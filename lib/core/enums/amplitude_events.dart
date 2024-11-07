@@ -218,8 +218,6 @@ enum AmplitudeEvents {
   nextPermissionsDialogClicked('next_permissions_dialog_clicked'),
   closePermissionsDialog('close_permissions_dialog'),
   navigationBarPressed('navigation_bar_pressed'),
-  impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
-  impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),
   manageFamilyPressed('manage_family_pressed'),
   registerWithoutChallengeClicked('register_without_challenge_clicked'),
   goToChallengeFromRegistrationClicked(
@@ -255,6 +253,7 @@ enum AmplitudeEvents {
   parentGiveWithAmountClicked('parent_give_with_amount_clicked'),
   parentGiveClicked('parent_give_clicked'),
   parentGiveFilterTileClicked('parent_give_filter_tile_clicked'),
+  parentGaveSuccessfully('parent_gave_successfully'),
 
   // Reflect and Share
   reflectandShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),

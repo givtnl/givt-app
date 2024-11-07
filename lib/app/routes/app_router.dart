@@ -22,8 +22,6 @@ import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
-import 'package:givt_app/features/impact_groups/models/impact_group.dart';
-import 'package:givt_app/features/impact_groups/pages/impact_group_details_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
@@ -142,21 +140,7 @@ class AppRouter {
           child: const LoadingPage(),
         ),
       ),
-      GoRoute(
-        path: Pages.impactGroupDetails.path,
-        name: Pages.impactGroupDetails.name,
-        builder: (context, state) => BlocProvider(
-          create: (_) => GiveBloc(
-            getIt(),
-            getIt(),
-            getIt(),
-            getIt(),
-          ),
-          child: ImpactGroupDetailsPage(
-            impactGroup: state.extra! as ImpactGroup,
-          ),
-        ),
-      ),
+
       GoRoute(
         path: Pages.home.path,
         name: Pages.home.name,

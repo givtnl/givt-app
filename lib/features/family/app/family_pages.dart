@@ -77,10 +77,6 @@ enum FamilyPages {
     path: 'school-event-organisations',
     name: 'SCHOOL_EVENT_ORGANISATIONS',
   ),
-  impactGroupDetails(
-    path: 'kids-impact-group-details',
-    name: 'KIDS_IMPACT_GROUP_DETAILS',
-  ),
 
   //reflect and share:
   reflectIntro(path: 'reflect-intro', name: 'REFLECT-INTRO'),

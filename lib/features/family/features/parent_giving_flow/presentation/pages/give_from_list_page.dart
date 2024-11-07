@@ -8,11 +8,11 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_amount_page.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -24,25 +24,16 @@ class GiveFromListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final give = getIt<GiveBloc>();
-    return BlocConsumer<GiveBloc, GiveState>(
+    final give = getIt<GiveCubit>();
+    return BlocConsumer<GiveCubit, GiveState>(
       bloc: give,
       listener: (context, state) {
-        final userGUID = context.read<AuthCubit>().state.user.guid;
-        if (state.status == GiveStatus.success) {
-          give.add(
-            GiveOrganisationSelected(
-              nameSpace: getIt<MediumCubit>().state.mediumId,
-              userGUID: userGUID,
-            ),
-          );
-        }
-        if (state.status == GiveStatus.readyToGive) {
+        if (state is GiveFromBrowser) {
           context.pushReplacementNamed(
             FamilyPages.parentGive.name,
           );
         }
-        if (state.status == GiveStatus.error) {
+        if (state is GiveError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(locals.somethingWentWrong),
@@ -50,9 +41,7 @@ class GiveFromListPage extends StatelessWidget {
           );
         }
       },
-      builder: (context, giveState) => giveState.status == GiveStatus.loading ||
-              giveState.status == GiveStatus.processed ||
-              giveState.status == GiveStatus.success
+      builder: (context, giveState) => giveState is GiveLoading
           ? const Scaffold(body: CustomCircularProgressIndicator())
           : OrganisationListFamilyPage(
               onTap: (CollectGroup collectGroup) {
@@ -95,12 +84,11 @@ class GiveFromListPage extends StatelessWidget {
           },
         ),
       );
-      getIt<GiveBloc>().add(
-        GiveAmountChanged(
-          firstCollectionAmount: result.toDouble(),
-          secondCollectionAmount: 0,
-          thirdCollectionAmount: 0,
-        ),
+      await getIt<GiveCubit>().createTransaction(
+        userId: context.read<AuthCubit>().state.user.guid,
+        amount: result,
+        orgName: collectGroup.orgName,
+        mediumId: collectGroup.nameSpace,
       );
     }
   }
