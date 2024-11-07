@@ -271,6 +271,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }) async {
     /// register user
     final userGUID = await _apiService.registerUser(tempUser.toJson());
+    await AnalyticsHelper.setUserProperties(userId: userGUID);
 
     /// create session
     await login(

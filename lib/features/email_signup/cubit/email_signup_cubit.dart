@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:device_region/device_region.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/request_helper.dart';
@@ -11,7 +12,9 @@ import 'package:givt_app/features/email_signup/presentation/models/email_signup_
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -149,7 +152,7 @@ class EmailSignupCubit
     // Check if this is a different login or someone who logged in before
     await _authRepository.checkUserExt(email: _currentEmail);
 
-    // Get information about emailadres
+    // Get info if this is a registered user
     final result = await _authRepository.checkEmail(email: _currentEmail);
 
     // When this is a registered user, we show the login page
@@ -158,6 +161,19 @@ class EmailSignupCubit
       return;
     }
 
+    // Otherwise we create a temp user
+    final tempUser = TempUser.prefilled(
+      email: _currentEmail,
+      country: _currentCountry.countryCode,
+      timeZoneId: await FlutterTimezone.getLocalTimezone(),
+      amountLimit: _currentCountry.isUS ? 4999 : 499,
+    );
+
+    await _authRepository.registerUser(
+      tempUser: tempUser,
+      isNewUser: true,
+    );
+    
     emitCustom(EmailSignupCustom.registerFamily(_currentEmail));
   }
 }
