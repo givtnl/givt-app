@@ -138,10 +138,11 @@ class EmailSignupCubit
       return;
     }
 
-    if (currentCountry.isUS) {
-      emitCustom(EmailSignupCustom.loginFamily(currentEmail));
-    } else {
-      emitCustom(EmailSignupCustom.success(currentEmail, currentCountry));
+    if (!currentCountry.isUS) {
+      // It shouldn't be possible to get here
+      emitError('EU is making use of family login');
     }
+
+    emitCustom(EmailSignupCustom.loginFamily(currentEmail));
   }
 }
