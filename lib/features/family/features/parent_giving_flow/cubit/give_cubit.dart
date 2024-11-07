@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -15,11 +17,20 @@ class GiveCubit extends Cubit<GiveState> {
   ) : super(GiveInitial());
   final CreateTransactionRepository _createTransactionRepository;
 
-  Future<void> createTransaction(
-      {required Transaction transaction,
-      required String orgName,
-      required String mediumId}) async {
+  Future<void> createTransaction({
+    required String userId,
+    required int amount,
+    required String orgName,
+    required String mediumId,
+    bool isGratitude = false,
+  }) async {
     emit(GiveLoading());
+    final transaction = Transaction(
+      userId: userId,
+      amount: amount.toDouble(),
+      mediumId: base64Encode(utf8.encode(mediumId)),
+      isActOfService: isGratitude,
+    );
     try {
       await _createTransactionRepository.createTransaction(
         transaction: transaction,

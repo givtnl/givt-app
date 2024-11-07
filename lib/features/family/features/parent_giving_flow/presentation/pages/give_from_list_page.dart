@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
@@ -87,13 +85,11 @@ class GiveFromListPage extends StatelessWidget {
         ),
       );
       await getIt<GiveCubit>().createTransaction(
-          transaction: Transaction(
-            userId: context.read<AuthCubit>().state.user.guid,
-            mediumId: base64Encode(utf8.encode(collectGroup.nameSpace)),
-            amount: result.toDouble(),
-          ),
-          orgName: collectGroup.orgName,
-          mediumId: collectGroup.nameSpace);
+        userId: context.read<AuthCubit>().state.user.guid,
+        amount: result,
+        orgName: collectGroup.orgName,
+        mediumId: collectGroup.nameSpace,
+      );
     }
   }
 }
