@@ -27,7 +27,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/utils/auth_utils.dart';
 import 'package:go_router/go_router.dart';
 
 class EmailSignupPage extends StatefulWidget {
@@ -81,121 +81,150 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
 
-    return BaseStateConsumer(
-      cubit: _cubit,
-      onLoading: (context) => const FunScaffold(
-        body: Center(
-          child: CustomCircularProgressIndicator(),
+    return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (previous, current) => previous != current,
+      listener: (context, state) {
+        if (state.status == AuthStatus.loginRedirect) {
+          AuthUtils.checkToken(
+            context,
+            checkAuthRequest: CheckAuthRequest(
+              navigate: (context) async => context.goNamed(Pages.home.name),
+              email: state.email.trim(),
+              forceLogin: true,
+            ),
+          );
+        }
+      },
+      child: BaseStateConsumer(
+        cubit: _cubit,
+        onLoading: (context) => const FunScaffold(
+          body: Center(
+            child: CustomCircularProgressIndicator(),
+          ),
         ),
-      ),
-      onCustom: handleCustom,
-      onData: (context, state) => FunScaffold(
-        body: LayoutBuilder(
-          builder: (context, constraint) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraint.maxHeight,
-                ),
-                child: IntrinsicHeight(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        TitleLargeText(
-                          locals.welcomeContinue,
-                        ),
-                        const SizedBox(height: 4),
-                        BodyMediumText(
-                          locals.toGiveWeNeedYourEmailAddress,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 4),
-                        BodySmallText.primary40(locals.weWontSendAnySpam),
-                        const Spacer(),
-                        OutlinedTextFormField(
-                          initialValue: state.email,
-                          hintText: locals.email,
-                          onChanged: _cubit.updateEmail,
-                          validator: (value) {
-                            if (!_cubit.validateEmail(value)) {
-                              return context.l10n.invalidEmail;
-                            }
+        onCustom: handleCustom,
+        onData: (context, state) => FunScaffold(
+          body: LayoutBuilder(
+            builder: (context, constraint) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraint.maxHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          TitleLargeText(
+                            locals.welcomeContinue,
+                          ),
+                          const SizedBox(height: 4),
+                          BodyMediumText(
+                            locals.toGiveWeNeedYourEmailAddress,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 4),
+                          BodySmallText.primary40(locals.weWontSendAnySpam),
+                          const Spacer(),
+                          OutlinedTextFormField(
+                            initialValue: state.email,
+                            hintText: locals.email,
+                            onChanged: _cubit.updateEmail,
+                            validator: (value) {
+                              if (!_cubit.validateEmail(value)) {
+                                return context.l10n.invalidEmail;
+                              }
 
-                            return null;
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          autofillHints: const [
-                            AutofillHints.username,
-                            AutofillHints.email,
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        CountryDropDown(
-                          selectedCountry: state.country,
-                          onChanged: (Country? newValue) {
-                            _cubit.updateCountry(newValue!);
-                          },
-                        ),
-                        const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: GestureDetector(
-                            onTap: () => showModalBottomSheet<void>(
-                              context: context,
-                              useSafeArea: true,
-                              scrollControlDisabledMaxHeightRatio: 1,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              builder: (BuildContext context) =>
-                                  const TermsAndConditionsDialog(
-                                typeOfTerms: TypeOfTerms.termsAndConditions,
-                              ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  FontAwesomeIcons.circleInfo,
-                                  size: 20,
-                                  color: FamilyAppTheme.primary20,
+                              return null;
+                            },
+                            keyboardType: TextInputType.emailAddress,
+                            autofillHints: const [
+                              AutofillHints.username,
+                              AutofillHints.email,
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          CountryDropDown(
+                            selectedCountry: state.country,
+                            onChanged: (Country? newValue) {
+                              _cubit.updateCountry(newValue!);
+                            },
+                          ),
+                          const Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: GestureDetector(
+                              onTap: () => showModalBottomSheet<void>(
+                                context: context,
+                                useSafeArea: true,
+                                scrollControlDisabledMaxHeightRatio: 1,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                const SizedBox(width: 8),
-                                Flexible(
-                                  child: BodySmallText.primary40(
-                                    locals.acceptTerms,
+                                builder: (BuildContext context) =>
+                                    const TermsAndConditionsDialog(
+                                  typeOfTerms: TypeOfTerms.termsAndConditions,
+                                ),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Icon(
+                                    FontAwesomeIcons.circleInfo,
+                                    size: 20,
+                                    color: FamilyAppTheme.primary20,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 8),
+                                  Flexible(
+                                    child: BodySmallText.primary40(
+                                      locals.acceptTerms,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 12),
-                        if (_isLoading)
-                          const Center(child: CircularProgressIndicator())
-                        else
-                          FunButton(
-                            isDisabled: !state.continueButtonEnabled,
-                            onTap: state.continueButtonEnabled
-                                ? _cubit.login
-                                : null,
-                            text: locals.continueKey,
-                            rightIcon: FontAwesomeIcons.arrowRight,
-                            analyticsEvent: AnalyticsEvent(
-                              AmplitudeEvents.emailSignupContinueClicked,
+                          const SizedBox(height: 12),
+                          if (_isLoading)
+                            const Center(child: CircularProgressIndicator())
+                          else
+                            FunButton(
+                              isDisabled: !state.continueButtonEnabled,
+                              onTap: state.continueButtonEnabled
+                                  ? () async {
+                                      if (state.country.isUS) {
+                                        _cubit.login();
+                                      } else {
+                                        await context
+                                            .read<AuthCubit>()
+                                            .register(
+                                              country: state.country,
+                                              email: state.email,
+                                              locale: Localizations.localeOf(
+                                                      context)
+                                                  .languageCode,
+                                            );
+                                      }
+                                    }
+                                  : null,
+                              text: locals.continueKey,
+                              rightIcon: FontAwesomeIcons.arrowRight,
+                              analyticsEvent: AnalyticsEvent(
+                                AmplitudeEvents.emailSignupContinueClicked,
+                              ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
@@ -205,12 +234,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
       BuildContext context, EmailSignupCustom custom) async {
     switch (custom) {
       case EmailSignupSuccess():
-        await context.read<AuthCubit>().register(
-              country: custom.country,
-              email: custom.email,
-              locale: Localizations.localeOf(context).languageCode,
-            );
-      case EmailSignupSuccessFamily():
+        break;
+      case EmailSignupShowFamilyLogin():
         await FamilyAuthUtils.authenticateUser(
           context,
           checkAuthRequest: FamilyCheckAuthRequest(

@@ -139,7 +139,7 @@ class EmailSignupCubit
     }
 
     if (currentCountry.isUS) {
-      emitCustom(EmailSignupCustom.successFamily(currentEmail));
+      emitCustom(EmailSignupCustom.loginFamily(currentEmail));
     } else {
       emitCustom(EmailSignupCustom.success(currentEmail, currentCountry));
     }

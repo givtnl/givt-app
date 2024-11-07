@@ -5,8 +5,8 @@ sealed class EmailSignupCustom {
 
   const factory EmailSignupCustom.success(String email, Country country) =
       EmailSignupSuccess;
-  const factory EmailSignupCustom.successFamily(String email) =
-      EmailSignupSuccessFamily;
+  const factory EmailSignupCustom.loginFamily(String email) =
+      EmailSignupShowFamilyLogin;
   const factory EmailSignupCustom.noInternet() = EmailSignupNoInternet;
   const factory EmailSignupCustom.certExpired() = EmailSignupCertExpired;
 }
@@ -18,8 +18,8 @@ class EmailSignupSuccess extends EmailSignupCustom {
   final Country country;
 }
 
-class EmailSignupSuccessFamily extends EmailSignupCustom {
-  const EmailSignupSuccessFamily(this.email);
+class EmailSignupShowFamilyLogin extends EmailSignupCustom {
+  const EmailSignupShowFamilyLogin(this.email);
 
   final String email;
 }

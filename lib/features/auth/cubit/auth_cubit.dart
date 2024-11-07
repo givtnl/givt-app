@@ -237,6 +237,30 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
 
     try {
+      /// check if user is trying to login with a different account.
+      /// if so delete the current user and login with the new one
+      await _authRepositoy.checkUserExt(email: email);
+
+      if (!await _authRepositoy.checkTld(email)) {
+        emit(state.copyWith(status: AuthStatus.failure));
+        return;
+      }
+
+      // Get information about emailadres
+      final result = await _authRepositoy.checkEmail(email);
+
+      // When this is a temp user, we skip the login page
+      if (result.contains('temp')) {
+        await login(email: email, password: TempUser.defaultPassword);
+        return;
+      }
+
+      // When this is a registered user, we show the login page
+      if (result.contains('true')) {
+        emit(state.copyWith(status: AuthStatus.loginRedirect, email: email));
+        return;
+      }
+
       // Otherwise we create a temp user
       final tempUser = TempUser.prefilled(
         email: email,
