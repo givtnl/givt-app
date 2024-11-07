@@ -234,7 +234,12 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
       BuildContext context, EmailSignupCustom custom) async {
     switch (custom) {
       case EmailSignupShowFamilyRegistration():
-        break;
+        context.goNamed(
+          FamilyPages.registrationUS.name,
+          queryParameters: {
+            'email': custom.email,
+          },
+        );
       case EmailSignupShowFamilyLogin():
         await FamilyAuthUtils.authenticateUser(
           context,
