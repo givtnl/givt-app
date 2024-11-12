@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/splash/cubit/splash_custom.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -14,6 +12,7 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
   final FamilyAuthRepository _authRepository;
 
   Future<void> init() async {
+    await _authRepository.initAuth();
     final user = _authRepository.getCurrentUser();
 
     if (user == null) {
@@ -21,10 +20,16 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       return;
     }
 
-    if(user.tempUser) {
+    if (user.tempUser) {
       emitCustom(const SplashCustom.redirectToSignup());
     }
 
-    emitError(null);
+    if (user != null) {
+      if (false) {
+        emitCustom(const SplashCustom.redirectToAddMembers());
+      } else {
+        emitCustom(const SplashCustom.redirectToHome());
+      }
+    }
   }
 }

@@ -46,7 +46,7 @@ abstract class FamilyAuthRepository {
 
   UserExt? getCurrentUser();
 
-  void initAuth();
+  Future<void> initAuth();
 
   Future<void> registerUser({
     required TempUser tempUser,
@@ -344,7 +344,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   UserExt? getCurrentUser() => _userExt;
 
   @override
-  void initAuth() {
-    refreshToken();
+  Future<void> initAuth() async {
+    await refreshToken();
   }
 }

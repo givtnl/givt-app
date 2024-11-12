@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
 import 'package:givt_app/features/splash/cubit/splash_custom.dart';
@@ -55,6 +56,15 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void handleCustom(BuildContext context, SplashCustom state) {
-    context.goNamed(Pages.welcome.name);
+    switch (state) {
+      case SplashRedirectToWelcome():
+        context.goNamed(Pages.welcome.name);
+      case SplashRedirectToSignup():
+        context.goNamed(FamilyPages.registrationUS.name);
+      case SplashRedirectToAddMembers():
+        context.goNamed(FamilyPages.registrationUS.name);
+      case SplashRedirectToHome():
+        context.goNamed(FamilyPages.profileSelection.name);
+    }
   }
 }
