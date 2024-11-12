@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/children/edit_profile/repositories/edit_parent_profile_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
@@ -51,7 +51,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   final AddMemberRepository _addMemberRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
   final GivtRepository _givtRepository;
-  final AuthRepository _authRepository;
+  final FamilyAuthRepository _authRepository;
   final ParentalApprovalRepository _parentalApprovalRepository;
   final CreateTransactionRepository _createTransactionRepository;
   final EditProfileRepository _editChildProfileRepository;
@@ -87,9 +87,9 @@ class ProfilesRepositoryImpl with ProfilesRepository {
           (_) => refreshProfiles(),
         );
 
-    _authRepository.hasSessionStream().listen(
-      (hasSession) {
-        if (hasSession) {
+    _authRepository.authenticatedUserStream().listen(
+      (user) {
+        if (user != null) {
           _clearData();
           refreshProfiles();
         } else {
