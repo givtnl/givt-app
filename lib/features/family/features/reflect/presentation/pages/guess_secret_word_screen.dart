@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/pages/setup_bedtime_screen.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
@@ -54,6 +56,16 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               Navigator.of(context).pushReplacement(
                 const GratefulScreen().toRoute(context),
               );
+            case RedirectToBedtimeSelection():
+              Navigator.of(context).push(SetupBedtimeScreen(
+                arguments: BedtimeArguments(
+                  7,
+                  30,
+                  profiles: custom.kidsWithoutBedtime,
+                  bedtimes: const [],
+                  index: 0,
+                ),
+              ).toRoute(context));
           }
         },
         onData: (context, uiModel) {
