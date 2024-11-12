@@ -48,49 +48,50 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     final child = widget.arguments.profiles[widget.arguments.index];
-    return BaseStateConsumer<dynamic, Bedtime>(
-      cubit: _cubit,
-      onError: (context, error) {
-        context.goNamed(FamilyPages.profileSelection.name);
-        return const SizedBox.shrink();
-      },
-      onCustom: (context, bedtime) {
-        if (widget.arguments.index == widget.arguments.profiles.length - 1) {
-          context.goNamed(FamilyPages.profileSelection.name);
-          //todo navigate to mission screen
-        } else {
-          Navigator.of(context).push(SetupBedtimeScreen(
-            arguments: BedtimeArguments(
-              bedtimeSliderValue,
-              windDownValue,
-              profiles: widget.arguments.profiles,
-              bedtimes: [bedtime, ...widget.arguments.bedtimes],
-              index: widget.arguments.index + 1,
-            ),
-          ).toRoute(context));
-        }
-      },
-      onInitial: (context) {
-        return Material(
-          child: ColoredBox(
-            color: Colors.black,
-            child: Stack(children: [
-              //to do animate city before page navigation
-              cityAtBottom(width, height),
-              SafeArea(
-                child: Stack(
-                  children: [
-                    if (widget.arguments.index > 0)
-                      const GivtBackButtonFlat(color: Colors.white),
-                    avatarEllipse(width, height, child),
-                    content(child),
-                  ],
+    return PopScope(
+      canPop: false,
+      child: BaseStateConsumer<dynamic, Bedtime>(
+        cubit: _cubit,
+        onCustom: (context, bedtime) {
+          if (widget.arguments.index == widget.arguments.profiles.length - 1) {
+            context.goNamed(FamilyPages.profileSelection.name);
+            //todo navigate to mission screen
+          } else {
+            Navigator.of(context).push(
+              SetupBedtimeScreen(
+                arguments: BedtimeArguments(
+                  bedtimeSliderValue,
+                  windDownValue,
+                  profiles: widget.arguments.profiles,
+                  bedtimes: [bedtime, ...widget.arguments.bedtimes],
+                  index: widget.arguments.index + 1,
                 ),
-              ),
-            ]),
-          ),
-        );
-      },
+              ).toRoute(context),
+            );
+          }
+        },
+        onInitial: (context) {
+          return Material(
+            child: ColoredBox(
+              color: Colors.black,
+              child: Stack(children: [
+                //to do animate city before page navigation
+                cityAtBottom(width, height),
+                SafeArea(
+                  child: Stack(
+                    children: [
+                      if (widget.arguments.index > 0)
+                        const GivtBackButtonFlat(color: Colors.white),
+                      avatarEllipse(width, height, child),
+                      content(child),
+                    ],
+                  ),
+                ),
+              ]),
+            ),
+          );
+        },
+      ),
     );
   }
 

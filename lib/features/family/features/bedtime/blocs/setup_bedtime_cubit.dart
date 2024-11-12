@@ -41,19 +41,23 @@ class SetupBedtimeCubit extends CommonCubit<dynamic, Bedtime> {
     }
   }
 
-  void onClickContinue(
-      String guid, double bedtimeSliderValue, int windDownValue) {
+  Future<void> onClickContinue(
+    String guid,
+    double bedtimeSliderValue,
+    int windDownValue,
+  ) async {
+    emit(const BaseState.loading());
     final bedtime = Bedtime(
       id: guid,
       bedtimeInUtc: _bedtimeSliderValueToUtc(bedtimeSliderValue),
       winddownMinutes: windDownValue,
     );
     try {
-      _editChildRepository.editChildBedtime(bedtime);
+      await _editChildRepository.editChildBedtime(bedtime);
       emitCustom(bedtime);
     } catch (e, s) {
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
-      emitError(e.toString());
+      emitError('An unexpected error occurred while saving bedtime settings.');
     }
   }
 }
