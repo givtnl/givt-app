@@ -52,8 +52,8 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          FunCounter( 
-            currency: currency,
+          FunCounter(
+            prefix: currency,
             initialAmount: topupAmount,
             onAmountChanged: (amount) {
               setState(() {

@@ -4,6 +4,7 @@ import 'package:givt_app/features/family/features/admin_fee/application/admin_fe
 import 'package:givt_app/features/family/features/admin_fee/data/repositories/admin_fee_repository.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
+import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
@@ -12,6 +13,7 @@ import 'package:givt_app/features/family/features/history/history_repository/his
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
@@ -59,6 +61,7 @@ void initCubits() {
     ..registerLazySingleton<InterviewCubit>(
       () => InterviewCubit(getIt()),
     )
+    ..registerFactory(() => SetupBedtimeCubit(getIt()))
     ..registerLazySingleton<GratitudeSelectionCubit>(
       () => GratitudeSelectionCubit(getIt()),
     )
@@ -66,11 +69,8 @@ void initCubits() {
       CameraCubit.new,
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
-    ..registerLazySingleton<GiveBloc>(
-      () => GiveBloc(
-        getIt(),
-        getIt(),
-        getIt(),
+    ..registerLazySingleton<GiveCubit>(
+      () => GiveCubit(
         getIt(),
       ),
     )

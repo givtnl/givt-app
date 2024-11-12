@@ -50,7 +50,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
           MemberCounter(totalCount: _amount, displayFamily: false),
           const SizedBox(height: 24),
           FunCounter(
-            currency: '',
+            prefix: '',
             initialAmount: _amount,
             onAmountChanged: (amount) => setState(() {
               _amount = amount;

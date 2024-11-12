@@ -451,27 +451,6 @@ class APIService {
     return response.statusCode == 200;
   }
 
-  Future<bool> createChild(Map<String, dynamic> body) async {
-    final url =
-        Uri.https(_apiURL, 'givtservice/v1/childprofile/setup-child-profile');
-
-    final response = await client.post(
-      url,
-      body: jsonEncode(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
-
-    if (response.statusCode >= 300) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
-      );
-    }
-    return response.statusCode == 200;
-  }
-
   Future<bool> editChild(String childGUID, Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/ChildProfile/$childGUID');
 
@@ -1005,14 +984,14 @@ class APIService {
     return itemMap;
   }
 
-  Future<bool> setPreferredChurch(
-      {required String churchMediumId, required String groupId}) async {
+  Future<bool> setBoxOrigin(
+      {required String orgId, required String groupId}) async {
     final url =
-        Uri.https(_apiURL, '/givtservice/v1/groups/$groupId/preferred-church');
+        Uri.https(_apiURL, '/givtservice/v1/groups/$groupId/box-origin');
 
     final response = await client.put(
       url,
-      body: jsonEncode({'CollectGroupNamespace': churchMediumId}),
+      body: jsonEncode({'CollectGroupNamespace': orgId}),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -1050,5 +1029,32 @@ class APIService {
             : null,
       );
     }
+  }
+
+  Future<bool> editChildBedtime(
+      String childGUID, String bedtime, int winddownMinutes) async {
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/bedtime');
+    final response = await client.put(
+      url,
+      body: jsonEncode({
+        'bedtime': bedtime,
+        'winddowntime': winddownMinutes,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return response.statusCode == 200;
   }
 }

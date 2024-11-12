@@ -4,27 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_icon_border_button.dart';
 
 class FunCounter extends StatefulWidget {
   const FunCounter({
-    required this.currency,
+    this.prefix = r'$',
+    this.suffix = '',
     this.initialAmount,
     this.onAmountChanged,
     this.maxAmount,
     this.minAmount,
     this.canAmountBeZero = false,
+    this.textColor,
+    this.customIncrement = 1,
     super.key,
   });
 
-  final String? currency;
+  final String prefix;
+  final String suffix;
   final int? initialAmount;
   final int? maxAmount;
   final int? minAmount;
   final void Function(int amount)? onAmountChanged;
   final bool canAmountBeZero;
+  final int customIncrement;
+  final Color? textColor;
 
   @override
   State<FunCounter> createState() => _FunCounterState();
@@ -90,7 +97,7 @@ class _FunCounterState extends State<FunCounter> {
       HapticFeedback.lightImpact();
       SystemSound.play(SystemSoundType.click);
       _currentAmount += (_heldDuration.inMilliseconds < holdDownDuration)
-          ? 1
+          ? widget.customIncrement
           : (_heldDuration.inMilliseconds < holdDownDuration2)
               ? amountIncrement
               : amountIncrement2;
@@ -115,7 +122,7 @@ class _FunCounterState extends State<FunCounter> {
       HapticFeedback.lightImpact();
       SystemSound.play(SystemSoundType.click);
       _currentAmount -= (_heldDuration.inMilliseconds < holdDownDuration)
-          ? 1
+          ? widget.customIncrement
           : (_heldDuration.inMilliseconds < holdDownDuration2)
               ? amountIncrement
               : amountIncrement2;
@@ -127,7 +134,6 @@ class _FunCounterState extends State<FunCounter> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomIconBorderButton(
           onTapDown: () {
@@ -152,17 +158,10 @@ class _FunCounterState extends State<FunCounter> {
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Text(
-            '${widget.currency}$_currentAmount',
+          child: HeadlineLargeText(
+            '${widget.prefix}$_currentAmount${widget.suffix}',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontWeight: FontWeight.w700,
-              color: FamilyAppTheme.secondary30,
-              fontFeatures: <FontFeature>[
-                const FontFeature.liningFigures(),
-                const FontFeature.tabularFigures(),
-              ],
-            ),
+            color: widget.textColor,
           ),
         ),
         CustomIconBorderButton(

@@ -5,25 +5,24 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
-Future<void> showPreferredChurchSuccessDialog(
-    BuildContext context, String churchName,
+Future<void> showBoxOriginSuccessDialog(BuildContext context, String orgName,
     {void Function()? onTap}) async {
   await FunModal(
-    title: churchName,
-    subtitle: 'Added as your church',
+    title: orgName,
+    subtitle: 'Thanks for sharing!',
     icon: FunIcon.checkmark(),
     buttons: [
       FunButton(
         text: 'Done',
         onTap: onTap ?? () => Navigator.of(context).pop(),
         analyticsEvent:
-            AnalyticsEvent(AmplitudeEvents.preferredChurchSuccessDialogDone),
+            AnalyticsEvent(AmplitudeEvents.boxOriginSuccessDialogDone),
       ),
     ],
   ).show(context);
 }
 
-Future<void> showPreferredChurchErrorDialog(BuildContext context,
+Future<void> showBoxOriginErrorDialog(BuildContext context,
     {void Function()? onTap}) async {
   await FunModal(
     title: 'Oops, something went wrong...',

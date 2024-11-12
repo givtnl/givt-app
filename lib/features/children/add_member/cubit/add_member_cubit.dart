@@ -54,6 +54,12 @@ class AddMemberCubit extends Cubit<AddMemberState> {
             eventName: AmplitudeEvents.topupFailed,
           ),
         );
+        emit(
+          state.copyWith(
+            status: AddMemberStateStatus.topupFailed,
+            error: 'Top up failed, child created!',
+          ),
+        );
       } else {
         unawaited(
           AnalyticsHelper.logEvent(

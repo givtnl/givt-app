@@ -131,23 +131,7 @@ class FamilyAppRoutes {
           path: FamilyPages.giveByListFamily.path,
           name: FamilyPages.giveByListFamily.name,
           builder: (context, state) {
-            final user = context.read<AuthCubit>().state.user;
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (_) => OrganisationBloc(
-                    getIt(),
-                    getIt(),
-                  )..add(
-                      OrganisationFetch(
-                        Country.fromCode(user.country),
-                        type: CollectGroupType.none.index,
-                      ),
-                    ),
-                ),
-              ],
-              child: const GiveFromListPage(),
-            );
+            return const GiveFromListPage();
           },
         ),
         GoRoute(
