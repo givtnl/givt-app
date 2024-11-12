@@ -37,9 +37,9 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
   void initState() {
     super.initState();
     bedtimeSliderValue =
-        widget.arguments.previousBedtime ?? BedtimeConfig().defaultBedtimeHour;
+        widget.arguments.previousBedtime ?? BedtimeConfig.defaultBedtimeHour;
     windDownValue = widget.arguments.previousWinddownMinutes ??
-        BedtimeConfig().defaultWindDownMinutes;
+        BedtimeConfig.defaultWindDownMinutes;
   }
 
   @override
@@ -171,9 +171,9 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
             prefix: '',
             suffix: ' min',
             initialAmount: windDownValue,
-            minAmount: BedtimeConfig().minWindDownMinutes,
-            maxAmount: BedtimeConfig().maxWindDownMinutes,
-            customIncrement: BedtimeConfig().windDownCounterSteps,
+            minAmount: BedtimeConfig.minWindDownMinutes,
+            maxAmount: BedtimeConfig.maxWindDownMinutes,
+            customIncrement: BedtimeConfig.windDownCounterSteps,
             textColor: Colors.white,
             onAmountChanged: (amount) {
               setState(() {

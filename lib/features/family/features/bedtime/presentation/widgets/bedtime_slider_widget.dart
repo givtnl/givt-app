@@ -26,7 +26,7 @@ class _BedtimeSliderWidgetState extends State<BedtimeSliderWidget> {
   @override
   void initState() {
     super.initState();
-    currentAmount = widget.initialAmount ?? BedtimeConfig().defaultBedtimeHour;
+    currentAmount = widget.initialAmount ?? BedtimeConfig.defaultBedtimeHour;
   }
 
   @override
@@ -43,10 +43,10 @@ class _BedtimeSliderWidgetState extends State<BedtimeSliderWidget> {
         SliderTheme(
           data: FunSliderTheme.getSliderTheme(context),
           child: Slider(
-            min: BedtimeConfig().minBedtimeHour,
+            min: BedtimeConfig.minBedtimeHour,
             value: currentAmount,
-            max: BedtimeConfig().maxBedtimeHour,
-            divisions: BedtimeConfig().sliderDivisions,
+            max: BedtimeConfig.maxBedtimeHour,
+            divisions: BedtimeConfig.sliderDivisions,
             onChanged: (value) {
               widget.onAmountChanged?.call(value);
               HapticFeedback.lightImpact();
@@ -69,12 +69,12 @@ class _BedtimeSliderWidgetState extends State<BedtimeSliderWidget> {
           child: Row(
             children: [
               LabelMediumText(
-                '${BedtimeConfig().minBedtimeHour.floor()}:00 pm',
+                '${BedtimeConfig.minBedtimeHour.floor()}:00 pm',
                 color: FamilyAppTheme.primary99,
               ),
               const Spacer(),
               LabelMediumText(
-                '${BedtimeConfig().maxBedtimeHour.floor()}:${getMinutes(BedtimeConfig().maxBedtimeHour)} pm',
+                '${BedtimeConfig.maxBedtimeHour.floor()}:${getMinutes(BedtimeConfig.maxBedtimeHour)} pm',
                 color: FamilyAppTheme.primary99,
               ),
             ],

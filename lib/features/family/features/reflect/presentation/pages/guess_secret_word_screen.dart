@@ -60,8 +60,8 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
             case RedirectToBedtimeSelection():
               Navigator.of(context).push(SetupBedtimeScreen(
                 arguments: BedtimeArguments(
-                  BedtimeConfig().defaultBedtimeHour,
-                  BedtimeConfig().defaultWindDownMinutes,
+                  BedtimeConfig.defaultBedtimeHour,
+                  BedtimeConfig.defaultWindDownMinutes,
                   profiles: custom.kidsWithoutBedtime,
                   bedtimes: const [],
                   index: 0,

@@ -73,7 +73,7 @@ class EditChildRepositoryImpl with EditChildRepository {
   Future<bool> editChildBedtime(Bedtime bedtime) async {
     final response = await apiService.editChildBedtime(
         bedtime.id, bedtime.bedtimeInUtc, bedtime.winddownMinutes);
-    _addChildGuidEventAfterOneSecond(bedtime.id);
+    _childGUIDController.add(bedtime.id);
     return response;
   }
 }

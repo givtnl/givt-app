@@ -18,24 +18,13 @@ class Bedtime extends Equatable {
 /// - 7.0 represents 19:00 PM
 /// - 9.5 represents 21:30 PM
 class BedtimeConfig {
-  BedtimeConfig({
-    this.defaultBedtimeHour = 7,
-    this.defaultBedtimeMinutes = 00,
-    this.defaultWindDownMinutes = 30,
-    this.minBedtimeHour = 6,
-    this.maxBedtimeHour = 9.5,
-    this.minWindDownMinutes = 15,
-    this.maxWindDownMinutes = 60,
-    this.windDownCounterSteps = 5,
-    this.sliderDivisions = 7,
-  });
-  final double defaultBedtimeHour;
-  final int defaultBedtimeMinutes;
-  final int defaultWindDownMinutes;
-  final double minBedtimeHour;
-  final double maxBedtimeHour;
-  final int minWindDownMinutes;
-  final int maxWindDownMinutes;
-  final int windDownCounterSteps;
-  final int sliderDivisions;
+  static const double defaultBedtimeHour = 7;
+  static const int defaultBedtimeMinutes = 00;
+  static const int defaultWindDownMinutes = 30;
+  static const double minBedtimeHour = 6;
+  static const double maxBedtimeHour = 9.5;
+  static const int minWindDownMinutes = 15;
+  static const int maxWindDownMinutes = 60;
+  static const int windDownCounterSteps = 5;
+  static const int sliderDivisions = 7;
 }

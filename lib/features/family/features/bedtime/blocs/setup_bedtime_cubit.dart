@@ -46,7 +46,7 @@ class SetupBedtimeCubit extends CommonCubit<dynamic, Bedtime> {
     double bedtimeSliderValue,
     int windDownValue,
   ) async {
-    emit(const BaseState.loading());
+    emitLoading();
     final bedtime = Bedtime(
       id: guid,
       bedtimeInUtc: _bedtimeSliderValueToUtc(bedtimeSliderValue),
