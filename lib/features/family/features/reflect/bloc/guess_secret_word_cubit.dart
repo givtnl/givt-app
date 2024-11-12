@@ -61,6 +61,13 @@ class GuessSecretWordCubit
                 ),
               );
               _emitData();
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents
+                    .redirectedFromGratitudeGameToBedtimeSelection,
+                eventProperties: {
+                  'total': _attempts,
+                },
+              );
               return;
             }
             emitCustom(const GuessTheWordCustom.redirectToSummary());

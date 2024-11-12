@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
 import 'package:givt_app/features/family/shared/design/components/input/input.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -20,12 +21,12 @@ class BedtimeSliderWidget extends StatefulWidget {
 }
 
 class _BedtimeSliderWidgetState extends State<BedtimeSliderWidget> {
-  double currentAmount = 7.0;
+  late double currentAmount;
 
   @override
   void initState() {
     super.initState();
-    currentAmount = widget.initialAmount ?? 7.0;
+    currentAmount = widget.initialAmount ?? BedtimeConfig().defaultBedtimeHour;
   }
 
   @override
@@ -42,11 +43,10 @@ class _BedtimeSliderWidgetState extends State<BedtimeSliderWidget> {
         SliderTheme(
           data: FunSliderTheme.getSliderTheme(context),
           child: Slider(
-            min: 6,
+            min: BedtimeConfig().minBedtimeHour,
             value: currentAmount,
-            max: 9.5,
-            divisions:
-                7, // there are 7 blocks of 30 minutes blocks between 6:30 and 9 pm
+            max: BedtimeConfig().maxBedtimeHour,
+            divisions: BedtimeConfig().sliderDivisionsCount,
             onChanged: (value) {
               widget.onAmountChanged?.call(value);
               HapticFeedback.lightImpact();
@@ -85,10 +85,7 @@ class _BedtimeSliderWidgetState extends State<BedtimeSliderWidget> {
   }
 
   String getMinutes(double amount) {
-    final commaValues = amount - amount.floor();
-    if (commaValues == 0.5) {
-      return '30';
-    }
-    return '00';
+    final minutes = ((amount - amount.floor()) * 60).round();
+    return minutes.toString().padLeft(2, '0');
   }
 }

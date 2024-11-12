@@ -32,13 +32,15 @@ class SetupBedtimeScreen extends StatefulWidget {
 
 class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
   final SetupBedtimeCubit _cubit = getIt<SetupBedtimeCubit>();
-  double bedtimeSliderValue = 7;
-  int windDownValue = 30;
+  late double bedtimeSliderValue;
+  late int windDownValue;
   @override
   void initState() {
     super.initState();
-    bedtimeSliderValue = widget.arguments.previousBedtime ?? 7;
-    windDownValue = widget.arguments.previousWinddownMinutes ?? 30;
+    bedtimeSliderValue =
+        widget.arguments.previousBedtime ?? BedtimeConfig().defaultBedtimeHour;
+    windDownValue = widget.arguments.previousWinddownMinutes ??
+        BedtimeConfig().defaultwidndownMinutes;
   }
 
   @override
@@ -171,9 +173,9 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
             prefix: '',
             suffix: ' min',
             initialAmount: windDownValue,
-            minAmount: 15,
-            maxAmount: 60,
-            customIncrement: 5,
+            minAmount: BedtimeConfig().minWindDownMinutes,
+            maxAmount: BedtimeConfig().maxWindDownMinutes,
+            customIncrement: BedtimeConfig().windDownCounterSteps,
             textColor: Colors.white,
             onAmountChanged: (amount) {
               setState(() {

@@ -46,7 +46,7 @@ class SliderWidgetThumb extends SliderComponentShape {
   }) {
     // Draw circle
     final circleBluePaint = Paint()
-      ..color = sliderTheme.thumbColor!
+      ..color = sliderTheme.thumbColor ?? FamilyAppTheme.secondary98
       ..style = PaintingStyle.fill;
 
     final circleDarkPaint = Paint()
