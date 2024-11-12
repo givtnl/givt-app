@@ -26,6 +26,8 @@ class BedtimeConfig {
     this.maxBedtimeHour = 9.5,
     this.minWindDownMinutes = 15,
     this.maxWindDownMinutes = 60,
+    this.windDownCounterSteps = 5,
+    this.sliderDivisions = 7,
   });
   final double defaultBedtimeHour;
   final int defaultBedtimeMinutes;
@@ -34,9 +36,6 @@ class BedtimeConfig {
   final double maxBedtimeHour;
   final int minWindDownMinutes;
   final int maxWindDownMinutes;
-  final int windDownCounterSteps = 5;
-
-  /// Returns the number of divisions for the bedtime slider
-  /// Each hour is divided into 2 parts (30-minute intervals)
-  int get sliderDivisionsCount => (maxBedtimeHour - minBedtimeHour).toInt() * 2;
+  final int windDownCounterSteps;
+  final int sliderDivisions;
 }

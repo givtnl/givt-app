@@ -46,7 +46,7 @@ class _BedtimeSliderWidgetState extends State<BedtimeSliderWidget> {
             min: BedtimeConfig().minBedtimeHour,
             value: currentAmount,
             max: BedtimeConfig().maxBedtimeHour,
-            divisions: BedtimeConfig().sliderDivisionsCount,
+            divisions: BedtimeConfig().sliderDivisions,
             onChanged: (value) {
               widget.onAmountChanged?.call(value);
               HapticFeedback.lightImpact();
