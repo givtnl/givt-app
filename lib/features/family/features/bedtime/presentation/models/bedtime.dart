@@ -21,7 +21,7 @@ class BedtimeConfig {
   BedtimeConfig({
     this.defaultBedtimeHour = 7,
     this.defaultBedtimeMinutes = 00,
-    this.defaultWidndownMinutes = 30,
+    this.defaultWindDownMinutes = 30,
     this.minBedtimeHour = 6,
     this.maxBedtimeHour = 9.5,
     this.minWindDownMinutes = 15,
@@ -29,7 +29,7 @@ class BedtimeConfig {
   });
   final double defaultBedtimeHour;
   final int defaultBedtimeMinutes;
-  final int defaultWidndownMinutes;
+  final int defaultWindDownMinutes;
   final double minBedtimeHour;
   final double maxBedtimeHour;
   final int minWindDownMinutes;

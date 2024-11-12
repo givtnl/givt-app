@@ -39,7 +39,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
     bedtimeSliderValue =
         widget.arguments.previousBedtime ?? BedtimeConfig().defaultBedtimeHour;
     windDownValue = widget.arguments.previousWinddownMinutes ??
-        BedtimeConfig().defaultWidndownMinutes;
+        BedtimeConfig().defaultWindDownMinutes;
   }
 
   @override
