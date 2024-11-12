@@ -64,7 +64,9 @@ class ReflectAndShareRepository {
   Future<List<Profile>> getKidsWithoutBedtime() async {
     final profiles = await _profilesRepository.getProfiles();
     final profilesInGame = profiles.where((profile) {
-      return _selectedProfiles.any((selected) => selected.userId == profile.id);
+      return _selectedProfiles.any(
+        (selected) => (selected.userId == profile.id) && (profile.isChild),
+      );
     }).toList();
     return profilesInGame
         .where(

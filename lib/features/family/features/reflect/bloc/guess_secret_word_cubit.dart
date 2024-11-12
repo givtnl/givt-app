@@ -35,7 +35,7 @@ class GuessSecretWordCubit
     _emitData();
   }
 
-  void onClickOption(int index) {
+  Future<void> onClickOption(int index) async {
     _attempts++;
     _pressedOptions.add(index);
     if (_guessOptions[index].toLowerCase() == _secretWord.toLowerCase()) {
@@ -48,21 +48,22 @@ class GuessSecretWordCubit
       emitCustom(const GuessTheWordCustom.showConfetti());
       // just to make sure we fire the analytics events once and save the stats once
       if (!_hasSuccess) {
+        final kidsWithoutBedtime =
+            await _reflectAndShareRepository.getKidsWithoutBedtime();
         // Check if it's the last game and delay for 2 seconds before continuing
         if (_reflectAndShareRepository.isGameFinished()) {
           _reflectAndShareRepository.saveSummaryStats();
-          Timer(const Duration(seconds: 2), () async {
-            final kidsWithoutBedtime =
-                await _reflectAndShareRepository.getKidsWithoutBedtime();
+          Timer(const Duration(seconds: 2), () {
             if (kidsWithoutBedtime.isNotEmpty) {
               emitCustom(
                 GuessTheWordCustom.redirectToBedtimeSelection(
                   kidsWithoutBedtime,
                 ),
               );
-            } else {
-              emitCustom(const GuessTheWordCustom.redirectToSummary());
+              _emitData();
+              return;
             }
+            emitCustom(const GuessTheWordCustom.redirectToSummary());
           });
         }
         AnalyticsHelper.logEvent(

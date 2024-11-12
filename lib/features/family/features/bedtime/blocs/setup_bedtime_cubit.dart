@@ -20,10 +20,13 @@ class SetupBedtimeCubit extends CommonCubit<dynamic, Bedtime> {
       minutes,
     ).toUtc();
 
-    return '${bedtime.hour}:${minutes.toString().padLeft(2, '0')}';
+    return '${bedtime.hour.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
   }
 
   int getMilitaryTimeHour(int amount) {
+    if (amount < 6 || amount > 9) {
+      throw ArgumentError('Bedtime must be between 6 PM and 9 PM');
+    }
     switch (amount) {
       case 6:
         return 18;
