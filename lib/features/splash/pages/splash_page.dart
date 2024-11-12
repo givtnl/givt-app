@@ -60,9 +60,8 @@ class _SplashPageState extends State<SplashPage> {
       case SplashRedirectToWelcome():
         context.goNamed(Pages.welcome.name);
       case SplashRedirectToSignup():
-        context.goNamed(FamilyPages.registrationUS.name);
-      case SplashRedirectToAddMembers():
-        context.goNamed(FamilyPages.registrationUS.name);
+        context.goNamed(FamilyPages.registrationUS.name,
+            queryParameters: {'email': state.email});
       case SplashRedirectToHome():
         context.goNamed(FamilyPages.profileSelection.name);
     }

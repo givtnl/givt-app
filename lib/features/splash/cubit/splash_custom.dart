@@ -2,8 +2,7 @@ sealed class SplashCustom {
   const SplashCustom();
 
   const factory SplashCustom.redirectToWelcome() = SplashRedirectToWelcome;
-  const factory SplashCustom.redirectToSignup() = SplashRedirectToSignup;
-  const factory SplashCustom.redirectToAddMembers() = SplashRedirectToAddMembers;
+  const factory SplashCustom.redirectToSignup(String email) = SplashRedirectToSignup;
   const factory SplashCustom.redirectToHome() = SplashRedirectToHome;
 }
 
@@ -12,11 +11,8 @@ class SplashRedirectToWelcome extends SplashCustom {
 }
 
 class SplashRedirectToSignup extends SplashCustom {
-  const SplashRedirectToSignup();
-}
-
-class SplashRedirectToAddMembers extends SplashCustom {
-  const SplashRedirectToAddMembers();
+  const SplashRedirectToSignup(this.email);
+  final String email;
 }
 
 class SplashRedirectToHome extends SplashCustom {

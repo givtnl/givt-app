@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
@@ -151,7 +152,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   void handleCustom(BuildContext context, UsSignupCustom custom) {
     switch (custom) {
       case UsSignupCustomSuccess():
-        context.pushReplacementNamed(FamilyPages.addMember.name);
+        AddMemberUtil.addFamilyPushPages(context);
     }
   }
 

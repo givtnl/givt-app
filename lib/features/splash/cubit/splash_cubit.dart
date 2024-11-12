@@ -20,16 +20,11 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       return;
     }
 
-    if (user.tempUser) {
-      emitCustom(const SplashCustom.redirectToSignup());
+    if (user.tempUser || !user.personalInfoRegistered) {
+      emitCustom(SplashCustom.redirectToSignup(user.email));
+      return;
     }
 
-    if (user != null) {
-      if (false) {
-        emitCustom(const SplashCustom.redirectToAddMembers());
-      } else {
-        emitCustom(const SplashCustom.redirectToHome());
-      }
-    }
+    emitCustom(const SplashCustom.redirectToHome());
   }
 }
