@@ -11,7 +11,6 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -80,8 +79,6 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
                 SafeArea(
                   child: Stack(
                     children: [
-                      if (widget.arguments.index > 0)
-                        const GivtBackButtonFlat(color: Colors.white),
                       avatarEllipse(width, height, child),
                       content(child),
                     ],
@@ -202,7 +199,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
                 parameters: {
                   'child': child.firstName,
                   'bedtime':
-                      '${bedtimeSliderValue.floor()}:${((bedtimeSliderValue - bedtimeSliderValue.floor()) * 60).toInt()}',
+                      '${bedtimeSliderValue.floor().toInt().toString().padLeft(2, '0')}:${((bedtimeSliderValue - bedtimeSliderValue.floor()) * 60).toInt().toString().padLeft(2, '0')}',
                   'windDown': windDownValue,
                 },
               ),
