@@ -64,17 +64,17 @@ class _BedtimeSliderWidgetState extends State<BedtimeSliderWidget> {
             },
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 22),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 22),
           child: Row(
             children: [
               LabelMediumText(
-                '6:00 pm',
+                '${BedtimeConfig().minBedtimeHour.floor()}:00 pm',
                 color: FamilyAppTheme.primary99,
               ),
-              Spacer(),
+              const Spacer(),
               LabelMediumText(
-                '9:30 pm',
+                '${BedtimeConfig().maxBedtimeHour.floor()}:${getMinutes(BedtimeConfig().maxBedtimeHour)} pm',
                 color: FamilyAppTheme.primary99,
               ),
             ],

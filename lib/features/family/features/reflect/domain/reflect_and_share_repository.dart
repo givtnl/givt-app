@@ -62,17 +62,26 @@ class ReflectAndShareRepository {
   }
 
   Future<List<Profile>> getKidsWithoutBedtime() async {
-    final profiles = await _profilesRepository.getProfiles();
-    final profilesInGame = profiles.where((profile) {
-      return _selectedProfiles.any(
-        (selected) => (selected.userId == profile.id) && (profile.isChild),
+    try {
+      final profiles = await _profilesRepository.getProfiles();
+      final profilesInGame = profiles.where((profile) {
+        return _selectedProfiles.any(
+          (selected) => (selected.userId == profile.id) && (profile.isChild),
+        );
+      }).toList();
+      return profilesInGame
+          .where(
+            (profile) =>
+                profile.bedTime == null || profile.windDownTime == null,
+          )
+          .toList();
+    } on Exception catch (e, s) {
+      LoggingInfo.instance.error(
+        'Failed to get kids without bedtime',
+        methodName: s.toString(),
       );
-    }).toList();
-    return profilesInGame
-        .where(
-          (profile) => profile.bedTime == null || profile.windDownTime == null,
-        )
-        .toList();
+      rethrow;
+    }
   }
 
   // complete a game loop/ round
