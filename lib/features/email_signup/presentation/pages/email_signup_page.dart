@@ -27,6 +27,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
+import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/auth_utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -241,6 +242,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           },
         );
       case EmailSignupShowFamilyLogin():
+        AppThemeSwitcher.of(context).switchTheme(isFamilyApp: true);
         await FamilyAuthUtils.authenticateUser(
           context,
           checkAuthRequest: FamilyCheckAuthRequest(

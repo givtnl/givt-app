@@ -81,6 +81,11 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       throw Exception(
           'Cannot refresh token, no current session found to refresh.');
     }
+    if(session.isLoggedIn == false){
+      _authenticatedUserStream.add(null);
+      throw Exception(
+          'Cannot refresh token, user is not logged in.');
+    }
     final response = await _apiService.refreshToken(
       {
         'refresh_token': session.refreshToken,
