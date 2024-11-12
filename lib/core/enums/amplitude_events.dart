@@ -305,6 +305,9 @@ enum AmplitudeEvents {
   redirectedFromGratitudeGameToBedtimeSelection(
     'redirected_from_gratitude_game_to_bedtime_selection',
   ),
+  familyMissionAcceptanceScreenAcceptButtonPressed(
+    'family_mission_acceptance_screen_accept_button_pressed',
+  ),
   // Family Home Screen
   FamilyHomeScreenGratitudeGameButtonClicked(
     'family_home_screen_gratitude_game_button_clicked',

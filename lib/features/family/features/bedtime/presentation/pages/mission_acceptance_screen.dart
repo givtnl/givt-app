@@ -179,7 +179,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
                     onLongPress: _playAnimation,
                     onLongPressUp: handleButtonReleased,
                     analyticsEvent: AnalyticsEvent(AmplitudeEvents
-                        .coinMediumIdNotRecognizedGoBackHomeClicked),
+                        .familyMissionAcceptanceScreenAcceptButtonPressed),
                     onTap: () {},
                   ),
                 ),
