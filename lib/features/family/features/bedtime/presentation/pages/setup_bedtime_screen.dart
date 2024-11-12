@@ -47,12 +47,14 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     final child = widget.arguments.profiles[widget.arguments.index];
+    final isLast =
+        widget.arguments.index == widget.arguments.profiles.length - 1;
     return PopScope(
       canPop: false,
       child: BaseStateConsumer<dynamic, Bedtime>(
         cubit: _cubit,
         onCustom: (context, bedtime) {
-          if (widget.arguments.index == widget.arguments.profiles.length - 1) {
+          if (isLast) {
             context.goNamed(FamilyPages.profileSelection.name);
             //todo navigate to mission screen
           } else {

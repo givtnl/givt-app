@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
@@ -55,19 +56,7 @@ class GuessSecretWordCubit
           _reflectAndShareRepository.saveSummaryStats();
           Timer(const Duration(seconds: 2), () {
             if (kidsWithoutBedtime.isNotEmpty) {
-              emitCustom(
-                GuessTheWordCustom.redirectToBedtimeSelection(
-                  kidsWithoutBedtime,
-                ),
-              );
-              _emitData();
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents
-                    .redirectedFromGratitudeGameToBedtimeSelection,
-                eventProperties: {
-                  'total': _attempts,
-                },
-              );
+              redirectToBedtimeSelection(kidsWithoutBedtime);
               return;
             }
             emitCustom(const GuessTheWordCustom.redirectToSummary());
@@ -84,6 +73,21 @@ class GuessSecretWordCubit
       _hasSuccess = true;
     }
     _emitData();
+  }
+
+  void redirectToBedtimeSelection(List<Profile> kidsWithoutBedtime) {
+    emitCustom(
+      GuessTheWordCustom.redirectToBedtimeSelection(
+        kidsWithoutBedtime,
+      ),
+    );
+    _emitData();
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.redirectedFromGratitudeGameToBedtimeSelection,
+      eventProperties: {
+        'total': _attempts,
+      },
+    );
   }
 
   void _emitData() {
