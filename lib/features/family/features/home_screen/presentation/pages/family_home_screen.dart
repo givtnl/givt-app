@@ -9,7 +9,7 @@ import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/pages/mission_acceptance_screen.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/pages/setup_bedtime_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
@@ -118,8 +118,17 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       /*onPressed: () => context.goNamed(
                         FamilyPages.reflectIntro.name,
                       ),*/
-                      onPressed: () => Navigator.of(context)
-                          .push(const SetupBedtimeScreen().toRoute(context)),
+                      onPressed: () =>
+                          Navigator.of(context).push(SetupBedtimeScreen(
+                        arguments: BedtimeArguments(
+                          7,
+                          30,
+                          profiles:
+                              context.read<ProfilesCubit>().state.children,
+                          bedtimes: const [],
+                          index: 0,
+                        ),
+                      ).toRoute(context)),
                     ),
                     const SizedBox(height: 24),
                     GiveButton(

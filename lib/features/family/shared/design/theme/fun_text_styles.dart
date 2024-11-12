@@ -33,6 +33,10 @@ class FunTextStyles {
     fontWeight: FontWeight.w700,
     height: 1.2,
     fontFamily: 'Rouna',
+    fontFeatures: <FontFeature>[
+      FontFeature.liningFigures(),
+      FontFeature.tabularFigures(),
+    ],
   );
 
   static const headlineMedium = TextStyle(

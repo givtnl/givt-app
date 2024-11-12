@@ -1,11 +1,15 @@
+import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
 class BedtimeArguments {
   BedtimeArguments(this.previousBedtime, this.previousWinddownMinutes,
-      {required this.profiles, this.showBackButton = true});
+      {required this.profiles, required this.bedtimes, required this.index});
 
+  final List<Bedtime> bedtimes;
   final List<Profile> profiles;
-  final bool showBackButton;
-  final DateTime? previousBedtime;
+  final double? previousBedtime;
   final int? previousWinddownMinutes;
+  final int index;
+
+  bool get showBackButton => index > 0;
 }

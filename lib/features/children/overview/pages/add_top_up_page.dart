@@ -57,7 +57,7 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                     ),
                     const SizedBox(height: 16),
                     FunCounter(
-                      currency: widget.currency,
+                      prefix: widget.currency,
                       initialAmount: _amount,
                       onAmountChanged: (amount) => setState(() {
                         _amount = amount;
