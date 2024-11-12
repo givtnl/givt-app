@@ -282,7 +282,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     if (!hasAuthenticated) return;
 
     // When authenticated we go to the home route
-    // TODO US!!
     if (!mounted) return;
     await context.read<AuthCubit>().authenticate();
 
