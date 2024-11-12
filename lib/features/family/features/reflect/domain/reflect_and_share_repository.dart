@@ -64,15 +64,11 @@ class ReflectAndShareRepository {
   Future<List<Profile>> getKidsWithoutBedtime() async {
     try {
       final profiles = await _profilesRepository.getProfiles();
-      final profilesInGame = profiles.where((profile) {
-        return _selectedProfiles.any(
-          (selected) => (selected.userId == profile.id) && (profile.isChild),
-        );
-      }).toList();
-      return profilesInGame
+      return profiles
           .where(
             (profile) =>
-                profile.bedTime == null || profile.windDownTime == null,
+                profile.isChild &&
+                (profile.bedTime == null || profile.windDownTime == null),
           )
           .toList();
     } on Exception catch (e, s) {
