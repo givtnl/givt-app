@@ -66,9 +66,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     super.dispose();
   }
 
-  void toggleLoading() {
+  void setLoading({bool state = true}) {
     setState(() {
-      _isLoading = !_isLoading;
+      _isLoading = state;
     });
   }
 
@@ -190,34 +190,30 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             ),
                           ),
                           const SizedBox(height: 12),
-                          if (_isLoading)
-                            const Center(child: CircularProgressIndicator())
-                          else
-                            FunButton(
-                              isDisabled: !state.continueButtonEnabled,
-                              onTap: state.continueButtonEnabled
-                                  ? () async {
-                                      if (state.country.isUS) {
-                                        _cubit.login();
-                                      } else {
-                                        await context
-                                            .read<AuthCubit>()
-                                            .register(
-                                              country: state.country,
-                                              email: state.email,
-                                              locale: Localizations.localeOf(
-                                                      context)
-                                                  .languageCode,
-                                            );
-                                      }
+                          FunButton(
+                            isDisabled: !state.continueButtonEnabled,
+                            isLoading: _isLoading,
+                            onTap: state.continueButtonEnabled
+                                ? () async {
+                                    if (state.country.isUS) {
+                                      await _cubit.login();
+                                    } else {
+                                      await context.read<AuthCubit>().register(
+                                            country: state.country,
+                                            email: state.email,
+                                            locale:
+                                                Localizations.localeOf(context)
+                                                    .languageCode,
+                                          );
                                     }
-                                  : null,
-                              text: locals.continueKey,
-                              rightIcon: FontAwesomeIcons.arrowRight,
-                              analyticsEvent: AnalyticsEvent(
-                                AmplitudeEvents.emailSignupContinueClicked,
-                              ),
+                                  }
+                                : null,
+                            text: locals.continueKey,
+                            rightIcon: FontAwesomeIcons.arrowRight,
+                            analyticsEvent: AnalyticsEvent(
+                              AmplitudeEvents.emailSignupContinueClicked,
                             ),
+                          ),
                         ],
                       ),
                     ),
@@ -234,7 +230,10 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   Future<void> handleCustom(
       BuildContext context, EmailSignupCustom custom) async {
     switch (custom) {
+      case EmailSignupCheckingEmail():
+        setLoading();
       case EmailSignupShowFamilyRegistration():
+        setLoading(state: false);
         context.goNamed(
           FamilyPages.registrationUS.name,
           queryParameters: {
@@ -242,6 +241,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           },
         );
       case EmailSignupShowFamilyLogin():
+        setLoading(state: false);
         AppThemeSwitcher.of(context).switchTheme(isFamilyApp: true);
         await FamilyAuthUtils.authenticateUser(
           context,
@@ -252,6 +252,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           ),
         );
       case EmailSignupNoInternet():
+        setLoading(state: false);
         await showDialog<void>(
           context: context,
           builder: (context) => WarningDialog(
@@ -261,6 +262,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           ),
         );
       case EmailSignupCertExpired():
+        setLoading();
         await showDialog<void>(
           context: context,
           builder: (context) => WarningDialog(

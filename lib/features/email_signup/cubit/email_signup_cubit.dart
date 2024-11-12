@@ -138,6 +138,8 @@ class EmailSignupCubit
   }
 
   Future<void> login() async {
+    emitCustom(const EmailSignupCustom.checkingEmail());
+    
     if (!validateEmail(_currentEmail)) {
       // It shouldn't be possible to get here
       emitError('Invalid email address');
