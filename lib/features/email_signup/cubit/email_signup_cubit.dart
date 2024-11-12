@@ -161,6 +161,12 @@ class EmailSignupCubit
       return;
     }
 
+    // When this is a temp user, we show the register page
+    if (result.contains('temp')) {
+      emitCustom(EmailSignupCustom.registerFamily(_currentEmail));
+      return;
+    }
+
     // Otherwise we create a temp user
     final tempUser = TempUser.prefilled(
       email: _currentEmail,
