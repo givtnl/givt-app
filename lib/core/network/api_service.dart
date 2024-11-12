@@ -1030,4 +1030,31 @@ class APIService {
       );
     }
   }
+
+  Future<bool> editChildBedtime(
+      String childGUID, String bedtime, int winddownMinutes) async {
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/bedtime');
+    final response = await client.put(
+      url,
+      body: jsonEncode({
+        'bedtime': bedtime,
+        'winddowntime': winddownMinutes,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return response.statusCode == 200;
+  }
 }

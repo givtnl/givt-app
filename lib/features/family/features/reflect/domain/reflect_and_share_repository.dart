@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -58,6 +59,29 @@ class ReflectAndShareRepository {
     return _selectedProfiles
         .where((profile) => profile.roles.whereType<Reporter>().isNotEmpty)
         .toList();
+  }
+
+  Future<List<Profile>> getKidsWithoutBedtime() async {
+    try {
+      final profiles = await _profilesRepository.getProfiles();
+      final profilesInGame = profiles.where((profile) {
+        return _selectedProfiles.any(
+          (selected) => (selected.userId == profile.id) && (profile.isChild),
+        );
+      }).toList();
+      return profilesInGame
+          .where(
+            (profile) =>
+                profile.bedTime == null || profile.windDownTime == null,
+          )
+          .toList();
+    } on Exception catch (e, s) {
+      LoggingInfo.instance.error(
+        'Failed to get kids without bedtime',
+        methodName: s.toString(),
+      );
+      rethrow;
+    }
   }
 
   // complete a game loop/ round

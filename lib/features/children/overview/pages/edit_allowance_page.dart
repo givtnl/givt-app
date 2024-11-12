@@ -78,7 +78,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                     ),
                     const SizedBox(height: 16),
                     FunCounter(
-                      currency: widget.currency,
+                      prefix: widget.currency,
                       initialAmount: _allowance,
                       onAmountChanged: (allowance) => setState(() {
                         _allowance = allowance;
