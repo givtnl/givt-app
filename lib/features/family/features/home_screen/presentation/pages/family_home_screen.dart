@@ -15,9 +15,9 @@ import 'package:givt_app/features/family/features/home_screen/presentation/pages
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
-import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -96,13 +96,14 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      AvatarBar(
-                        circleSize: 58,
-                        uiModel: AvatarBarUIModel(
-                          avatarUIModels: uiModel.avatars,
+                      if (!overlayVisible)
+                        AvatarBar(
+                          circleSize: 58,
+                          uiModel: AvatarBarUIModel(
+                            avatarUIModels: uiModel.avatars,
+                          ),
+                          onAvatarTapped: onAvatarTapped,
                         ),
-                        onAvatarTapped: onAvatarTapped,
-                      ),
                     ],
                   ),
                 ],

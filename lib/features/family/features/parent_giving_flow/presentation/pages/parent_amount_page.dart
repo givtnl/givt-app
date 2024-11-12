@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -33,7 +34,7 @@ class ParentAmountPage extends StatefulWidget {
 }
 
 class _ParentAmountPageState extends State<ParentAmountPage> {
-  final initialamount = 5;
+  final initialamount = 25;
   late int _amount;
 
   @override
@@ -75,7 +76,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                 ),
                 const SizedBox(height: 16),
                 FunCounter(
-                  currency: widget.currency,
+                  prefix: widget.currency,
                   initialAmount: initialamount,
                   onAmountChanged: (amount) => setState(() {
                     _amount = amount;

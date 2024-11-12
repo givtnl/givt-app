@@ -182,6 +182,11 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     final profile = Profile.fromMap(response);
     _childDetailsStreamController.add(profile);
     _profileMap[childGuid] = profile;
+    final index = _profiles?.indexWhere((element) => element.id == childGuid);
+    if (index != null && index != -1) {
+      _profiles?[index] = profile;
+      _profilesStreamController.add(_profiles!);
+    }
     return profile;
   }
 

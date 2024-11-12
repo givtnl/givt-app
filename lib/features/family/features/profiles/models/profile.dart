@@ -17,6 +17,8 @@ class Profile extends Equatable {
     required this.lastDonationItem,
     required this.pictureURL,
     required this.dateOfBirth,
+    this.windDownTime,
+    this.bedTime,
   });
   factory Profile.fromMap(Map<String, dynamic> map) {
     final pictureMap = map['picture'] as Map<String, dynamic>;
@@ -42,6 +44,8 @@ class Profile extends Equatable {
       lastDonationItem: donationMap,
       pictureURL: pictureMap['pictureURL'] as String,
       dateOfBirth: map['dateOfBirth'] as String? ?? '',
+      windDownTime: map['windDownTime'] as int?,
+      bedTime: map['bedTime'] as String?,
     );
   }
 
@@ -71,11 +75,13 @@ class Profile extends Equatable {
   final Donation lastDonationItem;
   final String pictureURL;
   final String dateOfBirth;
+  final int? windDownTime;
+  final String? bedTime;
 
   ProfileType get profileType => ProfileType.getByTypeName(type);
 
   String get possessiveName =>
-      firstName.endsWith('s') ? "$firstName'" : "$firstName's'";
+      firstName.endsWith('s') ? "$firstName'" : "$firstName's";
 
   bool get isAdult => profileType == ProfileType.Parent;
 
@@ -101,6 +107,8 @@ class Profile extends Equatable {
         wallet,
         pictureURL,
         dateOfBirth,
+        windDownTime,
+        bedTime,
       ];
 
   Profile copyWith({
@@ -115,6 +123,8 @@ class Profile extends Equatable {
     Donation? lastDonationItem,
     String? pictureURL,
     String? dateOfBirth,
+    int? windDownTime,
+    String? bedTime,
   }) {
     return Profile(
       id: id ?? this.id,
@@ -128,6 +138,8 @@ class Profile extends Equatable {
       lastDonationItem: lastDonationItem ?? this.lastDonationItem,
       pictureURL: pictureURL ?? this.pictureURL,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      windDownTime: windDownTime ?? this.windDownTime,
+      bedTime: bedTime ?? this.bedTime,
     );
   }
 
@@ -156,6 +168,8 @@ class Profile extends Equatable {
         'pictureURL': pictureURL,
       },
       'dateOfBirth': dateOfBirth,
+      'windDownTime': windDownTime,
+      'bedTime': bedTime,
     };
   }
 }

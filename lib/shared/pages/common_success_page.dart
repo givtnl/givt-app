@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -57,14 +58,8 @@ class CommonSuccessPage extends StatelessWidget {
                       if (text != null)
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 24),
-                          child: Text(
+                          child: BodyMediumText(
                             text!,
-                            style: theme.textTheme.bodyMedium!.copyWith(
-                              color: FamilyAppTheme.primary20,
-                              fontFamily: 'Rouna',
-                              fontWeight: FontWeight.w400,
-                              height: 1.2,
-                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),

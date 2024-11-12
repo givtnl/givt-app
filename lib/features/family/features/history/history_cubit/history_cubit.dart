@@ -41,10 +41,20 @@ class HistoryCubit extends Cubit<HistoryState> {
       final donationHistory = await donationHistoryFuture;
       final allowanceHistory = await allowanceHistoryFuture;
 
+      // Remove duplicates from current state
+      final updatedDonations = donationHistory.where((item) => !state.history
+          .any((existing) =>
+              existing.type == HistoryTypes.donation && existing == item));
+      final updatedAllowances = allowanceHistory.where((item) => !state.history
+          .any((existing) =>
+              (existing.type == HistoryTypes.allowance ||
+                  existing.type == HistoryTypes.topUp) &&
+              existing == item));
+
       final history = <HistoryItem>[
         ...state.history,
-        ...donationHistory,
-        ...allowanceHistory,
+        ...updatedDonations,
+        ...updatedAllowances,
       ]
         // sort from newest to oldest
         ..sort((a, b) => b.date.compareTo(a.date));

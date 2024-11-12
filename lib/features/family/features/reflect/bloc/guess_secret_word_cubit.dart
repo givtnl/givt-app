@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
@@ -14,7 +17,7 @@ class GuessSecretWordCubit
 
   final ReflectAndShareRepository _reflectAndShareRepository;
   final List<String> _texts = [
-    'Which one do you think it is?',
+    'What word do you think you heard?',
     'Oops, try again',
     'Oh, so close',
     'Not quite, keep going',
@@ -33,12 +36,32 @@ class GuessSecretWordCubit
     _emitData();
   }
 
-  void onClickOption(int index) {
+  Future<void> onClickOption(int index) async {
     _attempts++;
     _pressedOptions.add(index);
     if (_guessOptions[index].toLowerCase() == _secretWord.toLowerCase()) {
-      // just to make sure we fire the analytics events once
+      _pressedOptions = [
+        0,
+        1,
+        2,
+        3,
+      ]; // make sure people can't press wrong answers after pressing the correct answer
+      emitCustom(const GuessTheWordCustom.showConfetti());
+      // just to make sure we fire the analytics events once and save the stats once
       if (!_hasSuccess) {
+        final kidsWithoutBedtime =
+            await _reflectAndShareRepository.getKidsWithoutBedtime();
+        // Check if it's the last game and delay for 2 seconds before continuing
+        if (_reflectAndShareRepository.isGameFinished()) {
+          _reflectAndShareRepository.saveSummaryStats();
+          Timer(const Duration(seconds: 2), () {
+            if (kidsWithoutBedtime.isNotEmpty) {
+              redirectToBedtimeSelection(kidsWithoutBedtime);
+              return;
+            }
+            emitCustom(const GuessTheWordCustom.redirectToSummary());
+          });
+        }
         AnalyticsHelper.logEvent(
           eventName:
               AmplitudeEvents.reflectAndShareGuessTotalAttemptsUntilCorrect,
@@ -48,15 +71,23 @@ class GuessSecretWordCubit
         );
       }
       _hasSuccess = true;
-      _pressedOptions = [
-        0,
-        1,
-        2,
-        3
-      ]; // make sure people can't press wrong answers after pressing the correct answer
-      emitCustom(const GuessTheWordCustom.showConfetti());
     }
     _emitData();
+  }
+
+  void redirectToBedtimeSelection(List<Profile> kidsWithoutBedtime) {
+    emitCustom(
+      GuessTheWordCustom.redirectToBedtimeSelection(
+        kidsWithoutBedtime,
+      ),
+    );
+    _emitData();
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.redirectedFromGratitudeGameToBedtimeSelection,
+      eventProperties: {
+        'total': _attempts,
+      },
+    );
   }
 
   void _emitData() {

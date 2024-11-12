@@ -13,6 +13,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
+import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -134,21 +135,29 @@ class NotificationService implements INotificationService {
 
   Future<void> navigateFirebaseNotification(RemoteMessage message) async {
     LoggingInfo.instance.info('Firebase notification received');
-    print('Firebase notification received');
-
-    switch (message.data['Type']) {
-      case 'DonationApproval':
-        LoggingInfo.instance.info('Navigating to family overview screen');
-        AppRouter.router.goNamed(FamilyPages.childrenOverview.name);
-      case 'HabitReminder':
-        LoggingInfo.instance
-            .info('Navigating to profiles screen from sunday notification');
-        AppRouter.router.goNamed(FamilyPages.profileSelection.name);
-      default:
-        LoggingInfo.instance.info(
-          'Navigating to profiles screen screen, from firebase notification',
+    final pathName = message.data['Path'].toString();
+    if (pathName.isNotNullAndNotEmpty()) {
+      final validValues = [
+        ...FamilyPages.values.map((e) => e.name).toList(),
+        ...Pages.values.map((e) => e.name).toList(),
+      ];
+      if (validValues.contains(pathName)) {
+        AppRouter.router.goNamed(pathName);
+      } else {
+        LoggingInfo.instance.error(
+          'Invalid path name received from firebase notification: $pathName',
         );
         AppRouter.router.goNamed(FamilyPages.profileSelection.name);
+        return;
+      }
+      LoggingInfo.instance.info(
+        'Navigating to ${message.data['Path']}, from firebase notification type ${message.data['Type']}',
+      );
+    } else {
+      LoggingInfo.instance.info(
+        'Navigating to home screen, from firebase notification type ${message.data['Type']}, no path found.',
+      );
+      AppRouter.router.goNamed(FamilyPages.profileSelection.name);
     }
   }
 

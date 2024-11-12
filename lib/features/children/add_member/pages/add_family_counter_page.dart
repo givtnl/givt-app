@@ -41,7 +41,7 @@ class _AddFamilyCounterPageState extends State<AddFamilyCounterPage> {
           MemberCounter(totalCount: _amount - 1),
           const SizedBox(height: 24),
           FunCounter(
-            currency: '',
+            prefix: '',
             initialAmount: _amount,
             onAmountChanged: (amount) => setState(() {
               _amount = amount;
