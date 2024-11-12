@@ -52,7 +52,6 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   int _currentIndex = 0;
   static bool _isShowingPreferredChurch = false;
-  static bool _isShowingSetupFamily = false;
 
   final List<AnalyticsEvent> _analyticsEvents = [
     AnalyticsEvent(
@@ -206,18 +205,6 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     switch (custom) {
       case PreferredChurchDialog():
         await _showPreferredChurchModal(context);
-      case FamilyNotSetup():
-        await _showSetupFamily(context);
-    }
-  }
-
-  Future<void> _showSetupFamily(BuildContext context) async {
-    if (_isShowingSetupFamily) {
-      // do nothing, screen is already showing
-    } else {
-      _isShowingSetupFamily = true;
-      await AddMemberUtil.addFamilyPushPages(context);
-      _isShowingSetupFamily = false;
     }
   }
 

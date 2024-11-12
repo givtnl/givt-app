@@ -69,6 +69,17 @@ class FamilyAppRoutes {
 
   static final List<RouteBase> _routes = [
     GoRoute(
+      path: FamilyPages.registrationUS.path,
+      name: FamilyPages.registrationUS.name,
+      builder: (context, state) {
+        final email = state.uri.queryParameters['email'] ?? '';
+
+        return UsSignUpPage(
+          email: email,
+        );
+      },
+    ),
+    GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
       builder: (context, state) {
@@ -496,17 +507,6 @@ class FamilyAppRoutes {
             final user = context.read<ProfilesCubit>().state.activeProfile;
             context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
             return '${FamilyPages.profileSelection.path}?index=${NavigationBarHomeScreen.familyIndex}&showAllowanceWarning=$showAllowanceWarning';
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.registrationUS.path,
-          name: FamilyPages.registrationUS.name,
-          builder: (context, state) {
-            final email = state.uri.queryParameters['email'] ?? '';
-
-            return UsSignUpPage(
-              email: email,
-            );
           },
         ),
         GoRoute(

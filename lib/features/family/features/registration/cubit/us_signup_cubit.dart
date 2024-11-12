@@ -70,7 +70,7 @@ class UsSignupCubit
 
       emitCustom(const UsSignupCustomSuccess());
     } catch (e, s) {
-      emitError(null);
+      emitSnackbarMessage(e.toString(), isError: true);
     }
   }
 }

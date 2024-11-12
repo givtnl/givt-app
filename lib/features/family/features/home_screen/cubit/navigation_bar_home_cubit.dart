@@ -22,13 +22,11 @@ class NavigationBarHomeCubit
     this._profilesRepository,
     this._authRepository,
     this._impactGroupsRepository,
-    this._addMemberRepository,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final AuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
-  final AddMemberRepository _addMemberRepository;
 
   String? profilePictureUrl;
   List<Profile> _profiles = [];
@@ -37,12 +35,6 @@ class NavigationBarHomeCubit
 
   Future<void> init() async {
     await _initHasSession();
-    _addMemberRepository.onMemberAdded().listen((_) {
-      if (_profiles.length <= 1) {
-        emitLoading();
-        refreshData();
-      }
-    });
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
       _onImpactGroupsChanged();
@@ -70,7 +62,6 @@ class NavigationBarHomeCubit
   }
 
   Future<void> _onImpactGroupsChanged() async {
-    _profiles = await _profilesRepository.getProfiles();
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
     await doInitialChecks();
     _emitData();
@@ -88,8 +79,6 @@ class NavigationBarHomeCubit
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
-    } else if (_profiles.length <= 1) {
-      emitCustom(const NavigationBarHomeCustom.familyNotSetup());
     } else if (await shouldShowPreferredChurchModal()) {
       await setPreferredChurchModalShown();
       emitCustom(const NavigationBarHomeCustom.showPreferredChurchDialog());

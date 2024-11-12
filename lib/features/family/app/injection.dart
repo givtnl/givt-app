@@ -97,7 +97,6 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
-        getIt(),
       ),
     )
     ..registerFactory<FamilySelectionCubit>(
