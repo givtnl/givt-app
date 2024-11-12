@@ -14,6 +14,7 @@ import 'package:givt_app/features/family/features/history/history_repository/his
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
@@ -69,11 +70,8 @@ void initCubits() {
       CameraCubit.new,
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
-    ..registerLazySingleton<GiveBloc>(
-      () => GiveBloc(
-        getIt(),
-        getIt(),
-        getIt(),
+    ..registerLazySingleton<GiveCubit>(
+      () => GiveCubit(
         getIt(),
       ),
     )
