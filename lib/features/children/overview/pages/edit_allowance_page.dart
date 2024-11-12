@@ -5,6 +5,7 @@ import 'package:givt_app/features/children/overview/widgets/cancel_allowance_dia
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -77,21 +78,16 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                     ),
                     const SizedBox(height: 16),
                     FunCounter(
-                      currency: widget.currency,
+                      prefix: widget.currency,
                       initialAmount: _allowance,
                       onAmountChanged: (allowance) => setState(() {
                         _allowance = allowance;
                       }),
                     ),
                     const SizedBox(height: 12),
-                    Text(
-                      'What monthly amount should be added to $child wallet?',
+                    BodyMediumText(
+                      'How much should be added to $child wallet?',
                       textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyMedium!.copyWith(
-                        color: AppTheme.primary20,
-                        fontWeight: FontWeight.w400,
-                        height: 1.2,
-                      ),
                     ),
                   ],
                 ),

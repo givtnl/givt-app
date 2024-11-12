@@ -99,7 +99,7 @@ class FamilyMemberForm extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           FunCounter(
-            currency: r'$',
+            prefix: r'$',
             initialAmount: allowanceAmount,
             canAmountBeZero: true,
             onAmountChanged: onAmountChanged,

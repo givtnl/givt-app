@@ -27,15 +27,15 @@ mixin ImpactGroupsRepository {
 
   Future<ImpactGroup?> isInvitedToGroup();
 
-  Future<bool> setPreferredChurch(String churchId);
+  Future<bool> setBoxOrigin(String churchId);
 
-  Future<Organisation?> getPreferredChurch();
+  Future<Organisation?> getBoxOrigin();
 
-  Future<void> setPreferredChurchModalShown();
+  Future<void> setBoxOriginModalShown();
 
-  Future<bool> wasPreferredChurchModalShown();
+  Future<bool> wasBoxOriginModalShown();
 
-  void clearPreferredChurchModalShown();
+  void clearBoxOriginModalShown();
 
   Stream<List<ImpactGroup>> onImpactGroupsChanged();
 }
@@ -61,7 +61,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   final CreateTransactionRepository _createTransactionRepository;
   final SharedPreferences _prefs;
 
-  final String preferredChurchModalShownKey = 'preferredChurchModalShown';
+  final String boxOriginModalShownKey = 'boxOriginModalShown';
 
   final StreamController<List<ImpactGroup>> _impactGroupsStreamController =
       StreamController.broadcast();
@@ -146,11 +146,11 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }
 
   @override
-  Future<bool> setPreferredChurch(String churchMediumId) async {
+  Future<bool> setBoxOrigin(String churchMediumId) async {
     try {
       await getImpactGroups(fetchWhenEmpty: true);
-      await _apiService.setPreferredChurch(
-        churchMediumId: churchMediumId,
+      await _apiService.setBoxOrigin(
+        orgId: churchMediumId,
         groupId: _impactGroups!.firstWhere(
           (element) => element.type == ImpactGroupType.family,
           orElse: () {
@@ -162,36 +162,40 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
       return true;
     } catch (e) {
       LoggingInfo.instance.error(
-        'Error while setting preferred church: $e',
+        'Error setting box origin: $e',
       );
       return false;
     }
   }
 
   @override
-  Future<void> setPreferredChurchModalShown() async {
-    await _prefs.setBool(preferredChurchModalShownKey, true);
+  Future<void> setBoxOriginModalShown() async {
+    await _prefs.setBool(boxOriginModalShownKey, true);
   }
 
   @override
-  Future<bool> wasPreferredChurchModalShown() async {
-    return _prefs.getBool(preferredChurchModalShownKey) ?? false;
+  Future<bool> wasBoxOriginModalShown() async {
+    return _prefs.getBool(boxOriginModalShownKey) ?? false;
   }
 
   @override
-  void clearPreferredChurchModalShown() {
-    _prefs.remove(preferredChurchModalShownKey);
+  void clearBoxOriginModalShown() {
+    _prefs.remove(boxOriginModalShownKey);
   }
 
   @override
-  Future<Organisation?> getPreferredChurch() async {
+  Future<Organisation?> getBoxOrigin() async {
     try {
-      if(_impactGroups == null || _impactGroups!.isEmpty) {
+      if (_impactGroups == null || _impactGroups!.isEmpty) {
         await getImpactGroups(fetchWhenEmpty: true);
       }
+      // TODO: remove the .preferredChurch when new Preferred Church is implemented
       return _impactGroups
-          ?.firstWhere((element) => element.type == ImpactGroupType.family)
-          .preferredChurch;
+              ?.firstWhere((element) => element.type == ImpactGroupType.family)
+              .preferredChurch ??
+          _impactGroups
+              ?.firstWhere((element) => element.type == ImpactGroupType.family)
+              .boxOrigin;
     } catch (e) {
       LoggingInfo.instance
           .error('No family group found when getting preferred church');

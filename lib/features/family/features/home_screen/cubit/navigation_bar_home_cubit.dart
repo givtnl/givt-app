@@ -6,7 +6,7 @@ import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
-import 'package:givt_app/features/family/features/home_screen/usecases/preferred_church_usecase.dart';
+import 'package:givt_app/features/family/features/home_screen/usecases/box_origin_usecase.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/registration_usecase.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -17,7 +17,7 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class NavigationBarHomeCubit
     extends CommonCubit<NavigationBarHomeScreenUIModel, NavigationBarHomeCustom>
-    with PreferredChurchUseCase, RegistrationUseCase {
+    with BoxOriginUseCase, RegistrationUseCase {
   NavigationBarHomeCubit(
     this._profilesRepository,
     this._authRepository,
@@ -79,9 +79,9 @@ class NavigationBarHomeCubit
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
-    } else if (await shouldShowPreferredChurchModal()) {
-      await setPreferredChurchModalShown();
-      emitCustom(const NavigationBarHomeCustom.showPreferredChurchDialog());
+    } else if (await shouldShowBoxOriginModal()) {
+      await setBoxOriginModalShown();
+      emitCustom(const NavigationBarHomeCustom.showBoxOriginDialog());
     }
   }
 

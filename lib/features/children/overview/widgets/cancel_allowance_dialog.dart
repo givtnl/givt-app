@@ -5,7 +5,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class CancelAllowanceDialog extends StatelessWidget {
@@ -47,7 +46,7 @@ class CancelAllowanceDialog extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FunButton(
+                  FunButton.destructive(
                     onTap: () => {
                       onCancel.call(),
                       context
@@ -56,8 +55,6 @@ class CancelAllowanceDialog extends StatelessWidget {
                     },
                     text: 'Yes, cancel',
                     leftIcon: FontAwesomeIcons.xmark,
-                    backgroundColor: AppTheme.error80,
-                    borderColor: AppTheme.error30,
                     analyticsEvent: AnalyticsEvent(
                       AmplitudeEvents.cancelRGAYesClicked,
                     ),

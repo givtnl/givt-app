@@ -12,11 +12,9 @@ import 'package:givt_app/shared/widgets/common_icons.dart';
 class EnterDetailsBottomSheet extends StatelessWidget {
   const EnterDetailsBottomSheet({
     required this.onSuccess,
-    this.awaitActiveProfileBalance = false,
     super.key,
   });
   final VoidCallback onSuccess;
-  final bool awaitActiveProfileBalance;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +38,6 @@ class EnterDetailsBottomSheet extends StatelessWidget {
               TopupWalletBottomSheet.show(
                 context,
                 onSuccess,
-                awaitActiveProfileBalance,
               );
             },
           );
@@ -55,7 +52,6 @@ class EnterDetailsBottomSheet extends StatelessWidget {
   static void show(
     BuildContext context,
     VoidCallback onSuccess,
-    bool? awaitActiveProfileBalance,
   ) {
     showModalBottomSheet<void>(
       context: context,
@@ -66,7 +62,6 @@ class EnterDetailsBottomSheet extends StatelessWidget {
       backgroundColor: Colors.white,
       builder: (context) => EnterDetailsBottomSheet(
         onSuccess: onSuccess,
-        awaitActiveProfileBalance: awaitActiveProfileBalance ?? false,
       ),
     );
   }

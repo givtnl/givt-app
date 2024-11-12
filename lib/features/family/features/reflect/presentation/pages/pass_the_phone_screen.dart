@@ -18,6 +18,8 @@ class PassThePhone extends StatelessWidget {
   const PassThePhone({
     required this.user,
     required this.onTap,
+    this.accentColor,
+    this.backgroundColor,
     this.customHeader,
     super.key,
     this.customBtnText,
@@ -39,6 +41,8 @@ class PassThePhone extends StatelessWidget {
   factory PassThePhone.toSidekick(GameProfile sidekick,
       {bool toRules = false}) {
     return PassThePhone(
+      accentColor: sidekick.sidekickRole!.color.accentColor,
+      backgroundColor: sidekick.sidekickRole!.color.backgroundColor,
       user: sidekick,
       onTap: (context) => Navigator.of(context).pushReplacement(
         toRules
@@ -79,6 +83,8 @@ class PassThePhone extends StatelessWidget {
     );
   }
 
+  final Color? accentColor;
+  final Color? backgroundColor;
   final String? customBtnText;
   final Widget? customHeader;
 
@@ -90,7 +96,7 @@ class PassThePhone extends StatelessWidget {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: user.role!.color.backgroundColor,
+        backgroundColor: backgroundColor ?? user.role!.color.backgroundColor,
         body: SafeArea(
           child: Stack(
             children: [
@@ -110,6 +116,7 @@ class PassThePhone extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: customHeader ??
                         GameProfileItem(
+                          accentColor: accentColor,
                           profile: user,
                           size: 120,
                           displayName: false,

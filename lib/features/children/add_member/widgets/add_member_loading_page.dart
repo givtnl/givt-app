@@ -26,7 +26,8 @@ class AddMemberLoadingPage extends StatelessWidget {
         listener: (context, state) {
           if (state.status == AddMemberStateStatus.success) {
             _navigateToProfileSelection(context);
-          } else if (state.status == AddMemberStateStatus.error) {
+          } else if (state.status == AddMemberStateStatus.error ||
+              state.status == AddMemberStateStatus.topupFailed) {
             _navigateToProfileSelection(context);
             SnackBarHelper.showMessage(context, text: state.error);
           } else if (state.status == AddMemberStateStatus.successCached) {

@@ -52,11 +52,6 @@ enum Pages {
     name: 'EDIT-CREDIT-CARD-DETAILS',
   ),
   permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
-
-  impactGroupDetails(
-    path: '/impact-group-details',
-    name: 'IMPACT-GROUP-DETAILS',
-  ),
   ;
 
   const Pages({

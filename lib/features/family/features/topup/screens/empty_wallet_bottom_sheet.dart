@@ -46,17 +46,12 @@ class EmptyWalletBottomSheet extends StatelessWidget {
               final isMissingCardDetails = true ==
                   context.read<FamilyAuthCubit>().user?.isMissingcardDetails;
               if (isMissingCardDetails) {
-                EnterDetailsBottomSheet.show(
-                  context,
-                  afterSuccessAction,
-                  awaitActiveProfileBalance,
-                );
+                EnterDetailsBottomSheet.show(context, afterSuccessAction);
                 return;
               }
               TopupWalletBottomSheet.show(
                 context,
                 afterSuccessAction,
-                awaitActiveProfileBalance,
               );
             }),
           );
@@ -77,8 +72,10 @@ class EmptyWalletBottomSheet extends StatelessWidget {
     );
   }
 
-  static void show(BuildContext context, VoidCallback afterSuccessAction,
-      {bool? awaitActiveProfileBalance}) {
+  static void show(
+    BuildContext context,
+    VoidCallback afterSuccessAction,
+  ) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -88,7 +85,6 @@ class EmptyWalletBottomSheet extends StatelessWidget {
       backgroundColor: Colors.white,
       builder: (context) => EmptyWalletBottomSheet(
         afterSuccessAction: afterSuccessAction,
-        awaitActiveProfileBalance: awaitActiveProfileBalance ?? false,
       ),
     );
   }

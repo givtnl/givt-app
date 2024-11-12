@@ -33,7 +33,7 @@ class ParentAmountPage extends StatefulWidget {
 }
 
 class _ParentAmountPageState extends State<ParentAmountPage> {
-  final initialamount = 5;
+  final initialamount = 25;
   late int _amount;
 
   @override
@@ -75,7 +75,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                 ),
                 const SizedBox(height: 16),
                 FunCounter(
-                  currency: widget.currency,
+                  prefix: widget.currency,
                   initialAmount: initialamount,
                   onAmountChanged: (amount) => setState(() {
                     _amount = amount;

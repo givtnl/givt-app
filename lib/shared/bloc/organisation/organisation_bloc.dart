@@ -199,9 +199,11 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     Emitter<OrganisationState> emit,
   ) async {
     var orgs = state.organisations;
-    orgs = state.organisations
-        .where((organisation) => organisation.type.index == event.type)
-        .toList();
+    if (event.type != CollectGroupType.none.index) {
+      orgs = state.organisations
+          .where((organisation) => organisation.type.index == event.type)
+          .toList();
+    }
 
     if (state.previousSearchQuery.isNotEmpty) {
       orgs = orgs

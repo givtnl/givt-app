@@ -7,8 +7,8 @@ import 'package:givt_app/utils/utils.dart';
 class AvatarItem extends StatelessWidget {
   const AvatarItem({
     required this.url,
-    required this.filename,
-    required this.isSelected,
+    this.filename = '',
+    this.isSelected = false,
     this.onSelectProfilePicture,
     super.key,
   });

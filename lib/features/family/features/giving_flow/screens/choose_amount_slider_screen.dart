@@ -30,10 +30,11 @@ class ChooseAmountSliderScreen extends StatelessWidget {
   const ChooseAmountSliderScreen({
     super.key,
     this.onCustomSuccess,
+    this.isActOfService = false,
   });
 
   final void Function()? onCustomSuccess;
-
+  final bool isActOfService;
   @override
   Widget build(BuildContext context) {
     final flow = context.read<FlowsCubit>().state;
@@ -106,6 +107,7 @@ class ChooseAmountSliderScreen extends StatelessWidget {
                               userId: profilesCubit.state.activeProfile.id,
                               mediumId: mediumId,
                               amount: state.amount,
+                              isActOfService: isActOfService,
                             );
 
                             await context

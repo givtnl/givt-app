@@ -122,6 +122,9 @@ class UserExt extends Equatable {
   bool get isMissingcardDetails =>
       personalInfoRegistered && accountNumber.isEmpty;
 
+  String get possessiveName =>
+      firstName.endsWith('s') ? "$firstName'" : "$firstName's";
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'Email': email,
         'GUID': guid,

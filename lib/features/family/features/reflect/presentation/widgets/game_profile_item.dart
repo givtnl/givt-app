@@ -11,6 +11,7 @@ class GameProfileItem extends StatelessWidget {
     this.displayName = true,
     this.displayRole = true,
     this.size = 80,
+    this.accentColor,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class GameProfileItem extends StatelessWidget {
   final bool displayName;
   final bool displayRole;
   final double size;
+  final Color? accentColor;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class GameProfileItem extends StatelessWidget {
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: profile.role?.color.accentColor ?? Colors.red,
+                    color: accentColor ?? profile.role?.color.accentColor ?? Colors.red,
                   ),
                   child: Container(
                     decoration: const BoxDecoration(
@@ -104,7 +106,7 @@ class GameProfileItem extends StatelessWidget {
       height: 36,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: role.color.accentColor,
+        color: accentColor ?? role.color.accentColor,
       ),
       child: Icon(
         _getIconPerRole(role),

@@ -52,6 +52,8 @@ abstract class FamilyAuthRepository {
     required TempUser tempUser,
     required bool isNewUser,
   });
+
+  Future<void> refreshUser() async {}
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -81,10 +83,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       throw Exception(
           'Cannot refresh token, no current session found to refresh.');
     }
-    if(session.isLoggedIn == false){
+    if (session.isLoggedIn == false) {
       _authenticatedUserStream.add(null);
-      throw Exception(
-          'Cannot refresh token, user is not logged in.');
+      throw Exception('Cannot refresh token, user is not logged in.');
     }
     final response = await _apiService.refreshToken(
       {
@@ -309,14 +310,28 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   Future<bool> updateUser({
     required String guid,
     required Map<String, dynamic> newUserExt,
-  }) async =>
-      _apiService.updateUser(guid, newUserExt);
+  }) async {
+    try {
+      final result = await _apiService.updateUser(guid, newUserExt);
+      await _fetchUserExtension(guid);
+      return result;
+    } catch (e, s) {
+      return false;
+    }
+  }
 
   @override
   Future<bool> updateUserExt(
     Map<String, dynamic> newUserExt,
-  ) async =>
-      _apiService.updateUserExt(newUserExt);
+  ) async {
+    try {
+      final result = _apiService.updateUserExt(newUserExt);
+      await refreshUser();
+      return result;
+    } catch (e, s) {
+      return false;
+    }
+  }
 
   @override
   Future<bool> updateNotificationId({
@@ -351,5 +366,10 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   @override
   Future<void> initAuth() async {
     await refreshToken();
+  }
+
+  @override
+  Future<void> refreshUser() async {
+    await _fetchUserExtension(_userExt!.guid);
   }
 }

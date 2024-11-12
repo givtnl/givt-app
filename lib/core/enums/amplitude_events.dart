@@ -218,8 +218,6 @@ enum AmplitudeEvents {
   nextPermissionsDialogClicked('next_permissions_dialog_clicked'),
   closePermissionsDialog('close_permissions_dialog'),
   navigationBarPressed('navigation_bar_pressed'),
-  impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
-  impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),
   manageFamilyPressed('manage_family_pressed'),
   registerWithoutChallengeClicked('register_without_challenge_clicked'),
   goToChallengeFromRegistrationClicked(
@@ -228,12 +226,12 @@ enum AmplitudeEvents {
 
   bottomsheetCloseButtonClicked('bottomsheet_close_button_clicked'),
 
-  // Preferred church flow
+  // BoxOrigin flow
   modalCloseButtonClicked('modal_close_button_clicked'),
   continueChooseChurchClicked('continue_choose_church_clicked'),
-  dontGoToChurchClicked('dont_go_to_church_clicked'),
-  preferredChurchConfirmClicked('preferred_church_clicked'),
-  preferredChurchSelected('preferred_church_selected'),
+  dontHaveABoxClicked('dont_have_a_box_clicked'),
+  boxOriginConfirmClicked('box_orign_clicked'),
+  boxOriginSelected('box_orign_selected'),
 
   // Topup flow
   topupErrorOkButtonClicked('topup_error_ok_button_clicked'),
@@ -255,6 +253,7 @@ enum AmplitudeEvents {
   parentGiveWithAmountClicked('parent_give_with_amount_clicked'),
   parentGiveClicked('parent_give_clicked'),
   parentGiveFilterTileClicked('parent_give_filter_tile_clicked'),
+  parentGaveSuccessfully('parent_gave_successfully'),
 
   // Reflect and Share
   reflectandShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),
@@ -301,7 +300,14 @@ enum AmplitudeEvents {
     'family_reflect_summary_generous_deeds_clicked',
   ),
   recommendationTypeSelectorClicked('recommendation_type_selector_clicked'),
-
+//beditime
+  childBedtimeSet('bedtime_set_clicked'),
+  redirectedFromGratitudeGameToBedtimeSelection(
+    'redirected_from_gratitude_game_to_bedtime_selection',
+  ),
+  familyMissionAcceptanceScreenAcceptButtonPressed(
+    'family_mission_acceptance_screen_accept_button_pressed',
+  ),
   // Family Home Screen
   FamilyHomeScreenGratitudeGameButtonClicked(
     'family_home_screen_gratitude_game_button_clicked',
@@ -312,7 +318,7 @@ enum AmplitudeEvents {
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
   funCounterIncrementClicked('fun_counter_increment_clicked'),
 
-  preferredChurchSuccessDialogDone('preferred_church_success_dialog_done'),
+  boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

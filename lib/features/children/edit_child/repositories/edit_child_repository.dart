@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:givt_app/core/network/api_service.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
 
 mixin EditChildRepository {
+  Future<bool> editChildBedtime(Bedtime bedtime);
+
   Future<bool> editChildName(String childGUID, String name);
 
   Future<bool> editChildAllowance(String childGUID, int allowance);
@@ -65,4 +68,12 @@ class EditChildRepositoryImpl with EditChildRepository {
 
   @override
   Stream<String> childChangedStream() => _childGUIDController.stream;
+
+  @override
+  Future<bool> editChildBedtime(Bedtime bedtime) async {
+    final response = await apiService.editChildBedtime(
+        bedtime.id, bedtime.bedtimeInUtc, bedtime.winddownMinutes);
+    _childGUIDController.add(bedtime.id);
+    return response;
+  }
 }
