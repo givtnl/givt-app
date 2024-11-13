@@ -10,7 +10,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/email_signup_page.dart';
+import 'package:givt_app/features/email_signup/presentation/pages/email_signup_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -37,10 +37,11 @@ import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_d
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/pages.dart';
+import 'package:givt_app/features/splash/pages/splash_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
-import 'package:givt_app/shared/pages/pages.dart';
+import 'package:givt_app/shared/pages/loading_page.dart';
 import 'package:givt_app/shared/pages/redirect_to_browser_page.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -137,7 +138,7 @@ class AppRouter {
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
           listener: (context, state) =>
               _checkAndRedirectAuth(state, context, routerState),
-          child: const LoadingPage(),
+          child: const SplashPage(),
         ),
       ),
 
@@ -305,7 +306,6 @@ class AppRouter {
                       create: (context) => RegistrationBloc(
                         authCubit: context.read<AuthCubit>(),
                         authRepositoy: getIt(),
-                        registrationRepository: getIt(),
                       )..add(const RegistrationInit()),
                       child: const GiftAidRequestPage(),
                     ),
@@ -315,7 +315,6 @@ class AppRouter {
                   create: (context) => RegistrationBloc(
                     authCubit: context.read<AuthCubit>(),
                     authRepositoy: getIt(),
-                    registrationRepository: getIt(),
                   )..add(const RegistrationInit()),
                   child: const BacsExplanationPage(),
                 ),
@@ -325,7 +324,6 @@ class AppRouter {
               create: (context) => RegistrationBloc(
                 authCubit: context.read<AuthCubit>(),
                 authRepositoy: getIt(),
-                registrationRepository: getIt(),
               )..add(const RegistrationInit()),
               child: const MandateExplanationPage(),
             ),
@@ -627,11 +625,11 @@ class AppRouter {
     BuildContext context,
     GoRouterState routerState,
   ) async {
+    if (state.user.isUsUser) return;
+
     if (state.status == AuthStatus.biometricCheck) {
       await context.pushNamed(
-        state.user.isUsUser
-            ? FamilyPages.permitUSBiometric.name
-            : Pages.permitBiometric.name,
+        Pages.permitBiometric.name,
         extra: PermitBiometricRequest.login(),
       );
       return;
@@ -642,27 +640,6 @@ class AppRouter {
         context.read<AuthCubit>().clearNavigation();
         if (!context.mounted) return;
         await state.navigate(context);
-        return;
-      }
-
-      if (state.user.isUsUser) {
-        if (!state.user.personalInfoRegistered) {
-          // Prevent that users will see the profileselection page first when
-          // registration is not finished (yet)
-          context.pushReplacementNamed(
-            FamilyPages.registrationUS.name,
-            queryParameters: {
-              'email': state.user.email,
-            },
-          );
-        } else {
-          context.goNamed(
-            FamilyPages.profileSelection.name,
-            queryParameters: routerState.uri.queryParameters,
-          );
-        }
-
-        // US should not see the original home page
         return;
       }
 

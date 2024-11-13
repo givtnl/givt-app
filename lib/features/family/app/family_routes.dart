@@ -51,11 +51,11 @@ import 'package:givt_app/features/family/features/recommendation/start_recommend
 import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
+import 'package:givt_app/features/family/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
-import 'package:givt_app/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -68,6 +68,17 @@ class FamilyAppRoutes {
   static List<RouteBase> get routes => _routes;
 
   static final List<RouteBase> _routes = [
+    GoRoute(
+      path: FamilyPages.registrationUS.path,
+      name: FamilyPages.registrationUS.name,
+      builder: (context, state) {
+        final email = state.uri.queryParameters['email'] ?? '';
+
+        return UsSignUpPage(
+          email: email,
+        );
+      },
+    ),
     GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
@@ -496,17 +507,6 @@ class FamilyAppRoutes {
             final user = context.read<ProfilesCubit>().state.activeProfile;
             context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
             return '${FamilyPages.profileSelection.path}?index=${NavigationBarHomeScreen.familyIndex}&showAllowanceWarning=$showAllowanceWarning';
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.registrationUS.path,
-          name: FamilyPages.registrationUS.name,
-          builder: (context, state) {
-            final email = state.uri.queryParameters['email'] ?? '';
-
-            return UsSignUpPage(
-              email: email,
-            );
           },
         ),
         GoRoute(

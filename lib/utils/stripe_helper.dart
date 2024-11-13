@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
+import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
 import 'package:givt_app/shared/models/models.dart';
 
 class StripeHelper {

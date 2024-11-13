@@ -15,7 +15,6 @@ import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/give/widgets/triple_animated_switch.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
@@ -78,7 +77,6 @@ class _HomePageState extends State<HomePage> {
       );
 
     final auth = context.watch<AuthCubit>().state;
-    final impactGroupsState = context.watch<ImpactGroupsCubit>().state;
 
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {
@@ -181,14 +179,10 @@ class _HomePageState extends State<HomePage> {
 
               // Needs registration dialog
               if (state is RemoteDataSourceSyncSuccess) {
-                if (!auth.user.needRegistration ||
-                    auth.user.mandateSigned ||
-                    auth.user.isInvitedUser ||
-                    auth.user.isUsUser || // Don't show to US users
-                    impactGroupsState.status ==
-                        ImpactGroupCubitStatus.invited) {
+                if (!auth.user.needRegistration || auth.user.mandateSigned) {
                   return;
                 }
+
                 // TODO: Not show over biometrics
                 _buildNeedsRegistrationDialog(context);
               }
@@ -251,12 +245,11 @@ class _HomePageState extends State<HomePage> {
     BuildContext context,
   ) {
     final user = context.read<AuthCubit>().state.user;
-    final isUS = user.country == Country.us.countryCode;
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
         title: Text(
-          isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
+          context.l10n.importantReminder,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -277,13 +270,9 @@ class _HomePageState extends State<HomePage> {
           TextButton(
             onPressed: () {
               if (user.needRegistration) {
-                final createStripe = user.personalInfoRegistered &&
-                    user.country == Country.us.countryCode;
                 context
                   ..goNamed(
-                    createStripe
-                        ? FamilyPages.registrationUS.name
-                        : Pages.registration.name,
+                    Pages.registration.name,
                     queryParameters: {
                       'email': user.email,
                     },

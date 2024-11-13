@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
-import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/box_origin_usecase.dart';
@@ -12,7 +11,6 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
-import 'package:givt_app/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
@@ -23,15 +21,11 @@ class NavigationBarHomeCubit
     this._profilesRepository,
     this._authRepository,
     this._impactGroupsRepository,
-    this._addMemberRepository,
-    this._registrationRepository,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final AuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
-  final AddMemberRepository _addMemberRepository;
-  final RegistrationRepository _registrationRepository;
 
   String? profilePictureUrl;
   List<Profile> _profiles = [];
@@ -40,19 +34,9 @@ class NavigationBarHomeCubit
 
   Future<void> init() async {
     await _initHasSession();
-    _addMemberRepository.onMemberAdded().listen((_) {
-      if (_profiles.length <= 1) {
-        emitLoading();
-        refreshData();
-      }
-    });
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
       _onImpactGroupsChanged();
-    });
-    _registrationRepository.onRegistrationFlowFinished().listen((_) {
-      emitLoading();
-      refreshData();
     });
     await refreshData();
   }
@@ -77,7 +61,6 @@ class NavigationBarHomeCubit
   }
 
   Future<void> _onImpactGroupsChanged() async {
-    _profiles = await _profilesRepository.getProfiles();
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
     await doInitialChecks();
     _emitData();
@@ -95,8 +78,6 @@ class NavigationBarHomeCubit
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
-    } else if (_profiles.length <= 1) {
-      emitCustom(const NavigationBarHomeCustom.familyNotSetup());
     } else if (await shouldShowBoxOriginModal()) {
       await setBoxOriginModalShown();
       emitCustom(const NavigationBarHomeCustom.showBoxOriginDialog());
@@ -118,23 +99,21 @@ class NavigationBarHomeCubit
       final profile = _profiles
           .firstWhereOrNull((element) => element.id == session.userGUID);
       profilePictureUrl = profile?.pictureURL;
+
+      if (_profiles.isNotEmpty) {
+        _emitData();
+      }
     } catch (e, s) {
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
-    } finally {
-      _emitData();
     }
   }
 
   void _emitData() {
-    if (_profiles.length > 1) {
-      emitData(
-        NavigationBarHomeScreenUIModel(
-          profilePictureUrl: profilePictureUrl,
-          familyInviteGroup: _familyInviteGroup,
-        ),
-      );
-    } else {
-      emitError(null);
-    }
+    emitData(
+      NavigationBarHomeScreenUIModel(
+        profilePictureUrl: profilePictureUrl,
+        familyInviteGroup: _familyInviteGroup,
+      ),
+    );
   }
 }

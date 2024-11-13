@@ -1,12 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
 
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/models/session.dart';
-import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';

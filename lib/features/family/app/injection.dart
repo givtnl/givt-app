@@ -31,12 +31,14 @@ import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dar
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
+import 'package:givt_app/features/family/features/registration/cubit/us_signup_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/repositories/reset_password_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
+import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -58,7 +60,8 @@ Future<void> initAPIService() async {
 void initCubits() {
   getIt
     ..registerLazySingleton<InternetConnectionCubit>(
-        () => InternetConnectionCubit(getIt()))
+      () => InternetConnectionCubit(getIt()),
+    )
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<InterviewCubit>(
@@ -95,8 +98,6 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
-        getIt(),
-        getIt(),
       ),
     )
     ..registerFactory<FamilySelectionCubit>(
@@ -125,6 +126,12 @@ void initCubits() {
     )
     ..registerLazySingleton<FamilyLoginCubit>(
       () => FamilyLoginCubit(getIt()),
+    )
+    ..registerFactory<UsSignupCubit>(
+      () => UsSignupCubit(getIt()),
+    )
+    ..registerFactory<SplashCubit>(
+      () => SplashCubit(getIt(), getIt()),
     );
 }
 
@@ -143,7 +150,6 @@ void initRepositories() {
     )
     ..registerLazySingleton<ProfilesRepository>(
       () => ProfilesRepositoryImpl(
-        getIt(),
         getIt(),
         getIt(),
         getIt(),
