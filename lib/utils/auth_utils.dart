@@ -7,7 +7,6 @@ import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
-import 'package:givt_app/features/family/features/login/presentation/pages/family_login_sheet.dart';
 
 class CheckAuthRequest {
   CheckAuthRequest({

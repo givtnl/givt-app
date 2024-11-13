@@ -193,11 +193,13 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
   }
 
   Future<void> onCustom(
-      BuildContext context, FamilyLoginSheetCustom state) async {
+    BuildContext context,
+    FamilyLoginSheetCustom state,
+  ) async {
     switch (state) {
       case LoginSuccess():
         if (!context.mounted) return;
-        await widget.navigate!(context);
+        await widget.navigate(context);
 
         if (!context.mounted) return;
         context.pop();

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
-import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/box_origin_usecase.dart';
@@ -100,23 +99,21 @@ class NavigationBarHomeCubit
       final profile = _profiles
           .firstWhereOrNull((element) => element.id == session.userGUID);
       profilePictureUrl = profile?.pictureURL;
+
+      if (_profiles.isNotEmpty) {
+        _emitData();
+      }
     } catch (e, s) {
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
-    } finally {
-      _emitData();
     }
   }
 
   void _emitData() {
-    if (_profiles.length > 1) {
-      emitData(
-        NavigationBarHomeScreenUIModel(
-          profilePictureUrl: profilePictureUrl,
-          familyInviteGroup: _familyInviteGroup,
-        ),
-      );
-    } else {
-      emitError(null);
-    }
+    emitData(
+      NavigationBarHomeScreenUIModel(
+        profilePictureUrl: profilePictureUrl,
+        familyInviteGroup: _familyInviteGroup,
+      ),
+    );
   }
 }

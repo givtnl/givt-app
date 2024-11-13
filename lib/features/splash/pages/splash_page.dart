@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
@@ -60,10 +61,14 @@ class _SplashPageState extends State<SplashPage> {
       case SplashRedirectToWelcome():
         context.goNamed(Pages.welcome.name);
       case SplashRedirectToSignup():
-        context.goNamed(FamilyPages.registrationUS.name,
-            queryParameters: {'email': state.email});
+        context.goNamed(
+          FamilyPages.registrationUS.name,
+          queryParameters: {'email': state.email},
+        );
       case SplashRedirectToHome():
         context.goNamed(FamilyPages.profileSelection.name);
+      case SplashRedirectToAddMembers():
+        AddMemberUtil.addMemberPushPages(context);
     }
   }
 }

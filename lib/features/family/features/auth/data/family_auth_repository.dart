@@ -81,7 +81,8 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     if (session == const Session.empty()) {
       _authenticatedUserStream.add(null);
       throw Exception(
-          'Cannot refresh token, no current session found to refresh.');
+        'Cannot refresh token, no current session found to refresh.',
+      );
     }
     if (session.isLoggedIn == false) {
       _authenticatedUserStream.add(null);
@@ -315,7 +316,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       final result = await _apiService.updateUser(guid, newUserExt);
       await _fetchUserExtension(guid);
       return result;
-    } catch (e, s) {
+    } catch (e) {
       return false;
     }
   }
@@ -328,7 +329,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       final result = _apiService.updateUserExt(newUserExt);
       await refreshUser();
       return result;
-    } catch (e, s) {
+    } catch (e) {
       return false;
     }
   }

@@ -77,7 +77,6 @@ class _HomePageState extends State<HomePage> {
       );
 
     final auth = context.watch<AuthCubit>().state;
-    final impactGroupsState = context.watch<ImpactGroupsCubit>().state;
 
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {

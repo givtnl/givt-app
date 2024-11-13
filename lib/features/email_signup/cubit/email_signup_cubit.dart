@@ -14,7 +14,6 @@ import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -137,18 +136,24 @@ class EmailSignupCubit
     return result;
   }
 
+  /// Logic to check if the email is already registered and emits the next step.
+  /// - If the email is already registered, we show the login page
+  /// - If the email is not (fully) registered, we show the register page
+  ///
+  /// _Note: This code should only be used for the family app (currently US only)_
   Future<void> login() async {
     emitCustom(const EmailSignupCustom.checkingEmail());
-    
+
     if (!validateEmail(_currentEmail)) {
       // It shouldn't be possible to get here
-      emitError('Invalid email address');
+      emitSnackbarMessage('Invalid email address');
       return;
     }
 
     if (!_currentCountry.isUS) {
       // It shouldn't be possible to get here
-      emitError("EU shouldn't make use of family login");
+      emitSnackbarMessage("EU shouldn't make use of family login");
+      return;
     }
 
     // Check if this is a different login or someone who logged in before
@@ -181,7 +186,7 @@ class EmailSignupCubit
       tempUser: tempUser,
       isNewUser: true,
     );
-    
+
     emitCustom(EmailSignupCustom.registerFamily(_currentEmail));
   }
 }

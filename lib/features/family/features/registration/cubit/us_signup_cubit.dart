@@ -8,8 +8,7 @@ import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/util.dart';
 
-class UsSignupCubit
-    extends CommonCubit<UserExt, UsSignupCustom> {
+class UsSignupCubit extends CommonCubit<UserExt, UsSignupCustom> {
   UsSignupCubit(
     FamilyAuthRepository authRepository,
   )   : _authRepository = authRepository,
@@ -69,7 +68,7 @@ class UsSignupCubit
       );
 
       emitCustom(const UsSignupCustomSuccess());
-    } catch (e, s) {
+    } catch (e) {
       emitSnackbarMessage(e.toString(), isError: true);
     }
   }
