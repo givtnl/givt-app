@@ -170,6 +170,7 @@ class EmailSignupCubit
 
     // When this is a temp user, we show the register page
     if (result.contains('temp')) {
+      await _authRepository.login(_currentEmail, TempUser.defaultPassword);
       emitCustom(EmailSignupCustom.registerFamily(_currentEmail));
       return;
     }

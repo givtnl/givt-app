@@ -17,7 +17,11 @@ class UsSignupCubit extends CommonCubit<UserExt, UsSignupCustom> {
   final FamilyAuthRepository _authRepository;
 
   Future<void> init() async {
-    await _authRepository.refreshToken();
+    try {
+      await _authRepository.refreshToken();
+    } catch (e, s) {
+      // do nothing, failing is fine
+    }
     final user = _authRepository.getCurrentUser();
 
     if (user == null) {
