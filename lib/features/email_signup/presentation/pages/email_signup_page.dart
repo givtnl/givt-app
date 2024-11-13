@@ -198,6 +198,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                     if (state.country.isUS) {
                                       await _cubit.login();
                                     } else {
+                                      setLoading();
+                                      AppThemeSwitcher.of(context)
+                                          .switchTheme(isFamilyApp: false);
                                       await context.read<AuthCubit>().register(
                                             country: state.country,
                                             email: state.email,
