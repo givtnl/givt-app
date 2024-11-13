@@ -128,7 +128,7 @@ void initCubits() {
       () => FamilyLoginCubit(getIt()),
     )
     ..registerFactory<UsSignupCubit>(
-      () => UsSignupCubit(getIt()),
+      () => UsSignupCubit(getIt(), getIt()),
     )
     ..registerFactory<SplashCubit>(
       () => SplashCubit(getIt(), getIt()),

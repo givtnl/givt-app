@@ -2,6 +2,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/registration/cubit/us_signup_custom.dart';
+import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
@@ -10,16 +11,17 @@ import 'package:givt_app/utils/util.dart';
 
 class UsSignupCubit extends CommonCubit<UserExt, UsSignupCustom> {
   UsSignupCubit(
-    FamilyAuthRepository authRepository,
-  )   : _authRepository = authRepository,
-        super(const BaseState.loading());
+    this._authRepository,
+    this._impactGroupsRepository,
+  ) : super(const BaseState.loading());
 
   final FamilyAuthRepository _authRepository;
+  final ImpactGroupsRepository _impactGroupsRepository;
 
   Future<void> init() async {
     try {
       await _authRepository.refreshToken();
-    } catch (e, s) {
+    } catch (_) {
       // do nothing, failing is fine
     }
     final user = _authRepository.getCurrentUser();
@@ -71,7 +73,14 @@ class UsSignupCubit extends CommonCubit<UserExt, UsSignupCustom> {
         isNewUser: false,
       );
 
-      emitCustom(const UsSignupCustomSuccess());
+      final invitedGroup = await _impactGroupsRepository.isInvitedToGroup();
+
+      if (invitedGroup != null) {
+        emitCustom(const UsSignupRedirectToHome());
+        return;
+      }
+
+      emitCustom(const UsSignupRedirectToAddMembers());
     } catch (e) {
       emitSnackbarMessage(e.toString(), isError: true);
     }

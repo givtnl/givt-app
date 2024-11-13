@@ -1,9 +1,16 @@
 sealed class UsSignupCustom {
   const UsSignupCustom();
 
-  const factory UsSignupCustom.succes() = UsSignupCustomSuccess;
+  const factory UsSignupCustom.redirectToAddMembers() =
+      UsSignupRedirectToAddMembers;
+  const factory UsSignupCustom.redirectToHome() =
+      UsSignupRedirectToHome;
 }
 
-class UsSignupCustomSuccess extends UsSignupCustom {
-  const UsSignupCustomSuccess();
+class UsSignupRedirectToAddMembers extends UsSignupCustom {
+  const UsSignupRedirectToAddMembers();
+}
+
+class UsSignupRedirectToHome extends UsSignupCustom {
+  const UsSignupRedirectToHome();
 }

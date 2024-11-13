@@ -6,11 +6,9 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class SplashCubit extends CommonCubit<void, SplashCustom> {
   SplashCubit(
-    FamilyAuthRepository authRepository,
-    ProfilesRepository profilesRepository,
-  )   : _authRepository = authRepository,
-        _profilesRepository = profilesRepository,
-        super(const BaseState.loading());
+    this._authRepository,
+    this._profilesRepository,
+  ) : super(const BaseState.loading());
 
   final FamilyAuthRepository _authRepository;
   final ProfilesRepository _profilesRepository;
