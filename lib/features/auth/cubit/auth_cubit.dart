@@ -168,7 +168,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       LoggingInfo.instance.info('CheckedAuth for $userExt');
       if (!session.isLoggedIn) {
-        emit(state.copyWith(status: AuthStatus.unauthenticated));
+        emit(state.copyWith(status: AuthStatus.unauthenticated, user: userExt));
         _authRepositoy.setHasSessionInitialValue(false);
         return;
       }
@@ -215,17 +215,17 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> logout() async {
+  Future<void> logout({bool fullReset = false}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     LoggingInfo.instance.info('User is logging out');
 
-    ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     await _authRepositoy.logout();
 
     emit(
       state.copyWith(
         status: AuthStatus.unauthenticated,
-        email: state.user.email,
+        email: fullReset ? null : state.user.email,
+        user: fullReset ? const UserExt.empty() : state.user,
       ),
     );
     AnalyticsHelper.clearUserProperties();
