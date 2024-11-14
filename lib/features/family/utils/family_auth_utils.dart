@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/login/presentation/pages/family_login_sheet.dart';
 
 class FamilyAuthUtils {
@@ -14,7 +16,7 @@ class FamilyAuthUtils {
     BuildContext context, {
     required FamilyCheckAuthRequest checkAuthRequest,
   }) async {
-    if (!await LocalAuthInfo.instance.canCheckBiometrics) {
+    if (!checkAuthRequest.useBiometrics || !await LocalAuthInfo.instance.canCheckBiometrics) {
       if (!context.mounted) {
         return;
       }
@@ -26,7 +28,21 @@ class FamilyAuthUtils {
     }
 
     try {
-      final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
+      var hasAuthenticated = await LocalAuthInfo.instance.authenticate();
+
+      if (!context.mounted) {
+        return;
+      }
+
+      if (hasAuthenticated) {
+        try {
+          await getIt<FamilyAuthCubit>().refreshSession();
+        } catch (e) {
+          // If the session refresh fails, we want to force the user to log in
+          hasAuthenticated = false;
+        }
+      }
+
       if (!context.mounted) {
         return;
       }
@@ -95,9 +111,11 @@ class FamilyCheckAuthRequest {
     required this.navigate,
     this.forceLogin = false,
     this.email,
+    this.useBiometrics = true,
   });
 
   final Future<void> Function(BuildContext context) navigate;
   final bool forceLogin;
   final String? email;
+  final bool useBiometrics;
 }
