@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
@@ -75,6 +76,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   @override
   void initState() {
     super.initState();
+
+    _checkAuthentication();
   }
 
   @override
@@ -281,5 +284,25 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           ),
         );
     }
+  }
+
+  /// EU (Legacy) Code
+  Future<void> _checkAuthentication() async {
+    final user = context.read<AuthCubit>().state.user;
+    if (user.isUsUser) return;
+
+    // Without biometrics we use the regular route to login
+    if (!await LocalAuthInfo.instance.canCheckBiometrics) return;
+
+    // When not authenticated do nothing
+    final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
+    if (!hasAuthenticated) return;
+
+    // When authenticated we go to the home route
+    if (!mounted) return;
+    await context.read<AuthCubit>().authenticate();
+
+    if (!mounted) return;
+    context.goNamed(Pages.home.name);
   }
 }
