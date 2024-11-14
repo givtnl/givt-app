@@ -10,6 +10,8 @@ import 'package:givt_app/features/children/overview/pages/family_overview_page.d
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/box_origin/box_origin_selection_page.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
@@ -18,6 +20,7 @@ import 'package:givt_app/features/family/features/home_screen/presentation/pages
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
@@ -74,26 +77,35 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<InternetConnectionCubit, InternetConnectionState>(
-      bloc: _connectionCubit,
-      listener: (context, state) {
-        if (state is InternetConnectionLost) {
-          InternetConnectionLostDialog.show(context);
+    return BlocConsumer<FamilyAuthCubit, FamilyAuthState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        if (state is Unauthenticated) {
+          return const FullScreenLoadingWidget();
+        } else {
+          return BlocListener<InternetConnectionCubit, InternetConnectionState>(
+            bloc: _connectionCubit,
+            listener: (context, state) {
+              if (state is InternetConnectionLost) {
+                InternetConnectionLostDialog.show(context);
+              }
+            },
+            child: BaseStateConsumer(
+              cubit: _cubit,
+              onCustom: _handleCustom,
+              onLoading: (context) => const Scaffold(
+                body: Center(child: CustomCircularProgressIndicator()),
+              ),
+              onInitial: (context) => _regularLayout(),
+              onData: (context, data) => data.familyInviteGroup == null
+                  ? _regularLayout(uiModel: data)
+                  : ImpactGroupReceiveInviteSheet(
+                      invitdImpactGroup: data.familyInviteGroup!,
+                    ),
+            ),
+          );
         }
       },
-      child: BaseStateConsumer(
-        cubit: _cubit,
-        onCustom: _handleCustom,
-        onLoading: (context) => const Scaffold(
-          body: Center(child: CustomCircularProgressIndicator()),
-        ),
-        onInitial: (context) => _regularLayout(),
-        onData: (context, data) => data.familyInviteGroup == null
-            ? _regularLayout(uiModel: data)
-            : ImpactGroupReceiveInviteSheet(
-                invitdImpactGroup: data.familyInviteGroup!,
-              ),
-      ),
     );
   }
 
