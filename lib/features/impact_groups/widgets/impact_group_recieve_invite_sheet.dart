@@ -13,11 +13,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ImpactGroupReceiveInviteSheet extends StatelessWidget {
   const ImpactGroupReceiveInviteSheet({
-    required this.invitdImpactGroup,
+    required this.invitedImpactGroup,
     super.key,
   });
 
-  final ImpactGroup invitdImpactGroup;
+  final ImpactGroup invitedImpactGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class ImpactGroupReceiveInviteSheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${context.l10n.youHaveBeenInvitedToImpactGroup}${invitdImpactGroup.name}',
+            '${context.l10n.youHaveBeenInvitedToImpactGroup}${invitedImpactGroup.name}',
             textAlign: TextAlign.center,
             style: GoogleFonts.mulish(
               textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -40,13 +40,13 @@ class ImpactGroupReceiveInviteSheet extends StatelessWidget {
             onTap: () {
               context
                   .read<ImpactGroupsCubit>()
-                  .acceptGroupInvite(groupId: invitdImpactGroup.id);
+                  .acceptGroupInvite(groupId: invitedImpactGroup.id);
               context.pop();
             },
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.inviteToImpactGroupAccepted,
               parameters: {
-                'group_name': invitdImpactGroup.name,
+                'group_name': invitedImpactGroup.name,
               },
             ),
           ),

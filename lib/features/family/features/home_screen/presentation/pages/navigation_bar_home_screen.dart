@@ -100,7 +100,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
               onData: (context, data) => data.familyInviteGroup == null
                   ? _regularLayout(uiModel: data)
                   : ImpactGroupReceiveInviteSheet(
-                      invitdImpactGroup: data.familyInviteGroup!,
+                      invitedImpactGroup: data.familyInviteGroup!,
                     ),
             ),
           );
