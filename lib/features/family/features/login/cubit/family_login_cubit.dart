@@ -43,6 +43,13 @@ class FamilyLoginCubit extends CommonCubit<String, FamilyLoginSheetCustom> {
 
     try {
       await _authRepository.login(email, password);
+
+      try {
+        await _authRepository.updateNotificationId();
+      } catch (e) {
+        // do nothing, failing is fine
+      }
+
       emitCustom(const FamilyLoginSheetCustom.successRedirect());
       return;
     } catch (e, stackTrace) {
