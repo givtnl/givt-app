@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/amount_presets/models/user_presets.dart';
@@ -35,10 +37,7 @@ abstract class FamilyAuthRepository {
     required String email,
   });
 
-  Future<bool> updateNotificationId({
-    required String guid,
-    required String notificationId,
-  });
+  Future<void> updateNotificationId();
 
   Stream<UserExt?> authenticatedUserStream();
 
@@ -335,17 +334,41 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }
 
   @override
-  Future<bool> updateNotificationId({
-    required String guid,
-    required String notificationId,
-  }) =>
-      _apiService.updateNotificationId(
-        guid: guid,
-        body: {
-          'PushNotificationId': notificationId,
-          'OS': 1, // Always use firebase implementation from Android
-        },
+  Future<void> updateNotificationId() async {
+    LoggingInfo.instance.info('Update Notification Id');
+
+    if (Platform.isIOS) {
+      // On iOS be sure that APNS token is available before asking for a firebase token
+      await FirebaseMessaging.instance.getAPNSToken();
+    }
+
+    final notificationId = await FirebaseMessaging.instance.getToken();
+
+    LoggingInfo.instance.info('New FCM token: $notificationId');
+
+    if (_userExt!.notificationId == notificationId) {
+      LoggingInfo.instance.info(
+        'FCM token: $notificationId is the same as the current one',
       );
+
+      return;
+    }
+
+    if (notificationId == null) {
+      LoggingInfo.instance.warning(
+        'FCM token: is null',
+      );
+      return;
+    }
+
+    await _apiService.updateNotificationId(
+      guid: _userExt!.guid,
+      body: {
+        'PushNotificationId': notificationId,
+        'OS': 1, // Always use firebase implementation in backend (android)
+      },
+    );
+  }
 
   Future<void> _setUserPropsForExternalServices(UserExt newUserExt) {
     FirebaseCrashlytics.instance.setUserIdentifier(newUserExt.guid);
@@ -366,7 +389,12 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   @override
   Future<void> initAuth() async {
-    await refreshToken();
+    try {
+      await refreshToken();
+      await updateNotificationId();
+    } catch (e, s) {
+      // Do nothing
+    }
   }
 
   @override

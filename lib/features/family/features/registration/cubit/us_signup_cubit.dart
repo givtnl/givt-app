@@ -73,6 +73,12 @@ class UsSignupCubit extends CommonCubit<UserExt, UsSignupCustom> {
         isNewUser: false,
       );
 
+      try {
+        await _authRepository.updateNotificationId();
+      } catch (e) {
+        // do nothing, failing is fine
+      }
+
       // fetch impact groups
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true);
       final invitedGroup = await _impactGroupsRepository.isInvitedToGroup();
