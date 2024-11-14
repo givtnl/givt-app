@@ -68,7 +68,7 @@ class _SplashPageState extends State<SplashPage> {
       case SplashRedirectToHome():
         context.goNamed(FamilyPages.profileSelection.name);
       case SplashRedirectToAddMembers():
-        AddMemberUtil.addMemberPushPages(context);
+        AddMemberUtil.addFamilyPushPages(context);
     }
   }
 }
