@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -35,7 +35,7 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
   }
 
   String get _familyLeaderId {
-    return context.read<AuthCubit>().state.user.guid;
+    return context.read<FamilyAuthCubit>().user!.guid;
   }
 
   Profile get _familyLeader {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/family_goal_tracker.dart';
 import 'package:givt_app/features/children/family_history/family_history.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/widgets/profiles_overview_widget.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 
 class FamilyAvailablePage extends StatefulWidget {
   const FamilyAvailablePage({
@@ -21,7 +21,7 @@ class _FamilyAvailablePageState extends State<FamilyAvailablePage> {
   Widget build(BuildContext context) {
     final state = context.watch<FamilyOverviewCubit>().state
         as FamilyOverviewUpdatedState;
-    final currentUserId = context.read<AuthCubit>().state.user.guid;
+    final currentUserId = context.read<FamilyAuthCubit>().user!.guid;
     final sortedAdultProfiles = state.sortedAdults(currentUserId);
     final scrollController = ScrollController();
 
