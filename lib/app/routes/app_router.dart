@@ -524,16 +524,6 @@ class AppRouter {
             ),
           ),
         ),
-        redirect: (context, state) {
-          final auth = context.read<AuthCubit>().state;
-          if (auth.status == AuthStatus.authenticated &&
-              auth.user.isUsUser &&
-              !auth.user.needRegistration) {
-            return FamilyPages.profileSelection.path;
-          } else {
-            return null;
-          }
-        },
       ),
       GoRoute(
         path: Pages.welcome.path,
