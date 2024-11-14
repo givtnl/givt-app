@@ -435,9 +435,6 @@ class _HomePageViewState extends State<_HomePageView> {
       pageIndex = index;
       widget.onPageChanged(index);
     });
-    if (pageIndex == 1 && context.read<AuthCubit>().state.user.isUsUser) {
-      context.read<ImpactGroupsCubit>().fetchImpactGroups();
-    }
 
     setState(() {
       isPageAnimationActive = true;

@@ -3,16 +3,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/models/edit_child.dart';
 import 'package:givt_app/features/children/edit_child/widgets/create_child_text_field.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -63,7 +62,7 @@ class _EditChildPageState extends State<EditChildPage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AuthCubit>().state.user;
+    final user = context.read<FamilyAuthCubit>().user!;
     final currency = Util.getCurrency(countryCode: user.country);
 
     return BlocConsumer<EditChildCubit, EditChildState>(
