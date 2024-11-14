@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                   enableDrag: false,
                   builder: (_) {
                     return ImpactGroupReceiveInviteSheet(
-                      invitdImpactGroup: impactGroup,
+                      invitedImpactGroup: impactGroup,
                     );
                   },
                 );
