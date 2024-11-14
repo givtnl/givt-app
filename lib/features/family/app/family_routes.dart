@@ -55,6 +55,7 @@ import 'package:givt_app/features/family/features/registration/pages/us_signup_p
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
+import 'package:givt_app/features/permit_biometric/pages/family_permit_biometric_page.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
@@ -68,6 +69,20 @@ class FamilyAppRoutes {
   static List<RouteBase> get routes => _routes;
 
   static final List<RouteBase> _routes = [
+    GoRoute(
+      path: FamilyPages.permitUSBiometric.path,
+      name: FamilyPages.permitUSBiometric.name,
+      builder: (context, state) {
+        final permitBiometricRequest =
+        state.extra! as PermitBiometricRequest;
+        return BlocProvider(
+          create: (_) => PermitBiometricCubit(
+            permitBiometricRequest: permitBiometricRequest,
+          )..checkBiometric(),
+          child: const FamilyPermitBiometricPage(),
+        );
+      },
+    ),
     GoRoute(
       path: FamilyPages.registrationUS.path,
       name: FamilyPages.registrationUS.name,
@@ -507,20 +522,6 @@ class FamilyAppRoutes {
             final user = context.read<ProfilesCubit>().state.activeProfile;
             context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
             return '${FamilyPages.profileSelection.path}?index=${NavigationBarHomeScreen.familyIndex}&showAllowanceWarning=$showAllowanceWarning';
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.permitUSBiometric.path,
-          name: FamilyPages.permitUSBiometric.name,
-          builder: (context, state) {
-            final permitBiometricRequest =
-                state.extra! as PermitBiometricRequest;
-            return BlocProvider(
-              create: (_) => PermitBiometricCubit(
-                permitBiometricRequest: permitBiometricRequest,
-              )..checkBiometric(),
-              child: const PermitBiometricPage(),
-            );
           },
         ),
         GoRoute(

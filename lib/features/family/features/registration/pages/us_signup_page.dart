@@ -19,6 +19,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -152,9 +153,21 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   void handleCustom(BuildContext context, UsSignupCustom custom) {
     switch (custom) {
       case UsSignupRedirectToAddMembers():
-        AddMemberUtil.addFamilyPushPages(context);
+        context.pushReplacementNamed(
+          FamilyPages.permitUSBiometric.name,
+          extra: PermitBiometricRequest.registration(
+            redirect: AddMemberUtil.addFamilyPushPages,
+          ),
+        );
       case UsSignupRedirectToHome():
-        context.goNamed(FamilyPages.profileSelection.name);
+        context.pushReplacementNamed(
+          FamilyPages.permitUSBiometric.name,
+          extra: PermitBiometricRequest.registration(
+            redirect: (context) {
+              context.goNamed(FamilyPages.profileSelection.name);
+            },
+          ),
+        );
     }
   }
 
