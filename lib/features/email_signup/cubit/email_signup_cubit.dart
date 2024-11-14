@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:device_region/device_region.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
+import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/email_signup/cubit/email_signup_custom.dart';
@@ -130,8 +131,8 @@ class EmailSignupCubit
   }
 
   bool validateEmail(String? email) {
-    var result =
-        email != null && !email.isEmpty && Util.emailRegEx.hasMatch(email);
+    final result =
+        email != null && email.isNotEmpty && Util.emailRegEx.hasMatch(email);
 
     return result;
   }
@@ -140,7 +141,7 @@ class EmailSignupCubit
   /// - If the email is already registered, we show the login page
   /// - If the email is not (fully) registered, we show the register page
   ///
-  /// _Note: This code should only be used for the family app (currently US only)_
+  /// _This method should only be used for the family app (currently US only)_
   Future<void> login() async {
     emitCustom(const EmailSignupCustom.checkingEmail());
 
