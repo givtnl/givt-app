@@ -30,7 +30,7 @@ void logout(
   }
 
   try {
-    context.read<AuthCubit>().logout();
+    context.read<AuthCubit>().logout(fullReset: true);
     getIt<FamilyAuthRepository>().logout();
     context.read<ProfilesCubit>().logout();
     context.read<FlowsCubit>().resetFlow();

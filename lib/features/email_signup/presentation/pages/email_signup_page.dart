@@ -289,7 +289,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   /// EU (Legacy) Code
   Future<void> _checkAuthentication() async {
     final user = context.read<AuthCubit>().state.user;
-    if (user.isUsUser) return;
+    if (user.needRegistration || user.isUsUser) return;
 
     // Without biometrics we use the regular route to login
     if (!await LocalAuthInfo.instance.canCheckBiometrics) return;
