@@ -173,6 +173,8 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
+      if (userExt.isUsUser) return;
+
       // Update notification id if needed
       final newNotificationId = await _updateNotificationId(
         guid: userExt.guid,
