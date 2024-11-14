@@ -20,6 +20,7 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
+import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -249,8 +250,14 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           checkAuthRequest: FamilyCheckAuthRequest(
             useBiometrics: false,
             email: custom.email,
-            navigate: (context) async =>
-                context.goNamed(FamilyPages.profileSelection.name),
+            navigate: (context) async => context.pushReplacementNamed(
+              FamilyPages.permitUSBiometric.name,
+              extra: PermitBiometricRequest.registration(
+                redirect: (context) {
+                  context.goNamed(FamilyPages.profileSelection.name);
+                },
+              ),
+            ),
           ),
         );
       case EmailSignupNoInternet():

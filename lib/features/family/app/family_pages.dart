@@ -24,7 +24,7 @@ enum FamilyPages {
   ),
   registrationUS(path: '/registration-us', name: 'REGISTRATION-US'),
   permitUSBiometric(
-    path: 'permit-biometric-us',
+    path: '/permit-biometric-us',
     name: 'US-PERMIT-BIOMETRIC-US',
   ),
   giveByListFamily(path: 'give-by-list-family', name: 'GIVE-BY-LIST-FAMILY'),
