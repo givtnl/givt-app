@@ -334,7 +334,7 @@ class ReflectAndShareRepository {
     'nature',
     'home',
     'share',
-    'kindnes',
+    'kindness',
     'play',
     'gift',
     'helper',

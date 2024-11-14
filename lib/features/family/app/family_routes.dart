@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
@@ -17,6 +16,7 @@ import 'package:givt_app/features/children/family_history/family_history_cubit/f
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/coin_flow/cubit/search_coin_cubit.dart';
@@ -51,11 +51,11 @@ import 'package:givt_app/features/family/features/recommendation/start_recommend
 import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
+import 'package:givt_app/features/family/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
-import 'package:givt_app/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -68,6 +68,17 @@ class FamilyAppRoutes {
   static List<RouteBase> get routes => _routes;
 
   static final List<RouteBase> _routes = [
+    GoRoute(
+      path: FamilyPages.registrationUS.path,
+      name: FamilyPages.registrationUS.name,
+      builder: (context, state) {
+        final email = state.uri.queryParameters['email'] ?? '';
+
+        return UsSignUpPage(
+          email: email,
+        );
+      },
+    ),
     GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
@@ -85,13 +96,6 @@ class FamilyAppRoutes {
                 getIt(),
               )..add(const RemoteDataSourceSyncRequested()),
             ),
-            BlocProvider(
-              create: (context) => PersonalInfoEditBloc(
-                loggedInUserExt: context.read<AuthCubit>().state.user,
-                authRepository: getIt(),
-              ),
-            ),
-
             // manage family
             BlocProvider(
               create: (_) => FamilyOverviewCubit(getIt())
@@ -106,7 +110,7 @@ class FamilyAppRoutes {
             // us personal info edit page
             BlocProvider(
               create: (context) => PersonalInfoEditBloc(
-                loggedInUserExt: context.read<AuthCubit>().state.user,
+                loggedInUserExt: context.read<FamilyAuthCubit>().user!,
                 authRepository: getIt(),
               ),
             ),
@@ -131,7 +135,23 @@ class FamilyAppRoutes {
           path: FamilyPages.giveByListFamily.path,
           name: FamilyPages.giveByListFamily.name,
           builder: (context, state) {
-            return const GiveFromListPage();
+            final user = context.read<FamilyAuthCubit>().user!;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => OrganisationBloc(
+                    getIt(),
+                    getIt(),
+                  )..add(
+                      OrganisationFetch(
+                        Country.fromCode(user.country),
+                        type: CollectGroupType.none.index,
+                      ),
+                    ),
+                ),
+              ],
+              child: const GiveFromListPage(),
+            );
           },
         ),
         GoRoute(
@@ -344,7 +364,7 @@ class FamilyAppRoutes {
           path: FamilyPages.parentAvatarSelection.path,
           name: FamilyPages.parentAvatarSelection.name,
           builder: (context, state) {
-            final user = context.read<AuthCubit>().state.user;
+            final user = context.read<FamilyAuthCubit>().user!;
             return MultiBlocProvider(
               providers: [
                 BlocProvider(
@@ -399,7 +419,7 @@ class FamilyAppRoutes {
           path: FamilyPages.createFamilyGoal.path,
           name: FamilyPages.createFamilyGoal.name,
           builder: (context, state) {
-            final user = context.read<AuthCubit>().state.user;
+            final user = context.read<FamilyAuthCubit>().user!;
             return MultiBlocProvider(
               providers: [
                 BlocProvider.value(
@@ -487,17 +507,6 @@ class FamilyAppRoutes {
             final user = context.read<ProfilesCubit>().state.activeProfile;
             context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
             return '${FamilyPages.profileSelection.path}?index=${NavigationBarHomeScreen.familyIndex}&showAllowanceWarning=$showAllowanceWarning';
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.registrationUS.path,
-          name: FamilyPages.registrationUS.name,
-          builder: (context, state) {
-            final email = state.uri.queryParameters['email'] ?? '';
-
-            return UsSignUpPage(
-              email: email,
-            );
           },
         ),
         GoRoute(

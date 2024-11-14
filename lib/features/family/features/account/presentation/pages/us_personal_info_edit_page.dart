@@ -12,13 +12,15 @@ import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
-import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_screen.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
+import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
+import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
+import 'package:givt_app/features/family/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/fingerprint_bottom_sheet.dart';
@@ -28,16 +30,21 @@ import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class USPersonalInfoEditPage extends StatelessWidget {
+class USPersonalInfoEditPage extends StatefulWidget {
   const USPersonalInfoEditPage({
     super.key,
   });
 
   @override
+  State<USPersonalInfoEditPage> createState() => _USPersonalInfoEditPageState();
+}
+
+class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
+  final FamilyAuthCubit _authCubit = getIt<FamilyAuthCubit>();
+
+  @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final user = context.watch<AuthCubit>().state.user;
-
     return Scaffold(
       appBar: FunTopAppBar(
         title: locals.personalInfo,
@@ -90,227 +97,236 @@ class USPersonalInfoEditPage extends StatelessWidget {
           /// if change is success refresh user that used in the cubit
           if (state.status == PersonalInfoEditStatus.success) {
             context
-                .read<AuthCubit>()
+                .read<FamilyAuthCubit>()
                 .refreshUser()
                 .whenComplete(() => context.pop());
           }
         },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
+        child: BlocBuilder(
+          bloc: _authCubit,
+          buildWhen: (previous, current) => current is Authenticated,
+          builder: (context, state) {
+            return _buildLayout(state, context, locals);
+          },
+        ),
+      ),
+    );
+  }
+
+  SingleChildScrollView _buildLayout(
+      Object? state, BuildContext context, AppLocalizations locals) {
+    final user = (state! as Authenticated).user;
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: ParentAvatar(
+              firstName: user.firstName,
+              lastName: user.lastName,
+              pictureURL: user.profilePicture,
+            ),
+          ),
+          _buildInfoRow(
+            context,
+            icon: const Text(
+              '@',
+              style: TextStyle(
+                fontSize: 25,
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: ParentAvatar(
-                  firstName: user.firstName,
-                  lastName: user.lastName,
-                  pictureURL: user.profilePicture,
-                ),
+            ),
+            value: user.email,
+            onTap: () => _showModalBottomSheet(
+              context,
+              bottomSheet: ChangeEmailAddressBottomSheet(
+                email: user.email,
               ),
-              _buildInfoRow(
-                context,
-                icon: const Text(
-                  '@',
-                  style: TextStyle(
-                    fontSize: 25,
-                  ),
-                ),
-                value: user.email,
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: ChangeEmailAddressBottomSheet(
-                    email: user.email,
-                  ),
-                ),
+            ),
+          ),
+          _buildInfoRow(
+            context,
+            icon: const Icon(
+              FontAwesomeIcons.phone,
+            ),
+            value: user.phoneNumber,
+            onTap: () => _showModalBottomSheet(
+              context,
+              bottomSheet: ChangePhoneNumberBottomSheet(
+                country: user.country,
+                phoneNumber: user.phoneNumber,
               ),
-              _buildInfoRow(
-                context,
-                icon: const Icon(
-                  FontAwesomeIcons.phone,
-                ),
-                value: user.phoneNumber,
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: ChangePhoneNumberBottomSheet(
-                    country: user.country,
-                    phoneNumber: user.phoneNumber,
-                  ),
-                ),
-              ),
-              _buildInfoRow(
-                context,
-                icon: const Icon(
-                  FontAwesomeIcons.creditCard,
-                ),
-                value:
-                    '${user.accountBrand.toUpperCase()} ${user.accountNumber}',
-                onTap: () async {
-                  await AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.editPaymentDetailsClicked,
-                  );
+            ),
+          ),
+          _buildInfoRow(
+            context,
+            icon: const Icon(
+              FontAwesomeIcons.creditCard,
+            ),
+            value: '${user.accountBrand.toUpperCase()} ${user.accountNumber}',
+            onTap: () async {
+              await AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.editPaymentDetailsClicked,
+              );
 
-                  if (!context.mounted) return;
-                  await getIt<StripeCubit>().fetchSetupIntent();
+              if (!context.mounted) return;
+              await getIt<StripeCubit>().fetchSetupIntent();
 
-                  if (!context.mounted) return;
+              if (!context.mounted) return;
 
-                  try {
-                    await StripeHelper(context).showPaymentSheet();
+              try {
+                await StripeHelper(context).showPaymentSheet();
 
-                    if (!context.mounted) return;
-                    await context.read<AuthCubit>().refreshUser();
-                  } on StripeException catch (e, stackTrace) {
-                    await AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.editPaymentDetailsCanceled,
-                    );
+                if (!context.mounted) return;
+                await context.read<FamilyAuthCubit>().refreshUser();
+              } on StripeException catch (e, stackTrace) {
+                await AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.editPaymentDetailsCanceled,
+                );
 
-                    /* Logged as info as stripe is giving exception
-                       when for example people close the bottomsheet.
-                       So it's not a real error :)
-                    */
-                    LoggingInfo.instance.info(
-                      e.toString(),
-                      methodName: stackTrace.toString(),
-                    );
-                  }
-                },
-              ),
-              _buildInfoRow(
-                context,
-                icon: const Icon(
-                  FontAwesomeIcons.lock,
-                ),
-                value: locals.changePassword,
-                onTap: () =>
-                    ResetPasswordScreen(initialEmail: user.email).show(context),
-              ),
-              FutureBuilder(
-                initialData: false,
-                future: Future.wait<bool>([
-                  LocalAuthInfo.instance.checkFingerprint(),
-                  LocalAuthInfo.instance.checkFaceId(),
-                ]),
-                builder: (_, snapshot) {
-                  if (snapshot.connectionState != ConnectionState.done) {
-                    return const SizedBox.shrink();
-                  }
-                  if (!snapshot.hasData) {
-                    return const SizedBox.shrink();
-                  }
-                  if (snapshot.data == null) {
-                    return const SizedBox.shrink();
-                  }
+                /* Logged as info as stripe is giving exception
+               when for example people close the bottomsheet.
+               So it's not a real error :)
+            */
+                LoggingInfo.instance.info(
+                  e.toString(),
+                  methodName: stackTrace.toString(),
+                );
+              }
+            },
+          ),
+          _buildInfoRow(
+            context,
+            icon: const Icon(
+              FontAwesomeIcons.lock,
+            ),
+            value: locals.changePassword,
+            onTap: () =>
+                ResetPasswordSheet(initialEmail: user.email).show(context),
+          ),
+          FutureBuilder(
+            initialData: false,
+            future: Future.wait<bool>([
+              LocalAuthInfo.instance.checkFingerprint(),
+              LocalAuthInfo.instance.checkFaceId(),
+            ]),
+            builder: (_, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const SizedBox.shrink();
+              }
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
+              }
+              if (snapshot.data == null) {
+                return const SizedBox.shrink();
+              }
 
-                  final data = snapshot.data! as List<bool>;
-                  final isFingerprintAvailable = data[0];
-                  final isFaceIdAvailable = data[1];
-                  final shouldShow =
-                      isFingerprintAvailable || isFaceIdAvailable;
+              final data = snapshot.data! as List<bool>;
+              final isFingerprintAvailable = data[0];
+              final isFaceIdAvailable = data[1];
+              final shouldShow = isFingerprintAvailable || isFaceIdAvailable;
 
-                  return Column(
-                    children: [
-                      if (shouldShow)
-                        _buildInfoRow(
-                          context,
-                          value: isFingerprintAvailable
-                              ? Platform.isAndroid
-                                  ? locals.fingerprintTitle
-                                  : locals.touchId
-                              : locals.faceId,
-                          icon: Platform.isIOS && isFaceIdAvailable
-                              ? SvgPicture.asset(
-                                  'assets/images/face_id_image.svg',
-                                  width: 24,
-                                )
-                              : const Icon(Icons.fingerprint),
-                          onTap: () async => AuthUtils.checkToken(
-                            context,
-                            checkAuthRequest: CheckAuthRequest(
-                              navigate: (context, {isUSUser}) =>
-                                  showModalBottomSheet<void>(
-                                context: context,
-                                isScrollControlled: true,
-                                useSafeArea: true,
-                                builder: (_) => FingerprintBottomSheet(
-                                  isFingerprint: isFingerprintAvailable,
-                                ),
-                              ),
+              return Column(
+                children: [
+                  if (shouldShow)
+                    _buildInfoRow(
+                      context,
+                      value: isFingerprintAvailable
+                          ? Platform.isAndroid
+                              ? locals.fingerprintTitle
+                              : locals.touchId
+                          : locals.faceId,
+                      icon: Platform.isIOS && isFaceIdAvailable
+                          ? SvgPicture.asset(
+                              'assets/images/face_id_image.svg',
+                              width: 24,
+                            )
+                          : const Icon(Icons.fingerprint),
+                      onTap: () async => FamilyAuthUtils.authenticateUser(
+                        context,
+                        checkAuthRequest: FamilyCheckAuthRequest(
+                          navigate: (context) => showModalBottomSheet<void>(
+                            context: context,
+                            isScrollControlled: true,
+                            useSafeArea: true,
+                            builder: (_) => FingerprintBottomSheet(
+                              isFingerprint: isFingerprintAvailable,
                             ),
                           ),
                         ),
-                      if (shouldShow)
-                        const Divider(
-                          height: 0,
-                        ),
-                    ],
-                  );
-                },
-              ),
-              const Divider(
-                height: 0,
-              ),
-              _buildInfoRow(
-                context,
-                icon: const Icon(
-                  FontAwesomeIcons.userXmark,
-                ),
-                value: locals.unregister,
-                onTap: () async => AuthUtils.checkToken(
-                  context,
-                  checkAuthRequest: CheckAuthRequest(
-                    navigate: (context, {isUSUser}) async => context.pushNamed(
-                      FamilyPages.unregisterUS.name,
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              const Divider(
-                height: 0,
-              ),
-              _buildInfoRow(
-                context,
-                icon: const Icon(
-                  FontAwesomeIcons.circleInfo,
-                ),
-                value: locals.titleAboutGivt,
-                onTap: () => showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  builder: (_) => Theme(
-                    data: const FamilyAppTheme().toThemeData(),
-                    child: const AboutGivtBottomSheet(),
-                  ),
-                ),
-              ),
-              const Divider(
-                height: 0,
-              ),
-              _buildInfoRow(
-                context,
-                style: Theme.of(context).textTheme.labelMedium,
-                icon: const Icon(
-                  FontAwesomeIcons.rightFromBracket,
-                ),
-                value: 'Logout',
-                onTap: () => logout(context, fromLogoutBtn: true),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 70, right: 70, top: 20),
-                child: Text(
-                  'Would you like to change your name? Send an e-mail to support@givt.app',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: FamilyAppTheme.downloadAppBackground),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
+                  if (shouldShow)
+                    const Divider(
+                      height: 0,
+                    ),
+                ],
+              );
+            },
           ),
-        ),
+          const Divider(
+            height: 0,
+          ),
+          _buildInfoRow(
+            context,
+            icon: const Icon(
+              FontAwesomeIcons.userXmark,
+            ),
+            value: locals.unregister,
+            onTap: () async => FamilyAuthUtils.authenticateUser(
+              context,
+              checkAuthRequest: FamilyCheckAuthRequest(
+                navigate: (context) async => context.pushNamed(
+                  FamilyPages.unregisterUS.name,
+                ),
+              ),
+            ),
+          ),
+          const Divider(
+            height: 0,
+          ),
+          _buildInfoRow(
+            context,
+            icon: const Icon(
+              FontAwesomeIcons.circleInfo,
+            ),
+            value: locals.titleAboutGivt,
+            onTap: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              builder: (_) => Theme(
+                data: const FamilyAppTheme().toThemeData(),
+                child: const AboutGivtBottomSheet(),
+              ),
+            ),
+          ),
+          const Divider(
+            height: 0,
+          ),
+          _buildInfoRow(
+            context,
+            style: Theme.of(context).textTheme.labelMedium,
+            icon: const Icon(
+              FontAwesomeIcons.rightFromBracket,
+            ),
+            value: 'Logout',
+            onTap: () => logout(context, fromLogoutBtn: true),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 70, right: 70, top: 20),
+            child: Text(
+              'Would you like to change your name? Send an e-mail to support@givt.app',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: FamilyAppTheme.downloadAppBackground),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
       ),
     );
   }

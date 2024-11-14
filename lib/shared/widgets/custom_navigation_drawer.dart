@@ -13,7 +13,6 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -33,9 +32,6 @@ class CustomNavigationDrawer extends StatelessWidget {
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
 
-    final showFamilyItem = auth.user.country == Country.us.countryCode &&
-        !auth.user.needRegistration &&
-        auth.user.mandateSigned;
     return Drawer(
       child: auth.status == AuthStatus.loading
           ? const Center(
@@ -52,13 +48,9 @@ class CustomNavigationDrawer extends StatelessWidget {
                   icon: Icons.edit,
                   onTap: () {
                     if (auth.user.needRegistration) {
-                      final createStripe = auth.user.personalInfoRegistered &&
-                          (auth.user.country == Country.us.countryCode);
                       context
                         ..goNamed(
-                          createStripe
-                              ? FamilyPages.registrationUS.name
-                              : Pages.registration.name,
+                          Pages.registration.name,
                           queryParameters: {
                             'email': auth.user.email,
                           },
@@ -71,9 +63,6 @@ class CustomNavigationDrawer extends StatelessWidget {
                     );
                   },
                 ),
-                // Divider(
-                //   thickness: size.height * 0.03,
-                // ),
                 const SummaryMenuItem(),
                 Divider(
                   thickness: size.height * 0.02,
@@ -90,7 +79,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) async {
+                      navigate: (context) async {
                         context.goNamed(Pages.personalSummary.name);
                         unawaited(
                           AnalyticsHelper.logEvent(
@@ -102,33 +91,6 @@ class CustomNavigationDrawer extends StatelessWidget {
                   ),
                 ),
                 DrawerMenuItem(
-                  isVisible: showFamilyItem,
-                  title: locals.childrenMyFamily,
-                  isAccent: true,
-                  imageIcon: Container(
-                    padding: const EdgeInsets.all(10),
-                    width: 90,
-                    child: SvgPicture.asset(
-                      'assets/images/givt4kids_logo.svg',
-                    ),
-                  ),
-                  icon: Icons.family_restroom_rounded,
-                  onTap: () async => AuthUtils.checkToken(
-                    context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) async {
-                        context.goNamed(FamilyPages.childrenOverview.name);
-                        unawaited(
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.familyClicked,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                if (showFamilyItem) _buildEmptySpace(),
-                DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
                   title: locals.historyTitle,
                   icon: FontAwesomeIcons.listUl,
@@ -139,8 +101,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     await AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
-                        navigate: (context, {isUSUser}) async =>
-                            context.goNamed(
+                        navigate: (context) async => context.goNamed(
                           Pages.overview.name,
                         ),
                       ),
@@ -154,7 +115,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) async {
+                      navigate: (context) async {
                         context.goNamed(Pages.recurringDonations.name);
                         unawaited(
                           AnalyticsHelper.logEvent(
@@ -177,8 +138,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) =>
-                          showModalBottomSheet<void>(
+                      navigate: (context) => showModalBottomSheet<void>(
                         context: context,
                         isScrollControlled: true,
                         useSafeArea: true,
@@ -201,7 +161,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) async => context.goNamed(
+                      navigate: (context) async => context.goNamed(
                         Pages.personalInfoEdit.name,
                       ),
                     ),
@@ -271,8 +231,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                       onTap: () async => AuthUtils.checkToken(
                         context,
                         checkAuthRequest: CheckAuthRequest(
-                          navigate: (context, {isUSUser}) =>
-                              showModalBottomSheet<void>(
+                          navigate: (context) => showModalBottomSheet<void>(
                             context: context,
                             isScrollControlled: true,
                             useSafeArea: true,
@@ -324,8 +283,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     await AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
-                        navigate: (context, {isUSUser}) async =>
-                            context.goNamed(
+                        navigate: (context) async => context.goNamed(
                           Pages.unregister.name,
                         ),
                       ),

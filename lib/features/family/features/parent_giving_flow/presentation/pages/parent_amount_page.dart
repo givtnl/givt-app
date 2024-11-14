@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
+import 'package:givt_app/features/family/features/creditcard_setup/pages/credit_card_details.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
-import 'package:givt_app/features/registration/pages/credit_card_details.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -34,6 +35,7 @@ class ParentAmountPage extends StatefulWidget {
 class _ParentAmountPageState extends State<ParentAmountPage> {
   final initialamount = 25;
   late int _amount;
+
   @override
   void initState() {
     super.initState();
@@ -92,8 +94,8 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
               ? () async {
                   await FamilyAuthUtils.authenticateUser(
                     context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) async {
+                    checkAuthRequest: FamilyCheckAuthRequest(
+                      navigate: (context) async {
                         _checkCardDetailsAndNavigate(context);
                       },
                     ),
@@ -112,7 +114,9 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
   }
 
   void _checkCardDetailsAndNavigate(BuildContext context) {
-    if (context.read<AuthCubit>().state.user.isMissingcardDetails) {
+    if ((context.read<FamilyAuthCubit>().state as Authenticated)
+        .user
+        .isMissingcardDetails) {
       CreditCardDetails.show(
         context,
         onSuccess: () => Navigator.of(context).pop(_amount),

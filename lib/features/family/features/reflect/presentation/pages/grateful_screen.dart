@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
@@ -64,7 +64,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     return BlocListener<GiveCubit, GiveState>(
       bloc: _give,
       listener: (context, state) {
-        final userGUID = context.read<AuthCubit>().state.user.guid;
+        final userGUID = context.read<FamilyAuthCubit>().user!.guid;
         if (state is GiveFromBrowser) {
           // we assume the parent confirms on browser
           _handleParentBrowser(userGUID);
@@ -232,7 +232,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
         ),
       );
       await _give.createTransaction(
-        userId: context.read<AuthCubit>().state.user.guid,
+        userId: context.read<FamilyAuthCubit>().user!.guid,
         amount: result,
         isGratitude: true,
         orgName: org.name,

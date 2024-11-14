@@ -7,19 +7,16 @@ import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
-import 'package:givt_app/features/family/features/auth/pages/family_login_page.dart';
 
 class CheckAuthRequest {
   CheckAuthRequest({
     required this.navigate,
     this.email = '',
-    this.isUSUser = false,
     this.forceLogin = false,
   });
 
-  final Future<void> Function(BuildContext context, {bool? isUSUser}) navigate;
+  final Future<void> Function(BuildContext context) navigate;
   final String email;
-  final bool isUSUser;
   final bool forceLogin;
 }
 
@@ -70,7 +67,6 @@ class AuthUtils {
       }
       await checkAuthRequest.navigate(
         context,
-        isUSUser: auth.state.user.isUsUser,
       );
     } on PlatformException catch (e) {
       LoggingInfo.instance.info(
@@ -109,22 +105,13 @@ class AuthUtils {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) {
-        if (checkAuthRequest.isUSUser) {
-          return FamilyLoginPage(
-            email: checkAuthRequest.email.isNotEmpty
-                ? checkAuthRequest.email
-                : context.read<AuthCubit>().state.user.email,
-            navigate: checkAuthRequest.navigate,
-          );
-        } else {
-          return LoginPage(
-            email: checkAuthRequest.email.isNotEmpty
-                ? checkAuthRequest.email
-                : context.read<AuthCubit>().state.user.email,
-            isEmailEditable: checkAuthRequest.email.isNotEmpty,
-            navigate: checkAuthRequest.navigate,
-          );
-        }
+        return LoginPage(
+          email: checkAuthRequest.email.isNotEmpty
+              ? checkAuthRequest.email
+              : context.read<AuthCubit>().state.user.email,
+          isEmailEditable: checkAuthRequest.email.isNotEmpty,
+          navigate: checkAuthRequest.navigate,
+        );
       },
     );
   }

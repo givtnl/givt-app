@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
@@ -164,14 +165,16 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
 
     if (profile.profileType == ProfileType.Parent) {
-      if (profile.id != context.read<AuthCubit>().state.user.guid) {
+      final authstate = context.read<FamilyAuthCubit>().state;
+      if (authstate is Unauthenticated ||
+          profile.id != (authstate as Authenticated).user.guid) {
         return;
       }
 
       await FamilyAuthUtils.authenticateUser(
         context,
-        checkAuthRequest: CheckAuthRequest(
-          navigate: (context, {isUSUser}) async {
+        checkAuthRequest: FamilyCheckAuthRequest(
+          navigate: (context) async {
             await context.pushNamed(
               FamilyPages.parentHome.name,
               extra: profile,

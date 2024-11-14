@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class FamilyAuthRepository {
   Future<Session> refreshToken();
 
-  Future<Session> login(String email, String password);
+  Future<void> login(String email, String password);
 
   Future<(UserExt, Session, UserPresets)?> isAuthenticated();
 
@@ -31,6 +31,10 @@ abstract class FamilyAuthRepository {
     required String email,
   });
 
+  Future<String> checkEmail({
+    required String email,
+  });
+
   Future<bool> updateNotificationId({
     required String guid,
     required String notificationId,
@@ -39,6 +43,17 @@ abstract class FamilyAuthRepository {
   Stream<UserExt?> authenticatedUserStream();
 
   Session getStoredSession();
+
+  UserExt? getCurrentUser();
+
+  Future<void> initAuth();
+
+  Future<void> registerUser({
+    required TempUser tempUser,
+    required bool isNewUser,
+  });
+
+  Future<void> refreshUser() async {}
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -66,7 +81,12 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     if (session == const Session.empty()) {
       _authenticatedUserStream.add(null);
       throw Exception(
-          'Cannot refresh token, no current session found to refresh.');
+        'Cannot refresh token, no current session found to refresh.',
+      );
+    }
+    if (session.isLoggedIn == false) {
+      _authenticatedUserStream.add(null);
+      throw Exception('Cannot refresh token, user is not logged in.');
     }
     final response = await _apiService.refreshToken(
       {
@@ -91,7 +111,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }
 
   @override
-  Future<Session> login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     final newSession = await _apiService.login(
       {
         'username': email,
@@ -104,8 +124,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     session = session.copyWith(
       isLoggedIn: true,
     );
+
     await _storeSession(session);
-    return session;
+    await _fetchUserExtension(session.userGUID);
   }
 
   Future<bool> _storeSession(Session session) async {
@@ -135,13 +156,17 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     await _prefs.clear();
   }
 
+  @override
+  Future<String> checkEmail({required String email}) async =>
+      _apiService.checkEmail(email);
+
   Future<UserExt> _fetchUserExtension(String guid) async {
     try {
       final response = await _apiService.getUserExtension(guid);
       final userExt = UserExt.fromJson(response);
       await _storeUserExt(userExt);
       await _setUserPropsForExternalServices(userExt);
-      _authenticatedUserStream.add(userExt);
+      _updateAuthenticatedUserStream(userExt);
       return userExt;
     } catch (e, s) {
       LoggingInfo.instance.error(
@@ -157,6 +182,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       UserExt.tag,
       jsonEncode(userExt.toJson()),
     );
+    _updateAuthenticatedUserStream(userExt);
   }
 
   @override
@@ -223,7 +249,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     // _prefs.clear();
     final sessionString = _prefs.getString(Session.tag);
 
-    updateAuthenticatedUserStream(null);
+    _updateAuthenticatedUserStream(null);
 
     // If the data is already gone, just continue :)
     if (sessionString == null) {
@@ -246,12 +272,13 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }
 
   @override
-  Future<UserExt> registerUser({
+  Future<void> registerUser({
     required TempUser tempUser,
     required bool isNewUser,
   }) async {
     /// register user
     final userGUID = await _apiService.registerUser(tempUser.toJson());
+    await AnalyticsHelper.setUserProperties(userId: userGUID);
 
     /// create session
     await login(
@@ -278,22 +305,34 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     );
 
     await _storeUserExt(userExt);
-
-    return userExt;
   }
 
   @override
   Future<bool> updateUser({
     required String guid,
     required Map<String, dynamic> newUserExt,
-  }) async =>
-      _apiService.updateUser(guid, newUserExt);
+  }) async {
+    try {
+      final result = await _apiService.updateUser(guid, newUserExt);
+      await _fetchUserExtension(guid);
+      return result;
+    } catch (e) {
+      return false;
+    }
+  }
 
   @override
   Future<bool> updateUserExt(
     Map<String, dynamic> newUserExt,
-  ) async =>
-      _apiService.updateUserExt(newUserExt);
+  ) async {
+    try {
+      final result = _apiService.updateUserExt(newUserExt);
+      await refreshUser();
+      return result;
+    } catch (e) {
+      return false;
+    }
+  }
 
   @override
   Future<bool> updateNotificationId({
@@ -317,7 +356,21 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     );
   }
 
-  void updateAuthenticatedUserStream(UserExt? userExt) {
+  void _updateAuthenticatedUserStream(UserExt? userExt) {
+    _userExt = userExt;
     _authenticatedUserStream.add(userExt);
+  }
+
+  @override
+  UserExt? getCurrentUser() => _userExt;
+
+  @override
+  Future<void> initAuth() async {
+    await refreshToken();
+  }
+
+  @override
+  Future<void> refreshUser() async {
+    await _fetchUserExtension(_userExt!.guid);
   }
 }

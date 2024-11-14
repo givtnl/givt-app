@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/family/features/admin_fee/application/admin_fee_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/data/repositories/admin_fee_repository.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
@@ -13,6 +15,7 @@ import 'package:givt_app/features/family/features/history/history_repository/his
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -28,12 +31,14 @@ import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dar
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
+import 'package:givt_app/features/family/features/registration/cubit/us_signup_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/repositories/reset_password_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
+import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -55,7 +60,8 @@ Future<void> initAPIService() async {
 void initCubits() {
   getIt
     ..registerLazySingleton<InternetConnectionCubit>(
-        () => InternetConnectionCubit(getIt()))
+      () => InternetConnectionCubit(getIt()),
+    )
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<InterviewCubit>(
@@ -92,8 +98,6 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
-        getIt(),
-        getIt(),
       ),
     )
     ..registerFactory<FamilySelectionCubit>(
@@ -116,6 +120,18 @@ void initCubits() {
       () => ResetPasswordCubit(
         getIt(),
       ),
+    )
+    ..registerLazySingleton<FamilyAuthCubit>(
+      () => FamilyAuthCubit(getIt()),
+    )
+    ..registerLazySingleton<FamilyLoginCubit>(
+      () => FamilyLoginCubit(getIt()),
+    )
+    ..registerFactory<UsSignupCubit>(
+      () => UsSignupCubit(getIt(), getIt()),
+    )
+    ..registerFactory<SplashCubit>(
+      () => SplashCubit(getIt(), getIt()),
     );
 }
 
@@ -126,9 +142,14 @@ void initRepositories() {
         getIt(),
       ),
     )
+    ..registerLazySingleton<FamilyAuthRepository>(
+      () => FamilyAuthRepositoryImpl(
+        getIt(),
+        getIt(),
+      ),
+    )
     ..registerLazySingleton<ProfilesRepository>(
       () => ProfilesRepositoryImpl(
-        getIt(),
         getIt(),
         getIt(),
         getIt(),

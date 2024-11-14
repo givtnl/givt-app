@@ -7,16 +7,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
-import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
+import 'package:givt_app/features/family/features/box_origin/box_origin_selection_page.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_screen.dart';
-import 'package:givt_app/features/family/features/box_origin/box_origin_selection_page.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
@@ -52,7 +50,6 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   int _currentIndex = 0;
   static bool _isShowingBoxOrigin = false;
-  static bool _isShowingSetupFamily = false;
 
   final List<AnalyticsEvent> _analyticsEvents = [
     AnalyticsEvent(
@@ -89,11 +86,6 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
         onCustom: _handleCustom,
         onLoading: (context) => const Scaffold(
           body: Center(child: CustomCircularProgressIndicator()),
-        ),
-        onError: (context, error) => Scaffold(
-          body: ProfilesEmptyStateWidget(
-            onRetry: _cubit.refreshData,
-          ),
         ),
         onInitial: (context) => _regularLayout(),
         onData: (context, data) => data.familyInviteGroup == null
@@ -169,8 +161,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     } else {
       await FamilyAuthUtils.authenticateUser(
         context,
-        checkAuthRequest: CheckAuthRequest(
-          navigate: (context, {isUSUser}) async {
+        checkAuthRequest: FamilyCheckAuthRequest(
+          navigate: (context) async {
             _setIndex(index);
           },
         ),
@@ -206,18 +198,6 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     switch (custom) {
       case BoxOriginDialog():
         await _showBoxOriginModal(context);
-      case FamilyNotSetup():
-        await _showSetupFamily(context);
-    }
-  }
-
-  Future<void> _showSetupFamily(BuildContext context) async {
-    if (_isShowingSetupFamily) {
-      // do nothing, screen is already showing
-    } else {
-      _isShowingSetupFamily = true;
-      await AddMemberUtil.addFamilyPushPages(context);
-      _isShowingSetupFamily = false;
     }
   }
 

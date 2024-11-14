@@ -2,29 +2,32 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
+import 'package:givt_app/features/family/features/registration/cubit/us_signup_cubit.dart';
+import 'package:givt_app/features/family/features/registration/cubit/us_signup_custom.dart';
+import 'package:givt_app/features/family/features/registration/widgets/accept_policy_row_us.dart';
+import 'package:givt_app/features/family/features/registration/widgets/avatar_selection_bottomsheet.dart';
+import 'package:givt_app/features/family/features/registration/widgets/random_avatar.dart';
+import 'package:givt_app/features/family/features/registration/widgets/us_mobile_number_form_field.dart';
+import 'package:givt_app/features/family/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
-import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/widgets/accept_policy_row_us.dart';
-import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsheet.dart';
-import 'package:givt_app/features/registration/widgets/random_avatar.dart';
-import 'package:givt_app/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -49,154 +52,149 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   late TextEditingController _phoneNumberController;
 
   bool _acceptPolicy = false;
-  bool isLoading = false;
   bool _obscureText = true;
-  Country _selectedCountry = Country.sortedCountries().first;
+  Country _selectedCountry = Country.us;
+
+  final _cubit = getIt<UsSignupCubit>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _cubit.init();
+  }
 
   @override
   void initState() {
     super.initState();
+
     _emailController = TextEditingController(text: widget.email);
     _passwordController = TextEditingController();
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
     _phoneNumberController = TextEditingController();
-    final user = context.read<AuthCubit>().state.user;
-    _selectedCountry = Country.fromCode(user.country);
   }
 
   @override
   void dispose() {
     getIt<AvatarsCubit>().clear();
+    _cubit.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
-    final size = MediaQuery.sizeOf(context);
-    return BlocConsumer<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
-        if (state.status == RegistrationStatus.createStripeAccount) {
-          context.pushReplacementNamed(
-            FamilyPages.permitUSBiometric.name,
-            extra: PermitBiometricRequest.registration(
-              redirect: (context) {
-                context.goNamed(FamilyPages.profileSelection.name);
-                context.read<RegistrationBloc>().finishedRegistrationFlow();
-              },
-            ),
-          );
-        }
-      },
-      builder: (context, state) {
-        return FunScaffold(
-          canPop: false,
-          appBar: FunTopAppBar.primary99(
-            leading: GivtBackButtonFlat(
-              onPressedExt: () async {
-                logout(context, fromLogoutBtn: true);
-              },
-            ),
-            title: 'Enter your details',
-          ),
-          body: isLoading
-              ? _buildLoadingState()
-              : CustomScrollView(
-                  slivers: <Widget>[
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Column(
-                        children: [
-                          RandomAvatar(
-                            id: context.read<AuthCubit>().state.user.guid,
-                            onClick: () {
-                              AvatarSelectionBottomsheet.show(context,
-                                  context.read<AuthCubit>().state.user.guid);
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                          _buildSignUpForm(locals, size),
-                          const Spacer(),
-                          _buildBottomWidgetGroup(locals, size),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-        );
-      },
-    );
-  }
-
-  Future<void> _register() async {
-    setState(() {
-      isLoading = true;
-    });
-    unawaited(
-      AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
-        eventProperties: {
-          'id': context.read<AuthCubit>().state.user.guid,
-          'profile_country': _selectedCountry.countryCode,
-        },
+    return BaseStateConsumer(
+      cubit: _cubit,
+      onLoading: (context) => const Scaffold(
+        body: Center(child: CustomCircularProgressIndicator()),
       ),
+      onData: registrationForm,
+      onCustom: handleCustom,
     );
-    final avatar = getIt<AvatarsCubit>().state.getAvatarByKey(
-          context.read<AuthCubit>().state.user.guid,
-        );
-    context.read<RegistrationBloc>()
-      ..add(
-        RegistrationPasswordSubmitted(
-          email: _emailController.text,
-          password: _passwordController.text,
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-        ),
-      )
-      ..add(
-        RegistrationPersonalInfoSubmitted(
-          address: Util.defaultAdress,
-          city: Util.defaultCity,
-          postalCode: Util.defaultPostCode,
-          country: _selectedCountry.countryCode,
-          phoneNumber: _phoneNumberController.text,
-          iban: Util.defaultIban,
-          sortCode: Util.empty,
-          accountNumber: Util.empty,
-          appLanguage: Localizations.localeOf(context).languageCode,
-          countryCode: _selectedCountry.countryCode,
-          profilePicture: avatar.fileName,
-        ),
-      );
   }
 
-  bool get _isEnabled {
-    if (isLoading) return false;
-    if (_formKey.currentState == null) return false;
-    if (_acceptPolicy == true && _formKey.currentState!.validate()) return true;
-    return false;
-  }
-
-  Widget _buildLoadingState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            context.l10n.holdOnRegistration,
-            textAlign: TextAlign.center,
+  Widget registrationForm(BuildContext context, UserExt user) {
+    final locals = AppLocalizations.of(context);
+    // Show the form
+    return FunScaffold(
+      canPop: false,
+      appBar: FunTopAppBar.primary99(
+        leading: GivtBackButtonFlat(
+          onPressedExt: () async {
+            logout(context, fromLogoutBtn: true);
+          },
+        ),
+        title: 'Enter your details',
+        actions: [
+          IconButton(
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              backgroundColor: AppTheme.givtBlue,
+              builder: (_) => const FAQBottomSheet(),
+            ),
+            icon: const Icon(
+              FontAwesomeIcons.question,
+              size: 26,
+              color: AppTheme.primary30,
+            ),
           ),
-          const SizedBox(height: 16),
-          const CustomCircularProgressIndicator(),
+        ],
+      ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              children: [
+                RandomAvatar(
+                  id: user.guid,
+                  onClick: () {
+                    AvatarSelectionBottomsheet.show(
+                      context,
+                      user.guid,
+                    );
+                  },
+                ),
+                const SizedBox(height: 16),
+                _buildSignUpForm(locals),
+                const Spacer(),
+                _buildBottomWidgetGroup(locals, user),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
+  void handleCustom(BuildContext context, UsSignupCustom custom) {
+    switch (custom) {
+      case UsSignupRedirectToAddMembers():
+        AddMemberUtil.addFamilyPushPages(context);
+      case UsSignupRedirectToHome():
+        context.goNamed(FamilyPages.profileSelection.name);
+    }
+  }
+
+  Future<void> _register(UserExt user) async {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
+        eventProperties: {
+          'id': user.guid,
+          'profile_country': _selectedCountry.countryCode,
+        },
+      ),
+    );
+
+    final avatar = getIt<AvatarsCubit>().state.getAvatarByKey(
+          user.guid,
+        );
+
+    await _cubit.savePersonalInfo(
+      email: _emailController.text,
+      password: _passwordController.text,
+      firstName: _firstNameController.text,
+      lastName: _lastNameController.text,
+      country: _selectedCountry.countryCode,
+      phoneNumber: _phoneNumberController.text,
+      appLanguage: Localizations.localeOf(context).languageCode,
+      countryCode: _selectedCountry.countryCode,
+      profilePicture: avatar.fileName,
+    );
+  }
+
+  bool get _isEnabled {
+    if (_formKey.currentState == null) return false;
+    if (_acceptPolicy == true && _formKey.currentState!.validate()) return true;
+    return false;
+  }
+
   Widget _buildBottomWidgetGroup(
     AppLocalizations locals,
-    Size size,
+    UserExt user,
   ) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -212,7 +210,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         const SizedBox(height: 12),
         FunButton(
           isDisabled: !_isEnabled,
-          onTap: _isEnabled ? _register : null,
+          onTap: _isEnabled ? () => _register(user) : null,
           text: 'Continue',
           analyticsEvent: AnalyticsEvent(
             AmplitudeEvents.registrationContinueAfterPersonalInfoClicked,
@@ -222,7 +220,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
     );
   }
 
-  Widget _buildSignUpForm(AppLocalizations locals, Size size) {
+  Widget _buildSignUpForm(AppLocalizations locals) {
     return Form(
       key: _formKey,
       child: Column(
