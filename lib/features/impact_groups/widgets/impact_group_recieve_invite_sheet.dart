@@ -7,54 +7,50 @@ import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ImpactGroupReceiveInviteSheet extends StatelessWidget {
   const ImpactGroupReceiveInviteSheet({
-    required this.invitdImpactGroup,
+    required this.invitedImpactGroup,
     super.key,
   });
 
-  final ImpactGroup invitdImpactGroup;
+  final ImpactGroup invitedImpactGroup;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 32, 24, 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '${context.l10n.youHaveBeenInvitedToImpactGroup}${invitdImpactGroup.name}',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.mulish(
-                  textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-              ),
-              SvgPicture.asset('assets/images/family_superheroes.svg'),
-              FunButton(
-                text: context.l10n.acceptInviteKey,
-                onTap: () {
-                  context
-                      .read<ImpactGroupsCubit>()
-                      .acceptGroupInvite(groupId: invitdImpactGroup.id);
-                  context.pop();
-                },
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.inviteToImpactGroupAccepted,
-                  parameters: {
-                    'group_name': invitdImpactGroup.name,
-                  },
-                ),
-              ),
-            ],
+    return FunScaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            '${context.l10n.youHaveBeenInvitedToImpactGroup}${invitedImpactGroup.name}',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.mulish(
+              textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
           ),
-        ),
+          SvgPicture.asset('assets/images/family_superheroes.svg'),
+          FunButton(
+            text: context.l10n.acceptInviteKey,
+            onTap: () {
+              context
+                  .read<ImpactGroupsCubit>()
+                  .acceptGroupInvite(groupId: invitedImpactGroup.id);
+              context.pop();
+            },
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.inviteToImpactGroupAccepted,
+              parameters: {
+                'group_name': invitedImpactGroup.name,
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

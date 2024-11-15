@@ -116,20 +116,26 @@ class NotificationService implements INotificationService {
   }
 
   Future<void> _doInit() async {
-    await FirebaseMessaging.instance.subscribeToTopic('dev');
-    await FirebaseMessaging.instance.subscribeToTopic('all');
-    await setupFlutterNotifications();
+    try {
+      await FirebaseMessaging.instance.subscribeToTopic('dev');
+      await FirebaseMessaging.instance.subscribeToTopic('all');
+      await setupFlutterNotifications();
 
-    // When the app is launched from a notification
-    final notificationAppLaunchDetails = await FlutterLocalNotificationsPlugin()
-        .getNotificationAppLaunchDetails();
+      // When the app is launched from a notification
+      final notificationAppLaunchDetails =
+          await FlutterLocalNotificationsPlugin()
+              .getNotificationAppLaunchDetails();
 
-    if (notificationAppLaunchDetails != null &&
-        notificationAppLaunchDetails.didNotificationLaunchApp &&
-        notificationAppLaunchDetails.notificationResponse != null) {
-      await _navigateToScreen(
-        notificationAppLaunchDetails.notificationResponse!,
-      );
+      if (notificationAppLaunchDetails != null &&
+          notificationAppLaunchDetails.didNotificationLaunchApp &&
+          notificationAppLaunchDetails.notificationResponse != null) {
+        await _navigateToScreen(
+          notificationAppLaunchDetails.notificationResponse!,
+        );
+      }
+    } catch (e, s) {
+      // do not let app hang on loading screen forever just because we couldn't init push notifications
+      LoggingInfo.instance.error('Error initializing push notifications: $e');
     }
   }
 

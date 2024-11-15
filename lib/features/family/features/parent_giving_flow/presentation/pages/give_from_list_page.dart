@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
@@ -85,7 +85,7 @@ class GiveFromListPage extends StatelessWidget {
         ),
       );
       await getIt<GiveCubit>().createTransaction(
-        userId: context.read<AuthCubit>().state.user.guid,
+        userId: context.read<FamilyAuthCubit>().user!.guid,
         amount: result,
         orgName: collectGroup.orgName,
         mediumId: collectGroup.nameSpace,

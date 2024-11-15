@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
+import 'package:givt_app/shared/models/models.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'profiles_state.dart';
@@ -21,11 +22,11 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   }
 
   final ProfilesRepository _profilesRepository;
-  final AuthRepository _authRepository;
+  final FamilyAuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
 
   StreamSubscription<List<Profile>>? _profilesSubscription;
-  StreamSubscription<bool>? _hasSessionSubscription;
+  StreamSubscription<UserExt?>? _authenticatedUserSubscription;
 
   void _init() {
     _profilesSubscription = _profilesRepository.onProfilesChanged().listen(
@@ -33,9 +34,10 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         fetchAllProfiles();
       },
     );
-    _hasSessionSubscription = _authRepository.hasSessionStream().listen(
-      (hasSession) {
-        if (hasSession) {
+    _authenticatedUserSubscription =
+        _authRepository.authenticatedUserStream().listen(
+      (user) {
+        if (user != null) {
           clearProfiles(clearIndex: false);
           fetchAllProfiles();
         } else {
@@ -155,7 +157,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   @override
   Future<void> close() {
     _profilesSubscription?.cancel();
-    _hasSessionSubscription?.cancel();
+    _authenticatedUserSubscription?.cancel();
     return super.close();
   }
 }

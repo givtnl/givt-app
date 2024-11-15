@@ -11,11 +11,14 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 class SetupBedtimeScreen extends StatefulWidget {
@@ -53,6 +56,10 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
       canPop: false,
       child: BaseStateConsumer<dynamic, Bedtime>(
         cubit: _cubit,
+        onLoading: (context) => const FunScaffold(
+          backgroundColor: FamilyAppTheme.secondary10,
+          body: CustomCircularProgressIndicator(),
+        ),
         onCustom: (context, bedtime) {
           if (isLast) {
             context.goNamed(FamilyPages.profileSelection.name);
@@ -74,7 +81,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
         onInitial: (context) {
           return Material(
             child: ColoredBox(
-              color: Colors.black,
+              color: FamilyAppTheme.secondary10,
               child: Stack(children: [
                 //to do animate city before page navigation
                 cityAtBottom(width, height),

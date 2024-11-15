@@ -49,7 +49,7 @@ class TempUser extends Equatable {
     String phoneNumber = Util.defaultPhoneNumber,
     String firstName = Util.defaultFirstName,
     String lastName = Util.defaultLastName,
-    String address = Util.defaultAdress,
+    String address = Util.defaultAddress,
     String city = Util.defaultCity,
     String postalCode = Util.defaultPostCode,
     String appLanguage = Util.defaulAppLanguage,

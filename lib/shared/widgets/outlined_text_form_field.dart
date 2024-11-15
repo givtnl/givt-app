@@ -5,8 +5,9 @@ import 'package:givt_app/shared/widgets/widgets.dart';
 
 class OutlinedTextFormField extends StatelessWidget {
   const OutlinedTextFormField({
-    required this.controller,
     required this.hintText,
+    this.controller,
+    this.initialValue = '', // Only when controller is null
     this.errorStyle,
     this.keyboardType,
     this.readOnly = false,
@@ -22,7 +23,8 @@ class OutlinedTextFormField extends StatelessWidget {
     super.key,
   });
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final String initialValue;
   final String hintText;
   final TextStyle? errorStyle;
   final ValueChanged<String>? onChanged;
@@ -41,6 +43,7 @@ class OutlinedTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      initialValue: controller == null ? initialValue : null,
       onChanged: onChanged,
       style:
           const FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
@@ -66,6 +69,7 @@ class OutlinedTextFormField extends StatelessWidget {
       textInputAction: textInputAction,
       textCapitalization: textCapitalization,
       onTapOutside: onTapOutside,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
     );
   }
 }

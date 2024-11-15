@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/widgets/allowance_warning_dialog.dart';
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/features/children/utils/add_member_util.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -105,7 +105,7 @@ class FamilyOverviewPage extends StatelessWidget {
     );
 
     final isMissingCardDetails =
-        context.read<AuthCubit>().state.user.isMissingcardDetails;
+        context.read<FamilyAuthCubit>().user!.isMissingcardDetails;
     await AddMemberUtil.addMemberPushPages(
       context,
       showTopUp: !isMissingCardDetails,

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
@@ -31,7 +31,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AuthCubit>().state.user;
+    final user = context.read<FamilyAuthCubit>().user!;
     final currentProfile = context.read<ProfilesCubit>().state.activeProfile;
 
     final currency = NumberFormat.simpleCurrency(
