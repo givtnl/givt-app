@@ -11,10 +11,9 @@ To get started with this project please install [rbenv][rbenv_repo] to ensure th
 ---
 ## Getting Started 🚀
 
-This project contains 3 flavors:
+This project contains 2 flavors:
 
 - development
-- staging
 - production
 
 ## Dependencies
@@ -26,9 +25,6 @@ To run the desired flavor either use the launch configuration in VSCode/Android 
 ```sh
 # Development
 $ flutter run --flavor development --target lib/main_development.dart
-
-# Staging
-$ flutter run --flavor staging --target lib/main_staging.dart
 
 # Production
 $ flutter run --flavor production --target lib/main_production.dart
