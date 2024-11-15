@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/gratitude_selection_uimodel.dart';
@@ -27,29 +26,25 @@ class GratitudeSelectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FunScaffold(
       canPop: false,
-      appBar: FunTopAppBar.primary99(
-        title: uimodel.reporter.firstName!,
-        leading: Padding(
-          padding: const EdgeInsets.all(8),
-          child: SvgPicture.network(
-            uimodel.reporter.pictureURL!,
-            width: 36,
-            height: 36,
-          ),
-        ),
-        actions: const [
+      appBar: const FunTopAppBar(
+        title: 'Question 3',
+        actions: [
           LeaveGameButton(),
         ],
       ),
       body: Column(
         children: [
-          const TitleMediumText(
-            'What were you grateful for today?',
+          const BodyMediumText(
+            'Ask the superhero and pick one',
             color: FamilyAppTheme.primary30,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 4),
-          const BodyMediumText('Pick one'),
+          const SizedBox(height: 8),
+          const TitleMediumText(
+            'What are you grateful for today?',
+            color: FamilyAppTheme.primary30,
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 24),
           LayoutGrid(
             columnSizes: [1.fr, 1.fr],
@@ -91,7 +86,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
           FunButton(
             isDisabled: uimodel.selectedGratitude == null,
             onTap: onNext,
-            text: 'Next',
+            text: 'Last question',
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.gratefulTileSubmitted,
               parameters: {
