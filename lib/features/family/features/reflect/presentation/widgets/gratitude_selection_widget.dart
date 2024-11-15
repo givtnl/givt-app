@@ -57,6 +57,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
               auto,
               auto,
               auto,
+              auto,
             ],
             columnGap: 16,
             rowGap: 16,
