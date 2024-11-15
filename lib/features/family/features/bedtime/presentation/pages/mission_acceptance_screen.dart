@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
@@ -93,6 +94,18 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
         onData: (context, uiModel) {
           return Stack(
             children: [
+              if(!firstAnimationIsCompleted) FadeTransition(
+                opacity: _fadeAnimationController,
+                child: Positioned(
+                  left: 0,
+                  top: 0,
+                  child: Image.asset(
+                    'assets/family/images/moon.webp',
+                  ),
+                ),
+              ),
+              cityAtBottom(MediaQuery.sizeOf(context).width,
+                  MediaQuery.sizeOf(context).height),
               if (firstAnimationIsCompleted)
                 const Align(
                   child: TitleLargeText(
@@ -187,6 +200,29 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget cityAtBottom(double width, double height) {
+    return PositionedTransition(
+      rect: RelativeRectTween(
+        begin: RelativeRect.fromLTRB(0, 0, 0, -height+231),
+        end: RelativeRect.fromLTRB(0, 0, 0, -height+(231/2)),
+      ).animate(
+        CurvedAnimation(
+          parent: _avatarsAnimationController,
+          curve: Curves.easeInOutQuint,
+          reverseCurve: Curves.easeInOutQuint,
+        ),
+      ),
+      child: SizedBox(
+        height: 231,
+        width: width,
+        child: SvgPicture.asset(
+          'assets/family/images/city_purple.svg',
+          fit: BoxFit.fitWidth,
+        ),
       ),
     );
   }

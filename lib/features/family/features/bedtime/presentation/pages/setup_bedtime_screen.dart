@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/pages/mission_acceptance_screen.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/widgets/bedtime_slider_widget.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -19,13 +19,13 @@ import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:go_router/go_router.dart';
 
 class SetupBedtimeScreen extends StatefulWidget {
   const SetupBedtimeScreen({
     required this.arguments,
     super.key,
   });
+
   final BedtimeArguments arguments;
 
   @override
@@ -36,6 +36,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
   final SetupBedtimeCubit _cubit = getIt<SetupBedtimeCubit>();
   late double bedtimeSliderValue;
   late int windDownValue;
+
   @override
   void initState() {
     super.initState();
@@ -62,8 +63,8 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
         ),
         onCustom: (context, bedtime) {
           if (isLast) {
-            context.goNamed(FamilyPages.profileSelection.name);
-            //todo navigate to mission screen
+            Navigator.of(context)
+                .push(const MissionAcceptanceScreen().toRoute(context));
           } else {
             Navigator.of(context).push(
               SetupBedtimeScreen(
