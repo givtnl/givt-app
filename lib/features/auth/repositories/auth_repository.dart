@@ -472,6 +472,7 @@ class AuthRepositoyImpl with AuthRepository {
         amountPresets.updateUserPresets(
           userPreset.copyWith(
             presets: newUserPresets.presets,
+            isEnabled: newUserPresets.isEnabled,
           ),
         );
       }

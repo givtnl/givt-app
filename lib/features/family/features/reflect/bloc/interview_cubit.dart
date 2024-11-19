@@ -105,6 +105,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
           reporter: getCurrentReporter(),
           question: getCurrentQuestion(),
           buttonText: getButtonText(),
+          questionNumber: _nrOfQuestionsAsked + 1,
         ),
       );
     }

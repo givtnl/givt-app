@@ -19,42 +19,6 @@ class OrganisationsCubit extends Cubit<OrganisationsState> {
 
   final OrganisationsRepository _organisationsRepository;
 
-  static Tag get exhibitionLocation {
-    return const Tag(
-      key: 'USA',
-      area: Areas.location,
-      displayText: '',
-      pictureUrl: '',
-      type: TagType.LOCATION,
-    );
-  }
-
-  static List<Tag> get exhibitionInterests {
-    return const [
-      Tag(
-        key: 'CAREFORCHILDREN',
-        area: Areas.health,
-        displayText: '',
-        pictureUrl: '',
-        type: TagType.INTERESTS,
-      ),
-      Tag(
-        key: 'PROTECTANIMALS',
-        area: Areas.environment,
-        displayText: '',
-        pictureUrl: '',
-        type: TagType.INTERESTS,
-      ),
-      Tag(
-        key: 'GOTOSCHOOL',
-        area: Areas.education,
-        displayText: '',
-        pictureUrl: '',
-        type: TagType.INTERESTS,
-      ),
-    ];
-  }
-
   Future<void> getRecommendedOrganisations({
     required Tag location,
     required List<Tag> interests,

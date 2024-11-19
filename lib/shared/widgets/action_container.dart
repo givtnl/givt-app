@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -82,22 +83,20 @@ class _ActionContainerState extends State<ActionContainer> {
     return widget.isDisabled
         ? _buildContainer(widget.child)
         : GestureDetector(
-            onLongPress: () {
-              print('Long press');
-              widget.onLongPress?.call();
-              _setManualPressed(true);
-            },
-            onLongPressDown: (details) {
-              print('Long press down');
-            },
-            onLongPressCancel: () {
-              print('Long press cancel');
-            },
-            onLongPressEnd: (details) {
-              print('Long press end');
-              widget.onLongPressUp?.call();
-              _unpress(immediately: true);
-            },
+            onLongPress: widget.onLongPress == null
+                ? null
+                : () {
+                    if (kDebugMode) print('Long press');
+                    widget.onLongPress?.call();
+                    _setManualPressed(true);
+                  },
+            onLongPressEnd: widget.onLongPressUp == null
+                ? null
+                : (details) {
+                    if (kDebugMode) print('Long press end');
+                    widget.onLongPressUp?.call();
+                    _unpress(immediately: true);
+                  },
             onTap: widget.onlyLongPress
                 ? null
                 : () async {

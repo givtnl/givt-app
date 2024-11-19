@@ -6,5 +6,4 @@ enum FlowType {
   inAppGenerosityCoin,
   recommendation,
   familyGoal,
-  exhibition
 }
