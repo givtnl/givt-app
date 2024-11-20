@@ -4,25 +4,30 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 class ParentSummaryItem {
 
   ParentSummaryItem({
-    required this.conversations,
-    required this.audio,
+    this.conversations = const[],
+    this.audio,
+    this.date,
   });
 
   factory ParentSummaryItem.fromMap(Map<String, dynamic> map) {
-    final conversations = map['conversations'] as List<Map<String, dynamic>>;
-    final audio = map['audio'] as String;
+    final conversations = map['conversations'] as List<Map<String, dynamic>>?;
+    final audio = map['audio'] as String?;
+    final date = DateTime.parse(map['date'] as String? ?? '');
     return ParentSummaryItem(
-        conversations: conversations.map(Conversation.fromMap).toList(),
+        conversations: conversations?.map(Conversation.fromMap).toList() ?? [],
       audio: audio,
+      date: date,
     );
   }
   final List<Conversation> conversations;
-  final String audio;
+  final String? audio;
+  final DateTime? date;
 
   ParentSummaryUIModel toUIModel() {
     return ParentSummaryUIModel(
       conversations: conversations.map((e) => e.toUIModel()).toList(),
       audioLink: audio,
+      date: date,
     );
   }
 }
