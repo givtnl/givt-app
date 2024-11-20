@@ -5,7 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_screen.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -45,7 +48,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 'Your mission to turn your gratitude into generosity was a success!',
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
               SvgPicture.asset('assets/family/images/family_superheroes.svg'),
               const SizedBox(height: 32),
               Row(
@@ -63,7 +66,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: FunTile.red(
                       titleBig: secretWord.generousDeeds == 1
@@ -80,6 +83,23 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ],
               ),
               const Spacer(),
+              FunButton.secondary(
+                  leftIcon: FontAwesomeIcons.microphone,
+                  onTap: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: false,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      backgroundColor: Colors.white,
+                      builder: (context) => RecordSummaryMessageScreen(),
+                    );
+                  },
+                  text: 'Record a message for Name',
+                  analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.summaryRecordMessageClicked)),
+              const SizedBox(height: 16),
               FunButton(
                 onTap: () {
                   Navigator.of(context).popUntil(

@@ -320,6 +320,11 @@ enum AmplitudeEvents {
 
   boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
 
+  //Bedikme summary
+  summaryRecordMessageClicked(
+    'summary_record_message_clicked',
+  ),
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
   ;
