@@ -65,7 +65,7 @@ void initCubits() {
       () => InternetConnectionCubit(getIt()),
     )
     ..registerFactory(ParentSummaryCubit.new)
-    ..registerFactory(YesNoCubit())
+    ..registerFactory(YesNoCubit.new)
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<InterviewCubit>(
