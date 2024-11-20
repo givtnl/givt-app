@@ -74,8 +74,7 @@ class FamilyAppRoutes {
       path: FamilyPages.permitUSBiometric.path,
       name: FamilyPages.permitUSBiometric.name,
       builder: (context, state) {
-        final permitBiometricRequest =
-        state.extra! as PermitBiometricRequest;
+        final permitBiometricRequest = state.extra! as PermitBiometricRequest;
         return BlocProvider(
           create: (_) => PermitBiometricCubit(
             permitBiometricRequest: permitBiometricRequest,
@@ -142,7 +141,7 @@ class FamilyAppRoutes {
           name: FamilyPages.yesNo.name,
           builder: (context, state) => YesNoScreen(
             name: state.uri.queryParameters['name'] ?? '',
-            childGuid: state.uri.queryParameters['childguid'] ?? '',
+            childGuid: state.uri.queryParameters['childId'] ?? '',
           ),
         ),
         GoRoute(
