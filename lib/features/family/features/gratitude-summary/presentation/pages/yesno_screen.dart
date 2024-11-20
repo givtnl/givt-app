@@ -41,6 +41,12 @@ class _YesNoScreenState extends State<YesNoScreen> {
   }
 
   @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FunScaffold(
       backgroundColor: FamilyAppTheme.secondary10,
