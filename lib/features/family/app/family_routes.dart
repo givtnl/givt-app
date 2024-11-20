@@ -29,6 +29,7 @@ import 'package:givt_app/features/family/features/giving_flow/create_transaction
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/yesno_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/kids_home_screen.dart';
@@ -56,7 +57,6 @@ import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart'
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/family_permit_biometric_page.dart';
-import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -136,6 +136,14 @@ class FamilyAppRoutes {
         );
       },
       routes: [
+        GoRoute(
+          path: FamilyPages.yesNo.path,
+          name: FamilyPages.yesNo.name,
+          builder: (context, state) => YesNoScreen(
+            name: state.uri.queryParameters['name'] ?? '',
+            childGuid: state.uri.queryParameters['childguid'] ?? '',
+          ),
+        ),
         GoRoute(
           path: FamilyPages.parentHome.path,
           name: FamilyPages.parentHome.name,
