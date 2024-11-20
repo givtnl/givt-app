@@ -82,6 +82,7 @@ void initCubits() {
     ..registerLazySingleton<GiveCubit>(
       () => GiveCubit(
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<OrganisationBloc>(
