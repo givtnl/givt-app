@@ -1,13 +1,20 @@
 class SummaryUIModel {
 
   SummaryUIModel({
-    required this.title,
-    required this.description,
-    required this.icon,
-    required this.color,
+    required this.conversations,
+    required this.audioLink,
   });
-  final String title;
-  final String description;
-  final String icon;
-  final String color;
+  final List<ConversationUIModel> conversations;
+  final String audioLink;
+}
+
+class ConversationUIModel {
+  ConversationUIModel({
+    required this.sentence,
+    required this.profilePicture,
+    required this.profileName,
+  });
+  final String sentence;
+  final String profilePicture;
+  final String profileName;
 }
