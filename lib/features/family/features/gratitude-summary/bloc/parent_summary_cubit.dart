@@ -26,11 +26,12 @@ class ParentSummaryCubit extends CommonCubit<ParentSummaryUIModel?, dynamic> {
       emitLoading();
       final summary = await _summaryRepository.fetchLatestGameSummary();
       _summary = summary;
-    } catch (e) {
+    } catch (e,s) {
       LoggingInfo.instance
           .error('Failed to fetch summary', methodName: 'fetchSummary');
       _summary = ParentSummaryItem(
         date: DateTime.now(),
+        audio: 'https://download.samplelib.com/mp3/sample-3s.mp3',
         conversations: [
           Conversation(
               sentence:
