@@ -118,14 +118,17 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                         FamilyPages.parentSummary.name,
                       ),
                       text: 'Show Latest Summary',
-                      analyticsEvent: AnalyticsEvent(AmplitudeEvents.FamilyHomeScreenGiveButtonClicked),
+                      analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.FamilyHomeScreenGiveButtonClicked),
                     ),
                     GratitudeGameButton(
-                      onPressed: () => context.goNamed(FamilyPages.yesNo.name,
-                          queryParameters: {
-                            'name': 'Gini',
-                            'childId': 'sdkcfdkfdvd'
-                          }),
+                      onPressed: () => context
+                          .goNamed(FamilyPages.yesNo.name, queryParameters: {
+                        'name': 'Gini',
+                        'childId': 'sdkcfdkfdvd',
+                        'imageUrl':
+                            'https://givtstorage.blob.core.windows.net/public/cdn/avatars/Hero7.svg'
+                      }),
                       // onPressed: () {
                       //   Navigator.push(
                       //     context,

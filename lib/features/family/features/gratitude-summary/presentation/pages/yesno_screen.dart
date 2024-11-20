@@ -33,11 +33,13 @@ class YesNoScreen extends StatefulWidget {
 
 class _YesNoScreenState extends State<YesNoScreen> {
   final YesNoCubit _cubit = getIt<YesNoCubit>();
-
+  late String text;
+  bool _showButtons = true;
   @override
   void initState() {
     super.initState();
     _cubit.init(widget.childGuid);
+    text = 'Are you putting ${widget.name} to bed?';
   }
 
   @override
@@ -61,45 +63,57 @@ class _YesNoScreenState extends State<YesNoScreen> {
           if (decisionWasYes) {
             context.goNamed(FamilyPages.reflectIntro.name);
           } else {
-            context.pop();
+            setState(() {
+              text =
+                  'No worries, we’ll remind the other parent to play before bed!';
+              _showButtons = false;
+            });
+            Future.delayed(const Duration(milliseconds: 1800), () {
+              context.pop();
+            });
           }
         },
         onInitial: (context) {
-          return Column(
-            children: [
-              const Spacer(),
-              AvatarWidget(
-                  uiModel: AvatarUIModel(
-                    avatarUrl: widget.imageUrl,
-                    text: widget.name,
-                  ),
-                  circleSize: 100,
-                  textColor: Colors.transparent,
-                  onTap: () {}),
-              TitleMediumText(
-                'Are you putting ${widget.name} to bed?',
-                color: Colors.white,
-              ),
-              const Spacer(),
-              FunButton(
-                text: 'Yes',
-                onTap: _cubit.onClickedYes,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.whoDoesBedtimePushYesClicked,
-                ),
-              ),
-              const SizedBox(height: 8),
-              FunButton.secondary(
-                text: 'No',
-                onTap: _cubit.onClickedNo,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.whoDoesBedtimePushNoClicked,
-                ),
-              ),
-            ],
-          );
+          return body(text);
         },
       ),
     );
   }
+
+  Widget body(String text) => Column(
+        children: [
+          const Spacer(),
+          AvatarWidget(
+              uiModel: AvatarUIModel(
+                avatarUrl: widget.imageUrl,
+                text: widget.name,
+              ),
+              circleSize: 100,
+              textColor: Colors.transparent,
+              onTap: () {}),
+          TitleMediumText(
+            text,
+            textAlign: TextAlign.center,
+            color: Colors.white,
+          ),
+          const Spacer(),
+          if (_showButtons)
+            FunButton(
+              text: 'Yes',
+              onTap: _cubit.onClickedYes,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.whoDoesBedtimePushYesClicked,
+              ),
+            ),
+          const SizedBox(height: 8),
+          if (_showButtons)
+            FunButton.secondary(
+              text: 'No',
+              onTap: _cubit.onClickedNo,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.whoDoesBedtimePushNoClicked,
+              ),
+            ),
+        ],
+      );
 }
