@@ -75,10 +75,19 @@ class ReflectAndShareRepository {
     }
   }
 
-  void saveGratitudeInterestsForCurrentSuperhero(GratitudeCategory? gratitude) {
+  Future<void> saveGratitudeInterestsForCurrentSuperhero(GratitudeCategory? gratitude) async {
     _selectedProfiles[_getCurrentSuperHeroIndex()] =
         _selectedProfiles[_getCurrentSuperHeroIndex()]
             .copyWith(gratitude: gratitude);
+    try {
+      await _familyApiService.saveUserGratitudeCategory(_gameId!, 
+    _selectedProfiles[_getCurrentSuperHeroIndex()].userId, gratitude?.displayText ?? '');
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
   }
 
   GratitudeCategory? getGratitudeInterestsForCurrentSuperhero() {

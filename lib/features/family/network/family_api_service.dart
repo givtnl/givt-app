@@ -381,6 +381,28 @@ class FamilyAPIService {
     return itemMap['id'] as String;
   }
 
+  Future<bool> saveUserGratitudeCategory(String gameGuid, String userid, String category) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid/user');
+    final response = await client.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(
+          {'userid': userid, 
+          'category': category,}
+          ));
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );      
+    }
+    return response.statusCode == 200;
+  }
+
   Future<Map<String, dynamic>> fetchLatestGameSummary() async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/summary/latest');
     final response = await client.get(url);
