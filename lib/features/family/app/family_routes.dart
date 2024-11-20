@@ -140,9 +140,9 @@ class FamilyAppRoutes {
           path: FamilyPages.yesNo.path,
           name: FamilyPages.yesNo.name,
           builder: (context, state) => YesNoScreen(
-            name: state.uri.queryParameters['name'] ?? '',
+            name: state.uri.queryParameters['childName'] ?? '',
             childGuid: state.uri.queryParameters['childId'] ?? '',
-            imageUrl: state.uri.queryParameters['imageUrl'] ?? '',
+            imageUrl: state.uri.queryParameters['pictureUrl'] ?? '',
           ),
         ),
         GoRoute(
