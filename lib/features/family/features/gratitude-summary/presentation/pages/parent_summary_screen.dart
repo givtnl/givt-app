@@ -44,55 +44,60 @@ class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
     return FunScaffold(
       backgroundColor: FamilyAppTheme.secondary10,
       appBar: const FunTopAppBar(
+        color: FamilyAppTheme.secondary10,
         title: 'Summary',
+        titleColor: Colors.white,
       ),
       body: BaseStateConsumer(
         cubit: _cubit,
         onData: (context, uiModel) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                if (uiModel?.date != null)
-                  Container(
-                    decoration: BoxDecoration(
-                      color: FamilyAppTheme.highlight95,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: LabelSmallText(
-                      uiModel!.date!.formatDate(),
-                      color: FamilyAppTheme.highlight40,
-                    ),
+          return Column(
+            children: [
+              if (uiModel?.date != null)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4.5),
+                  decoration: BoxDecoration(
+                    color: FamilyAppTheme.highlight95,
+                    borderRadius: BorderRadius.circular(24),
                   ),
-                if (uiModel?.date != null) const SizedBox(height: 12),
-                const TitleMediumText(
-                    'We’ve been working on our generosity superpowers!',
-                    color: Colors.white),
-                const SizedBox(height: 24),
-                SummaryConversationList(
+                  child: LabelSmallText(
+                    uiModel!.date!.formatDate(),
+                    textAlign: TextAlign.center,
+                    color: FamilyAppTheme.highlight40,
+                  ),
+                ),
+              if (uiModel?.date != null) const SizedBox(height: 12),
+              const TitleMediumText(
+                  'We’ve been working on our generosity superpowers!',
+                  textAlign: TextAlign.center,
+                  color: Colors.white),
+              const SizedBox(height: 24),
+              Expanded(
+                child: SummaryConversationList(
                   conversations: uiModel?.conversations ?? [],
                 ),
-                const SizedBox(height: 24),
-                if (uiModel?.audioLink != null)
-                  GestureDetector(
-                    onTap: () async {
-                      setState(() {
-                        _hasClickedAudio = true;
-                      });
-                      await _player.play(UrlSource(uiModel!.audioLink!));
-                    },
-                    child: const Text('Play audio'),
-                  ),
-                FunButton(
-                  isDisabled: uiModel?.audioLink == null || !_hasClickedAudio,
-                  text: 'Done',
-                  onTap: () {
-                    context.pop();
+              ),
+              const SizedBox(height: 24),
+              if (uiModel?.audioLink != null)
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      _hasClickedAudio = true;
+                    });
+                    await _player.play(UrlSource(uiModel!.audioLink!));
                   },
-                  analyticsEvent: AnalyticsEvent(AmplitudeEvents
-                      .coinMediumIdNotRecognizedGoBackHomeClicked),
+                  child: const Text('Play audio'),
                 ),
-              ],
-            ),
+              FunButton(
+                isDisabled: uiModel?.audioLink != null && !_hasClickedAudio,
+                text: 'Done',
+                onTap: () {
+                  context.pop();
+                },
+                analyticsEvent: AnalyticsEvent(AmplitudeEvents
+                    .coinMediumIdNotRecognizedGoBackHomeClicked),
+              ),
+            ],
           );
         },
       ),
