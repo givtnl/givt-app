@@ -1,8 +1,8 @@
-import 'package:givt_app/features/family/features/gratitude-summary/domain/models/summary_item.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/domain/models/parent_summary_item.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
-class SummaryRepository {
-  SummaryRepository(this._familyAPIService);
+class ParentSummaryRepository {
+  ParentSummaryRepository(this._familyAPIService);
   final FamilyAPIService _familyAPIService;
 
   Future<bool> sendYesNoPutKidToBed({
@@ -17,8 +17,8 @@ class SummaryRepository {
     );
   }
 
-  Future<SummaryItem> fetchLatestGameSummary() async {
+  Future<ParentSummaryItem> fetchLatestGameSummary() async {
     final response = await _familyAPIService.fetchLatestGameSummary();
-    return SummaryItem.fromMap(response);
+    return ParentSummaryItem.fromMap(response);
   }
 }

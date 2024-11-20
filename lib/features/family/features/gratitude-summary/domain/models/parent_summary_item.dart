@@ -1,17 +1,17 @@
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/summary_uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
-class SummaryItem {
+class ParentSummaryItem {
 
-  SummaryItem({
+  ParentSummaryItem({
     required this.conversations,
     required this.audio,
   });
 
-  factory SummaryItem.fromMap(Map<String, dynamic> map) {
+  factory ParentSummaryItem.fromMap(Map<String, dynamic> map) {
     final conversations = map['conversations'] as List<Map<String, dynamic>>;
     final audio = map['audio'] as String;
-    return SummaryItem(
+    return ParentSummaryItem(
         conversations: conversations.map(Conversation.fromMap).toList(),
       audio: audio,
     );
@@ -19,8 +19,8 @@ class SummaryItem {
   final List<Conversation> conversations;
   final String audio;
 
-  SummaryUIModel toUIModel() {
-    return SummaryUIModel(
+  ParentSummaryUIModel toUIModel() {
+    return ParentSummaryUIModel(
       conversations: conversations.map((e) => e.toUIModel()).toList(),
       audioLink: audio,
     );

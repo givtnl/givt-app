@@ -6,7 +6,7 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 class YesNoCubit extends CommonCubit<dynamic, bool> {
   YesNoCubit(super.initialState);
 
-  final SummaryRepository _summaryRepository = getIt<SummaryRepository>();
+  final ParentSummaryRepository _summaryRepository = getIt<ParentSummaryRepository>();
   final FamilyAuthRepository _familyAuthRepository = getIt<FamilyAuthRepository>();
 
   late final String childGuid;
