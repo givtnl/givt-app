@@ -37,12 +37,14 @@ class FunTile extends StatelessWidget {
     IconData? iconData,
     VoidCallback? onTap,
     double? assetSize,
+    bool isPressedDown = false,
   }) {
     return FunTile(
       borderColor: FamilyAppTheme.highlight80,
       backgroundColor: FamilyAppTheme.highlight98,
       textColor: FamilyAppTheme.highlight40,
       iconPath: '',
+      isPressedDown: isPressedDown,
       onTap: onTap,
       titleBig: titleBig,
       titleSmall: titleSmall,
@@ -87,6 +89,7 @@ class FunTile extends StatelessWidget {
     IconData? iconData,
     VoidCallback? onTap,
     double? assetSize,
+    bool isPressedDown = false,
   }) {
     return FunTile(
       borderColor: FamilyAppTheme.error80,
@@ -94,6 +97,7 @@ class FunTile extends StatelessWidget {
       textColor: FamilyAppTheme.error40,
       iconPath: '',
       onTap: onTap,
+      isPressedDown: isPressedDown,
       titleBig: titleBig,
       titleSmall: titleSmall,
       subtitle: subtitle,

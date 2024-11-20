@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
@@ -252,6 +253,45 @@ class FamilyAPIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
+    return response.statusCode == 200;
+  }
+
+  Future<bool> uploadAudioFile(String gameGuid, File audioFile) async {
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid/upload-message');
+
+    final request = MultipartRequest('POST', url)
+      ..headers['Content-Type'] = 'multipart/form-data'
+      ..files.add(
+        MultipartFile(
+          'audio', // Name of the field expected by the server
+          audioFile.readAsBytes().asStream(),
+          audioFile.lengthSync(),
+          filename: 'audio_summary_message.m4a',
+        ),
+      );
+
+    final response = await Response.fromStream(await request.send());
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final isError = decodedBody['isError'] as bool;
+
+    if (response.statusCode == 200 && isError) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+
     return response.statusCode == 200;
   }
 
