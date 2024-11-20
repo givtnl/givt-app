@@ -79,6 +79,7 @@ dependencies:
   flutter_keyboard_visibility: ^6.0.0
   dropdown_button2: ^2.3.9
   page_transition: ^2.1.0
+  record: ^5.2.0
   audioplayers: ^6.1.0
 
 # Override needed because inappwebview >=6.1.0 requires this version

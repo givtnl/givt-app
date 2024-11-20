@@ -17,5 +17,6 @@ abstract class GratefulRecommendationsRepository {
   Future<void> savePledge(
     GameProfile profile,
     Organisation organisation,
+    String? gameGuid,
   );
 }
