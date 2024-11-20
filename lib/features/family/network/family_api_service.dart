@@ -328,4 +328,18 @@ class FamilyAPIService {
     }
     return response.statusCode == 200;
   }
+  Future<bool> putKidToBed(
+    {required String childGuid,
+    required String parentGuid,
+    required bool yes,}
+  ) async {
+    return _postRequest(
+      '/givtservice/v1/profiles/bedtime-responsibility',
+      {
+        'decision': yes,
+        'childGuid': childGuid,
+        'parentGuid': parentGuid,
+      },
+    );
+  }
 }
