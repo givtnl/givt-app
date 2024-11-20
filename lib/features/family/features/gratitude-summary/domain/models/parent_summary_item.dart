@@ -2,23 +2,26 @@ import 'package:givt_app/features/family/features/gratitude-summary/presentation
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
 class ParentSummaryItem {
-
   ParentSummaryItem({
-    this.conversations = const[],
+    this.conversations = const [],
     this.audio,
     this.date,
   });
 
   factory ParentSummaryItem.fromMap(Map<String, dynamic> map) {
-    final conversations = map['conversations'] as List<Map<String, dynamic>>?;
+    final conversations = map['conversations'] as List<dynamic>?;
     final audio = map['audio'] as String?;
-    final date = DateTime.parse(map['date'] as String? ?? '');
+    final date = DateTime.tryParse(map['date'] as String? ?? '');
     return ParentSummaryItem(
-        conversations: conversations?.map(Conversation.fromMap).toList() ?? [],
+      conversations: conversations
+              ?.map((e) => Conversation.fromMap(e as Map<String, dynamic>))
+              .toList() ??
+          [],
       audio: audio,
       date: date,
     );
   }
+
   final List<Conversation> conversations;
   final String? audio;
   final DateTime? date;
@@ -33,7 +36,6 @@ class ParentSummaryItem {
 }
 
 class Conversation {
-
   Conversation({
     required this.sentence,
     required this.profile,
@@ -47,9 +49,10 @@ class Conversation {
       profile: profile,
     );
   }
+
   final String sentence;
   final Profile profile;
-  
+
   ConversationUIModel toUIModel() {
     return ConversationUIModel(
       sentence: sentence,
