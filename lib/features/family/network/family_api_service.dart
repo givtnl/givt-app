@@ -344,7 +344,12 @@ class FamilyAPIService {
 
   Future<bool> updateGame(String gameGuid, Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid');
-    final response = await client.put(url, body: jsonEncode(body));
+    final response = await client.put(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(body));
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
@@ -357,8 +362,11 @@ class FamilyAPIService {
   }
 
   Future<String> createGame() async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/game');
-    final response = await client.post(url);
+    final url = Uri.https(_apiURL, '/givtservice/v1/Game');
+    final response = await client.post(url, headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    }, body: jsonEncode({}));
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
