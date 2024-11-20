@@ -13,6 +13,7 @@ class SummaryConversationList extends StatelessWidget {
       return const SizedBox.shrink();
     }
     return ListView.builder(
+      shrinkWrap: true,
       itemBuilder: (context, index) {
         return SummaryConversationItem(uiModel: conversations[index]);
       },
