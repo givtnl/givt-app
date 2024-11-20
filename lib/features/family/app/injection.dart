@@ -151,8 +151,8 @@ void initRepositories() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<ParentSummaryRepository>(
-      () => ParentSummaryRepository(
+    ..registerSingleton<ParentSummaryRepository>(
+      ParentSummaryRepository(
         getIt(),
       ),
     )
