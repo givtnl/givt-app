@@ -27,7 +27,6 @@ class ReflectAndShareRepository {
 
   final List<String> _usedSecretWords = [];
 
-
   int getAmountOfGenerousDeeds() => _generousDeeds;
 
   void incrementGenerousDeeds() {
@@ -37,7 +36,7 @@ class ReflectAndShareRepository {
   String? getGameId() => _gameId;
 
   Future<void> createGameSession() async {
-    try { 
+    try {
       _gameId = await _familyApiService.createGame();
     } catch (e, s) {
       _gameId = null;
@@ -66,7 +65,7 @@ class ReflectAndShareRepository {
       final file = File(path);
       if (file.existsSync()) {
         //TODO use game guid
-        _familyApiService.uploadAudioFile('gameGuid', file);
+        _familyApiService.uploadAudioFile(_gameId!, file);
         file.delete();
       }
     } on Exception catch (e) {
@@ -75,13 +74,16 @@ class ReflectAndShareRepository {
     }
   }
 
-  Future<void> saveGratitudeInterestsForCurrentSuperhero(GratitudeCategory? gratitude) async {
+  Future<void> saveGratitudeInterestsForCurrentSuperhero(
+      GratitudeCategory? gratitude) async {
     _selectedProfiles[_getCurrentSuperHeroIndex()] =
         _selectedProfiles[_getCurrentSuperHeroIndex()]
             .copyWith(gratitude: gratitude);
     try {
-      await _familyApiService.saveUserGratitudeCategory(_gameId!, 
-    _selectedProfiles[_getCurrentSuperHeroIndex()].userId, gratitude?.displayText ?? '');
+      await _familyApiService.saveUserGratitudeCategory(
+          _gameId!,
+          _selectedProfiles[_getCurrentSuperHeroIndex()].userId,
+          gratitude?.displayText ?? '');
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
