@@ -142,6 +142,7 @@ class FamilyAppRoutes {
           builder: (context, state) => YesNoScreen(
             name: state.uri.queryParameters['name'] ?? '',
             childGuid: state.uri.queryParameters['childId'] ?? '',
+            imageUrl: state.uri.queryParameters['imageUrl'] ?? '',
           ),
         ),
         GoRoute(

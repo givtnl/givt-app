@@ -7,8 +7,10 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 class YesNoCubit extends CommonCubit<dynamic, bool> {
   YesNoCubit() : super(const BaseState.initial());
 
-  final ParentSummaryRepository _summaryRepository = getIt<ParentSummaryRepository>();
-  final FamilyAuthRepository _familyAuthRepository = getIt<FamilyAuthRepository>();
+  final ParentSummaryRepository _summaryRepository =
+      getIt<ParentSummaryRepository>();
+  final FamilyAuthRepository _familyAuthRepository =
+      getIt<FamilyAuthRepository>();
 
   late final String childGuid;
 
@@ -16,15 +18,15 @@ class YesNoCubit extends CommonCubit<dynamic, bool> {
     this.childGuid = childGuid;
   }
 
-  Future<void> onClickedNo() async {
-    await saveDecision(yes: false);
+  void onClickedNo() {
+    saveDecision(yes: false);
   }
 
-  Future<void> saveDecision({required bool yes}) async {
+  void saveDecision({required bool yes}) {
     try {
-    await _summaryRepository.sendYesNoPutKidToBed(
-      childGuid: childGuid,
-      parentGuid: _familyAuthRepository.getCurrentUser()!.guid,
+      _summaryRepository.sendYesNoPutKidToBed(
+        childGuid: childGuid,
+        parentGuid: _familyAuthRepository.getCurrentUser()!.guid,
         yes: yes,
       );
     } catch (e) {
@@ -33,7 +35,7 @@ class YesNoCubit extends CommonCubit<dynamic, bool> {
     emitCustom(yes);
   }
 
-  Future<void> onClickedYes() async {
-    await saveDecision(yes: true);
+  void onClickedYes() {
+    saveDecision(yes: true);
   }
 }

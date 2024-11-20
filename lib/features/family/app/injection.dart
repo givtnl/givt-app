@@ -136,9 +136,6 @@ void initCubits() {
     ..registerFactory<UsSignupCubit>(
       () => UsSignupCubit(getIt(), getIt()),
     )
-    ..registerLazySingleton<YesNoCubit>(
-      YesNoCubit.new,
-    )
     ..registerFactory<SplashCubit>(
       () => SplashCubit(getIt(), getIt()),
     );
