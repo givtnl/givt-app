@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
@@ -86,7 +87,9 @@ class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
                     });
                     await _player.play(UrlSource(uiModel!.audioLink!));
                   },
-                  child: const Text('Play audio'),
+                  child: primaryCircleWithIcon(
+                    iconData: Icons.play_arrow,
+                  ),
                 ),
               FunButton(
                 isDisabled: uiModel?.audioLink != null && !_hasClickedAudio,
