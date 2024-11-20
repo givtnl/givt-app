@@ -116,9 +116,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                 child: Column(
                   children: [
                     GratitudeGameButton(
-                      onPressed: () => context.goNamed(
-                        FamilyPages.reflectIntro.name,
-                      ),
+                      onPressed: () => context.goNamed(FamilyPages.yesNo.name,
+                          queryParameters: {
+                            'name': 'Gini',
+                            'childId': 'sdkcfdkfdvd'
+                          }),
                       // onPressed: () {
                       //   Navigator.push(
                       //     context,

@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/giving_flow/collectgroup_detai
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/yesno-cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
@@ -135,6 +136,9 @@ void initCubits() {
     ..registerFactory<UsSignupCubit>(
       () => UsSignupCubit(getIt(), getIt()),
     )
+    ..registerLazySingleton<YesNoCubit>(
+      YesNoCubit.new,
+    )
     ..registerFactory<SplashCubit>(
       () => SplashCubit(getIt(), getIt()),
     );
@@ -144,6 +148,11 @@ void initRepositories() {
   getIt
     ..registerSingleton<AdminFeeRepository>(
       AdminFeeRepository(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<ParentSummaryRepository>(
+      () => ParentSummaryRepository(
         getIt(),
       ),
     )
