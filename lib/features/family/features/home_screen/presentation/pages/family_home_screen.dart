@@ -122,19 +122,16 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           AmplitudeEvents.FamilyHomeScreenGiveButtonClicked),
                     ),
                     GratitudeGameButton(
-                      onPressed: () => context
-                          .goNamed(FamilyPages.yesNo.name, queryParameters: {
-                        'name': 'Gini',
-                        'childId': 'sdkcfdkfdvd',
-                        'imageUrl':
-                            'https://givtstorage.blob.core.windows.net/public/cdn/avatars/Hero7.svg'
-                      }),
-                      // onPressed: () {
-                      //   Navigator.push(
-                      //     context,
-                      //     SummaryScreen().toRoute(context),
-                      //   );
-                      // },
+                      onPressed: () => context.goNamed(
+                        FamilyPages.reflectIntro.name,
+                      ),
+                      // onPressed: () => context
+                      //     .goNamed(FamilyPages.yesNo.name, queryParameters: {
+                      //   'name': 'Gini',
+                      //   'childId': 'sdkcfdkfdvd',
+                      //   'imageUrl':
+                      //       'https://givtstorage.blob.core.windows.net/public/cdn/avatars/Hero7.svg'
+                      // }),
                     ),
                     const SizedBox(height: 24),
                     GiveButton(
