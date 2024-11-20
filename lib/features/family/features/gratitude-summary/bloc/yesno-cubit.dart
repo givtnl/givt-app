@@ -1,10 +1,11 @@
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/summary_repository.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
+import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class YesNoCubit extends CommonCubit<dynamic, bool> {
-  YesNoCubit(super.initialState);
+  YesNoCubit() : super(const BaseState.initial());
 
   final ParentSummaryRepository _summaryRepository = getIt<ParentSummaryRepository>();
   final FamilyAuthRepository _familyAuthRepository = getIt<FamilyAuthRepository>();

@@ -1,4 +1,4 @@
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/summary_uimodel.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/parent_summary_uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
 class ParentSummaryItem {
