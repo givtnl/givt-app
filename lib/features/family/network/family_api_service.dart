@@ -318,10 +318,11 @@ class FamilyAPIService {
     );
   }
 
-  Future<bool> saveGratitudeStats(int duration) async {
+  Future<bool> saveGratitudeStats(int duration, String? gameGuid) async {
     return _postRequest('/givtservice/v1/game', {
       'type': 'Gratitude',
       'duration': duration,
+      if (gameGuid != null) 'GameId': gameGuid,
     });
   }
 

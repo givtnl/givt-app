@@ -34,6 +34,7 @@ class ReflectAndShareRepository {
     _generousDeeds++;
   }
 
+  String? getGameId() => _gameId;
   Future<void> createGameSession() async {
     try { 
       _gameId = await _familyApiService.createGame();
@@ -49,7 +50,7 @@ class ReflectAndShareRepository {
     try {
       _endTime = DateTime.now();
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
-      _familyApiService.saveGratitudeStats(totalTimeSpentInSeconds);
+      _familyApiService.saveGratitudeStats(totalTimeSpentInSeconds, _gameId);
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
