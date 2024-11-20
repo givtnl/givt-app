@@ -35,10 +35,12 @@ class ReflectAndShareRepository {
   }
 
   String? getGameId() => _gameId;
+
   Future<void> createGameSession() async {
     try { 
       _gameId = await _familyApiService.createGame();
     } catch (e, s) {
+      _gameId = null;
       LoggingInfo.instance.error(
         e.toString(),
         methodName: s.toString(),
