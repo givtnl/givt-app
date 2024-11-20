@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -42,6 +43,20 @@ class ReflectAndShareRepository {
         e.toString(),
         methodName: s.toString(),
       );
+    }
+  }
+
+  void shareAudio(String path) {
+    try {
+      final file = File(path);
+      if (file.existsSync()) {
+        //TODO use game guid
+        _familyApiService.uploadAudioFile('gameGuid', file);
+        file.delete();
+      }
+    } on Exception catch (e) {
+      print(e);
+      // TODO what if fails
     }
   }
 
@@ -94,6 +109,18 @@ class ReflectAndShareRepository {
     final profiles = await _profilesRepository.getProfiles();
     _allProfiles = profiles.map((profile) => profile.toGameProfile()).toList();
     return _allProfiles!;
+  }
+
+//list of adult users that did not play in this game
+  Future<List<Profile>> missingAdults() async {
+    final profiles = await _profilesRepository.getProfiles();
+    final missingAdults = profiles
+        .where((profile) => profile.isAdult)
+        .where((profile) => !_selectedProfiles
+            .map((selectedProfile) => selectedProfile.userId)
+            .contains(profile.id))
+        .toList();
+    return missingAdults;
   }
 
   void emptyAllProfiles() {

@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart' as ap;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 
 class AudioPlayer extends StatefulWidget {
   /// Path from where to play recorded audio
@@ -24,7 +28,7 @@ class AudioPlayer extends StatefulWidget {
 }
 
 class AudioPlayerState extends State<AudioPlayer> {
-  static const double _controlSize = 56;
+  static const double _controlSize = 50 + 28;
   static const double _deleteBtnSize = 24;
 
   final _audioPlayer = ap.AudioPlayer()..setReleaseMode(ReleaseMode.stop);
@@ -80,18 +84,22 @@ class AudioPlayerState extends State<AudioPlayer> {
                 _buildSlider(constraints.maxWidth),
                 IconButton(
                   icon: const Icon(Icons.delete,
-                      color: Color(0xFF73748D), size: _deleteBtnSize),
+                      color: FamilyAppTheme.neutral70, size: _deleteBtnSize),
                   onPressed: () {
                     if (_audioPlayer.state == ap.PlayerState.playing) {
-                      stop().then((value) => widget.onDelete());
+                      stop().then((value) {
+                        _deleteFile();
+                        widget.onDelete();
+                      });
                     } else {
+                      _deleteFile();
                       widget.onDelete();
                     }
                   },
                 ),
               ],
             ),
-            Text('${_duration ?? 0.0}'),
+            //   Text('00:${_duration?.inSeconds ?? 0.0}'),
           ],
         );
       },
@@ -99,33 +107,36 @@ class AudioPlayerState extends State<AudioPlayer> {
   }
 
   Widget _buildControl() {
-    Icon icon;
-    Color color;
+    Widget icon;
 
     if (_audioPlayer.state == ap.PlayerState.playing) {
-      icon = const Icon(Icons.pause, color: Colors.red, size: 30);
-      color = Colors.red.withOpacity(0.1);
+      icon = const FunIcon(
+        circleColor: FamilyAppTheme.error90,
+        circleSize: 50,
+        iconSize: 20,
+        iconColor: FamilyAppTheme.error30,
+        iconData: FontAwesomeIcons.pause,
+      );
     } else {
-      final theme = Theme.of(context);
-      icon = Icon(Icons.play_arrow, color: theme.primaryColor, size: 30);
-      color = theme.primaryColor.withOpacity(0.1);
+      icon = const FunIcon(
+        circleColor: FamilyAppTheme.primary95,
+        circleSize: 50,
+        iconSize: 20,
+        iconColor: FamilyAppTheme.primary30,
+        iconData: FontAwesomeIcons.play,
+      );
     }
 
-    return ClipOval(
-      child: Material(
-        color: color,
-        child: InkWell(
-          child:
-              SizedBox(width: _controlSize, height: _controlSize, child: icon),
-          onTap: () {
-            if (_audioPlayer.state == ap.PlayerState.playing) {
-              pause();
-            } else {
-              play();
-            }
-          },
-        ),
-      ),
+    return InkWell(
+      borderRadius: const BorderRadius.all(Radius.circular(60)),
+      child: icon,
+      onTap: () {
+        if (_audioPlayer.state == ap.PlayerState.playing) {
+          pause();
+        } else {
+          play();
+        }
+      },
     );
   }
 
@@ -145,8 +156,8 @@ class AudioPlayerState extends State<AudioPlayer> {
     return SizedBox(
       width: width,
       child: Slider(
-        activeColor: Theme.of(context).primaryColor,
-        inactiveColor: Theme.of(context).colorScheme.secondary,
+        activeColor: FamilyAppTheme.primary60,
+        inactiveColor: FamilyAppTheme.neutral90,
         onChanged: (v) {
           if (duration != null) {
             final position = v * duration.inMilliseconds;
@@ -170,6 +181,13 @@ class AudioPlayerState extends State<AudioPlayer> {
   Future<void> stop() async {
     await _audioPlayer.stop();
     setState(() {});
+  }
+
+  void _deleteFile() {
+    final file = File(widget.source);
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
   }
 
   Source get _source =>

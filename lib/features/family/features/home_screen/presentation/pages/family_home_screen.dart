@@ -10,7 +10,7 @@ import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_screen.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_.bottomsheet.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
@@ -116,15 +116,15 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                 child: Column(
                   children: [
                     GratitudeGameButton(
-                      // onPressed: () => context.goNamed(
-                      //   FamilyPages.reflectIntro.name,
-                      // ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          SummaryScreen().toRoute(context),
-                        );
-                      },
+                      onPressed: () => context.goNamed(
+                        FamilyPages.reflectIntro.name,
+                      ),
+                      // onPressed: () {
+                      //   Navigator.push(
+                      //     context,
+                      //     SummaryScreen().toRoute(context),
+                      //   );
+                      // },
                     ),
                     const SizedBox(height: 24),
                     GiveButton(

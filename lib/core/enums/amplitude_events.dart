@@ -321,8 +321,11 @@ enum AmplitudeEvents {
   boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
 
   //Bedikme summary
-  summaryRecordMessageClicked(
-    'summary_record_message_clicked',
+  summaryLeaveMessageClicked(
+    'summary_leave_message_clicked',
+  ),
+  doneRecordingSummaryMessageClicked(
+    'done_recording_summary_message_clicked',
   ),
 
   // DEBUG ONLY

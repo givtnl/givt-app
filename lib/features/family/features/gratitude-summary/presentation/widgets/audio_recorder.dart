@@ -2,57 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/data/record_utils.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:record/record.dart';
-
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
-import 'package:record/record.dart';
-
-mixin AudioRecorderMixin {
-  Future<void> recordFile(AudioRecorder recorder, RecordConfig config) async {
-    final path = await _getPath();
-
-    await recorder.start(config, path: path);
-  }
-
-  Future<void> recordStream(AudioRecorder recorder, RecordConfig config) async {
-    final path = await _getPath();
-
-    final file = File(path);
-
-    final stream = await recorder.startStream(config);
-
-    stream.listen(
-      (data) {
-        print(
-          recorder.convertBytesToInt16(Uint8List.fromList(data)),
-        );
-        file.writeAsBytesSync(data, mode: FileMode.append);
-      },
-      onDone: () {
-        print('End of stream. File written to $path.');
-      },
-    );
-  }
-
-  void downloadWebData(String path) {}
-
-  Future<String> _getPath() async {
-    final dir = await getApplicationDocumentsDirectory();
-    return p.join(
-      dir.path,
-      'audio_${DateTime.now().millisecondsSinceEpoch}.m4a',
-    );
-  }
-}
 
 class Recorder extends StatefulWidget {
-  final void Function(String path) onStop;
-
   const Recorder({super.key, required this.onStop});
+  final void Function(String path) onStop;
 
   @override
   State<Recorder> createState() => _RecorderState();
@@ -120,8 +78,6 @@ class _RecorderState extends State<Recorder> with AudioRecorderMixin {
 
     if (path != null) {
       widget.onStop(path);
-
-      downloadWebData(path);
     }
   }
 
@@ -167,29 +123,20 @@ class _RecorderState extends State<Recorder> with AudioRecorderMixin {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildRecordStopControl(),
-                const SizedBox(width: 20),
-                _buildPauseResumeControl(),
-                const SizedBox(width: 20),
-                _buildText(),
-              ],
-            ),
-            if (_amplitude != null) ...[
-              const SizedBox(height: 40),
-              Text('Current: ${_amplitude?.current ?? 0.0}'),
-              Text('Max: ${_amplitude?.max ?? 0.0}'),
-            ],
-          ],
-        ),
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildRecordStopControl(),
+        const SizedBox(width: 8),
+        _buildText(),
+
+        // if (_amplitude != null) ...[
+        //   const SizedBox(height: 40),
+        //   Text('Current: ${_amplitude?.current ?? 0.0}'),
+        //   Text('Max: ${_amplitude?.max ?? 0.0}'),
+        // ],
+      ],
     );
   }
 
@@ -203,58 +150,26 @@ class _RecorderState extends State<Recorder> with AudioRecorderMixin {
   }
 
   Widget _buildRecordStopControl() {
-    late Icon icon;
-    late Color color;
+    late Widget icon;
 
     if (_recordState != RecordState.stop) {
-      icon = const Icon(Icons.stop, color: Colors.red, size: 30);
-      color = Colors.red.withOpacity(0.1);
+      icon = FunIcon.recordingSquare(
+        iconsize: 32,
+        circleSize: 80,
+      );
     } else {
-      final theme = Theme.of(context);
-      icon = Icon(Icons.mic, color: theme.primaryColor, size: 30);
-      color = theme.primaryColor.withOpacity(0.1);
+      icon = FunIcon.microphone(
+        iconsize: 32,
+        circleSize: 80,
+      );
     }
 
-    return ClipOval(
-      child: Material(
-        color: color,
-        child: InkWell(
-          child: SizedBox(width: 56, height: 56, child: icon),
-          onTap: () {
-            (_recordState != RecordState.stop) ? _stop() : _start();
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPauseResumeControl() {
-    if (_recordState == RecordState.stop) {
-      return const SizedBox.shrink();
-    }
-
-    late Icon icon;
-    late Color color;
-
-    if (_recordState == RecordState.record) {
-      icon = const Icon(Icons.pause, color: Colors.red, size: 30);
-      color = Colors.red.withOpacity(0.1);
-    } else {
-      final theme = Theme.of(context);
-      icon = const Icon(Icons.play_arrow, color: Colors.red, size: 30);
-      color = theme.primaryColor.withOpacity(0.1);
-    }
-
-    return ClipOval(
-      child: Material(
-        color: color,
-        child: InkWell(
-          child: SizedBox(width: 56, height: 56, child: icon),
-          onTap: () {
-            (_recordState == RecordState.pause) ? _resume() : _pause();
-          },
-        ),
-      ),
+    return InkWell(
+      borderRadius: BorderRadius.circular(60),
+      child: SizedBox(child: icon),
+      onTap: () {
+        (_recordState != RecordState.stop) ? _stop() : _start();
+      },
     );
   }
 
@@ -263,12 +178,12 @@ class _RecorderState extends State<Recorder> with AudioRecorderMixin {
       return _buildTimer();
     }
 
-    return const Text("Waiting to record");
+    return const BodySmallText("Tap to record");
   }
 
   Widget _buildTimer() {
-    final String minutes = _formatNumber(_recordDuration ~/ 60);
-    final String seconds = _formatNumber(_recordDuration % 60);
+    final minutes = _formatNumber(_recordDuration ~/ 60);
+    final seconds = _formatNumber(_recordDuration % 60);
 
     return Text(
       '$minutes : $seconds',

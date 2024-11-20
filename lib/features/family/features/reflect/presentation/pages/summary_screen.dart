@@ -5,10 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_screen.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_.bottomsheet.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/audio_player.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -40,7 +39,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
       ),
       body: BaseStateConsumer(
         cubit: _cubit,
-        onData: (context, secretWord) {
+        onData: (context, details) {
+          bool showRecorder =
+              !details.allAdultsPlayed && details.audioPath.isEmpty;
+          bool showPlayer = details.audioPath.isNotEmpty;
           return Column(
             children: [
               const Spacer(),
@@ -55,11 +57,12 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 children: [
                   Expanded(
                     child: FunTile.gold(
-                      titleBig: secretWord.minutesPlayed == 1
+                      titleBig: details.minutesPlayed == 1
                           ? '1 minute family time'
-                          : '${secretWord.minutesPlayed} minutes family time',
+                          : '${details.minutesPlayed} minutes family time',
                       iconData: FontAwesomeIcons.solidClock,
                       assetSize: 32,
+                      isPressedDown: true,
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents
                             .familyReflectSummaryMinutesPlayedClicked,
@@ -69,11 +72,12 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: FunTile.red(
-                      titleBig: secretWord.generousDeeds == 1
+                      titleBig: details.generousDeeds == 1
                           ? '1 generous deed'
-                          : '${secretWord.generousDeeds} generous deeds',
+                          : '${details.generousDeeds} generous deeds',
                       iconData: FontAwesomeIcons.solidHeart,
                       assetSize: 32,
+                      isPressedDown: true,
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents
                             .familyReflectSummaryGenerousDeedsClicked,
@@ -83,32 +87,38 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ],
               ),
               const Spacer(),
-              FunButton.secondary(
+              if (showRecorder)
+                FunButton.secondary(
                   leftIcon: FontAwesomeIcons.microphone,
                   onTap: () {
-                    showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: false,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      backgroundColor: Colors.white,
-                      builder: (context) => RecordSummaryMessageScreen(),
+                    RecordSummaryMessageBottomsheet.show(
+                      context,
+                      details.adultName,
+                      _cubit.audioAvailable,
                     );
                   },
-                  text: 'Record a message for Name',
+                  text: 'Leave a message',
                   analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.summaryRecordMessageClicked)),
-              const SizedBox(height: 16),
+                    AmplitudeEvents.summaryLeaveMessageClicked,
+                  ),
+                ),
+              if (showPlayer)
+                AudioPlayer(source: details.audioPath, onDelete: () {}),
+              const SizedBox(height: 8),
               FunButton(
                 onTap: () {
+                  if (details.audioPath.isNotEmpty) {
+                    _cubit.shareAudio(details.audioPath);
+                  }
                   Navigator.of(context).popUntil(
                     ModalRoute.withName(
                       FamilyPages.profileSelection.name,
                     ),
                   );
                 },
-                text: 'Back to home',
+                text: (showPlayer || showRecorder)
+                    ? 'Share summary'
+                    : 'Back to home',
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.familyReflectSummaryBackToHome,
                 ),
