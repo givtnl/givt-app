@@ -10,6 +10,8 @@ import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cu
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/yesno-cubit.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
@@ -62,6 +64,8 @@ void initCubits() {
     ..registerLazySingleton<InternetConnectionCubit>(
       () => InternetConnectionCubit(getIt()),
     )
+    ..registerFactory(ParentSummaryCubit.new)
+    ..registerFactory(YesNoCubit.new)
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<InterviewCubit>(

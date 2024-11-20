@@ -1,28 +1,33 @@
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/summary_uimodel.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/parent_summary_uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
-class SummaryItem {
+class ParentSummaryItem {
 
-  SummaryItem({
-    required this.conversations,
-    required this.audio,
+  ParentSummaryItem({
+    this.conversations = const[],
+    this.audio,
+    this.date,
   });
 
-  factory SummaryItem.fromMap(Map<String, dynamic> map) {
-    final conversations = map['conversations'] as List<Map<String, dynamic>>;
-    final audio = map['audio'] as String;
-    return SummaryItem(
-        conversations: conversations.map(Conversation.fromMap).toList(),
+  factory ParentSummaryItem.fromMap(Map<String, dynamic> map) {
+    final conversations = map['conversations'] as List<Map<String, dynamic>>?;
+    final audio = map['audio'] as String?;
+    final date = DateTime.parse(map['date'] as String? ?? '');
+    return ParentSummaryItem(
+        conversations: conversations?.map(Conversation.fromMap).toList() ?? [],
       audio: audio,
+      date: date,
     );
   }
   final List<Conversation> conversations;
-  final String audio;
+  final String? audio;
+  final DateTime? date;
 
-  SummaryUIModel toUIModel() {
-    return SummaryUIModel(
+  ParentSummaryUIModel toUIModel() {
+    return ParentSummaryUIModel(
       conversations: conversations.map((e) => e.toUIModel()).toList(),
       audioLink: audio,
+      date: date,
     );
   }
 }

@@ -1,11 +1,13 @@
-class SummaryUIModel {
+class ParentSummaryUIModel {
 
-  SummaryUIModel({
+  ParentSummaryUIModel({
     required this.conversations,
-    required this.audioLink,
+    this.audioLink,
+    this.date,
   });
   final List<ConversationUIModel> conversations;
-  final String audioLink;
+  final String? audioLink;
+  final DateTime? date;
 }
 
 class ConversationUIModel {

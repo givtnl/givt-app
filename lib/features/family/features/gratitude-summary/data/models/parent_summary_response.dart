@@ -1,6 +1,6 @@
-class SummaryResponse {
+class ParentSummaryResponse {
 
-  SummaryResponse({
+  ParentSummaryResponse({
     required this.id,
     required this.title,
     required this.description,
@@ -9,8 +9,8 @@ class SummaryResponse {
     required this.familyMemberId,
   });
 
-  factory SummaryResponse.fromJson(Map<String, dynamic> json) {
-    return SummaryResponse(
+  factory ParentSummaryResponse.fromJson(Map<String, dynamic> json) {
+    return ParentSummaryResponse(
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,

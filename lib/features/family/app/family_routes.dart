@@ -29,6 +29,7 @@ import 'package:givt_app/features/family/features/giving_flow/create_transaction
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/parent_summary_screen.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/yesno_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
@@ -143,6 +144,11 @@ class FamilyAppRoutes {
             name: state.uri.queryParameters['name'] ?? '',
             childGuid: state.uri.queryParameters['childguid'] ?? '',
           ),
+        ),
+        GoRoute(
+          path: FamilyPages.parentSummary.path,
+          name: FamilyPages.parentSummary.name,
+          builder: (context, state) => const ParentSummaryScreen(),
         ),
         GoRoute(
           path: FamilyPages.parentHome.path,
