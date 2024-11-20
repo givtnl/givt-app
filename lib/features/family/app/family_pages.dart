@@ -22,6 +22,7 @@ enum FamilyPages {
     path: 'family-personal-info-edit',
     name: 'FAMILY-PERSONAL-INFO-EDIT',
   ),
+  yesNo(path: 'yes-no', name: 'YES-NO'),
   registrationUS(path: '/registration-us', name: 'REGISTRATION-US'),
   permitUSBiometric(
     path: '/permit-biometric-us',

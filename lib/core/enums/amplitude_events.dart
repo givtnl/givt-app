@@ -320,6 +320,10 @@ enum AmplitudeEvents {
 
   boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
 
+  // Gratitude Summary
+  whoDoesBedtimePushYesClicked('who_does_bedtime_push_yes_clicked'),
+  whoDoesBedtimePushNoClicked('who_does_bedtime_push_no_clicked'),
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
   ;
