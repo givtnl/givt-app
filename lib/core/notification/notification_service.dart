@@ -141,8 +141,10 @@ class NotificationService implements INotificationService {
 
   Future<void> navigateFirebaseNotification(RemoteMessage message) async {
     LoggingInfo.instance.info('Firebase notification received');
-    final pathName = message.data['Path'].toString().split(r'$').first;
-    final param = message.data['Path'].toString().split(r'$').last;
+    final path = message.data['Path'].toString();
+    final pathName = path.split('?').first;
+    final test = Uri.parse(path);
+    final param = test.queryParameters;
 
     if (pathName.isNotNullAndNotEmpty()) {
       final validValues = [
@@ -150,9 +152,7 @@ class NotificationService implements INotificationService {
         ...Pages.values.map((e) => e.name).toList(),
       ];
       if (validValues.contains(pathName)) {
-        AppRouter.router.goNamed(pathName,
-            queryParameters:
-                param.isNotNullAndNotEmpty() ? {'param': param} : {});
+        AppRouter.router.goNamed(pathName, queryParameters: param);
       } else {
         LoggingInfo.instance.error(
           'Invalid path name received from firebase notification: $pathName',
