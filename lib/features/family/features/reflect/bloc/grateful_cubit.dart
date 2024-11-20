@@ -164,6 +164,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
       await _gratefulRecommendationsRepository.savePledge(
         _getCurrentProfile(),
         organisation,
+        _reflectAndShareRepository.getGameId(),
       );
     } catch (e, s) {
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
