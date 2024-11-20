@@ -19,17 +19,29 @@ class ReflectAndShareRepository {
   int totalTimeSpentInSeconds = 0;
   DateTime? _startTime;
   DateTime? _endTime;
-
+  String? _gameId;
   List<GameProfile>? _allProfiles;
   List<GameProfile> _selectedProfiles = [];
   String? _currentSecretWord;
 
   final List<String> _usedSecretWords = [];
 
+
   int getAmountOfGenerousDeeds() => _generousDeeds;
 
   void incrementGenerousDeeds() {
     _generousDeeds++;
+  }
+
+  Future<void> createGameSession() async {
+    try { 
+      _gameId = await _familyApiService.createGame();
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
   }
 
   void saveSummaryStats() {
@@ -102,7 +114,8 @@ class ReflectAndShareRepository {
 
   // select the family members that will participate in the game
   void selectProfiles(List<GameProfile> selectedProfiles) {
-    // Rest game state
+    // Reset game state
+    createGameSession();
     completedLoops = 0;
     totalQuestionsAsked = 0;
     _generousDeeds = 0;
