@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/app/app.dart';
 
+import 'widget_tester_extension.dart';
+
 void main() {
   group('end-to-end test', () {
     testWidgets('verify EU login flow with email and password',
@@ -39,30 +41,4 @@ void main() {
       await tester.pumpUntilVisible(find.byKey(const ValueKey('EU-Home-AppBar')));
     });
   });
-}
-
-extension PumpUntilGone on WidgetTester {
-  Future<void> pumpUntilVisible(Finder finder,
-      {Duration timeout = const Duration(seconds: 10),
-      Duration interval = const Duration(milliseconds: 100)}) async {
-    final stopwatch = Stopwatch()..start();
-    while (!any(finder)) {
-      if (stopwatch.elapsed > timeout) {
-        throw Exception('Widget still not visible after timeout: $finder');
-      }
-      await pump(interval);
-    }
-  }
-
-  Future<void> pumpUntilGone(Finder finder,
-      {Duration timeout = const Duration(seconds: 10),
-      Duration interval = const Duration(milliseconds: 100)}) async {
-    final stopwatch = Stopwatch()..start();
-    while (any(finder)) {
-      if (stopwatch.elapsed > timeout) {
-        throw Exception('Widget still visible after timeout: $finder');
-      }
-      await pump(interval);
-    }
-  }
 }
