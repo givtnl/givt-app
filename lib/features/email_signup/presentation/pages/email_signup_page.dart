@@ -134,6 +134,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                           BodySmallText.primary40(locals.weWontSendAnySpam),
                           const Spacer(),
                           OutlinedTextFormField(
+                            key: const ValueKey('Email-Input'),
                             initialValue: state.email,
                             hintText: locals.email,
                             onChanged: _cubit.updateEmail,

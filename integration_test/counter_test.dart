@@ -13,7 +13,9 @@ void main() {
       // Verify the counter starts at 0.
       await expectLater(
           find.byKey(const ValueKey('Splash-Loader')), findsOneWidget);
+      await tester.pumpUntilGone(find.byKey(const ValueKey('Splash-Loader')));
 
+      expect(find.byKey(const ValueKey('Email-Input')), findsOneWidget);
       // // Finds the floating action button to tap on.
       // final fab = find.byKey(const ValueKey('increment'));
 
@@ -27,4 +29,18 @@ void main() {
       // expect(find.text('1'), findsOneWidget);
     });
   });
+}
+
+extension PumpUntilGone on WidgetTester {
+  Future<void> pumpUntilGone(Finder finder,
+      {Duration timeout = const Duration(seconds: 10),
+      Duration interval = const Duration(milliseconds: 100)}) async {
+    final stopwatch = Stopwatch()..start();
+    while (any(finder)) {
+      if (stopwatch.elapsed > timeout) {
+        throw Exception('Widget still visible after timeout: $finder');
+      }
+      await pump(interval);
+    }
+  }
 }
