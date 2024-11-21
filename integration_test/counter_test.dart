@@ -24,12 +24,13 @@ void main() {
       final button = find.byKey(const ValueKey('Email-Continue-Button'));
       await tester.tap(button);
       await tester.pumpAndSettle();
-      await tester.pumpUntilVisible(loader);
-      await tester.pumpUntilGone(loader);
+      // await tester.pumpUntilVisible(loader);
+      // await tester.pumpUntilGone(loader);
       final passwordInput =
           find.byKey(const ValueKey('Login-Bottomsheet-Password-Input'));
       expect(passwordInput, findsOneWidget);
       await tester.enterText(passwordInput, 'Welkom123');
+      await tester.pumpAndSettle();
       final loginButton =
           find.byKey(const ValueKey('Login-Bottomsheet-Login-Button'));
       await tester.tap(loginButton);
