@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/app/app.dart';
-import 'package:integration_test/integration_test.dart';
 
 void main() {
   group('end-to-end test', () {
@@ -20,24 +19,30 @@ void main() {
       expect(input, findsOneWidget);
 
       await tester.enterText(input, 'tamara+test3@givtapp.net');
+      await tester.pumpAndSettle();
       final button = find.byKey(const ValueKey('Email-Continue-Button'));
       await tester.tap(button);
-      await tester.pumpAndSettle();
-      await tester.pumpUntilVisible(loader);
-      await tester.pumpUntilGone(loader);
-      final passwordInput = find.byKey(const ValueKey('Login-Bottomsheet-Password-Input'));
+      await tester.pump(const Duration(seconds: 1));
+      //await tester.pumpUntilVisible(loader);
+      //await tester.pumpUntilGone(loader);
+      final passwordInput =
+          find.byKey(const ValueKey('Login-Bottomsheet-Password-Input'));
+      await tester.pumpUntilVisible(passwordInput);
       expect(passwordInput, findsOneWidget);
       await tester.enterText(passwordInput, 'Welkom123');
-      final loginButton = find.byKey(const ValueKey('Login-Bottomsheet-Login-Button'));
+      await tester.pump(const Duration(seconds: 1));
+      final loginButton =
+          find.byKey(const ValueKey('Login-Bottomsheet-Login-Button'));
       await tester.tap(loginButton);
+      await tester.pumpAndSettle();
     });
   });
 }
 
 extension PumpUntilGone on WidgetTester {
   Future<void> pumpUntilVisible(Finder finder,
-      {Duration timeout = const Duration(seconds: 30),
-        Duration interval = const Duration(milliseconds: 100)}) async {
+      {Duration timeout = const Duration(seconds: 10),
+      Duration interval = const Duration(milliseconds: 100)}) async {
     final stopwatch = Stopwatch()..start();
     while (!any(finder)) {
       if (stopwatch.elapsed > timeout) {
@@ -48,7 +53,7 @@ extension PumpUntilGone on WidgetTester {
   }
 
   Future<void> pumpUntilGone(Finder finder,
-      {Duration timeout = const Duration(seconds: 30),
+      {Duration timeout = const Duration(seconds: 10),
       Duration interval = const Duration(milliseconds: 100)}) async {
     final stopwatch = Stopwatch()..start();
     while (any(finder)) {
