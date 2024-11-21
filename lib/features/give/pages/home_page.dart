@@ -91,6 +91,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: _key,
       appBar: AppBar(
+        key: const ValueKey('EU-Home-AppBar'),
         title: switch (pageIndex) {
           0 => Text(locals.amount),
           1 => !auth.user.isUsUser

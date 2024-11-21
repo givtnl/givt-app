@@ -36,6 +36,7 @@ void main() {
       final skipButton = find.byKey(const ValueKey('PermitBiometric-Deny-Button'));
       await tester.tap(skipButton);
       await tester.pumpAndSettle();
+      await tester.pumpUntilVisible(find.byKey(const ValueKey('EU-Home-AppBar')));
     });
   });
 }
