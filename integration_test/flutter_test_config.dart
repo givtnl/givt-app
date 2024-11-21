@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it_injection;
 import 'package:givt_app/features/family/app/injection.dart'
 as get_it_injection_family;
+import 'package:integration_test/integration_test.dart';
 
 // https://api.flutter.dev/flutter/flutter_test/flutter_test-library.html
 
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
-  WidgetsFlutterBinding.ensureInitialized();
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   // Initialize the dependency injection
   await get_it_injection.init();
