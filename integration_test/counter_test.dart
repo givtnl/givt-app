@@ -4,7 +4,7 @@ import 'package:givt_app/app/app.dart';
 
 void main() {
   group('end-to-end test', () {
-    testWidgets('tap on the floating action button, verify counter',
+    testWidgets('verify EU login flow with email and password',
         (tester) async {
       // Load app widget.
       await tester.pumpWidget(const App());
