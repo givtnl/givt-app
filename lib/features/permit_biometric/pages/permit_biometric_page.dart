@@ -87,6 +87,7 @@ class PermitBiometricPage extends StatelessWidget {
                     ),
                     const Spacer(),
                     CustomSecondaryBorderButton(
+                      key: const ValueKey('PermitBiometric-Deny-Button'),
                       title: context.l10n.permitBiometricSkip,
                       onPressed: () {
                         AnalyticsHelper.logEvent(

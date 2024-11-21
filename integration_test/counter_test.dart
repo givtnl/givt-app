@@ -23,8 +23,6 @@ void main() {
       final button = find.byKey(const ValueKey('Email-Continue-Button'));
       await tester.tap(button);
       await tester.pump(const Duration(seconds: 1));
-      //await tester.pumpUntilVisible(loader);
-      //await tester.pumpUntilGone(loader);
       final passwordInput =
           find.byKey(const ValueKey('Login-Bottomsheet-Password-Input'));
       await tester.pumpUntilVisible(passwordInput);
@@ -34,6 +32,9 @@ void main() {
       final loginButton =
           find.byKey(const ValueKey('Login-Bottomsheet-Login-Button'));
       await tester.tap(loginButton);
+      await tester.pumpAndSettle();
+      final skipButton = find.byKey(const ValueKey('PermitBiometric-Deny-Button'));
+      await tester.tap(skipButton);
       await tester.pumpAndSettle();
     });
   });
