@@ -178,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 15),
                 CustomTextFormField(
-                  key: const Key('Login-Bottomsheet-Password-Input'),
+                  key: const ValueKey('Login-Bottomsheet-Password-Input'),
                   controller: passwordController,
                   autocorrect: false,
                   autofillHints: const [AutofillHints.password],
