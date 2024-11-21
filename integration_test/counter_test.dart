@@ -20,15 +20,18 @@ void main() {
       expect(input, findsOneWidget);
 
       await tester.enterText(input, 'tamara+test3@givtapp.net');
+      await tester.pumpAndSettle();
       final button = find.byKey(const ValueKey('Email-Continue-Button'));
       await tester.tap(button);
       await tester.pumpAndSettle();
       await tester.pumpUntilVisible(loader);
       await tester.pumpUntilGone(loader);
-      final passwordInput = find.byKey(const ValueKey('Login-Bottomsheet-Password-Input'));
+      final passwordInput =
+          find.byKey(const ValueKey('Login-Bottomsheet-Password-Input'));
       expect(passwordInput, findsOneWidget);
       await tester.enterText(passwordInput, 'Welkom123');
-      final loginButton = find.byKey(const ValueKey('Login-Bottomsheet-Login-Button'));
+      final loginButton =
+          find.byKey(const ValueKey('Login-Bottomsheet-Login-Button'));
       await tester.tap(loginButton);
     });
   });
@@ -37,7 +40,7 @@ void main() {
 extension PumpUntilGone on WidgetTester {
   Future<void> pumpUntilVisible(Finder finder,
       {Duration timeout = const Duration(seconds: 30),
-        Duration interval = const Duration(milliseconds: 100)}) async {
+      Duration interval = const Duration(milliseconds: 100)}) async {
     final stopwatch = Stopwatch()..start();
     while (!any(finder)) {
       if (stopwatch.elapsed > timeout) {

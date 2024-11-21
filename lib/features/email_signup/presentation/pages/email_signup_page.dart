@@ -199,9 +199,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             isLoading: _isLoading,
                             onTap: state.continueButtonEnabled
                                 ? () async {
-                                    setLoading();
                                     if (state.country.isUS) {
-                                      setLoading();
                                       await _cubit.login();
                                     } else {
                                       setLoading();
