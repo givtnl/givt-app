@@ -194,11 +194,13 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                           ),
                           const SizedBox(height: 12),
                           FunButton(
+                            key: const ValueKey('Email-Continue-Button'),
                             isDisabled: !state.continueButtonEnabled,
                             isLoading: _isLoading,
                             onTap: state.continueButtonEnabled
                                 ? () async {
                                     if (state.country.isUS) {
+                                      setLoading();
                                       await _cubit.login();
                                     } else {
                                       setLoading();

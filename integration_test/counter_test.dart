@@ -15,18 +15,20 @@ void main() {
           find.byKey(const ValueKey('Splash-Loader')), findsOneWidget);
       await tester.pumpUntilGone(find.byKey(const ValueKey('Splash-Loader')));
 
-      expect(find.byKey(const ValueKey('Email-Input')), findsOneWidget);
-      // // Finds the floating action button to tap on.
-      // final fab = find.byKey(const ValueKey('increment'));
+      final input = find.byKey(const ValueKey('Email-Input'));
+      expect(input, findsOneWidget);
 
-      // // Emulate a tap on the floating action button.
-      // await tester.tap(fab);
-
-      // // Trigger a frame.
-      // await tester.pumpAndSettle();
-
-      // // Verify the counter increments by 1.
-      // expect(find.text('1'), findsOneWidget);
+      await tester.enterText(input, 'tamara+test3@givtapp.net');
+      final button = find.byKey(const ValueKey('Email-Continue-Button'));
+      await tester.tap(button);
+      await Future.delayed(const Duration(seconds: 3));
+      await tester.pumpUntilGone(find.byKey(const ValueKey('Splash-Loader')));
+      await Future.delayed(const Duration(seconds: 3));
+      final passwordInput = find.byKey(const ValueKey('Login-Bottomsheet-Login-Button'));
+      expect(passwordInput, findsOneWidget);
+      await tester.enterText(passwordInput, 'Welkom123');
+      final loginButton = find.byKey(const ValueKey('Login-Bottomsheet-Login-Button'));
+      await tester.tap(loginButton);
     });
   });
 }
