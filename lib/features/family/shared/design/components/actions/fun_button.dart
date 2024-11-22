@@ -171,7 +171,10 @@ class FunButton extends StatelessWidget {
 
   Widget getChild(BuildContext context, ThemeData themeData) {
     if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+          child: CircularProgressIndicator(
+        key: ValueKey('Splash-Loader'),
+      ));
     }
     return Row(
       mainAxisSize: MainAxisSize.min,
