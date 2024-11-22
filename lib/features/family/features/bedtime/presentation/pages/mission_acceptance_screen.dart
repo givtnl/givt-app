@@ -43,9 +43,15 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     duration: const Duration(milliseconds: 2000),
     vsync: this,
   );
+  late final AnimationController _enterAnimationController =
+      AnimationController(
+    duration: const Duration(milliseconds: 800),
+    vsync: this,
+  );
 
   String buttonText = 'Hold to accept';
-  bool firstAnimationIsCompleted = false;
+  bool holdDownAnimationCompleted = false;
+  bool enterAnimationCompleted = false;
 
   @override
   void dispose() {
@@ -53,6 +59,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     _textAnimationController.dispose();
     _fadeAnimationController.dispose();
     _secondAnimationController.dispose();
+    _enterAnimationController.dispose();
     _cubit.close();
     super.dispose();
   }
@@ -64,10 +71,20 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     _avatarsAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         setState(() {
-          firstAnimationIsCompleted = true;
+          holdDownAnimationCompleted = true;
         });
       }
     });
+    print('before enter animation started');
+    _enterAnimationController..addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        print('enter animation completed');
+        setState(() {
+          enterAnimationCompleted = true;
+        });
+      }
+    })
+    ..forward();
   }
 
   void _navigateToHome() {
@@ -94,26 +111,31 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
         onData: (context, uiModel) {
           return Stack(
             children: [
-              if(!firstAnimationIsCompleted) FadeTransition(
-                opacity: _fadeAnimationController,
-                child: Positioned(
-                  left: 0,
-                  top: 0,
-                  child: Image.asset(
-                    'assets/family/images/moon.webp',
+              if (!holdDownAnimationCompleted)
+                FadeTransition(
+                  opacity: _fadeAnimationController,
+                  child: Positioned(
+                    left: 0,
+                    top: 0,
+                    child: Image.asset(
+                      'assets/family/images/moon.webp',
+                    ),
                   ),
                 ),
-              ),
-              cityAtBottom(MediaQuery.sizeOf(context).width,
-                  MediaQuery.sizeOf(context).height),
-              if (firstAnimationIsCompleted)
+              if (!enterAnimationCompleted)
+                poppingUpCityAtBottom(MediaQuery.sizeOf(context).width,
+                    MediaQuery.sizeOf(context).height),
+              if (enterAnimationCompleted)
+                reactiveCityAtBottom(MediaQuery.sizeOf(context).width,
+                    MediaQuery.sizeOf(context).height),
+              if (holdDownAnimationCompleted)
                 const Align(
                   child: TitleLargeText(
                     'Release the button!',
                     color: Colors.white,
                   ),
                 ),
-              if (!firstAnimationIsCompleted)
+              if (!holdDownAnimationCompleted)
                 PositionedTransition(
                   rect: RelativeRectTween(
                     begin: RelativeRect.fromLTRB(
@@ -139,7 +161,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
                     ),
                   ),
                 ),
-              if (!firstAnimationIsCompleted)
+              if (!holdDownAnimationCompleted)
                 PositionedTransition(
                   rect: RelativeRectTween(
                     begin: RelativeRect.fromLTRB(
@@ -161,7 +183,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
                     },
                   ),
                 ),
-              if (firstAnimationIsCompleted)
+              if (holdDownAnimationCompleted)
                 PositionedTransition(
                   rect: RelativeRectTween(
                     begin: RelativeRect.fromLTRB(
@@ -204,11 +226,29 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     );
   }
 
-  Widget cityAtBottom(double width, double height) {
+  // City at the bottom of the screen that pops up when we enter the screen
+  Widget poppingUpCityAtBottom(double width, double height) {
     return PositionedTransition(
       rect: RelativeRectTween(
-        begin: RelativeRect.fromLTRB(0, 0, 0, -height+231),
-        end: RelativeRect.fromLTRB(0, 0, 0, -height+(231/2)),
+        end: RelativeRect.fromLTRB(0, 0, 0, -height + 231),
+        begin: RelativeRect.fromLTRB(0, 0, 0, -height + (231 / 2)),
+      ).animate(
+        CurvedAnimation(
+          parent: _enterAnimationController,
+          curve: Curves.linear,
+          reverseCurve: Curves.linear,
+        ),
+      ),
+      child: _cityAsset(width),
+    );
+  }
+
+  // City at the bottom of the screen that moves with the long press of the button
+  Widget reactiveCityAtBottom(double width, double height) {
+    return PositionedTransition(
+      rect: RelativeRectTween(
+        begin: RelativeRect.fromLTRB(0, 0, 0, -height + 231),
+        end: RelativeRect.fromLTRB(0, 0, 0, -height + (231 / 2)),
       ).animate(
         CurvedAnimation(
           parent: _avatarsAnimationController,
@@ -216,13 +256,17 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
           reverseCurve: Curves.easeInOutQuint,
         ),
       ),
-      child: SizedBox(
-        height: 231,
-        width: width,
-        child: SvgPicture.asset(
-          'assets/family/images/city_purple.svg',
-          fit: BoxFit.fitWidth,
-        ),
+      child: _cityAsset(width),
+    );
+  }
+
+  SizedBox _cityAsset(double width) {
+    return SizedBox(
+      height: 231,
+      width: width,
+      child: SvgPicture.asset(
+        'assets/family/images/city_purple.svg',
+        fit: BoxFit.fitWidth,
       ),
     );
   }
@@ -234,7 +278,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
   }
 
   void handleButtonReleased() {
-    if (firstAnimationIsCompleted) {
+    if (holdDownAnimationCompleted) {
       _secondAnimationController.forward();
       _navigateToHome();
     } else {
