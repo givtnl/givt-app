@@ -104,7 +104,7 @@ class GratitudeTagsData {
     ),
   ];
   static final gratitudeCategories = [
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.highlight,
       displayText: 'The people in your life',
       iconData: FontAwesomeIcons.peopleGroup,
@@ -127,7 +127,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.secondary,
       displayText: 'Something you learned',
       iconData: FontAwesomeIcons.graduationCap,
@@ -150,7 +150,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.primary,
       displayText: 'The beauty of nature',
       iconData: FontAwesomeIcons.tree,
@@ -173,7 +173,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.highlight,
       displayText: 'Feeling healthy and strong',
       iconData: FontAwesomeIcons.heartPulse,
@@ -196,7 +196,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.highlight,
       displayText: 'The home where you live',
       iconData: FontAwesomeIcons.house,
@@ -219,7 +219,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.secondary,
       displayText: 'Someone helping you',
       iconData: FontAwesomeIcons.handshakeAngle,
@@ -242,7 +242,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.secondary,
       displayText: 'You got to help someone',
       iconData: FontAwesomeIcons.peopleCarryBox,
@@ -257,7 +257,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.primary,
       displayText: 'The animals around you',
       iconData: FontAwesomeIcons.paw,

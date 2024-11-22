@@ -6,9 +6,9 @@ import 'package:givt_app/features/family/features/reflect/presentation/models/gr
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class GratitudeSelectionCubit
+class GenerousSelectionCubit
     extends CommonCubit<TagSelectionUimodel, GameProfile> {
-  GratitudeSelectionCubit(this._reflectAndShareRepository)
+  GenerousSelectionCubit(this._reflectAndShareRepository)
       : super(const BaseState.initial());
 
   final ReflectAndShareRepository _reflectAndShareRepository;

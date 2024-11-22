@@ -287,6 +287,7 @@ enum AmplitudeEvents {
   ),
   familyReflectSummaryBackToHome('family_reflect_summary_back_to_home'),
   gratefulTileSubmitted('grateful_tile_submitted'),
+  generousTileSubmitted('generous_tile_submitted'),
   gratefulTileSelected('grateful_tile_selected'),
   familyReflectSummaryMinutesPlayedClicked(
     'family_reflect_summary_minutes_played_clicked',

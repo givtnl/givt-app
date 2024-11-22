@@ -45,13 +45,13 @@ class ReflectAndShareRepository {
     }
   }
 
-  void saveGratitudeInterestsForCurrentSuperhero(GratitudeCategory? gratitude) {
+  void saveGratitudeInterestsForCurrentSuperhero(TagCategory? gratitude) {
     _selectedProfiles[_getCurrentSuperHeroIndex()] =
         _selectedProfiles[_getCurrentSuperHeroIndex()]
             .copyWith(gratitude: gratitude);
   }
 
-  GratitudeCategory? getGratitudeInterestsForCurrentSuperhero() {
+  TagCategory? getGratitudeInterestsForCurrentSuperhero() {
     return _selectedProfiles[_getCurrentSuperHeroIndex()].gratitude;
   }
 

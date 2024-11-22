@@ -20,7 +20,7 @@ class GameProfile {
   final String? pictureURL;
   final List<Role> roles;
   final String type;
-  final GratitudeCategory? gratitude;
+  final TagCategory? gratitude;
 
   ProfileType get profileType => ProfileType.getByTypeName(type);
 
@@ -54,7 +54,7 @@ class GameProfile {
     Role? role,
     List<Role>? roles,
     String? type,
-    GratitudeCategory? gratitude,
+    TagCategory? gratitude,
   }) {
     return GameProfile(
       userId: userId ?? this.userId,

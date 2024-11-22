@@ -15,7 +15,7 @@ class RecommendationsUIModel {
   final List<Organisation> organisations;
   final bool showActsOfService;
   final String? name;
-  final GratitudeCategory? category;
+  final TagCategory? category;
   final bool isNotLoggedInParent;
   final bool isLoading;
   final bool hasError;
