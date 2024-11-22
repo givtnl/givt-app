@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -86,14 +85,20 @@ class _ActionContainerState extends State<ActionContainer> {
             onLongPress: widget.onLongPress == null
                 ? null
                 : () {
-                    if (kDebugMode) print('Long press');
+                    if (widget.onlyLongPress) {
+                      unawaited(
+                        AnalyticsHelper.logEvent(
+                          eventName: widget.analyticsEvent.name,
+                          eventProperties: widget.analyticsEvent.parameters,
+                        ),
+                      );
+                    }
                     widget.onLongPress?.call();
                     _setManualPressed(true);
                   },
             onLongPressEnd: widget.onLongPressUp == null
                 ? null
                 : (details) {
-                    if (kDebugMode) print('Long press end');
                     widget.onLongPressUp?.call();
                     _unpress(immediately: true);
                   },

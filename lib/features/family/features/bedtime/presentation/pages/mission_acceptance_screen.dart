@@ -277,10 +277,6 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     _avatarsAnimationController.forward();
     _textAnimationController.forward();
     _fadeAnimationController.reverse(from: 1);
-    AnalyticsHelper.logEvent(
-      eventName:
-          AmplitudeEvents.familyMissionAcceptanceScreenAcceptButtonPressed,
-    );
   }
 
   void handleButtonReleased() {
