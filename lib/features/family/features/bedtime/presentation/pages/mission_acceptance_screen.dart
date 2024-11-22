@@ -11,6 +11,7 @@ import 'package:givt_app/features/family/shared/design/components/content/avatar
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:page_transition/page_transition.dart';
 
 class MissionAcceptanceScreen extends StatefulWidget {
@@ -76,15 +77,16 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
       }
     });
     print('before enter animation started');
-    _enterAnimationController..addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        print('enter animation completed');
-        setState(() {
-          enterAnimationCompleted = true;
-        });
-      }
-    })
-    ..forward();
+    _enterAnimationController
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          print('enter animation completed');
+          setState(() {
+            enterAnimationCompleted = true;
+          });
+        }
+      })
+      ..forward();
   }
 
   void _navigateToHome() {
@@ -275,12 +277,20 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     _avatarsAnimationController.forward();
     _textAnimationController.forward();
     _fadeAnimationController.reverse(from: 1);
+    AnalyticsHelper.logEvent(
+      eventName:
+          AmplitudeEvents.familyMissionAcceptanceScreenAcceptButtonPressed,
+    );
   }
 
   void handleButtonReleased() {
     if (holdDownAnimationCompleted) {
       _secondAnimationController.forward();
       _navigateToHome();
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents
+            .familyMissionAcceptanceScreenAcceptLongPressReleaseToAccept,
+      );
     } else {
       _reverseAnimation();
     }
