@@ -335,6 +335,10 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
           _eigthTextController.forward();
           _cityDownTransition.forward();
         }
+        if (tapCount >= 8) {
+          tapCount = 8;
+          return;
+        }
       },
       child: Material(
         child: ColoredBox(
