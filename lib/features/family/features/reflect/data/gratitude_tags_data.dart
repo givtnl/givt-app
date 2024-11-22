@@ -137,7 +137,7 @@ class GratitudeTagsData {
           area: Areas.education,
           displayText: 'Go to school',
           pictureUrl:
-          'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/school.svg',
+              'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/school.svg',
           type: TagType.INTERESTS,
         ),
         Tag(
@@ -145,7 +145,7 @@ class GratitudeTagsData {
           area: Areas.education,
           displayText: 'Learn to read',
           pictureUrl:
-          'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/learn.svg',
+              'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/learn.svg',
           type: TagType.INTERESTS,
         ),
       ],
@@ -161,14 +161,6 @@ class GratitudeTagsData {
           displayText: 'Clean oceans',
           pictureUrl:
               'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/ocean.svg',
-          type: TagType.INTERESTS,
-        ),
-        Tag(
-          key: 'PROTECTANIMALS',
-          area: Areas.environment,
-          displayText: 'Protect animals',
-          pictureUrl:
-              'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/panda.svg',
           type: TagType.INTERESTS,
         ),
         Tag(
@@ -246,6 +238,36 @@ class GratitudeTagsData {
           displayText: 'After a disaster',
           pictureUrl:
               'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/aid.svg',
+          type: TagType.INTERESTS,
+        ),
+      ],
+    ),
+    const GratitudeCategory(
+      colorCombo: ColorCombo.secondary,
+      displayText: 'You got to help someone',
+      iconData: FontAwesomeIcons.peopleCarryBox,
+      tags: [
+        Tag(
+          key: 'WITHDISABILITIES',
+          area: Areas.health,
+          displayText: 'Disabilities',
+          pictureUrl:
+              'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/disabilities.svg',
+          type: TagType.INTERESTS,
+        ),
+      ],
+    ),
+    const GratitudeCategory(
+      colorCombo: ColorCombo.primary,
+      displayText: 'The animals around you',
+      iconData: FontAwesomeIcons.paw,
+      tags: [
+        Tag(
+          key: 'PROTECTANIMALS',
+          area: Areas.environment,
+          displayText: 'Protect animals',
+          pictureUrl:
+              'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/panda.svg',
           type: TagType.INTERESTS,
         ),
       ],

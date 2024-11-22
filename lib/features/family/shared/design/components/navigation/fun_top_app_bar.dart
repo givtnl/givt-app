@@ -28,7 +28,7 @@ class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
 
   factory FunTopAppBar.white({
-    required String title,
+    String? title,
     List<Widget> actions = const [],
     Widget? leading,
     Color? systemNavigationBarColor,

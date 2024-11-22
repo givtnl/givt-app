@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -114,16 +113,8 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
       },
       child: FunScaffold(
         canPop: false,
-        appBar: FunTopAppBar.primary99(
-          title: widget.uiModel.reporter.firstName!,
-          leading: Padding(
-            padding: const EdgeInsets.all(8),
-            child: SvgPicture.network(
-              widget.uiModel.reporter.pictureURL!,
-              width: 36,
-              height: 36,
-            ),
-          ),
+        appBar: FunTopAppBar(
+          title: 'Question ${widget.uiModel.questionNumber}',
           actions: const [
             LeaveGameButton(),
           ],
@@ -131,12 +122,14 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
         body: Column(
           children: [
             const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: TitleMediumText(
-                widget.uiModel.question,
-                textAlign: TextAlign.center,
-              ),
+            const BodyMediumText(
+              'Ask the superhero',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            TitleMediumText(
+              widget.uiModel.question,
+              textAlign: TextAlign.center,
             ),
             const Spacer(),
             Container(
@@ -159,7 +152,6 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: FunButton(
-                      rightIcon: FontAwesomeIcons.arrowRight,
                       onTap: () {
                         cubit.advanceToNext();
                       },

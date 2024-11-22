@@ -53,17 +53,6 @@ enum FamilyPages {
   successCoin(path: 'success-coin', name: 'SUCCESS_COIN'),
   redirectPopPage(path: 'redirect-pop-page', name: 'REDIRECT_POP_PAGE'),
 
-  //exhibition flow
-  voucherCode(path: 'voucher-code', name: 'VOUCHER_CODE'),
-  exhibitionOrganisations(
-    path: 'exhibition-organisations',
-    name: 'EXHIBITION_ORGANISATIONS',
-  ),
-  successExhibitionCoin(
-    path: 'success-exhibition-coin',
-    name: 'SUCCESS_EXHIBITION_COIN',
-  ),
-
   //design alignment
   designAlignment(path: 'design-alignment', name: 'DESIGN_ALIGNMENT'),
   chooseAmountSliderGoal(

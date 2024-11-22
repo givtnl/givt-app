@@ -9,7 +9,6 @@ import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.
 import 'package:givt_app/features/children/overview/widgets/allowance_warning_dialog.dart';
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
-import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -83,12 +82,6 @@ class FamilyOverviewPage extends StatelessWidget {
     }
 
     if (state is FamilyOverviewUpdatedState) {
-      if (!state.hasChildren && state.isAdultSingle) {
-        return NoChildrenPage(
-          onAddNewChildPressed: () => addNewMember(context),
-        );
-      }
-
       return const FamilyAvailablePage();
     }
 
