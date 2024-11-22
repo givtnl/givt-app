@@ -309,6 +309,9 @@ enum AmplitudeEvents {
   familyMissionAcceptanceScreenAcceptButtonPressed(
     'family_mission_acceptance_screen_accept_button_pressed',
   ),
+  familyMissionAcceptanceScreenAcceptLongPressReleaseToAccept(
+    'family_mission_acceptance_screen_accept_long_press_release_to_accept',
+  ),
   // Family Home Screen
   FamilyHomeScreenGratitudeGameButtonClicked(
     'family_home_screen_gratitude_game_button_clicked',
