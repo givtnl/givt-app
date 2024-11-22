@@ -67,7 +67,6 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   @override
   void initState() {
     super.initState();
-    // Initialize the AnimationControllers
     _firstTextController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -121,7 +120,6 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
       vsync: this,
     );
 
-    // Define the opacity animation
     _firstTextOpacity = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _firstTextController,
@@ -177,7 +175,6 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
         curve: FamilyAppTheme.gentle,
       ),
     );
-    // Define the scale animation for the sun
     _sunScale = Tween<double>(begin: 1, end: 0.5).animate(
       CurvedAnimation(
         parent: _sunTransition,
@@ -248,8 +245,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
       ),
     );
 
-    // Start the animation after a 1 second delay
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       _firstTextController.forward();
       setState(() {
         _started = true;
@@ -259,11 +255,18 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
 
   @override
   void dispose() {
-    // Dispose of the controller to avoid memory leaks
     _firstTextController.dispose();
     _sunTransition.dispose();
     _secondTextController.dispose();
     _thirdTextController.dispose();
+    _fourthTextController.dispose();
+    _fifthTextController.dispose();
+    _sixthTextController.dispose();
+    _seventhTextController.dispose();
+    _eigthTextController.dispose();
+    _nightShiftController.dispose();
+    _cityDownTransition.dispose();
+    _moonTranitionToRight.dispose();
     super.dispose();
   }
 
@@ -522,7 +525,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: FunButton(
                         onTap: () => Navigator.of(context).push(
-                          PageRouteBuilder<Route<dynamic>>(
+                          PageRouteBuilder(
                             pageBuilder: (context, animation,
                                     secondaryAnimation) =>
                                 SetupBedtimeScreen(arguments: widget.arguments),
