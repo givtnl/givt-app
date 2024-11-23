@@ -66,7 +66,7 @@ jobs:
               model: "gpt-4o-mini",
               messages: [
                 { role: 'system', content: 'You are a slack message writer. Your job is to translate a changelog to a short message (1 or 2 sentences) about what is changed. This message will be read by colleagues in our company. You can make use of markdown to highlight keywords or the make the message prettier. When a changelog is provided, respond with the message.' },
-                { role: 'user', content: ${{ steps.release-drafter.outputs.body }} }
+                { role: 'user', content: `${{ steps.release-drafter.outputs.body }}` }
               ]
             })
             console.log("::set-output name=generated_text::" + response.choices[2].message.content)
