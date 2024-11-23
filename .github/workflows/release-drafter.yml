@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - chore/AI-summary
 
   # Pull Request for auto assigning labels
   pull_request:
@@ -34,6 +35,7 @@ jobs:
   
       # Drafts next Release notes as Pull Requests are merged into "main"
       - name: Write Release Notes
+        id: release-drafter
         uses: release-drafter/release-drafter@v6
         with:
           version: ${{ steps.yq.outputs.result }}
@@ -47,10 +49,23 @@ jobs:
         run: |
           echo "builddate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
         id: version  # this is used on variable path
-  
+      
+      # Summarize release notes with OpenAI
+      - name: Slack Notification
+        id: generate-text
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { OpenAI } = require('openai')
+            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+            const response = await openai.completions.create({
+              model: "gpt-4o-mini",
+              prompt: "Write in 1 or 2 sentences what is changed in our app so that it is clear for the colleagues in our company. The app is not used by them, but used by lots of people that are giving to churches and charities. Use markdown format to make it pretty or highlight keywords. The message will be posted on a slack channel.\n\n${{ steps.release-drafter.outputs.body }}",
+            })
+            console.log("::set-output name=generated_text::" + response.choices[0].text)
+      
       # Post slack message for new release
       - name: Slack Notification
-        if: ${{ github.ref == 'refs/heads/main' }}
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
@@ -80,6 +95,16 @@ jobs:
                       "text": "*Made by:*\n${{ github.actor }}"
                     }
                   ]
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Release notes: ${{ steps.generate-text.outputs.generated_text }}"
+                  }
                 },
                 {
                   "type": "divider"
