@@ -48,7 +48,12 @@ jobs:
         run: |
           echo "builddate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
         id: version  # this is used on variable path
-      
+        
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install openai
+
       # Summarize release notes with OpenAI
       - name: Generate AI summary
         id: generate-text
@@ -59,7 +64,7 @@ jobs:
             const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
             const response = await openai.completions.create({
               model: "gpt-4o-mini",
-              prompt: "Write in 1 or 2 sentences what is changed in our app so that it is clear for the colleagues in our company. The app is not used by them, but used by lots of people that are giving to churches and charities. Use markdown format to make it pretty or highlight keywords. The message will be posted on a slack channel.\n\n${{ steps.release-drafter.outputs.body }}",
+              prompt: `Write in 1 or 2 sentences what is changed in our app so that it is clear for the colleagues in our company. The app is not used by them, but used by lots of people that are giving to churches and charities. Use markdown format to make it pretty or highlight keywords. The message will be posted on a slack channel.\n\n${{ steps.release-drafter.outputs.body }}`,
             })
             console.log("::set-output name=generated_text::" + response.choices[0].text)
       
