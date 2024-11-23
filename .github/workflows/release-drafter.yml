@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - chore/AI-summary
 
   # Pull Request for auto assigning labels
   pull_request:
@@ -45,17 +44,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Set current date as env variable"
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           echo "builddate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
         id: version  # this is used on variable path
         
       - uses: actions/setup-node@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           node-version: 16
       - run: npm install openai
 
       # Summarize release notes with OpenAI
       - name: Generate AI summary
+        if: ${{ github.ref == 'refs/heads/main' }}
         id: generate-text
         uses: actions/github-script@v6
         with:
@@ -73,6 +75,7 @@ jobs:
       
       # Post slack message for new release
       - name: Slack Notification
+        if: ${{ github.ref == 'refs/heads/main' }}
         uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
