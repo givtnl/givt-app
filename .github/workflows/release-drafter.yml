@@ -62,11 +62,14 @@ jobs:
           script: |
             const { OpenAI } = require('openai')
             const openai = new OpenAI({ apiKey: "${{ secrets.OPENAI_API_KEY }}"})
-            const response = await openai.completions.create({
+            const response = await openai.chat.completions.create({
               model: "gpt-4o-mini",
-              prompt: `Write in 1 or 2 sentences what is changed in our app so that it is clear for the colleagues in our company. The app is not used by them, but used by lots of people that are giving to churches and charities. Use markdown format to make it pretty or highlight keywords. The message will be posted on a slack channel.\n\n${{ steps.release-drafter.outputs.body }}`,
+              messages: [
+                { role: 'system', content: 'You are a slack message writer. Your job is to translate a changelog to a short message (1 or 2 sentences) about what is changed. This message will be read by colleagues in our company. You can make use of markdown to highlight keywords or the make the message prettier. When a changelog is provided, respond with the message.' },
+                { role: 'user', content: ${{ steps.release-drafter.outputs.body }} }
+              ]
             })
-            console.log("::set-output name=generated_text::" + response.choices[0].text)
+            console.log("::set-output name=generated_text::" + response.choices[2].message.content)
       
       # Post slack message for new release
       - name: Slack Notification
