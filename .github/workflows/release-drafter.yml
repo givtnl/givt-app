@@ -45,13 +45,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Set current date as env variable"
-        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           echo "builddate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
         id: version  # this is used on variable path
       
       # Summarize release notes with OpenAI
-      - name: Slack Notification
+      - name: Generate AI summary
         id: generate-text
         uses: actions/github-script@v6
         with:
