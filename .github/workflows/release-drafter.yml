@@ -61,7 +61,7 @@ jobs:
         with:
           script: |
             const { OpenAI } = require('openai')
-            const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+            const openai = new OpenAI({ apiKey: ${{ secrets.OPENAI_API_KEY }}})
             const response = await openai.completions.create({
               model: "gpt-4o-mini",
               prompt: `Write in 1 or 2 sentences what is changed in our app so that it is clear for the colleagues in our company. The app is not used by them, but used by lots of people that are giving to churches and charities. Use markdown format to make it pretty or highlight keywords. The message will be posted on a slack channel.\n\n${{ steps.release-drafter.outputs.body }}`,
