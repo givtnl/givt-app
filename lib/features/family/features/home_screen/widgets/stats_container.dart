@@ -25,23 +25,31 @@ class StatsContainer extends StatelessWidget {
         horizontal: 8,
         vertical: 16,
       ),
-      child: gameStats == null || gameStats!.totalSecondsPlayed == 0
-          ? showEmptyState()
-          : showStatsColumn(),
+      child: gameStats == null
+          ? showLoadingState()
+          : gameStats!.totalSecondsPlayed == 0
+              ? showEmptyState()
+              : showStatsColumn(),
+    );
+  }
+
+  Widget showLoadingState() {
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 
   Widget showEmptyState() {
     return const Column(
       children: [
-        LabelMediumText('Your stats this week'),
+        LabelMediumText('Game activity this week'),
         SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             StatsChip(
               icon: FontAwesomeIcons.arrowDown,
-              text: 'Play the gratitude game'
+              text: 'Play the Gratitude Game',
             ),
           ],
         ),
@@ -50,17 +58,19 @@ class StatsContainer extends StatelessWidget {
   }
 
   Widget showStatsColumn() {
+    final minutes = (gameStats!.totalSecondsPlayed / 60).ceil();
+    final minutesText = minutes == 1 ? ' min together' : ' mins together';
+
     return Column(
       children: [
-        const LabelMediumText('Your stats this week'),
+        const LabelMediumText('Game activity this week'),
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             StatsChip(
               icon: FontAwesomeIcons.solidClock,
-              text:
-                  '${(gameStats!.totalSecondsPlayed / 60).ceil()} min together',
+              text: minutes.toString() + minutesText,
             ),
             StatsChip(
               icon: FontAwesomeIcons.solidHeart,
