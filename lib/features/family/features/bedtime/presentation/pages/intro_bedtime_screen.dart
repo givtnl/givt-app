@@ -20,8 +20,8 @@ enum AnimationState {
 
 class IntroBedtimeScreen extends StatefulWidget {
   const IntroBedtimeScreen({
-    super.key,
     required this.arguments,
+    super.key,
   });
   final BedtimeArguments arguments;
   @override
@@ -30,6 +30,7 @@ class IntroBedtimeScreen extends StatefulWidget {
 
 class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
     with TickerProviderStateMixin {
+  late List<AnimationController> _controllers;
   late AnimationController _firstTextController;
   late AnimationController _secondTextController;
   late AnimationController _thirdTextController;
@@ -69,58 +70,35 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   @override
   void initState() {
     super.initState();
-    _firstTextController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
-    _sunTransition = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-    _secondTextController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
+    _controllers = List.generate(12, (index) {
+      int duration;
+      if (index == 0) {
+        duration = 1000;
+      } else if (index == 9 || index == 10) {
+        duration = 800;
+      } else if (index == 11) {
+        duration = 1000;
+      } else {
+        duration = 500;
+      }
+      return AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: duration),
+      );
+    });
 
-    _thirdTextController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-    _fourthTextController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-    _fifthTextController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-    _sixthTextController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-    _seventhTextController = AnimationController(
-      duration: const Duration(milliseconds: 500),
-      vsync: this,
-    );
-    _eigthTextController = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _nightShiftController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-
-    _cityDownTransition = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _moonTranitionToRight = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
+    _firstTextController = _controllers[0];
+    _secondTextController = _controllers[1];
+    _thirdTextController = _controllers[2];
+    _fourthTextController = _controllers[3];
+    _fifthTextController = _controllers[4];
+    _sixthTextController = _controllers[5];
+    _seventhTextController = _controllers[6];
+    _eigthTextController = _controllers[7];
+    _sunTransition = _controllers[8];
+    _nightShiftController = _controllers[9];
+    _cityDownTransition = _controllers[10];
+    _moonTranitionToRight = _controllers[11];
 
     _firstTextOpacity = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
@@ -257,18 +235,9 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
 
   @override
   void dispose() {
-    _firstTextController.dispose();
-    _sunTransition.dispose();
-    _secondTextController.dispose();
-    _thirdTextController.dispose();
-    _fourthTextController.dispose();
-    _fifthTextController.dispose();
-    _sixthTextController.dispose();
-    _seventhTextController.dispose();
-    _eigthTextController.dispose();
-    _nightShiftController.dispose();
-    _cityDownTransition.dispose();
-    _moonTranitionToRight.dispose();
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -362,103 +331,42 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                   ),
                   animation: _sunTransition,
                 ),
-              Center(
-                child: FadeTransition(
-                  opacity: _firstTextOpacity,
-                  child: const HeadlineMediumText(
-                    'Great job \nsuperheroes!',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+              _buildText(
+                'Great job \nsuperheroes!',
+                _firstTextOpacity,
               ),
-              Center(
-                child: FadeTransition(
-                  opacity: _secondTextOpacity,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: HeadlineMediumText(
-                      'Keep using your gratitude superpowers everyday',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+              _buildText(
+                'Keep using your gratitude superpowers everyday',
+                _secondTextOpacity,
               ),
-              Center(
-                child: FadeTransition(
-                  opacity: _thirdTextOpacity,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: HeadlineMediumText(
-                      'We have found that the best time to play the Gratitude Game',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+              _buildText(
+                'We have found that the best time to play the Gratitude Game',
+                _thirdTextOpacity,
               ),
-              Center(
-                child: FadeTransition(
-                  opacity: _fourthTextOpacity,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: HeadlineMediumText(
-                      'is in the evening before bedtime',
-                      color: Colors.white,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+              _buildText(
+                'is in the evening before bedtime',
+                _fourthTextOpacity,
+                color: Colors.white,
               ),
-              Center(
-                child: FadeTransition(
-                  opacity: _fifthTextOpacity,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: HeadlineMediumText(
-                      'This reduces stress and anxiety',
-                      color: Colors.white,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+              _buildText(
+                'This reduces stress and anxiety',
+                _fifthTextOpacity,
+                color: Colors.white,
               ),
-              Center(
-                child: FadeTransition(
-                  opacity: _sixthTextOpacity,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: HeadlineMediumText(
-                      'Develops healthy relationships',
-                      color: Colors.white,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+              _buildText(
+                'Develops healthy relationships',
+                _sixthTextOpacity,
+                color: Colors.white,
               ),
-              Center(
-                child: FadeTransition(
-                  opacity: _seventhTextOpacity,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: HeadlineMediumText(
-                      'Helps sleep quality',
-                      color: Colors.white,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+              _buildText(
+                'Helps sleep quality',
+                _seventhTextOpacity,
+                color: Colors.white,
               ),
-              Center(
-                child: FadeTransition(
-                  opacity: _eigthTextOpacity,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: HeadlineMediumText(
-                      'And ends the day on a positive note',
-                      color: Colors.white,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+              _buildText(
+                'And ends the day on a positive note',
+                _eigthTextOpacity,
+                color: Colors.white,
               ),
               if (_currentState == AnimationState.shiftedToNight)
                 AnimatedBuilder(
@@ -560,6 +468,22 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                   ),
                 ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildText(String text, Animation<double> opacity, {Color? color}) {
+    return Center(
+      child: FadeTransition(
+        opacity: opacity,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: HeadlineMediumText(
+            text,
+            textAlign: TextAlign.center,
+            color: color,
           ),
         ),
       ),
