@@ -10,6 +10,14 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:lottie/lottie.dart';
 
+enum AnimationState {
+  initial,
+  started,
+  shiftedToNight, //changes background to night, moves sun away revealing a moon, and changes city color
+  newMoonWidgetIsOnScreen, // discards the previous sun & moon widgets and shows a new moon widget that can move as needed for this animation
+  lastBenefitIsOnScreen,
+}
+
 class IntroBedtimeScreen extends StatefulWidget {
   const IntroBedtimeScreen({
     super.key,
@@ -55,13 +63,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   late Animation<double> _newMoonPositionRight;
   late Animation<double> _newMoonOpacity;
 
-  bool _isNight = false;
-  bool _started = false;
-  bool _newMoon = false;
-  bool _revealSuperheroFlare = false;
-  bool _animateSuperheroFlare = false;
-  bool _isLast = false;
-
+  AnimationState _currentState = AnimationState.initial;
   int tapCount = 0;
 
   @override
@@ -248,7 +250,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
     Future.delayed(const Duration(milliseconds: 500), () {
       _firstTextController.forward();
       setState(() {
-        _started = true;
+        _currentState = AnimationState.started;
       });
     });
   }
@@ -274,7 +276,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (!_started) return;
+        if (_currentState == AnimationState.initial) return;
         tapCount++;
         if (tapCount == 1) {
           _firstTextController
@@ -291,7 +293,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
         }
         if (tapCount == 3) {
           setState(() {
-            _isNight = true;
+            _currentState = AnimationState.shiftedToNight;
           });
           _thirdTextController
             ..duration = const Duration(milliseconds: 300)
@@ -304,8 +306,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
             ..duration = const Duration(milliseconds: 300)
             ..reverse();
           setState(() {
-            _newMoon = true;
-            _revealSuperheroFlare = true;
+            _currentState = AnimationState.newMoonWidgetIsOnScreen;
           });
           _moonTranitionToRight.forward();
         }
@@ -326,8 +327,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
         }
         if (tapCount == 8) {
           setState(() {
-            _animateSuperheroFlare = true;
-            _isLast = true;
+            _currentState = AnimationState.lastBenefitIsOnScreen;
           });
           _seventhTextController
             ..duration = const Duration(milliseconds: 300)
@@ -351,7 +351,8 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                 ),
                 animation: _nightShiftController,
               ),
-              if (!_newMoon)
+              if (_currentState != AnimationState.newMoonWidgetIsOnScreen &&
+                  _currentState != AnimationState.lastBenefitIsOnScreen)
                 AnimatedBuilder(
                   builder: (context, child) => sun(
                     MediaQuery.of(context).size.width,
@@ -459,7 +460,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                   ),
                 ),
               ),
-              if (_isNight)
+              if (_currentState == AnimationState.shiftedToNight)
                 AnimatedBuilder(
                   animation: _nightShiftController,
                   builder: (context, child) => sun(
@@ -469,15 +470,20 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                   ),
                 ),
               AnimatedBuilder(
-                animation: _isLast ? _cityDownTransition : _sunTransition,
+                animation: _currentState == AnimationState.lastBenefitIsOnScreen
+                    ? _cityDownTransition
+                    : _sunTransition,
                 builder: (context, child) => cityAtBottom(
                   MediaQuery.of(context).size.width,
                   MediaQuery.of(context).size.height,
-                  _isLast ? _cityDownPosition.value : _cityDayPosition.value,
+                  _currentState == AnimationState.lastBenefitIsOnScreen
+                      ? _cityDownPosition.value
+                      : _cityDayPosition.value,
                   1,
                 ),
               ),
-              if (!_newMoon)
+              if (_currentState != AnimationState.newMoonWidgetIsOnScreen &&
+                  _currentState != AnimationState.lastBenefitIsOnScreen)
                 AnimatedBuilder(
                   animation: _nightShiftController,
                   builder: (context, child) => Opacity(
@@ -488,7 +494,8 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                         isNight: true,
                       )),
                 ),
-              if (_newMoon)
+              if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
+                  _currentState == AnimationState.lastBenefitIsOnScreen)
                 AnimatedBuilder(
                   animation: _eigthTextController,
                   builder: (context, child) => Opacity(
@@ -503,7 +510,8 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                             )),
                   ),
                 ),
-              if (_revealSuperheroFlare)
+              if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
+                  _currentState == AnimationState.lastBenefitIsOnScreen)
                 Positioned.fill(
                   child: AnimatedBuilder(
                     animation: _moonTranitionToRight,
@@ -511,7 +519,8 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                       opacity: _flareOpacity.value,
                       child: Lottie.asset(
                         'assets/family/lotties/super_flare.json',
-                        animate: _animateSuperheroFlare,
+                        animate: _currentState ==
+                            AnimationState.lastBenefitIsOnScreen,
                         repeat: false,
                         fit: BoxFit.fitWidth,
                         width: double.infinity,
@@ -521,7 +530,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                   ),
                 ),
               const SafeArea(child: GivtBackButtonFlat()),
-              if (_isLast)
+              if (_currentState == AnimationState.lastBenefitIsOnScreen)
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: SafeArea(
