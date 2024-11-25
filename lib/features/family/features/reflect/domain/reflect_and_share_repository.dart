@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -5,6 +6,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
@@ -13,6 +15,7 @@ class ReflectAndShareRepository {
 
   final ProfilesRepository _profilesRepository;
   final FamilyAPIService _familyApiService;
+
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
   int _generousDeeds = 0;
@@ -22,9 +25,15 @@ class ReflectAndShareRepository {
 
   List<GameProfile>? _allProfiles;
   List<GameProfile> _selectedProfiles = [];
+  final List<String> _usedSecretWords = [];
   String? _currentSecretWord;
 
-  final List<String> _usedSecretWords = [];
+  GameStats? _gameStatsData;
+
+  final StreamController<GameStats> _gameStatsStreamController =
+      StreamController.broadcast();
+
+  Stream<GameStats> onGameStatsChanged() => _gameStatsStreamController.stream;
 
   int getAmountOfGenerousDeeds() => _generousDeeds;
 
@@ -32,11 +41,12 @@ class ReflectAndShareRepository {
     _generousDeeds++;
   }
 
-  void saveSummaryStats() {
+  Future<void> saveSummaryStats() async {
     try {
       _endTime = DateTime.now();
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
-      _familyApiService.saveGratitudeStats(totalTimeSpentInSeconds);
+      await _familyApiService.saveGratitudeStats(totalTimeSpentInSeconds);
+      await _fetchGameStats();
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -392,5 +402,16 @@ class ReflectAndShareRepository {
     }
     options.shuffle();
     return options;
+  }
+
+  Future<GameStats> getGameStats() async {
+    return _gameStatsData ??= await _fetchGameStats();
+  }
+
+  Future<GameStats> _fetchGameStats() async {
+    final result = await _familyApiService.fetchGameStats();
+    final stats = GameStats.fromJson(result);
+    _gameStatsStreamController.add(stats);
+    return stats;
   }
 }

@@ -14,12 +14,13 @@ import 'package:givt_app/features/family/features/home_screen/presentation/model
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/stats_container.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/utils/family_auth_utils.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -104,6 +105,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                           onAvatarTapped: onAvatarTapped,
                         ),
+                        StatsContainer(uiModel.gameStats),
                     ],
                   ),
                 ],
@@ -146,7 +148,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
       closeOverlay();
     }
 
-    var profile = _cubit.profiles[index];
+    final profile = _cubit.profiles[index];
 
     unawaited(
       context.read<ProfilesCubit>().setActiveProfile(
