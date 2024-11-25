@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
@@ -64,8 +66,12 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
     _reflectAndShareRepository.totalQuestionsAsked++;
     _nrOfQuestionsAsked++;
     if (_isLastQuestion()) {
-      _currentReporterIndex++;
-      emitData(InterviewUIModel.passThePhone(reporter: getCurrentReporter()));
+      if (_currentReporterIndex < _reporters.length - 1) {
+        _currentReporterIndex++;
+        emitData(InterviewUIModel.passThePhone(reporter: getCurrentReporter()));
+      } else {
+        finishInterview();
+      }
       return;
     } else {
       if (!_hasOnlyOneReporter()) _showPassThePhoneScreen = true;
