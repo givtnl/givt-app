@@ -34,6 +34,7 @@ jobs:
   
       # Drafts next Release notes as Pull Requests are merged into "main"
       - name: Write Release Notes
+        id: release-drafter
         uses: release-drafter/release-drafter@v6
         with:
           version: ${{ steps.yq.outputs.result }}
@@ -47,7 +48,31 @@ jobs:
         run: |
           echo "builddate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
         id: version  # this is used on variable path
-  
+        
+      - uses: actions/setup-node@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          node-version: 16
+      - run: npm install openai
+
+      # Summarize release notes with OpenAI
+      - name: Generate AI summary
+        if: ${{ github.ref == 'refs/heads/main' }}
+        id: generate-text
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { OpenAI } = require('openai')
+            const openai = new OpenAI({ apiKey: "${{ secrets.OPENAI_API_KEY }}"})
+            const response = await openai.chat.completions.create({
+              model: "gpt-4o-mini",
+              messages: [
+                { role: 'system', content: `You are a slack message writer. Your job is to translate a changelog to a short message (1 or 2 sentences) about what is changed. This message will be read by colleagues in our company. You can make use of 'mrkdwn' to highlight keywords or the make the message prettier. When a changelog is provided, respond with the message.` },
+                { role: 'user', content: `${{ steps.release-drafter.outputs.body }}` }
+              ]
+            })
+            console.log("::set-output name=generated_text::" + response.choices[0].message.content)
+      
       # Post slack message for new release
       - name: Slack Notification
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -80,6 +105,16 @@ jobs:
                       "text": "*Made by:*\n${{ github.actor }}"
                     }
                   ]
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Release notes: ${{ steps.generate-text.outputs.generated_text }}"
+                  }
                 },
                 {
                   "type": "divider"
