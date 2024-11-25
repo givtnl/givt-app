@@ -64,7 +64,8 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
     _reflectAndShareRepository.totalQuestionsAsked++;
     _nrOfQuestionsAsked++;
     if (_isLastQuestion()) {
-      finishInterview();
+      _currentReporterIndex++;
+      emitData(InterviewUIModel.passThePhone(reporter: getCurrentReporter()));
       return;
     } else {
       if (!_hasOnlyOneReporter()) _showPassThePhoneScreen = true;
@@ -112,6 +113,10 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
   }
 
   void onShowQuestionClicked() {
+    if (_isLastQuestion()) {
+      finishInterview();
+      return;
+    }
     _showPassThePhoneScreen = false;
     _emitData();
   }
