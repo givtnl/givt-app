@@ -110,6 +110,7 @@ void initCubits() {
       () => FamilyHomeScreenCubit(
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<AvatarsCubit>(

@@ -301,6 +301,21 @@ class FamilyAPIService {
     return response.statusCode == 200;
   }
 
+  Future<Map<String, dynamic>> fetchGameStats() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/statistics');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    } else {
+      final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return decodedBody['item'] as Map<String, dynamic>;
+    }
+  }
+
   Future<bool> _postRequest(String endpoint, Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, endpoint);
     final response = await client.post(
