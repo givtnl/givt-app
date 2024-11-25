@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/pages/setup_bedtime_screen.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/widgets/intro_bottom_city_widget.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/widgets/intro_new_moon_widget.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/widgets/intro_sun_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -18,6 +20,13 @@ enum AnimationState {
   lastBenefitIsOnScreen,
 }
 
+enum TransitionObject {
+  sun,
+  night,
+  moon,
+  city,
+}
+
 class IntroBedtimeScreen extends StatefulWidget {
   const IntroBedtimeScreen({
     required this.arguments,
@@ -30,28 +39,22 @@ class IntroBedtimeScreen extends StatefulWidget {
 
 class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
     with TickerProviderStateMixin {
-  late List<AnimationController> _controllers;
-  late AnimationController _firstTextController;
-  late AnimationController _secondTextController;
-  late AnimationController _thirdTextController;
-  late AnimationController _fourthTextController;
-  late AnimationController _fifthTextController;
-  late AnimationController _sixthTextController;
-  late AnimationController _seventhTextController;
-  late AnimationController _eigthTextController;
-  late AnimationController _sunTransition;
-  late AnimationController _nightShiftController;
-  late AnimationController _moonTranitionToRight;
-  late AnimationController _cityDownTransition;
+  List<AnimationController> _textTransitionControllers = [];
+  List<AnimationController> _objectTransitionControllers = [];
 
-  late Animation<double> _firstTextOpacity;
-  late Animation<double> _secondTextOpacity;
-  late Animation<double> _thirdTextOpacity;
-  late Animation<double> _fourthTextOpacity;
-  late Animation<double> _fifthTextOpacity;
-  late Animation<double> _sixthTextOpacity;
-  late Animation<double> _seventhTextOpacity;
-  late Animation<double> _eigthTextOpacity;
+  final List<String> _texts = [
+    'Great job \nsuperheroes!',
+    'Keep using your gratitude superpowers everyday',
+    'We have found that the best time to play the Gratitude Game',
+    'is in the evening before bedtime',
+    'This reduces stress and anxiety',
+    'Develops healthy relationships',
+    'Helps sleep quality',
+    'And ends the day on a positive note',
+  ];
+
+  late List<Animation<double>> _textOpacities;
+
   late Animation<double> _flareOpacity;
   late Animation<double> _sunScale;
   late Animation<double> _sunPostion;
@@ -70,245 +73,63 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   @override
   void initState() {
     super.initState();
-    _controllers = List.generate(12, (index) {
-      int duration;
+
+    _textTransitionControllers = List.generate(8, (index) {
+      var duration = 500;
       if (index == 0) {
         duration = 1000;
-      } else if (index == 9 || index == 10) {
-        duration = 800;
-      } else if (index == 11) {
-        duration = 1000;
-      } else {
-        duration = 500;
       }
+
       return AnimationController(
         vsync: this,
         duration: Duration(milliseconds: duration),
       );
     });
 
-    _firstTextController = _controllers[0];
-    _secondTextController = _controllers[1];
-    _thirdTextController = _controllers[2];
-    _fourthTextController = _controllers[3];
-    _fifthTextController = _controllers[4];
-    _sixthTextController = _controllers[5];
-    _seventhTextController = _controllers[6];
-    _eigthTextController = _controllers[7];
-    _sunTransition = _controllers[8];
-    _nightShiftController = _controllers[9];
-    _cityDownTransition = _controllers[10];
-    _moonTranitionToRight = _controllers[11];
-
-    _firstTextOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _firstTextController,
-        curve: FamilyAppTheme.gentle,
-      ),
-    );
-    _secondTextOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _secondTextController,
-        curve: Curves.easeInCubic,
-      ),
-    );
-
-    _thirdTextOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _thirdTextController,
-        curve: Curves.easeInCubic,
-      ),
-    );
-    _fourthTextOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _fourthTextController,
-        curve: Curves.easeInCubic,
-      ),
-    );
-    _fifthTextOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _fifthTextController,
-        curve: Curves.easeInCubic,
-      ),
-    );
-    _sixthTextOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _sixthTextController,
-        curve: Curves.easeInCubic,
-      ),
-    );
-    _seventhTextOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _seventhTextController,
-        curve: Curves.easeInCubic,
-      ),
-    );
-    _eigthTextOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _eigthTextController,
-        curve: Curves.easeInCubic,
-      ),
-    );
-    _newMoonOpacity = Tween<double>(begin: 1, end: 0).animate(
-      CurvedAnimation(
-        parent: _eigthTextController,
-        curve: FamilyAppTheme.gentle,
-      ),
-    );
-    _sunScale = Tween<double>(begin: 1, end: 0.5).animate(
-      CurvedAnimation(
-        parent: _sunTransition,
-        curve: FamilyAppTheme.gentle,
-      ),
-    );
-
-    _sunPostion = Tween<double>(begin: 1, end: 0.2).animate(
-      CurvedAnimation(
-        parent: _sunTransition,
-        curve: Curves.easeIn,
-      ),
-    );
-
-    _sunAwayPosition = Tween<double>(begin: 0.2, end: 2.6).animate(
-      CurvedAnimation(
-        parent: _nightShiftController,
-        curve: Curves.easeIn,
-      ),
-    );
-
-    _cityDayPosition = Tween<double>(begin: 0.25, end: 0).animate(
-      CurvedAnimation(
-        parent: _sunTransition,
-        curve: Curves.easeIn,
-      ),
-    );
-    _cityDownPosition = Tween<double>(begin: 0, end: 0.125).animate(
-      CurvedAnimation(
-        parent: _cityDownTransition,
-        curve: FamilyAppTheme.gentle,
-      ),
-    );
-
-    _cityNightOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _nightShiftController,
-        curve: Curves.easeIn,
-      ),
-    );
-    _flareOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _moonTranitionToRight,
-        curve: Curves.easeIn,
-      ),
-    );
-
-    _newMoonPositionTop = Tween<double>(begin: 0.2, end: 0).animate(
-      CurvedAnimation(
-        parent: _moonTranitionToRight,
-        curve: Curves.easeIn,
-      ),
-    );
-    _newMoonPositionRight = Tween<double>(begin: 1, end: -0.8).animate(
-      CurvedAnimation(
-        parent: _moonTranitionToRight,
-        curve: Curves.easeIn,
-      ),
-    );
-
-    _backgroundColor = ColorTween(
-      begin: FamilyAppTheme.secondary95,
-      end: FamilyAppTheme.secondary10,
-    ).animate(
-      CurvedAnimation(
-        parent: _nightShiftController,
-        curve: Curves.easeIn,
-      ),
-    );
-
-    Future.delayed(const Duration(milliseconds: 500), () {
-      _firstTextController.forward();
-      setState(() {
-        _currentState = AnimationState.started;
-      });
+    _objectTransitionControllers = List.generate(4, (index) {
+      return AnimationController(
+        vsync: this,
+      );
     });
+
+    _objectTransitionControllers[TransitionObject.sun.index].duration =
+        const Duration(milliseconds: 500);
+    _objectTransitionControllers[TransitionObject.night.index].duration =
+        const Duration(milliseconds: 800);
+    _objectTransitionControllers[TransitionObject.city.index].duration =
+        const Duration(milliseconds: 800);
+    _objectTransitionControllers[TransitionObject.moon.index].duration =
+        const Duration(milliseconds: 1000);
+
+    _textOpacities = List.generate(_texts.length, (index) {
+      return _createAnimation(
+        _textTransitionControllers[index],
+        Tween<double>(begin: 0, end: 1),
+        Curves.easeInCubic,
+      );
+    });
+
+    _initAnimations();
+    _startInitialAnimation();
   }
 
   @override
   void dispose() {
-    for (var controller in _controllers) {
+    for (final controller in _textTransitionControllers) {
       controller.dispose();
     }
+    
+    for (final controller in _objectTransitionControllers) {
+      controller.dispose();
+    }
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        if (_currentState == AnimationState.initial) return;
-        tapCount++;
-        if (tapCount == 1) {
-          _firstTextController
-            ..duration = const Duration(milliseconds: 500)
-            ..reverse();
-          _secondTextController.forward();
-          _sunTransition.forward();
-        }
-        if (tapCount == 2) {
-          _secondTextController
-            ..duration = const Duration(milliseconds: 300)
-            ..reverse();
-          _thirdTextController.forward();
-        }
-        if (tapCount == 3) {
-          setState(() {
-            _currentState = AnimationState.shiftedToNight;
-          });
-          _thirdTextController
-            ..duration = const Duration(milliseconds: 300)
-            ..reverse();
-          _fourthTextController.forward();
-          _nightShiftController.forward().then((value) {});
-        }
-        if (tapCount == 4) {
-          _fourthTextController
-            ..duration = const Duration(milliseconds: 300)
-            ..reverse();
-          setState(() {
-            _currentState = AnimationState.newMoonWidgetIsOnScreen;
-          });
-          _moonTranitionToRight.forward();
-        }
-        if (tapCount == 5) {
-          _fifthTextController.forward();
-        }
-        if (tapCount == 6) {
-          _fifthTextController
-            ..duration = const Duration(milliseconds: 300)
-            ..reverse();
-          _sixthTextController.forward();
-        }
-        if (tapCount == 7) {
-          _sixthTextController
-            ..duration = const Duration(milliseconds: 300)
-            ..reverse();
-          _seventhTextController.forward();
-        }
-        if (tapCount == 8) {
-          setState(() {
-            _currentState = AnimationState.lastBenefitIsOnScreen;
-          });
-          _seventhTextController
-            ..duration = const Duration(milliseconds: 300)
-            ..reverse();
-          _eigthTextController.forward();
-          _cityDownTransition.forward();
-        }
-        if (tapCount >= 8) {
-          tapCount = 8;
-          return;
-        }
-      },
+      onTap: _handleNextState,
       child: Material(
         child: ColoredBox(
           color: FamilyAppTheme.secondary95,
@@ -318,111 +139,82 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                 builder: (context, child) => Container(
                   color: _backgroundColor.value,
                 ),
-                animation: _nightShiftController,
+                animation:
+                    _objectTransitionControllers[TransitionObject.night.index],
               ),
               if (_currentState != AnimationState.newMoonWidgetIsOnScreen &&
                   _currentState != AnimationState.lastBenefitIsOnScreen)
                 AnimatedBuilder(
-                  builder: (context, child) => sun(
-                    MediaQuery.of(context).size.width,
-                    MediaQuery.of(context).size.height,
+                  builder: (context, child) => IntroSunWidget(
                     scale: _sunScale.value.clamp(0.5, 1),
                     position: _sunPostion.value,
                   ),
-                  animation: _sunTransition,
+                  animation:
+                      _objectTransitionControllers[TransitionObject.sun.index],
                 ),
-              _buildText(
-                'Great job \nsuperheroes!',
-                _firstTextOpacity,
-              ),
-              _buildText(
-                'Keep using your gratitude superpowers everyday',
-                _secondTextOpacity,
-              ),
-              _buildText(
-                'We have found that the best time to play the Gratitude Game',
-                _thirdTextOpacity,
-              ),
-              _buildText(
-                'is in the evening before bedtime',
-                _fourthTextOpacity,
-                color: Colors.white,
-              ),
-              _buildText(
-                'This reduces stress and anxiety',
-                _fifthTextOpacity,
-                color: Colors.white,
-              ),
-              _buildText(
-                'Develops healthy relationships',
-                _sixthTextOpacity,
-                color: Colors.white,
-              ),
-              _buildText(
-                'Helps sleep quality',
-                _seventhTextOpacity,
-                color: Colors.white,
-              ),
-              _buildText(
-                'And ends the day on a positive note',
-                _eigthTextOpacity,
-                color: Colors.white,
-              ),
+              for (int i = 0; i < _texts.length; i++)
+                _buildText(
+                  _texts[i],
+                  _textOpacities[i],
+                  color: i >= 3 ? Colors.white : null,
+                ),
               if (_currentState == AnimationState.shiftedToNight)
                 AnimatedBuilder(
-                  animation: _nightShiftController,
-                  builder: (context, child) => sun(
-                    MediaQuery.of(context).size.width,
-                    MediaQuery.of(context).size.height,
+                  animation: _objectTransitionControllers[
+                      TransitionObject.night.index],
+                  builder: (context, child) => IntroSunWidget(
                     position: _sunAwayPosition.value,
                   ),
                 ),
               AnimatedBuilder(
                 animation: _currentState == AnimationState.lastBenefitIsOnScreen
-                    ? _cityDownTransition
-                    : _sunTransition,
-                builder: (context, child) => cityAtBottom(
-                  MediaQuery.of(context).size.width,
-                  MediaQuery.of(context).size.height,
-                  _currentState == AnimationState.lastBenefitIsOnScreen
-                      ? _cityDownPosition.value
-                      : _cityDayPosition.value,
-                  1,
+                    ? _objectTransitionControllers[TransitionObject.city.index]
+                    : _objectTransitionControllers[TransitionObject.sun.index],
+                builder: (context, child) => IntroBottomCityWidget(
+                  position:
+                      _currentState == AnimationState.lastBenefitIsOnScreen
+                          ? _cityDownPosition.value
+                          : _cityDayPosition.value,
+                  opacity: 1,
+                  nightShiftController: _objectTransitionControllers[
+                      TransitionObject.night.index],
+                  cityNightOpacity: _cityNightOpacity,
                 ),
               ),
               if (_currentState != AnimationState.newMoonWidgetIsOnScreen &&
                   _currentState != AnimationState.lastBenefitIsOnScreen)
                 AnimatedBuilder(
-                  animation: _nightShiftController,
+                  animation: _objectTransitionControllers[
+                      TransitionObject.night.index],
                   builder: (context, child) => Opacity(
-                      opacity: _cityNightOpacity.value,
-                      child: sun(
-                        MediaQuery.of(context).size.width,
-                        MediaQuery.of(context).size.height,
-                        isNight: true,
-                      )),
+                    opacity: _cityNightOpacity.value,
+                    child: const IntroSunWidget(
+                      isNight: true,
+                    ),
+                  ),
                 ),
               if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
                   _currentState == AnimationState.lastBenefitIsOnScreen)
                 AnimatedBuilder(
-                  animation: _eigthTextController,
+                  animation: _textTransitionControllers[7],
                   builder: (context, child) => Opacity(
                     opacity: _newMoonOpacity.value.clamp(0, 1),
                     child: AnimatedBuilder(
-                        animation: _moonTranitionToRight,
-                        builder: (context, child) => newMoon(
-                              MediaQuery.of(context).size.width,
-                              MediaQuery.of(context).size.height,
-                              positionTop: _newMoonPositionTop.value,
-                              positionRight: _newMoonPositionRight.value,
-                            )),
+                      animation: _objectTransitionControllers[
+                          TransitionObject.moon.index],
+                      builder: (context, child) => IntroNewMoonWidget(
+                        positionTop: _newMoonPositionTop.value,
+                        positionRight: _newMoonPositionRight.value,
+                      ),
+                    ),
                   ),
                 ),
               if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
                   _currentState == AnimationState.lastBenefitIsOnScreen)
                 Positioned.fill(
                   child: AnimatedBuilder(
-                    animation: _moonTranitionToRight,
+                    animation: _objectTransitionControllers[
+                        TransitionObject.moon.index],
                     builder: (context, child) => Opacity(
                       opacity: _flareOpacity.value,
                       child: Lottie.asset(
@@ -432,7 +224,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                         repeat: false,
                         fit: BoxFit.fitWidth,
                         width: double.infinity,
-                        controller: _eigthTextController,
+                        controller: _textTransitionControllers[7],
                       ),
                     ),
                   ),
@@ -447,11 +239,18 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                       child: FunButton(
                         onTap: () => Navigator.of(context).push(
                           PageRouteBuilder(
-                            pageBuilder: (context, animation,
-                                    secondaryAnimation) =>
+                            pageBuilder: (
+                              context,
+                              animation,
+                              secondaryAnimation,
+                            ) =>
                                 SetupBedtimeScreen(arguments: widget.arguments),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
+                            transitionsBuilder: (
+                              context,
+                              animation,
+                              secondaryAnimation,
+                              child,
+                            ) {
                               return FadeTransition(
                                 opacity: animation,
                                 child: child,
@@ -474,6 +273,95 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
     );
   }
 
+  void _startInitialAnimation() {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _textTransitionControllers[0].forward();
+      setState(() {
+        _currentState = AnimationState.started;
+      });
+    });
+  }
+
+  void _initAnimations() {
+    _newMoonOpacity = _createAnimation(
+      _textTransitionControllers[7],
+      Tween<double>(begin: 1, end: 0),
+      FamilyAppTheme.gentle,
+    );
+    _sunScale = _createAnimation(
+      _objectTransitionControllers[TransitionObject.sun.index],
+      Tween<double>(begin: 1, end: 0.5),
+      FamilyAppTheme.gentle,
+    );
+
+    _sunPostion = _createAnimation(
+      _objectTransitionControllers[TransitionObject.sun.index],
+      Tween<double>(begin: 1, end: 0.2),
+      Curves.easeIn,
+    );
+
+    _sunAwayPosition = _createAnimation(
+      _objectTransitionControllers[TransitionObject.night.index],
+      Tween<double>(begin: 0.2, end: 2.6),
+      Curves.easeIn,
+    );
+
+    _cityDayPosition = _createAnimation(
+      _objectTransitionControllers[TransitionObject.sun.index],
+      Tween<double>(begin: 0.25, end: 0),
+      Curves.easeIn,
+    );
+    _cityDownPosition = _createAnimation(
+      _objectTransitionControllers[TransitionObject.city.index],
+      Tween<double>(begin: 0, end: 0.125),
+      FamilyAppTheme.gentle,
+    );
+
+    _cityNightOpacity = _createAnimation(
+      _objectTransitionControllers[TransitionObject.night.index],
+      Tween<double>(begin: 0, end: 1),
+      Curves.easeIn,
+    );
+    _flareOpacity = _createAnimation(
+      _objectTransitionControllers[TransitionObject.moon.index],
+      Tween<double>(begin: 0, end: 1),
+      Curves.easeIn,
+    );
+
+    _newMoonPositionTop = _createAnimation(
+      _objectTransitionControllers[TransitionObject.moon.index],
+      Tween<double>(begin: 0.2, end: 0),
+      Curves.easeIn,
+    );
+    _newMoonPositionRight = _createAnimation(
+      _objectTransitionControllers[TransitionObject.moon.index],
+      Tween<double>(begin: 1, end: -0.8),
+      Curves.easeIn,
+    );
+
+    _backgroundColor = _createAnimation(
+      _objectTransitionControllers[TransitionObject.night.index],
+      ColorTween(
+        begin: FamilyAppTheme.secondary95,
+        end: FamilyAppTheme.secondary10,
+      ),
+      Curves.easeIn,
+    );
+  }
+
+  Animation<T> _createAnimation<T>(
+    AnimationController controller,
+    Tween<T> tween,
+    Curve curve,
+  ) {
+    return tween.animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: curve,
+      ),
+    );
+  }
+
   Widget _buildText(String text, Animation<double> opacity, {Color? color}) {
     return Center(
       child: FadeTransition(
@@ -490,157 +378,61 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
     );
   }
 
-  Widget cityAtBottom(
-      double width, double height, double position, double opacity) {
-    return Stack(children: [
-      Positioned(
-        bottom: -height * position,
-        child: AnimatedBuilder(
-          animation: _nightShiftController,
-          builder: (context, child) => Opacity(
-            opacity: 1 - _cityNightOpacity.value,
-            child: SizedBox(
-              height: height * 0.25,
-              width: width,
-              child: SvgPicture.asset(
-                'assets/family/images/city_day.svg',
-                fit: BoxFit.fitHeight,
-              ),
-            ),
-          ),
-        ),
-      ),
-      Positioned(
-        bottom: -height * position,
-        child: AnimatedBuilder(
-          animation: _nightShiftController,
-          builder: (context, child) => Opacity(
-            opacity: _cityNightOpacity.value,
-            child: SizedBox(
-              height: height * 0.25,
-              width: width,
-              child: SvgPicture.asset(
-                'assets/family/images/city_purple.svg',
-                fit: BoxFit.fitHeight,
-              ),
-            ),
-          ),
-        ),
-      ),
-    ]);
+  void _handleNextState() {
+    if (_currentState == AnimationState.initial) return;
+    tapCount++;
+    switch (tapCount) {
+      case 1:
+        _startTextTransition(indexFrom: 0, indexTo: 1, ms: 500);
+        _objectTransitionControllers[TransitionObject.sun.index].forward();
+      case 2:
+        _startTextTransition(indexFrom: 1, indexTo: 2, ms: 300);
+      case 3:
+        _startTextTransition(indexFrom: 2, indexTo: 3, ms: 300);
+        _objectTransitionControllers[TransitionObject.night.index].forward();
+
+        setState(() {
+          _currentState = AnimationState.shiftedToNight;
+        });
+      case 4:
+        _startTextTransition(indexFrom: 3, ms: 300);
+        _objectTransitionControllers[TransitionObject.moon.index].forward();
+
+        setState(() {
+          _currentState = AnimationState.newMoonWidgetIsOnScreen;
+        });
+      case 5:
+        _startTextTransition(indexTo: 4, ms: 300);
+      case 6:
+        _startTextTransition(indexFrom: 4, indexTo: 5, ms: 300);
+      case 7:
+        _startTextTransition(indexFrom: 5, indexTo: 6, ms: 300);
+      case 8:
+        _startTextTransition(indexFrom: 6, indexTo: 7, ms: 300);
+        _objectTransitionControllers[TransitionObject.city.index].forward();
+
+        setState(() {
+          _currentState = AnimationState.lastBenefitIsOnScreen;
+        });
+      default:
+        tapCount = 8;
+        break;
+    }
   }
 
-  Widget sun(double width, double height,
-      {double scale = 0.5, double position = 0.2, bool isNight = false}) {
-    const smallestCircleModifier = 80;
-    const middleCircleModifier = 40;
-
-    return Padding(
-      padding: EdgeInsets.only(top: ((height - width * scale) / 2) * position),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: width / 2 - width * scale / 2,
-            child: Container(
-              width: width * scale,
-              height: width * scale,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isNight
-                    ? const Color(0xFF1A2C3A)
-                    : const Color(0xFFFFF9EB).withOpacity(0.7),
-              ),
-            ),
-          ),
-          Positioned(
-            top: middleCircleModifier * scale,
-            left: width / 2 - (width - middleCircleModifier * 2) * scale / 2,
-            child: Container(
-              width: (width - middleCircleModifier * 2) * scale,
-              height: (width - middleCircleModifier * 2) * scale,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isNight
-                    ? const Color(0xFF464D53)
-                    : FamilyAppTheme.highlight95,
-              ),
-            ),
-          ),
-          Positioned(
-            top: smallestCircleModifier * scale,
-            left: width / 2 - (width - smallestCircleModifier * 2) * scale / 2,
-            child: Container(
-              width: (width - smallestCircleModifier * 2) * scale,
-              height: (width - smallestCircleModifier * 2) * scale,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: isNight
-                    ? const Color(0xFFEAEAEA)
-                    : FamilyAppTheme.highlight90,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget newMoon(
-    double width,
-    double height, {
-    required double positionTop,
-    required double positionRight,
+  void _startTextTransition({
+    required int ms,
+    int? indexFrom,
+    int? indexTo,
   }) {
-    const smallestCircleModifier = 80;
-    const middleCircleModifier = 40;
+    if (indexFrom != null) {
+      _textTransitionControllers[indexFrom]
+        ..duration = Duration(milliseconds: ms)
+        ..reverse();
+    }
 
-    return Padding(
-      padding: EdgeInsets.only(top: ((height - width * 0.5) / 2) * positionTop),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: (width - width * 0.5) / 2 * positionRight,
-            child: Container(
-              width: width * 0.5,
-              height: width * 0.5,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF1A2C3A),
-              ),
-            ),
-          ),
-          Positioned(
-            top: middleCircleModifier * 0.5,
-            left: width / 2 * positionRight -
-                (width * positionRight - middleCircleModifier * 2) * 0.5 / 2,
-            child: Container(
-              width: (width - middleCircleModifier * 2) * 0.5,
-              height: (width - middleCircleModifier * 2) * 0.5,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF464D53),
-              ),
-            ),
-          ),
-          Positioned(
-            top: smallestCircleModifier * 0.5,
-            left: (width * positionRight -
-                    (width * positionRight - smallestCircleModifier * 2) *
-                        0.5) /
-                2,
-            child: Container(
-              width: (width - smallestCircleModifier * 2) * 0.5,
-              height: (width - smallestCircleModifier * 2) * 0.5,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFFEAEAEA),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    if (indexTo != null) {
+      _textTransitionControllers[indexTo].forward();
+    }
   }
 }
