@@ -53,10 +53,10 @@ import 'package:givt_app/features/family/features/recommendation/tags/screens/lo
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
 import 'package:givt_app/features/family/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/family_permit_biometric_page.dart';
-import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -73,8 +73,7 @@ class FamilyAppRoutes {
       path: FamilyPages.permitUSBiometric.path,
       name: FamilyPages.permitUSBiometric.name,
       builder: (context, state) {
-        final permitBiometricRequest =
-        state.extra! as PermitBiometricRequest;
+        final permitBiometricRequest = state.extra! as PermitBiometricRequest;
         return BlocProvider(
           create: (_) => PermitBiometricCubit(
             permitBiometricRequest: permitBiometricRequest,
@@ -97,11 +96,9 @@ class FamilyAppRoutes {
     GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
-      builder: (context, state) {
-        final index = int.tryParse(state.uri.queryParameters['index'] ?? '');
-        final showAllowanceWarning = bool.tryParse(
-            state.uri.queryParameters['showAllowanceWarning'] ?? '');
-        return MultiBlocProvider(
+      pageBuilder: (context, state) => CustomTransitionPage<void>(
+        key: state.pageKey,
+        child: MultiBlocProvider(
           providers: [
             // profile selection (home screen, for now)
             BlocProvider(
@@ -115,7 +112,10 @@ class FamilyAppRoutes {
             BlocProvider(
               create: (_) => FamilyOverviewCubit(getIt())
                 ..fetchFamilyProfiles(
-                  showAllowanceWarning: showAllowanceWarning ?? false,
+                  showAllowanceWarning: bool.tryParse(
+                          state.uri.queryParameters['showAllowanceWarning'] ??
+                              '') ??
+                      false,
                 ),
             ),
             BlocProvider(
@@ -131,10 +131,24 @@ class FamilyAppRoutes {
             ),
           ],
           child: NavigationBarHomeScreen(
-            index: index,
+            index: int.tryParse(state.uri.queryParameters['index'] ?? ''),
           ),
-        );
-      },
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0, 120);
+          const end = Offset.zero;
+          const curve = FamilyAppTheme.gentle;
+
+          final tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          final offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      ),
       routes: [
         GoRoute(
           path: FamilyPages.parentHome.path,
