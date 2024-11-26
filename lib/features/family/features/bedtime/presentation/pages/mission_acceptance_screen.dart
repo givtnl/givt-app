@@ -114,11 +114,11 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
           return Stack(
             children: [
               if (!holdDownAnimationCompleted)
-                FadeTransition(
-                  opacity: _fadeAnimationController,
-                  child: Positioned(
-                    left: 0,
-                    top: 0,
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  child: FadeTransition(
+                    opacity: _fadeAnimationController,
                     child: Image.asset(
                       'assets/family/images/moon.webp',
                     ),
