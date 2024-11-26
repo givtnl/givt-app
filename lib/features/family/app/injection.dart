@@ -217,6 +217,7 @@ void initRepositories() {
       () => ReflectAndShareRepository(
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<ResetPasswordRepository>(
