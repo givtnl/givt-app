@@ -54,7 +54,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
     final isLast =
         widget.arguments.index == widget.arguments.profiles.length - 1;
     return PopScope(
-      canPop: false,
+      canPop: true,
       child: BaseStateConsumer<dynamic, Bedtime>(
         cubit: _cubit,
         onLoading: (context) => const FunScaffold(
@@ -135,13 +135,13 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
 
   Widget cityAtBottom(double width, double height) {
     return Positioned(
-      bottom: -height * 0.085,
+      bottom: -height * 0.125,
       child: SizedBox(
-        height: height * 0.3,
+        height: height * 0.25,
         width: width,
         child: SvgPicture.asset(
           'assets/family/images/city_purple.svg',
-          fit: BoxFit.fitWidth,
+          fit: BoxFit.fitHeight,
         ),
       ),
     );
@@ -198,21 +198,18 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
             color: Colors.white,
           ),
           const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 24),
-            child: FunButton(
-              onTap: () => _cubit.onClickContinue(
-                  child.id, bedtimeSliderValue, windDownValue),
-              text: 'Continue',
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.childBedtimeSet,
-                parameters: {
-                  'child': child.firstName,
-                  'bedtime':
-                      '${bedtimeSliderValue.floor().toInt().toString().padLeft(2, '0')}:${((bedtimeSliderValue - bedtimeSliderValue.floor()) * 60).toInt().toString().padLeft(2, '0')}',
-                  'windDown': windDownValue,
-                },
-              ),
+          FunButton(
+            onTap: () => _cubit.onClickContinue(
+                child.id, bedtimeSliderValue, windDownValue),
+            text: 'Continue',
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.childBedtimeSet,
+              parameters: {
+                'child': child.firstName,
+                'bedtime':
+                    '${bedtimeSliderValue.floor().toInt().toString().padLeft(2, '0')}:${((bedtimeSliderValue - bedtimeSliderValue.floor()) * 60).toInt().toString().padLeft(2, '0')}',
+                'windDown': windDownValue,
+              },
             ),
           ),
         ],
