@@ -87,7 +87,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
           FunButton(
             isDisabled: uimodel.selectedGratitude == null,
             onTap: onNext,
-            text: 'Last question',
+            text: 'Next',
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.gratefulTileSubmitted,
               parameters: {
