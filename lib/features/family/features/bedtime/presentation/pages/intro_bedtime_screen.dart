@@ -4,7 +4,6 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/pages/setup_bedtime_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -309,165 +308,170 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
           return;
         }
       },
-      child: Material(
-        child: ColoredBox(
-          color: FamilyAppTheme.secondary95,
-          child: Stack(
-            children: [
-              AnimatedBuilder(
-                builder: (context, child) => Container(
-                  color: _backgroundColor.value,
-                ),
-                animation: _nightShiftController,
-              ),
-              if (_currentState != AnimationState.newMoonWidgetIsOnScreen &&
-                  _currentState != AnimationState.lastBenefitIsOnScreen)
+      child: PopScope(
+        canPop: false,
+        child: Material(
+          child: ColoredBox(
+            color: FamilyAppTheme.secondary95,
+            child: Stack(
+              children: [
                 AnimatedBuilder(
-                  builder: (context, child) => sun(
+                  builder: (context, child) => Container(
+                    color: _backgroundColor.value,
+                  ),
+                  animation: _nightShiftController,
+                ),
+                if (_currentState != AnimationState.newMoonWidgetIsOnScreen &&
+                    _currentState != AnimationState.lastBenefitIsOnScreen)
+                  AnimatedBuilder(
+                    builder: (context, child) => sun(
+                      MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).size.height,
+                      scale: _sunScale.value.clamp(0.5, 1),
+                      position: _sunPostion.value,
+                    ),
+                    animation: _sunTransition,
+                  ),
+                _buildText(
+                  'Great job \nsuperheroes!',
+                  _firstTextOpacity,
+                ),
+                _buildText(
+                  'Keep using your gratitude superpowers everyday',
+                  _secondTextOpacity,
+                ),
+                _buildText(
+                  'We have found that the best time to play the Gratitude Game',
+                  _thirdTextOpacity,
+                ),
+                _buildText(
+                  'is in the evening before bedtime',
+                  _fourthTextOpacity,
+                  color: Colors.white,
+                ),
+                _buildText(
+                  'This reduces stress and anxiety',
+                  _fifthTextOpacity,
+                  color: Colors.white,
+                ),
+                _buildText(
+                  'Develops healthy relationships',
+                  _sixthTextOpacity,
+                  color: Colors.white,
+                ),
+                _buildText(
+                  'Helps sleep quality',
+                  _seventhTextOpacity,
+                  color: Colors.white,
+                ),
+                _buildText(
+                  'And ends the day on a positive note',
+                  _eigthTextOpacity,
+                  color: Colors.white,
+                ),
+                if (_currentState == AnimationState.shiftedToNight)
+                  AnimatedBuilder(
+                    animation: _nightShiftController,
+                    builder: (context, child) => sun(
+                      MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).size.height,
+                      position: _sunAwayPosition.value,
+                    ),
+                  ),
+                AnimatedBuilder(
+                  animation:
+                      _currentState == AnimationState.lastBenefitIsOnScreen
+                          ? _cityDownTransition
+                          : _sunTransition,
+                  builder: (context, child) => cityAtBottom(
                     MediaQuery.of(context).size.width,
                     MediaQuery.of(context).size.height,
-                    scale: _sunScale.value.clamp(0.5, 1),
-                    position: _sunPostion.value,
-                  ),
-                  animation: _sunTransition,
-                ),
-              _buildText(
-                'Great job \nsuperheroes!',
-                _firstTextOpacity,
-              ),
-              _buildText(
-                'Keep using your gratitude superpowers everyday',
-                _secondTextOpacity,
-              ),
-              _buildText(
-                'We have found that the best time to play the Gratitude Game',
-                _thirdTextOpacity,
-              ),
-              _buildText(
-                'is in the evening before bedtime',
-                _fourthTextOpacity,
-                color: Colors.white,
-              ),
-              _buildText(
-                'This reduces stress and anxiety',
-                _fifthTextOpacity,
-                color: Colors.white,
-              ),
-              _buildText(
-                'Develops healthy relationships',
-                _sixthTextOpacity,
-                color: Colors.white,
-              ),
-              _buildText(
-                'Helps sleep quality',
-                _seventhTextOpacity,
-                color: Colors.white,
-              ),
-              _buildText(
-                'And ends the day on a positive note',
-                _eigthTextOpacity,
-                color: Colors.white,
-              ),
-              if (_currentState == AnimationState.shiftedToNight)
-                AnimatedBuilder(
-                  animation: _nightShiftController,
-                  builder: (context, child) => sun(
-                    MediaQuery.of(context).size.width,
-                    MediaQuery.of(context).size.height,
-                    position: _sunAwayPosition.value,
+                    _currentState == AnimationState.lastBenefitIsOnScreen
+                        ? _cityDownPosition.value
+                        : _cityDayPosition.value,
+                    1,
                   ),
                 ),
-              AnimatedBuilder(
-                animation: _currentState == AnimationState.lastBenefitIsOnScreen
-                    ? _cityDownTransition
-                    : _sunTransition,
-                builder: (context, child) => cityAtBottom(
-                  MediaQuery.of(context).size.width,
-                  MediaQuery.of(context).size.height,
-                  _currentState == AnimationState.lastBenefitIsOnScreen
-                      ? _cityDownPosition.value
-                      : _cityDayPosition.value,
-                  1,
-                ),
-              ),
-              if (_currentState != AnimationState.newMoonWidgetIsOnScreen &&
-                  _currentState != AnimationState.lastBenefitIsOnScreen)
-                AnimatedBuilder(
-                  animation: _nightShiftController,
-                  builder: (context, child) => Opacity(
-                      opacity: _cityNightOpacity.value,
-                      child: sun(
-                        MediaQuery.of(context).size.width,
-                        MediaQuery.of(context).size.height,
-                        isNight: true,
-                      )),
-                ),
-              if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
-                  _currentState == AnimationState.lastBenefitIsOnScreen)
-                AnimatedBuilder(
-                  animation: _eigthTextController,
-                  builder: (context, child) => Opacity(
-                    opacity: _newMoonOpacity.value.clamp(0, 1),
-                    child: AnimatedBuilder(
-                        animation: _moonTranitionToRight,
-                        builder: (context, child) => newMoon(
-                              MediaQuery.of(context).size.width,
-                              MediaQuery.of(context).size.height,
-                              positionTop: _newMoonPositionTop.value,
-                              positionRight: _newMoonPositionRight.value,
-                            )),
-                  ),
-                ),
-              if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
-                  _currentState == AnimationState.lastBenefitIsOnScreen)
-                Positioned.fill(
-                  child: AnimatedBuilder(
-                    animation: _moonTranitionToRight,
+                if (_currentState != AnimationState.newMoonWidgetIsOnScreen &&
+                    _currentState != AnimationState.lastBenefitIsOnScreen)
+                  AnimatedBuilder(
+                    animation: _nightShiftController,
                     builder: (context, child) => Opacity(
-                      opacity: _flareOpacity.value,
-                      child: Lottie.asset(
-                        'assets/family/lotties/super_flare.json',
-                        animate: _currentState ==
-                            AnimationState.lastBenefitIsOnScreen,
-                        repeat: false,
-                        fit: BoxFit.fitWidth,
-                        width: double.infinity,
-                        controller: _eigthTextController,
+                        opacity: _cityNightOpacity.value,
+                        child: sun(
+                          MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height,
+                          isNight: true,
+                        )),
+                  ),
+                if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
+                    _currentState == AnimationState.lastBenefitIsOnScreen)
+                  AnimatedBuilder(
+                    animation: _eigthTextController,
+                    builder: (context, child) => Opacity(
+                      opacity: _newMoonOpacity.value.clamp(0, 1),
+                      child: AnimatedBuilder(
+                          animation: _moonTranitionToRight,
+                          builder: (context, child) => newMoon(
+                                MediaQuery.of(context).size.width,
+                                MediaQuery.of(context).size.height,
+                                positionTop: _newMoonPositionTop.value,
+                                positionRight: _newMoonPositionRight.value,
+                              )),
+                    ),
+                  ),
+                if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
+                    _currentState == AnimationState.lastBenefitIsOnScreen)
+                  Positioned.fill(
+                    child: AnimatedBuilder(
+                      animation: _moonTranitionToRight,
+                      builder: (context, child) => Opacity(
+                        opacity: _flareOpacity.value,
+                        child: Lottie.asset(
+                          'assets/family/lotties/super_flare.json',
+                          animate: _currentState ==
+                              AnimationState.lastBenefitIsOnScreen,
+                          repeat: false,
+                          fit: BoxFit.fitWidth,
+                          width: double.infinity,
+                          controller: _eigthTextController,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              const SafeArea(child: GivtBackButtonFlat()),
-              if (_currentState == AnimationState.lastBenefitIsOnScreen)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: FunButton(
-                        onTap: () => Navigator.of(context).push(
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation,
-                                    secondaryAnimation) =>
-                                SetupBedtimeScreen(arguments: widget.arguments),
-                            transitionsBuilder: (context, animation,
-                                secondaryAnimation, child) {
-                              return FadeTransition(
-                                opacity: animation,
-                                child: child,
-                              );
-                            },
+                if (_currentState == AnimationState.lastBenefitIsOnScreen)
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: FunButton(
+                          onTap: () => Navigator.of(context).push(
+                            PageRouteBuilder<dynamic>(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      SetupBedtimeScreen(
+                                          arguments: widget.arguments),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          ),
+                          text: 'Continue',
+                          analyticsEvent: AnalyticsEvent(
+                            AmplitudeEvents
+                                .introBedtimeAnimationContinuePressed,
                           ),
                         ),
-                        text: 'Continue',
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.introBedtimeAnimationContinuePressed,
-                        ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
