@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -11,6 +12,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:go_router/go_router.dart';
 
 class SummaryScreen extends StatefulWidget {
   const SummaryScreen({super.key});
@@ -79,13 +81,13 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   ),
                 ],
               ),
+              //hmm
+
               const Spacer(),
               FunButton(
                 onTap: () {
-                  Navigator.of(context).popUntil(
-                    ModalRoute.withName(
-                      FamilyPages.profileSelection.name,
-                    ),
+                  context.goNamed(
+                    FamilyPages.profileSelection.name,
                   );
                 },
                 text: 'Back to home',
