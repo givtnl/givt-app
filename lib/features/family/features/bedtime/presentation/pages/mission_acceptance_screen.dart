@@ -1,13 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -16,7 +12,6 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
-import 'package:page_transition/page_transition.dart';
 
 class MissionAcceptanceScreen extends StatefulWidget {
   const MissionAcceptanceScreen({super.key});
