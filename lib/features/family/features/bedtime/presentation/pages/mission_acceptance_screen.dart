@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -109,7 +111,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     return SafeArea(
       child: BaseStateConsumer(
         cubit: _cubit,
-        onInitial: (context) => Container(color: Colors.black),
+        onInitial: (context) => Container(color: FamilyAppTheme.secondary10),
         onData: (context, uiModel) {
           return Stack(
             children: [
