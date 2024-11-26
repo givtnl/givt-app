@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,11 +31,10 @@ class FamilyPermitBiometricPage extends StatelessWidget {
         }
       },
       builder: (BuildContext context, PermitBiometricState state) {
-        return Theme(
-          data: AppTheme.lightTheme,
-          child: Scaffold(
-            body: _buildContent(context, state),
+        return FunScaffold(
+          appBar: FunTopAppBar.white(
           ),
+          body: _buildContent(context, state),
         );
       },
     );
@@ -39,85 +42,64 @@ class FamilyPermitBiometricPage extends StatelessWidget {
 
   Widget _buildContent(BuildContext context, PermitBiometricState state) {
     if (state.status == PermitBiometricStatus.checking) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(child: CustomCircularProgressIndicator());
     }
-
-    final size = MediaQuery.sizeOf(context);
-    final lightTheme = AppTheme.lightTheme;
 
     return state.status != PermitBiometricStatus.propose
         ? const SizedBox()
-        : SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                padding: EdgeInsets.only(top: size.height * 0.05, bottom: 10),
-                alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        text: context.l10n.permitBiometricQuestionWithType(
-                          state.biometricType.name,
-                        ),
-                        style: lightTheme.textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        children: [
-                          const TextSpan(text: '\n'),
-                          TextSpan(
-                            text: context.l10n.permitBiometricExplanation,
-                            style: lightTheme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    SvgPicture.asset(
-                      state.biometricType == BiometricType.faceId
-                          ? 'assets/images/face_id_image.svg'
-                          : 'assets/images/touch_id_image.svg',
-                      width: 160,
-                    ),
-                    const Spacer(),
-                    CustomSecondaryBorderButton(
-                      title: context.l10n.permitBiometricSkip,
-                      onPressed: () {
-                        AnalyticsHelper.logEvent(
-                          eventName: state.permitBiometricRequest.isRegistration
-                              ? AmplitudeEvents.skipBiometricWhenRegistered
-                              : AmplitudeEvents.skipBiometricWhenLoggedIn,
-                          eventProperties: {
-                            'biometric_type': state.biometricType.name,
-                          },
-                        );
-                        context.read<PermitBiometricCubit>().denyBiometric();
-                      },
-                    ),
-                    CustomElevatedButton(
-                      title: context.l10n.permitBiometricActivateWithType(
-                        state.biometricType.name,
-                      ),
-                      onPressed: () {
-                        AnalyticsHelper.logEvent(
-                          eventName: state.permitBiometricRequest.isRegistration
-                              ? AmplitudeEvents.activateBiometricWhenRegistered
-                              : AmplitudeEvents.activateBiometricWhenLoggedIn,
-                          eventProperties: {
-                            'biometric_type': state.biometricType.name,
-                          },
-                        );
-
-                        context.read<PermitBiometricCubit>().enableBiometric();
-                      },
-                    ),
-                  ],
+        : Column(
+            children: [
+              TitleLargeText(
+                context.l10n.permitBiometricQuestionWithType(
+                  state.biometricType.name,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 4),
+              BodyMediumText(
+                context.l10n.permitBiometricExplanation,
+                textAlign: TextAlign.center,
+              ),
+              const Spacer(),
+              SvgPicture.asset(
+                state.biometricType == BiometricType.faceId
+                    ? 'assets/family/images/face_id_image.svg'
+                    : 'assets/images/touch_id_image.svg',
+                width: 160,
+              ),
+              const Spacer(),
+              FunButton(
+                text: context.l10n.permitBiometricActivateWithType(
+                  state.biometricType.name,
+                ),
+                onTap: () {
+                  context.read<PermitBiometricCubit>().enableBiometric();
+                },
+                analyticsEvent: AnalyticsEvent(
+                  state.permitBiometricRequest.isRegistration
+                      ? AmplitudeEvents.activateBiometricWhenRegistered
+                      : AmplitudeEvents.activateBiometricWhenLoggedIn,
+                  parameters: {
+                    'biometric_type': state.biometricType.name,
+                  },
                 ),
               ),
-            ),
+              const SizedBox(height: 8),
+              FunButton.secondary(
+                text: context.l10n.permitBiometricSkip,
+                onTap: () {
+                  context.read<PermitBiometricCubit>().denyBiometric();
+                },
+                analyticsEvent: AnalyticsEvent(
+                  state.permitBiometricRequest.isRegistration
+                      ? AmplitudeEvents.skipBiometricWhenRegistered
+                      : AmplitudeEvents.skipBiometricWhenLoggedIn,
+                  parameters: {
+                    'biometric_type': state.biometricType.name,
+                  },
+                ),
+              ),
+            ],
           );
   }
 }

@@ -178,6 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 15),
                 CustomTextFormField(
+                  key: const ValueKey('Login-Bottomsheet-Password-Input'),
                   controller: passwordController,
                   autocorrect: false,
                   autofillHints: const [AutofillHints.password],
@@ -240,6 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const Spacer(),
                 ElevatedButton(
+                  key: const ValueKey('Login-Bottomsheet-Login-Button'),
                   onPressed: context.watch<AuthCubit>().state.status ==
                           AuthStatus.loading
                       ? null

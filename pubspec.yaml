@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.7.0
+version: 4.7.1
 publish_to: none
 
 environment:
@@ -95,6 +95,8 @@ dev_dependencies:
   golden_toolkit: ^0.15.0
   melos: ^6.1.0
   very_good_analysis: ^6.0.0
+  integration_test:
+    sdk: flutter
 
 flutter:
   uses-material-design: true

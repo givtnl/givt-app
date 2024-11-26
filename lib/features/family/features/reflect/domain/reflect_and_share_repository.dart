@@ -1,18 +1,25 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class ReflectAndShareRepository {
-  ReflectAndShareRepository(this._profilesRepository, this._familyApiService);
+  ReflectAndShareRepository(this._profilesRepository, this._familyApiService, this._authRepository) {
+    _init();
+  }
 
   final ProfilesRepository _profilesRepository;
   final FamilyAPIService _familyApiService;
+  final FamilyAuthRepository _authRepository;
+
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
   int _generousDeeds = 0;
@@ -22,21 +29,47 @@ class ReflectAndShareRepository {
 
   List<GameProfile>? _allProfiles;
   List<GameProfile> _selectedProfiles = [];
+  final List<String> _usedSecretWords = [];
   String? _currentSecretWord;
 
-  final List<String> _usedSecretWords = [];
+  GameStats? _gameStatsData;
+
+  final StreamController<GameStats> _gameStatsStreamController =
+      StreamController.broadcast();
+
+  Stream<GameStats> onGameStatsChanged() => _gameStatsStreamController.stream;
 
   int getAmountOfGenerousDeeds() => _generousDeeds;
+
+  Future<void> _init() async {
+    _authRepository.authenticatedUserStream().listen(
+      (user) {
+        if (user != null) {
+          _clearData();
+          _fetchGameStats();
+        } else {
+          _clearData();
+        }
+      },
+    );
+  }
+
+  void _clearData() {
+    _allProfiles = null;
+    _selectedProfiles = [];
+    _gameStatsData = null;
+  }
 
   void incrementGenerousDeeds() {
     _generousDeeds++;
   }
 
-  void saveSummaryStats() {
+  Future<void> saveSummaryStats() async {
     try {
       _endTime = DateTime.now();
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
-      _familyApiService.saveGratitudeStats(totalTimeSpentInSeconds);
+      await _familyApiService.saveGratitudeStats(totalTimeSpentInSeconds);
+      await _fetchGameStats();
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -214,13 +247,13 @@ class ReflectAndShareRepository {
 
     final questions = _getAllQuestions();
     if (preReporters.length == 1) {
-      final reporterQuestions = _pickQuestions(questions, 3, rng);
+      final reporterQuestions = _pickQuestions(questions, 2, rng);
       reportersWithQuestions.add(
         preReporters[0]
             .copyWith(role: Role.reporter(questions: reporterQuestions)),
       );
     } else if (preReporters.length == 2) {
-      final firstReporterQuestions = _pickQuestions(questions, 2, rng);
+      final firstReporterQuestions = _pickQuestions(questions, 1, rng);
       final secondReporterQuestions = _pickQuestions(questions, 1, rng);
       reportersWithQuestions
         ..add(
@@ -233,12 +266,20 @@ class ReflectAndShareRepository {
         );
     } else {
       for (final reporter in preReporters) {
-        final reporterQuestion = _pickQuestions(questions, 1, rng);
-        reportersWithQuestions.add(
-          reporter.copyWith(
-            role: Role.reporter(questions: reporterQuestion),
-          ),
-        );
+        if (reportersWithQuestions.length < 2) {
+          final reporterQuestion = _pickQuestions(questions, 1, rng);
+          reportersWithQuestions.add(
+            reporter.copyWith(
+              role: Role.reporter(questions: reporterQuestion),
+            ),
+          );
+        } else {
+          reportersWithQuestions.add(
+            reporter.copyWith(
+              role: const Role.reporter(questions: []),
+            ),
+          );
+        }
       }
     }
     return reportersWithQuestions;
@@ -392,5 +433,16 @@ class ReflectAndShareRepository {
     }
     options.shuffle();
     return options;
+  }
+
+  Future<GameStats> getGameStats() async {
+    return _gameStatsData ??= await _fetchGameStats();
+  }
+
+  Future<GameStats> _fetchGameStats() async {
+    final result = await _familyApiService.fetchGameStats();
+    final stats = GameStats.fromJson(result);
+    _gameStatsStreamController.add(stats);
+    return stats;
   }
 }

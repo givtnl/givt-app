@@ -275,13 +275,8 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.userXmark,
             ),
             value: locals.unregister,
-            onTap: () async => FamilyAuthUtils.authenticateUser(
-              context,
-              checkAuthRequest: FamilyCheckAuthRequest(
-                navigate: (context) async => context.pushNamed(
-                  FamilyPages.unregisterUS.name,
-                ),
-              ),
+            onTap: () async => context.pushNamed(
+              FamilyPages.unregisterUS.name,
             ),
           ),
           const Divider(

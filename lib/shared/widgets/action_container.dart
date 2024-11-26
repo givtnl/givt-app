@@ -82,22 +82,26 @@ class _ActionContainerState extends State<ActionContainer> {
     return widget.isDisabled
         ? _buildContainer(widget.child)
         : GestureDetector(
-            onLongPress: () {
-              print('Long press');
-              widget.onLongPress?.call();
-              _setManualPressed(true);
-            },
-            onLongPressDown: (details) {
-              print('Long press down');
-            },
-            onLongPressCancel: () {
-              print('Long press cancel');
-            },
-            onLongPressEnd: (details) {
-              print('Long press end');
-              widget.onLongPressUp?.call();
-              _unpress(immediately: true);
-            },
+            onLongPress: widget.onLongPress == null
+                ? null
+                : () {
+                    if (widget.onlyLongPress) {
+                      unawaited(
+                        AnalyticsHelper.logEvent(
+                          eventName: widget.analyticsEvent.name,
+                          eventProperties: widget.analyticsEvent.parameters,
+                        ),
+                      );
+                    }
+                    widget.onLongPress?.call();
+                    _setManualPressed(true);
+                  },
+            onLongPressEnd: widget.onLongPressUp == null
+                ? null
+                : (details) {
+                    widget.onLongPressUp?.call();
+                    _unpress(immediately: true);
+                  },
             onTap: widget.onlyLongPress
                 ? null
                 : () async {

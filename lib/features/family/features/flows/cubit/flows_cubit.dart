@@ -31,10 +31,6 @@ class FlowsCubit extends Cubit<FlowsState> {
     emit(const FlowsState(flowType: FlowType.recommendation));
   }
 
-  void startExhibitionFlow() {
-    emit(const FlowsState(flowType: FlowType.exhibition));
-  }
-
   void startFamilyGoalFlow() {
     emit(const FlowsState(flowType: FlowType.familyGoal));
   }

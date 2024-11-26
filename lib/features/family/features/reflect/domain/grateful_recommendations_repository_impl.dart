@@ -49,16 +49,17 @@ class GratefulRecommendationsRepositoryImpl
     Future<List<Organisation>> Function(GameProfile) fetchFunction,
   ) async {
     final recommendationsList = await fetchFunction(profile);
-    final sortedList = sortRecommendationsByChurchTag(recommendationsList);
+    final sortedList =
+        sortRecommendationsByLocalPartnerTag(recommendationsList);
     return MapEntry(profile, sortedList);
   }
 
-  List<Organisation> sortRecommendationsByChurchTag(
+  List<Organisation> sortRecommendationsByLocalPartnerTag(
     List<Organisation> organisations,
   ) {
     organisations.sort((a, b) {
-      final aHasChurchTag = a.tags.any((tag) => tag.key == "CHURCH");
-      final bHasChurchTag = b.tags.any((tag) => tag.key == "CHURCH");
+      final aHasChurchTag = a.tags.any((tag) => tag.key == "LOCALPARTNER");
+      final bHasChurchTag = b.tags.any((tag) => tag.key == "LOCALPARTNER");
       if (aHasChurchTag && !bHasChurchTag) {
         return -1;
       } else if (!aHasChurchTag && bHasChurchTag) {
@@ -70,6 +71,7 @@ class GratefulRecommendationsRepositoryImpl
     return organisations;
   }
 
+// TODO: Update includePreferredChurch to includeLocalPartnerat some point
   Future<List<Organisation>> _getOrganisationsForProfile(
       GameProfile profile) async {
     final interests = profile.gratitude?.tags;
@@ -108,7 +110,7 @@ class GratefulRecommendationsRepositoryImpl
   ) async {
     if (!cache.containsKey(profile)) {
       final result = await fetchFunction(profile);
-      final sortedList = sortRecommendationsByChurchTag(result);
+      final sortedList = sortRecommendationsByLocalPartnerTag(result);
       cache[profile] = sortedList;
     }
     return cache[profile] ?? [];
