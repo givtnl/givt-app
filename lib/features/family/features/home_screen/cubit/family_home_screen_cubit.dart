@@ -35,8 +35,13 @@ class FamilyHomeScreenCubit
     _onGroupsChanged(
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
     );
-    _onGameStatsChanged(await _reflectAndShareRepository.getGameStats());
     _emitData();
+  }
+
+  void logout() {
+    _gameStats = null;
+    _familyGroup = null;
+    profiles = [];
   }
 
   void _onProfilesChanged(List<Profile> profiles) {
@@ -53,8 +58,7 @@ class FamilyHomeScreenCubit
   }
 
   void _onGameStatsChanged(GameStats gameStats) {
-    this._gameStats = gameStats;
-
+    _gameStats = gameStats;
     _emitData();
   }
 
