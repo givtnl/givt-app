@@ -35,6 +35,7 @@ class FamilyHomeScreenCubit
     _onGroupsChanged(
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
     );
+    _gameStats = await _reflectAndShareRepository.getGameStats();
     _emitData();
   }
 
