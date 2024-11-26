@@ -96,59 +96,62 @@ class FamilyAppRoutes {
     GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
-        key: state.pageKey,
-        child: MultiBlocProvider(
-          providers: [
-            // profile selection (home screen, for now)
-            BlocProvider(
-              lazy: false,
-              create: (_) => RemoteDataSourceSyncBloc(
-                getIt(),
-                getIt(),
-              )..add(const RemoteDataSourceSyncRequested()),
-            ),
-            // manage family
-            BlocProvider(
-              create: (_) => FamilyOverviewCubit(getIt())
-                ..fetchFamilyProfiles(
-                  showAllowanceWarning: bool.tryParse(
-                          state.uri.queryParameters['showAllowanceWarning'] ??
-                              '') ??
-                      false,
-                ),
-            ),
-            BlocProvider(
-              create: (context) =>
-                  FamilyHistoryCubit(getIt(), getIt(), getIt())..fetchHistory(),
-            ),
-            // us personal info edit page
-            BlocProvider(
-              create: (context) => PersonalInfoEditBloc(
-                loggedInUserExt: context.read<FamilyAuthCubit>().user!,
-                authRepository: getIt(),
+      pageBuilder: (context, state) {
+        final index = int.tryParse(state.uri.queryParameters['index'] ?? '');
+        final showAllowanceWarning = bool.tryParse(
+            state.uri.queryParameters['showAllowanceWarning'] ?? '');
+        return CustomTransitionPage<void>(
+          key: state.pageKey,
+          child: MultiBlocProvider(
+            providers: [
+              // profile selection (home screen, for now)
+              BlocProvider(
+                lazy: false,
+                create: (_) => RemoteDataSourceSyncBloc(
+                  getIt(),
+                  getIt(),
+                )..add(const RemoteDataSourceSyncRequested()),
               ),
+              // manage family
+              BlocProvider(
+                create: (_) => FamilyOverviewCubit(getIt())
+                  ..fetchFamilyProfiles(
+                    showAllowanceWarning: showAllowanceWarning ?? false,
+                  ),
+              ),
+              BlocProvider(
+                create: (context) =>
+                    FamilyHistoryCubit(getIt(), getIt(), getIt())
+                      ..fetchHistory(),
+              ),
+              // us personal info edit page
+              BlocProvider(
+                create: (context) => PersonalInfoEditBloc(
+                  loggedInUserExt: context.read<FamilyAuthCubit>().user!,
+                  authRepository: getIt(),
+                ),
+              ),
+            ],
+            child: NavigationBarHomeScreen(
+              index: index,
             ),
-          ],
-          child: NavigationBarHomeScreen(
-            index: int.tryParse(state.uri.queryParameters['index'] ?? ''),
           ),
-        ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0, 120);
-          const end = Offset.zero;
-          const curve = FamilyAppTheme.gentle;
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(0, 120);
+            const end = Offset.zero;
+            const curve = FamilyAppTheme.gentle;
 
-          final tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          final offsetAnimation = animation.drive(tween);
+            final tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            final offsetAnimation = animation.drive(tween);
 
-          return SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          );
-        },
-      ),
+            return SlideTransition(
+              position: offsetAnimation,
+              child: child,
+            );
+          },
+        );
+      },
       routes: [
         GoRoute(
           path: FamilyPages.parentHome.path,
