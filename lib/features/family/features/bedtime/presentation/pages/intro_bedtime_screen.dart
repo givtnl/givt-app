@@ -437,7 +437,6 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                     ),
                   ),
                 ),
-              const SafeArea(child: GivtBackButtonFlat()),
               if (_currentState == AnimationState.lastBenefitIsOnScreen)
                 Align(
                   alignment: Alignment.bottomCenter,
