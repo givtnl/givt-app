@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/home_screen/presentation/pages
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -109,16 +110,16 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     return SafeArea(
       child: BaseStateConsumer(
         cubit: _cubit,
-        onInitial: (context) => Container(color: Colors.black),
+        onInitial: (context) => Container(color: FamilyAppTheme.secondary10),
         onData: (context, uiModel) {
           return Stack(
             children: [
               if (!holdDownAnimationCompleted)
-                FadeTransition(
-                  opacity: _fadeAnimationController,
-                  child: Positioned(
-                    left: 0,
-                    top: 0,
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  child: FadeTransition(
+                    opacity: _fadeAnimationController,
                     child: Image.asset(
                       'assets/family/images/moon.webp',
                     ),
