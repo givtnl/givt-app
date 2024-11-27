@@ -111,6 +111,7 @@ void initCubits() {
       () => FamilyHomeScreenCubit(
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<AvatarsCubit>(
@@ -220,6 +221,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<ReflectAndShareRepository>(
       () => ReflectAndShareRepository(
+        getIt(),
         getIt(),
         getIt(),
       ),

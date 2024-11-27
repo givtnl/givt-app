@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/pages/setup_bedtime_screen.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/pages/intro_bedtime_screen.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
@@ -58,7 +58,7 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                 const GratefulScreen().toRoute(context),
               );
             case RedirectToBedtimeSelection():
-              Navigator.of(context).push(SetupBedtimeScreen(
+              Navigator.of(context).push(IntroBedtimeScreen(
                 arguments: BedtimeArguments(
                   BedtimeConfig.defaultBedtimeHour,
                   BedtimeConfig.defaultWindDownMinutes,

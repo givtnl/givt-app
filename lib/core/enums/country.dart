@@ -71,7 +71,7 @@ enum Country {
   static Country fromCode(String code) {
     return Country.values.firstWhere(
       (country) => country.countryCode.toUpperCase() == code.toUpperCase(),
-      orElse: () => Country.unknown,
+      orElse: () => Country.nl,
     );
   }
 

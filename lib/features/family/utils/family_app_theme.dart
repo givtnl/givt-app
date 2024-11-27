@@ -15,6 +15,8 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   final Color secondaryColor;
   final Color tertiaryColor;
 
+  static const Cubic gentle = Cubic(0.47, 0, 0.23, 1.38);
+
 // extra colors within pallette
   static const primary20 = Color(0xFF003920);
   static const primary30 = Color(0xFF005231);
@@ -64,7 +66,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const error20 = Color(0xFF680300);
   static const error30 = Color(0xFF920700);
   static const error40 = Color(0xFFB91F0F);
-  static const error50 = Color.fromRGBO(220,58,38,1);
+  static const error50 = Color.fromRGBO(220, 58, 38, 1);
   static const error80 = Color(0xFFFFB4A7);
   static const error90 = Color(0xFFFFDAD4);
   static const error98 = Color.fromRGBO(255, 248, 246, 1);

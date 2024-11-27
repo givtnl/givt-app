@@ -1,18 +1,17 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:go_router/go_router.dart';
 
 class MissionAcceptanceScreen extends StatefulWidget {
   const MissionAcceptanceScreen({super.key});
@@ -90,12 +89,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
   }
 
   void _navigateToHome() {
-    Navigator.pushReplacement(
-        context,
-        PageTransition<dynamic>(
-            isIos: Platform.isIOS,
-            type: PageTransitionType.bottomToTop,
-            child: const NavigationBarHomeScreen()));
+    context.goNamed(FamilyPages.profileSelection.name);
   }
 
   void _reverseAnimation() {
@@ -109,119 +103,122 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     return SafeArea(
       child: BaseStateConsumer(
         cubit: _cubit,
-        onInitial: (context) => Container(color: Colors.black),
+        onInitial: (context) => Container(color: FamilyAppTheme.secondary10),
         onData: (context, uiModel) {
-          return Stack(
-            children: [
-              if (!holdDownAnimationCompleted)
-                FadeTransition(
-                  opacity: _fadeAnimationController,
-                  child: Positioned(
+          return ColoredBox(
+            color: FamilyAppTheme.secondary10,
+            child: Stack(
+              children: [
+                if (!holdDownAnimationCompleted)
+                  Positioned(
                     left: 0,
                     top: 0,
-                    child: Image.asset(
-                      'assets/family/images/moon.webp',
-                    ),
-                  ),
-                ),
-              if (!enterAnimationCompleted)
-                poppingUpCityAtBottom(MediaQuery.sizeOf(context).width,
-                    MediaQuery.sizeOf(context).height),
-              if (enterAnimationCompleted)
-                reactiveCityAtBottom(MediaQuery.sizeOf(context).width,
-                    MediaQuery.sizeOf(context).height),
-              if (holdDownAnimationCompleted)
-                const Align(
-                  child: TitleLargeText(
-                    'Release the button!',
-                    color: Colors.white,
-                  ),
-                ),
-              if (!holdDownAnimationCompleted)
-                PositionedTransition(
-                  rect: RelativeRectTween(
-                    begin: RelativeRect.fromLTRB(
-                        0.5, MediaQuery.sizeOf(context).height * 0.3, 0, 0),
-                    end: RelativeRect.fromLTRB(
-                        0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
-                  ).animate(
-                    CurvedAnimation(
-                      parent: _textAnimationController,
-                      curve: Curves.easeInOutQuint,
-                      reverseCurve: Curves.easeInOutQuint,
-                    ),
-                  ),
-                  child: FadeTransition(
-                    opacity: _fadeAnimationController,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: TitleLargeText(
-                        'Is the ${uiModel.familyName} Family ready to accept this mission of gratitude?',
-                        color: Colors.white,
-                        textAlign: TextAlign.center,
+                    child: FadeTransition(
+                      opacity: _fadeAnimationController,
+                      child: Image.asset(
+                        'assets/family/images/moon.webp',
                       ),
                     ),
                   ),
-                ),
-              if (!holdDownAnimationCompleted)
-                PositionedTransition(
-                  rect: RelativeRectTween(
-                    begin: RelativeRect.fromLTRB(
-                        0.5, MediaQuery.sizeOf(context).height * 0.1, 0, 0),
-                    end: RelativeRect.fromLTRB(
-                        0.5, MediaQuery.sizeOf(context).height * 0.55, 0, 0),
-                  ).animate(
-                    CurvedAnimation(
-                      parent: _avatarsAnimationController,
-                      curve: Curves.easeInOutQuint,
-                      reverseCurve: Curves.easeInOutQuint,
+                if (!enterAnimationCompleted)
+                  poppingUpCityAtBottom(MediaQuery.sizeOf(context).width,
+                      MediaQuery.sizeOf(context).height),
+                if (enterAnimationCompleted)
+                  reactiveCityAtBottom(MediaQuery.sizeOf(context).width,
+                      MediaQuery.sizeOf(context).height),
+                if (holdDownAnimationCompleted)
+                  const Align(
+                    child: TitleLargeText(
+                      'Release the button!',
+                      color: Colors.white,
                     ),
                   ),
-                  child: AvatarBar(
-                    textColor: Colors.white,
-                    uiModel: uiModel.avatarBarUIModel,
-                    onAvatarTapped: (int index) {
-                      //nothing
-                    },
+                if (!holdDownAnimationCompleted)
+                  PositionedTransition(
+                    rect: RelativeRectTween(
+                      begin: RelativeRect.fromLTRB(
+                          0.5, MediaQuery.sizeOf(context).height * 0.3, 0, 0),
+                      end: RelativeRect.fromLTRB(
+                          0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
+                    ).animate(
+                      CurvedAnimation(
+                        parent: _textAnimationController,
+                        curve: Curves.easeInOutQuint,
+                        reverseCurve: Curves.easeInOutQuint,
+                      ),
+                    ),
+                    child: FadeTransition(
+                      opacity: _fadeAnimationController,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: TitleLargeText(
+                          'Is the ${uiModel.familyName} Family ready to accept this mission of gratitude?',
+                          color: Colors.white,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                if (!holdDownAnimationCompleted)
+                  PositionedTransition(
+                    rect: RelativeRectTween(
+                      begin: RelativeRect.fromLTRB(
+                          0.5, MediaQuery.sizeOf(context).height * 0.1, 0, 0),
+                      end: RelativeRect.fromLTRB(
+                          0.5, MediaQuery.sizeOf(context).height * 0.55, 0, 0),
+                    ).animate(
+                      CurvedAnimation(
+                        parent: _avatarsAnimationController,
+                        curve: Curves.easeInOutQuint,
+                        reverseCurve: Curves.easeInOutQuint,
+                      ),
+                    ),
+                    child: AvatarBar(
+                      textColor: Colors.white,
+                      uiModel: uiModel.avatarBarUIModel,
+                      onAvatarTapped: (int index) {
+                        //nothing
+                      },
+                    ),
+                  ),
+                if (holdDownAnimationCompleted)
+                  PositionedTransition(
+                    rect: RelativeRectTween(
+                      begin: RelativeRect.fromLTRB(
+                          0.5, MediaQuery.sizeOf(context).height * 0.55, 0, 0),
+                      end: RelativeRect.fromLTRB(
+                          0.5, MediaQuery.sizeOf(context).height * -1, 0, 0),
+                    ).animate(
+                      CurvedAnimation(
+                          parent: _secondAnimationController,
+                          curve: Curves.linear,
+                          reverseCurve: Curves.linear),
+                    ),
+                    child: AvatarBar(
+                      textColor: Colors.white,
+                      uiModel: uiModel.avatarBarUIModel,
+                      onAvatarTapped: (int index) {
+                        //nothing
+                      },
+                    ),
+                  ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: FunButton(
+                      text: 'Hold to accept',
+                      onlyLongPress: true,
+                      onLongPress: _playAnimation,
+                      onLongPressUp: handleButtonReleased,
+                      analyticsEvent: AnalyticsEvent(AmplitudeEvents
+                          .familyMissionAcceptanceScreenAcceptButtonPressed),
+                      onTap: () {},
+                    ),
                   ),
                 ),
-              if (holdDownAnimationCompleted)
-                PositionedTransition(
-                  rect: RelativeRectTween(
-                    begin: RelativeRect.fromLTRB(
-                        0.5, MediaQuery.sizeOf(context).height * 0.55, 0, 0),
-                    end: RelativeRect.fromLTRB(
-                        0.5, MediaQuery.sizeOf(context).height * -1, 0, 0),
-                  ).animate(
-                    CurvedAnimation(
-                        parent: _secondAnimationController,
-                        curve: Curves.linear,
-                        reverseCurve: Curves.linear),
-                  ),
-                  child: AvatarBar(
-                    textColor: Colors.white,
-                    uiModel: uiModel.avatarBarUIModel,
-                    onAvatarTapped: (int index) {
-                      //nothing
-                    },
-                  ),
-                ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: FunButton(
-                    text: 'Hold to accept',
-                    onlyLongPress: true,
-                    onLongPress: _playAnimation,
-                    onLongPressUp: handleButtonReleased,
-                    analyticsEvent: AnalyticsEvent(AmplitudeEvents
-                        .familyMissionAcceptanceScreenAcceptButtonPressed),
-                    onTap: () {},
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           );
         },
       ),
