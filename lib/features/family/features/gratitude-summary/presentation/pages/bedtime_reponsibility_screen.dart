@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/bloc/yesno-cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/bedtime_responsibility_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
@@ -15,8 +13,8 @@ import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
-class YesNoScreen extends StatefulWidget {
-  const YesNoScreen({
+class AssignBedtimeResponsibilityScreen extends StatefulWidget {
+  const AssignBedtimeResponsibilityScreen({
     required this.name,
     required this.childGuid,
     required this.imageUrl,
@@ -28,11 +26,14 @@ class YesNoScreen extends StatefulWidget {
   final String imageUrl;
 
   @override
-  State<YesNoScreen> createState() => _YesNoScreenState();
+  State<AssignBedtimeResponsibilityScreen> createState() =>
+      _AssignBedtimeResponsibilityScreenState();
 }
 
-class _YesNoScreenState extends State<YesNoScreen> {
-  final YesNoCubit _cubit = getIt<YesNoCubit>();
+class _AssignBedtimeResponsibilityScreenState
+    extends State<AssignBedtimeResponsibilityScreen> {
+  final AssignBedtimeResponsibilityCubit _cubit =
+      getIt<AssignBedtimeResponsibilityCubit>();
   late String text;
   bool _showButtons = true;
   @override

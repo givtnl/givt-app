@@ -22,7 +22,9 @@ enum FamilyPages {
     path: 'family-personal-info-edit',
     name: 'FAMILY-PERSONAL-INFO-EDIT',
   ),
-  yesNo(path: 'yes-no', name: 'YES-NO'),
+  assignBedtimeResponsibility(
+      path: 'assign-bedtime-responsibility',
+      name: 'ASSIGN-BEDTIME-RESPONSIBILITY'),
   parentSummary(path: 'parent-summary', name: 'PARENT-SUMMARY'),
   registrationUS(path: '/registration-us', name: 'REGISTRATION-US'),
   permitUSBiometric(

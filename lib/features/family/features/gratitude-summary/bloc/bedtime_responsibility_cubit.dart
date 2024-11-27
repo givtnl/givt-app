@@ -4,8 +4,8 @@ import 'package:givt_app/features/family/features/gratitude-summary/domain/repos
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class YesNoCubit extends CommonCubit<dynamic, bool> {
-  YesNoCubit() : super(const BaseState.initial());
+class AssignBedtimeResponsibilityCubit extends CommonCubit<dynamic, bool> {
+  AssignBedtimeResponsibilityCubit() : super(const BaseState.initial());
 
   final ParentSummaryRepository _summaryRepository =
       getIt<ParentSummaryRepository>();
@@ -24,7 +24,7 @@ class YesNoCubit extends CommonCubit<dynamic, bool> {
 
   void saveDecision({required bool yes}) {
     try {
-      _summaryRepository.sendYesNoPutKidToBed(
+      _summaryRepository.assignBedtimeResponsibility(
         childGuid: childGuid,
         parentGuid: _familyAuthRepository.getCurrentUser()!.guid,
         yes: yes,

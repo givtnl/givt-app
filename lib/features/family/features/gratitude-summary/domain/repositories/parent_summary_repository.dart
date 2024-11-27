@@ -5,7 +5,7 @@ class ParentSummaryRepository {
   ParentSummaryRepository(this._familyAPIService);
   final FamilyAPIService _familyAPIService;
 
-  Future<bool> sendYesNoPutKidToBed({
+  Future<bool> assignBedtimeResponsibility({
     required String childGuid,
     required String parentGuid,
     required bool yes,
