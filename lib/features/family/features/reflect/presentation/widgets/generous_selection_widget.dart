@@ -60,6 +60,7 @@ class GenerousSelectionWidget extends StatelessWidget {
               for (int i = 0; i < uimodel.tagList.length; i++)
                 FunTile(
                   shrink: true,
+                  titleBig: uimodel.tagList[i].title,
                   titleMedium: uimodel.tagList[i].displayText,
                   assetSize: 27,
                   iconPath: '',
@@ -68,8 +69,7 @@ class GenerousSelectionWidget extends StatelessWidget {
                   onTap: () {
                     onClickTile(uimodel.tagList[i]);
                   },
-                  isSelected:
-                      uimodel.selectedTag == uimodel.tagList[i],
+                  isSelected: uimodel.selectedTag == uimodel.tagList[i],
                   borderColor: uimodel.tagList[i].colorCombo.borderColor,
                   backgroundColor:
                       uimodel.tagList[i].colorCombo.backgroundColor,

@@ -103,6 +103,36 @@ class GratitudeTagsData {
       type: TagType.INTERESTS,
     ),
   ];
+  static final generousPowers = [
+    const TagCategory(
+      tags: [],
+      colorCombo: ColorCombo.highlight,
+      displayText: 'Help by spending time',
+      title: 'Time',
+      iconData: FontAwesomeIcons.solidClock,
+    ),
+    const TagCategory(
+      tags: [],
+      colorCombo: ColorCombo.secondary,
+      displayText: 'Share your special skills',
+      title: 'Talents',
+      iconData: FontAwesomeIcons.book,
+    ),
+    const TagCategory(
+      tags: [],
+      colorCombo: ColorCombo.primary,
+      displayText: 'Give what you have',
+      title: 'Treasure',
+      iconData: FontAwesomeIcons.moneyBillWave,
+    ),
+    const TagCategory(
+      tags: [],
+      colorCombo: ColorCombo.tertiary,
+      displayText: 'I haven’t had a chance yet',
+      title: 'Not yet',
+      iconData: FontAwesomeIcons.handshakeAngle,
+    ),
+  ];
   static final gratitudeCategories = [
     const TagCategory(
       colorCombo: ColorCombo.highlight,

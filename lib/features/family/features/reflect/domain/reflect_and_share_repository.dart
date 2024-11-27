@@ -55,6 +55,17 @@ class ReflectAndShareRepository {
     return _selectedProfiles[_getCurrentSuperHeroIndex()].gratitude;
   }
 
+  void saveGenerousPowerForCurrentSuperhero(TagCategory? power) {
+    _selectedProfiles[_getCurrentSuperHeroIndex()] =
+        _selectedProfiles[_getCurrentSuperHeroIndex()].copyWith(
+      power: power,
+    );
+  }
+
+  TagCategory? getGenerousPowerrForCurrentSuperhero() {
+    return _selectedProfiles[_getCurrentSuperHeroIndex()].power;
+  }
+
   List<GameProfile> getCurrentReporters() {
     return _selectedProfiles
         .where((profile) => profile.roles.whereType<Reporter>().isNotEmpty)
