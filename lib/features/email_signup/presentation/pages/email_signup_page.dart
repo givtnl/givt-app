@@ -134,6 +134,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                           BodySmallText.primary40(locals.weWontSendAnySpam),
                           const Spacer(),
                           OutlinedTextFormField(
+                            key: const ValueKey('Email-Input'),
                             initialValue: state.email,
                             hintText: locals.email,
                             onChanged: _cubit.updateEmail,
@@ -193,6 +194,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                           ),
                           const SizedBox(height: 12),
                           FunButton(
+                            key: const ValueKey('Email-Continue-Button'),
                             isDisabled: !state.continueButtonEnabled,
                             isLoading: _isLoading,
                             onTap: state.continueButtonEnabled

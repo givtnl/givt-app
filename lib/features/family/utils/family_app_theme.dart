@@ -15,6 +15,8 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   final Color secondaryColor;
   final Color tertiaryColor;
 
+  static const Cubic gentle = Cubic(0.47, 0, 0.23, 1.38);
+
 // extra colors within pallette
   static const primary20 = Color(0xFF003920);
   static const primary30 = Color(0xFF005231);

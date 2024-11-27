@@ -53,7 +53,7 @@ class GuessSecretWordCubit
             await _reflectAndShareRepository.getKidsWithoutBedtime();
         // Check if it's the last game and delay for 2 seconds before continuing
         if (_reflectAndShareRepository.isGameFinished()) {
-          _reflectAndShareRepository.saveSummaryStats();
+          unawaited(_reflectAndShareRepository.saveSummaryStats());
           Timer(const Duration(seconds: 2), () {
             if (kidsWithoutBedtime.isNotEmpty) {
               redirectToBedtimeSelection(kidsWithoutBedtime);
@@ -62,13 +62,14 @@ class GuessSecretWordCubit
             emitCustom(const GuessTheWordCustom.redirectToSummary());
           });
         }
-        AnalyticsHelper.logEvent(
+
+        unawaited(AnalyticsHelper.logEvent(
           eventName:
               AmplitudeEvents.reflectAndShareGuessTotalAttemptsUntilCorrect,
           eventProperties: {
             'total': _attempts,
           },
-        );
+        ));
       }
       _hasSuccess = true;
     }

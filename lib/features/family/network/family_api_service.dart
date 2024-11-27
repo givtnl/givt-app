@@ -362,10 +362,12 @@ class FamilyAPIService {
 
   Future<String> createGame() async {
     final url = Uri.https(_apiURL, '/givtservice/v1/Game');
-    final response = await client.post(url, headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    }, body: jsonEncode({}));
+    final response = await client.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({}));
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
@@ -380,24 +382,25 @@ class FamilyAPIService {
     return itemMap['id'] as String;
   }
 
-  Future<bool> saveUserGratitudeCategory(String gameGuid, String userid, String category) async {
+  Future<bool> saveUserGratitudeCategory(
+      String gameGuid, String userid, String category) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid/user');
     final response = await client.post(url,
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: jsonEncode(
-          {'userid': userid, 
-          'category': category,}
-          ));
+        body: jsonEncode({
+          'userid': userid,
+          'category': category,
+        }));
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
         body: response.body.isNotEmpty
             ? jsonDecode(response.body) as Map<String, dynamic>
             : null,
-      );      
+      );
     }
     return response.statusCode == 200;
   }
@@ -416,6 +419,21 @@ class FamilyAPIService {
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final itemMap = decodedBody['item']! as Map<String, dynamic>;
     return itemMap;
+  }
+
+  Future<Map<String, dynamic>> fetchGameStats() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/statistics');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    } else {
+      final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return decodedBody['item'] as Map<String, dynamic>;
+    }
   }
 
   Future<bool> _postRequest(String endpoint, Map<String, dynamic> body) async {
@@ -445,11 +463,12 @@ class FamilyAPIService {
     }
     return response.statusCode == 200;
   }
-  Future<bool> putKidToBed(
-    {required String childGuid,
+
+  Future<bool> putKidToBed({
+    required String childGuid,
     required String parentGuid,
-    required bool yes,}
-  ) async {
+    required bool yes,
+  }) async {
     return _postRequest(
       '/givtservice/v1/profiles/bedtime-responsibility',
       {

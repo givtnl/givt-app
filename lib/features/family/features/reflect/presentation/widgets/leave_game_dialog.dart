@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:go_router/go_router.dart';
 
 class LeaveGameDialog extends StatelessWidget {
   const LeaveGameDialog({super.key});
@@ -23,10 +24,8 @@ class LeaveGameDialog extends StatelessWidget {
         FunButton.destructive(
           onTap: () {
             getIt<SummaryCubit>().saveSummary();
-            Navigator.of(context).popUntil(
-              ModalRoute.withName(
-                FamilyPages.profileSelection.name,
-              ),
+            context.goNamed(
+              FamilyPages.profileSelection.name,
             );
           },
           text: 'Leave game',

@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:go_router/go_router.dart';
 
 class SummaryScreen extends StatefulWidget {
   const SummaryScreen({super.key});
@@ -86,6 +87,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   ),
                 ],
               ),
+              //hmm
+
               const Spacer(),
               if (showRecorder)
                 FunButton.secondary(
@@ -110,10 +113,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   if (details.audioPath.isNotEmpty) {
                     _cubit.shareAudio(details.audioPath);
                   }
-                  Navigator.of(context).popUntil(
-                    ModalRoute.withName(
-                      FamilyPages.profileSelection.name,
-                    ),
+                  context.goNamed(
+                    FamilyPages.profileSelection.name,
                   );
                 },
                 text: (showPlayer || showRecorder)

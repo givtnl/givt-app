@@ -52,6 +52,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
               auto,
               auto,
               auto,
+              auto,
             ],
             columnGap: 16,
             rowGap: 16,
@@ -86,7 +87,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
           FunButton(
             isDisabled: uimodel.selectedGratitude == null,
             onTap: onNext,
-            text: 'Last question',
+            text: 'Next',
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.gratefulTileSubmitted,
               parameters: {
