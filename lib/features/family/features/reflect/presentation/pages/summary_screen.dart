@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_.bottomsheet.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/audio_player.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -39,7 +40,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
       ),
       body: BaseStateConsumer(
         cubit: _cubit,
-        onData: (context, secretWord) {
+        onData: (context, details) {
+          bool showRecorder =
+              !details.allAdultsPlayed && details.audioPath.isEmpty;
+          bool showPlayer = details.audioPath.isNotEmpty;
           return Column(
             children: [
               const Spacer(),
@@ -47,32 +51,34 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 'Your mission to turn your gratitude into generosity was a success!',
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
               SvgPicture.asset('assets/family/images/family_superheroes.svg'),
               const SizedBox(height: 32),
               Row(
                 children: [
                   Expanded(
                     child: FunTile.gold(
-                      titleBig: secretWord.minutesPlayed == 1
+                      titleBig: details.minutesPlayed == 1
                           ? '1 minute family time'
-                          : '${secretWord.minutesPlayed} minutes family time',
+                          : '${details.minutesPlayed} minutes family time',
                       iconData: FontAwesomeIcons.solidClock,
                       assetSize: 32,
+                      isPressedDown: true,
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents
                             .familyReflectSummaryMinutesPlayedClicked,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: FunTile.red(
-                      titleBig: secretWord.generousDeeds == 1
+                      titleBig: details.generousDeeds == 1
                           ? '1 generous deed'
-                          : '${secretWord.generousDeeds} generous deeds',
+                          : '${details.generousDeeds} generous deeds',
                       iconData: FontAwesomeIcons.solidHeart,
                       assetSize: 32,
+                      isPressedDown: true,
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents
                             .familyReflectSummaryGenerousDeedsClicked,
@@ -84,13 +90,36 @@ class _SummaryScreenState extends State<SummaryScreen> {
               //hmm
 
               const Spacer(),
+              if (showRecorder)
+                FunButton.secondary(
+                  leftIcon: FontAwesomeIcons.microphone,
+                  onTap: () {
+                    RecordSummaryMessageBottomsheet.show(
+                      context,
+                      details.adultName,
+                      _cubit.audioAvailable,
+                    );
+                  },
+                  text: 'Leave a message',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.summaryLeaveMessageClicked,
+                  ),
+                ),
+              if (showPlayer)
+                AudioPlayer(source: details.audioPath, onDelete: () {}),
+              const SizedBox(height: 8),
               FunButton(
                 onTap: () {
+                  if (details.audioPath.isNotEmpty) {
+                    _cubit.shareAudio(details.audioPath);
+                  }
                   context.goNamed(
                     FamilyPages.profileSelection.name,
                   );
                 },
-                text: 'Back to home',
+                text: (showPlayer || showRecorder)
+                    ? 'Share summary'
+                    : 'Back to home',
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.familyReflectSummaryBackToHome,
                 ),

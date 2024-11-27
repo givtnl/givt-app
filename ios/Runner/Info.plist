@@ -94,6 +94,8 @@
 	<string>We need your location for event based giving</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need to access the gallery if you want to upload pictures </string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need your permission to record the audio message</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
