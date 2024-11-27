@@ -25,6 +25,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/r
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/generous_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/gratitude_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
@@ -118,6 +119,11 @@ void initCubits() {
       ),
     )
     ..registerFactory(MissionAcceptanceCubit.new)
+    ..registerFactory<GenerousSelectionCubit>(
+      () => GenerousSelectionCubit(
+        getIt(),
+      ),
+    )
     ..registerLazySingleton<ResetPasswordCubit>(
       () => ResetPasswordCubit(
         getIt(),
