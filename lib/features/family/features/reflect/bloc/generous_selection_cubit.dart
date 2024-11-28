@@ -16,6 +16,7 @@ class GenerousSelectionCubit
   List<TagCategory> generousPowers = GratitudeTagsData.generousPowers;
 
   late GameProfile reporter;
+  TagCategory? selectedCategory;
 
   void init(GameProfile reporter) {
     this.reporter = reporter;
@@ -23,16 +24,12 @@ class GenerousSelectionCubit
   }
 
   void saveGenerousPowerForCurrentSuperhero(TagCategory? power) {
-    _reflectAndShareRepository.saveGenerousPowerForCurrentSuperhero(power);
+    selectedCategory = power;
   }
 
   void onClickTile(TagCategory? power) {
     saveGenerousPowerForCurrentSuperhero(power);
     _emitData();
-  }
-
-  TagCategory? getSelectedCategory() {
-    return _reflectAndShareRepository.getGenerousPowerForCurrentSuperhero();
   }
 
   void _emitData() {
@@ -41,10 +38,19 @@ class GenerousSelectionCubit
         reporter: reporter,
         sideKick: _reflectAndShareRepository.getCurrentSidekick(),
         tagList: generousPowers,
-        selectedTag: getSelectedCategory(),
+        selectedTag: selectedCategory,
         superheroName:
             _reflectAndShareRepository.getCurrentSuperhero().firstName,
       ),
     );
+  }
+
+  void onClickNext() {
+    try {
+      _reflectAndShareRepository
+          .saveGenerousPowerForCurrentSuperhero(selectedCategory);
+    } catch (_) {
+      // do nothing
+    }
   }
 }

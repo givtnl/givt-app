@@ -41,7 +41,9 @@ class _GenerousSelectionScreenState extends State<GenerousSelectionScreen> {
         return GenerousSelectionWidget(
             uimodel: uiModel,
             onClickTile: cubit.onClickTile,
-            onNext: () => Navigator.pushReplacement(
+            onNext: () {
+              cubit.onClickNext();
+              Navigator.pushReplacement(
                   context,
                   (uiModel.sideKick.roles.length > 1
                           ? const GuessSecretWordScreen()
@@ -49,7 +51,8 @@ class _GenerousSelectionScreenState extends State<GenerousSelectionScreen> {
                               uiModel.sideKick,
                             ))
                       .toRoute(context),
-                ));
+                );
+            });
       },
     );
   }
