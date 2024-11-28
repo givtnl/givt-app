@@ -382,12 +382,12 @@ class FamilyAPIService {
     return itemMap['id'] as String;
   }
 
-  Future<bool> saveUserGratitudeCategory(
-    String gameGuid,
-    String userid,
-    String category,
-    String power,
-  ) async {
+  Future<bool> saveUserGratitudeCategory({
+    required String gameGuid,
+    required String userid,
+    required String category,
+    required String power,
+  }) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid/user');
     final response = await client.post(url,
         headers: {

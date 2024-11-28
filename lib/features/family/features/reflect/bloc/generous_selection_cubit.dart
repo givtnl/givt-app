@@ -32,7 +32,7 @@ class GenerousSelectionCubit
   }
 
   TagCategory? getSelectedCategory() {
-    return _reflectAndShareRepository.getGenerousPowerrForCurrentSuperhero();
+    return _reflectAndShareRepository.getGenerousPowerForCurrentSuperhero();
   }
 
   void _emitData() {

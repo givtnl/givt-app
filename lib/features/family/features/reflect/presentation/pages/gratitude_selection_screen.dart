@@ -27,6 +27,12 @@ class _GratitudeSelectionScreenState extends State<GratitudeSelectionScreen> {
   }
 
   @override
+  void dispose() {
+    cubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: cubit,
@@ -38,7 +44,7 @@ class _GratitudeSelectionScreenState extends State<GratitudeSelectionScreen> {
                   context,
                   GenerousSelectionScreen(reporter: widget.reporter)
                       .toRoute(context),
-            ));
+                ));
       },
     );
   }

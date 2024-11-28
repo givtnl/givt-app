@@ -28,6 +28,12 @@ class _GenerousSelectionScreenState extends State<GenerousSelectionScreen> {
   }
 
   @override
+  void dispose() {
+    cubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: cubit,

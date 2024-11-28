@@ -75,9 +75,9 @@ class GenerousSelectionWidget extends StatelessWidget {
                       uimodel.tagList[i].colorCombo.backgroundColor,
                   textColor: uimodel.tagList[i].colorCombo.textColor,
                   analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.gratefulTileSelected,
+                    AmplitudeEvents.generousTileSelected,
                     parameters: {
-                      'gratefulFor': uimodel.selectedTag?.displayText,
+                      'generousPower': uimodel.selectedTag?.title,
                     },
                   ),
                 ),

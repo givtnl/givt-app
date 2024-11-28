@@ -114,10 +114,10 @@ class ReflectAndShareRepository {
 
     try {
       await _familyApiService.saveUserGratitudeCategory(
-        _gameId!,
-        _selectedProfiles[_getCurrentSuperHeroIndex()].userId,
-        gratitude?.displayText ?? '',
-        power?.title ?? '',
+        gameGuid: _gameId!,
+        userid: _selectedProfiles[_getCurrentSuperHeroIndex()].userId,
+        category: gratitude?.displayText ?? '',
+        power: power?.title ?? '',
       );
     } catch (e, s) {
       LoggingInfo.instance.error(
@@ -127,7 +127,7 @@ class ReflectAndShareRepository {
     }
   }
 
-  TagCategory? getGenerousPowerrForCurrentSuperhero() {
+  TagCategory? getGenerousPowerForCurrentSuperhero() {
     return _selectedProfiles[_getCurrentSuperHeroIndex()].power;
   }
 
