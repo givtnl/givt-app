@@ -6,15 +6,14 @@ import 'package:givt_app/features/family/features/reflect/presentation/models/gr
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class GratitudeSelectionCubit
+class GenerousSelectionCubit
     extends CommonCubit<TagSelectionUimodel, GameProfile> {
-  GratitudeSelectionCubit(this._reflectAndShareRepository)
+  GenerousSelectionCubit(this._reflectAndShareRepository)
       : super(const BaseState.initial());
 
   final ReflectAndShareRepository _reflectAndShareRepository;
 
-  List<TagCategory> gratitudeCategories =
-      GratitudeTagsData.gratitudeCategories;
+  List<TagCategory> generousPowers = GratitudeTagsData.generousPowers;
 
   late GameProfile reporter;
 
@@ -23,19 +22,17 @@ class GratitudeSelectionCubit
     _emitData();
   }
 
-  void saveGratitudeInterestsForCurrentSuperhero(TagCategory? gratitude) {
-    _reflectAndShareRepository
-        .saveGratitudeInterestsForCurrentSuperhero(gratitude);
+  void saveGenerousPowerForCurrentSuperhero(TagCategory? power) {
+    _reflectAndShareRepository.saveGenerousPowerForCurrentSuperhero(power);
   }
 
-  void onClickTile(TagCategory? gratitude) {
-    saveGratitudeInterestsForCurrentSuperhero(gratitude);
+  void onClickTile(TagCategory? power) {
+    saveGenerousPowerForCurrentSuperhero(power);
     _emitData();
   }
 
   TagCategory? getSelectedCategory() {
-    return _reflectAndShareRepository
-        .getGratitudeInterestsForCurrentSuperhero();
+    return _reflectAndShareRepository.getGenerousPowerForCurrentSuperhero();
   }
 
   void _emitData() {
@@ -43,10 +40,10 @@ class GratitudeSelectionCubit
       TagSelectionUimodel(
         reporter: reporter,
         sideKick: _reflectAndShareRepository.getCurrentSidekick(),
-        tagList: gratitudeCategories,
+        tagList: generousPowers,
         selectedTag: getSelectedCategory(),
         superheroName:
-        _reflectAndShareRepository.getCurrentSuperhero().firstName,
+            _reflectAndShareRepository.getCurrentSuperhero().firstName,
       ),
     );
   }

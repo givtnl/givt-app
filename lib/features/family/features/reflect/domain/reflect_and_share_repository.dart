@@ -95,16 +95,30 @@ class ReflectAndShareRepository {
     }
   }
 
-  Future<void> saveGratitudeInterestsForCurrentSuperhero(
-      GratitudeCategory? gratitude) async {
+  void saveGratitudeInterestsForCurrentSuperhero(TagCategory? gratitude) {
     _selectedProfiles[_getCurrentSuperHeroIndex()] =
         _selectedProfiles[_getCurrentSuperHeroIndex()]
             .copyWith(gratitude: gratitude);
+  }
+
+  TagCategory? getGratitudeInterestsForCurrentSuperhero() {
+    return _selectedProfiles[_getCurrentSuperHeroIndex()].gratitude;
+  }
+
+  Future<void> saveGenerousPowerForCurrentSuperhero(TagCategory? power) async {
+    _selectedProfiles[_getCurrentSuperHeroIndex()] =
+        _selectedProfiles[_getCurrentSuperHeroIndex()].copyWith(
+      power: power,
+    );
+    final gratitude = getGratitudeInterestsForCurrentSuperhero();
+
     try {
       await _familyApiService.saveUserGratitudeCategory(
-          _gameId!,
-          _selectedProfiles[_getCurrentSuperHeroIndex()].userId,
-          gratitude?.displayText ?? '');
+        gameGuid: _gameId!,
+        userid: _selectedProfiles[_getCurrentSuperHeroIndex()].userId,
+        category: gratitude?.displayText ?? '',
+        power: power?.title ?? '',
+      );
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -113,8 +127,8 @@ class ReflectAndShareRepository {
     }
   }
 
-  GratitudeCategory? getGratitudeInterestsForCurrentSuperhero() {
-    return _selectedProfiles[_getCurrentSuperHeroIndex()].gratitude;
+  TagCategory? getGenerousPowerForCurrentSuperhero() {
+    return _selectedProfiles[_getCurrentSuperHeroIndex()].power;
   }
 
   List<GameProfile> getCurrentReporters() {

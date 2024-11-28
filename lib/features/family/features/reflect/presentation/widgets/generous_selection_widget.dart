@@ -10,8 +10,8 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
-class GratitudeSelectionWidget extends StatelessWidget {
-  const GratitudeSelectionWidget({
+class GenerousSelectionWidget extends StatelessWidget {
+  const GenerousSelectionWidget({
     required this.uimodel,
     required this.onClickTile,
     required this.onNext,
@@ -27,7 +27,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
     return FunScaffold(
       canPop: false,
       appBar: const FunTopAppBar(
-        title: 'Question 3',
+        title: 'Question 4',
         actions: [
           LeaveGameButton(),
         ],
@@ -41,7 +41,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const TitleMediumText(
-            'What are you grateful for today?',
+            'In what way have you\nbeen generous today?',
             color: FamilyAppTheme.primary30,
             textAlign: TextAlign.center,
           ),
@@ -60,6 +60,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
               for (int i = 0; i < uimodel.tagList.length; i++)
                 FunTile(
                   shrink: true,
+                  titleBig: uimodel.tagList[i].title,
                   titleMedium: uimodel.tagList[i].displayText,
                   assetSize: 27,
                   iconPath: '',
@@ -74,9 +75,9 @@ class GratitudeSelectionWidget extends StatelessWidget {
                       uimodel.tagList[i].colorCombo.backgroundColor,
                   textColor: uimodel.tagList[i].colorCombo.textColor,
                   analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.gratefulTileSelected,
+                    AmplitudeEvents.generousTileSelected,
                     parameters: {
-                      'gratefulFor': uimodel.selectedTag?.displayText,
+                      'generousPower': uimodel.selectedTag?.title,
                     },
                   ),
                 ),
@@ -86,12 +87,12 @@ class GratitudeSelectionWidget extends StatelessWidget {
           FunButton(
             isDisabled: uimodel.selectedTag == null,
             onTap: onNext,
-            text: 'Last Question',
+            text: 'Next',
             analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.gratefulTileSubmitted,
+              AmplitudeEvents.generousTileSubmitted,
               parameters: {
                 'superhero': uimodel.superheroName,
-                'gratefulFor': uimodel.selectedTag?.displayText,
+                'haveBeenGenerous': uimodel.selectedTag?.displayText,
               },
             ),
           ),
