@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -12,7 +13,8 @@ import 'package:givt_app/features/family/features/reflect/domain/models/roles.da
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class ReflectAndShareRepository {
-  ReflectAndShareRepository(this._profilesRepository, this._familyApiService, this._authRepository) {
+  ReflectAndShareRepository(
+      this._profilesRepository, this._familyApiService, this._authRepository) {
     _init();
   }
 
@@ -26,7 +28,7 @@ class ReflectAndShareRepository {
   int totalTimeSpentInSeconds = 0;
   DateTime? _startTime;
   DateTime? _endTime;
-
+  String? _gameId;
   List<GameProfile>? _allProfiles;
   List<GameProfile> _selectedProfiles = [];
   final List<String> _usedSecretWords = [];
@@ -68,7 +70,8 @@ class ReflectAndShareRepository {
     try {
       _endTime = DateTime.now();
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
-      await _familyApiService.saveGratitudeStats(totalTimeSpentInSeconds);
+      await _familyApiService.saveGratitudeStats(
+          totalTimeSpentInSeconds, _gameId);
       await _fetchGameStats();
     } catch (e, s) {
       LoggingInfo.instance.error(
@@ -78,10 +81,35 @@ class ReflectAndShareRepository {
     }
   }
 
-  void saveGratitudeInterestsForCurrentSuperhero(TagCategory? gratitude) {
+  void shareAudio(String path) {
+    try {
+      final file = File(path);
+      if (file.existsSync()) {
+        //TODO use game guid
+        _familyApiService.uploadAudioFile(_gameId!, file);
+        file.delete();
+      }
+    } on Exception catch (e) {
+      print(e);
+      // TODO what if fails
+    }
+  }
+
+  void saveGratitudeInterestsForCurrentSuperhero(TagCategory? gratitude) async {
     _selectedProfiles[_getCurrentSuperHeroIndex()] =
         _selectedProfiles[_getCurrentSuperHeroIndex()]
             .copyWith(gratitude: gratitude);
+    try {
+      await _familyApiService.saveUserGratitudeCategory(
+          _gameId!,
+          _selectedProfiles[_getCurrentSuperHeroIndex()].userId,
+          gratitude?.displayText ?? '');
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
   }
 
   TagCategory? getGratitudeInterestsForCurrentSuperhero() {
@@ -140,13 +168,40 @@ class ReflectAndShareRepository {
     return _allProfiles!;
   }
 
+//list of adult users that did not play in this game
+  Future<List<Profile>> missingAdults() async {
+    final profiles = await _profilesRepository.getProfiles();
+    final missingAdults = profiles
+        .where((profile) => profile.isAdult)
+        .where((profile) => !_selectedProfiles
+            .map((selectedProfile) => selectedProfile.userId)
+            .contains(profile.id))
+        .toList();
+    return missingAdults;
+  }
+
   void emptyAllProfiles() {
     _allProfiles = null;
   }
 
+  String? getGameId() => _gameId;
+
+  Future<void> createGameSession() async {
+    try {
+      _gameId = await _familyApiService.createGame();
+    } catch (e, s) {
+      _gameId = null;
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
+  }
+
   // select the family members that will participate in the game
   void selectProfiles(List<GameProfile> selectedProfiles) {
-    // Rest game state
+    // Reset game state
+    createGameSession();
     completedLoops = 0;
     totalQuestionsAsked = 0;
     _generousDeeds = 0;

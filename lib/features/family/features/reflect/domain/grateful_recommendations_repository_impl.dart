@@ -142,15 +142,18 @@ class GratefulRecommendationsRepositoryImpl
   Future<void> savePledge(
     GameProfile profile,
     Organisation organisation,
+    String? gameGuid,
   ) async {
     organisation.type == RecommendationTypes.organisation
         ? await _familyApiService.savePledge({
             "userId": profile.userId,
             "collectGroupId": organisation.guid,
+            if (gameGuid != null) 'GameId': gameGuid,
           })
         : await _familyApiService.savePledge({
             "userId": profile.userId,
             "actOfServiceId": organisation.guid,
+            if (gameGuid != null) 'GameId': gameGuid,
           });
   }
 }

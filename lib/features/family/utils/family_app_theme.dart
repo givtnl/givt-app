@@ -57,6 +57,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const highlight20 = Color(0xFF383000);
   static const highlight30 = Color(0xFF514700);
   static const highlight40 = Color(0xFF6C5E00);
+  static const highlight50 = Color(0xFF877700);
   static const highlight80 = Color(0xFFDCC74D);
   static const highlight90 = Color(0xFFFAE366);
   static const highlight95 = Color(0xFFFFF1B2);
@@ -74,6 +75,8 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const stageColorPulse = Color(0xFFFFD669);
   static const stageColorPodium = Color(0xFFF5A563);
   static const neutral100 = Color(0xFFFEFFFF);
+  static const neutral90 = Color(0xFFE4E3DB);
+  static const neutral70 = Color(0xFFACABA4);
 
   static const neutralVariant40 = Color(0xFF5B6055);
   static const neutralVariant50 = Color(0xFF74796D);

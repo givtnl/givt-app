@@ -29,6 +29,8 @@ import 'package:givt_app/features/family/features/giving_flow/create_transaction
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/parent_summary_screen.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/bedtime_reponsibility_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/kids_home_screen.dart';
@@ -153,6 +155,20 @@ class FamilyAppRoutes {
         );
       },
       routes: [
+        GoRoute(
+          path: FamilyPages.assignBedtimeResponsibility.path,
+          name: FamilyPages.assignBedtimeResponsibility.name,
+          builder: (context, state) => AssignBedtimeResponsibilityScreen(
+            name: state.uri.queryParameters['childName'] ?? '',
+            childGuid: state.uri.queryParameters['childId'] ?? '',
+            imageUrl: state.uri.queryParameters['pictureUrl'] ?? '',
+          ),
+        ),
+        GoRoute(
+          path: FamilyPages.parentSummary.path,
+          name: FamilyPages.parentSummary.name,
+          builder: (context, state) => const ParentSummaryScreen(),
+        ),
         GoRoute(
           path: FamilyPages.parentHome.path,
           name: FamilyPages.parentHome.name,

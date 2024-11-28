@@ -6,6 +6,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
@@ -14,8 +15,10 @@ part 'give_state.dart';
 class GiveCubit extends Cubit<GiveState> {
   GiveCubit(
     this._createTransactionRepository,
+    this._reflectAndShareRepository,
   ) : super(GiveInitial());
   final CreateTransactionRepository _createTransactionRepository;
+  final ReflectAndShareRepository _reflectAndShareRepository;
 
   Future<void> createTransaction({
     required String userId,
@@ -30,6 +33,9 @@ class GiveCubit extends Cubit<GiveState> {
       amount: amount.toDouble(),
       mediumId: base64Encode(utf8.encode(mediumId)),
       isActOfService: isGratitude,
+      gameGuid: isGratitude
+          ? _reflectAndShareRepository.getGameId()
+          : null,
     );
     try {
       await _createTransactionRepository.createTransaction(
