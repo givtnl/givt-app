@@ -75,7 +75,7 @@ void initCubits() {
       () => InterviewCubit(getIt()),
     )
     ..registerFactory(() => SetupBedtimeCubit(getIt()))
-    ..registerLazySingleton<GratitudeSelectionCubit>(
+    ..registerFactory<GratitudeSelectionCubit>(
       () => GratitudeSelectionCubit(getIt()),
     )
     ..registerLazySingleton<CameraCubit>(
