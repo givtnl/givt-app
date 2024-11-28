@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/gratitude-summary/presentation
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -24,6 +25,7 @@ class SummaryScreen extends StatefulWidget {
 
 class _SummaryScreenState extends State<SummaryScreen> {
   final _cubit = getIt<SummaryCubit>();
+  bool pressDown = true;
 
   @override
   void didChangeDependencies() {
@@ -41,14 +43,16 @@ class _SummaryScreenState extends State<SummaryScreen> {
       body: BaseStateConsumer(
         cubit: _cubit,
         onData: (context, details) {
-          bool showRecorder =
+          final showRecorder =
               !details.allAdultsPlayed && details.audioPath.isEmpty;
-          bool showPlayer = details.audioPath.isNotEmpty;
+          final showPlayer = details.audioPath.isNotEmpty;
           return Column(
             children: [
               const Spacer(),
-              const TitleMediumText(
-                'Your mission to turn your gratitude into generosity was a success!',
+              TitleMediumText(
+                (showPlayer || showRecorder)
+                    ? 'Let’s share your superhero activity with the rest of the family!'
+                    : 'Your mission to turn your gratitude into generosity was a success!',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
@@ -111,14 +115,18 @@ class _SummaryScreenState extends State<SummaryScreen> {
               FunButton(
                 onTap: () {
                   if (details.audioPath.isNotEmpty) {
-                    _cubit.shareAudio(details.audioPath);
+                    sendAudioAndNavigate(details.audioPath);
+                    return;
                   }
                   context.goNamed(
                     FamilyPages.profileSelection.name,
                   );
                 },
+                isPressedDown: pressDown,
                 text: (showPlayer || showRecorder)
-                    ? 'Share summary'
+                    ? pressDown
+                        ? 'Sent!'
+                        : 'Share summary'
                     : 'Back to home',
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.familyReflectSummaryBackToHome,
@@ -129,5 +137,20 @@ class _SummaryScreenState extends State<SummaryScreen> {
         },
       ),
     );
+  }
+
+  Future<void> sendAudioAndNavigate(String path) async {
+    await _cubit.shareAudio(path);
+    if (!mounted) return;
+    await ConfettiDialog.show(context);
+    setState(() {
+      pressDown = true;
+    });
+    await Future<void>.delayed(const Duration(seconds: 1));
+    if (mounted) {
+      context.goNamed(
+        FamilyPages.profileSelection.name,
+      );
+    }
   }
 }

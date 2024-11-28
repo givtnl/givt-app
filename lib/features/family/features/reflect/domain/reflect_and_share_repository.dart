@@ -81,17 +81,18 @@ class ReflectAndShareRepository {
     }
   }
 
-  void shareAudio(String path) {
+  Future<void> shareAudio(String path) async {
     try {
       final file = File(path);
       if (file.existsSync()) {
-        //TODO use game guid
-        _familyApiService.uploadAudioFile(_gameId!, file);
-        file.delete();
+        await _familyApiService.uploadAudioFile(_gameId!, file);
+        await file.delete();
       }
-    } on Exception catch (e) {
-      print(e);
-      // TODO what if fails
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
     }
   }
 
