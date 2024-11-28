@@ -68,8 +68,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
                   onTap: () {
                     onClickTile(uimodel.tagList[i]);
                   },
-                  isSelected:
-                      uimodel.selectedTag == uimodel.tagList[i],
+                  isSelected: uimodel.selectedTag == uimodel.tagList[i],
                   borderColor: uimodel.tagList[i].colorCombo.borderColor,
                   backgroundColor:
                       uimodel.tagList[i].colorCombo.backgroundColor,
@@ -87,7 +86,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
           FunButton(
             isDisabled: uimodel.selectedTag == null,
             onTap: onNext,
-            text: 'Next',
+            text: 'Last Question',
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.gratefulTileSubmitted,
               parameters: {

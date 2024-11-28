@@ -383,7 +383,11 @@ class FamilyAPIService {
   }
 
   Future<bool> saveUserGratitudeCategory(
-      String gameGuid, String userid, String category) async {
+    String gameGuid,
+    String userid,
+    String category,
+    String power,
+  ) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid/user');
     final response = await client.post(url,
         headers: {
@@ -393,6 +397,7 @@ class FamilyAPIService {
         body: jsonEncode({
           'userid': userid,
           'category': category,
+          'generous': power,
         }));
     if (response.statusCode >= 300) {
       throw GivtServerFailure(

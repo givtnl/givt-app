@@ -95,32 +95,36 @@ class ReflectAndShareRepository {
     }
   }
 
-  void saveGratitudeInterestsForCurrentSuperhero(TagCategory? gratitude) async {
+  void saveGratitudeInterestsForCurrentSuperhero(TagCategory? gratitude) {
     _selectedProfiles[_getCurrentSuperHeroIndex()] =
         _selectedProfiles[_getCurrentSuperHeroIndex()]
             .copyWith(gratitude: gratitude);
-    try {
-      await _familyApiService.saveUserGratitudeCategory(
-          _gameId!,
-          _selectedProfiles[_getCurrentSuperHeroIndex()].userId,
-          gratitude?.displayText ?? '');
-    } catch (e, s) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: s.toString(),
-      );
-    }
   }
 
   TagCategory? getGratitudeInterestsForCurrentSuperhero() {
     return _selectedProfiles[_getCurrentSuperHeroIndex()].gratitude;
   }
 
-  void saveGenerousPowerForCurrentSuperhero(TagCategory? power) {
+  Future<void> saveGenerousPowerForCurrentSuperhero(TagCategory? power) async {
     _selectedProfiles[_getCurrentSuperHeroIndex()] =
         _selectedProfiles[_getCurrentSuperHeroIndex()].copyWith(
       power: power,
     );
+    final gratitude = getGratitudeInterestsForCurrentSuperhero();
+
+    try {
+      await _familyApiService.saveUserGratitudeCategory(
+        _gameId!,
+        _selectedProfiles[_getCurrentSuperHeroIndex()].userId,
+        gratitude?.displayText ?? '',
+        power?.title ?? '',
+      );
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
   }
 
   TagCategory? getGenerousPowerrForCurrentSuperhero() {
