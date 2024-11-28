@@ -91,8 +91,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   ),
                 ],
               ),
-              //hmm
-
               const Spacer(),
               if (showRecorder)
                 FunButton.secondary(
@@ -142,10 +140,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
   Future<void> sendAudioAndNavigate(String path) async {
     await _cubit.shareAudio(path);
     if (!mounted) return;
-    await ConfettiDialog.show(context);
     setState(() {
       pressDown = true;
     });
+    await ConfettiDialog.show(context);
     await Future<void>.delayed(const Duration(seconds: 1));
     if (mounted) {
       context.goNamed(
