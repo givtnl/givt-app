@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/stats_chip.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 
 class StatsContainer extends StatelessWidget {
   const StatsContainer(this.gameStats, {super.key});
@@ -28,7 +30,7 @@ class StatsContainer extends StatelessWidget {
       child: gameStats == null
           ? showLoadingState()
           : gameStats!.totalSecondsPlayed == 0
-              ? showEmptyState()
+              ? showEmptyState(context)
               : showStatsColumn(),
     );
   }
@@ -39,17 +41,22 @@ class StatsContainer extends StatelessWidget {
     );
   }
 
-  Widget showEmptyState() {
-    return const Column(
+  Widget showEmptyState(BuildContext context) {
+    return Column(
       children: [
-        LabelMediumText('Game activity this week'),
-        SizedBox(height: 8),
+        const LabelMediumText('Game activity this week'),
+        const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            StatsChip(
-              icon: FontAwesomeIcons.arrowDown,
-              text: 'Play the Gratitude Game',
+            GestureDetector(
+              onTap: () => context.goNamed(
+                FamilyPages.reflectIntro.name,
+              ),
+              child: StatsChip(
+                icon: FontAwesomeIcons.arrowDown,
+                text: 'Play the Gratitude Game',
+              ),
             ),
           ],
         ),

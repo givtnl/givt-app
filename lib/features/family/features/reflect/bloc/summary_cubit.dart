@@ -24,6 +24,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
         generousDeeds: _generousDeeds,
       ),
     );
+    saveSummary();
   }
 
   Future<void> checkAllParentsPlayed() async {
