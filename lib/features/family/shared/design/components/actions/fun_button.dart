@@ -15,6 +15,7 @@ class FunButton extends StatelessWidget {
     super.key,
     this.isDisabled = false,
     this.isLoading = false,
+    this.isPressedDown = false,
     this.leftIcon,
     this.rightIcon,
     this.leadingImage,
@@ -115,6 +116,7 @@ class FunButton extends StatelessWidget {
   final VoidCallback? onLongPressUp;
   final bool onlyLongPress;
   final bool isDisabled;
+  final bool isPressedDown;
   final String text;
   final bool isLoading;
   final IconData? leftIcon;
@@ -148,6 +150,7 @@ class FunButton extends StatelessWidget {
       onlyLongPress: onlyLongPress,
       borderColor: borderColor,
       isDisabled: isDisabled,
+      isPressedDown: isPressedDown,
       borderSize: fullBorder ? 2 : 0.01,
       baseBorderSize: 4,
       child: Container(

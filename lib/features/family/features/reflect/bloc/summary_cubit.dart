@@ -50,8 +50,8 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
     );
   }
 
-  void shareAudio(String path) {
-    _reflectAndShareRepository.shareAudio(path);
+  Future<void> shareAudio(String path) async {
+    await _reflectAndShareRepository.shareAudio(path);
   }
 
   void saveSummary() {
