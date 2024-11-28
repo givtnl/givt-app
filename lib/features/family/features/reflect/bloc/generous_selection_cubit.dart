@@ -32,17 +32,13 @@ class GenerousSelectionCubit
     _emitData();
   }
 
-  TagCategory? getSelectedCategory() {
-    return _reflectAndShareRepository.getGenerousPowerForCurrentSuperhero();
-  }
-
   void _emitData() {
     emitData(
       TagSelectionUimodel(
         reporter: reporter,
         sideKick: _reflectAndShareRepository.getCurrentSidekick(),
         tagList: generousPowers,
-        selectedTag: getSelectedCategory(),
+        selectedTag: selectedCategory,
         superheroName:
             _reflectAndShareRepository.getCurrentSuperhero().firstName,
       ),
