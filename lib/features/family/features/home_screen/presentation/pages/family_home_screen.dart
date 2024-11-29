@@ -126,8 +126,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       GiveButton(
                         onPressed: _cubit.onGiveButtonPressed,
                       ),
-                      const SizedBox(height: 4),
-                      FunButton.secondary(
+                      if(uiModel.showLatestSummaryBtn) const SizedBox(height: 4),
+                      if(uiModel.showLatestSummaryBtn) FunButton.secondary(
                         onTap: () => context.goNamed(
                           FamilyPages.parentSummary.name,
                         ),
