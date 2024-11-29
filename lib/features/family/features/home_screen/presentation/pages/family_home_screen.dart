@@ -128,7 +128,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       ),
                       if (uiModel.showLatestSummaryBtn)
                         const SizedBox(height: 4),
-                      if (true ?? uiModel.showLatestSummaryBtn)
+                      if (uiModel.showLatestSummaryBtn)
                         FunButton.secondary(
                           onTap: () => context.goNamed(
                             FamilyPages.parentSummary.name,
