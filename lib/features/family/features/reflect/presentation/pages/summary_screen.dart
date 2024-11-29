@@ -108,7 +108,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   ),
                 ),
               if (showPlayer)
-                AudioPlayer(source: details.audioPath, onDelete: () {}),
+                FunAudioPlayer(source: details.audioPath, onDelete: () {}),
               const SizedBox(height: 8),
               FunButton(
                 onTap: () {

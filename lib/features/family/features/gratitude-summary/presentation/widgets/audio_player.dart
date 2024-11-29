@@ -3,32 +3,34 @@ import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart' as ap;
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 
-class AudioPlayer extends StatefulWidget {
-  /// Path from where to play recorded audio
-  final String source;
-
-  /// Callback when audio file should be removed
-  /// Setting this to null hides the delete button
-  final VoidCallback onDelete;
-
-  const AudioPlayer({
-    super.key,
+class FunAudioPlayer extends StatefulWidget {
+  const FunAudioPlayer({
     required this.source,
-    required this.onDelete,
+    super.key,
+    this.isUrl = false,
+    this.showDeleteButton = true,
+    this.onDelete,
+    this.onPlayExtension,
   });
 
+  final String source;
+  final VoidCallback? onDelete;
+  final VoidCallback? onPlayExtension;
+  final bool isUrl;
+  final bool showDeleteButton;
+
   @override
-  AudioPlayerState createState() => AudioPlayerState();
+  FunAudioPlayerState createState() => FunAudioPlayerState();
 }
 
-class AudioPlayerState extends State<AudioPlayer> {
-  static const double _controlSize = 50 + 28;
+class FunAudioPlayerState extends State<FunAudioPlayer> {
+  double _controlSize = 50 + 28;
   static const double _deleteBtnSize = 24;
 
   final _audioPlayer = ap.AudioPlayer()..setReleaseMode(ReleaseMode.stop);
@@ -56,7 +58,9 @@ class AudioPlayerState extends State<AudioPlayer> {
     );
 
     _audioPlayer.setSource(_source);
-
+    if (!widget.showDeleteButton) {
+      _controlSize = _controlSize + 12;
+    }
     super.initState();
   }
 
@@ -77,33 +81,51 @@ class AudioPlayerState extends State<AudioPlayer> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 _buildControl(),
                 _buildSlider(constraints.maxWidth),
-                IconButton(
-                  icon: const Icon(Icons.delete,
-                      color: FamilyAppTheme.neutral70, size: _deleteBtnSize),
-                  onPressed: () {
-                    if (_audioPlayer.state == ap.PlayerState.playing) {
-                      stop().then((value) {
+                if (widget.showDeleteButton)
+                  IconButton(
+                    icon: const Icon(Icons.delete,
+                        color: FamilyAppTheme.neutral70, size: _deleteBtnSize),
+                    onPressed: () {
+                      if (_audioPlayer.state == ap.PlayerState.playing) {
+                        stop().then((value) {
+                          _deleteFile();
+                          widget.onDelete?.call();
+                        });
+                      } else {
                         _deleteFile();
-                        widget.onDelete();
-                      });
-                    } else {
-                      _deleteFile();
-                      widget.onDelete();
-                    }
-                  },
-                ),
+                        widget.onDelete?.call();
+                      }
+                    },
+                  ),
+                if (!widget.showDeleteButton)
+                  SizedBox(
+                    width: 56,
+                    child: BodyMediumText(
+                      '${getMinutes()}:${getSeconds()}',
+                      textAlign: TextAlign.right,
+                      color: FamilyAppTheme.primary98,
+                    ),
+                  ),
               ],
             ),
-            //   Text('00:${_duration?.inSeconds ?? 0.0}'),
           ],
         );
       },
     );
+  }
+
+  String getSeconds() {
+    final seconds = (_duration?.inSeconds ?? 0) % 60;
+    return seconds < 10 ? '0$seconds' : '$seconds';
+  }
+
+  String getMinutes() {
+    final minutes = (_duration?.inMinutes ?? 0) % 60;
+    return minutes < 10 ? '0$minutes' : '$minutes';
   }
 
   Widget _buildControl() {
@@ -116,19 +138,19 @@ class AudioPlayerState extends State<AudioPlayer> {
         iconSize: 20,
         iconColor: FamilyAppTheme.error30,
         iconData: FontAwesomeIcons.pause,
+        padding: EdgeInsets.fromLTRB(0, 14, 14, 14),
       );
     } else {
       icon = const FunIcon(
-        circleColor: FamilyAppTheme.primary95,
         circleSize: 50,
         iconSize: 20,
         iconColor: FamilyAppTheme.primary30,
         iconData: FontAwesomeIcons.play,
+        padding: EdgeInsets.fromLTRB(0, 14, 14, 14),
       );
     }
 
-    return InkWell(
-      borderRadius: const BorderRadius.all(Radius.circular(60)),
+    return GestureDetector(
       child: icon,
       onTap: () {
         if (_audioPlayer.state == ap.PlayerState.playing) {
@@ -171,7 +193,10 @@ class AudioPlayerState extends State<AudioPlayer> {
     );
   }
 
-  Future<void> play() => _audioPlayer.play(_source);
+  Future<void> play() async {
+    widget.onPlayExtension?.call();
+    await _audioPlayer.play(_source);
+  }
 
   Future<void> pause() async {
     await _audioPlayer.pause();
@@ -190,6 +215,7 @@ class AudioPlayerState extends State<AudioPlayer> {
     }
   }
 
-  Source get _source =>
-      kIsWeb ? ap.UrlSource(widget.source) : ap.DeviceFileSource(widget.source);
+  Source get _source => widget.isUrl
+      ? ap.UrlSource(widget.source)
+      : ap.DeviceFileSource(widget.source);
 }

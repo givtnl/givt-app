@@ -36,6 +36,7 @@ class FunIcon extends StatelessWidget {
     this.iconSize = 48,
     this.circleColor = FamilyAppTheme.primary95,
     this.iconColor = FamilyAppTheme.primary20,
+    this.padding = const EdgeInsets.all(14),
     super.key,
   });
 
@@ -139,11 +140,12 @@ class FunIcon extends StatelessWidget {
   final double iconSize;
   final Color circleColor;
   final Color iconColor;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(14),
+      padding: padding,
       child: Stack(
         alignment: Alignment.center,
         children: [
