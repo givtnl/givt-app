@@ -79,18 +79,21 @@ class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
               if (uiModel?.audioLink != null)
                 FunAudioPlayer(
                   source: uiModel!.audioLink!,
-                  onDelete: () {},
                   showDeleteButton: false,
                   isUrl: true,
+                  onPlayExtension: () {
+                    setState(() {
+                      _hasClickedAudio = true;
+                    });
+                  },
                 ),
               FunButton(
                 isDisabled: uiModel?.audioLink != null && !_hasClickedAudio,
                 text: 'Done',
-                onTap: () {
-                  context.pop();
-                },
+                onTap: () => context.pop(),
                 analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked),
+                  AmplitudeEvents.afterGameUsmmaryDoneClicked,
+                ),
               ),
             ],
           );

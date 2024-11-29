@@ -16,10 +16,12 @@ class FunAudioPlayer extends StatefulWidget {
     this.isUrl = false,
     this.showDeleteButton = true,
     this.onDelete,
+    this.onPlayExtension,
   });
 
   final String source;
   final VoidCallback? onDelete;
+  final VoidCallback? onPlayExtension;
   final bool isUrl;
   final bool showDeleteButton;
 
@@ -149,8 +151,7 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
       );
     }
 
-    return InkWell(
-      borderRadius: const BorderRadius.all(Radius.circular(60)),
+    return GestureDetector(
       child: icon,
       onTap: () {
         if (_audioPlayer.state == ap.PlayerState.playing) {
@@ -193,7 +194,10 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
     );
   }
 
-  Future<void> play() => _audioPlayer.play(_source);
+  Future<void> play() async {
+    widget.onPlayExtension?.call();
+    await _audioPlayer.play(_source);
+  }
 
   Future<void> pause() async {
     await _audioPlayer.pause();
