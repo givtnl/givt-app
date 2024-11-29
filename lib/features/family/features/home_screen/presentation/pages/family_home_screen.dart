@@ -72,72 +72,74 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         return FunScaffold(
           minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
           appBar: const FunTopAppBar(title: null),
-          body: Column(
-            children: [
-              Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Column(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/family/images/home_screen/background.svg',
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: TitleLargeText(
-                          overlayVisible
-                              ? ''
-                              : uiModel.familyGroupName == null
-                                  ? 'Welcome!'
-                                  : 'Hey ${uiModel.familyGroupName}!',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      if (!overlayVisible)
-                        AvatarBar(
-                          circleSize: 58,
-                          uiModel: AvatarBarUIModel(
-                            avatarUIModels: uiModel.avatars,
-                          ),
-                          onAvatarTapped: onAvatarTapped,
-                        ),
-                      StatsContainer(uiModel.gameStats),
-                    ],
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.topCenter,
                   children: [
-                    GratitudeGameButton(
-                      onPressed: () => context.goNamed(
-                        FamilyPages.reflectIntro.name,
-                      ),
+                    Column(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/family/images/home_screen/background.svg',
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 24),
-                    GiveButton(
-                      onPressed: _cubit.onGiveButtonPressed,
-                    ),
-                    const SizedBox(height: 4),
-                    FunButton.secondary(
-                      onTap: () => context.goNamed(
-                        FamilyPages.parentSummary.name,
-                      ),
-                      text: 'Show Latest Summary',
-                      analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.FamilyHomeScreenGiveButtonClicked),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: TitleLargeText(
+                            overlayVisible
+                                ? ''
+                                : uiModel.familyGroupName == null
+                                    ? 'Welcome!'
+                                    : 'Hey ${uiModel.familyGroupName}!',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        if (!overlayVisible)
+                          AvatarBar(
+                            circleSize: 58,
+                            uiModel: AvatarBarUIModel(
+                              avatarUIModels: uiModel.avatars,
+                            ),
+                            onAvatarTapped: onAvatarTapped,
+                          ),
+                        StatsContainer(uiModel.gameStats),
+                      ],
                     ),
                   ],
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      GratitudeGameButton(
+                        onPressed: () => context.goNamed(
+                          FamilyPages.reflectIntro.name,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      GiveButton(
+                        onPressed: _cubit.onGiveButtonPressed,
+                      ),
+                      const SizedBox(height: 4),
+                      FunButton.secondary(
+                        onTap: () => context.goNamed(
+                          FamilyPages.parentSummary.name,
+                        ),
+                        text: 'Show Latest Summary',
+                        analyticsEvent: AnalyticsEvent(
+                            AmplitudeEvents.FamilyHomeScreenGiveButtonClicked),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
