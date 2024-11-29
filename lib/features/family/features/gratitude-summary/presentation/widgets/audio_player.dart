@@ -81,7 +81,6 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 _buildControl(),
@@ -120,12 +119,12 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
   }
 
   String getSeconds() {
-    final seconds = _duration?.inSeconds ?? 0 % 60;
+    final seconds = (_duration?.inSeconds ?? 0) % 60;
     return seconds < 10 ? '0$seconds' : '$seconds';
   }
 
   String getMinutes() {
-    final minutes = _duration?.inMinutes ?? 0 % 60;
+    final minutes = (_duration?.inMinutes ?? 0) % 60;
     return minutes < 10 ? '0$minutes' : '$minutes';
   }
 

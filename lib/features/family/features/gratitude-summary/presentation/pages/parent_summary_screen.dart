@@ -92,7 +92,7 @@ class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
                 text: 'Done',
                 onTap: () => context.pop(),
                 analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.afterGameUsmmaryDoneClicked,
+                  AmplitudeEvents.afterGameSummaryDoneClicked,
                 ),
               ),
             ],
