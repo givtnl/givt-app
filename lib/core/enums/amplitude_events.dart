@@ -317,10 +317,13 @@ enum AmplitudeEvents {
     'family_mission_acceptance_screen_accept_long_press_release_to_accept',
   ),
   // Family Home Screen
-  FamilyHomeScreenGratitudeGameButtonClicked(
+  familyHomeScreenGratitudeGameButtonClicked(
     'family_home_screen_gratitude_game_button_clicked',
   ),
-  FamilyHomeScreenGiveButtonClicked('family_home_screen_give_button_clicked'),
+  familyHomeScreenGiveButtonClicked('family_home_screen_give_button_clicked'),
+  familyHomeScreenLatestSummaryClicked(
+    'family_home_screen_latest_summary_clicked',
+  ),
 
   // Fun Counter
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
