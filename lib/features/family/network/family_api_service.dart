@@ -261,24 +261,25 @@ class FamilyAPIService {
         Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid/upload-message');
 
     final request = MultipartRequest('POST', url)
-      ..headers['Content-Type'] = 'multipart/form-data'
+      ..headers.addAll({
+        'Content-Type': 'multipart/form-data',
+      })
       ..files.add(
         MultipartFile(
-          'audio', // Name of the field expected by the server
+          'file', // Name of the field expected by the server
           audioFile.readAsBytes().asStream(),
           audioFile.lengthSync(),
           filename: 'audio_summary_message.m4a',
         ),
       );
 
-    final response = await Response.fromStream(await request.send());
+    final response = await Response.fromStream(await client.send(request));
 
     if (response.statusCode >= 300) {
+      final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
       throw GivtServerFailure(
         statusCode: response.statusCode,
-        body: response.body.isNotEmpty
-            ? jsonDecode(response.body) as Map<String, dynamic>
-            : null,
+        body: response.body.isNotEmpty ? decodedBody : null,
       );
     }
 
