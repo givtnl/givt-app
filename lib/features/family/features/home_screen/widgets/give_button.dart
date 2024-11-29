@@ -16,7 +16,7 @@ class GiveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ActionContainer(
       analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.FamilyHomeScreenGiveButtonClicked,
+        AmplitudeEvents.familyHomeScreenGiveButtonClicked,
       ),
       onTap: onPressed,
       borderColor: FamilyAppTheme.secondary80,
