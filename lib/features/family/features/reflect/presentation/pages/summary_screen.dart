@@ -25,7 +25,7 @@ class SummaryScreen extends StatefulWidget {
 
 class _SummaryScreenState extends State<SummaryScreen> {
   final _cubit = getIt<SummaryCubit>();
-  bool pressDown = true;
+  bool pressDown = false;
 
   @override
   void didChangeDependencies() {
