@@ -37,52 +37,55 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
   @override
   Widget build(BuildContext context) {
     final profilesState = context.read<ProfilesCubit>().state;
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: FamilyAppTheme.secondary98,
-          statusBarIconBrightness: Brightness.dark,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 0,
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: FamilyAppTheme.secondary98,
+            statusBarIconBrightness: Brightness.dark,
+          ),
+          backgroundColor: FamilyAppTheme.secondary98,
         ),
         backgroundColor: FamilyAppTheme.secondary98,
-      ),
-      backgroundColor: FamilyAppTheme.secondary98,
-      body: SafeArea(
-        bottom: false,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Lottie.asset(
-                'assets/family/lotties/rays.json',
-                fit: BoxFit.fill,
-                alignment: Alignment.bottomCenter,
-                width: double.infinity,
+        body: SafeArea(
+          bottom: false,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Lottie.asset(
+                  'assets/family/lotties/rays.json',
+                  fit: BoxFit.fill,
+                  alignment: Alignment.bottomCenter,
+                  width: double.infinity,
+                ),
               ),
-            ),
-            Positioned.fill(
-              child: SvgPicture.asset(
-                'assets/family/images/box_success.svg',
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.bottomCenter,
-                width: double.infinity,
+              Positioned.fill(
+                child: SvgPicture.asset(
+                  'assets/family/images/box_success.svg',
+                  fit: BoxFit.fitWidth,
+                  alignment: Alignment.bottomCenter,
+                  width: double.infinity,
+                ),
               ),
-            ),
-            Positioned.fill(
-              child: Lottie.asset(
-                'assets/family/lotties/coin_drop_b.json',
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.bottomCenter,
-                width: double.infinity,
+              Positioned.fill(
+                child: Lottie.asset(
+                  'assets/family/lotties/coin_drop_b.json',
+                  fit: BoxFit.fitWidth,
+                  alignment: Alignment.bottomCenter,
+                  width: double.infinity,
+                ),
               ),
-            ),
-            _buildSuccessText(),
-          ],
+              _buildSuccessText(),
+            ],
+          ),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: _buildFAB(profilesState.isOnlyChild),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: _buildFAB(profilesState.isOnlyChild),
+        ),
       ),
     );
   }
