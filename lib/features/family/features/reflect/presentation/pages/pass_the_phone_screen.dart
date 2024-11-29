@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/r
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class PassThePhone extends StatelessWidget {
   const PassThePhone({
@@ -95,7 +96,14 @@ class PassThePhone extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      child: Scaffold(
+      child: FunScaffold(
+        minimumPadding: EdgeInsets.zero,
+        appBar: FunTopAppBar(
+          title: '',
+          color: backgroundColor ?? user.role!.color.backgroundColor,
+          systemNavigationBarColor:
+              backgroundColor ?? user.role!.color.backgroundColor,
+        ),
         backgroundColor: backgroundColor ?? user.role!.color.backgroundColor,
         body: SafeArea(
           child: Stack(
