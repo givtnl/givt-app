@@ -35,12 +35,16 @@ class _RewardBannerDialogState extends State<RewardBannerDialog>
   );
 
   Future<void> _animateBanner() async {
-    await Future<void>.delayed(_showingBannerInitialDelay);
-    await _controller.forward();
-    await Future<void>.delayed(_showingBannerDuration);
-    await _controller.reverse();
-    if (mounted) {
-      context.pop();
+    try {
+      await Future<void>.delayed(_showingBannerInitialDelay);
+      await _controller.forward();
+      await Future<void>.delayed(_showingBannerDuration);
+      await _controller.reverse();
+      if (mounted) {
+        context.pop();
+      }
+    } catch (e) {
+      // user already dismissed banner by swiping
     }
   }
 
@@ -60,16 +64,23 @@ class _RewardBannerDialogState extends State<RewardBannerDialog>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: SlideTransition(
-            position: _offsetAnimation,
-            child: const GivtBanner(
-              badgeImage: 'assets/family/images/reward_badge.svg',
-              title: 'New Reward',
-              content: 'Avatar updated',
+        Dismissible(
+          key: const ValueKey('Avatar-Updated-Reward-Banner'),
+          onDismissed: (_) {
+            _controller.stop();
+            context.pop();
+          },
+          child: Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SlideTransition(
+              position: _offsetAnimation,
+              child: const GivtBanner(
+                badgeImage: 'assets/family/images/reward_badge.svg',
+                title: 'New Reward',
+                content: 'Avatar updated',
+              ),
             ),
           ),
         ),
