@@ -62,7 +62,7 @@ class _RecordSummaryMessageBottomsheetState
           const SizedBox(height: 24),
           Center(
             child: showPlayer
-                ? AudioPlayer(
+                ? FunAudioPlayer(
                     source: audioPath!,
                     onDelete: () {
                       setState(() => showPlayer = false);

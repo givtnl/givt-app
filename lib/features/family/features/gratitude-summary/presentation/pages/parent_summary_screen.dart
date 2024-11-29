@@ -1,8 +1,8 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/audio_player.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/summary_conversation_list.dart';
 import 'package:givt_app/features/family/helpers/datetime_extension.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -10,7 +10,6 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
@@ -23,19 +22,16 @@ class ParentSummaryScreen extends StatefulWidget {
 
 class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
   final ParentSummaryCubit _cubit = getIt<ParentSummaryCubit>();
-  late AudioPlayer _player;
   bool _hasClickedAudio = false;
 
   @override
   void initState() {
     super.initState();
     _cubit.init();
-    _player = AudioPlayer();
   }
 
   @override
   void dispose() {
-    _player.dispose();
     _cubit.close();
     super.dispose();
   }
@@ -56,7 +52,8 @@ class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
             children: [
               if (uiModel?.date != null)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4.5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4.5),
                   decoration: BoxDecoration(
                     color: FamilyAppTheme.highlight95,
                     borderRadius: BorderRadius.circular(24),
@@ -80,16 +77,11 @@ class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
               ),
               const SizedBox(height: 24),
               if (uiModel?.audioLink != null)
-                GestureDetector(
-                  onTap: () async {
-                    setState(() {
-                      _hasClickedAudio = true;
-                    });
-                    await _player.play(UrlSource(uiModel!.audioLink!));
-                  },
-                  child: primaryCircleWithIcon(
-                    iconData: Icons.play_arrow,
-                  ),
+                FunAudioPlayer(
+                  source: uiModel!.audioLink!,
+                  onDelete: () {},
+                  showDeleteButton: false,
+                  isUrl: true,
                 ),
               FunButton(
                 isDisabled: uiModel?.audioLink != null && !_hasClickedAudio,
@@ -97,8 +89,8 @@ class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
                 onTap: () {
                   context.pop();
                 },
-                analyticsEvent: AnalyticsEvent(AmplitudeEvents
-                    .coinMediumIdNotRecognizedGoBackHomeClicked),
+                analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked),
               ),
             ],
           );
