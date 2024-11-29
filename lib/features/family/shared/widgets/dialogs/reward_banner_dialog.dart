@@ -62,15 +62,15 @@ class _RewardBannerDialogState extends State<RewardBannerDialog>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Dismissible(
-          key: const ValueKey('Avatar-Updated-Reward-Banner'),
-          onDismissed: (_) {
-            _controller.stop();
-            context.pop();
-          },
-          child: Positioned(
+    return Dismissible(
+      key: const ValueKey('Avatar-Updated-Reward-Banner'),
+      onDismissed: (_) {
+        _controller.stop();
+        context.pop();
+      },
+      child: Stack(
+        children: [
+          Positioned(
             top: 0,
             left: 0,
             right: 0,
@@ -83,8 +83,8 @@ class _RewardBannerDialogState extends State<RewardBannerDialog>
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
