@@ -116,9 +116,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                     sendAudioAndNavigate(details.audioPath);
                     return;
                   }
-                  context.goNamed(
-                    FamilyPages.profileSelection.name,
-                  );
+                  navigateWithConfetti();
                 },
                 isPressedDown: pressDown,
                 text: (showPlayer || showRecorder)
@@ -139,7 +137,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
   Future<void> sendAudioAndNavigate(String path) async {
     await _cubit.shareAudio(path);
-    if (!mounted) return;
+    await navigateWithConfetti();
+  }
+
+  Future<void> navigateWithConfetti() async {
     setState(() {
       pressDown = true;
     });

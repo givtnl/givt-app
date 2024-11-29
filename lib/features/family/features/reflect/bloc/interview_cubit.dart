@@ -95,7 +95,6 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
 
   // Get button text for current state
   String getButtonText() {
-    if (_nextQuestionIsLast()) return 'Last question';
     return _hasOnlyOneReporter() ? 'Next Question' : 'Next Reporter';
   }
 
