@@ -100,7 +100,8 @@ class FamilyHomeScreenCubit
           .toList(),
       familyGroupName: _familyGroup?.name,
       gameStats: _gameStats,
-      showLatestSummaryBtn: _latestSummary != null,
+      showLatestSummaryBtn:
+          _latestSummary != null && !_latestSummary!.isEmpty(),
     );
   }
 

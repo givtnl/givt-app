@@ -26,6 +26,8 @@ class ParentSummaryItem {
   final String? audio;
   final DateTime? date;
 
+  bool isEmpty() => conversations.isEmpty;
+
   ParentSummaryUIModel toUIModel() {
     return ParentSummaryUIModel(
       conversations: conversations.map((e) => e.toUIModel()).toList(),
