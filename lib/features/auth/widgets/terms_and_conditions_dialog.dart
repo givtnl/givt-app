@@ -70,8 +70,10 @@ class TermsAndConditionsDialog extends StatelessWidget {
           }
           return FunBottomSheet(
             title: title,
+            titleColor: Colors.white,
             content: BodySmallText(
               termsAndConditions,
+              color: Colors.white,
             ),
             closeAction: () => context.pop(),
           );
