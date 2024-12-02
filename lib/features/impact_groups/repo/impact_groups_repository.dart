@@ -7,6 +7,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
@@ -44,6 +45,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     this._createFamilyGoalRepository,
     this._parentalApprovalRepository,
     this._createTransactionRepository,
+    this._authRepository,
     this._prefs,
   ) {
     _init();
@@ -53,6 +55,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   final CreateFamilyGoalRepository _createFamilyGoalRepository;
   final ParentalApprovalRepository _parentalApprovalRepository;
   final CreateTransactionRepository _createTransactionRepository;
+  final FamilyAuthRepository _authRepository;
   final SharedPreferences _prefs;
 
   final String boxOriginModalShownKey = 'boxOriginModalShown';
@@ -72,6 +75,21 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     _createTransactionRepository.onTransaction().listen(
           (_) => _fetchImpactGroups(),
         );
+    _authRepository.authenticatedUserStream().listen(
+      (userExt) {
+        if (userExt != null) {
+          _clearData();
+          _fetchImpactGroups();
+        } else {
+          _clearData();
+        }
+      },
+    );
+  }
+
+  void _clearData() {
+    _impactGroups = null;
+    _update([]);
   }
 
   @override
