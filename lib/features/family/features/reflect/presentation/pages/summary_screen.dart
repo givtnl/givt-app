@@ -157,6 +157,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   }
 
   Future<void> navigateWithConfetti() async {
+    _cubit.onCloseGame();
     setState(() {
       pressDown = true;
     });

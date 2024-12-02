@@ -57,4 +57,8 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   void saveSummary() {
     _reflectAndShareRepository.saveSummaryStats();
   }
+
+  void onCloseGame() {
+    _reflectAndShareRepository.reset();
+  }
 }
