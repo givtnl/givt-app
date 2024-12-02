@@ -33,14 +33,24 @@ class FamilyHomeScreenCubit
   Future<void> init() async {
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen(_onGroupsChanged);
-    _reflectAndShareRepository.onGameStatsChanged().listen(_onGameStatsChanged);
+    _reflectAndShareRepository.onFinishedAGame().listen(_onFinishedAGame);
 
     _onProfilesChanged(await _profilesRepository.getProfiles());
     _onGroupsChanged(
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
     );
-    _gameStats = await _reflectAndShareRepository.getGameStats();
+    await _getGameStats();
+    await _getLatestGameSummary();
     _emitData();
+  }
+
+  Future<void> _getGameStats() async {
+    try {
+      _gameStats = await _reflectAndShareRepository.getGameStats();
+      _emitData();
+    } catch (e, s) {
+      // do nothing
+    }
   }
 
   void logout() {
@@ -62,9 +72,8 @@ class FamilyHomeScreenCubit
     _emitData();
   }
 
-  void _onGameStatsChanged(GameStats gameStats) {
-    _gameStats = gameStats;
-    _emitData();
+  void _onFinishedAGame(void event) {
+    _getGameStats();
     _getLatestGameSummary();
   }
 

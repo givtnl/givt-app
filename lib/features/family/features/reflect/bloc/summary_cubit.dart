@@ -14,6 +14,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   List<Profile> _missingAdults = const [];
 
   void init() {
+    saveSummary();
     _totalMinutesPlayed =
         (_reflectAndShareRepository.totalTimeSpentInSeconds / 60).ceil();
     _generousDeeds = _reflectAndShareRepository.getAmountOfGenerousDeeds();
@@ -24,7 +25,6 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
         generousDeeds: _generousDeeds,
       ),
     );
-    saveSummary();
   }
 
   Future<void> checkAllParentsPlayed() async {
@@ -59,6 +59,6 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   }
 
   void onCloseGame() {
-    _reflectAndShareRepository.reset();
+    _reflectAndShareRepository.onCloseGame();
   }
 }
