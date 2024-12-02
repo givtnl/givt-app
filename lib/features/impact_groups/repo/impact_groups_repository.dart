@@ -5,13 +5,12 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
-import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin ImpactGroupsRepository {
@@ -43,22 +42,20 @@ mixin ImpactGroupsRepository {
 class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   ImpactGroupsRepositoryImpl(
     this._apiService,
-    this._givtRepository,
     this._createFamilyGoalRepository,
     this._parentalApprovalRepository,
-    this._authRepository,
     this._createTransactionRepository,
+    this._authRepository,
     this._prefs,
   ) {
     _init();
   }
 
   final APIService _apiService;
-  final GivtRepository _givtRepository;
   final CreateFamilyGoalRepository _createFamilyGoalRepository;
   final ParentalApprovalRepository _parentalApprovalRepository;
-  final AuthRepository _authRepository;
   final CreateTransactionRepository _createTransactionRepository;
+  final FamilyAuthRepository _authRepository;
   final SharedPreferences _prefs;
 
   final String boxOriginModalShownKey = 'boxOriginModalShown';
@@ -69,18 +66,18 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   List<ImpactGroup>? _impactGroups;
 
   Future<void> _init() async {
-    _givtRepository.onGivtsChanged().listen(
-          (_) => _fetchImpactGroups(),
-        );
     _createFamilyGoalRepository.onFamilyGoalCreated().listen(
           (_) => _fetchImpactGroups(),
         );
     _parentalApprovalRepository.onParentalApprovalChanged().listen(
           (_) => _fetchImpactGroups(),
         );
-    _authRepository.hasSessionStream().listen(
-      (hasSession) {
-        if (hasSession) {
+    _createTransactionRepository.onTransaction().listen(
+          (_) => _fetchImpactGroups(),
+        );
+    _authRepository.authenticatedUserStream().listen(
+      (userExt) {
+        if (userExt != null) {
           _clearData();
           _fetchImpactGroups();
         } else {
@@ -88,9 +85,6 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
         }
       },
     );
-    _createTransactionRepository.onTransaction().listen(
-          (_) => _fetchImpactGroups(),
-        );
   }
 
   void _clearData() {

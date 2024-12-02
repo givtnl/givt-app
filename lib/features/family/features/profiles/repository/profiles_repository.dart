@@ -12,7 +12,6 @@ import 'package:givt_app/features/family/features/giving_flow/create_transaction
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
-import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 mixin ProfilesRepository {
   Future<Profile> getChildDetails(String childGuid);
@@ -36,7 +35,6 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     this._editChildRepository,
     this._addMemberRepository,
     this._impactGroupsRepository,
-    this._givtRepository,
     this._authRepository,
     this._parentalApprovalRepository,
     this._createTransactionRepository,
@@ -50,7 +48,6 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   final EditChildRepository _editChildRepository;
   final AddMemberRepository _addMemberRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
-  final GivtRepository _givtRepository;
   final FamilyAuthRepository _authRepository;
   final ParentalApprovalRepository _parentalApprovalRepository;
   final CreateTransactionRepository _createTransactionRepository;
@@ -76,10 +73,6 @@ class ProfilesRepositoryImpl with ProfilesRepository {
         .listen(refreshChildDetails);
 
     _impactGroupsRepository.onImpactGroupsChanged().listen(
-          (_) => refreshProfiles(),
-        );
-
-    _givtRepository.onGivtsChanged().listen(
           (_) => refreshProfiles(),
         );
 
