@@ -206,11 +206,8 @@ class ReflectAndShareRepository {
   // select the family members that will participate in the game
   void selectProfiles(List<GameProfile> selectedProfiles) {
     // Reset game state
+    reset();
     createGameSession();
-    completedLoops = 0;
-    totalQuestionsAsked = 0;
-    _generousDeeds = 0;
-    totalTimeSpentInSeconds = 0;
     _startTime = DateTime.now();
 
     _selectedProfiles = selectedProfiles;
@@ -515,5 +512,20 @@ class ReflectAndShareRepository {
     final stats = GameStats.fromJson(result);
     _gameStatsStreamController.add(stats);
     return stats;
+  }
+
+  void reset() {
+    completedLoops = 0;
+    totalQuestionsAsked = 0;
+    _generousDeeds = 0;
+    totalTimeSpentInSeconds = 0;
+    _startTime = null;
+    _endTime = null;
+    _gameId = null;
+    _allProfiles = null;
+    _selectedProfiles = [];
+    _usedSecretWords.clear();
+    _currentSecretWord = null;
+    _gameStatsData = null;
   }
 }
