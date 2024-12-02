@@ -53,7 +53,6 @@ class GuessSecretWordCubit
             await _reflectAndShareRepository.getKidsWithoutBedtime();
         // Check if it's the last game and delay for 2 seconds before continuing
         if (_reflectAndShareRepository.isGameFinished()) {
-          unawaited(_reflectAndShareRepository.saveSummaryStats());
           Timer(const Duration(seconds: 2), () {
             if (kidsWithoutBedtime.isNotEmpty) {
               redirectToBedtimeSelection(kidsWithoutBedtime);
