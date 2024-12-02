@@ -14,13 +14,10 @@ import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class ReflectAndShareRepository {
   ReflectAndShareRepository(
-      this._profilesRepository, this._familyApiService, this._authRepository) {
-    _init();
-  }
+      this._profilesRepository, this._familyApiService);
 
   final ProfilesRepository _profilesRepository;
   final FamilyAPIService _familyApiService;
-  final FamilyAuthRepository _authRepository;
 
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
@@ -42,25 +39,6 @@ class ReflectAndShareRepository {
   Stream<GameStats> onGameStatsChanged() => _gameStatsStreamController.stream;
 
   int getAmountOfGenerousDeeds() => _generousDeeds;
-
-  Future<void> _init() async {
-    _authRepository.authenticatedUserStream().listen(
-      (user) {
-        if (user != null) {
-          _clearData();
-          _fetchGameStats();
-        } else {
-          _clearData();
-        }
-      },
-    );
-  }
-
-  void _clearData() {
-    _allProfiles = null;
-    _selectedProfiles = [];
-    _gameStatsData = null;
-  }
 
   void incrementGenerousDeeds() {
     _generousDeeds++;
