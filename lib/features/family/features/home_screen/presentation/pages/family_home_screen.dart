@@ -70,7 +70,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
       },
       onData: (context, uiModel) {
         return FunScaffold(
-          minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+          minimumPadding: EdgeInsets.zero,
           appBar: const FunTopAppBar(title: null),
           body: SingleChildScrollView(
             child: Column(
