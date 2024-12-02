@@ -25,7 +25,7 @@ class RuleCard extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.only(top: 48),
         child: Container(
-          height: 420,
+          //  height: 420,
           width: double.infinity,
           decoration: BoxDecoration(
             color: color,
@@ -52,13 +52,15 @@ class RuleCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Spacer(),
+              const Spacer(flex: 3),
               header,
-              const SizedBox(height: 16),
-              content,
-              const SizedBox(height: 16),
-              button,
               const Spacer(),
+              const SizedBox(height: 4),
+              content,
+              const Spacer(),
+              const SizedBox(height: 4),
+              button,
+              const Spacer(flex: 3),
             ],
           ),
         ),
