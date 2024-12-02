@@ -208,8 +208,6 @@ void initRepositories() {
         getIt(),
         getIt(),
         getIt(),
-        getIt(),
-        getIt(),
       ),
     )
     ..registerLazySingleton<AddMemberCubit>(
