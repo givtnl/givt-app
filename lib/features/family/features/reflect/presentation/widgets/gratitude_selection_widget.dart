@@ -26,6 +26,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scrollbar(
       child: FunScaffold(
+        minimumPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
         canPop: false,
         appBar: const FunTopAppBar(
           title: 'Question 3',
@@ -97,7 +98,8 @@ class GratitudeSelectionWidget extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      const SizedBox(height: 56), // Placeholder for the button
+                      const SizedBox(
+                          height: 56 + 24), // Placeholder for the button
                     ],
                   ),
                 ),
@@ -108,15 +110,19 @@ class GratitudeSelectionWidget extends StatelessWidget {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                child: FunButton(
-                  onTap: onNext,
-                  text: 'Last Question',
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.gratefulTileSubmitted,
-                    parameters: {
-                      'superhero': uimodel.superheroName,
-                      'gratefulFor': uimodel.selectedTag?.displayText,
-                    },
+                child: Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.only(bottom: 24, top: 8),
+                  child: FunButton(
+                    onTap: onNext,
+                    text: 'Last Question',
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.gratefulTileSubmitted,
+                      parameters: {
+                        'superhero': uimodel.superheroName,
+                        'gratefulFor': uimodel.selectedTag?.displayText,
+                      },
+                    ),
                   ),
                 ),
               ),
