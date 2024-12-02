@@ -37,7 +37,7 @@ class RuleScreen extends StatelessWidget {
       header: GameProfileItem(
         profile: superhero,
         displayRole: false,
-        size: 100,
+        size: 96,
       ),
       iconData: FontAwesomeIcons.mask,
       bodyText:

@@ -77,7 +77,7 @@ class GameProfileItem extends StatelessWidget {
             ],
           ),
         ),
-        if (displayName && displayRole) const SizedBox(height: 12),
+        if (displayName && displayRole) const SizedBox(height: 8),
         if (displayName)
           Text(
             profile.firstName!,
