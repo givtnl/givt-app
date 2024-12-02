@@ -13,8 +13,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/roles.da
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class ReflectAndShareRepository {
-  ReflectAndShareRepository(
-      this._profilesRepository, this._familyApiService);
+  ReflectAndShareRepository(this._profilesRepository, this._familyApiService);
 
   final ProfilesRepository _profilesRepository;
   final FamilyAPIService _familyApiService;
@@ -33,10 +32,11 @@ class ReflectAndShareRepository {
 
   GameStats? _gameStatsData;
 
-  final StreamController<GameStats> _gameStatsStreamController =
-      StreamController.broadcast();
 
-  Stream<GameStats> onGameStatsChanged() => _gameStatsStreamController.stream;
+  final StreamController<void> _gameFinishedStreamController =
+  StreamController.broadcast();
+
+  Stream<void> onFinishedAGame() => _gameFinishedStreamController.stream;
 
   int getAmountOfGenerousDeeds() => _generousDeeds;
 
@@ -48,8 +48,11 @@ class ReflectAndShareRepository {
     try {
       _endTime = DateTime.now();
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
+      final totalMinutesPlayed = (totalTimeSpentInSeconds / 60).ceil();
       await _familyApiService.saveGratitudeStats(
-          totalTimeSpentInSeconds, _gameId);
+        totalMinutesPlayed * 60,
+        _gameId,
+      );
       await _fetchGameStats();
     } catch (e, s) {
       LoggingInfo.instance.error(
@@ -488,7 +491,6 @@ class ReflectAndShareRepository {
   Future<GameStats> _fetchGameStats() async {
     final result = await _familyApiService.fetchGameStats();
     final stats = GameStats.fromJson(result);
-    _gameStatsStreamController.add(stats);
     return stats;
   }
 
@@ -505,5 +507,10 @@ class ReflectAndShareRepository {
     _usedSecretWords.clear();
     _currentSecretWord = null;
     _gameStatsData = null;
+  }
+
+  void onCloseGame() {
+    reset();
+    _gameFinishedStreamController.add(null);
   }
 }
