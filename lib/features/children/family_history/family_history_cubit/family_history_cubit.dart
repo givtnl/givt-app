@@ -54,6 +54,7 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
   Future<void> close() async {
     await _approvalSubscription?.cancel();
     await _walletChangedSubscription?.cancel();
+    await _userTransactionSubscription?.cancel();
     await super.close();
   }
 
