@@ -91,9 +91,13 @@ class ProfilesRepositoryImpl with ProfilesRepository {
       },
     );
 
-    _createTransactionRepository
-        .onTransaction()
-        .listen((_) => refreshProfiles());
+    _createTransactionRepository.onTransactionByUser().listen((userId) {
+      if (_profileMap.containsKey(userId) && _profileMap[userId]!.isChild) {
+        refreshChildDetails(userId);
+      } else {
+        refreshProfiles();
+      }
+    });
 
     _editParentProfileRepository
         .onProfileChanged()

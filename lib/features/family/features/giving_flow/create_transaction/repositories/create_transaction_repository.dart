@@ -6,7 +6,8 @@ import 'package:givt_app/features/family/network/family_api_service.dart';
 mixin CreateTransactionRepository {
   Future<void> createTransaction({required Transaction transaction});
 
-  Stream<void> onTransaction();
+  //userid
+  Stream<String> onTransactionByUser();
 }
 
 class CreateTransactionRepositoryImpl with CreateTransactionRepository {
@@ -15,15 +16,15 @@ class CreateTransactionRepositoryImpl with CreateTransactionRepository {
   );
 
   final FamilyAPIService _apiService;
-  final StreamController<void> _transactionCreatedController =
-      StreamController<void>.broadcast();
+  final StreamController<String> _transactionCreatedController =
+      StreamController<String>.broadcast();
 
   @override
   Future<void> createTransaction({required Transaction transaction}) async {
     await _apiService.createTransaction(transaction: transaction);
-    _transactionCreatedController.add(null);
+    _transactionCreatedController.add(transaction.userId);
   }
 
   @override
-  Stream<void> onTransaction() => _transactionCreatedController.stream;
+  Stream<String> onTransactionByUser() => _transactionCreatedController.stream;
 }

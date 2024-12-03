@@ -245,8 +245,8 @@ class FamilyAppRoutes {
           path: FamilyPages.familyChooseAmountSlider.path,
           name: FamilyPages.familyChooseAmountSlider.name,
           builder: (context, state) => BlocProvider(
-            create: (BuildContext context) =>
-                CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+            create: (BuildContext context) => CreateTransactionCubit(
+                context.read<ProfilesCubit>(), getIt(), getIt()),
             child: const ChooseAmountSliderScreen(),
           ),
         ),
@@ -259,6 +259,7 @@ class FamilyAppRoutes {
             return BlocProvider(
               create: (BuildContext context) => CreateTransactionCubit(
                 context.read<ProfilesCubit>(),
+                getIt(),
                 getIt(),
               ),
               child: ChooseAmountSliderGoalScreen(
@@ -374,6 +375,7 @@ class FamilyAppRoutes {
             return BlocProvider(
               create: (BuildContext context) => CreateTransactionCubit(
                 context.read<ProfilesCubit>(),
+                getIt(),
                 getIt(),
               ),
               child: const ChooseAmountSliderScreen(),
