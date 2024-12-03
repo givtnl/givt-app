@@ -28,6 +28,9 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
   void initState() {
     super.initState();
     _cubit.init();
+    setState(() {
+      countryIso = Country.nl.countryCode;
+    });
     _getCountry();
   }
 

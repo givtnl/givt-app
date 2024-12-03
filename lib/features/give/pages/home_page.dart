@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
             listener: (context, state) {
               // Debug information
               if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                var syncString = 'Synced successfully}';
+                var syncString = 'Synced successfully';
                 if (widget.code.isNotEmpty) {
                   syncString += ' with mediumId/code ${widget.code}';
                 }
