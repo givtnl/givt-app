@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -132,9 +131,9 @@ class SignBacsMandatePage extends StatelessWidget {
                     isScrollControlled: true,
                     useSafeArea: true,
                     backgroundColor: AppTheme.givtPurple,
-                    builder: (BuildContext context) =>
-                        const TermsAndConditionsDialog(
-                      typeOfTerms: TypeOfTerms.directDebitGuarantee,
+                    builder: (BuildContext context) => TermsAndConditionsDialog(
+                      content: locals.bacsReadDdGuarantee,
+                      isDrakBackground: true,
                     ),
                   ),
                   style: ElevatedButton.styleFrom(

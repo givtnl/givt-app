@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -49,8 +48,9 @@ class _GiftAidPageState extends State<GiftAidPage> {
               isScrollControlled: true,
               useSafeArea: true,
               backgroundColor: AppTheme.givtBlue,
-              builder: (_) => const TermsAndConditionsDialog(
-                typeOfTerms: TypeOfTerms.giftAid,
+              builder: (_) => TermsAndConditionsDialog(
+                content: locals.giftAidInfoBody,
+                isDrakBackground: true,
               ),
             ),
             icon: const Icon(Icons.info),

@@ -9,7 +9,6 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/core/enums/type_of_terms.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/country_dropdown.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
@@ -170,8 +169,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 builder: (BuildContext context) =>
-                                    const TermsAndConditionsDialog(
-                                  typeOfTerms: TypeOfTerms.termsAndConditions,
+                                    TermsAndConditionsDialog(
+                                  content: locals.termsText,
                                 ),
                               ),
                               child: Row(

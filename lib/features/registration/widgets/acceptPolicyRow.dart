@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/type_of_terms.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -21,8 +20,9 @@ class AcceptPolicyRow extends StatelessWidget {
         isScrollControlled: true,
         useSafeArea: true,
         backgroundColor: AppTheme.givtPurple,
-        builder: (_) => const TermsAndConditionsDialog(
-          typeOfTerms: TypeOfTerms.privacyPolicy,
+        builder: (_) => TermsAndConditionsDialog(
+          content: locals.policyText,
+          isDrakBackground: true,
         ),
       ),
       child: Row(
