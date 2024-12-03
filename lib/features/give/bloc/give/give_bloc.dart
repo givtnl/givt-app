@@ -194,9 +194,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   ) async {
     emit(state.copyWith(status: GiveStatus.loading));
     try {
-      final namespace = state.organisation.mediumId!.split('.').first;
       await _processGivts(
-        namespace: namespace,
+        namespace: state.organisation.mediumId!.split('.').first,
         userGUID: event.userGUID,
         emit: emit,
       );
