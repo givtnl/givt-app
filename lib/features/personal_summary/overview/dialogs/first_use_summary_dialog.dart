@@ -1,15 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/personal_summary/giving_goal/pages/setup_giving_goal_bottom_sheet.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/models.dart';
-import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FirstUseSummaryDialog extends StatefulWidget {
   const FirstUseSummaryDialog({
@@ -23,13 +20,6 @@ class FirstUseSummaryDialog extends StatefulWidget {
 class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
   int currentIndex = 0;
   final CarouselSliderController _controller = CarouselSliderController();
-
-  void permanentlyDismiss() {
-    getIt<SharedPreferences>().setBool(
-      Util.testimonialsSummaryKey,
-      true,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,14 +116,12 @@ class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
                     Positioned(
                       right: -5,
                       child: IconButton(
-                          icon: const Icon(
-                            Icons.close_rounded,
-                            size: 32,
-                          ),
-                          onPressed: () {
-                            permanentlyDismiss();
-                            Navigator.of(context).pop();
-                          }),
+                        icon: const Icon(
+                          Icons.close_rounded,
+                          size: 32,
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
                     ),
                   ],
                 );
@@ -155,7 +143,6 @@ class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
                 width: 200,
                 child: ElevatedButton(
                   onPressed: () {
-                    permanentlyDismiss();
                     Navigator.of(context).pop();
                     switch (currentIndex) {
                       case 1:

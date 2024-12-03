@@ -136,6 +136,10 @@ class PersonalSummary extends StatelessWidget {
       );
 
   void _showFirstUseDialogs(BuildContext context) {
+    getIt<SharedPreferences>().setBool(
+      Util.testimonialsSummaryKey,
+      true,
+    );
     showDialog<void>(
       context: context,
       barrierDismissible: false,
