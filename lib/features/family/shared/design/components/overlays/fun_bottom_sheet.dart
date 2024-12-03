@@ -101,7 +101,10 @@ class FunBottomSheet extends StatelessWidget {
         if (closeAction == null) const SizedBox(height: 24),
         if (closeAction != null)
           IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
+            icon: FaIcon(
+              FontAwesomeIcons.xmark,
+              color: titleColor,
+            ),
             onPressed: () {
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.bottomsheetCloseButtonClicked,
