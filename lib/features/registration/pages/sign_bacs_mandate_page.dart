@@ -133,7 +133,7 @@ class SignBacsMandatePage extends StatelessWidget {
                     backgroundColor: AppTheme.givtPurple,
                     builder: (BuildContext context) => TermsAndConditionsDialog(
                       content: locals.bacsReadDdGuarantee,
-                      isDrakBackground: true,
+                      isDarkBackground: true,
                     ),
                   ),
                   style: ElevatedButton.styleFrom(

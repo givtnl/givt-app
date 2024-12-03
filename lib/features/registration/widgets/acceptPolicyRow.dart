@@ -22,7 +22,7 @@ class AcceptPolicyRow extends StatelessWidget {
         backgroundColor: AppTheme.givtPurple,
         builder: (_) => TermsAndConditionsDialog(
           content: locals.policyText,
-          isDrakBackground: true,
+          isDarkBackground: true,
         ),
       ),
       child: Row(

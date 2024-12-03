@@ -126,7 +126,7 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
         backgroundColor: AppTheme.givtPurple,
         builder: (BuildContext context) => TermsAndConditionsDialog(
           content: locals.bacsAdvanceNotice,
-          isDrakBackground: true,
+          isDarkBackground: true,
         ),
       ),
       child: Row(

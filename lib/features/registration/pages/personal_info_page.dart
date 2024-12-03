@@ -253,7 +253,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               backgroundColor: AppTheme.givtBlue,
               builder: (_) => TermsAndConditionsDialog(
                 content: context.l10n.readPrivacy,
-                isDrakBackground: true,
+                isDarkBackground: true,
               ),
             ),
             style: ElevatedButton.styleFrom(

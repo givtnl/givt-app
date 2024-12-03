@@ -50,7 +50,7 @@ class _GiftAidPageState extends State<GiftAidPage> {
               backgroundColor: AppTheme.givtBlue,
               builder: (_) => TermsAndConditionsDialog(
                 content: locals.giftAidInfoBody,
-                isDrakBackground: true,
+                isDarkBackground: true,
               ),
             ),
             icon: const Icon(Icons.info),

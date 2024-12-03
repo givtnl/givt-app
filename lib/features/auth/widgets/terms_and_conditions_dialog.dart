@@ -11,11 +11,11 @@ import 'package:go_router/go_router.dart';
 class TermsAndConditionsDialog extends StatefulWidget {
   const TermsAndConditionsDialog({
     required this.content,
-    this.isDrakBackground = false,
+    this.isDarkBackground = false,
     super.key,
   });
   final String content;
-  final bool isDrakBackground;
+  final bool isDarkBackground;
 
   @override
   State<TermsAndConditionsDialog> createState() =>
@@ -79,19 +79,16 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
       title = locals.giftAidInfoTitle;
     }
 
-    return Theme(
-      data: const FamilyAppTheme().toThemeData(),
-      child: FunBottomSheet(
-        title: title,
-        titleColor:
-            widget.isDrakBackground ? Colors.white : FamilyAppTheme.primary20,
-        content: BodySmallText(
-          termsAndConditions,
-          color:
-              widget.isDrakBackground ? Colors.white : FamilyAppTheme.primary20,
-        ),
-        closeAction: () => context.pop(),
+    return FunBottomSheet(
+      title: title,
+      titleColor:
+          widget.isDarkBackground ? Colors.white : FamilyAppTheme.primary20,
+      content: BodySmallText(
+        termsAndConditions,
+        color:
+            widget.isDarkBackground ? Colors.white : FamilyAppTheme.primary20,
       ),
+      closeAction: () => context.pop(),
     );
   }
 }

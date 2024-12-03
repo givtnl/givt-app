@@ -63,7 +63,7 @@ class _SepaMandateExplanationPageView extends StatelessWidget {
                 backgroundColor: AppTheme.givtPurple,
                 builder: (BuildContext context) => TermsAndConditionsDialog(
                   content: locals.slimPayInfoDetail,
-                  isDrakBackground: true,
+                  isDarkBackground: true,
                 ),
               ),
               child: Text.rich(
