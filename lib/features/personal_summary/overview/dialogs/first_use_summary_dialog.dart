@@ -24,6 +24,13 @@ class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
   int currentIndex = 0;
   final CarouselSliderController _controller = CarouselSliderController();
 
+  void permanentlyDismiss() {
+    getIt<SharedPreferences>().setBool(
+      Util.testimonialsSummaryKey,
+      true,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
@@ -119,12 +126,14 @@ class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
                     Positioned(
                       right: -5,
                       child: IconButton(
-                        icon: const Icon(
-                          Icons.close_rounded,
-                          size: 32,
-                        ),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
+                          icon: const Icon(
+                            Icons.close_rounded,
+                            size: 32,
+                          ),
+                          onPressed: () {
+                            permanentlyDismiss();
+                            Navigator.of(context).pop();
+                          }),
                     ),
                   ],
                 );
@@ -146,10 +155,7 @@ class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
                 width: 200,
                 child: ElevatedButton(
                   onPressed: () {
-                    getIt<SharedPreferences>().setBool(
-                      Util.testimonialsSummaryKey,
-                      true,
-                    );
+                    permanentlyDismiss();
                     Navigator.of(context).pop();
                     switch (currentIndex) {
                       case 1:

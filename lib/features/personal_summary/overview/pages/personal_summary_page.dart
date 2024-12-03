@@ -138,6 +138,7 @@ class PersonalSummary extends StatelessWidget {
   void _showFirstUseDialogs(BuildContext context) {
     showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (_) => BlocProvider.value(
         value: context.read<PersonalSummaryBloc>(),
         child: const FirstUseSummaryDialog(),
