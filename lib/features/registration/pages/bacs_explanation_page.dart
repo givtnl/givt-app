@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
@@ -125,8 +124,9 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
         isScrollControlled: true,
         useSafeArea: true,
         backgroundColor: AppTheme.givtPurple,
-        builder: (BuildContext context) => const TermsAndConditionsDialog(
-          typeOfTerms: TypeOfTerms.bacsInfo,
+        builder: (BuildContext context) => TermsAndConditionsDialog(
+          content: locals.bacsAdvanceNotice,
+          isDarkBackground: true,
         ),
       ),
       child: Row(

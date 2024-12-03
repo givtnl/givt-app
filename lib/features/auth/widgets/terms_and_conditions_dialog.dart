@@ -10,11 +10,12 @@ import 'package:go_router/go_router.dart';
 
 class TermsAndConditionsDialog extends StatefulWidget {
   const TermsAndConditionsDialog({
-    required this.typeOfTerms,
+    required this.content,
+    this.isDarkBackground = false,
     super.key,
   });
-  //todo refactor this to use the title and the instead of the [TypeOfTerms]
-  final TypeOfTerms typeOfTerms;
+  final String content;
+  final bool isDarkBackground;
 
   @override
   State<TermsAndConditionsDialog> createState() =>
@@ -44,55 +45,50 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final isUs = countryIso == Country.us.countryCode;
-    var termsAndConditions = locals.termsText;
+    var termsAndConditions = widget.content;
     var title = locals.fullVersionTitleTerms;
-    if (widget.typeOfTerms == TypeOfTerms.privacyPolicy) {
+    if (widget.content == locals.termsText) {
+      if (Country.unitedKingdomCodes().contains(countryIso)) {
+        termsAndConditions = locals.termsTextGb;
+      }
+      if (countryIso == Country.us.countryCode) {
+        termsAndConditions = locals.termsTextUs;
+      }
+    }
+    if (widget.content == locals.policyText) {
       title = locals.privacyTitle;
       termsAndConditions = locals.policyText;
       if (Country.unitedKingdomCodes().contains(countryIso)) {
         termsAndConditions = locals.policyTextGb;
       }
-      if (isUs) {
+      if (countryIso == Country.us.countryCode) {
         termsAndConditions = locals.policyTextUs;
       }
     }
-    if (widget.typeOfTerms == TypeOfTerms.termsAndConditions) {
-      if (Country.unitedKingdomCodes().contains(countryIso)) {
-        termsAndConditions = locals.termsTextGb;
-      }
-      if (isUs) {
-        termsAndConditions = locals.termsTextUs;
-      }
-    }
-    if (widget.typeOfTerms == TypeOfTerms.slimPayInfo) {
+
+    if (widget.content == locals.slimPayInfoDetail) {
       title = locals.slimPayInfoDetailTitle;
-      termsAndConditions = locals.slimPayInfoDetail;
     }
-    if (widget.typeOfTerms == TypeOfTerms.bacsInfo) {
+    if (widget.content == locals.bacsAdvanceNotice) {
       title = locals.bacsAdvanceNoticeTitle;
-      termsAndConditions = locals.bacsAdvanceNotice;
     }
-    if (widget.typeOfTerms == TypeOfTerms.directDebitGuarantee) {
+    if (widget.content == locals.bacsDdGuarantee) {
       title = locals.bacsDdGuaranteeTitle;
-      termsAndConditions = locals.bacsDdGuarantee;
     }
-    if (widget.typeOfTerms == TypeOfTerms.giftAid) {
+    if (widget.content == locals.giftAidInfoBody) {
       title = locals.giftAidInfoTitle;
-      termsAndConditions = locals.giftAidInfoBody;
     }
 
-    return Theme(
-      data: const FamilyAppTheme().toThemeData(),
-      child: FunBottomSheet(
-        title: title,
-        titleColor: isUs ? FamilyAppTheme.primary20 : Colors.white,
-        content: BodySmallText(
-          termsAndConditions,
-          color: isUs ? FamilyAppTheme.primary20 : Colors.white,
-        ),
-        closeAction: () => context.pop(),
+    return FunBottomSheet(
+      title: title,
+      titleColor:
+          widget.isDarkBackground ? Colors.white : FamilyAppTheme.primary20,
+      content: BodySmallText(
+        termsAndConditions,
+        color:
+            widget.isDarkBackground ? Colors.white : FamilyAppTheme.primary20,
       ),
+      closeAction: () => context.pop(),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/pages.dart';
@@ -62,9 +61,9 @@ class _SepaMandateExplanationPageView extends StatelessWidget {
                 isScrollControlled: true,
                 useSafeArea: true,
                 backgroundColor: AppTheme.givtPurple,
-                builder: (BuildContext context) =>
-                    const TermsAndConditionsDialog(
-                  typeOfTerms: TypeOfTerms.slimPayInfo,
+                builder: (BuildContext context) => TermsAndConditionsDialog(
+                  content: locals.slimPayInfoDetail,
+                  isDarkBackground: true,
                 ),
               ),
               child: Text.rich(
