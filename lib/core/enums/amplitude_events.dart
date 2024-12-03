@@ -256,10 +256,11 @@ enum AmplitudeEvents {
   parentGaveSuccessfully('parent_gave_successfully'),
 
   // Reflect and Share
-  reflectandShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),
+  reflectAndShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),
   reflectAndShareClicked('reflect_and_share_clicked'),
   reflectAndShareLetsGoClicked('reflect_and_share_lets_go_clicked'),
-  reflectAndShareStartClicked('reflect_and_share_start_clicked'),
+  assignedFamilyRolesStartClicked('assigned_family_roles_start_clicked'),
+  supersShowItsShowtimeClicked('supers_show_its_showtime_clicked'),
   reflectAndShareSeeTheRulesClicked('reflect_and_share_see_the_rules_clicked'),
   reflectAndShareRulesNextClicked('reflect_and_share_next_clicked'),
   reflectAndShareMemberAdded('reflect_and_share_member_added'),

@@ -70,7 +70,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                     onTap: _cubit.onClickStart,
                     text: 'Start',
                     analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.reflectAndShareStartClicked,
+                      AmplitudeEvents.assignedFamilyRolesStartClicked,
                     ),
                   ),
                 ],
