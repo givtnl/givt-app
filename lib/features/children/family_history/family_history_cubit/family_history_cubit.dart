@@ -7,6 +7,7 @@ import 'package:givt_app/features/children/family_history/models/history_item.da
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/children/parental_approval/models/parental_approval_response.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 
 part 'family_history_state.dart';
 
@@ -15,6 +16,7 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
     this.historyRepo,
     this._editChildRepository,
     this._parentalApprovalRepository,
+    this._createTransactionRepository,
   ) : super(const FamilyHistoryState()) {
     _init();
   }
@@ -22,9 +24,12 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
   final FamilyDonationHistoryRepository historyRepo;
   final EditChildRepository _editChildRepository;
   final ParentalApprovalRepository _parentalApprovalRepository;
+  final CreateTransactionRepository _createTransactionRepository;
 
   StreamSubscription<String>? _walletChangedSubscription;
+  StreamSubscription<String>? _userTransactionSubscription;
   StreamSubscription<ParentalApprovalResponse>? _approvalSubscription;
+
 
   void _init() {
     _walletChangedSubscription =
@@ -35,6 +40,12 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
     _approvalSubscription = _parentalApprovalRepository
         .onParentalApprovalChanged()
         .listen((response) {
+      fetchHistory(fromScratch: true);
+    });
+
+    _userTransactionSubscription = _createTransactionRepository
+        .onTransactionByUser()
+        .listen((_) {
       fetchHistory(fromScratch: true);
     });
   }
