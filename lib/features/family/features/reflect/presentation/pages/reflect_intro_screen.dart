@@ -34,6 +34,7 @@ class ReflectIntroScreen extends StatelessWidget {
           FunButton(
             onTap: () {
               Navigator.of(context).push(StageScreen(
+                fromInitialExplanationScreen: true,
                 buttonText: 'Start',
                 onClickButton: (context) {
                   Navigator.of(context)
