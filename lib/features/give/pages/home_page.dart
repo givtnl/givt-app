@@ -11,7 +11,6 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -162,8 +161,7 @@ class _HomePageState extends State<HomePage> {
             listener: (context, state) {
               // Debug information
               if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                var syncString =
-                    'Synced successfully Sim //${getIt<CountryIsoInfo>().countryIso}';
+                var syncString = 'Synced successfully}';
                 if (widget.code.isNotEmpty) {
                   syncString += ' with mediumId/code ${widget.code}';
                 }
