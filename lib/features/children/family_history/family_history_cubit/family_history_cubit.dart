@@ -27,7 +27,13 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
   final CreateTransactionRepository _createTransactionRepository;
 
   StreamSubscription<String>? _walletChangedSubscription;
-  StreamSubscription<String>? _userTransactionSubscription;
+  @override
+  Future<void> close() async {
+    await _approvalSubscription?.cancel();
+    await _walletChangedSubscription?.cancel();
+    await _userTransactionSubscription?.cancel();
+    await super.close();
+  }
   StreamSubscription<ParentalApprovalResponse>? _approvalSubscription;
 
 
