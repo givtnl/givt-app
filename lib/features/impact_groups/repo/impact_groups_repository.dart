@@ -72,7 +72,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     _parentalApprovalRepository.onParentalApprovalChanged().listen(
           (_) => _fetchImpactGroups(),
         );
-    _createTransactionRepository.onTransaction().listen(
+    _createTransactionRepository.onTransactionByUser().listen(
           (_) => _fetchImpactGroups(),
         );
     _authRepository.authenticatedUserStream().listen(

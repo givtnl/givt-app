@@ -166,7 +166,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     await Navigator.of(context).push(
       BlocProvider(
         create: (BuildContext context) =>
-            CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+            CreateTransactionCubit(context.read<ProfilesCubit>(), getIt(), getIt()),
         child: ChooseAmountSliderScreen(
           onCustomSuccess: () {
             _cubit.onDeed(profile);
