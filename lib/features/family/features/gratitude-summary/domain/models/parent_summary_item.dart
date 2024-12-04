@@ -17,7 +17,7 @@ class ParentSummaryItem {
               ?.map((e) => Conversation.fromMap(e as Map<String, dynamic>))
               .toList() ??
           [],
-      audio: audio,
+      audio: true == audio?.isNotEmpty ? audio : null,
       date: date,
     );
   }
