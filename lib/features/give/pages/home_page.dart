@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
       context.read<InfraCubit>().checkForUpdate();
 
       FirebaseMessaging.instance.getInitialMessage().then((message) {
-        final auth = context.watch<AuthCubit>().state;
+        final auth = context.read<AuthCubit>().state;
         if (message != null && auth.status == AuthStatus.authenticated) {
           NotificationService.instance.navigateFirebaseNotification(message);
         }
