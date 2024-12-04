@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
@@ -11,12 +12,14 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
+import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:go_router/go_router.dart';
 
 class SetupBedtimeScreen extends StatefulWidget {
   const SetupBedtimeScreen({
@@ -55,6 +58,19 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
       canPop: false,
       child: BaseStateConsumer<dynamic, Bedtime>(
         cubit: _cubit,
+        onError: (context, message) => ColoredBox(
+          color: FamilyAppTheme.primary98,
+          child: RetryErrorWidget(
+            onTapPrimaryButton: () => _cubit.onClickContinue(
+                child.id, bedtimeSliderValue, windDownValue),
+            secondaryButtonText: 'Go Home',
+            onTapSecondaryButton: () =>
+                context.goNamed(FamilyPages.profileSelection.name),
+            secondaryButtonAnalyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.returnToHomePressed,
+            ),
+          ),
+        ),
         onLoading: (context) => Material(
           child: ColoredBox(
             color: FamilyAppTheme.secondary10,
