@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -194,6 +196,11 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     _cubit.init();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       AppThemeSwitcher.of(context).switchTheme(isFamilyApp: true);
+      FirebaseMessaging.instance.getInitialMessage().then((message) {
+        if (message != null) {
+          NotificationService.instance.navigateFirebaseNotification(message);
+        }
+      });
     });
   }
 
