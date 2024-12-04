@@ -565,14 +565,6 @@ class FamilyAppRoutes {
           builder: (context, state) => const ReflectIntroScreen(),
         ),
       ],
-      redirect: (context, state) {
-        final page = state.uri.queryParameters['page'];
-        if (true == page?.isNotEmpty) {
-          return '${FamilyPages.profileSelection.path}/$page';
-        } else {
-          return null;
-        }
-      },
     ),
   ];
 }
