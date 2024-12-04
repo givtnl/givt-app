@@ -123,7 +123,7 @@ class FamilyAppRoutes {
               ),
               BlocProvider(
                 create: (context) =>
-                    FamilyHistoryCubit(getIt(), getIt(), getIt())
+                    FamilyHistoryCubit(getIt(), getIt(), getIt(), getIt())
                       ..fetchHistory(),
               ),
               // us personal info edit page
