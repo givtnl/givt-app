@@ -13,10 +13,17 @@ import 'package:givt_app/features/family/features/reflect/domain/models/roles.da
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class ReflectAndShareRepository {
-  ReflectAndShareRepository(this._profilesRepository, this._familyApiService);
+  ReflectAndShareRepository(
+    this._profilesRepository,
+    this._familyApiService,
+    this._familyAuthRepository,
+  ) {
+    _init();
+  }
 
   final ProfilesRepository _profilesRepository;
   final FamilyAPIService _familyApiService;
+  final FamilyAuthRepository _familyAuthRepository;
 
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
@@ -32,13 +39,20 @@ class ReflectAndShareRepository {
 
   GameStats? _gameStatsData;
 
-
   final StreamController<void> _gameFinishedStreamController =
-  StreamController.broadcast();
+      StreamController.broadcast();
 
   Stream<void> onFinishedAGame() => _gameFinishedStreamController.stream;
 
   int getAmountOfGenerousDeeds() => _generousDeeds;
+
+  void _init() {
+    _familyAuthRepository.authenticatedUserStream().listen((user) {
+      if (user == null) {
+        reset();
+      }
+    });
+  }
 
   void incrementGenerousDeeds() {
     _generousDeeds++;
