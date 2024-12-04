@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:badges/badges.dart' as badges;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,13 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
+
+      FirebaseMessaging.instance.getInitialMessage().then((message) {
+        final auth = context.read<AuthCubit>().state;
+        if (message != null && auth.status == AuthStatus.authenticated) {
+          NotificationService.instance.navigateFirebaseNotification(message);
+        }
+      });
     });
   }
 
