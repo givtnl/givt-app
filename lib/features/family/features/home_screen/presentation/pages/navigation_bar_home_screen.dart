@@ -44,6 +44,12 @@ class NavigationBarHomeScreen extends StatefulWidget {
   static const int familyIndex = 1;
   static const int profileIndex = 2;
 
+  static const List<int> validIndexes = [
+    homeIndex,
+    familyIndex,
+    profileIndex,
+  ];
+
   @override
   State<NavigationBarHomeScreen> createState() =>
       _NavigationBarHomeScreenState();
@@ -185,9 +191,11 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   }
 
   void _setIndex(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (NavigationBarHomeScreen.validIndexes.contains(index)) {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 
   @override
@@ -206,9 +214,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   @override
   void initState() {
-    setState(() {
-      _currentIndex = widget.index ?? 0;
-    });
+    _setIndex(widget.index ?? 0);
     super.initState();
   }
 
