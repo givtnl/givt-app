@@ -114,7 +114,10 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
                   child: Column(
                     children: [
                       GratitudeGameButton(
@@ -122,12 +125,12 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           FamilyPages.reflectIntro.name,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       GiveButton(
                         onPressed: _cubit.onGiveButtonPressed,
                       ),
                       if (uiModel.showLatestSummaryBtn)
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 16),
                       if (uiModel.showLatestSummaryBtn)
                         FunButton.secondary(
                           onTap: () => context.goNamed(
