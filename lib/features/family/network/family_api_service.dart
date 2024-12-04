@@ -478,9 +478,13 @@ class FamilyAPIService {
     return _postRequest(
       '/givtservice/v1/profiles/bedtime-responsibility',
       {
-        'decision': yes,
-        'childGuid': childGuid,
-        'parentGuid': parentGuid,
+        'BedTimeResponsibilities': [
+          {
+            'decision': yes,
+            'childid': childGuid,
+            'parentid': parentGuid,
+          },
+        ],
       },
     );
   }
