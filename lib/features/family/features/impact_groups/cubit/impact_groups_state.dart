@@ -29,7 +29,7 @@ class ImpactGroupsState extends Equatable {
   bool get hasGoals => goals.isNotEmpty;
 
   ImpactGroup getGoalGroup(Goal goal) =>
-      groups.firstWhere((element) => element.goal.goalId == goal.goalId);
+      groups.firstWhere((element) => element.goal.id == goal.id);
 
   ImpactGroupsState copyWith({
     ImpactGroupCubitStatus? status,

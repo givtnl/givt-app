@@ -10,6 +10,7 @@ class Goal extends Equatable {
     required this.status,
     required this.dateCreated,
     required this.collectGroupId,
+    this.orgName = '',
   });
 
   const Goal.empty()
@@ -22,6 +23,7 @@ class Goal extends Equatable {
           status: FamilyGoalStatus.inProgress,
           collectGroupId: '',
           dateCreated: '2024-01-01T10:00:00Z',
+          orgName: '',
         );
 
   factory Goal.fromMap(Map<String, dynamic> map) {
@@ -34,8 +36,10 @@ class Goal extends Equatable {
       collectGroupId: map['collectGroupId'] as String? ?? '',
       status: FamilyGoalStatus.fromString(map['status'] as String),
       dateCreated: map['creationDate'] as String,
+      orgName: map['collectGroupName'] as String? ?? '',
     );
   }
+  bool get isActive => status == FamilyGoalStatus.inProgress;
 
   final String id;
   final int goalAmount;
@@ -45,6 +49,7 @@ class Goal extends Equatable {
   final String collectGroupId;
   final FamilyGoalStatus status;
   final String dateCreated;
+  final String orgName;
 
   @override
   List<Object?> get props => [

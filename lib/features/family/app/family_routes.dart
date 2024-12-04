@@ -29,16 +29,14 @@ import 'package:givt_app/features/family/features/giving_flow/create_transaction
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/parent_summary_screen.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/bedtime_reponsibility_screen.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/parent_summary_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/kids_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/parent_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
-import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
-import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/give_from_list_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -56,6 +54,8 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/ref
 import 'package:givt_app/features/family/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/features/impact_groups/models/goal.dart';
+import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/family_permit_biometric_page.dart';
