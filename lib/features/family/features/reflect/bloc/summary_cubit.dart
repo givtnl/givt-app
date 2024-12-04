@@ -28,7 +28,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   }
 
   Future<void> checkAllParentsPlayed() async {
-    final _missingAdults = await _reflectAndShareRepository.missingAdults();
+    _missingAdults = await _reflectAndShareRepository.missingAdults();
 
     emitData(
       SummaryDetails(
@@ -60,5 +60,16 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
 
   void onCloseGame() {
     _reflectAndShareRepository.onCloseGame();
+  }
+
+  void onDeleteAudio() {
+    emitData(
+      SummaryDetails(
+        minutesPlayed: _totalMinutesPlayed,
+        generousDeeds: _generousDeeds,
+        missingAdults: _missingAdults,
+        audioPath: '',
+      ),
+    );
   }
 }
