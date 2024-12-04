@@ -94,7 +94,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    if (details.showRecorder) const SizedBox(height: 8),
                     if (details.showRecorder)
                       FunButton.secondary(
                         leftIcon: FontAwesomeIcons.microphone,
