@@ -49,6 +49,20 @@ class ChildDonation extends HistoryItem {
       goalId: (map['goalId'] ?? '').toString(),
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'amount': amount,
+      'donationDate': date,
+      'donationType': type.value,
+      'donor': {'firstName': name},
+      'collectGroupName': organizationName,
+      'status': DonationState.getDonationStateString(state),
+      'userId': userId,
+      'id': id,
+      'donationMedium': medium,
+      'goalId': goalId,
+    };
+  }
 
   final String organizationName;
   final DonationState state;

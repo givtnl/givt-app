@@ -1,4 +1,4 @@
-import 'package:givt_app/features/family/features/history/models/history_item.dart';
+import 'package:givt_app/features/children/family_history/models/history_item.dart';
 
 class Income extends HistoryItem {
   const Income({
@@ -10,14 +10,14 @@ class Income extends HistoryItem {
   Income.empty()
       : this(
           amount: 0,
-          date: DateTime.now(),
+          date: '',
           type: HistoryTypes.donation,
         );
 
   factory Income.fromMap(Map<String, dynamic> map) {
     return Income(
       amount: double.tryParse(map['amount'].toString()) ?? 0,
-      date: DateTime.tryParse(map['donationDate'] as String) ?? DateTime.now(),
+      date: map['donationDate'].toString(),
       type: HistoryTypes.values.firstWhere(
         (element) => element.value == map['donationType'],
       ),
@@ -29,7 +29,7 @@ class Income extends HistoryItem {
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,
-      'donationDate': date.toString(),
+      'donationDate': date,
       'donationType': type.value,
     };
   }

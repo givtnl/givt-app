@@ -5,7 +5,7 @@ abstract class HistoryItem extends Equatable {
     required this.amount,
     required this.date,
     required this.type,
-    required this.name,
+    this.name = '',
   });
 
   final double amount;
