@@ -33,6 +33,7 @@ import 'package:givt_app/features/family/features/gratitude-summary/presentation
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/bedtime_reponsibility_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/kids_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/parent_home_screen.dart';
@@ -102,6 +103,9 @@ class FamilyAppRoutes {
         final index = int.tryParse(state.uri.queryParameters['index'] ?? '');
         final showAllowanceWarning = bool.tryParse(
             state.uri.queryParameters['showAllowanceWarning'] ?? '');
+        if (index != null) {
+          getIt<NavigationBarHomeCubit>().switchTab(index);
+        }
         return CustomTransitionPage<void>(
           key: state.pageKey,
           child: MultiBlocProvider(

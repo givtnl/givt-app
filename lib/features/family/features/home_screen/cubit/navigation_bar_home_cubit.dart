@@ -40,6 +40,10 @@ class NavigationBarHomeCubit
     await refreshData();
   }
 
+  void switchTab(int tabIndex) {
+    emitCustom(NavigationBarHomeCustom.switchTab(tabIndex));
+  }
+
   Future<void> refreshData() async {
     _profiles = await _profilesRepository.getProfiles();
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();

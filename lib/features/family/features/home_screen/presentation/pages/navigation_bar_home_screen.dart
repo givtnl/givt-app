@@ -199,7 +199,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   @override
   void initState() {
-    _currentIndex = widget.index ?? 0;
+    setState(() {
+      _currentIndex = widget.index ?? 0;
+    });
     super.initState();
   }
 
@@ -210,6 +212,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     switch (custom) {
       case BoxOriginDialog():
         await _showBoxOriginModal(context);
+      case final SwitchTab event:
+        _setIndex(event.tabIndex);
     }
   }
 
