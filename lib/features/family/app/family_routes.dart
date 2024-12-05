@@ -55,8 +55,8 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/ref
 import 'package:givt_app/features/family/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/features/impact_groups/models/goal.dart';
-import 'package:givt_app/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/family_permit_biometric_page.dart';

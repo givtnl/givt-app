@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 

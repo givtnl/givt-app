@@ -18,7 +18,7 @@ import 'package:givt_app/features/family/features/impact_groups/cubit/impact_gro
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
-import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';

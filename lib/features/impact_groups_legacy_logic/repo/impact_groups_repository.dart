@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/features/parental_approval/repositories
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
-import 'package:givt_app/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin ImpactGroupsRepository {

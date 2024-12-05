@@ -5,7 +5,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
-import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 

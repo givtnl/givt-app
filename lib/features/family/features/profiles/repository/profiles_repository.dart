@@ -11,7 +11,7 @@ import 'package:givt_app/features/family/features/edit_child_profile/repositorie
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
-import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 
 mixin ProfilesRepository {
   Future<Profile> getChildDetails(String childGuid);

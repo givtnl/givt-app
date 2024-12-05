@@ -11,7 +11,7 @@ import 'package:givt_app/features/family/features/parental_approval/widgets/pare
 import 'package:givt_app/features/family/features/parental_approval/widgets/parental_approval_declined_page.dart';
 import 'package:givt_app/features/family/features/parental_approval/widgets/parental_approval_error_page.dart';
 import 'package:givt_app/features/family/features/parental_approval/widgets/parental_approval_loading_page.dart';
-import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 

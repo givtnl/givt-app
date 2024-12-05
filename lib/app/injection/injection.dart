@@ -19,7 +19,7 @@ import 'package:givt_app/features/email_signup/cubit/email_signup_cubit.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
-import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/create/repositories/create_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';

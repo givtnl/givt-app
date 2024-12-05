@@ -10,8 +10,8 @@ import 'package:givt_app/features/family/features/profiles/repository/profiles_r
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
-import 'package:givt_app/features/impact_groups/models/impact_group.dart';
-import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 

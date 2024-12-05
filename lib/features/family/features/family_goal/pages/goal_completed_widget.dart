@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 
 class GoalCompletedWidget extends StatelessWidget {
   const GoalCompletedWidget({

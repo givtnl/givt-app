@@ -5,8 +5,8 @@ import 'package:givt_app/features/family/features/family_goal/pages/goal_complet
 import 'package:givt_app/features/family/features/family_goal/pages/no_goal_set_widget.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
-import 'package:givt_app/features/impact_groups/models/goal.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 

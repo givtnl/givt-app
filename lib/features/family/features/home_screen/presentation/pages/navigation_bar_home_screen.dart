@@ -24,7 +24,7 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
-import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';

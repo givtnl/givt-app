@@ -7,7 +7,7 @@ import 'package:givt_app/features/family/features/family_history/models/child_do
 import 'package:givt_app/features/family/features/family_history/models/child_donation_helper.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/features/parental_approval/dialogs/parental_approval_dialog.dart';
-import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/string_datetime_extension.dart';
 import 'package:givt_app/utils/utils.dart';
