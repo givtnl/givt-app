@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/history_item.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
-import 'package:givt_app/features/family/features/history/models/donation.dart';
 import 'package:givt_app/features/family/features/history/models/donation_item_uimodel.dart';
-import 'package:givt_app/features/family/features/history/models/history_item.dart';
 import 'package:givt_app/features/family/features/history/models/income.dart';
 import 'package:givt_app/features/family/features/history/models/income_item_uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -64,6 +64,7 @@ class HistoryScreen extends StatelessWidget {
                   if (state.history[index].type != HistoryTypes.donation) {
                     return IncomeItemWidget(
                       uimodel: IncomeItemUIModel(
+                        context,
                         income: state.history[index] as Income,
                       ),
                     );
@@ -71,7 +72,8 @@ class HistoryScreen extends StatelessWidget {
 
                   return DonationItemWidget(
                     uimodel: DonationItemUIModel(
-                      donation: state.history[index] as Donation,
+                      context,
+                      donation: state.history[index] as ChildDonation,
                     ),
                   );
                 },

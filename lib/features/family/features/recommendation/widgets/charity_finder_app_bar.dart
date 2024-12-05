@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/content/wallet.dart';
+import 'package:givt_app/features/family/shared/widgets/content/wallet_amount_row.dart';
 
 class CharityFinderAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -40,7 +40,7 @@ class CharityFinderAppBar extends StatelessWidget
         if (showWallet)
           const Padding(
             padding: EdgeInsets.only(right: 16),
-            child: Wallet(),
+            child: WalletAmountRow(),
           ),
       ],
     );

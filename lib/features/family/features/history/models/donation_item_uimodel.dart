@@ -1,13 +1,16 @@
 import 'dart:ui';
 
-import 'package:givt_app/features/family/features/history/models/donation.dart';
-import 'package:givt_app/features/family/helpers/helpers.dart';
+import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/string_datetime_extension.dart';
 
 class DonationItemUIModel {
-  const DonationItemUIModel({required this.donation});
+  const DonationItemUIModel(this.context, {required this.donation});
 
-  final Donation donation;
-
+  final ChildDonation donation;
+  final BuildContext context;
   String get leadingSVGAsset => DonationState.getPicture(donation.state);
   double get amount => donation.amount;
   Color get amountColor => DonationState.getAmountColor(donation.state);
@@ -15,7 +18,7 @@ class DonationItemUIModel {
       '${donation.organizationName}';
   String get dateText => donation.state == DonationState.pending
       ? 'Waiting for approval...'
-      : donation.date.formatDate();
+      : donation.date.formatDate(context.l10n);
   String get trailingSvgAsset =>
       donation.medium == DonationMediumType.nfc || donation.isToGoal
           ? donation.isToGoal

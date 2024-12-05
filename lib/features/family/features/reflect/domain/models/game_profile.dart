@@ -1,4 +1,4 @@
-import 'package:givt_app/features/children/shared/profile_type.dart';
+import 'package:givt_app/utils/profile_type.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';

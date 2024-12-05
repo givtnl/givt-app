@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/shared/widgets/goal_progress_bar/goal_progress_bar_label.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
 
 class GoalProgressBar extends StatefulWidget {
   const GoalProgressBar({
