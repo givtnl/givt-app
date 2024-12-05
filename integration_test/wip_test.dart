@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/app/app.dart';
 
+import 'find_utils.dart';
 import 'widget_tester_extension.dart';
 
 /*
@@ -9,9 +10,8 @@ flutter test integration_test/eu_login_test.dart --flavor development --dart-def
  */
 
 void main() {
-  group('end-to-end test', () {
-    testWidgets('verify EU login flow with email and password',
-        (tester) async {
+  group('wip test', () {
+    testWidgets('test some testing stuff', (tester) async {
       await tester.pumpWidget(const App());
 
       await expectLater(
@@ -38,10 +38,12 @@ void main() {
           find.byKey(const ValueKey('Login-Bottomsheet-Login-Button'));
       await tester.tap(loginButton);
       await tester.pumpAndSettle();
-      final skipButton = find.byKey(const ValueKey('PermitBiometric-Deny-Button'));
+      final skipButton =
+          find.byKey(const ValueKey('PermitBiometric-Deny-Button'));
       await tester.tap(skipButton);
       await tester.pumpAndSettle();
-      await tester.pumpUntilVisible(find.byKey(const ValueKey('EU-Home-AppBar')));
+      await tester
+          .pumpUntilVisible(find.byKey(const ValueKey('EU-Home-AppBar')));
     });
   });
 }
