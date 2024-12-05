@@ -30,14 +30,15 @@ class ChildDonation extends HistoryItem {
         );
 
   factory ChildDonation.fromMap(Map<String, dynamic> map) {
+    final name = (map['donor'] as Map<String, dynamic>? ?? {})['firstName'];
     return ChildDonation(
-      name: (map['donor'] as Map<String, dynamic>)['firstName'].toString(),
+      name: name as String? ?? '',
       amount: double.tryParse(map['amount'].toString()) ?? 0,
       date: map['donationDate'].toString(),
       organizationName: map['collectGroupName'].toString(),
       state: DonationState.getState(map['status'].toString()),
       userId: map['userId'].toString(),
-      id: map['id'] as int,
+      id: map['id'] as int? ?? -1,
       medium: map['donationMedium'] != null
           ? DonationMediumType.fromString(
               map['donationMedium'].toString(),
