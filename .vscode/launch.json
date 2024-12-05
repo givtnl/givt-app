@@ -100,6 +100,7 @@
       "program": "integration_test",
       "request": "launch",
       "type": "dart",
+      "flutterMode": "debug",
       "args": [
         "--flavor",
         "development",
@@ -124,6 +125,7 @@
       "program": "integration_test/eu_login_test.dart",
       "request": "launch",
       "type": "dart",
+      "flutterMode": "debug",
       "args": [
         "--flavor",
         "development",
