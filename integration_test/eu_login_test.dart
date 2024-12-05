@@ -5,10 +5,6 @@ import 'package:givt_app/app/app.dart';
 import 'find_utils.dart';
 import 'widget_tester_extension.dart';
 
-/*
-flutter test integration_test/eu_login_test.dart --flavor development --dart-define AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e --dart-define API_URL_US=dev-backend.givt.app --dart-define API_URL_EU=dev-backend.givtapp.net --dart-define API_URL_AWS_EU=api.development.givtapp.net --dart-define API_URL_AWS_US=api.development.givtapp.net --dart-define STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1 --dart-define STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test
- */
-
 void main() {
   group('end-to-end test', () {
     testWidgets('verify EU login flow with email and password',

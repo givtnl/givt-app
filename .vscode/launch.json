@@ -29,7 +29,7 @@
         "--dart-define",
         "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1",
         "--dart-define",
-        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test"
       ]
     },
     {
@@ -56,7 +56,7 @@
         "--dart-define",
         "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1",
         "--dart-define",
-        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test"
       ]
     },
     {
@@ -83,7 +83,7 @@
         "--dart-define",
         "STRIPE_PK=pk_live_51NGl2uLM5mQffuXIGIt8OSH7HWeo2lqPLyvMJSi3ypUDH7ITn84S4A8sGoFvXpP4DCtoUQFlNdWm5jraqR8Ce0sE00Nb4wDuBW",
         "--dart-define",
-        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios"
       ]
     },
     {
@@ -94,6 +94,54 @@
         "for": ["run-test", "run-test-file"]
       },
       "args": ["--update-goldens"]
+    },
+    {
+      "name": "Integration Test: Run All Tests",
+      "program": "integration_test",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--flavor",
+        "development",
+        "--dart-define",
+        "AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e",
+        "--dart-define",
+        "API_URL_US=dev-backend.givt.app",
+        "--dart-define",
+        "API_URL_EU=dev-backend.givtapp.net",
+        "--dart-define",
+        "API_URL_AWS_EU=api.development.givtapp.net",
+        "--dart-define",
+        "API_URL_AWS_US=api.development.givtapp.net",
+        "--dart-define",
+        "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1",
+        "--dart-define",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test"
+      ]
+    },
+    {
+      "name": "Integration Test: Run Specific Test",
+      "program": "integration_test/eu_login_test.dart",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--flavor",
+        "development",
+        "--dart-define",
+        "AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e",
+        "--dart-define",
+        "API_URL_US=dev-backend.givt.app",
+        "--dart-define",
+        "API_URL_EU=dev-backend.givtapp.net",
+        "--dart-define",
+        "API_URL_AWS_EU=api.development.givtapp.net",
+        "--dart-define",
+        "API_URL_AWS_US=api.development.givtapp.net",
+        "--dart-define",
+        "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1",
+        "--dart-define",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test"
+      ]
     }
   ]
 }
