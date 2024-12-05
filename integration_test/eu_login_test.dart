@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/app/app.dart';
 
+import 'find_utils.dart';
 import 'widget_tester_extension.dart';
 
 /*
@@ -19,9 +20,10 @@ void main() {
       final loader = find.byKey(const ValueKey('Splash-Loader'));
       await tester.pumpUntilGone(loader);
 
-      final input = find.byKey(const ValueKey('Email-Input'));
+      final input = findByKeyValue('Email-Input');
       await tester.scrollToWidgetViaKeyValues('Email-Input', 'Email-Signup-Scrollable');
       expect(input, findsOneWidget);
+      await tester.pumpAndSettle();
 
       await tester.enterText(input, 'tamara+test3@givtapp.net');
       await tester.pumpAndSettle();

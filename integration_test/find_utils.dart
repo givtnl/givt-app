@@ -16,4 +16,8 @@ Finder findScrollableByKeyValue(String value) => findScrollableByKey(
       ),
     );
 
-
+Finder findByKeyValue(String value) => find.byKey(
+      ValueKey(
+        value,
+      ),
+    );
