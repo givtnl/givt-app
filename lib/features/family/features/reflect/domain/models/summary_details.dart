@@ -16,4 +16,8 @@ class SummaryDetails {
   String get adultName =>
       missingAdults.length == 1 ? missingAdults.first.firstName : 'the family';
   bool get allAdultsPlayed => missingAdults.isEmpty;
+  bool get isShareableSummary =>
+      !allAdultsPlayed && minutesPlayed > 0 && generousDeeds > 0;
+  bool get showPlayer => isShareableSummary && audioPath.isNotEmpty;
+  bool get showRecorder => isShareableSummary && audioPath.isEmpty;
 }

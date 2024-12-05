@@ -121,6 +121,7 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<AvatarsCubit>(
@@ -234,6 +235,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<ReflectAndShareRepository>(
       () => ReflectAndShareRepository(
+        getIt(),
         getIt(),
         getIt(),
       ),

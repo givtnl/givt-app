@@ -45,9 +45,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
         body: BaseStateConsumer(
           cubit: _cubit,
           onData: (context, details) {
-            final showRecorder =
-                !details.allAdultsPlayed && details.audioPath.isEmpty;
-            final showPlayer = details.audioPath.isNotEmpty;
             return SingleChildScrollView(
               child: Align(
                 alignment: Alignment.topCenter,
@@ -55,7 +52,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   children: [
                     const SizedBox(height: 24),
                     TitleMediumText(
-                      (showPlayer || showRecorder)
+                      details.isShareableSummary
                           ? 'Let’s share your superhero activity with the rest of the family!'
                           : 'Your mission to turn your gratitude into generosity was a success!',
                       textAlign: TextAlign.center,
@@ -97,8 +94,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
-                    if (showRecorder)
+                    if (details.showRecorder) const SizedBox(height: 8),
+                    if (details.showRecorder)
                       FunButton.secondary(
                         leftIcon: FontAwesomeIcons.microphone,
                         onTap: () {
@@ -113,9 +110,11 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           AmplitudeEvents.summaryLeaveMessageClicked,
                         ),
                       ),
-                    if (showPlayer)
+                    if (details.showPlayer)
                       FunAudioPlayer(
-                          source: details.audioPath, onDelete: () {}),
+                        source: details.audioPath,
+                        onDelete: _cubit.onDeleteAudio,
+                      ),
                     const SizedBox(height: 8),
                     FunButton(
                       onTap: () {
@@ -126,7 +125,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         navigateWithConfetti();
                       },
                       isPressedDown: pressDown,
-                      text: (showPlayer || showRecorder)
+                      text: details.isShareableSummary
                           ? pressDown
                               ? 'Sent!'
                               : 'Share summary'
