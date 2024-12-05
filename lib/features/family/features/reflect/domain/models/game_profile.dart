@@ -12,6 +12,7 @@ class GameProfile {
     this.pictureURL,
     this.roles = const [],
     this.gratitude,
+    this.power,
   });
 
   final String userId;
@@ -20,7 +21,8 @@ class GameProfile {
   final String? pictureURL;
   final List<Role> roles;
   final String type;
-  final GratitudeCategory? gratitude;
+  final TagCategory? gratitude;
+  final TagCategory? power;
 
   ProfileType get profileType => ProfileType.getByTypeName(type);
 
@@ -54,7 +56,8 @@ class GameProfile {
     Role? role,
     List<Role>? roles,
     String? type,
-    GratitudeCategory? gratitude,
+    TagCategory? gratitude,
+    TagCategory? power,
   }) {
     return GameProfile(
       userId: userId ?? this.userId,
@@ -64,6 +67,7 @@ class GameProfile {
       roles: role != null ? [role] : roles ?? this.roles,
       type: type ?? this.type,
       gratitude: gratitude ?? this.gratitude,
+      power: power ?? this.power,
     );
   }
 }

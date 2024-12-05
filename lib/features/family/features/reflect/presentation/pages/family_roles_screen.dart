@@ -59,7 +59,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                 children: [
                   Expanded(
                     child: GridView.count(
-                      childAspectRatio: 0.85,
+                      childAspectRatio: 0.8,
                       crossAxisCount: 3,
                       children: createGridItems(
                         profiles.take(9).toList(),
@@ -70,7 +70,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                     onTap: _cubit.onClickStart,
                     text: 'Start',
                     analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.reflectAndShareStartClicked,
+                      AmplitudeEvents.assignedFamilyRolesStartClicked,
                     ),
                   ),
                 ],

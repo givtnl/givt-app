@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/domain/models/parent_summary_item.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -16,30 +21,57 @@ class FamilyHomeScreenCubit
     this._profilesRepository,
     this._impactGroupsRepository,
     this._reflectAndShareRepository,
+    this._summaryRepository,
+    this._familyAuthRepository,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
   final ReflectAndShareRepository _reflectAndShareRepository;
+  final ParentSummaryRepository _summaryRepository;
+  final FamilyAuthRepository _familyAuthRepository;
 
   List<Profile> profiles = [];
   ImpactGroup? _familyGroup;
   GameStats? _gameStats;
+  ParentSummaryItem? _latestSummary;
 
   Future<void> init() async {
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen(_onGroupsChanged);
-    _reflectAndShareRepository.onGameStatsChanged().listen(_onGameStatsChanged);
+    _reflectAndShareRepository.onFinishedAGame().listen(_onFinishedAGame);
+    _familyAuthRepository.authenticatedUserStream().listen((user) {
+      if (user == null) {
+        logout();
+      } else {
+        _getData();
+      }
+    });
 
     _onProfilesChanged(await _profilesRepository.getProfiles());
     _onGroupsChanged(
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
     );
-    _gameStats = await _reflectAndShareRepository.getGameStats();
+    unawaited(_getData());
     _emitData();
   }
 
+  Future<void> _getData() async {
+    await _getGameStats();
+    await _getLatestGameSummary();
+  }
+
+  Future<void> _getGameStats() async {
+    try {
+      _gameStats = await _reflectAndShareRepository.getGameStats();
+      _emitData();
+    } catch (e, s) {
+      // do nothing
+    }
+  }
+
   void logout() {
+    _latestSummary = null;
     _gameStats = null;
     _familyGroup = null;
     profiles = [];
@@ -58,9 +90,18 @@ class FamilyHomeScreenCubit
     _emitData();
   }
 
-  void _onGameStatsChanged(GameStats gameStats) {
-    _gameStats = gameStats;
-    _emitData();
+  void _onFinishedAGame(void event) {
+    _getGameStats();
+    _getLatestGameSummary();
+  }
+
+  Future<void> _getLatestGameSummary() async {
+    try {
+      _latestSummary = await _summaryRepository.fetchLatestGameSummary();
+      _emitData();
+    } catch (e, s) {
+      // do nothing, we don't have a summary that's all
+    }
   }
 
   void onGiveButtonPressed() {
@@ -86,6 +127,8 @@ class FamilyHomeScreenCubit
           .toList(),
       familyGroupName: _familyGroup?.name,
       gameStats: _gameStats,
+      showLatestSummaryBtn:
+          _latestSummary != null && !_latestSummary!.isEmpty(),
     );
   }
 

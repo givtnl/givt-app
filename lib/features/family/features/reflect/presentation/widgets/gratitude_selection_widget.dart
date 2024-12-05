@@ -18,85 +18,116 @@ class GratitudeSelectionWidget extends StatelessWidget {
     super.key,
   });
 
-  final GratitudeSelectionUimodel uimodel;
-  final void Function(GratitudeCategory? gratitude) onClickTile;
+  final TagSelectionUimodel uimodel;
+  final void Function(TagCategory? gratitude) onClickTile;
   final VoidCallback onNext;
 
   @override
   Widget build(BuildContext context) {
-    return FunScaffold(
-      canPop: false,
-      appBar: const FunTopAppBar(
-        title: 'Question 3',
-        actions: [
-          LeaveGameButton(),
-        ],
-      ),
-      body: Column(
-        children: [
-          const BodyMediumText(
-            'Ask the superhero and pick one',
-            color: FamilyAppTheme.primary30,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          const TitleMediumText(
-            'What are you grateful for today?',
-            color: FamilyAppTheme.primary30,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-          LayoutGrid(
-            columnSizes: [1.fr, 1.fr],
-            rowSizes: const [
-              auto,
-              auto,
-              auto,
-              auto,
-            ],
-            columnGap: 16,
-            rowGap: 16,
-            children: [
-              for (int i = 0; i < uimodel.gratitudeList.length; i++)
-                FunTile(
-                  shrink: true,
-                  titleMedium: uimodel.gratitudeList[i].displayText,
-                  assetSize: 27,
-                  iconPath: '',
-                  iconData: uimodel.gratitudeList[i].iconData,
-                  iconColor: uimodel.gratitudeList[i].colorCombo.darkColor,
-                  onTap: () {
-                    onClickTile(uimodel.gratitudeList[i]);
-                  },
-                  isSelected:
-                      uimodel.selectedGratitude == uimodel.gratitudeList[i],
-                  borderColor: uimodel.gratitudeList[i].colorCombo.borderColor,
-                  backgroundColor:
-                      uimodel.gratitudeList[i].colorCombo.backgroundColor,
-                  textColor: uimodel.gratitudeList[i].colorCombo.textColor,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.gratefulTileSelected,
-                    parameters: {
-                      'gratefulFor': uimodel.selectedGratitude?.displayText,
-                    },
+    return Scrollbar(
+      child: FunScaffold(
+        minimumPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+        canPop: false,
+        appBar: const FunTopAppBar(
+          title: 'Question 3',
+          actions: [
+            LeaveGameButton(),
+          ],
+        ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height,
+                ),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      const BodyMediumText(
+                        'Ask the superhero and pick one',
+                        color: FamilyAppTheme.primary30,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      const TitleMediumText(
+                        'What are you grateful for today?',
+                        color: FamilyAppTheme.primary30,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 24),
+                      LayoutGrid(
+                        columnSizes: [1.fr, 1.fr],
+                        rowSizes: const [
+                          auto,
+                          auto,
+                          auto,
+                          auto,
+                        ],
+                        columnGap: 16,
+                        rowGap: 16,
+                        children: [
+                          for (int i = 0; i < uimodel.tagList.length; i++)
+                            FunTile(
+                              shrink: true,
+                              titleMedium: uimodel.tagList[i].displayText,
+                              assetSize: 27,
+                              iconPath: '',
+                              iconData: uimodel.tagList[i].iconData,
+                              iconColor:
+                                  uimodel.tagList[i].colorCombo.darkColor,
+                              onTap: () {
+                                onClickTile(uimodel.tagList[i]);
+                              },
+                              isSelected:
+                                  uimodel.selectedTag == uimodel.tagList[i],
+                              borderColor:
+                                  uimodel.tagList[i].colorCombo.borderColor,
+                              backgroundColor:
+                                  uimodel.tagList[i].colorCombo.backgroundColor,
+                              textColor:
+                                  uimodel.tagList[i].colorCombo.textColor,
+                              analyticsEvent: AnalyticsEvent(
+                                AmplitudeEvents.gratefulTileSelected,
+                                parameters: {
+                                  'gratefulFor':
+                                      uimodel.selectedTag?.displayText,
+                                },
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      const SizedBox(
+                          height: 56 + 24), // Placeholder for the button
+                    ],
                   ),
                 ),
-            ],
-          ),
-          const Spacer(),
-          FunButton(
-            isDisabled: uimodel.selectedGratitude == null,
-            onTap: onNext,
-            text: 'Next',
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.gratefulTileSubmitted,
-              parameters: {
-                'superhero': uimodel.superheroName,
-                'gratefulFor': uimodel.selectedGratitude?.displayText,
-              },
+              ),
             ),
-          ),
-        ],
+            if (uimodel.selectedTag != null)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.only(bottom: 24, top: 8),
+                  child: FunButton(
+                    onTap: onNext,
+                    text: 'Last Question',
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.gratefulTileSubmitted,
+                      parameters: {
+                        'superhero': uimodel.superheroName,
+                        'gratefulFor': uimodel.selectedTag?.displayText,
+                      },
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

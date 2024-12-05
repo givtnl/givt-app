@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:badges/badges.dart' as badges;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +12,11 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/triple_animated_switch.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
-import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
-import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
@@ -59,6 +57,13 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
+
+      FirebaseMessaging.instance.getInitialMessage().then((message) {
+        final auth = context.read<AuthCubit>().state;
+        if (message != null && auth.status == AuthStatus.authenticated) {
+          NotificationService.instance.navigateFirebaseNotification(message);
+        }
+      });
     });
   }
 
@@ -164,8 +169,7 @@ class _HomePageState extends State<HomePage> {
             listener: (context, state) {
               // Debug information
               if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                var syncString =
-                    'Synced successfully Sim //${getIt<CountryIsoInfo>().countryIso}';
+                var syncString = 'Synced successfully';
                 if (widget.code.isNotEmpty) {
                   syncString += ' with mediumId/code ${widget.code}';
                 }
@@ -195,32 +199,6 @@ class _HomePageState extends State<HomePage> {
                 _displayUpdateDialog(
                   context,
                   state.appUpdate,
-                );
-              }
-            },
-          ),
-          BlocListener<ImpactGroupsCubit, ImpactGroupsState>(
-            listener: (context, state) {
-              if (state.status == ImpactGroupCubitStatus.invited) {
-                unawaited(
-                  AnalyticsHelper.logEvent(
-                    eventName:
-                        AmplitudeEvents.invitedToImpactGroupBottomSheetShown,
-                  ),
-                );
-
-                final impactGroup = state.invitedGroup;
-                showModalBottomSheet<void>(
-                  isScrollControlled: true,
-                  context: context,
-                  useSafeArea: true,
-                  isDismissible: false,
-                  enableDrag: false,
-                  builder: (_) {
-                    return ImpactGroupReceiveInviteSheet(
-                      invitedImpactGroup: impactGroup,
-                    );
-                  },
                 );
               }
             },

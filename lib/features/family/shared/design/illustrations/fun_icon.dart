@@ -36,6 +36,7 @@ class FunIcon extends StatelessWidget {
     this.iconSize = 48,
     this.circleColor = FamilyAppTheme.primary95,
     this.iconColor = FamilyAppTheme.primary20,
+    this.padding = const EdgeInsets.all(14),
     super.key,
   });
 
@@ -51,10 +52,27 @@ class FunIcon extends StatelessWidget {
         circleColor: circleColor,
       );
 
-  factory FunIcon.microphone({Color circleColor = FamilyAppTheme.primary95}) =>
+  factory FunIcon.microphone(
+          {Color circleColor = FamilyAppTheme.primary95,
+          double iconsize = 48,
+          double circleSize = 112}) =>
       FunIcon(
         iconData: FontAwesomeIcons.microphone,
         circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+  factory FunIcon.recordingSquare(
+          {Color circleColor = FamilyAppTheme.error90,
+          Color iconColor = FamilyAppTheme.error30,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.solidSquare,
+        iconColor: iconColor,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
       );
 
   factory FunIcon.magnifyingGlass({
@@ -122,11 +140,12 @@ class FunIcon extends StatelessWidget {
   final double iconSize;
   final Color circleColor;
   final Color iconColor;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(14),
+      padding: padding,
       child: Stack(
         alignment: Alignment.center,
         children: [

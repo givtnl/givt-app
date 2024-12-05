@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
@@ -255,6 +256,46 @@ class FamilyAPIService {
     return response.statusCode == 200;
   }
 
+  Future<bool> uploadAudioFile(String gameGuid, File audioFile) async {
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid/upload-message');
+
+    final request = MultipartRequest('POST', url)
+      ..headers.addAll({
+        'Content-Type': 'multipart/form-data',
+      })
+      ..files.add(
+        MultipartFile(
+          'file', // Name of the field expected by the server
+          audioFile.readAsBytes().asStream(),
+          audioFile.lengthSync(),
+          filename: 'audio_summary_message.m4a',
+        ),
+      );
+
+    final response = await Response.fromStream(await client.send(request));
+
+    if (response.statusCode >= 300) {
+      final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty ? decodedBody : null,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final isError = decodedBody['isError'] as bool;
+
+    if (response.statusCode == 200 && isError) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+
+    return response.statusCode == 200;
+  }
+
   Future<bool> savePledge(
     Map<String, dynamic> body,
   ) async {
@@ -278,8 +319,8 @@ class FamilyAPIService {
     );
   }
 
-  Future<bool> saveGratitudeStats(int duration) async {
-    return _postRequest('/givtservice/v1/game', {
+  Future<bool> saveGratitudeStats(int duration, String? gameGuid) async {
+    return updateGame(gameGuid!, {
       'type': 'Gratitude',
       'duration': duration,
     });
@@ -299,6 +340,91 @@ class FamilyAPIService {
       throw Exception(response.statusCode);
     }
     return response.statusCode == 200;
+  }
+
+  Future<bool> updateGame(String gameGuid, Map<String, dynamic> body) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid');
+    final response = await client.put(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(body));
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<String> createGame() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/Game');
+    final response = await client.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({}));
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['item']! as Map<String, dynamic>;
+    return itemMap['id'] as String;
+  }
+
+  Future<bool> saveUserGratitudeCategory({
+    required String gameGuid,
+    required String userid,
+    required String category,
+    required String power,
+  }) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid/user');
+    final response = await client.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          'userid': userid,
+          'category': category,
+          'generous': power,
+        }));
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<Map<String, dynamic>> fetchLatestGameSummary() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/summary/latest');
+    final response = await client.get(url);
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['item']! as Map<String, dynamic>;
+    return itemMap;
   }
 
   Future<Map<String, dynamic>> fetchGameStats() async {
@@ -342,5 +468,24 @@ class FamilyAPIService {
       );
     }
     return response.statusCode == 200;
+  }
+
+  Future<bool> putKidToBed({
+    required String childGuid,
+    required String parentGuid,
+    required bool yes,
+  }) async {
+    return _postRequest(
+      '/givtservice/v1/profiles/bedtime-responsibility',
+      {
+        'BedTimeResponsibilities': [
+          {
+            'decision': yes,
+            'childid': childGuid,
+            'parentid': parentGuid,
+          },
+        ],
+      },
+    );
   }
 }

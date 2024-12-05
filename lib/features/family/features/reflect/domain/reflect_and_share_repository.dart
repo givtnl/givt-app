@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -12,13 +13,17 @@ import 'package:givt_app/features/family/features/reflect/domain/models/roles.da
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class ReflectAndShareRepository {
-  ReflectAndShareRepository(this._profilesRepository, this._familyApiService, this._authRepository) {
+  ReflectAndShareRepository(
+    this._profilesRepository,
+    this._familyApiService,
+    this._familyAuthRepository,
+  ) {
     _init();
   }
 
   final ProfilesRepository _profilesRepository;
   final FamilyAPIService _familyApiService;
-  final FamilyAuthRepository _authRepository;
+  final FamilyAuthRepository _familyAuthRepository;
 
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
@@ -26,7 +31,7 @@ class ReflectAndShareRepository {
   int totalTimeSpentInSeconds = 0;
   DateTime? _startTime;
   DateTime? _endTime;
-
+  String? _gameId;
   List<GameProfile>? _allProfiles;
   List<GameProfile> _selectedProfiles = [];
   final List<String> _usedSecretWords = [];
@@ -34,30 +39,19 @@ class ReflectAndShareRepository {
 
   GameStats? _gameStatsData;
 
-  final StreamController<GameStats> _gameStatsStreamController =
+  final StreamController<void> _gameFinishedStreamController =
       StreamController.broadcast();
 
-  Stream<GameStats> onGameStatsChanged() => _gameStatsStreamController.stream;
+  Stream<void> onFinishedAGame() => _gameFinishedStreamController.stream;
 
   int getAmountOfGenerousDeeds() => _generousDeeds;
 
-  Future<void> _init() async {
-    _authRepository.authenticatedUserStream().listen(
-      (user) {
-        if (user != null) {
-          _clearData();
-          _fetchGameStats();
-        } else {
-          _clearData();
-        }
-      },
-    );
-  }
-
-  void _clearData() {
-    _allProfiles = null;
-    _selectedProfiles = [];
-    _gameStatsData = null;
+  void _init() {
+    _familyAuthRepository.authenticatedUserStream().listen((user) {
+      if (user == null) {
+        reset();
+      }
+    });
   }
 
   void incrementGenerousDeeds() {
@@ -68,7 +62,11 @@ class ReflectAndShareRepository {
     try {
       _endTime = DateTime.now();
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
-      await _familyApiService.saveGratitudeStats(totalTimeSpentInSeconds);
+      final totalMinutesPlayed = (totalTimeSpentInSeconds / 60).ceil();
+      await _familyApiService.saveGratitudeStats(
+        totalMinutesPlayed * 60,
+        _gameId,
+      );
       await _fetchGameStats();
     } catch (e, s) {
       LoggingInfo.instance.error(
@@ -78,14 +76,55 @@ class ReflectAndShareRepository {
     }
   }
 
-  void saveGratitudeInterestsForCurrentSuperhero(GratitudeCategory? gratitude) {
+  Future<void> shareAudio(String path) async {
+    try {
+      final file = File(path);
+      if (file.existsSync()) {
+        await _familyApiService.uploadAudioFile(_gameId!, file);
+        await file.delete();
+      }
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
+  }
+
+  void saveGratitudeInterestsForCurrentSuperhero(TagCategory? gratitude) {
     _selectedProfiles[_getCurrentSuperHeroIndex()] =
         _selectedProfiles[_getCurrentSuperHeroIndex()]
             .copyWith(gratitude: gratitude);
   }
 
-  GratitudeCategory? getGratitudeInterestsForCurrentSuperhero() {
+  TagCategory? getGratitudeInterestsForCurrentSuperhero() {
     return _selectedProfiles[_getCurrentSuperHeroIndex()].gratitude;
+  }
+
+  Future<void> saveGenerousPowerForCurrentSuperhero(TagCategory? power) async {
+    _selectedProfiles[_getCurrentSuperHeroIndex()] =
+        _selectedProfiles[_getCurrentSuperHeroIndex()].copyWith(
+      power: power,
+    );
+    final gratitude = getGratitudeInterestsForCurrentSuperhero();
+
+    try {
+      await _familyApiService.saveUserGratitudeCategory(
+        gameGuid: _gameId!,
+        userid: _selectedProfiles[_getCurrentSuperHeroIndex()].userId,
+        category: gratitude?.displayText ?? '',
+        power: power?.title ?? '',
+      );
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
+  }
+
+  TagCategory? getGenerousPowerForCurrentSuperhero() {
+    return _selectedProfiles[_getCurrentSuperHeroIndex()].power;
   }
 
   List<GameProfile> getCurrentReporters() {
@@ -129,17 +168,41 @@ class ReflectAndShareRepository {
     return _allProfiles!;
   }
 
+//list of adult users that did not play in this game
+  Future<List<Profile>> missingAdults() async {
+    final profiles = await _profilesRepository.getProfiles();
+    final missingAdults = profiles
+        .where((profile) => profile.isAdult)
+        .where((profile) => !_selectedProfiles
+            .map((selectedProfile) => selectedProfile.userId)
+            .contains(profile.id))
+        .toList();
+    return missingAdults;
+  }
+
   void emptyAllProfiles() {
     _allProfiles = null;
   }
 
+  String? getGameId() => _gameId;
+
+  Future<void> createGameSession() async {
+    try {
+      _gameId = await _familyApiService.createGame();
+    } catch (e, s) {
+      _gameId = null;
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
+  }
+
   // select the family members that will participate in the game
   void selectProfiles(List<GameProfile> selectedProfiles) {
-    // Rest game state
-    completedLoops = 0;
-    totalQuestionsAsked = 0;
-    _generousDeeds = 0;
-    totalTimeSpentInSeconds = 0;
+    // Reset game state
+    reset();
+    createGameSession();
     _startTime = DateTime.now();
 
     _selectedProfiles = selectedProfiles;
@@ -442,7 +505,26 @@ class ReflectAndShareRepository {
   Future<GameStats> _fetchGameStats() async {
     final result = await _familyApiService.fetchGameStats();
     final stats = GameStats.fromJson(result);
-    _gameStatsStreamController.add(stats);
     return stats;
+  }
+
+  void reset() {
+    completedLoops = 0;
+    totalQuestionsAsked = 0;
+    _generousDeeds = 0;
+    totalTimeSpentInSeconds = 0;
+    _startTime = null;
+    _endTime = null;
+    _gameId = null;
+    _allProfiles = null;
+    _selectedProfiles = [];
+    _usedSecretWords.clear();
+    _currentSecretWord = null;
+    _gameStatsData = null;
+  }
+
+  void onCloseGame() {
+    reset();
+    _gameFinishedStreamController.add(null);
   }
 }

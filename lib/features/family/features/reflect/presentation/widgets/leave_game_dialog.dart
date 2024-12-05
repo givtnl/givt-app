@@ -10,7 +10,9 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class LeaveGameDialog extends StatelessWidget {
-  const LeaveGameDialog({super.key});
+  const LeaveGameDialog({super.key, this.onConfirmLeaveGame});
+
+  final VoidCallback? onConfirmLeaveGame;
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +25,7 @@ class LeaveGameDialog extends StatelessWidget {
       buttons: [
         FunButton.destructive(
           onTap: () {
-            getIt<SummaryCubit>().saveSummary();
-            context.goNamed(
-              FamilyPages.profileSelection.name,
-            );
+            onConfirmLeaveGame?.call();
           },
           text: 'Leave game',
           analyticsEvent: AnalyticsEvent(

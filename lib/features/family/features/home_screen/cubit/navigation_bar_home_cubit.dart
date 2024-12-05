@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/box_origin_usecase.dart';
@@ -24,16 +25,14 @@ class NavigationBarHomeCubit
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
-  final AuthRepository _authRepository;
+  final FamilyAuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
 
   String? profilePictureUrl;
   List<Profile> _profiles = [];
   ImpactGroup? _familyInviteGroup;
-  bool _hasSession = false;
 
   Future<void> init() async {
-    await _initHasSession();
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
       _onImpactGroupsChanged();
@@ -41,16 +40,8 @@ class NavigationBarHomeCubit
     await refreshData();
   }
 
-  Future<void> _initHasSession() async {
-    try {
-      final session = await _authRepository.getStoredSession();
-      _hasSession = session.isLoggedIn;
-    } catch (e, s) {
-      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
-    }
-    _authRepository.hasSessionStream().listen((hasSession) {
-      _hasSession = hasSession;
-    });
+  void switchTab(int tabIndex) {
+    emitCustom(NavigationBarHomeCustom.switchTab(tabIndex));
   }
 
   Future<void> refreshData() async {
@@ -74,7 +65,6 @@ class NavigationBarHomeCubit
   }
 
   Future<void> doInitialChecks() async {
-    if (!_hasSession) return;
     if (_familyInviteGroup != null) {
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {

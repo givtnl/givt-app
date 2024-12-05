@@ -10,10 +10,12 @@ class StageScreen extends StatelessWidget {
   const StageScreen({
     required this.buttonText,
     required this.onClickButton,
+    this.fromInitialExplanationScreen = false,
     super.key,
   });
 
   final String buttonText;
+  final bool fromInitialExplanationScreen;
   final void Function(BuildContext context) onClickButton;
 
   @override
@@ -35,10 +37,14 @@ class StageScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FunButton(
-          onTap: () => onClickButton(context),
-          text: buttonText,
-          analyticsEvent:
-              AnalyticsEvent(AmplitudeEvents.reflectAndShareStartClicked)),
+        onTap: () => onClickButton(context),
+        text: buttonText,
+        analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.supersShowItsShowtimeClicked,
+            parameters: {
+              'fromInitialExplanationScreen': fromInitialExplanationScreen,
+            }),
+      ),
     );
   }
 }

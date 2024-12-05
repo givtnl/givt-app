@@ -6,9 +6,11 @@ class FamilyHomeScreenUIModel {
     required this.avatars,
     this.familyGroupName,
     this.gameStats,
+    this.showLatestSummaryBtn = false,
   });
 
   final List<AvatarUIModel> avatars;
   final String? familyGroupName;
   final GameStats? gameStats;
+  final bool showLatestSummaryBtn;
 }

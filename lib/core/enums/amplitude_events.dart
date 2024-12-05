@@ -256,10 +256,11 @@ enum AmplitudeEvents {
   parentGaveSuccessfully('parent_gave_successfully'),
 
   // Reflect and Share
-  reflectandShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),
+  reflectAndShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),
   reflectAndShareClicked('reflect_and_share_clicked'),
   reflectAndShareLetsGoClicked('reflect_and_share_lets_go_clicked'),
-  reflectAndShareStartClicked('reflect_and_share_start_clicked'),
+  assignedFamilyRolesStartClicked('assigned_family_roles_start_clicked'),
+  supersShowItsShowtimeClicked('supers_show_its_showtime_clicked'),
   reflectAndShareSeeTheRulesClicked('reflect_and_share_see_the_rules_clicked'),
   reflectAndShareRulesNextClicked('reflect_and_share_next_clicked'),
   reflectAndShareMemberAdded('reflect_and_share_member_added'),
@@ -287,6 +288,8 @@ enum AmplitudeEvents {
   ),
   familyReflectSummaryBackToHome('family_reflect_summary_back_to_home'),
   gratefulTileSubmitted('grateful_tile_submitted'),
+  generousTileSubmitted('generous_tile_submitted'),
+  generousTileSelected('generous_tile_selected'),
   gratefulTileSelected('grateful_tile_selected'),
   familyReflectSummaryMinutesPlayedClicked(
     'family_reflect_summary_minutes_played_clicked',
@@ -315,16 +318,31 @@ enum AmplitudeEvents {
     'family_mission_acceptance_screen_accept_long_press_release_to_accept',
   ),
   // Family Home Screen
-  FamilyHomeScreenGratitudeGameButtonClicked(
+  familyHomeScreenGratitudeGameButtonClicked(
     'family_home_screen_gratitude_game_button_clicked',
   ),
-  FamilyHomeScreenGiveButtonClicked('family_home_screen_give_button_clicked'),
+  familyHomeScreenGiveButtonClicked('family_home_screen_give_button_clicked'),
+  familyHomeScreenLatestSummaryClicked(
+    'family_home_screen_latest_summary_clicked',
+  ),
 
   // Fun Counter
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
   funCounterIncrementClicked('fun_counter_increment_clicked'),
 
   boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
+
+  // Gratitude Summary
+  whoDoesBedtimePushYesClicked('who_does_bedtime_push_yes_clicked'),
+  whoDoesBedtimePushNoClicked('who_does_bedtime_push_no_clicked'),
+  //Bedikme summary
+  summaryLeaveMessageClicked(
+    'summary_leave_message_clicked',
+  ),
+  afterGameSummaryDoneClicked('after_game_usmmary_done_clicked'),
+  doneRecordingSummaryMessageClicked(
+    'done_recording_summary_message_clicked',
+  ),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

@@ -251,8 +251,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               isScrollControlled: true,
               useSafeArea: true,
               backgroundColor: AppTheme.givtBlue,
-              builder: (_) => const TermsAndConditionsDialog(
-                typeOfTerms: TypeOfTerms.privacyPolicy,
+              builder: (_) => TermsAndConditionsDialog(
+                content: context.l10n.readPrivacy,
+                isDarkBackground: true,
               ),
             ),
             style: ElevatedButton.styleFrom(

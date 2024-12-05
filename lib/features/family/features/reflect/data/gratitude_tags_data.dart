@@ -103,8 +103,38 @@ class GratitudeTagsData {
       type: TagType.INTERESTS,
     ),
   ];
+  static final generousPowers = [
+    const TagCategory(
+      tags: [],
+      colorCombo: ColorCombo.highlight,
+      displayText: 'Help by spending time',
+      title: 'Time',
+      iconData: FontAwesomeIcons.solidClock,
+    ),
+    const TagCategory(
+      tags: [],
+      colorCombo: ColorCombo.secondary,
+      displayText: 'Share your special skills',
+      title: 'Talents',
+      iconData: FontAwesomeIcons.book,
+    ),
+    const TagCategory(
+      tags: [],
+      colorCombo: ColorCombo.primary,
+      displayText: 'Give what you have',
+      title: 'Treasure',
+      iconData: FontAwesomeIcons.moneyBillWave,
+    ),
+    const TagCategory(
+      tags: [],
+      colorCombo: ColorCombo.tertiary,
+      displayText: 'I haven’t had a chance yet',
+      title: 'Not yet',
+      iconData: FontAwesomeIcons.handshakeAngle,
+    ),
+  ];
   static final gratitudeCategories = [
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.highlight,
       displayText: 'The people in your life',
       iconData: FontAwesomeIcons.peopleGroup,
@@ -127,7 +157,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.secondary,
       displayText: 'Something you learned',
       iconData: FontAwesomeIcons.graduationCap,
@@ -150,7 +180,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.primary,
       displayText: 'The beauty of nature',
       iconData: FontAwesomeIcons.tree,
@@ -173,7 +203,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.highlight,
       displayText: 'Feeling healthy and strong',
       iconData: FontAwesomeIcons.heartPulse,
@@ -196,7 +226,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.highlight,
       displayText: 'The home where you live',
       iconData: FontAwesomeIcons.house,
@@ -219,7 +249,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.secondary,
       displayText: 'Someone helping you',
       iconData: FontAwesomeIcons.handshakeAngle,
@@ -242,7 +272,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.secondary,
       displayText: 'You got to help someone',
       iconData: FontAwesomeIcons.peopleCarryBox,
@@ -257,7 +287,7 @@ class GratitudeTagsData {
         ),
       ],
     ),
-    const GratitudeCategory(
+    const TagCategory(
       colorCombo: ColorCombo.primary,
       displayText: 'The animals around you',
       iconData: FontAwesomeIcons.paw,

@@ -93,12 +93,6 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
     advanceToNext();
   }
 
-  // Get button text for current state
-  String getButtonText() {
-    if (_nextQuestionIsLast()) return 'Last question';
-    return _hasOnlyOneReporter() ? 'Next Question' : 'Next Reporter';
-  }
-
   bool _hasOnlyOneReporter() => _reporters.length == 1;
 
   void _emitData() {
@@ -109,7 +103,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
         InterviewUIModel.recordAnswer(
           reporter: getCurrentReporter(),
           question: getCurrentQuestion(),
-          buttonText: getButtonText(),
+          buttonText: 'Next Question',
           questionNumber: _nrOfQuestionsAsked + 1,
         ),
       );

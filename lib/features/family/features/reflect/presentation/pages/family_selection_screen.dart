@@ -49,7 +49,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             Navigator.of(context).pop();
           },
         ),
-        systemNavigationBarColor: FamilyAppTheme.secondary80,
+        systemNavigationBarColor: pulseColor,
         actions: const [
           LeaveGameButton(),
         ],

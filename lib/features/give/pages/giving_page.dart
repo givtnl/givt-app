@@ -11,7 +11,6 @@ import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
-import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -59,10 +58,6 @@ class _GivingPageState extends State<GivingPage> {
     if (!mounted) {
       return;
     }
-
-    unawaited(
-      context.read<ImpactGroupsCubit>().fetchImpactGroups(),
-    );
 
     final afterGivingRedirection =
         context.read<GiveBloc>().state.afterGivingRedirection;

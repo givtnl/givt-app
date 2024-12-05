@@ -11,6 +11,7 @@ class FunBottomSheet extends StatelessWidget {
     required this.content,
     this.icon,
     this.headlineContent,
+    this.titleColor,
     this.primaryButton,
     this.secondaryButton,
     this.closeAction,
@@ -18,6 +19,7 @@ class FunBottomSheet extends StatelessWidget {
   });
 
   final String title;
+  final Color? titleColor;
   final Widget? icon;
   final Widget content;
   final Widget? headlineContent;
@@ -48,6 +50,7 @@ class FunBottomSheet extends StatelessWidget {
                     child: TitleMediumText(
                       title,
                       textAlign: TextAlign.center,
+                      color: titleColor,
                     ),
                   ),
                 ),
@@ -98,7 +101,10 @@ class FunBottomSheet extends StatelessWidget {
         if (closeAction == null) const SizedBox(height: 24),
         if (closeAction != null)
           IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
+            icon: FaIcon(
+              FontAwesomeIcons.xmark,
+              color: titleColor,
+            ),
             onPressed: () {
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.bottomsheetCloseButtonClicked,

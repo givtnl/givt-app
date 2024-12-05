@@ -7,13 +7,13 @@ import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class GratitudeSelectionCubit
-    extends CommonCubit<GratitudeSelectionUimodel, GameProfile> {
+    extends CommonCubit<TagSelectionUimodel, GameProfile> {
   GratitudeSelectionCubit(this._reflectAndShareRepository)
       : super(const BaseState.initial());
 
   final ReflectAndShareRepository _reflectAndShareRepository;
 
-  List<GratitudeCategory> gratitudeCategories =
+  List<TagCategory> gratitudeCategories =
       GratitudeTagsData.gratitudeCategories;
 
   late GameProfile reporter;
@@ -23,28 +23,28 @@ class GratitudeSelectionCubit
     _emitData();
   }
 
-  void saveGratitudeInterestsForCurrentSuperhero(GratitudeCategory? gratitude) {
+  void saveGratitudeInterestsForCurrentSuperhero(TagCategory? gratitude) {
     _reflectAndShareRepository
         .saveGratitudeInterestsForCurrentSuperhero(gratitude);
   }
 
-  void onClickTile(GratitudeCategory? gratitude) {
+  void onClickTile(TagCategory? gratitude) {
     saveGratitudeInterestsForCurrentSuperhero(gratitude);
     _emitData();
   }
 
-  GratitudeCategory? getSelectedCategory() {
+  TagCategory? getSelectedCategory() {
     return _reflectAndShareRepository
         .getGratitudeInterestsForCurrentSuperhero();
   }
 
   void _emitData() {
     emitData(
-      GratitudeSelectionUimodel(
+      TagSelectionUimodel(
         reporter: reporter,
         sideKick: _reflectAndShareRepository.getCurrentSidekick(),
-        gratitudeList: gratitudeCategories,
-        selectedGratitude: getSelectedCategory(),
+        tagList: gratitudeCategories,
+        selectedTag: getSelectedCategory(),
         superheroName:
         _reflectAndShareRepository.getCurrentSuperhero().firstName,
       ),

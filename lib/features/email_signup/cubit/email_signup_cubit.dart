@@ -5,7 +5,6 @@ import 'dart:developer';
 import 'package:device_region/device_region.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
-import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/email_signup/cubit/email_signup_custom.dart';

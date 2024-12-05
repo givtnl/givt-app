@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -41,6 +43,12 @@ class NavigationBarHomeScreen extends StatefulWidget {
   static const int homeIndex = 0;
   static const int familyIndex = 1;
   static const int profileIndex = 2;
+
+  static const List<int> validIndexes = [
+    homeIndex,
+    familyIndex,
+    profileIndex,
+  ];
 
   @override
   State<NavigationBarHomeScreen> createState() =>
@@ -183,9 +191,11 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   }
 
   void _setIndex(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (NavigationBarHomeScreen.validIndexes.contains(index)) {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 
   @override
@@ -194,12 +204,17 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     _cubit.init();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       AppThemeSwitcher.of(context).switchTheme(isFamilyApp: true);
+      FirebaseMessaging.instance.getInitialMessage().then((message) {
+        if (message != null) {
+          NotificationService.instance.navigateFirebaseNotification(message);
+        }
+      });
     });
   }
 
   @override
   void initState() {
-    _currentIndex = widget.index ?? 0;
+    _setIndex(widget.index ?? 0);
     super.initState();
   }
 
@@ -210,6 +225,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     switch (custom) {
       case BoxOriginDialog():
         await _showBoxOriginModal(context);
+      case final SwitchTab event:
+        _setIndex(event.tabIndex);
     }
   }
 

@@ -92,9 +92,6 @@ Future<void> _initCoreDependencies() async {
     ..registerLazySingleton(InternetConnection.new)
     ..registerLazySingleton(NotificationService.new)
     ..registerLazySingleton(() => sharedPreferences)
-    ..registerLazySingleton<CountryIsoInfo>(
-      CountryIsoInfoImpl.new,
-    )
     ..registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(
         getIt(),
@@ -203,7 +200,6 @@ void initRepositories() {
     )
     ..registerLazySingleton<ImpactGroupsRepository>(
       () => ImpactGroupsRepositoryImpl(
-        getIt(),
         getIt(),
         getIt(),
         getIt(),

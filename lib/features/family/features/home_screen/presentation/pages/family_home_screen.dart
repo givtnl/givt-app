@@ -20,7 +20,9 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -68,65 +70,81 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
       },
       onData: (context, uiModel) {
         return FunScaffold(
-          minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+          minimumPadding: EdgeInsets.zero,
           appBar: const FunTopAppBar(title: null),
-          body: Column(
-            children: [
-              Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Column(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/family/images/home_screen/background.svg',
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: TitleLargeText(
-                          overlayVisible
-                              ? ''
-                              : uiModel.familyGroupName == null
-                                  ? 'Welcome!'
-                                  : 'Hey ${uiModel.familyGroupName}!',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      if (!overlayVisible)
-                        AvatarBar(
-                          circleSize: 58,
-                          uiModel: AvatarBarUIModel(
-                            avatarUIModels: uiModel.avatars,
-                          ),
-                          onAvatarTapped: onAvatarTapped,
-                        ),
-                        StatsContainer(uiModel.gameStats),
-                    ],
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.topCenter,
                   children: [
-                    GratitudeGameButton(
-                      onPressed: () => context.goNamed(
-                        FamilyPages.reflectIntro.name,
-                      ),
+                    Column(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/family/images/home_screen/background.svg',
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 24),
-                    GiveButton(
-                      onPressed: _cubit.onGiveButtonPressed,
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: TitleLargeText(
+                            overlayVisible
+                                ? ''
+                                : uiModel.familyGroupName == null
+                                    ? 'Welcome!'
+                                    : 'Hey ${uiModel.familyGroupName}!',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        if (!overlayVisible)
+                          AvatarBar(
+                            circleSize: 58,
+                            uiModel: AvatarBarUIModel(
+                              avatarUIModels: uiModel.avatars,
+                            ),
+                            onAvatarTapped: onAvatarTapped,
+                          ),
+                        StatsContainer(uiModel.gameStats),
+                      ],
                     ),
                   ],
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
+                  child: Column(
+                    children: [
+                      GratitudeGameButton(
+                        onPressed: () => context.goNamed(
+                          FamilyPages.reflectIntro.name,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      GiveButton(
+                        onPressed: _cubit.onGiveButtonPressed,
+                      ),
+                      if (uiModel.showLatestSummaryBtn)
+                        const SizedBox(height: 16),
+                      if (uiModel.showLatestSummaryBtn)
+                        FunButton.secondary(
+                          onTap: () => context.goNamed(
+                            FamilyPages.parentSummary.name,
+                          ),
+                          text: 'Show Latest Summary',
+                          analyticsEvent: AnalyticsEvent(AmplitudeEvents
+                              .familyHomeScreenLatestSummaryClicked),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

@@ -29,8 +29,11 @@ import 'package:givt_app/features/family/features/giving_flow/create_transaction
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/parent_summary_screen.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/bedtime_reponsibility_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/kids_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/parent_home_screen.dart';
@@ -100,6 +103,9 @@ class FamilyAppRoutes {
         final index = int.tryParse(state.uri.queryParameters['index'] ?? '');
         final showAllowanceWarning = bool.tryParse(
             state.uri.queryParameters['showAllowanceWarning'] ?? '');
+        if (index != null) {
+          getIt<NavigationBarHomeCubit>().switchTab(index);
+        }
         return CustomTransitionPage<void>(
           key: state.pageKey,
           child: MultiBlocProvider(
@@ -121,7 +127,7 @@ class FamilyAppRoutes {
               ),
               BlocProvider(
                 create: (context) =>
-                    FamilyHistoryCubit(getIt(), getIt(), getIt())
+                    FamilyHistoryCubit(getIt(), getIt(), getIt(), getIt())
                       ..fetchHistory(),
               ),
               // us personal info edit page
@@ -153,6 +159,20 @@ class FamilyAppRoutes {
         );
       },
       routes: [
+        GoRoute(
+          path: FamilyPages.assignBedtimeResponsibility.path,
+          name: FamilyPages.assignBedtimeResponsibility.name,
+          builder: (context, state) => AssignBedtimeResponsibilityScreen(
+            name: state.uri.queryParameters['childName'] ?? '',
+            childGuid: state.uri.queryParameters['childId'] ?? '',
+            imageUrl: state.uri.queryParameters['pictureUrl'] ?? '',
+          ),
+        ),
+        GoRoute(
+          path: FamilyPages.parentSummary.path,
+          name: FamilyPages.parentSummary.name,
+          builder: (context, state) => const ParentSummaryScreen(),
+        ),
         GoRoute(
           path: FamilyPages.parentHome.path,
           name: FamilyPages.parentHome.name,
@@ -229,8 +249,8 @@ class FamilyAppRoutes {
           path: FamilyPages.familyChooseAmountSlider.path,
           name: FamilyPages.familyChooseAmountSlider.name,
           builder: (context, state) => BlocProvider(
-            create: (BuildContext context) =>
-                CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+            create: (BuildContext context) => CreateTransactionCubit(
+                context.read<ProfilesCubit>(), getIt(), getIt()),
             child: const ChooseAmountSliderScreen(),
           ),
         ),
@@ -243,6 +263,7 @@ class FamilyAppRoutes {
             return BlocProvider(
               create: (BuildContext context) => CreateTransactionCubit(
                 context.read<ProfilesCubit>(),
+                getIt(),
                 getIt(),
               ),
               child: ChooseAmountSliderGoalScreen(
@@ -358,6 +379,7 @@ class FamilyAppRoutes {
             return BlocProvider(
               create: (BuildContext context) => CreateTransactionCubit(
                 context.read<ProfilesCubit>(),
+                getIt(),
                 getIt(),
               ),
               child: const ChooseAmountSliderScreen(),
@@ -547,14 +569,6 @@ class FamilyAppRoutes {
           builder: (context, state) => const ReflectIntroScreen(),
         ),
       ],
-      redirect: (context, state) {
-        final page = state.uri.queryParameters['page'];
-        if (true == page?.isNotEmpty) {
-          return '${FamilyPages.profileSelection.path}/$page';
-        } else {
-          return null;
-        }
-      },
     ),
   ];
 }

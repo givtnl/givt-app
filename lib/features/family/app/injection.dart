@@ -11,6 +11,9 @@ import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cu
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/bedtime_responsibility_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
@@ -25,9 +28,11 @@ import 'package:givt_app/features/family/features/recommendation/organisations/r
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/generous_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/gratitude_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/leave_game_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
@@ -63,13 +68,16 @@ void initCubits() {
     ..registerLazySingleton<InternetConnectionCubit>(
       () => InternetConnectionCubit(getIt()),
     )
+    ..registerFactory(ParentSummaryCubit.new)
+    ..registerFactory(AssignBedtimeResponsibilityCubit.new)
     ..registerFactory(() => AdminFeeCubit(getIt()))
+    ..registerFactory(() => LeaveGameCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<InterviewCubit>(
       () => InterviewCubit(getIt()),
     )
     ..registerFactory(() => SetupBedtimeCubit(getIt()))
-    ..registerLazySingleton<GratitudeSelectionCubit>(
+    ..registerFactory<GratitudeSelectionCubit>(
       () => GratitudeSelectionCubit(getIt()),
     )
     ..registerLazySingleton<CameraCubit>(
@@ -78,6 +86,7 @@ void initCubits() {
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
     ..registerLazySingleton<GiveCubit>(
       () => GiveCubit(
+        getIt(),
         getIt(),
       ),
     )
@@ -111,6 +120,8 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<AvatarsCubit>(
@@ -119,6 +130,11 @@ void initCubits() {
       ),
     )
     ..registerFactory(MissionAcceptanceCubit.new)
+    ..registerFactory<GenerousSelectionCubit>(
+      () => GenerousSelectionCubit(
+        getIt(),
+      ),
+    )
     ..registerLazySingleton<ResetPasswordCubit>(
       () => ResetPasswordCubit(
         getIt(),
@@ -145,6 +161,11 @@ void initRepositories() {
         getIt(),
       ),
     )
+    ..registerSingleton<ParentSummaryRepository>(
+      ParentSummaryRepository(
+        getIt(),
+      ),
+    )
     ..registerLazySingleton<FamilyAuthRepository>(
       () => FamilyAuthRepositoryImpl(
         getIt(),
@@ -153,7 +174,6 @@ void initRepositories() {
     )
     ..registerLazySingleton<ProfilesRepository>(
       () => ProfilesRepositoryImpl(
-        getIt(),
         getIt(),
         getIt(),
         getIt(),
