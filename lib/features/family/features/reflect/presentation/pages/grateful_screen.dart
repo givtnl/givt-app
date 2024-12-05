@@ -28,8 +28,10 @@ import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bot
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -85,6 +87,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
           return FunScaffold(
             canPop: false,
             withSafeArea: false,
+            minimumPadding: EdgeInsets.zero,
             appBar: FunTopAppBar(
               title: 'Share your gratitude',
               actions: [
@@ -93,26 +96,57 @@ class _GratefulScreenState extends State<GratefulScreen> {
                 ),
               ],
             ),
-            body: Column(
-              children: [
-                AvatarBar(
-                  backgroundColor: FamilyAppTheme.primary99,
-                  uiModel: uiModel.avatarBarUIModel,
-                  onAvatarTapped: _cubit.onAvatarTapped,
+            body: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height,
                 ),
-                const SizedBox(height: 24),
-                Flexible(
-                  child: RecommendationsWidget(
-                    uiModel: uiModel.recommendationsUIModel,
-                    onRecommendationChosen: (int i) {
-                      _cubit.onRecommendationChosen(i);
-                      context.pop();
-                    },
-                    onSelectionChanged: _cubit.onSelectionChanged,
-                    onTapRetry: _cubit.onRetry,
-                  ),
+                child: Column(
+                  children: [
+                    AvatarBar(
+                      backgroundColor: FamilyAppTheme.primary99,
+                      uiModel: uiModel.avatarBarUIModel,
+                      onAvatarTapped: _cubit.onAvatarTapped,
+                    ),
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: TitleMediumText(
+                        '${uiModel.recommendationsUIModel.name} you were grateful for ${uiModel.recommendationsUIModel.category!.displayText.toLowerCase()}, here are some ways to help',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: FunTabs(
+                        selections: [
+                          uiModel.recommendationsUIModel.showActsOfService,
+                          !uiModel.recommendationsUIModel.showActsOfService,
+                        ],
+                        onPressed: _cubit.onSelectionChanged,
+                        firstOption: 'Acts of Service',
+                        secondOption: 'Give',
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.recommendationTypeSelectorClicked,
+                          parameters: {
+                            'currentSelection':
+                                uiModel.recommendationsUIModel.showActsOfService
+                                    ? 'Acts of Service'
+                                    : 'Give',
+                          },
+                        ),
+                      ),
+                    ),
+                    RecommendationsWidget(
+                      uiModel: uiModel.recommendationsUIModel,
+                      onRecommendationChosen: (int i) {
+                        _cubit.onRecommendationChosen(i);
+                        context.pop();
+                      },
+                      onTapRetry: _cubit.onRetry,
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           );
         },
@@ -165,8 +199,8 @@ class _GratefulScreenState extends State<GratefulScreen> {
   ) async {
     await Navigator.of(context).push(
       BlocProvider(
-        create: (BuildContext context) =>
-            CreateTransactionCubit(context.read<ProfilesCubit>(), getIt(), getIt()),
+        create: (BuildContext context) => CreateTransactionCubit(
+            context.read<ProfilesCubit>(), getIt(), getIt()),
         child: ChooseAmountSliderScreen(
           onCustomSuccess: () {
             _cubit.onDeed(profile);

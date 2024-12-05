@@ -8,14 +8,12 @@ class RecommendationsWidget extends StatelessWidget {
   const RecommendationsWidget({
     required this.uiModel,
     this.onRecommendationChosen,
-    this.onSelectionChanged,
     this.onTapRetry,
     super.key,
   });
 
   final RecommendationsUIModel uiModel;
   final void Function(int index)? onRecommendationChosen;
-  final void Function(int index)? onSelectionChanged;
   final void Function()? onTapRetry;
 
   @override
@@ -30,7 +28,6 @@ class RecommendationsWidget extends StatelessWidget {
       return RecommendationsListWidget(
         uiModel: uiModel,
         onRecommendationChosen: onRecommendationChosen,
-        onSelectionChanged: onSelectionChanged,
       );
     }
   }
