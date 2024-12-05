@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/overview/pages/edit_allowance_success_page.dart';
-import 'package:givt_app/features/children/overview/pages/models/edit_allowance_success_uimodel.dart';
+import 'package:givt_app/features/family/features/overview/pages/edit_allowance_success_page.dart';
+import 'package:givt_app/features/family/features/overview/pages/models/edit_allowance_success_uimodel.dart';
 import 'package:givt_app/shared/pages/common_success_page.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 

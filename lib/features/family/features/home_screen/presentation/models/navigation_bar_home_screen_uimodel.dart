@@ -1,4 +1,4 @@
-import 'package:givt_app/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 
 class NavigationBarHomeScreenUIModel {
   const NavigationBarHomeScreenUIModel({

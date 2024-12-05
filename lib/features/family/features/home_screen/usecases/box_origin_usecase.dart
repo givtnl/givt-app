@@ -1,6 +1,6 @@
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
-import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
+import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 
 mixin class BoxOriginUseCase {
   final ImpactGroupsRepository _impactGroupsRepository =
