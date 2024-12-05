@@ -6,8 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class Wallet extends StatelessWidget {
-  const Wallet({
+class WalletAmountRow extends StatelessWidget {
+  const WalletAmountRow({
     super.key,
   });
 
