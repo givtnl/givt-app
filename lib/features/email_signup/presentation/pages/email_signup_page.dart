@@ -198,6 +198,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             isLoading: _isLoading,
                             onTap: state.continueButtonEnabled
                                 ? () async {
+                                    _cubit.updateApi();
                                     if (state.country.isUS) {
                                       await _cubit.login();
                                     } else {
