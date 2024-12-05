@@ -19,7 +19,14 @@ void main() {
       final loader = find.byKey(const ValueKey('Splash-Loader'));
       await tester.pumpUntilGone(loader);
 
+      final scrollable = find.byKey(const ValueKey('Email-Signup-Scrollable'));
       final input = find.byKey(const ValueKey('Email-Input'));
+      // Use this solution to ensure the scrollable finder is specific to the SingleChildScrollView
+      final scrollableFinder = find.descendant(
+        of: scrollable,
+        matching: find.byType(Scrollable).at(0),
+      );
+      await tester.scrollUntilVisible(input, 100, scrollable: scrollableFinder);
       expect(input, findsOneWidget);
 
       await tester.enterText(input, 'tamara+test3@givtapp.net');
