@@ -1,5 +1,5 @@
-import 'package:givt_app/features/children/family_history/models/child_donation.dart';
-import 'package:givt_app/features/children/family_history/models/history_item.dart';
+import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/history_item.dart';
 import 'package:givt_app/features/family/features/history/models/income.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 

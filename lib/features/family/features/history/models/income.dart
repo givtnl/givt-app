@@ -1,4 +1,4 @@
-import 'package:givt_app/features/children/family_history/models/history_item.dart';
+import 'package:givt_app/features/family/features/family_history/models/history_item.dart';
 
 class Income extends HistoryItem {
   const Income({

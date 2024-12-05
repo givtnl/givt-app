@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/children/family_history/models/child_donation.dart';
-import 'package:givt_app/features/children/overview/models/wallet.dart';
-import 'package:givt_app/features/children/shared/profile_type.dart';
+import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/overview/models/wallet.dart';
+import 'package:givt_app/utils/profile_type.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 
 class Profile extends Equatable {

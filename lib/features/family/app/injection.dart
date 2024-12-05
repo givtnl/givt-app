@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.da
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
-import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
+import 'package:givt_app/features/family/features/edit_child_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/bedtime_responsibility_cubit.dart';
@@ -217,7 +217,7 @@ void initRepositories() {
     ..registerLazySingleton<SvgAssetLoaderManager>(
       SvgAssetLoaderManager.new,
     )
-    ..registerLazySingleton<EditProfileRepository>(
+    ..registerLazySingleton<EditChildProfileRepository>(
       () => EditProfileRepositoryImpl(
         getIt(),
       ),

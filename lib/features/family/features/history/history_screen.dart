@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/children/family_history/models/child_donation.dart';
-import 'package:givt_app/features/children/family_history/models/history_item.dart';
+import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/history_item.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/models/donation_item_uimodel.dart';
 import 'package:givt_app/features/family/features/history/models/income.dart';

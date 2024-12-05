@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/family_history/models/child_donation.dart';
-import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/child_donation_helper.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/string_datetime_extension.dart';
 
