@@ -24,8 +24,7 @@ void main() {
       final permitBiometricPage = PermitBiometricTestPage(tester);
       final homePage = HomeTestPage(tester);
 
-      await patrolTester.pumpWidgetAndSettle(const App()); // Your's app main widget
-      //await tester.startApp();
+      await tester.startApp();
 
       await tester.makeSureLoadersHaveFinishedLoading();
 
