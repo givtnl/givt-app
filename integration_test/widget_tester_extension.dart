@@ -2,10 +2,23 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:givt_app/app/app.dart';
 
 import 'find_utils.dart';
 
 extension WidgetTesterExtension on WidgetTester {
+
+  Future<void> startApp() async {
+    await pumpWidget(const App());
+  }
+
+  Future<void> makeSureLoadersHaveFinishedLoading() async {
+    await expectLater(
+        find.byKey(const ValueKey('Splash-Loader')), findsOneWidget);
+    final loader = find.byKey(const ValueKey('Splash-Loader'));
+    await pumpUntilGone(loader);
+  }
+
   Future<void> pumpUntilVisible(Finder finder,
       {Duration timeout = const Duration(seconds: 10),
       Duration interval = const Duration(milliseconds: 100)}) async {
