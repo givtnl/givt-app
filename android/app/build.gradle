@@ -30,7 +30,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace 'net.givtapp.droid'
+    namespace 'net.givtapp.droid2'
     compileSdkVersion flutter.compileSdkVersion
 
     compileOptions {

@@ -15,7 +15,7 @@ public class MainActivityTest {
         // replace "MainActivity.class" with "io.flutter.embedding.android.FlutterActivity.class"
         // if in AndroidManifest.xml in manifest/application/activity you have
         //     android:name="io.flutter.embedding.android.FlutterActivity"
-        instrumentation.setUp(MainActivity.class);
+        instrumentation.setUp(io.flutter.embedding.android.FlutterActivity.class);
         instrumentation.waitForPatrolAppService();
         return instrumentation.listDartTests();
     }

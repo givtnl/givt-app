@@ -16,28 +16,32 @@ import 'package:timezone/data/latest.dart' as tz;
 // https://api.flutter.dev/flutter/flutter_test/flutter_test-library.html
 
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  //IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  await doTestSetup();
+  await testMain();
+}
+
+Future<void> doTestSetup() async {
   final (name, options) = await _firebaseOptions;
   await Firebase.initializeApp(
     name: name,
     options: options,
   );
-
+  
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
-
+  
   // Initialize the dependency injection
   await get_it_injection.init();
   await get_it_injection_family.init();
   await get_it_injection.getIt.allReady();
   // in the future we will setup the injection of test dependencies here
-
+  
   tz.initializeTimeZones();
   // Initialize the notification service
   await NotificationService.instance.init();
-  await testMain();
 }
 
 /// Returns the firebase options

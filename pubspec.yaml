@@ -81,7 +81,6 @@ dependencies:
   page_transition: ^2.1.0
   record: ^5.2.0
   audioplayers: ^6.1.0
-  patrol: ^3.13.0
 
 # Override needed because inappwebview >=6.1.0 requires this version
 # firebase_messaging_web is using an older version (and we can't upgrade to a more recent message version because of MLKIT)
@@ -98,6 +97,8 @@ dev_dependencies:
   golden_toolkit: ^0.15.0
   melos: ^6.1.0
   very_good_analysis: ^6.0.0
+  patrol: ^3.13.1
+  patrol_finders: ^2.5.1
   integration_test:
     sdk: flutter
 
