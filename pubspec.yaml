@@ -81,6 +81,7 @@ dependencies:
   page_transition: ^2.1.0
   record: ^5.2.0
   audioplayers: ^6.1.0
+  patrol: ^3.13.0
 
 # Override needed because inappwebview >=6.1.0 requires this version
 # firebase_messaging_web is using an older version (and we can't upgrade to a more recent message version because of MLKIT)
@@ -99,6 +100,13 @@ dev_dependencies:
   very_good_analysis: ^6.0.0
   integration_test:
     sdk: flutter
+
+patrol:
+  app_name: Givt Dev
+  android:
+    package_name: net.givtapp.droid2.test
+  ios:
+    bundle_id: net.givtapp.ios.test
 
 flutter:
   uses-material-design: true
