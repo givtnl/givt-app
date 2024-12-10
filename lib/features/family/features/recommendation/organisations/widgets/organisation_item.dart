@@ -18,6 +18,7 @@ class OrganisationItem extends StatelessWidget {
     required this.organisation,
     this.onDonateClicked,
     this.isActOfService = false,
+    this.nrOfTags,
     this.userName,
     super.key,
   });
@@ -26,6 +27,7 @@ class OrganisationItem extends StatelessWidget {
   final Organisation organisation;
   final void Function()? onDonateClicked;
   final String? userName;
+  final int? nrOfTags;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +70,7 @@ class OrganisationItem extends StatelessWidget {
             OrganisationHeader(
               organisation: organisation,
               isActOfService: isActOfService,
+              nrOfTags: nrOfTags ?? 3,
             ),
             if (organisation.promoPictureUrl.isNotEmpty) ...[
               Container(

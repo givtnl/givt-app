@@ -98,6 +98,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                 padding: const EdgeInsets.only(right: 12),
                 child: OrganisationItem(
                   isActOfService: widget.uiModel.showActsOfService,
+                  nrOfTags: 1,
                   organisation: recommendation,
                   onDonateClicked: () =>
                       widget.onRecommendationChosen?.call(recommendationIndex),

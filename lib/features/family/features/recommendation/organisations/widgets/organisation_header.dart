@@ -7,14 +7,17 @@ class OrganisationHeader extends StatelessWidget {
   const OrganisationHeader({
     required this.organisation,
     this.isActOfService = false,
+    this.nrOfTags = 3,
     super.key,
   });
 
   final Organisation organisation;
   final bool isActOfService;
+  final int nrOfTags;
   @override
   Widget build(BuildContext context) {
-    final fontsize = FunTextStyles.labelSmall.fontSize ?? 16;
+    final fontsize = MediaQuery.textScalerOf(context)
+        .scale(FunTextStyles.labelSmall.fontSize ?? 14);
     return Container(
       padding: const EdgeInsets.only(right: 20),
       child: Row(
@@ -25,7 +28,7 @@ class OrganisationHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: organisation.tags
-                  .take(3)
+                  .take(nrOfTags)
                   .map(
                     (tag) => Container(
                       margin: const EdgeInsets.symmetric(vertical: 3),
@@ -58,7 +61,7 @@ class OrganisationHeader extends StatelessWidget {
               child: Container(
                 alignment: Alignment.centerRight,
                 constraints: BoxConstraints(
-                  maxHeight: organisation.tags.length * (8 + fontsize),
+                  maxHeight: nrOfTags * (12 + fontsize),
                 ),
                 child: Image.network(
                   organisation.organisationLogoURL,
