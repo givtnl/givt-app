@@ -13,8 +13,6 @@ extension WidgetTesterExtension on WidgetTester {
   }
 
   Future<void> makeSureLoadersHaveFinishedLoading() async {
-    /*await expectLater(
-        find.byKey(const ValueKey('Splash-Loader')), findsOneWidget);*/
     final loader = find.byKey(const ValueKey('Splash-Loader'));
     await pumpUntilGone(loader);
   }
