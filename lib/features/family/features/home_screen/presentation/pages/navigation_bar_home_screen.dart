@@ -236,13 +236,13 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     } else {
       _isShowingBoxOrigin = true;
       await FunModal(
-        title: 'Did you get a generosity mission box?',
+        title: 'Can you tell us where you heard about Givt?',
         icon: const FunIcon(
-          iconData: FontAwesomeIcons.gift,
+          iconData: FontAwesomeIcons.earListen,
         ),
         buttons: [
           FunButton(
-            text: 'Yes',
+            text: 'Tell us',
             onTap: () async {
               context.pop(); // close modal
               await Navigator.push(
@@ -256,7 +256,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             ),
           ),
           FunButton.secondary(
-            text: 'No',
+            text: 'Dismiss',
             onTap: () => context.pop(),
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.dontHaveABoxClicked,
