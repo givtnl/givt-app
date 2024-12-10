@@ -7,9 +7,9 @@ import 'package:givt_app/shared/widgets/widgets.dart';
 import '../../../widget_tester_extension.dart';
 
 class HomeTestPage {
-  HomeTestPage(this.tester);
+  HomeTestPage({required this.nativeTester});
 
-  final WidgetTester tester;
+  final WidgetTester nativeTester;
 
   // Locators
   final Finder appBar = find.byKey(const ValueKey('EU-Home-AppBar'));
@@ -25,33 +25,33 @@ class HomeTestPage {
 
   // Actions
   Future<void> tapMenuButton() async {
-    await tester.tap(menuButton);
-    await tester.pumpAndSettle();
+    await nativeTester.tap(menuButton);
+    await nativeTester.pumpAndSettle();
   }
 
   Future<void> tapFaqButton() async {
-    await tester.tap(faqButton);
-    await tester.pumpAndSettle();
+    await nativeTester.tap(faqButton);
+    await nativeTester.pumpAndSettle();
   }
 
   Future<void> tapDebugButton() async {
-    await tester.tap(debugButton);
-    await tester.pumpAndSettle();
+    await nativeTester.tap(debugButton);
+    await nativeTester.pumpAndSettle();
   }
 
   Future<void> swipeToChooseCategory() async {
-    await tester.drag(pageView, const Offset(-300, 0));
-    await tester.pumpAndSettle();
+    await nativeTester.drag(pageView, const Offset(-300, 0));
+    await nativeTester.pumpAndSettle();
   }
 
   Future<void> swipeToChooseAmount() async {
-    await tester.drag(pageView, const Offset(300, 0));
-    await tester.pumpAndSettle();
+    await nativeTester.drag(pageView, const Offset(300, 0));
+    await nativeTester.pumpAndSettle();
   }
 
   // Assertions
   Future<void> verifyAppBarIsVisible() async {
-    await tester.pumpUntilVisible(appBar);
+    await nativeTester.pumpUntilVisible(appBar);
     expect(appBar, findsOneWidget);
   }
 

@@ -7,8 +7,8 @@ import '../../email_signup/presentation/pages/email_signup_test_page.dart';
 
 class LoginTestPage {
 
-  LoginTestPage(this.tester);
-  final WidgetTester tester;
+  LoginTestPage({required this.nativeTester});
+  final WidgetTester nativeTester;
 
   // Locators
   final Finder emailInput = find.byType(CustomTextFormField).at(0);
@@ -18,24 +18,24 @@ class LoginTestPage {
 
   // Actions
   Future<void> enterEmail(String email) async {
-    await tester.enterText(emailInput, email);
-    await tester.pumpAndSettle();
+    await nativeTester.enterText(emailInput, email);
+    await nativeTester.pumpAndSettle();
   }
 
   Future<void> enterPassword(String password) async {
-    await tester.pumpUntilVisible(passwordInput);
-    await tester.enterText(passwordInput, password);
-    await tester.pump(const Duration(seconds: 1));
+    await nativeTester.pumpUntilVisible(passwordInput);
+    await nativeTester.enterText(passwordInput, password);
+    await nativeTester.pump(const Duration(seconds: 1));
   }
 
   Future<void> tapLoginButton() async {
-    await tester.tap(loginButton);
-    await tester.pumpAndSettle();
+    await nativeTester.tap(loginButton);
+    await nativeTester.pumpAndSettle();
   }
 
   Future<void> tapForgotPasswordButton() async {
-    await tester.tap(forgotPasswordButton);
-    await tester.pumpAndSettle();
+    await nativeTester.tap(forgotPasswordButton);
+    await nativeTester.pumpAndSettle();
   }
 
   // Assertions
@@ -52,7 +52,7 @@ class LoginTestPage {
   }
 
   Future<void> verifyLoginButtonIsEnabled() async {
-    final button = tester.widget<ElevatedButton>(loginButton);
+    final button = nativeTester.widget<ElevatedButton>(loginButton);
     expect(button.enabled, isTrue);
   }
 }

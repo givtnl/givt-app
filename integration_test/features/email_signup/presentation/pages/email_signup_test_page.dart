@@ -6,8 +6,8 @@ import '../../../../widget_tester_extension.dart';
 
 class EmailSignupTestPage {
 
-  EmailSignupTestPage(this.tester);
-  final WidgetTester tester;
+  EmailSignupTestPage({required this.nativeTester});
+  final WidgetTester nativeTester;
 
   // Locators
   final Finder emailInput = find.byKey(const ValueKey('Email-Input'));
@@ -17,21 +17,21 @@ class EmailSignupTestPage {
 
   // Actions
   Future<void> enterEmail(String email) async {
-    await tester.scrollToWidgetViaKeyValues('Email-Input', 'Email-Signup-Scrollable');
-    await tester.enterText(emailInput, email);
-    await tester.pumpAndSettle();
+    await nativeTester.scrollToWidgetViaKeyValues('Email-Input', 'Email-Signup-Scrollable');
+    await nativeTester.enterText(emailInput, email);
+    await nativeTester.pumpAndSettle();
   }
 
   Future<void> selectCountry(String country) async {
-    await tester.tap(countryDropdown);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(country));
-    await tester.pumpAndSettle();
+    await nativeTester.tap(countryDropdown);
+    await nativeTester.pumpAndSettle();
+    await nativeTester.tap(find.text(country));
+    await nativeTester.pumpAndSettle();
   }
 
   Future<void> tapContinueButton() async {
-    await tester.tap(continueButton);
-    await tester.pump(const Duration(seconds: 1));
+    await nativeTester.tap(continueButton);
+    await nativeTester.pump(const Duration(seconds: 1));
   }
 
   // Assertions
@@ -44,7 +44,7 @@ class EmailSignupTestPage {
   }
 
   Future<void> verifyContinueButtonIsEnabled() async {
-    final button = tester.widget<ElevatedButton>(continueButton);
+    final button = nativeTester.widget<ElevatedButton>(continueButton);
     expect(button.enabled, isTrue);
   }
 }

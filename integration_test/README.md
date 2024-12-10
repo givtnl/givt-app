@@ -35,8 +35,9 @@ void main() {
   patrolTest('write what your test case does here',
           (patrolTester) async {
         await doTestSetup();
-        final tester = patrolTester.tester;
-        await tester.startApp();
+        final nativeTester = patrolTester.tester;
+        await nativeTester.startApp();
+        await nativeTester.makeSureLoadersHaveFinishedLoading();
 
         // Write your test code here
       });
@@ -45,3 +46,21 @@ void main() {
 
 You can now write your test and take advantage of native automation using patrol: https://patrol.leancode.co/documentation/native/overview
    (Note that in the documentation they've named the PatrolIntegrationTester `$` in the code while in my example it is named `patrolTester`)
+Patrol allows you to interact with native elements, like permission request dialogs, notifications etc.
+The documentation also contains a very handy cheat-sheet: https://patrol.leancode.co/documentation/cheatsheet
+Strongly recommend having that open while writing the tests.
+
+Another strongly recommended thing is to use AI to help you write a test.
+Open copilot chat:
+1. Ask copilot which file contains the code of the screen that you want to test:
+`can you tell me which file in the lib folder contains the widgets for the screen where you can edit your emailaddress`
+   (note: Its better to use 'screen' here rather than 'page' and also to specify to search in the lib folder)
+2. Ask copilot to create a 'Page Object Model' for the screen:
+`can you generate a page object model for me of the email_signup_page.dart`
+3. Copy the code and put it in a new dart file in the integration_test folder with the name of the screen you are testing and add `test_page` at the end of the name.
+Keep the same folder structure as the lib folder. For example the email_signup_page.dart is in lib/features/email_signup/presentation/pages so the test_page file should be in integration_test/features/email_signup/presentation/pages.
+4. Now in your test file, from the comment that says `// Write your test code here` you can use the page object model to interact with the screen: 
+```final emailSignupPage = EmailSignupTestPage(nativeTester);```
+   (note if the generated page uses the `WidgetTester` you need to pass `nativeTester`, if it uses `PatrolIntegrationTester` you need to pass `patrolTester`)
+5. Now you can use the page object model to interact with the screen. For example: 
+```    await emailSignupPage.verifyEmailInputIsVisible();```

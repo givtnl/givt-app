@@ -4,8 +4,8 @@ import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dar
 
 class PermitBiometricTestPage {
 
-  PermitBiometricTestPage(this.tester);
-  final WidgetTester tester;
+  PermitBiometricTestPage({required this.nativeTester});
+  final WidgetTester nativeTester;
 
   // Locators
   final Finder denyButton = find.byKey(const ValueKey('PermitBiometric-Deny-Button'));
@@ -14,13 +14,13 @@ class PermitBiometricTestPage {
 
   // Actions
   Future<void> tapDenyButton() async {
-    await tester.tap(denyButton);
-    await tester.pumpAndSettle();
+    await nativeTester.tap(denyButton);
+    await nativeTester.pumpAndSettle();
   }
 
   Future<void> tapActivateButton() async {
-    await tester.tap(activateButton);
-    await tester.pumpAndSettle();
+    await nativeTester.tap(activateButton);
+    await nativeTester.pumpAndSettle();
   }
 
   // Assertions
