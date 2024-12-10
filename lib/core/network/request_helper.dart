@@ -85,7 +85,7 @@ class RequestHelper {
       euClient = createEUClient(client: _secureEuClient);
       usClient = createUSClient(client: _secureUsClient);
     } catch (e, s) {
-      if (_networkInfo.isConnected) {
+      if (_failedDueToInternetConnectionButWeHaveInternetNow(e)) {
         LoggingInfo.instance.info(
           '''
 Error while setting up secure http clients (while having an internet connection): $e\n$s''',
@@ -105,6 +105,12 @@ Error while setting up secure http clients (while having an internet connection)
         );
       }
     }
+  }
+
+  bool _failedDueToInternetConnectionButWeHaveInternetNow(Object e) {
+    return _networkInfo.isConnected &&
+        (e is CertificatesException &&
+            true == e.message?.toLowerCase().contains('socket'));
   }
 
   Future<void> _checkForAndroidTrustedCertificate() async {
