@@ -10,7 +10,6 @@ import 'package:test_api/src/backend/invoker.dart';
 
 // START: GENERATED TEST IMPORTS
 import 'eu_login_test.dart' as eu_login_test;
-import 'us_login_test.dart' as us_login_test;
 // END: GENERATED TEST IMPORTS
 
 Future<void> main() async {
@@ -71,7 +70,6 @@ Future<void> main() async {
 
   // START: GENERATED TEST GROUPS
   group('eu_login_test', eu_login_test.main);
-  group('us_login_test', us_login_test.main);
   // END: GENERATED TEST GROUPS
 
   final dartTestGroup = await testExplorationCompleter.future;
