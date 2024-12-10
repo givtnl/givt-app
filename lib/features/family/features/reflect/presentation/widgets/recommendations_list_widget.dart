@@ -1,9 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 
 class RecommendationsListWidget extends StatefulWidget {
@@ -17,12 +17,25 @@ class RecommendationsListWidget extends StatefulWidget {
   final void Function(int index)? onRecommendationChosen;
 
   @override
-  _RecommendationsListWidgetState createState() =>
+  State<RecommendationsListWidget> createState() =>
       _RecommendationsListWidgetState();
 }
 
 class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
   int _currentIndex = 0;
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
+
+  @override
+  void didUpdateWidget(covariant RecommendationsListWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.uiModel != oldWidget.uiModel) {
+      _carouselController.jumpToPage(0);
+      setState(() {
+        _currentIndex = 0;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +59,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
         ConstrainedBox(
           constraints: BoxConstraints(maxHeight: cardHeight),
           child: CarouselSlider.builder(
+            carouselController: _carouselController,
             options: CarouselOptions(
               height: cardHeight,
               viewportFraction: viewportFraction,
