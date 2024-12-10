@@ -15,6 +15,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class SummaryScreen extends StatefulWidget {
   const SummaryScreen({super.key});
@@ -28,9 +29,21 @@ class _SummaryScreenState extends State<SummaryScreen> {
   bool pressDown = false;
 
   @override
+  void initState() {
+    super.initState();
+    WakelockPlus.enable();
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _cubit.init();
+  }
+
+  @override
+  void dispose() {
+    WakelockPlus.disable();
+    super.dispose();
   }
 
   @override
