@@ -29,7 +29,7 @@
         "--dart-define",
         "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1",
         "--dart-define",
-        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test"
       ]
     },
     {
@@ -56,7 +56,7 @@
         "--dart-define",
         "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1",
         "--dart-define",
-        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test"
       ]
     },
     {
@@ -83,7 +83,7 @@
         "--dart-define",
         "STRIPE_PK=pk_live_51NGl2uLM5mQffuXIGIt8OSH7HWeo2lqPLyvMJSi3ypUDH7ITn84S4A8sGoFvXpP4DCtoUQFlNdWm5jraqR8Ce0sE00Nb4wDuBW",
         "--dart-define",
-        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios"
       ]
     },
     {
@@ -94,6 +94,13 @@
         "for": ["run-test", "run-test-file"]
       },
       "args": ["--update-goldens"]
+    },
+    {
+      "name": "attach debugger",
+      "request": "attach",
+      "type": "dart",
+      "cwd": "integration_test",
+      "vmServiceUri": "${command:dart.promptForVmService}"
     }
   ]
 }

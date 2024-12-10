@@ -109,6 +109,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           body: LayoutBuilder(
             builder: (context, constraint) {
               return SingleChildScrollView(
+                key: const ValueKey('Email-Signup-Scrollable'),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: constraint.maxHeight,
