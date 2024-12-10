@@ -22,6 +22,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
     _currentReporterIndex = 0;
     _currentQuestionIndex = 0;
     _nrOfQuestionsAsked = 0;
+    _reflectAndShareRepository.onStartedInterview();
 
     _emitData();
   }
