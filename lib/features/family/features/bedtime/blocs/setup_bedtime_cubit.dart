@@ -1,5 +1,5 @@
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
+import 'package:givt_app/features/family/features/edit_child_name/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
