@@ -23,12 +23,7 @@ class MissionAcceptanceCubit
     String? name;
     var profiles = <GameProfile>[];
     try {
-      final groups =
-          await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true);
-      final familyGroup = groups.firstWhereOrNull(
-        (element) => element.isFamilyGroup,
-      );
-      name = familyGroup?.name;
+      name = await _impactGroupsRepository.getFamilyGroupName();
       profiles = await _reflectAndShareRepository.getFamilyProfiles();
       if (true == name?.isNullOrEmpty()) {
         name =
@@ -37,12 +32,14 @@ class MissionAcceptanceCubit
     } catch (e, s) {
       // fallback is not showing the family name
     }
-    emitData(MissionAcceptanceUIModel(
-      avatarBarUIModel: AvatarBarUIModel(
-        avatarUIModels:
-            profiles.map((profile) => profile.toAvatarUIModel()).toList(),
+    emitData(
+      MissionAcceptanceUIModel(
+        avatarBarUIModel: AvatarBarUIModel(
+          avatarUIModels:
+              profiles.map((profile) => profile.toAvatarUIModel()).toList(),
+        ),
+        familyName: name ?? '',
       ),
-      familyName: name ?? '',
-    ));
+    );
   }
 }
