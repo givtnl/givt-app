@@ -88,13 +88,8 @@ class _GratefulScreenState extends State<GratefulScreen> {
             canPop: false,
             withSafeArea: false,
             minimumPadding: EdgeInsets.zero,
-            appBar: FunTopAppBar(
+            appBar: const FunTopAppBar(
               title: 'Share your gratitude',
-              actions: [
-                LeaveGameButton(
-                  onPressed: () => const FinishReflectionDialog().show(context),
-                ),
-              ],
             ),
             body: SingleChildScrollView(
               child: ConstrainedBox(
