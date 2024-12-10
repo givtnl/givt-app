@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class OrganisationHeader extends StatelessWidget {
   const OrganisationHeader({
@@ -12,6 +14,7 @@ class OrganisationHeader extends StatelessWidget {
   final bool isActOfService;
   @override
   Widget build(BuildContext context) {
+    final fontsize = FunTextStyles.labelSmall.fontSize ?? 16;
     return Container(
       padding: const EdgeInsets.only(right: 20),
       child: Row(
@@ -40,13 +43,9 @@ class OrganisationHeader extends StatelessWidget {
                           left: 16,
                           right: 8,
                         ),
-                        child: Text(
+                        child: LabelSmallText(
                           tag.displayText,
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: tag.area.textColor,
-                                    fontSize: 13,
-                                  ),
+                          color: tag.area.textColor,
                         ),
                       ),
                     ),
@@ -59,7 +58,7 @@ class OrganisationHeader extends StatelessWidget {
               child: Container(
                 alignment: Alignment.centerRight,
                 constraints: BoxConstraints(
-                  maxHeight: organisation.tags.length * 25.0,
+                  maxHeight: organisation.tags.length * (8 + fontsize),
                 ),
                 child: Image.network(
                   organisation.organisationLogoURL,
