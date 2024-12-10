@@ -30,9 +30,9 @@ class _LeaveGameButtonState extends State<LeaveGameButton> {
     return BaseStateConsumer(
       cubit: _cubit,
       onCustom: (context, custom) {
-        if (custom.isFirstRound) {
+        if (custom.isFirstRound && custom.hasAtLeastStartedInterview) {
           Navigator.of(context).push(const SummaryScreen().toRoute(context));
-        } else if (custom.hasAtLeastStartedInterview) {
+        } else if (!custom.isFirstRound && custom.hasAtLeastStartedInterview) {
           Navigator.of(context).push(const GratefulScreen().toRoute(context));
         } else {
           context.goNamed(
