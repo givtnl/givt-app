@@ -152,7 +152,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: TitleLargeText(
-                          'Is the ${uiModel.familyName} Family ready to accept this mission of gratitude?',
+                          'Is the ${uiModel.familyName} ready to accept this mission of gratitude?',
                           color: Colors.white,
                           textAlign: TextAlign.center,
                         ),
