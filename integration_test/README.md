@@ -29,11 +29,6 @@ If you need a complete reboot, press Ctrl+C and run the command from step 2 agai
 To run a all patrol tests run the following command in the terminal:
 `patrol test --flavor development --dart-define AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e --dart-define API_URL_US=dev-backend.givt.app --dart-define API_URL_EU=dev-backend.givtapp.net --dart-define API_URL_AWS_EU=api.development.givtapp.net --dart-define API_URL_AWS_US=api.development.givtapp.net --dart-define STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1 --dart-define STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test --verbose`
 
-## IDE configurations
-For vscode and intellij there are also run code configurations that you can use to run all tests or a specific tests.
-You can change the specific test in .vscode/launch.json or .idea/runConfigurations/specific_patrol_test.xml
-Normalspeak: From the dropdown in your IDE (vscode/ android studio) you can select `Patrol run all integration tests` or `Patrol develop specific integration test` to run all tests or a specific test.
-
 ## How to create a patrol test
 
 1. In the integration_test folder create a new dart file with the name of the test you want to
@@ -91,3 +86,7 @@ Open copilot chat:
    `PatrolIntegrationTester` you need to pass `patrolTester`)
 5. Now you can use the page object model to interact with the screen. For example:
    ```    await emailSignupPage.verifyEmailInputIsVisible();```
+
+## How to debug a patrol test
+1. Open: https://patrol.leancode.co/documentation/debugging-patrol-tests
+2. Step 1 has already been done, please follow the other steps.
