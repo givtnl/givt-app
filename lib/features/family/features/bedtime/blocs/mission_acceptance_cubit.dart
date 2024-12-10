@@ -26,8 +26,11 @@ class MissionAcceptanceCubit
       name = await _impactGroupsRepository.getFamilyGroupName();
       profiles = await _reflectAndShareRepository.getFamilyProfiles();
       if (true == name?.isNullOrEmpty()) {
-        name =
+        final profileLastName =
             profiles.firstWhereOrNull((profile) => profile.isAdult)?.lastName;
+        if(profileLastName.isNotNullAndNotEmpty()) {
+          name = '$profileLastName Family';
+        }
       }
     } catch (e, s) {
       // fallback is not showing the family name
