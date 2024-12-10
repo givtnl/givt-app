@@ -96,12 +96,13 @@
       "args": ["--update-goldens"]
     },
     {
-      "name": "Integration Test: Run All Tests",
-      "program": "integration_test",
+      "name": "Patrol run all integration tests",
       "request": "launch",
       "type": "dart",
+      "program": "patrol/packages/patrol_cli/bin/main.dart",
       "flutterMode": "debug",
       "args": [
+        "test",
         "--flavor",
         "development",
         "--dart-define",
@@ -121,12 +122,15 @@
       ]
     },
     {
-      "name": "Integration Test: Run Specific Test",
-      "program": "integration_test/eu_login_test.dart",
+      "name": "Patrol develop specific integration test",
       "request": "launch",
       "type": "dart",
+      "program": "patrol/packages/patrol_cli/bin/main.dart",
       "flutterMode": "debug",
       "args": [
+        "develop",
+        "-t",
+        "integration_test/eu_login_test.dart",
         "--flavor",
         "development",
         "--dart-define",
