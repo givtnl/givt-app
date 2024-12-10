@@ -144,6 +144,8 @@ class _GratefulScreenState extends State<GratefulScreen> {
                       },
                       onTapRetry: _cubit.onRetry,
                     ),
+                    // todo KIDS-1763 add action buttons
+                    SizedBox(height: 40),
                   ],
                 ),
               ),
