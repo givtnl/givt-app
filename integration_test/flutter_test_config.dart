@@ -16,7 +16,7 @@ import 'package:timezone/data/latest.dart' as tz;
 // https://api.flutter.dev/flutter/flutter_test/flutter_test-library.html
 
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
-  //IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   await doTestSetup();
   await testMain();
