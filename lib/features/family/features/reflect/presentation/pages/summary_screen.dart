@@ -42,7 +42,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
   @override
   void dispose() {
-    _cubit.close();
     WakelockPlus.disable();
     super.dispose();
   }

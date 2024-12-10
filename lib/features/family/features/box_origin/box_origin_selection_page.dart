@@ -34,7 +34,7 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
       onTapListItem: (collectgroup) {
         getIt<MediumCubit>().setMediumId(collectgroup.nameSpace);
       },
-      title: 'Where did you get it?',
+      title: 'Select an organization',
       removedCollectGroupTypes: const [
         CollectGroupType.campaign,
         CollectGroupType.artists,
