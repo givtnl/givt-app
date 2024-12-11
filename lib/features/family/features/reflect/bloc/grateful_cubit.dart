@@ -115,8 +115,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
           tabIndex: tabIndex,
           isLoading: _isLoadingRecommendations,
           hasError: _hasRecommendationsError,
-          organisations:
-              tabIndex == 0 ? _currentActsOfService : _currentOrganisations,
+          organisations: tabIndex == _actsOfServiceIndex
+              ? _currentActsOfService
+              : _currentOrganisations,
           isNotLoggedInParent: _isNonLoggedInParent(_getCurrentProfile()),
           name: _getCurrentProfile().firstName,
           category: _getCurrentProfile().gratitude,
