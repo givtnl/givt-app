@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/features/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -16,7 +17,7 @@ class FamilyMemberForm extends StatelessWidget {
     required this.nameController,
     required this.emailController,
     required this.ageController,
-    required this.isChildSelected,
+    required this.selectedIndex,
     required this.allowanceAmount,
     required this.onAmountChanged,
     this.showTopUp = false,
@@ -29,14 +30,14 @@ class FamilyMemberForm extends StatelessWidget {
   final TextEditingController ageController;
   final int allowanceAmount;
   final void Function(int amount) onAmountChanged;
-  final bool isChildSelected;
+  final int selectedIndex;
   final bool showTopUp;
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: isChildSelected
+      child: selectedIndex == childSelectedIndex
           ? _buildChildForm(context, nameController, ageController)
           : _buildParentForm(context, nameController, emailController),
     );

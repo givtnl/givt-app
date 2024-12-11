@@ -129,6 +129,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   Future<void> onAvatarTapped(int index) async {
     _currentProfileIndex = index;
     await _fetchRecommendationsForCurrentProfile();
+    resetTabs();
   }
 
   Future<void> _fetchRecommendationsForCurrentProfile() async {
@@ -155,6 +156,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
       _isLoadingRecommendations = false;
       _emitData();
     }
+  }
+
+  void resetTabs() {
+    onSelectionChanged(_actsOfServiceIndex);
   }
 
   void onSelectionChanged(int index) {
@@ -225,6 +230,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
         },
       );
       _currentProfileIndex = _profiles.indexOf(nextGiver);
+      resetTabs();
       await _fetchRecommendationsForCurrentProfile();
     }
   }

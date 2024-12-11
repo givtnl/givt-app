@@ -23,6 +23,8 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
+const childSelectedIndex = 0;
+
 class FamilyMemberFormPage extends StatefulWidget {
   const FamilyMemberFormPage({
     required this.index,
@@ -113,7 +115,6 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   @override
   Widget build(BuildContext context) {
     final isLast = widget.index == widget.totalCount;
-    final isChildSelected = selectedIndex == 0;
     return FunScaffold(
       appBar: FunTopAppBar.primary99(
         title: 'Set up Family',
@@ -172,7 +173,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                       _amount = amount;
                     });
                   },
-                  isChildSelected: isChildSelected,
+                  selectedIndex: selectedIndex,
                 ),
                 const SizedBox(height: 24),
               ],
@@ -185,9 +186,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
               children: [
                 const Spacer(),
                 if (isLast)
-                  _primaryButton(isChildSelected)
+                  _primaryButton(selectedIndex == childSelectedIndex)
                 else
-                  _secondaryButton(isChildSelected),
+                  _secondaryButton(selectedIndex == childSelectedIndex),
               ],
             ),
           ),
