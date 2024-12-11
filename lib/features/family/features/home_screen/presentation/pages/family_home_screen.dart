@@ -100,14 +100,17 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        if (!overlayVisible)
-                          AvatarBar(
+                        Visibility(
+                          visible: !overlayVisible,
+                          maintainSize: true,
+                          child: AvatarBar(
                             circleSize: 58,
                             uiModel: AvatarBarUIModel(
                               avatarUIModels: uiModel.avatars,
                             ),
                             onAvatarTapped: onAvatarTapped,
                           ),
+                        ),
                         StatsContainer(uiModel.gameStats),
                       ],
                     ),
