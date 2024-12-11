@@ -122,10 +122,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
-            widget.uiModel.isNotLoggedInParent &&
-                    !widget.uiModel.showActsOfService
-                ? widget.uiModel.organisations.length + 1
-                : widget.uiModel.organisations.length,
+            widget.uiModel.organisations.length,
             (index) => Container(
               width: 8,
               height: 8,
