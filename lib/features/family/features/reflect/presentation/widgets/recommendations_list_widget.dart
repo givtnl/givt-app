@@ -148,8 +148,13 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                   ? "I'm going to do this"
                   : 'Give',
               analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.donateToRecommendedCharityPressed,
-              ),
+                  AmplitudeEvents.newActOfGenerosityClicked,
+                  parameters: {
+                    widget.uiModel.showActsOfService
+                            ? 'act_of_service'
+                            : 'donation':
+                        widget.uiModel.organisations[_currentIndex].name,
+                  }),
             ),
           ),
         const SizedBox(height: 16),
