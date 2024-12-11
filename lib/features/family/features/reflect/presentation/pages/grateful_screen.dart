@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
-import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
@@ -20,9 +20,7 @@ import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.da
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/finish_reflection_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -48,6 +46,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
   final _cubit = getIt<GratefulCubit>();
   final _give = getIt<GiveCubit>();
   final _medium = getIt<MediumCubit>();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -58,6 +57,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
   @override
   void dispose() {
     _cubit.close();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -92,6 +92,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
               title: 'Share your gratitude',
             ),
             body: SingleChildScrollView(
+              controller: _scrollController,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height,
@@ -101,7 +102,14 @@ class _GratefulScreenState extends State<GratefulScreen> {
                     AvatarBar(
                       backgroundColor: FamilyAppTheme.primary99,
                       uiModel: uiModel.avatarBarUIModel,
-                      onAvatarTapped: _cubit.onAvatarTapped,
+                      onAvatarTapped: (index) {
+                        _scrollController.animateTo(
+                          0,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeOut,
+                        );
+                        _cubit.onAvatarTapped(index);
+                      },
                     ),
                     const SizedBox(height: 24),
                     Padding(
@@ -123,14 +131,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
                     ),
                     RecommendationsWidget(
                       uiModel: uiModel.recommendationsUIModel,
-                      onRecommendationChosen: (int i) {
-                        _cubit.onRecommendationChosen(i);
-                        context.pop();
-                      },
+                      onRecommendationChosen: _cubit.onRecommendationChosen,
                       onTapRetry: _cubit.onRetry,
+                      onSkip: _cubit.onSkip,
                     ),
-                    // todo KIDS-1763 add action buttons
-                    SizedBox(height: 40),
                   ],
                 ),
               ),

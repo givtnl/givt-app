@@ -114,13 +114,10 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                         .pushNamed(FamilyPages.familyChooseAmountSlider.name);
                   },
               analyticsEvent: AnalyticsEvent(
-                isActOfService
-                    ? AmplitudeEvents.donateToRecommendedCharityPressed
-                    : AmplitudeEvents.pledgeActOfServiceClicked,
+                AmplitudeEvents.newActOfGenerosityClicked,
                 parameters: {
-                  isActOfService
-                      ? AnalyticsHelper.actOfServiceNameKey
-                      : AnalyticsHelper.charityNameKey: organisation.name,
+                  isActOfService ? 'act_of_service' : 'donation':
+                      organisation.name,
                   AnalyticsHelper.firstNameKey: userName,
                 },
               ),

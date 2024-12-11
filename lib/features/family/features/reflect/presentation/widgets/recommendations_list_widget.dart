@@ -1,20 +1,29 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:go_router/go_router.dart';
 
 class RecommendationsListWidget extends StatefulWidget {
   const RecommendationsListWidget({
     required this.uiModel,
     super.key,
     this.onRecommendationChosen,
+    this.onSkip,
   });
 
   final RecommendationsUIModel uiModel;
   final void Function(int index)? onRecommendationChosen;
+  final void Function()? onSkip;
 
   @override
   State<RecommendationsListWidget> createState() =>
@@ -100,8 +109,10 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                   isActOfService: widget.uiModel.isShowingActsOfService,
                   nrOfTags: 1,
                   organisation: recommendation,
-                  onDonateClicked: () =>
-                      widget.onRecommendationChosen?.call(recommendationIndex),
+                  onDonateClicked: () {
+                    widget.onRecommendationChosen?.call(_currentIndex);
+                    context.pop(); //close bottomsheet
+                  },
                   userName: widget.uiModel.name,
                 ),
               );
@@ -111,10 +122,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
-            widget.uiModel.isNotLoggedInParent &&
-                    !widget.uiModel.isShowingActsOfService
-                ? widget.uiModel.organisations.length + 1
-                : widget.uiModel.organisations.length,
+            widget.uiModel.organisations.length,
             (index) => Container(
               width: 8,
               height: 8,
@@ -128,6 +136,39 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
             ),
           ),
         ),
+        const SizedBox(height: 24),
+        if (!widget.uiModel.isNotLoggedInParent ||
+            widget.uiModel.showActsOfService)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: FunButton(
+              onTap: () => widget.onRecommendationChosen?.call(_currentIndex),
+              text: widget.uiModel.showActsOfService
+                  ? "I'm going to do this"
+                  : 'Give',
+              analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.newActOfGenerosityClicked,
+                  parameters: {
+                    widget.uiModel.showActsOfService
+                            ? 'act_of_service'
+                            : 'donation':
+                        widget.uiModel.organisations[_currentIndex].name,
+                  }),
+            ),
+          ),
+        const SizedBox(height: 16),
+        TextButton(
+          onPressed: () {
+            widget.onSkip?.call();
+            unawaited(
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.skipGenerosActPressed,
+              ),
+            );
+          },
+          child: const LabelLargeText('Skip this time'),
+        ),
+        const SizedBox(height: 40),
       ],
     );
   }
