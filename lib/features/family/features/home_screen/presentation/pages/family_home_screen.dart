@@ -103,6 +103,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                         Visibility(
                           visible: !overlayVisible,
                           maintainSize: true,
+                          maintainAnimation: true,
+                          maintainState: true,
                           child: AvatarBar(
                             circleSize: 58,
                             uiModel: AvatarBarUIModel(
