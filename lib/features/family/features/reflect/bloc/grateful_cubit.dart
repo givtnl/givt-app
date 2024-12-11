@@ -172,6 +172,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void onRecommendationChosen(int index) {
+    if (index == -1) {
+      onDeed(_getCurrentProfile(), skip: true);
+      return;
+    }
     final organisation = showActsOfService
         ? _currentActsOfService[index]
         : _currentOrganisations[index];
@@ -208,8 +212,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     await onDeed(parent);
   }
 
-  Future<void> onDeed(GameProfile profile) async {
-    _reflectAndShareRepository.incrementGenerousDeeds();
+  Future<void> onDeed(GameProfile profile, {bool skip = false}) async {
+    if (!skip) {
+      _reflectAndShareRepository.incrementGenerousDeeds();
+    }
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {
       _onEveryoneDonated();

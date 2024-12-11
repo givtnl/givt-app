@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -8,6 +10,7 @@ import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dar
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class RecommendationsListWidget extends StatefulWidget {
@@ -149,7 +152,19 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
               ),
             ),
           ),
-        SizedBox(height: 40),
+        const SizedBox(height: 16),
+        TextButton(
+          onPressed: () {
+            widget.onRecommendationChosen?.call(-1);
+            unawaited(
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.skipGenerosActPressed,
+              ),
+            );
+          },
+          child: const LabelLargeText('Skip this time'),
+        ),
+        const SizedBox(height: 40),
       ],
     );
   }

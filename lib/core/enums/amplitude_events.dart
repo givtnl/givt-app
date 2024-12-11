@@ -303,6 +303,7 @@ enum AmplitudeEvents {
     'family_reflect_summary_generous_deeds_clicked',
   ),
   recommendationTypeSelectorClicked('recommendation_type_selector_clicked'),
+  skipGenerosActPressed('skip_generous_act_pressed'),
 //beditime
   childBedtimeSet('bedtime_set_clicked'),
   redirectedFromGratitudeGameToBedtimeSelection(
