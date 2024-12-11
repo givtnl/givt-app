@@ -1,3 +1,4 @@
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/leave_game_custom.dart';
@@ -10,12 +11,20 @@ class LeaveGameCubit extends CommonCubit<dynamic, LeaveGameCustom> {
 
   final ReflectAndShareRepository _reflectAndShareRepository;
 
-  void onConfirmLeaveGameClicked() {
+  Future<void> onConfirmLeaveGameClicked() async {
+    var kidsWithoutBedtimeSetup = <Profile>[];
+    try {
+      kidsWithoutBedtimeSetup =
+          await _reflectAndShareRepository.getKidsWithoutBedtime();
+    } catch (e) {
+      // do nothing, as a fallback we just don't navigate to the bedtime screens
+    }
     emitCustom(
       LeaveGameCustom(
         isFirstRound: _reflectAndShareRepository.isFirstRound(),
         hasAtLeastStartedInterview:
             _reflectAndShareRepository.hasStartedInterview(),
+        kidsWithoutBedtimeSetup: kidsWithoutBedtimeSetup,
       ),
     );
   }
