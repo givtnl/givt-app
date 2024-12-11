@@ -24,12 +24,14 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   final GratefulRecommendationsRepository _gratefulRecommendationsRepository;
   final AuthRepository _authRepository;
 
+  static const int _actsOfServiceIndex = 0;
+
   List<GameProfile> _profiles = [];
   final List<GameProfile> _profilesThatDonated = [];
   int _currentProfileIndex = 0;
   List<Organisation> _currentOrganisations = [];
   List<Organisation> _currentActsOfService = [];
-  bool showActsOfService = true;
+  int tabIndex = _actsOfServiceIndex;
   bool _hasRecommendationsError = false;
   bool _isLoadingRecommendations = false;
   Session? _session;
@@ -110,14 +112,15 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
               .toList(),
         ),
         recommendationsUIModel: RecommendationsUIModel(
-          showActsOfService: showActsOfService,
+          tabIndex: tabIndex,
           isLoading: _isLoadingRecommendations,
           hasError: _hasRecommendationsError,
           organisations:
-              showActsOfService ? _currentActsOfService : _currentOrganisations,
+              tabIndex == 0 ? _currentActsOfService : _currentOrganisations,
           isNotLoggedInParent: _isNonLoggedInParent(_getCurrentProfile()),
           name: _getCurrentProfile().firstName,
           category: _getCurrentProfile().gratitude,
+          isShowingActsOfService: tabIndex == _actsOfServiceIndex,
         ),
       ),
     );
@@ -155,7 +158,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void onSelectionChanged(int index) {
-    showActsOfService = index == 0;
+    tabIndex = index;
     _emitData();
   }
 
@@ -172,10 +175,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void onRecommendationChosen(int index) {
-    final organisation = showActsOfService
+    final organisation = tabIndex == _actsOfServiceIndex
         ? _currentActsOfService[index]
         : _currentOrganisations[index];
-    if (showActsOfService) {
+    if (tabIndex == _actsOfServiceIndex) {
       emitCustom(
         GratefulCustom.openActOfServiceSuccess(
           organisation: organisation,

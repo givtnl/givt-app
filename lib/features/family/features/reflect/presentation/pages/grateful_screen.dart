@@ -113,10 +113,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                     ),
                     Center(
                       child: FunTabs(
-                        selectedIndex:
-                            uiModel.recommendationsUIModel.showActsOfService
-                                ? 0
-                                : 1,
+                        selectedIndex: uiModel.recommendationsUIModel.tabIndex,
                         onPressed: _cubit.onSelectionChanged,
                         options: const ['Ways to help', 'Give'],
                         analyticsEvent: AnalyticsEvent(

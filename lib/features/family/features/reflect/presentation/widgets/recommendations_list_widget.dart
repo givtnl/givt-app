@@ -71,12 +71,12 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
               },
             ),
             itemCount: widget.uiModel.isNotLoggedInParent &&
-                    !widget.uiModel.showActsOfService
+                    !widget.uiModel.isShowingActsOfService
                 ? widget.uiModel.organisations.length + 1
                 : widget.uiModel.organisations.length,
             itemBuilder: (context, index, realIndex) {
               if (widget.uiModel.isNotLoggedInParent &&
-                  !widget.uiModel.showActsOfService &&
+                  !widget.uiModel.isShowingActsOfService &&
                   index == 0) {
                 return Padding(
                   padding:
@@ -88,7 +88,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                 );
               }
               final recommendationIndex = widget.uiModel.isNotLoggedInParent &&
-                      !widget.uiModel.showActsOfService
+                      !widget.uiModel.isShowingActsOfService
                   ? index - 1
                   : index;
               final recommendation =
@@ -97,7 +97,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                 width: width - 48,
                 padding: const EdgeInsets.only(right: 12),
                 child: OrganisationItem(
-                  isActOfService: widget.uiModel.showActsOfService,
+                  isActOfService: widget.uiModel.isShowingActsOfService,
                   nrOfTags: 1,
                   organisation: recommendation,
                   onDonateClicked: () =>
@@ -112,7 +112,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
             widget.uiModel.isNotLoggedInParent &&
-                    !widget.uiModel.showActsOfService
+                    !widget.uiModel.isShowingActsOfService
                 ? widget.uiModel.organisations.length + 1
                 : widget.uiModel.organisations.length,
             (index) => Container(
