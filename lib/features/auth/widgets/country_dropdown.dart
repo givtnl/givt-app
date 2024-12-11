@@ -34,6 +34,7 @@ class _CountryDropDownState extends State<CountryDropDown> {
         .toList();
 
     return DropdownButton2<Country>(
+        key: const ValueKey('CountryDropDown'),
         items: _buildPopupItems(countries, locals, context),
         focusNode: widget.focusNode,
         underline: const SizedBox.shrink(),
