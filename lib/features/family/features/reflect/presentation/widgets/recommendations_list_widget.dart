@@ -138,18 +138,18 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
         ),
         const SizedBox(height: 24),
         if (!widget.uiModel.isNotLoggedInParent ||
-            widget.uiModel.showActsOfService)
+            widget.uiModel.isShowingActsOfService)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: FunButton(
               onTap: () => widget.onRecommendationChosen?.call(_currentIndex),
-              text: widget.uiModel.showActsOfService
+              text: widget.uiModel.isShowingActsOfService
                   ? "I'm going to do this"
                   : 'Give',
               analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.newActOfGenerosityClicked,
                   parameters: {
-                    widget.uiModel.showActsOfService
+                    widget.uiModel.isShowingActsOfService
                             ? 'act_of_service'
                             : 'donation':
                         widget.uiModel.organisations[_currentIndex].name,
