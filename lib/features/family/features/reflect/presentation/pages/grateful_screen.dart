@@ -46,6 +46,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
   final _cubit = getIt<GratefulCubit>();
   final _give = getIt<GiveCubit>();
   final _medium = getIt<MediumCubit>();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -56,6 +57,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
   @override
   void dispose() {
     _cubit.close();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -90,6 +92,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
               title: 'Share your gratitude',
             ),
             body: SingleChildScrollView(
+              controller: _scrollController,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height,
@@ -99,7 +102,14 @@ class _GratefulScreenState extends State<GratefulScreen> {
                     AvatarBar(
                       backgroundColor: FamilyAppTheme.primary99,
                       uiModel: uiModel.avatarBarUIModel,
-                      onAvatarTapped: _cubit.onAvatarTapped,
+                      onAvatarTapped: (index) {
+                        _scrollController.animateTo(
+                          0,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeOut,
+                        );
+                        _cubit.onAvatarTapped(index);
+                      },
                     ),
                     const SizedBox(height: 24),
                     Padding(
