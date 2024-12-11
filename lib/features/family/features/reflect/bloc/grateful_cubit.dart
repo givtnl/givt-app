@@ -171,11 +171,11 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     }
   }
 
+  void onSkip() {
+    onDeed(_getCurrentProfile(), skip: true);
+  }
+
   void onRecommendationChosen(int index) {
-    if (index == -1) {
-      onDeed(_getCurrentProfile(), skip: true);
-      return;
-    }
     final organisation = showActsOfService
         ? _currentActsOfService[index]
         : _currentOrganisations[index];

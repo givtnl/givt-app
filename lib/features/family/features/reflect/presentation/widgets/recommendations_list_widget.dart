@@ -18,10 +18,12 @@ class RecommendationsListWidget extends StatefulWidget {
     required this.uiModel,
     super.key,
     this.onRecommendationChosen,
+    this.onSkip,
   });
 
   final RecommendationsUIModel uiModel;
   final void Function(int index)? onRecommendationChosen;
+  final void Function()? onSkip;
 
   @override
   State<RecommendationsListWidget> createState() =>
@@ -160,7 +162,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
         const SizedBox(height: 16),
         TextButton(
           onPressed: () {
-            widget.onRecommendationChosen?.call(-1);
+            widget.onSkip?.call();
             unawaited(
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.skipGenerosActPressed,

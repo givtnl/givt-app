@@ -143,6 +143,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                       uiModel: uiModel.recommendationsUIModel,
                       onRecommendationChosen: _cubit.onRecommendationChosen,
                       onTapRetry: _cubit.onRetry,
+                      onSkip: _cubit.onSkip,
                     ),
                   ],
                 ),
