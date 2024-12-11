@@ -63,9 +63,8 @@ class ReflectAndShareRepository {
     try {
       _endTime = DateTime.now();
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
-      final totalMinutesPlayed = (totalTimeSpentInSeconds / 60).ceil();
       await _familyApiService.saveGratitudeStats(
-        totalMinutesPlayed * 60,
+        totalTimeSpentInSeconds,
         _gameId,
       );
       await _fetchGameStats();
