@@ -115,17 +115,20 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
           tabIndex: tabIndex,
           isLoading: _isLoadingRecommendations,
           hasError: _hasRecommendationsError,
-          organisations: tabIndex == _actsOfServiceIndex
+          organisations: _isActsOfServiceIndexCurrentlySelected()
               ? _currentActsOfService
               : _currentOrganisations,
           isNotLoggedInParent: _isNonLoggedInParent(_getCurrentProfile()),
           name: _getCurrentProfile().firstName,
           category: _getCurrentProfile().gratitude,
-          isShowingActsOfService: tabIndex == _actsOfServiceIndex,
+          isShowingActsOfService: _isActsOfServiceIndexCurrentlySelected(),
         ),
       ),
     );
   }
+
+  bool _isActsOfServiceIndexCurrentlySelected() =>
+      tabIndex == _actsOfServiceIndex;
 
   Future<void> onAvatarTapped(int index) async {
     _currentProfileIndex = index;
@@ -181,10 +184,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void onRecommendationChosen(int index) {
-    final organisation = tabIndex == _actsOfServiceIndex
+    final organisation = _isActsOfServiceIndexCurrentlySelected()
         ? _currentActsOfService[index]
         : _currentOrganisations[index];
-    if (tabIndex == _actsOfServiceIndex) {
+    if (_isActsOfServiceIndexCurrentlySelected()) {
       emitCustom(
         GratefulCustom.openActOfServiceSuccess(
           organisation: organisation,
