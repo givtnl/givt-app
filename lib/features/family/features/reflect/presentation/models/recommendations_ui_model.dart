@@ -9,14 +9,16 @@ class RecommendationsUIModel {
     this.isNotLoggedInParent = false,
     this.hasError = false,
     this.organisations = const [],
-    this.showActsOfService = false,
+    this.tabIndex = 0,
+    this.isShowingActsOfService = true,
   });
 
   final List<Organisation> organisations;
-  final bool showActsOfService;
+  final int tabIndex;
   final String? name;
   final TagCategory? category;
   final bool isNotLoggedInParent;
   final bool isLoading;
   final bool hasError;
+  final bool isShowingActsOfService;
 }

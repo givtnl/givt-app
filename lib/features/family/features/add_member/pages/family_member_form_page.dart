@@ -23,6 +23,8 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
+const childSelectedIndex = 0;
+
 class FamilyMemberFormPage extends StatefulWidget {
   const FamilyMemberFormPage({
     required this.index,
@@ -46,7 +48,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _ageController = TextEditingController();
-  List<bool> selections = [true, false];
+  int selectedIndex = 0;
   late int _amount;
   late AvatarsCubit avatars;
 
@@ -113,7 +115,6 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   @override
   Widget build(BuildContext context) {
     final isLast = widget.index == widget.totalCount;
-    final isChildSelected = selections[0];
     return FunScaffold(
       appBar: FunTopAppBar.primary99(
         title: 'Set up Family',
@@ -140,10 +141,10 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 ),
                 const SizedBox(height: 24),
                 ChildOrParentSelector(
-                  selections: selections,
+                  selectedIndex: selectedIndex,
                   onPressed: (int index) {
                     setState(() {
-                      selections = [index == 0, index == 1];
+                      selectedIndex = index;
                     });
 
                     FocusScope.of(context).unfocus();
@@ -172,7 +173,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                       _amount = amount;
                     });
                   },
-                  isChildSelected: isChildSelected,
+                  selectedIndex: selectedIndex,
                 ),
                 const SizedBox(height: 24),
               ],
@@ -185,9 +186,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
               children: [
                 const Spacer(),
                 if (isLast)
-                  _primaryButton(isChildSelected)
+                  _primaryButton(selectedIndex == childSelectedIndex)
                 else
-                  _secondaryButton(isChildSelected),
+                  _secondaryButton(selectedIndex == childSelectedIndex),
               ],
             ),
           ),
