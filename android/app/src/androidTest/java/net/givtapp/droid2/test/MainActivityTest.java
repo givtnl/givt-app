@@ -15,7 +15,9 @@ public class MainActivityTest {
         // replace "MainActivity.class" with "io.flutter.embedding.android.FlutterActivity.class"
         // if in AndroidManifest.xml in manifest/application/activity you have
         //     android:name="io.flutter.embedding.android.FlutterActivity"
-        instrumentation.setUp(io.flutter.embedding.android.FlutterActivity.class);
+
+        // note we need to use FlutterFragmentActivity for our local auth plugin
+        instrumentation.setUp(io.flutter.embedding.android.FlutterFragmentActivity.class);
         instrumentation.waitForPatrolAppService();
         return instrumentation.listDartTests();
     }
