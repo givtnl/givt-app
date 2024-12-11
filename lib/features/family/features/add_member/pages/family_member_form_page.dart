@@ -46,7 +46,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _ageController = TextEditingController();
-  List<bool> selections = [true, false];
+  int selectedIndex = 0;
   late int _amount;
   late AvatarsCubit avatars;
 
@@ -113,7 +113,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   @override
   Widget build(BuildContext context) {
     final isLast = widget.index == widget.totalCount;
-    final isChildSelected = selections[0];
+    final isChildSelected = selectedIndex == 0;
     return FunScaffold(
       appBar: FunTopAppBar.primary99(
         title: 'Set up Family',
@@ -140,10 +140,10 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 ),
                 const SizedBox(height: 24),
                 ChildOrParentSelector(
-                  selections: selections,
+                  selectedIndex: selectedIndex,
                   onPressed: (int index) {
                     setState(() {
-                      selections = [index == 0, index == 1];
+                      selectedIndex = index;
                     });
 
                     FocusScope.of(context).unfocus();
