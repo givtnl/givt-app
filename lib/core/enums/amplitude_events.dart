@@ -280,6 +280,9 @@ enum AmplitudeEvents {
   reflectAndShareNextJournalistClicked(
     'reflect_and_share_next_journalist_clicked',
   ),
+  reflectAndShareLeaveGameButtonClicked(
+    'reflect_and_share_leave_game_button_clicked',
+  ),
   reflectAndShareChangeWordClicked('reflect_and_share_change_word_clicked'),
   reflectAndShareConfirmExitClicked('reflect_and_share_confirm_exit_clicked'),
   reflectAndShareKeepPlayingClicked('reflect_and_share_keep_playing_clicked'),
