@@ -38,7 +38,7 @@ class FunTabs extends StatelessWidget {
         alignment: Alignment.center,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: index == selectedIndex ? Colors.white : Colors.transparent,
+          color: index == selectedIndex ? Colors.white : null,
           borderRadius: const BorderRadius.all(Radius.circular(12)),
         ),
         child: LabelMediumText(
