@@ -118,7 +118,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                                 ? 0
                                 : 1,
                         onPressed: _cubit.onSelectionChanged,
-                        options: const ['Acts of Service', 'Give'],
+                        options: const ['Ways to help', 'Give'],
                         analyticsEvent: AnalyticsEvent(
                           AmplitudeEvents.recommendationTypeSelectorClicked,
                         ),
