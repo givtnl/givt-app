@@ -59,6 +59,7 @@ class NavigationBarHomeScreen extends StatefulWidget {
 class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final _cubit = getIt<NavigationBarHomeCubit>();
   final _connectionCubit = getIt<InternetConnectionCubit>();
+  late final AppLifecycleListener _listener;
 
   int _currentIndex = 0;
   static bool _isShowingBoxOrigin = false;
@@ -216,7 +217,18 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   @override
   void initState() {
     _setIndex(widget.index ?? 0);
+    _listener = AppLifecycleListener(
+      onResume: _connectionCubit.resume,
+      onHide: _connectionCubit.pause,
+      onPause: _connectionCubit.pause,
+    );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _listener.dispose();
+    super.dispose();
   }
 
   Future<void> _handleCustom(
