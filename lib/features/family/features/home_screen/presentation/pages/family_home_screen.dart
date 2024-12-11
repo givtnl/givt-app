@@ -107,7 +107,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               avatarUIModels: uiModel.avatars,
                             ),
                             onAvatarTapped: onAvatarTapped,
-                          ),
+                          )
+                        else
+                          const SizedBox(height: 116),
                         StatsContainer(uiModel.gameStats),
                       ],
                     ),
