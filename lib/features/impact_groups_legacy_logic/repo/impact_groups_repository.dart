@@ -20,6 +20,8 @@ mixin ImpactGroupsRepository {
 
   Future<List<ImpactGroup>> getImpactGroups({bool fetchWhenEmpty = false});
 
+  Future<String?> getFamilyGroupName();
+
   // this method should only be called externally when the screen itself
   // has a refresh mechanism for the user
   Future<List<ImpactGroup>> refreshImpactGroups();
@@ -199,4 +201,20 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
 
   @override
   Future<List<ImpactGroup>> refreshImpactGroups() => _fetchImpactGroups();
+
+  @override
+  Future<String?> getFamilyGroupName() async {
+    return _impactGroups
+            ?.firstWhereOrNull(
+              (element) => element.isFamilyGroup,
+            )
+            ?.name ??
+        await _fetchImpactGroups().then(
+          (value) => value
+              .firstWhereOrNull(
+                (element) => element.isFamilyGroup,
+              )
+              ?.name,
+        );
+  }
 }

@@ -24,12 +24,14 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   final GratefulRecommendationsRepository _gratefulRecommendationsRepository;
   final AuthRepository _authRepository;
 
+  static const int _actsOfServiceIndex = 0;
+
   List<GameProfile> _profiles = [];
   final List<GameProfile> _profilesThatDonated = [];
   int _currentProfileIndex = 0;
   List<Organisation> _currentOrganisations = [];
   List<Organisation> _currentActsOfService = [];
-  bool showActsOfService = true;
+  int tabIndex = _actsOfServiceIndex;
   bool _hasRecommendationsError = false;
   bool _isLoadingRecommendations = false;
   Session? _session;
@@ -110,22 +112,28 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
               .toList(),
         ),
         recommendationsUIModel: RecommendationsUIModel(
-          showActsOfService: showActsOfService,
+          tabIndex: tabIndex,
           isLoading: _isLoadingRecommendations,
           hasError: _hasRecommendationsError,
-          organisations:
-              showActsOfService ? _currentActsOfService : _currentOrganisations,
+          organisations: _isActsOfServiceIndexCurrentlySelected()
+              ? _currentActsOfService
+              : _currentOrganisations,
           isNotLoggedInParent: _isNonLoggedInParent(_getCurrentProfile()),
           name: _getCurrentProfile().firstName,
           category: _getCurrentProfile().gratitude,
+          isShowingActsOfService: _isActsOfServiceIndexCurrentlySelected(),
         ),
       ),
     );
   }
 
+  bool _isActsOfServiceIndexCurrentlySelected() =>
+      tabIndex == _actsOfServiceIndex;
+
   Future<void> onAvatarTapped(int index) async {
     _currentProfileIndex = index;
     await _fetchRecommendationsForCurrentProfile();
+    resetTabs();
   }
 
   Future<void> _fetchRecommendationsForCurrentProfile() async {
@@ -154,8 +162,12 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     }
   }
 
+  void resetTabs() {
+    onSelectionChanged(_actsOfServiceIndex);
+  }
+
   void onSelectionChanged(int index) {
-    showActsOfService = index == 0;
+    tabIndex = index;
     _emitData();
   }
 
@@ -176,10 +188,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void onRecommendationChosen(int index) {
-    final organisation = showActsOfService
+    final organisation = _isActsOfServiceIndexCurrentlySelected()
         ? _currentActsOfService[index]
         : _currentOrganisations[index];
-    if (showActsOfService) {
+    if (_isActsOfServiceIndexCurrentlySelected()) {
       emitCustom(
         GratefulCustom.openActOfServiceSuccess(
           organisation: organisation,
@@ -228,6 +240,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
         },
       );
       _currentProfileIndex = _profiles.indexOf(nextGiver);
+      resetTabs();
       await _fetchRecommendationsForCurrentProfile();
     }
   }
