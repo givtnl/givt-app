@@ -18,13 +18,14 @@ import 'package:givt_app/features/family/features/home_screen/cubit/navigation_b
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_screen.dart';
+import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/family/features/overview/pages/family_overview_page.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
-import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -58,6 +59,7 @@ class NavigationBarHomeScreen extends StatefulWidget {
 class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final _cubit = getIt<NavigationBarHomeCubit>();
   final _connectionCubit = getIt<InternetConnectionCubit>();
+  late final AppLifecycleListener _listener;
 
   int _currentIndex = 0;
   static bool _isShowingBoxOrigin = false;
@@ -215,7 +217,18 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   @override
   void initState() {
     _setIndex(widget.index ?? 0);
+    _listener = AppLifecycleListener(
+      onResume: _connectionCubit.resume,
+      onHide: _connectionCubit.pause,
+      onPause: _connectionCubit.pause,
+    );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _listener.dispose();
+    super.dispose();
   }
 
   Future<void> _handleCustom(
@@ -236,13 +249,13 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     } else {
       _isShowingBoxOrigin = true;
       await FunModal(
-        title: 'Did you get a generosity mission box?',
+        title: 'Can you tell us where you heard about Givt?',
         icon: const FunIcon(
-          iconData: FontAwesomeIcons.gift,
+          iconData: FontAwesomeIcons.earListen,
         ),
         buttons: [
           FunButton(
-            text: 'Yes',
+            text: 'Tell us',
             onTap: () async {
               context.pop(); // close modal
               await Navigator.push(
@@ -256,7 +269,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             ),
           ),
           FunButton.secondary(
-            text: 'No',
+            text: 'Dismiss',
             onTap: () => context.pop(),
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.dontHaveABoxClicked,

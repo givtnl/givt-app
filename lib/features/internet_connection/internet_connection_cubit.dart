@@ -12,6 +12,7 @@ class InternetConnectionCubit extends Cubit<InternetConnectionState> {
   ) : super(InternetConnectionInitial()) {
     _init();
   }
+
   final NetworkInfo _networkInfo;
   StreamSubscription<bool>? hasInternetConnectionStream;
 
@@ -32,5 +33,13 @@ class InternetConnectionCubit extends Cubit<InternetConnectionState> {
   Future<void> close() async {
     await hasInternetConnectionStream?.cancel();
     await super.close();
+  }
+
+  void pause() {
+    hasInternetConnectionStream?.pause();
+  }
+
+  void resume() {
+    hasInternetConnectionStream?.resume();
   }
 }

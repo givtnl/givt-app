@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/m
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_detail_bottomsheet.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_header.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -18,6 +18,7 @@ class OrganisationItem extends StatelessWidget {
     required this.organisation,
     this.onDonateClicked,
     this.isActOfService = false,
+    this.nrOfTags,
     this.userName,
     super.key,
   });
@@ -26,6 +27,7 @@ class OrganisationItem extends StatelessWidget {
   final Organisation organisation;
   final void Function()? onDonateClicked;
   final String? userName;
+  final int? nrOfTags;
 
   @override
   Widget build(BuildContext context) {
@@ -63,31 +65,29 @@ class OrganisationItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20),
         color: Colors.white,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             OrganisationHeader(
               organisation: organisation,
               isActOfService: isActOfService,
+              nrOfTags: nrOfTags ?? 3,
             ),
-            Container(
-              height: 168,
-              width: double.maxFinite,
-              margin: const EdgeInsets.symmetric(vertical: 12),
-              child: Image.network(
-                organisation.promoPictureUrl,
-                fit: BoxFit.cover,
+            if (organisation.promoPictureUrl.isNotEmpty) ...[
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 12),
+                height: 150,
+                child: Image.network(
+                  organisation.promoPictureUrl,
+                  width: double.maxFinite,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
+            ],
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: TitleSmallText(
                 organisation.name,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: FamilyAppTheme.recommendationItemText,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  height: 0,
-                ),
               ),
             ),
           ],

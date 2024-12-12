@@ -98,7 +98,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 12, left: 24, right: 24),
             child: FunButton(
-              text: isActOfService ? "I'm going to do this" : 'Donate',
+              text: isActOfService ? "I'm going to do this" : 'Give',
               onTap: onClick ??
                   () {
                     if (!isDonateButtonActive) {
@@ -114,13 +114,10 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                         .pushNamed(FamilyPages.familyChooseAmountSlider.name);
                   },
               analyticsEvent: AnalyticsEvent(
-                isActOfService
-                    ? AmplitudeEvents.donateToRecommendedCharityPressed
-                    : AmplitudeEvents.pledgeActOfServiceClicked,
+                AmplitudeEvents.newActOfGenerosityClicked,
                 parameters: {
-                  isActOfService
-                      ? AnalyticsHelper.actOfServiceNameKey
-                      : AnalyticsHelper.charityNameKey: organisation.name,
+                  isActOfService ? 'act_of_service' : 'donation':
+                      organisation.name,
                   AnalyticsHelper.firstNameKey: userName,
                 },
               ),

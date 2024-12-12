@@ -1,12 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
-import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
@@ -20,16 +22,16 @@ import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.da
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/finish_reflection_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -46,6 +48,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
   final _cubit = getIt<GratefulCubit>();
   final _give = getIt<GiveCubit>();
   final _medium = getIt<MediumCubit>();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -56,6 +59,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
   @override
   void dispose() {
     _cubit.close();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -85,38 +89,68 @@ class _GratefulScreenState extends State<GratefulScreen> {
           return FunScaffold(
             canPop: false,
             withSafeArea: false,
-            appBar: FunTopAppBar(
+            minimumPadding: EdgeInsets.zero,
+            appBar: const FunTopAppBar(
               title: 'Share your gratitude',
-              actions: [
-                LeaveGameButton(
-                  onPressed: () => const FinishReflectionDialog().show(context),
-                ),
-              ],
             ),
-            body: Column(
-              children: [
-                AvatarBar(
-                  backgroundColor: FamilyAppTheme.primary99,
-                  uiModel: uiModel.avatarBarUIModel,
-                  onAvatarTapped: _cubit.onAvatarTapped,
+            body: SingleChildScrollView(
+              controller: _scrollController,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height,
                 ),
-                const SizedBox(height: 24),
-                Flexible(
-                  child: RecommendationsWidget(
-                    uiModel: uiModel.recommendationsUIModel,
-                    onRecommendationChosen: (int i) {
-                      _cubit.onRecommendationChosen(i);
-                      context.pop();
-                    },
-                    onSelectionChanged: _cubit.onSelectionChanged,
-                    onTapRetry: _cubit.onRetry,
-                  ),
+                child: Column(
+                  children: [
+                    AvatarBar(
+                      backgroundColor: FamilyAppTheme.primary99,
+                      uiModel: uiModel.avatarBarUIModel,
+                      onAvatarTapped: (index) {
+                        _scrollToTop();
+                        _cubit.onAvatarTapped(index);
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: TitleMediumText(
+                        '${uiModel.recommendationsUIModel.name} you were grateful for ${uiModel.recommendationsUIModel.category!.displayText.toLowerCase()}, here are some ways to help',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Center(
+                      child: FunTabs(
+                        selectedIndex: uiModel.recommendationsUIModel.tabIndex,
+                        onPressed: _cubit.onSelectionChanged,
+                        options: const ['Ways to help', 'Give'],
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.recommendationTypeSelectorClicked,
+                        ),
+                      ),
+                    ),
+                    RecommendationsWidget(
+                      uiModel: uiModel.recommendationsUIModel,
+                      onRecommendationChosen: _cubit.onRecommendationChosen,
+                      onTapRetry: _cubit.onRetry,
+                      onSkip: () {
+                        _scrollToTop();
+                        _cubit.onSkip();
+                      },
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           );
         },
       ),
+    );
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
     );
   }
 
@@ -126,6 +160,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
         _navigateToChildGivingScreen(
           context,
           data.profile,
+          data.organisation,
         );
       case final GratefulOpenParentDonationFlow data:
         _navigateToParentGivingScreen(
@@ -145,8 +180,13 @@ class _GratefulScreenState extends State<GratefulScreen> {
 
   Future<void> _navigateToChildGivingScreen(
     BuildContext context,
-    GameProfile profile,
+    GameProfile profile, Organisation organisation,
   ) async {
+    final generatedMediumId =
+    base64.encode(organisation.namespace.codeUnits);
+    await context
+        .read<CollectGroupDetailsCubit>()
+        .getOrganisationDetails(generatedMediumId);
     final profiles = context.read<ProfilesCubit>();
     await profiles.setActiveProfile(profile.userId);
     if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
@@ -165,8 +205,8 @@ class _GratefulScreenState extends State<GratefulScreen> {
   ) async {
     await Navigator.of(context).push(
       BlocProvider(
-        create: (BuildContext context) =>
-            CreateTransactionCubit(context.read<ProfilesCubit>(), getIt(), getIt()),
+        create: (BuildContext context) => CreateTransactionCubit(
+            context.read<ProfilesCubit>(), getIt(), getIt()),
         child: ChooseAmountSliderScreen(
           onCustomSuccess: () {
             _cubit.onDeed(profile);

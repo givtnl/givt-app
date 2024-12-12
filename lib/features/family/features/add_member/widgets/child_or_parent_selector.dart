@@ -5,26 +5,22 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 
 class ChildOrParentSelector extends StatelessWidget {
   const ChildOrParentSelector({
-    required this.selections,
+    required this.selectedIndex,
     required this.onPressed,
     super.key,
   });
 
-  final List<bool> selections;
+  final int selectedIndex;
   final void Function(int) onPressed;
 
   @override
   Widget build(BuildContext context) {
     return FunTabs(
-      selections: selections,
+      selectedIndex: selectedIndex,
       onPressed: onPressed,
-      firstOption: 'Child',
-      secondOption: 'Parent',
+      options: const ['Child', 'Parent'],
       analyticsEvent: AnalyticsEvent(
         AmplitudeEvents.addMemberTypeSelectorClicked,
-        parameters: {
-          'currentSelection': selections[0] ? 'Child' : 'Parent',
-        },
       ),
     );
   }

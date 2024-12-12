@@ -36,6 +36,7 @@ class ReflectAndShareRepository {
   List<GameProfile> _selectedProfiles = [];
   final List<String> _usedSecretWords = [];
   String? _currentSecretWord;
+  bool _hasStartedInterview = false;
 
   GameStats? _gameStatsData;
 
@@ -62,9 +63,8 @@ class ReflectAndShareRepository {
     try {
       _endTime = DateTime.now();
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
-      final totalMinutesPlayed = (totalTimeSpentInSeconds / 60).ceil();
       await _familyApiService.saveGratitudeStats(
-        totalMinutesPlayed * 60,
+        totalTimeSpentInSeconds,
         _gameId,
       );
       await _fetchGameStats();
@@ -521,10 +521,17 @@ class ReflectAndShareRepository {
     _usedSecretWords.clear();
     _currentSecretWord = null;
     _gameStatsData = null;
+    _hasStartedInterview = false;
   }
 
   void onCloseGame() {
     reset();
     _gameFinishedStreamController.add(null);
   }
+
+  void onStartedInterview() {
+    _hasStartedInterview = true;
+  }
+
+  bool hasStartedInterview() => _hasStartedInterview;
 }

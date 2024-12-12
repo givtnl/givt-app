@@ -8,48 +8,64 @@ import 'package:givt_app/utils/utils.dart';
 
 class FunTabs extends StatelessWidget {
   const FunTabs({
-    required this.selections,
+    required this.options,
+    required this.selectedIndex,
     required this.onPressed,
-    required this.firstOption,
-    required this.secondOption,
     required this.analyticsEvent,
     super.key,
   });
 
-  final String firstOption;
-  final String secondOption;
-  final List<bool> selections;
+  final List<String> options;
+  final int selectedIndex;
   final void Function(int) onPressed;
   final AnalyticsEvent analyticsEvent;
 
-  @override
-  Widget build(BuildContext context) {
-    return ToggleButtons(
-      borderWidth: 2,
-      borderRadius: const BorderRadius.all(Radius.circular(12)),
-      borderColor: AppTheme.inputFieldBorderEnabled,
-      selectedBorderColor: FamilyAppTheme.primary80,
-      selectedColor: Colors.white,
-      fillColor: FamilyAppTheme.primary80,
-      color: FamilyAppTheme.primary80,
-      constraints: BoxConstraints(
-        minHeight: 44,
-        minWidth: MediaQuery.of(context).size.width / 2 - 40,
-      ),
-      isSelected: selections,
-      onPressed: (index) {
+  Widget _buildTab(BuildContext context, int index) {
+    return GestureDetector(
+      onTap: () {
         unawaited(
           AnalyticsHelper.logEvent(
             eventName: analyticsEvent.name,
-            eventProperties: analyticsEvent.parameters,
+            eventProperties: {
+              'selected_option': options[index],
+              'selected_index': index,
+            },
           ),
         );
         onPressed.call(index);
       },
-      children: [
-        LabelMediumText(firstOption),
-        LabelMediumText(secondOption),
-      ],
+      child: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: index == selectedIndex ? Colors.white : null,
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+        ),
+        child: LabelMediumText(
+          options[index],
+          color: index == selectedIndex
+              ? FamilyAppTheme.primary20
+              : Colors.black.withOpacity(0.5),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.all(4),
+      decoration: const BoxDecoration(
+        color: FamilyAppTheme.neutralVariant90,
+        borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+      child: Row(
+        children: List.generate(
+          options.length,
+          (index) => Expanded(child: _buildTab(context, index)),
+        ),
+      ),
     );
   }
 }
