@@ -165,6 +165,9 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
             unawaited(
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.skipGenerosActPressed,
+                eventProperties: {
+                  AnalyticsHelper.firstNameKey: widget.uiModel.name,
+                },
               ),
             );
           },
