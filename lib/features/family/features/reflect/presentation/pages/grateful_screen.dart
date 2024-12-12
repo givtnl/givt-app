@@ -24,7 +24,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/models/gr
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
-import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
@@ -106,11 +105,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                       backgroundColor: FamilyAppTheme.primary99,
                       uiModel: uiModel.avatarBarUIModel,
                       onAvatarTapped: (index) {
-                        _scrollController.animateTo(
-                          0,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeOut,
-                        );
+                        _scrollToTop();
                         _cubit.onAvatarTapped(index);
                       },
                     ),
@@ -136,7 +131,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
                       uiModel: uiModel.recommendationsUIModel,
                       onRecommendationChosen: _cubit.onRecommendationChosen,
                       onTapRetry: _cubit.onRetry,
-                      onSkip: _cubit.onSkip,
+                      onSkip: () {
+                        _scrollToTop();
+                        _cubit.onSkip();
+                      },
                     ),
                   ],
                 ),
@@ -145,6 +143,14 @@ class _GratefulScreenState extends State<GratefulScreen> {
           );
         },
       ),
+    );
+  }
+
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
     );
   }
 
