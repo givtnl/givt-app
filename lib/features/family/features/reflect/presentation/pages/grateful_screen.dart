@@ -181,7 +181,6 @@ class _GratefulScreenState extends State<GratefulScreen> {
     await context
         .read<CollectGroupDetailsCubit>()
         .getOrganisationDetails(generatedMediumId);
-    context.read<ScanNfcCubit>().stopScanningSession();
     final profiles = context.read<ProfilesCubit>();
     await profiles.setActiveProfile(profile.userId);
     if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
