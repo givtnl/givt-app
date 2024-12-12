@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
@@ -22,6 +24,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/models/gr
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
+import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
@@ -151,6 +154,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
         _navigateToChildGivingScreen(
           context,
           data.profile,
+          data.organisation,
         );
       case final GratefulOpenParentDonationFlow data:
         _navigateToParentGivingScreen(
@@ -170,8 +174,14 @@ class _GratefulScreenState extends State<GratefulScreen> {
 
   Future<void> _navigateToChildGivingScreen(
     BuildContext context,
-    GameProfile profile,
+    GameProfile profile, Organisation organisation,
   ) async {
+    final generatedMediumId =
+    base64.encode(organisation.namespace.codeUnits);
+    await context
+        .read<CollectGroupDetailsCubit>()
+        .getOrganisationDetails(generatedMediumId);
+    context.read<ScanNfcCubit>().stopScanningSession();
     final profiles = context.read<ProfilesCubit>();
     await profiles.setActiveProfile(profile.userId);
     if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
