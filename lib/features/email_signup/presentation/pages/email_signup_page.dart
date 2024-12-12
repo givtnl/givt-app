@@ -242,6 +242,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
         setLoading();
       case EmailSignupShowFamilyRegistration():
         setLoading(state: false);
+        AppThemeSwitcher.of(context).switchTheme(isFamilyApp: true);
         context.goNamed(
           FamilyPages.registrationUS.name,
           queryParameters: {
