@@ -213,6 +213,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                                 Localizations.localeOf(context)
                                                     .languageCode,
                                           );
+                                      setLoading(state: false);
                                     }
                                   }
                                 : null,
