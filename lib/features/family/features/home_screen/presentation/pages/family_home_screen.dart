@@ -70,6 +70,12 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
       },
       onData: (context, uiModel) {
         return FunScaffold(
+          canPop: !overlayVisible,
+          onPopInvokedWithResult: (didPop, _) {
+            if (overlayVisible) {
+              closeOverlay();
+            }
+          },
           minimumPadding: EdgeInsets.zero,
           appBar: const FunTopAppBar(title: null),
           body: SingleChildScrollView(
