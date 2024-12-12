@@ -147,13 +147,15 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                   ? "I'm going to do this"
                   : 'Give',
               analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.newActOfGenerosityClicked,
-                  parameters: {
-                    widget.uiModel.isShowingActsOfService
-                            ? 'act_of_service'
-                            : 'donation':
-                        widget.uiModel.organisations[_currentIndex].name,
-                  }),
+                AmplitudeEvents.newActOfGenerosityClicked,
+                parameters: {
+                  widget.uiModel.isShowingActsOfService
+                          ? 'act_of_service'
+                          : 'donation':
+                      widget.uiModel.organisations[_currentIndex].name,
+                  AnalyticsHelper.firstNameKey: widget.uiModel.name,
+                },
+              ),
             ),
           ),
         const SizedBox(height: 16),
@@ -163,6 +165,9 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
             unawaited(
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.skipGenerosActPressed,
+                eventProperties: {
+                  AnalyticsHelper.firstNameKey: widget.uiModel.name,
+                },
               ),
             );
           },
