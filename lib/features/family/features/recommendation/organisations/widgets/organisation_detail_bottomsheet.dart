@@ -98,7 +98,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 12, left: 24, right: 24),
             child: FunButton(
-              text: isActOfService ? "I'm going to do this" : 'Donate',
+              text: isActOfService ? "I'm going to do this" : 'Give',
               onTap: onClick ??
                   () {
                     if (!isDonateButtonActive) {
