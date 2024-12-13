@@ -15,6 +15,8 @@ class RemoteConfigRepository {
     _init();
   }
 
+  // A BehaviorSubject emits the last value when a listener subscribes
+  // A regular dart stream doesn't
   final Map<String, BehaviorSubject<RemoteConfigValue>> _subscriptions = {};
 
   Stream<RemoteConfigValue>? subscribeToRemoteConfigValue(String key) {
