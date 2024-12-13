@@ -450,7 +450,7 @@ class ReflectAndShareRepository {
 
   List<String> getSecretWords() {
     if (_gameConfig?.isEmpty() == false) {
-      return _gameConfig!.secretWords;
+      return List.from(_gameConfig!.secretWords);
     } else {
       return _fallbackSecretWords;
     }
@@ -489,7 +489,7 @@ class ReflectAndShareRepository {
 
   List<String> getAllQuestions() {
     if (_gameConfig?.isEmpty() == false) {
-      return _gameConfig!.questions;
+      return List.from(_gameConfig!.questions);
     } else {
       return _fallbackQuestions();
     }
