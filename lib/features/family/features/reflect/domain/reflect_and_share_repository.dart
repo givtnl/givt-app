@@ -452,11 +452,11 @@ class ReflectAndShareRepository {
     if (_gameConfig?.isEmpty() == false) {
       return _gameConfig!.secretWords;
     } else {
-      return _secretWords;
+      return _fallbackSecretWords;
     }
   }
 
-  final List<String> _secretWords = [
+  final List<String> _fallbackSecretWords = [
     'friends',
     'family',
     'fun',
@@ -491,12 +491,12 @@ class ReflectAndShareRepository {
     if (_gameConfig?.isEmpty() == false) {
       return _gameConfig!.questions;
     } else {
-      return _getAllQuestions();
+      return _fallbackQuestions();
     }
   }
 
   // get the questions that the reporters can ask
-  List<String> _getAllQuestions() {
+  List<String> _fallbackQuestions() {
     return [
       'What made you smile today?',
       'Who is someone who helped you today?',
