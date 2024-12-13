@@ -38,6 +38,7 @@ import 'package:givt_app/features/family/features/reflect/domain/grateful_recomm
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/registration/cubit/us_signup_cubit.dart';
+import 'package:givt_app/features/family/features/remote_config/domain/remote_config_repository.dart';
 import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/repositories/reset_password_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
@@ -238,7 +239,11 @@ void initRepositories() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
+    )
+    ..registerLazySingleton<RemoteConfigRepository>(
+      RemoteConfigRepository.new,
     )
     ..registerLazySingleton<ResetPasswordRepository>(
       () => ResetPasswordRepositoryImpl(
