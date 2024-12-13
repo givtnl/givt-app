@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/audio_player.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_player.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/summary_conversation_list.dart';
 import 'package:givt_app/features/family/helpers/datetime_extension.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
