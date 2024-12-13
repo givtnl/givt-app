@@ -44,6 +44,7 @@ class ReflectAndShareRepository {
   List<GameProfile>? _allProfiles;
   List<GameProfile> _selectedProfiles = [];
   final List<String> _usedSecretWords = [];
+  final List<String> _currentSetOfQuestions = [];
   String? _currentSecretWord;
   bool _hasStartedInterview = false;
 
@@ -337,7 +338,7 @@ class ReflectAndShareRepository {
       List<GameProfile> preReporters, Random rng) {
     final reportersWithQuestions = <GameProfile>[];
 
-    final questions = getAllQuestions();
+    final questions = getCurrentSetOfQuestions();
     if (preReporters.length == 1) {
       final reporterQuestions = _pickQuestions(questions, 2, rng);
       reportersWithQuestions.add(
@@ -386,7 +387,7 @@ class ReflectAndShareRepository {
     for (var i = 0; i < count; i++) {
       if (availableQuestions.isEmpty) {
         // ignore: parameter_assignments
-        availableQuestions = getAllQuestions();
+        availableQuestions = getCurrentSetOfQuestions();
       }
       final question =
           availableQuestions[rng.nextInt(availableQuestions.length)];
@@ -430,11 +431,11 @@ class ReflectAndShareRepository {
 
   // call this to get a secret word or reroll it
   String randomizeSecretWord() {
-    var list = getSecretWords()
+    var list = getAllPossibleSecretWords()
         .where((word) => !_usedSecretWords.contains(word))
         .toList();
     if (list.isEmpty) {
-      list = getSecretWords();
+      list = getAllPossibleSecretWords();
       _usedSecretWords.clear();
     }
     final rng = Random();
@@ -448,14 +449,16 @@ class ReflectAndShareRepository {
     return list[wordIndex];
   }
 
-  List<String> getSecretWords() {
+  // All possible secret words that can be used in the gratitude game
+  List<String> getAllPossibleSecretWords() {
     if (_gameConfig?.isEmpty() == false) {
-      return _gameConfig!.secretWords;
+      return List.from(_gameConfig!.secretWords);
     } else {
       return _fallbackSecretWords;
     }
   }
 
+  // fallback for when we cannot get the secret words from firebase remote config
   final List<String> _fallbackSecretWords = [
     'friends',
     'family',
@@ -487,15 +490,24 @@ class ReflectAndShareRepository {
     'excited',
   ];
 
-  List<String> getAllQuestions() {
+  // The questions we're using in this one particular instance of the game
+  List<String> getCurrentSetOfQuestions() {
+    if (_currentSetOfQuestions.isEmpty) {
+      _currentSetOfQuestions.addAll(getAllPossibleQuestions());
+    }
+    return _currentSetOfQuestions;
+  }
+
+  // All possible questions that can be used in the gratitude game
+  List<String> getAllPossibleQuestions() {
     if (_gameConfig?.isEmpty() == false) {
-      return _gameConfig!.questions;
+      return List.from(_gameConfig!.questions);
     } else {
       return _fallbackQuestions();
     }
   }
 
-  // get the questions that the reporters can ask
+  // Fallback for when we cannot get the questions from firebase remote config
   List<String> _fallbackQuestions() {
     return [
       'What made you smile today?',
@@ -535,7 +547,8 @@ class ReflectAndShareRepository {
     options.add(_currentSecretWord!);
     final rng = Random();
     while (options.length < 4) {
-      final word = getSecretWords()[rng.nextInt(getSecretWords().length)];
+      final word = getAllPossibleSecretWords()[
+          rng.nextInt(getAllPossibleSecretWords().length)];
       if (!options.contains(word)) {
         options.add(word);
       }
@@ -564,6 +577,7 @@ class ReflectAndShareRepository {
     _gameId = null;
     _allProfiles = null;
     _selectedProfiles = [];
+    _currentSetOfQuestions.clear();
     _usedSecretWords.clear();
     _currentSecretWord = null;
     _gameStatsData = null;
