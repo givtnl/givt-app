@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_remote_config_platform_interface/src/remote_config_value.dart';
+import 'package:flutter/foundation.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
@@ -9,7 +12,9 @@ import 'package:givt_app/features/family/features/profiles/repository/profiles_r
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/gratitude_game_config.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
+import 'package:givt_app/features/family/features/remote_config/domain/remote_config_repository.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class ReflectAndShareRepository {
@@ -17,6 +22,7 @@ class ReflectAndShareRepository {
     this._profilesRepository,
     this._familyApiService,
     this._familyAuthRepository,
+    this._remoteConfigRepository,
   ) {
     _init();
   }
@@ -24,6 +30,9 @@ class ReflectAndShareRepository {
   final ProfilesRepository _profilesRepository;
   final FamilyAPIService _familyApiService;
   final FamilyAuthRepository _familyAuthRepository;
+  final RemoteConfigRepository _remoteConfigRepository;
+
+  static const String _gameConfigKey = 'gratitude_game_config';
 
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
@@ -40,6 +49,8 @@ class ReflectAndShareRepository {
 
   GameStats? _gameStatsData;
 
+  GratitudeGameConfig? _gameConfig;
+
   final StreamController<void> _gameFinishedStreamController =
       StreamController.broadcast();
 
@@ -53,6 +64,24 @@ class ReflectAndShareRepository {
         reset();
       }
     });
+    _remoteConfigRepository
+        .subscribeToRemoteConfigValue(_gameConfigKey)
+        ?.listen(
+          _handleGameConfigUpdated,
+        );
+  }
+
+  void _handleGameConfigUpdated(RemoteConfigValue value) {
+    try {
+      final decodedBody = jsonDecode(value.asString()) as Map<String, dynamic>;
+      _gameConfig = GratitudeGameConfig.fromJson(decodedBody);
+    } catch (e, s) {
+      // we could not decode the remote config value, no biggie as we have hardcoded values as back-up
+      LoggingInfo.instance.logExceptionForDebug(
+        e,
+        stacktrace: s,
+      );
+    }
   }
 
   void incrementGenerousDeeds() {
@@ -308,7 +337,7 @@ class ReflectAndShareRepository {
       List<GameProfile> preReporters, Random rng) {
     final reportersWithQuestions = <GameProfile>[];
 
-    final questions = _getAllQuestions();
+    final questions = getAllQuestions();
     if (preReporters.length == 1) {
       final reporterQuestions = _pickQuestions(questions, 2, rng);
       reportersWithQuestions.add(
@@ -357,7 +386,7 @@ class ReflectAndShareRepository {
     for (var i = 0; i < count; i++) {
       if (availableQuestions.isEmpty) {
         // ignore: parameter_assignments
-        availableQuestions = _getAllQuestions();
+        availableQuestions = getAllQuestions();
       }
       final question =
           availableQuestions[rng.nextInt(availableQuestions.length)];
@@ -401,10 +430,11 @@ class ReflectAndShareRepository {
 
   // call this to get a secret word or reroll it
   String randomizeSecretWord() {
-    var list =
-        _secretWords.where((word) => !_usedSecretWords.contains(word)).toList();
+    var list = getSecretWords()
+        .where((word) => !_usedSecretWords.contains(word))
+        .toList();
     if (list.isEmpty) {
-      list = _secretWords;
+      list = getSecretWords();
       _usedSecretWords.clear();
     }
     final rng = Random();
@@ -418,7 +448,15 @@ class ReflectAndShareRepository {
     return list[wordIndex];
   }
 
-  final List<String> _secretWords = [
+  List<String> getSecretWords() {
+    if (_gameConfig?.isEmpty() == false) {
+      return _gameConfig!.secretWords;
+    } else {
+      return _fallbackSecretWords;
+    }
+  }
+
+  final List<String> _fallbackSecretWords = [
     'friends',
     'family',
     'fun',
@@ -449,8 +487,16 @@ class ReflectAndShareRepository {
     'excited',
   ];
 
-// get the questions that the reporters can ask
-  List<String> _getAllQuestions() {
+  List<String> getAllQuestions() {
+    if (_gameConfig?.isEmpty() == false) {
+      return _gameConfig!.questions;
+    } else {
+      return _fallbackQuestions();
+    }
+  }
+
+  // get the questions that the reporters can ask
+  List<String> _fallbackQuestions() {
     return [
       'What made you smile today?',
       'Who is someone who helped you today?',
@@ -489,7 +535,7 @@ class ReflectAndShareRepository {
     options.add(_currentSecretWord!);
     final rng = Random();
     while (options.length < 4) {
-      final word = _secretWords[rng.nextInt(_secretWords.length)];
+      final word = getSecretWords()[rng.nextInt(getSecretWords().length)];
       if (!options.contains(word)) {
         options.add(word);
       }
