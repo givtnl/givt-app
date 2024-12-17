@@ -34,8 +34,15 @@ class GameSummariesCubit extends CommonCubit<List<GameSummaryItem>, dynamic> {
 
   Future<SummaryUIModel> getSummaryUIModel(String id) async {
     emitLoading();
-    final summary = await _summaries.fetchGameSummary(id);
-    emitData(gameSummaries);
-    return summary.toUIModel();
+
+    try {
+      final summary = await _summaries.fetchGameSummary(id);
+      emitData(gameSummaries);
+      return summary.toUIModel();
+    } catch (e) {
+      emitError(e.toString());
+      LoggingInfo.instance.error('Error fetching game summary: $e');
+      rethrow;
+    }
   }
 }
