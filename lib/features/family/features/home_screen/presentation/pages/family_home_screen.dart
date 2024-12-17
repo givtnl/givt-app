@@ -149,7 +149,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                           text: 'Show Summaries',
                           analyticsEvent: AnalyticsEvent(AmplitudeEvents
-                              .familyHomeScreenLatestSummaryClicked),
+                              .familyHomeScreenShowSummariesClicked),
                         ),
                     ],
                   ),
