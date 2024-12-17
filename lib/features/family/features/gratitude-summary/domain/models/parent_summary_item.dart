@@ -28,8 +28,8 @@ class ParentSummaryItem {
 
   bool isEmpty() => conversations.isEmpty;
 
-  ParentSummaryUIModel toUIModel() {
-    return ParentSummaryUIModel(
+  SummaryUIModel toUIModel() {
+    return SummaryUIModel(
       conversations: conversations.map((e) => e.toUIModel()).toList(),
       audioLink: audio,
       date: date,

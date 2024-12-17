@@ -427,6 +427,22 @@ class FamilyAPIService {
     return itemList;
   }
 
+  Future<Map<String, dynamic>> fetchGameSummary(String id) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/summary/$id');
+    final response = await client.get(url);
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['item']! as Map<String, dynamic>;
+    return itemMap;
+  }
+
   Future<Map<String, dynamic>> fetchLatestGameSummary() async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/summary/latest');
     final response = await client.get(url);
