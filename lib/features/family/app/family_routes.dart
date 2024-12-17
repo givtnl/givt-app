@@ -54,6 +54,7 @@ import 'package:givt_app/features/family/features/recommendation/tags/screens/lo
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
 import 'package:givt_app/features/family/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
+import 'package:givt_app/features/family/features/game_summary/game_summaries_screen.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
@@ -172,6 +173,11 @@ class FamilyAppRoutes {
           path: FamilyPages.parentSummary.path,
           name: FamilyPages.parentSummary.name,
           builder: (context, state) => const ParentSummaryScreen(),
+        ),
+        GoRoute(
+          path: FamilyPages.gameSummaries.path,
+          name: FamilyPages.gameSummaries.name,
+          builder: (context, state) => const GameSummariesScreen(),
         ),
         GoRoute(
           path: FamilyPages.parentHome.path,

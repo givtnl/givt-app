@@ -2,7 +2,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:intl/intl.dart';
 
 extension StringDateTimeExtension on String {
-  String formatDate(AppLocalizations locals) {
+  String formatDate(AppLocalizations locals, {bool showYear = false}) {
     final date = DateTime.tryParse(this) ?? DateTime.now();
 
     final now = DateTime.now();
@@ -22,8 +22,10 @@ extension StringDateTimeExtension on String {
       return locals.yesterday;
     }
 
-    final formatter = DateFormat('MM/dd');
-
+    var formatter = DateFormat('MM/dd');
+    if (showYear) {
+      formatter = DateFormat('MM/dd/yyyy');
+    }
     return formatter.format(date);
   }
 }

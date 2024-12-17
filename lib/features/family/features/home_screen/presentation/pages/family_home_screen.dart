@@ -145,9 +145,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       if (uiModel.showLatestSummaryBtn)
                         FunButton.secondary(
                           onTap: () => context.goNamed(
-                            FamilyPages.parentSummary.name,
+                            FamilyPages.gameSummaries.name,
                           ),
-                          text: 'Show Latest Summary',
+                          text: 'Show Summaries',
                           analyticsEvent: AnalyticsEvent(AmplitudeEvents
                               .familyHomeScreenLatestSummaryClicked),
                         ),
