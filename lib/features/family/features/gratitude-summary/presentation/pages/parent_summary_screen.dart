@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/game_summary/presentation/widgets/summary_page.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/audio_player.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/summary_conversation_list.dart';
-import 'package:givt_app/features/family/helpers/datetime_extension.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -22,7 +18,6 @@ class ParentSummaryScreen extends StatefulWidget {
 
 class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
   final ParentSummaryCubit _cubit = getIt<ParentSummaryCubit>();
-  bool _hasClickedAudio = false;
 
   @override
   void initState() {
@@ -40,63 +35,22 @@ class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
   Widget build(BuildContext context) {
     return FunScaffold(
       backgroundColor: FamilyAppTheme.secondary10,
-      appBar: const FunTopAppBar(
+      appBar: FunTopAppBar(
         color: FamilyAppTheme.secondary10,
         title: 'Summary',
         titleColor: Colors.white,
+        leading: context.canPop()
+            ? const GivtBackButtonFlat(
+                color: Colors.white,
+              )
+            : null,
       ),
       body: BaseStateConsumer(
         cubit: _cubit,
         onData: (context, uiModel) {
-          return Column(
-            children: [
-              if (uiModel?.date != null)
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4.5),
-                  decoration: BoxDecoration(
-                    color: FamilyAppTheme.highlight95,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: LabelSmallText(
-                    uiModel!.date!.formatDate(),
-                    textAlign: TextAlign.center,
-                    color: FamilyAppTheme.highlight40,
-                  ),
-                ),
-              if (uiModel?.date != null) const SizedBox(height: 12),
-              const TitleMediumText(
-                  'We’ve been working on our generosity superpowers!',
-                  textAlign: TextAlign.center,
-                  color: Colors.white),
-              const SizedBox(height: 24),
-              Expanded(
-                child: SummaryConversationList(
-                  conversations: uiModel?.conversations ?? [],
-                ),
-              ),
-              const SizedBox(height: 24),
-              if (uiModel?.audioLink != null)
-                FunAudioPlayer(
-                  source: uiModel!.audioLink!,
-                  showDeleteButton: false,
-                  isUrl: true,
-                  onPlayExtension: () {
-                    setState(() {
-                      _hasClickedAudio = true;
-                    });
-                  },
-                ),
-              FunButton(
-                isDisabled: uiModel?.audioLink != null && !_hasClickedAudio,
-                text: 'Done',
-                onTap: () => context.pop(),
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.afterGameSummaryDoneClicked,
-                ),
-              ),
-            ],
-          );
+          return uiModel != null
+              ? SummaryPage(uiModel: uiModel)
+              : const SizedBox.shrink();
         },
       ),
     );
