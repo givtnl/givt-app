@@ -10,7 +10,8 @@ class GameSummaryItem {
   factory GameSummaryItem.fromMap(
       Map<String, dynamic> map, List<Profile> profiles) {
     final id = map['id'] as String;
-    final date = map['createdDate'] as String;
+    final date =
+        DateTime.tryParse(map['createdDate'] as String) ?? DateTime.now();
     final playerGuids =
         (map['profiles'] as List<dynamic>).map((e) => e as String).toList();
     final players =
@@ -23,6 +24,6 @@ class GameSummaryItem {
   }
 
   final String id;
-  final String date;
+  final DateTime date;
   final List<Profile> players;
 }
