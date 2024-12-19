@@ -2,7 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/bloc/background_audio_cubit.dart';
+import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 /*
@@ -31,7 +31,6 @@ class FunBackgroundAudioWidget extends StatefulWidget {
 
 class _FunBackgroundAudioWidgetState extends State<FunBackgroundAudioWidget>
     with SingleTickerProviderStateMixin {
-
   final _audioPlayer = AudioPlayer();
   final BackgroundAudioCubit _cubit = getIt<BackgroundAudioCubit>();
 
