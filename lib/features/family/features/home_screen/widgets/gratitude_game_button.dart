@@ -54,11 +54,11 @@ class GratitudeGameButton extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       LabelLargeText(
-                        'Gratitude Game',
+                        'Family Game',
                         color: FamilyAppTheme.highlight40,
                       ),
                       BodySmallText(
-                        'Family activity',
+                        'Play now!',
                         color: FamilyAppTheme.highlight40,
                       ),
                     ],
