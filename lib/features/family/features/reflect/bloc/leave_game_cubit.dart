@@ -19,13 +19,30 @@ class LeaveGameCubit extends CommonCubit<dynamic, LeaveGameCustom> {
     } catch (e) {
       // do nothing, as a fallback we just don't navigate to the bedtime screens
     }
-    emitCustom(
-      LeaveGameCustom(
-        isFirstRound: _reflectAndShareRepository.isFirstRound(),
-        hasAtLeastStartedInterview:
-            _reflectAndShareRepository.hasStartedInterview(),
-        kidsWithoutBedtimeSetup: kidsWithoutBedtimeSetup,
-      ),
-    );
+    final isFirstRound = _reflectAndShareRepository.isFirstRound();
+    final hasAtLeastStartedInterview =
+        _reflectAndShareRepository.hasStartedInterview();
+    final hasAnyGratitudeBeenSelected =
+        _reflectAndShareRepository.hasAnyGratitudeBeenSelected();
+
+    if (!isFirstRound && kidsWithoutBedtimeSetup.isNotEmpty) {
+      emitCustom(
+        LeaveGameCustom.introBedtime(kidsWithoutBedtimeSetup),
+      );
+    } else if ((isFirstRound &&
+        hasAtLeastStartedInterview) &&
+        !hasAnyGratitudeBeenSelected) {
+      emitCustom(
+        const LeaveGameCustom.summary(),
+      );
+    } else if (hasAnyGratitudeBeenSelected) {
+      emitCustom(
+        const LeaveGameCustom.grateful(),
+      );
+    } else {
+      emitCustom(
+        const LeaveGameCustom.home(),
+      );
+    }
   }
 }
