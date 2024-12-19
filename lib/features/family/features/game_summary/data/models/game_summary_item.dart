@@ -16,12 +16,9 @@ class GameSummaryItem {
         (map['profiles'] as List<dynamic>).map((e) => e as String).toList();
     final players =
         profiles.where((element) => playerGuids.contains(element.id)).toList();
-    return GameSummaryItem(
-      id: id,
-      date: date,
-      players: players,
-    );
+    return GameSummaryItem(id: id, date: date, players: players);
   }
+  bool get isEmpty => players.isEmpty;
 
   final String id;
   final DateTime date;
