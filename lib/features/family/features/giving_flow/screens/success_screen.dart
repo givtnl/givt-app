@@ -100,7 +100,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
                     ),
                     Text(
                       widget.isActOfService
-                          ? 'Good luck in completing your act of service'
+                          ? 'What a great way to help someone. Good luck!'
                           : 'Thank you for your donation \n to ${organisation.name}',
                       textAlign: TextAlign.center,
                     ),
