@@ -4,12 +4,14 @@ class SummaryDetails {
   SummaryDetails({
     required this.minutesPlayed,
     required this.generousDeeds,
+    required this.tagsWereSelected,
     this.missingAdults = const [],
     this.audioPath = '',
   });
 
   int minutesPlayed;
   int generousDeeds;
+  bool tagsWereSelected;
   List<Profile> missingAdults;
   String audioPath;
 
@@ -19,7 +21,9 @@ class SummaryDetails {
   bool get allAdultsPlayed => missingAdults.isEmpty;
 
   bool get isShareableSummary =>
-      !allAdultsPlayed && (minutesPlayed > 0 || generousDeeds > 0);
+      !allAdultsPlayed &&
+      (minutesPlayed > 0 || generousDeeds > 0) &&
+      tagsWereSelected;
 
   bool get showPlayer => isShareableSummary && audioPath.isNotEmpty;
 
