@@ -11,6 +11,8 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   final ReflectAndShareRepository _reflectAndShareRepository;
   int _totalMinutesPlayed = 0;
   int _generousDeeds = 0;
+  bool _tagsWereSelected = false;
+  String _audioPath = '';
   List<Profile> _missingAdults = const [];
 
   void init() {
@@ -18,36 +20,19 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
     _totalMinutesPlayed =
         (_reflectAndShareRepository.totalTimeSpentInSeconds / 60).ceil();
     _generousDeeds = _reflectAndShareRepository.getAmountOfGenerousDeeds();
+    _tagsWereSelected = _reflectAndShareRepository.wereAnyTagsSelected();
     checkAllParentsPlayed();
-    emitData(
-      SummaryDetails(
-        minutesPlayed: _totalMinutesPlayed,
-        generousDeeds: _generousDeeds,
-      ),
-    );
+    _emitData();
   }
 
   Future<void> checkAllParentsPlayed() async {
     _missingAdults = await _reflectAndShareRepository.missingAdults();
-
-    emitData(
-      SummaryDetails(
-        minutesPlayed: _totalMinutesPlayed,
-        generousDeeds: _generousDeeds,
-        missingAdults: _missingAdults,
-      ),
-    );
+    _emitData();
   }
 
   void audioAvailable(String path) {
-    emitData(
-      SummaryDetails(
-        minutesPlayed: _totalMinutesPlayed,
-        generousDeeds: _generousDeeds,
-        missingAdults: _missingAdults,
-        audioPath: path,
-      ),
-    );
+    _audioPath = path;
+    _emitData();
   }
 
   Future<void> shareAudio(String path) async {
@@ -63,12 +48,18 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   }
 
   void onDeleteAudio() {
+    _audioPath = '';
+    _emitData();
+  }
+
+  void _emitData() {
     emitData(
       SummaryDetails(
         minutesPlayed: _totalMinutesPlayed,
         generousDeeds: _generousDeeds,
         missingAdults: _missingAdults,
-        audioPath: '',
+        tagsWereSelected: _tagsWereSelected,
+        audioPath: _audioPath,
       ),
     );
   }

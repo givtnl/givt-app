@@ -561,6 +561,10 @@ class ReflectAndShareRepository {
     return _gameStatsData ??= await _fetchGameStats();
   }
 
+  bool wereAnyTagsSelected() {
+    return _selectedProfiles.any((profile) => profile.gratitude != null);
+  }
+
   Future<GameStats> _fetchGameStats() async {
     final result = await _familyApiService.fetchGameStats();
     final stats = GameStats.fromJson(result);
