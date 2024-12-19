@@ -1,5 +1,4 @@
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/leave_game_custom.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -22,20 +21,19 @@ class LeaveGameCubit extends CommonCubit<dynamic, LeaveGameCustom> {
     final isFirstRound = _reflectAndShareRepository.isFirstRound();
     final hasAtLeastStartedInterview =
         _reflectAndShareRepository.hasStartedInterview();
-    final hasAnyGratitudeBeenSelected =
-        _reflectAndShareRepository.hasAnyGratitudeBeenSelected();
+    final hasAnyGenerousPowerBeenSelected =
+        _reflectAndShareRepository.hasAnyGenerousPowerBeenSelected();
 
     if (!isFirstRound && kidsWithoutBedtimeSetup.isNotEmpty) {
       emitCustom(
         LeaveGameCustom.introBedtime(kidsWithoutBedtimeSetup),
       );
-    } else if ((isFirstRound &&
-        hasAtLeastStartedInterview) &&
-        !hasAnyGratitudeBeenSelected) {
+    } else if ((isFirstRound && hasAtLeastStartedInterview) &&
+        !hasAnyGenerousPowerBeenSelected) {
       emitCustom(
         const LeaveGameCustom.summary(),
       );
-    } else if (hasAnyGratitudeBeenSelected) {
+    } else if (hasAnyGenerousPowerBeenSelected) {
       emitCustom(
         const LeaveGameCustom.grateful(),
       );
