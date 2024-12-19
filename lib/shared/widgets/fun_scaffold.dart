@@ -12,6 +12,7 @@ class FunScaffold extends StatelessWidget {
     this.withSafeArea = true,
     this.floatingActionButton,
     this.backgroundColor = Colors.white,
+    this.onPopInvokedWithResult,
     super.key,
   });
 
@@ -23,6 +24,7 @@ class FunScaffold extends StatelessWidget {
   final bool withSafeArea;
   final Color backgroundColor;
   final FunButton? floatingActionButton;
+  final void Function(bool, dynamic)? onPopInvokedWithResult;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class FunScaffold extends StatelessWidget {
         onTap: () => FocusScope.of(context).unfocus(),
         child: PopScope(
           canPop: canPop,
+          onPopInvokedWithResult: onPopInvokedWithResult,
           child: Scaffold(
             backgroundColor: backgroundColor,
             appBar: appBar,

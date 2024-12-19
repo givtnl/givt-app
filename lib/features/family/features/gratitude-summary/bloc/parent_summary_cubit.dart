@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class ParentSummaryCubit extends CommonCubit<ParentSummaryUIModel?, dynamic> {
+class ParentSummaryCubit extends CommonCubit<SummaryUIModel?, dynamic> {
   ParentSummaryCubit() : super(const BaseState.loading());
 
   final ParentSummaryRepository _summaryRepository =

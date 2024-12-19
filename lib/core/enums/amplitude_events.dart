@@ -331,6 +331,9 @@ enum AmplitudeEvents {
   familyHomeScreenLatestSummaryClicked(
     'family_home_screen_latest_summary_clicked',
   ),
+  familyHomeScreenShowSummariesClicked(
+    'family_home_screen_show_summaries_clicked',
+  ),
 
   // Fun Counter
   funCounterDecrementClicked('fun_counter_decrement_clicked'),

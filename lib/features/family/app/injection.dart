@@ -9,6 +9,8 @@ import 'package:givt_app/features/family/features/avatars/repositories/avatars_r
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
 import 'package:givt_app/features/family/features/edit_child_profile/repositories/edit_profile_repository.dart';
+import 'package:givt_app/features/family/features/game_summary/cubit/game_summaries_cubit.dart';
+import 'package:givt_app/features/family/features/game_summary/data/game_summaries_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/bedtime_responsibility_cubit.dart';
@@ -38,6 +40,7 @@ import 'package:givt_app/features/family/features/reflect/domain/grateful_recomm
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/registration/cubit/us_signup_cubit.dart';
+import 'package:givt_app/features/family/features/remote_config/domain/remote_config_repository.dart';
 import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/repositories/reset_password_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
@@ -149,6 +152,9 @@ void initCubits() {
     ..registerFactory<UsSignupCubit>(
       () => UsSignupCubit(getIt(), getIt()),
     )
+    ..registerFactory<GameSummariesCubit>(
+      GameSummariesCubit.new,
+    )
     ..registerFactory<SplashCubit>(
       () => SplashCubit(getIt(), getIt()),
     );
@@ -237,6 +243,15 @@ void initRepositories() {
       () => ReflectAndShareRepository(
         getIt(),
         getIt(),
+        getIt(),
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<RemoteConfigRepository>(
+      RemoteConfigRepository.new,
+    )
+    ..registerLazySingleton<GameSummariesRepository>(
+      () => GameSummariesRepository(
         getIt(),
       ),
     )
