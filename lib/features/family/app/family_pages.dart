@@ -22,10 +22,6 @@ enum FamilyPages {
     path: 'family-personal-info-edit',
     name: 'FAMILY-PERSONAL-INFO-EDIT',
   ),
-  assignBedtimeResponsibility(
-      path: 'assign-bedtime-responsibility',
-      name: 'ASSIGN-BEDTIME-RESPONSIBILITY'),
-  parentSummary(path: 'parent-summary', name: 'PARENT-SUMMARY'),
   registrationUS(path: '/registration-us', name: 'REGISTRATION-US'),
   permitUSBiometric(
     path: '/permit-biometric-us',
@@ -73,6 +69,13 @@ enum FamilyPages {
 
   //reflect and share:
   reflectIntro(path: 'reflect-intro', name: 'REFLECT-INTRO'),
+  assignBedtimeResponsibility(
+      path: 'assign-bedtime-responsibility',
+      name: 'ASSIGN-BEDTIME-RESPONSIBILITY'),
+
+  //Game summaries
+  gameSummaries(path: 'game-summaries', name: 'GAME-SUMMARIES'),
+  parentSummary(path: 'parent-summary', name: 'PARENT-SUMMARY'),
   ;
 
   final String path;

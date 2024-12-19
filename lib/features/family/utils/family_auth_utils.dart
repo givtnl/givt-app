@@ -16,7 +16,11 @@ class FamilyAuthUtils {
     BuildContext context, {
     required FamilyCheckAuthRequest checkAuthRequest,
   }) async {
-    if (!checkAuthRequest.useBiometrics || !await LocalAuthInfo.instance.canCheckBiometrics) {
+    if (!checkAuthRequest.useBiometrics ||
+        !await LocalAuthInfo.instance.canCheckBiometrics) {
+      LoggingInfo.instance.info(
+        'Biometrics not available for family authentication, displaying login sheet',
+      );
       if (!context.mounted) {
         return;
       }
@@ -39,6 +43,9 @@ class FamilyAuthUtils {
           await getIt<FamilyAuthCubit>().refreshSession();
         } catch (e) {
           // If the session refresh fails, we want to force the user to log in
+          LoggingInfo.instance.error(
+            'Error while authenticating, failed to refresh session: $e',
+          );
           hasAuthenticated = false;
         }
       }

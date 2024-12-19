@@ -1,6 +1,5 @@
-class ParentSummaryUIModel {
-
-  ParentSummaryUIModel({
+class SummaryUIModel {
+  SummaryUIModel({
     required this.conversations,
     this.audioLink,
     this.date,

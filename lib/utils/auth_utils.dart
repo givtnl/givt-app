@@ -30,6 +30,9 @@ class AuthUtils {
     required CheckAuthRequest checkAuthRequest,
   }) async {
     if (checkAuthRequest.forceLogin) {
+      LoggingInfo.instance.info(
+        'Check token request is forced, displaying login bottom sheet.',
+      );
       await _displayLoginBottomSheet(
         context,
         checkAuthRequest: checkAuthRequest,
@@ -47,6 +50,9 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
+      LoggingInfo.instance.info(
+        'Token expired, biometrics not available, displaying login bottom sheet.',
+      );
       await _displayLoginBottomSheet(
         context,
         checkAuthRequest: checkAuthRequest,

@@ -40,7 +40,7 @@ class GratitudeGameButton extends StatelessWidget {
                   SizedBox(
                     width: 170,
                     child: Image.asset(
-                      'assets/family/images/home_screen/super_show.png',
+                      'assets/family/images/home_screen/gratitude_tile.webp',
                     ),
                   ),
                   const Spacer(),
@@ -54,11 +54,11 @@ class GratitudeGameButton extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       LabelLargeText(
-                        'Gratitude Game',
+                        'Family Game',
                         color: FamilyAppTheme.highlight40,
                       ),
                       BodySmallText(
-                        'Family activity',
+                        'Play now!',
                         color: FamilyAppTheme.highlight40,
                       ),
                     ],
