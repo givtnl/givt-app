@@ -12,10 +12,14 @@ class GameSummariesRepository {
       List<Profile> profiles) async {
     try {
       final response = await _familyAPIService.fetchGameSummaries();
-      return response
-          .map((e) =>
-              GameSummaryItem.fromMap(e as Map<String, dynamic>, profiles))
-          .toList();
+      final filteredResponse = response
+          .map(
+            (e) => GameSummaryItem.fromMap(e as Map<String, dynamic>, profiles),
+          )
+          .toList()
+        ..removeWhere((e) => e.isEmpty);
+
+      return filteredResponse;
     } on Exception catch (e) {
       LoggingInfo.instance.error('Error fetching game summaries: $e');
       throw Exception('Error fetching game summaries: $e');
