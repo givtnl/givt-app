@@ -1,5 +1,5 @@
 <resources>
     <string name="flutter_shared_pref_name">net.givtapp.droid2</string>
-    <string name="facebook_app_id">[APP_ID]</string>
-    <string name="facebook_client_token">[CLIENT_TOKEN]</string>
+    <string name="facebook_app_id">623135970055229</string>
+    <string name="facebook_client_token">5f700de9f47fe82513aecd9a4fab58d9</string>
 </resources>
