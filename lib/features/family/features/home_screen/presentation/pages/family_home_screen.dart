@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:facebook_app_events/facebook_app_events.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,6 +41,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   OverlayEntry? overlayEntry;
   bool overlayVisible = false;
   final _cubit = getIt<FamilyHomeScreenCubit>();
+  static final facebookAppEvents = FacebookAppEvents();
 
   @override
   void didChangeDependencies() {
@@ -46,6 +49,10 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
 
     context.read<ProfilesCubit>().fetchAllProfiles();
     _cubit.init();
+    //TODO remove this test
+    if (kDebugMode) {
+      facebookAppEvents.logEvent(name: "test facebook app event ios");
+    }
   }
 
   @override
