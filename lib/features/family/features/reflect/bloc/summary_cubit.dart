@@ -20,7 +20,8 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
     _totalMinutesPlayed =
         (_reflectAndShareRepository.totalTimeSpentInSeconds / 60).ceil();
     _generousDeeds = _reflectAndShareRepository.getAmountOfGenerousDeeds();
-    _tagsWereSelected = _reflectAndShareRepository.wereAnyTagsSelected();
+    _tagsWereSelected =
+        _reflectAndShareRepository.hasAnyGenerousPowerBeenSelected();
     checkAllParentsPlayed();
     _emitData();
   }
