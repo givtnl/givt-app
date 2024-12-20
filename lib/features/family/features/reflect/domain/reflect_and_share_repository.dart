@@ -131,6 +131,10 @@ class ReflectAndShareRepository {
     return _selectedProfiles[_getCurrentSuperHeroIndex()].gratitude;
   }
 
+  bool hasAnyGenerousPowerBeenSelected() {
+    return _selectedProfiles.any((profile) => profile.power != null);
+  }
+
   Future<void> saveGenerousPowerForCurrentSuperhero(TagCategory? power) async {
     _selectedProfiles[_getCurrentSuperHeroIndex()] =
         _selectedProfiles[_getCurrentSuperHeroIndex()].copyWith(
