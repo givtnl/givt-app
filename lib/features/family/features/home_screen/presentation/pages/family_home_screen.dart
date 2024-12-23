@@ -140,17 +140,15 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       GiveButton(
                         onPressed: _cubit.onGiveButtonPressed,
                       ),
-                      if (uiModel.showLatestSummaryBtn)
-                        const SizedBox(height: 16),
-                      if (uiModel.showLatestSummaryBtn)
-                        FunButton.secondary(
-                          onTap: () => context.goNamed(
-                            FamilyPages.gameSummaries.name,
-                          ),
-                          text: 'Show Summaries',
-                          analyticsEvent: AnalyticsEvent(AmplitudeEvents
-                              .familyHomeScreenShowSummariesClicked),
+                      const SizedBox(height: 16),
+                      FunButton.secondary(
+                        onTap: () => context.goNamed(
+                          FamilyPages.gameSummaries.name,
                         ),
+                        text: 'Show Summaries',
+                        analyticsEvent: AnalyticsEvent(AmplitudeEvents
+                            .familyHomeScreenShowSummariesClicked),
+                      ),
                     ],
                   ),
                 ),

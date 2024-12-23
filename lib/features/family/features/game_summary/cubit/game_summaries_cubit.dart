@@ -14,6 +14,7 @@ class GameSummariesCubit extends CommonCubit<List<GameSummaryItem>, dynamic> {
   final ProfilesRepository _profiles = getIt<ProfilesRepository>();
   List<GameSummaryItem> gameSummaries = [];
   List<Profile> profiles = [];
+
   Future<void> init() async {
     emitLoading();
     profiles = await _profiles.getProfiles();
