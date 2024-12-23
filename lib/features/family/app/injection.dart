@@ -159,6 +159,7 @@ void initCubits() {
     ..registerLazySingleton<BackgroundAudioCubit>(
       () => BackgroundAudioCubit(
         getIt(),
+        getIt(),
       ),
     )
     ..registerFactory<SplashCubit>(

@@ -106,7 +106,7 @@ class PassThePhone extends StatefulWidget {
 
 class _PassThePhoneState extends State<PassThePhone> {
   bool _hasPlayedAudio = false;
-  bool _isFirstRound = true;
+  bool isFirstRoundofFirstGame = true;
   final BackgroundAudioCubit _cubit = getIt<BackgroundAudioCubit>();
 
   final _multiRoleString =
@@ -115,7 +115,11 @@ class _PassThePhoneState extends State<PassThePhone> {
   @override
   void initState() {
     super.initState();
-    _isFirstRound = _cubit.isFirstRound();
+    _cubit.isFirstRoundofFirstGame().then((value) {
+      setState(() {
+        isFirstRoundofFirstGame = value;
+      });
+    });
   }
 
   @override
@@ -180,7 +184,7 @@ class _PassThePhoneState extends State<PassThePhone> {
                   Padding(
                     padding: const EdgeInsets.all(24),
                     child: FunButton.secondary(
-                      isDisabled: !_hasPlayedAudio && _isFirstRound,
+                      isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
                       onTap: () => widget.onTap.call(context),
                       text: widget.customBtnText ?? 'Continue',
                       analyticsEvent: AnalyticsEvent(
