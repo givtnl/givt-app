@@ -123,6 +123,12 @@ class _PassThePhoneState extends State<PassThePhone> {
   }
 
   @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,

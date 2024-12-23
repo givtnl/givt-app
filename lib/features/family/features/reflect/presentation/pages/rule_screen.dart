@@ -146,6 +146,12 @@ class _RuleScreenState extends State<RuleScreen> {
   }
 
   @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FunScaffold(
       canPop: false,
