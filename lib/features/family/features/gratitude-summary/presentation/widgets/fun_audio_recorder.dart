@@ -8,15 +8,15 @@ import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.da
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:record/record.dart';
 
-class Recorder extends StatefulWidget {
-  const Recorder({super.key, required this.onStop});
+class FunAudioRecorder extends StatefulWidget {
+  const FunAudioRecorder({super.key, required this.onStop});
   final void Function(String path) onStop;
 
   @override
-  State<Recorder> createState() => _RecorderState();
+  State<FunAudioRecorder> createState() => _FunAudioRecorderState();
 }
 
-class _RecorderState extends State<Recorder> with AudioRecorderMixin {
+class _FunAudioRecorderState extends State<FunAudioRecorder> with AudioRecorderMixin {
   int _recordDuration = 0;
   Timer? _timer;
   late final AudioRecorder _audioRecorder;
