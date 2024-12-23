@@ -344,7 +344,7 @@ enum AmplitudeEvents {
   // Gratitude Summary
   whoDoesBedtimePushYesClicked('who_does_bedtime_push_yes_clicked'),
   whoDoesBedtimePushNoClicked('who_does_bedtime_push_no_clicked'),
-  //Bedikme summary
+  //Bedtime summary
   summaryLeaveMessageClicked(
     'summary_leave_message_clicked',
   ),
@@ -352,6 +352,8 @@ enum AmplitudeEvents {
   doneRecordingSummaryMessageClicked(
     'done_recording_summary_message_clicked',
   ),
+
+  volumeBottomSheetReadyClicked('volume_bottom_sheet_ready_clicked'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

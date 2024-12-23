@@ -52,6 +52,28 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
       body: BaseStateConsumer(
         cubit: _cubit,
         onData: (context, summaries) {
+          if (summaries.isEmpty) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 40),
+                  SvgPicture.asset(
+                    'assets/family/images/empty_flag.svg',
+                    width: 140,
+                    height: 140,
+                  ),
+                  const SizedBox(height: 16),
+                  BodyMediumText(
+                    'You haven’t played the Gratitude Game yet',
+                    color: Colors.black.withOpacity(0.5),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
+          }
           return buildListView(summaries);
         },
         onError: (context, error) => RetryErrorWidget(

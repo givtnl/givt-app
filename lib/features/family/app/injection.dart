@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.da
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
+import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
 import 'package:givt_app/features/family/features/edit_child_profile/repositories/edit_profile_repository.dart';
@@ -124,7 +125,6 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
-        getIt(),
       ),
     )
     ..registerLazySingleton<AvatarsCubit>(
@@ -154,6 +154,12 @@ void initCubits() {
     )
     ..registerFactory<GameSummariesCubit>(
       GameSummariesCubit.new,
+    )
+    ..registerFactory<BackgroundAudioCubit>(
+      () => BackgroundAudioCubit(
+        getIt(),
+        getIt(),
+      ),
     )
     ..registerFactory<SplashCubit>(
       () => SplashCubit(getIt(), getIt()),

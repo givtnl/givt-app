@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/data/record_utils.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/audio_player.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/audio_recorder.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_player.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_recorder.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -68,7 +68,7 @@ class _RecordSummaryMessageBottomsheetState
                       setState(() => showPlayer = false);
                     },
                   )
-                : Recorder(
+                : FunAudioRecorder(
                     onStop: (path) {
                       setState(() {
                         audioPath = path;
