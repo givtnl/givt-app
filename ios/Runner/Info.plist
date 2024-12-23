@@ -141,5 +141,7 @@
     <string>5f700de9f47fe82513aecd9a4fab58d9</string>
     <key>FacebookDisplayName</key>
     <string>Givt</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<false/>
 </dict>
 </plist>
