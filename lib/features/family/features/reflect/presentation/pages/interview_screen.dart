@@ -36,6 +36,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
           case PassThePhoneUIModel():
             return PassThePhone(
               user: uiModel.reporter,
+              audioPath: 'family/audio/pass_phone_to_first_reporter.wav',
               customBtnText: 'Show question',
               onTap: (BuildContext context) => _cubit.onShowQuestionClicked(),
             );

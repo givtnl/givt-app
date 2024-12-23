@@ -1,9 +1,8 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/features/background_audio/presentation/animated_speaker.dart';
 
 /*
   There's two ways to listen to the audio state of this widget.
@@ -23,7 +22,6 @@ class FunBackgroundAudioWidget extends StatefulWidget {
   final String audioPath;
   final VoidCallback? onPlay;
   final VoidCallback? onPauseOrStop;
-
   @override
   State<FunBackgroundAudioWidget> createState() =>
       _FunBackgroundAudioWidgetState();
@@ -33,34 +31,21 @@ class _FunBackgroundAudioWidgetState extends State<FunBackgroundAudioWidget>
     with SingleTickerProviderStateMixin {
   final _audioPlayer = AudioPlayer();
   final BackgroundAudioCubit _cubit = getIt<BackgroundAudioCubit>();
-
-  late AnimationController controller;
-
-  final _iconsList = [
-    FontAwesomeIcons.volumeOff,
-    FontAwesomeIcons.volumeLow,
-    FontAwesomeIcons.volumeHigh,
-  ];
-
-  final int _index = 0;
-
+  bool isPlaying = false;
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 400),
-      reverseDuration: Duration(milliseconds: 400),
-    );
     _audioPlayer
       ..setReleaseMode(ReleaseMode.stop)
       ..onPlayerStateChanged.listen((event) {
         if (event == PlayerState.playing) {
-          _cubit.onPlay();
+          setState(() => isPlaying = true);
           widget.onPlay?.call();
+          _cubit.onPlay();
         } else {
-          _cubit.onPauseOrStop();
+          setState(() => isPlaying = false);
           widget.onPauseOrStop?.call();
+          _cubit.onPauseOrStop();
         }
       })
       ..play(AssetSource(widget.audioPath));
@@ -77,10 +62,12 @@ class _FunBackgroundAudioWidgetState extends State<FunBackgroundAudioWidget>
   Widget build(BuildContext context) {
     return Visibility(
       visible: widget.isVisible,
-      child: FaIcon(
-        _iconsList[_index],
-        color: FamilyAppTheme.primary30,
-      ),
+      child: isPlaying
+          ? const AnimatedSpeaker()
+          : GestureDetector(
+              onTap: () => _audioPlayer.play(AssetSource(widget.audioPath)),
+              child: AnimatedSpeaker.pause(),
+            ),
     );
   }
 }

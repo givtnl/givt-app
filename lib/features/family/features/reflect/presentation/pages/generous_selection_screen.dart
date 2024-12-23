@@ -44,14 +44,14 @@ class _GenerousSelectionScreenState extends State<GenerousSelectionScreen> {
             onNext: () {
               cubit.onClickNext();
               Navigator.pushReplacement(
-                  context,
-                  (uiModel.sideKick.roles.length > 1
-                          ? const GuessSecretWordScreen()
-                          : PassThePhone.toSidekick(
-                              uiModel.sideKick,
-                            ))
-                      .toRoute(context),
-                );
+                context,
+                (uiModel.sideKick.roles.length > 1
+                        ? const GuessSecretWordScreen()
+                        : PassThePhone.toSidekick(
+                            uiModel.sideKick,
+                          ))
+                    .toRoute(context),
+              );
             });
       },
     );

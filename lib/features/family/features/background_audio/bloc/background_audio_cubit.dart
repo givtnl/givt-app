@@ -1,7 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 
 class BackgroundAudioCubit extends Cubit<bool> {
-  BackgroundAudioCubit() : super(false);
+  BackgroundAudioCubit(
+    this._reflectAndShareRepository,
+  ) : super(false);
+
+  final ReflectAndShareRepository _reflectAndShareRepository;
 
   void onPlay() {
     emit(true);
@@ -15,5 +20,9 @@ class BackgroundAudioCubit extends Cubit<bool> {
   Future<void> close() async {
     emit(false);
     return super.close();
+  }
+
+  bool isFirstRound() {
+    return _reflectAndShareRepository.isFirstRound();
   }
 }

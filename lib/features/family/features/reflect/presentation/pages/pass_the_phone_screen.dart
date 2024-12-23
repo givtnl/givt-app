@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
+import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/guess_secret_word_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/interview_screen.dart';
@@ -15,10 +18,11 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
-class PassThePhone extends StatelessWidget {
+class PassThePhone extends StatefulWidget {
   const PassThePhone({
     required this.user,
     required this.onTap,
+    required this.audioPath,
     this.accentColor,
     this.backgroundColor,
     this.customHeader,
@@ -29,6 +33,7 @@ class PassThePhone extends StatelessWidget {
   factory PassThePhone.toSuperhero(GameProfile superhero,
       {bool skipRules = false}) {
     return PassThePhone(
+      audioPath: 'family/audio/pass_phone_to_superhero.wav',
       user: superhero,
       onTap: (context) => Navigator.of(context).pushReplacement(
         (skipRules
@@ -42,6 +47,7 @@ class PassThePhone extends StatelessWidget {
   factory PassThePhone.toSidekick(GameProfile sidekick,
       {bool toRules = false}) {
     return PassThePhone(
+      audioPath: 'family/audio/pass_phone_to_sidekick.wav',
       accentColor: sidekick.sidekickRole!.color.accentColor,
       backgroundColor: sidekick.sidekickRole!.color.backgroundColor,
       user: sidekick,
@@ -56,6 +62,7 @@ class PassThePhone extends StatelessWidget {
   factory PassThePhone.toReporters(List<GameProfile> reporters,
       {bool skipRules = false}) {
     return PassThePhone(
+      audioPath: 'family/audio/pass_phone_to_the_reporter.wav',
       user: reporters.first,
       customHeader: ReportersWidget(
         reporters: reporters,
@@ -88,9 +95,28 @@ class PassThePhone extends StatelessWidget {
   final Color? backgroundColor;
   final String? customBtnText;
   final Widget? customHeader;
+  final String audioPath;
 
   final GameProfile user;
   final void Function(BuildContext context) onTap;
+
+  @override
+  State<PassThePhone> createState() => _PassThePhoneState();
+}
+
+class _PassThePhoneState extends State<PassThePhone> {
+  bool _hasPlayedAudio = false;
+  bool _isFirstRound = true;
+  final BackgroundAudioCubit _cubit = getIt<BackgroundAudioCubit>();
+
+  final _multiRoleString =
+      'family/audio/pass_phone_to_the_sidekick_and_reporter.wav';
+
+  @override
+  void initState() {
+    super.initState();
+    _isFirstRound = _cubit.isFirstRound();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +126,13 @@ class PassThePhone extends StatelessWidget {
         minimumPadding: EdgeInsets.zero,
         appBar: FunTopAppBar(
           title: '',
-          color: backgroundColor ?? user.role!.color.backgroundColor,
+          color:
+              widget.backgroundColor ?? widget.user.role!.color.backgroundColor,
           systemNavigationBarColor:
-              backgroundColor ?? user.role!.color.backgroundColor,
+              widget.backgroundColor ?? widget.user.role!.color.backgroundColor,
         ),
-        backgroundColor: backgroundColor ?? user.role!.color.backgroundColor,
+        backgroundColor:
+            widget.backgroundColor ?? widget.user.role!.color.backgroundColor,
         body: SafeArea(
           child: Stack(
             children: [
@@ -122,27 +150,39 @@ class PassThePhone extends StatelessWidget {
                   const Spacer(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: customHeader ??
+                    child: widget.customHeader ??
                         GameProfileItem(
-                          accentColor: accentColor,
-                          profile: user,
+                          accentColor: widget.accentColor,
+                          profile: widget.user,
                           size: 120,
                           displayName: false,
                           displayRole: false,
                         ),
                   ),
+                  const SizedBox(height: 4),
+                  FunBackgroundAudioWidget(
+                      isVisible: true,
+                      audioPath: widget.user.roles.length > 1
+                          ? _multiRoleString
+                          : widget.audioPath,
+                      onPauseOrStop: () {
+                        setState(() {
+                          _hasPlayedAudio = true;
+                        });
+                      }),
                   const SizedBox(height: 16),
                   TitleMediumText(
-                    user.roles.length > 1
-                        ? 'Pass the phone to the\n ${user.roles.first.name} and ${user.roles.last.name} ${user.firstName}'
-                        : 'Pass the phone to the\n ${user.role!.name} ${user.firstName}',
+                    widget.user.roles.length > 1
+                        ? 'Pass the phone to the\n ${widget.user.roles.first.name} and ${widget.user.roles.last.name} ${widget.user.firstName}'
+                        : 'Pass the phone to the\n ${widget.user.role!.name} ${widget.user.firstName}',
                     textAlign: TextAlign.center,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(24),
                     child: FunButton.secondary(
-                      onTap: () => onTap.call(context),
-                      text: customBtnText ?? 'Continue',
+                      isDisabled: !_hasPlayedAudio && _isFirstRound,
+                      onTap: () => widget.onTap.call(context),
+                      text: widget.customBtnText ?? 'Continue',
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents.reflectAndSharePassThePhoneClicked,
                       ),
