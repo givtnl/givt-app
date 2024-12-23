@@ -333,7 +333,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                     animation: _sunTransition,
                   ),
                 _buildText(
-                  'Great job \nsuperheroes!',
+                  'Great job\nsuperheroes!',
                   _firstTextOpacity,
                 ),
                 _buildText(
@@ -479,17 +479,34 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   }
 
   Widget _buildText(String text, Animation<double> opacity, {Color? color}) {
-    return Center(
-      child: FadeTransition(
-        opacity: opacity,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: HeadlineMediumText(
-            text,
-            textAlign: TextAlign.center,
-            color: color,
+    return FadeTransition(
+      opacity: opacity,
+      child: Column(
+        children: [
+          const Spacer(),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: HeadlineMediumText(
+                text,
+                textAlign: TextAlign.center,
+                color: color,
+              ),
+            ),
           ),
-        ),
+          Expanded(
+            child: Column(
+              children: [
+                const Spacer(),
+                Center(
+                    child: Padding(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  child: LabelLargeText('Tap to continue', color: color),
+                )),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
