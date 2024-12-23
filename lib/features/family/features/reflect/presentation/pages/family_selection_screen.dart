@@ -107,6 +107,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   void showVolumeBottomSheet(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
+      isDismissible: false,
       builder: (context) {
         return VolumeBottomsheet(
           onReady: () => cubit.navigate(),
