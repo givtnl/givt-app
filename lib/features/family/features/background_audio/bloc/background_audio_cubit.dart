@@ -21,12 +21,6 @@ class BackgroundAudioCubit extends Cubit<bool> {
     emit(false);
   }
 
-  @override
-  Future<void> close() async {
-    emit(false);
-    return super.close();
-  }
-
   Future<bool> isFirstRoundofFirstGame() async {
     final isFirstRound = _reflectAndShareRepository.isFirstRound();
     if (!isFirstRound) return false;
