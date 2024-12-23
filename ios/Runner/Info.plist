@@ -40,6 +40,7 @@
 			<array>
 				<string>givt</string>
 				<string>givt.app</string>
+				<string>fb623135970055229</string>
 			</array>
 		</dict>
 	</array>
@@ -126,15 +127,6 @@
 	<array>
     	<string>appscheme</string>
 	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-     <dict>
-     <key>CFBundleURLSchemes</key>
-     <array>
-       <string>fb623135970055229</string>
-     </array>
-     </dict>
-    </array>
     <key>FacebookAppID</key>
     <string>623135970055229</string>
     <key>FacebookClientToken</key>
