@@ -83,6 +83,7 @@ dependencies:
   audioplayers: ^6.1.0
   firebase_remote_config: ^4.4.7
   rxdart: ^0.28.0
+  facebook_app_events: ^0.19.4
   volume_controller: ^2.0.8
 
 # Override needed because inappwebview >=6.1.0 requires this version

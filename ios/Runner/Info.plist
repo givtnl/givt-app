@@ -40,6 +40,7 @@
 			<array>
 				<string>givt</string>
 				<string>givt.app</string>
+				<string>fb623135970055229</string>
 			</array>
 		</dict>
 	</array>
@@ -125,6 +126,14 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
     	<string>appscheme</string>
-	</array>	
+	</array>
+    <key>FacebookAppID</key>
+    <string>623135970055229</string>
+    <key>FacebookClientToken</key>
+    <string>5f700de9f47fe82513aecd9a4fab58d9</string>
+    <key>FacebookDisplayName</key>
+    <string>Givt</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<false/>
 </dict>
 </plist>
