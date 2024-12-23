@@ -116,6 +116,7 @@ class _PassThePhoneState extends State<PassThePhone> {
   void initState() {
     super.initState();
     _cubit.isFirstRoundofFirstGame().then((value) {
+      if (!mounted) return;
       setState(() {
         isFirstRoundofFirstGame = value;
       });

@@ -139,6 +139,7 @@ class _RuleScreenState extends State<RuleScreen> {
   void initState() {
     super.initState();
     _cubit.isFirstRoundofFirstGame().then((value) {
+      if (!mounted) return;
       setState(() {
         isFirstRoundofFirstGame = value;
       });
