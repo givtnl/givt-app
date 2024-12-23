@@ -184,7 +184,7 @@ class _RuleScreenState extends State<RuleScreen> {
                 FunBackgroundAudioWidget(
                   isVisible: true,
                   audioPath: widget.audioPath,
-                  onPlay: () {
+                  onPauseOrStop: () {
                     setState(() {
                       _hasPlayedAudio = true;
                     });
