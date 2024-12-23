@@ -30,56 +30,50 @@ class _AnimatedSpeakerState extends State<AnimatedSpeaker>
   }
 
   Future<void> _startAnimationLoop() async {
-    while (mounted) {
+    while (mounted && !widget._pause) {
       setState(() {
         _opacity1 = 0;
         _opacity2 = 0;
       });
-      await Future<void>.delayed(const Duration(milliseconds: 800));
+      await Future<void>.delayed(const Duration(milliseconds: 600));
       setState(() => _opacity1 = 1.0);
-      await Future<void>.delayed(const Duration(milliseconds: 800));
+      await Future<void>.delayed(const Duration(milliseconds: 600));
       setState(() => _opacity2 = 1.0);
-      await Future<void>.delayed(const Duration(milliseconds: 800));
+      await Future<void>.delayed(const Duration(milliseconds: 600));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget._pause
-        ? SvgPicture.asset(
-            _imagePaths[0],
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        SvgPicture.asset(
+          _imagePaths[0],
+          fit: BoxFit.fitHeight,
+          height: 25,
+        ),
+        AnimatedOpacity(
+          duration: const Duration(milliseconds: 400),
+          opacity: _opacity1,
+          curve: FamilyAppTheme.gentle,
+          child: SvgPicture.asset(
+            _imagePaths[1],
             fit: BoxFit.fitHeight,
             height: 25,
-          )
-        : Stack(
-            alignment: Alignment.center,
-            children: [
-              SvgPicture.asset(
-                _imagePaths[0],
-                fit: BoxFit.fitHeight,
-                height: 25,
-              ),
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 600),
-                opacity: _opacity1,
-                curve: FamilyAppTheme.gentle,
-                child: SvgPicture.asset(
-                  _imagePaths[1],
-                  fit: BoxFit.fitHeight,
-                  height: 25,
-                ),
-              ),
-              AnimatedOpacity(
-                duration: const Duration(milliseconds: 600),
-                opacity: _opacity2,
-                curve: FamilyAppTheme.gentle,
-                child: SvgPicture.asset(
-                  _imagePaths[2],
-                  fit: BoxFit.fitHeight,
-                  height: 25,
-                ),
-              ),
-            ],
-          );
+          ),
+        ),
+        AnimatedOpacity(
+          duration: const Duration(milliseconds: 400),
+          opacity: _opacity2,
+          curve: FamilyAppTheme.gentle,
+          child: SvgPicture.asset(
+            _imagePaths[2],
+            fit: BoxFit.fitHeight,
+            height: 25,
+          ),
+        ),
+      ],
+    );
   }
 }
