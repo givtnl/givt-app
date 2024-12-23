@@ -156,7 +156,7 @@ void initCubits() {
     ..registerFactory<GameSummariesCubit>(
       GameSummariesCubit.new,
     )
-    ..registerLazySingleton<BackgroundAudioCubit>(
+    ..registerFactory<BackgroundAudioCubit>(
       () => BackgroundAudioCubit(
         getIt(),
         getIt(),

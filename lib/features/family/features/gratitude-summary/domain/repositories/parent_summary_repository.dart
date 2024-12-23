@@ -4,6 +4,7 @@ import 'package:givt_app/features/family/network/family_api_service.dart';
 class ParentSummaryRepository {
   ParentSummaryRepository(this._familyAPIService);
   final FamilyAPIService _familyAPIService;
+  ParentSummaryItem? latestSummary;
 
   Future<bool> assignBedtimeResponsibility({
     required String childGuid,
@@ -19,6 +20,11 @@ class ParentSummaryRepository {
 
   Future<ParentSummaryItem> fetchLatestGameSummary() async {
     final response = await _familyAPIService.fetchLatestGameSummary();
-    return ParentSummaryItem.fromMap(response);
+    return latestSummary = ParentSummaryItem.fromMap(response);
+  }
+
+  Future<ParentSummaryItem> getLazyLatestSummary() async {
+    if (latestSummary != null) return latestSummary!;
+    return fetchLatestGameSummary();
   }
 }

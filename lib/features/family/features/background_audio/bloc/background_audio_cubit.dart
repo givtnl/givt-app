@@ -11,7 +11,7 @@ class BackgroundAudioCubit extends Cubit<bool> {
 
   final ReflectAndShareRepository _reflectAndShareRepository;
   final ParentSummaryRepository _summaryRepository;
-  ParentSummaryItem? lastGame = null;
+  ParentSummaryItem? lastGame;
 
   void onPlay() {
     emit(true);
@@ -31,7 +31,7 @@ class BackgroundAudioCubit extends Cubit<bool> {
     final isFirstRound = _reflectAndShareRepository.isFirstRound();
     if (!isFirstRound) return false;
     if (lastGame == null) {
-      lastGame = await _summaryRepository.fetchLatestGameSummary();
+      lastGame = await _summaryRepository.getLazyLatestSummary();
       return lastGame!.isEmpty();
     }
     return isFirstRound && lastGame!.isEmpty();
