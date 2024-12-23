@@ -83,6 +83,7 @@ dependencies:
   audioplayers: ^6.1.0
   firebase_remote_config: ^4.4.7
   rxdart: ^0.28.0
+  volume_controller: ^2.0.8
 
 # Override needed because inappwebview >=6.1.0 requires this version
 # firebase_messaging_web is using an older version (and we can't upgrade to a more recent message version because of MLKIT)

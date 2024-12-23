@@ -3,11 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 
 class AnimatedSpeaker extends StatefulWidget {
-  const AnimatedSpeaker({super.key, bool pause = false}) : _pause = pause;
+  const AnimatedSpeaker({super.key, bool pause = false, double height = 25})
+      : _pause = pause,
+        _height = height;
   factory AnimatedSpeaker.pause() {
     return const AnimatedSpeaker(pause: true);
   }
   final bool _pause;
+  final double _height;
   @override
   State<AnimatedSpeaker> createState() => _AnimatedSpeakerState();
 }
@@ -57,7 +60,7 @@ class _AnimatedSpeakerState extends State<AnimatedSpeaker>
         SvgPicture.asset(
           _imagePaths[0],
           fit: BoxFit.fitHeight,
-          height: 25,
+          height: widget._height,
         ),
         AnimatedOpacity(
           duration: const Duration(milliseconds: 400),
@@ -66,7 +69,7 @@ class _AnimatedSpeakerState extends State<AnimatedSpeaker>
           child: SvgPicture.asset(
             _imagePaths[1],
             fit: BoxFit.fitHeight,
-            height: 25,
+            height: widget._height,
           ),
         ),
         AnimatedOpacity(
@@ -76,7 +79,7 @@ class _AnimatedSpeakerState extends State<AnimatedSpeaker>
           child: SvgPicture.asset(
             _imagePaths[2],
             fit: BoxFit.fitHeight,
-            height: 25,
+            height: widget._height,
           ),
         ),
       ],
