@@ -41,7 +41,6 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   OverlayEntry? overlayEntry;
   bool overlayVisible = false;
   final _cubit = getIt<FamilyHomeScreenCubit>();
-  static final facebookAppEvents = FacebookAppEvents();
 
   @override
   void didChangeDependencies() {
@@ -49,10 +48,6 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
 
     context.read<ProfilesCubit>().fetchAllProfiles();
     _cubit.init();
-    //TODO remove this test
-    if (kDebugMode) {
-      facebookAppEvents.logEvent(name: "test facebook app event ios");
-    }
   }
 
   @override

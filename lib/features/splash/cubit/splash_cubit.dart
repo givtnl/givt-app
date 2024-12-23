@@ -26,7 +26,11 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
 
     if (false == user.isUsUser) return;
 
-    await FacebookAppEvents().setAutoLogAppEventsEnabled(true);
+    final fbsdk = FacebookAppEvents();
+    await fbsdk.setAutoLogAppEventsEnabled(true);
+    await fbsdk.logEvent(
+      name: 'app_open_and_logged_in',
+    );
 
     if (!user.personalInfoRegistered) {
       emitCustom(SplashCustom.redirectToSignup(user.email));

@@ -202,8 +202,12 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                 ? () async {
                                     _cubit.updateApi();
                                     if (state.country.isUS) {
-                                      await FacebookAppEvents()
+                                      final fbsdk = FacebookAppEvents();
+                                      await fbsdk
                                           .setAutoLogAppEventsEnabled(true);
+                                      await fbsdk.logEvent(
+                                        name: 'email_signup_continue_clicked',
+                                      );
 
                                       await _cubit.login();
                                     } else {
