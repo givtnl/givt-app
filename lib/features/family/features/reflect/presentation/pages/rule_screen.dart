@@ -98,6 +98,7 @@ class RuleScreen extends StatefulWidget {
           context,
           StageScreen(
             buttonText: "It's showtime!",
+            playAudio: true,
             onClickButton: (context) {
               Navigator.of(context).pushReplacement(
                 const InterviewScreen().toRoute(context),
