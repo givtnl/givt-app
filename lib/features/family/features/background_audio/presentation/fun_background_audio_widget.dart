@@ -39,13 +39,17 @@ class _FunBackgroundAudioWidgetState extends State<FunBackgroundAudioWidget>
       ..setReleaseMode(ReleaseMode.stop)
       ..onPlayerStateChanged.listen((event) {
         if (event == PlayerState.playing) {
-          setState(() => isPlaying = true);
-          widget.onPlay?.call();
-          _cubit.onPlay();
+          if (mounted) {
+            setState(() => isPlaying = true);
+            widget.onPlay?.call();
+            _cubit.onPlay();
+          }
         } else {
-          setState(() => isPlaying = false);
-          widget.onPauseOrStop?.call();
-          _cubit.onPauseOrStop();
+          if (mounted) {
+            setState(() => isPlaying = false);
+            widget.onPauseOrStop?.call();
+            _cubit.onPauseOrStop();
+          }
         }
       })
       ..play(AssetSource(widget.audioPath));

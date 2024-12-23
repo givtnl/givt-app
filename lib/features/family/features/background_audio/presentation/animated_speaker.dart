@@ -31,14 +31,20 @@ class _AnimatedSpeakerState extends State<AnimatedSpeaker>
 
   Future<void> _startAnimationLoop() async {
     while (mounted && !widget._pause) {
-      setState(() {
-        _opacity1 = 0;
-        _opacity2 = 0;
-      });
+      if (mounted) {
+        setState(() {
+          _opacity1 = 0;
+          _opacity2 = 0;
+        });
+      }
       await Future<void>.delayed(const Duration(milliseconds: 600));
-      setState(() => _opacity1 = 1.0);
+      if (mounted) {
+        setState(() => _opacity1 = 1.0);
+      }
       await Future<void>.delayed(const Duration(milliseconds: 600));
-      setState(() => _opacity2 = 1.0);
+      if (mounted) {
+        setState(() => _opacity2 = 1.0);
+      }
       await Future<void>.delayed(const Duration(milliseconds: 600));
     }
   }
