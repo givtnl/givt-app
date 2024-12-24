@@ -67,6 +67,7 @@ class _LeaveGameButtonState extends State<LeaveGameButton> {
           FamilyPages.profileSelection.name,
         );
       case final LeaveGameCustomIntroBedtime event:
+        _cubit.saveSummary();
         Navigator.of(context).push(
           IntroBedtimeScreen(
             arguments: BedtimeArguments(

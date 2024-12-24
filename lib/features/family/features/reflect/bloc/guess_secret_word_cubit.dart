@@ -90,6 +90,10 @@ class GuessSecretWordCubit
     );
   }
 
+  void saveSummary() {
+    _reflectAndShareRepository.saveSummaryStats();
+  }
+
   void _emitData() {
     emitData(
       GuessTheWordUIModel(
