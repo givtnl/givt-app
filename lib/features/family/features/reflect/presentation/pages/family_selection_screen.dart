@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/background_audio/presentation/volume_bottomsheet.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/game_roles_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/animated_arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
@@ -56,17 +58,21 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
       ),
       body: BaseStateConsumer(
         cubit: cubit,
-        onCustom: (context, superhero) {
-          if (cubit.isFirstRound()) {
-            Navigator.of(context).push(
-              PassThePhone.toSuperhero(superhero).toRoute(context),
-            );
-            return;
+        onCustom: (context, custom) {
+          switch (custom) {
+            case final GoToPassThePhone data:
+              Navigator.of(context).push(
+                PassThePhone.toSuperhero(data.profile).toRoute(context),
+              );
+            case final GoToPassThePhoneAndReplace data:
+              Navigator.of(context).pushReplacement(
+                PassThePhone.toSuperhero(data.profile).toRoute(context),
+              );
+            // ignore: unused_local_variable
+            case final ShowVolumeBottomsheet data:
+              showVolumeBottomSheet(context);
+              break;
           }
-
-          Navigator.of(context).pushReplacement(
-            PassThePhone.toSuperhero(superhero).toRoute(context),
-          );
         },
         onLoading: (context) =>
             const Center(child: CircularProgressIndicator()),
@@ -98,15 +104,25 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
     );
   }
 
+  void showVolumeBottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isDismissible: false,
+      builder: (context) {
+        return VolumeBottomsheet(
+          onReady: () => cubit.navigate(),
+        );
+      },
+    );
+  }
+
   Widget _seeRolesButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 40),
       child: SizedBox(
         width: MediaQuery.sizeOf(context).width - 48,
         child: FunButton(
-          onTap: () {
-            cubit.rolesClicked(selectedProfiles);
-          },
+          onTap: () => cubit.rolesClicked(selectedProfiles),
           isDisabled: selectedProfiles.length < 2,
           text: 'See the rules',
           analyticsEvent: AnalyticsEvent(

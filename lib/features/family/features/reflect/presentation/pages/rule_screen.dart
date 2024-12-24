@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
+import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/interview_screen.dart';
@@ -19,7 +21,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
-class RuleScreen extends StatelessWidget {
+class RuleScreen extends StatefulWidget {
   const RuleScreen({
     required this.user,
     required this.onTap,
@@ -27,6 +29,7 @@ class RuleScreen extends StatelessWidget {
     required this.bodyText,
     required this.header,
     required this.iconData,
+    required this.audioPath,
     this.backgroundColor,
     super.key,
   });
@@ -34,6 +37,7 @@ class RuleScreen extends StatelessWidget {
   factory RuleScreen.toSuperhero(GameProfile superhero) {
     return RuleScreen(
       user: superhero,
+      audioPath: 'family/audio/superhero_instructions.wav',
       header: GameProfileItem(
         profile: superhero,
         displayRole: false,
@@ -51,8 +55,9 @@ class RuleScreen extends StatelessWidget {
 
   factory RuleScreen.toSidekick(GameProfile sidekick) {
     return RuleScreen(
-      backgroundColor: sidekick.sidekickRole!.color.backgroundColor,
       user: sidekick,
+      audioPath: 'family/audio/sidekick_instructions.wav',
+      backgroundColor: sidekick.sidekickRole!.color.backgroundColor,
       header: GameProfileItem(
         accentColor: sidekick.sidekickRole!.color.accentColor,
         profile: sidekick,
@@ -81,6 +86,9 @@ class RuleScreen extends StatelessWidget {
   factory RuleScreen.toReporters(List<GameProfile> reporters) {
     return RuleScreen(
       user: reporters.first,
+      audioPath: reporters.length > 1
+          ? 'family/audio/reporters_plural_instructions.wav'
+          : 'family/audio/reporter_singular_instructions.wav',
       header: ReportersWidget(reporters: reporters),
       iconData: FontAwesomeIcons.microphone,
       bodyText: getReportersText(reporters.length),
@@ -90,6 +98,7 @@ class RuleScreen extends StatelessWidget {
           context,
           StageScreen(
             buttonText: "It's showtime!",
+            playAudio: true,
             onClickButton: (context) {
               Navigator.of(context).pushReplacement(
                 const InterviewScreen().toRoute(context),
@@ -116,6 +125,33 @@ class RuleScreen extends StatelessWidget {
   final Widget header;
   final IconData iconData;
   final Color? backgroundColor;
+  final String audioPath;
+
+  @override
+  State<RuleScreen> createState() => _RuleScreenState();
+}
+
+class _RuleScreenState extends State<RuleScreen> {
+  bool _hasPlayedAudio = false;
+  bool isFirstRoundofFirstGame = true;
+  final BackgroundAudioCubit _cubit = getIt<BackgroundAudioCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit.isFirstRoundofFirstGame().then((value) {
+      if (!mounted) return;
+      setState(() {
+        isFirstRoundofFirstGame = value;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,23 +167,42 @@ class RuleScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(bottom: 56),
           child: RuleCard(
-            color: backgroundColor ?? user.role!.color.backgroundColor,
+            color: widget.backgroundColor ??
+                widget.user.role!.color.backgroundColor,
             icon: FunIcon(
-              iconData: iconData,
-              circleColor: backgroundColor ?? user.role!.color.backgroundColor,
+              iconData: widget.iconData,
+              circleColor: widget.backgroundColor ??
+                  widget.user.role!.color.backgroundColor,
               circleSize: 64,
               iconSize: 32,
             ),
-            header: header,
-            content: BodyMediumText(
-              bodyText,
-              textAlign: TextAlign.center,
+            header: widget.header,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 8),
+                FunBackgroundAudioWidget(
+                  isVisible: true,
+                  audioPath: widget.audioPath,
+                  onPauseOrStop: () {
+                    setState(() {
+                      _hasPlayedAudio = true;
+                    });
+                  },
+                ),
+                const SizedBox(height: 8),
+                BodyMediumText(
+                  widget.bodyText,
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
             button: FunButton(
+              isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
               onTap: () {
-                onTap(context);
+                widget.onTap(context);
               },
-              text: buttonText,
+              text: widget.buttonText,
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.reflectAndShareRulesNextClicked,
               ),

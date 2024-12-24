@@ -1,3 +1,4 @@
+import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/splash/cubit/splash_custom.dart';
@@ -24,6 +25,12 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
     }
 
     if (false == user.isUsUser) return;
+
+    final fbsdk = FacebookAppEvents();
+    await fbsdk.setAutoLogAppEventsEnabled(true);
+    await fbsdk.logEvent(
+      name: 'app_open_and_logged_in',
+    );
 
     if (!user.personalInfoRegistered) {
       emitCustom(SplashCustom.redirectToSignup(user.email));

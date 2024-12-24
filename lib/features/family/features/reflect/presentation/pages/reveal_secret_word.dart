@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
+import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
@@ -28,12 +30,20 @@ class RevealSecretWordScreen extends StatefulWidget {
 
 class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
   final SecretWordCubit _cubit = SecretWordCubit(getIt());
+  final BackgroundAudioCubit _audioCubit = getIt<BackgroundAudioCubit>();
   final scratchKey = GlobalKey<ScratcherState>();
   bool _isSecretWordVisible = false;
   bool _isSecondWord = false;
   String wordNotVisibleText = 'Scratch to reveal\nyour secret word';
   String wordVisibleText = 'Sneak your secret word\ninto ONE of your answers!';
   late String text;
+
+  @override
+  void dispose() {
+    _cubit.close();
+    _audioCubit.close();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -56,13 +66,18 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
         cubit: _cubit,
         onData: (context, secretWord) => Column(
           children: [
+            const Spacer(),
+            const FunBackgroundAudioWidget(
+              isVisible: true,
+              audioPath: 'family/audio/secret_word_instructions.wav',
+            ),
             const SizedBox(height: 8),
             TitleLargeText(
               text,
               textAlign: TextAlign.center,
               color: FamilyAppTheme.primary30,
             ),
-            const Spacer(),
+            const SizedBox(height: 40),
             Stack(
               alignment: Alignment.center,
               children: [
@@ -97,7 +112,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                 ),
               ],
             ),
-            const Spacer(),
+            const Spacer(flex: 2),
             Visibility(
               visible: !_isSecondWord,
               maintainSize: true,

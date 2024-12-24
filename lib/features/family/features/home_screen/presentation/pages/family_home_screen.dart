@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:facebook_app_events/facebook_app_events.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -140,17 +142,15 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       GiveButton(
                         onPressed: _cubit.onGiveButtonPressed,
                       ),
-                      if (uiModel.showLatestSummaryBtn)
-                        const SizedBox(height: 16),
-                      if (uiModel.showLatestSummaryBtn)
-                        FunButton.secondary(
-                          onTap: () => context.goNamed(
-                            FamilyPages.gameSummaries.name,
-                          ),
-                          text: 'Show Summaries',
-                          analyticsEvent: AnalyticsEvent(AmplitudeEvents
-                              .familyHomeScreenShowSummariesClicked),
+                      const SizedBox(height: 16),
+                      FunButton.secondary(
+                        onTap: () => context.goNamed(
+                          FamilyPages.gameSummaries.name,
                         ),
+                        text: 'Show Summaries',
+                        analyticsEvent: AnalyticsEvent(AmplitudeEvents
+                            .familyHomeScreenShowSummariesClicked),
+                      ),
                     ],
                   ),
                 ),

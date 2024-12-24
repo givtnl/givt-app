@@ -2,15 +2,13 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/domain/models/parent_summary_item.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
-import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
@@ -21,20 +19,17 @@ class FamilyHomeScreenCubit
     this._profilesRepository,
     this._impactGroupsRepository,
     this._reflectAndShareRepository,
-    this._summaryRepository,
     this._familyAuthRepository,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
   final ReflectAndShareRepository _reflectAndShareRepository;
-  final ParentSummaryRepository _summaryRepository;
   final FamilyAuthRepository _familyAuthRepository;
 
   List<Profile> profiles = [];
   ImpactGroup? _familyGroup;
   GameStats? _gameStats;
-  ParentSummaryItem? _latestSummary;
 
   Future<void> init() async {
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
@@ -44,7 +39,7 @@ class FamilyHomeScreenCubit
       if (user == null) {
         logout();
       } else {
-        _getData();
+        _getGameStats();
       }
     });
 
@@ -52,13 +47,8 @@ class FamilyHomeScreenCubit
     _onGroupsChanged(
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
     );
-    unawaited(_getData());
+    unawaited(_getGameStats());
     _emitData();
-  }
-
-  Future<void> _getData() async {
-    await _getGameStats();
-    await _getLatestGameSummary();
   }
 
   Future<void> _getGameStats() async {
@@ -71,7 +61,6 @@ class FamilyHomeScreenCubit
   }
 
   void logout() {
-    _latestSummary = null;
     _gameStats = null;
     _familyGroup = null;
     profiles = [];
@@ -92,16 +81,6 @@ class FamilyHomeScreenCubit
 
   void _onFinishedAGame(void event) {
     _getGameStats();
-    _getLatestGameSummary();
-  }
-
-  Future<void> _getLatestGameSummary() async {
-    try {
-      _latestSummary = await _summaryRepository.fetchLatestGameSummary();
-      _emitData();
-    } catch (e, s) {
-      // do nothing, we don't have a summary that's all
-    }
   }
 
   void onGiveButtonPressed() {
@@ -127,8 +106,6 @@ class FamilyHomeScreenCubit
           .toList(),
       familyGroupName: _familyGroup?.name,
       gameStats: _gameStats,
-      showLatestSummaryBtn:
-          _latestSummary != null && !_latestSummary!.isEmpty(),
     );
   }
 

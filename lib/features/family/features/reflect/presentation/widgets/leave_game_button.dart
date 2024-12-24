@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/bedtime/presentation/models/be
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/pages/intro_bedtime_screen.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/leave_game_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/leave_game_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/grateful_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
@@ -36,29 +37,7 @@ class _LeaveGameButtonState extends State<LeaveGameButton> {
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: _cubit,
-      onCustom: (context, custom) {
-        if (!custom.isFirstRound && custom.kidsWithoutBedtimeSetup.isNotEmpty) {
-          Navigator.of(context).push(
-            IntroBedtimeScreen(
-              arguments: BedtimeArguments(
-                BedtimeConfig.defaultBedtimeHour,
-                BedtimeConfig.defaultWindDownMinutes,
-                profiles: custom.kidsWithoutBedtimeSetup,
-                bedtimes: const [],
-                index: 0,
-              ),
-            ).toRoute(context),
-          );
-        } else if (custom.isFirstRound && custom.hasAtLeastStartedInterview) {
-          Navigator.of(context).push(const SummaryScreen().toRoute(context));
-        } else if (!custom.isFirstRound && custom.hasAtLeastStartedInterview) {
-          Navigator.of(context).push(const GratefulScreen().toRoute(context));
-        } else {
-          context.goNamed(
-            FamilyPages.profileSelection.name,
-          );
-        }
-      },
+      onCustom: _handleCustom,
       onInitial: (context) {
         return IconButton(
           icon: const FaIcon(FontAwesomeIcons.xmark),
@@ -77,5 +56,31 @@ class _LeaveGameButtonState extends State<LeaveGameButton> {
         );
       },
     );
+  }
+
+  void _handleCustom(BuildContext context, LeaveGameCustom custom) {
+    switch (custom) {
+      case LeaveGameCustomGrateful():
+        Navigator.of(context).push(const GratefulScreen().toRoute(context));
+      case LeaveGameCustomHome():
+        context.goNamed(
+          FamilyPages.profileSelection.name,
+        );
+      case final LeaveGameCustomIntroBedtime event:
+        _cubit.saveSummary();
+        Navigator.of(context).push(
+          IntroBedtimeScreen(
+            arguments: BedtimeArguments(
+              BedtimeConfig.defaultBedtimeHour,
+              BedtimeConfig.defaultWindDownMinutes,
+              profiles: event.profiles,
+              bedtimes: const [],
+              index: 0,
+            ),
+          ).toRoute(context),
+        );
+      case LeaveGameCustomSummary():
+        Navigator.of(context).push(const SummaryScreen().toRoute(context));
+    }
   }
 }
