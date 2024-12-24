@@ -10,6 +10,10 @@ class LeaveGameCubit extends CommonCubit<dynamic, LeaveGameCustom> {
 
   final ReflectAndShareRepository _reflectAndShareRepository;
 
+  void saveSummary() {
+    _reflectAndShareRepository.saveSummaryStats();
+  }
+
   Future<void> onConfirmLeaveGameClicked() async {
     var kidsWithoutBedtimeSetup = <Profile>[];
     try {
