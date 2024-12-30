@@ -6,6 +6,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -119,22 +120,9 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
             },
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            widget.uiModel.organisations.length,
-            (index) => Container(
-              width: 8,
-              height: 8,
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _currentIndex == index
-                    ? FamilyAppTheme.primary40
-                    : Colors.black.withOpacity(0.1),
-              ),
-            ),
-          ),
+        PagerDotIndicator(
+          count: widget.uiModel.organisations.length,
+          index: _currentIndex,
         ),
         const SizedBox(height: 24),
         if (!widget.uiModel.isNotLoggedInParent ||
