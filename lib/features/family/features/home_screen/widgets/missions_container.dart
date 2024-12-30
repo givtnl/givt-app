@@ -40,7 +40,7 @@ class MissionsContainer extends StatelessWidget {
 
   Widget missionsContent(BuildContext context) {
     return GestureDetector(
-      //onTap: () => context.pushNamed(FamilyPages.missions.name),
+      onTap: () => context.pushNamed(FamilyPages.missions.name),
       child: Stack(
         children: [
           Column(
