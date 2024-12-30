@@ -26,8 +26,8 @@ class MissionsCubit extends CommonCubit<MissionsUIModel, dynamic> {
   void _emitData() {
     emitData(
       MissionsUIModel(
-        todoMissions: [] ?? _todoMissions,
-        completedMissions: [] ?? _completedMissions,
+        todoMissions: _todoMissions,
+        completedMissions: _completedMissions,
       ),
     );
   }

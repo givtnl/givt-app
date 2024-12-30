@@ -62,6 +62,15 @@ class _MissionsScreenState extends State<MissionsScreen> {
                       : 'You haven’t completed any missions yet',
                   textAlign: TextAlign.center,
                 ),
+              ...List.generate(
+                _missions(uiModel).length,
+                (index) {
+                  final mission = _missions(uiModel)[index];
+                  return MissionWidget(
+                    uiModel: mission,
+                  );
+                },
+              ),
             ],
           );
         },
