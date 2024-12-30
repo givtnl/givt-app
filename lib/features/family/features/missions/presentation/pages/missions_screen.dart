@@ -4,10 +4,12 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
 import 'package:givt_app/features/family/features/missions/presentation/models/mission_ui_model.dart';
+import 'package:givt_app/features/family/features/missions/presentation/models/missions_ui_model.dart';
 import 'package:givt_app/features/family/features/missions/presentation/widgets/mission_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/personal_summary/overview/widgets/giving_goal_card.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -24,6 +26,12 @@ class MissionsScreen extends StatefulWidget {
 class _MissionsScreenState extends State<MissionsScreen> {
   final MissionsCubit _cubit = getIt<MissionsCubit>();
   int _selectedIndex = 0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _cubit.init();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +55,20 @@ class _MissionsScreenState extends State<MissionsScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              MissionWidget(
-                uiModel: MissionUIModel(
-                  title: 'Mission Bedtime',
-                  description: 'Make it a habit',
-                  progress: 50,
+              if (_missions(uiModel).isEmpty)
+                BodyMediumText(
+                  _selectedIndex == 0
+                      ? 'You don’t have any missions currently'
+                      : 'You haven’t completed any missions yet',
+                  textAlign: TextAlign.center,
                 ),
-              ),
             ],
           );
         },
       ),
     );
   }
+
+  List<MissionUIModel> _missions(MissionsUIModel uiModel) =>
+      _selectedIndex == 0 ? uiModel.todoMissions : uiModel.completedMissions;
 }

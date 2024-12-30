@@ -1,8 +1,8 @@
 class MissionUIModel {
   MissionUIModel({
     required this.title,
-    required this.description,
-    this.progress = 0,
+    this.description = 'Completed',
+    this.progress = 100,
   });
 
   final String title;
