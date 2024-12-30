@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/shared/design/components/actions/fun_bu
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';

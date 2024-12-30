@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/features/impact_groups/models/impact_gr
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/mission_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
@@ -30,6 +31,7 @@ class FamilyHomeScreenCubit
   List<Profile> profiles = [];
   ImpactGroup? _familyGroup;
   GameStats? _gameStats;
+  MissionStats? _missionStats;
 
   Future<void> init() async {
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
@@ -42,6 +44,8 @@ class FamilyHomeScreenCubit
         _getGameStats();
       }
     });
+
+    _missionStats = MissionStats(missionsToBeCompleted: 0);
 
     _onProfilesChanged(await _profilesRepository.getProfiles());
     _onGroupsChanged(
@@ -106,6 +110,7 @@ class FamilyHomeScreenCubit
           .toList(),
       familyGroupName: _familyGroup?.name,
       gameStats: _gameStats,
+      missionStats: _missionStats,
     );
   }
 
