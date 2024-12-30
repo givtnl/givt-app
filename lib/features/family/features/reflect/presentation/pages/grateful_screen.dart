@@ -104,10 +104,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                     AvatarBar(
                       backgroundColor: FamilyAppTheme.primary99,
                       uiModel: uiModel.avatarBarUIModel,
-                      onAvatarTapped: (index) {
-                        _scrollToTop();
-                        _cubit.onAvatarTapped(index);
-                      },
+                      onAvatarTapped: _cubit.onAvatarTapped,
                     ),
                     const SizedBox(height: 24),
                     Padding(
@@ -131,10 +128,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                       uiModel: uiModel.recommendationsUIModel,
                       onRecommendationChosen: _cubit.onRecommendationChosen,
                       onTapRetry: _cubit.onRetry,
-                      onSkip: () {
-                        _scrollToTop();
-                        _cubit.onSkip();
-                      },
+                      onSkip: _cubit.onSkip,
                     ),
                   ],
                 ),
@@ -175,15 +169,17 @@ class _GratefulScreenState extends State<GratefulScreen> {
         );
       case GratefulGoToGameSummary():
         _navigateToSummary(context);
+      case ScrollToTop():
+        _scrollToTop();
     }
   }
 
   Future<void> _navigateToChildGivingScreen(
     BuildContext context,
-    GameProfile profile, Organisation organisation,
+    GameProfile profile,
+    Organisation organisation,
   ) async {
-    final generatedMediumId =
-    base64.encode(organisation.namespace.codeUnits);
+    final generatedMediumId = base64.encode(organisation.namespace.codeUnits);
     await context
         .read<CollectGroupDetailsCubit>()
         .getOrganisationDetails(generatedMediumId);
