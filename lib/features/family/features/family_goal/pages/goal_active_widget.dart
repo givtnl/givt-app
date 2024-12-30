@@ -38,7 +38,11 @@ class GoalActiveWidget extends StatelessWidget {
               const SizedBox(height: 4),
               Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 8),
-                child: GoalProgressBar(goal: currentGoal),
+                child: GoalProgressBar(
+                  amount: currentGoal.amount,
+                  goalAmount: currentGoal.goalAmount,
+                  totalAmount: currentGoal.totalAmount,
+                ),
               ),
             ],
           ),
