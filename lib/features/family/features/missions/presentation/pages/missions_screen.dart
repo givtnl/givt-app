@@ -64,6 +64,9 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   final mission = _missions(uiModel)[index];
                   return FunGoalCard(
                     uiModel: mission,
+                    onTap: () {
+                      //TODO
+                    },
                   );
                 },
               ),

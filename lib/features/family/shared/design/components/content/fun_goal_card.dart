@@ -1,52 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_goal_card_ui_model.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
-import 'package:givt_app/utils/app_theme.dart';
 
 class FunGoalCard extends StatelessWidget {
-  const FunGoalCard({required this.uiModel, super.key});
+  const FunGoalCard({
+    required this.uiModel,
+    required this.onTap,
+    this.isLoading = false,
+    super.key,
+  });
+  factory FunGoalCard.loading() => FunGoalCard(
+        uiModel: FunGoalCardUIModel(
+          title: 'Loading...',
+          description: '',
+        ),
+        onTap: () {},
+        isLoading: true,
+      );
 
   final FunGoalCardUIModel uiModel;
-
+  final VoidCallback onTap;
+  final bool isLoading;
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: ShapeDecoration(
-        color: AppTheme.primary98,
-        shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-    ),
-    ),
-    child:Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            uiModel.description,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '${context.l10n.familyGoalPrefix}\$${uiModel.progress}',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w400,
-                ),
-          ),
-          const SizedBox(height: 4),
-          Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 8),
-            child: GoalProgressBar(
-              amount: uiModel.progress,
+      decoration: BoxDecoration(
+        color: FamilyAppTheme.highlight99,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: FamilyAppTheme.neutralVariant95,
+          width: 2,
+        ),
+      ),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 16,
+      ),
+      child: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : GestureDetector(
+              onTap: onTap,
+              child: Stack(
+                children: [
+                  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (uiModel.headerIcon != null)
+                          FaIcon(uiModel.headerIcon,
+                              color: FamilyAppTheme.primary60),
+                        const SizedBox(height: 12),
+                        TitleSmallText(
+                          uiModel.title,
+                        ),
+                        const SizedBox(height: 4),
+                        BodySmallText.primary40(uiModel.description),
+                        if (uiModel.progress != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16, bottom: 8),
+                            child: GoalProgressBar(
+                              amount: uiModel.progress!,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: FaIcon(
+                      uiModel.actionIcon,
+                      color: FamilyAppTheme.primary40.withOpacity(0.75),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
-      ),),
     );
   }
 }

@@ -16,6 +16,7 @@ class MissionsCubit extends CommonCubit<MissionsUIModel, dynamic> {
   final _completedMissions = <FunGoalCardUIModel>[
     FunGoalCardUIModel(
       title: 'Open the app',
+      description: 'You did it!',
     ),
   ];
 
