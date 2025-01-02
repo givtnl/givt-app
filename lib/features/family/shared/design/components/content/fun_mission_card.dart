@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/fun_goal_card_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 
-class FunGoalCard extends StatelessWidget {
-  const FunGoalCard({
+class FunMissionCard extends StatelessWidget {
+  const FunMissionCard({
     required this.uiModel,
     this.onTap,
     this.isLoading = false,
     super.key,
   });
-  factory FunGoalCard.loading() => FunGoalCard(
-        uiModel: FunGoalCardUIModel(
+  factory FunMissionCard.loading() => FunMissionCard(
+        uiModel: FunMissionCardUiModel(
           title: 'Loading...',
           description: '',
         ),
@@ -21,7 +21,7 @@ class FunGoalCard extends StatelessWidget {
         isLoading: true,
       );
 
-  final FunGoalCardUIModel uiModel;
+  final FunMissionCardUiModel uiModel;
   final VoidCallback? onTap;
   final bool isLoading;
   @override

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/mission_stats.dart';
-import 'package:givt_app/features/family/shared/design/components/content/fun_goal_card.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/fun_goal_card_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,9 +19,9 @@ class MissionsContainer extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 24),
       child: missionStats == null
-          ? FunGoalCard.loading()
-          : FunGoalCard(
-              uiModel: FunGoalCardUIModel(
+          ? FunMissionCard.loading()
+          : FunMissionCard(
+              uiModel: FunMissionCardUiModel(
                 title: missionStats!.missionsToBeCompleted > 0
                     ? '${missionsText.capitalize()} available'
                     : 'No $missionsText available',

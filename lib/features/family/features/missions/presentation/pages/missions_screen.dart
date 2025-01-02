@@ -4,8 +4,8 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
 import 'package:givt_app/features/family/features/missions/presentation/models/missions_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/components/content/fun_goal_card.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/fun_goal_card_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -62,7 +62,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                 _missions(uiModel).length,
                 (index) {
                   final mission = _missions(uiModel)[index];
-                  return FunGoalCard(
+                  return FunMissionCard(
                     uiModel: mission,
                     onTap: () {
                       //TODO
@@ -77,6 +77,6 @@ class _MissionsScreenState extends State<MissionsScreen> {
     );
   }
 
-  List<FunGoalCardUIModel> _missions(MissionsUIModel uiModel) =>
+  List<FunMissionCardUiModel> _missions(MissionsUIModel uiModel) =>
       _selectedIndex == 0 ? uiModel.todoMissions : uiModel.completedMissions;
 }
