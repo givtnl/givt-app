@@ -6,7 +6,9 @@ import 'package:givt_app/utils/utils.dart';
 
 class GoalProgressBar extends StatelessWidget {
   const GoalProgressBar({
-    required this.goal,
+    this.amount = 0,
+    this.goalAmount = 100,
+    this.totalAmount = 0,
     this.colors = _defaultColors,
     this.showFlag = false,
     this.showGoalLabel = false,
@@ -16,7 +18,9 @@ class GoalProgressBar extends StatelessWidget {
     super.key,
   });
 
-  final Goal goal;
+  final double amount;
+  final int goalAmount;
+  final double totalAmount;
   final List<Color> colors;
   final Color goalLabelBackgroundColor;
   final Color currentLabelBackgroundColor;
@@ -38,11 +42,11 @@ class GoalProgressBar extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         const barHeight = 12.0;
-        final isCompleted = goal.amount >= goal.goalAmount;
+        final isCompleted = amount >= goalAmount;
 
-        final progress = goal.amount / goal.goalAmount.toDouble();
+        final progress = amount / goalAmount.toDouble();
         final progress0 = progress > 1.0 ? 1.0 : progress;
-        final totalProgress = goal.totalAmount / goal.goalAmount.toDouble();
+        final totalProgress = totalAmount / goalAmount.toDouble();
         final totalProgress0 = totalProgress > 1.0 ? 1.0 : totalProgress;
 
         final availableWidth = constraints.maxWidth;
@@ -80,7 +84,7 @@ class GoalProgressBar extends StatelessWidget {
                     left: widthToApply,
                     top: -currentLabelOffsetY,
                     child: GoalProgressBarLabel.amount(
-                      goal.amount.toInt(),
+                      amount.toInt(),
                       backgroundColor: currentLabelBackgroundColor,
                       isCenterAnchor: true,
                     ),
@@ -153,7 +157,7 @@ class GoalProgressBar extends StatelessWidget {
                   children: [
                     const Spacer(),
                     GoalProgressBarLabel.amount(
-                      goal.goalAmount,
+                      goalAmount,
                       backgroundColor: goalLabelBackgroundColor,
                       isBold: true,
                     ),

@@ -15,6 +15,7 @@ import 'package:givt_app/features/family/features/family_goal/pages/create_famil
 import 'package:givt_app/features/family/features/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summaries_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
+import 'package:givt_app/features/family/features/missions/presentation/pages/missions_screen.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -160,6 +161,11 @@ class FamilyAppRoutes {
         );
       },
       routes: [
+        GoRoute(
+          path: FamilyPages.missions.path,
+          name: FamilyPages.missions.name,
+          builder: (context, state) => const MissionsScreen(),
+        ),
         GoRoute(
           path: FamilyPages.assignBedtimeResponsibility.path,
           name: FamilyPages.assignBedtimeResponsibility.name,
