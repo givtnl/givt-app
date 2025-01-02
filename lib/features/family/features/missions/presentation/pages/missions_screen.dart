@@ -1,20 +1,16 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
-import 'package:givt_app/features/family/features/missions/presentation/models/mission_ui_model.dart';
 import 'package:givt_app/features/family/features/missions/presentation/models/missions_ui_model.dart';
-import 'package:givt_app/features/family/features/missions/presentation/widgets/mission_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_goal_card.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/fun_goal_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
-import 'package:givt_app/features/personal_summary/overview/widgets/giving_goal_card.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/utils/app_theme.dart';
 
 class MissionsScreen extends StatefulWidget {
   const MissionsScreen({super.key});
@@ -66,7 +62,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                 _missions(uiModel).length,
                 (index) {
                   final mission = _missions(uiModel)[index];
-                  return MissionWidget(
+                  return FunGoalCard(
                     uiModel: mission,
                   );
                 },
@@ -78,6 +74,6 @@ class _MissionsScreenState extends State<MissionsScreen> {
     );
   }
 
-  List<MissionUIModel> _missions(MissionsUIModel uiModel) =>
+  List<FunGoalCardUIModel> _missions(MissionsUIModel uiModel) =>
       _selectedIndex == 0 ? uiModel.todoMissions : uiModel.completedMissions;
 }

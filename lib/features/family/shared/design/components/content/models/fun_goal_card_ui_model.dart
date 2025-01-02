@@ -1,5 +1,5 @@
-class MissionUIModel {
-  MissionUIModel({
+class FunGoalCardUIModel {
+  FunGoalCardUIModel({
     required this.title,
     this.description = 'Completed',
     this.progress = 100,

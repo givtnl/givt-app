@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/features/missions/presentation/models/mission_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/fun_goal_card_ui_model.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
-class MissionWidget extends StatelessWidget {
-  const MissionWidget({required this.uiModel, super.key});
+class FunGoalCard extends StatelessWidget {
+  const FunGoalCard({required this.uiModel, super.key});
 
-  final MissionUIModel uiModel;
+  final FunGoalCardUIModel uiModel;
 
   @override
   Widget build(BuildContext context) {

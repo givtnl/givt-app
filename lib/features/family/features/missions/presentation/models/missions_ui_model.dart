@@ -1,4 +1,4 @@
-import 'package:givt_app/features/family/features/missions/presentation/models/mission_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/fun_goal_card_ui_model.dart';
 
 class MissionsUIModel {
   MissionsUIModel({
@@ -6,6 +6,6 @@ class MissionsUIModel {
     this.completedMissions = const [],
   });
 
-  final List<MissionUIModel> todoMissions;
-  final List<MissionUIModel> completedMissions;
+  final List<FunGoalCardUIModel> todoMissions;
+  final List<FunGoalCardUIModel> completedMissions;
 }
