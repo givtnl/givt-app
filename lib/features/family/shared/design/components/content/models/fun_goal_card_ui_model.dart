@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 
 class FunGoalCardUIModel {
   FunGoalCardUIModel({
@@ -13,6 +14,6 @@ class FunGoalCardUIModel {
   final String title;
   final String description;
   final IconData actionIcon;
-  final double? progress;
+  final GoalProgressUimodel? progress;
   final IconData? headerIcon;
 }

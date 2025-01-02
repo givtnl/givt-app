@@ -8,7 +8,7 @@ import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart
 class FunGoalCard extends StatelessWidget {
   const FunGoalCard({
     required this.uiModel,
-    required this.onTap,
+    this.onTap,
     this.isLoading = false,
     super.key,
   });
@@ -22,7 +22,7 @@ class FunGoalCard extends StatelessWidget {
       );
 
   final FunGoalCardUIModel uiModel;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool isLoading;
   @override
   Widget build(BuildContext context) {
@@ -65,19 +65,20 @@ class FunGoalCard extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 16, bottom: 8),
                             child: GoalProgressBar(
-                              amount: uiModel.progress!,
+                              model: uiModel.progress!,
                             ),
                           ),
                       ],
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: FaIcon(
-                      uiModel.actionIcon,
-                      color: FamilyAppTheme.primary40.withOpacity(0.75),
-                    ),
-                  )
+                  if (onTap != null)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: FaIcon(
+                        uiModel.actionIcon,
+                        color: FamilyAppTheme.primary40.withOpacity(0.75),
+                      ),
+                    )
                 ],
               ),
             ),

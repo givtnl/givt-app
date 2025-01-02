@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_goal_card.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/fun_goal_card_ui_model.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 
 class GoalCompletedWidget extends StatelessWidget {
@@ -13,48 +14,15 @@ class GoalCompletedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final impactGroupsCubit = context.watch<ImpactGroupsCubit>();
     final org = impactGroupsCubit.state.familyGroup.organisation;
-    return Stack(
-      children: [
-        Positioned(
-          right: 0,
-          child: IconButton(
-            onPressed: () => impactGroupsCubit
-                .dismissGoal(impactGroupsCubit.state.familyGroup.goal.id),
-            icon: const Icon(
-              FontAwesomeIcons.xmark,
-              size: 20,
-            ),
-          ),
-        ),
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgPicture.asset(
-                  'assets/images/goal_check.svg',
-                  width: 40,
-                  height: 40,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  org.organisationName ?? 'Name Placeholder',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Family Goal completed. Great job!',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+    return FunGoalCard(
+      uiModel: FunGoalCardUIModel(
+        title: org.organisationName ?? 'Name Placeholder',
+        description: 'Family Goal completed. Great job!',
+        headerIcon: FontAwesomeIcons.check,
+        actionIcon: FontAwesomeIcons.xmark,
+      ),
+      onTap: () => impactGroupsCubit
+          .dismissGoal(impactGroupsCubit.state.familyGroup.goal.id),
     );
   }
 }
