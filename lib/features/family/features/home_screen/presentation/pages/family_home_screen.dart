@@ -1,15 +1,10 @@
 import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:facebook_app_events/facebook_app_events.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/features/home_screen/widgets/missions_container.dart';
-import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
-import 'package:givt_app/utils/profile_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
@@ -19,11 +14,13 @@ import 'package:givt_app/features/family/features/home_screen/presentation/model
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/missions_container.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/stats_container.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -31,6 +28,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/utils/profile_type.dart';
 import 'package:go_router/go_router.dart';
 
 class FamilyHomeScreen extends StatefulWidget {
@@ -76,6 +74,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         Overlay.of(context).insert(overlayEntry!);
       },
       onData: (context, uiModel) {
+        final hasMissions =
+            uiModel.missionStats?.missionsToBeCompleted != null &&
+                uiModel.missionStats!.missionsToBeCompleted > 0;
         return FunScaffold(
           canPop: !overlayVisible,
           onPopInvokedWithResult: (didPop, _) {
@@ -127,10 +128,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                         ),
                         CarouselSlider(
-                          items: [
-                            MissionsContainer(uiModel.missionStats),
-                            StatsContainer(uiModel.gameStats),
-                          ],
+                          items: _buildCarouselItems(uiModel, hasMissions),
                           options: CarouselOptions(
                             onPageChanged: (index, reason) {
                               setState(() {
@@ -138,7 +136,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               });
                             },
                             viewportFraction: 1,
-                            aspectRatio: 2.658,
+                            aspectRatio: 3,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -253,5 +251,20 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     setState(() {
       overlayVisible = false;
     });
+  }
+
+  List<Widget> _buildCarouselItems(
+      FamilyHomeScreenUIModel uiModel, bool hasMissions) {
+    final items = [
+      MissionsContainer(uiModel.missionStats),
+      StatsContainer(uiModel.gameStats),
+    ];
+
+    // If there are no missions, move the stats container to the first position
+    if (!hasMissions) {
+      items.insert(0, items.removeAt(1));
+    }
+
+    return items;
   }
 }
