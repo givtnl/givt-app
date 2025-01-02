@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/mission_stats.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -16,15 +15,19 @@ class MissionsContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: FamilyAppTheme.primary98,
+        color: FamilyAppTheme.highlight99,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: FamilyAppTheme.neutralVariant95,
+          width: 2,
+        ),
       ),
       width: double.infinity,
       margin: const EdgeInsets.symmetric(
         horizontal: 24,
       ),
       padding: const EdgeInsets.symmetric(
-        horizontal: 8,
+        horizontal: 20,
         vertical: 16,
       ),
       child:
@@ -43,30 +46,32 @@ class MissionsContainer extends StatelessWidget {
       onTap: () => context.pushNamed(FamilyPages.missions.name),
       child: Stack(
         children: [
-          Column(
-            children: [
-              const Row(),
-              const SizedBox(height: 16),
-              const FaIcon(FontAwesomeIcons.bolt,
-                  color: FamilyAppTheme.primary20),
-              const SizedBox(height: 12),
-              TitleSmallText(
-                missionStats!.missionsToBeCompleted > 0
-                    ? 'Missions available'
-                    : 'All missions completed!',
-              ),
-              const SizedBox(height: 4),
-              if (missionStats!.missionsToBeCompleted > 0)
-                BodySmallText(
-                  '${missionStats!.missionsToBeCompleted} missions to be completed',
+          Center(
+            child: Column(
+              children: [
+                const FaIcon(FontAwesomeIcons.bolt,
+                    color: FamilyAppTheme.primary60),
+                const SizedBox(height: 12),
+                TitleSmallText(
+                  missionStats!.missionsToBeCompleted > 0
+                      ? 'Missions available'
+                      : 'No missions available',
                 ),
-            ],
+                const SizedBox(height: 4),
+                if (missionStats!.missionsToBeCompleted > 0)
+                  BodySmallText(
+                    '${missionStats!.missionsToBeCompleted} missions to be completed',
+                  )
+                else
+                  BodySmallText.primary40('Your work here is done'),
+              ],
+            ),
           ),
-          const Align(
+          Align(
             alignment: Alignment.topRight,
-            child: Padding(
-              padding: EdgeInsets.only(top: 24, right: 18),
-              child: FaIcon(FontAwesomeIcons.chevronRight),
+            child: FaIcon(
+              FontAwesomeIcons.chevronRight,
+              color: FamilyAppTheme.primary40.withOpacity(0.75),
             ),
           )
         ],

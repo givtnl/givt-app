@@ -43,6 +43,7 @@ class StatsContainer extends StatelessWidget {
 
   Widget showEmptyState(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const LabelMediumText('Game activity this week'),
         const SizedBox(height: 8),
