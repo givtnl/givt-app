@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/missions_container.dart';
+import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/utils/profile_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -41,6 +44,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   OverlayEntry? overlayEntry;
   bool overlayVisible = false;
   final _cubit = getIt<FamilyHomeScreenCubit>();
+
+  int _carrouselIndex = 0;
 
   @override
   void didChangeDependencies() {
@@ -121,7 +126,23 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             onAvatarTapped: onAvatarTapped,
                           ),
                         ),
-                        StatsContainer(uiModel.gameStats),
+                        CarouselSlider(
+                          items: [
+                            MissionsContainer(uiModel.missionStats),
+                            StatsContainer(uiModel.gameStats),
+                          ],
+                          options: CarouselOptions(
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _carrouselIndex = index;
+                              });
+                            },
+                            viewportFraction: 1,
+                            aspectRatio: 2.658,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        PagerDotIndicator(count: 2, index: _carrouselIndex),
                       ],
                     ),
                   ],
