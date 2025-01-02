@@ -393,7 +393,11 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       await refreshToken();
       await updateNotificationId();
     } catch (e, s) {
-      // Do nothing
+      LoggingInfo.instance.info('Error in initAuth');
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
     }
   }
 
