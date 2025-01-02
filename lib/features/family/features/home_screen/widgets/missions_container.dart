@@ -4,12 +4,15 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/mission_stats.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:go_router/go_router.dart';
 
 class MissionsContainer extends StatelessWidget {
   const MissionsContainer(this.missionStats, {super.key});
 
   final MissionStats? missionStats;
+  String get missionsText =>
+      missionStats?.missionsToBeCompleted == 1 ? 'mission' : 'missions';
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +57,13 @@ class MissionsContainer extends StatelessWidget {
                 const SizedBox(height: 12),
                 TitleSmallText(
                   missionStats!.missionsToBeCompleted > 0
-                      ? 'Missions available'
-                      : 'No missions available',
+                      ? '${missionsText.capitalize()} available'
+                      : 'No $missionsText available',
                 ),
                 const SizedBox(height: 4),
                 if (missionStats!.missionsToBeCompleted > 0)
                   BodySmallText(
-                    '${missionStats!.missionsToBeCompleted} missions to be completed',
+                    '${missionStats!.missionsToBeCompleted} $missionsText to be completed',
                   )
                 else
                   BodySmallText.primary40('Your work here is done'),
