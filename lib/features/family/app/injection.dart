@@ -154,7 +154,7 @@ void initCubits() {
       () => UsSignupCubit(getIt(), getIt()),
     )
     ..registerFactory<MissionsCubit>(
-      () => MissionsCubit(),
+      () => MissionsCubit(getIt()),
     )
     ..registerFactory<GameSummariesCubit>(
       GameSummariesCubit.new,

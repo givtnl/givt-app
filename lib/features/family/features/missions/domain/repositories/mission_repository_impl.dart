@@ -29,7 +29,21 @@ class MissionRepositoryImpl implements MissionRepository {
 
     final updated = currentMissions.map((m) {
       if (m.missionKey == missionKey) {
-        return m.copyWith(isCompleted: true, progress: 1);
+        return m.copyWith(progress: 100);
+      }
+      return m;
+    }).toList();
+
+    await localDataSource.saveMissions(updated);
+  }
+
+  @override
+  Future<void> unCompleteMission(String missionKey) async {
+    final currentMissions = await localDataSource.getMissions();
+
+    final updated = currentMissions.map((m) {
+      if (m.missionKey == missionKey) {
+        return m.copyWith(progress: 0);
       }
       return m;
     }).toList();
