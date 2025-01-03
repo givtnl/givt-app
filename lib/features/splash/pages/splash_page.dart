@@ -3,9 +3,11 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
 import 'package:givt_app/features/splash/cubit/splash_custom.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/utils/add_member_util.dart';
 import 'package:go_router/go_router.dart';
@@ -21,6 +23,8 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   final _cubit = getIt<SplashCubit>();
+
+  bool _showNoInternetMessage = false;
 
   @override
   void initState() {
@@ -50,6 +54,14 @@ class _SplashPageState extends State<SplashPage> {
             ),
             const SizedBox(height: 20),
             const CustomCircularProgressIndicator(),
+            if (_showNoInternetMessage)
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: BodyMediumText(
+                  context.l10n.noInternet,
+                  textAlign: TextAlign.center,
+                ),
+              ),
           ],
         ),
       ),
@@ -75,6 +87,10 @@ class _SplashPageState extends State<SplashPage> {
             redirect: AddMemberUtil.addFamilyPushPages,
           ),
         );
+      case NoInternet():
+        setState(() {
+          _showNoInternetMessage = true;
+        });
     }
   }
 }
