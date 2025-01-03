@@ -13,7 +13,7 @@ class NoGoalSetWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FunMissionCard(
-      uiModel: FunMissionCardUiModel(
+      uiModel: FunMissionCardUIModel(
         title: 'Create a Family Goal',
         description: 'Give together',
         headerIcon: FontAwesomeIcons.solidFlag,

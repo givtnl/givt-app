@@ -21,7 +21,7 @@ class MissionsContainer extends StatelessWidget {
       child: missionStats == null
           ? FunMissionCard.loading()
           : FunMissionCard(
-              uiModel: FunMissionCardUiModel(
+              uiModel: FunMissionCardUIModel(
                 title: missionStats!.missionsToBeCompleted > 0
                     ? '${missionsText.capitalize()} available'
                     : 'No $missionsText available',

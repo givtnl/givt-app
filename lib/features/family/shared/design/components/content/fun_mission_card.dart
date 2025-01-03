@@ -12,8 +12,9 @@ class FunMissionCard extends StatelessWidget {
     this.isLoading = false,
     super.key,
   });
+
   factory FunMissionCard.loading() => FunMissionCard(
-        uiModel: FunMissionCardUiModel(
+        uiModel: FunMissionCardUIModel(
           title: 'Loading...',
           description: '',
         ),
@@ -21,9 +22,10 @@ class FunMissionCard extends StatelessWidget {
         isLoading: true,
       );
 
-  final FunMissionCardUiModel uiModel;
+  final FunMissionCardUIModel uiModel;
   final VoidCallback? onTap;
   final bool isLoading;
+
   @override
   Widget build(BuildContext context) {
     return Container(

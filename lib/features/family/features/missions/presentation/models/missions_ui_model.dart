@@ -6,6 +6,6 @@ class MissionsUIModel {
     this.completedMissions = const [],
   });
 
-  final List<FunMissionCardUiModel> todoMissions;
-  final List<FunMissionCardUiModel> completedMissions;
+  final List<FunMissionCardUIModel> todoMissions;
+  final List<FunMissionCardUIModel> completedMissions;
 }

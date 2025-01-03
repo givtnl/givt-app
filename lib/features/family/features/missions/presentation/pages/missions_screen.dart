@@ -77,6 +77,6 @@ class _MissionsScreenState extends State<MissionsScreen> {
     );
   }
 
-  List<FunMissionCardUiModel> _missions(MissionsUIModel uiModel) =>
+  List<FunMissionCardUIModel> _missions(MissionsUIModel uiModel) =>
       _selectedIndex == 0 ? uiModel.todoMissions : uiModel.completedMissions;
 }
