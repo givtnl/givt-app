@@ -77,6 +77,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         final hasMissions =
             uiModel.missionStats?.missionsToBeCompleted != null &&
                 uiModel.missionStats!.missionsToBeCompleted > 0;
+        final carrouselItems = _buildCarouselItems(uiModel, hasMissions);
         return FunScaffold(
           canPop: !overlayVisible,
           onPopInvokedWithResult: (didPop, _) {
@@ -139,8 +140,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             aspectRatio: 3,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        PagerDotIndicator(count: 2, index: _carrouselIndex),
+                        if(carrouselItems.length > 1) const SizedBox(height: 8),
+                        if(carrouselItems.length > 1) PagerDotIndicator(
+                          count: carrouselItems.length,
+                          index: _carrouselIndex,
+                        ),
                       ],
                     ),
                   ],
@@ -256,14 +260,14 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   List<Widget> _buildCarouselItems(
       FamilyHomeScreenUIModel uiModel, bool hasMissions) {
     final items = [
-      MissionsContainer(uiModel.missionStats),
+      //MissionsContainer(uiModel.missionStats),
       StatsContainer(uiModel.gameStats),
     ];
 
     // If there are no missions, move the stats container to the first position
-    if (!hasMissions) {
+    /*if (!hasMissions) {
       items.insert(0, items.removeAt(1));
-    }
+    }*/
 
     return items;
   }
