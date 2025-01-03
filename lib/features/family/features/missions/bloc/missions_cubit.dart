@@ -1,4 +1,3 @@
-import 'package:givt_app/features/family/features/missions/domain/mission_flags.dart';
 import 'package:givt_app/features/family/features/missions/presentation/models/missions_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
