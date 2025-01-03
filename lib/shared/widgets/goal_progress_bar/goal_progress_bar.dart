@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar_label.dart';
+import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GoalProgressBar extends StatelessWidget {
   const GoalProgressBar({
-    required this.goal,
+    required this.model,
     this.colors = _defaultColors,
     this.showFlag = false,
     this.showGoalLabel = false,
@@ -16,7 +17,7 @@ class GoalProgressBar extends StatelessWidget {
     super.key,
   });
 
-  final Goal goal;
+  final GoalProgressUimodel model;
   final List<Color> colors;
   final Color goalLabelBackgroundColor;
   final Color currentLabelBackgroundColor;
@@ -38,11 +39,11 @@ class GoalProgressBar extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         const barHeight = 12.0;
-        final isCompleted = goal.amount >= goal.goalAmount;
+        final isCompleted = model.amount >= model.goalAmount;
 
-        final progress = goal.amount / goal.goalAmount.toDouble();
+        final progress = model.amount / model.goalAmount.toDouble();
         final progress0 = progress > 1.0 ? 1.0 : progress;
-        final totalProgress = goal.totalAmount / goal.goalAmount.toDouble();
+        final totalProgress = model.totalAmount / model.goalAmount.toDouble();
         final totalProgress0 = totalProgress > 1.0 ? 1.0 : totalProgress;
 
         final availableWidth = constraints.maxWidth;
@@ -80,7 +81,7 @@ class GoalProgressBar extends StatelessWidget {
                     left: widthToApply,
                     top: -currentLabelOffsetY,
                     child: GoalProgressBarLabel.amount(
-                      goal.amount.toInt(),
+                      model.amount.toInt(),
                       backgroundColor: currentLabelBackgroundColor,
                       isCenterAnchor: true,
                     ),
@@ -153,7 +154,7 @@ class GoalProgressBar extends StatelessWidget {
                   children: [
                     const Spacer(),
                     GoalProgressBarLabel.amount(
-                      goal.goalAmount,
+                      model.goalAmount,
                       backgroundColor: goalLabelBackgroundColor,
                       isBold: true,
                     ),

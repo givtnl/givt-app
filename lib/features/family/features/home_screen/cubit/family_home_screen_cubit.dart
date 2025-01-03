@@ -1,17 +1,20 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/mission_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 
 class FamilyHomeScreenCubit
     extends CommonCubit<FamilyHomeScreenUIModel, FamilyHomeScreenUIModel> {
@@ -30,18 +33,17 @@ class FamilyHomeScreenCubit
   List<Profile> profiles = [];
   ImpactGroup? _familyGroup;
   GameStats? _gameStats;
+  MissionStats? _missionStats;
 
   Future<void> init() async {
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen(_onGroupsChanged);
     _reflectAndShareRepository.onFinishedAGame().listen(_onFinishedAGame);
-    _familyAuthRepository.authenticatedUserStream().listen((user) {
-      if (user == null) {
-        logout();
-      } else {
-        _getGameStats();
-      }
+    _familyAuthRepository.authenticatedUserStream().listen((user) async {
+      await _handleUserUpdate(user);
     });
+
+    _missionStats = MissionStats(missionsToBeCompleted: 0);
 
     _onProfilesChanged(await _profilesRepository.getProfiles());
     _onGroupsChanged(
@@ -49,6 +51,29 @@ class FamilyHomeScreenCubit
     );
     unawaited(_getGameStats());
     _emitData();
+  }
+
+  Future<void> _handleUserUpdate(UserExt? user) async {
+    if (user == null) {
+      try {
+        final session = await _familyAuthRepository.refreshToken();
+        if (session.isExpired || !session.isLoggedIn) {
+          LoggingInfo.instance.info(
+            'Session is expired or not logged in, we will log out',
+            methodName: 'FamilyHomeScreenCubit init',
+          );
+          logout();
+        }
+      } catch (e, s) {
+        LoggingInfo.instance.error(
+          'Error refreshing token, we will logout: $e,\n\n$s',
+          methodName: 'FamilyHomeScreenCubit init',
+        );
+        logout();
+      }
+    } else {
+      unawaited(_getGameStats());
+    }
   }
 
   Future<void> _getGameStats() async {
@@ -106,6 +131,7 @@ class FamilyHomeScreenCubit
           .toList(),
       familyGroupName: _familyGroup?.name,
       gameStats: _gameStats,
+      missionStats: _missionStats,
     );
   }
 

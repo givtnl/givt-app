@@ -355,6 +355,9 @@ enum AmplitudeEvents {
 
   volumeBottomSheetReadyClicked('volume_bottom_sheet_ready_clicked'),
 
+  //Missions
+  missionTabsChanged('mission_tabs_changed'),
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
   ;

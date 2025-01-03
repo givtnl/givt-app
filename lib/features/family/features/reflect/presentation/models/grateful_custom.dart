@@ -20,6 +20,8 @@ sealed class GratefulCustom {
   }) = GratefulOpenActOfServiceSuccess;
 
   const factory GratefulCustom.goToGameSummary() = GratefulGoToGameSummary;
+
+  const factory GratefulCustom.scrollToTop() = ScrollToTop;
 }
 
 class GratefulOpenKidDonationFlow extends GratefulCustom {
@@ -53,4 +55,8 @@ class GratefulOpenActOfServiceSuccess extends GratefulCustom {
 
 class GratefulGoToGameSummary extends GratefulCustom {
   const GratefulGoToGameSummary();
+}
+
+class ScrollToTop extends GratefulCustom {
+  const ScrollToTop();
 }

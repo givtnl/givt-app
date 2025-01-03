@@ -73,6 +73,9 @@ enum FamilyPages {
       path: 'assign-bedtime-responsibility',
       name: 'ASSIGN-BEDTIME-RESPONSIBILITY'),
 
+  //Missions
+  missions(path: 'missions', name: 'MISSIONS'),
+
   //Game summaries
   gameSummaries(path: 'game-summaries', name: 'GAME-SUMMARIES'),
   parentSummary(path: 'parent-summary', name: 'PARENT-SUMMARY'),

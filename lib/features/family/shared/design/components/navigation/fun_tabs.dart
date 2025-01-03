@@ -12,11 +12,13 @@ class FunTabs extends StatelessWidget {
     required this.selectedIndex,
     required this.onPressed,
     required this.analyticsEvent,
+    this.margin,
     super.key,
   });
 
   final List<String> options;
   final int selectedIndex;
+  final EdgeInsets? margin;
   final void Function(int) onPressed;
   final AnalyticsEvent analyticsEvent;
 
@@ -54,7 +56,7 @@ class FunTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
+      margin: margin ?? const EdgeInsets.symmetric(horizontal: 24),
       padding: const EdgeInsets.all(4),
       decoration: const BoxDecoration(
         color: FamilyAppTheme.neutralVariant90,

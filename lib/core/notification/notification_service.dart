@@ -45,6 +45,10 @@ Future<void> _navigateToScreen(NotificationResponse details) async {
     case 'ShowYearlySummary':
       LoggingInfo.instance.info('Navigating to yearly summary screen');
       AppRouter.router.goNamed(Pages.personalSummary.name);
+    case 'FCMTest':
+      LoggingInfo.instance.info('FCM Test');
+      NotificationService.instance
+          .handleFirebaseNotificationNavigation(decodedPayload);
   }
 }
 
@@ -139,36 +143,44 @@ class NotificationService implements INotificationService {
     }
   }
 
+  Future<void> scheduleBedtimeTestNotifications() async {
+    await scheduleAssignBedtimeNotification();
+    await scheduleBedtimeNotification();
+  }
+
+  Future<void> scheduleBedtimeNotification() {
+    final scheduledDate =
+        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 15));
+    return _scheduleNotifications(
+      body: 'Goes to reflect intro',
+      title: 'Local test: Reflect intro',
+      payload: {
+        'Path': 'REFLECT-INTRO',
+        'Type': 'FCMTest',
+      },
+      scheduledDate: scheduledDate,
+    );
+  }
+
+  Future<void> scheduleAssignBedtimeNotification() {
+    final scheduledDate =
+        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10));
+    return _scheduleNotifications(
+      body: 'Goes to assign bedtime',
+      title: 'Local test: Assign Bedtime Duty',
+      payload: {
+        'Type': 'FCMTest',
+        'Path':
+            'ASSIGN-BEDTIME-RESPONSIBILITY?childName=TestChildName&childId=cd88375a-ca29-492f-8b03-5548434811cf&pictureUrl=https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Default.svg'
+      },
+      scheduledDate: scheduledDate,
+    );
+  }
+
   Future<void> navigateFirebaseNotification(RemoteMessage message) async {
     LoggingInfo.instance.info('Firebase notification received');
-    final path = message.data['Path'].toString();
-    final pathName = path.split('?').first;
-    final test = Uri.parse(path);
-    final param = test.queryParameters;
-
-    if (pathName.isNotNullAndNotEmpty()) {
-      final validValues = [
-        ...FamilyPages.values.map((e) => e.name).toList(),
-        ...Pages.values.map((e) => e.name).toList(),
-      ];
-      if (validValues.contains(pathName)) {
-        AppRouter.router.goNamed(pathName, queryParameters: param);
-      } else {
-        LoggingInfo.instance.error(
-          'Invalid path name received from firebase notification: $pathName',
-        );
-        AppRouter.router.goNamed(FamilyPages.profileSelection.name);
-        return;
-      }
-      LoggingInfo.instance.info(
-        'Navigating to ${message.data['Path']}, from firebase notification type ${message.data['Type']}',
-      );
-    } else {
-      LoggingInfo.instance.info(
-        'Navigating to home screen, from firebase notification type ${message.data['Type']}, no path found.',
-      );
-      AppRouter.router.goNamed(FamilyPages.profileSelection.name);
-    }
+    final data = message.data;
+    handleFirebaseNotificationNavigation(data);
   }
 
   Future<void> setupFlutterNotifications() async {
@@ -481,4 +493,35 @@ class NotificationService implements INotificationService {
   /// Constants for notification keys used in [SharedPreferences]
   static const monthlySummaryNotificationKey = 'monthy_summary_notification';
   static const yearlySummaryNotificationKey = 'yearly_summary_notification';
+
+  void handleFirebaseNotificationNavigation(Map<String, dynamic> data) {
+    final path = data['Path'].toString();
+    final pathName = path.split('?').first;
+    final test = Uri.parse(path);
+    final param = test.queryParameters;
+
+    if (pathName.isNotNullAndNotEmpty()) {
+      final validValues = [
+        ...FamilyPages.values.map((e) => e.name).toList(),
+        ...Pages.values.map((e) => e.name).toList(),
+      ];
+      if (validValues.contains(pathName)) {
+        AppRouter.router.goNamed(pathName, queryParameters: param);
+      } else {
+        LoggingInfo.instance.error(
+          'Invalid path name received from firebase notification: $pathName',
+        );
+        AppRouter.router.goNamed(FamilyPages.profileSelection.name);
+        return;
+      }
+      LoggingInfo.instance.info(
+        'Navigating to ${data['Path']}, from firebase notification type ${data['Type']}',
+      );
+    } else {
+      LoggingInfo.instance.info(
+        'Navigating to home screen, from firebase notification type ${data['Type']}, no path found.',
+      );
+      AppRouter.router.goNamed(FamilyPages.profileSelection.name);
+    }
+  }
 }
