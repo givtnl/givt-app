@@ -47,10 +47,6 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
   Future<void> _checkForRedirect() async {
     try {
       await _authRepository.initAuth();
-      Future.delayed(
-        const Duration(seconds: 2),
-        () => NotificationService.instance.scheduleBedtimeTestNotifications(),
-      );
       final user = _authRepository.getCurrentUser();
       final profiles = await _profilesRepository.refreshProfiles();
 
