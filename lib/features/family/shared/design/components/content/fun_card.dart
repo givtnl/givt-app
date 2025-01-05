@@ -53,7 +53,7 @@ class FunCard extends StatelessWidget {
             if (button != null) ...[
               const SizedBox(height: 16),
               button!,
-            ]
+            ],
           ],
         ),
       ),

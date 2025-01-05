@@ -130,6 +130,7 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<AvatarsCubit>(

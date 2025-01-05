@@ -81,7 +81,7 @@ class FunMissionCard extends StatelessWidget {
                         uiModel.actionIcon,
                         color: FamilyAppTheme.primary40.withOpacity(0.75),
                       ),
-                    )
+                    ),
                 ],
               ),
             ),

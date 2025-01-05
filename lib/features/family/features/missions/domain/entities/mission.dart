@@ -8,6 +8,7 @@ class Mission extends Equatable {
     required this.title,
     required this.description,
     required this.progress,
+    required this.namedPath,
   });
 
   /// Create a Mission from JSON map.
@@ -17,6 +18,7 @@ class Mission extends Equatable {
       title: json['title'] as String,
       description: json['description'] as String,
       progress: (json['progress'] as num).toDouble(),
+      namedPath: json['namedPath'] as String,
     );
   }
 
@@ -25,6 +27,7 @@ class Mission extends Equatable {
       title: title,
       description: description,
       progress: GoalProgressUImodel(amount: progress),
+      namedPage: namedPath,
     );
   }
   
@@ -33,6 +36,7 @@ class Mission extends Equatable {
   final String title;
   final String description;
   final double progress; // 0.0 to 100.0
+  final String namedPath; // Optional named path for navigation
 
   bool isCompleted() => progress >= 100;
 
@@ -43,12 +47,14 @@ class Mission extends Equatable {
     String? description,
     String? icon,
     double? progress,
+    String? namedPath,
   }) {
     return Mission(
       missionKey: missionKey ?? this.missionKey,
       title: title ?? this.title,
       description: description ?? this.description,
       progress: progress ?? this.progress,
+      namedPath: namedPath ?? this.namedPath,
     );
   }
 
@@ -59,6 +65,7 @@ class Mission extends Equatable {
       'title': title,
       'description': description,
       'progress': progress,
+      'namedPath': namedPath,
     };
   }
 
@@ -68,5 +75,6 @@ class Mission extends Equatable {
         title,
         description,
         progress,
+        namedPath,
       ];
 }

@@ -17,7 +17,17 @@ class MissionLocalDataSourceImpl implements MissionLocalDataSource {
     final missionJson = prefs.getString(_missionsKey);
 
     if (missionJson == null) {
-      return [];
+      // Default list
+      // We might need to check if there is already bedtime set?
+      return [
+        const Mission(
+          missionKey: 'BEDTIME',
+          title: 'Mission Bedtime',
+          description: 'Make it a habit',
+          progress: 0,
+          namedPath: 'FamilyPages.setupBedtime.name',
+        )
+      ];
     }
 
     final decodedList = jsonDecode(missionJson) as List<dynamic>;

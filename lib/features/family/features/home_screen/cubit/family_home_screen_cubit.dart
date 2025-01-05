@@ -6,6 +6,7 @@ import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
@@ -24,6 +25,7 @@ class FamilyHomeScreenCubit
     this._impactGroupsRepository,
     this._reflectAndShareRepository,
     this._familyAuthRepository,
+    this._missionRepository,
     this._networkInfo,
   ) : super(const BaseState.loading());
 
@@ -31,6 +33,7 @@ class FamilyHomeScreenCubit
   final ImpactGroupsRepository _impactGroupsRepository;
   final ReflectAndShareRepository _reflectAndShareRepository;
   final FamilyAuthRepository _familyAuthRepository;
+  final MissionRepository _missionRepository;
   final NetworkInfo _networkInfo;
 
   List<Profile> profiles = [];
@@ -46,7 +49,10 @@ class FamilyHomeScreenCubit
       await _handleUserUpdate(user);
     });
 
-    _missionStats = MissionStats(missionsToBeCompleted: 0);
+    final missions = await _missionRepository.getMissions();
+    _missionStats = MissionStats(
+      missionsToBeCompleted: missions.where((m) => !m.isCompleted()).length,
+    );
 
     _onProfilesChanged(await _profilesRepository.getProfiles());
     _onGroupsChanged(
