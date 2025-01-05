@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.d
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:go_router/go_router.dart';
 
 class MissionsScreen extends StatefulWidget {
   const MissionsScreen({super.key});
@@ -70,8 +71,8 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   final mission = _missions(uiModel)[index];
                   return FunMissionCard(
                     uiModel: mission,
-                    onTap: () {
-                      //TODO
+                    onTap: mission.namedPage == null ? null : () {
+                      context.goNamed(mission.namedPage!);
                     },
                   );
                 },

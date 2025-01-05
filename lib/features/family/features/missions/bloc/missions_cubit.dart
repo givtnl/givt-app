@@ -23,6 +23,7 @@ class MissionsCubit extends CommonCubit<MissionsUIModel, dynamic> {
       title: 'Mission Bedtime',
       description: 'Make it a habit',
       progress: GoalProgressUImodel(amount: 0),
+      namedPage: 'SETUP-BEDTIME',
     ),
   ];
   final _completedMissions = <FunMissionCardUIModel>[

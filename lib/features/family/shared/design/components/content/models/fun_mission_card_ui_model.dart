@@ -9,6 +9,7 @@ class FunMissionCardUIModel {
     this.actionIcon = FontAwesomeIcons.chevronRight,
     this.progress,
     this.headerIcon,
+    this.namedPage,
   });
 
   final String title;
@@ -16,4 +17,5 @@ class FunMissionCardUIModel {
   final IconData actionIcon;
   final GoalProgressUImodel? progress;
   final IconData? headerIcon;
+  final String? namedPage;
 }

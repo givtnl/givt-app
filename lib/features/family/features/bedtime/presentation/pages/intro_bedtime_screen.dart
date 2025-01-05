@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/pages/setup_bedtime_screen.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -19,10 +21,9 @@ enum AnimationState {
 
 class IntroBedtimeScreen extends StatefulWidget {
   const IntroBedtimeScreen({
-    required this.arguments,
     super.key,
   });
-  final BedtimeArguments arguments;
+
   @override
   State<IntroBedtimeScreen> createState() => _IntroBedtimeScreenState();
 }
@@ -66,9 +67,19 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   AnimationState _currentState = AnimationState.initial;
   int tapCount = 0;
 
+  BedtimeArguments? arguments;
+
   @override
   void initState() {
     super.initState();
+
+    final reflectAndShareRepository = getIt<ReflectAndShareRepository>();
+    reflectAndShareRepository.getKidsWithoutBedtime().then((profiles) {
+      arguments = BedtimeArguments(
+        profiles: profiles,
+      );
+    });
+
     _controllers = List.generate(12, (index) {
       int duration;
       if (index == 0) {
@@ -450,8 +461,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                             PageRouteBuilder<dynamic>(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      SetupBedtimeScreen(
-                                          arguments: widget.arguments),
+                                      SetupBedtimeScreen(arguments: arguments!),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 return FadeTransition(

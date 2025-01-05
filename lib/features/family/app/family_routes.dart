@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/pages/intro_bedtime_screen.dart';
 import 'package:givt_app/features/family/features/child_details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/family/features/child_details/pages/child_details_page.dart';
 import 'package:givt_app/features/family/features/edit_child_name/cubit/edit_child_cubit.dart';
@@ -174,6 +175,11 @@ class FamilyAppRoutes {
             childGuid: state.uri.queryParameters['childId'] ?? '',
             imageUrl: state.uri.queryParameters['pictureUrl'] ?? '',
           ),
+        ),
+        GoRoute(
+          path: FamilyPages.setupBedtime.path,
+          name: FamilyPages.setupBedtime.name,
+          builder: (context, state) => const IntroBedtimeScreen(),
         ),
         GoRoute(
           path: FamilyPages.parentSummary.path,

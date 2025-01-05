@@ -57,17 +57,6 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               Navigator.of(context).pushReplacement(
                 const GratefulScreen().toRoute(context),
               );
-            case RedirectToBedtimeSelection():
-              _cubit.saveSummary();
-              Navigator.of(context).push(IntroBedtimeScreen(
-                arguments: BedtimeArguments(
-                  BedtimeConfig.defaultBedtimeHour,
-                  BedtimeConfig.defaultWindDownMinutes,
-                  profiles: custom.kidsWithoutBedtime,
-                  bedtimes: const [],
-                  index: 0,
-                ),
-              ).toRoute(context));
           }
         },
         onData: (context, uiModel) {
