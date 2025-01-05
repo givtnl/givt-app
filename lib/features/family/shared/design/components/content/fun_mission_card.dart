@@ -18,7 +18,6 @@ class FunMissionCard extends StatelessWidget {
           title: 'Loading...',
           description: '',
         ),
-        onTap: () {},
         isLoading: true,
       );
 
