@@ -22,14 +22,10 @@ class MissionsCubit extends CommonCubit<MissionsUIModel, dynamic> {
     FunMissionCardUIModel(
       title: 'Mission Bedtime',
       description: 'Make it a habit',
-      progress: GoalProgressUImodel(amount: 50),
+      progress: GoalProgressUImodel(amount: 0),
     ),
   ];
   final _completedMissions = <FunMissionCardUIModel>[
-    FunMissionCardUIModel(
-      title: 'Open the app',
-      description: 'You did it!',
-    ),
   ];
 
   void _emitData() {

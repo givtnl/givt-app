@@ -75,6 +75,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const stageColorPulse = Color(0xFFFFD669);
   static const stageColorPodium = Color(0xFFF5A563);
   static const neutral100 = Color(0xFFFEFFFF);
+  static const neutral95 = Color(0xFFF3F1E9);
   static const neutral90 = Color(0xFFE4E3DB);
   static const neutral70 = Color(0xFFACABA4);
 
@@ -86,6 +87,8 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const neutralVariant95 = Color(0xFFEEF2E4);
 
   static const opacityWhite75 = Color(0x4CFFFFFF);
+
+  static const opacityBlack50 = Color(0x80000000);
 
   static const disabledTileBackground = Color(0xFFF5F4F5);
   static const disabledTileBorder = Color(0xFFC8C6C9);

@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/features/missions/presentation/models/m
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_goal.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -52,11 +53,16 @@ class _MissionsScreenState extends State<MissionsScreen> {
               ),
               const SizedBox(height: 24),
               if (_missions(uiModel).isEmpty)
-                BodyMediumText(
-                  _selectedIndex == 0
-                      ? "You don't have any missions currently"
-                      : "You haven't completed any missions yet",
-                  textAlign: TextAlign.center,
+                FunCard(
+                  title: null,
+                  content: BodyMediumText.opacityBlack50(
+                    _selectedIndex == 0
+                        ? "You don't have any missions currently"
+                        : "You haven't completed any missions yet",
+                    textAlign: TextAlign.center,
+                  ),
+                  button: null,
+                  icon: FunGoal.neutral95(),
                 ),
               ...List.generate(
                 _missions(uiModel).length,

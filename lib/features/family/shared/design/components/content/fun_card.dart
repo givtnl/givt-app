@@ -13,7 +13,7 @@ class FunCard extends StatelessWidget {
   });
 
   final FunIcon icon;
-  final String title;
+  final String? title;
   final Widget content;
   final Widget? button;
 
@@ -41,15 +41,19 @@ class FunCard extends StatelessWidget {
                 child: icon,
               ),
             ),
-            const SizedBox(height: 16),
-            TitleMediumText(
-              title,
-              textAlign: TextAlign.center,
-            ),
+            if (title != null) ...[
+              const SizedBox(height: 16),
+              TitleMediumText(
+                title!,
+                textAlign: TextAlign.center,
+              ),
+            ],
             const SizedBox(height: 8),
             content,
-            if (button != null) const SizedBox(height: 16),
-            if (button != null) button!,
+            if (button != null) ...[
+              const SizedBox(height: 16),
+              button!,
+            ]
           ],
         ),
       ),

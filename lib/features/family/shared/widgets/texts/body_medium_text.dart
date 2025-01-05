@@ -46,6 +46,13 @@ class BodyMediumText extends StatelessWidget {
   factory BodyMediumText.tertiary40(String text) =>
       BodyMediumText(text, color: FamilyAppTheme.tertiary40);
 
+  factory BodyMediumText.opacityBlack50(String text, {TextAlign? textAlign}) =>
+      BodyMediumText(
+        text,
+        textAlign: textAlign,
+        color: FamilyAppTheme.opacityBlack50,
+      );
+
   final String text;
   final Color? color;
   final TextAlign? textAlign;
