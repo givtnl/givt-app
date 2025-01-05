@@ -54,8 +54,8 @@ class _MissionsScreenState extends State<MissionsScreen> {
               if (_missions(uiModel).isEmpty)
                 BodyMediumText(
                   _selectedIndex == 0
-                      ? 'You don’t have any missions currently'
-                      : 'You haven’t completed any missions yet',
+                      ? "You don't have any missions currently"
+                      : "You haven't completed any missions yet",
                   textAlign: TextAlign.center,
                 ),
               ...List.generate(

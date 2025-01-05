@@ -24,6 +24,9 @@ import 'package:givt_app/features/family/features/home_screen/cubit/navigation_b
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
+import 'package:givt_app/features/family/features/missions/data/datasources/mission_local_datasource.dart';
+import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
+import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository_impl.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -268,6 +271,14 @@ void initRepositories() {
     )
     ..registerLazySingleton<ResetPasswordRepository>(
       () => ResetPasswordRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<MissionLocalDataSource>(
+      MissionLocalDataSourceImpl.new,
+    )
+    ..registerLazySingleton<MissionRepository>(
+      () => MissionRepositoryImpl(
         getIt(),
       ),
     );

@@ -3,7 +3,7 @@ import 'package:givt_app/features/family/features/missions/domain/entities/missi
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 
 class MissionRepositoryImpl implements MissionRepository {
-  MissionRepositoryImpl({required this.localDataSource});
+  MissionRepositoryImpl(this.localDataSource);
 
   final MissionLocalDataSource localDataSource;
 
