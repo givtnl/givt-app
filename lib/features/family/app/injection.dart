@@ -126,6 +126,7 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<AvatarsCubit>(
@@ -166,7 +167,7 @@ void initCubits() {
       ),
     )
     ..registerFactory<SplashCubit>(
-      () => SplashCubit(getIt(), getIt()),
+      () => SplashCubit(getIt(), getIt(), getIt()),
     );
 }
 
