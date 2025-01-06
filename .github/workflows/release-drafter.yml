@@ -49,7 +49,7 @@ jobs:
           echo "builddate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
         id: version  # this is used on variable path
         
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           node-version: 16
