@@ -55,6 +55,7 @@ class SetupBedtimeCubit extends CommonCubit<dynamic, Bedtime> {
     try {
       await _editChildRepository.editChildBedtime(bedtime);
       emitCustom(bedtime);
+      emitInitial();
     } catch (e, s) {
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
       emitError('An unexpected error occurred while saving bedtime settings.');
