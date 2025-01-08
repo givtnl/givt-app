@@ -51,8 +51,10 @@ class _KidsAvatarSelectionScreenState extends State<KidsAvatarSelectionScreen> {
               context: context,
               barrierDismissible: false,
               barrierColor:
-                  Theme.of(context).colorScheme.primary.withOpacity(.25),
-              builder: (context) => const RewardBannerDialog(),
+                  Theme.of(context).colorScheme.primary.withOpacity(.5),
+              builder: (context) => const MissionCompletedBannerDialog(
+                missionName: 'Avatar updated',
+              ),
             );
           }
         }

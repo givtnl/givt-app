@@ -1,66 +1,50 @@
-import 'package:givt_app/features/family/features/missions/data/datasources/mission_local_datasource.dart';
+import 'dart:async';
+
 import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class MissionRepositoryImpl implements MissionRepository {
-  MissionRepositoryImpl(this.localDataSource);
+  MissionRepositoryImpl(this._apiService);
 
-  final MissionLocalDataSource localDataSource;
+  final FamilyAPIService _apiService;
+
+  final StreamController<Mission> _missionAchievedStreamController =
+      StreamController<Mission>.broadcast();
+
+  final StreamController<List<Mission>> _missionsStreamController =
+      StreamController<List<Mission>>.broadcast();
+
+  List<Mission> _missions = [];
 
   @override
-  Future<List<Mission>> getMissions() async {
-    return localDataSource.getMissions();
+  Future<List<Mission>> getMissions({bool force = false}) async {
+    if (force || _missions.isEmpty) {
+      await _fetchMissions();
+    }
+
+    return _missions;
+  }
+
+  Future<void> _fetchMissions() async {
+    _missions = (await _apiService.fetchFamilyMissions())
+        .map((m) => Mission.fromJson(m as Map<String, dynamic>))
+        .toList();
+
+    _missionsStreamController.add(_missions);
   }
 
   @override
-  Future<void> addMission(Mission mission) async {
-    final currentMissions = await localDataSource.getMissions();
-
-    // If you want to prevent duplicates by key, remove existing first:
-    currentMissions
-      ..removeWhere((m) => m.missionKey == mission.missionKey)
-      ..add(mission);
-    await localDataSource.saveMissions(currentMissions);
+  Future<void> missionAchieved(String missionKey) async {
+    final mission = (await getMissions()).firstWhere((m) => m.missionKey == missionKey);
+    _missionAchievedStreamController.add(mission);
+    await _fetchMissions();
   }
 
   @override
-  Future<void> completeMission(String missionKey) async {
-    final currentMissions = await localDataSource.getMissions();
-
-    final updated = currentMissions.map((m) {
-      if (m.missionKey == missionKey) {
-        return m.copyWith(progress: 100);
-      }
-      return m;
-    }).toList();
-
-    await localDataSource.saveMissions(updated);
-  }
+  Stream<Mission> onMissionAchieved() =>
+      _missionAchievedStreamController.stream;
 
   @override
-  Future<void> unCompleteMission(String missionKey) async {
-    final currentMissions = await localDataSource.getMissions();
-
-    final updated = currentMissions.map((m) {
-      if (m.missionKey == missionKey) {
-        return m.copyWith(progress: 0);
-      }
-      return m;
-    }).toList();
-
-    await localDataSource.saveMissions(updated);
-  }
-
-  @override
-  Future<void> updateMissionProgress(String missionKey, double progress) async {
-    final currentMissions = await localDataSource.getMissions();
-    final updated = currentMissions.map((m) {
-      if (m.missionKey == missionKey && !m.isCompleted()) {
-        return m.copyWith(progress: progress);
-      }
-      return m;
-    }).toList();
-
-    await localDataSource.saveMissions(updated);
-  }
+  Stream<List<Mission>> onMissionsUpdated() => _missionsStreamController.stream;
 }

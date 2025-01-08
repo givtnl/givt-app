@@ -1,9 +1,9 @@
 import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
 
-abstract class MissionRepository {
+mixin MissionRepository {
   Future<List<Mission>> getMissions();
-  Future<void> addMission(Mission mission);
-  Future<void> completeMission(String missionKey);
-  Future<void> unCompleteMission(String missionKey);
-  Future<void> updateMissionProgress(String missionKey, double progress);
+  Future<void> missionAchieved(String missionKey);
+
+  Stream<Mission> onMissionAchieved();
+  Stream<List<Mission>> onMissionsUpdated();
 }

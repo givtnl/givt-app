@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/widgets/content/givt_banner.dart';
 import 'package:go_router/go_router.dart';
 
-class RewardBannerDialog extends StatefulWidget {
-  const RewardBannerDialog({
+class MissionCompletedBannerDialog extends StatefulWidget {
+  const MissionCompletedBannerDialog({
+    required this.missionName,
     super.key,
   });
 
+  final String missionName;
+
   @override
-  State<RewardBannerDialog> createState() => _RewardBannerDialogState();
+  State<MissionCompletedBannerDialog> createState() =>
+      _MissionCompletedBannerDialogState();
 }
 
-class _RewardBannerDialogState extends State<RewardBannerDialog>
+class _MissionCompletedBannerDialogState
+    extends State<MissionCompletedBannerDialog>
     with SingleTickerProviderStateMixin {
   static const Duration _animationDuration = Duration(milliseconds: 600);
   static const Duration _showingBannerInitialDelay =
@@ -63,7 +68,7 @@ class _RewardBannerDialogState extends State<RewardBannerDialog>
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: const ValueKey('Avatar-Updated-Reward-Banner'),
+      key: const ValueKey('Reward-Banner'),
       onDismissed: (_) {
         _controller.stop();
         context.pop();
@@ -76,10 +81,10 @@ class _RewardBannerDialogState extends State<RewardBannerDialog>
             right: 0,
             child: SlideTransition(
               position: _offsetAnimation,
-              child: const GivtBanner(
+              child: GivtBanner(
                 badgeImage: 'assets/family/images/reward_badge.svg',
-                title: 'New Reward',
-                content: 'Avatar updated',
+                title: 'Completed',
+                content: widget.missionName,
               ),
             ),
           ),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
+import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
 import 'package:http/http.dart';
 
 class FamilyAPIService {
@@ -519,5 +520,20 @@ class FamilyAPIService {
         ],
       },
     );
+  }
+
+  Future<List<dynamic>> fetchFamilyMissions() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/missions/family');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['items'] as List<dynamic>;
   }
 }
