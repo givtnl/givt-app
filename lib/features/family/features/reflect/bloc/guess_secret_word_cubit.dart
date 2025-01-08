@@ -49,15 +49,9 @@ class GuessSecretWordCubit
       emitCustom(const GuessTheWordCustom.showConfetti());
       // just to make sure we fire the analytics events once and save the stats once
       if (!_hasSuccess) {
-        final kidsWithoutBedtime =
-            await _reflectAndShareRepository.getKidsWithoutBedtime();
         // Check if it's the last game and delay for 2 seconds before continuing
         if (_reflectAndShareRepository.isGameFinished()) {
           Timer(const Duration(seconds: 2), () {
-            if (kidsWithoutBedtime.isNotEmpty) {
-              redirectToBedtimeSelection(kidsWithoutBedtime);
-              return;
-            }
             emitCustom(const GuessTheWordCustom.redirectToSummary());
           });
         }
@@ -73,21 +67,6 @@ class GuessSecretWordCubit
       _hasSuccess = true;
     }
     _emitData();
-  }
-
-  void redirectToBedtimeSelection(List<Profile> kidsWithoutBedtime) {
-    emitCustom(
-      GuessTheWordCustom.redirectToBedtimeSelection(
-        kidsWithoutBedtime,
-      ),
-    );
-    _emitData();
-    AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.redirectedFromGratitudeGameToBedtimeSelection,
-      eventProperties: {
-        'total': _attempts,
-      },
-    );
   }
 
   void saveSummary() {

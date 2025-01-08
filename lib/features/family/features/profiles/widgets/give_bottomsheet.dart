@@ -189,7 +189,9 @@ class GiveBottomSheet extends StatelessWidget {
   }
 
   void showEmptyWalletBottomSheet(
-      BuildContext context, VoidCallback afterPopAction) {
+    BuildContext context,
+    VoidCallback afterPopAction,
+  ) {
     EmptyWalletBottomSheet.show(context, afterPopAction);
   }
 }

@@ -18,11 +18,11 @@ class GoalActiveWidget extends StatelessWidget {
         final currentGoal = state.familyGoal;
         final org = state.familyGroup.organisation;
         return FunMissionCard(
-          uiModel: FunMissionCardUiModel(
+          uiModel: FunMissionCardUIModel(
             title: org.organisationName ?? 'Name Placeholder',
             description:
                 '${context.l10n.familyGoalPrefix}\$${currentGoal.goalAmount}',
-            progress: GoalProgressUimodel(
+            progress: GoalProgressUImodel(
               amount: currentGoal.amount,
               goalAmount: currentGoal.goalAmount,
               totalAmount: currentGoal.totalAmount,

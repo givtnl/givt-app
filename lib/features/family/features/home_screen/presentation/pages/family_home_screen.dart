@@ -137,7 +137,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               });
                             },
                             viewportFraction: 1,
-                            aspectRatio: 3,
+                            height: 125,
                           ),
                         ),
                         if (carrouselItems.length > 1)
@@ -260,7 +260,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   }
 
   List<Widget> _buildCarouselItems(
-      FamilyHomeScreenUIModel uiModel, bool hasMissions) {
+    FamilyHomeScreenUIModel uiModel,
+    bool hasMissions,
+  ) {
     final items = [
       MissionsContainer(uiModel.missionStats),
       StatsContainer(uiModel.gameStats),

@@ -15,7 +15,7 @@ class GoalCompletedWidget extends StatelessWidget {
     final impactGroupsCubit = context.watch<ImpactGroupsCubit>();
     final org = impactGroupsCubit.state.familyGroup.organisation;
     return FunMissionCard(
-      uiModel: FunMissionCardUiModel(
+      uiModel: FunMissionCardUIModel(
         title: org.organisationName ?? 'Name Placeholder',
         description: 'Family Goal completed. Great job!',
         headerIcon: FontAwesomeIcons.check,

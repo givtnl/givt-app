@@ -24,6 +24,8 @@ import 'package:givt_app/features/family/features/home_screen/cubit/navigation_b
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
+import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
+import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository_impl.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -127,6 +129,7 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<AvatarsCubit>(
@@ -155,7 +158,7 @@ void initCubits() {
       () => UsSignupCubit(getIt(), getIt()),
     )
     ..registerFactory<MissionsCubit>(
-      () => MissionsCubit(),
+      () => MissionsCubit(getIt()),
     )
     ..registerFactory<GameSummariesCubit>(
       GameSummariesCubit.new,
@@ -268,6 +271,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<ResetPasswordRepository>(
       () => ResetPasswordRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<MissionRepository>(
+      () => MissionRepositoryImpl(
         getIt(),
       ),
     );

@@ -62,7 +62,10 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
           color: FamilyAppTheme.primary98,
           child: RetryErrorWidget(
             onTapPrimaryButton: () => _cubit.onClickContinue(
-                child.id, bedtimeSliderValue, windDownValue),
+              child.id,
+              bedtimeSliderValue,
+              windDownValue,
+            ),
             secondaryButtonText: 'Go Home',
             onTapSecondaryButton: () =>
                 context.goNamed(FamilyPages.profileSelection.name),
@@ -99,8 +102,8 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
                 pageBuilder: (context, animation, secondaryAnimation) =>
                     SetupBedtimeScreen(
                   arguments: BedtimeArguments(
-                    bedtimeSliderValue,
-                    windDownValue,
+                    previousBedtime: bedtimeSliderValue,
+                    previousWinddownMinutes: windDownValue,
                     profiles: widget.arguments.profiles,
                     bedtimes: [bedtime, ...widget.arguments.bedtimes],
                     index: widget.arguments.index + 1,
@@ -121,17 +124,19 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
           return Material(
             child: ColoredBox(
               color: FamilyAppTheme.secondary10,
-              child: Stack(children: [
-                cityAtBottom(width, height),
-                SafeArea(
-                  child: Stack(
-                    children: [
-                      avatarEllipse(width, height, child),
-                      content(child),
-                    ],
+              child: Stack(
+                children: [
+                  cityAtBottom(width, height),
+                  SafeArea(
+                    child: Stack(
+                      children: [
+                        avatarEllipse(width, height, child),
+                        content(child),
+                      ],
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ),
           );
         },
@@ -159,12 +164,13 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
           top: 24 + 22,
           left: (width / 2) - (80 / 2),
           child: AvatarWidget(
-              uiModel: AvatarUIModel(
-                avatarUrl: child.pictureURL,
-                text: child.firstName,
-              ),
-              circleSize: 80,
-              onTap: () {}),
+            uiModel: AvatarUIModel(
+              avatarUrl: child.pictureURL,
+              text: child.firstName,
+            ),
+            circleSize: 80,
+            onTap: () {},
+          ),
         ),
       ],
     );
@@ -237,7 +243,10 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
           const SizedBox(height: 8),
           FunButton(
             onTap: () => _cubit.onClickContinue(
-                child.id, bedtimeSliderValue, windDownValue),
+              child.id,
+              bedtimeSliderValue,
+              windDownValue,
+            ),
             isLoading: isLoading,
             text: 'Continue',
             analyticsEvent: AnalyticsEvent(
