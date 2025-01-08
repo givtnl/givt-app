@@ -5,9 +5,11 @@ import 'package:audioplayers/audioplayers.dart' as ap;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 class FunAudioPlayer extends StatefulWidget {
   const FunAudioPlayer({
@@ -194,16 +196,29 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
   }
 
   Future<void> play() async {
+
+    await AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.audioRecordingPlayed,
+    );
+    
     widget.onPlayExtension?.call();
     await _audioPlayer.play(_source);
   }
 
   Future<void> pause() async {
+    await AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.audioRecordingPlayPaused,
+    );
+
     await _audioPlayer.pause();
     setState(() {});
   }
 
   Future<void> stop() async {
+    await AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.audioRecordingPlayStopped,
+    );
+
     await _audioPlayer.stop();
     setState(() {});
   }
