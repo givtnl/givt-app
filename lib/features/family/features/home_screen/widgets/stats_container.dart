@@ -70,6 +70,7 @@ class StatsContainer extends StatelessWidget {
     final minutesText = minutes == 1 ? ' min together' : ' mins together';
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const LabelMediumText('Game activity this week'),
         const SizedBox(height: 8),

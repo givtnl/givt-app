@@ -6,11 +6,13 @@ import 'package:givt_app/features/family/features/missions/presentation/models/m
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_goal.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:go_router/go_router.dart';
 
 class MissionsScreen extends StatefulWidget {
   const MissionsScreen({super.key});
@@ -52,11 +54,16 @@ class _MissionsScreenState extends State<MissionsScreen> {
               ),
               const SizedBox(height: 24),
               if (_missions(uiModel).isEmpty)
-                BodyMediumText(
-                  _selectedIndex == 0
-                      ? 'You don’t have any missions currently'
-                      : 'You haven’t completed any missions yet',
-                  textAlign: TextAlign.center,
+                FunCard(
+                  title: null,
+                  content: BodyMediumText.opacityBlack50(
+                    _selectedIndex == 0
+                        ? "You don't have any missions currently"
+                        : "You haven't completed any missions yet",
+                    textAlign: TextAlign.center,
+                  ),
+                  button: null,
+                  icon: FunGoal.neutral95(),
                 ),
               ...List.generate(
                 _missions(uiModel).length,
@@ -64,9 +71,13 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   final mission = _missions(uiModel)[index];
                   return FunMissionCard(
                     uiModel: mission,
-                    onTap: () {
-                      //TODO
-                    },
+                    onTap: mission.namedPage == null ||
+                            mission.progress?.amount ==
+                                mission.progress?.goalAmount
+                        ? null
+                        : () {
+                            context.goNamed(mission.namedPage!);
+                          },
                   );
                 },
               ),
@@ -77,6 +88,6 @@ class _MissionsScreenState extends State<MissionsScreen> {
     );
   }
 
-  List<FunMissionCardUiModel> _missions(MissionsUIModel uiModel) =>
+  List<FunMissionCardUIModel> _missions(MissionsUIModel uiModel) =>
       _selectedIndex == 0 ? uiModel.todoMissions : uiModel.completedMissions;
 }

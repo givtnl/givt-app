@@ -137,14 +137,16 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               });
                             },
                             viewportFraction: 1,
-                            aspectRatio: 3,
+                            height: 125,
                           ),
                         ),
-                        if(carrouselItems.length > 1) const SizedBox(height: 8),
-                        if(carrouselItems.length > 1) PagerDotIndicator(
-                          count: carrouselItems.length,
-                          index: _carrouselIndex,
-                        ),
+                        if (carrouselItems.length > 1)
+                          const SizedBox(height: 8),
+                        if (carrouselItems.length > 1)
+                          PagerDotIndicator(
+                            count: carrouselItems.length,
+                            index: _carrouselIndex,
+                          ),
                       ],
                     ),
                   ],
@@ -258,16 +260,18 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   }
 
   List<Widget> _buildCarouselItems(
-      FamilyHomeScreenUIModel uiModel, bool hasMissions) {
+    FamilyHomeScreenUIModel uiModel,
+    bool hasMissions,
+  ) {
     final items = [
-      //MissionsContainer(uiModel.missionStats),
+      MissionsContainer(uiModel.missionStats),
       StatsContainer(uiModel.gameStats),
     ];
 
     // If there are no missions, move the stats container to the first position
-    /*if (!hasMissions) {
+    if (!hasMissions) {
       items.insert(0, items.removeAt(1));
-    }*/
+    }
 
     return items;
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class GivtBanner extends StatelessWidget {
@@ -51,24 +52,18 @@ class GivtBanner extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                LabelMediumText(
                   title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: FamilyAppTheme.highlight40,
-                        fontWeight: FontWeight.w700,
-                      ),
+                  color: FamilyAppTheme.highlight40,
                 ),
-                Text(
+                TitleMediumText(
                   content,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        color: FamilyAppTheme.highlight40,
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
+                  color: FamilyAppTheme.highlight30,
+                )
               ],
             ),
           ],

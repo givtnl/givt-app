@@ -19,9 +19,12 @@ import 'package:givt_app/features/family/features/home_screen/presentation/model
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
+import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/reward_banner_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
@@ -58,7 +61,10 @@ class NavigationBarHomeScreen extends StatefulWidget {
 class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final _cubit = getIt<NavigationBarHomeCubit>();
   final _connectionCubit = getIt<InternetConnectionCubit>();
+  final _missionRepo = getIt<MissionRepository>();
+
   late final AppLifecycleListener _listener;
+  late final StreamSubscription<Mission> _missionAchievedListener;
 
   int _currentIndex = 0;
   static bool _isShowingBoxOrigin = false;
@@ -221,12 +227,23 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
       onHide: _connectionCubit.pause,
       onPause: _connectionCubit.pause,
     );
+
+    _missionAchievedListener = _missionRepo.onMissionAchieved().listen((mission) {
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        barrierColor: Theme.of(context).colorScheme.primary.withOpacity(.25),
+        builder: (context) => MissionCompletedBannerDialog(missionName: mission.title),
+      );
+    });
+
     super.initState();
   }
 
   @override
   void dispose() {
     _listener.dispose();
+    _missionAchievedListener.cancel();
     super.dispose();
   }
 

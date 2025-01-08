@@ -15,24 +15,13 @@ class LeaveGameCubit extends CommonCubit<dynamic, LeaveGameCustom> {
   }
 
   Future<void> onConfirmLeaveGameClicked() async {
-    var kidsWithoutBedtimeSetup = <Profile>[];
-    try {
-      kidsWithoutBedtimeSetup =
-          await _reflectAndShareRepository.getKidsWithoutBedtime();
-    } catch (e) {
-      // do nothing, as a fallback we just don't navigate to the bedtime screens
-    }
     final isFirstRound = _reflectAndShareRepository.isFirstRound();
     final hasAtLeastStartedInterview =
         _reflectAndShareRepository.hasStartedInterview();
     final hasAnyGenerousPowerBeenSelected =
         _reflectAndShareRepository.hasAnyGenerousPowerBeenSelected();
 
-    if (!isFirstRound && kidsWithoutBedtimeSetup.isNotEmpty) {
-      emitCustom(
-        LeaveGameCustom.introBedtime(kidsWithoutBedtimeSetup),
-      );
-    } else if ((isFirstRound && hasAtLeastStartedInterview) &&
+    if ((isFirstRound && hasAtLeastStartedInterview) &&
         !hasAnyGenerousPowerBeenSelected) {
       emitCustom(
         const LeaveGameCustom.summary(),

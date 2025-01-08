@@ -6,9 +6,6 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/pages/intro_bedtime_screen.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/leave_game_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/leave_game_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/grateful_screen.dart';
@@ -65,19 +62,6 @@ class _LeaveGameButtonState extends State<LeaveGameButton> {
       case LeaveGameCustomHome():
         context.goNamed(
           FamilyPages.profileSelection.name,
-        );
-      case final LeaveGameCustomIntroBedtime event:
-        _cubit.saveSummary();
-        Navigator.of(context).push(
-          IntroBedtimeScreen(
-            arguments: BedtimeArguments(
-              BedtimeConfig.defaultBedtimeHour,
-              BedtimeConfig.defaultWindDownMinutes,
-              profiles: event.profiles,
-              bedtimes: const [],
-              index: 0,
-            ),
-          ).toRoute(context),
         );
       case LeaveGameCustomSummary():
         Navigator.of(context).push(const SummaryScreen().toRoute(context));

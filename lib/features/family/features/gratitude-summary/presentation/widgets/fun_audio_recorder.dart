@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/data/record_utils.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
-import 'package:givt_app/shared/widgets/common_icons.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:record/record.dart';
 
 class FunAudioRecorder extends StatefulWidget {
@@ -65,6 +66,10 @@ class _FunAudioRecorderState extends State<FunAudioRecorder> with AudioRecorderM
         _recordDuration = 0;
 
         _startTimer();
+
+        await AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.audioRecordingStarted,
+        );
       }
     } catch (e) {
       if (kDebugMode) {
@@ -75,6 +80,11 @@ class _FunAudioRecorderState extends State<FunAudioRecorder> with AudioRecorderM
 
   Future<void> _stop() async {
     final path = await _audioRecorder.stop();
+
+
+    await AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.audioRecordingStopped,
+    );
 
     if (path != null) {
       widget.onStop(path);

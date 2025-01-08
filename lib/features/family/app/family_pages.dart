@@ -68,10 +68,18 @@ enum FamilyPages {
   ),
 
   //reflect and share:
-  reflectIntro(path: 'reflect-intro', name: 'REFLECT-INTRO'),
+  reflectIntro(
+    path: 'reflect-intro',
+    name: 'REFLECT-INTRO',
+  ),
   assignBedtimeResponsibility(
-      path: 'assign-bedtime-responsibility',
-      name: 'ASSIGN-BEDTIME-RESPONSIBILITY'),
+    path: 'assign-bedtime-responsibility',
+    name: 'ASSIGN-BEDTIME-RESPONSIBILITY',
+  ),
+  setupBedtime(
+    path: 'setup-bedtime',
+    name: 'SETUP-BEDTIME',
+  ),
 
   //Missions
   missions(path: 'missions', name: 'MISSIONS'),

@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
+import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
@@ -23,12 +26,16 @@ class FamilyHomeScreenCubit
     this._impactGroupsRepository,
     this._reflectAndShareRepository,
     this._familyAuthRepository,
+    this._missionRepository,
+    this._networkInfo,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
   final ReflectAndShareRepository _reflectAndShareRepository;
   final FamilyAuthRepository _familyAuthRepository;
+  final MissionRepository _missionRepository;
+  final NetworkInfo _networkInfo;
 
   List<Profile> profiles = [];
   ImpactGroup? _familyGroup;
@@ -42,14 +49,22 @@ class FamilyHomeScreenCubit
     _familyAuthRepository.authenticatedUserStream().listen((user) async {
       await _handleUserUpdate(user);
     });
+    _missionRepository.onMissionsUpdated().listen(_missionsChanged);
 
-    _missionStats = MissionStats(missionsToBeCompleted: 0);
-
+    _missionsChanged(await _missionRepository.getMissions());
     _onProfilesChanged(await _profilesRepository.getProfiles());
     _onGroupsChanged(
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
     );
     unawaited(_getGameStats());
+    _emitData();
+  }
+
+  void _missionsChanged(List<Mission> missions) {
+    _missionStats = MissionStats(
+      missionsToBeCompleted: missions.where((m) => !m.isCompleted()).length,
+    );
+
     _emitData();
   }
 
@@ -65,11 +80,15 @@ class FamilyHomeScreenCubit
           logout();
         }
       } catch (e, s) {
-        LoggingInfo.instance.error(
-          'Error refreshing token, we will logout: $e,\n\n$s',
-          methodName: 'FamilyHomeScreenCubit init',
-        );
-        logout();
+        if (_networkInfo.isConnected) {
+          LoggingInfo.instance.error(
+            'Error refreshing token while we do have internet, we will logout: $e,\n\n$s',
+            methodName: 'FamilyHomeScreenCubit init',
+          );
+          logout();
+        } else {
+          // do nothing, the app will show a no internet connection dialog
+        }
       }
     } else {
       unawaited(_getGameStats());

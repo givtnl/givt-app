@@ -12,49 +12,52 @@ class FunMissionCard extends StatelessWidget {
     this.isLoading = false,
     super.key,
   });
+
   factory FunMissionCard.loading() => FunMissionCard(
-        uiModel: FunMissionCardUiModel(
+        uiModel: FunMissionCardUIModel(
           title: 'Loading...',
           description: '',
         ),
-        onTap: () {},
         isLoading: true,
       );
 
-  final FunMissionCardUiModel uiModel;
+  final FunMissionCardUIModel uiModel;
   final VoidCallback? onTap;
   final bool isLoading;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: FamilyAppTheme.highlight99,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: FamilyAppTheme.neutralVariant95,
-          width: 2,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: FamilyAppTheme.highlight99,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: FamilyAppTheme.neutralVariant95,
+            width: 2,
+          ),
         ),
-      ),
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 16,
-      ),
-      child: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : GestureDetector(
-              onTap: onTap,
-              child: Stack(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
+        child: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Stack(
                 children: [
                   Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (uiModel.headerIcon != null)
-                          FaIcon(uiModel.headerIcon,
-                              color: FamilyAppTheme.primary60),
+                          FaIcon(
+                            uiModel.headerIcon,
+                            color: FamilyAppTheme.primary60,
+                          ),
                         const SizedBox(height: 12),
                         TitleSmallText(
                           uiModel.title,
@@ -78,10 +81,10 @@ class FunMissionCard extends StatelessWidget {
                         uiModel.actionIcon,
                         color: FamilyAppTheme.primary40.withOpacity(0.75),
                       ),
-                    )
+                    ),
                 ],
               ),
-            ),
+      ),
     );
   }
 }
