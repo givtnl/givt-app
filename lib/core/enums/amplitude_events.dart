@@ -358,6 +358,15 @@ enum AmplitudeEvents {
   //Missions
   missionTabsChanged('mission_tabs_changed'),
 
+  // Audio recording/player
+  audioWidgetPlayClicked('audio_widget_play_clicked'),
+  audioWidgetPauseOrStopClicked('audio_widget_pause_or_stop_clicked'),
+  audioRecordingStarted('audio_recording_started'),
+  audioRecordingStopped('audio_recording_stopped'),
+  audioRecordingPlayed('audio_recording_played'),
+  audioRecordingPlayPaused('audio_recording_play_paused'),
+  audioRecordingPlayStopped('audio_recording_play_stopped'),
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
   ;
