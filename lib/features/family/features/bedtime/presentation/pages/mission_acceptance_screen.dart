@@ -49,7 +49,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     vsync: this,
   );
 
-  String buttonText = 'Hold to accept';
+  String buttonText = 'Hold to complete';
   bool holdDownAnimationCompleted = false;
   bool enterAnimationCompleted = false;
 
@@ -149,10 +149,10 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
                     ),
                     child: FadeTransition(
                       opacity: _fadeAnimationController,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 24),
                         child: TitleLargeText(
-                          'Is the ${uiModel.familyName} ready to accept this mission of gratitude?',
+                          'All set up.\nReady to complete mission bedtime?',
                           color: Colors.white,
                           textAlign: TextAlign.center,
                         ),

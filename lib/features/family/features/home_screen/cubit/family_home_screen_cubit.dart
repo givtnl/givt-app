@@ -6,6 +6,7 @@ import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -48,17 +49,22 @@ class FamilyHomeScreenCubit
     _familyAuthRepository.authenticatedUserStream().listen((user) async {
       await _handleUserUpdate(user);
     });
+    _missionRepository.onMissionsUpdated().listen(_missionsChanged);
 
-    final missions = await _missionRepository.getMissions();
-    _missionStats = MissionStats(
-      missionsToBeCompleted: missions.where((m) => !m.isCompleted()).length,
-    );
-
+    _missionsChanged(await _missionRepository.getMissions());
     _onProfilesChanged(await _profilesRepository.getProfiles());
     _onGroupsChanged(
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
     );
     unawaited(_getGameStats());
+    _emitData();
+  }
+
+  void _missionsChanged(List<Mission> missions) {
+    _missionStats = MissionStats(
+      missionsToBeCompleted: missions.where((m) => !m.isCompleted()).length,
+    );
+
     _emitData();
   }
 

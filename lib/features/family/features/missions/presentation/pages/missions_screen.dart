@@ -71,9 +71,13 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   final mission = _missions(uiModel)[index];
                   return FunMissionCard(
                     uiModel: mission,
-                    onTap: mission.namedPage == null ? null : () {
-                      context.goNamed(mission.namedPage!);
-                    },
+                    onTap: mission.namedPage == null ||
+                            mission.progress?.amount ==
+                                mission.progress?.goalAmount
+                        ? null
+                        : () {
+                            context.goNamed(mission.namedPage!);
+                          },
                   );
                 },
               ),

@@ -27,27 +27,27 @@ class FunMissionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: FamilyAppTheme.highlight99,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: FamilyAppTheme.neutralVariant95,
-          width: 2,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: FamilyAppTheme.highlight99,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: FamilyAppTheme.neutralVariant95,
+            width: 2,
+          ),
         ),
-      ),
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
-      ),
-      child: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : GestureDetector(
-              onTap: onTap,
-              child: Stack(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
+        child: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Stack(
                 children: [
                   Center(
                     child: Column(
@@ -84,7 +84,7 @@ class FunMissionCard extends StatelessWidget {
                     ),
                 ],
               ),
-            ),
+      ),
     );
   }
 }
