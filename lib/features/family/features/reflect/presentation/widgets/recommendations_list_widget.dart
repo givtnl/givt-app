@@ -102,6 +102,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                   : index;
               final recommendation =
                   widget.uiModel.organisations[recommendationIndex];
+
               return Container(
                 width: width - 48,
                 padding: const EdgeInsets.only(right: 12),
