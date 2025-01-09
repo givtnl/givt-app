@@ -31,7 +31,7 @@ class Tag extends Equatable {
           pictureUrl: '',
           type: TagType.INTERESTS,
         );
-
+  
   final String key;
   final Areas area;
   final String displayText;
