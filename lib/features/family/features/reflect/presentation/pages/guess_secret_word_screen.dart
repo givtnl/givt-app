@@ -40,8 +40,8 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
 
   @override
   void dispose() {
-    _audioCubit.close();
     super.dispose();
+    _audioCubit.close();
   }
 
   @override
