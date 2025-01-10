@@ -149,7 +149,6 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                     AmplitudeEvents.reflectAndShareResultShuffleRolesClicked,
                   ),
                 ),
-                const SizedBox(height: 16),
               ],
             ],
           );

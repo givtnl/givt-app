@@ -6,22 +6,48 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
-class FunModal extends StatelessWidget {
+class FunModal extends StatefulWidget {
   const FunModal({
     required this.title,
     this.subtitle,
     this.buttons = const [],
     this.icon,
     this.closeAction,
+    this.autoClose,
     super.key,
   });
 
   final FunIcon? icon;
-  final String title;
+  final String? title;
   final String? subtitle;
   final List<FunButton> buttons;
+  final Duration? autoClose;
 
   final VoidCallback? closeAction;
+
+  @override
+  State<FunModal> createState() => _FunModalState();
+
+  Future<void> show(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => this,
+    );
+  }
+}
+
+class _FunModalState extends State<FunModal> {
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.autoClose != null) {
+      Future.delayed(widget.autoClose!, () {
+        widget.closeAction?.call();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,35 +64,39 @@ class FunModal extends StatelessWidget {
           child: Stack(
             children: [
               showCloseButton(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
-                child: Column(
-                  children: [
-                    // Optional Icon
-                    if (icon != null) icon!,
-
-                    const SizedBox(height: 16),
-
-                    // Title
-                    TitleMediumText(
-                      title,
-                      textAlign: TextAlign.center,
-                    ),
-
-                    // Subtitle
-                    if (subtitle != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: BodyMediumText(
-                          subtitle!,
+              SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+                  child: Column(
+                    children: [
+                      // Optional Icon
+                      if (widget.icon != null) widget.icon!,
+                
+                      const SizedBox(height: 16),
+                
+                      // Title
+                      if (widget.title != null)
+                        TitleMediumText(
+                          widget.title!,
                           textAlign: TextAlign.center,
                         ),
-                      ),
-
-                    const SizedBox(height: 16),
-
-                    showButtons(),
-                  ],
+                
+                      // Subtitle
+                      if (widget.subtitle != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: BodyMediumText(
+                            widget.subtitle!,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                
+                      const SizedBox(height: 16),
+                
+                      showButtons(),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -77,7 +107,7 @@ class FunModal extends StatelessWidget {
   }
 
   Widget showCloseButton() {
-    if (closeAction == null) return const SizedBox.shrink();
+    if (widget.closeAction == null) return const SizedBox.shrink();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -89,7 +119,7 @@ class FunModal extends StatelessWidget {
               eventName: AmplitudeEvents.modalCloseButtonClicked,
             );
 
-            closeAction!.call();
+            widget.closeAction!.call();
           },
         ),
       ],
@@ -99,20 +129,12 @@ class FunModal extends StatelessWidget {
   Widget showButtons() {
     return Column(
       children: [
-        for (int i = 0; i < buttons.length; i++)
+        for (int i = 0; i < widget.buttons.length; i++)
           Padding(
             padding: EdgeInsets.only(top: i == 0 ? 0 : 8),
-            child: buttons[i],
+            child: widget.buttons[i],
           ),
       ],
-    );
-  }
-
-  Future<void> show(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => this,
     );
   }
 }

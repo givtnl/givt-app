@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/shared/design/components/actions/fun_bu
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
