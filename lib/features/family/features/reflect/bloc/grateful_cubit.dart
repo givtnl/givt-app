@@ -163,8 +163,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
       _isLoadingRecommendations = true;
       _emitData();
       final profile = _getCurrentProfile();
-      _currentActsOfService = await _gratefulRecommendationsRepository
-          .getActsRecommendations(profile);
+      _currentActsOfService = (await _gratefulRecommendationsRepository
+          .getActsRecommendations(profile))
+        ..shuffle();
       if (_isNonLoggedInParent(profile)) {
         _currentOrganisations = [];
       } else {
@@ -251,21 +252,30 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     if (!skip) {
       _reflectAndShareRepository.incrementGenerousDeeds();
     }
+
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {
       _onEveryoneDonated();
-    } else {
-      final nextGiver = _profiles.firstWhere(
-        (profile) => !_profilesThatDonated.contains(profile),
-        orElse: () {
-          _onEveryoneDonated();
-          throw Exception('No next giver found');
-        },
-      );
-      _currentProfileIndex = _profiles.indexOf(nextGiver);
-      resetTabs();
-      await _fetchRecommendationsForCurrentProfile();
+      return;
     }
+
+    final nextGiver = _profiles.firstWhere(
+      (profile) => !_profilesThatDonated.contains(profile),
+      orElse: () {
+        _onEveryoneDonated();
+        throw Exception('No next giver found');
+      },
+    );
+
+    if (skip) {
+      emitCustom(const GratefulCustom.showSkippedOverlay());
+    } else {
+      emitCustom(const GratefulCustom.showDoneOverlay());
+    }
+
+    _currentProfileIndex = _profiles.indexOf(nextGiver);
+    resetTabs();
+    await _fetchRecommendationsForCurrentProfile();
   }
 
   void _onEveryoneDonated() {

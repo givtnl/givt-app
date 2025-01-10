@@ -27,7 +27,7 @@ class StageScreen extends StatelessWidget {
       canPop: false,
       withSafeArea: false,
       appBar: const FunTopAppBar(
-        title: '',
+        title: null,
         actions: [LeaveGameButton()],
       ),
       body: Stack(
@@ -51,10 +51,11 @@ class StageScreen extends StatelessWidget {
         onTap: () => onClickButton(context),
         text: buttonText,
         analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.supersShowItsShowtimeClicked,
-            parameters: {
-              'fromInitialExplanationScreen': fromInitialExplanationScreen,
-            }),
+          AmplitudeEvents.supersShowItsShowtimeClicked,
+          parameters: {
+            'fromInitialExplanationScreen': fromInitialExplanationScreen,
+          },
+        ),
       ),
     );
   }

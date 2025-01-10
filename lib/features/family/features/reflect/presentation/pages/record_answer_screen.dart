@@ -130,7 +130,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
               widget.uiModel.question,
               textAlign: TextAlign.center,
             ),
-            const Spacer(),
+            const SizedBox(height: 48),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
