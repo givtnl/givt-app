@@ -38,15 +38,23 @@ class FunModal extends StatefulWidget {
 }
 
 class _FunModalState extends State<FunModal> {
+  Timer? _autoCloseTimer;
+
   @override
   void initState() {
     super.initState();
 
     if (widget.autoClose != null) {
-      Future.delayed(widget.autoClose!, () {
+      _autoCloseTimer = Timer(widget.autoClose!, () {
         widget.closeAction?.call();
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _autoCloseTimer?.cancel();
+    super.dispose();
   }
 
   @override
