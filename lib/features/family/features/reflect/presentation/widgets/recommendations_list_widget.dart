@@ -1,16 +1,10 @@
-import 'dart:async';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class RecommendationsListWidget extends StatefulWidget {
@@ -19,11 +13,13 @@ class RecommendationsListWidget extends StatefulWidget {
     super.key,
     this.onRecommendationChosen,
     this.onSkip,
+    this.onIndexChanged, // Add this line
   });
 
   final RecommendationsUIModel uiModel;
   final void Function(int index)? onRecommendationChosen;
   final void Function()? onSkip;
+  final void Function(int index)? onIndexChanged; // Add this line
 
   @override
   State<RecommendationsListWidget> createState() =>
@@ -42,6 +38,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
       _carouselController.jumpToPage(0);
       setState(() {
         _currentIndex = 0;
+        widget.onIndexChanged?.call(0);
       });
     }
   }
@@ -77,6 +74,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                 setState(() {
                   _currentIndex = index;
                 });
+                widget.onIndexChanged?.call(index);
               },
             ),
             itemCount: widget.uiModel.isNotLoggedInParent &&
@@ -102,6 +100,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                   : index;
               final recommendation =
                   widget.uiModel.organisations[recommendationIndex];
+
               return Container(
                 width: width - 48,
                 padding: const EdgeInsets.only(right: 12),
@@ -124,43 +123,6 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
           index: _currentIndex,
         ),
         const SizedBox(height: 24),
-        if (!widget.uiModel.isNotLoggedInParent ||
-            widget.uiModel.isShowingActsOfService)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: FunButton(
-              onTap: () => widget.onRecommendationChosen?.call(_currentIndex),
-              text: widget.uiModel.isShowingActsOfService
-                  ? "I'm going to do this"
-                  : 'Give',
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.newActOfGenerosityClicked,
-                parameters: {
-                  widget.uiModel.isShowingActsOfService
-                          ? 'act_of_service'
-                          : 'donation':
-                      widget.uiModel.organisations[_currentIndex].name,
-                  AnalyticsHelper.firstNameKey: widget.uiModel.name,
-                },
-              ),
-            ),
-          ),
-        const SizedBox(height: 16),
-        TextButton(
-          onPressed: () {
-            widget.onSkip?.call();
-            unawaited(
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.skipGenerosActPressed,
-                eventProperties: {
-                  AnalyticsHelper.firstNameKey: widget.uiModel.name,
-                },
-              ),
-            );
-          },
-          child: const LabelLargeText('Skip this time'),
-        ),
-        const SizedBox(height: 40),
       ],
     );
   }

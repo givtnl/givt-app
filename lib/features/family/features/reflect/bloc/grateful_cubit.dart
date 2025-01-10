@@ -3,13 +3,15 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
+import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
+import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
@@ -116,8 +118,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
           isLoading: _isLoadingRecommendations,
           hasError: _hasRecommendationsError,
           organisations: _isActsOfServiceIndexCurrentlySelected()
-              ? _currentActsOfService
-              : _currentOrganisations,
+              ? _overrideTags(_currentActsOfService)
+              : _overrideTags(_currentOrganisations),
           isNotLoggedInParent: _isNonLoggedInParent(_getCurrentProfile()),
           name: _getCurrentProfile().firstName,
           category: _getCurrentProfile().gratitude,
@@ -125,6 +127,26 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
         ),
       ),
     );
+  }
+
+  List<Organisation> _overrideTags(List<Organisation> organisations) {
+    return organisations.map((organisation) {
+      return organisation.copyWith(
+        tags: [
+          Tag(
+            key: 'override',
+            displayText: _isActsOfServiceIndexCurrentlySelected()
+                ? 'Way to help'
+                : 'Give',
+            area: _isActsOfServiceIndexCurrentlySelected()
+                ? Areas.tertiary
+                : Areas.primary,
+            pictureUrl: '',
+            type: TagType.INTERESTS,
+          ),
+        ],
+      );
+    }).toList();
   }
 
   bool _isActsOfServiceIndexCurrentlySelected() =>
@@ -141,8 +163,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
       _isLoadingRecommendations = true;
       _emitData();
       final profile = _getCurrentProfile();
-      _currentActsOfService = await _gratefulRecommendationsRepository
-          .getActsRecommendations(profile);
+      _currentActsOfService = (await _gratefulRecommendationsRepository
+          .getActsRecommendations(profile))
+        ..shuffle();
       if (_isNonLoggedInParent(profile)) {
         _currentOrganisations = [];
       } else {
@@ -229,21 +252,30 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     if (!skip) {
       _reflectAndShareRepository.incrementGenerousDeeds();
     }
+
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {
       _onEveryoneDonated();
-    } else {
-      final nextGiver = _profiles.firstWhere(
-        (profile) => !_profilesThatDonated.contains(profile),
-        orElse: () {
-          _onEveryoneDonated();
-          throw Exception('No next giver found');
-        },
-      );
-      _currentProfileIndex = _profiles.indexOf(nextGiver);
-      resetTabs();
-      await _fetchRecommendationsForCurrentProfile();
+      return;
     }
+
+    final nextGiver = _profiles.firstWhere(
+      (profile) => !_profilesThatDonated.contains(profile),
+      orElse: () {
+        _onEveryoneDonated();
+        throw Exception('No next giver found');
+      },
+    );
+
+    if (skip) {
+      emitCustom(const GratefulCustom.showSkippedOverlay());
+    } else {
+      emitCustom(const GratefulCustom.showDoneOverlay());
+    }
+
+    _currentProfileIndex = _profiles.indexOf(nextGiver);
+    resetTabs();
+    await _fetchRecommendationsForCurrentProfile();
   }
 
   void _onEveryoneDonated() {

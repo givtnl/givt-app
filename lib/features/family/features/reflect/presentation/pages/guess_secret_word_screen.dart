@@ -3,9 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/pages/intro_bedtime_screen.dart';
+import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
+import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
@@ -29,12 +28,20 @@ class GuessSecretWordScreen extends StatefulWidget {
 
 class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
   final GuessSecretWordCubit _cubit = GuessSecretWordCubit(getIt());
+  final BackgroundAudioCubit _audioCubit = getIt<BackgroundAudioCubit>();
+
   String currentGuessedWord = '';
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _cubit.init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _audioCubit.close();
   }
 
   @override
@@ -65,6 +72,11 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               const Spacer(),
               Column(
                 children: [
+                  const FunBackgroundAudioWidget(
+                    isVisible: true,
+                    audioPath: 'family/audio/guess_secret_word.wav',
+                  ),
+                  const SizedBox(height: 8),
                   TitleMediumText(
                     uiModel.text,
                     textAlign: TextAlign.center,
@@ -137,7 +149,6 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                     AmplitudeEvents.reflectAndShareResultShuffleRolesClicked,
                   ),
                 ),
-                const SizedBox(height: 16),
               ],
             ],
           );

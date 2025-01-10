@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 
 class OrganisationHeader extends StatelessWidget {
   const OrganisationHeader({
@@ -14,6 +15,7 @@ class OrganisationHeader extends StatelessWidget {
   final Organisation organisation;
   final bool isActOfService;
   final int nrOfTags;
+
   @override
   Widget build(BuildContext context) {
     final fontsize = MediaQuery.textScalerOf(context)
@@ -28,32 +30,15 @@ class OrganisationHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: organisation.tags
-                  .take(nrOfTags)
-                  .map(
-                    (tag) => Container(
-                      margin: const EdgeInsets.symmetric(vertical: 3),
-                      decoration: BoxDecoration(
-                        color: tag.area.accentColor,
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(25),
-                          bottomRight: Radius.circular(25),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 4,
-                          bottom: 4,
-                          left: 16,
-                          right: 8,
-                        ),
-                        child: LabelSmallText(
+                      .take(nrOfTags)
+                      .map(
+                        (tag) => tagContainer(
                           tag.displayText,
-                          color: tag.area.textColor,
+                          tag.area.textColor,
+                          tag.area.accentColor,
                         ),
-                      ),
-                    ),
-                  )
-                  .toList(),
+                      )
+                      .toList(),
             ),
           ),
           if (!isActOfService)
@@ -71,6 +56,32 @@ class OrganisationHeader extends StatelessWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  Container tagContainer(
+      String displayText, Color textColor, Color accentColor) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      decoration: BoxDecoration(
+        color: accentColor,
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(25),
+          bottomRight: Radius.circular(25),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 4,
+          bottom: 4,
+          left: 20,
+          right: 12,
+        ),
+        child: LabelSmallText(
+          displayText,
+          color: textColor,
+        ),
       ),
     );
   }

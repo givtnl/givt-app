@@ -26,7 +26,7 @@ class AvatarBar extends StatelessWidget {
       alignment: Alignment.center,
       padding: const EdgeInsets.only(top: 8, bottom: 16),
       child: SizedBox(
-        height: 92,
+        height: circleSize + 28,
         child: ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
