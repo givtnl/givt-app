@@ -1,5 +1,6 @@
 enum AmplitudeEvents {
   letsGo('lets_go'),
+  loading('loading'),
   welcomeContinueClicked('welcome_continue_clicked'),
   loginClicked('login_clicked'),
   emailSignupContinueClicked('email_signup_continue_clicked'),
@@ -357,6 +358,10 @@ enum AmplitudeEvents {
 
   //Missions
   missionTabsChanged('mission_tabs_changed'),
+  funMissionCardClicked('fun_mission_card_clicked'),
+  noGoalSetCardClicked('no_goal_set_card_clicked'),
+  goalActiveCardClicked('goal_active_card_clicked'),
+  goalCompletedCardClicked('goal_completed_card_clicked'),
 
   // Audio recording/player
   audioWidgetPlayClicked('audio_widget_play_clicked'),

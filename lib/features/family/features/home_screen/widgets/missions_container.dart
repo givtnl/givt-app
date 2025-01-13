@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/mission_stats.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,6 +37,12 @@ class MissionsContainer extends StatelessWidget {
         headerIcon: FontAwesomeIcons.bolt,
       ),
       onTap: () => context.pushNamed(FamilyPages.missions.name),
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.funMissionCardClicked,
+        parameters: {
+          'missionsToBeCompleted': missionStats!.missionsToBeCompleted,
+        },
+      ),
     );
   }
 
@@ -46,6 +54,12 @@ class MissionsContainer extends StatelessWidget {
         headerIcon: FontAwesomeIcons.bolt,
       ),
       onTap: () => context.pushNamed(FamilyPages.missions.name),
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.funMissionCardClicked,
+        parameters: {
+          'missionsToBeCompleted': 'none',
+        },
+      ),
     );
   }
 }
