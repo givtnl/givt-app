@@ -57,7 +57,7 @@ class MissionsContainer extends StatelessWidget {
       analyticsEvent: AnalyticsEvent(
         AmplitudeEvents.funMissionCardClicked,
         parameters: {
-          'missionsToBeCompleted': 'none',
+          'missionsToBeCompleted': '0',
         },
       ),
     );

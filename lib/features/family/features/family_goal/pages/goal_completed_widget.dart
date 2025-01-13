@@ -28,7 +28,8 @@ class GoalCompletedWidget extends StatelessWidget {
       analyticsEvent: AnalyticsEvent(
         AmplitudeEvents.goalCompletedCardClicked,
         parameters: {
-          'organisation': impactGroupsCubit.state.familyGroup.organisation,
+          'organisation':
+              impactGroupsCubit.state.familyGroup.organisation.organisationName,
         },
       ),
     );
