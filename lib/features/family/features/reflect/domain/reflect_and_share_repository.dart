@@ -207,8 +207,10 @@ class ReflectAndShareRepository {
     final allProfiles = await _profilesRepository.getProfiles();
     final allPlayers = getPlayers();
     final profileMap = {for (var profil in allProfiles) profil.id: profil};
-    final playerProfiles =
-        allPlayers.map((player) => profileMap[player.userId]!).toList();
+    final playerProfiles = allPlayers
+        .map((player) => profileMap[player.userId])
+        .whereType<Profile>()
+        .toList();
     return playerProfiles;
   }
 
