@@ -22,11 +22,11 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
     _generousDeeds = _reflectAndShareRepository.getAmountOfGenerousDeeds();
     _tagsWereSelected =
         _reflectAndShareRepository.hasAnyGenerousPowerBeenSelected();
-    checkAllParentsPlayed();
+    getPlayerProfiles();
     _emitData();
   }
 
-  Future<void> checkAllParentsPlayed() async {
+  Future<void> getPlayerProfiles() async {
     _players = await _reflectAndShareRepository.getPlayerProfiles();
     _emitData();
   }
