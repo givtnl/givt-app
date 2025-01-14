@@ -78,6 +78,12 @@ class _MissionsScreenState extends State<MissionsScreen> {
                         : () {
                             context.goNamed(mission.namedPage!);
                           },
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.funMissionCardClicked,
+                      parameters: {
+                        'mission': mission.title,
+                      },
+                    ),
                   );
                 },
               ),
