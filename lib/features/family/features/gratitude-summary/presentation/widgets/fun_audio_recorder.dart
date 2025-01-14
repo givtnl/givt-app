@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/data/record_utils.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:record/record.dart';
 
@@ -17,22 +18,22 @@ class FunAudioRecorder extends StatefulWidget {
   State<FunAudioRecorder> createState() => _FunAudioRecorderState();
 }
 
-class _FunAudioRecorderState extends State<FunAudioRecorder> with AudioRecorderMixin {
+class _FunAudioRecorderState extends State<FunAudioRecorder>
+    with AudioRecorderMixin {
   int _recordDuration = 0;
   Timer? _timer;
   late final AudioRecorder _audioRecorder;
   StreamSubscription<RecordState>? _recordSub;
   RecordState _recordState = RecordState.stop;
   StreamSubscription<Amplitude>? _amplitudeSub;
-  Amplitude? _amplitude;
+  // ignore: unused_field
+  late Amplitude? _amplitude;
 
   @override
   void initState() {
     _audioRecorder = AudioRecorder();
 
-    _recordSub = _audioRecorder.onStateChanged().listen((recordState) {
-      _updateRecordState(recordState);
-    });
+    _recordSub = _audioRecorder.onStateChanged().listen(_updateRecordState);
 
     _amplitudeSub = _audioRecorder
         .onAmplitudeChanged(const Duration(milliseconds: 300))
@@ -80,7 +81,6 @@ class _FunAudioRecorderState extends State<FunAudioRecorder> with AudioRecorderM
 
   Future<void> _stop() async {
     final path = await _audioRecorder.stop();
-
 
     await AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.audioRecordingStopped,
@@ -188,16 +188,19 @@ class _FunAudioRecorderState extends State<FunAudioRecorder> with AudioRecorderM
       return _buildTimer();
     }
 
-    return const BodySmallText("Tap to record");
+    return const BodySmallText(
+      'Tap to record',
+      color: FamilyAppTheme.primary60,
+    );
   }
 
   Widget _buildTimer() {
     final minutes = _formatNumber(_recordDuration ~/ 60);
     final seconds = _formatNumber(_recordDuration % 60);
 
-    return Text(
+    return TitleMediumText(
       '$minutes : $seconds',
-      style: const TextStyle(color: Colors.red),
+      color: FamilyAppTheme.error40,
     );
   }
 

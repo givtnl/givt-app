@@ -127,7 +127,7 @@ class FunTextStyles {
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 15,
     height: 1.4,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w700,
     fontFamily: 'Rouna',
     letterSpacing: 0,
   );

@@ -114,6 +114,10 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
                   ),
               ],
             ),
+            BodyMediumText(
+              '${getMinutes()}:${getSeconds()}',
+              textAlign: TextAlign.right,
+            ),
           ],
         );
       },
@@ -196,11 +200,10 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
   }
 
   Future<void> play() async {
-
     await AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.audioRecordingPlayed,
     );
-    
+
     widget.onPlayExtension?.call();
     await _audioPlayer.play(_source);
   }

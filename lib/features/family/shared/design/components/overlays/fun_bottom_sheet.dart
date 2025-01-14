@@ -33,7 +33,7 @@ class FunBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       minimum: EdgeInsets.fromLTRB(
-          0, 0, 0, MediaQuery.of(context).viewInsets.bottom + 40,),
+          0, 0, 0, MediaQuery.of(context).viewInsets.bottom + 40),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -46,7 +46,7 @@ class FunBottomSheet extends StatelessWidget {
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 96,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 24),
+                    padding: const EdgeInsets.only(top: 40),
                     child: TitleMediumText(
                       title,
                       textAlign: TextAlign.center,

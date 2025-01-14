@@ -85,39 +85,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: FunTile.gold(
-                                  titleBig: details.minutesPlayed == 1
-                                      ? '1 minute family time'
-                                      : '${details.minutesPlayed} minutes family time',
-                                  iconData: FontAwesomeIcons.solidClock,
-                                  assetSize: 32,
-                                  isPressedDown: true,
-                                  analyticsEvent: AnalyticsEvent(
-                                    AmplitudeEvents
-                                        .familyReflectSummaryMinutesPlayedClicked,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: FunTile.red(
-                                  titleBig: details.generousDeeds == 1
-                                      ? '1 generous deed'
-                                      : '${details.generousDeeds} generous deeds',
-                                  iconData: FontAwesomeIcons.solidHeart,
-                                  assetSize: 32,
-                                  isPressedDown: true,
-                                  analyticsEvent: AnalyticsEvent(
-                                    AmplitudeEvents
-                                        .familyReflectSummaryGenerousDeedsClicked,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          getTileStats(details),
                           const SizedBox(height: 24),
                           const TitleMediumText(
                             'Save a message for your memories',
@@ -138,6 +106,40 @@ class _SummaryScreenState extends State<SummaryScreen> {
           },
         ),
       ),
+    );
+  }
+
+  Widget getTileStats(SummaryDetails details) {
+    return Row(
+      children: [
+        Expanded(
+          child: FunTile.gold(
+            titleBig: details.minutesPlayed == 1
+                ? '1 minute family time'
+                : '${details.minutesPlayed} minutes family time',
+            iconData: FontAwesomeIcons.solidClock,
+            assetSize: 32,
+            isPressedDown: true,
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.familyReflectSummaryMinutesPlayedClicked,
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: FunTile.red(
+            titleBig: details.generousDeeds == 1
+                ? '1 generous deed'
+                : '${details.generousDeeds} generous deeds',
+            iconData: FontAwesomeIcons.solidHeart,
+            assetSize: 32,
+            isPressedDown: true,
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.familyReflectSummaryGenerousDeedsClicked,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -188,7 +190,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
         onTap: () {
           RecordSummaryMessageBottomsheet.show(
             context,
-            'Nopeee',
             _cubit.audioAvailable,
           );
         },
