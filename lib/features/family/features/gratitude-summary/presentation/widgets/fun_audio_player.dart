@@ -114,10 +114,11 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
                   ),
               ],
             ),
-            BodyMediumText(
-              '${getMinutes()}:${getSeconds()}',
-              textAlign: TextAlign.right,
-            ),
+            if (widget.showDeleteButton)
+              BodyMediumText(
+                '${getMinutes()}:${getSeconds()}',
+                textAlign: TextAlign.right,
+              ),
           ],
         );
       },
