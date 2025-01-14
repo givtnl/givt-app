@@ -80,6 +80,32 @@ class FunTile extends StatelessWidget {
       analyticsEvent: analyticsEvent,
     );
   }
+  factory FunTile.green({
+    required AnalyticsEvent analyticsEvent,
+    String? titleBig,
+    String? titleSmall,
+    String? subtitle,
+    IconData? iconData,
+    VoidCallback? onTap,
+    double? assetSize,
+    bool shrink = false,
+  }) {
+    return FunTile(
+      borderColor: FamilyAppTheme.primary80,
+      backgroundColor: FamilyAppTheme.primary98,
+      textColor: FamilyAppTheme.primary40,
+      iconPath: '',
+      onTap: onTap,
+      titleBig: titleBig,
+      titleSmall: titleSmall,
+      subtitle: subtitle,
+      iconData: iconData,
+      assetSize: assetSize,
+      shrink: shrink,
+      iconColor: FamilyAppTheme.secondary20,
+      analyticsEvent: analyticsEvent,
+    );
+  }
 
   factory FunTile.red({
     required AnalyticsEvent analyticsEvent,

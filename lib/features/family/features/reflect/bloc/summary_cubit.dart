@@ -13,7 +13,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   int _generousDeeds = 0;
   bool _tagsWereSelected = false;
   String _audioPath = '';
-  List<Profile> _missingAdults = const [];
+  List<Profile> _players = const [];
 
   void init() {
     saveSummary();
@@ -27,7 +27,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   }
 
   Future<void> checkAllParentsPlayed() async {
-    _missingAdults = await _reflectAndShareRepository.missingAdults();
+    _players = await _reflectAndShareRepository.getPlayerProfiles();
     _emitData();
   }
 
@@ -59,7 +59,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
       SummaryDetails(
         minutesPlayed: _totalMinutesPlayed,
         generousDeeds: _generousDeeds,
-        missingAdults: _missingAdults,
+        players: _players,
         tagsWereSelected: _tagsWereSelected,
         audioPath: _audioPath,
       ),

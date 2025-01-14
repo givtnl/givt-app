@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
@@ -8,7 +6,13 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_.bottomsheet.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_player.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/summary_details.dart';
+import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -50,10 +54,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
   Widget build(BuildContext context) {
     return Scrollbar(
       child: FunScaffold(
-        minimumPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+        minimumPadding: EdgeInsets.zero,
         canPop: false,
         appBar: const FunTopAppBar(
-          title: 'Awesome work heroes!',
+          title: 'Family summary',
         ),
         body: BaseStateConsumer(
           cubit: _cubit,
@@ -64,90 +68,69 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 child: Column(
                   children: [
                     const SizedBox(height: 24),
-                    TitleMediumText(
-                      details.isShareableSummary
-                          ? 'Let’s share your superhero activity with the rest of the family!'
-                          : 'Your mission to turn your gratitude into generosity was a success!',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    SvgPicture.asset(
-                        'assets/family/images/family_superheroes.svg'),
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: FunTile.gold(
-                            titleBig: details.minutesPlayed == 1
-                                ? '1 minute family time'
-                                : '${details.minutesPlayed} minutes family time',
-                            iconData: FontAwesomeIcons.solidClock,
-                            assetSize: 32,
-                            isPressedDown: true,
-                            analyticsEvent: AnalyticsEvent(
-                              AmplitudeEvents
-                                  .familyReflectSummaryMinutesPlayedClicked,
-                            ),
+                    FunTag.purple(text: DateTime.now().formattedFullMonth),
+                    const SizedBox(height: 16),
+                    if (details.players.isNotEmpty)
+                      AvatarBar(
+                          circleSize: 54,
+                          uiModel: AvatarBarUIModel(avatarUIModels: [
+                            for (var i = 0; i < details.players.length; i++)
+                              AvatarUIModel(
+                                avatarUrl: details.players[i].pictureURL,
+                                text: details.players[i].firstName,
+                              ),
+                          ]),
+                          onAvatarTapped: (i) {}),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: FunTile.gold(
+                                  titleBig: details.minutesPlayed == 1
+                                      ? '1 minute family time'
+                                      : '${details.minutesPlayed} minutes family time',
+                                  iconData: FontAwesomeIcons.solidClock,
+                                  assetSize: 32,
+                                  isPressedDown: true,
+                                  analyticsEvent: AnalyticsEvent(
+                                    AmplitudeEvents
+                                        .familyReflectSummaryMinutesPlayedClicked,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: FunTile.red(
+                                  titleBig: details.generousDeeds == 1
+                                      ? '1 generous deed'
+                                      : '${details.generousDeeds} generous deeds',
+                                  iconData: FontAwesomeIcons.solidHeart,
+                                  assetSize: 32,
+                                  isPressedDown: true,
+                                  analyticsEvent: AnalyticsEvent(
+                                    AmplitudeEvents
+                                        .familyReflectSummaryGenerousDeedsClicked,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: FunTile.red(
-                            titleBig: details.generousDeeds == 1
-                                ? '1 generous deed'
-                                : '${details.generousDeeds} generous deeds',
-                            iconData: FontAwesomeIcons.solidHeart,
-                            assetSize: 32,
-                            isPressedDown: true,
-                            analyticsEvent: AnalyticsEvent(
-                              AmplitudeEvents
-                                  .familyReflectSummaryGenerousDeedsClicked,
-                            ),
+                          const SizedBox(height: 24),
+                          const TitleMediumText(
+                            'Save a message for your memories',
+                            textAlign: TextAlign.center,
                           ),
-                        ),
-                      ],
-                    ),
-                    if (details.showRecorder) const SizedBox(height: 8),
-                    if (details.showRecorder)
-                      FunButton.secondary(
-                        leftIcon: FontAwesomeIcons.microphone,
-                        onTap: () {
-                          RecordSummaryMessageBottomsheet.show(
-                            context,
-                            details.adultName,
-                            _cubit.audioAvailable,
-                          );
-                        },
-                        text: 'Leave a message',
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.summaryLeaveMessageClicked,
-                        ),
-                      ),
-                    if (details.showPlayer)
-                      FunAudioPlayer(
-                        source: details.audioPath,
-                        onDelete: _cubit.onDeleteAudio,
-                      ),
-                    const SizedBox(height: 8),
-                    FunButton(
-                      onTap: () {
-                        if (details.audioPath.isNotEmpty) {
-                          sendAudioAndNavigate(details.audioPath);
-                          return;
-                        }
-                        navigateWithConfetti();
-                      },
-                      isPressedDown: pressDown,
-                      text: details.isShareableSummary
-                          ? pressDown
-                              ? 'Sent!'
-                              : 'Share summary'
-                          : 'Back to home',
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.familyReflectSummaryBackToHome,
+                          const SizedBox(height: 12),
+                          getAudioWidget(details),
+                          const SizedBox(height: 24),
+                          getFunButton(details),
+                          const SizedBox(height: 40),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 40),
                   ],
                 ),
               ),
@@ -156,6 +139,64 @@ class _SummaryScreenState extends State<SummaryScreen> {
         ),
       ),
     );
+  }
+
+  FunButton getFunButton(SummaryDetails details) {
+    const text = 'Done';
+    void onTap() {
+      if (details.audioPath.isNotEmpty) {
+        sendAudioAndNavigate(details.audioPath);
+        return;
+      }
+      navigateWithConfetti();
+    }
+
+    final analyticEvent = AnalyticsEvent(
+      AmplitudeEvents.familyReflectSummaryBackToHome,
+    );
+
+    if (details.showPlayer) {
+      return FunButton(
+        onTap: onTap,
+        isPressedDown: pressDown,
+        text: text,
+        analyticsEvent: analyticEvent,
+      );
+    } else {
+      return FunButton.secondary(
+        onTap: onTap,
+        isPressedDown: pressDown,
+        text: text,
+        analyticsEvent: analyticEvent,
+      );
+    }
+  }
+
+  Widget getAudioWidget(SummaryDetails details) {
+    if (details.showPlayer) {
+      return FunAudioPlayer(
+        source: details.audioPath,
+        onDelete: _cubit.onDeleteAudio,
+      );
+    } else {
+      return FunTile.green(
+        titleBig: 'Tap to record',
+        titleSmall: 'Only your family can hear this',
+        shrink: true,
+        iconData: FontAwesomeIcons.microphone,
+        assetSize: 32,
+        onTap: () {
+          RecordSummaryMessageBottomsheet.show(
+            context,
+            'Nopeee',
+            _cubit.audioAvailable,
+          );
+        },
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.summaryLeaveMessageClicked,
+        ),
+      );
+    }
   }
 
   Future<void> sendAudioAndNavigate(String path) async {
