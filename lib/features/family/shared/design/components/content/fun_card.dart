@@ -5,16 +5,16 @@ import 'package:givt_app/features/family/utils/utils.dart';
 
 class FunCard extends StatelessWidget {
   const FunCard({
-    required this.title,
-    required this.content,
-    required this.button,
     required this.icon,
+    this.title,
+    this.content,
+    this.button,
     super.key,
   });
 
   final FunIcon icon;
   final String? title;
-  final Widget content;
+  final Widget? content;
   final Widget? button;
 
   @override
@@ -49,7 +49,7 @@ class FunCard extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 8),
-            content,
+            content ?? const SizedBox(),
             if (button != null) ...[
               const SizedBox(height: 16),
               button!,
