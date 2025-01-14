@@ -202,16 +202,16 @@ class ReflectAndShareRepository {
     return _allProfiles!;
   }
 
-//list of adult users that did not play in this game
-  Future<List<Profile>> missingAdults() async {
-    final profiles = await _profilesRepository.getProfiles();
-    final missingAdults = profiles
-        .where((profile) => profile.isAdult)
-        .where((profile) => !_selectedProfiles
-            .map((selectedProfile) => selectedProfile.userId)
-            .contains(profile.id))
+  /// Retrieves the profiles of players who have participated in the game.
+  Future<List<Profile>> getPlayerProfiles() async {
+    final allProfiles = await _profilesRepository.getProfiles();
+    final allPlayers = getPlayers();
+    final profileMap = {for (var profil in allProfiles) profil.id: profil};
+    final playerProfiles = allPlayers
+        .map((player) => profileMap[player.userId])
+        .whereType<Profile>()
         .toList();
-    return missingAdults;
+    return playerProfiles;
   }
 
   void emptyAllProfiles() {

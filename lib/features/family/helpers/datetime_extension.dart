@@ -1,7 +1,9 @@
 import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
-  String formatDate() {
+  /// Formats with 'Today' and 'Yesterday' otherwise
+  /// Formats the date in the format 'MM/dd'
+  String formatInlineDate() {
     final now = DateTime.now();
 
     // Check if the date is today
@@ -21,11 +23,19 @@ extension DateTimeExtension on DateTime {
     return formatter.format(this);
   }
 
+  /// Formats the date like 'December 16'
+  String get formattedFullMonth {
+    final formatter = DateFormat.MMMMd();
+    return formatter.format(this);
+  }
+
+  /// Formats the date for US like '04/30/2022' == 'MM/dd/yyyy'
   String get formattedFullUSDate {
     final formatter = DateFormat('MM/dd/yyyy');
     return formatter.format(this);
   }
 
+  /// Formats the date for EU like '31/08/2022' == 'dd/MM/yyyy'
   String get formattedFullEuDate {
     final formatter = DateFormat('dd/MM/yyyy');
     return formatter.format(this);

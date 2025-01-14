@@ -5,8 +5,8 @@ import 'package:givt_app/features/family/features/gratitude-summary/presentation
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/summary_conversation_list.dart';
 import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -38,17 +38,8 @@ class _SummaryPageState extends State<SummaryPage> {
     return Column(
       children: [
         if (widget.uiModel.date != null)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4.5),
-            decoration: BoxDecoration(
-              color: FamilyAppTheme.highlight95,
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: LabelSmallText(
-              widget.uiModel.date!.formatDate(),
-              textAlign: TextAlign.center,
-              color: FamilyAppTheme.highlight40,
-            ),
+          FunTag.gold(
+            text: widget.uiModel.date!.formattedFullMonth,
           ),
         if (widget.uiModel.date != null) const SizedBox(height: 12),
         const TitleMediumText(
