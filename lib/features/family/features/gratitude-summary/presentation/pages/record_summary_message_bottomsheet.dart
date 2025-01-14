@@ -47,8 +47,7 @@ class _RecordSummaryMessageBottomsheetState
   @override
   Widget build(BuildContext context) {
     return FunBottomSheet(
-      closeAction: () =>
-          Navigator.of(context).pop(recordedMessage ? audioPath : null),
+      closeAction: () => Navigator.of(context).pop(),
       title: 'What did you talk about? ',
       content: Column(
         children: [

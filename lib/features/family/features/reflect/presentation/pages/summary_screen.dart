@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_.bottomsheet.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_bottomsheet.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_player.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/summary_details.dart';
