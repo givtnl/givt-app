@@ -362,6 +362,7 @@ enum AmplitudeEvents {
   noGoalSetCardClicked('no_goal_set_card_clicked'),
   goalActiveCardClicked('goal_active_card_clicked'),
   goalCompletedCardClicked('goal_completed_card_clicked'),
+  notificationsGoToSettingsClicked('notifications_go_to_settings_clicked'),
 
   // Audio recording/player
   audioWidgetPlayClicked('audio_widget_play_clicked'),

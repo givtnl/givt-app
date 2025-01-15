@@ -7,9 +7,28 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class NotificationMissionScreen extends StatelessWidget {
+class NotificationMissionScreen extends StatefulWidget {
   const NotificationMissionScreen({super.key});
+  @override
+  State<NotificationMissionScreen> createState() =>
+      _NotificationMissionScreenState();
+}
 
+class _NotificationMissionScreenState extends State<NotificationMissionScreen>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
       final status = await Permission.notification.status;
@@ -38,7 +57,8 @@ class NotificationMissionScreen extends StatelessWidget {
           FunButton(
               onTap: openAppSettings,
               text: 'Go to Settings',
-              analyticsEvent: AnalyticsEvent(AmplitudeEvents.accountLocked)),
+              analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.notificationsGoToSettingsClicked)),
         ],
       ),
     );
