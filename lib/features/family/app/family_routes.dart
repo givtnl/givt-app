@@ -588,8 +588,8 @@ class FamilyAppRoutes {
           builder: (context, state) => const ReflectIntroScreen(),
         ),
         GoRoute(
-          path: FamilyPages.setupPushNotifications.path,
-          name: FamilyPages.setupPushNotifications.name,
+          path: FamilyPages.setupPushNotification.path,
+          name: FamilyPages.setupPushNotification.name,
           builder: (context, state) => const NotificationMissionScreen(),
         ),
       ],

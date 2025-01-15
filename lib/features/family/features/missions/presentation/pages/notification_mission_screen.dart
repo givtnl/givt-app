@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/missions/bloc/notif_mission_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class NotificationMissionScreen extends StatefulWidget {
@@ -16,6 +20,7 @@ class NotificationMissionScreen extends StatefulWidget {
 
 class _NotificationMissionScreenState extends State<NotificationMissionScreen>
     with WidgetsBindingObserver {
+  final cubit = getIt<NotificationMissionsCubit>();
   @override
   void initState() {
     super.initState();
@@ -31,9 +36,20 @@ class _NotificationMissionScreenState extends State<NotificationMissionScreen>
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      final status = await Permission.notification.status;
-      if (status.isGranted) {
-        // TODO: KIDS-1861 Implement BE call to complete mission
+      try {
+        await cubit.updateNotificationPermission();
+        if (mounted) {
+          context.goNamed(FamilyPages.wallet.name);
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  'Failed to update notification permission: ${e.toString()}'),
+            ),
+          );
+        }
       }
     }
   }
