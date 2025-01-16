@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -24,6 +25,7 @@ class _NotificationMissionScreenState extends State<NotificationMissionScreen>
   @override
   void initState() {
     super.initState();
+    cubit.init();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -38,9 +40,6 @@ class _NotificationMissionScreenState extends State<NotificationMissionScreen>
     if (state == AppLifecycleState.resumed) {
       try {
         await cubit.updateNotificationPermission();
-        if (mounted) {
-          context.goNamed(FamilyPages.wallet.name);
-        }
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -57,26 +56,34 @@ class _NotificationMissionScreenState extends State<NotificationMissionScreen>
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      appBar: const FunTopAppBar(
-        title: 'Mission Reminders',
-        leading: GivtBackButtonFlat(),
-      ),
-      body: Column(
-        children: [
-          const Spacer(flex: 2),
-          FunCard(
-            title:
-                'Enable notifications so we can let you know when a mission is available',
-            icon: FunIcon.bell(),
+        appBar: const FunTopAppBar(
+          title: 'Mission Reminders',
+          leading: GivtBackButtonFlat(),
+        ),
+        body: BaseStateConsumer(
+          cubit: cubit,
+          onData: (context, uiModel) => Column(
+            children: [
+              const Spacer(flex: 2),
+              FunCard(
+                title:
+                    'Enable notifications so we can let you know when a mission is available',
+                icon: FunIcon.bell(),
+              ),
+              const Spacer(flex: 3),
+              FunButton(
+                  onTap: () {
+                    if (uiModel.notifEnabled) {
+                      context.goNamed(FamilyPages.profileSelection.name);
+                    } else {
+                      openAppSettings();
+                    }
+                  },
+                  text: uiModel.notifEnabled ? 'Done' : 'Go to Settings',
+                  analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.notificationsGoToSettingsClicked)),
+            ],
           ),
-          const Spacer(flex: 3),
-          FunButton(
-              onTap: openAppSettings,
-              text: 'Go to Settings',
-              analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.notificationsGoToSettingsClicked)),
-        ],
-      ),
-    );
+        ));
   }
 }

@@ -346,14 +346,8 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     final notificationId = await FirebaseMessaging.instance.getToken();
 
     LoggingInfo.instance.info('New FCM token: $notificationId');
-
-    if (_userExt!.notificationId == notificationId) {
-      LoggingInfo.instance.info(
-        'FCM token: $notificationId is the same as the current one',
-      );
-
-      return;
-    }
+    final notificationPermissionStatus =
+        await Permission.notification.status.isGranted;
 
     if (notificationId == null) {
       LoggingInfo.instance.warning(
@@ -361,16 +355,21 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       );
       return;
     }
+    if (_userExt!.notificationId == notificationId &&
+        _userExt!.pushNotificationsEnabled == notificationPermissionStatus) {
+      LoggingInfo.instance.info(
+        'FCM token: $notificationId is the same as the current one',
+      );
 
-    final notificationPermissionStatus = await Permission.notification.status;
+      return;
+    }
 
     await _apiService.updateNotificationId(
       guid: _userExt!.guid,
       body: {
         'PushNotificationId': notificationId,
         'OS': 1, // Always use firebase implementation in backend (android)
-        'PushNotificationsEnabled':
-            notificationPermissionStatus == PermissionStatus.granted,
+        'PushNotificationsEnabled': notificationPermissionStatus,
       },
     );
   }
