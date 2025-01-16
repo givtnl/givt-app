@@ -36,6 +36,7 @@ class UserExt extends Equatable {
     this.accountBrand = '',
     this.notificationId = '',
     this.profilePicture = '',
+    this.pushNotificationsEnabled = false,
   });
 
   factory UserExt.fromJson(Map<String, dynamic> json) {
@@ -81,6 +82,8 @@ class UserExt extends Equatable {
           ? json['PushNotificationId'] as String
           : '',
       profilePicture: (json['ProfilePicture'] ?? '').toString(),
+      pushNotificationsEnabled:
+          (json['PushNotificationsEnabled'] ?? false) as bool,
     );
   }
 
@@ -116,7 +119,8 @@ class UserExt extends Equatable {
         accountNumber = '',
         accountBrand = '',
         notificationId = '',
-        profilePicture = '';
+        profilePicture = '',
+        pushNotificationsEnabled = false;
 
   bool get isUsUser => Country.fromCode(country).isUS;
   bool get isMissingcardDetails =>
@@ -157,6 +161,7 @@ class UserExt extends Equatable {
         'pinSet': pinSet,
         'multipleCollectsAccepted': multipleCollectsAccepted,
         'ProfilePicture': profilePicture,
+        'PushNotificationsEnabled': pushNotificationsEnabled,
       };
 
   Map<String, dynamic> toUpdateJson() {
@@ -207,6 +212,7 @@ class UserExt extends Equatable {
   final bool needRegistration;
   final bool isInvitedUser;
   final bool personalInfoRegistered;
+  final bool pushNotificationsEnabled;
 
   final bool pinSet;
 
@@ -247,6 +253,7 @@ class UserExt extends Equatable {
     bool? pinSet,
     bool? multipleCollectsAccepted,
     String? profilePicture,
+    bool? pushNotificationsEnabled,
   }) {
     return UserExt(
       email: email ?? this.email,
@@ -283,6 +290,8 @@ class UserExt extends Equatable {
           multipleCollectsAccepted ?? this.multipleCollectsAccepted,
       // notificationId: notificationId ?? this.notificationId,
       profilePicture: profilePicture ?? this.profilePicture,
+      pushNotificationsEnabled:
+          pushNotificationsEnabled ?? this.pushNotificationsEnabled,
     );
   }
 
@@ -318,6 +327,7 @@ class UserExt extends Equatable {
         multipleCollectsAccepted,
         // notificationId,
         profilePicture,
+        pushNotificationsEnabled,
       ];
 
   static String tag = 'UserExt';
