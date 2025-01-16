@@ -89,6 +89,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
         onCustom: _handleCustom,
         onLoading: (context) => const GratefulLoading(),
         onData: (context, uiModel) {
+          if (_currentIndex >=
+              uiModel.recommendationsUIModel.organisations.length) {
+            _currentIndex = 0;
+          }
           return FunScaffold(
             canPop: false,
             minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
