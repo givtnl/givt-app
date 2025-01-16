@@ -347,14 +347,6 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
     LoggingInfo.instance.info('New FCM token: $notificationId');
 
-    if (_userExt!.notificationId == notificationId) {
-      LoggingInfo.instance.info(
-        'FCM token: $notificationId is the same as the current one',
-      );
-
-      return;
-    }
-
     if (notificationId == null) {
       LoggingInfo.instance.warning(
         'FCM token: is null',
