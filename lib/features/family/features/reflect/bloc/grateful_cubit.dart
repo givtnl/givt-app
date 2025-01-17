@@ -192,6 +192,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void onSelectionChanged(Set<String> set) {
+    if (set.isEmpty || !tabsOptions.contains(set.first)) {
+      return;
+    }
     tabIndex = set.first == tabsOptions.first ? 0 : 1;
     _emitData();
   }

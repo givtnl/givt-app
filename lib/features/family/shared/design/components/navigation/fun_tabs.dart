@@ -41,25 +41,27 @@ class FunTabs extends StatelessWidget {
           ),
         ),
         segments: [
-          ...options
-              .map((option) => ButtonSegment(
-                    value: option,
-                    label: LabelMediumText(
-                      option,
-                      color: FamilyAppTheme.primary40,
-                    ),
-                  ))
-              .toList(),
+          ...options.map(
+            (option) => ButtonSegment(
+              value: option,
+              label: LabelMediumText(
+                option,
+                color: FamilyAppTheme.primary40,
+              ),
+            ),
+          ),
         ],
         selected: <String>{options[selectedIndex]},
         onSelectionChanged: (set) {
           onPressed(set);
+          final selectedOption = set.first;
+          final newSelectedIndex = options.indexOf(selectedOption);
           unawaited(
             AnalyticsHelper.logEvent(
               eventName: analyticsEvent.name,
               eventProperties: {
-                'selected_option': options[selectedIndex],
-                'selected_index': selectedIndex,
+                'selected_option': selectedOption,
+                'selected_index': newSelectedIndex,
               },
             ),
           );

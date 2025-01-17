@@ -23,7 +23,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
-const childSelectedIndex = 0;
+const tabsOptions = ['Child', 'Parent'];
 
 class FamilyMemberFormPage extends StatefulWidget {
   const FamilyMemberFormPage({
@@ -141,17 +141,14 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 ),
                 const SizedBox(height: 24),
                 ChildOrParentSelector(
-                  selectedIndex: selectedIndex,
-                  onPressed: (set) {
-                    setState(() {
-                      selectedIndex = set.first == 'Child'
-                          ? childSelectedIndex
-                          : childSelectedIndex + 1;
-                    });
-
-                    FocusScope.of(context).unfocus();
-                  },
-                ),
+                    selectedIndex: selectedIndex,
+                    options: tabsOptions,
+                    onPressed: (set) {
+                      setState(() {
+                        selectedIndex = set.first == tabsOptions.first ? 0 : 1;
+                        FocusScope.of(context).unfocus();
+                      });
+                    }),
                 const SizedBox(height: 16),
                 RandomAvatar(
                   id: widget.index.toString(),
@@ -188,9 +185,10 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
               children: [
                 const Spacer(),
                 if (isLast)
-                  _primaryButton(selectedIndex == childSelectedIndex)
+                  _primaryButton(selectedIndex == tabsOptions.indexOf('Child'))
                 else
-                  _secondaryButton(selectedIndex == childSelectedIndex),
+                  _secondaryButton(
+                      selectedIndex == tabsOptions.indexOf('Child')),
               ],
             ),
           ),
