@@ -495,7 +495,6 @@ class AuthRepositoyImpl with AuthRepository {
         guid: guid,
         body: {
           'PushNotificationId': notificationId,
-          'OS': 1, // Always use firebase implementation from Android
         },
       );
 

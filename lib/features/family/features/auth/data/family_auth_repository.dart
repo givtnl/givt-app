@@ -368,7 +368,6 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       guid: _userExt!.guid,
       body: {
         'PushNotificationId': notificationId,
-        'OS': 1, // Always use firebase implementation in backend (android)
         'PushNotificationsEnabled': notificationPermissionStatus,
       },
     );
