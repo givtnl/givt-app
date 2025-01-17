@@ -7,18 +7,20 @@ class ChildOrParentSelector extends StatelessWidget {
   const ChildOrParentSelector({
     required this.selectedIndex,
     required this.onPressed,
+    required this.options,
     super.key,
   });
 
   final int selectedIndex;
-  final void Function(int) onPressed;
+  final void Function(Set<String>) onPressed;
+  final List<String> options;
 
   @override
   Widget build(BuildContext context) {
     return FunTabs(
       selectedIndex: selectedIndex,
       onPressed: onPressed,
-      options: const ['Child', 'Parent'],
+      options: options,
       analyticsEvent: AnalyticsEvent(
         AmplitudeEvents.addMemberTypeSelectorClicked,
       ),

@@ -33,6 +33,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const options = ['To do', 'Completed'];
     return FunScaffold(
       appBar: const FunTopAppBar(
         leading: GivtBackButtonFlat(),
@@ -45,9 +46,10 @@ class _MissionsScreenState extends State<MissionsScreen> {
             children: [
               FunTabs(
                 margin: EdgeInsets.zero,
-                options: const ['To do', 'Completed'],
+                options: options,
                 selectedIndex: _selectedIndex,
-                onPressed: (index) => setState(() => _selectedIndex = index),
+                onPressed: (set) => setState(
+                    () => _selectedIndex = set.first == options[0] ? 0 : 1),
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.missionTabsChanged,
                 ),
