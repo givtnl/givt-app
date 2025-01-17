@@ -11,7 +11,7 @@ class ChildOrParentSelector extends StatelessWidget {
   });
 
   final int selectedIndex;
-  final void Function(int) onPressed;
+  final void Function(Set<String>) onPressed;
 
   @override
   Widget build(BuildContext context) {

@@ -19,54 +19,51 @@ class FunTabs extends StatelessWidget {
   final List<String> options;
   final int selectedIndex;
   final EdgeInsets? margin;
-  final void Function(int) onPressed;
+  final void Function(Set<String>) onPressed;
   final AnalyticsEvent analyticsEvent;
-
-  Widget _buildTab(BuildContext context, int index) {
-    return GestureDetector(
-      onTap: () {
-        unawaited(
-          AnalyticsHelper.logEvent(
-            eventName: analyticsEvent.name,
-            eventProperties: {
-              'selected_option': options[index],
-              'selected_index': index,
-            },
-          ),
-        );
-        onPressed.call(index);
-      },
-      child: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: index == selectedIndex ? Colors.white : null,
-          borderRadius: const BorderRadius.all(Radius.circular(12)),
-        ),
-        child: LabelMediumText(
-          options[index],
-          color: index == selectedIndex
-              ? FamilyAppTheme.primary20
-              : Colors.black.withOpacity(0.5),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin ?? const EdgeInsets.symmetric(horizontal: 24),
-      padding: const EdgeInsets.all(4),
-      decoration: const BoxDecoration(
-        color: FamilyAppTheme.neutralVariant90,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-      ),
-      child: Row(
-        children: List.generate(
-          options.length,
-          (index) => Expanded(child: _buildTab(context, index)),
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      child: SegmentedButton<String>(
+        style: SegmentedButton.styleFrom(
+          backgroundColor: Colors.white,
+          selectedForegroundColor: FamilyAppTheme.primary40,
+          selectedBackgroundColor: FamilyAppTheme.primary95,
+          side: const BorderSide(
+            width: 2,
+            color: FamilyAppTheme.primary40,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
+        segments: [
+          ...options
+              .map((option) => ButtonSegment(
+                    value: option,
+                    label: LabelMediumText(
+                      option,
+                      color: FamilyAppTheme.primary40,
+                    ),
+                  ))
+              .toList(),
+        ],
+        selected: <String>{options[selectedIndex]},
+        onSelectionChanged: (set) {
+          onPressed(set);
+          unawaited(
+            AnalyticsHelper.logEvent(
+              eventName: analyticsEvent.name,
+              eventProperties: {
+                'selected_option': options[selectedIndex],
+                'selected_index': selectedIndex,
+              },
+            ),
+          );
+        },
       ),
     );
   }

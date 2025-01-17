@@ -128,7 +128,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                             selectedIndex:
                                 uiModel.recommendationsUIModel.tabIndex,
                             onPressed: _cubit.onSelectionChanged,
-                            options: const ['Ways to help', 'Give'],
+                            options: _cubit.tabsOptions,
                             analyticsEvent: AnalyticsEvent(
                               AmplitudeEvents.recommendationTypeSelectorClicked,
                             ),

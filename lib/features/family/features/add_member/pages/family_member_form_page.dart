@@ -142,9 +142,11 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 const SizedBox(height: 24),
                 ChildOrParentSelector(
                   selectedIndex: selectedIndex,
-                  onPressed: (int index) {
+                  onPressed: (set) {
                     setState(() {
-                      selectedIndex = index;
+                      selectedIndex = set.first == 'Child'
+                          ? childSelectedIndex
+                          : childSelectedIndex + 1;
                     });
 
                     FocusScope.of(context).unfocus();
