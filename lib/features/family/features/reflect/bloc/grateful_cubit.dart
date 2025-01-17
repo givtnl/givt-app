@@ -136,9 +136,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
         tags: [
           Tag(
             key: 'override',
-            displayText: _isActsOfServiceIndexCurrentlySelected()
-                ? 'Way to help'
-                : 'Give',
+            displayText:
+                _isActsOfServiceIndexCurrentlySelected() ? 'Help' : 'Give',
             area: _isActsOfServiceIndexCurrentlySelected()
                 ? Areas.tertiary
                 : Areas.primary,

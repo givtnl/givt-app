@@ -118,7 +118,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                             horizontal: 48,
                           ),
                           child: TitleMediumText(
-                            '${uiModel.recommendationsUIModel.name} what would you like to do?',
+                            '${uiModel.recommendationsUIModel.name} would you like to Help or Give?',
                             textAlign: TextAlign.center,
                           ),
                         ),
