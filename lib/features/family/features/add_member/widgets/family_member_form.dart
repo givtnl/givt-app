@@ -37,7 +37,7 @@ class FamilyMemberForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: selectedIndex == childSelectedIndex
+      child: selectedIndex == tabsOptions.indexOf('Child')
           ? _buildChildForm(context, nameController, ageController)
           : _buildParentForm(context, nameController, emailController),
     );

@@ -83,6 +83,8 @@ enum FamilyPages {
 
   //Missions
   missions(path: 'missions', name: 'MISSIONS'),
+  setupPushNotification(
+      path: 'setup-pushnotification', name: 'SETUP-PUSHNOTIFICATION'),
 
   //Game summaries
   gameSummaries(path: 'game-summaries', name: 'GAME-SUMMARIES'),

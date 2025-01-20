@@ -708,9 +708,9 @@ class APIService {
     required String guid,
     required Map<String, dynamic> body,
   }) async {
-    final url = Uri.https(_apiURL, '/api/v2/users/$guid/pushnotificationid');
+    final url = Uri.https(_apiURL, '/givtservice/v1/profiles/pushnotification');
 
-    final response = await client.post(
+    final response = await client.patch(
       url,
       body: jsonEncode(body),
       headers: {

@@ -33,6 +33,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const options = ['To do', 'Completed'];
     return FunScaffold(
       appBar: const FunTopAppBar(
         leading: GivtBackButtonFlat(),
@@ -45,9 +46,10 @@ class _MissionsScreenState extends State<MissionsScreen> {
             children: [
               FunTabs(
                 margin: EdgeInsets.zero,
-                options: const ['To do', 'Completed'],
+                options: options,
                 selectedIndex: _selectedIndex,
-                onPressed: (index) => setState(() => _selectedIndex = index),
+                onPressed: (set) => setState(
+                    () => _selectedIndex = set.first == options[0] ? 0 : 1),
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.missionTabsChanged,
                 ),
@@ -69,15 +71,24 @@ class _MissionsScreenState extends State<MissionsScreen> {
                 _missions(uiModel).length,
                 (index) {
                   final mission = _missions(uiModel)[index];
-                  return FunMissionCard(
-                    uiModel: mission,
-                    onTap: mission.namedPage == null ||
-                            mission.progress?.amount ==
-                                mission.progress?.goalAmount
-                        ? null
-                        : () {
-                            context.goNamed(mission.namedPage!);
-                          },
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: FunMissionCard(
+                      uiModel: mission,
+                      onTap: mission.namedPage == null ||
+                              mission.progress?.amount ==
+                                  mission.progress?.goalAmount
+                          ? null
+                          : () {
+                              context.goNamed(mission.namedPage!);
+                            },
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.funMissionCardClicked,
+                        parameters: {
+                          'mission': mission.title,
+                        },
+                      ),
+                    ),
                   );
                 },
               ),

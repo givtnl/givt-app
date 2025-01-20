@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/features/family_history/family_history_
 import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summaries_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
 import 'package:givt_app/features/family/features/missions/presentation/pages/missions_screen.dart';
+import 'package:givt_app/features/family/features/missions/presentation/pages/notification_mission_screen.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -585,6 +586,11 @@ class FamilyAppRoutes {
           path: FamilyPages.reflectIntro.path,
           name: FamilyPages.reflectIntro.name,
           builder: (context, state) => const ReflectIntroScreen(),
+        ),
+        GoRoute(
+          path: FamilyPages.setupPushNotification.path,
+          name: FamilyPages.setupPushNotification.name,
+          builder: (context, state) => const NotificationMissionScreen(),
         ),
       ],
     ),

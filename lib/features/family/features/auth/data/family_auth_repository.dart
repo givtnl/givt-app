@@ -11,6 +11,7 @@ import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class FamilyAuthRepository {
@@ -345,14 +346,8 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     final notificationId = await FirebaseMessaging.instance.getToken();
 
     LoggingInfo.instance.info('New FCM token: $notificationId');
-
-    if (_userExt!.notificationId == notificationId) {
-      LoggingInfo.instance.info(
-        'FCM token: $notificationId is the same as the current one',
-      );
-
-      return;
-    }
+    final notificationPermissionStatus =
+        await Permission.notification.status.isGranted;
 
     if (notificationId == null) {
       LoggingInfo.instance.warning(
@@ -360,14 +355,23 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       );
       return;
     }
+    if (_userExt!.notificationId == notificationId &&
+        _userExt!.pushNotificationsEnabled == notificationPermissionStatus) {
+      LoggingInfo.instance.info(
+        'FCM token: $notificationId is the same as the current one',
+      );
+
+      return;
+    }
 
     await _apiService.updateNotificationId(
       guid: _userExt!.guid,
       body: {
         'PushNotificationId': notificationId,
-        'OS': 1, // Always use firebase implementation in backend (android)
+        'PushNotificationsEnabled': notificationPermissionStatus,
       },
     );
+    await _fetchUserExtension(_userExt!.guid);
   }
 
   Future<void> _setUserPropsForExternalServices(UserExt newUserExt) {

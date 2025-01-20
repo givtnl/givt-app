@@ -37,6 +37,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   bool _hasRecommendationsError = false;
   bool _isLoadingRecommendations = false;
   Session? _session;
+  List<String> tabsOptions = const ['Help', 'Give'];
 
   Future<void> init() async {
     try {
@@ -135,9 +136,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
         tags: [
           Tag(
             key: 'override',
-            displayText: _isActsOfServiceIndexCurrentlySelected()
-                ? 'Way to help'
-                : 'Give',
+            displayText:
+                _isActsOfServiceIndexCurrentlySelected() ? 'Help' : 'Give',
             area: _isActsOfServiceIndexCurrentlySelected()
                 ? Areas.tertiary
                 : Areas.primary,
@@ -186,12 +186,15 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void resetTabs() {
-    onSelectionChanged(_actsOfServiceIndex);
+    onSelectionChanged({tabsOptions[0]});
     emitCustom(const GratefulCustom.scrollToTop());
   }
 
-  void onSelectionChanged(int index) {
-    tabIndex = index;
+  void onSelectionChanged(Set<String> set) {
+    if (set.isEmpty || !tabsOptions.contains(set.first)) {
+      return;
+    }
+    tabIndex = set.first == tabsOptions.first ? 0 : 1;
     _emitData();
   }
 

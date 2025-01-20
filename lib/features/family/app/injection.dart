@@ -24,6 +24,7 @@ import 'package:givt_app/features/family/features/home_screen/cubit/navigation_b
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
+import 'package:givt_app/features/family/features/missions/bloc/notif_mission_cubit.dart';
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository_impl.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
@@ -159,6 +160,9 @@ void initCubits() {
     )
     ..registerFactory<MissionsCubit>(
       () => MissionsCubit(getIt()),
+    )
+    ..registerFactory<NotificationMissionsCubit>(
+      () => NotificationMissionsCubit(getIt()),
     )
     ..registerFactory<GameSummariesCubit>(
       GameSummariesCubit.new,
