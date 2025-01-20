@@ -8,6 +8,7 @@ class Util {
   /// Features overlay keys
   static const String cancelFeatureOverlayKey = 'cancelFeatureOverlayKey';
   static const String testimonialsSummaryKey = 'testimonialsSummaryKey';
+
   // Default user info
   static const String defaultAddress = 'Foobarstraat 5';
   static const String defaultCity = 'Foobar';
@@ -32,7 +33,7 @@ class Util {
   static final usPhoneNumberRegEx =
       RegExp(r'^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$');
   static final ukSortCodeRegEx = RegExp(r'^\d{6}$');
-  static final emailRegEx = RegExp(r'^[\w-\.\+]*[\w]+@([\w-]+\.)+[\w]+$');
+  static final emailRegEx = RegExp(r'^(?!.*\.\.)[\w-\.\+]*[\w]+@([\w-]+\.)+[\w]+$');
   static final nameFieldsRegEx =
       RegExp(r'^[^0-9_!,¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$');
 
@@ -53,6 +54,7 @@ DKMjI861g8uLPf2mXBrkUOsvnSlUOD/CKYH10yvghfP+6T2KnA21dfVTX7HhGPcV
 AgMBAAE=
 -----END PUBLIC KEY-----
 ''');
+
   static IconData getCurrencyIconData({required Country country}) {
     var icon = Icons.euro;
     if (country == Country.us) {
