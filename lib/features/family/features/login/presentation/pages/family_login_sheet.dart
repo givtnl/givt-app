@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
@@ -8,10 +7,8 @@ import 'package:givt_app/features/family/features/reset_password/presentation/pa
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
@@ -39,7 +36,6 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
   bool obscureText = true;
 
   final _cubit = getIt<FamilyLoginCubit>();
-  final _connectionCubit = getIt<InternetConnectionCubit>();
 
   @override
   void didChangeDependencies() {
@@ -73,27 +69,19 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<InternetConnectionCubit, InternetConnectionState>(
-      bloc: _connectionCubit,
-      listener: (context, state) {
-        if (state is InternetConnectionLost) {
-          InternetConnectionLostDialog.show(context);
-        }
+    return BaseStateConsumer(
+      cubit: _cubit,
+      onCustom: onCustom,
+      onData: (context, data) => showLoginForm(data),
+      onLoading: (context) {
+        return FunBottomSheet(
+          title: context.l10n.login,
+          icon: const CustomCircularProgressIndicator(),
+          content: const BodyMediumText(
+            "We're logging you in",
+          ),
+        );
       },
-      child: BaseStateConsumer(
-        cubit: _cubit,
-        onCustom: onCustom,
-        onData: (context, data) => showLoginForm(data),
-        onLoading: (context) {
-          return FunBottomSheet(
-            title: context.l10n.login,
-            icon: const CustomCircularProgressIndicator(),
-            content: const BodyMediumText(
-              "We're logging you in",
-            ),
-          );
-        },
-      ),
     );
   }
 
