@@ -371,6 +371,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
         'PushNotificationsEnabled': notificationPermissionStatus,
       },
     );
+    await _fetchUserExtension(_userExt!.guid);
   }
 
   Future<void> _setUserPropsForExternalServices(UserExt newUserExt) {
