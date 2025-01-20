@@ -84,7 +84,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
       parameters: {
         'destination': 'Family',
       },
-    ),    AnalyticsEvent(
+    ),
+    AnalyticsEvent(
       AmplitudeEvents.navigationBarPressed,
       parameters: {
         'destination': 'Memories',
@@ -146,7 +147,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
           const NavigationDestination(
             icon: FaIcon(FontAwesomeIcons.mask),
             label: 'Family',
-          ),        const NavigationDestination(
+          ),
+          const NavigationDestination(
             icon: FaIcon(FontAwesomeIcons.solidCalendar),
             label: 'Memories',
           ),
@@ -195,7 +197,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   }) async {
     unawaited(SystemSound.play(SystemSoundType.click));
     unawaited(HapticFeedback.selectionClick());
-    if (index == NavigationBarHomeScreen.homeIndex) {
+    if (index == NavigationBarHomeScreen.homeIndex ||
+        index == NavigationBarHomeScreen.memoriesIndex) {
       _setIndex(index);
     } else {
       await FamilyAuthUtils.authenticateUser(
@@ -240,12 +243,14 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
       onPause: _connectionCubit.pause,
     );
 
-    _missionAchievedListener = _missionRepo.onMissionAchieved().listen((mission) {
+    _missionAchievedListener =
+        _missionRepo.onMissionAchieved().listen((mission) {
       showDialog<void>(
         context: context,
         barrierDismissible: false,
         barrierColor: Theme.of(context).colorScheme.primary.withOpacity(.25),
-        builder: (context) => MissionCompletedBannerDialog(missionName: mission.title),
+        builder: (context) =>
+            MissionCompletedBannerDialog(missionName: mission.title),
       );
     });
 
