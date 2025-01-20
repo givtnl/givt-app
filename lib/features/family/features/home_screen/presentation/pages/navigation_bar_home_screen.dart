@@ -14,6 +14,7 @@ import 'package:givt_app/features/family/features/account/presentation/pages/us_
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/box_origin/box_origin_selection_page.dart';
+import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summaries_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
@@ -45,11 +46,13 @@ class NavigationBarHomeScreen extends StatefulWidget {
 
   static const int homeIndex = 0;
   static const int familyIndex = 1;
-  static const int profileIndex = 2;
+  static const int memoriesIndex = 2;
+  static const int profileIndex = 3;
 
   static const List<int> validIndexes = [
     homeIndex,
     familyIndex,
+    memoriesIndex,
     profileIndex,
   ];
 
@@ -79,13 +82,18 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     AnalyticsEvent(
       AmplitudeEvents.navigationBarPressed,
       parameters: {
-        'destination': 'My Family',
+        'destination': 'Family',
+      },
+    ),    AnalyticsEvent(
+      AmplitudeEvents.navigationBarPressed,
+      parameters: {
+        'destination': 'Memories',
       },
     ),
     AnalyticsEvent(
       AmplitudeEvents.navigationBarPressed,
       parameters: {
-        'destination': 'My Profile',
+        'destination': 'Profile',
       },
     ),
   ];
@@ -137,7 +145,10 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
           ),
           const NavigationDestination(
             icon: FaIcon(FontAwesomeIcons.mask),
-            label: 'My Family',
+            label: 'Family',
+          ),        const NavigationDestination(
+            icon: FaIcon(FontAwesomeIcons.solidCalendar),
+            label: 'Memories',
           ),
           NavigationDestination(
             icon: uiModel?.profilePictureUrl == null
@@ -147,7 +158,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
                     height: 28,
                     child: SvgPicture.network(uiModel!.profilePictureUrl!),
                   ),
-            label: 'My Profile',
+            label: 'Profile',
           ),
         ],
         analyticsEvent: (int index) => _analyticsEvents[index],
@@ -170,6 +181,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
           child: <Widget>[
             const FamilyHomeScreen(),
             const FamilyOverviewPage(),
+            const GameSummariesScreen(),
             const USPersonalInfoEditPage(),
           ][_currentIndex],
         ),
