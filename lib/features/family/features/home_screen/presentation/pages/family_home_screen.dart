@@ -167,15 +167,6 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       GiveButton(
                         onPressed: _cubit.onGiveButtonPressed,
                       ),
-                      const SizedBox(height: 16),
-                      FunButton.secondary(
-                        onTap: () => context.goNamed(
-                          FamilyPages.gameSummaries.name,
-                        ),
-                        text: 'Show Summaries',
-                        analyticsEvent: AnalyticsEvent(AmplitudeEvents
-                            .familyHomeScreenShowSummariesClicked),
-                      ),
                     ],
                   ),
                 ),
