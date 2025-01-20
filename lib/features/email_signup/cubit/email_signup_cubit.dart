@@ -162,7 +162,13 @@ class EmailSignupCubit
     await _authRepository.checkUserExt(email: _currentEmail);
 
     // Get info if this is a registered user
-    final result = await _authRepository.checkEmail(email: _currentEmail);
+    String result;
+    try {
+      result = await _authRepository.checkEmail(email: _currentEmail);
+    } catch (e, s) {
+      emitCustom(const EmailSignupCustom.noInternet());
+      return;
+    }
 
     // When this is a registered user, we show the login page
     if (result.contains('true')) {
