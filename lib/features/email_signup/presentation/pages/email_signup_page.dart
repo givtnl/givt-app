@@ -106,6 +106,16 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                 forceLogin: true,
               ),
             );
+          } else if (state.status == AuthStatus.noInternet) {
+            setLoading(state: false);
+            showDialog<void>(
+              context: context,
+              builder: (context) => WarningDialog(
+                title: context.l10n.noInternetConnectionTitle,
+                content: context.l10n.noInternet,
+                onConfirm: () => context.pop(),
+              ),
+            );
           }
         },
         child: BaseStateConsumer(
