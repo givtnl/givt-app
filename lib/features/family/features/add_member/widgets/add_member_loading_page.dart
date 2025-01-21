@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/family/features/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
@@ -15,7 +15,7 @@ class AddMemberLoadingPage extends StatelessWidget {
     while (context.canPop()) {
       context.pop();
     }
-    context.goNamed(FamilyPages.profileSelection.name);
+    context.goNamed(FamilyPages.heardAboutGivt.name);
   }
 
   @override

@@ -9,11 +9,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
-import 'package:givt_app/features/family/features/box_origin/box_origin_selection_page.dart';
 import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summaries_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
@@ -24,7 +22,6 @@ import 'package:givt_app/features/family/features/missions/domain/entities/missi
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/reward_banner_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
@@ -34,7 +31,6 @@ import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
-import 'package:go_router/go_router.dart';
 
 class NavigationBarHomeScreen extends StatefulWidget {
   const NavigationBarHomeScreen({
@@ -70,7 +66,6 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   late final StreamSubscription<Mission> _missionAchievedListener;
 
   int _currentIndex = 0;
-  static bool _isShowingBoxOrigin = false;
 
   final List<AnalyticsEvent> _analyticsEvents = [
     AnalyticsEvent(
@@ -269,48 +264,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     NavigationBarHomeCustom custom,
   ) async {
     switch (custom) {
-      case BoxOriginDialog():
-        await _showBoxOriginModal(context);
       case final SwitchTab event:
         _setIndex(event.tabIndex);
-    }
-  }
-
-  Future<void> _showBoxOriginModal(BuildContext context) async {
-    if (_isShowingBoxOrigin) {
-      // do nothing, dialog is already showing
-    } else {
-      _isShowingBoxOrigin = true;
-      await FunModal(
-        title: 'Can you tell us where you heard about Givt?',
-        icon: const FunIcon(
-          iconData: FontAwesomeIcons.earListen,
-        ),
-        buttons: [
-          FunButton(
-            text: 'Tell us',
-            onTap: () async {
-              context.pop(); // close modal
-              await Navigator.push(
-                context,
-                BoxOriginSelectionPage(setBoxOrigin: _cubit.setBoxOrigin)
-                    .toRoute(context),
-              );
-            },
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.continueChooseChurchClicked,
-            ),
-          ),
-          FunButton.secondary(
-            text: 'Dismiss',
-            onTap: () => context.pop(),
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.dontHaveABoxClicked,
-            ),
-          ),
-        ],
-      ).show(context);
-      _isShowingBoxOrigin = false;
     }
   }
 }

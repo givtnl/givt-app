@@ -5,7 +5,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
-import 'package:givt_app/features/family/features/home_screen/usecases/box_origin_usecase.dart';
+import 'package:givt_app/features/family/features/box_origin/usecases/box_origin_usecase.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/registration_usecase.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
@@ -68,9 +68,6 @@ class NavigationBarHomeCubit
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
-    } else if (await shouldShowBoxOriginModal()) {
-      await setBoxOriginModalShown();
-      emitCustom(const NavigationBarHomeCustom.showBoxOriginDialog());
     }
   }
 
