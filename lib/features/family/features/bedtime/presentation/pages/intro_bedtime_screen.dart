@@ -457,8 +457,8 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: FunButton(
-                          onTap: () async {
-                            final result = await Navigator.of(context).push(
+                          onTap: () {
+                            Navigator.of(context).push(
                               PageRouteBuilder<dynamic>(
                                 pageBuilder: (context, animation,
                                         secondaryAnimation) =>
@@ -472,7 +472,6 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                                 },
                               ),
                             );
-                            Navigator.pop(context, result);
                           },
                           text: 'Continue',
                           analyticsEvent: AnalyticsEvent(

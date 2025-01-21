@@ -83,11 +83,11 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
             isLast: isLast,
           );
         },
-        onCustom: (context, bedtime) async {
+        onCustom: (context, bedtime) {
           if (isLast) {
-            Navigator.of(context).pop();
+            context.goNamed(FamilyPages.missions.name);
           } else {
-            final result = await Navigator.of(context).push(
+            Navigator.of(context).push(
               PageRouteBuilder<dynamic>(
                 pageBuilder: (context, animation, secondaryAnimation) =>
                     SetupBedtimeScreen(
@@ -108,7 +108,6 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
                 },
               ),
             );
-            Navigator.pop(context, result);
           }
         },
         onInitial: (context) {
