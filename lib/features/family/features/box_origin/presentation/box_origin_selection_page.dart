@@ -69,7 +69,7 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
           Navigator.of(context)
             ..pop()
             ..pop();
-          context.pushNamed(FamilyPages.reflectIntro.name);
+          context.pushNamed(FamilyPages.profileSelection.name);
         },
       );
     } else {
