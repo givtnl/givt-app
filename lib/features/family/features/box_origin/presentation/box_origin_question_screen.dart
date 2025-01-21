@@ -8,8 +8,8 @@ import 'package:givt_app/features/family/features/box_origin/bloc/box_origin_cub
 import 'package:givt_app/features/family/features/box_origin/presentation/box_origin_selection_page.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
-import 'package:givt_app/features/family/shared/design/components/overlays/fun_modal.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -28,41 +28,53 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      minimumPadding: EdgeInsets.zero,
       canPop: false,
       appBar: FunTopAppBar.primary99(
         title: 'Last step',
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          FunModal(
-            title: 'Where did you hear about Givt?',
-            icon: const FunIcon(
+          const Align(
+            alignment: Alignment.topCenter,
+            child: TitleMediumText(
+              'Where did you hear about Givt?',
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const Align(
+            child: FunIcon(
               iconData: FontAwesomeIcons.earListen,
             ),
-            buttons: [
-              FunButton(
-                text: 'Select location',
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    BoxOriginSelectionPage(setBoxOrigin: _cubit.setBoxOrigin)
-                        .toRoute(context),
-                  );
-                },
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.continueChooseChurchClicked,
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FunButton(
+                  text: 'Select location',
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      BoxOriginSelectionPage(setBoxOrigin: _cubit.setBoxOrigin)
+                          .toRoute(context),
+                    );
+                  },
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.continueChooseChurchClicked,
+                  ),
                 ),
-              ),
-              FunButton.secondary(
-                text: 'Skip',
-                onTap: () => context.goNamed(FamilyPages.profileSelection.name),
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.dontHaveABoxClicked,
+                const SizedBox(height: 8),
+                FunButton.secondary(
+                  text: 'Skip',
+                  onTap: () =>
+                      context.goNamed(FamilyPages.profileSelection.name),
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.dontHaveABoxClicked,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
