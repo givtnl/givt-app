@@ -235,7 +235,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
           context: context,
           builder: (context) => WarningDialog(
             title: context.l10n.loginFailure,
-            content: context.l10n.wrongCredentials,
+            content: context.l10n.noInternet,
             onConfirm: () => context.pop(),
           ),
         );

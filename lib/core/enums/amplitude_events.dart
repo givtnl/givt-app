@@ -349,7 +349,7 @@ enum AmplitudeEvents {
   summaryLeaveMessageClicked(
     'summary_leave_message_clicked',
   ),
-  afterGameSummaryDoneClicked('after_game_usmmary_done_clicked'),
+  afterGameSummaryDoneClicked('after_game_summary_done_clicked'),
   doneRecordingSummaryMessageClicked(
     'done_recording_summary_message_clicked',
   ),
