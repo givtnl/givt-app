@@ -457,20 +457,23 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: FunButton(
-                          onTap: () => Navigator.of(context).push(
-                            PageRouteBuilder<dynamic>(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) =>
-                                      SetupBedtimeScreen(arguments: arguments!),
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                            ),
-                          ),
+                          onTap: () async {
+                            final result = await Navigator.of(context).push(
+                              PageRouteBuilder<dynamic>(
+                                pageBuilder: (context, animation,
+                                        secondaryAnimation) =>
+                                    SetupBedtimeScreen(arguments: arguments!),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
+                            Navigator.pop(context, result);
+                          },
                           text: 'Continue',
                           analyticsEvent: AnalyticsEvent(
                             AmplitudeEvents

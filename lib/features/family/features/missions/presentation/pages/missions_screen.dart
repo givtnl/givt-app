@@ -80,7 +80,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                                   mission.progress?.goalAmount
                           ? null
                           : () {
-                              context.goNamed(mission.namedPage!);
+                              context.pushNamed(mission.namedPage!);
                             },
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents.funMissionCardClicked,
