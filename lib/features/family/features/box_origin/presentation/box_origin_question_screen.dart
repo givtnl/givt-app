@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/box_origin/bloc/box_origin_cubit.dart';
 import 'package:givt_app/features/family/features/box_origin/presentation/box_origin_selection_page.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/fun_modal.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 class BoxOriginQuestionScreen extends StatefulWidget {
@@ -24,34 +27,45 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FunModal(
-      title: 'Can you tell us where you heard about Givt?',
-      icon: const FunIcon(
-        iconData: FontAwesomeIcons.earListen,
+    return FunScaffold(
+      minimumPadding: EdgeInsets.zero,
+      canPop: false,
+      appBar: FunTopAppBar.primary99(
+        title: 'Last step',
       ),
-      buttons: [
-        FunButton(
-          text: 'Tell us',
-          onTap: () async {
-            context.pop(); // close modal
-            await Navigator.push(
-              context,
-              BoxOriginSelectionPage(setBoxOrigin: _cubit.setBoxOrigin)
-                  .toRoute(context),
-            );
-          },
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.continueChooseChurchClicked,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FunModal(
+            title: 'Where did you hear about Givt?',
+            icon: const FunIcon(
+              iconData: FontAwesomeIcons.earListen,
+            ),
+            buttons: [
+              FunButton(
+                text: 'Select location',
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    BoxOriginSelectionPage(setBoxOrigin: _cubit.setBoxOrigin)
+                        .toRoute(context),
+                  );
+                },
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.continueChooseChurchClicked,
+                ),
+              ),
+              FunButton.secondary(
+                text: 'Skip',
+                onTap: () => context.goNamed(FamilyPages.profileSelection.name),
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.dontHaveABoxClicked,
+                ),
+              ),
+            ],
           ),
-        ),
-        FunButton.secondary(
-          text: 'Dismiss',
-          onTap: () => context.pop(),
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.dontHaveABoxClicked,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

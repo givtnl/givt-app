@@ -102,13 +102,6 @@ class FamilyAppRoutes {
       },
     ),
     GoRoute(
-      path: FamilyPages.heardAboutGivt.path,
-      name: FamilyPages.heardAboutGivt.name,
-      builder: (context, state) {
-        return const BoxOriginQuestionScreen();
-      },
-    ),
-    GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
       pageBuilder: (context, state) {
@@ -171,6 +164,13 @@ class FamilyAppRoutes {
         );
       },
       routes: [
+        GoRoute(
+          path: FamilyPages.heardAboutGivt.path,
+          name: FamilyPages.heardAboutGivt.name,
+          builder: (context, state) {
+            return const BoxOriginQuestionScreen();
+          },
+        ),
         GoRoute(
           path: FamilyPages.missions.path,
           name: FamilyPages.missions.name,
