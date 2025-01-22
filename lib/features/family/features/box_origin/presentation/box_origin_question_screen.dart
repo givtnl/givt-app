@@ -32,7 +32,7 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
       appBar: FunTopAppBar.primary99(
         title: 'Last step',
       ),
-      body: Stack(
+      body: Column(
         children: [
           const Align(
             alignment: Alignment.topCenter,
@@ -41,40 +41,38 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
               textAlign: TextAlign.center,
             ),
           ),
+          const Spacer(),
           const Align(
             child: FunIcon(
               iconData: FontAwesomeIcons.earListen,
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FunButton(
-                  text: 'Select location',
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      BoxOriginSelectionPage(setBoxOrigin: _cubit.setBoxOrigin)
-                          .toRoute(context),
-                    );
-                  },
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.continueChooseChurchClicked,
-                  ),
+          const Spacer(),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FunButton(
+                text: 'Select location',
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    BoxOriginSelectionPage(setBoxOrigin: _cubit.setBoxOrigin)
+                        .toRoute(context),
+                  );
+                },
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.continueChooseChurchClicked,
                 ),
-                const SizedBox(height: 8),
-                FunButton.secondary(
-                  text: 'Skip',
-                  onTap: () =>
-                      context.goNamed(FamilyPages.profileSelection.name),
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.dontHaveABoxClicked,
-                  ),
+              ),
+              const SizedBox(height: 8),
+              FunButton.secondary(
+                text: 'Skip',
+                onTap: () => context.goNamed(FamilyPages.profileSelection.name),
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.dontHaveABoxClicked,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
