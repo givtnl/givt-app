@@ -11,7 +11,7 @@ dependencies:
   animated_toggle_switch: ^0.8.3
   app_settings: ^5.1.1
   badges: ^3.1.1
-  bloc: ^8.1.1
+  bloc: ^9.0.0
   carousel_slider: ^5.0.0
   country_flags: ^3.0.0
   countup: ^0.1.4
@@ -23,13 +23,13 @@ dependencies:
   diacritic: ^0.1.4
   dotted_border: ^2.1.0
   equatable: ^2.0.5
-  firebase_core: ^2.32.0
+  firebase_core: ^3.10.1
   # firebase_core: ^2.31.0
-  firebase_messaging: ^14.9.2
-  firebase_crashlytics: ^3.5.7
+  firebase_messaging: ^15.2.1
+  firebase_crashlytics: ^4.3.1
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.2
+  flutter_bloc: ^9.0.0
   flutter_blue_plus: ^1.30.5
   flutter_inappwebview: ^6.1.2
   flutter_layout_grid: ^2.0.5
@@ -48,7 +48,7 @@ dependencies:
   http_certificate_pinning:
     path: ./packages/http_certificate_pinning
   http_interceptor: ^2.0.0
-  hydrated_bloc: ^9.1.1
+  hydrated_bloc: ^10.0.0
   iban: ^1.0.1
   image_picker: ^1.1.2
   internet_connection_checker_plus: ^2.5.2
@@ -75,13 +75,13 @@ dependencies:
   uuid: ^4.4.0
   vibration: ^2.0.0
   wakelock_plus: ^1.2.8
-  collection: ^1.18.0
+  collection: ^1.19.0
   flutter_keyboard_visibility: ^6.0.0
   dropdown_button2: ^2.3.9
   page_transition: ^2.1.0
   record: ^5.2.0
   audioplayers: ^6.1.0
-  firebase_remote_config: ^4.4.7
+  firebase_remote_config: ^5.3.1
   rxdart: ^0.28.0
   facebook_app_events: ^0.19.4
   volume_controller: ^2.0.8
