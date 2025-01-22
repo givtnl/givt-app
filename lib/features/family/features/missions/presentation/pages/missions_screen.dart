@@ -74,6 +74,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: FunMissionCard(
+                      key: ValueKey(mission.title),
                       uiModel: mission,
                       onTap: mission.namedPage == null ||
                               mission.progress?.amount ==
