@@ -97,7 +97,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
             canPop: false,
             minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
             appBar: const FunTopAppBar(
-              title: 'Generous opportunities',
+              title: 'Generosity time',
             ),
             body: Column(
               children: [
