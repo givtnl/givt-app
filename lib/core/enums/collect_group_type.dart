@@ -88,11 +88,11 @@ enum CollectGroupType {
   static IconData getIconByTypeUS(CollectGroupType type) {
     switch (type) {
       case CollectGroupType.church:
-        return FontAwesomeIcons.placeOfWorship;
+        return FontAwesomeIcons.church;
       case CollectGroupType.charities:
-        return FontAwesomeIcons.solidHeart;
+        return FontAwesomeIcons.earthAmericas;
       case CollectGroupType.campaign:
-        return FontAwesomeIcons.solidFlag;
+        return FontAwesomeIcons.seedling;
       case CollectGroupType.artists:
         return FontAwesomeIcons.guitar;
       default:
