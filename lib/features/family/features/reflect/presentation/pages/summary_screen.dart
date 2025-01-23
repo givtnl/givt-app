@@ -54,7 +54,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   Widget build(BuildContext context) {
     return Scrollbar(
       child: FunScaffold(
-        minimumPadding: EdgeInsets.zero,
+        minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
         canPop: false,
         appBar: const FunTopAppBar(
           title: 'Family summary',
@@ -62,46 +62,68 @@ class _SummaryScreenState extends State<SummaryScreen> {
         body: BaseStateConsumer(
           cubit: _cubit,
           onData: (context, details) {
-            return SingleChildScrollView(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 24),
-                    FunTag.purple(text: DateTime.now().formattedFullMonth),
-                    const SizedBox(height: 16),
-                    if (details.players.isNotEmpty)
-                      AvatarBar(
-                          circleSize: 54,
-                          uiModel: AvatarBarUIModel(avatarUIModels: [
-                            for (var i = 0; i < details.players.length; i++)
-                              AvatarUIModel(
-                                avatarUrl: details.players[i].pictureURL,
-                                text: details.players[i].firstName,
-                              ),
-                          ]),
-                          onAvatarTapped: (i) {}),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
+            return LayoutBuilder(
+              builder:
+                  (BuildContext context, BoxConstraints viewportConstraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: viewportConstraints.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
                       child: Column(
                         children: [
-                          getTileStats(details),
                           const SizedBox(height: 24),
-                          const TitleMediumText(
-                            'Save a message for your memories',
-                            textAlign: TextAlign.center,
+                          FunTag.purple(
+                              text: DateTime.now().formattedFullMonth),
+                          const SizedBox(height: 16),
+                          if (details.players.isNotEmpty)
+                            AvatarBar(
+                                circleSize: 54,
+                                uiModel: AvatarBarUIModel(avatarUIModels: [
+                                  for (var i = 0;
+                                      i < details.players.length;
+                                      i++)
+                                    AvatarUIModel(
+                                      avatarUrl: details.players[i].pictureURL,
+                                      text: details.players[i].firstName,
+                                    ),
+                                ]),
+                                onAvatarTapped: (i) {}),
+
+                          // stats button
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: getTileStats(details),
                           ),
-                          const SizedBox(height: 12),
-                          getAudioWidget(details),
                           const SizedBox(height: 24),
-                          getFunButton(details),
-                          const SizedBox(height: 40),
+                          // Record
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Column(
+                              children: [
+                                const TitleMediumText(
+                                  'Save a message for your memories',
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 12),
+                                getAudioWidget(details),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          const Spacer(),
+                          // Bottom button
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: getFunButton(details),
+                          ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             );
           },
         ),
