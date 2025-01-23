@@ -54,7 +54,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   Widget build(BuildContext context) {
     return Scrollbar(
       child: FunScaffold(
-        minimumPadding: EdgeInsets.zero,
+        minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
         canPop: false,
         appBar: const FunTopAppBar(
           title: 'Family summary',
@@ -118,7 +118,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: getFunButton(details),
                           ),
-                          const SizedBox(height: 40),
                         ],
                       ),
                     ),
