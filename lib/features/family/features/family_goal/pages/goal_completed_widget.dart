@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 
@@ -20,7 +21,7 @@ class GoalCompletedWidget extends StatelessWidget {
       uiModel: FunMissionCardUIModel(
         title: org.organisationName ?? 'Name Placeholder',
         description: 'Family Goal completed. Great job!',
-        headerIcon: FontAwesomeIcons.check,
+        headerIcon: FunIcon.xmarkPlain(),
         actionIcon: FontAwesomeIcons.xmark,
       ),
       onTap: () => impactGroupsCubit

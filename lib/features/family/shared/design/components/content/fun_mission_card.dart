@@ -73,10 +73,7 @@ class FunMissionCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (uiModel.headerIcon != null)
-                          FaIcon(
-                            uiModel.headerIcon,
-                            color: FamilyAppTheme.primary60,
-                          ),
+                          uiModel.headerIcon!,
                         const SizedBox(height: 12),
                         TitleSmallText(
                           uiModel.title,

@@ -137,7 +137,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               });
                             },
                             viewportFraction: 1,
-                            height: 125,
+                            height: 150,
                           ),
                         ),
                         if (carrouselItems.length > 1)
