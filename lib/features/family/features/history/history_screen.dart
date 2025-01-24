@@ -14,6 +14,8 @@ import 'package:givt_app/features/family/shared/widgets/content/donation_item_wi
 import 'package:givt_app/features/family/shared/widgets/content/income_item_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class HistoryScreen extends StatelessWidget {
@@ -44,6 +46,21 @@ class HistoryScreen extends StatelessWidget {
           // Display loading indicator if no data is available
           if (state.status == HistoryStatus.loading && state.history.isEmpty) {
             return const FullScreenLoadingWidget();
+          }
+
+          if (state.history.isEmpty) {
+            return Column(
+              children: [
+                const SizedBox(height: 20),
+                walletEmptyIcon(),
+                const SizedBox(height: 16),
+                Center(
+                  child: BodyMediumText.opacityBlack50(
+                    'You haven’t made any givts yet!',
+                  ),
+                ),
+              ],
+            );
           }
 
           // Display error message if data is not available
