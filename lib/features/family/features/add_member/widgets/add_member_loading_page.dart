@@ -9,11 +9,17 @@ import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class AddMemberLoadingPage extends StatelessWidget {
-  const AddMemberLoadingPage({super.key});
+  const AddMemberLoadingPage({this.skipHeardAboutGivt = false, super.key});
+  final bool skipHeardAboutGivt;
 
   void _navigateToProfileSelection(BuildContext context) {
     while (context.canPop()) {
       context.pop();
+    }
+
+    if(skipHeardAboutGivt) {
+      context.goNamed(FamilyPages.profileSelection.name);
+      return;
     }
     context.goNamed(FamilyPages.heardAboutGivt.name);
   }
