@@ -5,30 +5,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/pages/intro_bedtime_screen.dart';
-import 'package:givt_app/features/family/features/child_details/cubit/child_details_cubit.dart';
-import 'package:givt_app/features/family/features/child_details/pages/child_details_page.dart';
-import 'package:givt_app/features/family/features/edit_child_name/cubit/edit_child_cubit.dart';
-import 'package:givt_app/features/family/features/edit_child_name/pages/edit_child_page.dart';
-import 'package:givt_app/features/family/features/edit_parent_profile/cubit/edit_profile_cubit.dart';
-import 'package:givt_app/features/family/features/family_goal/cubit/create_family_goal_cubit.dart';
-import 'package:givt_app/features/family/features/family_goal/pages/create_family_goal_flow_page.dart';
-import 'package:givt_app/features/family/features/family_history/family_history_cubit/family_history_cubit.dart';
-import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summaries_screen.dart';
-import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
-import 'package:givt_app/features/family/features/missions/presentation/pages/missions_screen.dart';
-import 'package:givt_app/features/family/features/missions/presentation/pages/notification_mission_screen.dart';
-import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/pages/intro_bedtime_screen.dart';
+import 'package:givt_app/features/family/features/box_origin/presentation/box_origin_question_screen.dart';
+import 'package:givt_app/features/family/features/child_details/cubit/child_details_cubit.dart';
+import 'package:givt_app/features/family/features/child_details/pages/child_details_page.dart';
 import 'package:givt_app/features/family/features/coin_flow/cubit/search_coin_cubit.dart';
 import 'package:givt_app/features/family/features/coin_flow/screens/search_for_coin_screen.dart';
 import 'package:givt_app/features/family/features/coin_flow/screens/success_coin_screen.dart';
+import 'package:givt_app/features/family/features/edit_child_name/cubit/edit_child_cubit.dart';
+import 'package:givt_app/features/family/features/edit_child_name/pages/edit_child_page.dart';
 import 'package:givt_app/features/family/features/edit_child_profile/cubit/edit_child_profile_cubit.dart';
+import 'package:givt_app/features/family/features/edit_parent_profile/cubit/edit_profile_cubit.dart';
+import 'package:givt_app/features/family/features/family_goal/cubit/create_family_goal_cubit.dart';
+import 'package:givt_app/features/family/features/family_goal/pages/create_family_goal_flow_page.dart';
+import 'package:givt_app/features/family/features/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
+import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summaries_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';
@@ -43,6 +40,11 @@ import 'package:givt_app/features/family/features/home_screen/presentation/pages
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/parent_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/family/features/missions/presentation/pages/missions_screen.dart';
+import 'package:givt_app/features/family/features/missions/presentation/pages/notification_mission_screen.dart';
+import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/give_from_list_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -59,8 +61,6 @@ import 'package:givt_app/features/family/features/recommendation/tags/screens/lo
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
 import 'package:givt_app/features/family/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
-import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/family_permit_biometric_page.dart';
@@ -103,66 +103,56 @@ class FamilyAppRoutes {
     GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
-      pageBuilder: (context, state) {
+      builder: (context, state) {
         final index = int.tryParse(state.uri.queryParameters['index'] ?? '');
         final showAllowanceWarning = bool.tryParse(
             state.uri.queryParameters['showAllowanceWarning'] ?? '');
         if (index != null) {
           getIt<NavigationBarHomeCubit>().switchTab(index);
         }
-        return CustomTransitionPage<void>(
-          key: state.pageKey,
-          child: MultiBlocProvider(
-            providers: [
-              // profile selection (home screen, for now)
-              BlocProvider(
-                lazy: false,
-                create: (_) => RemoteDataSourceSyncBloc(
-                  getIt(),
-                  getIt(),
-                )..add(const RemoteDataSourceSyncRequested()),
-              ),
-              // manage family
-              BlocProvider(
-                create: (_) => FamilyOverviewCubit(getIt())
-                  ..fetchFamilyProfiles(
-                    showAllowanceWarning: showAllowanceWarning ?? false,
-                  ),
-              ),
-              BlocProvider(
-                create: (context) =>
-                    FamilyHistoryCubit(getIt(), getIt(), getIt(), getIt())
-                      ..fetchHistory(),
-              ),
-              // us personal info edit page
-              BlocProvider(
-                create: (context) => PersonalInfoEditBloc(
-                  loggedInUserExt: context.read<FamilyAuthCubit>().user!,
-                  authRepository: getIt(),
-                ),
-              ),
-            ],
-            child: NavigationBarHomeScreen(
-              index: index,
+        return MultiBlocProvider(
+          providers: [
+            // profile selection (home screen, for now)
+            BlocProvider(
+              lazy: false,
+              create: (_) => RemoteDataSourceSyncBloc(
+                getIt(),
+                getIt(),
+              )..add(const RemoteDataSourceSyncRequested()),
             ),
+            // manage family
+            BlocProvider(
+              create: (_) => FamilyOverviewCubit(getIt())
+                ..fetchFamilyProfiles(
+                  showAllowanceWarning: showAllowanceWarning ?? false,
+                ),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  FamilyHistoryCubit(getIt(), getIt(), getIt(), getIt())
+                    ..fetchHistory(),
+            ),
+            // us personal info edit page
+            BlocProvider(
+              create: (context) => PersonalInfoEditBloc(
+                loggedInUserExt: context.read<FamilyAuthCubit>().user!,
+                authRepository: getIt(),
+              ),
+            ),
+          ],
+          child: NavigationBarHomeScreen(
+            index: index,
           ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(0, 120);
-            const end = Offset.zero;
-            const curve = FamilyAppTheme.gentle;
-
-            final tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            final offsetAnimation = animation.drive(tween);
-
-            return SlideTransition(
-              position: offsetAnimation,
-              child: child,
-            );
-          },
         );
       },
       routes: [
+        GoRoute(
+          path: FamilyPages.heardAboutGivt.path,
+          name: FamilyPages.heardAboutGivt.name,
+          builder: (context, state) {
+            return const BoxOriginQuestionScreen();
+          },
+        ),
         GoRoute(
           path: FamilyPages.missions.path,
           name: FamilyPages.missions.name,

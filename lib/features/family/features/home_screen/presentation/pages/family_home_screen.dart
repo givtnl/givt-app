@@ -137,7 +137,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               });
                             },
                             viewportFraction: 1,
-                            height: 125,
+                            height: 150,
                           ),
                         ),
                         if (carrouselItems.length > 1)
@@ -166,15 +166,6 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       const SizedBox(height: 16),
                       GiveButton(
                         onPressed: _cubit.onGiveButtonPressed,
-                      ),
-                      const SizedBox(height: 16),
-                      FunButton.secondary(
-                        onTap: () => context.goNamed(
-                          FamilyPages.gameSummaries.name,
-                        ),
-                        text: 'Show Summaries',
-                        analyticsEvent: AnalyticsEvent(AmplitudeEvents
-                            .familyHomeScreenShowSummariesClicked),
                       ),
                     ],
                   ),

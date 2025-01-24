@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/avatars/repositories/avatars_r
 import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
+import 'package:givt_app/features/family/features/box_origin/bloc/box_origin_cubit.dart';
 import 'package:givt_app/features/family/features/edit_child_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/game_summary/cubit/game_summaries_cubit.dart';
 import 'package:givt_app/features/family/features/game_summary/data/game_summaries_repository.dart';
@@ -148,6 +149,9 @@ void initCubits() {
       () => ResetPasswordCubit(
         getIt(),
       ),
+    )
+    ..registerLazySingleton<BoxOriginCubit>(
+      BoxOriginCubit.new,
     )
     ..registerLazySingleton<FamilyAuthCubit>(
       () => FamilyAuthCubit(getIt()),

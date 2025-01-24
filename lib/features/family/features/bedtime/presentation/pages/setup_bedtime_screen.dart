@@ -6,7 +6,6 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/pages/mission_acceptance_screen.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/widgets/bedtime_slider_widget.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -19,7 +18,6 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
@@ -77,12 +75,17 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
           ),
         ),
         onLoading: (context) {
-          return bedtimeSelectionScreen(width, height, child, true);
+          return bedtimeSelectionScreen(
+            width,
+            height,
+            child,
+            isLoading: true,
+            isLast: isLast,
+          );
         },
         onCustom: (context, bedtime) {
           if (isLast) {
-            Navigator.of(context)
-                .push(const MissionAcceptanceScreen().toRoute(context));
+            context.goNamed(FamilyPages.missions.name);
           } else {
             Navigator.of(context).push(
               PageRouteBuilder<dynamic>(
@@ -108,14 +111,19 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
           }
         },
         onInitial: (context) {
-          return bedtimeSelectionScreen(width, height, child, false);
+          return bedtimeSelectionScreen(width, height, child, isLast: isLast);
         },
       ),
     );
   }
 
   FunScaffold bedtimeSelectionScreen(
-      double width, double height, Profile child, bool isLoading) {
+    double width,
+    double height,
+    Profile child, {
+    bool isLoading = false,
+    bool isLast = false,
+  }) {
     return FunScaffold(
       withSafeArea: false,
       backgroundColor: FamilyAppTheme.secondary10,
@@ -138,7 +146,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
             Stack(
               children: [
                 avatarEllipse(width, height, child),
-                content(child, isLoading: isLoading),
+                content(child, isLoading: isLoading, isLast: isLast),
               ],
             ),
           ],
@@ -193,7 +201,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
     );
   }
 
-  Widget content(Profile child, {bool isLoading = false}) {
+  Widget content(Profile child, {bool isLoading = false, bool isLast = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -251,7 +259,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
               windDownValue,
             ),
             isLoading: isLoading,
-            text: 'Continue',
+            text: isLast ? 'Done' : 'Continue',
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.childBedtimeSet,
               parameters: {

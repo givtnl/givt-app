@@ -109,6 +109,11 @@ class FunIcon extends StatelessWidget {
         iconColor: iconColor,
       );
 
+  factory FunIcon.xmarkPlain() => FunIcon(
+        iconData: FontAwesomeIcons.xmark,
+        circleColor: Colors.transparent,
+      );
+
   factory FunIcon.bowlFood({
     Color circleColor = FamilyAppTheme.primary95,
     Color iconColor = FamilyAppTheme.primary20,
@@ -139,6 +144,21 @@ class FunIcon extends StatelessWidget {
         iconColor: iconColor,
       );
 
+  factory FunIcon.solidFlagPlain({
+    Color iconColor = FamilyAppTheme.primary20,
+    EdgeInsets padding = const EdgeInsets.all(14),
+    double iconSize = 48,
+    double circleSize = 112,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.solidFlag,
+        iconColor: iconColor,
+        circleColor: Colors.transparent,
+        circleSize: circleSize,
+        padding: padding,
+        iconSize: iconSize,
+      );
+
   /// The icon to be displayed in the center of the circle.
   /// If [icon] is provided, it will be used instead of [iconData].
   final IconData? iconData;
@@ -167,12 +187,18 @@ class FunIcon extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          icon ??
-              FaIcon(
-                iconData,
-                color: iconColor,
-                size: iconSize,
-              ),
+          if (icon != null)
+            SizedBox(
+              width: circleSize,
+              height: circleSize,
+              child: icon,
+            )
+          else
+            FaIcon(
+              iconData,
+              color: iconColor,
+              size: iconSize,
+            ),
         ],
       ),
     );

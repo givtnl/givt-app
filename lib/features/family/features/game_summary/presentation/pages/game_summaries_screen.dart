@@ -46,8 +46,7 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
     return FunScaffold(
       minimumPadding: EdgeInsets.zero,
       appBar: const FunTopAppBar(
-        title: 'Game Summaries',
-        leading: GivtBackButtonFlat(),
+        title: 'Memories',
       ),
       body: BaseStateConsumer(
         cubit: _cubit,

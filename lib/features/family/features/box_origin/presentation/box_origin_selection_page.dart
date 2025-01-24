@@ -62,16 +62,7 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
     final success = await widget.setBoxOrigin(selectedNamespace);
 
     if (success) {
-      await showBoxOriginSuccessDialog(
-        context,
-        selectedOrg.orgName,
-        onTap: () {
-          Navigator.of(context)
-            ..pop()
-            ..pop();
-          context.pushNamed(FamilyPages.reflectIntro.name);
-        },
-      );
+      await context.pushNamed(FamilyPages.profileSelection.name);
     } else {
       await showBoxOriginErrorDialog(
         context,

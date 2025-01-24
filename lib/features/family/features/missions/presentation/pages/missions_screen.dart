@@ -49,7 +49,8 @@ class _MissionsScreenState extends State<MissionsScreen> {
                 options: options,
                 selectedIndex: _selectedIndex,
                 onPressed: (set) => setState(
-                    () => _selectedIndex = set.first == options[0] ? 0 : 1),
+                  () => _selectedIndex = set.first == options[0] ? 0 : 1,
+                ),
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.missionTabsChanged,
                 ),
@@ -57,14 +58,12 @@ class _MissionsScreenState extends State<MissionsScreen> {
               const SizedBox(height: 24),
               if (_missions(uiModel).isEmpty)
                 FunCard(
-                  title: null,
                   content: BodyMediumText.opacityBlack50(
                     _selectedIndex == 0
                         ? "You don't have any missions currently"
                         : "You haven't completed any missions yet",
                     textAlign: TextAlign.center,
                   ),
-                  button: null,
                   icon: FunGoal.neutral95(),
                 ),
               ...List.generate(
@@ -74,6 +73,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: FunMissionCard(
+                      key: ValueKey(mission.title),
                       uiModel: mission,
                       onTap: mission.namedPage == null ||
                               mission.progress?.amount ==

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 
 class NoGoalSetWidget extends StatelessWidget {
@@ -18,7 +18,11 @@ class NoGoalSetWidget extends StatelessWidget {
       uiModel: FunMissionCardUIModel(
         title: 'Create a Family Goal',
         description: 'Give together',
-        headerIcon: FontAwesomeIcons.solidFlag,
+        headerIcon: FunIcon.solidFlagPlain(
+          circleSize: 24,
+          iconSize: 24,
+          padding: EdgeInsets.zero,
+        ),
       ),
       onTap: onTap,
       analyticsEvent: AnalyticsEvent(

@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                 context: context,
                 builder: (context) => WarningDialog(
                   title: locals.loginFailure,
-                  content: locals.wrongCredentials,
+                  content: locals.noInternet,
                   onConfirm: () => context.pop(),
                 ),
               );

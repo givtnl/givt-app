@@ -21,9 +21,11 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
+import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -53,6 +55,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   bool _isLoading = false;
 
   final _cubit = getIt<EmailSignupCubit>();
+  final _connectionCubit = getIt<InternetConnectionCubit>();
 
   @override
   void didChangeDependencies() {
@@ -84,160 +87,181 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
 
-    return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previous, current) => previous != current,
+    return BlocListener<InternetConnectionCubit, InternetConnectionState>(
+      bloc: _connectionCubit,
       listener: (context, state) {
-        if (state.status == AuthStatus.loginRedirect) {
-          AuthUtils.checkToken(
-            context,
-            checkAuthRequest: CheckAuthRequest(
-              navigate: (context) async => context.goNamed(Pages.home.name),
-              email: state.email.trim(),
-              forceLogin: true,
-            ),
-          );
+        if (state is InternetConnectionLost) {
+          InternetConnectionLostDialog.show(context);
         }
       },
-      child: BaseStateConsumer(
-        cubit: _cubit,
-        onLoading: (context) => const FunScaffold(
-          body: Center(
-            child: CustomCircularProgressIndicator(),
+      child: BlocListener<AuthCubit, AuthState>(
+        listenWhen: (previous, current) => previous != current,
+        listener: (context, state) {
+          if (state.status == AuthStatus.loginRedirect) {
+            AuthUtils.checkToken(
+              context,
+              checkAuthRequest: CheckAuthRequest(
+                navigate: (context) async => context.goNamed(Pages.home.name),
+                email: state.email.trim(),
+                forceLogin: true,
+              ),
+            );
+          } else if (state.status == AuthStatus.noInternet) {
+            setLoading(state: false);
+            showDialog<void>(
+              context: context,
+              builder: (context) => WarningDialog(
+                title: context.l10n.noInternetConnectionTitle,
+                content: context.l10n.noInternet,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
+        },
+        child: BaseStateConsumer(
+          cubit: _cubit,
+          onLoading: (context) => const FunScaffold(
+            body: Center(
+              child: CustomCircularProgressIndicator(),
+            ),
           ),
-        ),
-        onCustom: handleCustom,
-        onData: (context, state) => FunScaffold(
-          body: LayoutBuilder(
-            builder: (context, constraint) {
-              return SingleChildScrollView(
-                key: const ValueKey('Email-Signup-Scrollable'),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraint.maxHeight,
-                  ),
-                  child: IntrinsicHeight(
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          TitleLargeText(
-                            locals.welcomeContinue,
-                          ),
-                          const SizedBox(height: 4),
-                          BodyMediumText(
-                            locals.toGiveWeNeedYourEmailAddress,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 4),
-                          BodySmallText.primary40(locals.weWontSendAnySpam),
-                          const Spacer(),
-                          OutlinedTextFormField(
-                            key: const ValueKey('Email-Input'),
-                            initialValue: state.email,
-                            hintText: locals.email,
-                            onChanged: _cubit.updateEmail,
-                            validator: (value) {
-                              if (!_cubit.validateEmail(value)) {
-                                return context.l10n.invalidEmail;
-                              }
+          onCustom: handleCustom,
+          onData: (context, state) => FunScaffold(
+            body: LayoutBuilder(
+              builder: (context, constraint) {
+                return SingleChildScrollView(
+                  key: const ValueKey('Email-Signup-Scrollable'),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraint.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            TitleLargeText(
+                              locals.welcomeContinue,
+                            ),
+                            const SizedBox(height: 4),
+                            BodyMediumText(
+                              locals.toGiveWeNeedYourEmailAddress,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 4),
+                            BodySmallText.primary40(locals.weWontSendAnySpam),
+                            const Spacer(),
+                            OutlinedTextFormField(
+                              key: const ValueKey('Email-Input'),
+                              initialValue: state.email,
+                              hintText: locals.email,
+                              onChanged: _cubit.updateEmail,
+                              validator: (value) {
+                                if (!_cubit.validateEmail(value)) {
+                                  return context.l10n.invalidEmail;
+                                }
 
-                              return null;
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            autofillHints: const [
-                              AutofillHints.username,
-                              AutofillHints.email,
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          CountryDropDown(
-                            selectedCountry: state.country,
-                            onChanged: (Country? newValue) {
-                              _cubit.updateCountry(newValue!);
-                            },
-                          ),
-                          const Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: GestureDetector(
-                              onTap: () => showModalBottomSheet<void>(
-                                context: context,
-                                useSafeArea: true,
-                                scrollControlDisabledMaxHeightRatio: 1,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                builder: (BuildContext context) =>
-                                    TermsAndConditionsDialog(
-                                  content: locals.termsText,
-                                ),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Icon(
-                                    FontAwesomeIcons.circleInfo,
-                                    size: 20,
-                                    color: FamilyAppTheme.primary20,
+                                return null;
+                              },
+                              keyboardType: TextInputType.emailAddress,
+                              autofillHints: const [
+                                AutofillHints.username,
+                                AutofillHints.email,
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            CountryDropDown(
+                              selectedCountry: state.country,
+                              onChanged: (Country? newValue) {
+                                _cubit.updateCountry(newValue!);
+                              },
+                            ),
+                            const Spacer(),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: GestureDetector(
+                                onTap: () => showModalBottomSheet<void>(
+                                  context: context,
+                                  useSafeArea: true,
+                                  scrollControlDisabledMaxHeightRatio: 1,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                                  const SizedBox(width: 8),
-                                  Flexible(
-                                    child: BodySmallText.primary40(
-                                      locals.acceptTerms,
+                                  builder: (BuildContext context) =>
+                                      TermsAndConditionsDialog(
+                                    content: locals.termsText,
+                                  ),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      FontAwesomeIcons.circleInfo,
+                                      size: 20,
+                                      color: FamilyAppTheme.primary20,
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(width: 8),
+                                    Flexible(
+                                      child: BodySmallText.primary40(
+                                        locals.acceptTerms,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 12),
-                          FunButton(
-                            key: const ValueKey('Email-Continue-Button'),
-                            isDisabled: !state.continueButtonEnabled,
-                            isLoading: _isLoading,
-                            onTap: state.continueButtonEnabled
-                                ? () async {
-                                    _cubit.updateApi();
-                                    if (state.country.isUS) {
-                                      final fbsdk = FacebookAppEvents();
-                                      await fbsdk
-                                          .setAutoLogAppEventsEnabled(true);
-                                      await fbsdk.logEvent(
-                                        name: 'email_signup_continue_clicked',
-                                      );
+                            const SizedBox(height: 12),
+                            FunButton(
+                              key: const ValueKey('Email-Continue-Button'),
+                              isDisabled: !state.continueButtonEnabled,
+                              isLoading: _isLoading,
+                              onTap: state.continueButtonEnabled
+                                  ? () async {
+                                      _cubit.updateApi();
+                                      if (state.country.isUS) {
+                                        final fbsdk = FacebookAppEvents();
+                                        await fbsdk
+                                            .setAutoLogAppEventsEnabled(true);
+                                        await fbsdk.logEvent(
+                                          name: 'email_signup_continue_clicked',
+                                        );
 
-                                      await _cubit.login();
-                                    } else {
-                                      setLoading();
-                                      AppThemeSwitcher.of(context)
-                                          .switchTheme(isFamilyApp: false);
-                                      await context.read<AuthCubit>().register(
-                                            country: state.country,
-                                            email: state.email,
-                                            locale:
-                                                Localizations.localeOf(context)
-                                                    .languageCode,
-                                          );
-                                      setLoading(state: false);
+                                        await _cubit.login();
+                                      } else {
+                                        setLoading();
+                                        AppThemeSwitcher.of(context)
+                                            .switchTheme(isFamilyApp: false);
+                                        await context
+                                            .read<AuthCubit>()
+                                            .register(
+                                              country: state.country,
+                                              email: state.email,
+                                              locale: Localizations.localeOf(
+                                                      context)
+                                                  .languageCode,
+                                            );
+                                        setLoading(state: false);
+                                      }
                                     }
-                                  }
-                                : null,
-                            text: locals.continueKey,
-                            rightIcon: FontAwesomeIcons.arrowRight,
-                            analyticsEvent: AnalyticsEvent(
-                              AmplitudeEvents.emailSignupContinueClicked,
+                                  : null,
+                              text: locals.continueKey,
+                              rightIcon: FontAwesomeIcons.arrowRight,
+                              analyticsEvent: AnalyticsEvent(
+                                AmplitudeEvents.emailSignupContinueClicked,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

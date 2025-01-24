@@ -4,14 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/family/features/add_member/models/member.dart';
 import 'package:givt_app/features/family/features/add_member/widgets/add_member_loading_page.dart';
 import 'package:givt_app/features/family/features/add_member/widgets/child_or_parent_selector.dart';
 import 'package:givt_app/features/family/features/add_member/widgets/family_member_form.dart';
 import 'package:givt_app/features/family/features/add_member/widgets/member_counter.dart';
-import 'package:givt_app/utils/profile_type.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/registration/widgets/random_avatar.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -22,6 +21,7 @@ import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsh
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/profile_type.dart';
 
 const tabsOptions = ['Child', 'Parent'];
 
@@ -30,14 +30,16 @@ class FamilyMemberFormPage extends StatefulWidget {
     required this.index,
     required this.totalCount,
     required this.membersToCombine,
+    required this.existingFamily,
     this.showTopUp = false,
-    super.key,
+    super.key, 
   });
 
   final int index;
   final int totalCount;
   final List<Member> membersToCombine;
   final bool showTopUp;
+  final bool existingFamily;
 
   @override
   State<FamilyMemberFormPage> createState() => _FamilyMemberFormPageState();
@@ -109,7 +111,11 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
       ..addAllMembers(members)
       ..createMember();
 
-    Navigator.push(context, const AddMemberLoadingPage().toRoute(context));
+    Navigator.push(
+      context,
+      AddMemberLoadingPage(skipHeardAboutGivt: widget.existingFamily)
+          .toRoute(context),
+    );
   }
 
   @override
@@ -277,6 +283,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 ...widget.membersToCombine,
                 member,
               ],
+              existingFamily: widget.existingFamily,
               showTopUp: widget.showTopUp,
             ).toRoute(context),
           );
