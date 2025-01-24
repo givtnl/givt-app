@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/history/history_cubit/history_
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -157,10 +158,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'My givts',
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
+                        const LabelMediumText('My givts'),
                         Padding(
                           padding: const EdgeInsets.only(left: 4),
                           child: Icon(
