@@ -71,7 +71,8 @@ jobs:
                 { role: 'user', content: `${{ steps.release-drafter.outputs.body }}` }
               ]
             })
-            console.log("::set-output name=generated_text::" + response.choices[0].message.content)
+            return response.choices[0].message.content
+          result-encoding: string
       
       # Post slack message for new release
       - name: Slack Notification
