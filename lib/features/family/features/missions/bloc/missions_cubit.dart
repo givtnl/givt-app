@@ -12,7 +12,12 @@ class MissionsCubit extends CommonCubit<MissionsUIModel, dynamic> {
   List<Mission>? _mission;
 
   Future<void> init() async {
+    // Show known data
     _mission = await repository.getMissions();
+    _emitData();
+    
+    // At the same time also fetch new data
+    _mission = await repository.getMissions(force: true);
     _emitData();
   }
 
