@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/family/features/add_member/widgets/member_counter.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class AddFamilyCounterPage extends StatefulWidget {
-  const AddFamilyCounterPage({super.key});
+  const AddFamilyCounterPage({required this.existingFamily, super.key});
+
+  final bool existingFamily;
+
   @override
   State<AddFamilyCounterPage> createState() => _AddFamilyCounterPageState();
 }
@@ -61,6 +64,7 @@ class _AddFamilyCounterPageState extends State<AddFamilyCounterPage> {
                   totalCount: _amount -
                       1, // -1 because the first member is already added
                   membersToCombine: const [],
+                  existingFamily: widget.existingFamily,
                 ).toRoute(context),
               );
             },
