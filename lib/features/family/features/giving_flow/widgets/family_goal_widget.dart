@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/models/collectgroup_details.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class FamilyGoalWidget extends StatelessWidget {
   const FamilyGoalWidget(
@@ -32,6 +32,7 @@ class FamilyGoalWidget extends StatelessWidget {
             children: [
               TitleMediumText(
                 organisation.name,
+                textAlign: TextAlign.center,
               ),
               BodyMediumText(
                 group.type == ImpactGroupType.family

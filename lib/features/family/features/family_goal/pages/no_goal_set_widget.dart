@@ -18,7 +18,11 @@ class NoGoalSetWidget extends StatelessWidget {
       uiModel: FunMissionCardUIModel(
         title: 'Create a Family Goal',
         description: 'Give together',
-        headerIcon: FunIcon.solidFlagPlain(),
+        headerIcon: FunIcon.solidFlagPlain(
+          circleSize: 24,
+          iconSize: 24,
+          padding: EdgeInsets.zero,
+        ),
       ),
       onTap: onTap,
       analyticsEvent: AnalyticsEvent(
