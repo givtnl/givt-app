@@ -285,6 +285,7 @@ void initRepositories() {
     ..registerLazySingleton<MissionRepository>(
       () => MissionRepositoryImpl(
         getIt(),
+        getIt(),
       ),
     );
 }
