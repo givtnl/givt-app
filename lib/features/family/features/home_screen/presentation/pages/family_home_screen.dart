@@ -16,6 +16,7 @@ import 'package:givt_app/features/family/features/home_screen/widgets/give_butto
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/missions_container.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/stats_container.dart';
+import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
@@ -210,6 +211,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         },
       ),
     );
+
+    context.read<ImpactGroupsCubit>().fetchImpactGroups(profile.id, true);
 
     if (profile.profileType == ProfileType.Parent) {
       final authstate = context.read<FamilyAuthCubit>().state;
