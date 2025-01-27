@@ -128,7 +128,7 @@ class _FunModalState extends State<FunModal> {
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.modalCloseButtonClicked,
             );
-
+            _autoCloseTimer?.cancel();
             widget.closeAction!.call();
           },
         ),
