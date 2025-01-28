@@ -37,6 +37,7 @@ class ParentAmountPage extends StatefulWidget {
 class _ParentAmountPageState extends State<ParentAmountPage> {
   final initialamount = 25;
   bool isActive = false;
+  bool isPresetAmount = false;
   late int _amount;
 
   @override
@@ -124,6 +125,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
           setState(() {
             _amount = amount;
             isActive = true;
+            isPresetAmount = true;
           });
         },
         child: Container(
@@ -194,7 +196,11 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
               onKeyboardTap: (value) {
                 setState(() {
                   if (isActive) {
-                    _amount = _amount * 10 + int.parse(value);
+                    if (isPresetAmount) {
+                      _amount = int.parse(value);
+                    } else {
+                      _amount = _amount * 10 + int.parse(value);
+                    }
                   } else {
                     isActive = true;
                     _amount = int.parse(value);
