@@ -59,6 +59,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
           children: [
             Container(
               height: size.height,
+              width: size.width,
               color: Colors.white,
               child: SingleChildScrollView(
                 child: Padding(
@@ -86,7 +87,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                             : FamilyAppTheme.neutral70,
                       ),
                       SizedBox(
-                        height: NumericKeyboard.getHeight(context) + 118,
+                        height: NumericKeyboard.getHeight(context) + 118 + 54,
                       )
                     ],
                   ),
@@ -103,8 +104,47 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
     );
   }
 
+  Widget presetRow() => Container(
+        height: 54,
+        width: MediaQuery.of(context).size.width,
+        color: Colors.grey[200],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            presetButton(25),
+            presetButton(50),
+            presetButton(75),
+            presetButton(100),
+          ],
+        ),
+      );
+  Widget presetButton(int amount) => InkWell(
+        onTap: () {
+          setState(() {
+            _amount = amount;
+            isActive = true;
+          });
+        },
+        child: Container(
+          width: MediaQuery.sizeOf(context).width / 4 - 16,
+          height: 44,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(25),
+            ),
+          ),
+          child: Center(
+            child: LabelSmallText.secondary40(
+              '\$$amount',
+            ),
+          ),
+        ),
+      );
+
   Widget keyboard() => SizedBox(
-        height: NumericKeyboard.getHeight(context) + 118,
+        height: NumericKeyboard.getHeight(context) + 118 + 54,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -137,6 +177,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                 ),
               ),
             ),
+            presetRow(),
             NumericKeyboard(
               currencySymbol: Country.us.currency,
               textColor: FamilyAppTheme.secondary40,
