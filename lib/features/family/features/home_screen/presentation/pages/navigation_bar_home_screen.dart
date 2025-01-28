@@ -22,15 +22,18 @@ import 'package:givt_app/features/family/features/missions/domain/entities/missi
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/content/triangle_painter.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/reward_banner_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class NavigationBarHomeScreen extends StatefulWidget {
   const NavigationBarHomeScreen({
@@ -58,6 +61,7 @@ class NavigationBarHomeScreen extends StatefulWidget {
 }
 
 class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
+  final TooltipController _tooltipController = TooltipController();
   final _cubit = getIt<NavigationBarHomeCubit>();
   final _connectionCubit = getIt<InternetConnectionCubit>();
   final _missionRepo = getIt<MissionRepository>();
@@ -65,6 +69,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   late final AppLifecycleListener _listener;
   late final StreamSubscription<Mission> _missionAchievedListener;
 
+  bool _switchMaskColor = false;
   int _currentIndex = 0;
 
   final List<AnalyticsEvent> _analyticsEvents = [
@@ -96,35 +101,60 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FamilyAuthCubit, FamilyAuthState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is Unauthenticated) {
-          return const FullScreenLoadingWidget();
-        } else {
-          return BlocListener<InternetConnectionCubit, InternetConnectionState>(
-            bloc: _connectionCubit,
-            listener: (context, state) {
-              if (state is InternetConnectionLost) {
-                InternetConnectionLostDialog.show(context);
-              }
-            },
-            child: BaseStateConsumer(
-              cubit: _cubit,
-              onCustom: _handleCustom,
-              onLoading: (context) => const Scaffold(
-                body: Center(child: CustomCircularProgressIndicator()),
+    return OverlayTooltipScaffold(
+      controller: _tooltipController,
+      preferredOverlay: GestureDetector(
+        onTap: () {
+          if (_tooltipController.nextPlayIndex !=
+              _tooltipController.playWidgetLength - 1) {
+            if (_tooltipController.nextPlayIndex == 0) {
+              setState(() {
+                _switchMaskColor = true;
+              });
+            }
+            _tooltipController.next();
+          } else {
+            setState(() {
+              _switchMaskColor = false;
+            });
+            _tooltipController.dismiss();
+          }
+        },
+        child: Container(
+          color: FamilyAppTheme.primary50.withOpacity(0.5),
+        ),
+      ),
+      builder: (context) => BlocConsumer<FamilyAuthCubit, FamilyAuthState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is Unauthenticated) {
+            return const FullScreenLoadingWidget();
+          } else {
+            return BlocListener<InternetConnectionCubit,
+                InternetConnectionState>(
+              bloc: _connectionCubit,
+              listener: (context, state) {
+                if (state is InternetConnectionLost) {
+                  InternetConnectionLostDialog.show(context);
+                }
+              },
+              child: BaseStateConsumer(
+                cubit: _cubit,
+                onCustom: _handleCustom,
+                onLoading: (context) => const Scaffold(
+                  body: Center(child: CustomCircularProgressIndicator()),
+                ),
+                onInitial: (context) => _regularLayout(),
+                onData: (context, data) => data.familyInviteGroup == null
+                    ? _regularLayout(uiModel: data)
+                    : ImpactGroupReceiveInviteSheet(
+                        invitedImpactGroup: data.familyInviteGroup!,
+                      ),
               ),
-              onInitial: (context) => _regularLayout(),
-              onData: (context, data) => data.familyInviteGroup == null
-                  ? _regularLayout(uiModel: data)
-                  : ImpactGroupReceiveInviteSheet(
-                      invitedImpactGroup: data.familyInviteGroup!,
-                    ),
-            ),
-          );
-        }
-      },
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -139,8 +169,50 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             icon: FaIcon(FontAwesomeIcons.house),
             label: 'Home',
           ),
-          const NavigationDestination(
-            icon: FaIcon(FontAwesomeIcons.mask),
+          NavigationDestination(
+            icon: OverlayTooltipItem(
+              displayIndex: 1,
+              tooltipHorizontalPosition: TooltipHorizontalPosition.CENTER,
+              tooltipVerticalPosition: TooltipVerticalPosition.TOP,
+              tooltip: (TooltipController controller) {
+                return Tooltip(
+                  message: 'Play the Gratitude Game',
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 300,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        CustomPaint(
+                          painter: TrianglePainter(
+                            strokeColor: Colors.white,
+                            paintingStyle: PaintingStyle.fill,
+                            offset: const Offset(-50, 0),
+                          ),
+                          child: Container(
+                            height: 23,
+                            width: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              child: FaIcon(
+                FontAwesomeIcons.mask,
+                color:
+                    _switchMaskColor ? Colors.white : FamilyAppTheme.primary20,
+              ),
+            ),
             label: 'Family',
           ),
           const NavigationDestination(
@@ -176,7 +248,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             );
           },
           child: <Widget>[
-            const FamilyHomeScreen(),
+            FamilyHomeScreen(
+              tooltipController: _tooltipController,
+            ),
             const FamilyOverviewPage(),
             const GameSummariesScreen(),
             const USPersonalInfoEditPage(),

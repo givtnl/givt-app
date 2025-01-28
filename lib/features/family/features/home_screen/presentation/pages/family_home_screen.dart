@@ -25,15 +25,17 @@ import 'package:givt_app/features/family/shared/design/components/content/pager_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/profile_type.dart';
 import 'package:go_router/go_router.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class FamilyHomeScreen extends StatefulWidget {
-  const FamilyHomeScreen({super.key});
+  const FamilyHomeScreen({required this.tooltipController, super.key});
+
+  final TooltipController tooltipController;
 
   @override
   State<FamilyHomeScreen> createState() => _FamilyHomeScreenState();
@@ -159,9 +161,22 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                   ),
                   child: Column(
                     children: [
-                      GratitudeGameButton(
-                        onPressed: () => context.goNamed(
-                          FamilyPages.reflectIntro.name,
+                      OverlayTooltipItem(
+                        displayIndex: 0,
+                        tooltipHorizontalPosition:
+                            TooltipHorizontalPosition.CENTER,
+                        tooltipVerticalPosition: TooltipVerticalPosition.TOP,
+                        tooltip: (TooltipController) {
+                          return Tooltip(
+                            message: 'Play the Gratitude Game',
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                            ),
+                          );
+                        },
+                        child: GratitudeGameButton(
+                          onPressed: () => widget.tooltipController.start(),
                         ),
                       ),
                       const SizedBox(height: 16),
