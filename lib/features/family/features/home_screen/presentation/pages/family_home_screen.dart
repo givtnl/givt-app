@@ -31,6 +31,7 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/profile_type.dart';
 import 'package:go_router/go_router.dart';
+import 'package:super_tooltip/super_tooltip.dart';
 
 class FamilyHomeScreen extends StatefulWidget {
   const FamilyHomeScreen({super.key});
@@ -40,6 +41,7 @@ class FamilyHomeScreen extends StatefulWidget {
 }
 
 class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
+  final _controller = SuperTooltipController();
   OverlayEntry? overlayEntry;
   bool overlayVisible = false;
   final _cubit = getIt<FamilyHomeScreenCubit>();
@@ -165,8 +167,48 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      GiveButton(
-                        onPressed: _cubit.onGiveButtonPressed,
+                      SuperTooltip(
+                        showBarrier: true,
+                        barrierColor: FamilyAppTheme.primary50.withOpacity(0.5),
+                        controller: _controller,
+                        hasShadow: false,
+                        borderRadius: 12,
+                        borderColor: Colors.white,
+                        arrowTipDistance: 72,
+                        minimumOutsideMargin: 24,
+                        popupDirection: TooltipDirection.up,
+                        arrowTipRadius: 2,
+                        arrowBaseWidth: 18,
+                        arrowLength: 23,
+                        //hideTooltipOnBarrierTap: false,
+                        content: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(height: 50, width: 50, color: Colors.red,),
+                            Flexible(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TitleSmallText(
+                                    'Gratitude Game',
+                                    color: FamilyAppTheme.secondary30,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  BodySmallText(
+                                    'This game helps you to build gratitude by reflecting on your day as a family',
+                                    color: FamilyAppTheme.secondary30,
+                                  ),
+                                ],),
+                            ),
+                          ],
+                        ),
+                        child: GiveButton(
+                          onPressed: () => _controller.showTooltip() ?? _cubit.onGiveButtonPressed,
+                        ),
                       ),
                     ],
                   ),
