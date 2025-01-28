@@ -311,9 +311,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
         authcheck: true,
         currency: r'$',
         organisationName: org.name,
-        colorCombo:
-            CollectGroupType.getColorComboByType(CollectGroupType.charities),
-        icon: CollectGroupType.getIconByTypeUS(CollectGroupType.charities),
+        icon: CollectGroupType.getFunIconByType(CollectGroupType.charities),
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {

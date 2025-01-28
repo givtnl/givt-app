@@ -22,6 +22,7 @@ class NumericKeyboard extends StatefulWidget {
       color: Colors.black54,
     ),
     this.leftButtonFn,
+    this.hideLeftButton = false,
     this.mainAxisAlignment = MainAxisAlignment.spaceEvenly,
   });
 
@@ -37,6 +38,9 @@ class NumericKeyboard extends StatefulWidget {
   /// Action to trigger when left button is pressed
   final VoidCallback? leftButtonFn;
 
+  /// Hide the left button
+  final bool hideLeftButton;
+
   /// Callback when an item is pressed
   final KeyboardTapCallback onKeyboardTap;
 
@@ -51,6 +55,17 @@ class NumericKeyboard extends StatefulWidget {
 
   /// Currency symbol for presets
   final String currencySymbol;
+
+  static double getHeight(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    var height = 270.0;
+    if (size.height < 600) {
+      height = height - 60;
+    } else if (size.height < 700) {
+      height = height - 40;
+    }
+    return height;
+  }
 
   @override
   State<StatefulWidget> createState() {
@@ -73,7 +88,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
 
     final size = MediaQuery.sizeOf(context);
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8), //y
       width: size.width,
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
@@ -90,7 +105,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
             child: SizedBox(
               width: size.width * 0.3,
               child: Padding(
-                padding: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4), //y
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: widget.presets.map(
@@ -141,10 +156,15 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
                 Row(
                   mainAxisAlignment: widget.mainAxisAlignment,
                   children: [
-                    _calcButton(
-                      _comma,
-                      onTap: widget.leftButtonFn,
-                    ),
+                    if (widget.hideLeftButton)
+                      _calcButton(
+                        '',
+                      )
+                    else
+                      _calcButton(
+                        _comma,
+                        onTap: widget.leftButtonFn,
+                      ),
                     _calcButton('0'),
                     _calcButton(
                       '⌫',
@@ -168,7 +188,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
   }) {
     final size = MediaQuery.sizeOf(context);
 
-    var fontSize = 18.0;
+    var fontSize = 18.0; //y
     if (size.height < 600 && widget.presets.isNotEmpty) {
       fontSize = fontSize * 0.9;
     }
@@ -183,7 +203,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
                 fontSize: fontSize,
               ),
         );
-    var padding = 14.0;
+    var padding = 14.0; //y
     if (size.height < 700) {
       padding = 7.5;
     }
@@ -192,12 +212,12 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
         borderRadius: BorderRadius.circular(45),
         onTap: onButtonTap,
         child: Container(
-          margin: EdgeInsets.all(size.height < 600 ? 2 : 4),
-          padding: EdgeInsets.all(padding),
+          margin: EdgeInsets.all(size.height < 600 ? 2 : 4), //y
+          padding: EdgeInsets.all(padding), //y
           alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
+          decoration: BoxDecoration(
+            color: value.isEmpty ? Colors.grey.shade200 : Colors.white,
+            borderRadius: const BorderRadius.all(
               Radius.circular(5),
             ),
           ),
