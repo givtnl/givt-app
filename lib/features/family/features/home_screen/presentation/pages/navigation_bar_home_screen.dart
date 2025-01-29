@@ -26,12 +26,14 @@ import 'package:givt_app/features/family/shared/widgets/content/triangle_painter
 import 'package:givt_app/features/family/shared/widgets/dialogs/reward_banner_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_icon_border_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 
@@ -175,31 +177,100 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
               tooltipHorizontalPosition: TooltipHorizontalPosition.CENTER,
               tooltipVerticalPosition: TooltipVerticalPosition.TOP,
               tooltip: (TooltipController controller) {
+                final width = MediaQuery.of(context).size.width;
+                final onePart =
+                    width / NavigationBarHomeScreen.validIndexes.length;
+                final halfPart = onePart / 2;
+                const horizontalPadding = 24.0;
+                const triangleHeight = 23.0;
                 return Tooltip(
                   message: 'Play the Gratitude Game',
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                      vertical: 12,
+                    ),
+                    child: Stack(
                       children: [
-                        Container(
-                          width: 300,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: width - (horizontalPadding * 2),
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.red),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TitleSmallText(
+                                          'Managing your family',
+                                          color: FamilyAppTheme.secondary30,
+                                          textAlign: TextAlign.start,
+                                        ),
+                                        BodySmallText(
+                                          'Encourage your heroes by topping up wallets and approving donations.',
+                                          color: FamilyAppTheme.secondary30,
+                                        ),
+                                        SizedBox(height: 12),
+                                        LabelMediumText(
+                                          '2/6',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            CustomPaint(
+                              painter: TrianglePainter(
+                                strokeColor: Colors.white,
+                                paintingStyle: PaintingStyle.fill,
+                                offset: Offset(
+                                  -halfPart,
+                                  0,
+                                ), //we start at the center so we only need to substract half a part
+                              ),
+                              child: const SizedBox(
+                                height: triangleHeight,
+                                width: 18,
+                              ),
+                            ),
+                          ],
                         ),
-                        CustomPaint(
-                          painter: TrianglePainter(
-                            strokeColor: Colors.white,
-                            paintingStyle: PaintingStyle.fill,
-                            offset: const Offset(-50, 0),
-                          ),
-                          child: Container(
-                            height: 23,
-                            width: 18,
+                        Positioned(
+                          bottom: 1,
+                          right: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 12+triangleHeight,
+                              right: 16,
+                            ),
+                            child: CustomIconBorderButton(
+                              onTap: () {},
+                              analyticsEvent: AnalyticsEvent(
+                                  AmplitudeEvents.accountLocked),
+                              child: const FaIcon(
+                                FontAwesomeIcons.arrowRight,
+                              ),
+                            ),
                           ),
                         ),
                       ],
