@@ -17,7 +17,7 @@ class FunTooltip extends StatelessWidget {
     required this.labelBottomLeft,
     required this.child,
     super.key,
-    this.tooltipHorizontalPosition = TooltipHorizontalPosition.WITH_WIDGET,
+    this.tooltipHorizontalPosition = TooltipHorizontalPosition.CENTER,
     this.tooltipVerticalPosition = TooltipVerticalPosition.TOP,
     this.triangleOffset = Offset.zero,
     this.buttonBottomRightOverride,
@@ -82,6 +82,7 @@ class FunTooltip extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    if(tooltipVerticalPosition == TooltipVerticalPosition.BOTTOM) _bubbleTriangle(),
                     Container(
                       width: width - (horizontalPadding * 2),
                       padding: const EdgeInsets.all(16),
@@ -119,17 +120,7 @@ class FunTooltip extends StatelessWidget {
                         ],
                       ),
                     ),
-                    CustomPaint(
-                      painter: TrianglePainter(
-                        strokeColor: Colors.white,
-                        paintingStyle: PaintingStyle.fill,
-                        offset: triangleOffset,
-                      ),
-                      child: const SizedBox(
-                        height: triangleHeight,
-                        width: 18,
-                      ),
-                    ),
+                    if(tooltipVerticalPosition == TooltipVerticalPosition.TOP) _bubbleTriangle(),
                   ],
                 ),
                 if (showButton)
@@ -137,8 +128,11 @@ class FunTooltip extends StatelessWidget {
                     bottom: 1,
                     right: 1,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 12 + triangleHeight,
+                      padding: EdgeInsets.only(
+                        bottom: tooltipVerticalPosition ==
+                                TooltipVerticalPosition.TOP
+                            ? 12 + triangleHeight
+                            : 12,
                         right: 16,
                       ),
                       child: buttonBottomRightOverride ??
@@ -167,5 +161,23 @@ class FunTooltip extends StatelessWidget {
       },
       child: child,
     );
+  }
+
+  CustomPaint _bubbleTriangle() {
+    return CustomPaint(
+                    painter: TrianglePainter(
+                      strokeColor: Colors.white,
+                      paintingStyle: PaintingStyle.fill,
+                      offset: triangleOffset,
+                      direction: tooltipVerticalPosition ==
+                              TooltipVerticalPosition.TOP
+                          ? TriangleDirection.down
+                          : TriangleDirection.up,
+                    ),
+                    child: const SizedBox(
+                      height: triangleHeight,
+                      width: 18,
+                    ),
+                  );
   }
 }

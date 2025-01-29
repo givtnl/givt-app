@@ -22,6 +22,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -161,20 +162,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                   ),
                   child: Column(
                     children: [
-                      OverlayTooltipItem(
-                        displayIndex: 0,
-                        tooltipHorizontalPosition:
-                            TooltipHorizontalPosition.CENTER,
-                        tooltipVerticalPosition: TooltipVerticalPosition.TOP,
-                        tooltip: (TooltipController) {
-                          return Tooltip(
-                            message: 'Play the Gratitude Game',
-                            child: Container(
-                              width: 100,
-                              height: 100,
-                            ),
-                          );
-                        },
+                      FunTooltip(
+                        tooltipIndex: 0,
+                        title: 'Gratitude Game',
+                        description: 'This game helps you to build gratitude by reflecting on your day as a family',
+                        labelBottomLeft: '3/6',
                         child: GratitudeGameButton(
                           onPressed: () => widget.tooltipController.start(),
                         ),
@@ -273,7 +265,13 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     bool hasMissions,
   ) {
     final items = [
-      MissionsContainer(uiModel.missionStats),
+      FunTooltip(
+          tooltipIndex: 3,
+          title: 'Let’s complete your first mission!',
+          description: 'New missions help your family grow together. Tap above to begin!',
+          labelBottomLeft: '4/6',
+          tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
+          child: MissionsContainer(uiModel.missionStats)),
       StatsContainer(uiModel.gameStats),
     ];
 
