@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
 class TrianglePainter extends CustomPainter {
-  final Color strokeColor;
-  final PaintingStyle paintingStyle;
-  final double strokeWidth;
-  final Offset offset;
 
   TrianglePainter({
     this.strokeColor = Colors.black,
@@ -12,6 +8,10 @@ class TrianglePainter extends CustomPainter {
     this.paintingStyle = PaintingStyle.stroke,
     this.offset = Offset.zero,
   });
+  final Color strokeColor;
+  final PaintingStyle paintingStyle;
+  final double strokeWidth;
+  final Offset offset;
 
   @override
   void paint(Canvas canvas, Size size) {
