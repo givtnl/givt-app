@@ -15,7 +15,7 @@ import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/utils/utils.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -69,8 +69,7 @@ class AuthCubit extends Cubit<AuthState> {
       LoggingInfo.instance.info('User logged in with $userExt');
 
       final newNotificationId = await _updateNotificationId(
-        guid: userExt.guid,
-        currentNotificationId: userExt.notificationId,
+        userExt: userExt,
       );
 
       userExt = userExt.copyWith(
@@ -177,8 +176,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       // Update notification id if needed
       final newNotificationId = await _updateNotificationId(
-        guid: userExt.guid,
-        currentNotificationId: userExt.notificationId,
+        userExt: userExt,
       );
 
       userExt = userExt.copyWith(
@@ -288,8 +286,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       final newNotificationId = await _updateNotificationId(
-        guid: unRegisteredUserExt.guid,
-        currentNotificationId: unRegisteredUserExt.notificationId,
+        userExt: unRegisteredUserExt,
       );
 
       unRegisteredUserExt = unRegisteredUserExt.copyWith(
@@ -488,10 +485,11 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<String> _updateNotificationId({
-    required String guid,
-    required String currentNotificationId,
+    required UserExt userExt,
   }) async {
     try {
+      final guid = userExt.guid;
+
       LoggingInfo.instance.info('Update Notification Id');
 
       if (Platform.isIOS) {
@@ -500,22 +498,25 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       final notificationId = await FirebaseMessaging.instance.getToken();
+      final notificationPermissionStatus =
+          await Permission.notification.status.isGranted;
 
-      LoggingInfo.instance.info('New FCM token: $notificationId');
+      LoggingInfo.instance.info('New FCM token: $notificationId; '
+          'Notification permission status: $notificationPermissionStatus');
 
-      if (currentNotificationId == notificationId) {
+      if (userExt.notificationId == notificationId &&
+          userExt.pushNotificationsEnabled == notificationPermissionStatus) {
         LoggingInfo.instance.info(
           'FCM token: $notificationId is the same as the current one',
         );
 
-        return currentNotificationId;
+        return userExt.notificationId;
       }
-
       if (notificationId == null) {
         LoggingInfo.instance.warning(
           'FCM token: is null',
         );
-        return currentNotificationId;
+        return userExt.notificationId;
       }
 
       LoggingInfo.instance.info('Updating notification id');
@@ -524,11 +525,12 @@ class AuthCubit extends Cubit<AuthState> {
         LoggingInfo.instance.warning(
           'Tried to update notification id with empty guid',
         );
-        return currentNotificationId;
+        return userExt.notificationId;
       }
 
       await _authRepositoy.updateNotificationId(
         notificationId: notificationId,
+        notificationPermissionStatus: notificationPermissionStatus,
         guid: guid,
       );
       return notificationId;
@@ -537,7 +539,7 @@ class AuthCubit extends Cubit<AuthState> {
         e.toString(),
         methodName: stackTrace.toString(),
       );
-      return currentNotificationId;
+      return userExt.notificationId;
     }
   }
 }

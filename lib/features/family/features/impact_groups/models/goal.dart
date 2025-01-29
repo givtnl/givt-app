@@ -39,7 +39,7 @@ class Goal extends Equatable {
       orgName: map['collectGroupName'] as String? ?? '',
     );
   }
-  bool get isActive => status == FamilyGoalStatus.inProgress;
+  bool get isActive => status == FamilyGoalStatus.inProgress && orgName.isNotEmpty;
 
   final String id;
   final int goalAmount;

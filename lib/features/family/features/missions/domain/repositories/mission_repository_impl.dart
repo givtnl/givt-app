@@ -1,13 +1,17 @@
 import 'dart:async';
 
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class MissionRepositoryImpl implements MissionRepository {
-  MissionRepositoryImpl(this._apiService);
+  MissionRepositoryImpl(this._apiService, this._authRepository) {
+    _init();
+  }
 
   final FamilyAPIService _apiService;
+  final FamilyAuthRepository _authRepository;
 
   final StreamController<Mission> _missionAchievedStreamController =
       StreamController<Mission>.broadcast();
@@ -16,6 +20,24 @@ class MissionRepositoryImpl implements MissionRepository {
       StreamController<List<Mission>>.broadcast();
 
   List<Mission> _missions = [];
+
+  void _init() {
+    _authRepository.authenticatedUserStream().listen(
+      (user) {
+        if (user != null) {
+          _clearData();
+          getMissions(force: true);
+        } else {
+          _clearData();
+        }
+      },
+    );
+  }
+
+  void _clearData() {
+    _missions = [];
+    _missionsStreamController.add(_missions);
+  }
 
   @override
   Future<List<Mission>> getMissions({bool force = false}) async {
@@ -36,7 +58,8 @@ class MissionRepositoryImpl implements MissionRepository {
 
   @override
   Future<void> missionAchieved(String missionKey) async {
-    final mission = (await getMissions()).firstWhere((m) => m.missionKey == missionKey);
+    final mission =
+        (await getMissions()).firstWhere((m) => m.missionKey == missionKey);
     _missionAchievedStreamController.add(mission);
     await _fetchMissions();
   }
