@@ -195,9 +195,9 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
           margin: EdgeInsets.all(size.height < 600 ? 2 : 4),
           padding: EdgeInsets.all(padding),
           alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
+          decoration: BoxDecoration(
+            color: value.isEmpty ? Colors.grey.shade200 : Colors.white,
+            borderRadius: const BorderRadius.all(
               Radius.circular(5),
             ),
           ),

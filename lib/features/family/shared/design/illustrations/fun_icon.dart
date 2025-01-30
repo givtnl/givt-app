@@ -143,6 +143,53 @@ class FunIcon extends StatelessWidget {
         circleColor: circleColor,
         iconColor: iconColor,
       );
+  factory FunIcon.church(
+          {Color circleColor = FamilyAppTheme.primary95,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.church,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+  factory FunIcon.globe(
+          {Color circleColor = FamilyAppTheme.primary95,
+          Color iconColor = FamilyAppTheme.primary20,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.earthAmericas,
+        circleColor: circleColor,
+        iconColor: iconColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+  factory FunIcon.guitar(
+          {Color circleColor = FamilyAppTheme.primary95,
+          Color iconColor = FamilyAppTheme.primary20,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.guitar,
+        circleColor: circleColor,
+        iconColor: iconColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.seedling(
+          {Color circleColor = FamilyAppTheme.primary95,
+          Color iconColor = FamilyAppTheme.primary20,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.seedling,
+        circleColor: circleColor,
+        iconColor: iconColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
 
   factory FunIcon.solidFlagPlain({
     Color iconColor = FamilyAppTheme.primary20,
