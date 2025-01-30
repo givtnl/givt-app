@@ -68,111 +68,110 @@ class FunTooltip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => print("test1"),
-      child: OverlayTooltipItem(
-        displayIndex: tooltipIndex,
-        tooltipHorizontalPosition: tooltipHorizontalPosition,
-        tooltipVerticalPosition: tooltipVerticalPosition,
-        tooltip: (TooltipController controller) {
-          final width = MediaQuery.of(context).size.width;
-          return Tooltip(
-            enableTapToDismiss: false,
-            message: title,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: horizontalPadding,
-                vertical: 12,
-              ),
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (tooltipVerticalPosition ==
-                          TooltipVerticalPosition.BOTTOM)
-                        _bubbleTriangle(),
-                      Container(
-                        width: width - (horizontalPadding * 2),
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (showImage) imageLeft ?? FunAvatar.captain(),
-                            if (showImage) const SizedBox(width: 12),
-                            Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TitleSmallText(
-                                    title,
-                                    color: FamilyAppTheme.secondary30,
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  BodySmallText(
-                                    description,
-                                    color: FamilyAppTheme.secondary30,
-                                  ),
-                                  const SizedBox(height: 12),
-                                  LabelMediumText(
-                                    labelBottomLeft,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+    return OverlayTooltipItem(
+      absorbPointer: onHighlightedWidgetTap == null,
+      displayIndex: tooltipIndex,
+      tooltipHorizontalPosition: tooltipHorizontalPosition,
+      tooltipVerticalPosition: tooltipVerticalPosition,
+      tooltip: (TooltipController controller) {
+        final width = MediaQuery.of(context).size.width;
+        return Tooltip(
+          enableTapToDismiss: false,
+          message: title,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: 12,
+            ),
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (tooltipVerticalPosition ==
+                        TooltipVerticalPosition.BOTTOM)
+                      _bubbleTriangle(),
+                    Container(
+                      width: width - (horizontalPadding * 2),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      if (tooltipVerticalPosition == TooltipVerticalPosition.TOP)
-                        _bubbleTriangle(),
-                    ],
-                  ),
-                  if (showButton)
-                    Positioned(
-                      bottom: 1,
-                      right: 1,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          bottom: tooltipVerticalPosition ==
-                                  TooltipVerticalPosition.TOP
-                              ? 12 + triangleHeight
-                              : 12,
-                          right: 16,
-                        ),
-                        child: buttonBottomRightOverride ??
-                            CustomIconBorderButton(
-                              onTap: onButtonTap ?? () => controller.next(),
-                              analyticsEvent: analyticsEventButtonOverride ??
-                                  AnalyticsEvent(
-                                    AmplitudeEvents.tutorialNextClicked,
-                                    parameters: {
-                                      'tutorialLabelBottomLeft': labelBottomLeft,
-                                      'tutorialTitle': title,
-                                      'tutorialDescription': description,
-                                    },
-                                  ),
-                              child: buttonIcon ??
-                                  const FaIcon(
-                                    FontAwesomeIcons.arrowRight,
-                                  ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (showImage) imageLeft ?? FunAvatar.captain(),
+                          if (showImage) const SizedBox(width: 12),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TitleSmallText(
+                                  title,
+                                  color: FamilyAppTheme.secondary30,
+                                  textAlign: TextAlign.start,
+                                ),
+                                BodySmallText(
+                                  description,
+                                  color: FamilyAppTheme.secondary30,
+                                ),
+                                const SizedBox(height: 12),
+                                LabelMediumText(
+                                  labelBottomLeft,
+                                ),
+                              ],
                             ),
+                          ),
+                        ],
                       ),
                     ),
-                ],
-              ),
+                    if (tooltipVerticalPosition == TooltipVerticalPosition.TOP)
+                      _bubbleTriangle(),
+                  ],
+                ),
+                if (showButton)
+                  Positioned(
+                    bottom: 1,
+                    right: 1,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        bottom: tooltipVerticalPosition ==
+                                TooltipVerticalPosition.TOP
+                            ? 12 + triangleHeight
+                            : 12,
+                        right: 16,
+                      ),
+                      child: buttonBottomRightOverride ??
+                          CustomIconBorderButton(
+                            onTap: onButtonTap ?? () => controller.next(),
+                            analyticsEvent: analyticsEventButtonOverride ??
+                                AnalyticsEvent(
+                                  AmplitudeEvents.tutorialNextClicked,
+                                  parameters: {
+                                    'tutorialLabelBottomLeft': labelBottomLeft,
+                                    'tutorialTitle': title,
+                                    'tutorialDescription': description,
+                                  },
+                                ),
+                            child: buttonIcon ??
+                                const FaIcon(
+                                  FontAwesomeIcons.arrowRight,
+                                ),
+                          ),
+                    ),
+                  ),
+              ],
             ),
-          );
-        },
-        child: GestureDetector(
-          onTap: onHighlightedWidgetTap,
-          child: child,
-        ),
+          ),
+        );
+      },
+      child: GestureDetector(
+        onTap: onHighlightedWidgetTap,
+        child: ColoredBox(
+            color: Colors.transparent, child: AbsorbPointer(child: child)),
       ),
     );
   }

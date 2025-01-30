@@ -1245,10 +1245,9 @@ packages:
   overlay_tooltip:
     dependency: "direct main"
     description:
-      name: overlay_tooltip
-      sha256: "283c16b695f672291fa9777711e2d13c3d86a897cf8a340c4dbb837f16d86833"
-      url: "https://pub.dev"
-    source: hosted
+      path: "packages/overlay_tooltip"
+      relative: true
+    source: path
     version: "0.2.3"
   package_info_plus:
     dependency: "direct main"
