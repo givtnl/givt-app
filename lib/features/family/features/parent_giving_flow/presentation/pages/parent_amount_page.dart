@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -8,12 +7,12 @@ import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.da
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/pages/credit_card_details.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/input/fun_numeric_keyboard.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
-import 'package:givt_app/features/give/widgets/numeric_keyboard.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 
 class ParentAmountPage extends StatefulWidget {
@@ -88,7 +87,8 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                             : FamilyAppTheme.neutral70,
                       ),
                       SizedBox(
-                        height: NumericKeyboard.getHeight(context) + 118 + 54,
+                        height:
+                            FunNumericKeyboard.getHeight(context) + 118 + 54,
                       )
                     ],
                   ),
@@ -146,7 +146,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
       );
 
   Widget keyboard() => SizedBox(
-        height: NumericKeyboard.getHeight(context) + 118 + 54,
+        height: FunNumericKeyboard.getHeight(context) + 118 + 54,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -180,7 +180,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
               ),
             ),
             presetRow(),
-            NumericKeyboard(
+            FunNumericKeyboard(
               currencySymbol: Country.us.currency,
               textColor: FamilyAppTheme.secondary40,
               rightIcon: const Icon(
