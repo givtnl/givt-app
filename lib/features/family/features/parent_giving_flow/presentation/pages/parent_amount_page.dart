@@ -33,7 +33,7 @@ class ParentAmountPage extends StatefulWidget {
 
 class _ParentAmountPageState extends State<ParentAmountPage> {
   final initialamount = 25;
-  bool isActive = false;
+  bool hasOverwrittenPlaceholderValue = false;
   bool isPresetAmount = false;
   late int _amount;
 
@@ -87,7 +87,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                 DisplayMediumText(
                   '${widget.currency} $_amount',
                   textAlign: TextAlign.center,
-                  color: isActive
+                  color: hasOverwrittenPlaceholderValue
                       ? FamilyAppTheme.primary40
                       : FamilyAppTheme.neutral70,
                 ),
@@ -128,7 +128,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                             _checkCardDetailsAndNavigate(context);
                           },
                     text: 'Give',
-                    isDisabled: !isActive,
+                    isDisabled: !hasOverwrittenPlaceholderValue,
                     analyticsEvent: AnalyticsEvent(
                       AmplitudeEvents.parentGiveClicked,
                     ),
@@ -140,33 +140,36 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                 onPresetTap: (amount) {
                   setState(() {
                     _amount = int.parse(amount);
-                    isActive = true;
+                    hasOverwrittenPlaceholderValue = true;
                     isPresetAmount = true;
                   });
                 },
                 onKeyboardTap: (value) {
                   setState(() {
-                    if (isActive) {
+                    if (hasOverwrittenPlaceholderValue) {
                       // overwriting a previously selected preset
                       if (isPresetAmount) {
                         _amount = int.parse(value);
                         isPresetAmount = false;
                       } else {
-                        // normal typing
+                        // Mulpiplying the current amount by 10 and adding the new value
+                        // Aka calculating in 'tens'
                         _amount = _amount * 10 + int.parse(value);
                       }
                     } else {
                       // overwriting the placeholder amount
-                      isActive = true;
+                      hasOverwrittenPlaceholderValue = true;
                       _amount = int.parse(value);
                     }
                   });
                 },
                 rightButtonFn: () {
                   setState(() {
+                    //Removing the last digit of the current amount
+                    // By dividing by 10 and flooring the result
                     _amount = _amount ~/ 10;
                     if (_amount < 2) {
-                      isActive = false;
+                      hasOverwrittenPlaceholderValue = false;
                     }
                   });
                 },
