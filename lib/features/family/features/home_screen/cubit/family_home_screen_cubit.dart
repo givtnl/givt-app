@@ -5,6 +5,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen_custom.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
@@ -13,6 +14,7 @@ import 'package:givt_app/features/family/features/profiles/repository/profiles_r
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/mission_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
+import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -20,7 +22,7 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 
 class FamilyHomeScreenCubit
-    extends CommonCubit<FamilyHomeScreenUIModel, FamilyHomeScreenUIModel> {
+    extends CommonCubit<FamilyHomeScreenUIModel, FamilyHomeScreenCustom> {
   FamilyHomeScreenCubit(
     this._profilesRepository,
     this._impactGroupsRepository,
@@ -28,6 +30,7 @@ class FamilyHomeScreenCubit
     this._familyAuthRepository,
     this._missionRepository,
     this._networkInfo,
+    this._tutorialRepository,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
@@ -36,6 +39,7 @@ class FamilyHomeScreenCubit
   final FamilyAuthRepository _familyAuthRepository;
   final MissionRepository _missionRepository;
   final NetworkInfo _networkInfo;
+  final TutorialRepository _tutorialRepository;
 
   List<Profile> profiles = [];
   ImpactGroup? _familyGroup;
@@ -58,6 +62,9 @@ class FamilyHomeScreenCubit
     );
     unawaited(_getGameStats());
     _emitData();
+    _tutorialRepository.onStartTutorial().listen((_) {
+      _startTutorial();
+    });
   }
 
   void _missionsChanged(List<Mission> missions) {
@@ -127,13 +134,18 @@ class FamilyHomeScreenCubit
     _getGameStats();
   }
 
-  void onGiveButtonPressed() {
-    emitCustom(_createUIModel());
-  }
-
   void _emitData() {
     emitData(
       _createUIModel(),
+    );
+  }
+
+  void _startTutorial() {
+    emitCustom(
+      FamilyHomeScreenCustom.openAvatarOverlay(
+        _createUIModel(),
+        withTutorial: true,
+      ),
     );
   }
 
@@ -162,5 +174,12 @@ class FamilyHomeScreenCubit
               ? 1
               : 0,
     );
+  }
+
+  void onNextTutorialClicked() {
+    if (_missionStats?.missionsToBeCompleted == 0 || _missionStats == null) {
+      emitCustom(const FamilyHomeScreenCustom.slideCarousel(1));
+    }
+    emitCustom(const FamilyHomeScreenCustom.startTutorial());
   }
 }

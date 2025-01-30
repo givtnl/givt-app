@@ -49,6 +49,7 @@ import 'package:givt_app/features/family/features/registration/cubit/us_signup_c
 import 'package:givt_app/features/family/features/remote_config/domain/remote_config_repository.dart';
 import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/repositories/reset_password_repository.dart';
+import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -117,6 +118,7 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerFactory<FamilySelectionCubit>(
@@ -126,6 +128,7 @@ void initCubits() {
     )
     ..registerLazySingleton<FamilyHomeScreenCubit>(
       () => FamilyHomeScreenCubit(
+        getIt(),
         getIt(),
         getIt(),
         getIt(),
@@ -188,6 +191,9 @@ void initRepositories() {
       AdminFeeRepository(
         getIt(),
       ),
+    )
+    ..registerSingleton<TutorialRepository>(
+      TutorialRepository(),
     )
     ..registerSingleton<ParentSummaryRepository>(
       ParentSummaryRepository(

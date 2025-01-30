@@ -159,10 +159,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
           NavigationDestination(
             icon: FunTooltip(
               tooltipIndex: 1,
-              tooltipHorizontalPosition: TooltipHorizontalPosition.CENTER,
               title: 'Managing your family',
               description:
-                  'Encourage your heroes by topping up wallets and approving donations.',
+              'Encourage your heroes by topping up wallets and approving donations.',
               labelBottomLeft: '2/6',
               triangleOffset: Offset(-halfPart, 0),
               child: const FaIcon(

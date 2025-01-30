@@ -2,17 +2,20 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
+import 'package:givt_app/features/family/features/box_origin/usecases/box_origin_usecase.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
-import 'package:givt_app/features/family/features/box_origin/usecases/box_origin_usecase.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/registration_usecase.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationBarHomeCubit
     extends CommonCubit<NavigationBarHomeScreenUIModel, NavigationBarHomeCustom>
@@ -21,11 +24,15 @@ class NavigationBarHomeCubit
     this._profilesRepository,
     this._authRepository,
     this._impactGroupsRepository,
+    this._tutorialRepository,
   ) : super(const BaseState.loading());
+
+  static const String _tutorialSeenOrSkippedKey = 'tutorialSeenOrSkippedKey';
 
   final ProfilesRepository _profilesRepository;
   final FamilyAuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
+  final TutorialRepository _tutorialRepository;
 
   String? profilePictureUrl;
   List<Profile> _profiles = [];
@@ -68,8 +75,17 @@ class NavigationBarHomeCubit
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
+    } else if (true) {
+      _tutorialRepository.startTutorial();
+      //await setTutorialSeenOrSkipped();
     }
   }
+
+  static bool get hasSeenOrSkippedTutorial =>
+      getIt<SharedPreferences>().getBool(_tutorialSeenOrSkippedKey) ?? false;
+
+  static Future<void> setTutorialSeenOrSkipped() async =>
+      getIt<SharedPreferences>().setBool(_tutorialSeenOrSkippedKey, true);
 
   Future<ImpactGroup?> isInvitedToGroup() async {
     try {

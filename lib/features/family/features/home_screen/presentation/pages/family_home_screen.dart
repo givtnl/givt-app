@@ -11,6 +11,7 @@ import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.da
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
@@ -46,6 +47,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   OverlayEntry? overlayEntry;
   bool overlayVisible = false;
   final _cubit = getIt<FamilyHomeScreenCubit>();
+  final CarouselSliderController _carouselSliderController =
+      CarouselSliderController();
 
   int _carrouselIndex = 0;
 
@@ -70,12 +73,19 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: _cubit,
-      onCustom: (context, uiModel) {
-        createOverlay(uiModel);
-        setState(() {
-          overlayVisible = true;
-        });
-        Overlay.of(context).insert(overlayEntry!);
+      onCustom: (context, custom) {
+        switch (custom) {
+          case final SlideCarouselTo event:
+            _carouselSliderController.jumpToPage(event.carrouselIndex);
+          case final OpenAvatarOverlay event:
+            _openAvatarOverlay(
+              context,
+              event.uiModel,
+              withTutorial: event.withTutorial,
+            );
+          case StartTutorial():
+            widget.tooltipController.start();
+        }
       },
       onData: (context, uiModel) {
         final hasMissions =
@@ -133,7 +143,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                         ),
                         CarouselSlider(
-                          items: _buildCarouselItems(uiModel, hasMissions),
+                          carouselController: _carouselSliderController,
+                          items: carrouselItems,
                           options: CarouselOptions(
                             onPageChanged: (index, reason) {
                               setState(() {
@@ -163,17 +174,19 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                   child: Column(
                     children: [
                       FunTooltip(
-                        tooltipIndex: 0,
+                        tooltipIndex: 2,
                         title: 'Gratitude Game',
-                        description: 'This game helps you to build gratitude by reflecting on your day as a family',
+                        description:
+                            'This game helps you to build gratitude by reflecting on your day as a family',
                         labelBottomLeft: '3/6',
                         child: GratitudeGameButton(
-                          onPressed: () => widget.tooltipController.start(),
+                          onPressed: () =>
+                              context.goNamed(FamilyPages.reflectIntro.name),
                         ),
                       ),
                       const SizedBox(height: 16),
                       GiveButton(
-                        onPressed: _cubit.onGiveButtonPressed,
+                        onPressed: () => _openAvatarOverlay(context, uiModel),
                       ),
                     ],
                   ),
@@ -186,12 +199,24 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
   }
 
-  void createOverlay(FamilyHomeScreenUIModel uiModel) {
+  void _openAvatarOverlay(BuildContext context, FamilyHomeScreenUIModel uiModel,
+      {bool withTutorial = false}) {
+    createOverlay(uiModel, withTutorial: withTutorial);
+    setState(() {
+      overlayVisible = true;
+    });
+    Overlay.of(context).insert(overlayEntry!);
+  }
+
+  void createOverlay(FamilyHomeScreenUIModel uiModel,
+      {required bool withTutorial}) {
     overlayEntry = OverlayEntry(
       builder: (context) => FamilyHomeOverlay(
         uiModel: uiModel,
         onDismiss: closeOverlay,
         onAvatarTapped: onAvatarTapped,
+        onNextTutorialClicked: _cubit.onNextTutorialClicked,
+        withTutorial: withTutorial,
       ),
     );
   }
@@ -266,12 +291,15 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   ) {
     final items = [
       FunTooltip(
-          tooltipIndex: 3,
-          title: 'Let’s complete your first mission!',
-          description: 'New missions help your family grow together. Tap above to begin!',
-          labelBottomLeft: '4/6',
-          tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
-          child: MissionsContainer(uiModel.missionStats)),
+        tooltipIndex: 3,
+        title: 'Let’s complete your first mission!',
+        description:
+            'New missions help your family grow together. Tap above to begin!',
+        labelBottomLeft: '4/6',
+        showButton: false,
+        tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
+        child: MissionsContainer(uiModel.missionStats),
+      ),
       StatsContainer(uiModel.gameStats),
     ];
 
