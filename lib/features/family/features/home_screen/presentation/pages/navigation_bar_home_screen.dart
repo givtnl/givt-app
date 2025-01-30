@@ -102,11 +102,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   Widget build(BuildContext context) {
     return OverlayTooltipScaffold(
       controller: _tooltipController,
-      preferredOverlay: GestureDetector(
-        onTap: _tooltipController.next,
-        child: Container(
-          color: FamilyAppTheme.primary50.withOpacity(0.5),
-        ),
+      preferredOverlay: Container(
+        color: FamilyAppTheme.primary50.withOpacity(0.5),
       ),
       builder: (context) => BlocConsumer<FamilyAuthCubit, FamilyAuthState>(
         listener: (context, state) {},

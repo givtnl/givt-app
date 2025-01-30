@@ -298,6 +298,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         labelBottomLeft: '4/6',
         showButton: false,
         tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
+        onHighlightedWidgetTap: () {
+          print("test2");
+          OverlayTooltipScaffold.of(context)?.controller.dismiss();
+          context.goNamed(FamilyPages.missions.name);
+        },
         child: MissionsContainer(uiModel.missionStats),
       ),
       StatsContainer(uiModel.gameStats),
