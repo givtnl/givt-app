@@ -154,10 +154,15 @@ class FamilyAppRoutes {
           },
         ),
         GoRoute(
-          path: FamilyPages.missions.path,
-          name: FamilyPages.missions.name,
-          builder: (context, state) => const MissionsScreen(),
-        ),
+            path: FamilyPages.missions.path,
+            name: FamilyPages.missions.name,
+            builder: (context, state) {
+              final map = state.extra as Map<String, dynamic>? ?? {};
+              final showTutorial = map['showTutorial'] as bool? ?? false;
+              return MissionsScreen(
+                showTutorial: showTutorial,
+              );
+            }),
         GoRoute(
           path: FamilyPages.assignBedtimeResponsibility.path,
           name: FamilyPages.assignBedtimeResponsibility.name,
@@ -170,7 +175,13 @@ class FamilyAppRoutes {
         GoRoute(
           path: FamilyPages.setupBedtime.path,
           name: FamilyPages.setupBedtime.name,
-          builder: (context, state) => const IntroBedtimeScreen(),
+          builder: (context, state) {
+            final map = state.extra as Map<String, dynamic>? ?? {};
+            final fromTutorial = map['fromTutorial'] as bool? ?? false;
+            return IntroBedtimeScreen(
+              fromTutorial: fromTutorial,
+            );
+          },
         ),
         GoRoute(
           path: FamilyPages.parentSummary.path,

@@ -3,15 +3,18 @@ import 'dart:async';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
+import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class MissionRepositoryImpl implements MissionRepository {
-  MissionRepositoryImpl(this._apiService, this._authRepository) {
+  MissionRepositoryImpl(
+      this._apiService, this._authRepository, this._tutorialRepository) {
     _init();
   }
 
   final FamilyAPIService _apiService;
   final FamilyAuthRepository _authRepository;
+  final TutorialRepository _tutorialRepository;
 
   final StreamController<Mission> _missionAchievedStreamController =
       StreamController<Mission>.broadcast();
@@ -58,8 +61,12 @@ class MissionRepositoryImpl implements MissionRepository {
 
   @override
   Future<void> missionAchieved(String missionKey) async {
-    final mission =
+    var mission =
         (await getMissions()).firstWhere((m) => m.missionKey == missionKey);
+    if (_tutorialRepository.bedtimeMissionStartedFromTutorial &&
+        mission.title.toLowerCase().contains('bedtime')) {
+      mission = mission.copyWith(showAchievedTooltip: true);
+    }
     _missionAchievedStreamController.add(mission);
     await _fetchMissions();
   }

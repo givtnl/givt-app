@@ -9,6 +9,7 @@ class Mission extends Equatable {
     required this.description,
     required this.progress,
     required this.path,
+    this.showAchievedTooltip = false,
   });
 
   /// Create a Mission from JSON map.
@@ -19,6 +20,7 @@ class Mission extends Equatable {
       description: json['description'] as String,
       progress: (json['progress'] as num).toDouble(),
       path: json['path'] as String,
+      showAchievedTooltip: json['showAchievedTooltip'] as bool?,
     );
   }
 
@@ -30,13 +32,15 @@ class Mission extends Equatable {
       namedPage: path,
     );
   }
-  
+
   /// A unique key for this mission (from MissionKeys).
   final String missionKey;
   final String title;
   final String description;
   final double progress; // 0.0 to 100.0
   final String path; // Optional named path for navigation
+  final bool?
+      showAchievedTooltip; // Show a tooltip when the mission is achieved
 
   bool isCompleted() => progress >= 100;
 
@@ -48,6 +52,7 @@ class Mission extends Equatable {
     String? icon,
     double? progress,
     String? namedPath,
+    bool? showAchievedTooltip,
   }) {
     return Mission(
       missionKey: missionKey ?? this.missionKey,
@@ -55,6 +60,7 @@ class Mission extends Equatable {
       description: description ?? this.description,
       progress: progress ?? this.progress,
       path: namedPath ?? this.path,
+      showAchievedTooltip: showAchievedTooltip ?? this.showAchievedTooltip,
     );
   }
 
@@ -66,6 +72,8 @@ class Mission extends Equatable {
       'description': description,
       'progress': progress,
       'namedPath': path,
+      if (true == showAchievedTooltip)
+        'showAchievedTooltip': showAchievedTooltip,
     };
   }
 
@@ -76,5 +84,6 @@ class Mission extends Equatable {
         description,
         progress,
         path,
+        showAchievedTooltip,
       ];
 }

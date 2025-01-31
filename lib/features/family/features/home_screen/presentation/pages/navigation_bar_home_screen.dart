@@ -158,7 +158,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
               tooltipIndex: 1,
               title: 'Managing your family',
               description:
-              'Encourage your heroes by topping up wallets and approving donations.',
+                  'Encourage your heroes by topping up wallets and approving donations.',
               labelBottomLeft: '2/6',
               triangleOffset: Offset(-halfPart, 0),
               child: const FaIcon(
@@ -270,10 +270,12 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
         context: context,
         barrierDismissible: false,
         barrierColor: Theme.of(context).colorScheme.primary.withOpacity(.25),
-        builder: (context) =>
-            MissionCompletedBannerDialog(missionName: mission.title),
+        builder: (context) => MissionCompletedBannerDialog(
+          missionName: mission.title,
+          showTooltip: mission.showAchievedTooltip,
+        ),
       );
-    });
+        });
 
     super.initState();
   }

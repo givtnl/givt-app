@@ -4,14 +4,14 @@ import 'package:givt_app/features/family/features/missions/presentation/models/m
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class MissionsCubit extends CommonCubit<MissionsUIModel, dynamic> {
+class MissionsCubit extends CommonCubit<MissionsUIModel, int> {
   MissionsCubit(this.repository) : super(const BaseState.loading());
 
   final MissionRepository repository;
 
   List<Mission>? _mission;
 
-  Future<void> init() async {
+  Future<void> init({bool showTutorial = false}) async {
     // Show known data
     _mission = await repository.getMissions();
     _emitData();
@@ -19,6 +19,10 @@ class MissionsCubit extends CommonCubit<MissionsUIModel, dynamic> {
     // At the same time also fetch new data
     _mission = await repository.getMissions(force: true);
     _emitData();
+
+    if(showTutorial) {
+      emitCustom(0);
+    }
   }
 
   void _emitData() {

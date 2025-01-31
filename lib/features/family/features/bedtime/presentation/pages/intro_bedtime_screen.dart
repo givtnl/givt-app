@@ -22,7 +22,10 @@ enum AnimationState {
 class IntroBedtimeScreen extends StatefulWidget {
   const IntroBedtimeScreen({
     super.key,
+    this.fromTutorial = false,
   });
+
+  final bool fromTutorial;
 
   @override
   State<IntroBedtimeScreen> createState() => _IntroBedtimeScreenState();
@@ -77,6 +80,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
     reflectAndShareRepository.getKidsWithoutBedtime().then((profiles) {
       arguments = BedtimeArguments(
         profiles: profiles,
+        fromTutorial: widget.fromTutorial,
       );
     });
 

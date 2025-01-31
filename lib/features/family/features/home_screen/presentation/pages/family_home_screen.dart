@@ -300,7 +300,12 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
         onHighlightedWidgetTap: () {
           OverlayTooltipScaffold.of(context)?.controller.dismiss();
-          context.goNamed(FamilyPages.missions.name);
+          context.goNamed(
+            FamilyPages.missions.name,
+            extra: {
+              'showTutorial': true,
+            },
+          );
         },
         child: MissionsContainer(uiModel.missionStats),
       ),

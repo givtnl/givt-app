@@ -171,7 +171,9 @@ class FunTooltip extends StatelessWidget {
       child: GestureDetector(
         onTap: onHighlightedWidgetTap,
         child: ColoredBox(
-            color: Colors.transparent, child: AbsorbPointer(child: child)),
+          color: Colors.transparent,
+          child: AbsorbPointer(child: child),
+        ),
       ),
     );
   }

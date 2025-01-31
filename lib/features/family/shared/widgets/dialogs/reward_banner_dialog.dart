@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/widgets/content/givt_banner.dart';
+import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class MissionCompletedBannerDialog extends StatefulWidget {
   const MissionCompletedBannerDialog({
     required this.missionName,
+    this.showTooltip = false,
     super.key,
   });
 
   final String missionName;
+  final bool? showTooltip;
 
   @override
   State<MissionCompletedBannerDialog> createState() =>
@@ -18,6 +23,8 @@ class MissionCompletedBannerDialog extends StatefulWidget {
 class _MissionCompletedBannerDialogState
     extends State<MissionCompletedBannerDialog>
     with SingleTickerProviderStateMixin {
+  final TooltipController _tooltipController = TooltipController();
+
   static const Duration _animationDuration = Duration(milliseconds: 600);
   static const Duration _showingBannerInitialDelay =
       Duration(milliseconds: 300);
@@ -43,10 +50,12 @@ class _MissionCompletedBannerDialogState
     try {
       await Future<void>.delayed(_showingBannerInitialDelay);
       await _controller.forward();
-      await Future<void>.delayed(_showingBannerDuration);
-      await _controller.reverse();
-      if (mounted) {
-        context.pop();
+      if (widget.showTooltip == false) {
+        await Future<void>.delayed(_showingBannerDuration);
+        await _controller.reverse();
+        if (mounted) {
+          context.pop();
+        }
       }
     } catch (e) {
       // user already dismissed banner by swiping
@@ -67,28 +76,58 @@ class _MissionCompletedBannerDialogState
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: const ValueKey('Reward-Banner'),
-      onDismissed: (_) {
+    return true == widget.showTooltip
+        ? OverlayTooltipScaffold(
+            startWhen: (instantiatedWidgetLength) async {
+              return true == widget.showTooltip;
+            },
+            overlayColor: FamilyAppTheme.primary50.withOpacity(0.5),
+            controller: _tooltipController,
+            builder: (context) => _content(),
+          )
+        : Dismissible(
+            key: const ValueKey('Reward-Banner'),
+            onDismissed: (_) {
+              _controller.stop();
+              context.pop();
+            },
+            child: _content(),
+          );
+  }
+
+  Stack _content() {
+    return Stack(
+      children: [
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: SlideTransition(
+            position: _offsetAnimation,
+            child: true == widget.showTooltip ? _givtBanner() : _givtBanner(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _givtBanner() {
+    return FunTooltip(
+      tooltipIndex: 0,
+      title: 'Amazing work, superhero!',
+      description:
+          'I’ll let you take it from here. Head to your next mission and keep making a difference!',
+      labelBottomLeft: '6/6',
+      tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
+      onButtonTap: () {
+        _tooltipController.dismiss();
         _controller.stop();
         context.pop();
       },
-      child: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: SlideTransition(
-              position: _offsetAnimation,
-              child: GivtBanner(
-                badgeImage: 'assets/family/images/reward_badge.svg',
-                title: 'Completed',
-                content: widget.missionName,
-              ),
-            ),
-          ),
-        ],
+      child: GivtBanner(
+        badgeImage: 'assets/family/images/reward_badge.svg',
+        title: 'Completed',
+        content: widget.missionName,
       ),
     );
   }

@@ -41,6 +41,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
   @override
   void initState() {
     super.initState();
+    _cubit.init(fromTutorial: widget.arguments.fromTutorial);
     bedtimeSliderValue =
         widget.arguments.previousBedtime ?? BedtimeConfig.defaultBedtimeHour;
     windDownValue = widget.arguments.previousWinddownMinutes ??
@@ -97,6 +98,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
                     profiles: widget.arguments.profiles,
                     bedtimes: [bedtime, ...widget.arguments.bedtimes],
                     index: widget.arguments.index + 1,
+                    fromTutorial: widget.arguments.fromTutorial,
                   ),
                 ),
                 transitionsBuilder:

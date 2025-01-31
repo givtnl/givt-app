@@ -33,7 +33,7 @@ class FamilyHomeOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverlayTooltipScaffold(
       controller: controller,
-      preferredOverlay: Container(),
+      overlayColor: Colors.transparent,
       startWhen: (instantiatedWidgetLength) async {
         return withTutorial;
       },

@@ -75,16 +75,16 @@ class NavigationBarHomeCubit
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
-    } else if (true) {
+    } else if (!_hasSeenOrSkippedTutorial()) {
       _tutorialRepository.startTutorial();
-      //await setTutorialSeenOrSkipped();
+      await _setTutorialSeenOrSkipped();
     }
   }
 
-  static bool get hasSeenOrSkippedTutorial =>
-      getIt<SharedPreferences>().getBool(_tutorialSeenOrSkippedKey) ?? false;
+  bool _hasSeenOrSkippedTutorial() =>
+      getIt<SharedPreferences>().containsKey(_tutorialSeenOrSkippedKey);
 
-  static Future<void> setTutorialSeenOrSkipped() async =>
+  Future<void> _setTutorialSeenOrSkipped() async =>
       getIt<SharedPreferences>().setBool(_tutorialSeenOrSkippedKey, true);
 
   Future<ImpactGroup?> isInvitedToGroup() async {

@@ -86,7 +86,7 @@ void initCubits() {
     ..registerLazySingleton<InterviewCubit>(
       () => InterviewCubit(getIt()),
     )
-    ..registerFactory(() => SetupBedtimeCubit(getIt()))
+    ..registerFactory(() => SetupBedtimeCubit(getIt(), getIt()))
     ..registerFactory<GratitudeSelectionCubit>(
       () => GratitudeSelectionCubit(getIt()),
     )
@@ -290,6 +290,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<MissionRepository>(
       () => MissionRepositoryImpl(
+        getIt(),
         getIt(),
         getIt(),
       ),
