@@ -57,7 +57,7 @@ class _OverlayTooltipItemImplState extends State<OverlayTooltipItemImpl> {
                 displayIndex: widget.displayIndex,
                 onHighlightedWidgetTap: widget.onHighlightedWidgetTap));
       } catch (e) {
-        print(e);
+        debugPrint('Error: $e');
       }
     });
   }
