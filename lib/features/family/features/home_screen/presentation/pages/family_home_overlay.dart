@@ -11,7 +11,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 
-class FamilyHomeOverlay extends StatelessWidget {
+class FamilyHomeOverlay extends StatefulWidget {
   FamilyHomeOverlay({
     required this.uiModel,
     required this.onDismiss,
@@ -27,7 +27,18 @@ class FamilyHomeOverlay extends StatelessWidget {
   final void Function() onDismiss;
   final void Function(int index) onAvatarTapped;
 
+  @override
+  State<FamilyHomeOverlay> createState() => _FamilyHomeOverlayState();
+}
+
+class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
   final TooltipController controller = TooltipController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +46,7 @@ class FamilyHomeOverlay extends StatelessWidget {
       controller: controller,
       overlayColor: Colors.transparent,
       startWhen: (instantiatedWidgetLength) async {
-        return withTutorial;
+        return widget.withTutorial;
       },
       builder: (context) => BackdropFilter(
         filter: ImageFilter.blur(
@@ -51,7 +62,7 @@ class FamilyHomeOverlay extends StatelessWidget {
           ),
           body: GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: onDismiss,
+            onTap: widget.onDismiss,
             child: SizedBox(
               width: double.infinity,
               child: Column(
@@ -80,17 +91,17 @@ class FamilyHomeOverlay extends StatelessWidget {
                     labelBottomLeft: '1/6',
                     onButtonTap: () {
                       controller.dismiss();
-                      onNextTutorialClicked();
-                      onDismiss();
+                      widget.onNextTutorialClicked();
+                      widget.onDismiss();
                     },
                     tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
                     child: AvatarBar(
                       circleSize: 58,
                       textColor: Colors.white,
                       uiModel: AvatarBarUIModel(
-                        avatarUIModels: uiModel.avatars,
+                        avatarUIModels: widget.uiModel.avatars,
                       ),
-                      onAvatarTapped: onAvatarTapped,
+                      onAvatarTapped: widget.onAvatarTapped,
                     ),
                   ),
                 ],
