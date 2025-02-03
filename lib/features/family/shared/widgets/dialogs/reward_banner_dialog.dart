@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/content/givt_banner.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -119,6 +120,9 @@ class _MissionCompletedBannerDialogState
           'I’ll let you take it from here. Head to your next mission and keep making a difference!',
       labelBottomLeft: '6/6',
       tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
+      buttonIcon:  const FaIcon(
+        FontAwesomeIcons.check,
+      ),
       onButtonTap: () {
         _tooltipController.dismiss();
         _controller.stop();
