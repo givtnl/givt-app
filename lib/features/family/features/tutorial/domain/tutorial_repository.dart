@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:rxdart/rxdart.dart';
-
 class TutorialRepository {
-  final BehaviorSubject<void> _startTutorialStream = BehaviorSubject();
+  final StreamController<void> _startTutorialStream =
+      StreamController<void>.broadcast();
 
   Stream<void> onStartTutorial() => _startTutorialStream.stream;
 

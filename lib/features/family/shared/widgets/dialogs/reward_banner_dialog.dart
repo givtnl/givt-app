@@ -14,7 +14,7 @@ class MissionCompletedBannerDialog extends StatefulWidget {
   });
 
   final String missionName;
-  final bool? showTooltip;
+  final bool showTooltip;
 
   @override
   State<MissionCompletedBannerDialog> createState() =>
@@ -51,12 +51,10 @@ class _MissionCompletedBannerDialogState
     try {
       await Future<void>.delayed(_showingBannerInitialDelay);
       await _controller.forward();
-      if (widget.showTooltip == false) {
-        await Future<void>.delayed(_showingBannerDuration);
-        await _controller.reverse();
-        if (mounted) {
-          context.pop();
-        }
+      await Future<void>.delayed(_showingBannerDuration);
+      await _controller.reverse();
+      if (mounted) {
+        context.pop();
       }
     } catch (e) {
       // user already dismissed banner by swiping
@@ -65,13 +63,16 @@ class _MissionCompletedBannerDialogState
 
   @override
   void initState() {
-    _animateBanner();
+    if (widget.showTooltip == false) {
+      _animateBanner();
+    }
     super.initState();
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _tooltipController.dispose();
     super.dispose();
   }
 
@@ -103,16 +104,18 @@ class _MissionCompletedBannerDialogState
           top: 0,
           left: 0,
           right: 0,
-          child: SlideTransition(
-            position: _offsetAnimation,
-            child: true == widget.showTooltip ? _givtBanner() : _givtBanner(),
-          ),
+          child: true == widget.showTooltip
+              ? _tooltip()
+              : SlideTransition(
+                  position: _offsetAnimation,
+                  child: _banner(),
+                ),
         ),
       ],
     );
   }
 
-  Widget _givtBanner() {
+  Widget _tooltip() {
     return FunTooltip(
       tooltipIndex: 0,
       title: 'Amazing work, superhero!',
@@ -120,7 +123,7 @@ class _MissionCompletedBannerDialogState
           'I’ll let you take it from here. Head to your next mission and keep making a difference!',
       labelBottomLeft: '6/6',
       tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
-      buttonIcon:  const FaIcon(
+      buttonIcon: const FaIcon(
         FontAwesomeIcons.check,
       ),
       onButtonTap: () {
@@ -128,11 +131,15 @@ class _MissionCompletedBannerDialogState
         _controller.stop();
         context.pop();
       },
-      child: GivtBanner(
-        badgeImage: 'assets/family/images/reward_badge.svg',
-        title: 'Completed',
-        content: widget.missionName,
-      ),
+      child: _banner(),
+    );
+  }
+
+  GivtBanner _banner() {
+    return GivtBanner(
+      badgeImage: 'assets/family/images/reward_badge.svg',
+      title: 'Completed',
+      content: widget.missionName,
     );
   }
 }

@@ -274,7 +274,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
         barrierColor: Theme.of(context).colorScheme.primary.withOpacity(.25),
         builder: (context) => MissionCompletedBannerDialog(
           missionName: mission.title,
-          showTooltip: mission.showAchievedTooltip,
+          showTooltip: mission.showAchievedTooltip ?? false,
         ),
       );
     });

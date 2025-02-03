@@ -201,11 +201,13 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
 
   void _openAvatarOverlay(BuildContext context, FamilyHomeScreenUIModel uiModel,
       {bool withTutorial = false}) {
-    createOverlay(uiModel, withTutorial: withTutorial);
-    setState(() {
-      overlayVisible = true;
-    });
-    Overlay.of(context).insert(overlayEntry!);
+    if (!overlayVisible) {
+      createOverlay(uiModel, withTutorial: withTutorial);
+      setState(() {
+        overlayVisible = true;
+      });
+      Overlay.of(context).insert(overlayEntry!);
+    }
   }
 
   void createOverlay(FamilyHomeScreenUIModel uiModel,

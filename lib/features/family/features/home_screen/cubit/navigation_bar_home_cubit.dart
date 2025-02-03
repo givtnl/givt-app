@@ -75,6 +75,7 @@ class NavigationBarHomeCubit
 
   Future<void> _doInitialChecks() async {
     if (_familyInviteGroup != null) {
+      await _setTutorialSeenOrSkipped();
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
