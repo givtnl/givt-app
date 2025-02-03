@@ -43,6 +43,9 @@ class NavigationBarHomeCubit
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
       _onImpactGroupsChanged();
     });
+    _authRepository.registrationFinishedStream().listen((_) {
+      _doInitialChecks();
+    });
     await refreshData();
   }
 
@@ -54,12 +57,12 @@ class NavigationBarHomeCubit
     _profiles = await _profilesRepository.getProfiles();
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
     unawaited(_getProfilePictureUrl());
-    await doInitialChecks();
+    await _doInitialChecks();
   }
 
   Future<void> _onImpactGroupsChanged() async {
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
-    await doInitialChecks();
+    await _doInitialChecks();
     _emitData();
   }
 
@@ -67,15 +70,16 @@ class NavigationBarHomeCubit
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
     _profiles = profiles;
     unawaited(_getProfilePictureUrl());
-    await doInitialChecks();
+    await _doInitialChecks();
   }
 
-  Future<void> doInitialChecks() async {
+  Future<void> _doInitialChecks() async {
     if (_familyInviteGroup != null) {
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
-    } else if (!_hasSeenOrSkippedTutorial()) {
+    } else if (!_authRepository.hasUserStartedRegistration() &&
+        !_hasSeenOrSkippedTutorial()) {
       _tutorialRepository.startTutorial();
       await _setTutorialSeenOrSkipped();
     }

@@ -154,7 +154,7 @@ void initCubits() {
       ),
     )
     ..registerLazySingleton<BoxOriginCubit>(
-      BoxOriginCubit.new,
+      () => BoxOriginCubit(getIt()),
     )
     ..registerLazySingleton<FamilyAuthCubit>(
       () => FamilyAuthCubit(getIt()),

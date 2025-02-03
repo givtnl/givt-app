@@ -6,7 +6,7 @@ mixin class BoxOriginUseCase {
   final ImpactGroupsRepository _impactGroupsRepository =
       getIt<ImpactGroupsRepository>();
 
-  Future<bool> setBoxOrigin(String churchId) async {
+  Future<bool> sendBoxOriginResult(String churchId) async {
     try {
       return await _impactGroupsRepository.setBoxOrigin(churchId);
     } catch (e, s) {
