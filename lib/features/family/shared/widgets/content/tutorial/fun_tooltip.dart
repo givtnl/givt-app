@@ -83,86 +83,81 @@ class FunTooltip extends StatelessWidget {
               horizontal: horizontalPadding,
               vertical: 12,
             ),
-            child: Stack(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (tooltipVerticalPosition ==
-                        TooltipVerticalPosition.BOTTOM)
-                      _bubbleTriangle(),
-                    Container(
-                      width: width - (horizontalPadding * 2),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (showImage) imageLeft ?? FunAvatar.captain(),
-                          if (showImage) const SizedBox(width: 12),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
+                if (tooltipVerticalPosition == TooltipVerticalPosition.BOTTOM)
+                  _bubbleTriangle(),
+                Container(
+                  width: width - (horizontalPadding * 2),
+                  padding: const EdgeInsets.only(
+                      left: 16, top: 16, right: 16, bottom: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (showImage) imageLeft ?? FunAvatar.captain(),
+                      if (showImage) const SizedBox(width: 12),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TitleSmallText(
+                              title,
+                              color: FamilyAppTheme.secondary30,
+                              textAlign: TextAlign.start,
+                            ),
+                            BodySmallText(
+                              description,
+                              color: FamilyAppTheme.secondary30,
+                            ),
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                TitleSmallText(
-                                  title,
-                                  color: FamilyAppTheme.secondary30,
-                                  textAlign: TextAlign.start,
-                                ),
-                                BodySmallText(
-                                  description,
-                                  color: FamilyAppTheme.secondary30,
-                                ),
-                                const SizedBox(height: 12),
                                 LabelMediumText(
                                   labelBottomLeft,
                                 ),
+                                buttonBottomRightOverride ??
+                                    Opacity(
+                                      opacity: showButton ? 1 : 0,
+                                      child: CustomIconBorderButton(
+                                        onTap: onButtonTap ??
+                                            () => controller.next(),
+                                        analyticsEvent:
+                                            analyticsEventButtonOverride ??
+                                                AnalyticsEvent(
+                                                  AmplitudeEvents
+                                                      .tutorialNextClicked,
+                                                  parameters: {
+                                                    'tutorialLabelBottomLeft':
+                                                        labelBottomLeft,
+                                                    'tutorialTitle': title,
+                                                    'tutorialDescription':
+                                                        description,
+                                                  },
+                                                ),
+                                        child: buttonIcon ??
+                                            const FaIcon(
+                                              FontAwesomeIcons.arrowRight,
+                                            ),
+                                      ),
+                                    ),
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    if (tooltipVerticalPosition == TooltipVerticalPosition.TOP)
-                      _bubbleTriangle(),
-                  ],
-                ),
-                if (showButton)
-                  Positioned(
-                    bottom: 1,
-                    right: 1,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        bottom: tooltipVerticalPosition ==
-                                TooltipVerticalPosition.TOP
-                            ? 12 + triangleHeight
-                            : 12,
-                        right: 16,
-                      ),
-                      child: buttonBottomRightOverride ??
-                          CustomIconBorderButton(
-                            onTap: onButtonTap ?? () => controller.next(),
-                            analyticsEvent: analyticsEventButtonOverride ??
-                                AnalyticsEvent(
-                                  AmplitudeEvents.tutorialNextClicked,
-                                  parameters: {
-                                    'tutorialLabelBottomLeft': labelBottomLeft,
-                                    'tutorialTitle': title,
-                                    'tutorialDescription': description,
-                                  },
-                                ),
-                            child: buttonIcon ??
-                                const FaIcon(
-                                  FontAwesomeIcons.arrowRight,
-                                ),
-                          ),
-                    ),
+                    ],
                   ),
+                ),
+                if (tooltipVerticalPosition == TooltipVerticalPosition.TOP)
+                  _bubbleTriangle(),
               ],
             ),
           ),
