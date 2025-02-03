@@ -79,9 +79,9 @@ class NavigationBarHomeCubit
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
     } else if (_shouldShowTutorial()) {
+      await _setTutorialSeenOrSkipped();
       //delay is to ensure screen is visible
       await Future.delayed(const Duration(milliseconds: 30));
-      await _setTutorialSeenOrSkipped();
       emitCustom(const NavigationBarHomeCustom.showTutorialPopup());
     }
   }
