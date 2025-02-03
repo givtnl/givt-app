@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network_info.dart';
-import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/splash/cubit/splash_custom.dart';
@@ -64,11 +63,13 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       );
 
       if (!user.personalInfoRegistered) {
+        _authRepository.onRegistrationStarted();
         emitCustom(SplashCustom.redirectToSignup(user.email));
         return;
       }
 
       if (profiles.length <= 1) {
+        _authRepository.onRegistrationStarted();
         emitCustom(const SplashCustom.redirectToAddMembers());
         return;
       }

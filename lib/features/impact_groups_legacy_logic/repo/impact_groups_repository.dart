@@ -5,12 +5,12 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/family/features/family_goal/repositories/create_family_goal_repository.dart';
-import 'package:givt_app/features/family/features/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
+import 'package:givt_app/features/family/features/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
-import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/family/features/parental_approval/repositories/parental_approval_repository.dart';
+import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin ImpactGroupsRepository {
@@ -100,6 +100,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }) async {
     await _apiService.acceptGroupInvite(groupId);
     await _fetchImpactGroups();
+    _authRepository.onRegistrationFinished();
   }
 
   @override

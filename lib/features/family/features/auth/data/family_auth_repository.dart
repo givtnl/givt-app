@@ -42,6 +42,8 @@ abstract class FamilyAuthRepository {
 
   Stream<UserExt?> authenticatedUserStream();
 
+  Stream<void> registrationFinishedStream();
+
   Session getStoredSession();
 
   UserExt? getCurrentUser();
@@ -54,6 +56,14 @@ abstract class FamilyAuthRepository {
   });
 
   Future<void> refreshUser() async {}
+
+  void onRegistrationFinished();
+
+  void onRegistrationStarted();
+
+  void onRegistrationCancelled();
+
+  bool hasUserStartedRegistration();
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -69,6 +79,11 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   // bool hasSession
   final StreamController<UserExt?> _authenticatedUserStream =
       StreamController<UserExt?>.broadcast();
+
+  final StreamController<void> _onRegistrationFinishedStream =
+      StreamController<void>.broadcast();
+
+  bool _startedRegistration = false;
 
   //emits a userExt object when we have an authenticated user, else null
   @override
@@ -246,6 +261,8 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   @override
   Future<bool> logout() async {
+    _startedRegistration = false;
+
     // _prefs.clear();
     final sessionString = _prefs.getString(Session.tag);
 
@@ -409,4 +426,23 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   Future<void> refreshUser() async {
     await _fetchUserExtension(_userExt!.guid);
   }
+
+  @override
+  void onRegistrationFinished() {
+    _startedRegistration = false;
+    _onRegistrationFinishedStream.add(null);
+  }
+
+  @override
+  void onRegistrationStarted() => _startedRegistration = true;
+
+  @override
+  bool hasUserStartedRegistration() => _startedRegistration;
+
+  @override
+  Stream<void> registrationFinishedStream() =>
+      _onRegistrationFinishedStream.stream;
+
+  @override
+  void onRegistrationCancelled() => _startedRegistration = false;
 }

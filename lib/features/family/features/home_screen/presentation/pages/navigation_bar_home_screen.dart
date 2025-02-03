@@ -22,15 +22,20 @@ import 'package:givt_app/features/family/features/missions/domain/entities/missi
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
+import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/reward_banner_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
+import 'package:go_router/go_router.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class NavigationBarHomeScreen extends StatefulWidget {
   const NavigationBarHomeScreen({
@@ -58,6 +63,7 @@ class NavigationBarHomeScreen extends StatefulWidget {
 }
 
 class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
+  final TooltipController _tooltipController = TooltipController();
   final _cubit = getIt<NavigationBarHomeCubit>();
   final _connectionCubit = getIt<InternetConnectionCubit>();
   final _missionRepo = getIt<MissionRepository>();
@@ -96,39 +102,49 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<FamilyAuthCubit, FamilyAuthState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is Unauthenticated) {
-          return const FullScreenLoadingWidget();
-        } else {
-          return BlocListener<InternetConnectionCubit, InternetConnectionState>(
-            bloc: _connectionCubit,
-            listener: (context, state) {
-              if (state is InternetConnectionLost) {
-                InternetConnectionLostDialog.show(context);
-              }
-            },
-            child: BaseStateConsumer(
-              cubit: _cubit,
-              onCustom: _handleCustom,
-              onLoading: (context) => const Scaffold(
-                body: Center(child: CustomCircularProgressIndicator()),
+    return OverlayTooltipScaffold(
+      controller: _tooltipController,
+      preferredOverlay: Container(
+        color: FamilyAppTheme.primary50.withOpacity(0.5),
+      ),
+      builder: (context) => BlocConsumer<FamilyAuthCubit, FamilyAuthState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is Unauthenticated) {
+            return const FullScreenLoadingWidget();
+          } else {
+            return BlocListener<InternetConnectionCubit,
+                InternetConnectionState>(
+              bloc: _connectionCubit,
+              listener: (context, state) {
+                if (state is InternetConnectionLost) {
+                  InternetConnectionLostDialog.show(context);
+                }
+              },
+              child: BaseStateConsumer(
+                cubit: _cubit,
+                onCustom: _handleCustom,
+                onLoading: (context) => const Scaffold(
+                  body: Center(child: CustomCircularProgressIndicator()),
+                ),
+                onInitial: (context) => _regularLayout(),
+                onData: (context, data) => data.familyInviteGroup == null
+                    ? _regularLayout(uiModel: data)
+                    : ImpactGroupReceiveInviteSheet(
+                        invitedImpactGroup: data.familyInviteGroup!,
+                      ),
               ),
-              onInitial: (context) => _regularLayout(),
-              onData: (context, data) => data.familyInviteGroup == null
-                  ? _regularLayout(uiModel: data)
-                  : ImpactGroupReceiveInviteSheet(
-                      invitedImpactGroup: data.familyInviteGroup!,
-                    ),
-            ),
-          );
-        }
-      },
+            );
+          }
+        },
+      ),
     );
   }
 
   Scaffold _regularLayout({NavigationBarHomeScreenUIModel? uiModel}) {
+    final width = MediaQuery.of(context).size.width;
+    final onePart = width / NavigationBarHomeScreen.validIndexes.length;
+    final halfPart = onePart / 2;
     return Scaffold(
       bottomNavigationBar: FunNavigationBar(
         index: _currentIndex,
@@ -139,8 +155,18 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             icon: FaIcon(FontAwesomeIcons.house),
             label: 'Home',
           ),
-          const NavigationDestination(
-            icon: FaIcon(FontAwesomeIcons.mask),
+          NavigationDestination(
+            icon: FunTooltip(
+              tooltipIndex: 1,
+              title: 'Managing your family',
+              description:
+                  'Encourage your heroes by topping up wallets and approving donations.',
+              labelBottomLeft: '2/6',
+              triangleOffset: Offset(-halfPart, 0),
+              child: const FaIcon(
+                FontAwesomeIcons.mask,
+              ),
+            ),
             label: 'Family',
           ),
           const NavigationDestination(
@@ -176,7 +202,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             );
           },
           child: <Widget>[
-            const FamilyHomeScreen(),
+            FamilyHomeScreen(
+              tooltipController: _tooltipController,
+            ),
             const FamilyOverviewPage(),
             const GameSummariesScreen(),
             const USPersonalInfoEditPage(),
@@ -244,8 +272,10 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
         context: context,
         barrierDismissible: false,
         barrierColor: Theme.of(context).colorScheme.primary.withOpacity(.25),
-        builder: (context) =>
-            MissionCompletedBannerDialog(missionName: mission.title),
+        builder: (context) => MissionCompletedBannerDialog(
+          missionName: mission.title,
+          showTooltip: mission.showAchievedTooltip ?? false,
+        ),
       );
     });
 
@@ -266,6 +296,34 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     switch (custom) {
       case final SwitchTab event:
         _setIndex(event.tabIndex);
+      case TutorialPopup():
+        _showTutorialPopup(context);
     }
+  }
+
+  void _showTutorialPopup(BuildContext context) {
+    FunModal(
+      icon: FunAvatar.captain(isLarge: true),
+      title: 'Hey, I’m Captain Generosity ',
+      subtitle:
+          'I’m here to help your family build gratitude and foster generosity. Let’s get started!',
+      buttons: [
+        FunButton(
+          onTap: () {
+            context.pop();
+            _cubit.onShowTutorialClicked();
+          },
+          text: "Let's go!",
+          analyticsEvent: AnalyticsEvent(AmplitudeEvents.tutorialStartClicked),
+        ),
+        FunButton.secondary(
+          onTap: () {
+            context.pop();
+          },
+          text: 'Skip',
+          analyticsEvent: AnalyticsEvent(AmplitudeEvents.tutorialSkipClicked),
+        ),
+      ],
+    ).show(context);
   }
 }

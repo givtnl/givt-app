@@ -11,13 +11,15 @@ class FunAvatar extends FunIcon {
     this.customSize = 48,
   });
 
-  factory FunAvatar.captain() {
+  factory FunAvatar.captain({bool isLarge = false}) {
     return FunAvatar(
       customCircleColor: FamilyAppTheme.neutral95,
       customAvatar: SvgPicture.asset(
-        'assets/family/images/avatar_captain.svg',
+        isLarge
+            ? 'assets/family/images/avatar_captain_large.svg'
+            : 'assets/family/images/avatar_captain.svg',
       ),
-      customSize: 48,
+      customSize: isLarge ? 140 : 48,
     );
   }
 

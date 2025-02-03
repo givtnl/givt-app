@@ -373,6 +373,11 @@ enum AmplitudeEvents {
   audioRecordingPlayPaused('audio_recording_play_paused'),
   audioRecordingPlayStopped('audio_recording_play_stopped'),
 
+  // Tutorial
+  tutorialStartClicked('tutorial_start_clicked'),
+  tutorialNextClicked('tutorial_next_clicked'),
+  tutorialSkipClicked('tutorial_skip_clicked'),
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
   ;

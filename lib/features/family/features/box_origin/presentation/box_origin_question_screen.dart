@@ -67,7 +67,10 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
               const SizedBox(height: 8),
               FunButton.secondary(
                 text: 'Skip',
-                onTap: () => context.goNamed(FamilyPages.profileSelection.name),
+                onTap: () {
+                  _cubit.onSkipClicked();
+                  context.goNamed(FamilyPages.profileSelection.name);
+                },
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.dontHaveABoxClicked,
                 ),

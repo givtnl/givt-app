@@ -20,6 +20,8 @@ dependencies:
   device_info_plus: ^10.1.2
   device_region:
     path: ./packages/flutter_device_region
+  overlay_tooltip:
+    path: ./packages/overlay_tooltip
   diacritic: ^0.1.4
   dotted_border: ^2.1.0
   equatable: ^2.0.5

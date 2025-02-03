@@ -7,6 +7,8 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
@@ -36,6 +38,7 @@ void logout(
     context.read<ProfilesCubit>().logout();
     context.read<FlowsCubit>().resetFlow();
     context.read<FamilyHomeScreenCubit>().logout();
+    context.read<NavigationBarHomeCubit>().logout();
     context.read<RegistrationBloc>().add(const RegistrationReset());
     AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
   } catch (e) {

@@ -11,6 +11,7 @@ import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.da
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
@@ -22,18 +23,21 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/profile_type.dart';
 import 'package:go_router/go_router.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class FamilyHomeScreen extends StatefulWidget {
-  const FamilyHomeScreen({super.key});
+  const FamilyHomeScreen({required this.tooltipController, super.key});
+
+  final TooltipController tooltipController;
 
   @override
   State<FamilyHomeScreen> createState() => _FamilyHomeScreenState();
@@ -43,6 +47,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   OverlayEntry? overlayEntry;
   bool overlayVisible = false;
   final _cubit = getIt<FamilyHomeScreenCubit>();
+  final CarouselSliderController _carouselSliderController =
+      CarouselSliderController();
 
   int _carrouselIndex = 0;
 
@@ -67,12 +73,19 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: _cubit,
-      onCustom: (context, uiModel) {
-        createOverlay(uiModel);
-        setState(() {
-          overlayVisible = true;
-        });
-        Overlay.of(context).insert(overlayEntry!);
+      onCustom: (context, custom) {
+        switch (custom) {
+          case final SlideCarouselTo event:
+            _carouselSliderController.jumpToPage(event.carrouselIndex);
+          case final OpenAvatarOverlay event:
+            _openAvatarOverlay(
+              context,
+              event.uiModel,
+              withTutorial: event.withTutorial,
+            );
+          case StartTutorial():
+            widget.tooltipController.start();
+        }
       },
       onData: (context, uiModel) {
         final hasMissions =
@@ -130,7 +143,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                         ),
                         CarouselSlider(
-                          items: _buildCarouselItems(uiModel, hasMissions),
+                          carouselController: _carouselSliderController,
+                          items: carrouselItems,
                           options: CarouselOptions(
                             onPageChanged: (index, reason) {
                               setState(() {
@@ -159,14 +173,20 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                   ),
                   child: Column(
                     children: [
-                      GratitudeGameButton(
-                        onPressed: () => context.goNamed(
-                          FamilyPages.reflectIntro.name,
+                      FunTooltip(
+                        tooltipIndex: 2,
+                        title: 'Gratitude Game',
+                        description:
+                            'This game helps you to build gratitude by reflecting on your day as a family',
+                        labelBottomLeft: '3/6',
+                        child: GratitudeGameButton(
+                          onPressed: () =>
+                              context.goNamed(FamilyPages.reflectIntro.name),
                         ),
                       ),
                       const SizedBox(height: 16),
                       GiveButton(
-                        onPressed: _cubit.onGiveButtonPressed,
+                        onPressed: () => _openAvatarOverlay(context, uiModel),
                       ),
                     ],
                   ),
@@ -179,12 +199,26 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
   }
 
-  void createOverlay(FamilyHomeScreenUIModel uiModel) {
+  void _openAvatarOverlay(BuildContext context, FamilyHomeScreenUIModel uiModel,
+      {bool withTutorial = false}) {
+    if (!overlayVisible) {
+      createOverlay(uiModel, withTutorial: withTutorial);
+      setState(() {
+        overlayVisible = true;
+      });
+      Overlay.of(context).insert(overlayEntry!);
+    }
+  }
+
+  void createOverlay(FamilyHomeScreenUIModel uiModel,
+      {required bool withTutorial}) {
     overlayEntry = OverlayEntry(
       builder: (context) => FamilyHomeOverlay(
         uiModel: uiModel,
         onDismiss: closeOverlay,
         onAvatarTapped: onAvatarTapped,
+        onNextTutorialClicked: _cubit.onNextTutorialClicked,
+        withTutorial: withTutorial,
       ),
     );
   }
@@ -258,7 +292,25 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     bool hasMissions,
   ) {
     final items = [
-      MissionsContainer(uiModel.missionStats),
+      FunTooltip(
+        tooltipIndex: 3,
+        title: 'Let’s complete your first mission!',
+        description:
+            'New missions help your family grow together. Tap above to begin!',
+        labelBottomLeft: '4/6',
+        showButton: false,
+        tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
+        onHighlightedWidgetTap: () {
+          widget.tooltipController.dismiss();
+          context.goNamed(
+            FamilyPages.missions.name,
+            extra: {
+              'showTutorial': true,
+            },
+          );
+        },
+        child: MissionsContainer(uiModel.missionStats),
+      ),
       StatsContainer(uiModel.gameStats),
     ];
 
