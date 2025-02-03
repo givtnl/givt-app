@@ -123,10 +123,10 @@ class FunTooltip extends StatelessWidget {
                                 LabelMediumText(
                                   labelBottomLeft,
                                 ),
-                                buttonBottomRightOverride ??
-                                    Opacity(
-                                      opacity: showButton ? 1 : 0,
-                                      child: CustomIconBorderButton(
+                                Opacity(
+                                  opacity: showButton ? 1 : 0,
+                                  child: buttonBottomRightOverride ??
+                                      CustomIconBorderButton(
                                         onTap: onButtonTap ??
                                             () => controller.next(),
                                         analyticsEvent:
@@ -147,7 +147,7 @@ class FunTooltip extends StatelessWidget {
                                               FontAwesomeIcons.arrowRight,
                                             ),
                                       ),
-                                    ),
+                                ),
                               ],
                             ),
                           ],
