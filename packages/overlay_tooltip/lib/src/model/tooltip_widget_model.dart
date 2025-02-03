@@ -10,6 +10,7 @@ class OverlayTooltipModel {
   final TooltipVerticalPosition vertPosition;
   final TooltipHorizontalPosition horPosition;
   final int displayIndex;
+  final VoidCallback? onHighlightedWidgetTap;
 
   OverlayTooltipModel(
       {required this.absorbPointer,
@@ -18,7 +19,8 @@ class OverlayTooltipModel {
       required this.widgetKey,
       required this.vertPosition,
       required this.horPosition,
-      required this.displayIndex});
+      required this.displayIndex,
+      this.onHighlightedWidgetTap,});
 
   @override
   bool operator ==(Object other) =>

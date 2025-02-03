@@ -299,7 +299,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         showButton: false,
         tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
         onHighlightedWidgetTap: () {
-          OverlayTooltipScaffold.of(context)?.controller.dismiss();
+          widget.tooltipController.dismiss();
           context.goNamed(
             FamilyPages.missions.name,
             extra: {

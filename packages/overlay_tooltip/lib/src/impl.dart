@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'core/overlay_tooltip_scaffold.dart';
+
 import 'constants/enums.dart';
-import 'core/tooltip_controller.dart';
 import 'core/overlay_tooltip_item.dart';
+import 'core/overlay_tooltip_scaffold.dart';
+import 'core/tooltip_controller.dart';
 
 class TooltipController extends TooltipControllerImpl {}
 
@@ -85,20 +86,26 @@ class OverlayTooltipItem extends OverlayTooltipItemImpl {
   /// This determines the order of display when overlay is started
   final int displayIndex;
 
+  /// Callback when the user taps the widget that is highlighted by the tooltip
+  final VoidCallback? onHighlightedWidgetTap;
+
   OverlayTooltipItem(
       {Key? key,
       this.absorbPointer = true,
       required this.displayIndex,
       required this.child,
       required this.tooltip,
+      this.onHighlightedWidgetTap,
       this.tooltipVerticalPosition = TooltipVerticalPosition.BOTTOM,
       this.tooltipHorizontalPosition = TooltipHorizontalPosition.WITH_WIDGET})
       : super(
-            key: key,
-            absorbPointer: absorbPointer,
-            child: child,
-            displayIndex: displayIndex,
-            tooltip: tooltip,
-            tooltipVerticalPosition: tooltipVerticalPosition,
-            tooltipHorizontalPosition: tooltipHorizontalPosition);
+          key: key,
+          absorbPointer: absorbPointer,
+          child: child,
+          displayIndex: displayIndex,
+          tooltip: tooltip,
+          tooltipVerticalPosition: tooltipVerticalPosition,
+          tooltipHorizontalPosition: tooltipHorizontalPosition,
+          onHighlightedWidgetTap: onHighlightedWidgetTap,
+  );
 }

@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:overlay_tooltip/src/constants/enums.dart';
-import 'package:overlay_tooltip/src/model/tooltip_widget_model.dart';
 import 'package:overlay_tooltip/src/impl.dart';
+import 'package:overlay_tooltip/src/model/tooltip_widget_model.dart';
+
+
 import '../constants/extensions.dart';
 
 abstract class OverlayTooltipScaffoldImpl extends StatefulWidget {
@@ -139,8 +141,14 @@ class _TooltipLayout extends StatelessWidget {
             left: topLeft.dx,
             bottom: size.maxHeight - bottomRight.dy,
             right: size.maxWidth - bottomRight.dx,
-            child: AbsorbPointer(
-                child: model.child, absorbing: model.absorbPointer),
+            child: GestureDetector(
+              onTap: model.onHighlightedWidgetTap,
+              child: ColoredBox(
+                color: Colors.transparent,
+                child: AbsorbPointer(
+                    child: model.child, absorbing: model.absorbPointer),
+              ),
+            ),
           ),
           _buildToolTip(topLeft, bottomRight, size)
         ],

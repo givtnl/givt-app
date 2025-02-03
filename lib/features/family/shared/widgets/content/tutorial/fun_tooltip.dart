@@ -69,10 +69,10 @@ class FunTooltip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OverlayTooltipItem(
-      absorbPointer: onHighlightedWidgetTap == null,
       displayIndex: tooltipIndex,
       tooltipHorizontalPosition: tooltipHorizontalPosition,
       tooltipVerticalPosition: tooltipVerticalPosition,
+      onHighlightedWidgetTap: onHighlightedWidgetTap,
       tooltip: (TooltipController controller) {
         final width = MediaQuery.of(context).size.width;
         return Tooltip(
@@ -168,13 +168,7 @@ class FunTooltip extends StatelessWidget {
           ),
         );
       },
-      child: GestureDetector(
-        onTap: onHighlightedWidgetTap,
-        child: ColoredBox(
-          color: Colors.transparent,
-          child: AbsorbPointer(child: child),
-        ),
-      ),
+      child: child,
     );
   }
 

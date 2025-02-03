@@ -22,6 +22,7 @@ import 'package:givt_app/features/family/features/missions/domain/entities/missi
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/reward_banner_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
@@ -33,6 +34,7 @@ import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
+import 'package:go_router/go_router.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class NavigationBarHomeScreen extends StatefulWidget {
@@ -275,7 +277,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
           showTooltip: mission.showAchievedTooltip,
         ),
       );
-        });
+    });
 
     super.initState();
   }
@@ -294,6 +296,34 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     switch (custom) {
       case final SwitchTab event:
         _setIndex(event.tabIndex);
+      case TutorialPopup():
+        _showTutorialPopup(context);
     }
+  }
+
+  void _showTutorialPopup(BuildContext context) {
+    FunModal(
+      icon: FunAvatar.captain(isLarge: true),
+      title: 'Hey, I’m Captain Generosity ',
+      subtitle:
+          'I’m here to help your family build gratitude and foster generosity. Let’s get started!',
+      buttons: [
+        FunButton(
+          onTap: () {
+            context.pop();
+            _cubit.onShowTutorialClicked();
+          },
+          text: "Let's go!",
+          analyticsEvent: AnalyticsEvent(AmplitudeEvents.tutorialStartClicked),
+        ),
+        FunButton.secondary(
+          onTap: () {
+            context.pop();
+          },
+          text: 'Skip',
+          analyticsEvent: AnalyticsEvent(AmplitudeEvents.tutorialSkipClicked),
+        ),
+      ],
+    ).show(context);
   }
 }

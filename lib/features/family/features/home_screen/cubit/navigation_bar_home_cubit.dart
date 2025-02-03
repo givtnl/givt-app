@@ -80,9 +80,13 @@ class NavigationBarHomeCubit
       return;
     } else if (!_authRepository.hasUserStartedRegistration() &&
         !_hasSeenOrSkippedTutorial()) {
-      _tutorialRepository.startTutorial();
       await _setTutorialSeenOrSkipped();
+      emitCustom(const NavigationBarHomeCustom.showTutorialPopup());
     }
+  }
+
+  void onShowTutorialClicked() {
+    _tutorialRepository.startTutorial();
   }
 
   bool _hasSeenOrSkippedTutorial() =>
@@ -122,5 +126,9 @@ class NavigationBarHomeCubit
         familyInviteGroup: _familyInviteGroup,
       ),
     );
+  }
+
+  Future<void> logout() async {
+    await getIt<SharedPreferences>().remove(_tutorialSeenOrSkippedKey);
   }
 }

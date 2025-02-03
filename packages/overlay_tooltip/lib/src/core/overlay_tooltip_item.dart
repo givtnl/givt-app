@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/enums.dart';
 import '../impl.dart';
 import '../model/tooltip_widget_model.dart';
@@ -10,6 +11,7 @@ abstract class OverlayTooltipItemImpl extends StatefulWidget {
   final TooltipVerticalPosition tooltipVerticalPosition;
   final TooltipHorizontalPosition tooltipHorizontalPosition;
   final int displayIndex;
+  final VoidCallback? onHighlightedWidgetTap;
 
   OverlayTooltipItemImpl(
       {Key? key,
@@ -18,7 +20,8 @@ abstract class OverlayTooltipItemImpl extends StatefulWidget {
       required this.child,
       required this.tooltip,
       required this.tooltipVerticalPosition,
-      required this.tooltipHorizontalPosition})
+      required this.tooltipHorizontalPosition,
+      this.onHighlightedWidgetTap})
       : super(key: key);
 
   @override
@@ -51,7 +54,8 @@ class _OverlayTooltipItemImplState extends State<OverlayTooltipItemImpl> {
                 widgetKey: widgetKey,
                 vertPosition: widget.tooltipVerticalPosition,
                 horPosition: widget.tooltipHorizontalPosition,
-                displayIndex: widget.displayIndex));
+                displayIndex: widget.displayIndex,
+                onHighlightedWidgetTap: widget.onHighlightedWidgetTap));
       } catch (e) {
         print(e);
       }

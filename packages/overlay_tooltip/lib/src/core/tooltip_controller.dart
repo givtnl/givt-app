@@ -9,15 +9,15 @@ abstract class TooltipControllerImpl {
   StreamController<OverlayTooltipModel?> _widgetsPlayController =
       StreamController.broadcast();
 
-  bool _playActive = false;
+  bool isPlayActive = false;
 
   Stream<OverlayTooltipModel?> get widgetsPlayStream =>
       _widgetsPlayController.stream
         ..listen((event) {
           if (event != null) {
-            _playActive = true;
+            isPlayActive = true;
           } else {
-            _playActive = false;
+            isPlayActive = false;
           }
         });
 
@@ -92,7 +92,7 @@ abstract class TooltipControllerImpl {
     }
 
     if ((await _startWhenCallback?.call(_playableWidgets.length)) ?? false) {
-      if (!_playActive) {
+      if (!isPlayActive) {
         start();
       }
     }
