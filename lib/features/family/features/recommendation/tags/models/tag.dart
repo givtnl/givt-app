@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/src/widgets/icon_data.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
 
 class Tag extends Equatable {
@@ -8,6 +9,7 @@ class Tag extends Equatable {
     required this.displayText,
     required this.pictureUrl,
     required this.type,
+    this.iconData,
   });
 
   factory Tag.fromMap(Map<String, dynamic> map) {
@@ -17,7 +19,7 @@ class Tag extends Equatable {
       displayText: (map['displayText'] ?? '') as String,
       pictureUrl: (map['pictureUrl'] ?? '') as String,
       type: TagType.values.firstWhere(
-        (element) => element.name == map['type'],
+            (element) => element.name == map['type'],
         orElse: () => TagType.INTERESTS,
       ),
     );
@@ -31,20 +33,22 @@ class Tag extends Equatable {
           pictureUrl: '',
           type: TagType.INTERESTS,
         );
-  
+
   final String key;
   final Areas area;
   final String displayText;
   final String pictureUrl;
   final TagType type;
+  final IconData? iconData;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         key,
         area,
         displayText,
         pictureUrl,
         type,
+        iconData,
       ];
 
   Map<String, dynamic> toJson() {
@@ -59,4 +63,4 @@ class Tag extends Equatable {
 }
 
 // ignore: constant_identifier_names
-enum TagType { LOCATION, INTERESTS }
+enum TagType { LOCATION, INTERESTS, XP }

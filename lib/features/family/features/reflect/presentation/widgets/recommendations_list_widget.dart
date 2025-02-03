@@ -50,7 +50,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
         MediaQuery.textScalerOf(context)
                 .scale(FunTextStyles.labelSmall.fontSize ?? 14) *
             (FunTextStyles.titleSmall.height ?? 1.2) +
-        6 + // top label text and padding
+        10 + // top label text and padding
         150 +
         24 + //img height and padding
         MediaQuery.textScalerOf(context)
@@ -106,7 +106,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                 padding: const EdgeInsets.only(right: 12),
                 child: OrganisationItem(
                   isActOfService: widget.uiModel.isShowingActsOfService,
-                  nrOfTags: 1,
+                  nrOfTags: recommendation.tags.length,
                   organisation: recommendation,
                   onDonateClicked: () {
                     widget.onRecommendationChosen?.call(_currentIndex);

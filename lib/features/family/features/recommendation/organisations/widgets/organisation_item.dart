@@ -77,7 +77,7 @@ class OrganisationItem extends StatelessWidget {
             if (organisation.promoPictureUrl.isNotEmpty) ...[
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 12),
-                height: 150,
+                height: 126,
                 child: Image.network(
                   organisation.promoPictureUrl,
                   width: double.maxFinite,

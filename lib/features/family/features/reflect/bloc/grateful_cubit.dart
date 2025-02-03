@@ -144,6 +144,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
             pictureUrl: '',
             type: TagType.INTERESTS,
           ),
+          if (organisation.xp > 0) organisation.xpTag(),
         ],
       );
     }).toList();
