@@ -5,7 +5,6 @@ import 'package:overlay_tooltip/src/constants/enums.dart';
 import 'package:overlay_tooltip/src/impl.dart';
 import 'package:overlay_tooltip/src/model/tooltip_widget_model.dart';
 
-
 import '../constants/extensions.dart';
 
 abstract class OverlayTooltipScaffoldImpl extends StatefulWidget {
@@ -58,35 +57,38 @@ class OverlayTooltipScaffoldImplState
             builder: (context, snapshot) {
               return snapshot.data == null ||
                       snapshot.data!.widgetKey.globalPaintBounds == null
-                  ? SizedBox.shrink()
-                  : Positioned.fill(
-                      child: Stack(
-                        children: [
-                          widget.preferredOverlay ??
-                              Container(
-                                height: double.infinity,
-                                width: double.infinity,
-                                color: widget.overlayColor,
+                  ? const SizedBox.shrink()
+                  : PopScope(
+                      canPop: false,
+                      child: Positioned.fill(
+                        child: Stack(
+                          children: [
+                            widget.preferredOverlay ??
+                                Container(
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  color: widget.overlayColor,
+                                ),
+                            TweenAnimationBuilder(
+                              key: ValueKey(snapshot.data!.displayIndex),
+                              tween: Tween<double>(begin: 0, end: 1),
+                              duration: widget.tooltipAnimationDuration,
+                              curve: widget.tooltipAnimationCurve,
+                              builder: (_, double val, child) {
+                                val = min(val, 1);
+                                val = max(val, 0);
+                                return Opacity(
+                                  opacity: val,
+                                  child: child,
+                                );
+                              },
+                              child: _TooltipLayout(
+                                model: snapshot.data!,
+                                controller: widget.controller,
                               ),
-                          TweenAnimationBuilder(
-                            key: ValueKey(snapshot.data!.displayIndex),
-                            tween: Tween<double>(begin: 0, end: 1),
-                            duration: widget.tooltipAnimationDuration,
-                            curve: widget.tooltipAnimationCurve,
-                            builder: (_, double val, child) {
-                              val = min(val, 1);
-                              val = max(val, 0);
-                              return Opacity(
-                                opacity: val,
-                                child: child,
-                              );
-                            },
-                            child: _TooltipLayout(
-                              model: snapshot.data!,
-                              controller: widget.controller,
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
             },
