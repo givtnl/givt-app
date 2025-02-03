@@ -61,6 +61,8 @@ abstract class FamilyAuthRepository {
 
   void onRegistrationStarted();
 
+  void onRegistrationCancelled();
+
   bool hasUserStartedRegistration();
 }
 
@@ -259,6 +261,8 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   @override
   Future<bool> logout() async {
+    _startedRegistration = false;
+
     // _prefs.clear();
     final sessionString = _prefs.getString(Session.tag);
 
@@ -438,4 +442,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   @override
   Stream<void> registrationFinishedStream() =>
       _onRegistrationFinishedStream.stream;
+
+  @override
+  void onRegistrationCancelled() => _startedRegistration = false;
 }

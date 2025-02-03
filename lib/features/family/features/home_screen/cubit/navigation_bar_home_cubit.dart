@@ -78,11 +78,17 @@ class NavigationBarHomeCubit
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
-    } else if (!_authRepository.hasUserStartedRegistration() &&
-        !_hasSeenOrSkippedTutorial()) {
+    } else if (_shouldShowTutorial()) {
+      //delay is to ensure screen is visible
+      await Future.delayed(const Duration(milliseconds: 30));
       await _setTutorialSeenOrSkipped();
       emitCustom(const NavigationBarHomeCustom.showTutorialPopup());
     }
+  }
+
+  bool _shouldShowTutorial() {
+    return !_authRepository.hasUserStartedRegistration() &&
+        !_hasSeenOrSkippedTutorial();
   }
 
   void onShowTutorialClicked() {

@@ -79,7 +79,6 @@ class UsSignupCubit extends CommonCubit<UserExt, UsSignupCustom> {
         // do nothing, failing is fine
       }
 
-      _authRepository.onRegistrationStarted();
       // fetch impact groups
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true);
       final invitedGroup = await _impactGroupsRepository.isInvitedToGroup();

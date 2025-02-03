@@ -63,6 +63,7 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       );
 
       if (!user.personalInfoRegistered) {
+        _authRepository.onRegistrationStarted();
         emitCustom(SplashCustom.redirectToSignup(user.email));
         return;
       }
