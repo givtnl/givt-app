@@ -86,7 +86,11 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
         },
         onCustom: (context, bedtime) {
           if (isLast) {
-            context.goNamed(FamilyPages.missions.name);
+            if (widget.arguments.fromTutorial) {
+              context.goNamed(FamilyPages.profileSelection.name);
+            } else {
+              context.goNamed(FamilyPages.missions.name);
+            }
           } else {
             Navigator.of(context).push(
               PageRouteBuilder<dynamic>(
