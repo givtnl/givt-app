@@ -67,12 +67,11 @@ jobs:
             const response = await openai.chat.completions.create({
               model: "gpt-4o-mini",
               messages: [
-                { role: 'system', content: `You are tasked with creating concise Slack messages that distill Givt app changelogs in 1-2 sentences. These messages should effectively communicate the main updates to your colleagues. Use Slack's mrkdwn syntax—not to be confused with markdown—to highlight key points and improve readability for non-technical people. Upon receiving a changelog, promptly craft and distribute the summarized message.\n\nAdd a superhero themed punchlines, riddles or jokes at the end that is related to the changelog, give these jokes the title: 'Joke of the Day: Super Hero Edition'` },
+                { role: 'system', content: `You are a slack message writer. Your job is to translate a changelog to a short message (1 or 2 sentences) about what is changed. This message will be read by colleagues in our company. You can make use of 'mrkdwn' to highlight keywords or the make the message prettier. When a changelog is provided, respond with the message.` },
                 { role: 'user', content: `${{ steps.release-drafter.outputs.body }}` }
               ]
             })
-            return response.choices[0].message.content
-          result-encoding: string
+            console.log("::set-output name=generated_text::" + response.choices[0].message.content)
       
       # Post slack message for new release
       - name: Slack Notification
