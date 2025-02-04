@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/utils/utils.dart';
 
 class OrganisationHeader extends StatelessWidget {
   const OrganisationHeader({
@@ -30,15 +30,14 @@ class OrganisationHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: organisation.tags
-                      .take(nrOfTags)
-                      .map(
-                        (tag) => tagContainer(
-                          tag.displayText,
-                          tag.area.textColor,
-                          tag.area.accentColor,
-                        ),
-                      )
-                      .toList(),
+                  .take(nrOfTags)
+                  .map(
+                    (tag) => FunTag.fromTag(
+                      tag: tag,
+                      flatSide: FlatSide.left,
+                    ),
+                  )
+                  .toList(),
             ),
           ),
           if (!isActOfService)
@@ -46,7 +45,7 @@ class OrganisationHeader extends StatelessWidget {
               child: Container(
                 alignment: Alignment.centerRight,
                 constraints: BoxConstraints(
-                  maxHeight: nrOfTags * (12 + fontsize),
+                  maxHeight: nrOfTags * (16 + fontsize),
                 ),
                 child: Image.network(
                   organisation.organisationLogoURL,
@@ -60,8 +59,8 @@ class OrganisationHeader extends StatelessWidget {
     );
   }
 
-  Container tagContainer(
-      String displayText, Color textColor, Color accentColor) {
+  Container tagContainer(String displayText, Color textColor, Color accentColor,
+      {IconData? iconData}) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
@@ -78,9 +77,16 @@ class OrganisationHeader extends StatelessWidget {
           left: 20,
           right: 12,
         ),
-        child: LabelSmallText(
-          displayText,
-          color: textColor,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (iconData != null) Icon(iconData, color: textColor),
+            if (iconData != null) const SizedBox(width: 4),
+            LabelSmallText(
+              displayText,
+              color: textColor,
+            ),
+          ],
         ),
       ),
     );

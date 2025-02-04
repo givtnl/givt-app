@@ -18,9 +18,20 @@ class CollectGroupDetailsCubit extends Cubit<CollectGroupDetailsState> {
   static const String defaultMediumId =
       'NjFmN2VkMDE1NTUzMDEyMmMwMDAuZmMwMDAwMDAwMDAx';
 
+  int? experiencePoints;
+
   // emits true for success, false for failure
-  Future<bool> getOrganisationDetails(String mediumId) async {
+  Future<bool> getOrganisationDetails(
+    String mediumId, {
+    int? experiencePoints,
+  }) async {
     emit(const OrganisationDetailsLoadingState());
+
+    if (experiencePoints != null) {
+      this.experiencePoints = experiencePoints;
+    } else {
+      this.experiencePoints = null;
+    }
 
     try {
       final response =
@@ -30,6 +41,7 @@ class CollectGroupDetailsCubit extends Cubit<CollectGroupDetailsState> {
         OrganisationDetailsSetState(
           collectgroup: response,
           mediumId: mediumId,
+          experiencePoints: experiencePoints,
         ),
       );
 

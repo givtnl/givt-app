@@ -75,7 +75,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         children: [
                           const SizedBox(height: 24),
                           FunTag.purple(
-                              text: DateTime.now().formattedFullMonth),
+                            text: DateTime.now().formattedFullMonth,
+                          ),
                           const SizedBox(height: 16),
                           if (details.players.isNotEmpty)
                             AvatarBar(

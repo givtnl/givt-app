@@ -7,12 +7,12 @@ import 'package:givt_app/features/family/features/giving_flow/collectgroup_detai
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-
 import 'package:lottie/lottie.dart';
 
 class SuccessScreen extends StatefulWidget {
@@ -21,8 +21,10 @@ class SuccessScreen extends StatefulWidget {
     this.isActOfService = false,
     this.onCustomSuccess,
   });
+
   final bool isActOfService;
   final void Function()? onCustomSuccess;
+
   @override
   State<SuccessScreen> createState() => _SuccessScreenState();
 }
@@ -39,6 +41,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
   Widget build(BuildContext context) {
     final organisation =
         context.read<CollectGroupDetailsCubit>().state.collectgroup;
+    final xp = context.read<CollectGroupDetailsCubit>().state.experiencePoints;
     final profilesState = context.read<ProfilesCubit>().state;
 
     return PopScope(
@@ -104,6 +107,8 @@ class _SuccessScreenState extends State<SuccessScreen> {
                           : 'Thank you for your donation \n to ${organisation.name}',
                       textAlign: TextAlign.center,
                     ),
+                    if (xp != null) const SizedBox(height: 8),
+                    if (xp != null) FunTag.xp(xp),
                   ],
                 ),
               ),

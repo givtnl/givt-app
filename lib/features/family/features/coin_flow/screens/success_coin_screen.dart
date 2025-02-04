@@ -21,7 +21,9 @@ class SuccessCoinScreen extends StatefulWidget {
     required this.isGoal,
     super.key,
   });
+
   final bool isGoal;
+
   @override
   State<SuccessCoinScreen> createState() => _SuccessCoinScreenState();
 }
