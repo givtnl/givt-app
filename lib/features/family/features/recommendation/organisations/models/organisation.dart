@@ -19,7 +19,7 @@ class Organisation extends Equatable {
     required this.collectGroupId,
     required this.namespace,
     required this.qrCodeURL,
-    this.xp = 0,
+    this.experiencePoints = 0,
   });
 
   factory Organisation.fromMap(Map<String, dynamic> map) {
@@ -48,7 +48,7 @@ class Organisation extends Equatable {
               if (experiencePoints > 0)
                 _experiencePointsTag(xp: experiencePoints),
       ],
-      xp: experiencePoints,
+      experiencePoints: experiencePoints,
     );
   }
 
@@ -63,7 +63,7 @@ class Organisation extends Equatable {
   final String collectGroupId;
   final String namespace;
   final String qrCodeURL;
-  final int xp;
+  final int experiencePoints;
 
   @override
   List<Object?> get props => [
@@ -78,7 +78,7 @@ class Organisation extends Equatable {
         shortDescription,
         longDescription,
         tags,
-        xp,
+        experiencePoints,
       ];
 
   Organisation copyWith({
@@ -107,7 +107,7 @@ class Organisation extends Equatable {
         shortDescription: shortDescription ?? this.shortDescription,
         longDescription: longDescription ?? this.longDescription,
         tags: tags ?? this.tags,
-        xp: xp ?? this.xp,
+        experiencePoints: xp ?? this.experiencePoints,
       );
 
   Map<String, dynamic> toJson() {
@@ -123,7 +123,7 @@ class Organisation extends Equatable {
       'shortDescription': shortDescription,
       'longDescription': longDescription,
       'tags': jsonEncode(tags),
-      'ExperiencePoints': xp,
+      'ExperiencePoints': experiencePoints,
     };
   }
 
@@ -136,5 +136,5 @@ class Organisation extends Equatable {
         iconData: FontAwesomeIcons.bolt,
       );
 
-  Tag xpTag() => _experiencePointsTag(xp: xp);
+  Tag xpTag() => _experiencePointsTag(xp: experiencePoints);
 }

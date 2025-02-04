@@ -21,8 +21,10 @@ class SuccessScreen extends StatefulWidget {
     this.isActOfService = false,
     this.onCustomSuccess,
   });
+
   final bool isActOfService;
   final void Function()? onCustomSuccess;
+
   @override
   State<SuccessScreen> createState() => _SuccessScreenState();
 }

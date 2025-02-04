@@ -39,9 +39,10 @@ class OrganisationItem extends StatelessWidget {
       onTap: () {
         final generatedMediumId =
             base64.encode(organisation.namespace.codeUnits);
-        context
-            .read<CollectGroupDetailsCubit>()
-            .getOrganisationDetails(generatedMediumId);
+        context.read<CollectGroupDetailsCubit>().getOrganisationDetails(
+              generatedMediumId,
+              experiencePoints: organisation.experiencePoints,
+            );
 
         context.read<ScanNfcCubit>().stopScanningSession();
 

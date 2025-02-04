@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
@@ -31,10 +32,9 @@ class OrganisationHeader extends StatelessWidget {
               children: organisation.tags
                   .take(nrOfTags)
                   .map(
-                    (tag) => tagContainer(
-                      tag.displayText,
-                      tag.area.textColor,
-                      tag.area.accentColor,
+                    (tag) => FunTag.fromTag(
+                      tag: tag,
+                      flatSide: FlatSide.left,
                     ),
                   )
                   .toList(),

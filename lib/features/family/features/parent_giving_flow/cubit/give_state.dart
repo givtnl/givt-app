@@ -4,7 +4,7 @@ sealed class GiveState extends Equatable {
   const GiveState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 final class GiveInitial extends GiveState {}
@@ -17,6 +17,7 @@ final class GiveFromBrowser extends GiveState {
     this.transaction,
     this.orgName,
     this.mediumId,
+    this.experiencePoints,
   );
 
 // this is legacy for the browser page
@@ -25,10 +26,11 @@ final class GiveFromBrowser extends GiveState {
   final Transaction transaction;
   final String orgName;
   final String mediumId;
+  final int? experiencePoints;
 
   @override
-  List<Object> get props =>
-      [givtTransactionObject, transaction, orgName, mediumId];
+  List<Object?> get props =>
+      [givtTransactionObject, transaction, orgName, mediumId, experiencePoints];
 }
 
 final class GiveError extends GiveState {

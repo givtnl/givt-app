@@ -331,6 +331,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
         isGratitude: true,
         orgName: org.name,
         mediumId: org.namespace,
+        experiencePoints: org.experiencePoints,
       );
 
       await Navigator.push(

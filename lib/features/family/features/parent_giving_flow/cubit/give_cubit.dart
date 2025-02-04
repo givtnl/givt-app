@@ -26,6 +26,7 @@ class GiveCubit extends Cubit<GiveState> {
     required String orgName,
     required String mediumId,
     bool isGratitude = false,
+    int? experiencePoints,
   }) async {
     emit(GiveLoading());
     final transaction = Transaction(
@@ -33,9 +34,7 @@ class GiveCubit extends Cubit<GiveState> {
       amount: amount.toDouble(),
       mediumId: base64Encode(utf8.encode(mediumId)),
       isActOfService: isGratitude,
-      gameGuid: isGratitude
-          ? _reflectAndShareRepository.getGameId()
-          : null,
+      gameGuid: isGratitude ? _reflectAndShareRepository.getGameId() : null,
     );
     try {
       await _createTransactionRepository.createTransaction(
@@ -48,10 +47,18 @@ class GiveCubit extends Cubit<GiveState> {
           'amount': transaction.amount,
           'organisation': orgName,
           'mediumid': mediumId,
+          'experiencePoints': experiencePoints,
         },
       );
-      emit(GiveFromBrowser(GivtTransaction.fromTransaction(transaction),
-          transaction, orgName, mediumId));
+      emit(
+        GiveFromBrowser(
+          GivtTransaction.fromTransaction(transaction),
+          transaction,
+          orgName,
+          mediumId,
+          experiencePoints,
+        ),
+      );
     } catch (error, stackTrace) {
       LoggingInfo.instance.error(
         'Error while creating transaction: $error',
