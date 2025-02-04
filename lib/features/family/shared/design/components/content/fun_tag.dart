@@ -16,6 +16,7 @@ class FunTag extends StatelessWidget {
     this.borderRadius,
     this.iconData,
     this.flatSide = FlatSide.none,
+    this.iconSize,
   });
 
   factory FunTag.fromArea({
@@ -23,6 +24,7 @@ class FunTag extends StatelessWidget {
     required String text,
     IconData? iconData,
     FlatSide flatSide = FlatSide.none,
+    double? iconSize,
   }) {
     return FunTag(
       text: text,
@@ -30,6 +32,7 @@ class FunTag extends StatelessWidget {
       accentColor: area.accentColor,
       iconData: iconData,
       flatSide: flatSide,
+      iconSize: iconSize,
     );
   }
 
@@ -160,12 +163,22 @@ class FunTag extends StatelessWidget {
     );
   }
 
+  factory FunTag.xp(int xp) {
+    return FunTag.fromArea(
+      area: Areas.highlight,
+      text: '$xp XP',
+      iconData: Icons.bolt,
+      iconSize: 16,
+    );
+  }
+
   final String text;
   final Color textColor;
   final Color accentColor;
   final BorderRadius? borderRadius;
   final IconData? iconData;
   final FlatSide flatSide;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -180,17 +193,22 @@ class FunTag extends StatelessWidget {
         borderRadius: borderRadius ?? _getBorderRadius(),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(
+        padding: EdgeInsets.only(
           top: 4,
           bottom: 4,
-          left: 20,
-          right: 12,
+          left: flatSide == FlatSide.left ? 16 : 12,
+          right: flatSide == FlatSide.right ? 16 : 12,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (iconData != null) Icon(iconData, color: textColor),
-            if (iconData != null) const SizedBox(width: 4),
+            if (iconData != null)
+              Icon(
+                iconData,
+                color: textColor,
+                size: iconSize,
+              ),
+            if (iconData != null) const SizedBox(width: 1.5),
             LabelSmallText(
               text,
               color: textColor,

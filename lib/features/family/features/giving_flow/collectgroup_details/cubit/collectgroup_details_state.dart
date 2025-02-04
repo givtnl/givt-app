@@ -4,12 +4,15 @@ abstract class CollectGroupDetailsState extends Equatable {
   const CollectGroupDetailsState({
     required this.collectgroup,
     this.mediumId = '',
+    this.experiencePoints,
   });
+
   final CollectGroupDetails collectgroup;
   final String mediumId;
+  final int? experiencePoints;
 
   @override
-  List<Object> get props => [collectgroup, mediumId];
+  List<Object?> get props => [collectgroup, mediumId, experiencePoints];
 }
 
 class OrganisationDetailsInitialState extends CollectGroupDetailsState {
@@ -35,5 +38,6 @@ class OrganisationDetailsSetState extends CollectGroupDetailsState {
   const OrganisationDetailsSetState({
     required super.collectgroup,
     required super.mediumId,
+    super.experiencePoints,
   });
 }

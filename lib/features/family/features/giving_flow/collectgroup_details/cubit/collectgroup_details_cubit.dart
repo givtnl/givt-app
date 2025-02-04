@@ -41,6 +41,7 @@ class CollectGroupDetailsCubit extends Cubit<CollectGroupDetailsState> {
         OrganisationDetailsSetState(
           collectgroup: response,
           mediumId: mediumId,
+          experiencePoints: experiencePoints,
         ),
       );
 

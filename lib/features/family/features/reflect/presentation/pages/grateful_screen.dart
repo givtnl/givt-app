@@ -240,9 +240,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
     Organisation organisation,
   ) async {
     final generatedMediumId = base64.encode(organisation.namespace.codeUnits);
-    await context
-        .read<CollectGroupDetailsCubit>()
-        .getOrganisationDetails(generatedMediumId);
+    await context.read<CollectGroupDetailsCubit>().getOrganisationDetails(
+      generatedMediumId,
+          experiencePoints: organisation.experiencePoints,
+        );
     final profiles = context.read<ProfilesCubit>();
     await profiles.setActiveProfile(profile.userId);
     if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
