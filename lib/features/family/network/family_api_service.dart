@@ -319,7 +319,10 @@ class FamilyAPIService {
     );
   }
 
-  Future<bool> saveGratitudeStats(int duration, String? gameGuid) async {
+  Future<Map<String, dynamic>> saveGratitudeStats(
+    int duration,
+    String? gameGuid,
+  ) async {
     return updateGame(gameGuid!, {
       'type': 'Gratitude',
       'duration': duration,
@@ -342,7 +345,8 @@ class FamilyAPIService {
     return response.statusCode == 200;
   }
 
-  Future<bool> updateGame(String gameGuid, Map<String, dynamic> body) async {
+  Future<Map<String, dynamic>> updateGame(
+      String gameGuid, Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid');
     final response = await client.put(url,
         headers: {
@@ -358,7 +362,8 @@ class FamilyAPIService {
             : null,
       );
     }
-    return response.statusCode == 200;
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['item']! as Map<String, dynamic>;
   }
 
   Future<String> createGame() async {
