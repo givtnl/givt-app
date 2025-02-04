@@ -44,7 +44,7 @@ class NavigationBarHomeCubit
       _onImpactGroupsChanged();
     });
     _authRepository.registrationFinishedStream().listen((_) {
-      _doInitialChecks();
+      _doInitialChecks(fromRegistrationFinished: true);
     });
     await refreshData();
   }
@@ -73,13 +73,13 @@ class NavigationBarHomeCubit
     await _doInitialChecks();
   }
 
-  Future<void> _doInitialChecks() async {
+  Future<void> _doInitialChecks({bool fromRegistrationFinished = false}) async {
     if (_familyInviteGroup != null) {
       await _setTutorialSeenOrSkipped();
       return;
     } else if (await userNeedsToFillInPersonalDetails()) {
       return;
-    } else if (_shouldShowTutorial()) {
+    } else if (fromRegistrationFinished && _shouldShowTutorial()) {
       await _setTutorialSeenOrSkipped();
       //delay is to ensure screen is visible
       await Future.delayed(const Duration(milliseconds: 30));
