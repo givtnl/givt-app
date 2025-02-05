@@ -143,14 +143,6 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             onAvatarTapped: onAvatarTapped,
                           ),
                         ),
-                        FunProgressbar.xp(
-                          currentProgress: 30,
-                          total: 30,
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 16,
-                          ),
-                        ),
                         CarouselSlider(
                           carouselController: _carouselSliderController,
                           items: carrouselItems,
