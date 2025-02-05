@@ -18,13 +18,19 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   ExperienceStats? _experienceStats;
 
   Future<void> init() async {
-    await saveSummary();
-    _totalMinutesPlayed =
-        (_reflectAndShareRepository.totalTimeSpentInSeconds / 60).ceil();
-    _generousDeeds = _reflectAndShareRepository.getAmountOfGenerousDeeds();
-    _tagsWereSelected =
-        _reflectAndShareRepository.hasAnyGenerousPowerBeenSelected();
-    await getPlayerProfiles();
+    emitLoading();
+    try {
+      await saveSummary();
+      _totalMinutesPlayed =
+          (_reflectAndShareRepository.totalTimeSpentInSeconds / 60).ceil();
+      _generousDeeds = _reflectAndShareRepository.getAmountOfGenerousDeeds();
+      _tagsWereSelected =
+          _reflectAndShareRepository.hasAnyGenerousPowerBeenSelected();
+      await getPlayerProfiles();
+    } catch (e, s) {
+      // it's ok to fail we can still show some data
+    }
+
     _emitData();
   }
 
@@ -44,6 +50,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   }
 
   Future<void> saveSummary() async {
+    _experienceStats = null;
     _experienceStats = await _reflectAndShareRepository.saveSummaryStats();
   }
 
