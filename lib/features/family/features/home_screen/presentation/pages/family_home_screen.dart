@@ -21,6 +21,7 @@ import 'package:givt_app/features/family/features/impact_groups/cubit/impact_gro
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
@@ -140,6 +141,14 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               avatarUIModels: uiModel.avatars,
                             ),
                             onAvatarTapped: onAvatarTapped,
+                          ),
+                        ),
+                        FunProgressbar.xp(
+                          currentProgress: 30,
+                          total: 30,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 16,
                           ),
                         ),
                         CarouselSlider(

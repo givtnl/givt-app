@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_small_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class FunProgressbar extends StatelessWidget {
+class FunProgressbar extends StatefulWidget {
   const FunProgressbar({
     required this.currentProgress,
     required this.total,
@@ -19,6 +19,7 @@ class FunProgressbar extends StatelessWidget {
   factory FunProgressbar.xp({
     required int currentProgress,
     required int total,
+    EdgeInsets? margin,
   }) {
     return FunProgressbar(
       currentProgress: currentProgress,
@@ -28,12 +29,14 @@ class FunProgressbar extends StatelessWidget {
         color: FamilyAppTheme.highlight30,
       ),
       suffix: 'XP',
+      margin: margin,
     );
   }
 
   factory FunProgressbar.powerstones({
     required int currentProgress,
     required int total,
+    EdgeInsets? margin,
   }) {
     return FunProgressbar(
       currentProgress: currentProgress,
@@ -44,6 +47,7 @@ class FunProgressbar extends StatelessWidget {
       ),
       textColor: FamilyAppTheme.secondary30,
       progressColor: FamilyAppTheme.secondary95,
+      margin: margin,
     );
   }
 
@@ -69,51 +73,71 @@ class FunProgressbar extends StatelessWidget {
   final Color? textColor;
 
   @override
+  State<FunProgressbar> createState() => _FunProgressbarState();
+}
+
+class _FunProgressbarState extends State<FunProgressbar> {
+  bool checkForCompletion = false;
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin,
+      margin: widget.margin,
       child: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
             children: [
               Container(
+                height: 37,
+                width: constraints.maxWidth,
                 decoration: BoxDecoration(
-                  color: backgroundColor ?? FamilyAppTheme.neutralVariant99,
+                  color:
+                      widget.backgroundColor ?? FamilyAppTheme.neutralVariant99,
                   borderRadius: BorderRadius.circular(100),
                 ),
               ),
               AnimatedContainer(
-                width: constraints.maxWidth * (currentProgress / total),
+                onEnd: () => setState(() {
+                  checkForCompletion = true;
+                }),
+                height: 37,
+                width: constraints.maxWidth *
+                    (widget.currentProgress / widget.total),
                 decoration: BoxDecoration(
-                  color: progressColor ?? FamilyAppTheme.highlight90,
+                  color: widget.progressColor ?? FamilyAppTheme.highlight90,
                   borderRadius: BorderRadius.circular(100),
                 ),
                 duration: const Duration(milliseconds: 300),
               ),
-              AnimatedCrossFade(
-                duration: const Duration(milliseconds: 300),
-                firstChild: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (prefixWidget != null) prefixWidget!,
-                    LabelSmallText(
-                      '$currentProgress / $total${suffix == null ? '' : ' $suffix'}',
-                      color: textColor ?? FamilyAppTheme.highlight30,
-                    ),
-                  ],
+              Container(
+                height: 37,
+                alignment: Alignment.center,
+                child: AnimatedCrossFade(
+                  duration: const Duration(milliseconds: 300),
+                  firstChild: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (widget.prefixWidget != null) widget.prefixWidget!,
+                      LabelSmallText(
+                        '${widget.currentProgress} / ${widget.total}${widget.suffix == null ? '' : ' ${widget.suffix}'}',
+                        color: widget.textColor ?? FamilyAppTheme.highlight30,
+                      ),
+                    ],
+                  ),
+                  secondChild: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LabelSmallText(
+                        widget.completedText ?? 'Completed',
+                        color: widget.textColor ?? FamilyAppTheme.highlight30,
+                      ),
+                    ],
+                  ),
+                  crossFadeState: checkForCompletion &&
+                          widget.currentProgress >= widget.total
+                      ? CrossFadeState.showSecond
+                      : CrossFadeState.showFirst,
                 ),
-                secondChild: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    LabelSmallText(
-                      completedText ?? 'Completed',
-                      color: textColor ?? FamilyAppTheme.highlight30,
-                    ),
-                  ],
-                ),
-                crossFadeState: currentProgress < total
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
               ),
             ],
           );
