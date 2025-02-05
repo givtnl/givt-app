@@ -11,7 +11,41 @@ class FunProgressbar extends StatelessWidget {
     this.suffix,
     this.completedText,
     this.margin,
+    this.backgroundColor,
+    this.progressColor,
+    this.textColor,
   });
+
+  factory FunProgressbar.xp({
+    required int currentProgress,
+    required int total,
+  }) {
+    return FunProgressbar(
+      currentProgress: currentProgress,
+      total: total,
+      prefixWidget: const Icon(
+        Icons.bolt,
+        color: FamilyAppTheme.highlight30,
+      ),
+      suffix: 'XP',
+    );
+  }
+
+  factory FunProgressbar.powerstones({
+    required int currentProgress,
+    required int total,
+  }) {
+    return FunProgressbar(
+      currentProgress: currentProgress,
+      total: total,
+      prefixWidget: const Icon(
+        Icons.water_drop,
+        color: FamilyAppTheme.secondary30,
+      ),
+      textColor: FamilyAppTheme.secondary30,
+      progressColor: FamilyAppTheme.secondary95,
+    );
+  }
 
   // Widget to show before the progress (i.e. a bolt icon or a powerstone etc)
   final Widget? prefixWidget;
@@ -30,6 +64,10 @@ class FunProgressbar extends StatelessWidget {
 
   final EdgeInsets? margin;
 
+  final Color? backgroundColor;
+  final Color? progressColor;
+  final Color? textColor;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,14 +78,14 @@ class FunProgressbar extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: FamilyAppTheme.neutralVariant99,
+                  color: backgroundColor ?? FamilyAppTheme.neutralVariant99,
                   borderRadius: BorderRadius.circular(100),
                 ),
               ),
               AnimatedContainer(
                 width: constraints.maxWidth * (currentProgress / total),
                 decoration: BoxDecoration(
-                  color: FamilyAppTheme.highlight90,
+                  color: progressColor ?? FamilyAppTheme.highlight90,
                   borderRadius: BorderRadius.circular(100),
                 ),
                 duration: const Duration(milliseconds: 300),
@@ -60,13 +98,17 @@ class FunProgressbar extends StatelessWidget {
                     if (prefixWidget != null) prefixWidget!,
                     LabelSmallText(
                       '$currentProgress / $total${suffix == null ? '' : ' $suffix'}',
+                      color: textColor ?? FamilyAppTheme.highlight30,
                     ),
                   ],
                 ),
                 secondChild: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    LabelSmallText(completedText ?? 'Completed'),
+                    LabelSmallText(
+                      completedText ?? 'Completed',
+                      color: textColor ?? FamilyAppTheme.highlight30,
+                    ),
                   ],
                 ),
                 crossFadeState: currentProgress < total
