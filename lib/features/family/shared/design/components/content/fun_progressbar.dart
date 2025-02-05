@@ -14,7 +14,8 @@ class FunProgressbar extends StatefulWidget {
     this.backgroundColor,
     this.progressColor,
     this.textColor,
-  });
+  })  : assert(currentProgress >= 0, 'Current progress must be non-negative'),
+        assert(total > 0, 'Total must be greater than zero');
 
   factory FunProgressbar.xp({
     required int currentProgress,
