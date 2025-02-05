@@ -85,6 +85,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const neutralVariant80 = Color(0xFFC8C7BF);
   static const neutralVariant90 = Color(0xFFE4E3DB);
   static const neutralVariant95 = Color(0xFFEEF2E4);
+  static const neutralVariant99 = Color.fromRGBO(254, 252, 244, 1);
 
   static const opacityWhite75 = Color(0x4CFFFFFF);
 
