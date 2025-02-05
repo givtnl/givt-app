@@ -19,10 +19,12 @@ class SuccessScreen extends StatefulWidget {
   const SuccessScreen({
     super.key,
     this.isActOfService = false,
+    this.experiencePoints,
     this.onCustomSuccess,
   });
 
   final bool isActOfService;
+  final int? experiencePoints;
   final void Function()? onCustomSuccess;
 
   @override
@@ -41,7 +43,8 @@ class _SuccessScreenState extends State<SuccessScreen> {
   Widget build(BuildContext context) {
     final organisation =
         context.read<CollectGroupDetailsCubit>().state.collectgroup;
-    final xp = context.read<CollectGroupDetailsCubit>().state.experiencePoints;
+    final xp = widget.experiencePoints ??
+        context.read<CollectGroupDetailsCubit>().state.experiencePoints;
     final profilesState = context.read<ProfilesCubit>().state;
 
     return PopScope(
