@@ -1,4 +1,5 @@
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/experience_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/summary_details.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -14,15 +15,22 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   bool _tagsWereSelected = false;
   String _audioPath = '';
   List<Profile> _players = const [];
+  ExperienceStats? _experienceStats;
 
-  void init() {
-    saveSummary();
-    _totalMinutesPlayed =
-        (_reflectAndShareRepository.totalTimeSpentInSeconds / 60).ceil();
-    _generousDeeds = _reflectAndShareRepository.getAmountOfGenerousDeeds();
-    _tagsWereSelected =
-        _reflectAndShareRepository.hasAnyGenerousPowerBeenSelected();
-    getPlayerProfiles();
+  Future<void> init() async {
+    emitLoading();
+    try {
+      await saveSummary();
+      _totalMinutesPlayed =
+          (_reflectAndShareRepository.totalTimeSpentInSeconds / 60).ceil();
+      _generousDeeds = _reflectAndShareRepository.getAmountOfGenerousDeeds();
+      _tagsWereSelected =
+          _reflectAndShareRepository.hasAnyGenerousPowerBeenSelected();
+      await getPlayerProfiles();
+    } catch (e, s) {
+      // it's ok to fail we can still show some data
+    }
+
     _emitData();
   }
 
@@ -41,8 +49,9 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
     _audioPath = '';
   }
 
-  void saveSummary() {
-    _reflectAndShareRepository.saveSummaryStats();
+  Future<void> saveSummary() async {
+    _experienceStats = null;
+    _experienceStats = await _reflectAndShareRepository.saveSummaryStats();
   }
 
   void onCloseGame() {
@@ -62,6 +71,8 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
         players: _players,
         tagsWereSelected: _tagsWereSelected,
         audioPath: _audioPath,
+        xpEarnedForTime: _experienceStats?.xpEarnedForTime,
+        xpEarnedForDeeds: _experienceStats?.xpEarnedForDeeds,
       ),
     );
   }

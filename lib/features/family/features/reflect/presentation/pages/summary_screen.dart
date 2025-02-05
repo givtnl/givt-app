@@ -94,7 +94,12 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
                           // stats button
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            padding: const EdgeInsets.only(
+                              left: 24,
+                              right: 24,
+                              top: 12,
+                              bottom: 24,
+                            ),
                             child: getTileStats(details),
                           ),
                           const SizedBox(height: 24),
@@ -136,30 +141,54 @@ class _SummaryScreenState extends State<SummaryScreen> {
     return Row(
       children: [
         Expanded(
-          child: FunTile.gold(
-            titleBig: details.minutesPlayed == 1
-                ? '1 minute family time'
-                : '${details.minutesPlayed} minutes family time',
-            iconData: FontAwesomeIcons.solidClock,
-            assetSize: 32,
-            isPressedDown: true,
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.familyReflectSummaryMinutesPlayedClicked,
-            ),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: FunTile.gold(
+                  titleBig: details.minutesPlayed == 1
+                      ? '1 minute family time'
+                      : '${details.minutesPlayed} minutes family time',
+                  iconData: FontAwesomeIcons.solidClock,
+                  assetSize: 32,
+                  isPressedDown: true,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.familyReflectSummaryMinutesPlayedClicked,
+                  ),
+                ),
+              ),
+              if (details.xpEarnedForTime != null)
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: FunTag.xp(details.xpEarnedForTime!),
+                ),
+            ],
           ),
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: FunTile.red(
-            titleBig: details.generousDeeds == 1
-                ? '1 generous deed'
-                : '${details.generousDeeds} generous deeds',
-            iconData: FontAwesomeIcons.solidHeart,
-            assetSize: 32,
-            isPressedDown: true,
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.familyReflectSummaryGenerousDeedsClicked,
-            ),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: FunTile.red(
+                  titleBig: details.generousDeeds == 1
+                      ? '1 generous deed'
+                      : '${details.generousDeeds} generous deeds',
+                  iconData: FontAwesomeIcons.solidHeart,
+                  assetSize: 32,
+                  isPressedDown: true,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.familyReflectSummaryGenerousDeedsClicked,
+                  ),
+                ),
+              ),
+              if (details.xpEarnedForDeeds != null)
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: FunTag.xp(details.xpEarnedForDeeds!),
+                ),
+            ],
           ),
         ),
       ],

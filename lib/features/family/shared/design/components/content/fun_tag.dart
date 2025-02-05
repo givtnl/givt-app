@@ -101,18 +101,6 @@ class FunTag extends StatelessWidget {
     );
   }
 
-  factory FunTag.gold({
-    required String text,
-    IconData? iconData,
-    FlatSide flatSide = FlatSide.none,
-  }) {
-    return FunTag.highlight(
-      text: text,
-      iconData: iconData,
-      flatSide: flatSide,
-    );
-  }
-
   factory FunTag.tertiary({
     required String text,
     IconData? iconData,
@@ -165,7 +153,7 @@ class FunTag extends StatelessWidget {
 
   factory FunTag.xp(int xp) {
     return FunTag.fromArea(
-      area: Areas.highlight,
+      area: Areas.gold,
       text: '$xp XP',
       iconData: Icons.bolt,
       iconSize: 16,

@@ -130,7 +130,7 @@ class Organisation extends Equatable {
   static Tag _experiencePointsTag({int? xp}) => Tag(
         key: 'ExperiencePoints',
         displayText: '$xp XP',
-        area: Areas.highlight,
+        area: Areas.gold,
         pictureUrl: '',
         type: TagType.XP,
         iconData: FontAwesomeIcons.bolt,

@@ -4,12 +4,12 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_remote_config_platform_interface/src/remote_config_value.dart';
-import 'package:flutter/foundation.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/experience_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/gratitude_game_config.dart';
@@ -89,20 +89,22 @@ class ReflectAndShareRepository {
     _generousDeeds++;
   }
 
-  Future<void> saveSummaryStats() async {
+  Future<ExperienceStats?> saveSummaryStats() async {
     try {
       _endTime = DateTime.now();
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
-      await _familyApiService.saveGratitudeStats(
+      final map = await _familyApiService.saveGratitudeStats(
         totalTimeSpentInSeconds,
         _gameId,
       );
-      await _fetchGameStats();
+      _fetchGameStats();
+      return ExperienceStats.fromJson(map);
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
         methodName: s.toString(),
       );
+      return null;
     }
   }
 

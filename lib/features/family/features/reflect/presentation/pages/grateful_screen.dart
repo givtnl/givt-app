@@ -241,7 +241,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
   ) async {
     final generatedMediumId = base64.encode(organisation.namespace.codeUnits);
     await context.read<CollectGroupDetailsCubit>().getOrganisationDetails(
-      generatedMediumId,
+          generatedMediumId,
           experiencePoints: organisation.experiencePoints,
         );
     final profiles = context.read<ProfilesCubit>();
@@ -263,7 +263,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
     await Navigator.of(context).push(
       BlocProvider(
         create: (BuildContext context) => CreateTransactionCubit(
-            context.read<ProfilesCubit>(), getIt(), getIt()),
+          context.read<ProfilesCubit>(),
+          getIt(),
+          getIt(),
+        ),
         child: ChooseAmountSliderScreen(
           onCustomSuccess: () {
             _cubit.onDeed(profile);
@@ -284,6 +287,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     await Navigator.push(
       context,
       SuccessScreen(
+        experiencePoints: org.experiencePoints,
         isActOfService: true,
         onCustomSuccess: () {
           _cubit.onDeed(profile);

@@ -7,6 +7,8 @@ class SummaryDetails {
     required this.tagsWereSelected,
     this.players = const [],
     this.audioPath = '',
+    this.xpEarnedForTime,
+    this.xpEarnedForDeeds,
   });
 
   int minutesPlayed;
@@ -14,6 +16,8 @@ class SummaryDetails {
   bool tagsWereSelected;
   List<Profile> players;
   String audioPath;
+  int? xpEarnedForTime;
+  int? xpEarnedForDeeds;
 
   bool get showPlayer => audioPath.isNotEmpty;
 

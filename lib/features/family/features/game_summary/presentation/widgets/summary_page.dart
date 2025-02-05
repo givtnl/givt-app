@@ -38,7 +38,7 @@ class _SummaryPageState extends State<SummaryPage> {
     return Column(
       children: [
         if (widget.uiModel.date != null)
-          FunTag.gold(
+          FunTag.highlight(
             text: widget.uiModel.date!.formattedFullMonth,
           ),
         if (widget.uiModel.date != null) const SizedBox(height: 12),
