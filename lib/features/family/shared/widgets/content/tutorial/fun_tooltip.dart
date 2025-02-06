@@ -125,31 +125,34 @@ class FunTooltip extends StatelessWidget {
                                 ),
                                 Opacity(
                                   opacity: showButton ? 1 : 0,
-                                  child: buttonBottomRightOverride ??
-                                      CustomIconBorderButton(
-                                        key: ValueKey(
-                                          'tooltipNext$tooltipIndex',
+                                  child: Semantics(
+                                    label: 'tooltipNext$tooltipIndex',
+                                    child: buttonBottomRightOverride ??
+                                        CustomIconBorderButton(
+                                          key: ValueKey(
+                                            'tooltipNext$tooltipIndex',
+                                          ),
+                                          onTap: onButtonTap ??
+                                                  () => controller.next(),
+                                          analyticsEvent:
+                                              analyticsEventButtonOverride ??
+                                                  AnalyticsEvent(
+                                                    AmplitudeEvents
+                                                        .tutorialNextClicked,
+                                                    parameters: {
+                                                      'tutorialLabelBottomLeft':
+                                                          labelBottomLeft,
+                                                      'tutorialTitle': title,
+                                                      'tutorialDescription':
+                                                          description,
+                                                    },
+                                                  ),
+                                          child: buttonIcon ??
+                                              const FaIcon(
+                                                FontAwesomeIcons.arrowRight,
+                                              ),
                                         ),
-                                        onTap: onButtonTap ??
-                                                () => controller.next(),
-                                        analyticsEvent:
-                                            analyticsEventButtonOverride ??
-                                                AnalyticsEvent(
-                                                  AmplitudeEvents
-                                                      .tutorialNextClicked,
-                                                  parameters: {
-                                                    'tutorialLabelBottomLeft':
-                                                        labelBottomLeft,
-                                                    'tutorialTitle': title,
-                                                    'tutorialDescription':
-                                                        description,
-                                                  },
-                                                ),
-                                        child: buttonIcon ??
-                                            const FaIcon(
-                                              FontAwesomeIcons.arrowRight,
-                                            ),
-                                      ),
+                                  ),
                                 ),
                               ],
                             ),
