@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/features/home_screen/cubit/family_home_
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/daily_experience_container.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/missions_container.dart';
@@ -143,6 +144,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             onAvatarTapped: onAvatarTapped,
                           ),
                         ),
+                        const DailyExperienceContainer(),
                         CarouselSlider(
                           carouselController: _carouselSliderController,
                           items: carrouselItems,

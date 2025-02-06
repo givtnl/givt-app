@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_small_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
@@ -25,9 +26,10 @@ class FunProgressbar extends StatefulWidget {
     return FunProgressbar(
       currentProgress: currentProgress,
       total: total,
-      prefixWidget: const Icon(
+      prefixWidget: const FaIcon(
         Icons.bolt,
         color: FamilyAppTheme.highlight30,
+        size: 16,
       ),
       suffix: 'XP',
       margin: margin,
@@ -78,7 +80,7 @@ class FunProgressbar extends StatefulWidget {
 }
 
 class _FunProgressbarState extends State<FunProgressbar> {
-  bool checkForCompletion = false;
+  //bool checkForCompletion = false;
 
   @override
   Widget build(BuildContext context) {
@@ -98,9 +100,9 @@ class _FunProgressbarState extends State<FunProgressbar> {
                 ),
               ),
               AnimatedContainer(
-                onEnd: () => setState(() {
+                /*onEnd: () => setState(() {
                   checkForCompletion = true;
-                }),
+                }),*/
                 height: 37,
                 width: constraints.maxWidth *
                     (widget.currentProgress / widget.total),
@@ -108,13 +110,16 @@ class _FunProgressbarState extends State<FunProgressbar> {
                   color: widget.progressColor ?? FamilyAppTheme.highlight90,
                   borderRadius: BorderRadius.circular(100),
                 ),
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 800),
+                curve: Curves.easeOut,
               ),
               Container(
                 height: 37,
                 alignment: Alignment.center,
                 child: AnimatedCrossFade(
                   duration: const Duration(milliseconds: 300),
+                  firstCurve: Curves.easeOut,
+                  secondCurve: Curves.easeOut,
                   firstChild: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -134,8 +139,7 @@ class _FunProgressbarState extends State<FunProgressbar> {
                       ),
                     ],
                   ),
-                  crossFadeState: checkForCompletion &&
-                          widget.currentProgress >= widget.total
+                  crossFadeState: widget.currentProgress >= widget.total
                       ? CrossFadeState.showSecond
                       : CrossFadeState.showFirst,
                 ),
