@@ -99,20 +99,21 @@ class _FunProgressbarState extends State<FunProgressbar> {
                   borderRadius: BorderRadius.circular(100),
                 ),
               ),
-              AnimatedContainer(
-                /*onEnd: () => setState(() {
-                  checkForCompletion = true;
-                }),*/
-                height: 37,
-                width: constraints.maxWidth *
-                    (widget.currentProgress / widget.total),
-                decoration: BoxDecoration(
-                  color: widget.progressColor ?? FamilyAppTheme.highlight90,
-                  borderRadius: BorderRadius.circular(100),
+              if (widget.currentProgress >= 0 && widget.total > 0)
+                AnimatedContainer(
+                  onEnd: () => setState(() {
+                    //checkForCompletion = true;
+                  }),
+                  height: 37,
+                  width: constraints.maxWidth *
+                      (widget.currentProgress / widget.total),
+                  decoration: BoxDecoration(
+                    color: widget.progressColor ?? FamilyAppTheme.highlight90,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  duration: const Duration(milliseconds: 800),
+                  curve: Curves.easeOut,
                 ),
-                duration: const Duration(milliseconds: 800),
-                curve: Curves.easeOut,
-              ),
               Container(
                 height: 37,
                 alignment: Alignment.center,
