@@ -17,12 +17,12 @@ import 'package:givt_app/features/family/features/home_screen/widgets/daily_expe
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/missions_container.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/models/daily_experience_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/stats_container.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
-import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
@@ -144,7 +144,19 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             onAvatarTapped: onAvatarTapped,
                           ),
                         ),
-                        const DailyExperienceContainer(),
+                        DailyExperienceContainer(
+                          key: const ValueKey('Homepage-Daily-Experience'),
+                          uiModel: DailyExperienceUIModel(
+                            currentProgress: 70,
+                            total: 30,
+                            timeLeft: DateTime.now().add(
+                              const Duration(
+                                hours: 1,
+                                minutes: 0,
+                              ),
+                            ),
+                          ),
+                        ),
                         CarouselSlider(
                           carouselController: _carouselSliderController,
                           items: carrouselItems,

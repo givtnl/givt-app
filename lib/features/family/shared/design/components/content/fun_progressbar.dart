@@ -22,8 +22,10 @@ class FunProgressbar extends StatefulWidget {
     required int currentProgress,
     required int total,
     EdgeInsets? margin,
+    Key? key,
   }) {
     return FunProgressbar(
+      key: key,
       currentProgress: currentProgress,
       total: total,
       prefixWidget: const FaIcon(
@@ -40,8 +42,10 @@ class FunProgressbar extends StatefulWidget {
     required int currentProgress,
     required int total,
     EdgeInsets? margin,
+    Key? key,
   }) {
     return FunProgressbar(
+      key: key,
       currentProgress: currentProgress,
       total: total,
       prefixWidget: const Icon(
@@ -80,11 +84,42 @@ class FunProgressbar extends StatefulWidget {
 }
 
 class _FunProgressbarState extends State<FunProgressbar> {
-  //bool checkForCompletion = false;
+  bool checkForCompletion = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+    print('initState');
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print('didChangeDependencies');
+  }
+
+  @override
+  void didUpdateWidget(FunProgressbar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.currentProgress != widget.currentProgress) {
+      print('didUpdateWidget: not same');
+      setState(() {
+        checkForCompletion = false;
+      });
+    } else {
+      print('didUpdateWidget: same');
+      setState(() {
+        checkForCompletion = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: widget.key,
       margin: widget.margin,
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -102,7 +137,7 @@ class _FunProgressbarState extends State<FunProgressbar> {
               if (widget.currentProgress >= 0 && widget.total > 0)
                 AnimatedContainer(
                   onEnd: () => setState(() {
-                    //checkForCompletion = true;
+                    checkForCompletion = true;
                   }),
                   height: 37,
                   width: constraints.maxWidth *
@@ -140,7 +175,8 @@ class _FunProgressbarState extends State<FunProgressbar> {
                       ),
                     ],
                   ),
-                  crossFadeState: widget.currentProgress >= widget.total
+                  crossFadeState: checkForCompletion &&
+                          widget.currentProgress >= widget.total
                       ? CrossFadeState.showSecond
                       : CrossFadeState.showFirst,
                 ),
