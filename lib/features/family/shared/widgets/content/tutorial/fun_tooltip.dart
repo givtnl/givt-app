@@ -127,8 +127,11 @@ class FunTooltip extends StatelessWidget {
                                   opacity: showButton ? 1 : 0,
                                   child: buttonBottomRightOverride ??
                                       CustomIconBorderButton(
+                                        key: ValueKey(
+                                          'tooltipNext$tooltipIndex',
+                                        ),
                                         onTap: onButtonTap ??
-                                            () => controller.next(),
+                                                () => controller.next(),
                                         analyticsEvent:
                                             analyticsEventButtonOverride ??
                                                 AnalyticsEvent(
