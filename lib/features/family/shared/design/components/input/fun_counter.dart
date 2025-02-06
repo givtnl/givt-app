@@ -147,6 +147,7 @@ class _FunCounterState extends State<FunCounter> {
             AmplitudeEvents.funCounterDecrementClicked,
           ),
           child: FaIcon(
+            semanticLabel: 'minus',
             FontAwesomeIcons.minus,
             size: 25,
             color: (_currentAmount < 2)
@@ -176,6 +177,7 @@ class _FunCounterState extends State<FunCounter> {
             AmplitudeEvents.funCounterIncrementClicked,
           ),
           child: FaIcon(
+            semanticLabel: 'plus',
             FontAwesomeIcons.plus,
             size: 25,
             color:
