@@ -68,7 +68,6 @@ class _DailyExperienceContainerState extends State<DailyExperienceContainer> {
       onLoading: (context) => const SizedBox.shrink(),
       onError: (context, error) => const SizedBox.shrink(),
       onData: (context, uiModel) {
-        final timeLeft = DateTime.now();
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
