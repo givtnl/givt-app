@@ -126,6 +126,7 @@ class FunTooltip extends StatelessWidget {
                                 Opacity(
                                   opacity: showButton ? 1 : 0,
                                   child: Semantics(
+                                    identifier: 'tooltipNext$tooltipIndex',
                                     label: 'tooltipNext$tooltipIndex',
                                     child: buttonBottomRightOverride ??
                                         CustomIconBorderButton(
