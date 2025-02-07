@@ -21,7 +21,11 @@ class DailyExperienceCubit
 
   Future<void> init() async {
     final now = DateTime.now();
-    midnight = DateTime(now.year, now.month, now.day, 24);
+    midnight = DateTime(
+      now.year,
+      now.month,
+      now.day + 1,
+    );
     _gameStatsSubscription =
         _repo.onGameStatsUpdated.listen(_onGameStatsUpdated);
     try {
