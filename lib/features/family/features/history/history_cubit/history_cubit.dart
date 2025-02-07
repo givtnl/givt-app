@@ -13,7 +13,7 @@ class HistoryCubit extends Cubit<HistoryState> {
   final HistoryRepository historyRepo;
 
   FutureOr<void> fetchHistory(
-    String childId, {
+    String userId, {
     bool fromBeginning = false,
   }) async {
     // Make sure that it's not loading already
@@ -24,15 +24,21 @@ class HistoryCubit extends Cubit<HistoryState> {
 
     try {
       final donationHistoryFuture = historyRepo.fetchHistory(
-        childId: childId,
+        userId: userId,
         pageNumber: state.pageNr,
         type: HistoryTypes.donation,
       );
 
       final allowanceHistoryFuture = historyRepo.fetchHistory(
-        childId: childId,
+        userId: userId,
         pageNumber: state.pageNr,
         type: HistoryTypes.allowance,
+      );
+
+      final adultDonationHistoryFuture = historyRepo.fetchHistory(
+        userId: userId,
+        pageNumber: state.pageNr,
+        type: HistoryTypes.adultDonation,
       );
 
       // In this way the second future will already start fetching
@@ -40,6 +46,7 @@ class HistoryCubit extends Cubit<HistoryState> {
       // This will make the fetching faster
       final donationHistory = await donationHistoryFuture;
       final allowanceHistory = await allowanceHistoryFuture;
+      final adultDonationHistory = await adultDonationHistoryFuture;
 
       // Remove duplicates from current state
       final updatedDonations = donationHistory.where((item) => !state.history
@@ -55,6 +62,7 @@ class HistoryCubit extends Cubit<HistoryState> {
         ...state.history,
         ...updatedDonations,
         ...updatedAllowances,
+        ...adultDonationHistory,
       ]
         // sort from newest to oldest
         ..sort((a, b) => b.date.compareTo(a.date));
