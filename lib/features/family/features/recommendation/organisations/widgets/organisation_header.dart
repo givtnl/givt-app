@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class OrganisationHeader extends StatelessWidget {
   const OrganisationHeader({
@@ -55,39 +54,6 @@ class OrganisationHeader extends StatelessWidget {
               ),
             ),
         ],
-      ),
-    );
-  }
-
-  Container tagContainer(String displayText, Color textColor, Color accentColor,
-      {IconData? iconData}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 3),
-      decoration: BoxDecoration(
-        color: accentColor,
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(25),
-          bottomRight: Radius.circular(25),
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: 4,
-          bottom: 4,
-          left: 20,
-          right: 12,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (iconData != null) Icon(iconData, color: textColor),
-            if (iconData != null) const SizedBox(width: 4),
-            LabelSmallText(
-              displayText,
-              color: textColor,
-            ),
-          ],
-        ),
       ),
     );
   }

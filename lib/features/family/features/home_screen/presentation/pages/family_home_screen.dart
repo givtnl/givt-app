@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/features/home_screen/cubit/family_home_
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/daily_experience_container.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/missions_container.dart';
@@ -21,7 +22,6 @@ import 'package:givt_app/features/family/features/impact_groups/cubit/impact_gro
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
-import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
@@ -108,28 +108,32 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                 Stack(
                   alignment: Alignment.topCenter,
                   children: [
-                    Column(
-                      children: [
-                        SvgPicture.asset(
-                          'assets/family/images/home_screen/background.svg',
-                          width: MediaQuery.of(context).size.width,
-                        ),
-                      ],
+                    ColoredBox(
+                      color: FamilyAppTheme.primary99,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: TitleLargeText(
+                              overlayVisible
+                                  ? ''
+                                  : uiModel.familyGroupName == null
+                                  ? 'Welcome!'
+                                  : 'Hey ${uiModel.familyGroupName}!',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          SvgPicture.asset(
+                            'assets/family/images/home_screen/background.svg',
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                        ],
+                      ),
                     ),
                     Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                          child: TitleLargeText(
-                            overlayVisible
-                                ? ''
-                                : uiModel.familyGroupName == null
-                                    ? 'Welcome!'
-                                    : 'Hey ${uiModel.familyGroupName}!',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 36),
                         Visibility(
                           visible: !overlayVisible,
                           maintainSize: true,
@@ -142,6 +146,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             ),
                             onAvatarTapped: onAvatarTapped,
                           ),
+                        ),
+                        const DailyExperienceContainer(
+                          key: ValueKey('Homepage-Daily-Experience'),
                         ),
                         CarouselSlider(
                           carouselController: _carouselSliderController,

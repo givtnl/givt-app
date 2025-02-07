@@ -47,7 +47,7 @@ class Organisation extends Equatable {
           : [
               if (experiencePoints > 0)
                 _experiencePointsTag(xp: experiencePoints),
-      ],
+            ],
       experiencePoints: experiencePoints,
     );
   }
@@ -134,7 +134,8 @@ class Organisation extends Equatable {
         pictureUrl: '',
         type: TagType.XP,
         iconData: FontAwesomeIcons.bolt,
-      );
+        iconSize: 16,
+  );
 
   Tag xpTag() => _experiencePointsTag(xp: experiencePoints);
 }

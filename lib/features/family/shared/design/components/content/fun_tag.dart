@@ -45,6 +45,7 @@ class FunTag extends StatelessWidget {
       area: tag.area,
       iconData: tag.iconData,
       flatSide: flatSide,
+      iconSize: tag.iconSize,
     );
   }
 

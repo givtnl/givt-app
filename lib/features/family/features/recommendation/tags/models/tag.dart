@@ -10,6 +10,7 @@ class Tag extends Equatable {
     required this.pictureUrl,
     required this.type,
     this.iconData,
+    this.iconSize,
   });
 
   factory Tag.fromMap(Map<String, dynamic> map) {
@@ -40,6 +41,7 @@ class Tag extends Equatable {
   final String pictureUrl;
   final TagType type;
   final IconData? iconData;
+  final double? iconSize;
 
   @override
   List<Object?> get props => [
@@ -49,6 +51,7 @@ class Tag extends Equatable {
         pictureUrl,
         type,
         iconData,
+        iconSize,
       ];
 
   Map<String, dynamic> toJson() {

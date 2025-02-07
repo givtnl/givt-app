@@ -59,6 +59,12 @@ class ReflectAndShareRepository {
 
   int getAmountOfGenerousDeeds() => _generousDeeds;
 
+  final StreamController<GameStats> _gameStatsUpdatedStreamController =
+      StreamController.broadcast();
+
+  Stream<GameStats> get onGameStatsUpdated =>
+      _gameStatsUpdatedStreamController.stream;
+
   void _init() {
     _familyAuthRepository.authenticatedUserStream().listen((user) {
       if (user == null) {
@@ -570,6 +576,7 @@ class ReflectAndShareRepository {
   Future<GameStats> _fetchGameStats() async {
     final result = await _familyApiService.fetchGameStats();
     final stats = GameStats.fromJson(result);
+    _gameStatsUpdatedStreamController.add(stats);
     return stats;
   }
 

@@ -20,6 +20,7 @@ import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_
 import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/daily_experience_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
@@ -79,6 +80,7 @@ void initCubits() {
       () => InternetConnectionCubit(getIt()),
     )
     ..registerFactory(ParentSummaryCubit.new)
+    ..registerFactory(() => DailyExperienceCubit(getIt()))
     ..registerFactory(AssignBedtimeResponsibilityCubit.new)
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => LeaveGameCubit(getIt()))

@@ -62,6 +62,7 @@ class FunIcon extends StatelessWidget {
         iconSize: iconsize,
         circleSize: circleSize,
       );
+
   factory FunIcon.bell(
           {Color circleColor = FamilyAppTheme.primary95,
           double iconsize = 48,
@@ -72,6 +73,7 @@ class FunIcon extends StatelessWidget {
         iconSize: iconsize,
         circleSize: circleSize,
       );
+
   factory FunIcon.recordingSquare(
           {Color circleColor = FamilyAppTheme.error90,
           Color iconColor = FamilyAppTheme.error30,
@@ -143,6 +145,7 @@ class FunIcon extends StatelessWidget {
         circleColor: circleColor,
         iconColor: iconColor,
       );
+
   factory FunIcon.church(
           {Color circleColor = FamilyAppTheme.primary95,
           double iconsize = 48,
@@ -153,6 +156,7 @@ class FunIcon extends StatelessWidget {
         iconSize: iconsize,
         circleSize: circleSize,
       );
+
   factory FunIcon.globe(
           {Color circleColor = FamilyAppTheme.primary95,
           Color iconColor = FamilyAppTheme.primary20,
@@ -165,6 +169,7 @@ class FunIcon extends StatelessWidget {
         iconSize: iconsize,
         circleSize: circleSize,
       );
+
   factory FunIcon.guitar(
           {Color circleColor = FamilyAppTheme.primary95,
           Color iconColor = FamilyAppTheme.primary20,
@@ -203,6 +208,21 @@ class FunIcon extends StatelessWidget {
         circleColor: Colors.transparent,
         circleSize: circleSize,
         padding: padding,
+        iconSize: iconSize,
+      );
+
+  factory FunIcon.clock({
+    Color iconColor = FamilyAppTheme.primary40,
+    EdgeInsets padding = EdgeInsets.zero,
+    double iconSize = 16,
+    double circleSize = 16,
+  }) =>
+      FunIcon(
+        padding: padding,
+        iconData: FontAwesomeIcons.solidClock,
+        iconColor: iconColor,
+        circleColor: Colors.transparent,
+        circleSize: circleSize,
         iconSize: iconSize,
       );
 

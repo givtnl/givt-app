@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_small_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
@@ -21,13 +22,16 @@ class FunProgressbar extends StatefulWidget {
     required int currentProgress,
     required int total,
     EdgeInsets? margin,
+    Key? key,
   }) {
     return FunProgressbar(
+      key: key,
       currentProgress: currentProgress,
       total: total,
-      prefixWidget: const Icon(
+      prefixWidget: const FaIcon(
         Icons.bolt,
         color: FamilyAppTheme.highlight30,
+        size: 16,
       ),
       suffix: 'XP',
       margin: margin,
@@ -38,8 +42,10 @@ class FunProgressbar extends StatefulWidget {
     required int currentProgress,
     required int total,
     EdgeInsets? margin,
+    Key? key,
   }) {
     return FunProgressbar(
+      key: key,
       currentProgress: currentProgress,
       total: total,
       prefixWidget: const Icon(
@@ -80,9 +86,40 @@ class FunProgressbar extends StatefulWidget {
 class _FunProgressbarState extends State<FunProgressbar> {
   bool checkForCompletion = false;
 
+
+  @override
+  void initState() {
+    super.initState();
+    print('initState');
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print('didChangeDependencies');
+  }
+
+  @override
+  void didUpdateWidget(FunProgressbar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.currentProgress != widget.currentProgress) {
+      print('didUpdateWidget: not same');
+      setState(() {
+        checkForCompletion = false;
+      });
+    } else {
+      print('didUpdateWidget: same');
+      setState(() {
+        checkForCompletion = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: widget.key,
       margin: widget.margin,
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -109,13 +146,16 @@ class _FunProgressbarState extends State<FunProgressbar> {
                     color: widget.progressColor ?? FamilyAppTheme.highlight90,
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  duration: const Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 800),
+                  curve: Curves.easeOut,
                 ),
               Container(
                 height: 37,
                 alignment: Alignment.center,
                 child: AnimatedCrossFade(
                   duration: const Duration(milliseconds: 300),
+                  firstCurve: Curves.easeOut,
+                  secondCurve: Curves.easeOut,
                   firstChild: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
