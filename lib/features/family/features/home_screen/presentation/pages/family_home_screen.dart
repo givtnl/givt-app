@@ -125,7 +125,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                           const SizedBox(height: 24),
                           SvgPicture.asset(
-                            'assets/family/images/home_screen/new_background.svg',
+                            'assets/family/images/home_screen/background.svg',
                             width: MediaQuery.of(context).size.width,
                           ),
                         ],
