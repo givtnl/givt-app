@@ -10,6 +10,7 @@ class RuleCard extends StatelessWidget {
     required this.button,
     required this.icon,
     required this.color,
+    required this.title,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class RuleCard extends StatelessWidget {
   final Widget button;
   final FunIcon icon;
   final Color color;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +70,7 @@ class RuleCard extends StatelessWidget {
       Positioned(top: 0, child: icon),
       Positioned(
         top: icon.circleSize,
-        child: const TitleMediumText('Read out loud'),
+        child: TitleMediumText(title),
       ),
     ]);
   }
