@@ -134,7 +134,7 @@ class Organisation extends Equatable {
         pictureUrl: '',
         type: TagType.XP,
         iconData: FontAwesomeIcons.bolt,
-        iconSize: 16,
+        iconSize: 12,
   );
 
   Tag xpTag() => _experiencePointsTag(xp: experiencePoints);

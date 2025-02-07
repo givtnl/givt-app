@@ -86,30 +86,14 @@ class FunProgressbar extends StatefulWidget {
 class _FunProgressbarState extends State<FunProgressbar> {
   bool checkForCompletion = false;
 
-
-  @override
-  void initState() {
-    super.initState();
-    print('initState');
-  }
-
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print('didChangeDependencies');
-  }
-
   @override
   void didUpdateWidget(FunProgressbar oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.currentProgress != widget.currentProgress) {
-      print('didUpdateWidget: not same');
       setState(() {
         checkForCompletion = false;
       });
     } else {
-      print('didUpdateWidget: same');
       setState(() {
         checkForCompletion = true;
       });
