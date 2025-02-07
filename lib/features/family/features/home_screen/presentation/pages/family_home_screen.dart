@@ -26,7 +26,6 @@ import 'package:givt_app/features/family/shared/design/components/content/models
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -101,7 +100,10 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
             }
           },
           minimumPadding: EdgeInsets.zero,
-          appBar: const FunTopAppBar(title: null),
+          appBar: const FunTopAppBar(
+            title: null,
+            overridePreferredSize: Size.zero,
+          ),
           body: SingleChildScrollView(
             physics: const ClampingScrollPhysics(),
             child: Column(
@@ -113,14 +115,15 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       color: FamilyAppTheme.primary99,
                       child: Column(
                         children: [
+                          const SizedBox(height: kToolbarHeight),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: TitleLargeText(
                               overlayVisible
                                   ? ''
                                   : uiModel.familyGroupName == null
-                                  ? 'Welcome!'
-                                  : 'Hey ${uiModel.familyGroupName}!',
+                                      ? 'Welcome!'
+                                      : 'Hey ${uiModel.familyGroupName}!',
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -134,6 +137,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                     ),
                     Column(
                       children: [
+                        const SizedBox(height: kToolbarHeight),
                         const SizedBox(height: 36),
                         Visibility(
                           visible: !overlayVisible,
@@ -164,12 +168,13 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             height: 150,
                           ),
                         ),
-                        if (carrouselItems.length > 1)
-                          ...[const SizedBox(height: 8),
+                        if (carrouselItems.length > 1) ...[
+                          const SizedBox(height: 8),
                           PagerDotIndicator(
                             count: carrouselItems.length,
                             index: _carrouselIndex,
-                          ),],
+                          ),
+                        ],
                         Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 24,
@@ -181,16 +186,17 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                                 tooltipIndex: 2,
                                 title: 'Gratitude Game',
                                 description:
-                                'This game helps you to build gratitude by reflecting on your day as a family',
+                                    'This game helps you to build gratitude by reflecting on your day as a family',
                                 labelBottomLeft: '3/6',
                                 child: GratitudeGameButton(
-                                  onPressed: () =>
-                                      context.goNamed(FamilyPages.reflectIntro.name),
+                                  onPressed: () => context
+                                      .goNamed(FamilyPages.reflectIntro.name),
                                 ),
                               ),
                               const SizedBox(height: 16),
                               GiveButton(
-                                onPressed: () => _openAvatarOverlay(context, uiModel),
+                                onPressed: () =>
+                                    _openAvatarOverlay(context, uiModel),
                               ),
                             ],
                           ),
