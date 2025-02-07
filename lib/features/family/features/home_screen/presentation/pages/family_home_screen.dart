@@ -103,6 +103,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
           minimumPadding: EdgeInsets.zero,
           appBar: const FunTopAppBar(title: null),
           body: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
             child: Column(
               children: [
                 Stack(
@@ -164,40 +165,39 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                         ),
                         if (carrouselItems.length > 1)
-                          const SizedBox(height: 8),
-                        if (carrouselItems.length > 1)
+                          ...[const SizedBox(height: 8),
                           PagerDotIndicator(
                             count: carrouselItems.length,
                             index: _carrouselIndex,
+                          ),],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 16,
                           ),
+                          child: Column(
+                            children: [
+                              FunTooltip(
+                                tooltipIndex: 2,
+                                title: 'Gratitude Game',
+                                description:
+                                'This game helps you to build gratitude by reflecting on your day as a family',
+                                labelBottomLeft: '3/6',
+                                child: GratitudeGameButton(
+                                  onPressed: () =>
+                                      context.goNamed(FamilyPages.reflectIntro.name),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              GiveButton(
+                                onPressed: () => _openAvatarOverlay(context, uiModel),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 16,
-                  ),
-                  child: Column(
-                    children: [
-                      FunTooltip(
-                        tooltipIndex: 2,
-                        title: 'Gratitude Game',
-                        description:
-                            'This game helps you to build gratitude by reflecting on your day as a family',
-                        labelBottomLeft: '3/6',
-                        child: GratitudeGameButton(
-                          onPressed: () =>
-                              context.goNamed(FamilyPages.reflectIntro.name),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      GiveButton(
-                        onPressed: () => _openAvatarOverlay(context, uiModel),
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),
