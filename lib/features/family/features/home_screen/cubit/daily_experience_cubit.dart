@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/models/daily_experience_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/models/daily_experience_uimodel.dart';
@@ -15,10 +17,13 @@ class DailyExperienceCubit
   late GameStats _gameStats;
   late DateTime midnight;
 
+  StreamSubscription<GameStats>? _gameStatsSubscription;
+
   Future<void> init() async {
     final now = DateTime.now();
     midnight = DateTime(now.year, now.month, now.day, 24);
-    _repo.onGameStatsUpdated.listen(_onGameStatsUpdated);
+    _gameStatsSubscription =
+        _repo.onGameStatsUpdated.listen(_onGameStatsUpdated);
     try {
       _gameStats = await _repo.getGameStats();
     } catch (_) {
@@ -47,5 +52,11 @@ class DailyExperienceCubit
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
       emitError(e.toString());
     }
+  }
+
+  @override
+  Future<void> close() {
+    _gameStatsSubscription?.cancel();
+    return super.close();
   }
 }

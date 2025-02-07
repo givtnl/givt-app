@@ -19,13 +19,21 @@ class LabelMediumText extends StatelessWidget {
     this.selectionColor,
     this.textWidthBasis,
     this.strutStyle,
+    this.fontFeatures,
   });
 
   factory LabelMediumText.primary30(String text) =>
       LabelMediumText(text, color: FamilyAppTheme.primary30);
 
-  factory LabelMediumText.primary40(String text) =>
-      LabelMediumText(text, color: FamilyAppTheme.primary40);
+  factory LabelMediumText.primary40(
+    String text, {
+    List<FontFeature>? fontFeatures,
+  }) =>
+      LabelMediumText(
+        text,
+        color: FamilyAppTheme.primary40,
+        fontFeatures: fontFeatures,
+      );
 
   factory LabelMediumText.secondary20(String text) =>
       LabelMediumText(text, color: FamilyAppTheme.secondary20);
@@ -56,6 +64,7 @@ class LabelMediumText extends StatelessWidget {
   final Color? selectionColor;
   final TextWidthBasis? textWidthBasis;
   final StrutStyle? strutStyle;
+  final List<FontFeature>? fontFeatures;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +82,10 @@ class LabelMediumText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: Theme.of(context).textTheme.labelMedium?.copyWith(color: color),
+      style: Theme.of(context)
+          .textTheme
+          .labelMedium
+          ?.copyWith(color: color, fontFeatures: fontFeatures),
     );
   }
 }

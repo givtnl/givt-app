@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/daily_experience_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/models/daily_experience_custom.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
 class DailyExperienceContainer extends StatefulWidget {
@@ -81,13 +81,10 @@ class _DailyExperienceContainerState extends State<DailyExperienceContainer> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const FaIcon(
-                        FontAwesomeIcons.solidClock,
-                        color: FamilyAppTheme.primary40,
-                      ),
+                      FunIcon.clock(),
                       const SizedBox(width: 4),
                       if (_timer != null)
-                        LabelLargeText.primary40(
+                        LabelMediumText.primary40(
                           '${_remainingHours > 0 ? "${_remainingHours}h " : ''}${_remainingMinutes}m',
                           fontFeatures: const [FontFeature.tabularFigures()],
                         ),
