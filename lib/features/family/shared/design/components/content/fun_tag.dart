@@ -171,10 +171,6 @@ class FunTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return tagContainer();
-  }
-
-  Container tagContainer() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
