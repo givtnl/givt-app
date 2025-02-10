@@ -43,6 +43,11 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
     emitLoading();
   }
 
+  void _showExperiencingIssuesMessage() {
+    emitCustom(const SplashCustom.experiencingIssues());
+    emitLoading();
+  }
+
   Future<void> _checkForRedirect() async {
     try {
       await _authRepository.initAuth();
@@ -68,7 +73,15 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
         return;
       }
 
-      if (profiles.length <= 1) {
+      if (profiles.isEmpty) {
+        _showExperiencingIssuesMessage();
+        // we probably have a BE issue
+        LoggingInfo.instance.error(
+          'No profiles found for user ${user.guid}, do we have a failing BE call?',
+          methodName: 'SplashCubit._checkForRedirect',
+        );
+        return;
+      } else if (profiles.length <= 1) {
         _authRepository.onRegistrationStarted();
         emitCustom(const SplashCustom.redirectToAddMembers());
         return;
