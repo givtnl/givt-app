@@ -8,6 +8,7 @@ sealed class SplashCustom {
   const factory SplashCustom.redirectToAddMembers() =
       SplashRedirectToAddMembers;
   const factory SplashCustom.noInternet() = NoInternet;
+  const factory SplashCustom.experiencingIssues() = ExperiencingIssues;
 }
 
 class SplashRedirectToWelcome extends SplashCustom {
@@ -29,4 +30,8 @@ class SplashRedirectToAddMembers extends SplashCustom {
 
 class NoInternet extends SplashCustom {
   const NoInternet();
+}
+
+class ExperiencingIssues extends SplashCustom {
+  const ExperiencingIssues();
 }

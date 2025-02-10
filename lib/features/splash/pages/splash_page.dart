@@ -25,6 +25,7 @@ class _SplashPageState extends State<SplashPage> {
   final _cubit = getIt<SplashCubit>();
 
   bool _showNoInternetMessage = false;
+  bool _showCurrentlyExperiencingIssues = false;
 
   @override
   void initState() {
@@ -53,12 +54,21 @@ class _SplashPageState extends State<SplashPage> {
               width: 100,
             ),
             const SizedBox(height: 20),
-            const CustomCircularProgressIndicator(),
+            if (!_showCurrentlyExperiencingIssues)
+              const CustomCircularProgressIndicator(),
             if (_showNoInternetMessage)
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: BodyMediumText(
                   context.l10n.noInternet,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            if (_showCurrentlyExperiencingIssues)
+              const Padding(
+                padding: EdgeInsets.all(20),
+                child: BodyMediumText(
+                  'We are currently experiencing issues. Please close the app and try again later.',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -90,6 +100,10 @@ class _SplashPageState extends State<SplashPage> {
       case NoInternet():
         setState(() {
           _showNoInternetMessage = true;
+        });
+      case ExperiencingIssues():
+        setState(() {
+          _showCurrentlyExperiencingIssues = true;
         });
     }
   }
