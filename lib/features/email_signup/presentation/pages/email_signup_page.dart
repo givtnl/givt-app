@@ -4,6 +4,7 @@ import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
@@ -129,9 +130,17 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           ),
           onCustom: handleCustom,
           onData: (context, state) => FunScaffold(
+            minimumPadding: const EdgeInsets.only(
+              left: 24,
+              right: 24,
+              top: 24,
+            ),
             body: LayoutBuilder(
               builder: (context, constraint) {
+                final size = MediaQuery.sizeOf(context);
+                print("screen height is ${size.height}, constraint height is ${constraint.maxHeight}");
                 return SingleChildScrollView(
+                  reverse: true,
                   key: const ValueKey('Email-Signup-Scrollable'),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
@@ -169,10 +178,17 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               textAlign: TextAlign.center,
                             ),
                             const Spacer(),
+                            if (_isUS && size.height > 720)
+                              SvgPicture.asset(
+                                'assets/family/images/avatar_captain_large.svg',
+                              ),
                             CountryDropDown(
                               selectedCountry: state.country,
                               onChanged: (Country? newValue) {
                                 _cubit.updateCountry(newValue!);
+                                setState(() {
+                                  _isUS = newValue.isUS;
+                                });
                               },
                             ),
                             const SizedBox(height: 12),
@@ -273,6 +289,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                 },
                               ),
                             ),
+                            const SizedBox(height: 24),
                           ],
                         ),
                       ),
