@@ -1553,11 +1553,7 @@
     "plusAddMembers": "+ Add members",
     "goToSettings": "Go to Settings",
     "goToSettingsBody": "To scan the QR Code we need to turn on the camera. Go to Settings to allow that.",
-    "Hint for the select country dropdown": {
-        "selectCountryHint": "Select country"
-    },
-    "Let's go! Energizing text that can be used as a title on multiple screens.": {
-        "letsGo": "Let's go!"
-    },
+    "selectCountryHint": "Select country",
+    "letsGo": "Let's go!",
     "startJourneyOfGenerosity": "Start your journey of generosity!"
 }
