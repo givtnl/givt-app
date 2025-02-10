@@ -3,19 +3,20 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class CountryDropDown extends StatefulWidget {
   const CountryDropDown({
-    required this.selectedCountry,
+    this.selectedCountry,
     required this.onChanged,
     this.focusNode,
     super.key,
   });
 
-  final Country selectedCountry;
+  final Country? selectedCountry;
   final ValueChanged<Country?>? onChanged;
   final FocusNode? focusNode;
 
@@ -75,6 +76,14 @@ class _CountryDropDownState extends State<CountryDropDown> {
               color: FamilyAppTheme.primary40,
             ),
         value: widget.selectedCountry,
+        hint: Row(
+          children: [
+            const SizedBox(width: 24),
+            FunIcon.earthAmericas(),
+            const SizedBox(width: 16),
+            LabelLargeText('Select Country'),
+          ],
+        ),
         onChanged: (Country? country) {
           if (country != null) {
             widget.onChanged?.call(country);

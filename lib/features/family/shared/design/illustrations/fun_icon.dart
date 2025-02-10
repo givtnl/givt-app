@@ -211,6 +211,21 @@ class FunIcon extends StatelessWidget {
         iconSize: iconSize,
       );
 
+  factory FunIcon.earthAmericas({
+    Color iconColor = FamilyAppTheme.neutralVariant40,
+    EdgeInsets padding = EdgeInsets.zero,
+    double iconSize = 24,
+    double circleSize = 24,
+  }) =>
+      FunIcon(
+        padding: padding,
+        iconData: FontAwesomeIcons.earthAmericas,
+        iconColor: iconColor,
+        circleColor: Colors.transparent,
+        circleSize: circleSize,
+        iconSize: iconSize,
+      );
+
   factory FunIcon.clock({
     Color iconColor = FamilyAppTheme.primary40,
     EdgeInsets padding = EdgeInsets.zero,

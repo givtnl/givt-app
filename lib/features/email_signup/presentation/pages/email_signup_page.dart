@@ -58,8 +58,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   final _cubit = getIt<EmailSignupCubit>();
   final _connectionCubit = getIt<InternetConnectionCubit>();
 
-  bool _isUS = false;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -89,6 +87,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final size = MediaQuery.sizeOf(context);
 
     return BlocListener<InternetConnectionCubit, InternetConnectionState>(
       bloc: _connectionCubit,
@@ -137,7 +136,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
             ),
             body: LayoutBuilder(
               builder: (context, constraint) {
-                final size = MediaQuery.sizeOf(context);
+                final isUS = true == state.country?.isUS;
                 return SingleChildScrollView(
                   reverse: true,
                   key: const ValueKey('Email-Signup-Scrollable'),
@@ -154,30 +153,30 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               height: 24,
                             ),
                             Image.asset(
-                              _isUS
+                              isUS
                                   ? 'assets/images/logo_green.png'
                                   : 'assets/images/logo.png',
                               width: 100,
                             ),
-                            if (_isUS)
+                            if (isUS)
                               const SizedBox(
                                 height: 24,
                               ),
-                            if (!_isUS) const Spacer(),
+                            if (!isUS) const Spacer(),
                             TitleLargeText(
-                              _isUS
+                              isUS
                                   ? 'Welcome, super family!'
                                   : locals.welcomeContinue,
                             ),
                             const SizedBox(height: 4),
                             BodyMediumText(
-                              _isUS
+                              isUS
                                   ? "Let's foster generosity together"
                                   : locals.toGiveWeNeedYourEmailAddress,
                               textAlign: TextAlign.center,
                             ),
                             const Spacer(),
-                            if (_isUS && size.height > 780)
+                            if (isUS && size.height > 780)
                               SvgPicture.asset(
                                 'assets/family/images/avatar_captain_large.svg',
                               ),
@@ -185,9 +184,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               selectedCountry: state.country,
                               onChanged: (Country? newValue) {
                                 _cubit.updateCountry(newValue!);
-                                setState(() {
-                                  _isUS = newValue.isUS;
-                                });
                               },
                             ),
                             const SizedBox(height: 12),
@@ -252,7 +248,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               onTap: state.continueButtonEnabled
                                   ? () async {
                                       _cubit.updateApi();
-                                      if (state.country.isUS) {
+                                      if (state.country?.isUS == true) {
                                         final fbsdk = FacebookAppEvents();
                                         await fbsdk
                                             .setAutoLogAppEventsEnabled(true);
@@ -268,7 +264,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                         await context
                                             .read<AuthCubit>()
                                             .register(
-                                              country: state.country,
+                                              country: state.country!,
                                               email: state.email,
                                               locale: Localizations.localeOf(
                                                       context)
@@ -284,7 +280,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                 AmplitudeEvents.emailSignupContinueClicked,
                                 parameters: {
                                   'email': state.email,
-                                  'country': state.country.name,
+                                  'country': state.country?.name,
                                 },
                               ),
                             ),
