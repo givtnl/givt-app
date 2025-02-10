@@ -138,7 +138,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
             body: LayoutBuilder(
               builder: (context, constraint) {
                 final size = MediaQuery.sizeOf(context);
-                print("screen height is ${size.height}, constraint height is ${constraint.maxHeight}");
                 return SingleChildScrollView(
                   reverse: true,
                   key: const ValueKey('Email-Signup-Scrollable'),
