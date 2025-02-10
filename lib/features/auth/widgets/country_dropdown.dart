@@ -10,14 +10,14 @@ import 'package:givt_app/l10n/l10n.dart';
 
 class CountryDropDown extends StatefulWidget {
   const CountryDropDown({
-    this.selectedCountry,
     required this.onChanged,
+    this.selectedCountry,
     this.focusNode,
     super.key,
   });
 
   final Country? selectedCountry;
-  final ValueChanged<Country?>? onChanged;
+  final ValueChanged<Country>? onChanged;
   final FocusNode? focusNode;
 
   @override

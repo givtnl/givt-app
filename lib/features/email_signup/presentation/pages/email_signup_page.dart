@@ -212,7 +212,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                     ? null
                                     : () => showModalBottomSheet<void>(
                                           context: context,
-                                  useSafeArea: true,
+                                          useSafeArea: true,
                                           scrollControlDisabledMaxHeightRatio:
                                               1,
                                           shape: RoundedRectangleBorder(
