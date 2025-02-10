@@ -44,9 +44,22 @@ enum Country {
 
   bool get isUS => countryCode == Country.us.countryCode;
 
+  bool get isUK => countryCode == Country.gb.countryCode;
+
+  bool get isNetherlands => countryCode == Country.nl.countryCode;
+
   static List<Country> sortedCountries() {
-    return Country.values.toList()
-      ..sort((a, b) => a.countryCode.compareTo(b.countryCode));
+    return Country.values.toList()..sort((a, b) => a.compareTo(b));
+  }
+
+  int compareTo(Country toCompareTo) {
+    if (isUS) return -1;
+    if (toCompareTo.isUS) return 1;
+    if (isUK) return -1;
+    if (toCompareTo.isUK) return 1;
+    if (isNetherlands) return -1;
+    if (toCompareTo.isNetherlands) return 1;
+    return countryCode.compareTo(toCompareTo.countryCode);
   }
 
   static List<Country> sortedPrefixCountries() {

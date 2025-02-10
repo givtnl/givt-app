@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:device_region/device_region.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/core/enums/country.dart';
@@ -23,7 +22,7 @@ class EmailSignupCubit
 
   final FamilyAuthRepository _authRepository;
 
-  Country _currentCountry = Country.nl;
+  Country? _currentCountry;
   String _currentEmail = '';
 
   Future<void> init() async {
@@ -59,7 +58,7 @@ class EmailSignupCubit
     return '';
   }
 
-  Future<Country> getCountry() async {
+  Future<Country?> getCountry() async {
     // Use user preference to fetch last used country
     final prefs = await SharedPreferences.getInstance();
 
@@ -71,19 +70,6 @@ class EmailSignupCubit
       return Country.fromCode(user.country);
     }
 
-    // Otherwise use sim card country
-    try {
-      final countryCode = await DeviceRegion.getSIMCountryCode();
-
-      if (countryCode != null && countryCode.isNotEmpty) {
-        return Country.fromCode(countryCode);
-      }
-    } catch (_) {
-      // On error use default country
-      return _currentCountry;
-    }
-
-    // If no sim card country is found, use default country
     return _currentCountry;
   }
 
@@ -109,14 +95,14 @@ class EmailSignupCubit
     var baseUrl = const String.fromEnvironment('API_URL_EU');
     var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
 
-    if (_currentCountry.isUS) {
+    if (_currentCountry!.isUS) {
       baseUrl = const String.fromEnvironment('API_URL_US');
       baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
     }
 
     log('Using API URL: $baseUrl');
     get_it.getIt<RequestHelper>().updateApiUrl(baseUrl, baseUrlAWS);
-    get_it.getIt<RequestHelper>().country = _currentCountry.countryCode;
+    get_it.getIt<RequestHelper>().country = _currentCountry!.countryCode;
   }
 
   Future<void> updateEmail(String email) async {
@@ -126,7 +112,7 @@ class EmailSignupCubit
       EmailSignupUiModel(
         email: email,
         country: _currentCountry,
-        continueButtonEnabled: validateEmail(email),
+        continueButtonEnabled: shouldContinueBeEnabled(email),
       ),
     );
   }
@@ -138,6 +124,10 @@ class EmailSignupCubit
     return result;
   }
 
+  bool shouldContinueBeEnabled(String email) {
+    return _currentCountry != null && validateEmail(email);
+  }
+
   /// Logic to check if the email is already registered and emits the next step.
   /// - If the email is already registered, we show the login page
   /// - If the email is not (fully) registered, we show the register page
@@ -146,13 +136,13 @@ class EmailSignupCubit
   Future<void> login() async {
     emitCustom(const EmailSignupCustom.checkingEmail());
 
-    if (!validateEmail(_currentEmail)) {
+    if (!shouldContinueBeEnabled(_currentEmail)) {
       // It shouldn't be possible to get here
       emitSnackbarMessage('Invalid email address');
       return;
     }
 
-    if (!_currentCountry.isUS) {
+    if (!_currentCountry!.isUS) {
       // It shouldn't be possible to get here
       emitSnackbarMessage("EU shouldn't make use of family login");
       return;
@@ -187,9 +177,9 @@ class EmailSignupCubit
     // Otherwise we create a temp user
     final tempUser = TempUser.prefilled(
       email: _currentEmail,
-      country: _currentCountry.countryCode,
+      country: _currentCountry!.countryCode,
       timeZoneId: await FlutterTimezone.getLocalTimezone(),
-      amountLimit: _currentCountry.isUS ? 4999 : 499,
+      amountLimit: _currentCountry!.isUS ? 4999 : 499,
     );
 
     await _authRepository.registerUser(

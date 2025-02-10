@@ -14,6 +14,7 @@ class TermsAndConditionsDialog extends StatefulWidget {
     this.isDarkBackground = false,
     super.key,
   });
+
   final String content;
   final bool isDarkBackground;
 
@@ -25,6 +26,7 @@ class TermsAndConditionsDialog extends StatefulWidget {
 class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
   final _cubit = getIt<EmailSignupCubit>();
   late String countryIso;
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +40,7 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
   Future<void> _getCountry() async {
     final country = await _cubit.getCountry();
     setState(() {
-      countryIso = country.countryCode;
+      countryIso = country?.countryCode ?? Country.nl.countryCode;
     });
   }
 
