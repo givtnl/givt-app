@@ -178,7 +178,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             const Spacer(),
                             if (isUS && size.height > 780)
                               SvgPicture.asset(
-                                'assets/family/images/avatar_captain_large.svg',
+                                'assets/family/images/captain.svg',
                               ),
                             CountryDropDown(
                               selectedCountry: state.country,
