@@ -24,7 +24,7 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    final userid = context.read<ProfilesCubit>().state.activeProfile.id;
+    final childid = context.read<ProfilesCubit>().state.activeProfile.id;
     final historyCubit = getIt<HistoryCubit>();
 
     scrollController.addListener(() {
@@ -32,7 +32,7 @@ class HistoryScreen extends StatelessWidget {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
         if (historyCubit.state.status != HistoryStatus.loading) {
-          historyCubit.fetchHistory(userid);
+          historyCubit.fetchHistory(childid);
         }
       }
     });
