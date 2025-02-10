@@ -164,9 +164,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               ),
                             if (!isUS) const Spacer(),
                             TitleLargeText(
-                              isUS
-                                  ? 'Welcome, super family!'
-                                  : locals.letsGo,
+                              isUS ? 'Welcome, super family!' : locals.letsGo,
                             ),
                             const SizedBox(height: 4),
                             BodyMediumText(
@@ -210,18 +208,22 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8),
                               child: GestureDetector(
-                                onTap: () => showModalBottomSheet<void>(
-                                  context: context,
+                                onTap: state.country == null
+                                    ? null
+                                    : () => showModalBottomSheet<void>(
+                                          context: context,
                                   useSafeArea: true,
-                                  scrollControlDisabledMaxHeightRatio: 1,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  builder: (BuildContext context) =>
-                                      TermsAndConditionsDialog(
-                                    content: locals.termsText,
-                                  ),
-                                ),
+                                          scrollControlDisabledMaxHeightRatio:
+                                              1,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          builder: (BuildContext context) =>
+                                              TermsAndConditionsDialog(
+                                            content: locals.termsText,
+                                          ),
+                                        ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -232,8 +234,11 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                     ),
                                     const SizedBox(width: 8),
                                     Flexible(
-                                      child: BodySmallText.primary40(
+                                      child: BodySmallText(
                                         locals.acceptTerms,
+                                        color: state.country == null
+                                            ? FamilyAppTheme.neutralVariant40
+                                            : FamilyAppTheme.primary40,
                                       ),
                                     ),
                                   ],
