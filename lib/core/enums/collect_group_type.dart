@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -83,6 +84,30 @@ enum CollectGroupType {
       default:
     }
     return FontAwesomeIcons.church;
+  }
+
+  static FunIcon getFunIconByType(CollectGroupType type) {
+    switch (type) {
+      case CollectGroupType.church:
+        return FunIcon.church();
+      case CollectGroupType.charities:
+        return FunIcon.globe(
+          circleColor: ColorCombo.tertiary.backgroundColor,
+          iconColor: ColorCombo.tertiary.textColor,
+        );
+      case CollectGroupType.campaign:
+        return FunIcon.seedling(
+          circleColor: ColorCombo.highlight.backgroundColor,
+          iconColor: ColorCombo.highlight.textColor,
+        );
+      case CollectGroupType.artists:
+        return FunIcon.guitar(
+          circleColor: ColorCombo.secondary.backgroundColor,
+          iconColor: ColorCombo.secondary.textColor,
+        );
+      default:
+    }
+    return FunIcon.church();
   }
 
   static IconData getIconByTypeUS(CollectGroupType type) {

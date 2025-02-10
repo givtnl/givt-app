@@ -62,7 +62,9 @@ class PassThePhone extends StatefulWidget {
   factory PassThePhone.toReporters(List<GameProfile> reporters,
       {bool skipRules = false}) {
     return PassThePhone(
-      audioPath: 'family/audio/pass_phone_to_the_reporter.wav',
+      audioPath: reporters.length > 1
+          ? 'family/audio/pass_phone_to_first_reporter.wav'
+          : 'family/audio/pass_phone_to_the_reporter.wav',
       user: reporters.first,
       customHeader: ReportersWidget(
         reporters: reporters,

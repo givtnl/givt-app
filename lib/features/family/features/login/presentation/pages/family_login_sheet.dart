@@ -156,6 +156,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
               hintText: context.l10n.password,
               suffixIcon: IconButton(
                 icon: Icon(
+                  semanticLabel: 'passwordeye',
                   obscureText ? Icons.visibility : Icons.visibility_off,
                 ),
                 onPressed: () {

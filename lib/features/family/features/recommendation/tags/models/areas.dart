@@ -62,6 +62,12 @@ enum Areas {
     accentColor: FamilyAppTheme.highlight95,
     textColor: FamilyAppTheme.highlight40,
   ),
+  gold(
+    borderColor: FamilyAppTheme.highlight80,
+    backgroundColor: FamilyAppTheme.highlight95,
+    accentColor: FamilyAppTheme.highlight90,
+    textColor: FamilyAppTheme.highlight30,
+  ),
   tertiary(
     borderColor: FamilyAppTheme.tertiary80,
     backgroundColor: FamilyAppTheme.tertiary98,

@@ -240,9 +240,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
     Organisation organisation,
   ) async {
     final generatedMediumId = base64.encode(organisation.namespace.codeUnits);
-    await context
-        .read<CollectGroupDetailsCubit>()
-        .getOrganisationDetails(generatedMediumId);
+    await context.read<CollectGroupDetailsCubit>().getOrganisationDetails(
+          generatedMediumId,
+          experiencePoints: organisation.experiencePoints,
+        );
     final profiles = context.read<ProfilesCubit>();
     await profiles.setActiveProfile(profile.userId);
     if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
@@ -262,7 +263,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
     await Navigator.of(context).push(
       BlocProvider(
         create: (BuildContext context) => CreateTransactionCubit(
-            context.read<ProfilesCubit>(), getIt(), getIt()),
+          context.read<ProfilesCubit>(),
+          getIt(),
+          getIt(),
+        ),
         child: ChooseAmountSliderScreen(
           onCustomSuccess: () {
             _cubit.onDeed(profile);
@@ -283,6 +287,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     await Navigator.push(
       context,
       SuccessScreen(
+        experiencePoints: org.experiencePoints,
         isActOfService: true,
         onCustomSuccess: () {
           _cubit.onDeed(profile);
@@ -311,9 +316,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
         authcheck: true,
         currency: r'$',
         organisationName: org.name,
-        colorCombo:
-            CollectGroupType.getColorComboByType(CollectGroupType.charities),
-        icon: CollectGroupType.getIconByTypeUS(CollectGroupType.charities),
+        icon: CollectGroupType.getFunIconByType(CollectGroupType.charities),
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {
@@ -333,6 +336,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
         isGratitude: true,
         orgName: org.name,
         mediumId: org.namespace,
+        experiencePoints: org.experiencePoints,
       );
 
       await Navigator.push(

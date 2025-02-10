@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
-import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
 import 'package:http/http.dart';
 
 class FamilyAPIService {
@@ -320,7 +319,10 @@ class FamilyAPIService {
     );
   }
 
-  Future<bool> saveGratitudeStats(int duration, String? gameGuid) async {
+  Future<Map<String, dynamic>> saveGratitudeStats(
+    int duration,
+    String? gameGuid,
+  ) async {
     return updateGame(gameGuid!, {
       'type': 'Gratitude',
       'duration': duration,
@@ -343,7 +345,8 @@ class FamilyAPIService {
     return response.statusCode == 200;
   }
 
-  Future<bool> updateGame(String gameGuid, Map<String, dynamic> body) async {
+  Future<Map<String, dynamic>> updateGame(
+      String gameGuid, Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid');
     final response = await client.put(url,
         headers: {
@@ -359,17 +362,22 @@ class FamilyAPIService {
             : null,
       );
     }
-    return response.statusCode == 200;
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['item']! as Map<String, dynamic>;
   }
 
-  Future<String> createGame() async {
+  Future<String> createGame({required List<String> guids}) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/Game');
-    final response = await client.post(url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode({}));
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode({
+        'Players': guids,
+      }),
+    );
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,

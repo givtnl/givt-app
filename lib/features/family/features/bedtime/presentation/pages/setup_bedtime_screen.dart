@@ -41,6 +41,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
   @override
   void initState() {
     super.initState();
+    _cubit.init(fromTutorial: widget.arguments.fromTutorial);
     bedtimeSliderValue =
         widget.arguments.previousBedtime ?? BedtimeConfig.defaultBedtimeHour;
     windDownValue = widget.arguments.previousWinddownMinutes ??
@@ -85,7 +86,11 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
         },
         onCustom: (context, bedtime) {
           if (isLast) {
-            context.goNamed(FamilyPages.missions.name);
+            if (widget.arguments.fromTutorial) {
+              context.goNamed(FamilyPages.profileSelection.name);
+            } else {
+              context.goNamed(FamilyPages.missions.name);
+            }
           } else {
             Navigator.of(context).push(
               PageRouteBuilder<dynamic>(
@@ -97,6 +102,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
                     profiles: widget.arguments.profiles,
                     bedtimes: [bedtime, ...widget.arguments.bedtimes],
                     index: widget.arguments.index + 1,
+                    fromTutorial: widget.arguments.fromTutorial,
                   ),
                 ),
                 transitionsBuilder:

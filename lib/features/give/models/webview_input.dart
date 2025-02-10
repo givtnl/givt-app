@@ -27,6 +27,7 @@ class WebViewInput extends Equatable {
     this.advertisementTitle = '',
     this.apiUrl = '',
     this.givtObj = const [],
+    this.experiencePoints,
   });
 
   factory WebViewInput.fromJson(Map<String, dynamic> json) => WebViewInput(
@@ -55,6 +56,7 @@ class WebViewInput extends Equatable {
         advertisementTitle: json['advertisementTitle'] as String,
         apiUrl: json['apiUrl'] as String,
         givtObj: json['givtObj'] as List<Map<String, dynamic>>,
+        experiencePoints: json['experiencePoints'] as int?,
       );
 
   final String advertisementImageUrl;
@@ -82,6 +84,7 @@ class WebViewInput extends Equatable {
   final String advertisementTitle;
   final String apiUrl;
   final List<Map<String, dynamic>> givtObj;
+  final int? experiencePoints;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'advertisementImageUrl': advertisementImageUrl,
@@ -109,6 +112,7 @@ class WebViewInput extends Equatable {
         'advertisementTitle': advertisementTitle,
         'apiUrl': apiUrl,
         'givtObj': givtObj,
+        'experiencePoints': experiencePoints,
       };
 
   WebViewInput copyWith({
@@ -137,6 +141,7 @@ class WebViewInput extends Equatable {
     String? advertisementTitle,
     String? apiUrl,
     List<Map<String, dynamic>>? givtObj,
+    int? experiencePoints,
   }) {
     return WebViewInput(
       advertisementImageUrl:
@@ -167,6 +172,7 @@ class WebViewInput extends Equatable {
       advertisementTitle: advertisementTitle ?? this.advertisementTitle,
       apiUrl: apiUrl ?? this.apiUrl,
       givtObj: givtObj ?? this.givtObj,
+      experiencePoints: experiencePoints ?? this.experiencePoints,
     );
   }
 
@@ -197,5 +203,6 @@ class WebViewInput extends Equatable {
         advertisementTitle,
         apiUrl,
         givtObj,
+        experiencePoints,
       ];
 }

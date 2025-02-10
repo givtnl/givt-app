@@ -8,6 +8,7 @@ class BedtimeArguments {
     required this.profiles,
     this.bedtimes = const [],
     this.index = 0,
+    this.fromTutorial = false,
   });
 
   final List<Bedtime> bedtimes;
@@ -15,6 +16,7 @@ class BedtimeArguments {
   final double? previousBedtime;
   final int? previousWinddownMinutes;
   final int index;
+  final bool fromTutorial;
 
   bool get showBackButton => index > 0;
 }

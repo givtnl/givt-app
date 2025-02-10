@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.8.4
+version: 4.8.5
 publish_to: none
 
 environment:
@@ -20,6 +20,8 @@ dependencies:
   device_info_plus: ^10.1.2
   device_region:
     path: ./packages/flutter_device_region
+  overlay_tooltip:
+    path: ./packages/overlay_tooltip
   diacritic: ^0.1.4
   dotted_border: ^2.1.0
   equatable: ^2.0.5
@@ -85,6 +87,7 @@ dependencies:
   rxdart: ^0.28.0
   facebook_app_events: ^0.19.4
   volume_controller: ^2.0.8
+  flutter_animate: ^4.5.2
 
 # Override needed because inappwebview >=6.1.0 requires this version
 # firebase_messaging_web is using an older version (and we can't upgrade to a more recent message version because of MLKIT)
