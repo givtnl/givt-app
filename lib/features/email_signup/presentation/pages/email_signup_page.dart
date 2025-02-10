@@ -166,13 +166,13 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             TitleLargeText(
                               isUS
                                   ? 'Welcome, super family!'
-                                  : locals.welcomeContinue,
+                                  : locals.letsGo,
                             ),
                             const SizedBox(height: 4),
                             BodyMediumText(
                               isUS
                                   ? "Let's foster generosity together"
-                                  : locals.toGiveWeNeedYourEmailAddress,
+                                  : locals.startJourneyOfGenerosity,
                               textAlign: TextAlign.center,
                             ),
                             const Spacer(),

@@ -65,9 +65,8 @@ class _CountryDropDownState extends State<CountryDropDown> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: _isOpen
-                  ? FamilyAppTheme.primary70
-                  : FamilyAppTheme.primary40,
+              color:
+                  _isOpen ? FamilyAppTheme.primary70 : FamilyAppTheme.primary40,
               width: 2,
             ),
           ),
@@ -81,7 +80,7 @@ class _CountryDropDownState extends State<CountryDropDown> {
             const SizedBox(width: 24),
             FunIcon.earthAmericas(),
             const SizedBox(width: 16),
-            LabelLargeText('Select Country'),
+            LabelLargeText(context.l10n.selectCountryHint),
           ],
         ),
         onChanged: (Country? country) {
