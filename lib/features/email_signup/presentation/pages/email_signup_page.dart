@@ -177,7 +177,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               textAlign: TextAlign.center,
                             ),
                             const Spacer(),
-                            if (_isUS && size.height > 720)
+                            if (_isUS && size.height > 780)
                               SvgPicture.asset(
                                 'assets/family/images/avatar_captain_large.svg',
                               ),
