@@ -57,6 +57,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   final _cubit = getIt<EmailSignupCubit>();
   final _connectionCubit = getIt<InternetConnectionCubit>();
 
+  bool _isUS = false;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -143,17 +145,37 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             const SizedBox(
                               height: 24,
                             ),
+                            Image.asset(
+                              _isUS
+                                  ? 'assets/images/logo_green.png'
+                                  : 'assets/images/logo.png',
+                              width: 100,
+                            ),
+                            if (_isUS)
+                              const SizedBox(
+                                height: 24,
+                              ),
+                            if (!_isUS) const Spacer(),
                             TitleLargeText(
-                              locals.welcomeContinue,
+                              _isUS
+                                  ? 'Welcome, super family!'
+                                  : locals.welcomeContinue,
                             ),
                             const SizedBox(height: 4),
                             BodyMediumText(
-                              locals.toGiveWeNeedYourEmailAddress,
+                              _isUS
+                                  ? "Let's foster generosity together"
+                                  : locals.toGiveWeNeedYourEmailAddress,
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 4),
-                            BodySmallText.primary40(locals.weWontSendAnySpam),
                             const Spacer(),
+                            CountryDropDown(
+                              selectedCountry: state.country,
+                              onChanged: (Country? newValue) {
+                                _cubit.updateCountry(newValue!);
+                              },
+                            ),
+                            const SizedBox(height: 12),
                             OutlinedTextFormField(
                               key: const ValueKey('Email-Input'),
                               initialValue: state.email,
@@ -171,13 +193,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                 AutofillHints.username,
                                 AutofillHints.email,
                               ],
-                            ),
-                            const SizedBox(height: 12),
-                            CountryDropDown(
-                              selectedCountry: state.country,
-                              onChanged: (Country? newValue) {
-                                _cubit.updateCountry(newValue!);
-                              },
                             ),
                             const Spacer(),
                             Padding(
@@ -252,6 +267,10 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               rightIcon: FontAwesomeIcons.arrowRight,
                               analyticsEvent: AnalyticsEvent(
                                 AmplitudeEvents.emailSignupContinueClicked,
+                                parameters: {
+                                  'email': state.email,
+                                  'country': state.country.name,
+                                },
                               ),
                             ),
                           ],
