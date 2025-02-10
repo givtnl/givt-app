@@ -230,7 +230,9 @@ class ReflectAndShareRepository {
 
   Future<void> createGameSession() async {
     try {
-      _gameId = await _familyApiService.createGame();
+      _gameId = await _familyApiService.createGame(
+        guids: _selectedProfiles.map((e) => e.userId).toList(),
+      );
     } catch (e, s) {
       _gameId = null;
       LoggingInfo.instance.error(
@@ -244,10 +246,9 @@ class ReflectAndShareRepository {
   void selectProfiles(List<GameProfile> selectedProfiles) {
     // Reset game state
     reset();
+    _selectedProfiles = selectedProfiles;
     createGameSession();
     _startTime = DateTime.now();
-
-    _selectedProfiles = selectedProfiles;
   }
 
   // randomly assign roles to the selected family members (superhero, sidekick, reporter)

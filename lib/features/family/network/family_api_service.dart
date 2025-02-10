@@ -366,14 +366,18 @@ class FamilyAPIService {
     return decodedBody['item']! as Map<String, dynamic>;
   }
 
-  Future<String> createGame() async {
+  Future<String> createGame({required List<String> guids}) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/Game');
-    final response = await client.post(url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode({}));
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode({
+        'Players': guids,
+      }),
+    );
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
