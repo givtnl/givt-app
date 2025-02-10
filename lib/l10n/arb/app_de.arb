@@ -1553,11 +1553,7 @@
     "plusAddMembers": "+ Add members",
     "goToSettings": "Gehen sie zu Einstellungen",
     "goToSettingsBody": "Um den QR-Code zu scannen, müssen wir die Kamera einschalten. Gehen Sie zu Einstellungen, um dies zuzulassen.",
-    "Hint for the select country dropdown": {
-        "selectCountryHint": "Land auswählen"
-    },
-    "Let's go! Energizing text that can be used as a title on multiple screens.": {
-        "letsGo": "Let's go!"
-    },
+    "selectCountryHint": "Land auswählen",
+    "letsGo": "Los geht’s!",
     "startJourneyOfGenerosity": "Beginne hier dein Spenden Abenteuer!"
 }
