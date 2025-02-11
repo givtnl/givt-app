@@ -38,7 +38,9 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         _authRepository.authenticatedUserStream().listen(
       (user) {
         if (user != null) {
-          clearProfiles(clearIndex: false);
+          if (state.profiles.where((e) => e.id == user.guid).isEmpty) {
+            clearProfiles();
+          }
           fetchAllProfiles();
         } else {
           clearProfiles();
@@ -99,17 +101,29 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   void _emitProfilesUpdated(
     List<Profile> profiles,
   ) {
+    int? newIndex;
+    try {
+      final currentId = state.profiles[state.activeProfileIndex].id;
+      final newActiveProfile = profiles.firstWhere(
+        (element) => element.id == currentId,
+        orElse: Profile.empty,
+      );
+      newIndex = profiles.indexOf(newActiveProfile);
+    } catch (e, s) {
+      // we probably didn't have profiles before, ignore this error
+    }
+
     emit(
       ProfilesUpdatedState(
         profiles: profiles,
-        activeProfileIndex: state.activeProfileIndex,
+        activeProfileIndex: newIndex ?? state.activeProfileIndex,
       ),
     );
   }
 
   Future<void> refresh() async => _profilesRepository.refreshProfiles();
 
-  Future<void> setActiveProfile(String id) async {
+  void setActiveProfile(String id) {
     try {
       final profile = state.profiles.firstWhere(
         (element) => element.id == id,
