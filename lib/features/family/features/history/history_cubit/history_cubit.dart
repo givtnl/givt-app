@@ -69,7 +69,9 @@ class HistoryCubit extends Cubit<HistoryState> {
 
       // check if they reached end of history
       // if end of history do not increment page nr
-      if (donationHistory.isEmpty && allowanceHistory.isEmpty) {
+      if (donationHistory.isEmpty &&
+          allowanceHistory.isEmpty &&
+          adultDonationHistory.isEmpty) {
         emit(state.copyWith(status: HistoryStatus.loaded, history: history));
         return;
       }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/family_history/family_history_cubit/family_history_cubit.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/features/parental_approval/cubit/parental_approval_cubit.dart';
 import 'package:givt_app/features/family/features/parental_approval/widgets/parental_approval_approved_page.dart';
@@ -21,7 +21,7 @@ class ParentalApprovalDialogContent extends StatelessWidget {
     super.key,
   });
 
-  final ChildDonation donation;
+  final Donation donation;
 
   Future<void> _refreshHistory(BuildContext context) async {
     await context.read<FamilyOverviewCubit>().refresh();

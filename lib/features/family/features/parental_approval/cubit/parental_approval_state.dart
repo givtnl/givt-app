@@ -7,7 +7,7 @@ class ParentalApprovalState extends Equatable {
     this.decisionMade,
   });
 
-  final ChildDonation donation;
+  final Donation donation;
   final DecisionStatus status;
   final bool? decisionMade;
 
@@ -15,7 +15,7 @@ class ParentalApprovalState extends Equatable {
   List<Object?> get props => [donation, status, decisionMade];
 
   ParentalApprovalState copyWith({
-    ChildDonation? donation,
+    Donation? donation,
     DecisionStatus? status,
     bool? decisionMade,
   }) {
