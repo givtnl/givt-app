@@ -56,7 +56,7 @@ class HistoryScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Center(
                   child: BodyMediumText.opacityBlack50(
-                    'You haven’t made any givts yet!',
+                    'You haven’t made any Givts yet!',
                   ),
                 ),
               ],
