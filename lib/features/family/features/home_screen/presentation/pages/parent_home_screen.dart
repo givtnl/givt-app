@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
+import 'package:givt_app/features/family/features/history/history_screen.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 
@@ -126,6 +132,41 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.topCenter,
+                    ),
+                    onPressed: () {
+                      SystemSound.play(SystemSoundType.click);
+                      AnalyticsHelper.logEvent(
+                        eventName: AmplitudeEvents.seeDonationHistoryPressed,
+                      );
+                      getIt<HistoryCubit>().fetchHistory(
+                        profile.id,
+                        fromBeginning: true,
+                      );
+                      Navigator.of(context)
+                          .push(const HistoryScreen().toRoute(context));
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const LabelMediumText('My givts'),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: Icon(
+                            FontAwesomeIcons.arrowRight,
+                            size: 20,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/network/family_api_service.dart';
 
 mixin HistoryRepository {
   Future<List<HistoryItem>> fetchHistory({
-    required String childId,
+    required String userId,
     required int pageNumber,
     required HistoryTypes type,
   });
@@ -20,7 +20,7 @@ class HistoryRepositoryImpl with HistoryRepository {
 
   @override
   Future<List<HistoryItem>> fetchHistory({
-    required String childId,
+    required String userId,
     required int pageNumber,
     required HistoryTypes type,
   }) async {
@@ -30,7 +30,7 @@ class HistoryRepositoryImpl with HistoryRepository {
       'type': type.value,
     };
 
-    final response = await _apiService.fetchHistory(childId, body);
+    final response = await _apiService.fetchHistory(userId, body);
 
     final result = <HistoryItem>[];
 
