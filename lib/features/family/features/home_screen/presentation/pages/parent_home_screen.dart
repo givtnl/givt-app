@@ -11,6 +11,7 @@ import 'package:givt_app/features/family/features/history/history_cubit/history_
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/my_givts_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -124,40 +125,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      alignment: Alignment.topCenter,
-                    ),
-                    onPressed: () {
-                      SystemSound.play(SystemSoundType.click);
-                      AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.seeDonationHistoryPressed,
-                      );
-                      getIt<HistoryCubit>().fetchHistory(
-                        profile.id,
-                        fromBeginning: true,
-                      );
-                      Navigator.of(context)
-                          .push(const HistoryScreen().toRoute(context));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const LabelMediumText('My givts'),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: Icon(
-                            FontAwesomeIcons.arrowRight,
-                            size: 20,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimaryContainer,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  MyGivtsTextButton(userId: profile.id),
                 ],
               ),
             ),

@@ -8,13 +8,10 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
-import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/my_givts_text_button.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -137,40 +134,8 @@ class _WalletWidgetState extends State<WalletWidget> {
                         ),
                       ],
                     ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      alignment: Alignment.topCenter,
-                    ),
-                    onPressed: () {
-                      SystemSound.play(SystemSoundType.click);
-                      AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.seeDonationHistoryPressed,
-                      );
-                      getIt<HistoryCubit>().fetchHistory(
-                        widget.kidid,
-                        fromBeginning: true,
-                      );
-                      Navigator.of(context)
-                          .push(const HistoryScreen().toRoute(context));
-                    },
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const LabelMediumText('My givts'),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: Icon(
-                            FontAwesomeIcons.arrowRight,
-                            size: 20,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimaryContainer,
-                          ),
-                        ),
-                      ],
-                    ),
+                  MyGivtsTextButton(
+                    userId: widget.kidid,
                   ),
                   const SizedBox(height: 8),
                 ],
