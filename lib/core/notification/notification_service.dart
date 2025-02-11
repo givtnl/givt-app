@@ -196,18 +196,9 @@ class NotificationService implements INotificationService {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     await flutterLocalNotificationsPlugin.initialize(
-      InitializationSettings(
-        android: const AndroidInitializationSettings('icon'),
-        iOS: DarwinInitializationSettings(
-          onDidReceiveLocalNotification: (id, title, body, payload) async =>
-              _navigateToScreen(
-            NotificationResponse(
-              payload: payload,
-              notificationResponseType:
-                  NotificationResponseType.selectedNotification,
-            ),
-          ),
-        ),
+      const InitializationSettings(
+        android: AndroidInitializationSettings('icon'),
+        iOS: DarwinInitializationSettings(),
       ),
       onDidReceiveBackgroundNotificationResponse: _navigateToScreen,
       onDidReceiveNotificationResponse: _navigateToScreen,
@@ -217,7 +208,7 @@ class NotificationService implements INotificationService {
     /// default FCM channel to enable heads up notifications.
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     await FirebaseMessaging.instance
