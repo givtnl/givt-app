@@ -12,7 +12,7 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class FamilyHomeOverlay extends StatefulWidget {
-  FamilyHomeOverlay({
+  const FamilyHomeOverlay({
     required this.uiModel,
     required this.onDismiss,
     required this.onNextTutorialClicked,
