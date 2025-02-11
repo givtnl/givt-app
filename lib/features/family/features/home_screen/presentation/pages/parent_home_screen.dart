@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -88,12 +89,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
         title: profile.firstName,
         color: FamilyAppTheme.secondary99,
         systemNavigationBarColor: FamilyAppTheme.secondary99,
-        actions: [
-          IconButton(
-            icon: switchProfilesIcon(),
-            onPressed: () => _onProfileSwitchPressed(context),
-          ),
-        ],
+        leading: const GivtBackButtonFlat(),
       );
 
   Widget _parentHeaderWidget(Profile profile, BuildContext context) =>
@@ -146,7 +142,6 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                           .push(const HistoryScreen().toRoute(context));
                     },
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const LabelMediumText('My givts'),
@@ -163,7 +158,6 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
                 ],
               ),
             ),
