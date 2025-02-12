@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:givt_app/features/family/features/family_history/models/history_item.dart';
 import 'package:givt_app/utils/utils.dart';
 
 enum DonationState {
@@ -9,22 +10,33 @@ enum DonationState {
 
   static const int pageSize = 20;
 
-  static DonationState getState(String? state) {
-    switch (state) {
-      case 'ParentApprovalPending':
+  static DonationState getState(String? state, HistoryTypes type) {
+    if (type == HistoryTypes.adultDonation) {
+      switch (state) {
+        case 'Processed':
+          return DonationState.approved;
+        case 'Rejected':
+        case 'Cancelled':
+          return DonationState.declined;
+        case 'ParentApprovalPending':
+        case 'Entered':
+        case 'ToProcess':
+        default:
+          return DonationState.pending;
+      }
+    } else {
+      switch (state) {
+        case 'Entered':
+        case 'ToProcess':
+        case 'Processed':
+          return DonationState.approved;
+        case 'Rejected':
+        case 'Cancelled':
+          return DonationState.declined;
+        case 'ParentApprovalPending':
+        default:
         return DonationState.pending;
-      case 'Entered':
-        return DonationState.approved;
-      case 'ToProcess':
-        return DonationState.approved;
-      case 'Processed':
-        return DonationState.approved;
-      case 'Rejected':
-        return DonationState.declined;
-      case 'Cancelled':
-        return DonationState.declined;
-      default:
-        return DonationState.pending;
+      }
     }
   }
 

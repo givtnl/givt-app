@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-
+import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
+import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/my_givts_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -49,13 +56,10 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
     );
   }
 
-  void _onMySettingsClicked(BuildContext context) {
-    context.pushNamed(
-      FamilyPages.familyPersonalInfoEdit.name,
-      extra: true,
-    );
+  void _onEditAvatarClicked(BuildContext context) {
+    context.pushNamed(FamilyPages.parentAvatarSelection.name);
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.mySettingsClicked,
+      eventName: AmplitudeEvents.editAvatarPictureClicked,
     );
   }
 
@@ -86,12 +90,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
         title: profile.firstName,
         color: FamilyAppTheme.secondary99,
         systemNavigationBarColor: FamilyAppTheme.secondary99,
-        actions: [
-          IconButton(
-            icon: switchProfilesIcon(),
-            onPressed: () => _onProfileSwitchPressed(context),
-          ),
-        ],
+        leading: const GivtBackButtonFlat(),
       );
 
   Widget _parentHeaderWidget(Profile profile, BuildContext context) =>
@@ -109,7 +108,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () => _onMySettingsClicked(context),
+              onTap: () => _onEditAvatarClicked(context),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -127,23 +126,9 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                   ),
                   const SizedBox(height: 12),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        'My Settings',
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 4),
-                        child: Icon(
-                          FontAwesomeIcons.arrowRight,
-                          size:
-                              Theme.of(context).textTheme.labelMedium?.fontSize,
-                          color:
-                              Theme.of(context).colorScheme.onPrimaryContainer,
-                        ),
-                      ),
+                      MyGivtsButton(userId: profile.id),
                     ],
                   ),
                   const SizedBox(height: 24),

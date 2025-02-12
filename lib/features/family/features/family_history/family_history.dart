@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/family/features/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/family/features/family_history/models/allowance.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation_helper.dart';
 import 'package:givt_app/features/family/features/family_history/models/history_item.dart';
 import 'package:givt_app/features/family/features/family_history/models/topup.dart';
 import 'package:givt_app/features/family/features/family_history/widgets/allowance_item_widget.dart';
@@ -63,7 +63,7 @@ class FamilyHistory extends StatelessWidget {
                       );
                     }
                     return DonationItemWidget(
-                      donation: state.history[index] as ChildDonation,
+                      donation: state.history[index] as Donation,
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
@@ -88,12 +88,12 @@ class FamilyHistory extends StatelessWidget {
 
   Widget getDivider(FamilyHistoryState state, int index) {
     if (state.history[index].type == HistoryTypes.donation) {
-      final holder = state.history[index] as ChildDonation;
+      final holder = state.history[index] as Donation;
       final nextIndex = index + 1;
 
       if (nextIndex < state.history.length &&
           state.history[nextIndex].type == HistoryTypes.donation) {
-        final next = state.history[nextIndex] as ChildDonation;
+        final next = state.history[nextIndex] as Donation;
         if (next.state == DonationState.pending) {
           return const Divider(
             thickness: 0,
