@@ -128,7 +128,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      MyGivtsTextButton(userId: profile.id),
+                      MyGivtsButton(userId: profile.id),
                     ],
                   ),
                   const SizedBox(height: 24),

@@ -8,16 +8,16 @@ import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 
-class MyGivtsTextButton extends StatefulWidget {
-  const MyGivtsTextButton({required this.userId, super.key});
+class MyGivtsButton extends StatefulWidget {
+  const MyGivtsButton({required this.userId, super.key});
 
   final String userId;
 
   @override
-  State<MyGivtsTextButton> createState() => _MyGivtsTextButtonState();
+  State<MyGivtsButton> createState() => _MyGivtsButtonState();
 }
 
-class _MyGivtsTextButtonState extends State<MyGivtsTextButton> {
+class _MyGivtsButtonState extends State<MyGivtsButton> {
   @override
   Widget build(BuildContext context) {
     return FunTextButton(
