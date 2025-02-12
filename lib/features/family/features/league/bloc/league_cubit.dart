@@ -21,13 +21,20 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
 
   void init() {
     _hasSeenLeagueExplanation = _prefs.getBool(_leagueExplanationKey) ?? false;
-
-
+    _emitData();
   }
 
   void _emitData() {
-    //TODO
+    if (!_hasSeenLeagueExplanation) {
+      emitData(const LeagueScreenUIModel.showLeagueExplanation());
+    } else {
+      emitData(const LeagueScreenUIModel.showEmptyLeague());
+    }
   }
 
-  void onExplanationContinuePressed() {}
+  void onExplanationContinuePressed() {
+    _hasSeenLeagueExplanation = true;
+    _prefs.setBool(_leagueExplanationKey, true);
+    _emitData();
+  }
 }

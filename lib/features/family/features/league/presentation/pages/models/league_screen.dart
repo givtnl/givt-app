@@ -19,6 +19,13 @@ class LeagueScreen extends StatefulWidget {
 class _LeagueScreenState extends State<LeagueScreen> {
   final LeagueCubit _leagueCubit = getIt<LeagueCubit>();
 
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _leagueCubit.init();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
