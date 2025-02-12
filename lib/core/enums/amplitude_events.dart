@@ -173,6 +173,8 @@ enum AmplitudeEvents {
   parentProfileIconClicked('parent_profile_icon_clicked'),
   mySettingsClicked('my_settings_clicked'),
   homeSettingsClicked('home_settings_clicked'),
+  leaguePlayGameClicked('league_play_game_clicked'),
+  leagueExplanationContinueClicked('league_explanation_continue_clicked'),
 
   // Change Password
   changePasswordClicked('change_password_clicked'),
