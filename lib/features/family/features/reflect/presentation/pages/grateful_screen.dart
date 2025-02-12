@@ -245,7 +245,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
           experiencePoints: organisation.experiencePoints,
         );
     final profiles = context.read<ProfilesCubit>();
-    await profiles.setActiveProfile(profile.userId);
+    profiles.setActiveProfile(profile.userId);
     if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
       EmptyWalletBottomSheet.show(context, () {
         context.pop();

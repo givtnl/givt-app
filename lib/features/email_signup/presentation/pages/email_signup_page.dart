@@ -4,6 +4,7 @@ import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
@@ -86,6 +87,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final size = MediaQuery.sizeOf(context);
 
     return BlocListener<InternetConnectionCubit, InternetConnectionState>(
       bloc: _connectionCubit,
@@ -127,9 +129,16 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           ),
           onCustom: handleCustom,
           onData: (context, state) => FunScaffold(
+            minimumPadding: const EdgeInsets.only(
+              left: 24,
+              right: 24,
+              top: 24,
+            ),
             body: LayoutBuilder(
               builder: (context, constraint) {
+                final isUS = true == state.country?.isUS;
                 return SingleChildScrollView(
+                  reverse: true,
                   key: const ValueKey('Email-Signup-Scrollable'),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
@@ -143,17 +152,39 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             const SizedBox(
                               height: 24,
                             ),
+                            Image.asset(
+                              isUS
+                                  ? 'assets/images/logo_green.png'
+                                  : 'assets/images/logo.png',
+                              width: 100,
+                            ),
+                            if (isUS)
+                              const SizedBox(
+                                height: 24,
+                              ),
+                            if (!isUS) const Spacer(),
                             TitleLargeText(
-                              locals.welcomeContinue,
+                              isUS ? 'Welcome, super family!' : locals.letsGo,
                             ),
                             const SizedBox(height: 4),
                             BodyMediumText(
-                              locals.toGiveWeNeedYourEmailAddress,
+                              isUS
+                                  ? "Let's foster generosity together"
+                                  : locals.startJourneyOfGenerosity,
                               textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 4),
-                            BodySmallText.primary40(locals.weWontSendAnySpam),
                             const Spacer(),
+                            if (isUS && size.height > 750)
+                              SvgPicture.asset(
+                                'assets/family/images/captain.svg',
+                              ),
+                            CountryDropDown(
+                              selectedCountry: state.country,
+                              onChanged: (Country? newValue) {
+                                _cubit.updateCountry(newValue!);
+                              },
+                            ),
+                            const SizedBox(height: 12),
                             OutlinedTextFormField(
                               key: const ValueKey('Email-Input'),
                               initialValue: state.email,
@@ -172,30 +203,29 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                 AutofillHints.email,
                               ],
                             ),
-                            const SizedBox(height: 12),
-                            CountryDropDown(
-                              selectedCountry: state.country,
-                              onChanged: (Country? newValue) {
-                                _cubit.updateCountry(newValue!);
-                              },
-                            ),
                             const Spacer(),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8),
                               child: GestureDetector(
-                                onTap: () => showModalBottomSheet<void>(
-                                  context: context,
-                                  useSafeArea: true,
-                                  scrollControlDisabledMaxHeightRatio: 1,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  builder: (BuildContext context) =>
-                                      TermsAndConditionsDialog(
-                                    content: locals.termsText,
-                                  ),
-                                ),
+                                onTap: state.country == null
+                                    ? null
+                                    : () => showModalBottomSheet<void>(
+                                          context: context,
+                                          useSafeArea: true,
+                                          scrollControlDisabledMaxHeightRatio:
+                                              1,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          builder: (BuildContext context) =>
+                                              TermsAndConditionsDialog(
+                                            content: locals.termsText,
+                                            overrideCountryIso:
+                                                state.country?.countryCode,
+                                              ),
+                                        ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -206,8 +236,11 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                     ),
                                     const SizedBox(width: 8),
                                     Flexible(
-                                      child: BodySmallText.primary40(
+                                      child: BodySmallText(
                                         locals.acceptTerms,
+                                        color: state.country == null
+                                            ? FamilyAppTheme.neutralVariant40
+                                            : FamilyAppTheme.primary40,
                                       ),
                                     ),
                                   ],
@@ -222,7 +255,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               onTap: state.continueButtonEnabled
                                   ? () async {
                                       _cubit.updateApi();
-                                      if (state.country.isUS) {
+                                      if (state.country?.isUS == true) {
                                         final fbsdk = FacebookAppEvents();
                                         await fbsdk
                                             .setAutoLogAppEventsEnabled(true);
@@ -238,7 +271,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                         await context
                                             .read<AuthCubit>()
                                             .register(
-                                              country: state.country,
+                                              country: state.country!,
                                               email: state.email,
                                               locale: Localizations.localeOf(
                                                       context)
@@ -252,8 +285,13 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               rightIcon: FontAwesomeIcons.arrowRight,
                               analyticsEvent: AnalyticsEvent(
                                 AmplitudeEvents.emailSignupContinueClicked,
+                                parameters: {
+                                  'email': state.email,
+                                  'country': state.country?.name,
+                                },
                               ),
                             ),
+                            const SizedBox(height: 24),
                           ],
                         ),
                       ),

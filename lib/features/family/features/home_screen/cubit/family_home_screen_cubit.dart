@@ -157,6 +157,7 @@ class FamilyHomeScreenCubit
             (e) => AvatarUIModel(
               avatarUrl: e.pictureURL,
               text: e.firstName,
+              guid: e.id,
             ),
           )
           .toList(),

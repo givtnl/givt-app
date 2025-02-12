@@ -149,7 +149,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             uiModel: AvatarBarUIModel(
                               avatarUIModels: uiModel.avatars,
                             ),
-                            onAvatarTapped: onAvatarTapped,
+                            onAvatarTapped: (index) =>
+                                onAvatarTapped(index, uiModel),
                           ),
                         ),
                         const DailyExperienceContainer(
@@ -230,25 +231,26 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
       builder: (context) => FamilyHomeOverlay(
         uiModel: uiModel,
         onDismiss: closeOverlay,
-        onAvatarTapped: onAvatarTapped,
+        onAvatarTapped: (index) => onAvatarTapped(index, uiModel),
         onNextTutorialClicked: _cubit.onNextTutorialClicked,
         withTutorial: withTutorial,
       ),
     );
   }
 
-  Future<void> onAvatarTapped(int index) async {
+  Future<void> onAvatarTapped(
+      int index, FamilyHomeScreenUIModel uiModel) async {
     if (overlayVisible) {
       closeOverlay();
     }
 
-    final profile = _cubit.profiles[index];
-
-    unawaited(
-      context.read<ProfilesCubit>().setActiveProfile(
-            profile.id,
-          ),
+    final id = uiModel.avatars[index].guid ?? _cubit.profiles[index].id;
+    final profile = _cubit.profiles.firstWhere(
+      (element) => element.id == id,
     );
+    context.read<ProfilesCubit>().setActiveProfile(
+          profile.id,
+        );
 
     unawaited(
       AnalyticsHelper.logEvent(

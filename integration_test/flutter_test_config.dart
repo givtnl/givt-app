@@ -28,17 +28,19 @@ Future<void> doTestSetup() async {
     name: name,
     options: options,
   );
-  
+
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: await getApplicationDocumentsDirectory(),
+    storageDirectory: HydratedStorageDirectory(
+      (await getApplicationDocumentsDirectory()).path,
+    ),
   );
-  
+
   // Initialize the dependency injection
   await get_it_injection.init();
   await get_it_injection_family.init();
   await get_it_injection.getIt.allReady();
   // in the future we will setup the injection of test dependencies here
-  
+
   tz.initializeTimeZones();
   // Initialize the notification service
   await NotificationService.instance.init();
