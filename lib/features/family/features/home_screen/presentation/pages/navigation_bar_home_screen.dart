@@ -95,7 +95,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     AnalyticsEvent(
       AmplitudeEvents.navigationBarPressed,
       parameters: {
-        'destination': 'Profile',
+        'destination': 'League',
       },
     ),
   ];
@@ -173,15 +173,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             icon: FaIcon(FontAwesomeIcons.solidCalendar),
             label: 'Memories',
           ),
-          NavigationDestination(
-            icon: uiModel?.profilePictureUrl == null
-                ? const FaIcon(FontAwesomeIcons.person)
-                : SizedBox(
-                    width: 28,
-                    height: 28,
-                    child: SvgPicture.network(uiModel!.profilePictureUrl!),
-                  ),
-            label: 'Profile',
+          const NavigationDestination(
+            icon: FaIcon(FontAwesomeIcons.medal),
+            label: 'League',
           ),
         ],
         analyticsEvent: (int index) => _analyticsEvents[index],
@@ -220,8 +214,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   }) async {
     unawaited(SystemSound.play(SystemSoundType.click));
     unawaited(HapticFeedback.selectionClick());
-    if (index == NavigationBarHomeScreen.homeIndex ||
-        index == NavigationBarHomeScreen.memoriesIndex) {
+    if (index != NavigationBarHomeScreen.familyIndex) {
       _setIndex(index);
     } else {
       await FamilyAuthUtils.authenticateUser(

@@ -19,6 +19,7 @@ import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
 import 'package:givt_app/features/family/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -48,6 +49,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
     return Scaffold(
       appBar: FunTopAppBar(
         title: locals.personalInfo,
+        leading: const GivtBackButtonFlat(),
       ),
       body: BlocListener<PersonalInfoEditBloc, PersonalInfoEditState>(
         listener: (context, state) {

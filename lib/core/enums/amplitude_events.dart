@@ -172,6 +172,7 @@ enum AmplitudeEvents {
   walletTracker('wallet_tracker'),
   parentProfileIconClicked('parent_profile_icon_clicked'),
   mySettingsClicked('my_settings_clicked'),
+  homeSettingsClicked('home_settings_clicked'),
 
   // Change Password
   changePasswordClicked('change_password_clicked'),
