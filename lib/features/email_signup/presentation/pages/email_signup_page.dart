@@ -222,7 +222,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                           builder: (BuildContext context) =>
                                               TermsAndConditionsDialog(
                                             content: locals.termsText,
-                                          ),
+                                            overrideCountryIso:
+                                                state.country?.countryCode,
+                                              ),
                                         ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,

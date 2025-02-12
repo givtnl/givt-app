@@ -28,7 +28,7 @@ class EmailSignupCubit
   Future<void> init() async {
     emitLoading();
 
-    _currentCountry = await getCountry();
+    _currentCountry = await getStoredCountry();
     _currentEmail = await getEmail();
 
     emitData(
@@ -58,7 +58,7 @@ class EmailSignupCubit
     return '';
   }
 
-  Future<Country?> getCountry() async {
+  Future<Country?> getStoredCountry() async {
     // Use user preference to fetch last used country
     final prefs = await SharedPreferences.getInstance();
 
@@ -72,6 +72,8 @@ class EmailSignupCubit
 
     return _currentCountry;
   }
+
+  Country? get currentCountry => _currentCountry;
 
   /// Some logic to set the current API urls based on the country
   /// The method also updates the country iso in shared preferences
