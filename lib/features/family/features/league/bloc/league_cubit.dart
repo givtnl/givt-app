@@ -24,8 +24,10 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
 
 
   }
-  
+
   void _emitData() {
     //TODO
   }
+
+  void onExplanationContinuePressed() {}
 }

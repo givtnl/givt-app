@@ -3,7 +3,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.d
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class RankWidget extends StatelessWidget {
-  const RankWidget({super.key, required this.rank});
+  const RankWidget({required this.rank, super.key});
 
   final int rank;
 

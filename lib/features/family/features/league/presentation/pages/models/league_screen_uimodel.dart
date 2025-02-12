@@ -1,28 +1,27 @@
-import 'package:givt_app/features/family/features/league/presentation/widgets/models/league_entry_uimodel.dart';
+import 'package:givt_app/features/family/features/league/presentation/widgets/models/league_overview_uimodel.dart';
 
 sealed class LeagueScreenUIModel {
   const LeagueScreenUIModel();
 
   const factory LeagueScreenUIModel.showLeague(
-    List<LeagueEntryUIModel> uiModels,
-  ) = ShowLeague;
+    LeagueOverviewUIModel uiModel,
+  ) = ShowLeagueOverview;
 
-  const factory LeagueScreenUIModel.showLeagueExplanation() =
-      LeagueExplanation;
+  const factory LeagueScreenUIModel.showLeagueExplanation() = ShowLeagueExplanation;
 
-  const factory LeagueScreenUIModel.showNoStatsToShow() = NoStatsToShow;
+  const factory LeagueScreenUIModel.showEmptyLeague() = ShowEmptyLeague;
 }
 
-class ShowLeague extends LeagueScreenUIModel {
-  const ShowLeague(this.uiModels);
+class ShowLeagueOverview extends LeagueScreenUIModel {
+  const ShowLeagueOverview(this.uiModel);
 
-  final List<LeagueEntryUIModel> uiModels;
+  final LeagueOverviewUIModel uiModel;
 }
 
-class LeagueExplanation extends LeagueScreenUIModel {
-  const LeagueExplanation();
+class ShowLeagueExplanation extends LeagueScreenUIModel {
+  const ShowLeagueExplanation();
 }
 
-class NoStatsToShow extends LeagueScreenUIModel {
-  const NoStatsToShow();
+class ShowEmptyLeague extends LeagueScreenUIModel {
+  const ShowEmptyLeague();
 }
