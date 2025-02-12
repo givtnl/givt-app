@@ -88,12 +88,12 @@ class FamilyAPIService {
   }
 
   Future<List<dynamic>> fetchHistory(
-    String childId,
+    String userId,
     Map<String, dynamic> body,
   ) async {
     final url = Uri.https(
       _apiURL,
-      '/givtservice/v1/profiles/$childId/transactions',
+      '/givtservice/v1/profiles/$userId/transactions',
     );
 
     final response = await client.post(
