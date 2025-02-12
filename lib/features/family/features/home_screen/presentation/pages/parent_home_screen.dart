@@ -125,7 +125,13 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  MyGivtsTextButton(userId: profile.id),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MyGivtsTextButton(userId: profile.id),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),

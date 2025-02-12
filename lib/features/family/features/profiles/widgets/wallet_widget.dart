@@ -137,7 +137,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                   MyGivtsTextButton(
                     userId: widget.kidid,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 24),
                 ],
               );
             },
