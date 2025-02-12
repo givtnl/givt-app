@@ -81,13 +81,15 @@ class FunTextButton extends StatelessWidget {
     final hasDisabledState = isDisabled || onTap == null;
 
     return GestureDetector(
-      onTap: () {
-        onTap?.call();
-        AnalyticsHelper.logEvent(
-          eventName: analyticsEvent.name,
-          eventProperties: analyticsEvent.parameters,
-        );
-      },
+      onTap: isDisabled
+          ? null
+          : () {
+              onTap?.call();
+              AnalyticsHelper.logEvent(
+                eventName: analyticsEvent.name,
+                eventProperties: analyticsEvent.parameters,
+              );
+            },
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -102,14 +104,14 @@ class FunTextButton extends StatelessWidget {
               text,
               color: hasDisabledState ? disabledTextColor : textColor,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 6),
-              child: FaIcon(
-                rightIcon ?? FontAwesomeIcons.arrowRight,
-                size: rightIconSize ?? 24,
-                color: hasDisabledState ? disabledTextColor : textColor,
-              ),
+          Padding(
+            padding: const EdgeInsets.only(left: 6),
+            child: FaIcon(
+              rightIcon ?? FontAwesomeIcons.arrowRight,
+              size: rightIconSize ?? 24,
+              color: hasDisabledState ? disabledTextColor : textColor,
             ),
+          ),
         ],
       ),
     );
