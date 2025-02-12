@@ -12,11 +12,13 @@ class TermsAndConditionsDialog extends StatefulWidget {
   const TermsAndConditionsDialog({
     required this.content,
     this.isDarkBackground = false,
+    this.overrideCountryIso,
     super.key,
   });
 
   final String content;
   final bool isDarkBackground;
+  final String? overrideCountryIso;
 
   @override
   State<TermsAndConditionsDialog> createState() =>
@@ -32,15 +34,17 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
     super.initState();
     _cubit.init();
     setState(() {
-      countryIso = Country.nl.countryCode;
+      countryIso = widget.overrideCountryIso ?? Country.nl.countryCode;
     });
     _getCountry();
   }
 
   Future<void> _getCountry() async {
-    final country = await _cubit.getCountry();
+    final country = _cubit.currentCountry;
     setState(() {
-      countryIso = country?.countryCode ?? Country.nl.countryCode;
+      countryIso = country?.countryCode ??
+          widget.overrideCountryIso ??
+          Country.nl.countryCode;
     });
   }
 
