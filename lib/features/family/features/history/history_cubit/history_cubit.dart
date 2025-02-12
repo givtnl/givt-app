@@ -57,12 +57,15 @@ class HistoryCubit extends Cubit<HistoryState> {
               (existing.type == HistoryTypes.allowance ||
                   existing.type == HistoryTypes.topUp) &&
               existing == item));
+      final updatedAdultDonations = adultDonationHistory.where((item) =>
+          !state.history.any((existing) =>
+              existing.type == HistoryTypes.adultDonation && existing == item));
 
       final history = <HistoryItem>[
         ...state.history,
         ...updatedDonations,
         ...updatedAllowances,
-        ...adultDonationHistory,
+        ...updatedAdultDonations,
       ]
         // sort from newest to oldest
         ..sort((a, b) => b.date.compareTo(a.date));
