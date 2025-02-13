@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:givt_app/features/family/features/league/domain/league_repository.dart';
 import 'package:givt_app/features/family/features/league/domain/models/league_item.dart';
@@ -27,19 +29,26 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
   List<LeagueItem> _league = [];
   late bool _hasSeenLeagueExplanation;
 
+  StreamSubscription<List<Profile>>? _profilesSubscription;
+  StreamSubscription<List<LeagueItem>>? _leagueSubscription;
+
   Future<void> init() async {
-    _profilesRepository.onProfilesChanged().listen((profiles) {
+    await _profilesSubscription?.cancel();
+    await _leagueSubscription?.cancel();
+    _profilesSubscription ??=
+        _profilesRepository.onProfilesChanged().listen((profiles) {
       _profiles = profiles;
       _emitData();
     });
-    _leagueRepository.onLeagueChanged().listen((league) {
+    _leagueSubscription ??=
+        _leagueRepository.onLeagueChanged().listen((league) {
       _league = league;
       _emitData();
     });
     _hasSeenLeagueExplanation = _prefs.getBool(_leagueExplanationKey) ?? false;
     try {
       _profiles = await _profilesRepository.getProfiles();
-      _league = await _leagueRepository.getLeague();
+      _league = await _leagueRepository.fetchLeague();
     } catch (e, s) {
       // do nothing
     }

@@ -35,7 +35,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
       _startCountdown();
     }
   }
-
+  
   void _calculateDatesAndTimes() {
     final now = DateTime.now();
     mondayMidnight = DateTime(now.year, now.month, now.day).add(
