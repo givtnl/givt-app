@@ -1,0 +1,44 @@
+appId: net.givtapp.ios.test
+name: Ask for creditcard details in give flow
+#When the user didn't fill in creditcard details yet it will be asked in the giving flow.
+---
+- assertVisible: "Oops, an empty Wallet"
+- tapOn: "Top up"
+- tapOn: "Password"
+- inputText:
+    label: Enter the test user's Password
+    text: "Test123"
+- tapOn:
+    label: "Tap on Login"
+    point: "50%,55%"
+- tapOn: "Enter payment details"
+- tapOn: "Name on card"
+- inputText:
+    label: "Enter the Name on card"
+    text: "TextCard"
+- tapOn: "Card number"
+- inputText:
+    label: "Enter the creditcard number"
+    text: "4242424242424242"
+- inputText:
+    label: "Enter mm/yy"
+    text: "01/35"
+- inputText:
+    label: "Enter the CVC"
+    text: "123"
+- tapOn: "Set up"
+- assertVisible: 
+    text: ".*Hold on.*"
+    optional: true
+- repeat:
+    label: "Add more money +"
+    times: 6
+    commands:
+    - tapOn:
+        text: "plus"
+- tapOn:
+    label: "Decrease money -"
+    text: "minus"
+- assertVisible: "An admin fee of $1.00 will be added"
+- tapOn: "Confirm"
+- tapOn: "Done"
