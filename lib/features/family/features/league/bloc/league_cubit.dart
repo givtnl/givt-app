@@ -52,40 +52,46 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
     } else if (_league.isEmpty) {
       emitData(const LeagueScreenUIModel.showEmptyLeague());
     } else {
-      final listOfUniqueAndSortedExperiencePoints = _league
-          .map((e) => e.experiencePoints)
-          .toSet()
-          .toList()
-        ..sort((a, b) => b!.compareTo(a!));
-      final list = _league.mapIndexed((int index, e) {
-        final profile = _profiles.firstWhere(
-          (p) => p.id == e.guid,
-          orElse: Profile.empty,
-        );
-        final rank = listOfUniqueAndSortedExperiencePoints
-                .where(
-                  (xp) => xp! > e.experiencePoints!,
-                )
-                .length +
-            1;
-        return LeagueEntryUIModel(
-          rank: rank,
-          name: profile.firstName,
-          xp: e.experiencePoints,
-          imageUrl: profile.pictureURL,
-        );
-      }).toList()
-        ..sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''))
-        ..sort((a, b) => a.rank.compareTo(b.rank));
-
       emitData(
         LeagueScreenUIModel.showLeague(
           LeagueOverviewUIModel(
-            entries: list,
+            entries: _organizeEntries(),
           ),
         ),
       );
     }
+  }
+
+  // Match profiles to xp entries
+  // Calculate rank
+  // Sort on xp, then alphabetically
+  List<LeagueEntryUIModel> _organizeEntries() {
+    final listOfUniqueAndSortedExperiencePoints = _league
+        .map((e) => e.experiencePoints)
+        .toSet()
+        .toList()
+      ..sort((a, b) => b!.compareTo(a!));
+    final list = _league.mapIndexed((int index, e) {
+      final profile = _profiles.firstWhere(
+        (p) => p.id == e.guid,
+        orElse: Profile.empty,
+      );
+      final rank = listOfUniqueAndSortedExperiencePoints
+              .where(
+                (xp) => xp! > e.experiencePoints!,
+              )
+              .length +
+          1;
+      return LeagueEntryUIModel(
+        rank: rank,
+        name: profile.firstName,
+        xp: e.experiencePoints,
+        imageUrl: profile.pictureURL,
+      );
+    }).toList()
+      ..sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''))
+      ..sort((a, b) => a.rank.compareTo(b.rank));
+    return list;
   }
 
   void onExplanationContinuePressed() {
