@@ -1,0 +1,29 @@
+appId: net.givtapp.ios.test
+name: Going through tutorial after registration
+#After registration you'll go through the tutorial screens.
+---
+- tapOn: "Let's go!"
+- tapOn:
+    label: Step 1/6
+    point: "85%,46%" 
+- tapOn:
+    label: Step 2/6
+    point: "85%,81%" 
+- tapOn:
+    label: Click outside box should not do anything
+    point: "55%,55%" 
+- tapOn:
+    label: Step 3/6
+    point: "87%,42%"
+- tapOn:
+    label: Step 4/6 Mission available
+    point: "62%,37%" 
+- tapOn:
+    label: Step 5/6 Mission bedtime
+    point: "50%,30%"
+- runFlow: "setup_bedtime.yml"
+- assertVisible: 
+    label: Step 6/6 can't be tested. Will not show due the backend notifications can't be shown in emulator
+    text: ${KIDSNAME}
+    optional: true
+# Step 6/6 can't be tested. Will not show due the backend notifications can't be shown in emulator
