@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:firebase_remote_config_platform_interface/src/remote_config_value.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
@@ -23,6 +24,7 @@ class ReflectAndShareRepository {
     this._familyApiService,
     this._familyAuthRepository,
     this._remoteConfigRepository,
+    this._createTransactionRepository,
   ) {
     _init();
   }
@@ -31,6 +33,7 @@ class ReflectAndShareRepository {
   final FamilyAPIService _familyApiService;
   final FamilyAuthRepository _familyAuthRepository;
   final RemoteConfigRepository _remoteConfigRepository;
+  final CreateTransactionRepository _createTransactionRepository;
 
   static const String _gameConfigKey = 'gratitude_game_config';
 
@@ -66,6 +69,9 @@ class ReflectAndShareRepository {
       _gameStatsUpdatedStreamController.stream;
 
   void _init() {
+    _createTransactionRepository.onTransactionByUser().listen((_) {
+      _fetchGameStats();
+    });
     _familyAuthRepository.authenticatedUserStream().listen((user) {
       if (user == null) {
         reset();

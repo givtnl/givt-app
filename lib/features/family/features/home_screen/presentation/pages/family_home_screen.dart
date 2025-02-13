@@ -24,6 +24,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -115,7 +116,35 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       color: FamilyAppTheme.primary99,
                       child: Column(
                         children: [
-                          const SizedBox(height: kToolbarHeight),
+                          SizedBox(
+                            height: kToolbarHeight,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    FamilyAuthUtils.authenticateUser(
+                                      context,
+                                      checkAuthRequest: FamilyCheckAuthRequest(
+                                        navigate: (context) async {
+                                          context.goNamed(
+                                            FamilyPages
+                                                .familyPersonalInfoEdit.name,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                    AnalyticsHelper.logEvent(
+                                      eventName:
+                                          AmplitudeEvents.homeSettingsClicked,
+                                    );
+                                  },
+                                  child: FunIcon.gear(),
+                                ),
+                                const SizedBox(width: 24),
+                              ],
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: TitleLargeText(

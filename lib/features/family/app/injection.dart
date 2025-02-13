@@ -24,6 +24,8 @@ import 'package:givt_app/features/family/features/home_screen/cubit/daily_experi
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/league/bloc/league_cubit.dart';
+import 'package:givt_app/features/family/features/league/domain/league_repository.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
 import 'package:givt_app/features/family/features/missions/bloc/notif_mission_cubit.dart';
@@ -96,6 +98,7 @@ void initCubits() {
       CameraCubit.new,
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
+    ..registerLazySingleton(() => LeagueCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<GiveCubit>(
       () => GiveCubit(
         getIt(),
@@ -117,7 +120,6 @@ void initCubits() {
     ..registerLazySingleton(() => SummaryCubit(getIt()))
     ..registerLazySingleton<NavigationBarHomeCubit>(
       () => NavigationBarHomeCubit(
-        getIt(),
         getIt(),
         getIt(),
         getIt(),
@@ -193,6 +195,9 @@ void initRepositories() {
       AdminFeeRepository(
         getIt(),
       ),
+    )
+    ..registerLazySingleton<LeagueRepository>(
+      () => LeagueRepository(getIt(), getIt()),
     )
     ..registerSingleton<TutorialRepository>(
       TutorialRepository(),
@@ -271,6 +276,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<ReflectAndShareRepository>(
       () => ReflectAndShareRepository(
+        getIt(),
         getIt(),
         getIt(),
         getIt(),

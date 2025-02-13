@@ -18,6 +18,7 @@ import 'package:givt_app/features/family/features/home_screen/presentation/model
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/features/family/features/league/presentation/pages/models/league_screen.dart';
 import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/overview/pages/family_overview_page.dart';
@@ -95,7 +96,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     AnalyticsEvent(
       AmplitudeEvents.navigationBarPressed,
       parameters: {
-        'destination': 'Profile',
+        'destination': 'League',
       },
     ),
   ];
@@ -173,15 +174,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             icon: FaIcon(FontAwesomeIcons.solidCalendar),
             label: 'Memories',
           ),
-          NavigationDestination(
-            icon: uiModel?.profilePictureUrl == null
-                ? const FaIcon(FontAwesomeIcons.person)
-                : SizedBox(
-                    width: 28,
-                    height: 28,
-                    child: SvgPicture.network(uiModel!.profilePictureUrl!),
-                  ),
-            label: 'Profile',
+          const NavigationDestination(
+            icon: FaIcon(FontAwesomeIcons.medal),
+            label: 'League',
           ),
         ],
         analyticsEvent: (int index) => _analyticsEvents[index],
@@ -207,7 +202,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             ),
             const FamilyOverviewPage(),
             const GameSummariesScreen(),
-            const USPersonalInfoEditPage(),
+            const LeagueScreen(),
           ][_currentIndex],
         ),
       ),
@@ -220,8 +215,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   }) async {
     unawaited(SystemSound.play(SystemSoundType.click));
     unawaited(HapticFeedback.selectionClick());
-    if (index == NavigationBarHomeScreen.homeIndex ||
-        index == NavigationBarHomeScreen.memoriesIndex) {
+    if (index != NavigationBarHomeScreen.familyIndex) {
       _setIndex(index);
     } else {
       await FamilyAuthUtils.authenticateUser(

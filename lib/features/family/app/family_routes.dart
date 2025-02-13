@@ -7,6 +7,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
@@ -133,12 +134,6 @@ class FamilyAppRoutes {
                     ..fetchHistory(),
             ),
             // us personal info edit page
-            BlocProvider(
-              create: (context) => PersonalInfoEditBloc(
-                loggedInUserExt: context.read<FamilyAuthCubit>().user!,
-                authRepository: getIt(),
-              ),
-            ),
           ],
           child: NavigationBarHomeScreen(
             index: index,
@@ -485,9 +480,13 @@ class FamilyAppRoutes {
         GoRoute(
           path: FamilyPages.familyPersonalInfoEdit.path,
           name: FamilyPages.familyPersonalInfoEdit.name,
-          redirect: (context, state) {
-            return '${FamilyPages.profileSelection.path}?index=${NavigationBarHomeScreen.profileIndex}';
-          },
+          builder: (context, state) => BlocProvider(
+            create: (context) => PersonalInfoEditBloc(
+              loggedInUserExt: context.read<FamilyAuthCubit>().user!,
+              authRepository: getIt(),
+            ),
+            child: const USPersonalInfoEditPage(),
+          ),
         ),
         GoRoute(
           path: FamilyPages.createFamilyGoal.path,
