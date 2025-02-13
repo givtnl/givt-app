@@ -17,6 +17,7 @@ class FunTag extends StatelessWidget {
     this.iconData,
     this.flatSide = FlatSide.none,
     this.iconSize,
+    this.fontFeatures,
   });
 
   factory FunTag.fromArea({
@@ -55,6 +56,7 @@ class FunTag extends StatelessWidget {
     IconData? iconData,
     FlatSide flatSide = FlatSide.none,
     double? iconSize,
+    List<FontFeature>? fontFeatures,
   }) {
     return FunTag(
       text: text,
@@ -63,6 +65,7 @@ class FunTag extends StatelessWidget {
       iconData: iconData,
       flatSide: flatSide,
       iconSize: iconSize,
+      fontFeatures: fontFeatures,
     );
   }
 
@@ -109,6 +112,7 @@ class FunTag extends StatelessWidget {
     IconData? iconData,
     FlatSide flatSide = FlatSide.none,
     double? iconSize,
+    List<FontFeature>? fontFeatures,
   }) {
     return FunTag.fromColorCombo(
       combo: ColorCombo.tertiary,
@@ -116,6 +120,7 @@ class FunTag extends StatelessWidget {
       iconData: iconData,
       flatSide: flatSide,
       iconSize: iconSize,
+      fontFeatures: fontFeatures,
     );
   }
 
@@ -172,6 +177,7 @@ class FunTag extends StatelessWidget {
   final IconData? iconData;
   final FlatSide flatSide;
   final double? iconSize;
+  final List<FontFeature>? fontFeatures;
 
   @override
   Widget build(BuildContext context) {
@@ -197,10 +203,11 @@ class FunTag extends StatelessWidget {
                 color: textColor,
                 size: iconSize,
               ),
-            if (iconData != null) const SizedBox(width: 1.5),
+            if (iconData != null) const SizedBox(width: 4),
             LabelSmallText(
               text,
               color: textColor,
+              fontFeatures: fontFeatures,
             ),
           ],
         ),

@@ -13,35 +13,38 @@ class LeagueExplanation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Spacer(),
-        SvgPicture.asset(
-          'assets/family/images/league/standing_superhero.svg',
-        ),
-        const SizedBox(height: 16),
-        const TitleLargeText(
-          'Welcome to the League!',
-          textAlign: TextAlign.center,
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          child: BodyMediumText(
-            'Your XP sets your rank. Grow in generosity and climb to the top!',
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Spacer(),
+          SvgPicture.asset(
+            'assets/family/images/league/standing_superhero.svg',
+          ),
+          const SizedBox(height: 16),
+          const TitleLargeText(
+            'Welcome to the League!',
             textAlign: TextAlign.center,
           ),
-        ),
-        const Spacer(),
-        FunButton(
-          onTap: onContinuePressed,
-          text: 'Continue',
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.leagueExplanationContinueClicked,
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: BodyMediumText(
+              'Your XP sets your rank. Grow in generosity and climb to the top!',
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-        const SizedBox(height: 32),
-      ],
+          const Spacer(),
+          FunButton(
+            onTap: onContinuePressed,
+            text: 'Continue',
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.leagueExplanationContinueClicked,
+            ),
+          ),
+          const SizedBox(height: 36),
+        ],
+      ),
     );
   }
 }

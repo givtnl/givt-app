@@ -7,9 +7,11 @@ import 'package:givt_app/features/family/shared/design/components/content/fun_ta
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class LeagueOverview extends StatelessWidget {
-  const LeagueOverview({required this.uiModel, super.key});
+  const LeagueOverview(
+      {required this.uiModel, required this.dateLabel, super.key});
 
   final LeagueOverviewUIModel uiModel;
+  final String dateLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +26,10 @@ class LeagueOverview extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           FunTag.tertiary(
-            text: ' 4 days',
+            text: dateLabel,
             iconData: FontAwesomeIcons.solidClock,
             iconSize: 12,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
           const SizedBox(height: 32),
           if (uiModel.entries != null)

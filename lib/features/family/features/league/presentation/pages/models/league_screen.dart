@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/league/bloc/league_cubit.dart';
@@ -19,10 +21,58 @@ class LeagueScreen extends StatefulWidget {
 class _LeagueScreenState extends State<LeagueScreen> {
   final LeagueCubit _leagueCubit = getIt<LeagueCubit>();
 
+  late DateTime mondayMidnight;
+  Timer? _timer;
+  late int _minutesUntilReset;
+  late int daysDifference;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _calculateDatesAndTimes();
     _leagueCubit.init();
+    if (_remainingHours <= 24) {
+      _startCountdown();
+    }
+  }
+
+  void _calculateDatesAndTimes() {
+    final now = DateTime.now();
+    mondayMidnight = DateTime(now.year, now.month, now.day).add(
+      Duration(
+        days: (DateTime.monday - now.weekday) % DateTime.daysPerWeek,
+      ),
+    );
+    _minutesUntilReset = mondayMidnight.difference(now).inMinutes;
+    daysDifference = mondayMidnight.difference(now).inDays;
+  }
+
+  void _startCountdown() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(minutes: 1), (Timer timer) {
+      if (_minutesUntilReset <= 0) {
+        timer.cancel();
+      } else {
+        if (!mounted) return;
+        setState(() {
+          _minutesUntilReset--;
+        });
+      }
+    });
+  }
+
+  int get _remainingMinutes {
+    return _minutesUntilReset % 60;
+  }
+
+  int get _remainingHours {
+    return _minutesUntilReset ~/ 60;
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -37,7 +87,10 @@ class _LeagueScreenState extends State<LeagueScreen> {
         onData: (context, uiModel) {
           switch (uiModel) {
             case final ShowLeagueOverview state:
-              return LeagueOverview(uiModel: state.uiModel);
+              return LeagueOverview(
+                uiModel: state.uiModel,
+                dateLabel: _getDateLabel(),
+              );
             case ShowLeagueExplanation():
               return LeagueExplanation(
                 onContinuePressed: _leagueCubit.onExplanationContinuePressed,
@@ -48,5 +101,13 @@ class _LeagueScreenState extends State<LeagueScreen> {
         },
       ),
     );
+  }
+
+  String _getDateLabel() {
+    return _remainingHours <= 24
+        ? '${_remainingHours > 0 ? "${_remainingHours}h " : ""}${_remainingMinutes}m'
+        : daysDifference == 1
+            ? '1 day'
+            : '$daysDifference days';
   }
 }

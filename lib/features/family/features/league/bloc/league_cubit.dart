@@ -26,12 +26,8 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
   List<Profile> _profiles = [];
   List<LeagueItem> _league = [];
   late bool _hasSeenLeagueExplanation;
-  late DateTime mondayMidnight;
-  late int daysDifference;
-  late int minutesDifference;
 
   Future<void> init() async {
-    _calculateDatesAndTimes();
     _profilesRepository.onProfilesChanged().listen((profiles) {
       _profiles = profiles;
       _emitData();
@@ -48,25 +44,6 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
       // do nothing
     }
     _emitData();
-  }
-
-  void _calculateDatesAndTimes() {
-    final now = DateTime.now();
-    mondayMidnight = now.add(
-      Duration(
-        days: (DateTime.monday - now.weekday) % DateTime.daysPerWeek,
-      ),
-    )..subtract(
-        Duration(
-          hours: now.hour,
-          minutes: now.minute,
-          seconds: now.second,
-          milliseconds: now.millisecond,
-          microseconds: now.microsecond,
-        ),
-      );
-    daysDifference = mondayMidnight.difference(now).inDays;
-    minutesDifference = mondayMidnight.difference(now).inMinutes;
   }
 
   void _emitData() {

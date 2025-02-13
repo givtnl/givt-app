@@ -12,28 +12,31 @@ class EmptyLeague extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Spacer(),
-        SvgPicture.asset(
-          'assets/family/images/league/league_empty_image.svg',
-        ),
-        const SizedBox(height: 16),
-        const TitleMediumText(
-          'Play the Gratitude Game to unlock this weeks League!',
-          textAlign: TextAlign.center,
-        ),
-        const Spacer(),
-        FunButton(
-          onTap: () => context.goNamed(
-            FamilyPages.reflectIntro.name,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        children: [
+          const Spacer(),
+          SvgPicture.asset(
+            'assets/family/images/league/league_empty_image.svg',
           ),
-          text: 'Play Gratitude Game',
-          analyticsEvent:
-          AnalyticsEvent(AmplitudeEvents.leaguePlayGameClicked),
-        ),
-        const SizedBox(height: 32),
-      ],
+          const SizedBox(height: 16),
+          const TitleMediumText(
+            'Play the Gratitude Game to unlock this weeks League!',
+            textAlign: TextAlign.center,
+          ),
+          const Spacer(),
+          FunButton(
+            onTap: () => context.goNamed(
+              FamilyPages.reflectIntro.name,
+            ),
+            text: 'Play Gratitude Game',
+            analyticsEvent:
+            AnalyticsEvent(AmplitudeEvents.leaguePlayGameClicked),
+          ),
+          const SizedBox(height: 36),
+        ],
+      ),
     );
   }
 }
