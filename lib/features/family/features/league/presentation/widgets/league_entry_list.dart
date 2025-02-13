@@ -7,15 +7,18 @@ class LeagueEntryList extends StatelessWidget {
   const LeagueEntryList({
     required this.uiModels,
     this.shrinkWrap = false,
+    this.physics,
     super.key,
   });
 
   final List<LeagueEntryUIModel> uiModels;
   final bool shrinkWrap;
+  final ScrollPhysics? physics;
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      physics: physics,
       shrinkWrap: shrinkWrap,
       itemBuilder: (BuildContext context, int index) {
         return LeagueEntryItem(uiModel: uiModels[index]);
@@ -23,7 +26,7 @@ class LeagueEntryList extends StatelessWidget {
       separatorBuilder: (BuildContext context, int index) {
         return Row(
           children: [
-            Container(height: 1, color: FamilyAppTheme.neutralVariant95),
+            Expanded(child: Container(height: 1, color: FamilyAppTheme.neutralVariant95)),
           ],
         );
       },

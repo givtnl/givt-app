@@ -29,11 +29,12 @@ class LeagueOverview extends StatelessWidget {
             iconSize: 12,
           ),
           const SizedBox(height: 32),
-          //if (uiModel.entries != null)
-            //LeagueHighlightedHeroes(uiModels: uiModel.entries!),
+          if (uiModel.entries != null)
+            LeagueHighlightedHeroes(uiModels: uiModel.entries!),
           const SizedBox(height: 16),
           if (uiModel.entries != null)
             LeagueEntryList(
+              physics: const ClampingScrollPhysics(),
               uiModels: uiModel.entries!,
               shrinkWrap: true,
             ),

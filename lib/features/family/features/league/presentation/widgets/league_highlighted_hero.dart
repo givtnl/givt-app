@@ -8,20 +8,22 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 class LeagueHighlightedHero extends StatelessWidget {
   const LeagueHighlightedHero({
     required this.uiModel,
+    this.isLarge = false,
     super.key,
   });
 
   final LeagueEntryUIModel uiModel;
+  final bool isLarge;
 
   @override
   Widget build(BuildContext context) {
-    final double size = uiModel.rank == 1 ? 120 : 80;
+    final double size = isLarge ? 120 : 80;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           width: size,
-          height: size + 40,
+          height: size + 20,
           child: Stack(
             children: [
               Align(
@@ -59,12 +61,20 @@ class LeagueHighlightedHero extends StatelessWidget {
         ),
         if (uiModel.name != null) const SizedBox(height: 8),
         if (uiModel.name != null)
-          LabelMediumText(
-            uiModel.name!,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
+          SizedBox(
+            width: 80,
+            child: LabelMediumText(
+              uiModel.name!,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           ),
+        LabelMediumText(
+          '${uiModel.xp} XP',
+          color: FamilyAppTheme.primary50,
+          textAlign: TextAlign.center,
+        ),
       ],
     );
   }

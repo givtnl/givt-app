@@ -12,26 +12,28 @@ class LeagueEntryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(width: 24),
-        RankWidget(rank: uiModel.rank),
-        const SizedBox(width: 12),
-        if (uiModel.imageUrl != null)
-          SvgPicture.network(
-            uiModel.imageUrl!,
-            width: 40,
-            height: 40,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+      child: Row(
+        children: [
+          RankWidget(rank: uiModel.rank),
+          const SizedBox(width: 12),
+          if (uiModel.imageUrl != null)
+            SvgPicture.network(
+              uiModel.imageUrl!,
+              width: 40,
+              height: 40,
+            ),
+          const SizedBox(width: 16),
+          if (uiModel.name != null) LabelMediumText(uiModel.name!),
+          const Spacer(),
+          LabelMediumText(
+            '${uiModel.xp} XP',
+            color: FamilyAppTheme.primary50,
           ),
-        const SizedBox(width: 16),
-        if (uiModel.name != null) LabelMediumText(uiModel.name!),
-        const Spacer(),
-        LabelMediumText(
-          '${uiModel.xp} XP',
-          color: FamilyAppTheme.primary50,
-        ),
-        const SizedBox(width: 40),
-      ],
+          const SizedBox(width: 16),
+        ],
+      ),
     );
   }
 }

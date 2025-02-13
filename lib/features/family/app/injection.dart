@@ -196,7 +196,9 @@ void initRepositories() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<LeagueRepository>(() => LeagueRepository(getIt()))
+    ..registerLazySingleton<LeagueRepository>(
+      () => LeagueRepository(getIt(), getIt()),
+    )
     ..registerSingleton<TutorialRepository>(
       TutorialRepository(),
     )

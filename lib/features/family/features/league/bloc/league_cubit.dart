@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:givt_app/features/family/features/league/domain/league_repository.dart';
 import 'package:givt_app/features/family/features/league/domain/models/league_item.dart';
 import 'package:givt_app/features/family/features/league/presentation/pages/models/league_screen_uimodel.dart';
@@ -10,8 +11,11 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
-  LeagueCubit(this._profilesRepository, this._leagueRepository, this._prefs)
-      : super(const BaseState.loading());
+  LeagueCubit(
+    this._profilesRepository,
+    this._leagueRepository,
+    this._prefs,
+  ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final LeagueRepository _leagueRepository;
@@ -71,21 +75,36 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
     } else if (_league.isEmpty) {
       emitData(const LeagueScreenUIModel.showEmptyLeague());
     } else {
+      final listOfUniqueAndSortedExperiencePoints = _league
+          .map((e) => e.experiencePoints)
+          .toSet()
+          .toList()
+        ..sort((a, b) => b!.compareTo(a!));
+      final list = _league.mapIndexed((int index, e) {
+        final profile = _profiles.firstWhere(
+          (p) => p.id == e.guid,
+          orElse: Profile.empty,
+        );
+        final rank = listOfUniqueAndSortedExperiencePoints
+                .where(
+                  (xp) => xp! > e.experiencePoints!,
+                )
+                .length +
+            1;
+        return LeagueEntryUIModel(
+          rank: rank,
+          name: profile.firstName,
+          xp: e.experiencePoints,
+          imageUrl: profile.pictureURL,
+        );
+      }).toList()
+        ..sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''))
+        ..sort((a, b) => a.rank.compareTo(b.rank));
+
       emitData(
         LeagueScreenUIModel.showLeague(
           LeagueOverviewUIModel(
-            entries: _league.map((e) {
-              final profile = _profiles.firstWhere(
-                (p) => p.id == e.guid,
-                orElse: Profile.empty,
-              );
-              return LeagueEntryUIModel(
-                rank: 1,
-                name: profile.firstName,
-                xp: e.experiencePoints,
-                imageUrl: profile.pictureURL,
-              );
-            }).toList(),
+            entries: list,
           ),
         ),
       );

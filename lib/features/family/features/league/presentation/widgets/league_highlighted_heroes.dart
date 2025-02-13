@@ -13,25 +13,37 @@ class LeagueHighlightedHeroes extends StatelessWidget {
     final first = shortlist.firstOrNull;
     final second = shortlist.elementAtOrNull(1);
     final third = shortlist.elementAtOrNull(2);
-    return Stack(
-      children: [
-        if (third != null)
-          Positioned(
-            right: 1,
-            child: LeagueHighlightedHero(uiModel: third),
-          ),
-        if (second != null)
-          Positioned(
-            left: 1,
-            child: LeagueHighlightedHero(uiModel: second),
-          ),
-        if (first != null)
-          Positioned(
-            left: 0,
-            right: 0,
-            child: LeagueHighlightedHero(uiModel: first),
-          ),
-      ],
+    return SizedBox(
+      height: 188,
+      width: 253,
+      child: Stack(
+        children: [
+          if (third != null)
+            Positioned(
+              top: 0,
+              bottom: 0,
+              right: 0,
+              child: LeagueHighlightedHero(uiModel: third),
+            ),
+          if (second != null)
+            Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              child: LeagueHighlightedHero(uiModel: second),
+            ),
+          if (first != null)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: LeagueHighlightedHero(
+                uiModel: first,
+                isLarge: true,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

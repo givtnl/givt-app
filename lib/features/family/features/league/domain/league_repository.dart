@@ -1,12 +1,16 @@
 import 'dart:async';
 
 import 'package:givt_app/features/family/features/league/domain/models/league_item.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class LeagueRepository {
-  LeagueRepository(this._api);
+  LeagueRepository(this._api, this._reflectAndShareRepository) {
+    _init();
+  }
 
   final FamilyAPIService _api;
+  final ReflectAndShareRepository _reflectAndShareRepository;
 
   final StreamController<List<LeagueItem>> _leagueStreamController =
       StreamController<List<LeagueItem>>.broadcast();
@@ -14,6 +18,12 @@ class LeagueRepository {
   Stream<List<LeagueItem>> onLeagueChanged() => _leagueStreamController.stream;
 
   List<LeagueItem> _league = [];
+
+  void _init() {
+    _reflectAndShareRepository.onGameStatsUpdated.listen((_) {
+      fetchLeague();
+    });
+  }
 
   Future<List<LeagueItem>> refreshLeagues() async {
     return fetchLeague();

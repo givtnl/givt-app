@@ -28,6 +28,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      minimumPadding: EdgeInsets.zero,
       appBar: const FunTopAppBar(
         title: 'League',
       ),
