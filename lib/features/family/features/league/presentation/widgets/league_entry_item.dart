@@ -16,16 +16,18 @@ class LeagueEntryItem extends StatelessWidget {
       children: [
         const SizedBox(width: 24),
         RankWidget(rank: uiModel.rank),
+        const SizedBox(width: 12),
         if (uiModel.imageUrl != null)
           SvgPicture.network(
             uiModel.imageUrl!,
             width: 40,
             height: 40,
           ),
+        const SizedBox(width: 16),
         if (uiModel.name != null) LabelMediumText(uiModel.name!),
         const Spacer(),
         LabelMediumText(
-          uiModel.xp.toString(),
+          '${uiModel.xp} XP',
           color: FamilyAppTheme.primary50,
         ),
         const SizedBox(width: 40),

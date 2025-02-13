@@ -12,6 +12,7 @@ class RankWidget extends StatelessWidget {
     return Container(
       height: 32,
       width: 32,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: _getColor(),

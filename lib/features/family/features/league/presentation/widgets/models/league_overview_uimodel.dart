@@ -3,9 +3,7 @@ import 'package:givt_app/features/family/features/league/presentation/widgets/mo
 class LeagueOverviewUIModel {
   LeagueOverviewUIModel({
     this.entries,
-    this.datetimeLabel,
   });
 
   final List<LeagueEntryUIModel>? entries;
-  final String? datetimeLabel;
 }

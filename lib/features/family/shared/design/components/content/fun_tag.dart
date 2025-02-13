@@ -54,6 +54,7 @@ class FunTag extends StatelessWidget {
     required String text,
     IconData? iconData,
     FlatSide flatSide = FlatSide.none,
+    double? iconSize,
   }) {
     return FunTag(
       text: text,
@@ -61,6 +62,7 @@ class FunTag extends StatelessWidget {
       accentColor: combo.accentColor,
       iconData: iconData,
       flatSide: flatSide,
+      iconSize: iconSize,
     );
   }
 
@@ -106,12 +108,14 @@ class FunTag extends StatelessWidget {
     required String text,
     IconData? iconData,
     FlatSide flatSide = FlatSide.none,
+    double? iconSize,
   }) {
     return FunTag.fromColorCombo(
       combo: ColorCombo.tertiary,
       text: text,
       iconData: iconData,
       flatSide: flatSide,
+      iconSize: iconSize,
     );
   }
 

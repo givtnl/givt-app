@@ -15,6 +15,21 @@ class FamilyAPIService {
 
   String get _apiURL => _requestHelper.apiURL;
 
+  Future<List<dynamic>> fetchLeague() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/groups/family/league');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    } else {
+      final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return decodedBody['items'] as List<dynamic>;
+    }
+  }
+
   Future<List<dynamic>> fetchAllProfiles() async {
     final url = Uri.https(_apiURL, '/givtservice/v1/profiles');
     final response = await client.get(url);

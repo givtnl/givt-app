@@ -15,6 +15,7 @@ class LeagueOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 24),
           const Padding(
@@ -23,15 +24,19 @@ class LeagueOverview extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           FunTag.tertiary(
-            text: '4 days',
+            text: ' 4 days',
             iconData: FontAwesomeIcons.solidClock,
+            iconSize: 12,
           ),
           const SizedBox(height: 32),
-          if (uiModel.entries != null)
-            LeagueHighlightedHeroes(uiModels: uiModel.entries!),
+          //if (uiModel.entries != null)
+            //LeagueHighlightedHeroes(uiModels: uiModel.entries!),
           const SizedBox(height: 16),
           if (uiModel.entries != null)
-            LeagueEntryList(uiModels: uiModel.entries!),
+            LeagueEntryList(
+              uiModels: uiModel.entries!,
+              shrinkWrap: true,
+            ),
         ],
       ),
     );

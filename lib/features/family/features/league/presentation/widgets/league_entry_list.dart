@@ -16,6 +16,7 @@ class LeagueEntryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      shrinkWrap: shrinkWrap,
       itemBuilder: (BuildContext context, int index) {
         return LeagueEntryItem(uiModel: uiModels[index]);
       },
