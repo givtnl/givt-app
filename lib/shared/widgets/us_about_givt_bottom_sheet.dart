@@ -31,9 +31,11 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
   final messageFocusNode = FocusNode();
   final scrollController = ScrollController();
   final FamilyAuthCubit _familyAuthCubit = getIt<FamilyAuthCubit>();
+  late bool isEnabled;
 
   @override
   void initState() {
+    isEnabled = widget.initialMessage.isNotEmpty;
     messageController.text = widget.initialMessage;
     if (widget.initialMessage.isNotEmpty) {
       messageFocusNode.requestFocus();
@@ -60,6 +62,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
       title: locals.titleAboutGivt,
       closeAction: () => context.pop(),
       primaryButton: FunButton(
+        isDisabled: !isEnabled,
         onTap: isEnabled
             ? () async {
                 if (!_formKey.currentState!.validate()) {
@@ -70,7 +73,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
                       appLanguage: locals.localeName,
                       email: user!.email,
                       guid: user.guid,
-                    );
+                );
               }
             : null,
         text: locals.send,
@@ -109,11 +112,14 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
               OutlinedTextFormField(
                 key: messageKey,
                 minLines: 3,
+                maxLines: 3,
                 focusNode: messageFocusNode,
                 controller: messageController,
                 hintText: locals.typeMessage,
                 keyboardType: TextInputType.multiline,
-                onChanged: (_) => setState(() {}),
+                onChanged: (text) => setState(() {
+                  isEnabled = text.isNotEmpty;
+                }),
               ),
             ],
           ),
@@ -121,6 +127,4 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
       ),
     );
   }
-
-  bool get isEnabled => messageController.text.isNotEmpty;
 }
