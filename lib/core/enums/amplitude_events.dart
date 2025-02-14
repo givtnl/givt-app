@@ -381,6 +381,8 @@ enum AmplitudeEvents {
   tutorialNextClicked('tutorial_next_clicked'),
   tutorialSkipClicked('tutorial_skip_clicked'),
 
+  bottomsheet('bottomsheet'),
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
   ;
