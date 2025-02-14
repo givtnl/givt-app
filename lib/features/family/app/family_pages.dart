@@ -73,10 +73,6 @@ enum FamilyPages {
     path: 'reflect-intro',
     name: 'REFLECT-INTRO',
   ),
-  assignBedtimeResponsibility(
-    path: 'assign-bedtime-responsibility',
-    name: 'ASSIGN-BEDTIME-RESPONSIBILITY',
-  ),
   setupBedtime(
     path: 'setup-bedtime',
     name: 'SETUP-BEDTIME',
