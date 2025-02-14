@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 
@@ -105,15 +106,12 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
                 ],
               ),
               const SizedBox(height: 20),
-              TextFormField(
+              OutlinedTextFormField(
                 key: messageKey,
+                minLines: 3,
                 focusNode: messageFocusNode,
                 controller: messageController,
-                minLines: 10,
-                maxLines: 10,
-                decoration: InputDecoration(
-                  hintText: locals.typeMessage,
-                ),
+                hintText: locals.typeMessage,
                 keyboardType: TextInputType.multiline,
                 onChanged: (_) => setState(() {}),
               ),
