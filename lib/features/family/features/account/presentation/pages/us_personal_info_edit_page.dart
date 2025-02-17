@@ -11,8 +11,8 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
-import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/account/presentation/widgets/us_change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
@@ -111,7 +111,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
         child: BlocBuilder(
           bloc: _authCubit,
           buildWhen: (previous, current) => current is Authenticated,
-          builder: (context, state) {
+          builder: (context, FamilyAuthState state) {
             return _buildLayout(state, context, locals);
           },
         ),
@@ -120,8 +120,8 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
   }
 
   SingleChildScrollView _buildLayout(
-      Object? state, BuildContext context, AppLocalizations locals) {
-    final user = (state! as Authenticated).user;
+      FamilyAuthState state, BuildContext context, AppLocalizations locals) {
+    final user = (state as Authenticated).user;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -158,12 +158,17 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.phone,
             ),
             value: user.phoneNumber,
-            onTap: () => _showModalBottomSheet(
+            onTap: () => FunBottomSheetWithAsyncAction.show(
               context,
-              bottomSheet: ChangePhoneNumberBottomSheet(
+              cubit: _asyncCubit,
+              initialState: UsChangePhoneNumberBottomSheet(
                 country: user.country,
                 phoneNumber: user.phoneNumber,
+                asyncCubit: _asyncCubit,
               ),
+              successText: 'Changes saved!',
+              loadingText: 'Updating profile information',
+              analyticsName: 'us_change_phone_number_bottom_sheet',
             ),
           ),
           _buildInfoRow(

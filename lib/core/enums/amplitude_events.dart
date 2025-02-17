@@ -44,6 +44,7 @@ enum AmplitudeEvents {
     'child_edit_monthly_allowance_save_clicked',
   ),
   aboutGivtSendFeedbackClicked('about_givt_send_feedback_clicked'),
+  editPhoneNumberClicked('edit_phone_number_clicked'),
 
   // Topup flow
   topupFailed('topup_failed'),

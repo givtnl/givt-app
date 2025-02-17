@@ -64,6 +64,8 @@ abstract class FamilyAuthRepository {
   void onRegistrationCancelled();
 
   bool hasUserStartedRegistration();
+
+  Future<void> updateNumber(String number);
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -445,4 +447,11 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   @override
   void onRegistrationCancelled() => _startedRegistration = false;
+
+  @override
+  Future<void> updateNumber(String number) async {
+    final newUserExt = _userExt!.copyWith(phoneNumber: number);
+    final result = _apiService.updateUserExt(newUserExt.toJson());
+    _updateAuthenticatedUserStream(newUserExt);
+  }
 }
