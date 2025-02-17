@@ -76,6 +76,7 @@ class AnalyticsHelper {
       'email': user.email,
       'profile_country': user.country,
       'first_name': user.firstName,
+      'phone_number': user.phoneNumber,
       AnalyticsHelper.isFamilyAppKey: user.isUsUser,
     };
   }

@@ -345,8 +345,15 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     Map<String, dynamic> newUserExt,
   ) async {
     try {
+      final userExt = UserExt.fromJson(newUserExt);
       final result = _apiService.updateUserExt(newUserExt);
       await refreshUser();
+      unawaited(
+        AnalyticsHelper.setUserProperties(
+          userId: userExt.guid,
+          userProperties: AnalyticsHelper.getUserPropertiesFromExt(userExt),
+        ),
+      );
       return result;
     } catch (e) {
       return false;
@@ -454,6 +461,10 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     final isSuccess = await _apiService.updateUserExt(newUserExt.toJson());
     if (isSuccess) {
       _updateAuthenticatedUserStream(newUserExt);
+      unawaited(AnalyticsHelper.setUserProperties(
+        userId: newUserExt.guid,
+        userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
+      ));
     } else {
       throw Exception('Phone number update failed');
     }
