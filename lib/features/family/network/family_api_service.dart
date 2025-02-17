@@ -526,25 +526,6 @@ class FamilyAPIService {
     return response.statusCode == 200;
   }
 
-  Future<bool> putKidToBed({
-    required String childGuid,
-    required String parentGuid,
-    required bool yes,
-  }) async {
-    return _postRequest(
-      '/givtservice/v1/profiles/bedtime-responsibility',
-      {
-        'BedTimeResponsibilities': [
-          {
-            'decision': yes,
-            'childid': childGuid,
-            'parentid': parentGuid,
-          },
-        ],
-      },
-    );
-  }
-
   Future<List<dynamic>> fetchFamilyMissions() async {
     final url = Uri.https(_apiURL, '/givtservice/v1/missions/family');
     final response = await client.get(url);

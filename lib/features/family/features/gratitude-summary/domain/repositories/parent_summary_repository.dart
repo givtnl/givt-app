@@ -6,18 +6,6 @@ class ParentSummaryRepository {
   final FamilyAPIService _familyAPIService;
   ParentSummaryItem? latestSummary;
 
-  Future<bool> assignBedtimeResponsibility({
-    required String childGuid,
-    required String parentGuid,
-    required bool yes,
-  }) async {
-    return _familyAPIService.putKidToBed(
-      childGuid: childGuid,
-      parentGuid: parentGuid,
-      yes: yes,
-    );
-  }
-
   Future<ParentSummaryItem> fetchLatestGameSummary() async {
     final response = await _familyAPIService.fetchLatestGameSummary();
     return latestSummary = ParentSummaryItem.fromMap(response);
