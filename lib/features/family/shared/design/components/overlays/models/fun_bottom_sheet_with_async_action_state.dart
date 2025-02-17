@@ -16,5 +16,7 @@ class LoadingState extends FunBottomSheetWithAsyncActionState {
 }
 
 class ErrorState extends FunBottomSheetWithAsyncActionState {
-  const ErrorState();
+  const ErrorState({this.errorMessage});
+
+  final String? errorMessage;
 }

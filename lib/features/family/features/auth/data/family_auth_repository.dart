@@ -475,6 +475,18 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   @override
   Future<void> updateEmail(String email) async {
     final newUserExt = _userExt!.copyWith(email: email);
+    if (!await _apiService.checktld(email)) {
+      throw invalidEmailException();
+    }
+
+    final result = await _apiService.checkEmail(email);
+    if (result.contains('temp')) {
+      throw invalidEmailException();
+    }
+    if (result.contains('true')) {
+      throw invalidEmailException();
+    }
+
     final isSuccess = await _apiService.updateUserExt(newUserExt.toJson());
     if (isSuccess) {
       _updateAuthenticatedUserStream(newUserExt);
@@ -488,4 +500,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       throw Exception('Email update failed');
     }
   }
+
+  Exception invalidEmailException() =>
+      Exception('The email you entered is invalid or already in use');
 }

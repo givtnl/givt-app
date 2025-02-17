@@ -93,9 +93,10 @@ class _FunBottomSheetWithAsyncActionState
                 title: widget.loadingText,
                 content: const CustomCircularProgressIndicator(),
               );
-            case ErrorState():
+            case final ErrorState error:
               return FunBottomSheet(
-                title: widget.errorText ??
+                title: error.errorMessage ??
+                    widget.errorText ??
                     'Oops, something went wrong!\nPlease try again later.',
                 content: FunIcon.xmark(),
                 primaryButton: FunButton(

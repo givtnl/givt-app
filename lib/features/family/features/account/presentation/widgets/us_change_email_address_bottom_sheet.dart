@@ -55,6 +55,8 @@ class _ChangeEmailAddressBottomSheetState
                   () => _familyAuthRepository.updateEmail(
                     emailController.text,
                   ),
+                  showGivtServerFailureMessage: true,
+                  showAnyErrorMessage: true,
                 );
               }
             : null,
