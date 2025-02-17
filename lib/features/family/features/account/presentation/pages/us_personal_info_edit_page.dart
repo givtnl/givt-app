@@ -19,13 +19,14 @@ import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
 import 'package:givt_app/features/family/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/fun_bottom_sheet_with_async_action.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/fingerprint_bottom_sheet.dart';
-import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/parent_avatar.dart';
 import 'package:givt_app/shared/widgets/us_about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
@@ -43,6 +44,8 @@ class USPersonalInfoEditPage extends StatefulWidget {
 
 class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
   final FamilyAuthCubit _authCubit = getIt<FamilyAuthCubit>();
+  final FunBottomSheetWithAsyncActionCubit _asyncCubit =
+      FunBottomSheetWithAsyncActionCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -291,14 +294,14 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.circleInfo,
             ),
             value: locals.titleAboutGivt,
-            onTap: () => showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              useSafeArea: true,
-              builder: (_) => Theme(
-                data: const FamilyAppTheme().toThemeData(),
-                child: const USAboutGivtBottomSheet(),
-              ),
+            onTap: () => FunBottomSheetWithAsyncAction.show(
+              context,
+              cubit: _asyncCubit,
+              initialState: USAboutGivtBottomSheet(asyncCubit: _asyncCubit),
+              successText:
+                  'Thanks for reaching out!\nWe will be in touch shortly',
+              loadingText: 'Sending message',
+              analyticsName: 'us_about_givt_bottom_sheet',
             ),
           ),
           const Divider(

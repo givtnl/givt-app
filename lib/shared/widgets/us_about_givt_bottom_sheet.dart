@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
@@ -14,10 +15,12 @@ import 'package:go_router/go_router.dart';
 
 class USAboutGivtBottomSheet extends StatefulWidget {
   const USAboutGivtBottomSheet({
+    required this.asyncCubit,
     this.initialMessage = '',
     super.key,
   });
 
+  final FunBottomSheetWithAsyncActionCubit asyncCubit;
   final String initialMessage;
 
   @override
@@ -68,11 +71,13 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
                 if (!_formKey.currentState!.validate()) {
                   return;
                 }
-                await context.read<InfraCubit>().contactSupport(
-                      message: messageController.text,
-                      appLanguage: locals.localeName,
-                      email: user!.email,
-                      guid: user.guid,
+                await widget.asyncCubit.doAsyncAction(
+                  () async => context.read<InfraCubit>().contactSupport(
+                        message: messageController.text,
+                        appLanguage: locals.localeName,
+                        email: user!.email,
+                        guid: user.guid,
+                      ),
                 );
               }
             : null,

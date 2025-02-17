@@ -18,51 +18,19 @@ class InfraCubit extends Cubit<InfraState> {
   final InfraRepository infraRepository;
   final AppConfig appConfig;
 
-  Future<void> contactSupport({
+  Future<void> contactSupportSafely({
     required String guid,
     required String email,
     required String message,
     required String appLanguage,
   }) async {
-    emit(const InfraLoading());
     try {
-      message = message.replaceAll('\n', '<br>');
-      final applang = 'App Language : $appLanguage';
-      final info = appConfig.packageInfo;
-
-      late String os;
-      late String device;
-
-      if (Platform.isAndroid) {
-        final androidInfo = await DeviceInfoPlugin().androidInfo;
-        final release = androidInfo.version.release;
-        final sdkInt = androidInfo.version.sdkInt;
-        final manufacturer = androidInfo.manufacturer;
-        final model = androidInfo.model;
-        os = 'Operating system : $release (SDK $sdkInt)';
-        device = 'Device : $manufacturer $model';
-      }
-
-      if (Platform.isIOS) {
-        final iosInfo = await DeviceInfoPlugin().iosInfo;
-        final machineId = iosInfo.utsname.machine;
-        final name = machineId.iOSProductName;
-        final systemName = iosInfo.systemName;
-        final version = iosInfo.systemVersion;
-        final model = iosInfo.model;
-        os = 'Operating system : $systemName $version';
-        device = 'Device : $name $model';
-      }
-
-      final appversion = 'App version : ${info.version}.${info.buildNumber}';
-      final footer =
-          '$email<br />$appversion<br />$os<br />$device<br />$applang';
-
-      await infraRepository.contactSupport(
+      await contactSupport(
         guid: guid,
-        message: '$message <br /><br />$footer',
+        email: email,
+        message: message,
+        appLanguage: appLanguage,
       );
-      emit(const InfraSuccess());
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -70,6 +38,52 @@ class InfraCubit extends Cubit<InfraState> {
       );
       emit(const InfraFailure());
     }
+  }
+
+  Future<void> contactSupport({
+    required String guid,
+    required String email,
+    required String message,
+    required String appLanguage,
+  }) async {
+    emit(const InfraLoading());
+    message = message.replaceAll('\n', '<br>');
+    final applang = 'App Language : $appLanguage';
+    final info = appConfig.packageInfo;
+
+    late String os;
+    late String device;
+
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      final release = androidInfo.version.release;
+      final sdkInt = androidInfo.version.sdkInt;
+      final manufacturer = androidInfo.manufacturer;
+      final model = androidInfo.model;
+      os = 'Operating system : $release (SDK $sdkInt)';
+      device = 'Device : $manufacturer $model';
+    }
+
+    if (Platform.isIOS) {
+      final iosInfo = await DeviceInfoPlugin().iosInfo;
+      final machineId = iosInfo.utsname.machine;
+      final name = machineId.iOSProductName;
+      final systemName = iosInfo.systemName;
+      final version = iosInfo.systemVersion;
+      final model = iosInfo.model;
+      os = 'Operating system : $systemName $version';
+      device = 'Device : $name $model';
+    }
+
+    final appversion = 'App version : ${info.version}.${info.buildNumber}';
+    final footer =
+        '$email<br />$appversion<br />$os<br />$device<br />$applang';
+
+    await infraRepository.contactSupport(
+      guid: guid,
+      message: '$message <br /><br />$footer',
+    );
+    emit(const InfraSuccess());
   }
 
   Future<void> checkForUpdate() async {

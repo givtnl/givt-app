@@ -5,15 +5,17 @@ class FunBottomSheetWithAsyncActionCubit
     extends Cubit<FunBottomSheetWithAsyncActionState> {
   FunBottomSheetWithAsyncActionCubit() : super(const InitialState());
 
-  Future<void> doAsyncAction(Future<void> asyncAction) async {
+  Future<void> doAsyncAction(Future<void> Function() asyncAction) async {
     emit(const LoadingState());
     try {
-      await asyncAction;
+      await asyncAction();
       success();
     } catch (e) {
       error();
     }
   }
+
+  void onClose() => _emitInitialState();
 
   void success() {
     emit(const SuccessState());
@@ -23,7 +25,11 @@ class FunBottomSheetWithAsyncActionCubit
     emit(const ErrorState());
   }
 
-  void onClickOkAfterError() {
+  void onClickTryAgainAfterError() {
+    _emitInitialState();
+  }
+
+  void _emitInitialState() {
     emit(const InitialState());
   }
 }

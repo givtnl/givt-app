@@ -38,7 +38,7 @@ class FunBottomSheetWithAsyncAction extends StatefulWidget {
     required String loadingText,
     required String successText,
     required String analyticsName,
-    required String? errorText,
+    String? errorText,
   }) {
     showModalBottomSheet<void>(
       context: context,
@@ -63,53 +63,67 @@ class _FunBottomSheetWithAsyncActionState
     extends State<FunBottomSheetWithAsyncAction> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
-      bloc: widget.cubit,
-      builder:
-          (BuildContext context, FunBottomSheetWithAsyncActionState state) {
-        switch (state) {
-          case InitialState():
-            return widget.initialState;
-          case SuccessState():
-            return FunBottomSheet(
-              title: widget.successText,
-              content: FunIcon.checkmark(),
-              primaryButton: FunButton(
-                text: 'Done',
-                onTap: () => context.pop(),
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.bottomsheet,
-                  parameters: {
-                    'bottomsheet_name': widget.analyticsName,
-                    'action': 'successStateDoneClicked',
-                  },
+    return PopScope(
+      onPopInvokedWithResult: (_, __) => widget.cubit.onClose(),
+      child: BlocBuilder(
+        bloc: widget.cubit,
+        builder:
+            (BuildContext context, FunBottomSheetWithAsyncActionState state) {
+          switch (state) {
+            case InitialState():
+              return widget.initialState;
+            case SuccessState():
+              return FunBottomSheet(
+                title: widget.successText,
+                content: FunIcon.checkmark(),
+                primaryButton: FunButton(
+                  text: 'Done',
+                  onTap: () => context.pop(),
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.bottomsheet,
+                    parameters: {
+                      'bottomsheet_name': widget.analyticsName,
+                      'action': 'successStateDoneClicked',
+                    },
+                  ),
                 ),
-              ),
-            );
-          case LoadingState():
-            return FunBottomSheet(
-              title: widget.loadingText,
-              content: const CustomCircularProgressIndicator(),
-            );
-          case ErrorState():
-            return FunBottomSheet(
-              title: widget.errorText ??
-                  'Oops, something went wrong!\nPlease try again later.',
-              content: FunIcon.xmark(),
-              primaryButton: FunButton(
-                text: 'OK',
-                onTap: () => widget.cubit.onClickOkAfterError(),
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.bottomsheet,
-                  parameters: {
-                    'bottomsheet_name': widget.analyticsName,
-                    'action': 'errorStateOkClicked',
-                  },
+              );
+            case LoadingState():
+              return FunBottomSheet(
+                title: widget.loadingText,
+                content: const CustomCircularProgressIndicator(),
+              );
+            case ErrorState():
+              return FunBottomSheet(
+                title: widget.errorText ??
+                    'Oops, something went wrong!\nPlease try again later.',
+                content: FunIcon.xmark(),
+                primaryButton: FunButton(
+                  text: 'Try again',
+                  onTap: () => widget.cubit.onClickTryAgainAfterError(),
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.bottomsheet,
+                    parameters: {
+                      'bottomsheet_name': widget.analyticsName,
+                      'action': 'errorStateTryAgainClicked',
+                    },
+                  ),
                 ),
-              ),
-            );
-        }
-      },
+                secondaryButton: FunButton.secondary(
+                  text: 'Close',
+                  onTap: () => context.pop(),
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.bottomsheet,
+                    parameters: {
+                      'bottomsheet_name': widget.analyticsName,
+                      'action': 'errorStateCloseClicked',
+                    },
+                  ),
+                ),
+              );
+          }
+        },
+      ),
     );
   }
 }

@@ -55,6 +55,7 @@ import 'package:givt_app/features/family/features/reset_password/repositories/re
 import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
@@ -82,6 +83,7 @@ void initCubits() {
       () => InternetConnectionCubit(getIt()),
     )
     ..registerFactory(ParentSummaryCubit.new)
+    ..registerFactory(FunBottomSheetWithAsyncActionCubit.new)
     ..registerFactory(() => DailyExperienceCubit(getIt()))
     ..registerFactory(AssignBedtimeResponsibilityCubit.new)
     ..registerFactory(() => AdminFeeCubit(getIt()))
