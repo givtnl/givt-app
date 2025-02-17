@@ -23,137 +23,150 @@ class SignSepaMandatePage extends StatelessWidget {
     final user = context.read<AuthCubit>().state.user;
     return Scaffold(
       appBar: const RegistrationAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 30,
-          left: 20,
-          right: 20,
-          top: 20,
-        ),
-        child: BlocListener<RegistrationBloc, RegistrationState>(
-          listenWhen: (previous, current) => previous.status != current.status,
-          listener: (context, state) {
-            if (state.status == RegistrationStatus.success) {
-              context.pushNamed(
-                Pages.permitBiometric.name,
-                extra: PermitBiometricRequest.registration(
-                  redirect: (context) =>
-                      context.goNamed(Pages.registrationSuccess.name),
-                ),
-              );
-            }
-            if (state.status == RegistrationStatus.conflict) {
-              showDialog<void>(
-                context: context,
-                builder: (_) => WarningDialog(
-                  title: locals.mandateFailed,
-                  content: locals.mandateFailPersonalInformation,
-                  onConfirm: () => context.goNamed(Pages.home.name),
-                ),
-              );
-            }
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              bottom: 30,
+              left: 20,
+              right: 20,
+              top: 20,
+            ),
+            child: BlocListener<RegistrationBloc, RegistrationState>(
+              listenWhen: (previous, current) => previous.status != current.status,
+              listener: (context, state) {
+                if (state.status == RegistrationStatus.success) {
+                  context.pushNamed(
+                    Pages.permitBiometric.name,
+                    extra: PermitBiometricRequest.registration(
+                      redirect: (context) =>
+                          context.goNamed(Pages.registrationSuccess.name),
+                    ),
+                  );
+                }
+                if (state.status == RegistrationStatus.conflict) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.mandateFailed,
+                      content: locals.mandateFailPersonalInformation,
+                      onConfirm: () => context.goNamed(Pages.home.name),
+                    ),
+                  );
+                }
 
-            if (state.status == RegistrationStatus.badRequest) {
-              showDialog<void>(
-                context: context,
-                builder: (_) => WarningDialog(
-                  title: locals.mandateFailed,
-                  content: locals.duplicateAccountOrganisationMessage,
-                  onConfirm: () => context.goNamed(Pages.home.name),
-                ),
-              );
-            }
+                if (state.status == RegistrationStatus.badRequest) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.mandateFailed,
+                      content: locals.duplicateAccountOrganisationMessage,
+                      onConfirm: () => context.goNamed(Pages.home.name),
+                    ),
+                  );
+                }
 
-            if (state.status == RegistrationStatus.failure) {
-              showDialog<void>(
-                context: context,
-                builder: (_) => WarningDialog(
-                  title: locals.mandateFailed,
-                  content: locals.mandateFailTryAgainLater,
-                  onConfirm: () => context.goNamed(Pages.home.name),
-                ),
-              );
-            }
-          },
-          child: Column(
-            children: [
-              if (size.height > 600)
-                const SizedBox(
-                  height: 20,
-                ),
-              Text(
-                locals.bacsVerifyTitle,
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      fontWeight: FontWeight.bold,
+                if (state.status == RegistrationStatus.failure) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.mandateFailed,
+                      content: locals.mandateFailTryAgainLater,
+                      onConfirm: () => context.goNamed(Pages.home.name),
                     ),
-              ),
-              if (size.height > 600)
-                const SizedBox(
-                  height: 20,
-                ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildInforRow(
-                      value: '${user.firstName} ${user.lastName}',
-                      icon: const Icon(Icons.person),
-                      size: size,
-                    ),
-                    _buildInforRow(
-                      value: user.email,
-                      icon: const Icon(
-                        Icons.alternate_email,
-                        color: AppTheme.givtLightBlue,
-                      ),
-                      size: size,
-                    ),
-                    _buildInforRow(
-                      value:
-                          '${user.address} ${user.postalCode} ${user.city}, ${user.country}',
-                      icon: const Icon(
-                        FontAwesomeIcons.house,
-                        color: AppTheme.givtLightGreen,
-                      ),
-                      size: size,
-                    ),
-                    _buildInforRow(
-                      value: user.iban,
-                      icon: const Icon(
-                        FontAwesomeIcons.creditCard,
-                        color: AppTheme.givtOrange,
-                      ),
-                      size: size,
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              Text(
-                locals.sepaVerifyBody,
-                textAlign: TextAlign.center,
-              ),
-              const Spacer(),
-              Text(locals.signMandateDisclaimer),
-              if (context.watch<RegistrationBloc>().state.status ==
-                  RegistrationStatus.loading)
-                const Center(
-                  child: CircularProgressIndicator(),
-                )
-              else
-                ElevatedButton(
-                  onPressed: () => context.read<RegistrationBloc>().add(
-                        RegistrationSignMandate(
-                          guid: user.guid,
-                          appLanguage: locals.localeName,
+                  );
+                }
+              },
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight - kToolbarHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      children: [
+                        if (size.height > 600)
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        Text(
+                          locals.bacsVerifyTitle,
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
-                      ),
-                  child: Text(locals.signMandate),
+                        if (size.height > 600)
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildInforRow(
+                                value: '${user.firstName} ${user.lastName}',
+                                icon: const Icon(Icons.person),
+                                size: size,
+                              ),
+                              _buildInforRow(
+                                value: user.email,
+                                icon: const Icon(
+                                  Icons.alternate_email,
+                                  color: AppTheme.givtLightBlue,
+                                ),
+                                size: size,
+                              ),
+                              _buildInforRow(
+                                value:
+                                    '${user.address} ${user.postalCode} ${user.city}, ${user.country}',
+                                icon: const Icon(
+                                  FontAwesomeIcons.house,
+                                  color: AppTheme.givtLightGreen,
+                                ),
+                                size: size,
+                              ),
+                              _buildInforRow(
+                                value: user.iban,
+                                icon: const Icon(
+                                  FontAwesomeIcons.creditCard,
+                                  color: AppTheme.givtOrange,
+                                ),
+                                size: size,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          locals.sepaVerifyBody,
+                          textAlign: TextAlign.center,
+                        ),
+                        const Spacer(),
+                        Text(locals.signMandateDisclaimer),
+                        if (context.watch<RegistrationBloc>().state.status ==
+                            RegistrationStatus.loading)
+                          const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        else
+                          ElevatedButton(
+                            onPressed: () => context.read<RegistrationBloc>().add(
+                                  RegistrationSignMandate(
+                                    guid: user.guid,
+                                    appLanguage: locals.localeName,
+                                  ),
+                                ),
+                            child: Text(locals.signMandate),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
-            ],
-          ),
-        ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

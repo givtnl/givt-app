@@ -42,68 +42,85 @@ class _SepaMandateExplanationPageView extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: const RegistrationAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 30,
-          left: 20,
-          right: 20,
-          top: 20,
-        ),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              bottom: 30,
+              left: 20,
+              right: 20,
+              top: 20,
             ),
-            GestureDetector(
-              onTap: () => showModalBottomSheet<void>(
-                context: context,
-                showDragHandle: true,
-                isScrollControlled: true,
-                useSafeArea: true,
-                backgroundColor: AppTheme.givtPurple,
-                builder: (BuildContext context) => TermsAndConditionsDialog(
-                  content: locals.slimPayInfoDetail,
-                  isDarkBackground: true,
+            child: SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight - kToolbarHeight,
                 ),
-              ),
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: locals.slimPayInformation,
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () => showModalBottomSheet<void>(
+                          context: context,
+                          showDragHandle: true,
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          backgroundColor: AppTheme.givtPurple,
+                          builder: (BuildContext context) =>
+                              TermsAndConditionsDialog(
+                            content: locals.slimPayInfoDetail,
+                            isDarkBackground: true,
                           ),
-                    ),
-                    const WidgetSpan(
-                      child: Icon(Icons.info_rounded, size: 16),
-                    ),
-                  ],
+                        ),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: locals.slimPayInformation,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              const WidgetSpan(
+                                child: Icon(Icons.info_rounded, size: 16),
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const Spacer(),
+                      Image.asset(
+                        'assets/images/givy_slim_pay.png',
+                        height: size.height * 0.2,
+                      ),
+                      const Spacer(),
+                      Text(
+                        locals.slimPayInformationPart2,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        onPressed: () => context.goNamed(
+                          Pages.signSepaMandate.name,
+                          extra: context.read<RegistrationBloc>(),
+                        ),
+                        child: Text(locals.next),
+                      ),
+                    ],
+                  ),
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
-            const Spacer(),
-            Image.asset(
-              'assets/images/givy_slim_pay.png',
-              height: size.height * 0.2,
-            ),
-            const Spacer(),
-            Text(
-              locals.slimPayInformationPart2,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: () => context.goNamed(
-                Pages.signSepaMandate.name,
-                extra: context.read<RegistrationBloc>(),
-              ),
-              child: Text(locals.next),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
