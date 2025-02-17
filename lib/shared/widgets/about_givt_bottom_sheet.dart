@@ -142,7 +142,7 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                                   }
                                   await context
                                       .read<InfraCubit>()
-                                      .contactSupport(
+                                      .contactSupportSafely(
                                         message: messageController.text,
                                         appLanguage: locals.localeName,
                                         email: user.email,

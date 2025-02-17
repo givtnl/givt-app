@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 class USAboutGivtBottomSheet extends StatefulWidget {
   const USAboutGivtBottomSheet({
+    required this.asyncCubit,
     this.initialMessage = '',
     super.key,
   });
 
+  final FunBottomSheetWithAsyncActionCubit asyncCubit;
   final String initialMessage;
 
   @override
@@ -26,9 +34,11 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
   final messageFocusNode = FocusNode();
   final scrollController = ScrollController();
   final FamilyAuthCubit _familyAuthCubit = getIt<FamilyAuthCubit>();
+  late bool isEnabled;
 
   @override
   void initState() {
+    isEnabled = widget.initialMessage.isNotEmpty;
     messageController.text = widget.initialMessage;
     if (widget.initialMessage.isNotEmpty) {
       messageFocusNode.requestFocus();
@@ -51,118 +61,75 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
     final size = MediaQuery.sizeOf(context);
     const messageKey = GlobalObjectKey('messageKey');
     final user = _familyAuthCubit.user;
-    return BottomSheetLayout(
-      title: Text(
-        locals.titleAboutGivt,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-      ),
-      child: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: size.height,
-          ),
-          child: BlocConsumer<InfraCubit, InfraState>(
-            listener: (context, state) {
-              if (state is InfraSuccess) {
-                showDialog<void>(
-                  context: context,
-                  builder: (_) => WarningDialog(
-                    title: locals.success,
-                    content: locals.feedbackMailSent,
-                    onConfirm: () => Navigator.of(context).pop(),
-                  ),
-                ).whenComplete(() => Navigator.of(context).pop());
-              }
-              if (state is InfraFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(locals.somethingWentWrong),
-                  ),
+    return FunBottomSheet(
+      title: locals.titleAboutGivt,
+      closeAction: () => context.pop(),
+      primaryButton: FunButton(
+        isDisabled: !isEnabled,
+        onTap: isEnabled
+            ? () async {
+                if (!_formKey.currentState!.validate()) {
+                  return;
+                }
+                await widget.asyncCubit.doAsyncAction(
+                  () async => context.read<InfraCubit>().contactSupport(
+                        message: messageController.text,
+                        appLanguage: locals.localeName,
+                        email: user!.email,
+                        guid: user.guid,
+                      ),
                 );
               }
-            },
-            builder: (context, state) {
-              return Form(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/images/logo.png',
-                        height: size.height * 0.03,
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        locals.informationAboutUsUs,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              fontSize: 16,
-                            ),
-                      ),
-                      const SizedBox(height: 20),
-                      AppVersion(),
-                      SizedBox(
-                        height: size.height * 0.1,
-                      ),
-                      Text(
-                        locals.feedbackTitle,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        key: messageKey,
-                        focusNode: messageFocusNode,
-                        controller: messageController,
-                        minLines: 10,
-                        maxLines: 10,
-                        decoration: InputDecoration(
-                          hintText: locals.typeMessage,
-                        ),
-                        keyboardType: TextInputType.multiline,
-                        onChanged: (_) => setState(() {}),
-                      ),
-                      const SizedBox(height: 20),
-                      if (state is InfraLoading)
-                        const CircularProgressIndicator()
-                      else
-                        ElevatedButton(
-                          onPressed: isEnabled
-                              ? () async {
-                                  if (!_formKey.currentState!.validate()) {
-                                    return;
-                                  }
-                                  await context
-                                      .read<InfraCubit>()
-                                      .contactSupport(
-                                        message: messageController.text,
-                                        appLanguage: locals.localeName,
-                                        email: user!.email,
-                                        guid: user.guid,
-                                      );
-                                }
-                              : null,
-                          style: ElevatedButton.styleFrom(
-                            disabledBackgroundColor: Colors.grey,
-                          ),
-                          child: Text(
-                            locals.send,
-                          ),
-                        ),
-                    ],
+            : null,
+        text: locals.send,
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.aboutGivtSendFeedbackClicked,
+        ),
+      ),
+      content: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/images/logo_green.png',
+                width: 140,
+              ),
+              const SizedBox(height: 24),
+              const BodySmallText(
+                "Givt is a product of Givt Inc.\n\nWe are located on 12 N Cheyanne Ave, #305 Tulsa, OK. For questions or complaints you can reach us via +1 918-615-9611 or support@givt.app",
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              AppVersion(
+                isOldStyle: false,
+              ),
+              const SizedBox(height: 32),
+              Row(
+                children: [
+                  TitleSmallText(
+                    locals.feedbackTitle,
                   ),
-                ),
-              );
-            },
+                ],
+              ),
+              const SizedBox(height: 20),
+              OutlinedTextFormField(
+                key: messageKey,
+                minLines: 3,
+                maxLines: 3,
+                focusNode: messageFocusNode,
+                controller: messageController,
+                hintText: locals.typeMessage,
+                keyboardType: TextInputType.multiline,
+                onChanged: (text) => setState(() {
+                  isEnabled = text.isNotEmpty;
+                }),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-
-  bool get isEnabled => messageController.text.isNotEmpty;
 }
