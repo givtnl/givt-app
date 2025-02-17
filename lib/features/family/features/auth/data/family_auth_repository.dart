@@ -487,7 +487,10 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       throw invalidEmailException();
     }
 
-    final isSuccess = await _apiService.updateUserExt(newUserExt.toJson());
+    final isSuccess = await _apiService.updateUser(
+      newUserExt.guid,
+      newUserExt.toJson(),
+    );
     if (isSuccess) {
       _updateAuthenticatedUserStream(newUserExt);
       unawaited(
@@ -497,7 +500,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
         ),
       );
     } else {
-      throw Exception('Email update failed');
+      throw Exception('Oops, something went wrong!\nPlease try again later.');
     }
   }
 
