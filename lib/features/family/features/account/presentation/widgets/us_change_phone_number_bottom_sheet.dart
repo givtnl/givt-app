@@ -105,6 +105,7 @@ class _UsChangePhoneNumberBottomSheetState
         key: formKey,
         child: Column(
           children: [
+            const SizedBox(height: 16),
             if (selectedCountry == Country.us)
               MobileNumberFormFieldUs(
                 phone: phone,

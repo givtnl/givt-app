@@ -451,7 +451,11 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   @override
   Future<void> updateNumber(String number) async {
     final newUserExt = _userExt!.copyWith(phoneNumber: number);
-    final result = _apiService.updateUserExt(newUserExt.toJson());
-    _updateAuthenticatedUserStream(newUserExt);
+    final isSuccess = await _apiService.updateUserExt(newUserExt.toJson());
+    if (isSuccess) {
+      _updateAuthenticatedUserStream(newUserExt);
+    } else {
+      throw Exception('Phone number update failed');
+    }
   }
 }
