@@ -10,8 +10,8 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/util.dart';
 
-class UsChangePhoneNumberBottomSheet extends StatefulWidget {
-  const UsChangePhoneNumberBottomSheet({
+class USChangePhoneNumberBottomSheet extends StatefulWidget {
+  const USChangePhoneNumberBottomSheet({
     required this.country,
     required this.phoneNumber,
     required this.asyncCubit,
@@ -23,12 +23,12 @@ class UsChangePhoneNumberBottomSheet extends StatefulWidget {
   final FunBottomSheetWithAsyncActionCubit asyncCubit;
 
   @override
-  State<UsChangePhoneNumberBottomSheet> createState() =>
-      _UsChangePhoneNumberBottomSheetState();
+  State<USChangePhoneNumberBottomSheet> createState() =>
+      _USChangePhoneNumberBottomSheetState();
 }
 
-class _UsChangePhoneNumberBottomSheetState
-    extends State<UsChangePhoneNumberBottomSheet> {
+class _USChangePhoneNumberBottomSheetState
+    extends State<USChangePhoneNumberBottomSheet> {
   final FamilyAuthRepository _familyAuthRepository =
       getIt<FamilyAuthRepository>();
   final formKey = GlobalKey<FormState>();
@@ -94,10 +94,12 @@ class _UsChangePhoneNumberBottomSheetState
             : null,
         text: locals.save,
         analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.editPhoneNumberClicked,
+          AmplitudeEvents.editPhoneNumberSaveClicked,
           parameters: {
             'country': selectedCountry.countryCode,
-            'phone': selectedCountry.prefix + phone.text,
+            'new_phone': selectedCountry.prefix + phone.text,
+            'old_phone': widget.phoneNumber,
+            'old_country': widget.country,
           },
         ),
       ),

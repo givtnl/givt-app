@@ -10,8 +10,8 @@ import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
-import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/account/presentation/widgets/us_change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/family/features/account/presentation/widgets/us_change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
@@ -145,11 +145,16 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               ),
             ),
             value: user.email,
-            onTap: () => _showModalBottomSheet(
+            onTap: () => FunBottomSheetWithAsyncAction.show(
               context,
-              bottomSheet: ChangeEmailAddressBottomSheet(
+              cubit: _asyncCubit,
+              initialState: USChangeEmailAddressBottomSheet(
                 email: user.email,
+                asyncCubit: _asyncCubit,
               ),
+              successText: 'Changes saved!',
+              loadingText: 'Updating profile information',
+              analyticsName: 'us_change_email_bottom_sheet',
             ),
           ),
           _buildInfoRow(
@@ -161,7 +166,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
             onTap: () => FunBottomSheetWithAsyncAction.show(
               context,
               cubit: _asyncCubit,
-              initialState: UsChangePhoneNumberBottomSheet(
+              initialState: USChangePhoneNumberBottomSheet(
                 country: user.country,
                 phoneNumber: user.phoneNumber,
                 asyncCubit: _asyncCubit,

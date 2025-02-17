@@ -66,6 +66,8 @@ abstract class FamilyAuthRepository {
   bool hasUserStartedRegistration();
 
   Future<void> updateNumber(String number);
+
+  Future<void> updateEmail(String email);
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -467,6 +469,23 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       ));
     } else {
       throw Exception('Phone number update failed');
+    }
+  }
+
+  @override
+  Future<void> updateEmail(String email) async {
+    final newUserExt = _userExt!.copyWith(email: email);
+    final isSuccess = await _apiService.updateUserExt(newUserExt.toJson());
+    if (isSuccess) {
+      _updateAuthenticatedUserStream(newUserExt);
+      unawaited(
+        AnalyticsHelper.setUserProperties(
+          userId: newUserExt.guid,
+          userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
+        ),
+      );
+    } else {
+      throw Exception('Email update failed');
     }
   }
 }

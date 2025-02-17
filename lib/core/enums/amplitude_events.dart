@@ -44,7 +44,8 @@ enum AmplitudeEvents {
     'child_edit_monthly_allowance_save_clicked',
   ),
   aboutGivtSendFeedbackClicked('about_givt_send_feedback_clicked'),
-  editPhoneNumberClicked('edit_phone_number_clicked'),
+  editPhoneNumberSaveClicked('edit_phone_number_save_clicked'),
+  editEmailSaveClicked('edit_email_save_clicked'),
 
   // Topup flow
   topupFailed('topup_failed'),
@@ -58,7 +59,6 @@ enum AmplitudeEvents {
 
   // Edit Recurring Giving allowance flow
   editRGAConfirmClicked('edit_rga_confirm_clicked'),
-
   childEditCancelClicked('child_edit_cancel_clicked'),
   childProfileClicked('child_profile_clicked'),
   adultProfileTileClicked('adult_profile_tile_clicked'),
@@ -110,7 +110,6 @@ enum AmplitudeEvents {
     'invited_to_impact_group_bottom_sheet_shown',
   ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
-
   organisationCardClicked('organisation_card_clicked'),
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
   sliderAmountChanged('slider_amount_changed'),
@@ -202,7 +201,6 @@ enum AmplitudeEvents {
   coinMediumIdNotRecognizedTryAgainClicked(
     'coin_medium_id_not_recognized_try_again_clicked',
   ),
-
   organisationSelected('organisation_is_set'),
   editAvatarIconClicked('edit_avatar_icon_clicked'),
   avatarImageSelected('avatar_image_selected'),
@@ -229,7 +227,6 @@ enum AmplitudeEvents {
   goToChallengeFromRegistrationClicked(
     'go_to_challenge_from_registration_clicked',
   ),
-
   bottomsheetCloseButtonClicked('bottomsheet_close_button_clicked'),
 
   // BoxOrigin flow
@@ -311,7 +308,6 @@ enum AmplitudeEvents {
   familyReflectSummaryGenerousDeedsClicked(
     'family_reflect_summary_generous_deeds_clicked',
   ),
-
   newActOfGenerosityClicked('new_act_of_generosity_clicked'),
   recommendationTypeSelectorClicked('recommendation_type_selector_clicked'),
   skipGenerosActPressed('skip_generous_act_pressed'),
@@ -344,7 +340,6 @@ enum AmplitudeEvents {
   // Fun Counter
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
   funCounterIncrementClicked('fun_counter_increment_clicked'),
-
   boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
 
   //Bedtime summary
@@ -355,7 +350,6 @@ enum AmplitudeEvents {
   doneRecordingSummaryMessageClicked(
     'done_recording_summary_message_clicked',
   ),
-
   volumeBottomSheetReadyClicked('volume_bottom_sheet_ready_clicked'),
 
   //Missions
@@ -379,7 +373,6 @@ enum AmplitudeEvents {
   tutorialStartClicked('tutorial_start_clicked'),
   tutorialNextClicked('tutorial_next_clicked'),
   tutorialSkipClicked('tutorial_skip_clicked'),
-
   bottomsheet('bottomsheet'),
 
   // DEBUG ONLY
