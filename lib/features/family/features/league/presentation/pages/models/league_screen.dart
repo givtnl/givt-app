@@ -31,16 +31,18 @@ class _LeagueScreenState extends State<LeagueScreen> {
     super.didChangeDependencies();
     _calculateDatesAndTimes();
     _leagueCubit.init();
-    if (_remainingHours <= 24) {
+    if (daysDifference <= 1) {
       _startCountdown();
     }
   }
-  
+
   void _calculateDatesAndTimes() {
     final now = DateTime.now();
     mondayMidnight = DateTime(now.year, now.month, now.day).add(
       Duration(
-        days: (DateTime.monday - now.weekday) % DateTime.daysPerWeek,
+        days: now.weekday == DateTime.monday
+            ? 7
+            : (DateTime.monday - now.weekday) % DateTime.daysPerWeek,
       ),
     );
     _minutesUntilReset = mondayMidnight.difference(now).inMinutes;
