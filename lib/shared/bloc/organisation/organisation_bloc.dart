@@ -39,12 +39,15 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
-      final unFiltered = await _collectGroupRepository.getCollectGroupList();
+      var unFiltered = await _collectGroupRepository.getCollectGroupList();
+      if (unFiltered.isEmpty) {
+        unFiltered = await _collectGroupRepository.fetchCollectGroupList();
+      }
       final userAccountType = await _getAccountType(event.country);
       final organisations = unFiltered
           .where(
             (organisation) => organisation.accountType == userAccountType,
-          )
+      )
           .toList();
       var selectedGroup = state.selectedCollectGroup;
       if (event.showLastDonated) {

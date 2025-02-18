@@ -94,7 +94,12 @@ class FamilyAppRoutes {
       name: FamilyPages.registrationUS.name,
       builder: (context, state) {
         final email = state.uri.queryParameters['email'] ?? '';
-
+        getIt<OrganisationBloc>().add(
+          OrganisationFetch(
+            Country.fromCode(Country.us.countryCode),
+            type: CollectGroupType.none.index,
+          ),
+        );
         return UsSignUpPage(
           email: email,
         );

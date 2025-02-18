@@ -23,6 +23,7 @@ class AddMemberLoadingPage extends StatelessWidget {
       context.goNamed(FamilyPages.profileSelection.name);
       return;
     }
+
     getIt<OrganisationBloc>().state.filteredOrganisations.isNotEmpty
         ? context.goNamed(FamilyPages.heardAboutGivt.name)
         : context.goNamed(FamilyPages.profileSelection.name);

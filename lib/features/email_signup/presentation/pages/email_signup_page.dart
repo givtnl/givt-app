@@ -224,7 +224,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                             content: locals.termsText,
                                             overrideCountryIso:
                                                 state.country?.countryCode,
-                                              ),
+                                          ),
                                         ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,15 +268,17 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                         setLoading();
                                         AppThemeSwitcher.of(context)
                                             .switchTheme(isFamilyApp: false);
-                                        await context
-                                            .read<AuthCubit>()
-                                            .register(
-                                              country: state.country!,
-                                              email: state.email,
-                                              locale: Localizations.localeOf(
-                                                      context)
-                                                  .languageCode,
-                                            );
+                                        try {
+                                          await context
+                                              .read<AuthCubit>()
+                                              .register(
+                                                country: state.country!,
+                                                email: state.email,
+                                                locale: Localizations.localeOf(
+                                                        context)
+                                                    .languageCode,
+                                              );
+                                        } catch (e, s) {}
                                         setLoading(state: false);
                                       }
                                     }
