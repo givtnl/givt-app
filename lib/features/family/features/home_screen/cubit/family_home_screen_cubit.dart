@@ -55,7 +55,12 @@ class FamilyHomeScreenCubit
     });
     _missionRepository.onMissionsUpdated().listen(_missionsChanged);
 
-    _missionsChanged(await _missionRepository.getMissions());
+    unawaited(
+      inTryCatchFinally(
+        inTry: () async =>
+            _missionsChanged(await _missionRepository.getMissions()),
+      ),
+    );
     _onProfilesChanged(await _profilesRepository.getProfiles());
     _onGroupsChanged(
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
