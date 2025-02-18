@@ -57,7 +57,7 @@ abstract class FamilyAuthRepository {
 
   Future<void> refreshUser() async {}
 
-  void onRegistrationFinished();
+  Future<void> onRegistrationFinished();
 
   void onRegistrationStarted();
 
@@ -439,7 +439,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }
 
   @override
-  void onRegistrationFinished() {
+  Future<void> onRegistrationFinished() async {
+    // a little delay to allow navigation to resolve first
+    await Future.delayed(const Duration(milliseconds: 30));
     _startedRegistration = false;
     _onRegistrationFinishedStream.add(null);
   }

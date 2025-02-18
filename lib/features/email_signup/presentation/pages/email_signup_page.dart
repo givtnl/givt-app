@@ -224,7 +224,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                             content: locals.termsText,
                                             overrideCountryIso:
                                                 state.country?.countryCode,
-                                              ),
+                                          ),
                                         ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,15 +268,19 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                         setLoading();
                                         AppThemeSwitcher.of(context)
                                             .switchTheme(isFamilyApp: false);
-                                        await context
-                                            .read<AuthCubit>()
-                                            .register(
-                                              country: state.country!,
-                                              email: state.email,
-                                              locale: Localizations.localeOf(
-                                                      context)
-                                                  .languageCode,
-                                            );
+                                        try {
+                                          await context
+                                              .read<AuthCubit>()
+                                              .register(
+                                                country: state.country!,
+                                                email: state.email,
+                                                locale: Localizations.localeOf(
+                                                        context)
+                                                    .languageCode,
+                                              );
+                                        } catch (e, s) {
+                                          //do nothing (error will be shown via custom state)
+                                        }
                                         setLoading(state: false);
                                       }
                                     }
@@ -355,6 +359,16 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           builder: (context) => WarningDialog(
             title: context.l10n.certExceptionTitle,
             content: context.l10n.certExceptionBody,
+            onConfirm: () => context.pop(),
+          ),
+        );
+      case final EmailSignupError error:
+        setLoading(state: false);
+        await showDialog<void>(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: 'An error occurred',
+            content: error.message,
             onConfirm: () => context.pop(),
           ),
         );

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/add_member/cubit/add_member_cubit.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
@@ -10,6 +12,7 @@ import 'package:go_router/go_router.dart';
 
 class AddMemberLoadingPage extends StatelessWidget {
   const AddMemberLoadingPage({this.skipHeardAboutGivt = false, super.key});
+
   final bool skipHeardAboutGivt;
 
   void _navigateToProfileSelection(BuildContext context) {
@@ -17,11 +20,17 @@ class AddMemberLoadingPage extends StatelessWidget {
       context.pop();
     }
 
-    if(skipHeardAboutGivt) {
+    if (skipHeardAboutGivt) {
       context.goNamed(FamilyPages.profileSelection.name);
       return;
     }
-    context.goNamed(FamilyPages.heardAboutGivt.name);
+
+    if (getIt<OrganisationBloc>().state.filteredOrganisations.isNotEmpty) {
+      context.goNamed(FamilyPages.heardAboutGivt.name);
+    } else {
+      getIt<FamilyAuthRepository>().onRegistrationFinished();
+      context.goNamed(FamilyPages.profileSelection.name);
+    }
   }
 
   @override

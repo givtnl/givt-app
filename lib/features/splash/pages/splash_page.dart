@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
@@ -8,6 +9,7 @@ import 'package:givt_app/features/permit_biometric/models/permit_biometric_reque
 import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
 import 'package:givt_app/features/splash/cubit/splash_custom.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/utils/add_member_util.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +34,12 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _cubit.init();
+      getIt<OrganisationBloc>().add(
+        OrganisationFetch(
+          Country.fromCode(Country.us.countryCode),
+          type: CollectGroupType.none.index,
+        ),
+      );
     });
   }
 

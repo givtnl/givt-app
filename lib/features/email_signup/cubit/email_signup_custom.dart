@@ -8,6 +8,7 @@ sealed class EmailSignupCustom {
       EmailSignupShowFamilyLogin;
   const factory EmailSignupCustom.noInternet() = EmailSignupNoInternet;
   const factory EmailSignupCustom.certExpired() = EmailSignupCertExpired;
+  const factory EmailSignupCustom.error(String message) = EmailSignupError;
 }
 
 class EmailSignupCheckingEmail extends EmailSignupCustom {
@@ -32,4 +33,10 @@ class EmailSignupNoInternet extends EmailSignupCustom {
 
 class EmailSignupCertExpired extends EmailSignupCustom {
   const EmailSignupCertExpired();
+}
+
+class EmailSignupError extends EmailSignupCustom {
+  const EmailSignupError(this.message);
+
+  final String message;
 }

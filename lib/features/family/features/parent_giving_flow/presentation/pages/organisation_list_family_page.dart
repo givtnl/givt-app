@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
@@ -27,12 +26,14 @@ class OrganisationListFamilyPage extends StatefulWidget {
     this.analyticsEvent,
     super.key,
   });
+
   final void Function(CollectGroup)? onTapListItem;
   final void Function()? onTapFunButton;
   final String title;
   final List<CollectGroupType> removedCollectGroupTypes;
   final String? buttonText;
   final AnalyticsEvent? analyticsEvent;
+
   @override
   State<OrganisationListFamilyPage> createState() =>
       _OrganisationListFamilyPageState();
@@ -42,12 +43,14 @@ class _OrganisationListFamilyPageState
     extends State<OrganisationListFamilyPage> {
   final TextEditingController controller = TextEditingController();
   CollectGroup selectedCollectgroup = const CollectGroup.empty();
+  final OrganisationBloc bloc = getIt<OrganisationBloc>();
+
   @override
   void initState() {
     super.initState();
-    getIt<OrganisationBloc>().add(
+    bloc.add(
       OrganisationFetch(
-        Country.fromCode(context.read<FamilyAuthCubit>().user!.country),
+        Country.fromCode(Country.us.countryCode),
         type: CollectGroupType.none.index,
       ),
     );
@@ -68,7 +71,7 @@ class _OrganisationListFamilyPageState
         title: widget.title,
       ),
       body: BlocConsumer<OrganisationBloc, OrganisationState>(
-        bloc: getIt<OrganisationBloc>(),
+        bloc: bloc,
         listener: (context, state) {
           if (state.status == OrganisationStatus.error) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -104,7 +107,7 @@ class _OrganisationListFamilyPageState
                 child: FamilySearchField(
                   autocorrect: false,
                   controller: controller,
-                  onChanged: (value) => getIt<OrganisationBloc>()
+                  onChanged: (value) => bloc
                       .add(OrganisationFilterQueryChanged(value)),
                 ),
               ),

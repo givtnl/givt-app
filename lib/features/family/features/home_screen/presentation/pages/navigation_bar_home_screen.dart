@@ -4,12 +4,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summaries_screen.dart';
@@ -73,6 +71,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   late final StreamSubscription<Mission> _missionAchievedListener;
 
   int _currentIndex = 0;
+  bool _hasShownTutorialPopup = false;
 
   final List<AnalyticsEvent> _analyticsEvents = [
     AnalyticsEvent(
@@ -291,7 +290,12 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
       case final SwitchTab event:
         _setIndex(event.tabIndex);
       case TutorialPopup():
-        _showTutorialPopup(context);
+        if (!_hasShownTutorialPopup) {
+          setState(() {
+            _hasShownTutorialPopup = true;
+          });
+          _showTutorialPopup(context);
+        }
     }
   }
 

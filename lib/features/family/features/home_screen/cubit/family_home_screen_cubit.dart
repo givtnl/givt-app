@@ -55,7 +55,12 @@ class FamilyHomeScreenCubit
     });
     _missionRepository.onMissionsUpdated().listen(_missionsChanged);
 
-    _missionsChanged(await _missionRepository.getMissions());
+    unawaited(
+      inTryCatchFinally(
+        inTry: () async =>
+            _missionsChanged(await _missionRepository.getMissions()),
+      ),
+    );
     _onProfilesChanged(await _profilesRepository.getProfiles());
     _onGroupsChanged(
       await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
@@ -68,11 +73,15 @@ class FamilyHomeScreenCubit
   }
 
   void _missionsChanged(List<Mission> missions) {
-    _missionStats = MissionStats(
-      missionsToBeCompleted: missions.where((m) => !m.isCompleted()).length,
-    );
+    try {
+      _missionStats = MissionStats(
+        missionsToBeCompleted: missions.where((m) => !m.isCompleted()).length,
+      );
 
-    _emitData();
+      _emitData();
+    } catch (e, s) {
+      // do nothing
+    }
   }
 
   Future<void> _handleUserUpdate(UserExt? user) async {
