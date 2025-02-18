@@ -1,0 +1,58 @@
+appId: net.givtapp.ios.test
+env:
+    USERNAME: donna+maestro@givtapp.net
+    PASSWORD: Test123
+    PARENT_FIRSTNAME: Automate
+    PARENT_LASTNAME: with Maestro
+    KIDSNAME: Awesome
+
+---
+- launchApp:
+    clearState: true
+
+- tapOn: "E-mail address"
+- inputText: 
+    label: Enter the test user's Email
+    text: ${USERNAME}
+- tapOn:
+    point: "50%,37%"
+- repeat:
+    while:
+      notVisible: "United States of America"
+    commands:
+      - swipe:
+          start: "50%, 70%"
+          end: "50%, 50%"
+- tapOn: "United States of America"
+- tapOn: "Continue"
+- tapOn: "First name"
+- inputText: ${PARENT_FIRSTNAME}
+- tapOn: "Surname"
+- inputText: ${PARENT_LASTNAME}
+- tapOn: "Mobile number"
+- inputText: "9876543210"
+- tapOn: "Password"
+- inputText:
+    label: Enter the test user's Password
+    text: ${PASSWORD}
+- tapOn:
+    label: Hide the keyboard
+    point: "95%, 59%"
+- tapOn: "0"
+- tapOn: "Continue"
+- tapOn: "Continue"
+- tapOn: "First name"
+- inputText: 
+    label: Enter the kids name
+    text: ${KIDSNAME}
+- tapOn: "Age"
+- inputText: "9"
+- tapOn:
+    label: Click on profile image
+    point: "50%,36%"
+- tapOn:
+    label: Select other profile image
+    point: "81%,35%"
+- tapOn: "Save"
+- tapOn: "Done!"
+- tapOn: "Skip"

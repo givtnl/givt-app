@@ -1,8 +1,8 @@
-import 'package:givt_app/features/family/features/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation_helper.dart';
 import 'package:givt_app/features/family/features/family_history/models/history_item.dart';
 
-class ChildDonation extends HistoryItem {
-  const ChildDonation({
+class Donation extends HistoryItem {
+  const Donation({
     required super.amount,
     required super.date,
     required this.organizationName,
@@ -15,7 +15,7 @@ class ChildDonation extends HistoryItem {
     required this.goalId,
   });
 
-  const ChildDonation.empty()
+  const Donation.empty()
       : this(
           amount: 0,
           date: '',
@@ -29,14 +29,15 @@ class ChildDonation extends HistoryItem {
           goalId: '',
         );
 
-  factory ChildDonation.fromMap(Map<String, dynamic> map) {
+  factory Donation.fromMap(Map<String, dynamic> map) {
+    final type = HistoryTypes.fromString(map['donationType'].toString());
     final name = (map['donor'] as Map<String, dynamic>? ?? {})['firstName'];
-    return ChildDonation(
+    return Donation(
       name: name as String? ?? '',
       amount: double.tryParse(map['amount'].toString()) ?? 0,
       date: map['donationDate'].toString(),
       organizationName: map['collectGroupName'].toString(),
-      state: DonationState.getState(map['status'].toString()),
+      state: DonationState.getState(map['status'].toString(), type),
       userId: map['userId'].toString(),
       id: map['id'] as int? ?? -1,
       medium: map['donationMedium'] != null
@@ -44,9 +45,7 @@ class ChildDonation extends HistoryItem {
               map['donationMedium'].toString(),
             )
           : DonationMediumType.unknown,
-      type: HistoryTypes.fromString(
-        map['donationType'].toString(),
-      ),
+      type: type,
       goalId: (map['goalId'] ?? '').toString(),
     );
   }

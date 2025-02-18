@@ -15,7 +15,6 @@ import 'package:givt_app/features/family/features/game_summary/cubit/game_summar
 import 'package:givt_app/features/family/features/game_summary/data/game_summaries_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/bloc/bedtime_responsibility_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
@@ -24,6 +23,8 @@ import 'package:givt_app/features/family/features/home_screen/cubit/daily_experi
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/league/bloc/league_cubit.dart';
+import 'package:givt_app/features/family/features/league/domain/league_repository.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
 import 'package:givt_app/features/family/features/missions/bloc/notif_mission_cubit.dart';
@@ -53,6 +54,7 @@ import 'package:givt_app/features/family/features/reset_password/repositories/re
 import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
@@ -80,8 +82,8 @@ void initCubits() {
       () => InternetConnectionCubit(getIt()),
     )
     ..registerFactory(ParentSummaryCubit.new)
+    ..registerFactory(FunBottomSheetWithAsyncActionCubit.new)
     ..registerFactory(() => DailyExperienceCubit(getIt()))
-    ..registerFactory(AssignBedtimeResponsibilityCubit.new)
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => LeaveGameCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
@@ -96,6 +98,7 @@ void initCubits() {
       CameraCubit.new,
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
+    ..registerLazySingleton(() => LeagueCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<GiveCubit>(
       () => GiveCubit(
         getIt(),
@@ -117,7 +120,6 @@ void initCubits() {
     ..registerLazySingleton(() => SummaryCubit(getIt()))
     ..registerLazySingleton<NavigationBarHomeCubit>(
       () => NavigationBarHomeCubit(
-        getIt(),
         getIt(),
         getIt(),
         getIt(),
@@ -193,6 +195,9 @@ void initRepositories() {
       AdminFeeRepository(
         getIt(),
       ),
+    )
+    ..registerLazySingleton<LeagueRepository>(
+      () => LeagueRepository(getIt(), getIt()),
     )
     ..registerSingleton<TutorialRepository>(
       TutorialRepository(),
@@ -271,6 +276,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<ReflectAndShareRepository>(
       () => ReflectAndShareRepository(
+        getIt(),
         getIt(),
         getIt(),
         getIt(),

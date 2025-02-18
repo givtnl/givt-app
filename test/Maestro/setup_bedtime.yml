@@ -1,0 +1,42 @@
+appId: net.givtapp.ios.test
+name: Setup the bedtimes for the kids
+---
+- tapOn:
+    label: Tap screen "Great job superheroes! Tap to continue"
+    point: "50%,50%" 
+- tapOn:
+    label: Tap screen "Keep using your.."
+    point: "50%,50%"
+- tapOn:
+    label: Tap screen "We have found.."
+    point: "50%,50%"
+- tapOn:
+    label: Tap screen "Is in the evening.."
+    point: "50%,50%"
+- tapOn:
+    label: Tap screen Spotlight
+    point: "50%,50%"
+- tapOn:
+    label: Tap screen "This reduces.."
+    point: "50%,50%"
+- tapOn:
+    label: Tap screen "Develops.."
+    point: "50%,50%"
+- tapOn:
+    label: Tap screen "Helps.."
+    point: "50%,50%"
+- tapOn: "Continue"
+- tapOn:
+    label: Adjust bedtime time
+    point: "50%,48%" 
+- tapOn:
+    label: Adjust winddown time - 
+    text: "minus" 
+- tapOn:
+    label: Adjust winddown time - 
+    text: "minus" 
+- tapOn:
+    label: Adjust winddown time +
+    text: "plus"
+- tapOn: "Done"
+# Step 6/6 can't be tested. Will not show due the backend notifications can't be shown in emulator

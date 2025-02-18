@@ -4,12 +4,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summaries_screen.dart';
@@ -18,6 +16,7 @@ import 'package:givt_app/features/family/features/home_screen/presentation/model
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/features/family/features/league/presentation/pages/models/league_screen.dart';
 import 'package:givt_app/features/family/features/missions/domain/entities/mission.dart';
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/features/family/features/overview/pages/family_overview_page.dart';
@@ -72,6 +71,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   late final StreamSubscription<Mission> _missionAchievedListener;
 
   int _currentIndex = 0;
+  bool _hasShownTutorialPopup = false;
 
   final List<AnalyticsEvent> _analyticsEvents = [
     AnalyticsEvent(
@@ -95,7 +95,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     AnalyticsEvent(
       AmplitudeEvents.navigationBarPressed,
       parameters: {
-        'destination': 'Profile',
+        'destination': 'League',
       },
     ),
   ];
@@ -173,15 +173,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             icon: FaIcon(FontAwesomeIcons.solidCalendar),
             label: 'Memories',
           ),
-          NavigationDestination(
-            icon: uiModel?.profilePictureUrl == null
-                ? const FaIcon(FontAwesomeIcons.person)
-                : SizedBox(
-                    width: 28,
-                    height: 28,
-                    child: SvgPicture.network(uiModel!.profilePictureUrl!),
-                  ),
-            label: 'Profile',
+          const NavigationDestination(
+            icon: FaIcon(FontAwesomeIcons.medal),
+            label: 'League',
           ),
         ],
         analyticsEvent: (int index) => _analyticsEvents[index],
@@ -207,7 +201,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             ),
             const FamilyOverviewPage(),
             const GameSummariesScreen(),
-            const USPersonalInfoEditPage(),
+            const LeagueScreen(),
           ][_currentIndex],
         ),
       ),
@@ -220,8 +214,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   }) async {
     unawaited(SystemSound.play(SystemSoundType.click));
     unawaited(HapticFeedback.selectionClick());
-    if (index == NavigationBarHomeScreen.homeIndex ||
-        index == NavigationBarHomeScreen.memoriesIndex) {
+    if (index != NavigationBarHomeScreen.familyIndex) {
       _setIndex(index);
     } else {
       await FamilyAuthUtils.authenticateUser(
@@ -297,7 +290,12 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
       case final SwitchTab event:
         _setIndex(event.tabIndex);
       case TutorialPopup():
-        _showTutorialPopup(context);
+        if (!_hasShownTutorialPopup) {
+          setState(() {
+            _hasShownTutorialPopup = true;
+          });
+          _showTutorialPopup(context);
+        }
     }
   }
 

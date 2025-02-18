@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation_helper.dart';
 import 'package:givt_app/features/family/features/parental_approval/cubit/parental_approval_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -13,7 +13,7 @@ class ParentalApprovalConfirmationPage extends StatelessWidget {
     super.key,
   });
 
-  final ChildDonation donation;
+  final Donation donation;
 
   Future<void> _submitDecision(
     BuildContext context,

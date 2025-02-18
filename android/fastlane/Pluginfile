@@ -3,5 +3,4 @@
 # Ensure this file is checked in to source control!
 
 gem 'pry'
-gem 'fastlane-plugin-match_keystore'
-
+gem 'fastlane-plugin-match_android'

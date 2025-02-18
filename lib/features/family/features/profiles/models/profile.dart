@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation.dart';
 import 'package:givt_app/features/family/features/overview/models/wallet.dart';
 import 'package:givt_app/utils/profile_type.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -24,8 +24,8 @@ class Profile extends Equatable {
     final pictureMap = map['picture'] as Map<String, dynamic>;
 
     final donationMap = map['latestDonation'] == null
-        ? const ChildDonation.empty()
-        : ChildDonation.fromMap(map['latestDonation'] as Map<String, dynamic>);
+        ? const Donation.empty()
+        : Donation.fromMap(map['latestDonation'] as Map<String, dynamic>);
 
     final walletMap = map['wallet'] == null
         ? const Wallet.empty()
@@ -59,7 +59,7 @@ class Profile extends Equatable {
           type: '',
           hasDonations: false,
           wallet: const Wallet.empty(),
-          lastDonationItem: const ChildDonation.empty(),
+          lastDonationItem: const Donation.empty(),
           pictureURL: '',
           dateOfBirth: '',
         );
@@ -72,7 +72,7 @@ class Profile extends Equatable {
   final String type;
   final bool hasDonations;
   final Wallet wallet;
-  final ChildDonation lastDonationItem;
+  final Donation lastDonationItem;
   final String pictureURL;
   final String dateOfBirth;
   final int? windDownTime;
@@ -120,7 +120,7 @@ class Profile extends Equatable {
     String? type,
     bool? hasDonations,
     Wallet? wallet,
-    ChildDonation? lastDonationItem,
+    Donation? lastDonationItem,
     String? pictureURL,
     String? dateOfBirth,
     int? windDownTime,

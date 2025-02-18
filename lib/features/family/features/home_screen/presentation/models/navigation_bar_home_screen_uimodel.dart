@@ -2,10 +2,8 @@ import 'package:givt_app/features/family/features/impact_groups/models/impact_gr
 
 class NavigationBarHomeScreenUIModel {
   const NavigationBarHomeScreenUIModel({
-    this.profilePictureUrl,
     this.familyInviteGroup,
   });
 
-  final String? profilePictureUrl;
   final ImpactGroup? familyInviteGroup;
 }

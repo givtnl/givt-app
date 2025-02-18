@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation_helper.dart';
 import 'package:givt_app/features/family/features/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -22,7 +22,7 @@ class ParentalApprovalCubit extends Cubit<ParentalApprovalState> {
   static const _approvalResultDelay = Duration(seconds: 3);
 
   final ParentalApprovalRepository decisionRepository;
-  final ChildDonation donation;
+  final Donation donation;
 
   Future<void> _emitDelayedPopWithDecision(bool decisionMade) async {
     // ignore: inference_failure_on_instance_creation

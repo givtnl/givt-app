@@ -1,0 +1,41 @@
+- tapOn: "Continue"
+- tapOn: "Finish registration"
+- tapOn: "First name"
+- tapOn: "First name"
+- inputText:
+    label: "Enter the test user's Firstname"
+    text: "Automate"
+- tapOn: "Surname"
+- inputText:
+    label: "Enter the test user's Lastname"
+    text: "in Maestro"
+- tapOn: "Password"
+- inputText:
+    label: "Enter the test user's Password"
+    text: "Test123"
+- tapOn: "0"
+- tapOn: "Next"
+- tapOn: "Street name and number"
+- inputText:
+    label: "Enter the test user's Street + Number"
+    text: "Bloemetjes 13"
+- tapOn: "Postal Code"
+- inputText:
+    label: "Enter Postal Code"
+    text: "1234AA"
+- tapOn: "City/Town"
+- inputText:
+    label: "Enter City/Town"
+    text: "Lelystad"
+- tapOn: "Mobile number"
+- inputText:
+    label: "Enter Phonenumber"
+    text: "612345678"
+- tapOn: "IBAN account number\nIBAN account number"
+- inputText:
+    label: "Enter IBAN"
+    text: "DE86100000001234400013"
+- tapOn: "Next"
+- tapOn: "Next"
+- tapOn: "Sign mandate"
+- tapOn: "Continue"

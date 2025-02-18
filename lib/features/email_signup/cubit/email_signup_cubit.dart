@@ -184,12 +184,16 @@ class EmailSignupCubit
       amountLimit: _currentCountry!.isUS ? 4999 : 499,
     );
 
-    await _authRepository.registerUser(
-      tempUser: tempUser,
-      isNewUser: true,
-    );
-
-    _authRepository.onRegistrationStarted();
-    emitCustom(EmailSignupCustom.registerFamily(_currentEmail));
+    try {
+      await _authRepository.registerUser(
+        tempUser: tempUser,
+        isNewUser: true,
+      );
+      _authRepository.onRegistrationStarted();
+      emitCustom(EmailSignupCustom.registerFamily(_currentEmail));
+    } catch (e, s) {
+      emitCustom(const EmailSignupCustom.error(
+          'Could not register with entered e-mailadres. Please try again or submit a different e-mailadres.'));
+    }
   }
 }

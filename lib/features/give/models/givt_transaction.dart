@@ -1,18 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
-import 'package:intl/intl.dart';
 
 class GivtTransaction extends Equatable {
   GivtTransaction.fromTransaction(Transaction transaction)
       : guid = transaction.userId,
         amount = transaction.amount,
         beaconId = transaction.mediumId,
-        timestamp = DateFormat('yyyy-MM-ddTHH:mm:ss').format(
-          DateTime.now().toUtc(),
-        ),
+        timestamp = transaction.timestamp,
         collectId = '1',
         goalId = transaction.goalId,
         mediumId = transaction.mediumId;
+
   const GivtTransaction({
     required this.guid,
     required this.amount,

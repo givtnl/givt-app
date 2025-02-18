@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.8.6
+version: 4.8.7
 publish_to: none
 
 environment:
@@ -172,6 +172,7 @@ flutter:
     - assets/ca/
     - assets/family/images/
     - assets/family/images/home_screen/
+    - assets/family/images/league/
     - assets/family/lotties/
     - assets/fun/illustrations/
     - assets/family/audio/

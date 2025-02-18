@@ -57,13 +57,17 @@ abstract class FamilyAuthRepository {
 
   Future<void> refreshUser() async {}
 
-  void onRegistrationFinished();
+  Future<void> onRegistrationFinished();
 
   void onRegistrationStarted();
 
   void onRegistrationCancelled();
 
   bool hasUserStartedRegistration();
+
+  Future<void> updateNumber(String number);
+
+  Future<void> updateEmail(String email);
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -343,8 +347,15 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     Map<String, dynamic> newUserExt,
   ) async {
     try {
+      final userExt = UserExt.fromJson(newUserExt);
       final result = _apiService.updateUserExt(newUserExt);
       await refreshUser();
+      unawaited(
+        AnalyticsHelper.setUserProperties(
+          userId: userExt.guid,
+          userProperties: AnalyticsHelper.getUserPropertiesFromExt(userExt),
+        ),
+      );
       return result;
     } catch (e) {
       return false;
@@ -428,7 +439,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }
 
   @override
-  void onRegistrationFinished() {
+  Future<void> onRegistrationFinished() async {
+    // a little delay to allow navigation to resolve first
+    await Future.delayed(const Duration(milliseconds: 30));
     _startedRegistration = false;
     _onRegistrationFinishedStream.add(null);
   }
@@ -445,4 +458,54 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   @override
   void onRegistrationCancelled() => _startedRegistration = false;
+
+  @override
+  Future<void> updateNumber(String number) async {
+    final newUserExt = _userExt!.copyWith(phoneNumber: number);
+    final isSuccess = await _apiService.updateUserExt(newUserExt.toJson());
+    if (isSuccess) {
+      _updateAuthenticatedUserStream(newUserExt);
+      unawaited(AnalyticsHelper.setUserProperties(
+        userId: newUserExt.guid,
+        userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
+      ));
+    } else {
+      throw Exception('Phone number update failed');
+    }
+  }
+
+  @override
+  Future<void> updateEmail(String email) async {
+    final newUserExt = _userExt!.copyWith(email: email);
+    if (!await _apiService.checktld(email)) {
+      throw invalidEmailException();
+    }
+
+    final result = await _apiService.checkEmail(email);
+    if (result.contains('temp')) {
+      throw invalidEmailException();
+    }
+    if (result.contains('true')) {
+      throw invalidEmailException();
+    }
+
+    final isSuccess = await _apiService.updateUser(
+      newUserExt.guid,
+      newUserExt.toJson(),
+    );
+    if (isSuccess) {
+      _updateAuthenticatedUserStream(newUserExt);
+      unawaited(
+        AnalyticsHelper.setUserProperties(
+          userId: newUserExt.guid,
+          userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
+        ),
+      );
+    } else {
+      throw Exception('Oops, something went wrong!\nPlease try again later.');
+    }
+  }
+
+  Exception invalidEmailException() =>
+      Exception('The email you entered is invalid or already in use');
 }

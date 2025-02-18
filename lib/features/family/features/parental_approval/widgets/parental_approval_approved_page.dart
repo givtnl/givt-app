@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -10,7 +10,7 @@ class ParentalApprovalApprovedPage extends StatelessWidget {
     super.key,
   });
 
-  final ChildDonation donation;
+  final Donation donation;
 
   @override
   Widget build(BuildContext context) {

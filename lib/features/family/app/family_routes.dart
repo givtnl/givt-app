@@ -7,6 +7,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
@@ -31,7 +32,6 @@ import 'package:givt_app/features/family/features/giving_flow/create_transaction
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/bedtime_reponsibility_screen.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/parent_summary_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
@@ -94,7 +94,12 @@ class FamilyAppRoutes {
       name: FamilyPages.registrationUS.name,
       builder: (context, state) {
         final email = state.uri.queryParameters['email'] ?? '';
-
+        getIt<OrganisationBloc>().add(
+          OrganisationFetch(
+            Country.fromCode(Country.us.countryCode),
+            type: CollectGroupType.none.index,
+          ),
+        );
         return UsSignUpPage(
           email: email,
         );
@@ -133,12 +138,6 @@ class FamilyAppRoutes {
                     ..fetchHistory(),
             ),
             // us personal info edit page
-            BlocProvider(
-              create: (context) => PersonalInfoEditBloc(
-                loggedInUserExt: context.read<FamilyAuthCubit>().user!,
-                authRepository: getIt(),
-              ),
-            ),
           ],
           child: NavigationBarHomeScreen(
             index: index,
@@ -154,23 +153,15 @@ class FamilyAppRoutes {
           },
         ),
         GoRoute(
-            path: FamilyPages.missions.path,
-            name: FamilyPages.missions.name,
-            builder: (context, state) {
-              final map = state.extra as Map<String, dynamic>? ?? {};
-              final showTutorial = map['showTutorial'] as bool? ?? false;
-              return MissionsScreen(
-                showTutorial: showTutorial,
-              );
-            }),
-        GoRoute(
-          path: FamilyPages.assignBedtimeResponsibility.path,
-          name: FamilyPages.assignBedtimeResponsibility.name,
-          builder: (context, state) => AssignBedtimeResponsibilityScreen(
-            name: state.uri.queryParameters['childName'] ?? '',
-            childGuid: state.uri.queryParameters['childId'] ?? '',
-            imageUrl: state.uri.queryParameters['pictureUrl'] ?? '',
-          ),
+          path: FamilyPages.missions.path,
+          name: FamilyPages.missions.name,
+          builder: (context, state) {
+            final map = state.extra as Map<String, dynamic>? ?? {};
+            final showTutorial = map['showTutorial'] as bool? ?? false;
+            return MissionsScreen(
+              showTutorial: showTutorial,
+            );
+          },
         ),
         GoRoute(
           path: FamilyPages.setupBedtime.path,
@@ -485,9 +476,13 @@ class FamilyAppRoutes {
         GoRoute(
           path: FamilyPages.familyPersonalInfoEdit.path,
           name: FamilyPages.familyPersonalInfoEdit.name,
-          redirect: (context, state) {
-            return '${FamilyPages.profileSelection.path}?index=${NavigationBarHomeScreen.profileIndex}';
-          },
+          builder: (context, state) => BlocProvider(
+            create: (context) => PersonalInfoEditBloc(
+              loggedInUserExt: context.read<FamilyAuthCubit>().user!,
+              authRepository: getIt(),
+            ),
+            child: const USPersonalInfoEditPage(),
+          ),
         ),
         GoRoute(
           path: FamilyPages.createFamilyGoal.path,

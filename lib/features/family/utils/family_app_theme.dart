@@ -51,6 +51,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const info20 = Color(0xFF4E2600);
   static const info30 = Color(0xFF6F3900);
   static const info40 = Color(0xFF914C00);
+  static const info70 = Color.fromRGBO(240, 150, 72, 1);
   static const info90 = Color(0xFFFFDCC3);
   static const info95 = Color(0xFFFFEDE3);
 
