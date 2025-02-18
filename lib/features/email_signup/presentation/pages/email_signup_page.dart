@@ -278,7 +278,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                                         context)
                                                     .languageCode,
                                               );
-                                        } catch (e, s) {}
+                                        } catch (e, s) {
+                                          print("TEST");
+                                        }
                                         setLoading(state: false);
                                       }
                                     }
@@ -357,6 +359,16 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           builder: (context) => WarningDialog(
             title: context.l10n.certExceptionTitle,
             content: context.l10n.certExceptionBody,
+            onConfirm: () => context.pop(),
+          ),
+        );
+      case final EmailSignupError error:
+        setLoading(state: false);
+        await showDialog<void>(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: 'An error occurred',
+            content: error.message,
             onConfirm: () => context.pop(),
           ),
         );
