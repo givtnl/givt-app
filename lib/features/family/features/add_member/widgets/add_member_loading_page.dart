@@ -28,8 +28,8 @@ class AddMemberLoadingPage extends StatelessWidget {
     if (getIt<OrganisationBloc>().state.filteredOrganisations.isNotEmpty) {
       context.goNamed(FamilyPages.heardAboutGivt.name);
     } else {
-      context.goNamed(FamilyPages.profileSelection.name);
       getIt<FamilyAuthRepository>().onRegistrationFinished();
+      context.goNamed(FamilyPages.profileSelection.name);
     }
   }
 
