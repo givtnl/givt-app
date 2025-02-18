@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/add_member/cubit/add_member_cubit.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
@@ -24,9 +25,12 @@ class AddMemberLoadingPage extends StatelessWidget {
       return;
     }
 
-    getIt<OrganisationBloc>().state.filteredOrganisations.isNotEmpty
-        ? context.goNamed(FamilyPages.heardAboutGivt.name)
-        : context.goNamed(FamilyPages.profileSelection.name);
+    if (getIt<OrganisationBloc>().state.filteredOrganisations.isNotEmpty) {
+      context.goNamed(FamilyPages.heardAboutGivt.name);
+    } else {
+      context.goNamed(FamilyPages.profileSelection.name);
+      getIt<FamilyAuthRepository>().onRegistrationFinished();
+    }
   }
 
   @override

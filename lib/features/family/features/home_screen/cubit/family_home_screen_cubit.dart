@@ -73,11 +73,15 @@ class FamilyHomeScreenCubit
   }
 
   void _missionsChanged(List<Mission> missions) {
-    _missionStats = MissionStats(
-      missionsToBeCompleted: missions.where((m) => !m.isCompleted()).length,
-    );
+    try {
+      _missionStats = MissionStats(
+        missionsToBeCompleted: missions.where((m) => !m.isCompleted()).length,
+      );
 
-    _emitData();
+      _emitData();
+    } catch (e, s) {
+      // do nothing
+    }
   }
 
   Future<void> _handleUserUpdate(UserExt? user) async {
