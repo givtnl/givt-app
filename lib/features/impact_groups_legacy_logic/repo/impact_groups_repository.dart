@@ -100,7 +100,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }) async {
     await _apiService.acceptGroupInvite(groupId);
     await _fetchImpactGroups();
-    _authRepository.onRegistrationFinished();
+    unawaited(_authRepository.onRegistrationFinished());
   }
 
   @override

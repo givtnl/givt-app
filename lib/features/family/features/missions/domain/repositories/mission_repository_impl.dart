@@ -29,7 +29,9 @@ class MissionRepositoryImpl implements MissionRepository {
       (user) {
         if (user != null) {
           _clearData();
-          getMissions(force: true);
+          if (!user.tempUser && user.personalInfoRegistered) {
+            refreshMissions();
+          }
         } else {
           _clearData();
         }
@@ -40,6 +42,14 @@ class MissionRepositoryImpl implements MissionRepository {
   void _clearData() {
     _missions = [];
     _missionsStreamController.add(_missions);
+  }
+
+  Future<void> refreshMissions() async {
+    try {
+      await _fetchMissions();
+    } catch (e) {
+      // do nothing
+    }
   }
 
   @override
