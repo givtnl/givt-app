@@ -10,15 +10,15 @@ import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.d
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
-class DailyExperienceContainer extends StatefulWidget {
-  const DailyExperienceContainer({super.key});
+class GratitudeGoalContainer extends StatefulWidget {
+  const GratitudeGoalContainer({super.key});
 
   @override
-  State<DailyExperienceContainer> createState() =>
-      _DailyExperienceContainerState();
+  State<GratitudeGoalContainer> createState() =>
+      _GratitudeGoalContainerState();
 }
 
-class _DailyExperienceContainerState extends State<DailyExperienceContainer> {
+class _GratitudeGoalContainerState extends State<GratitudeGoalContainer> {
   final GratitudeGoalCubit _cubit = getIt<GratitudeGoalCubit>();
 
   Timer? _timer;

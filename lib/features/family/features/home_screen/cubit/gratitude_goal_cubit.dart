@@ -21,7 +21,8 @@ class GratitudeGoalCubit
 
   Future<void> init() async {
     final now = DateTime.now();
-    final daysUntilSaturday = DateTime.saturday - now.weekday;
+    final adjustedWeekday = now.weekday == 7 ? 0 : now.weekday;
+    final daysUntilSaturday = DateTime.saturday - adjustedWeekday;
     endOfWeek = DateTime(
       now.year,
       now.month,
@@ -30,6 +31,7 @@ class GratitudeGoalCubit
       59,
       59,
     );
+
     _gameStatsSubscription =
         _repo.onGameStatsUpdated.listen(_onGameStatsUpdated);
     try {
