@@ -37,7 +37,7 @@ class _GratitudeGoalSelectBehaviorScreenState
     return FunScaffold(
       minimumPadding: const EdgeInsets.symmetric(horizontal: 24),
       appBar: const FunTopAppBar(
-        title: 'Gratitude goal',
+        title: 'Build a habit',
         leading: kDebugMode ? GivtBackButtonFlat() : null,
       ),
       body: CustomScrollView(

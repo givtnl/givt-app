@@ -45,7 +45,7 @@ class _GratitudeGoalExplanationScreenState
     return FunScaffold(
       minimumPadding: const EdgeInsets.symmetric(horizontal: 24),
       appBar: const FunTopAppBar(
-        title: 'Gratitude goal',
+        title: 'Build a habit',
         leading: GivtBackButtonFlat(),
       ),
       body: _isEndOfExplanation

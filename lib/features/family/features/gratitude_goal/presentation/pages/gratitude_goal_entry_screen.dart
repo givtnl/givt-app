@@ -16,7 +16,7 @@ class GratitudeGoalEntryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FunScaffold(
       appBar: const FunTopAppBar(
-        title: 'Gratitude goal',
+        title: 'Build a habit',
         leading: GivtBackButtonFlat(),
       ),
       body: Column(
