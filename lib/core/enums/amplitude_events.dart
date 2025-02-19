@@ -50,6 +50,7 @@ enum AmplitudeEvents {
   // Gratitude Goal
   gratitudeGoalStartClicked('gratitude_goal_start_clicked'),
   gratitudeGoalContinueClicked('gratitude_goal_continue_clicked'),
+  gratitudeGoalBehaviorClicked('gratitude_goal_behavior_clicked'),
   gratitudeGoalLetsDoItClicked('gratitude_goal_lets_do_it_clicked'),
   gratitudeGoalYesOfCourseClicked('gratitude_goal_yes_of_course_clicked'),
   gratitudeGoalNoNotReallyClicked('gratitude_goal_no_not_really_clicked'),

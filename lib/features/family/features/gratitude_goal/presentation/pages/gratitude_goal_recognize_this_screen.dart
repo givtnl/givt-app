@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_select_behavior_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
@@ -17,7 +20,7 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
       minimumPadding: const EdgeInsets.symmetric(horizontal: 24),
       appBar: const FunTopAppBar(
         title: 'Gratitude goal',
-        leading: GivtBackButtonFlat(),
+        leading: kDebugMode ? GivtBackButtonFlat() : null,
       ),
       body: CustomScrollView(
         slivers: [
@@ -64,7 +67,8 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
                     const SizedBox(height: 24),
                     FunButton(
                       text: 'Yes, of course',
-                      onTap: () {},
+                      onTap: () =>
+                          _navigateToGratitudeGoalSelectBehaviorScreen(context),
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents.gratitudeGoalYesOfCourseClicked,
                       ),
@@ -75,7 +79,8 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
                     FunTextButton(
                       text: 'No, not really',
                       rightIconSize: 0,
-                      onTap: () {},
+                      onTap: () =>
+                          _navigateToGratitudeGoalSelectBehaviorScreen(context),
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents.gratitudeGoalNoNotReallyClicked,
                       ),
@@ -88,6 +93,12 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _navigateToGratitudeGoalSelectBehaviorScreen(BuildContext context) {
+    Navigator.of(context).push(
+      const GratitudeGoalSelectBehaviorScreen().toRoute(context),
     );
   }
 }
