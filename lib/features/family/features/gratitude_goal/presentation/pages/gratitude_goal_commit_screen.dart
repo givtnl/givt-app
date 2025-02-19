@@ -79,6 +79,7 @@ class GratitudeGoalCommitScreen extends StatelessWidget {
                         parameters: {
                           'weeksToFormHabit': chosenOption.weeksToFormHabit,
                           'timesAWeek': chosenOption.timesAWeek,
+                          'timesAWeekLabel': chosenOption.timesAWeekLabel,
                         },
                       ),
                     ),

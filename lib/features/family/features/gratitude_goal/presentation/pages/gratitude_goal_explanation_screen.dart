@@ -21,6 +21,7 @@ class GratitudeGoalExplanationScreen extends StatefulWidget {
 class _GratitudeGoalExplanationScreenState
     extends State<GratitudeGoalExplanationScreen> {
   int _index = 0;
+  int _tapAmount = 0;
   bool _isEndOfExplanation = false;
 
   final List<String> explanations = [
@@ -76,6 +77,16 @@ class _GratitudeGoalExplanationScreenState
   Widget _explanationLayout() {
     return GestureDetector(
       onTap: () {
+        setState(() {
+          _tapAmount++;
+        });
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.gratitudeGoalTapToContinueClicked,
+          eventProperties: {
+            'screen_index': _index,
+            'amount_tapped': _tapAmount,
+          },
+        );
         if (_index == explanations.length - 1) {
           setState(() {
             _isEndOfExplanation = true;
@@ -85,9 +96,6 @@ class _GratitudeGoalExplanationScreenState
             _index++;
           });
         }
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.gratitudeGoalTapToContinueClicked,
-        );
       },
       child: ColoredBox(
         color: Colors.white,

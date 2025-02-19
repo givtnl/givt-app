@@ -334,6 +334,7 @@ enum AmplitudeEvents {
   introBedtimeAnimationContinuePressed(
     'intro_bedtime_animation_continue_pressed',
   ),
+  introBedtimeTapToContinueClicked('intro_bedtime_tap_to_continue_clicked'),
   familyMissionAcceptanceScreenAcceptLongPressReleaseToAccept(
     'family_mission_acceptance_screen_accept_long_press_release_to_accept',
   ),
