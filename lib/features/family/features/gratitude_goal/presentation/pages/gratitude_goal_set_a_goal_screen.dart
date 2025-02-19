@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/domain/behavior_options.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/domain/set_a_goal_options.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_commit_screen.dart';
+import 'package:givt_app/features/family/helpers/datetime_extension.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -23,6 +26,7 @@ class GratitudeGoalSetAGoalScreen extends StatefulWidget {
 
 class _GratitudeGoalSetAGoalScreenState
     extends State<GratitudeGoalSetAGoalScreen> {
+  late DateTime _byDate;
   int _index = 2;
   final List<SetAGoalOptions> _goalOptions = [
     SetAGoalOnceAWeek(),
@@ -31,6 +35,22 @@ class _GratitudeGoalSetAGoalScreenState
     SetAGoalFourTimesAWeek(),
     SetAGoalDaily(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    setByDate();
+  }
+
+  void setByDate() {
+    setState(() {
+      _byDate = DateTime.now().add(
+        Duration(
+          days: 7 * _currentGoal().weeksToFormHabit,
+        ),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +70,32 @@ class _GratitudeGoalSetAGoalScreenState
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      const SizedBox(height: 16),
+                      FunCard(
+                        backgroundColor: FamilyAppTheme.highlight99,
+                        content: Column(
+                          children: [
+                            const Row(),
+                            SvgPicture.asset(
+                              'assets/family/images/kids_without_frame.svg',
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            TitleMediumText(
+                              'By ${_byDate.formattedFullMonth}',
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            BodyMediumText(
+                              widget.behavior.weWillBeMoreLabel,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
                       const SizedBox(
                         height: 32,
                       ),
@@ -76,6 +122,7 @@ class _GratitudeGoalSetAGoalScreenState
                             setState(() {
                               _index = value.round();
                             });
+                            setByDate();
                           },
                         ),
                       ),
