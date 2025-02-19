@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/behavior_options.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_set_a_goal_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -11,7 +12,9 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
 class GratitudeGoalExplanationScreen extends StatefulWidget {
-  const GratitudeGoalExplanationScreen({super.key});
+  const GratitudeGoalExplanationScreen({required this.behavior, super.key});
+
+  final BehaviorOptions behavior;
 
   @override
   State<GratitudeGoalExplanationScreen> createState() =>
@@ -24,12 +27,18 @@ class _GratitudeGoalExplanationScreenState
   int _tapAmount = 0;
   bool _isEndOfExplanation = false;
 
-  final List<String> explanations = [
-    'The best way to change behavior is to focus on building habits...',
-    'This requires consistent repetition...',
-    'I know...there’s already a lot on your plate.',
-    'Science shows a daily practice of gratitude helps your family to become more thankful',
-  ];
+  late List<String> explanations;
+
+  @override
+  void initState() {
+    super.initState();
+    explanations = [
+      'The best way to change behavior is to focus on building habits...',
+      'This requires consistent repetition...',
+      'I know...there’s already a lot on your plate.',
+      widget.behavior.captainExplanation,
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +72,8 @@ class _GratitudeGoalExplanationScreenState
         FunButton(
           text: 'Let’s do it',
           onTap: () => Navigator.of(context).push(
-            const GratitudeGoalSetAGoalScreen().toRoute(context),
+            GratitudeGoalSetAGoalScreen(behavior: widget.behavior)
+                .toRoute(context),
           ),
           analyticsEvent: AnalyticsEvent(
             AmplitudeEvents.gratitudeGoalLetsDoItClicked,
@@ -124,8 +134,9 @@ class _GratitudeGoalExplanationScreenState
             const Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                  padding: EdgeInsets.only(bottom: 32),
-                  child: LabelLargeText('Tap to continue')),
+                padding: EdgeInsets.only(bottom: 32),
+                child: LabelLargeText('Tap to continue'),
+              ),
             ),
           ],
         ),

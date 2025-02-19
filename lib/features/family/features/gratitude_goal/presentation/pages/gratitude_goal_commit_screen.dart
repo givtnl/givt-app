@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/gratitude_goal/domain/SetAGoalOptions.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/behavior_options.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/set_a_goal_options.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -11,9 +12,11 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 class GratitudeGoalCommitScreen extends StatelessWidget {
-  const GratitudeGoalCommitScreen({required this.chosenOption, super.key});
+  const GratitudeGoalCommitScreen(
+      {required this.chosenOption, required this.behavior, super.key});
 
   final SetAGoalOptions chosenOption;
+  final BehaviorOptions behavior;
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +43,8 @@ class GratitudeGoalCommitScreen extends StatelessWidget {
                       const SizedBox(
                         height: 24,
                       ),
-                      const TitleSmallText(
-                        'We want to be more thankful, so we will...',
+                      TitleSmallText(
+                        behavior.weWantToBeLabel,
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(

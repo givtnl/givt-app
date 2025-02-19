@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/gratitude_goal/domain/SetAGoalOptions.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/behavior_options.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/set_a_goal_options.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_commit_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
@@ -11,7 +12,9 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeGoalSetAGoalScreen extends StatefulWidget {
-  const GratitudeGoalSetAGoalScreen({super.key});
+  const GratitudeGoalSetAGoalScreen({required this.behavior, super.key});
+
+  final BehaviorOptions behavior;
 
   @override
   State<GratitudeGoalSetAGoalScreen> createState() =>
@@ -86,8 +89,10 @@ class _GratitudeGoalSetAGoalScreenState
                     FunButton(
                       text: 'Continue',
                       onTap: () => Navigator.of(context).push(
-                        GratitudeGoalCommitScreen(chosenOption: _currentGoal())
-                            .toRoute(context),
+                        GratitudeGoalCommitScreen(
+                          chosenOption: _currentGoal(),
+                          behavior: widget.behavior,
+                        ).toRoute(context),
                       ),
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents.gratitudeGoalSetAGoalContinueClicked,
