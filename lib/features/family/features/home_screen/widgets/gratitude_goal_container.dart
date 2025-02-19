@@ -2,24 +2,24 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/daily_experience_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/widgets/models/daily_experience_custom.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/gratitude_goal_cubit.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/models/gratitude_goal_custom.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
-class DailyExperienceContainer extends StatefulWidget {
-  const DailyExperienceContainer({super.key});
+class GratitudeGoalContainer extends StatefulWidget {
+  const GratitudeGoalContainer({super.key});
 
   @override
-  State<DailyExperienceContainer> createState() =>
-      _DailyExperienceContainerState();
+  State<GratitudeGoalContainer> createState() =>
+      _GratitudeGoalContainerState();
 }
 
-class _DailyExperienceContainerState extends State<DailyExperienceContainer> {
-  final DailyExperienceCubit _cubit = getIt<DailyExperienceCubit>();
+class _GratitudeGoalContainerState extends State<GratitudeGoalContainer> {
+  final GratitudeGoalCubit _cubit = getIt<GratitudeGoalCubit>();
 
   Timer? _timer;
   late int _minutesUntilReset;
@@ -76,7 +76,7 @@ class _DailyExperienceContainerState extends State<DailyExperienceContainer> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   LabelLargeText.primary40(
-                    'Daily Goal',
+                    'Play ${uiModel.gratitudeGoal}x Weekly',
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -85,7 +85,11 @@ class _DailyExperienceContainerState extends State<DailyExperienceContainer> {
                       const SizedBox(width: 4),
                       if (_timer != null)
                         LabelMediumText.primary40(
-                          '${_remainingHours > 0 ? "${_remainingHours}h " : ''}${_remainingMinutes}m',
+                          _remainingHours > 48
+                              ? '${_remainingHours ~/ 24} days left'
+                              : _remainingHours > 0
+                                  ? '${_remainingHours}h ${_remainingMinutes}m'
+                                  : '${_remainingMinutes}m',
                           fontFeatures: const [FontFeature.tabularFigures()],
                         ),
                     ],
@@ -93,10 +97,10 @@ class _DailyExperienceContainerState extends State<DailyExperienceContainer> {
                 ],
               ),
               const SizedBox(height: 12),
-              FunProgressbar.xp(
+              FunProgressbar.gratitudeGoal(
                 key: const ValueKey('Daily-Experience-Progressbar'),
-                currentProgress: uiModel.currentProgress,
-                total: uiModel.total,
+                currentProgress: uiModel.gratitudeGoalCurrent,
+                total: uiModel.gratitudeGoal,
               ),
               const SizedBox(height: 16),
             ],
@@ -106,7 +110,7 @@ class _DailyExperienceContainerState extends State<DailyExperienceContainer> {
     );
   }
 
-  void onCustom(BuildContext context, DailyExperienceCustom state) {
+  void onCustom(BuildContext context, GratitudeGoalCustom state) {
     switch (state) {
       case final StartCounter event:
         _startCountdown(event.countdownTo);
