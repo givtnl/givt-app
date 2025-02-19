@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/domain/SetAGoalOptions.dart';
-import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_select_behavior_screen.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_commit_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -86,7 +86,7 @@ class _GratitudeGoalSetAGoalScreenState
                     FunButton(
                       text: 'Continue',
                       onTap: () => Navigator.of(context).push(
-                        const GratitudeGoalSelectBehaviorScreen()
+                        GratitudeGoalCommitScreen(chosenOption: _currentGoal())
                             .toRoute(context),
                       ),
                       analyticsEvent: AnalyticsEvent(
