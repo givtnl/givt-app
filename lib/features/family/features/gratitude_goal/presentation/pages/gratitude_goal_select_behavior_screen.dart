@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_explanation_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -20,7 +22,7 @@ class _GratitudeGoalSelectBehaviorScreenState
     extends State<GratitudeGoalSelectBehaviorScreen> {
   int? _pressedIndex;
 
-  final List<String> behaviors = [
+  final List<String> _behaviors = [
     'Saying thank you',
     'Having appreciation',
     'Dealing with emotions',
@@ -57,7 +59,7 @@ class _GratitudeGoalSelectBehaviorScreenState
                         height: 24,
                       ),
                       ...List.generate(
-                        behaviors.length,
+                        _behaviors.length,
                         (index) {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
@@ -65,7 +67,7 @@ class _GratitudeGoalSelectBehaviorScreenState
                               shrink: true,
                               hasIcon: false,
                               mainAxisAlignment: MainAxisAlignment.center,
-                              titleBig: behaviors[index],
+                              titleBig: _behaviors[index],
                               onTap: () {
                                 setState(() {
                                   _pressedIndex = index;
@@ -87,7 +89,7 @@ class _GratitudeGoalSelectBehaviorScreenState
                               analyticsEvent: AnalyticsEvent(
                                 AmplitudeEvents.gratitudeGoalBehaviorClicked,
                                 parameters: {
-                                  'behavior': behaviors[index],
+                                  'behavior': _behaviors[index],
                                 },
                               ), iconPath: '',
                             ),
@@ -105,7 +107,11 @@ class _GratitudeGoalSelectBehaviorScreenState
                     FunButton(
                       isDisabled: _pressedIndex == null,
                       text: 'Continue',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          const GratitudeGoalExplanationScreen().toRoute(context),
+                        );
+                      },
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents.gratitudeGoalContinueClicked,
                       ),
