@@ -4,12 +4,14 @@ sealed class BehaviorOptions {
     required this.behavior,
     required this.weWantToBeLabel,
     required this.captainExplanation,
+    required this.index,
   });
 
   final String weWillBeMoreLabel;
   final String behavior;
   final String weWantToBeLabel;
   final String captainExplanation;
+  final int index;
 }
 
 class SayingThankYou extends BehaviorOptions {
@@ -18,8 +20,9 @@ class SayingThankYou extends BehaviorOptions {
           weWillBeMoreLabel: 'We will be more thankful',
           behavior: 'Saying thank you',
           weWantToBeLabel: 'We want to be more thankful, so we will...',
-    captainExplanation:
+          captainExplanation:
               'Science shows a daily practice of gratitude helps your family to become more thankful',
+          index: 0,
         );
 }
 
@@ -31,6 +34,7 @@ class HavingAppreciation extends BehaviorOptions {
           weWantToBeLabel: 'We want to be more appreciative, so we will...',
           captainExplanation:
               'Science shows a daily practice of gratitude helps your family to become more appreciative',
+          index: 1,
         );
 }
 
@@ -43,6 +47,7 @@ class DealingWithEmotions extends BehaviorOptions {
               'We want to deal better with emotions, so we will...',
           captainExplanation:
               'Science shows a daily practice of gratitude helps your family to better deal with emotions',
+          index: 2,
         );
 }
 
@@ -54,5 +59,6 @@ class WorkingTogether extends BehaviorOptions {
           weWantToBeLabel: 'We want to be more collaborative, so we will...',
           captainExplanation:
               'Science shows a daily practice of gratitude helps your family to learn to collaborate more',
+          index: 3,
         );
 }

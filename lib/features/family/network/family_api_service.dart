@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/models/behavior_options.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/models/set_a_goal_options.dart';
 import 'package:http/http.dart';
 
 class FamilyAPIService {
@@ -248,6 +250,31 @@ class FamilyAPIService {
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final itemMap = decodedBody['items']! as List<dynamic>;
     return itemMap;
+  }
+
+  Future<bool> saveGratitudeGoal(
+      SetAGoalOptions goal, BehaviorOptions behavior) async {
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/groups/family/gratitude-goal');
+
+    final response = await client.post(
+      url,
+      body: jsonEncode({
+        'behavior': behavior.index,
+        'goal': goal.timesAWeek,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
   }
 
   Future<bool> setupRecurringAmount(String childGUID, int allowance) async {

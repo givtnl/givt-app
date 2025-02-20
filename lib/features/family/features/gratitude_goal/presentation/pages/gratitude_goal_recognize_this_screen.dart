@@ -24,70 +24,72 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
       ),
       body: CustomScrollView(
         slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(
+                  height: 40,
+                ),
+                Image.asset(
+                  'assets/family/images/gratitude_goal_sad.png',
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                const TitleMediumText(
+                  'Recognize this?',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                const BodyMediumText(
+                  '"My 9-year-old got a box of Lego from our neighbor but refused to share it with his sister. I’d love them to be more grateful and generous!"',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                FunTag.secondary(
+                  text: 'Cindy 33 , Tulsa OK',
+                ),
+              ],
+            ),
+          ),
           SliverFillRemaining(
             hasScrollBody: false,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Image.asset(
-                      'assets/family/images/gratitude_goal_sad.png',
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    const TitleMediumText(
-                      'Recognize this?',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    const BodyMediumText(
-                      '"My 9-year-old got a box of Lego from our neighbor but refused to share it with his sister. I’d love them to be more grateful and generous!"',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    FunTag.secondary(
-                      text: 'Cindy 33 , Tulsa OK',
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      const SizedBox(height: 24),
-                      FunButton(
-                        text: 'Yes, of course',
-                        onTap: () =>
-                            _navigateToGratitudeGoalSelectBehaviorScreen(context),
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.gratitudeGoalYesOfCourseClicked,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      FunTextButton(
-                        text: 'No, not really',
-                        rightIconSize: 0,
-                        onTap: () =>
-                            _navigateToGratitudeGoalSelectBehaviorScreen(context),
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.gratitudeGoalNoNotReallyClicked,
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                    ],
+                const SizedBox(height: 24),
+                FunButton(
+                  text: 'Yes, of course',
+                  onTap: () =>
+                      _navigateToGratitudeGoalSelectBehaviorScreen(
+                    context,
+                    isRecognized: true,
+                  ),
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.gratitudeGoalYesOfCourseClicked,
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                FunTextButton(
+                  text: 'No, not really',
+                  rightIconSize: 0,
+                  onTap: () =>
+                      _navigateToGratitudeGoalSelectBehaviorScreen(
+                    context,
+                    isRecognized: false,
+                  ),
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.gratitudeGoalNoNotReallyClicked,
+                  ),
+                ),
+                const SizedBox(height: 32),
               ],
             ),
           ),
@@ -96,9 +98,13 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
     );
   }
 
-  void _navigateToGratitudeGoalSelectBehaviorScreen(BuildContext context) {
+  void _navigateToGratitudeGoalSelectBehaviorScreen(
+    BuildContext context, {
+    required bool isRecognized,
+  }) {
     Navigator.of(context).push(
-      const GratitudeGoalSelectBehaviorScreen().toRoute(context),
+      GratitudeGoalSelectBehaviorScreen(isRecognized: isRecognized)
+          .toRoute(context),
     );
   }
 }

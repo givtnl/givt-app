@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/gratitude_goal/domain/behavior_options.dart';
-import 'package:givt_app/features/family/features/gratitude_goal/domain/set_a_goal_options.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/models/behavior_options.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/models/set_a_goal_options.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_commit_screen.dart';
 import 'package:givt_app/features/family/helpers/datetime_extension.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -70,36 +70,49 @@ class _GratitudeGoalSetAGoalScreenState
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 16),
-                    FunCard(
-                      backgroundColor: FamilyAppTheme.highlight99,
-                      content: Column(
-                        children: [
-                          const Row(),
-                          SvgPicture.asset(
-                            'assets/family/images/kids_without_frame.svg',
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25),
+                          child: FunCard(
+                            backgroundColor: FamilyAppTheme.highlight99,
+                            content: Column(
+                              children: [
+                                const Row(),
+                                SvgPicture.asset(
+                                  'assets/family/images/kids_without_frame.svg',
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                TitleMediumText.primary30(
+                                  'By ${_byDate.formattedFullMonth}',
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                BodyMediumText(
+                                  widget.behavior.weWillBeMoreLabel,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                          const SizedBox(
-                            height: 16,
+                        ),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: FunTag.fromTag(
+                            tag: _currentGoal().habitFormingTag,
                           ),
-                          TitleMediumText.primary30(
-                            'By ${_byDate.formattedFullMonth}',
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          BodyMediumText(
-                            widget.behavior.weWillBeMoreLabel,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 32,
                     ),
-                    FunTag.secondary(
-                      text: '${_currentGoal().weeksToFormHabit} weeks',
+                    FunTag.fromTag(
+                      tag: _currentGoal().weeksTag,
                     ),
                     const SizedBox(height: 4),
                     const BodyMediumText('Practicing gratitude'),
@@ -141,7 +154,10 @@ class _GratitudeGoalSetAGoalScreenState
                           ).toRoute(context),
                         ),
                         analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.gratitudeGoalSetAGoalContinueClicked,
+                          AmplitudeEvents.continueClicked,
+                          parameters: {
+                            'page': 'Set a goal',
+                          },
                         ),
                       ),
                       const SizedBox(height: 50),
