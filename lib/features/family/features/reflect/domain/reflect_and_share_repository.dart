@@ -580,10 +580,15 @@ class ReflectAndShareRepository {
     return _gameStatsData ??= await _fetchGameStats();
   }
 
+  Future<void> refreshGameStats() async {
+    await _fetchGameStats();
+  }
+
   Future<GameStats> _fetchGameStats() async {
     final result = await _familyApiService.fetchGameStats();
     final stats = GameStats.fromJson(result);
     _gameStatsUpdatedStreamController.add(stats);
+    _gameStatsData = stats;
     return stats;
   }
 

@@ -178,7 +178,7 @@ void initCubits() {
       () => NotificationMissionsCubit(getIt()),
     )
     ..registerFactory<GratitudeGoalCommitCubit>(
-      () => GratitudeGoalCommitCubit(getIt(), getIt()),
+      () => GratitudeGoalCommitCubit(getIt(), getIt(), getIt()),
     )
     ..registerFactory<GameSummariesCubit>(
       GameSummariesCubit.new,
