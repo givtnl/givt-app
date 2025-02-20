@@ -1,31 +1,37 @@
 import 'dart:async';
 
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/family/features/home_screen/widgets/models/daily_experience_custom.dart';
-import 'package:givt_app/features/family/features/home_screen/widgets/models/daily_experience_uimodel.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/models/gratitude_goal_custom.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/models/gratitude_goal_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class DailyExperienceCubit
-    extends CommonCubit<DailyExperienceUIModel, DailyExperienceCustom> {
-  DailyExperienceCubit(this._repo) : super(const BaseState.loading());
+class GratitudeGoalCubit
+    extends CommonCubit<GratitudeGoalUIModel, GratitudeGoalCustom> {
+  GratitudeGoalCubit(this._repo) : super(const BaseState.loading());
 
   final ReflectAndShareRepository _repo;
 
   late GameStats _gameStats;
-  late DateTime midnight;
+  late DateTime endOfWeek;
 
   StreamSubscription<GameStats>? _gameStatsSubscription;
 
   Future<void> init() async {
     final now = DateTime.now();
-    midnight = DateTime(
+    final adjustedWeekday = now.weekday == 7 ? 0 : now.weekday;
+    final daysUntilSunday = DateTime.sunday - adjustedWeekday;
+    endOfWeek = DateTime(
       now.year,
       now.month,
-      now.day + 1,
+      now.day + daysUntilSunday,
+      23,
+      59,
+      59,
     );
+
     _gameStatsSubscription =
         _repo.onGameStatsUpdated.listen(_onGameStatsUpdated);
     try {
@@ -34,7 +40,7 @@ class DailyExperienceCubit
       //it's okay to fail, we'll stay updated via the stream
     }
     _emitData();
-    emitCustom(DailyExperienceCustom.startCountdownTo(midnight));
+    emitCustom(GratitudeGoalCustom.startCountdownTo(endOfWeek));
   }
 
   void _onGameStatsUpdated(GameStats stats) {
@@ -46,9 +52,9 @@ class DailyExperienceCubit
     try {
       emit(
         BaseState.data(
-          DailyExperienceUIModel(
-            currentProgress: _gameStats.currentDailyXP!,
-            total: _gameStats.dailyXPGoal!,
+          GratitudeGoalUIModel(
+            gratitudeGoal: _gameStats.gratitudeGoal,
+            gratitudeGoalCurrent: _gameStats.gratitudeGoalCurrent,
           ),
         ),
       );

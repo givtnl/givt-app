@@ -10,6 +10,7 @@ export 'package:givt_app/features/family/shared/widgets/texts/headline_small_tex
 export 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 export 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 export 'package:givt_app/features/family/shared/widgets/texts/label_small_text.dart';
+export 'package:givt_app/features/family/shared/widgets/texts/label_thin_text.dart';
 export 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
 export 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 export 'package:givt_app/features/family/shared/widgets/texts/title_small_text.dart';

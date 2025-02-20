@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
 import 'package:givt_app/features/family/features/missions/presentation/models/missions_ui_model.dart';
+import 'package:givt_app/features/family/features/missions/presentation/widgets/missions_dialog.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
@@ -108,7 +111,17 @@ class _MissionsScreenState extends State<MissionsScreen> {
                                       mission.progress?.goalAmount
                               ? null
                               : () {
-                                  context.goNamed(mission.namedPage!);
+                                  final validValues = [
+                                    ...FamilyPages.values.map((e) => e.name),
+                                    ...Pages.values.map((e) => e.name),
+                                  ];
+                                  if (validValues.contains(mission.namedPage)) {
+                                    context.goNamed(mission.namedPage!);
+                                  } else {
+                                    showMissionNotAvailableDialog(
+                                      context,
+                                    );
+                                  }
                                 },
                           analyticsEvent: AnalyticsEvent(
                             AmplitudeEvents.funMissionCardClicked,

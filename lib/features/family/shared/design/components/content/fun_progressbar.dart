@@ -18,7 +18,7 @@ class FunProgressbar extends StatefulWidget {
   })  : assert(currentProgress >= 0, 'Current progress must be non-negative'),
         assert(total > 0, 'Total must be greater than zero');
 
-  factory FunProgressbar.xp({
+  factory FunProgressbar.gratitudeGoal({
     required int currentProgress,
     required int total,
     EdgeInsets? margin,
@@ -28,12 +28,15 @@ class FunProgressbar extends StatefulWidget {
       key: key,
       currentProgress: currentProgress,
       total: total,
-      prefixWidget: const FaIcon(
-        Icons.bolt,
-        color: FamilyAppTheme.highlight30,
-        size: 16,
+      prefixWidget: const Padding(
+        padding: EdgeInsets.only(right: 4),
+        child: FaIcon(
+          FontAwesomeIcons.fire,
+          color: FamilyAppTheme.highlight30,
+          size: 12,
+        ),
       ),
-      suffix: 'XP',
+      suffix: 'played',
       margin: margin,
     );
   }

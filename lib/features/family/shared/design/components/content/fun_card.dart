@@ -5,15 +5,17 @@ import 'package:givt_app/features/family/utils/utils.dart';
 
 class FunCard extends StatelessWidget {
   const FunCard({
-    required this.icon,
+    this.icon,
     this.title,
+    this.backgroundColor,
     this.content,
     this.button,
     super.key,
   });
 
-  final FunIcon icon;
+  final FunIcon? icon;
   final String? title;
+  final Color? backgroundColor;
   final Widget? content;
   final Widget? button;
 
@@ -21,7 +23,7 @@ class FunCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: backgroundColor ?? Colors.white,
         border: Border.all(
           color: FamilyAppTheme.neutralVariant95,
           width: 2,
@@ -33,7 +35,7 @@ class FunCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
+            if(icon != null) Container(
               padding: EdgeInsets.zero,
               child: SizedBox(
                 width: 140,

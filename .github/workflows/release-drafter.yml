@@ -65,13 +65,14 @@ jobs:
             const { OpenAI } = require('openai')
             const openai = new OpenAI({ apiKey: "${{ secrets.OPENAI_API_KEY }}"})
             const response = await openai.chat.completions.create({
-              model: "gpt-4o-mini",
+              model: "gpt-4o",
               messages: [
-                { role: 'system', content: `You are a slack message writer. Your job is to translate a changelog to a short message (1 or 2 sentences) about what is changed. This message will be read by colleagues in our company. You can make use of 'mrkdwn' to highlight keywords or the make the message prettier. When a changelog is provided, respond with the message.` },
+                { role: 'system', content: `You are a slack message writer. Your job is to translate a changelog to a short message (1 or 2 sentences) about what is changed. This message will be read by colleagues in our company. You can make use of 'mrkdwn' to highlight keywords or the make the message prettier. When a changelog is provided, respond with the message. If something is new, don't mention the bugfixes about the same thing` },
                 { role: 'user', content: `${{ steps.release-drafter.outputs.body }}` }
               ]
             })
-            console.log("::set-output name=generated_text::" + response.choices[0].message.content)
+            return response.choices[0].message.content;
+          result-encoding: string
       
       # Post slack message for new release
       - name: Slack Notification
@@ -113,7 +114,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ steps.generate-text.outputs.generated_text }}"
+                    "text": "${{ steps.generate-text.outputs.result }}"
                   }
                 },
                 {

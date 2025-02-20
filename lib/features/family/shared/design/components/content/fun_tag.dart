@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/label_thin_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 
@@ -13,6 +14,7 @@ class FunTag extends StatelessWidget {
     required this.textColor,
     required this.accentColor,
     super.key,
+    this.subtitle,
     this.borderRadius,
     this.iconData,
     this.flatSide = FlatSide.none,
@@ -26,9 +28,11 @@ class FunTag extends StatelessWidget {
     IconData? iconData,
     FlatSide flatSide = FlatSide.none,
     double? iconSize,
+    String? subtitle,
   }) {
     return FunTag(
       text: text,
+      subtitle: subtitle,
       textColor: area.textColor,
       accentColor: area.accentColor,
       iconData: iconData,
@@ -43,6 +47,7 @@ class FunTag extends StatelessWidget {
   }) {
     return FunTag.fromArea(
       text: tag.displayText,
+      subtitle: tag.subtitle,
       area: tag.area,
       iconData: tag.iconData,
       flatSide: flatSide,
@@ -171,6 +176,7 @@ class FunTag extends StatelessWidget {
   }
 
   final String text;
+  final String? subtitle;
   final Color textColor;
   final Color accentColor;
   final BorderRadius? borderRadius;
@@ -194,21 +200,26 @@ class FunTag extends StatelessWidget {
           left: flatSide == FlatSide.left ? 16 : 12,
           right: flatSide == FlatSide.right ? 16 : 12,
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Column(
           children: [
-            if (iconData != null)
-              Icon(
-                iconData,
-                color: textColor,
-                size: iconSize,
-              ),
-            if (iconData != null) const SizedBox(width: 4),
-            LabelSmallText(
-              text,
-              color: textColor,
-              fontFeatures: fontFeatures,
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (iconData != null)
+                  Icon(
+                    iconData,
+                    color: textColor,
+                    size: iconSize,
+                  ),
+                if (iconData != null) const SizedBox(width: 4),
+                LabelSmallText(
+                  text,
+                  color: textColor,
+                  fontFeatures: fontFeatures,
+                ),
+              ],
             ),
+            if (subtitle != null) LabelThinText(subtitle!, color: textColor),
           ],
         ),
       ),

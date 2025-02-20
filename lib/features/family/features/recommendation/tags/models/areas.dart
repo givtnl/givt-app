@@ -50,6 +50,24 @@ enum Areas {
     accentColor: FamilyAppTheme.primary95,
     textColor: FamilyAppTheme.primary40,
   ),
+  extremelyStrong(
+    borderColor: FamilyAppTheme.primary70,
+    backgroundColor: FamilyAppTheme.primary98,
+    accentColor: FamilyAppTheme.primary80,
+    textColor: FamilyAppTheme.primary10,
+  ),
+  strong(
+    borderColor: FamilyAppTheme.primary70,
+    backgroundColor: FamilyAppTheme.primary98,
+    accentColor: FamilyAppTheme.primary90,
+    textColor: FamilyAppTheme.primary30,
+  ),
+  lessStrong(
+    borderColor: FamilyAppTheme.info70,
+    backgroundColor: FamilyAppTheme.info95,
+    accentColor: FamilyAppTheme.info80,
+    textColor: FamilyAppTheme.info20,
+  ),
   secondary(
     borderColor: FamilyAppTheme.secondary80,
     backgroundColor: FamilyAppTheme.secondary98,
@@ -74,6 +92,7 @@ enum Areas {
     accentColor: FamilyAppTheme.tertiary95,
     textColor: FamilyAppTheme.tertiary40,
   ),
+
   ;
 
   final Color backgroundColor;

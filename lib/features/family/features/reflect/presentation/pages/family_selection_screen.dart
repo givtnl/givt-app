@@ -71,7 +71,6 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             // ignore: unused_local_variable
             case final ShowVolumeBottomsheet data:
               showVolumeBottomSheet(context);
-              break;
           }
         },
         onLoading: (context) =>
@@ -237,7 +236,10 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
         for (var i = 0; i < profiles.length; i++)
           isSelected(profiles[i])
               ? getEmptyProfileItem()
-              : ProfileItem(profile: profiles[i]),
+              : ProfileItem(
+                  profile: profiles[i],
+                  size: 60,
+                ),
       ],
     );
   }
@@ -252,6 +254,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
               ? getEmptyProfileItem()
               : ProfileItem(
                   profile: profiles[i],
+                  size: 60,
                 ),
         ),
       );
@@ -265,8 +268,8 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
 
   Widget getEmptyProfileItem() {
     return Container(
-      width: 80,
-      height: 113,
+      width: 60,
+      height: 93,
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),

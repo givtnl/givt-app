@@ -19,7 +19,7 @@ class FunModal extends StatefulWidget {
     super.key,
   });
 
-  final FunIcon? icon;
+  final Widget? icon;
   final String? title;
   final String? subtitle;
   final List<FunButton> buttons;

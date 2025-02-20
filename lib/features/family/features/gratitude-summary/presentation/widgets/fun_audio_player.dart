@@ -77,51 +77,51 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                _buildControl(),
-                _buildSlider(constraints.maxWidth),
-                if (widget.showDeleteButton)
-                  IconButton(
-                    icon: const Icon(Icons.delete,
-                        color: FamilyAppTheme.neutral70, size: _deleteBtnSize),
-                    onPressed: () {
-                      if (_audioPlayer.state == ap.PlayerState.playing) {
-                        stop().then((value) {
-                          _deleteFile();
-                          widget.onDelete?.call();
-                        });
-                      } else {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _buildControl(),
+              Expanded(
+                child: _buildSlider(),
+              ),
+              if (widget.showDeleteButton)
+                IconButton(
+                  icon: const Icon(Icons.delete,
+                      color: FamilyAppTheme.neutral70, size: _deleteBtnSize),
+                  onPressed: () {
+                    if (_audioPlayer.state == ap.PlayerState.playing) {
+                      stop().then((value) {
                         _deleteFile();
                         widget.onDelete?.call();
-                      }
-                    },
+                      });
+                    } else {
+                      _deleteFile();
+                      widget.onDelete?.call();
+                    }
+                  },
+                ),
+              if (!widget.showDeleteButton)
+                SizedBox(
+                  width: 56,
+                  child: BodyMediumText(
+                    '${getMinutes()}:${getSeconds()}',
+                    textAlign: TextAlign.right,
+                    color: FamilyAppTheme.primary98,
                   ),
-                if (!widget.showDeleteButton)
-                  SizedBox(
-                    width: 56,
-                    child: BodyMediumText(
-                      '${getMinutes()}:${getSeconds()}',
-                      textAlign: TextAlign.right,
-                      color: FamilyAppTheme.primary98,
-                    ),
-                  ),
-              ],
+                ),
+            ],
+          ),
+          if (widget.showDeleteButton)
+            BodyMediumText(
+              '${getMinutes()}:${getSeconds()}',
+              textAlign: TextAlign.right,
             ),
-            if (widget.showDeleteButton)
-              BodyMediumText(
-                '${getMinutes()}:${getSeconds()}',
-                textAlign: TextAlign.right,
-              ),
-          ],
-        );
-      },
+        ],
+      ),
     );
   }
 
@@ -169,7 +169,7 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
     );
   }
 
-  Widget _buildSlider(double widgetWidth) {
+  Widget _buildSlider() {
     bool canSetValue = false;
     final duration = _duration;
     final position = _position;
@@ -179,24 +179,18 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
       canSetValue &= position.inMilliseconds < duration.inMilliseconds;
     }
 
-    double width = widgetWidth - _controlSize - _deleteBtnSize;
-    width -= _deleteBtnSize;
-
-    return SizedBox(
-      width: width,
-      child: Slider(
-        activeColor: FamilyAppTheme.primary60,
-        inactiveColor: FamilyAppTheme.neutral90,
-        onChanged: (v) {
-          if (duration != null) {
-            final position = v * duration.inMilliseconds;
-            _audioPlayer.seek(Duration(milliseconds: position.round()));
-          }
-        },
-        value: canSetValue && duration != null && position != null
-            ? position.inMilliseconds / duration.inMilliseconds
-            : 0.0,
-      ),
+    return Slider(
+      activeColor: FamilyAppTheme.primary60,
+      inactiveColor: FamilyAppTheme.neutral90,
+      onChanged: (v) {
+        if (duration != null) {
+          final position = v * duration.inMilliseconds;
+          _audioPlayer.seek(Duration(milliseconds: position.round()));
+        }
+      },
+      value: canSetValue && duration != null && position != null
+          ? position.inMilliseconds / duration.inMilliseconds
+          : 0.0,
     );
   }
 

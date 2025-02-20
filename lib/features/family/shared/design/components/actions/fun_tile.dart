@@ -23,6 +23,7 @@ class FunTile extends StatelessWidget {
     this.titleSmall,
     this.subtitle,
     this.assetSize,
+    this.padding,
     this.mainAxisAlignment,
     this.iconData,
     this.iconColor,
@@ -80,6 +81,7 @@ class FunTile extends StatelessWidget {
       analyticsEvent: analyticsEvent,
     );
   }
+
   factory FunTile.green({
     required AnalyticsEvent analyticsEvent,
     String? titleBig,
@@ -152,6 +154,7 @@ class FunTile extends StatelessWidget {
   final Color? iconColor;
   final bool hasIcon;
   final MainAxisAlignment? mainAxisAlignment;
+  final EdgeInsets? padding;
   final AnalyticsEvent analyticsEvent;
 
   @override
@@ -206,9 +209,10 @@ class FunTile extends StatelessWidget {
                           ),
                   ),
                 Padding(
-                  padding: hasIcon
-                      ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16)
-                      : EdgeInsets.zero,
+                  padding: padding ??
+                      (hasIcon
+                          ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16)
+                          : EdgeInsets.zero),
                   child: Column(
                     children: [
                       if (titleBig != null)

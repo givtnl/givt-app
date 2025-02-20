@@ -168,49 +168,50 @@ class _RuleScreenState extends State<RuleScreen> {
           LeaveGameButton(),
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 56),
-          child: RuleCard(
-            color: widget.backgroundColor ??
-                widget.user.role!.color.backgroundColor,
-            title: widget.title,
-            icon: FunIcon(
-              iconData: widget.iconData,
-              circleColor: widget.backgroundColor ??
+      body: LayoutBuilder(
+        builder: (context, constraints) => Center(
+          child: SingleChildScrollView(
+            child: RuleCard(
+              color: widget.backgroundColor ??
                   widget.user.role!.color.backgroundColor,
-              circleSize: 64,
-              iconSize: 32,
-            ),
-            header: widget.header,
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 8),
-                FunBackgroundAudioWidget(
-                  isVisible: true,
-                  audioPath: widget.audioPath,
-                  onPauseOrStop: () {
-                    setState(() {
-                      _hasPlayedAudio = true;
-                    });
-                  },
+              title: widget.title,
+              icon: FunIcon(
+                iconData: widget.iconData,
+                circleColor: widget.backgroundColor ??
+                    widget.user.role!.color.backgroundColor,
+                circleSize: 64,
+                iconSize: 32,
+              ),
+              header: widget.header,
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 8),
+                  FunBackgroundAudioWidget(
+                    isVisible: true,
+                    audioPath: widget.audioPath,
+                    onPauseOrStop: () {
+                      setState(() {
+                        _hasPlayedAudio = true;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  BodyMediumText(
+                    widget.bodyText,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              button: FunButton(
+                isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
+                onTap: () {
+                  widget.onTap(context);
+                },
+                text: widget.buttonText,
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.reflectAndShareRulesNextClicked,
                 ),
-                const SizedBox(height: 8),
-                BodyMediumText(
-                  widget.bodyText,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-            button: FunButton(
-              isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
-              onTap: () {
-                widget.onTap(context);
-              },
-              text: widget.buttonText,
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.reflectAndShareRulesNextClicked,
               ),
             ),
           ),

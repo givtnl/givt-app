@@ -17,10 +17,12 @@ import 'package:givt_app/features/family/features/giving_flow/collectgroup_detai
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/bloc/gratitude_goal_commit_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/repositories/gratitude_goal_repository.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/daily_experience_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/gratitude_goal_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
 import 'package:givt_app/features/family/features/league/bloc/league_cubit.dart';
@@ -83,7 +85,7 @@ void initCubits() {
     )
     ..registerFactory(ParentSummaryCubit.new)
     ..registerFactory(FunBottomSheetWithAsyncActionCubit.new)
-    ..registerFactory(() => DailyExperienceCubit(getIt()))
+    ..registerFactory(() => GratitudeGoalCubit(getIt()))
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => LeaveGameCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
@@ -175,6 +177,9 @@ void initCubits() {
     ..registerFactory<NotificationMissionsCubit>(
       () => NotificationMissionsCubit(getIt()),
     )
+    ..registerFactory<GratitudeGoalCommitCubit>(
+      () => GratitudeGoalCommitCubit(getIt(), getIt(), getIt()),
+    )
     ..registerFactory<GameSummariesCubit>(
       GameSummariesCubit.new,
     )
@@ -198,6 +203,9 @@ void initRepositories() {
     )
     ..registerLazySingleton<LeagueRepository>(
       () => LeagueRepository(getIt(), getIt()),
+    )
+    ..registerLazySingleton<GratitudeGoalRepository>(
+      () => GratitudeGoalRepository(getIt()),
     )
     ..registerSingleton<TutorialRepository>(
       TutorialRepository(),

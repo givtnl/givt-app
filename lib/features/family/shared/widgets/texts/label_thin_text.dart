@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class TitleMediumText extends StatelessWidget {
+class LabelThinText extends StatelessWidget {
   // when color is not defined it will default to primary20
-  const TitleMediumText(
+  const LabelThinText(
     this.text, {
     super.key,
     this.color,
@@ -19,32 +19,29 @@ class TitleMediumText extends StatelessWidget {
     this.selectionColor,
     this.textWidthBasis,
     this.strutStyle,
+    this.fontFeatures,
   });
 
-  factory TitleMediumText.primary30(String text, {TextAlign? textAlign}) =>
-      TitleMediumText(
-        text,
-        color: FamilyAppTheme.primary30,
-        textAlign: textAlign,
-      );
+  factory LabelThinText.primary30(String text) =>
+      LabelThinText(text, color: FamilyAppTheme.primary30);
 
-  factory TitleMediumText.primary40(String text) =>
-      TitleMediumText(text, color: FamilyAppTheme.primary40);
+  factory LabelThinText.primary40(String text) =>
+      LabelThinText(text, color: FamilyAppTheme.primary40);
 
-  factory TitleMediumText.secondary20(String text) =>
-      TitleMediumText(text, color: FamilyAppTheme.secondary20);
+  factory LabelThinText.secondary20(String text) =>
+      LabelThinText(text, color: FamilyAppTheme.secondary20);
 
-  factory TitleMediumText.secondary30(String text) =>
-      TitleMediumText(text, color: FamilyAppTheme.secondary30);
+  factory LabelThinText.secondary30(String text) =>
+      LabelThinText(text, color: FamilyAppTheme.secondary30);
 
-  factory TitleMediumText.secondary40(String text) =>
-      TitleMediumText(text, color: FamilyAppTheme.secondary40);
+  factory LabelThinText.secondary40(String text) =>
+      LabelThinText(text, color: FamilyAppTheme.secondary40);
 
-  factory TitleMediumText.tertiary20(String text) =>
-      TitleMediumText(text, color: FamilyAppTheme.tertiary20);
+  factory LabelThinText.tertiary20(String text) =>
+      LabelThinText(text, color: FamilyAppTheme.tertiary20);
 
-  factory TitleMediumText.tertiary40(String text) =>
-      TitleMediumText(text, color: FamilyAppTheme.tertiary40);
+  factory LabelThinText.tertiary40(String text) =>
+      LabelThinText(text, color: FamilyAppTheme.tertiary40);
 
   final String text;
   final Color? color;
@@ -60,6 +57,7 @@ class TitleMediumText extends StatelessWidget {
   final Color? selectionColor;
   final TextWidthBasis? textWidthBasis;
   final StrutStyle? strutStyle;
+  final List<FontFeature>? fontFeatures;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +75,11 @@ class TitleMediumText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: Theme.of(context).textTheme.titleMedium?.copyWith(color: color),
+      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: color,
+            fontFeatures: fontFeatures,
+            fontWeight: FontWeight.w500,
+          ),
     );
   }
 }

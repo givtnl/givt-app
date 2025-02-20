@@ -9,6 +9,7 @@ class Tag extends Equatable {
     required this.displayText,
     required this.pictureUrl,
     required this.type,
+    this.subtitle,
     this.iconData,
     this.iconSize,
   });
@@ -38,6 +39,7 @@ class Tag extends Equatable {
   final String key;
   final Areas area;
   final String displayText;
+  final String? subtitle;
   final String pictureUrl;
   final TagType type;
   final IconData? iconData;
@@ -48,6 +50,7 @@ class Tag extends Equatable {
         key,
         area,
         displayText,
+        subtitle,
         pictureUrl,
         type,
         iconData,
@@ -66,4 +69,4 @@ class Tag extends Equatable {
 }
 
 // ignore: constant_identifier_names
-enum TagType { LOCATION, INTERESTS, XP }
+enum TagType { LOCATION, INTERESTS, XP, GRATITUDEGOAL }
