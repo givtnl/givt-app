@@ -28,7 +28,7 @@ class GameProfileItem extends StatelessWidget {
       children: [
         SizedBox(
           width: size,
-          height: size + 20,
+          height: size + 16,
           child: Stack(
             children: [
               Align(
