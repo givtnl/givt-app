@@ -22,11 +22,11 @@ class GratitudeGoalCubit
   Future<void> init() async {
     final now = DateTime.now();
     final adjustedWeekday = now.weekday == 7 ? 0 : now.weekday;
-    final daysUntilSaturday = DateTime.saturday - adjustedWeekday;
+    final daysUntilSunday = DateTime.sunday - adjustedWeekday;
     endOfWeek = DateTime(
       now.year,
       now.month,
-      now.day + daysUntilSaturday,
+      now.day + daysUntilSunday,
       23,
       59,
       59,

@@ -5,8 +5,11 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
-Future<void> showBoxOriginSuccessDialog(BuildContext context, String orgName,
-    {void Function()? onTap}) async {
+Future<void> showBoxOriginSuccessDialog(
+  BuildContext context,
+  String orgName, {
+  void Function()? onTap,
+}) async {
   await FunModal(
     title: orgName,
     subtitle: 'Thanks for sharing!',
@@ -22,8 +25,10 @@ Future<void> showBoxOriginSuccessDialog(BuildContext context, String orgName,
   ).show(context);
 }
 
-Future<void> showBoxOriginErrorDialog(BuildContext context,
-    {void Function()? onTap}) async {
+Future<void> showBoxOriginErrorDialog(
+  BuildContext context, {
+      void Function()? onTap,
+}) async {
   await FunModal(
     title: 'Oops, something went wrong...',
     buttons: [
