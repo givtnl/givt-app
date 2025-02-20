@@ -141,7 +141,10 @@ class _GratitudeGoalSetAGoalScreenState
                           ).toRoute(context),
                         ),
                         analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.gratitudeGoalSetAGoalContinueClicked,
+                          AmplitudeEvents.continueClicked,
+                          parameters: {
+                            'page': 'Set a goal',
+                          },
                         ),
                       ),
                       const SizedBox(height: 50),

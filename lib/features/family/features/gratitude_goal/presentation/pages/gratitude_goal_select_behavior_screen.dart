@@ -4,6 +4,8 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/domain/models/behavior_options.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_explanation_screen.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_later_screen.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -12,7 +14,10 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeGoalSelectBehaviorScreen extends StatefulWidget {
-  const GratitudeGoalSelectBehaviorScreen({super.key});
+  const GratitudeGoalSelectBehaviorScreen(
+      {required this.isRecognized, super.key});
+
+  final bool isRecognized;
 
   @override
   State<GratitudeGoalSelectBehaviorScreen> createState() =>
@@ -54,8 +59,10 @@ class _GratitudeGoalSelectBehaviorScreenState
                       const SizedBox(
                         height: 40,
                       ),
-                      const TitleMediumText(
-                        'For your family...\nWhat behavior would you like to work on?',
+                      TitleMediumText(
+                        widget.isRecognized
+                            ? 'For your family...\nWhat behavior would you like to work on?'
+                            : 'Okay, is there any behavior in your family you would still like to work on?',
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(
@@ -119,9 +126,24 @@ class _GratitudeGoalSelectBehaviorScreenState
                         );
                       },
                       analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.gratitudeGoalContinueClicked,
+                        AmplitudeEvents.continueClicked,
+                        parameters: {
+                          'page': 'Select gratitude behavior screen',
+                        },
                       ),
                     ),
+                    if (!widget.isRecognized) const SizedBox(height: 20),
+                    if (!widget.isRecognized)
+                      FunTextButton(
+                        text: 'Maybe later',
+                        rightIconSize: 0,
+                        onTap: () => Navigator.of(context).push(
+                          const GratitudeGoalLaterScreen().toRoute(context),
+                        ),
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.gratitudeGoalMaybeLaterClicked,
+                        ),
+                      ),
                     const SizedBox(height: 40),
                   ],
                 ),
