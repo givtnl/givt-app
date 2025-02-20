@@ -82,7 +82,7 @@ class _GratitudeGoalSetAGoalScreenState
                             const SizedBox(
                               height: 16,
                             ),
-                            TitleMediumText(
+                            TitleMediumText.primary30(
                               'By ${_byDate.formattedFullMonth}',
                               textAlign: TextAlign.center,
                             ),
