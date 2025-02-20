@@ -33,6 +33,7 @@ import 'package:givt_app/features/family/features/giving_flow/screens/choose_amo
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/parent_summary_screen.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_entry_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
@@ -145,6 +146,13 @@ class FamilyAppRoutes {
         );
       },
       routes: [
+        GoRoute(
+          path: FamilyPages.gratitudeGoal.path,
+          name: FamilyPages.gratitudeGoal.name,
+          builder: (context, state) {
+            return const GratitudeGoalEntryScreen();
+          },
+        ),
         GoRoute(
           path: FamilyPages.heardAboutGivt.path,
           name: FamilyPages.heardAboutGivt.name,

@@ -22,6 +22,7 @@ enum FamilyPages {
     path: 'family-personal-info-edit',
     name: 'FAMILY-PERSONAL-INFO-EDIT',
   ),
+  gratitudeGoal(path: 'gratitude-goal', name: 'GRATITUDE-GOAL'),
   registrationUS(path: '/registration-us', name: 'REGISTRATION-US'),
   permitUSBiometric(
     path: '/permit-biometric-us',
