@@ -43,11 +43,10 @@ class _GratitudeGoalLaterScreenState extends State<GratitudeGoalLaterScreen> {
           Padding(
             padding: const EdgeInsets.only(bottom: 32),
             child: FunButton(
-              onTap: () =>
-                  context.goNamed(FamilyPages.profileSelection.name),
-              text: 'Continue',
+              onTap: () => context.goNamed(FamilyPages.profileSelection.name),
+              text: 'Done',
               analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.continueClicked,
+                AmplitudeEvents.gratitudeGoalLaterDoneClicked,
               ),
             ),
           ),
