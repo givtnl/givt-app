@@ -86,6 +86,7 @@ dependencies:
   facebook_app_events: ^0.19.5
   volume_controller: ^3.2.0
   flutter_animate: ^4.5.2
+  sliver_fill_remaining_box_adapter: ^1.0.0
 
 # Override needed because inappwebview >=6.1.0 requires this version
 # firebase_messaging_web is using an older version (and we can't upgrade to a more recent message version because of MLKIT)

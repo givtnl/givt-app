@@ -66,87 +66,87 @@ class _GratitudeGoalSetAGoalScreenState
             hasScrollBody: false,
             child: Column(
               children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(height: 16),
-                      FunCard(
-                        backgroundColor: FamilyAppTheme.highlight99,
-                        content: Column(
-                          children: [
-                            const Row(),
-                            SvgPicture.asset(
-                              'assets/family/images/kids_without_frame.svg',
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            TitleMediumText.primary30(
-                              'By ${_byDate.formattedFullMonth}',
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            BodyMediumText(
-                              widget.behavior.weWillBeMoreLabel,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      FunTag.secondary(
-                        text: '${_currentGoal().weeksToFormHabit} weeks',
-                      ),
-                      const SizedBox(height: 4),
-                      const BodyMediumText('Practicing gratitude'),
-                      const SizedBox(height: 4),
-                      HeadlineLargeText(
-                        _currentGoal().timesAWeekLabel,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      SliderTheme(
-                        data: FunSliderTheme.getSliderTheme(context),
-                        child: Slider(
-                          max: _goalOptions.length - 1,
-                          divisions: _goalOptions.length - 1,
-                          value: _index.toDouble(),
-                          onChanged: (double value) {
-                            setState(() {
-                              _index = value.round();
-                            });
-                            setByDate();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 24),
-                    FunButton(
-                      text: 'Continue',
-                      onTap: () => Navigator.of(context).push(
-                        GratitudeGoalCommitScreen(
-                          chosenOption: _currentGoal(),
-                          behavior: widget.behavior,
-                        ).toRoute(context),
-                      ),
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.gratitudeGoalSetAGoalContinueClicked,
+                    const SizedBox(height: 16),
+                    FunCard(
+                      backgroundColor: FamilyAppTheme.highlight99,
+                      content: Column(
+                        children: [
+                          const Row(),
+                          SvgPicture.asset(
+                            'assets/family/images/kids_without_frame.svg',
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          TitleMediumText.primary30(
+                            'By ${_byDate.formattedFullMonth}',
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          BodyMediumText(
+                            widget.behavior.weWillBeMoreLabel,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(
+                      height: 32,
+                    ),
+                    FunTag.secondary(
+                      text: '${_currentGoal().weeksToFormHabit} weeks',
+                    ),
+                    const SizedBox(height: 4),
+                    const BodyMediumText('Practicing gratitude'),
+                    const SizedBox(height: 4),
+                    HeadlineLargeText(
+                      _currentGoal().timesAWeekLabel,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    SliderTheme(
+                      data: FunSliderTheme.getSliderTheme(context),
+                      child: Slider(
+                        max: _goalOptions.length - 1,
+                        divisions: _goalOptions.length - 1,
+                        value: _index.toDouble(),
+                        onChanged: (double value) {
+                          setState(() {
+                            _index = value.round();
+                          });
+                          setByDate();
+                        },
+                      ),
+                    ),
                   ],
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      const SizedBox(height: 24),
+                      FunButton(
+                        text: 'Continue',
+                        onTap: () => Navigator.of(context).push(
+                          GratitudeGoalCommitScreen(
+                            chosenOption: _currentGoal(),
+                            behavior: widget.behavior,
+                          ).toRoute(context),
+                        ),
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.gratitudeGoalSetAGoalContinueClicked,
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                    ],
+                  ),
                 ),
               ],
             ),

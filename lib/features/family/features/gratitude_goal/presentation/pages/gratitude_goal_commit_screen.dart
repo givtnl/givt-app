@@ -28,68 +28,66 @@ class GratitudeGoalCommitScreen extends StatelessWidget {
       ),
       body: CustomScrollView(
         slivers: [
-          SliverFillRemaining(
-            hasScrollBody: false,
+          SliverToBoxAdapter(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      //TODO avatars
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      TitleSmallText(
-                        behavior.weWantToBeLabel,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Image.asset(
-                        'assets/family/images/gratitude_goal_happy.png',
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      const BodyMediumText('Practice gratitude'),
-                      const SizedBox(height: 4),
-                      FunTag.secondary(
-                        text: '${chosenOption.weeksToFormHabit} weeks',
-                      ),
-                      const SizedBox(height: 4),
-                      HeadlineLargeText(
-                        chosenOption.timesAWeekLabel,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
+                const SizedBox(
+                  height: 32,
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 24),
-                    FunButton(
-                      text: 'Commit to this goal',
-                      onTap: () =>
-                          context.goNamed(FamilyPages.profileSelection.name),
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.gratitudeGoalCommitToThisGoalClicked,
-                        parameters: {
-                          'weeksToFormHabit': chosenOption.weeksToFormHabit,
-                          'timesAWeek': chosenOption.timesAWeek,
-                          'timesAWeekLabel': chosenOption.timesAWeekLabel,
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                  ],
+                //TODO avatars
+                const SizedBox(
+                  height: 24,
+                ),
+                TitleSmallText(
+                  behavior.weWantToBeLabel,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Image.asset(
+                  'assets/family/images/gratitude_goal_happy.png',
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                const BodyMediumText('Practice gratitude'),
+                const SizedBox(height: 4),
+                FunTag.secondary(
+                  text: '${chosenOption.weeksToFormHabit} weeks',
+                ),
+                const SizedBox(height: 4),
+                HeadlineLargeText(
+                  chosenOption.timesAWeekLabel,
+                  textAlign: TextAlign.center,
                 ),
               ],
+            ),
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  const SizedBox(height: 24),
+                  FunButton(
+                    text: 'Commit to this goal',
+                    onTap: () =>
+                        context.goNamed(FamilyPages.profileSelection.name),
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.gratitudeGoalCommitToThisGoalClicked,
+                      parameters: {
+                        'weeksToFormHabit': chosenOption.weeksToFormHabit,
+                        'timesAWeek': chosenOption.timesAWeek,
+                        'timesAWeekLabel': chosenOption.timesAWeekLabel,
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                ],
+              ),
             ),
           ),
         ],
