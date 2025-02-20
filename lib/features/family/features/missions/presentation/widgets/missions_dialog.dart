@@ -16,8 +16,8 @@ Future<void> showMissionNotAvailableDialog(BuildContext context) async {
     buttons: [
       FunButton(
         text: 'Update now!',
-        onTap: () {
-          launchStoreUrl();
+        onTap: () async {
+          await launchStoreUrl();
           Navigator.of(context).pop();
         },
         analyticsEvent: AnalyticsEvent(AmplitudeEvents.updateNowClicked),
@@ -34,8 +34,8 @@ Future<void> launchStoreUrl() async {
   final url = Platform.isIOS ? Uri.parse(iosUrl) : Uri.parse(androidUrl);
 
   if (await canLaunchUrl(url)) {
-    await canLaunchUrl(url);
+    await launchUrl(url);
   } else {
-    // do nothing, we're probably on a weird platform
+    // do nothing, we're probably on a weird platform/ simulator
   }
 }
