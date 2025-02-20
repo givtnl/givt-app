@@ -355,6 +355,8 @@ enum AmplitudeEvents {
   funCounterIncrementClicked('fun_counter_increment_clicked'),
   boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
 
+  updateNowClicked('update_now_clicked'),
+
   //Bedtime summary
   summaryLeaveMessageClicked(
     'summary_leave_message_clicked',
