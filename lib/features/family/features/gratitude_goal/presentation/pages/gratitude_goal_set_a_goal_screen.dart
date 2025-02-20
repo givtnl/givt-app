@@ -70,36 +70,49 @@ class _GratitudeGoalSetAGoalScreenState
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 16),
-                    FunCard(
-                      backgroundColor: FamilyAppTheme.highlight99,
-                      content: Column(
-                        children: [
-                          const Row(),
-                          SvgPicture.asset(
-                            'assets/family/images/kids_without_frame.svg',
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25),
+                          child: FunCard(
+                            backgroundColor: FamilyAppTheme.highlight99,
+                            content: Column(
+                              children: [
+                                const Row(),
+                                SvgPicture.asset(
+                                  'assets/family/images/kids_without_frame.svg',
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                TitleMediumText.primary30(
+                                  'By ${_byDate.formattedFullMonth}',
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                BodyMediumText(
+                                  widget.behavior.weWillBeMoreLabel,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                          const SizedBox(
-                            height: 16,
+                        ),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: FunTag.fromTag(
+                            tag: _currentGoal().habitFormingTag,
                           ),
-                          TitleMediumText.primary30(
-                            'By ${_byDate.formattedFullMonth}',
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          BodyMediumText(
-                            widget.behavior.weWillBeMoreLabel,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 32,
                     ),
-                    FunTag.secondary(
-                      text: '${_currentGoal().weeksToFormHabit} weeks',
+                    FunTag.fromTag(
+                      tag: _currentGoal().weeksTag,
                     ),
                     const SizedBox(height: 4),
                     const BodyMediumText('Practicing gratitude'),
