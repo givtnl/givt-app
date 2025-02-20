@@ -105,7 +105,7 @@ class _GratitudeGoalSetAGoalScreenState
                       const SizedBox(height: 4),
                       const BodyMediumText('Practicing gratitude'),
                       const SizedBox(height: 4),
-                      TitleMediumText(
+                      HeadlineLargeText(
                         _currentGoal().timesAWeekLabel,
                         textAlign: TextAlign.center,
                       ),

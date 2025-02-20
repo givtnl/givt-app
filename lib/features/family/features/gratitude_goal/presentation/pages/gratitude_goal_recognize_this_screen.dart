@@ -49,7 +49,7 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
                         height: 8,
                       ),
                       const BodyMediumText(
-                        'My 9-year-old got a box of Lego from our neighbor but refused to share it with his sister. I’d love them to be more grateful and generous!',
+                        '"My 9-year-old got a box of Lego from our neighbor but refused to share it with his sister. I’d love them to be more grateful and generous!"',
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(

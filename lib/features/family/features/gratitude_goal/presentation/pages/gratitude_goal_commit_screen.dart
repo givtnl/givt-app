@@ -62,7 +62,7 @@ class GratitudeGoalCommitScreen extends StatelessWidget {
                         text: '${chosenOption.weeksToFormHabit} weeks',
                       ),
                       const SizedBox(height: 4),
-                      TitleMediumText(
+                      HeadlineLargeText(
                         chosenOption.timesAWeekLabel,
                         textAlign: TextAlign.center,
                       ),
