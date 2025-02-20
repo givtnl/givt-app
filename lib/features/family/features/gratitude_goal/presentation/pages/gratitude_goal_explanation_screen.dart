@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/gratitude_goal/domain/behavior_options.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/models/behavior_options.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_set_a_goal_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
