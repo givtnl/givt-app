@@ -808,12 +808,12 @@
         "description": "Title van de pagina \"Account opzeggen\"",
         "type": "text"
     },
-    "unregisterInfo": "We’re sad to see you go! We will delete all your personal information.",
+    "unregisterInfo": "We’re sorry to see you go!\nAfter terminating your account, we cannot recover it for you.",
     "@unregisterInfo": {
         "description": "Informatie op de \"account opzeggen\" pagina",
         "type": "text"
     },
-    "unregisterSad": "We're sad to see you leave\n and we hope to see you again.",
+    "unregisterSad": "We’re sad to see you leave and we hope to see you again.",
     "@unregisterSad": {
         "description": "Jammer dat je gaat",
         "type": "text"
@@ -1152,7 +1152,6 @@
     "historyInfoLegendaAccessibilityLabel": "Info explanation",
     "historyDownloadAnnualOverviewAccessibilityLabel": "Download annual overview of donations (mail)",
     "bluetoothErrorMessageEvent": "With Bluetooth, you can find your location even with no/poor GPS connection, thanks to location-beacons. \n Activate your Bluetooth now!",
-    "processCashedGivtNamespaceInvalid": "We see that you have made a non-processed gift to an organization that, sadly, doesn't use Givt anymore. This gift will be deleted.",
     "suggestionNamespaceInvalid": "Your last selected cause doesn't support Givt anymore.",
     "charity": "Charity",
     "artist": "Artist",
@@ -1377,7 +1376,6 @@
     "faQantwoord0Us": "In the app-menu under \"About Givt / Contact\" there's a text field where you can type a message and send it to us. Of course you can also contact us by calling +1 918-615-9611 or by sending an e-mail to support@givt.app.",
     "usRegistrationPersonalDetailsPostalCodePlaceholder": "Zip code",
     "amountPresetsErrMinAmount": "The amount has to be at least {value0}",
-    "unregisterInfoUs": "We’re sad to see you go!",
     "invalidQRcodeTitle": "Inactive QR code",
     "invalidQRcodeMessage": "Unfortunately, this QR code is no longer active. Would you like to give to the general funds of {value0}?",
     "errorOccurred": "An error occurred",
