@@ -85,7 +85,7 @@ class _GratitudeGoalContainerState extends State<GratitudeGoalContainer> {
                       const SizedBox(width: 4),
                       if (_timer != null)
                         LabelMediumText.primary40(
-                          _remainingHours > 48
+                          _remainingHours > 24
                               ? '${_remainingHours ~/ 24} days left'
                               : _remainingHours > 0
                                   ? '${_remainingHours}h ${_remainingMinutes}m'

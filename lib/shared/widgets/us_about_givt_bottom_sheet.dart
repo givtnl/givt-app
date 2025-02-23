@@ -92,6 +92,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
           controller: scrollController,
           child: Column(
             children: [
+              const SizedBox(height: 16),
               Image.asset(
                 'assets/images/logo_green.png',
                 width: 140,
