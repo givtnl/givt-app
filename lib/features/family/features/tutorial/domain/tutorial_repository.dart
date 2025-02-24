@@ -7,8 +7,13 @@ class TutorialRepository {
   Stream<void> onStartTutorial() => _startTutorialStream.stream;
 
   void startTutorial() {
-    _startTutorialStream.add(null);
+    if (!hasTutorialStarted) {
+      hasTutorialStarted = true;
+      _startTutorialStream.add(null);
+    }
   }
+
+  bool hasTutorialStarted = false;
 
   bool bedtimeMissionStartedFromTutorial = false;
 }
