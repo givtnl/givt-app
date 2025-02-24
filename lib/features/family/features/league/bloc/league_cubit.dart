@@ -59,16 +59,25 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
     if (!_hasSeenLeagueExplanation) {
       emitData(const LeagueScreenUIModel.showLeagueExplanation());
     } else if (_league.isEmpty) {
-      emitData(const LeagueScreenUIModel.showEmptyLeague());
+      _emitEmptyLeague();
     } else {
-      emitData(
-        LeagueScreenUIModel.showLeague(
-          LeagueOverviewUIModel(
-            entries: _organizeEntries(),
+      final entries = _organizeEntries();
+      if (entries.isNotEmpty) {
+        emitData(
+          LeagueScreenUIModel.showLeague(
+            LeagueOverviewUIModel(
+              entries: entries,
+            ),
           ),
-        ),
-      );
+        );
+      } else {
+        _emitEmptyLeague();
+      }
     }
+  }
+
+  void _emitEmptyLeague() {
+    emitData(const LeagueScreenUIModel.showEmptyLeague());
   }
 
   // Match profiles to xp entries
@@ -98,7 +107,8 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
         imageUrl: profile.pictureURL,
       );
     }).toList()
-      ..where((e) => true == e.name?.isNotEmpty)
+      ..where((e) =>
+          true == e.name?.isNotEmpty) //we're waiting on a profiles update
       ..sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''))
       ..sort((a, b) => a.rank.compareTo(b.rank));
     return list;
