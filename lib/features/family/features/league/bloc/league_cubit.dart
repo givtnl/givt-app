@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
@@ -107,8 +108,9 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
         imageUrl: profile.pictureURL,
       );
     }).toList()
-      ..where((e) =>
-          true == e.name?.isNotEmpty) //we're waiting on a profiles update
+      ..removeWhere(
+        (e) => e.name.isNullOrEmpty(),
+      ) //we're waiting on a profiles update
       ..sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''))
       ..sort((a, b) => a.rank.compareTo(b.rank));
     return list;
