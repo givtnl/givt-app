@@ -1,28 +1,46 @@
 import 'dart:async';
 
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/league/domain/models/league_item.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class LeagueRepository {
-  LeagueRepository(this._api, this._reflectAndShareRepository) {
+  LeagueRepository(
+    this._api,
+    this._reflectAndShareRepository,
+    this._authRepository,
+  ) {
     _init();
   }
 
   final FamilyAPIService _api;
   final ReflectAndShareRepository _reflectAndShareRepository;
+  final FamilyAuthRepository _authRepository;
 
   final StreamController<List<LeagueItem>> _leagueStreamController =
-      StreamController<List<LeagueItem>>.broadcast();
+  StreamController<List<LeagueItem>>.broadcast();
 
   Stream<List<LeagueItem>> onLeagueChanged() => _leagueStreamController.stream;
 
   List<LeagueItem> _league = [];
 
   void _init() {
+    _authRepository.authenticatedUserStream().listen((user) {
+      if (user != null) {
+        fetchLeague();
+      } else {
+        _resetLeague();
+      }
+    });
     _reflectAndShareRepository.onGameStatsUpdated.listen((_) {
       fetchLeague();
     });
+  }
+
+  void _resetLeague() {
+    _league = [];
+    _leagueStreamController.add(_league);
   }
 
   Future<List<LeagueItem>> refreshLeagues() async {
