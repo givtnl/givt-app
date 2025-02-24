@@ -81,7 +81,7 @@ dependencies:
   page_transition: ^2.2.1
   record: ^5.2.0
   audioplayers: ^6.1.2
-  firebase_remote_config: ^5.4.0
+  firebase_remote_config: ^5.4.1
   rxdart: ^0.28.0
   facebook_app_events: ^0.19.5
   volume_controller: ^3.2.0
