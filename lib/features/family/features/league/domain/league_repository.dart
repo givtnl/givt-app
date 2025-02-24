@@ -33,8 +33,10 @@ class LeagueRepository {
         _resetLeague();
       }
     });
-    _reflectAndShareRepository.onGameStatsUpdated.listen((_) {
-      fetchLeague();
+    _reflectAndShareRepository.onGameStatsUpdated.listen((_) async {
+      // especially after the very first game in a week it seems to take a bit of time before the BE has updated the league
+      await Future.delayed(const Duration(seconds: 1));
+      unawaited(fetchLeague());
     });
   }
 
