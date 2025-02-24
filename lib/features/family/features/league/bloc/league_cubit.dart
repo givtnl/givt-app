@@ -98,6 +98,7 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
         imageUrl: profile.pictureURL,
       );
     }).toList()
+      ..where((e) => true == e.name?.isNotEmpty)
       ..sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''))
       ..sort((a, b) => a.rank.compareTo(b.rank));
     return list;
