@@ -21,10 +21,10 @@ packages:
     dependency: "direct main"
     description:
       name: amplitude_flutter
-      sha256: ced3315f75f084c39c5f11c409055ad3cf26e53e74dd016606a9624350bceb95
+      sha256: f8b76c270610ac6d45d1021d13c5891da2032c28936f3f50225dc233ddd85a68
       url: "https://pub.dev"
     source: hosted
-    version: "3.16.7"
+    version: "4.0.1"
   animated_toggle_switch:
     dependency: "direct main"
     description:
