@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-
 class TutorialRepository {
   final StreamController<void> _startTutorialStream =
       StreamController<void>.broadcast();
