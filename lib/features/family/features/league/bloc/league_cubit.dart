@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
@@ -59,16 +60,25 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
     if (!_hasSeenLeagueExplanation) {
       emitData(const LeagueScreenUIModel.showLeagueExplanation());
     } else if (_league.isEmpty) {
-      emitData(const LeagueScreenUIModel.showEmptyLeague());
+      _emitEmptyLeague();
     } else {
-      emitData(
-        LeagueScreenUIModel.showLeague(
-          LeagueOverviewUIModel(
-            entries: _organizeEntries(),
+      final entries = _organizeEntries();
+      if (entries.isNotEmpty) {
+        emitData(
+          LeagueScreenUIModel.showLeague(
+            LeagueOverviewUIModel(
+              entries: entries,
+            ),
           ),
-        ),
-      );
+        );
+      } else {
+        _emitEmptyLeague();
+      }
     }
+  }
+
+  void _emitEmptyLeague() {
+    emitData(const LeagueScreenUIModel.showEmptyLeague());
   }
 
   // Match profiles to xp entries
@@ -98,6 +108,9 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
         imageUrl: profile.pictureURL,
       );
     }).toList()
+      ..removeWhere(
+        (e) => e.name.isNullOrEmpty(),
+      ) //we're waiting on a profiles update
       ..sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''))
       ..sort((a, b) => a.rank.compareTo(b.rank));
     return list;

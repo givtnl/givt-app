@@ -202,7 +202,7 @@ void initRepositories() {
       ),
     )
     ..registerLazySingleton<LeagueRepository>(
-      () => LeagueRepository(getIt(), getIt()),
+      () => LeagueRepository(getIt(), getIt(), getIt()),
     )
     ..registerLazySingleton<GratitudeGoalRepository>(
       () => GratitudeGoalRepository(getIt()),

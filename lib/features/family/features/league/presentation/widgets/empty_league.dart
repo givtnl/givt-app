@@ -22,7 +22,7 @@ class EmptyLeague extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const TitleMediumText(
-            'Play the Gratitude Game to unlock this weeks League!',
+            "Play the Gratitude Game to unlock this week's League!",
             textAlign: TextAlign.center,
           ),
           const Spacer(),
