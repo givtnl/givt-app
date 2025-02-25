@@ -6,7 +6,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_waveform.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/record_waveform.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
@@ -129,7 +129,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
               'Ask the superhero',
               textAlign: TextAlign.center,
             ),
-            const FunAudioWaveform(),
+            const RecordWaveform(),
             const SizedBox(height: 8),
             TitleMediumText(
               widget.uiModel.question,

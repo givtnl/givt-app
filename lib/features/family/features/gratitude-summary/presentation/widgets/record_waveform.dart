@@ -4,14 +4,14 @@ import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:waveform_flutter/waveform_flutter.dart';
 
-class FunAudioWaveform extends StatefulWidget {
-  const FunAudioWaveform({super.key});
+class RecordWaveform extends StatefulWidget {
+  const RecordWaveform({super.key});
 
   @override
-  State<FunAudioWaveform> createState() => _FunAudioWaveformState();
+  State<RecordWaveform> createState() => _RecordWaveformState();
 }
 
-class _FunAudioWaveformState extends State<FunAudioWaveform> {
+class _RecordWaveformState extends State<RecordWaveform> {
   final RecordCubit _recordCubit = getIt<RecordCubit>();
 
   @override
