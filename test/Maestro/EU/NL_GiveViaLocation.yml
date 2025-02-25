@@ -1,0 +1,22 @@
+appId: net.givtapp.ios.test
+name: Give 1 donation via the location
+
+---
+
+- tapOn: "5"
+- tapOn: "Next"
+- tapOn:
+    point: "50%,87%"
+- setLocation:
+    label: Set location on Sjoerds place
+    latitude: 52.51462945582153
+    longitude: 5.5033534838315505
+- tapOn:
+    label: "Click on Yes, please"
+    point: "50%,69%"
+
+- assertVisible: "This Givt will be converted into a transaction."
+- assertVisible: "Collection 1"
+- tapOn: "Next"
+- assertVisible: "Yes, success!"
+- tapOn: "Close"
