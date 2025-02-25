@@ -31,24 +31,18 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
     emitData(RecordUIModel(amplitude: _amplitude));
   }
 
+  Future<bool> requestPermission() async {
+    _initAudioRecorder();
+    final hasPermission = await _audioRecorder!.hasPermission();
+    return hasPermission;
+  }
+
   Future<void> start() async {
     if (true == await _audioRecorder?.isRecording()) {
       return;
     }
     try {
-      _audioRecorder = AudioRecorder();
-      _amplitudeSub = _audioRecorder!
-          .onAmplitudeChanged(const Duration(milliseconds: 300))
-          .listen((amp) {
-        _amplitude = amp;
-        _amplitudeStreamController.add(
-          waveform.Amplitude(
-            current: amp.current,
-            max: amp.max,
-          ),
-        );
-        _emitData();
-      });
+      _initAudioRecorder();
       if (await _audioRecorder!.hasPermission()) {
         const encoder = AudioEncoder.aacLc;
 
@@ -67,12 +61,30 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
         await AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.audioRecordingStarted,
         );
+      } else {
+        //TODO: Handle permission denied
       }
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
     }
+  }
+
+  void _initAudioRecorder() {
+    _audioRecorder = AudioRecorder();
+    _amplitudeSub = _audioRecorder!
+        .onAmplitudeChanged(const Duration(milliseconds: 300))
+        .listen((amp) {
+      _amplitude = amp;
+      _amplitudeStreamController.add(
+        waveform.Amplitude(
+          current: amp.current,
+          max: amp.max,
+        ),
+      );
+      _emitData();
+    });
   }
 
   Future<String?> stop() async {

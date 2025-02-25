@@ -14,6 +14,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/experien
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/gratitude_game_config.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/question_for_hero_model.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/remote_config/domain/remote_config_repository.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
@@ -117,6 +118,28 @@ class ReflectAndShareRepository {
         methodName: s.toString(),
       );
       return null;
+    }
+  }
+
+  Future<QuestionForHeroModel> getQuestionForHero({
+    File? audioFile,
+    int questionNumber = 0,
+  }) async {
+    try {
+      final currentHero = _selectedProfiles[_getCurrentSuperHeroIndex()];
+      final response = await _familyApiService.getQuestionForHero(
+        _gameId!,
+        currentHero.userId,
+        audioFile: audioFile,
+        questionNumber: questionNumber,
+      );
+      return QuestionForHeroModel.fromJson(response);
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+      return const QuestionForHeroModel();
     }
   }
 

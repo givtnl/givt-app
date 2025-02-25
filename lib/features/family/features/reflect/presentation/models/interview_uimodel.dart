@@ -3,11 +3,13 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 sealed class InterviewUIModel {
   const InterviewUIModel();
 
-  const factory InterviewUIModel.recordAnswer(
-      {required String question,
-      required String buttonText,
-      required GameProfile reporter,
-      required int questionNumber}) = RecordAnswerUIModel;
+  const factory InterviewUIModel.recordAnswer({
+    required String question,
+    required String buttonText,
+    required GameProfile reporter,
+    required int questionNumber,
+    String? summary,
+  }) = RecordAnswerUIModel;
 
   const factory InterviewUIModel.passThePhone({required GameProfile reporter}) =
       PassThePhoneUIModel;
@@ -19,9 +21,11 @@ class RecordAnswerUIModel extends InterviewUIModel {
     required this.buttonText,
     required this.reporter,
     required this.questionNumber,
+    this.summary,
   });
 
   final String question;
+  final String? summary;
   final String buttonText;
   final GameProfile reporter;
   final int questionNumber;

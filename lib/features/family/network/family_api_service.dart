@@ -298,6 +298,47 @@ class FamilyAPIService {
     return response.statusCode == 200;
   }
 
+  Future<Map<String, dynamic>> getQuestionForHero(
+    String gameGuid,
+    String userGuid, {
+    File? audioFile,
+    int questionNumber = 0,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/game/$gameGuid/$userGuid/question/$questionNumber',
+    );
+
+    final request = MultipartRequest('POST', url)
+      ..headers.addAll({
+        'Content-Type': 'multipart/form-data',
+      });
+    if (audioFile != null) {
+      request.files.add(
+        MultipartFile(
+          'file', // Name of the field expected by the server
+          audioFile.readAsBytes().asStream(),
+          audioFile.lengthSync(),
+          filename: 'audio_summary_message.m4a',
+        ),
+      );
+    }
+
+    final response = await Response.fromStream(await client.send(request));
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['item']! as Map<String, dynamic>;
+    return itemMap;
+  }
+
   Future<bool> uploadHeroAudioFile(
       String gameGuid, String userGuid, File audioFile) async {
     final url = Uri.https(

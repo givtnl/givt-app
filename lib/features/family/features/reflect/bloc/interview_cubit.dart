@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/question_for_hero_model.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
@@ -16,6 +20,9 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
   int _currentQuestionIndex = 0;
   int _nrOfQuestionsAsked = 0;
   bool _showPassThePhoneScreen = false;
+  int questionForHeroIndex = 0;
+  QuestionForHeroModel? questionForHero;
+  Future<QuestionForHeroModel>? questionForHeroFuture;
 
   void init() {
     _reporters = getReporters();
@@ -24,8 +31,30 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
     _nrOfQuestionsAsked = 0;
     _reflectAndShareRepository.onStartedInterview();
 
+    questionForHeroFuture = _questionForHero();
+    _getQuestionForHero();
+  }
+
+  Future<void> _getQuestionForHero() async {
+    emitLoading();
+    try {
+      questionForHero = await questionForHeroFuture;
+      questionForHeroIndex++;
+    } catch (e, s) {
+      debugPrint(
+        'Could not fetch question for hero.\nError: $e, StackTrace: $s',
+      );
+    }
     _emitData();
   }
+
+  Future<QuestionForHeroModel> _questionForHero({
+    File? audioFile,
+  }) async =>
+      _reflectAndShareRepository.getQuestionForHero(
+        audioFile: audioFile,
+        questionNumber: questionForHeroIndex,
+      );
 
   List<GameProfile> getReporters() =>
       _reflectAndShareRepository.getCurrentReporters();
@@ -62,6 +91,10 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
 
   // Advance to the next reporter/question
   void advanceToNext() {
+    questionForHero = null;
+    questionForHeroFuture = _questionForHero();
+    //TODO
+
     _reflectAndShareRepository.totalQuestionsAsked++;
     _nrOfQuestionsAsked++;
     if (_isLastQuestion()) {
@@ -81,7 +114,11 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
         _currentReporterIndex = 0;
         _currentQuestionIndex++;
       }
-      _emitData();
+      if (_hasOnlyOneReporter()) {
+        _getQuestionForHero();
+      } else {
+        _emitData();
+      }
     }
   }
 
@@ -103,7 +140,8 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
       emitData(
         InterviewUIModel.recordAnswer(
           reporter: getCurrentReporter(),
-          question: getCurrentQuestion(),
+          question: questionForHero?.question ?? getCurrentQuestion(),
+          summary: questionForHero?.summary,
           buttonText: 'Next Question',
           questionNumber: _nrOfQuestionsAsked + 1,
         ),
@@ -117,6 +155,6 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
       return;
     }
     _showPassThePhoneScreen = false;
-    _emitData();
+    _getQuestionForHero();
   }
 }

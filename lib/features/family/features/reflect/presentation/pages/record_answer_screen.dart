@@ -125,7 +125,10 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
         body: Column(
           children: [
             const Spacer(),
-            const BodyMediumText(
+            if (widget.uiModel.summary != null)
+              BodySmallText(widget.uiModel.summary!),
+            if (widget.uiModel.summary != null) const SizedBox(height: 4),
+              const BodyMediumText(
               'Ask the superhero',
               textAlign: TextAlign.center,
             ),
