@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/gra
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class InterviewScreen extends StatefulWidget {
   const InterviewScreen({super.key});
@@ -30,6 +31,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
     return BaseStateConsumer(
       cubit: _cubit,
       onInitial: (context) => const SizedBox.shrink(),
+      onLoading: (context) =>
+          const FunScaffold(body: Center(child: CircularProgressIndicator())),
       onCustom: handleCustom,
       onData: (context, uiModel) {
         switch (uiModel) {
