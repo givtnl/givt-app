@@ -26,8 +26,9 @@ class PassThePhone extends StatefulWidget {
     this.accentColor,
     this.backgroundColor,
     this.customHeader,
-    super.key,
     this.customBtnText,
+    this.startRecording = false,
+    super.key,
   });
 
   factory PassThePhone.toSuperhero(GameProfile superhero,
@@ -71,6 +72,7 @@ class PassThePhone extends StatefulWidget {
         circleSize: 120,
         displayName: false,
       ),
+      startRecording: skipRules,
       onTap: (context) {
         if (skipRules) {
           Navigator.pushReplacement(
@@ -99,6 +101,7 @@ class PassThePhone extends StatefulWidget {
   final String? customBtnText;
   final Widget? customHeader;
   final String audioPath;
+  final bool startRecording;
 
   final GameProfile user;
   final void Function(BuildContext context) onTap;
