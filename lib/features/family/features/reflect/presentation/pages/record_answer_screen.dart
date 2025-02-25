@@ -128,11 +128,13 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
             if (widget.uiModel.summary != null)
               BodySmallText(widget.uiModel.summary!),
             if (widget.uiModel.summary != null) const SizedBox(height: 4),
-              const BodyMediumText(
+            const BodyMediumText(
               'Ask the superhero',
               textAlign: TextAlign.center,
             ),
-            const RecordWaveform(),
+            RecordWaveform(
+              showRedVersion: _isLastTenSeconds(),
+            ),
             const SizedBox(height: 8),
             TitleMediumText(
               widget.uiModel.question,
