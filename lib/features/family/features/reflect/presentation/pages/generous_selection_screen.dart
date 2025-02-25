@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/bloc/audio_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/generous_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/guess_secret_word_screen.dart';
@@ -21,7 +21,7 @@ class GenerousSelectionScreen extends StatefulWidget {
 
 class _GenerousSelectionScreenState extends State<GenerousSelectionScreen> {
   final cubit = getIt<GenerousSelectionCubit>();
-  final AudioCubit audioCubit = getIt<AudioCubit>();
+  final RecordCubit _recordCubit = getIt<RecordCubit>();
 
   @override
   void didChangeDependencies() {
@@ -44,7 +44,7 @@ class _GenerousSelectionScreenState extends State<GenerousSelectionScreen> {
             uimodel: uiModel,
             onClickTile: cubit.onClickTile,
             onNext: () async {
-              final filepath = await audioCubit.stop();
+              final filepath = await _recordCubit.stop();
               cubit.onClickNext(filepath);
               Navigator.pushReplacement(
                 context,

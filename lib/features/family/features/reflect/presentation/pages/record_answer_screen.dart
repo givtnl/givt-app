@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/bloc/audio_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_waveform.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
@@ -37,14 +38,14 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   Timer? _timer;
   int _remainingSeconds;
   InterviewCubit cubit = getIt<InterviewCubit>();
-  final AudioCubit audioCubit = getIt<AudioCubit>();
+  final RecordCubit _recordCubit = getIt<RecordCubit>();
   AppConfig config = getIt<AppConfig>();
 
   @override
   void initState() {
     super.initState();
     WakelockPlus.enable();
-    audioCubit.start();
+    _recordCubit.start();
   }
 
   @override
@@ -128,6 +129,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
               'Ask the superhero',
               textAlign: TextAlign.center,
             ),
+            const FunAudioWaveform(),
             const SizedBox(height: 8),
             TitleMediumText(
               widget.uiModel.question,

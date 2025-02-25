@@ -1,18 +1,35 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/data/record_utils.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/record_uimodel.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:record/record.dart';
+import 'package:waveform_flutter/waveform_flutter.dart' as waveform;
 
-class AudioCubit extends CommonCubit<dynamic, dynamic> with AudioRecorderMixin {
-  AudioCubit() : super(const BaseState.initial());
+class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
+    with AudioRecorderMixin {
+  RecordCubit() : super(const BaseState.initial());
 
   AudioRecorder? _audioRecorder;
   String? _path;
+  StreamSubscription<Amplitude>? _amplitudeSub;
+  Amplitude? _amplitude;
+
+  final StreamController<waveform.Amplitude> _amplitudeStreamController =
+      StreamController<waveform.Amplitude>.broadcast();
+
+  Stream<waveform.Amplitude> getAmplitudeStream() =>
+      _amplitudeStreamController.stream;
 
   String? getRecordedAudio() => _path;
+
+  void _emitData() {
+    emitData(RecordUIModel(amplitude: _amplitude));
+  }
 
   Future<void> start() async {
     if (true == await _audioRecorder?.isRecording()) {
@@ -20,6 +37,18 @@ class AudioCubit extends CommonCubit<dynamic, dynamic> with AudioRecorderMixin {
     }
     try {
       _audioRecorder = AudioRecorder();
+      _amplitudeSub = _audioRecorder!
+          .onAmplitudeChanged(const Duration(milliseconds: 300))
+          .listen((amp) {
+        _amplitude = amp;
+        _amplitudeStreamController.add(
+          waveform.Amplitude(
+            current: amp.current,
+            max: amp.max,
+          ),
+        );
+        _emitData();
+      });
       if (await _audioRecorder!.hasPermission()) {
         const encoder = AudioEncoder.aacLc;
 
