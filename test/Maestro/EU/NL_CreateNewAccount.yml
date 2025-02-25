@@ -1,0 +1,16 @@
+appId: net.givtapp.ios.test
+name: Login with emailaddress that doesn't exist
+
+env:
+    USERNAME: donna+maestronl@givtapp.net
+
+---
+
+- tapOn: "Select country"
+- tapOn: "Netherlands"
+- tapOn: "E-mail address"
+- inputText:
+    label: "Enter the test user's email address"
+    text: ${USERNAME}
+- tapOn: "Continue"
+- tapOn: "Ask me later"

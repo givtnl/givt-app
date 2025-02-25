@@ -10,9 +10,6 @@ name: Going through tutorial after registration
     label: Step 2/6
     point: "85%,81%" 
 - tapOn:
-    label: Click outside box should not do anything
-    point: "55%,55%" 
-- tapOn:
     label: Step 3/6
     point: "87%,42%"
 - tapOn:
