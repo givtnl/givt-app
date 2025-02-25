@@ -120,6 +120,26 @@ class ReflectAndShareRepository {
     }
   }
 
+  Future<void> shareHeroAudio(String path) async {
+    try {
+      final currentHero = _selectedProfiles[_getCurrentSuperHeroIndex()];
+      final file = File(path);
+      if (file.existsSync()) {
+        await _familyApiService.uploadHeroAudioFile(
+          _gameId!,
+          currentHero.userId,
+          file,
+        );
+        await file.delete();
+      }
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
+  }
+
   Future<void> shareAudio(String path) async {
     try {
       final file = File(path);

@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/audio_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/interview_screen.dart';
@@ -32,6 +33,7 @@ class RuleScreen extends StatefulWidget {
     required this.audioPath,
     required this.title,
     this.backgroundColor,
+    this.startRecording = false,
     super.key,
   });
 
@@ -97,6 +99,7 @@ class RuleScreen extends StatefulWidget {
       iconData: FontAwesomeIcons.microphone,
       bodyText: getReportersText(reporters.length),
       buttonText: 'Next',
+      startRecording: true,
       onTap: (context) {
         Navigator.pushReplacement(
           context,
@@ -131,6 +134,7 @@ class RuleScreen extends StatefulWidget {
   final Color? backgroundColor;
   final String audioPath;
   final String title;
+  final bool startRecording;
 
   @override
   State<RuleScreen> createState() => _RuleScreenState();
@@ -140,6 +144,7 @@ class _RuleScreenState extends State<RuleScreen> {
   bool _hasPlayedAudio = false;
   bool isFirstRoundofFirstGame = true;
   final BackgroundAudioCubit _cubit = getIt<BackgroundAudioCubit>();
+  final AudioCubit _audioCubit = getIt<AudioCubit>();
 
   @override
   void initState() {
@@ -206,6 +211,9 @@ class _RuleScreenState extends State<RuleScreen> {
               button: FunButton(
                 isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
                 onTap: () {
+                  if (widget.startRecording) {
+                    _audioCubit.start();
+                  }
                   widget.onTap(context);
                 },
                 text: widget.buttonText,

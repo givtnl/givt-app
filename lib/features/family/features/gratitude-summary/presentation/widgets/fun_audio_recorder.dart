@@ -11,7 +11,8 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:record/record.dart';
 
 class FunAudioRecorder extends StatefulWidget {
-  const FunAudioRecorder({super.key, required this.onStop});
+  const FunAudioRecorder({required this.onStop, super.key});
+
   final void Function(String path) onStop;
 
   @override
@@ -26,6 +27,7 @@ class _FunAudioRecorderState extends State<FunAudioRecorder>
   StreamSubscription<RecordState>? _recordSub;
   RecordState _recordState = RecordState.stop;
   StreamSubscription<Amplitude>? _amplitudeSub;
+
   // ignore: unused_field
   late Amplitude? _amplitude;
 
@@ -205,7 +207,7 @@ class _FunAudioRecorderState extends State<FunAudioRecorder>
   }
 
   String _formatNumber(int number) {
-    String numberStr = number.toString();
+    var numberStr = number.toString();
     if (number < 10) {
       numberStr = '0$numberStr';
     }
