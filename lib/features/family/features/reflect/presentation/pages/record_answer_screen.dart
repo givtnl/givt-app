@@ -133,9 +133,6 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
               'Ask the superhero',
               textAlign: TextAlign.center,
             ),
-            RecordWaveform(
-              showRedVersion: _isLastTenSeconds(),
-            ),
             const SizedBox(height: 8),
             TitleMediumText(
               widget.uiModel.question,

@@ -34,7 +34,12 @@ class _InterviewScreenState extends State<InterviewScreen> {
       cubit: _cubit,
       onInitial: (context) => const SizedBox.shrink(),
       onLoading: (context) =>
-          const FunScaffold(body: Center(child: CircularProgressIndicator())),
+          const FunScaffold(body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+            ],
+          )),
       onCustom: handleCustom,
       onData: (context, uiModel) {
         switch (uiModel) {

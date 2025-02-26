@@ -10,7 +10,7 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:record/record.dart';
 import 'package:waveform_flutter/waveform_flutter.dart' as waveform;
 
-class RecordCubit extends CommonCubit<dynamic, dynamic>
+class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
     with AudioRecorderMixin {
   RecordCubit() : super(const BaseState.initial());
 
@@ -29,8 +29,12 @@ class RecordCubit extends CommonCubit<dynamic, dynamic>
 
   String? getRecordedAudio() => _path;
 
+  bool _isRecording = false;
+
+  bool isRecording() => _isRecording;
+
   void _emitData() {
-    emitData(RecordUIModel(amplitude: _amplitude));
+    emitData(RecordUIModel(amplitude: _amplitude, isRecording: _isRecording));
   }
 
   Future<bool> requestPermission() async {
@@ -63,6 +67,8 @@ class RecordCubit extends CommonCubit<dynamic, dynamic>
           config,
           overrideAudioPath: overrideAudioPath ?? audioPath,
         );
+        _isRecording = true;
+        _emitData();
 
         await AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.audioRecordingStarted,
@@ -95,6 +101,8 @@ class RecordCubit extends CommonCubit<dynamic, dynamic>
   Future<String?> stop() async {
     try {
       _path = await _audioRecorder!.stop();
+      _isRecording = false;
+      _emitData();
 
       await AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.audioRecordingStopped,

@@ -18,19 +18,20 @@ class _RecordWaveformState extends State<RecordWaveform> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 40,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      height: 72,
       width: MediaQuery.sizeOf(context).width,
       child: AnimatedWaveList(
         barBuilder: (Animation<double> animation, Amplitude amplitude) =>
             WaveFormBar(
-          maxHeight: 3,
-          animation: animation,
-          amplitude: amplitude,
-          color: widget.showRedVersion
-              ? FamilyAppTheme.error80
+                      maxHeight: 3,
+                      animation: animation,
+                      amplitude: amplitude,
+                      color: widget.showRedVersion
+              ? FamilyAppTheme.error60
               : FamilyAppTheme.primary70,
-        ),
+                    ),
         stream: _recordCubit.getAmplitudeStream(),
       ),
     );
