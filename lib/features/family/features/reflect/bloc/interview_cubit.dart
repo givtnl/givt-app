@@ -18,26 +18,26 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
   int _currentQuestionIndex = 0;
   int _nrOfQuestionsAsked = 0;
   bool _showPassThePhoneScreen = false;
-  int questionForHeroIndex = 0;
+  int _questionForHeroIndex = 0;
   QuestionForHeroModel? questionForHero;
-  Future<QuestionForHeroModel>? questionForHeroFuture;
 
   void init() {
     _reporters = getReporters();
     _currentReporterIndex = 0;
     _currentQuestionIndex = 0;
     _nrOfQuestionsAsked = 0;
+    _questionForHeroIndex = 0;
     _reflectAndShareRepository.onStartedInterview();
+    questionForHero = null;
 
-    questionForHeroFuture = _questionForHero();
     _getQuestionForHero();
   }
 
-  Future<void> _getQuestionForHero() async {
+  Future<void> _getQuestionForHero({String? audioPath}) async {
     emitLoading();
     try {
-      questionForHero = await questionForHeroFuture;
-      questionForHeroIndex++;
+      questionForHero = await _questionForHero(audioPath: audioPath);
+      _questionForHeroIndex++;
     } catch (e, s) {
       debugPrint(
         'Could not fetch question for hero.\nError: $e, StackTrace: $s',
@@ -51,7 +51,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
   }) async =>
       _reflectAndShareRepository.getQuestionForHero(
         audioPath: audioPath,
-        questionNumber: questionForHeroIndex,
+        questionNumber: _questionForHeroIndex,
       );
 
   List<GameProfile> getReporters() =>
@@ -79,7 +79,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
   }
 
   // Advance to the next reporter/question
-  void advanceToNext({String? audioPath}) {
+  Future<void> advanceToNext({String? audioPath}) async {
     _reflectAndShareRepository.totalQuestionsAsked++;
     _nrOfQuestionsAsked++;
     if (_isLastQuestion()) {
@@ -93,7 +93,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
       return;
     } else {
       questionForHero = null;
-      questionForHeroFuture = _questionForHero(audioPath: audioPath);
+      await _getQuestionForHero(audioPath: audioPath);
       if (!_hasOnlyOneReporter()) _showPassThePhoneScreen = true;
       if (_hasOnlyOneReporter()) emitCustom(const InterviewCustom.record());
       if (_hasOnlyOneReporter()) emitCustom(const InterviewCustom.resetTimer());
@@ -103,11 +103,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
         _currentReporterIndex = 0;
         _currentQuestionIndex++;
       }
-      if (_hasOnlyOneReporter()) {
-        _getQuestionForHero();
-      } else {
-        _emitData();
-      }
+      _emitData();
     }
   }
 
@@ -146,7 +142,6 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
       return;
     }
     _showPassThePhoneScreen = false;
-    _getQuestionForHero();
   }
 
   void _sendLastRecording({String? audioPath}) {

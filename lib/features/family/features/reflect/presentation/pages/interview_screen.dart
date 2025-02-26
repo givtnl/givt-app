@@ -44,7 +44,6 @@ class _InterviewScreenState extends State<InterviewScreen> {
               audioPath: 'family/audio/pass_phone_to_next_reporter.wav',
               customBtnText: 'Show question',
               onTap: (BuildContext context) {
-                _recordCubit.start();
                 _cubit.onShowQuestionClicked();
               },
             );

@@ -319,7 +319,7 @@ class FamilyAPIService {
           'file', // Name of the field expected by the server
           audioFile.readAsBytes().asStream(),
           audioFile.lengthSync(),
-          filename: 'audio_summary_message.m4a',
+          filename: 'audio_recording_message.m4a',
         ),
       );
     }
@@ -353,7 +353,7 @@ class FamilyAPIService {
           'file', // Name of the field expected by the server
           audioFile.readAsBytes().asStream(),
           audioFile.lengthSync(),
-          filename: 'audio_summary_message.m4a',
+          filename: 'audio_recording_message.m4a',
         ),
       );
 

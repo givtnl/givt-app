@@ -10,7 +10,7 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:record/record.dart';
 import 'package:waveform_flutter/waveform_flutter.dart' as waveform;
 
-class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
+class RecordCubit extends CommonCubit<dynamic, dynamic>
     with AudioRecorderMixin {
   RecordCubit() : super(const BaseState.initial());
 
@@ -18,6 +18,8 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
   String? _path;
   StreamSubscription<Amplitude>? _amplitudeSub;
   Amplitude? _amplitude;
+
+  static const String audioPath = 'audio_recording_message.m4a';
 
   final StreamController<waveform.Amplitude> _amplitudeStreamController =
       StreamController<waveform.Amplitude>.broadcast();
@@ -37,7 +39,7 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
     return hasPermission;
   }
 
-  Future<void> start() async {
+  Future<void> start({String? overrideAudioPath}) async {
     if (true == await _audioRecorder?.isRecording()) {
       return;
     }
@@ -56,7 +58,11 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
         const config = RecordConfig(numChannels: 1);
 
         // Record to file
-        await recordFile(_audioRecorder!, config);
+        await recordFile(
+          _audioRecorder!,
+          config,
+          overrideAudioPath: overrideAudioPath ?? audioPath,
+        );
 
         await AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.audioRecordingStarted,
@@ -83,7 +89,6 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
           max: amp.max,
         ),
       );
-      _emitData();
     });
   }
 

@@ -129,7 +129,7 @@ class ReflectAndShareRepository {
       final currentHero = _selectedProfiles[_getCurrentSuperHeroIndex()];
       File? file;
       if (audioPath != null) {
-        file = File(audioPath);
+        file = File(audioPath)..existsSync();
       }
       final response = await _familyApiService.getQuestionForHero(
         _gameId!,
@@ -137,6 +137,9 @@ class ReflectAndShareRepository {
         audioFile: file,
         questionNumber: questionNumber,
       );
+      if (true == file?.existsSync()) {
+        file?.deleteSync();
+      }
       return QuestionForHeroModel.fromJson(response);
     } catch (e, s) {
       LoggingInfo.instance.error(
