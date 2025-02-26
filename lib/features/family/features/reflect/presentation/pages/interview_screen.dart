@@ -8,6 +8,8 @@ import 'package:givt_app/features/family/features/reflect/presentation/models/in
 import 'package:givt_app/features/family/features/reflect/presentation/pages/gratitude_selection_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -34,12 +36,26 @@ class _InterviewScreenState extends State<InterviewScreen> {
       cubit: _cubit,
       onInitial: (context) => const SizedBox.shrink(),
       onLoading: (context) =>
-          const FunScaffold(body: Column(
+          FunScaffold(body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(child: CircularProgressIndicator()),
+              Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: FamilyAppTheme.primary40.withOpacity(0.3),
+                        blurRadius: 9.8,
+                        offset: const Offset(1, 1),
+                      ),
+                    ],
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const TitleSmallText('One moment! Even superheroes need a second to think!'),),
+              const SizedBox(height: 24),
+              const Center(child: CircularProgressIndicator()),
             ],
-          )),
+          ),),
       onCustom: handleCustom,
       onData: (context, uiModel) {
         switch (uiModel) {
