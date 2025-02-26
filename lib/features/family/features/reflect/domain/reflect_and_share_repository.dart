@@ -122,15 +122,19 @@ class ReflectAndShareRepository {
   }
 
   Future<QuestionForHeroModel> getQuestionForHero({
-    File? audioFile,
+    String? audioPath,
     int questionNumber = 0,
   }) async {
     try {
       final currentHero = _selectedProfiles[_getCurrentSuperHeroIndex()];
+      File? file;
+      if (audioPath != null) {
+        file = File(audioPath);
+      }
       final response = await _familyApiService.getQuestionForHero(
         _gameId!,
         currentHero.userId,
-        audioFile: audioFile,
+        audioFile: file,
         questionNumber: questionNumber,
       );
       return QuestionForHeroModel.fromJson(response);
@@ -148,7 +152,7 @@ class ReflectAndShareRepository {
       final currentHero = _selectedProfiles[_getCurrentSuperHeroIndex()];
       final file = File(path);
       if (file.existsSync()) {
-        await _familyApiService.uploadHeroAudioFile(
+        await _familyApiService.uploadEndOfRoundHeroAudioFile(
           _gameId!,
           currentHero.userId,
           file,

@@ -339,7 +339,7 @@ class FamilyAPIService {
     return itemMap;
   }
 
-  Future<bool> uploadHeroAudioFile(
+  Future<bool> uploadEndOfRoundHeroAudioFile(
       String gameGuid, String userGuid, File audioFile) async {
     final url = Uri.https(
         _apiURL, '/givtservice/v1/game/$gameGuid/$userGuid/conversation');

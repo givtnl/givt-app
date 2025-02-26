@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
@@ -19,6 +20,7 @@ class InterviewScreen extends StatefulWidget {
 
 class _InterviewScreenState extends State<InterviewScreen> {
   final InterviewCubit _cubit = getIt<InterviewCubit>();
+  final RecordCubit _recordCubit = getIt<RecordCubit>();
 
   @override
   void didChangeDependencies() {
@@ -41,7 +43,10 @@ class _InterviewScreenState extends State<InterviewScreen> {
               user: uiModel.reporter,
               audioPath: 'family/audio/pass_phone_to_next_reporter.wav',
               customBtnText: 'Show question',
-              onTap: (BuildContext context) => _cubit.onShowQuestionClicked(),
+              onTap: (BuildContext context) {
+                _recordCubit.start();
+                _cubit.onShowQuestionClicked();
+              },
             );
           case RecordAnswerUIModel():
             return RecordAnswerScreen(
@@ -65,6 +70,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
         );
       case ResetTimer():
       //do nothing here
+      case StartRecording():
+        _recordCubit.start();
     }
   }
 }

@@ -43,9 +43,8 @@ class _GenerousSelectionScreenState extends State<GenerousSelectionScreen> {
         return GenerousSelectionWidget(
             uimodel: uiModel,
             onClickTile: cubit.onClickTile,
-            onNext: () async {
-              final filepath = await _recordCubit.stop();
-              cubit.onClickNext(filepath);
+            onNext: () {
+              cubit.onClickNext();
               Navigator.pushReplacement(
                 context,
                 (uiModel.sideKick.roles.length > 1

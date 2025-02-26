@@ -85,12 +85,13 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     });
   }
 
-  void _handleEffects() {
+  Future<void> _handleEffects() async {
     if (_isLastTenSeconds()) {
       Vibrator.tryVibrate();
     } else if (_isLastSecond()) {
       Vibrator.tryVibratePattern();
-      cubit.timeForQuestionRanOut();
+      final audioPath = await _recordCubit.stop();
+      cubit.timeForQuestionRanOut(audioPath: audioPath);
     }
   }
 
@@ -161,8 +162,9 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: FunButton(
-                      onTap: () {
-                        cubit.advanceToNext();
+                      onTap: () async {
+                        final audioPath = await _recordCubit.stop();
+                        cubit.advanceToNext(audioPath: audioPath);
                       },
                       text: widget.uiModel.buttonText,
                       analyticsEvent: AnalyticsEvent(

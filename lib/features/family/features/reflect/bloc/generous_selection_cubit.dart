@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_tags_data.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -6,7 +5,6 @@ import 'package:givt_app/features/family/features/reflect/domain/reflect_and_sha
 import 'package:givt_app/features/family/features/reflect/presentation/models/gratitude_selection_uimodel.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
-import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 
 class GenerousSelectionCubit
     extends CommonCubit<TagSelectionUimodel, GameProfile> {
@@ -47,21 +45,12 @@ class GenerousSelectionCubit
     );
   }
 
-  void onClickNext(String? filepath) {
+  void onClickNext() {
     try {
       _reflectAndShareRepository
           .saveGenerousPowerForCurrentSuperhero(selectedCategory);
     } catch (_) {
       // do nothing
-    }
-
-    try {
-      if (filepath.isNotNullAndNotEmpty()) {
-        _reflectAndShareRepository.shareHeroAudio(filepath!);
-      }
-    } catch (e, s) {
-      // do nothing
-      debugPrint('Error sharing audio: $e\n\n$s');
     }
   }
 }
