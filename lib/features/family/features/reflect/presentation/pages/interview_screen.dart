@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/gra
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_bubble.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -38,11 +39,11 @@ class _InterviewScreenState extends State<InterviewScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FunBubble.betaCaptain(
+            FunBubble.captainAi(
               text: 'One moment! Even superheroes need a second to think!',
             ),
             const SizedBox(height: 24),
-            const Center(child: CircularProgressIndicator()),
+            const Center(child: CustomCircularProgressIndicator()),
           ],
         ),
       ),

@@ -46,6 +46,7 @@ import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.da
 import 'package:givt_app/features/family/features/reflect/bloc/gratitude_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/leave_game_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/stage_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
@@ -84,6 +85,7 @@ void initCubits() {
     ..registerLazySingleton<InternetConnectionCubit>(
       () => InternetConnectionCubit(getIt()),
     )
+    ..registerFactory(() => StageCubit(getIt()))
     ..registerFactory(ParentSummaryCubit.new)
     ..registerFactory(FunBottomSheetWithAsyncActionCubit.new)
     ..registerFactory(() => GratitudeGoalCubit(getIt()))

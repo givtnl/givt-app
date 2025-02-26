@@ -10,9 +10,14 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
-class ReflectIntroScreen extends StatelessWidget {
+class ReflectIntroScreen extends StatefulWidget {
   const ReflectIntroScreen({super.key});
 
+  @override
+  State<ReflectIntroScreen> createState() => _ReflectIntroScreenState();
+}
+
+class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(

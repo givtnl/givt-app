@@ -6,11 +6,11 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 class FunBubble extends StatelessWidget {
   const FunBubble({required this.child, super.key});
 
-  factory FunBubble.betaCaptain({required String text}) {
+  factory FunBubble.captainAi({required String text}) {
     return FunBubble(
       child: Row(
         children: [
-          FunAvatar.betaCaptain(),
+          FunAvatar.captainAi(),
           const SizedBox(width: 12),
           Flexible(child: BodySmallText(text)),
         ],

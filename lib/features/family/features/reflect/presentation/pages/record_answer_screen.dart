@@ -6,7 +6,6 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/record_waveform.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
@@ -14,6 +13,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/l
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_bubble.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -127,8 +127,8 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
           children: [
             const Spacer(),
             if (widget.uiModel.summary != null)
-              BodySmallText(widget.uiModel.summary!),
-            if (widget.uiModel.summary != null) const SizedBox(height: 4),
+              FunBubble.captainAi(text: widget.uiModel.summary!),
+            if (widget.uiModel.summary != null) const Spacer(),
             const BodyMediumText(
               'Ask the superhero',
               textAlign: TextAlign.center,
@@ -161,7 +161,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                     child: FunButton(
                       onTap: () async {
                         final audioPath = await _recordCubit.stop();
-                        cubit.advanceToNext(audioPath: audioPath);
+                        unawaited(cubit.advanceToNext(audioPath: audioPath));
                       },
                       text: widget.uiModel.buttonText,
                       analyticsEvent: AnalyticsEvent(

@@ -51,6 +51,7 @@ class ReflectAndShareRepository {
   final List<String> _currentSetOfQuestions = [];
   String? _currentSecretWord;
   bool _hasStartedInterview = false;
+  bool isAIEnabled = false;
 
   GameStats? _gameStatsData;
 

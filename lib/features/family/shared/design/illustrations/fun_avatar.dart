@@ -23,11 +23,13 @@ class FunAvatar extends FunIcon {
     );
   }
 
-  factory FunAvatar.betaCaptain() {
+  factory FunAvatar.captainAi({bool withBorder = false}) {
     return FunAvatar(
       customCircleColor: FamilyAppTheme.neutral95,
       customAvatar: Image.asset(
-        'assets/family/images/beta_captain.webp',
+        withBorder
+            ? 'assets/family/images/beta_captain_with_border.webp'
+            : 'assets/family/images/beta_captain.webp',
       ),
       customSize: 50,
     );
