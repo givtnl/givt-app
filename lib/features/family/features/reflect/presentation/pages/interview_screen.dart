@@ -37,7 +37,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
           const FunScaffold(body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(),
+              Center(child: CircularProgressIndicator()),
             ],
           )),
       onCustom: handleCustom,
