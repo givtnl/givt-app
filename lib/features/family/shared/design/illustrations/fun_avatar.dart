@@ -23,6 +23,16 @@ class FunAvatar extends FunIcon {
     );
   }
 
+  factory FunAvatar.betaCaptain() {
+    return FunAvatar(
+      customCircleColor: FamilyAppTheme.neutral95,
+      customAvatar: Image.asset(
+        'assets/family/images/beta_captain.webp',
+      ),
+      customSize: 50,
+    );
+  }
+
   final Color customCircleColor;
   final Widget customAvatar;
   final double customSize;

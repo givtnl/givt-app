@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
@@ -182,6 +183,8 @@ class FamilyAPIService {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(body),
     );
+
+    debugPrint('Recommended AOS response: ${response}, body: ${response.body}');
 
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
