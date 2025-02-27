@@ -18,6 +18,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/question
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/remote_config/domain/remote_config_repository.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReflectAndShareRepository {
   ReflectAndShareRepository(
@@ -26,6 +27,7 @@ class ReflectAndShareRepository {
     this._familyAuthRepository,
     this._remoteConfigRepository,
     this._createTransactionRepository,
+    this._sharedPreferences,
   ) {
     _init();
   }
@@ -35,8 +37,10 @@ class ReflectAndShareRepository {
   final FamilyAuthRepository _familyAuthRepository;
   final RemoteConfigRepository _remoteConfigRepository;
   final CreateTransactionRepository _createTransactionRepository;
+  final SharedPreferences _sharedPreferences;
 
   static const String _gameConfigKey = 'gratitude_game_config';
+  static const String _prefIsAiEnabledKey = 'pref_is_ai_enabled_key';
 
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
@@ -51,7 +55,12 @@ class ReflectAndShareRepository {
   final List<String> _currentSetOfQuestions = [];
   String? _currentSecretWord;
   bool _hasStartedInterview = false;
-  bool isAIEnabled = false;
+  bool _isAIEnabled = false;
+
+  void setAIEnabled({required bool value}) {
+    _isAIEnabled = value;
+    _sharedPreferences.setBool(_prefIsAiEnabledKey, value);
+  }
 
   GameStats? _gameStatsData;
 
@@ -71,6 +80,7 @@ class ReflectAndShareRepository {
       _gameStatsUpdatedStreamController.stream;
 
   void _init() {
+    _isAIEnabled = _sharedPreferences.getBool(_prefIsAiEnabledKey) ?? false;
     _createTransactionRepository.onTransactionByUser().listen((_) {
       _fetchGameStats();
     });
@@ -94,7 +104,7 @@ class ReflectAndShareRepository {
   }
 
   bool isAITurnedOn() {
-    return isAIEnabled && isAiAllowed();
+    return _isAIEnabled && isAiAllowed();
   }
 
   void _handleGameConfigUpdated(RemoteConfigValue value) {

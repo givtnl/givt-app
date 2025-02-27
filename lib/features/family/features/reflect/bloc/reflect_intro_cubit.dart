@@ -19,12 +19,12 @@ class ReflectIntroCubit extends CommonCubit<dynamic, ReflectIntroCustom> {
   }
 
   void onAIEnabledChanged({required bool isEnabled}) {
-    _reflectAndShareRepository.isAIEnabled = isEnabled;
+    _reflectAndShareRepository.setAIEnabled(value: isEnabled);
     _emitData();
   }
 
   void enableCaptainAi() {
-    _reflectAndShareRepository.isAIEnabled = true;
+    _reflectAndShareRepository.setAIEnabled(value: true);
     _goToStageScreen();
   }
 

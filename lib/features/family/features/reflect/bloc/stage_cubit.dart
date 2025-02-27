@@ -22,7 +22,7 @@ class StageCubit extends CommonCubit<StageUIModel, dynamic> {
     emit(
       BaseState.data(
         StageUIModel(
-          isAITurnedOn: _reflectAndShareRepository.isAIEnabled,
+          isAITurnedOn: _reflectAndShareRepository.isAITurnedOn(),
           showAIFeatures: _reflectAndShareRepository.isAiAllowed(),
         ),
       ),
@@ -30,7 +30,7 @@ class StageCubit extends CommonCubit<StageUIModel, dynamic> {
   }
 
   void onAIEnabledChanged({required bool isEnabled}) {
-    _reflectAndShareRepository.isAIEnabled = isEnabled;
+    _reflectAndShareRepository.setAIEnabled(value: isEnabled);
     _emitData();
   }
 }
