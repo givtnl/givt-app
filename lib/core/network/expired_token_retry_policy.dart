@@ -15,8 +15,7 @@ class ExpiredTokenRetryPolicy extends RetryPolicy {
   Future<bool> shouldAttemptRetryOnResponse(BaseResponse response) async {
     ///This is where we need to update our token on 401 response
     if (response.statusCode == 401) {
-      await _refreshToken();
-      return true;
+      return _refreshToken();
     }
     return false;
   }
@@ -24,11 +23,13 @@ class ExpiredTokenRetryPolicy extends RetryPolicy {
   /// This method will be called
   /// when a request fails and the [shouldAttemptRetryOnResponse]
   /// Handle the [SocketException] when there is no internet connection
-  Future<void> _refreshToken() async {
+  Future<bool> _refreshToken() async {
     try {
       await getIt<AuthRepository>().refreshToken();
+      return true;
     } catch (e) {
       log('No internet connection');
+      return false;
     }
   }
 }
