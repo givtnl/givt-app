@@ -100,6 +100,9 @@ class _StageScreenState extends State<StageScreen> {
                               ),
                               Switch.adaptive(
                                 activeColor: FamilyAppTheme.primary70,
+                                inactiveTrackColor: Colors.white.withValues(
+                                  alpha: 0.5,
+                                ),
                                 value: uiModel.isAITurnedOn,
                                 onChanged: (bool value) {
                                   _stageCubit.onAIEnabledChanged(
