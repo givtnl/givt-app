@@ -11,6 +11,7 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 class StageScreen extends StatefulWidget {
   const StageScreen({
@@ -98,8 +99,18 @@ class _StageScreenState extends State<StageScreen> {
                               Switch.adaptive(
                                 activeColor: FamilyAppTheme.primary70,
                                 value: uiModel.isAITurnedOn,
-                                onChanged: (bool value) => _stageCubit
-                                    .onAIEnabledChanged(isEnabled: value),
+                                onChanged: (bool value) {
+                                  _stageCubit.onAIEnabledChanged(
+                                    isEnabled: value,
+                                  );
+                                  AnalyticsHelper.logEvent(
+                                    eventName:
+                                        AmplitudeEvents.userToggledAIFeature,
+                                    eventProperties: {
+                                      'on': value,
+                                    },
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -112,6 +123,8 @@ class _StageScreenState extends State<StageScreen> {
                             parameters: {
                               'fromInitialExplanationScreen':
                                   widget.fromInitialExplanationScreen,
+                              'isAITurnedOn': uiModel.isAITurnedOn,
+                              'buttonText': widget.buttonText,
                             },
                           ),
                         ),

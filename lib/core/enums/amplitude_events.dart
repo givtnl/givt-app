@@ -351,6 +351,7 @@ enum AmplitudeEvents {
   ),
   enableCaptainAiClicked('enable_captain_ai_clicked'),
   maybeLaterCaptainAiClicked('maybe_later_captain_ai_clicked'),
+  userToggledAIFeature('user_toggled_ai_feature'),
 
   // Fun Counter
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
