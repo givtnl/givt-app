@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/stage_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -33,6 +34,7 @@ class StageScreen extends StatefulWidget {
 
 class _StageScreenState extends State<StageScreen> {
   final StageCubit _stageCubit = getIt<StageCubit>();
+  final RecordCubit _recordCubit = getIt<RecordCubit>();
 
   @override
   void didChangeDependencies() {
@@ -110,6 +112,9 @@ class _StageScreenState extends State<StageScreen> {
                                       'on': value,
                                     },
                                   );
+                                  if (value) {
+                                    _recordCubit.requestPermission();
+                                  }
                                 },
                               ),
                             ],

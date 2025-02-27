@@ -99,6 +99,9 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
   }
 
   Future<String?> stop() async {
+    if (_isRecording == false) {
+      return null;
+    }
     try {
       _path = await _audioRecorder!.stop();
       _isRecording = false;
