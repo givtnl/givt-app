@@ -10,20 +10,12 @@ env:
 - launchApp:
     clearState: true
 
+- tapOn: "Select country"
+- tapOn: "United States of America"
 - tapOn: "E-mail address"
 - inputText: 
     label: Enter the test user's Email
     text: ${USERNAME}
-- tapOn:
-    point: "50%,37%"
-- repeat:
-    while:
-      notVisible: "United States of America"
-    commands:
-      - swipe:
-          start: "50%, 70%"
-          end: "50%, 50%"
-- tapOn: "United States of America"
 - tapOn: "Continue"
 - tapOn: "First name"
 - inputText: ${PARENT_FIRSTNAME}

@@ -4,9 +4,8 @@ name: When logged in this is how you delete an user
 env:
     PASSWORD: Test123
 ---
-- tapOn: 
-    label: Tap on Profile
-    text: "Profile\nTab 4 of 4"
+- tapOn:
+    point: "92%,9%"
 - tapOn: "Password"
 - inputText:
     label: Enter the test user's Password
@@ -15,7 +14,6 @@ env:
     label: Make password visible
     point: "89%,38%"
 - assertVisible: "Test123"
-#- tapOn: "Login" #For some reason this one doesn't work
 - tapOn:
     text: "Login"
     index: 1
@@ -25,4 +23,4 @@ env:
     text: "0"
 - tapOn: "Terminate my account"
 - assertVisible: "We're sad to see you leave\n and we hope to see you again."
-- assertVisible: "Let’s begin"
+- assertVisible: "Let's go!"
