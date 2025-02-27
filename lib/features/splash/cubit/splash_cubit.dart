@@ -52,7 +52,6 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
     try {
       await _authRepository.initAuth();
       final user = _authRepository.getCurrentUser();
-      final profiles = await _profilesRepository.refreshProfiles();
 
       if (user == null) {
         emitCustom(const SplashCustom.redirectToWelcome());
@@ -60,6 +59,7 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       }
 
       if (false == user.isUsUser) return;
+      final profiles = await _profilesRepository.refreshProfiles();
 
       final fbsdk = FacebookAppEvents();
       await fbsdk.setAutoLogAppEventsEnabled(true);
