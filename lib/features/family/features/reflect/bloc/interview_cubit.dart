@@ -34,6 +34,10 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
   }
 
   Future<void> _getQuestionForHero({String? audioPath}) async {
+    if (_reflectAndShareRepository.isAITurnedOn() == false) {
+      _emitData();
+      return;
+    }
     emitLoading();
     try {
       questionForHero = await _questionForHero(audioPath: audioPath);
@@ -95,7 +99,9 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
       questionForHero = null;
       await _getQuestionForHero(audioPath: audioPath);
       if (!_hasOnlyOneReporter()) _showPassThePhoneScreen = true;
-      if (_hasOnlyOneReporter()) emitCustom(const InterviewCustom.record());
+      if (_hasOnlyOneReporter() && _reflectAndShareRepository.isAITurnedOn()) {
+        emitCustom(const InterviewCustom.startRecording());
+      }
       if (_hasOnlyOneReporter()) emitCustom(const InterviewCustom.resetTimer());
       if (_currentReporterIndex < _reporters.length - 1) {
         _currentReporterIndex++;
@@ -145,6 +151,9 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
   }
 
   void _sendLastRecording({String? audioPath}) {
+    if (_reflectAndShareRepository.isAITurnedOn() == false) {
+      return;
+    }
     try {
       if (audioPath != null) {
         _reflectAndShareRepository.shareHeroAudio(audioPath);

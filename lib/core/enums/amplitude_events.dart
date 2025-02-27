@@ -349,6 +349,8 @@ enum AmplitudeEvents {
   familyHomeScreenShowSummariesClicked(
     'family_home_screen_show_summaries_clicked',
   ),
+  enableCaptainAiClicked('enable_captain_ai_clicked'),
+  maybeLaterCaptainAiClicked('maybe_later_captain_ai_clicked'),
 
   // Fun Counter
   funCounterDecrementClicked('fun_counter_decrement_clicked'),

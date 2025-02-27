@@ -11,7 +11,7 @@ sealed class InterviewCustom {
 
   const factory InterviewCustom.resetTimer() = ResetTimer;
 
-  const factory InterviewCustom.record() = StartRecording;
+  const factory InterviewCustom.startRecording() = StartRecording;
 }
 
 class ResetTimer extends InterviewCustom {

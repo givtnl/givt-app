@@ -7,6 +7,7 @@ import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
@@ -39,13 +40,16 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   int _remainingSeconds;
   InterviewCubit cubit = getIt<InterviewCubit>();
   final RecordCubit _recordCubit = getIt<RecordCubit>();
+  final ReflectAndShareRepository _repository = getIt<ReflectAndShareRepository>();
   AppConfig config = getIt<AppConfig>();
 
   @override
   void initState() {
     super.initState();
     WakelockPlus.enable();
-    _recordCubit.start();
+    if(_repository.isAITurnedOn()) {
+      _recordCubit.start();
+    }
   }
 
   @override

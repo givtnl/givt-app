@@ -54,15 +54,15 @@ class _StageScreenState extends State<StageScreen> {
         ),
         body: BaseStateConsumer(
           cubit: _stageCubit,
-          onData: (context, isEnabled) {
+          onData: (context, uiModel) {
             return Stack(
               children: [
                 Opacity(
-                    opacity: isEnabled ? 1 : 0,
+                    opacity: uiModel.isAITurnedOn ? 1 : 0,
                     child:
                         Image.asset('assets/family/images/stage_with_ai.png')),
                 Opacity(
-                    opacity: isEnabled ? 0 : 1,
+                    opacity: uiModel.isAITurnedOn ? 0 : 1,
                     child: Image.asset(
                         'assets/family/images/stage_without_ai.png')),
                 if (widget.playAudio)
@@ -80,29 +80,29 @@ class _StageScreenState extends State<StageScreen> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                FunAvatar.captainAi(
-                                  withBorder: true,
-                                ),
-                                const SizedBox(width: 8),
-                                const TitleSmallText(
-                                  'Captain Ai',
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                            Switch.adaptive(
-                              activeColor: FamilyAppTheme.primary70,
-                              value: isEnabled,
-                              onChanged: (bool value) => _stageCubit
-                                  .onAIEnabledChanged(isEnabled: value),
-                            ),
-                          ],
-                        ),
+                        if (uiModel.showAIFeatures &&
+                            widget.fromInitialExplanationScreen)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  FunAvatar.captainAi(),
+                                  const SizedBox(width: 8),
+                                  const TitleSmallText(
+                                    'Captain Ai',
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                              Switch.adaptive(
+                                activeColor: FamilyAppTheme.primary70,
+                                value: uiModel.isAITurnedOn,
+                                onChanged: (bool value) => _stageCubit
+                                    .onAIEnabledChanged(isEnabled: value),
+                              ),
+                            ],
+                          ),
                         const SizedBox(height: 16),
                         FunButton(
                           onTap: () => widget.onClickButton(context),

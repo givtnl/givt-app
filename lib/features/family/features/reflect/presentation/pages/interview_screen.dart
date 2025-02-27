@@ -3,6 +3,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/gratitude_selection_screen.dart';
@@ -23,6 +24,8 @@ class InterviewScreen extends StatefulWidget {
 class _InterviewScreenState extends State<InterviewScreen> {
   final InterviewCubit _cubit = getIt<InterviewCubit>();
   final RecordCubit _recordCubit = getIt<RecordCubit>();
+  final ReflectAndShareRepository _repository =
+      getIt<ReflectAndShareRepository>();
 
   @override
   void didChangeDependencies() {
@@ -39,10 +42,11 @@ class _InterviewScreenState extends State<InterviewScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FunBubble.captainAi(
-              text: 'One moment! Even superheroes need a second to think!',
-            ),
-            const SizedBox(height: 24),
+            if (_repository.isAITurnedOn())
+              FunBubble.captainAi(
+                text: 'One moment! Even superheroes need a second to think!',
+              ),
+            if (_repository.isAITurnedOn()) const SizedBox(height: 24),
             const Center(child: CustomCircularProgressIndicator()),
           ],
         ),

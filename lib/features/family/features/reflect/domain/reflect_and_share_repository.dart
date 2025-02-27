@@ -86,6 +86,17 @@ class ReflectAndShareRepository {
         );
   }
 
+  bool isAiAllowed() {
+    if (_gameConfig != null) {
+      return _gameConfig!.isAiAllowed;
+    }
+    return false;
+  }
+
+  bool isAITurnedOn() {
+    return isAIEnabled && isAiAllowed();
+  }
+
   void _handleGameConfigUpdated(RemoteConfigValue value) {
     try {
       final decodedBody = jsonDecode(value.asString()) as Map<String, dynamic>;

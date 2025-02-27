@@ -3,6 +3,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/record_uimodel.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/record_waveform.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -25,6 +26,8 @@ class RecordTimerWidget extends StatefulWidget {
 
 class _RecordTimerWidgetState extends State<RecordTimerWidget> {
   final RecordCubit _recordCubit = getIt<RecordCubit>();
+  final ReflectAndShareRepository _repository =
+      getIt<ReflectAndShareRepository>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +44,7 @@ class _RecordTimerWidgetState extends State<RecordTimerWidget> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (true == uiModel?.isRecording)
+        if (_repository.isAITurnedOn() && true == uiModel?.isRecording)
           RecordWaveform(
             showRedVersion: widget.showRedVersion,
           )

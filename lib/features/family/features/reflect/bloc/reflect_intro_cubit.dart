@@ -5,24 +5,41 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class ReflectIntroCubit extends CommonCubit<dynamic, ReflectIntroCustom> {
   ReflectIntroCubit(this._reflectAndShareRepository)
-      : super(BaseState.data(_reflectAndShareRepository.isAIEnabled));
+      : super(BaseState.data(_reflectAndShareRepository.isAITurnedOn()));
 
   final ReflectAndShareRepository _reflectAndShareRepository;
 
-  late bool _isAIEnabled;
 
   void init() {
-    _isAIEnabled = _reflectAndShareRepository.isAIEnabled;
     _emitData();
   }
 
   void _emitData() {
-    emit(BaseState.data(_isAIEnabled));
+    emit(BaseState.data(_reflectAndShareRepository.isAITurnedOn()));
   }
 
   void onAIEnabledChanged({required bool isEnabled}) {
-    _isAIEnabled = isEnabled;
     _reflectAndShareRepository.isAIEnabled = isEnabled;
     _emitData();
+  }
+
+  void enableCaptainAi() {
+    _reflectAndShareRepository.isAIEnabled = true;
+    _goToStageScreen();
+  }
+
+  void maybeLaterCaptainAi() {
+    _goToStageScreen();
+  }
+
+  void _goToStageScreen() {
+    emitCustom(const ReflectIntroCustom.goToStageScreen());
+  }
+
+  void onStartClicked() {
+    //TODO
+    //emitCustom(const ReflectIntroCustom.showCaptainAiPopup());
+
+    _goToStageScreen();
   }
 }
