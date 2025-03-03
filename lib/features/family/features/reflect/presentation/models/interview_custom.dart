@@ -10,10 +10,16 @@ sealed class InterviewCustom {
       {required GameProfile reporter}) = GratitudeSelection;
 
   const factory InterviewCustom.resetTimer() = ResetTimer;
+
+  const factory InterviewCustom.startRecording() = StartRecording;
 }
 
 class ResetTimer extends InterviewCustom {
   const ResetTimer();
+}
+
+class StartRecording extends InterviewCustom {
+  const StartRecording();
 }
 
 class PassThePhoneToSidekick extends InterviewCustom {

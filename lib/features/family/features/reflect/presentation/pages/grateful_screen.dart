@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -164,8 +165,9 @@ class _GratefulScreenState extends State<GratefulScreen> {
                           uiModel.recommendationsUIModel.isShowingActsOfService
                                   ? 'act_of_service'
                                   : 'donation':
-                              uiModel.recommendationsUIModel
-                                  .organisations[_currentIndex].name,
+                              uiModel.recommendationsUIModel.organisations
+                                  .elementAtOrNull(_currentIndex)
+                                  ?.name,
                           AnalyticsHelper.firstNameKey:
                               uiModel.recommendationsUIModel.name,
                         },

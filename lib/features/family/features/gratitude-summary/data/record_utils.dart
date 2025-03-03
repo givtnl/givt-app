@@ -8,14 +8,22 @@ import 'package:record/record.dart';
 mixin AudioRecorderMixin {
   static const String audioPath = 'audio_summary_message.m4a';
 
-  Future<void> recordFile(AudioRecorder recorder, RecordConfig config) async {
-    final path = await _getPath();
+  Future<void> recordFile(
+    AudioRecorder recorder,
+    RecordConfig config, {
+    String? overrideAudioPath,
+  }) async {
+    final path = await _getPath(overrideAudioPath: overrideAudioPath);
 
     await recorder.start(config, path: path);
   }
 
-  Future<void> recordStream(AudioRecorder recorder, RecordConfig config) async {
-    final path = await _getPath();
+  Future<void> recordStream(
+    AudioRecorder recorder,
+    RecordConfig config, {
+    String? overrideAudioPath,
+  }) async {
+    final path = await _getPath(overrideAudioPath: overrideAudioPath);
 
     final file = File(path);
 
@@ -34,11 +42,11 @@ mixin AudioRecorderMixin {
     );
   }
 
-  Future<String> _getPath() async {
+  Future<String> _getPath({String? overrideAudioPath}) async {
     final dir = await getApplicationDocumentsDirectory();
     return p.join(
       dir.path,
-      audioPath,
+      overrideAudioPath ?? audioPath,
     );
   }
 }

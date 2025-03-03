@@ -205,9 +205,7 @@ class _RuleScreenState extends State<RuleScreen> {
               ),
               button: FunButton(
                 isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
-                onTap: () {
-                  widget.onTap(context);
-                },
+                onTap: () => widget.onTap(context),
                 text: widget.buttonText,
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.reflectAndShareRulesNextClicked,

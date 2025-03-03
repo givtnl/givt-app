@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
@@ -183,6 +184,8 @@ class FamilyAPIService {
       body: jsonEncode(body),
     );
 
+    debugPrint('Recommended AOS response: ${response}, body: ${response.body}');
+
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
@@ -295,6 +298,88 @@ class FamilyAPIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
+    return response.statusCode == 200;
+  }
+
+  Future<Map<String, dynamic>> getQuestionForHero(
+    String gameGuid,
+    String userGuid, {
+    File? audioFile,
+    int questionNumber = 0,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/game/$gameGuid/$userGuid/question/$questionNumber',
+    );
+
+    final request = MultipartRequest('POST', url)
+      ..headers.addAll({
+        'Content-Type': 'multipart/form-data',
+      });
+    if (audioFile != null) {
+      request.files.add(
+        MultipartFile(
+          'file', // Name of the field expected by the server
+          audioFile.readAsBytes().asStream(),
+          audioFile.lengthSync(),
+          filename: 'audio_recording_message.m4a',
+        ),
+      );
+    }
+
+    final response = await Response.fromStream(await client.send(request));
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['item']! as Map<String, dynamic>;
+    return itemMap;
+  }
+
+  Future<bool> uploadEndOfRoundHeroAudioFile(
+      String gameGuid, String userGuid, File audioFile) async {
+    final url = Uri.https(
+        _apiURL, '/givtservice/v1/game/$gameGuid/$userGuid/conversation');
+
+    final request = MultipartRequest('POST', url)
+      ..headers.addAll({
+        'Content-Type': 'multipart/form-data',
+      })
+      ..files.add(
+        MultipartFile(
+          'file', // Name of the field expected by the server
+          audioFile.readAsBytes().asStream(),
+          audioFile.lengthSync(),
+          filename: 'audio_recording_message.m4a',
+        ),
+      );
+
+    final response = await Response.fromStream(await client.send(request));
+
+    if (response.statusCode >= 300) {
+      final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty ? decodedBody : null,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final isError = decodedBody['isError'] as bool;
+
+    if (response.statusCode == 200 && isError) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+
     return response.statusCode == 200;
   }
 
