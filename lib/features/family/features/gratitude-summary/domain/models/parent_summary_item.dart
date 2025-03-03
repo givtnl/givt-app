@@ -44,7 +44,7 @@ class Conversation {
   });
 
   factory Conversation.fromMap(Map<String, dynamic> map) {
-    final sentence = map['sentence'] as String;
+    final sentence = map['sentence'] as String? ?? '';
     final profile = Profile.fromMap(map['profile'] as Map<String, dynamic>);
     return Conversation(
       sentence: sentence,
