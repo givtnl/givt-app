@@ -1,0 +1,15 @@
+name: waveform_flutter
+description: "Build highly customizable & beautiful animated waveforms in your Flutter app"
+version: 1.2.0
+repository: https://github.com/agenthesh/waveform
+
+environment:
+  sdk: ">=3.3.3 <4.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^5.0.0

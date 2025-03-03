@@ -14,9 +14,11 @@ import 'package:givt_app/features/family/features/reflect/domain/models/experien
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/gratitude_game_config.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/question_for_hero_model.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/remote_config/domain/remote_config_repository.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReflectAndShareRepository {
   ReflectAndShareRepository(
@@ -25,6 +27,7 @@ class ReflectAndShareRepository {
     this._familyAuthRepository,
     this._remoteConfigRepository,
     this._createTransactionRepository,
+    this._sharedPreferences,
   ) {
     _init();
   }
@@ -34,8 +37,10 @@ class ReflectAndShareRepository {
   final FamilyAuthRepository _familyAuthRepository;
   final RemoteConfigRepository _remoteConfigRepository;
   final CreateTransactionRepository _createTransactionRepository;
+  final SharedPreferences _sharedPreferences;
 
   static const String _gameConfigKey = 'gratitude_game_config';
+  static const String _prefIsAiEnabledKey = 'pref_is_ai_enabled_key';
 
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
@@ -50,6 +55,12 @@ class ReflectAndShareRepository {
   final List<String> _currentSetOfQuestions = [];
   String? _currentSecretWord;
   bool _hasStartedInterview = false;
+  bool _isAIEnabled = false;
+
+  void setAIEnabled({required bool value}) {
+    _isAIEnabled = value;
+    _sharedPreferences.setBool(_prefIsAiEnabledKey, value);
+  }
 
   GameStats? _gameStatsData;
 
@@ -69,6 +80,7 @@ class ReflectAndShareRepository {
       _gameStatsUpdatedStreamController.stream;
 
   void _init() {
+    _isAIEnabled = _sharedPreferences.getBool(_prefIsAiEnabledKey) ?? false;
     _createTransactionRepository.onTransactionByUser().listen((_) {
       _fetchGameStats();
     });
@@ -82,6 +94,17 @@ class ReflectAndShareRepository {
         ?.listen(
           _handleGameConfigUpdated,
         );
+  }
+
+  bool isAiAllowed() {
+    if (_gameConfig != null) {
+      return _gameConfig!.isAiAllowed;
+    }
+    return false;
+  }
+
+  bool isAITurnedOn() {
+    return _isAIEnabled && isAiAllowed();
   }
 
   void _handleGameConfigUpdated(RemoteConfigValue value) {
@@ -117,6 +140,55 @@ class ReflectAndShareRepository {
         methodName: s.toString(),
       );
       return null;
+    }
+  }
+
+  Future<QuestionForHeroModel> getQuestionForHero({
+    String? audioPath,
+    int questionNumber = 0,
+  }) async {
+    try {
+      final currentHero = _selectedProfiles[_getCurrentSuperHeroIndex()];
+      File? file;
+      if (audioPath != null) {
+        file = File(audioPath)..existsSync();
+      }
+      final response = await _familyApiService.getQuestionForHero(
+        _gameId!,
+        currentHero.userId,
+        audioFile: file,
+        questionNumber: questionNumber,
+      );
+      if (true == file?.existsSync()) {
+        file?.deleteSync();
+      }
+      return QuestionForHeroModel.fromJson(response);
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+      return const QuestionForHeroModel();
+    }
+  }
+
+  Future<void> shareHeroAudio(String path) async {
+    try {
+      final currentHero = _selectedProfiles[_getCurrentSuperHeroIndex()];
+      final file = File(path);
+      if (file.existsSync()) {
+        await _familyApiService.uploadEndOfRoundHeroAudioFile(
+          _gameId!,
+          currentHero.userId,
+          file,
+        );
+        await file.delete();
+      }
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
     }
   }
 

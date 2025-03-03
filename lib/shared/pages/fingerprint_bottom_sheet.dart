@@ -76,7 +76,7 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
                 ),
               ),
               Switch.adaptive(
-                activeColor: AppTheme.givtLightGreen,
+                activeColor: AppTheme.primary70,
                 onChanged: (bool value) async {
                   try {
                     final hasAuthentication =
