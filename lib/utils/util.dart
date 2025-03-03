@@ -33,7 +33,8 @@ class Util {
   static final usPhoneNumberRegEx =
       RegExp(r'^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$');
   static final ukSortCodeRegEx = RegExp(r'^\d{6}$');
-  static final emailRegEx = RegExp(r'^(?!.*\.\.)[a-zA-Z0-9][\w-\.]*[a-zA-Z0-9](\+[\w-\.]+)?@([\w-]+\.)+[\w]+$');
+  static final emailRegEx = RegExp(
+      r'^(?!.*\.\.)[a-zA-Z0-9][\w-\.]*[a-zA-Z0-9_\.](\+[\w-\.]+)?@([\w-]+\.)+[\w]+$');
   static final nameFieldsRegEx =
       RegExp(r'^[^0-9_!,¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$');
 
