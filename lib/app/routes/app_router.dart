@@ -13,6 +13,8 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/email_signup/presentation/pages/email_signup_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/family_routes.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
@@ -76,41 +78,10 @@ class AppRouter {
         path: '/search-for-coin',
         name: 'search-for-coin',
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) {
-            if (state.status == AuthStatus.loading) {
-              // do nothing
-              return;
-            }
-            if (state.status == AuthStatus.authenticated) {
-              context.go(
-                '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${routerState.uri.query}',
-              );
-            } else {
-              final isTestApp = getIt<AppConfig>().isTestApp;
-              final code = routerState.uri.queryParameters['code'];
-              if (isTestApp && code != null) {
-                context.go(
-                  '${Pages.redirectToBrowser.path}?uri=https://dev-coin.givt.app/?mediumId=$code',
-                );
-              } else {
-                context.go(
-                  '${Pages.redirectToBrowser.path}?uri=${routerState.uri}',
-                );
-              }
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.redirectCoinToNoAppFlow,
-                eventProperties: {
-                  'url': routerState.uri.toString(),
-                },
-              );
-            }
-          },
-          child: Builder(
-            builder: (context) {
-              context.read<AuthCubit>().checkAuth();
-              return const LoadingPage();
-            },
-          ),
+          listener: (context, state) =>
+          // Temp solution to redirect users to the app as it is (not a specific page)
+              _checkAndRedirectAuth(state, context, routerState),
+          child: const SplashPage(),
         ),
       ),
       GoRoute(
