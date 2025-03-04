@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 Future<void> showMissionNotAvailableDialog(BuildContext context) async {
   await FunModal(
+    closeAction: () => Navigator.of(context).pop(),
     title: 'Update Required!',
     subtitle:
         'This mission is available in the latest version. Update now to continue the adventure!',
