@@ -44,6 +44,7 @@ class _ChangeEmailAddressBottomSheetState
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
     return FunBottomSheet(
+      closeAction: () => Navigator.of(context).pop(),
       title: locals.changeEmail,
       primaryButton: FunButton(
         isDisabled: !isEnabled,

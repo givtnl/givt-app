@@ -46,8 +46,8 @@ class _USChangePhoneNumberBottomSheetState
     if (value == null || value.isEmpty) {
       return '';
     }
-    if (!Util.phoneNumberRegExWithPrefix()
-        .hasMatch('${selectedCountry.prefix}$value')) {
+
+    if (!Util.usPhoneNumberRegEx.hasMatch(Util.formatPhoneNrUs(value))) {
       return '';
     }
 
@@ -69,13 +69,14 @@ class _USChangePhoneNumberBottomSheetState
   }
 
   void onPhoneChanged(String value) {
-    setState(() {});
+    // setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
     return FunBottomSheet(
+      closeAction: () => Navigator.of(context).pop(),
       title: locals.changePhone,
       primaryButton: FunButton(
         isDisabled: !isEnabled,
@@ -108,24 +109,14 @@ class _USChangePhoneNumberBottomSheetState
         child: Column(
           children: [
             const SizedBox(height: 16),
-            if (selectedCountry == Country.us)
-              MobileNumberFormFieldUs(
-                phone: phone,
-                onPhoneChanged: onPhoneChanged,
-                onPrefixChanged: onPrefixChanged,
-                validator: validator,
-                hintText: locals.phoneNumber,
-                selectedCountryPrefix: selectedCountry.prefix,
-              )
-            else
-              MobileNumberFormField(
-                phone: phone,
-                hintText: locals.phoneNumber,
-                selectedCountryPrefix: selectedCountry.prefix,
-                onPhoneChanged: onPhoneChanged,
-                onPrefixChanged: onPrefixChanged,
-                validator: validator,
-              ),
+            MobileNumberFormFieldUs(
+              phone: phone,
+              onPhoneChanged: onPhoneChanged,
+              onPrefixChanged: onPrefixChanged,
+              validator: validator,
+              hintText: locals.phoneNumber,
+              selectedCountryPrefix: selectedCountry.prefix,
+            )
           ],
         ),
       ),
