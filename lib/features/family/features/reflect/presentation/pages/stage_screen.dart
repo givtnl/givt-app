@@ -4,6 +4,8 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/stage_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/stage_screen_custom.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/sheets/ai_game_explanation_sheet.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
@@ -57,17 +59,20 @@ class _StageScreenState extends State<StageScreen> {
         ),
         body: BaseStateConsumer(
           cubit: _stageCubit,
+          onCustom: _handleCustom,
           onData: (context, uiModel) {
             return Stack(
               children: [
                 Opacity(
-                    opacity: uiModel.isAITurnedOn ? 1 : 0,
-                    child:
-                        Image.asset('assets/family/images/stage_with_ai.png')),
+                  opacity: uiModel.isAITurnedOn ? 1 : 0,
+                  child: Image.asset('assets/family/images/stage_with_ai.png'),
+                ),
                 Opacity(
-                    opacity: uiModel.isAITurnedOn ? 0 : 1,
-                    child: Image.asset(
-                        'assets/family/images/stage_without_ai.png')),
+                  opacity: uiModel.isAITurnedOn ? 0 : 1,
+                  child: Image.asset(
+                    'assets/family/images/stage_without_ai.png',
+                  ),
+                ),
                 if (widget.playAudio)
                   const FunBackgroundAudioWidget(
                     audioPath: 'family/audio/ready_its_showtime.wav',
@@ -146,5 +151,32 @@ class _StageScreenState extends State<StageScreen> {
         ),
       ),
     );
+  }
+
+  void _handleCustom(BuildContext context, StageScreenCustom custom) {
+    switch (custom) {
+      case CaptainAiPopup():
+        showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          useSafeArea: true,
+          builder: (context) {
+            return AiGameExplanationSheet(
+              enableClicked: () async {
+                final permission = await _recordCubit.requestPermission();
+                if (permission) {
+                  _stageCubit.enableCaptainAi();
+                }
+                
+                Navigator.of(context).pop();
+              },
+              maybeLaterClicked: () {
+                _stageCubit.maybeLaterCaptainAi();
+                Navigator.of(context).pop();
+              },
+            );
+          },
+        );
+    }
   }
 }

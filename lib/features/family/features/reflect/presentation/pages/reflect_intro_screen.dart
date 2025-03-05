@@ -70,25 +70,6 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
 
   void _handleCustom(BuildContext context, ReflectIntroCustom custom) {
     switch (custom) {
-      case CaptainAiPopup():
-        showModalBottomSheet<void>(
-          context: context,
-          isScrollControlled: true,
-          useSafeArea: true,
-          builder: (context) {
-            return AiGameExplanationSheet(
-              enableClicked: () {
-                _cubit.enableCaptainAi();
-                Navigator.of(context).pop();
-              },
-              maybeLaterClicked: () {
-                _cubit.maybeLaterCaptainAi();
-                Navigator.of(context).pop();
-                _goToStageScreen(context);
-              },
-            );
-          },
-        );
       case GoToStageScreen():
         _goToStageScreen(context);
     }

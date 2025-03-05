@@ -1,9 +1,10 @@
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/stage_screen_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/stage_uimodel.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class StageCubit extends CommonCubit<StageUIModel, dynamic> {
+class StageCubit extends CommonCubit<StageUIModel, StageScreenCustom> {
   StageCubit(this._reflectAndShareRepository)
       : super(
           BaseState.data(
@@ -16,7 +17,11 @@ class StageCubit extends CommonCubit<StageUIModel, dynamic> {
 
   final ReflectAndShareRepository _reflectAndShareRepository;
 
-  void init() {}
+  void init() {
+    Future.delayed(Duration.zero).then((value) {
+      emitCustom(const StageScreenCustom.showCaptainAiPopup());
+    });
+  }
 
   void _emitData() {
     emit(
@@ -31,6 +36,17 @@ class StageCubit extends CommonCubit<StageUIModel, dynamic> {
 
   void onAIEnabledChanged({required bool isEnabled}) {
     _reflectAndShareRepository.setAIEnabled(value: isEnabled);
+    _emitData();
+  }
+
+  void enableCaptainAi() {
+    _reflectAndShareRepository.setAIEnabled(value: true);
+    // Permission check
+    _emitData();
+  }
+
+  void maybeLaterCaptainAi() {
+    _reflectAndShareRepository.setAIEnabled(value: false);
     _emitData();
   }
 }
