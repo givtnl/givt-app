@@ -54,7 +54,7 @@ class OutlinedTextFormField extends StatelessWidget {
       onChanged: onChanged,
       style:
           const FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
-                color: FamilyAppTheme.primary40,
+                color: FamilyAppTheme.primary20,
               ),
       decoration: InputDecoration(
         hintText: hintText,

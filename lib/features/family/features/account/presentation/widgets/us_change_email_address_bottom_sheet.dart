@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/util.dart';
 
@@ -43,6 +44,7 @@ class _ChangeEmailAddressBottomSheetState
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
     return FunBottomSheet(
+      closeAction: () => Navigator.of(context).pop(),
       title: locals.changeEmail,
       primaryButton: FunButton(
         isDisabled: !isEnabled,
@@ -75,7 +77,7 @@ class _ChangeEmailAddressBottomSheetState
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: size.height * 0.05),
-            CustomTextFormField(
+            OutlinedTextFormField(
               controller: emailController,
               onChanged: (value) => setState(() {}),
               validator: (value) {
