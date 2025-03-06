@@ -91,7 +91,7 @@ class _SplashPageState extends State<SplashPage> {
     switch (state) {
       case SplashRedirectToWelcome():
         context.goNamed(Pages.welcome.name);
-      case SplashRedirectToSignup():
+      case SplashRedirectToUSRegistration():
         context.goNamed(
           FamilyPages.registrationUS.name,
           queryParameters: {'email': state.email},
@@ -115,6 +115,11 @@ class _SplashPageState extends State<SplashPage> {
         });
       case SplashRedirectToEUHome():
         context.goNamed(Pages.home.name);
+      case SplashRedirectToEmailSignup():
+        context.goNamed(
+          Pages.welcome.name,
+          queryParameters: {'email': state.email},
+        );
     }
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:backoff/backoff.dart';
 import 'package:facebook_app_events/facebook_app_events.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/auth/models/session.dart';
@@ -12,6 +14,7 @@ import 'package:givt_app/features/splash/cubit/splash_custom.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashCubit extends CommonCubit<void, SplashCustom> {
   SplashCubit(
@@ -26,7 +29,6 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
   final ProfilesRepository _profilesRepository;
   final NetworkInfo _networkInfo;
   StreamSubscription<bool>? _internetConnectionSubscription;
-  bool _shouldRetryDueToAppDDos = false;
   late ExponentialBackOff _backOff;
 
   Future<void> init() async {
@@ -60,53 +62,33 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
 
   Future<void> _checkForRedirect() async {
     try {
-      final euSession = await _getEUSession();
-      if (euSession != null) {
-        if (euSession.isLoggedIn) {
-          emitCustom(const SplashCustom.redirectToEUHome());
-          return;
-        } else {
-          // user logged out, upon seeing the signup screen they will see biometrics to easily login
-          emitCustom(SplashCustom.redirectToSignup(euSession.email));
-          return;
-        }
+      //for the session it doesn't matter if we use the family one or the EU one
+      //for now because they are both stored in the same place using the same object
+      final session = await _authRepository.getStoredSession();
+
+      final user = await _getUser();
+      final isUSUser = await _isUSUser();
+
+      // we don't have a session/ user, go to welcome
+      if (session == const Session.empty() || user == null) {
+        emitCustom(const SplashCustom.redirectToWelcome());
+        return;
       }
 
-      // if we reached here we don't have an EU user with a session
-      // possibly we do have a US user
-      final usUser = await _getUSUser();
-
-      if (usUser == null) {
-        if (_networkInfo.isConnected && !_shouldRetryDueToAppDDos) {
-          // we don't have a US user, we had internet and no checks failed
-          // so we don't have an existing session at all
-          emitCustom(const SplashCustom.redirectToWelcome());
-          return;
-        } else {
-          // something went wrong trying to retrieve the US user
-          // let's keep retrying with exponential backoff (so we don't DDOS the server)
-          _shouldRetryDueToAppDDos = false;
-          final nextBackOff = _backOff.nextBackOffMillis();
-          if (nextBackOff == BackOff.STOP) {
-            await Future.delayed(Duration(milliseconds: nextBackOff));
-            await _checkForRedirect();
-            return;
-          } else {
-            // we've tried for a long time, time to give up (and leave the server alone!)
-            emitCustom(const SplashCustom.redirectToWelcome());
-            return;
-          }
-        }
-      }
-
-      // ah the age old classic, this shouldn't happen but...
-      if (usUser.isUsUser == false) {
+      // we are logged in as a EU user, go to EU home
+      if (session.isLoggedIn && (user.isUsUser == false || !isUSUser)) {
         emitCustom(const SplashCustom.redirectToEUHome());
         return;
       }
 
-      // if we are here we've had an existing US session before
-      // we now check where we should redirect the user to
+      // we are not logged in but we did have a session, go to email signup
+      if (session.isLoggedIn == false) {
+        emitCustom(SplashCustom.redirectToEmailSignup(session.email));
+        return;
+      }
+
+      // we are logged in and have a session as a US user
+      await _familyAuthRepository.initAuth();
       final profiles = await _profilesRepository.refreshProfiles();
 
       final fbsdk = FacebookAppEvents();
@@ -115,26 +97,25 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
         name: 'app_open_and_logged_in',
       );
 
-      if (!usUser.personalInfoRegistered) {
+      // user started registration but didn't finish yet
+      if (!user.personalInfoRegistered) {
         _familyAuthRepository.onRegistrationStarted();
-        emitCustom(SplashCustom.redirectToSignup(usUser.email));
+        emitCustom(SplashCustom.redirectToUSRegistration(user.email));
         return;
       }
 
       if (profiles.isEmpty) {
-        _showExperiencingIssuesMessage();
-        // we probably have a BE issue
-        LoggingInfo.instance.error(
-          'No profiles found for user ${usUser.guid}, do we have a failing BE call?',
-          methodName: 'SplashCubit._checkForRedirect',
-        );
+        // we probably have a BE issue or internet connection issue
+        await _handleNoProfilesIssue(user);
         return;
       } else if (profiles.length <= 1) {
+        // user started registration but didn't create a family yet
         _familyAuthRepository.onRegistrationStarted();
         emitCustom(const SplashCustom.redirectToAddMembers());
         return;
       }
 
+      // we have a logged in US user that fully went through registration
       emitCustom(const SplashCustom.redirectToUSHome());
     } catch (e, s) {
       if (_networkInfo.isConnected) {
@@ -149,40 +130,50 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
     }
   }
 
-  Future<Session?> _getEUSession() async {
-    try {
-      return await _authRepository.getStoredSession();
-    } catch (e, s) {
-      LoggingInfo.instance.error(
-        s.toString(),
-        methodName: 'SplashCubit._getEUUser',
-      );
-      return null;
+  Future<void> _handleNoProfilesIssue(UserExt user) async {
+    if (_networkInfo.isConnected) {
+      _showExperiencingIssuesMessage();
+    }
+    // we probably have a BE issue
+    LoggingInfo.instance.error(
+      'No profiles found for user ${user.guid}, do we have a failing BE call?',
+      methodName: 'SplashCubit._checkForRedirect',
+    );
+    final nextBackOff = _backOff.nextBackOffMillis();
+    if (nextBackOff != BackOff.STOP) {
+      await Future.delayed(Duration(milliseconds: nextBackOff));
+      await _checkForRedirect();
     }
   }
 
-  Future<UserExt?> _getUSUser() async {
-    try {
-      await _familyAuthRepository.initAuth();
-      final usUser = _familyAuthRepository.getCurrentUser();
-      final session = _familyAuthRepository.getStoredSession();
-      return session.isLoggedIn ? usUser : null;
-    } catch (e, s) {
-      _checkForServiceNotAvailableException(e);
-      LoggingInfo.instance.error(
-        s.toString(),
-        methodName: 'SplashCubit._getUSUser',
-      );
-      return null;
+  Future<UserExt?> _getUser() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (prefs.containsKey(UserExt.tag)) {
+      final userExtString = prefs.getString(UserExt.tag);
+      if (userExtString != null) {
+        final user =
+            UserExt.fromJson(jsonDecode(userExtString) as Map<String, dynamic>);
+        return user;
+      }
     }
+
+    return null;
   }
 
-  // We get a format exception because the BE returns a ServerNotAvailableException
-  // rather than a GivtServerFailure when being DDOSd (by the app :p)
-  void _checkForServiceNotAvailableException(Object e) {
-    if (e.toString().toLowerCase().contains('formatexception')) {
-      _shouldRetryDueToAppDDos = true;
+  Future<bool> _isUSUser() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (prefs.containsKey(UserExt.tag)) {
+      final userExtString = prefs.getString(UserExt.tag);
+      if (userExtString != null) {
+        final user =
+            UserExt.fromJson(jsonDecode(userExtString) as Map<String, dynamic>);
+        return user.country == Country.us.countryCode;
+      }
     }
+
+    return false;
   }
 
   @override
