@@ -96,7 +96,7 @@ class _SplashPageState extends State<SplashPage> {
           FamilyPages.registrationUS.name,
           queryParameters: {'email': state.email},
         );
-      case SplashRedirectToHome():
+      case SplashRedirectToUSHome():
         context.goNamed(FamilyPages.profileSelection.name);
       case SplashRedirectToAddMembers():
         context.pushReplacementNamed(
@@ -113,6 +113,8 @@ class _SplashPageState extends State<SplashPage> {
         setState(() {
           _showCurrentlyExperiencingIssues = true;
         });
+      case SplashRedirectToEUHome():
+        context.goNamed(Pages.home.name);
     }
   }
 }
