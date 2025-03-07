@@ -178,18 +178,8 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
   }
 
   Future<bool> _isUSUser() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    if (prefs.containsKey(UserExt.tag)) {
-      final userExtString = prefs.getString(UserExt.tag);
-      if (userExtString != null) {
-        final user =
-            UserExt.fromJson(jsonDecode(userExtString) as Map<String, dynamic>);
-        return user.country == Country.us.countryCode;
-      }
-    }
-
-    return false;
+    final user = await _getUser();
+    return user?.country == Country.us.countryCode;
   }
 
   @override
