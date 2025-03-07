@@ -107,10 +107,12 @@ class _SplashPageState extends State<SplashPage> {
       case NoInternet():
         setState(() {
           _showNoInternetMessage = true;
+          _showCurrentlyExperiencingIssues = false;
         });
       case ExperiencingIssues():
         setState(() {
           _showCurrentlyExperiencingIssues = true;
+          _showNoInternetMessage = false;
         });
       case SplashRedirectToEUHome():
         context.goNamed(Pages.home.name);
