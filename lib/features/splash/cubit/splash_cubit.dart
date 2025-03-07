@@ -33,6 +33,7 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
   late ExponentialBackOff _backOff;
 
   Future<void> init() async {
+    // prevent BE from being DDOSd by the app
     _backOff = ExponentialBackOff(initialIntervalMillis: 3000);
 
     _refreshTokenFailedStream =
