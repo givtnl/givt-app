@@ -86,7 +86,7 @@ void initCubits() {
     ..registerLazySingleton<InternetConnectionCubit>(
       () => InternetConnectionCubit(getIt()),
     )
-    ..registerFactory(() => StageCubit(getIt()))
+    ..registerFactory(() => StageCubit(getIt(), getIt()))
     ..registerFactory(() => ReflectIntroCubit(getIt()))
     ..registerFactory(ParentSummaryCubit.new)
     ..registerFactory(FunBottomSheetWithAsyncActionCubit.new)

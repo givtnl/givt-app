@@ -135,14 +135,11 @@ class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
                                   );
                                   AnalyticsHelper.logEvent(
                                     eventName:
-                                        AmplitudeEvents.userToggledAIFeature,
+                                    AmplitudeEvents.userToggledAIFeature,
                                     eventProperties: {
                                       'on': value,
                                     },
                                   );
-                                  if (value) {
-                                    _recordCubit.requestPermission();
-                                  }
                                 },
                               ),
                             ],

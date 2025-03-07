@@ -4,9 +4,10 @@ import 'package:givt_app/features/family/features/reflect/presentation/models/st
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StageCubit extends CommonCubit<StageUIModel, StageScreenCustom> {
-  StageCubit(this._reflectAndShareRepository)
+  StageCubit(this._sharedPreferences, this._reflectAndShareRepository)
       : super(
           BaseState.data(
             StageUIModel(
@@ -16,13 +17,19 @@ class StageCubit extends CommonCubit<StageUIModel, StageScreenCustom> {
           ),
         );
 
+  final SharedPreferences _sharedPreferences;
   final ReflectAndShareRepository _reflectAndShareRepository;
   bool _checkForMicPermissionOnResume = false;
 
+  static const String _aiPopupShownKey = 'ai_popup_shown_key';
+
   void init() {
-    Future.delayed(Duration.zero).then((value) {
-      emitCustom(const StageScreenCustom.showCaptainAiPopup());
-    });
+    if (_sharedPreferences.getBool(_aiPopupShownKey) == null) {
+      _sharedPreferences.setBool(_aiPopupShownKey, true);
+      Future.delayed(Duration.zero).then((value) {
+        emitCustom(const StageScreenCustom.showCaptainAiPopup());
+      });
+    }
   }
 
   void _emitData() {
@@ -37,7 +44,7 @@ class StageCubit extends CommonCubit<StageUIModel, StageScreenCustom> {
   }
 
   void onAIEnabledChanged({required bool isEnabled}) =>
-      _setAIFeature(isEnabled);
+      isEnabled ? tryToTurnOnCaptainAI() : _disableAI();
 
   void _setAIFeature(bool isEnabled) {
     _reflectAndShareRepository.setAIEnabled(value: isEnabled);
@@ -67,7 +74,7 @@ class StageCubit extends CommonCubit<StageUIModel, StageScreenCustom> {
   Future<void> onResume() async {
     if (_checkForMicPermissionOnResume) {
       _checkForMicPermissionOnResume = false;
-      await tryToTurnOnCaptainAI();
+      await _hasMicPermission() ? _enableAI() : _disableAI();
     }
   }
 
