@@ -29,11 +29,22 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
   final ProfilesRepository _profilesRepository;
   final NetworkInfo _networkInfo;
   StreamSubscription<bool>? _internetConnectionSubscription;
+  StreamSubscription<void>? _refreshTokenFailedStream;
   late ExponentialBackOff _backOff;
 
   Future<void> init() async {
+    // prevent BE from being DDOSd by the app
     _backOff = ExponentialBackOff(initialIntervalMillis: 3000);
 
+    _refreshTokenFailedStream =
+        _familyAuthRepository.refreshTokenFailedStream().listen(
+      (_) async {
+        if (_networkInfo.isConnected && _backOff.getRetryCount() >= 1) {
+          // we can't recover, user needs to login fully anew again
+          emitCustom(const SplashCustom.redirectToWelcome());
+        }
+      },
+    );
     _internetConnectionSubscription = _networkInfo
         .hasInternetConnectionStream()
         .listen((hasInternetConnection) async {
@@ -185,6 +196,7 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
   @override
   Future<void> close() async {
     await _internetConnectionSubscription?.cancel();
+    await _refreshTokenFailedStream?.cancel();
     await super.close();
   }
 }
