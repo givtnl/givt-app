@@ -4,6 +4,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/stage_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/dialogs/microphone_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/stage_screen_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/sheets/ai_game_explanation_sheet.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
@@ -34,9 +35,28 @@ class StageScreen extends StatefulWidget {
   State<StageScreen> createState() => _StageScreenState();
 }
 
-class _StageScreenState extends State<StageScreen> {
+class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
   final StageCubit _stageCubit = getIt<StageCubit>();
   final RecordCubit _recordCubit = getIt<RecordCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _stageCubit.onResume();
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -153,6 +173,20 @@ class _StageScreenState extends State<StageScreen> {
     );
   }
 
+  void _showMicrophoneSettingsPopup(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      builder: (context) {
+        return MicrophonePermissionsDialog(
+          hasDialogLayout: false,
+          onClickClose: _stageCubit.onMicrophonePermissionDeclined,
+          onClickSettings: _stageCubit.onMicrophonePermissionSettingsClicked,
+        );
+      },
+    );
+  }
+
   void _handleCustom(BuildContext context, StageScreenCustom custom) {
     switch (custom) {
       case CaptainAiPopup():
@@ -163,11 +197,7 @@ class _StageScreenState extends State<StageScreen> {
           builder: (context) {
             return AiGameExplanationSheet(
               enableClicked: () async {
-                final permission = await _recordCubit.requestPermission();
-                if (permission) {
-                  _stageCubit.enableCaptainAi();
-                }
-                
+                await _stageCubit.tryToTurnOnCaptainAI();
                 Navigator.of(context).pop();
               },
               maybeLaterClicked: () {
@@ -177,6 +207,8 @@ class _StageScreenState extends State<StageScreen> {
             );
           },
         );
+      case OpenMicrophonePermissionsDialog():
+        _showMicrophoneSettingsPopup(context);
     }
   }
 }
