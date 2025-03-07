@@ -198,7 +198,7 @@ void initCubits() {
       ),
     )
     ..registerFactory<SplashCubit>(
-      () => SplashCubit(getIt(), getIt(), getIt()),
+      () => SplashCubit(getIt(), getIt(), getIt(), getIt()),
     );
 }
 

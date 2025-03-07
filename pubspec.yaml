@@ -88,6 +88,7 @@ dependencies:
   flutter_animate: ^4.5.2
   waveform_flutter:
     path: ./packages/waveform
+  backoff: ^1.0.1
 
 
 # Override needed because inappwebview >=6.1.0 requires this version
