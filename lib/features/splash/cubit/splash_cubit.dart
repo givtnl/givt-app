@@ -39,7 +39,7 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
     _refreshTokenFailedStream =
         _familyAuthRepository.refreshTokenFailedStream().listen(
       (_) async {
-        if (_networkInfo.isConnected && _backOff.getRetryCount() >= 2) {
+        if (_networkInfo.isConnected && _backOff.getRetryCount() >= 1) {
           // we can't recover, user needs to login fully anew again
           emitCustom(const SplashCustom.redirectToWelcome());
         }
