@@ -46,6 +46,8 @@ abstract class FamilyAuthRepository {
 
   Stream<void> registrationFinishedStream();
 
+  Stream<void> refreshTokenFailedStream();
+
   Session getStoredSession();
 
   UserExt? getCurrentUser();
@@ -89,6 +91,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   final StreamController<void> _onRegistrationFinishedStream =
       StreamController<void>.broadcast();
 
+  final StreamController<void> _refreshTokenFailedStream =
+      StreamController<void>.broadcast();
+
   bool _startedRegistration = false;
 
   //emits a userExt object when we have an authenticated user, else null
@@ -96,39 +101,52 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   Stream<UserExt?> authenticatedUserStream() =>
       _authenticatedUserStream.stream.distinct();
 
+  Stream<void> refreshTokenFailedStream() => _refreshTokenFailedStream.stream;
+
   @override
   Future<Session> refreshToken() async {
     final session = getStoredSession();
     if (session == const Session.empty()) {
       _authenticatedUserStream.add(null);
+      _refreshTokenFailedStream.add(null);
       throw Exception(
         'Cannot refresh token, no current session found to refresh.',
       );
     }
     if (session.isLoggedIn == false) {
       _authenticatedUserStream.add(null);
+      _refreshTokenFailedStream.add(null);
       throw Exception('Cannot refresh token, user is not logged in.');
     }
-    final response = await _apiService.refreshToken(
-      {
-        'refresh_token': session.refreshToken,
-        'grant_type': 'refresh_token',
-      },
-    );
-    var newSession = Session.fromJson(response);
-    newSession = newSession.copyWith(
-      isLoggedIn: true,
-    );
-    await _storeSession(newSession);
     try {
-      await _fetchAndStoreUserExtension(newSession.userGUID);
-    } catch (e, s) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: s.toString(),
+      final response = await _apiService.refreshToken(
+        {
+          'refresh_token': session.refreshToken,
+          'grant_type': 'refresh_token',
+        },
       );
+      var newSession = Session.fromJson(response);
+      newSession = newSession.copyWith(
+        isLoggedIn: true,
+      );
+      await _storeSession(newSession);
+      try {
+        await _fetchAndStoreUserExtension(newSession.userGUID);
+      } catch (e, s) {
+        LoggingInfo.instance.error(
+          e.toString(),
+          methodName: s.toString(),
+        );
+      }
+      return newSession;
+    } catch (e, s) {
+      _refreshTokenFailedStream.add(null);
+      LoggingInfo.instance.error(
+        s.toString(),
+        methodName: 'FamilyAuthRepositoryImpl.refreshToken',
+      );
+      rethrow;
     }
-    return newSession;
   }
 
   @override
