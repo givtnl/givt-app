@@ -32,7 +32,7 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
   late ExponentialBackOff _backOff;
 
   Future<void> init() async {
-    _backOff = ExponentialBackOff();
+    _backOff = ExponentialBackOff(initialIntervalMillis: 3000);
 
     _internetConnectionSubscription = _networkInfo
         .hasInternetConnectionStream()
@@ -119,26 +119,42 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       emitCustom(const SplashCustom.redirectToUSHome());
     } catch (e, s) {
       if (_networkInfo.isConnected) {
-        LoggingInfo.instance.error(
-          '$e\n\n$s',
-          methodName: 'SplashCubit._checkForRedirect',
-        );
-        emitCustom(const SplashCustom.redirectToWelcome());
+        await _handleExceptionNotDueToInternetConnection(e, s);
       } else {
         _showNoInternetMessage();
       }
     }
   }
 
-  Future<void> _handleNoProfilesIssue(UserExt user) async {
-    if (_networkInfo.isConnected) {
-      _showExperiencingIssuesMessage();
+  Future<void> _handleExceptionNotDueToInternetConnection(
+      Object e, StackTrace s) async {
+    LoggingInfo.instance.error(
+      '$e\n\n$s',
+      methodName: 'SplashCubit._checkForRedirect',
+    );
+    if (_isBENotAvailableDueToDDOS(e)) {
+      // let's retry after a bit of time and see if the server is available
+      await _retryAfterABitOfTime();
+    } else {
+      //we can't recover from this
+      emitCustom(const SplashCustom.redirectToWelcome());
     }
+  }
+
+  bool _isBENotAvailableDueToDDOS(Object e) =>
+      e.toString().toLowerCase().contains('format');
+
+  Future<void> _handleNoProfilesIssue(UserExt user) async {
     // we probably have a BE issue
     LoggingInfo.instance.error(
       'No profiles found for user ${user.guid}, do we have a failing BE call?',
-      methodName: 'SplashCubit._checkForRedirect',
+      methodName: 'SplashCubit._handleNoProfilesIssue',
     );
+    await _retryAfterABitOfTime();
+  }
+
+  Future<void> _retryAfterABitOfTime() async {
+    _showExperiencingIssuesMessage();
     final nextBackOff = _backOff.nextBackOffMillis();
     if (nextBackOff != BackOff.STOP) {
       await Future.delayed(Duration(milliseconds: nextBackOff));

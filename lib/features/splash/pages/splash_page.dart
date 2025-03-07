@@ -62,8 +62,7 @@ class _SplashPageState extends State<SplashPage> {
               width: 100,
             ),
             const SizedBox(height: 20),
-            if (!_showCurrentlyExperiencingIssues)
-              const CustomCircularProgressIndicator(),
+            const CustomCircularProgressIndicator(),
             if (_showNoInternetMessage)
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -76,7 +75,7 @@ class _SplashPageState extends State<SplashPage> {
               const Padding(
                 padding: EdgeInsets.all(20),
                 child: BodyMediumText(
-                  'We are currently experiencing issues. Please close the app and try again later.',
+                  'We are currently experiencing issues with connecting to the server. We will automatically keep retrying. Feel free to close the app and try again later.',
                   textAlign: TextAlign.center,
                 ),
               ),
