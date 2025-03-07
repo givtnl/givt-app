@@ -101,6 +101,8 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   Stream<UserExt?> authenticatedUserStream() =>
       _authenticatedUserStream.stream.distinct();
 
+  //emits an event when we have failed to refresh the token
+  @override
   Stream<void> refreshTokenFailedStream() => _refreshTokenFailedStream.stream;
 
   @override
