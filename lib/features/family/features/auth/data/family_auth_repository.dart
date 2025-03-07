@@ -38,6 +38,8 @@ abstract class FamilyAuthRepository {
     required String email,
   });
 
+  Future<UserExt> fetchUserExtension(String guid);
+
   Future<void> updateNotificationId();
 
   Stream<UserExt?> authenticatedUserStream();
@@ -119,7 +121,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     );
     await _storeSession(newSession);
     try {
-      await _fetchUserExtension(newSession.userGUID);
+      await _fetchAndStoreUserExtension(newSession.userGUID);
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -145,7 +147,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     );
 
     await _storeSession(session);
-    await _fetchUserExtension(session.userGUID);
+    await _fetchAndStoreUserExtension(session.userGUID);
   }
 
   Future<bool> _storeSession(Session session) async {
@@ -179,10 +181,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   Future<String> checkEmail({required String email}) async =>
       _apiService.checkEmail(email);
 
-  Future<UserExt> _fetchUserExtension(String guid) async {
+  Future<UserExt> _fetchAndStoreUserExtension(String guid) async {
     try {
-      final response = await _apiService.getUserExtension(guid);
-      final userExt = UserExt.fromJson(response);
+      UserExt userExt = await fetchUserExtension(guid);
       await _storeUserExt(userExt);
       await _setUserPropsForExternalServices(userExt);
       _updateAuthenticatedUserStream(userExt);
@@ -194,6 +195,12 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       );
       rethrow;
     }
+  }
+
+  Future<UserExt> fetchUserExtension(String guid) async {
+    final response = await _apiService.getUserExtension(guid);
+    final userExt = UserExt.fromJson(response);
+    return userExt;
   }
 
   Future<void> _storeUserExt(UserExt userExt) async {
@@ -335,7 +342,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }) async {
     try {
       final result = await _apiService.updateUser(guid, newUserExt);
-      await _fetchUserExtension(guid);
+      await _fetchAndStoreUserExtension(guid);
       return result;
     } catch (e) {
       return false;
@@ -399,7 +406,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
         'PushNotificationsEnabled': notificationPermissionStatus,
       },
     );
-    await _fetchUserExtension(_userExt!.guid);
+    await _fetchAndStoreUserExtension(_userExt!.guid);
   }
 
   Future<void> _setUserPropsForExternalServices(UserExt newUserExt) {
@@ -435,7 +442,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   @override
   Future<void> refreshUser() async {
-    await _fetchUserExtension(_userExt!.guid);
+    await _fetchAndStoreUserExtension(_userExt!.guid);
   }
 
   @override

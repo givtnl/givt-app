@@ -62,8 +62,7 @@ class _SplashPageState extends State<SplashPage> {
               width: 100,
             ),
             const SizedBox(height: 20),
-            if (!_showCurrentlyExperiencingIssues)
-              const CustomCircularProgressIndicator(),
+            const CustomCircularProgressIndicator(),
             if (_showNoInternetMessage)
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -76,7 +75,7 @@ class _SplashPageState extends State<SplashPage> {
               const Padding(
                 padding: EdgeInsets.all(20),
                 child: BodyMediumText(
-                  'We are currently experiencing issues. Please close the app and try again later.',
+                  'We are currently experiencing issues with connecting to the server. We will automatically keep retrying. Feel free to close the app and try again later.',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -91,12 +90,12 @@ class _SplashPageState extends State<SplashPage> {
     switch (state) {
       case SplashRedirectToWelcome():
         context.goNamed(Pages.welcome.name);
-      case SplashRedirectToSignup():
+      case SplashRedirectToUSRegistration():
         context.goNamed(
           FamilyPages.registrationUS.name,
           queryParameters: {'email': state.email},
         );
-      case SplashRedirectToHome():
+      case SplashRedirectToUSHome():
         context.goNamed(FamilyPages.profileSelection.name);
       case SplashRedirectToAddMembers():
         context.pushReplacementNamed(
@@ -108,11 +107,20 @@ class _SplashPageState extends State<SplashPage> {
       case NoInternet():
         setState(() {
           _showNoInternetMessage = true;
+          _showCurrentlyExperiencingIssues = false;
         });
       case ExperiencingIssues():
         setState(() {
           _showCurrentlyExperiencingIssues = true;
+          _showNoInternetMessage = false;
         });
+      case SplashRedirectToEUHome():
+        context.goNamed(Pages.home.name);
+      case SplashRedirectToEmailSignup():
+        context.goNamed(
+          Pages.welcome.name,
+          queryParameters: {'email': state.email},
+        );
     }
   }
 }
