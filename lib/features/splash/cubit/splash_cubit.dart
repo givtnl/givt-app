@@ -118,6 +118,10 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       // we have a logged in US user that fully went through registration
       emitCustom(const SplashCustom.redirectToUSHome());
     } catch (e, s) {
+      LoggingInfo.instance.error(
+        '$e\n\n$s',
+        methodName: 'SplashCubit._checkForRedirect',
+      );
       if (_networkInfo.isConnected) {
         await _handleExceptionNotDueToInternetConnection(e, s);
       } else {
@@ -128,10 +132,6 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
 
   Future<void> _handleExceptionNotDueToInternetConnection(
       Object e, StackTrace s) async {
-    LoggingInfo.instance.error(
-      '$e\n\n$s',
-      methodName: 'SplashCubit._checkForRedirect',
-    );
     if (_isBENotAvailableDueToDDOS(e)) {
       // let's retry after a bit of time and see if the server is available
       await _retryAfterABitOfTime();
