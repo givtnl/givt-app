@@ -55,6 +55,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
     return Scrollbar(
       child: FunScaffold(
         minimumPadding: EdgeInsets.zero,
+        safeAreaBottom: false,
         canPop: false,
         appBar: const FunTopAppBar(
           title: 'Family summary',
