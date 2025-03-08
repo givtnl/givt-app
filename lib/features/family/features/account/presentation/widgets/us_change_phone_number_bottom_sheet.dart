@@ -69,7 +69,7 @@ class _USChangePhoneNumberBottomSheetState
   }
 
   void onPhoneChanged(String value) {
-    // setState(() {});
+    setState(() {});
   }
 
   @override
