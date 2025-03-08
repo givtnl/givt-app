@@ -41,7 +41,6 @@ class _ChangeEmailAddressBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final locals = context.l10n;
     return FunBottomSheet(
       closeAction: () => Navigator.of(context).pop(),
@@ -74,9 +73,8 @@ class _ChangeEmailAddressBottomSheetState
       content: Form(
         key: formKey,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: size.height * 0.05),
+            const SizedBox(height: 24),
             OutlinedTextFormField(
               controller: emailController,
               onChanged: (value) => setState(() {}),
@@ -98,6 +96,7 @@ class _ChangeEmailAddressBottomSheetState
   }
 
   bool get isEnabled {
+    if (emailController.text == widget.email) return false;
     if (formKey.currentState == null) return false;
     if (formKey.currentState!.validate() == false) return false;
     return emailController.text.isNotEmpty;
