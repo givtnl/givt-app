@@ -46,6 +46,7 @@ enum AmplitudeEvents {
   aboutGivtSendFeedbackClicked('about_givt_send_feedback_clicked'),
   editPhoneNumberSaveClicked('edit_phone_number_save_clicked'),
   editEmailSaveClicked('edit_email_save_clicked'),
+  inAppReviewTriggered('in_app_review_triggered'),
 
   // Gratitude Goal
   gratitudeGoalStartClicked('gratitude_goal_start_clicked'),
@@ -56,7 +57,8 @@ enum AmplitudeEvents {
   gratitudeGoalMaybeLaterClicked('gratitude_goal_maybe_later_clicked'),
   gratitudeGoalLaterDoneClicked('gratitude_goal_later_done_clicked'),
   gratitudeGoalTapToContinueClicked('gratitude_goal_tap_to_continue_clicked'),
-  gratitudeGoalCommitToThisGoalClicked('gratitude_goal_commit_to_this_goal_clicked'),
+  gratitudeGoalCommitToThisGoalClicked(
+      'gratitude_goal_commit_to_this_goal_clicked'),
   gratitudeGoalCloseClicked('gratitude_goal_close_clicked'),
 
   // Topup flow

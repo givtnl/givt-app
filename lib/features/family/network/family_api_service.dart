@@ -652,4 +652,21 @@ class FamilyAPIService {
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     return decodedBody['items'] as List<dynamic>;
   }
+
+  Future<int> fetchTotalFamilyGameCount() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/group/family/count');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['item'] as int;
+  }
 }
