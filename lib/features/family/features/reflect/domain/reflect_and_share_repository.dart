@@ -691,4 +691,15 @@ class ReflectAndShareRepository {
   }
 
   bool hasStartedInterview() => _hasStartedInterview;
+
+  Future<int> getTotalGamePlays() async =>
+      _familyApiService.fetchTotalFamilyGameCount();
+
+  int getStoreReviewGameCount() {
+    if (_gameConfig != null) {
+      return _gameConfig!.storeReviewGameCount;
+    }
+
+    return 2;
+  }
 }

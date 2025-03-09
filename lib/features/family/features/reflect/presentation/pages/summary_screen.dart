@@ -18,7 +18,9 @@ import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class SummaryScreen extends StatefulWidget {
@@ -198,12 +200,25 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
   FunButton getFunButton(SummaryDetails details) {
     const text = 'Done';
-    void onTap() {
+
+    Future<void> onTap() async {
+      // If second game
+      var gameplays = await _cubit.getTotalGamePlays();
+      if (await InAppReview.instance.isAvailable() &&
+          await _cubit.getTotalGamePlays() == 2) {
+        await AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.inAppReviewTriggered,
+        );
+
+        await InAppReview.instance.requestReview();
+      }
+
       if (details.audioPath.isNotEmpty) {
-        sendAudioAndNavigate(details.audioPath);
+        await sendAudioAndNavigate(details.audioPath);
         return;
       }
-      navigateWithConfetti();
+
+      await navigateWithConfetti();
     }
 
     final analyticEvent = AnalyticsEvent(
