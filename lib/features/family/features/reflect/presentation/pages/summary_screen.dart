@@ -205,7 +205,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
       // If second game
       var gameplays = await _cubit.getTotalGamePlays();
       if (await InAppReview.instance.isAvailable() &&
-          await _cubit.getTotalGamePlays() == 2) {
+          gameplays == (await _cubit.getStoreReviewGameCount() - 1)) {
         await AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.inAppReviewTriggered,
         );

@@ -79,4 +79,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
 
   Future<int> getTotalGamePlays() async =>
       _reflectAndShareRepository.getTotalGamePlays();
+
+  Future<int> getStoreReviewGameCount() async =>
+      _reflectAndShareRepository.getStoreReviewGameCount();
 }
