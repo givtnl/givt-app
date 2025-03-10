@@ -34,8 +34,6 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
   StreamSubscription<List<LeagueItem>>? _leagueSubscription;
 
   Future<void> init() async {
-    await _profilesSubscription?.cancel();
-    await _leagueSubscription?.cancel();
     _profilesSubscription ??=
         _profilesRepository.onProfilesChanged().listen((profiles) {
       _profiles = profiles;
@@ -48,6 +46,7 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
     });
     _hasSeenLeagueExplanation = _prefs.getBool(_leagueExplanationKey) ?? false;
     try {
+      emitLoading();
       _profiles = await _profilesRepository.getProfiles();
       _league = await _leagueRepository.fetchLeague();
     } catch (e, s) {

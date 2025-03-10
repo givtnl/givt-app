@@ -19,7 +19,7 @@ class LeagueRepository {
   final FamilyAuthRepository _authRepository;
 
   final StreamController<List<LeagueItem>> _leagueStreamController =
-  StreamController<List<LeagueItem>>.broadcast();
+      StreamController<List<LeagueItem>>.broadcast();
 
   Stream<List<LeagueItem>> onLeagueChanged() => _leagueStreamController.stream;
 
@@ -28,6 +28,7 @@ class LeagueRepository {
   void _init() {
     _authRepository.authenticatedUserStream().listen((user) {
       if (user != null) {
+        _resetLeague();
         fetchLeague();
       } else {
         _resetLeague();
