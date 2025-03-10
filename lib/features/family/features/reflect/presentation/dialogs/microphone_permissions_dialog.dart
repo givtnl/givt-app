@@ -19,6 +19,8 @@ class MicrophonePermissionsDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return FamilyAppPermissionDialog(
       hasDialogLayout: hasDialogLayout,
+      onClickClose: onClickClose,
+      onClickSettings: onClickSettings,
       model: PermissionsUIModel(
         image: SvgPicture.asset(
           'assets/family/images/record_mic_green.svg',
