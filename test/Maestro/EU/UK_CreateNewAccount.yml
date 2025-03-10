@@ -1,17 +1,17 @@
 appId: net.givtapp.ios.test
-name: NL - Sign up with new email address
+name: UK - Sign up with new email address
 
 env:
-    USERNAME: donna+maestronl@givtapp.net
+    USERNAME: donna+maestrouk@givtapp.net
 
 ---
 - launchApp:
     clearState: true
 
 - tapOn: "Select country"
-- tapOn: "Netherlands"
+- tapOn: "United Kingdom"
 - tapOn: "By continuing you agree to our terms and conditions."
-- assertVisible: '.*GIVT B.V..*'
+- assertVisible: '.*GIVT LTD.*'
 - tapOn:
     label: Close the popup
     point: "94%,10%"

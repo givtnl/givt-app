@@ -10,6 +10,7 @@ name: Give to 3 collections via the list
 - tapOn: "2"
 - tapOn: "Next"
 - tapOn:
+    label: Select the List option
     point: "50%,68%"
 - tapOn: "Bassie&Adriaan"
 - tapOn: "Search ..."
@@ -18,6 +19,7 @@ name: Give to 3 collections via the list
     text: "Gamers"
 - tapOn: "Gamers4Life Lelytown"
 - tapOn: "Give"
+- assertVisible: ".*€.*"
 - assertVisible: "This Givt will be converted into a transaction."
 - assertVisible: "Collection 1"
 - assertVisible: "Collection 2"

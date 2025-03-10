@@ -1,15 +1,16 @@
 appId: net.givtapp.ios.test
-name: Finish registration for NL user
+name: Finish registration for UK user
 
 env:
     FIRSTNAME: Automate
     LASTNAME: with Maestro
     PASSWORD: Test123
-    STREETNUMBER: Bloemetjes 13
-    POSTALCODE: 1234AA
-    CITY: Lelystad
-    PHONENUMBER: 612345678
-    IBAN: DE86100000001234400013
+    STREETNUMBER: Buckingham Palace
+    POSTALCODE: SW1A 1AA
+    CITY: London
+    PHONENUMBER: 4912345678
+    SORTCODE: 100000
+    BANKACCOUNTNUMBER: 31510604
 
 ---
 - tapOn:
@@ -22,7 +23,7 @@ env:
     text: ${FIRSTNAME}
 - tapOn: "Surname"
 - inputText:
-    label: "Enter the test user's Lastname"
+    label: "Enter the test user's Firstname"
     text: ${LASTNAME}
 - tapOn: "Password"
 - inputText:
@@ -46,12 +47,23 @@ env:
 - inputText:
     label: "Enter Phonenumber"
     text: ${PHONENUMBER}
-- tapOn: 
-    label: "Enter IBAN"
-    point: 46%,56%
+- "scroll"
+- tapOn: "Sort code"
+    #label: "Sort code"
+    #point: "46%,56%"
 - inputText:
-    text: ${IBAN}
+    label: "Enter sort code"
+    text: ${SORTCODE}
+- "scroll"
+- tapOn: "Bank account number"
+- inputText:
+    label: "Enter bank account number"
+    text: ${BANKACCOUNTNUMBER}
 - tapOn: "Next"
-- tapOn: "Next"
-- tapOn: "Sign mandate"
+- tapOn: "0"
+- tapOn: "Continue"
+- tapOn:
+    label: "Switch Gift Aid on"
+    text: "0"
+- tapOn: "Save"
 - tapOn: "Continue"
