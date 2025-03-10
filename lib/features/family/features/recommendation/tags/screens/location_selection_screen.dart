@@ -28,6 +28,8 @@ class LocationSelectionScreen extends StatelessWidget {
         final svgManager = getIt<SvgAssetLoaderManager>();
         final isCitySelection = state.status == LocationSelectionStatus.city;
         return FunScaffold(
+          minimumPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+          safeAreaBottom: false,
           appBar: const CharityFinderAppBar(),
           body: CustomScrollView(
             slivers: [
@@ -136,6 +138,7 @@ class LocationSelectionScreen extends StatelessWidget {
                               AmplitudeEvents.locationNextClicked,
                             ),
                           ),
+                          const SizedBox(height: 40),
                         ],
                       )
                     : null,
