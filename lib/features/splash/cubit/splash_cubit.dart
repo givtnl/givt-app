@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:backoff/backoff.dart';
 import 'package:facebook_app_events/facebook_app_events.dart';
-import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/auth/models/session.dart';
@@ -78,7 +77,6 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       final session = await _authRepository.getStoredSession();
 
       final user = await _getUser();
-      final isUSUser = await _isUSUser();
 
       // we don't have a session/ user, go to welcome
       if (session == const Session.empty() || user == null) {
@@ -87,8 +85,8 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       }
 
       // we are logged in as a EU user, go to EU home
-      if (session.isLoggedIn && (user.isUsUser == false || !isUSUser)) {
-        emitCustom(const SplashCustom.redirectToEUHome());
+      if (session.isLoggedIn && (user.isUsUser == false)) {
+        // let the auth redirect logic take over, it will take the user to EU Home
         return;
       }
 
@@ -186,11 +184,6 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
     }
 
     return null;
-  }
-
-  Future<bool> _isUSUser() async {
-    final user = await _getUser();
-    return user?.country == Country.us.countryCode;
   }
 
   @override
