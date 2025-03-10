@@ -19,11 +19,11 @@ class StageCubit extends CommonCubit<StageUIModel, StageScreenCustom> {
 
   final SharedPreferences _sharedPreferences;
   final ReflectAndShareRepository _reflectAndShareRepository;
-  bool _checkForMicPermissionOnResume = false;
 
   static const String _aiPopupShownKey = 'ai_popup_shown_key';
 
   void init() {
+    _checkForMicPermission();
     if (_sharedPreferences.getBool(_aiPopupShownKey) == null) {
       _sharedPreferences.setBool(_aiPopupShownKey, true);
       Future.delayed(Duration.zero).then((value) {
@@ -67,20 +67,20 @@ class StageCubit extends CommonCubit<StageUIModel, StageScreenCustom> {
 
   void _disableAI() => _setAIFeature(false);
 
-  void onMicrophonePermissionSettingsClicked() {
-    _checkForMicPermissionOnResume = true;
-  }
-
   Future<void> onResume() async {
-    if (_checkForMicPermissionOnResume) {
-      _checkForMicPermissionOnResume = false;
-      await _hasMicPermission() ? _enableAI() : _disableAI();
-    }
+    await _checkForMicPermission();
   }
 
+  // Check if permission has changed, update toggle accordingly
+  Future<void> _checkForMicPermission() async {
+    await _hasMicPermission() ? _enableAI() : _disableAI();
+  }
+
+  // Request permission via system popup and return whether it has been granted
   Future<bool> _requestMicPermission() async =>
       Permission.microphone.request().isGranted;
 
+  // Return whether the app currently has permission to use the microphone without showing a dialog
   Future<bool> _hasMicPermission() async =>
       await Permission.microphone.status == PermissionStatus.granted;
 }

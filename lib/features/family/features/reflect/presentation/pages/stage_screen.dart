@@ -174,11 +174,11 @@ class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
     showModalBottomSheet<void>(
       context: context,
       useSafeArea: true,
+      scrollControlDisabledMaxHeightRatio: 0.8,
       builder: (context) {
         return MicrophonePermissionsDialog(
           hasDialogLayout: false,
           onClickClose: _stageCubit.onMicrophonePermissionDeclined,
-          onClickSettings: _stageCubit.onMicrophonePermissionSettingsClicked,
         );
       },
     );
