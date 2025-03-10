@@ -691,4 +691,17 @@ class ReflectAndShareRepository {
   }
 
   bool hasStartedInterview() => _hasStartedInterview;
+
+  Future<int> getTotalGamePlays() async =>
+      _familyApiService.fetchTotalFamilyGameCount();
+
+  /// The amount of games played by the user before we show the store review popup
+  /// This is a (remotely) configurable value, by default it's 2
+  int getStoreReviewMinimumGameCount() {
+    if (_gameConfig != null) {
+      return _gameConfig!.storeReviewGameCount;
+    }
+
+    return 2;
+  }
 }
