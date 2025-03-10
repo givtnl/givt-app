@@ -62,7 +62,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
         ),
         body: BaseStateConsumer(
           cubit: _cubit,
-          onCustom: onCustom,
+          onCustom: _onCustom,
           onData: (context, details) {
             return LayoutBuilder(
               builder:
@@ -248,7 +248,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
     }
   }
 
-  void onCustom(BuildContext context, SummaryDetailsCustom custom) {
+  void _onCustom(BuildContext context, SummaryDetailsCustom custom) {
     switch (custom) {
       case ShowConfetti():
         setState(() {

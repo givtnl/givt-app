@@ -84,7 +84,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
   Future<void> doneButtonPressed() async {
     final gameplays = await _reflectAndShareRepository.getTotalGamePlays();
     final playsBeforePopup =
-        _reflectAndShareRepository.getStoreReviewMinimumalGameCount();
+        _reflectAndShareRepository.getStoreReviewMinimumGameCount();
 
     if (await InAppReview.instance.isAvailable() &&
         gameplays == (playsBeforePopup - 1)) {
@@ -96,15 +96,9 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
     }
 
     if (_audioPath.isNotEmpty) {
-      await sendAudioAndNavigate(_audioPath);
-      return;
+      await shareAudio(_audioPath);
     }
 
-    await navigateWithConfetti();
-  }
-
-  Future<void> sendAudioAndNavigate(String path) async {
-    await shareAudio(path);
     await navigateWithConfetti();
   }
 
