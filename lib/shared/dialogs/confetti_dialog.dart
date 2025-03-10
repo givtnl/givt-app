@@ -36,16 +36,22 @@ class _ConfettiDialogState extends State<ConfettiDialog> {
     _schedulePop();
   }
 
-  Future<void> _schedulePop() =>
-      Future.delayed(widget.duration, () => context.pop());
+  Future<void> _schedulePop() => Future.delayed(widget.duration, () {
+        if (!mounted) return;
+        context.pop();
+      });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Expanded(child: Align(alignment: Alignment.topCenter, child: _confettiAsset())),
+        Expanded(
+            child:
+                Align(alignment: Alignment.topCenter, child: _confettiAsset())),
         Expanded(child: Align(child: _confettiAsset())),
-        Expanded(child: Align(alignment: Alignment.bottomCenter, child: _confettiAsset())),
+        Expanded(
+            child: Align(
+                alignment: Alignment.bottomCenter, child: _confettiAsset())),
       ],
     );
   }

@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/features/gratitude-summary/presentation
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_player.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/summary_details.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/summary_details_custom.dart';
 import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
@@ -18,9 +19,7 @@ import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class SummaryScreen extends StatefulWidget {
@@ -63,6 +62,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
         ),
         body: BaseStateConsumer(
           cubit: _cubit,
+          onCustom: onCustom,
           onData: (context, details) {
             return LayoutBuilder(
               builder:
@@ -201,40 +201,20 @@ class _SummaryScreenState extends State<SummaryScreen> {
   FunButton getFunButton(SummaryDetails details) {
     const text = 'Done';
 
-    Future<void> onTap() async {
-      // If second game
-      var gameplays = await _cubit.getTotalGamePlays();
-      if (await InAppReview.instance.isAvailable() &&
-          gameplays == (await _cubit.getStoreReviewGameCount() - 1)) {
-        await AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.inAppReviewTriggered,
-        );
-
-        await InAppReview.instance.requestReview();
-      }
-
-      if (details.audioPath.isNotEmpty) {
-        await sendAudioAndNavigate(details.audioPath);
-        return;
-      }
-
-      await navigateWithConfetti();
-    }
-
     final analyticEvent = AnalyticsEvent(
       AmplitudeEvents.familyReflectSummaryBackToHome,
     );
 
     if (details.showPlayer) {
       return FunButton(
-        onTap: onTap,
+        onTap: _cubit.doneButtonPressed,
         isPressedDown: pressDown,
         text: text,
         analyticsEvent: analyticEvent,
       );
     } else {
       return FunButton.secondary(
-        onTap: onTap,
+        onTap: _cubit.doneButtonPressed,
         isPressedDown: pressDown,
         text: text,
         analyticsEvent: analyticEvent,
@@ -268,22 +248,17 @@ class _SummaryScreenState extends State<SummaryScreen> {
     }
   }
 
-  Future<void> sendAudioAndNavigate(String path) async {
-    await _cubit.shareAudio(path);
-    await navigateWithConfetti();
-  }
-
-  Future<void> navigateWithConfetti() async {
-    _cubit.onCloseGame();
-    setState(() {
-      pressDown = true;
-    });
-    await ConfettiDialog.show(context);
-    await Future<void>.delayed(const Duration(seconds: 1));
-    if (mounted) {
-      context.goNamed(
-        FamilyPages.profileSelection.name,
-      );
+  void onCustom(BuildContext context, SummaryDetailsCustom custom) {
+    switch (custom) {
+      case ShowConfetti():
+        setState(() {
+          pressDown = true;
+        });
+        ConfettiDialog.show(context);
+      case NavigateToNextScreen():
+        context.goNamed(
+          FamilyPages.profileSelection.name,
+        );
     }
   }
 }

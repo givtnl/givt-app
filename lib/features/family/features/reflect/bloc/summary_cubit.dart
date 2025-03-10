@@ -1,11 +1,15 @@
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/experience_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/summary_details.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/summary_details_custom.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:in_app_review/in_app_review.dart';
 
-class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
+class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
   SummaryCubit(this._reflectAndShareRepository)
       : super(const BaseState.loading());
 
@@ -77,9 +81,40 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
     );
   }
 
-  Future<int> getTotalGamePlays() async =>
-      _reflectAndShareRepository.getTotalGamePlays();
+  Future<void> doneButtonPressed() async {
+    final gameplays = await _reflectAndShareRepository.getTotalGamePlays();
+    final playsBeforePopup =
+        _reflectAndShareRepository.getStoreReviewMinimumalGameCount();
 
-  Future<int> getStoreReviewGameCount() async =>
-      _reflectAndShareRepository.getStoreReviewGameCount();
+    if (await InAppReview.instance.isAvailable() &&
+        gameplays == (playsBeforePopup - 1)) {
+      await AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.inAppReviewTriggered,
+      );
+
+      await InAppReview.instance.requestReview();
+    }
+
+    if (_audioPath.isNotEmpty) {
+      await sendAudioAndNavigate(_audioPath);
+      return;
+    }
+
+    await navigateWithConfetti();
+  }
+
+  Future<void> sendAudioAndNavigate(String path) async {
+    await shareAudio(path);
+    await navigateWithConfetti();
+  }
+
+  Future<void> navigateWithConfetti() async {
+    onCloseGame();
+
+    emitCustom(const SummaryDetailsCustom.showConfetti());
+
+    Future<void>.delayed(const Duration(seconds: 1), () {
+      emitCustom(const SummaryDetailsCustom.navigateToNextScreen());
+    });
+  }
 }
