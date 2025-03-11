@@ -697,11 +697,22 @@ class ReflectAndShareRepository {
 
   /// The amount of games played by the user before we show the store review popup
   /// This is a (remotely) configurable value, by default it's 2
-  int getStoreReviewMinimumGameCount() {
-    if (_gameConfig != null) {
-      return _gameConfig!.storeReviewGameCount;
-    }
+  int getStoreReviewMinimumGameCount() =>
+      _gameConfig?.storeReviewGameCount ?? 2;
 
-    return 2;
-  }
+  /// The amount of games played by the user before we ask for an interview
+  /// This is a (remotely) configurable value, by default it's 1
+  int getInterviewMinimumGameCount() => _gameConfig?.interviewGameCount ?? 1;
+
+  /// Whether or not to use the default interview icon
+  /// for the popup that asks for an interview (default is comments, else its money-bill)
+  bool useDefaultInterviewIcon() =>
+      _gameConfig?.useDefaultInterviewIcon ?? true;
+
+  String getAskForInterviewTitle() =>
+      _gameConfig?.askForInterviewTitle ?? 'Earn \$50 for helping us!';
+
+  String getAskForInterviewMessage() =>
+      _gameConfig?.askForInterviewMessage ??
+      'We’d love to hear your feedback about Givt on a quick call.';
 }

@@ -35,6 +35,7 @@ class SummaryScreen extends StatefulWidget {
 class _SummaryScreenState extends State<SummaryScreen> {
   final _cubit = getIt<SummaryCubit>();
   bool pressDown = false;
+  bool _isDoneBtnLoading = false;
 
   @override
   void initState() {
@@ -211,14 +212,16 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
     if (details.showPlayer) {
       return FunButton(
-        onTap: _cubit.doneButtonPressed,
+        isLoading: _isDoneBtnLoading,
+        onTap: _onTapDoneBtn,
         isPressedDown: pressDown,
         text: text,
         analyticsEvent: analyticEvent,
       );
     } else {
       return FunButton.secondary(
-        onTap: _cubit.doneButtonPressed,
+        isLoading: _isDoneBtnLoading,
+        onTap: _onTapDoneBtn,
         isPressedDown: pressDown,
         text: text,
         analyticsEvent: analyticEvent,
@@ -260,6 +263,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
         });
         ConfettiDialog.show(context);
       case NavigateToNextScreen():
+        setState(() {
+          _isDoneBtnLoading = false;
+        });
         context.goNamed(
           FamilyPages.profileSelection.name,
         );
@@ -290,5 +296,12 @@ class _SummaryScreenState extends State<SummaryScreen> {
         _cubit.onCloseGame();
       },
     );
+  }
+
+  void _onTapDoneBtn() {
+    setState(() {
+      _isDoneBtnLoading = true;
+    });
+    _cubit.doneButtonPressed();
   }
 }
