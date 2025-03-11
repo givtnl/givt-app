@@ -96,7 +96,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need to access the gallery if you want to upload pictures </string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>We need your permission to record the audio message</string>
+	<string>We need your permission to record the interview or audio message</string>
 	<key>PermissionGroupNotification</key>
 	<string>We need your permission to send you mission reminders</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
