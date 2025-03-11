@@ -1,0 +1,26 @@
+appId: net.givtapp.ios.test
+name: Give one donation via the list
+
+---
+
+- tapOn: "1"
+- tapOn: "2"
+- tapOn:
+    label: Use backspace to remove digit
+    point: "81%,91%"
+- tapOn: "Next"
+- tapOn:
+    label: Select the List option
+    point: "50%,68%"
+- tapOn: "Colorful UK"
+- assertVisible:
+    text: "Give"
+    enabled: true
+- tapOn: "Give"
+- assertVisible: ".*£.*"
+- assertVisible: "This Givt will be converted into a transaction."
+- assertVisible: "Collection 1"
+- tapOn: "Next"
+- assertVisible: "Yes, success!"
+- tapOn: "Close"
+
