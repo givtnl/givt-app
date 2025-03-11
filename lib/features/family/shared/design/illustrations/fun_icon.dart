@@ -63,6 +63,30 @@ class FunIcon extends StatelessWidget {
         circleSize: circleSize,
       );
 
+  factory FunIcon.moneyBill({
+    Color circleColor = FamilyAppTheme.primary95,
+    double iconsize = 48,
+    double circleSize = 112,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.moneyBill,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.comments({
+    Color circleColor = FamilyAppTheme.primary95,
+    double iconsize = 48,
+    double circleSize = 112,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.comments,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
   factory FunIcon.bell(
           {Color circleColor = FamilyAppTheme.primary95,
           double iconsize = 48,

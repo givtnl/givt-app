@@ -230,6 +230,7 @@ enum AmplitudeEvents {
   schoolEventFlowConfirmButtonClicked(
     'school_event_flow_confirm_button_clicked',
   ),
+  funDialogAction('fun_dialog_action'),
   schoolEventLogOutTriggered('school_event_log_out_triggered'),
   permissionsGoToSettingsClicked('open_app_permissions_settings'),
   permissionsNextClicked('next_permissions_clicked'),

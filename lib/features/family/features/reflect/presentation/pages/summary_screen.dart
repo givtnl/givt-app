@@ -14,6 +14,9 @@ import 'package:givt_app/features/family/shared/design/components/content/avatar
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -260,6 +263,32 @@ class _SummaryScreenState extends State<SummaryScreen> {
         context.goNamed(
           FamilyPages.profileSelection.name,
         );
+      case final ShowInterviewPopup event:
+        _showInterviewPopup(
+          context,
+          event.uiModel,
+          useDefaultImage: event.useDefaultImage,
+        );
     }
+  }
+
+  void _showInterviewPopup(
+    BuildContext context,
+    FunDialogUIModel uiModel, {
+    bool useDefaultImage = true,
+  }) {
+    FunDialog.show(
+      context,
+      uiModel: uiModel,
+      image: useDefaultImage ? FunIcon.comments() : FunIcon.moneyBill(),
+      onClickPrimary: () {
+        context.pop();
+        _cubit.onCloseGame();
+      },
+      onClickSecondary: () {
+        context.pop();
+        _cubit.onCloseGame();
+      },
+    );
   }
 }
