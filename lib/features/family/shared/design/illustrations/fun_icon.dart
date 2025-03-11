@@ -75,13 +75,13 @@ class FunIcon extends StatelessWidget {
         circleSize: circleSize,
       );
 
-  factory FunIcon.comments({
+  factory FunIcon.solidComments({
     Color circleColor = FamilyAppTheme.primary95,
     double iconsize = 48,
     double circleSize = 112,
   }) =>
       FunIcon(
-        iconData: FontAwesomeIcons.comments,
+        iconData: FontAwesomeIcons.solidComments,
         circleColor: circleColor,
         iconSize: iconsize,
         circleSize: circleSize,

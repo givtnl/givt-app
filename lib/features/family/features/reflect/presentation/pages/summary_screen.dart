@@ -23,6 +23,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class SummaryScreen extends StatefulWidget {
@@ -258,17 +259,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
   void _onCustom(BuildContext context, SummaryDetailsCustom custom) {
     switch (custom) {
       case ShowConfetti():
-        setState(() {
-          pressDown = true;
-        });
-        ConfettiDialog.show(context);
+        _showConffetti(context);
       case NavigateToNextScreen():
-        setState(() {
-          _isDoneBtnLoading = false;
-        });
-        context.goNamed(
-          FamilyPages.profileSelection.name,
-        );
+        _navigateToNextScreen(context);
       case final ShowInterviewPopup event:
         _showInterviewPopup(
           context,
@@ -276,6 +269,22 @@ class _SummaryScreenState extends State<SummaryScreen> {
           useDefaultImage: event.useDefaultImage,
         );
     }
+  }
+
+  void _showConffetti(BuildContext context) {
+    setState(() {
+      pressDown = true;
+    });
+    ConfettiDialog.show(context);
+  }
+
+  void _navigateToNextScreen(BuildContext context) {
+    setState(() {
+      _isDoneBtnLoading = false;
+    });
+    context.goNamed(
+      FamilyPages.profileSelection.name,
+    );
   }
 
   void _showInterviewPopup(
@@ -286,16 +295,31 @@ class _SummaryScreenState extends State<SummaryScreen> {
     FunDialog.show(
       context,
       uiModel: uiModel,
-      image: useDefaultImage ? FunIcon.comments() : FunIcon.moneyBill(),
+      image: useDefaultImage ? FunIcon.solidComments() : FunIcon.moneyBill(),
       onClickPrimary: () {
         context.pop();
-        _cubit.onCloseGame();
+        launchCalendlyUrl();
+        _showConffetti(context);
+        _navigateToNextScreen(context);
       },
       onClickSecondary: () {
         context.pop();
-        _cubit.onCloseGame();
+        _showConffetti(context);
+        _navigateToNextScreen(context);
       },
     );
+  }
+
+  Future<void> launchCalendlyUrl() async {
+    const calendlyLinK = 'https://calendly.com/andy-765/45min';
+
+    final url = Uri.parse(calendlyLinK);
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      // do nothing, we're probably on a weird platform/ simulator
+    }
   }
 
   void _onTapDoneBtn() {

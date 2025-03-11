@@ -83,6 +83,10 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
   }
 
   Future<void> doneButtonPressed() async {
+    if (_audioPath.isNotEmpty) {
+      await shareAudio(_audioPath);
+    }
+
     final amountGamePlays =
         await _reflectAndShareRepository.getTotalGamePlays();
 
@@ -94,7 +98,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
       await InAppReview.instance.requestReview();
     }
 
-    if (await _shouldAskForInterview(amountGamePlays)) {
+    if (true ?? await _shouldAskForInterview(amountGamePlays)) {
       emitCustom(
         SummaryDetailsCustom.showInterviewPopup(
           FunDialogUIModel(
@@ -110,18 +114,14 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
       return;
     }
 
-    if (_audioPath.isNotEmpty) {
-      await shareAudio(_audioPath);
-    }
-
     await navigateWithConfetti();
   }
 
   Future<bool> _shouldAskForAppReview(int gameplays) async {
     final playsBeforePopup =
         _reflectAndShareRepository.getStoreReviewMinimumGameCount();
-    return await InAppReview.instance.isAvailable() &&
-        gameplays == (playsBeforePopup - 1);
+    final isInAppReviewAvailable = await InAppReview.instance.isAvailable();
+    return isInAppReviewAvailable && gameplays == (playsBeforePopup - 1);
   }
 
   Future<bool> _shouldAskForInterview(int gameplays) async {

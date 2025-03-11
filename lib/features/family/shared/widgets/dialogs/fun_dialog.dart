@@ -36,6 +36,7 @@ class FunDialog extends StatelessWidget {
   }) async {
     await showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (context) => FunDialog(
         uiModel: uiModel,
         image: image,
@@ -72,25 +73,6 @@ class FunDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (uiModel.showCloseButton)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: const FaIcon(FontAwesomeIcons.xmark),
-                      onPressed: () {
-                        context.pop();
-                        onClickClose?.call();
-                        AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.funDialogAction,
-                          eventProperties: {
-                            'action': 'close',
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
               if (image != null) image!,
               const SizedBox(height: 16),
               if (uiModel.title != null)
@@ -126,7 +108,7 @@ class FunDialog extends StatelessWidget {
                   uiModel.primaryButtonText != null)
                 const SizedBox(height: 8),
               if (uiModel.secondaryButtonText != null)
-                FunButton(
+                FunButton.secondary(
                   onTap: () {
                     context.pop();
                     onClickSecondary?.call();
@@ -143,21 +125,25 @@ class FunDialog extends StatelessWidget {
             ],
           ),
         ),
-        Positioned(
-          right: 8,
-          top: 8,
-          child: IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
-            onPressed: () {
-              SystemSound.play(SystemSoundType.click);
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.closePermissionsDialog,
-              );
-              context.pop();
-              onClickClose?.call();
-            },
+        if (uiModel.showCloseButton)
+          Positioned(
+            right: 8,
+            top: 8,
+            child: IconButton(
+              icon: const FaIcon(FontAwesomeIcons.xmark),
+              onPressed: () {
+                SystemSound.play(SystemSoundType.click);
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.funDialogAction,
+                  eventProperties: {
+                    'action': 'close',
+                  },
+                );
+                context.pop();
+                onClickClose?.call();
+              },
+            ),
           ),
-        ),
       ],
     );
   }
