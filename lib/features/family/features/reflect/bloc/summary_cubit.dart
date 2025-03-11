@@ -99,6 +99,10 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
     }
 
     if (await _shouldAskForInterview(amountGamePlays)) {
+      await AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.askForInterviewTriggered,
+      );
+
       emitCustom(
         SummaryDetailsCustom.showInterviewPopup(
           FunDialogUIModel(
