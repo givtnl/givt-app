@@ -98,7 +98,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
       await InAppReview.instance.requestReview();
     }
 
-    if (true ?? await _shouldAskForInterview(amountGamePlays)) {
+    if (await _shouldAskForInterview(amountGamePlays)) {
       emitCustom(
         SummaryDetailsCustom.showInterviewPopup(
           FunDialogUIModel(
