@@ -4,6 +4,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/experien
 import 'package:givt_app/features/family/features/reflect/domain/models/summary_details.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/summary_details_custom.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -82,12 +83,14 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
   }
 
   Future<void> doneButtonPressed() async {
-    final gameplays = await _reflectAndShareRepository.getTotalGamePlays();
-    final playsBeforePopup =
-        _reflectAndShareRepository.getStoreReviewMinimumGameCount();
+    if (_audioPath.isNotEmpty) {
+      await shareAudio(_audioPath);
+    }
 
-    if (await InAppReview.instance.isAvailable() &&
-        gameplays == (playsBeforePopup - 1)) {
+    final amountGamePlays =
+        await _reflectAndShareRepository.getTotalGamePlays();
+
+    if (await _shouldAskForAppReview(amountGamePlays)) {
       await AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.inAppReviewTriggered,
       );
@@ -95,11 +98,40 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
       await InAppReview.instance.requestReview();
     }
 
-    if (_audioPath.isNotEmpty) {
-      await shareAudio(_audioPath);
+    if (await _shouldAskForInterview(amountGamePlays)) {
+      await AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.askForInterviewTriggered,
+      );
+
+      emitCustom(
+        SummaryDetailsCustom.showInterviewPopup(
+          FunDialogUIModel(
+            title: _reflectAndShareRepository.getAskForInterviewTitle(),
+            description: _reflectAndShareRepository.getAskForInterviewMessage(),
+            primaryButtonText: 'Yes, I’m interested!',
+            secondaryButtonText: 'No, thanks',
+            showCloseButton: false,
+          ),
+          useDefaultImage: _reflectAndShareRepository.useDefaultInterviewIcon(),
+        ),
+      );
+      return;
     }
 
     await navigateWithConfetti();
+  }
+
+  Future<bool> _shouldAskForAppReview(int gameplays) async {
+    final playsBeforePopup =
+        _reflectAndShareRepository.getStoreReviewMinimumGameCount();
+    final isInAppReviewAvailable = await InAppReview.instance.isAvailable();
+    return isInAppReviewAvailable && gameplays == (playsBeforePopup - 1);
+  }
+
+  Future<bool> _shouldAskForInterview(int gameplays) async {
+    final playsBeforeInterview =
+        _reflectAndShareRepository.getInterviewMinimumGameCount();
+    return gameplays == (playsBeforeInterview - 1);
   }
 
   Future<void> navigateWithConfetti() async {

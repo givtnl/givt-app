@@ -47,6 +47,7 @@ enum AmplitudeEvents {
   editPhoneNumberSaveClicked('edit_phone_number_save_clicked'),
   editEmailSaveClicked('edit_email_save_clicked'),
   inAppReviewTriggered('in_app_review_triggered'),
+  askForInterviewTriggered('ask_for_interview_triggered'),
 
   // Gratitude Goal
   gratitudeGoalStartClicked('gratitude_goal_start_clicked'),
@@ -230,6 +231,7 @@ enum AmplitudeEvents {
   schoolEventFlowConfirmButtonClicked(
     'school_event_flow_confirm_button_clicked',
   ),
+  funDialogAction('fun_dialog_action'),
   schoolEventLogOutTriggered('school_event_log_out_triggered'),
   permissionsGoToSettingsClicked('open_app_permissions_settings'),
   permissionsNextClicked('next_permissions_clicked'),

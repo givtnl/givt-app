@@ -14,12 +14,16 @@ import 'package:givt_app/features/family/shared/design/components/content/avatar
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class SummaryScreen extends StatefulWidget {
@@ -32,6 +36,7 @@ class SummaryScreen extends StatefulWidget {
 class _SummaryScreenState extends State<SummaryScreen> {
   final _cubit = getIt<SummaryCubit>();
   bool pressDown = false;
+  bool _isDoneBtnLoading = false;
 
   @override
   void initState() {
@@ -208,14 +213,16 @@ class _SummaryScreenState extends State<SummaryScreen> {
 
     if (details.showPlayer) {
       return FunButton(
-        onTap: _cubit.doneButtonPressed,
+        isLoading: _isDoneBtnLoading,
+        onTap: _onTapDoneBtn,
         isPressedDown: pressDown,
         text: text,
         analyticsEvent: analyticEvent,
       );
     } else {
       return FunButton.secondary(
-        onTap: _cubit.doneButtonPressed,
+        isLoading: _isDoneBtnLoading,
+        onTap: _onTapDoneBtn,
         isPressedDown: pressDown,
         text: text,
         analyticsEvent: analyticEvent,
@@ -252,14 +259,73 @@ class _SummaryScreenState extends State<SummaryScreen> {
   void _onCustom(BuildContext context, SummaryDetailsCustom custom) {
     switch (custom) {
       case ShowConfetti():
-        setState(() {
-          pressDown = true;
-        });
-        ConfettiDialog.show(context);
+        _showConffetti(context);
       case NavigateToNextScreen():
-        context.goNamed(
-          FamilyPages.profileSelection.name,
+        _navigateToNextScreen(context);
+      case final ShowInterviewPopup event:
+        _showInterviewPopup(
+          context,
+          event.uiModel,
+          useDefaultImage: event.useDefaultImage,
         );
     }
+  }
+
+  void _showConffetti(BuildContext context) {
+    setState(() {
+      pressDown = true;
+    });
+    ConfettiDialog.show(context);
+  }
+
+  void _navigateToNextScreen(BuildContext context) {
+    setState(() {
+      _isDoneBtnLoading = false;
+    });
+    context.goNamed(
+      FamilyPages.profileSelection.name,
+    );
+  }
+
+  void _showInterviewPopup(
+    BuildContext context,
+    FunDialogUIModel uiModel, {
+    bool useDefaultImage = true,
+  }) {
+    FunDialog.show(
+      context,
+      uiModel: uiModel,
+      image: useDefaultImage ? FunIcon.solidComments() : FunIcon.moneyBill(),
+      onClickPrimary: () {
+        context.pop();
+        launchCalendlyUrl();
+        _showConffetti(context);
+        _navigateToNextScreen(context);
+      },
+      onClickSecondary: () {
+        context.pop();
+        _showConffetti(context);
+        _navigateToNextScreen(context);
+      },
+    );
+  }
+
+  Future<void> launchCalendlyUrl() async {
+    const calendlyLinK = 'https://calendly.com/andy-765/45min';
+
+    final url = Uri.parse(calendlyLinK);
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      // do nothing, we're probably on a weird platform/ simulator
+    }
+  }
+
+  void _onTapDoneBtn() {
+    setState(() {
+      _isDoneBtnLoading = true;
+    });
+    _cubit.doneButtonPressed();
   }
 }
