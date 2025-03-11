@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/features/gratitude-summary/presentation
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:waveform_flutter/waveform_flutter.dart' as waveform;
 
@@ -43,13 +44,17 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
     return hasPermission;
   }
 
+  // Return whether the app currently has permission to use the microphone without showing a dialog
+  Future<bool> _hasMicPermission() async =>
+      await Permission.microphone.status == PermissionStatus.granted;
+
   Future<void> start({String? overrideAudioPath}) async {
     if (true == await _audioRecorder?.isRecording()) {
       return;
     }
     try {
       _initAudioRecorder();
-      if (await _audioRecorder!.hasPermission()) {
+      if (await _hasMicPermission()) {
         const encoder = AudioEncoder.aacLc;
 
         if (!await _isEncoderSupported(encoder)) {
