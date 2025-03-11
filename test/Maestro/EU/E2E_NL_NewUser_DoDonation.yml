@@ -1,5 +1,5 @@
 appId: net.givtapp.ios.test
-name: User registratrion, List and Location Giving
+name: User registration, List and Location Giving
 #This end-to-end test verifies that a new user can successfully register, and make a donation via List and Location. 
 #The test ensures that the correct user flow is followed.
 ---

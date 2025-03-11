@@ -23,7 +23,7 @@ env:
     text: ${FIRSTNAME}
 - tapOn: "Surname"
 - inputText:
-    label: "Enter the test user's Firstname"
+    label: "Enter the test user's Surname"
     text: ${LASTNAME}
 - tapOn: "Password"
 - inputText:

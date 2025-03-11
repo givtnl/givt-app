@@ -1,6 +1,0 @@
-appId: net.givtapp.ios.test
-name: Test some random stuff
-
----
-
-- assertVisible: ".*€.*"
