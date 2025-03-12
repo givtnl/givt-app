@@ -125,13 +125,13 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
     final playsBeforePopup =
         _reflectAndShareRepository.getStoreReviewMinimumGameCount();
     final isInAppReviewAvailable = await InAppReview.instance.isAvailable();
-    return isInAppReviewAvailable && gameplays == (playsBeforePopup - 1);
+    return isInAppReviewAvailable && gameplays == playsBeforePopup;
   }
 
   Future<bool> _shouldAskForInterview(int gameplays) async {
     final playsBeforeInterview =
         _reflectAndShareRepository.getInterviewMinimumGameCount();
-    return gameplays == (playsBeforeInterview - 1);
+    return gameplays == playsBeforeInterview;
   }
 
   Future<void> navigateWithConfetti() async {
