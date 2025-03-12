@@ -25,7 +25,7 @@ class FunBottomSheet extends StatelessWidget {
   final Widget? headlineContent;
 
   final FunButton? primaryButton;
-  final FunButton? secondaryButton;
+  final Widget? secondaryButton;
 
   final VoidCallback? closeAction;
 
@@ -33,7 +33,11 @@ class FunBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       minimum: EdgeInsets.fromLTRB(
-          0, 0, 0, MediaQuery.of(context).viewInsets.bottom + 40),
+        0,
+        0,
+        0,
+        MediaQuery.of(context).viewInsets.bottom + 40,
+      ),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,

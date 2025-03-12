@@ -9,7 +9,6 @@ class ReflectIntroCubit extends CommonCubit<dynamic, ReflectIntroCustom> {
 
   final ReflectAndShareRepository _reflectAndShareRepository;
 
-
   void init() {
     _emitData();
   }
@@ -17,29 +16,12 @@ class ReflectIntroCubit extends CommonCubit<dynamic, ReflectIntroCustom> {
   void _emitData() {
     emit(BaseState.data(_reflectAndShareRepository.isAITurnedOn()));
   }
-
-  void onAIEnabledChanged({required bool isEnabled}) {
-    _reflectAndShareRepository.setAIEnabled(value: isEnabled);
-    _emitData();
-  }
-
-  void enableCaptainAi() {
-    _reflectAndShareRepository.setAIEnabled(value: true);
-    _goToStageScreen();
-  }
-
-  void maybeLaterCaptainAi() {
-    _goToStageScreen();
-  }
-
+  
   void _goToStageScreen() {
     emitCustom(const ReflectIntroCustom.goToStageScreen());
   }
 
   void onStartClicked() {
-    //TODO
-    //emitCustom(const ReflectIntroCustom.showCaptainAiPopup());
-
     _goToStageScreen();
   }
 }

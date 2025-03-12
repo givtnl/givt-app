@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/label_small_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -30,12 +30,14 @@ class FunTextButton extends StatelessWidget {
     bool isDisabled = false,
     bool isMedium = true,
     IconData? rightIcon,
+    double? rightIconSize,
   }) {
     return FunTextButton(
       onTap: onTap,
       text: text,
       isDisabled: isDisabled,
       rightIcon: rightIcon,
+      rightIconSize: rightIconSize,
       analyticsEvent: analyticsEvent,
       isMedium: isMedium,
     );
@@ -95,12 +97,12 @@ class FunTextButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (isMedium)
-            LabelMediumText(
+            LabelLargeText(
               text,
               color: hasDisabledState ? disabledTextColor : textColor,
             )
           else
-            LabelSmallText(
+            LabelMediumText(
               text,
               color: hasDisabledState ? disabledTextColor : textColor,
             ),

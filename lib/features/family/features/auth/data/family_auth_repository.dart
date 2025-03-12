@@ -38,11 +38,15 @@ abstract class FamilyAuthRepository {
     required String email,
   });
 
+  Future<UserExt> fetchUserExtension(String guid);
+
   Future<void> updateNotificationId();
 
   Stream<UserExt?> authenticatedUserStream();
 
   Stream<void> registrationFinishedStream();
+
+  Stream<void> refreshTokenFailedStream();
 
   Session getStoredSession();
 
@@ -87,6 +91,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   final StreamController<void> _onRegistrationFinishedStream =
       StreamController<void>.broadcast();
 
+  final StreamController<void> _refreshTokenFailedStream =
+      StreamController<void>.broadcast();
+
   bool _startedRegistration = false;
 
   //emits a userExt object when we have an authenticated user, else null
@@ -94,39 +101,54 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   Stream<UserExt?> authenticatedUserStream() =>
       _authenticatedUserStream.stream.distinct();
 
+  //emits an event when we have failed to refresh the token
+  @override
+  Stream<void> refreshTokenFailedStream() => _refreshTokenFailedStream.stream;
+
   @override
   Future<Session> refreshToken() async {
     final session = getStoredSession();
     if (session == const Session.empty()) {
       _authenticatedUserStream.add(null);
+      _refreshTokenFailedStream.add(null);
       throw Exception(
         'Cannot refresh token, no current session found to refresh.',
       );
     }
     if (session.isLoggedIn == false) {
       _authenticatedUserStream.add(null);
+      _refreshTokenFailedStream.add(null);
       throw Exception('Cannot refresh token, user is not logged in.');
     }
-    final response = await _apiService.refreshToken(
-      {
-        'refresh_token': session.refreshToken,
-        'grant_type': 'refresh_token',
-      },
-    );
-    var newSession = Session.fromJson(response);
-    newSession = newSession.copyWith(
-      isLoggedIn: true,
-    );
-    await _storeSession(newSession);
     try {
-      await _fetchUserExtension(newSession.userGUID);
-    } catch (e, s) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: s.toString(),
+      final response = await _apiService.refreshToken(
+        {
+          'refresh_token': session.refreshToken,
+          'grant_type': 'refresh_token',
+        },
       );
+      var newSession = Session.fromJson(response);
+      newSession = newSession.copyWith(
+        isLoggedIn: true,
+      );
+      await _storeSession(newSession);
+      try {
+        await _fetchAndStoreUserExtension(newSession.userGUID);
+      } catch (e, s) {
+        LoggingInfo.instance.error(
+          e.toString(),
+          methodName: s.toString(),
+        );
+      }
+      return newSession;
+    } catch (e, s) {
+      _refreshTokenFailedStream.add(null);
+      LoggingInfo.instance.error(
+        s.toString(),
+        methodName: 'FamilyAuthRepositoryImpl.refreshToken',
+      );
+      rethrow;
     }
-    return newSession;
   }
 
   @override
@@ -145,7 +167,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     );
 
     await _storeSession(session);
-    await _fetchUserExtension(session.userGUID);
+    await _fetchAndStoreUserExtension(session.userGUID);
   }
 
   Future<bool> _storeSession(Session session) async {
@@ -179,10 +201,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   Future<String> checkEmail({required String email}) async =>
       _apiService.checkEmail(email);
 
-  Future<UserExt> _fetchUserExtension(String guid) async {
+  Future<UserExt> _fetchAndStoreUserExtension(String guid) async {
     try {
-      final response = await _apiService.getUserExtension(guid);
-      final userExt = UserExt.fromJson(response);
+      UserExt userExt = await fetchUserExtension(guid);
       await _storeUserExt(userExt);
       await _setUserPropsForExternalServices(userExt);
       _updateAuthenticatedUserStream(userExt);
@@ -194,6 +215,12 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       );
       rethrow;
     }
+  }
+
+  Future<UserExt> fetchUserExtension(String guid) async {
+    final response = await _apiService.getUserExtension(guid);
+    final userExt = UserExt.fromJson(response);
+    return userExt;
   }
 
   Future<void> _storeUserExt(UserExt userExt) async {
@@ -335,7 +362,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }) async {
     try {
       final result = await _apiService.updateUser(guid, newUserExt);
-      await _fetchUserExtension(guid);
+      await _fetchAndStoreUserExtension(guid);
       return result;
     } catch (e) {
       return false;
@@ -399,7 +426,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
         'PushNotificationsEnabled': notificationPermissionStatus,
       },
     );
-    await _fetchUserExtension(_userExt!.guid);
+    await _fetchAndStoreUserExtension(_userExt!.guid);
   }
 
   Future<void> _setUserPropsForExternalServices(UserExt newUserExt) {
@@ -435,7 +462,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   @override
   Future<void> refreshUser() async {
-    await _fetchUserExtension(_userExt!.guid);
+    await _fetchAndStoreUserExtension(_userExt!.guid);
   }
 
   @override

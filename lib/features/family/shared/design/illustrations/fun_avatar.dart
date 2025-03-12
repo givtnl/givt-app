@@ -23,7 +23,7 @@ class FunAvatar extends FunIcon {
     );
   }
 
-  factory FunAvatar.captainAi({bool withBorder = false}) {
+  factory FunAvatar.captainAi({bool withBorder = false, bool isLarge = false}) {
     return FunAvatar(
       customCircleColor: FamilyAppTheme.neutral95,
       customAvatar: Image.asset(
@@ -31,7 +31,7 @@ class FunAvatar extends FunIcon {
             ? 'assets/family/images/beta_captain_with_border.webp'
             : 'assets/family/images/beta_captain.webp',
       ),
-      customSize: 50,
+      customSize: isLarge ? 160 : 50,
     );
   }
 

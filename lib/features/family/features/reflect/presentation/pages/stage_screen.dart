@@ -4,6 +4,9 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/stage_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/dialogs/microphone_permissions_dialog.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/stage_screen_custom.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/sheets/ai_game_explanation_sheet.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
@@ -32,9 +35,28 @@ class StageScreen extends StatefulWidget {
   State<StageScreen> createState() => _StageScreenState();
 }
 
-class _StageScreenState extends State<StageScreen> {
+class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
   final StageCubit _stageCubit = getIt<StageCubit>();
   final RecordCubit _recordCubit = getIt<RecordCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _stageCubit.onResume();
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -57,17 +79,20 @@ class _StageScreenState extends State<StageScreen> {
         ),
         body: BaseStateConsumer(
           cubit: _stageCubit,
+          onCustom: _handleCustom,
           onData: (context, uiModel) {
             return Stack(
               children: [
                 Opacity(
-                    opacity: uiModel.isAITurnedOn ? 1 : 0,
-                    child:
-                        Image.asset('assets/family/images/stage_with_ai.png')),
+                  opacity: uiModel.isAITurnedOn ? 1 : 0,
+                  child: Image.asset('assets/family/images/stage_with_ai.png'),
+                ),
                 Opacity(
-                    opacity: uiModel.isAITurnedOn ? 0 : 1,
-                    child: Image.asset(
-                        'assets/family/images/stage_without_ai.png')),
+                  opacity: uiModel.isAITurnedOn ? 0 : 1,
+                  child: Image.asset(
+                    'assets/family/images/stage_without_ai.png',
+                  ),
+                ),
                 if (widget.playAudio)
                   const FunBackgroundAudioWidget(
                     audioPath: 'family/audio/ready_its_showtime.wav',
@@ -110,14 +135,11 @@ class _StageScreenState extends State<StageScreen> {
                                   );
                                   AnalyticsHelper.logEvent(
                                     eventName:
-                                        AmplitudeEvents.userToggledAIFeature,
+                                    AmplitudeEvents.userToggledAIFeature,
                                     eventProperties: {
                                       'on': value,
                                     },
                                   );
-                                  if (value) {
-                                    _recordCubit.requestPermission();
-                                  }
                                 },
                               ),
                             ],
@@ -146,5 +168,44 @@ class _StageScreenState extends State<StageScreen> {
         ),
       ),
     );
+  }
+
+  void _showMicrophoneSettingsPopup(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      scrollControlDisabledMaxHeightRatio: 0.8,
+      builder: (context) {
+        return MicrophonePermissionsDialog(
+          hasDialogLayout: false,
+          onClickClose: _stageCubit.onMicrophonePermissionDeclined,
+        );
+      },
+    );
+  }
+
+  void _handleCustom(BuildContext context, StageScreenCustom custom) {
+    switch (custom) {
+      case CaptainAiPopup():
+        showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          useSafeArea: true,
+          builder: (context) {
+            return AiGameExplanationSheet(
+              enableClicked: () async {
+                await _stageCubit.tryToTurnOnCaptainAI();
+                Navigator.of(context).pop();
+              },
+              maybeLaterClicked: () {
+                _stageCubit.maybeLaterCaptainAi();
+                Navigator.of(context).pop();
+              },
+            );
+          },
+        );
+      case OpenMicrophonePermissionsDialog():
+        _showMicrophoneSettingsPopup(context);
+    }
   }
 }

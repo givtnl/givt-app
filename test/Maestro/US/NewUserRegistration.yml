@@ -12,6 +12,11 @@ env:
 
 - tapOn: "Select country"
 - tapOn: "United States of America"
+- tapOn: "By continuing you agree to our terms and conditions."
+- assertVisible: '.*GIVT INC.*'
+- tapOn:
+    label: Close the popup
+    point: "94%,10%"
 - tapOn: "E-mail address"
 - inputText: 
     label: Enter the test user's Email

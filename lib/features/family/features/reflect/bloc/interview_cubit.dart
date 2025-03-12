@@ -115,7 +115,10 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
 
   void finishInterview() {
     emitCustom(
-        InterviewCustom.goToGratitudeSelection(reporter: getCurrentReporter()));
+      InterviewCustom.goToGratitudeSelection(
+        reporter: getCurrentReporter(),
+      ),
+    );
   }
 
   void timeForQuestionRanOut({String? audioPath}) {
@@ -148,6 +151,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
       return;
     }
     _showPassThePhoneScreen = false;
+    _emitData();
   }
 
   void _sendLastRecording({String? audioPath}) {
