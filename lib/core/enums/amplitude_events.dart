@@ -324,6 +324,9 @@ enum AmplitudeEvents {
   familyReflectSummaryGenerousDeedsClicked(
     'family_reflect_summary_generous_deeds_clicked',
   ),
+  familyReflectSummaryXpClicked(
+    'family_reflect_summary_xp_clicked',
+  ),
   newActOfGenerosityClicked('new_act_of_generosity_clicked'),
   recommendationTypeSelectorClicked('recommendation_type_selector_clicked'),
   skipGenerosActPressed('skip_generous_act_pressed'),
