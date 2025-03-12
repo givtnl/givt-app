@@ -28,7 +28,7 @@ class Mission extends Equatable {
     return FunMissionCardUIModel(
       title: title,
       description: description,
-      progress: GoalProgressUImodel(amount: progress),
+      progress: GoalCardProgressUImodel(amount: progress),
       namedPage: path,
     );
   }

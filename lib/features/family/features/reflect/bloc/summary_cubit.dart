@@ -139,8 +139,19 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
 
     emitCustom(const SummaryDetailsCustom.showConfetti());
 
-    Future<void>.delayed(const Duration(seconds: 1), () {
-      emitCustom(const SummaryDetailsCustom.navigateToNextScreen());
+    Future<void>.delayed(const Duration(seconds: 1), () async {
+      try {
+        final statsChanged =
+            await _reflectAndShareRepository.refreshGameStats();
+        if (statsChanged) {
+          emitCustom(const SummaryDetailsCustom.navigateToGoalProgressUpdate());
+          return;
+        }
+      } catch (_) {
+        // it's ok to fail we can still navigate
+      }
+
+      emitCustom(const SummaryDetailsCustom.navigateToProfileSelection());
     });
   }
 }

@@ -5,8 +5,11 @@ sealed class SummaryDetailsCustom {
 
   const factory SummaryDetailsCustom.showConfetti() = ShowConfetti;
 
-  const factory SummaryDetailsCustom.navigateToNextScreen() =
-      NavigateToNextScreen;
+  const factory SummaryDetailsCustom.navigateToProfileSelection() =
+      NavigateToProfileSelection;
+
+  const factory SummaryDetailsCustom.navigateToGoalProgressUpdate() =
+      NavigateToGoalProgressUpdate;
 
   const factory SummaryDetailsCustom.showInterviewPopup(
     FunDialogUIModel uiModel, {
@@ -18,8 +21,12 @@ class ShowConfetti extends SummaryDetailsCustom {
   const ShowConfetti();
 }
 
-class NavigateToNextScreen extends SummaryDetailsCustom {
-  const NavigateToNextScreen();
+class NavigateToProfileSelection extends SummaryDetailsCustom {
+  const NavigateToProfileSelection();
+}
+
+class NavigateToGoalProgressUpdate extends SummaryDetailsCustom {
+  const NavigateToGoalProgressUpdate();
 }
 
 class ShowInterviewPopup extends SummaryDetailsCustom {
