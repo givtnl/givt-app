@@ -309,7 +309,7 @@ enum AmplitudeEvents {
     'reflect_and_share_result_shuffle_roles_clicked',
   ),
   reflectAndShareShowSummaryClicked('reflect_and_share_show_summary_clicked'),
-  familyReflectSummaryBackToHome('family_reflect_summary_back_to_home'),
+  familyReflectSummaryClaimXp('family_reflect_summary_claim_xp'),
   gratefulTileSubmitted('grateful_tile_submitted'),
   generousTileSubmitted('generous_tile_submitted'),
   generousTileSelected('generous_tile_selected'),
@@ -324,6 +324,9 @@ enum AmplitudeEvents {
       'parent_reflection_flow_organisation_clicked'),
   familyReflectSummaryGenerousDeedsClicked(
     'family_reflect_summary_generous_deeds_clicked',
+  ),
+  familyReflectSummaryXpClicked(
+    'family_reflect_summary_xp_clicked',
   ),
   newActOfGenerosityClicked('new_act_of_generosity_clicked'),
   recommendationTypeSelectorClicked('recommendation_type_selector_clicked'),
