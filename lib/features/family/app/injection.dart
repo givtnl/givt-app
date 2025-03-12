@@ -26,6 +26,7 @@ import 'package:givt_app/features/family/features/home_screen/cubit/family_home_
 import 'package:givt_app/features/family/features/home_screen/cubit/gratitude_goal_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/league/bloc/in_game_league_cubit.dart';
 import 'package:givt_app/features/family/features/league/bloc/league_cubit.dart';
 import 'package:givt_app/features/family/features/league/domain/league_repository.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
@@ -106,6 +107,7 @@ void initCubits() {
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
     ..registerLazySingleton(() => LeagueCubit(getIt(), getIt(), getIt()))
+    ..registerFactory(() => InGameLeagueCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<GiveCubit>(
       () => GiveCubit(
         getIt(),
