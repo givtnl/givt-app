@@ -73,7 +73,9 @@ class StageCubit extends CommonCubit<StageUIModel, StageScreenCustom> {
 
   // Check if permission has changed, update toggle accordingly
   Future<void> _checkForMicPermission() async {
-    await _hasMicPermission() ? _enableAI() : _disableAI();
+    if (!await _hasMicPermission()) {
+      _disableAI();
+    }
   }
 
   // Request permission via system popup and return whether it has been granted
