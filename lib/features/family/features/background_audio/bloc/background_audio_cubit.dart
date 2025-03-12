@@ -31,6 +31,10 @@ class BackgroundAudioCubit extends Cubit<bool> {
     final isFirstRound = _reflectAndShareRepository.isFirstRound();
     if (!isFirstRound) return false;
 
+    return isFirstGame();
+  }
+
+  Future<bool> isFirstGame() async {
     final gamePlays = await _reflectAndShareRepository.getTotalGamePlays();
     if (gamePlays == 0) return true;
 

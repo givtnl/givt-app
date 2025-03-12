@@ -21,16 +21,16 @@ class GatherAroundScreen extends StatefulWidget {
 
 class _GatherAroundScreenState extends State<GatherAroundScreen> {
   bool _hasPlayedAudio = false;
-  bool isFirstRoundofFirstGame = true;
+  bool isFirstGame = true;
   final BackgroundAudioCubit _cubit = getIt<BackgroundAudioCubit>();
 
   @override
   void initState() {
     super.initState();
-    _cubit.isFirstRoundofFirstGame().then((value) {
+    _cubit.isFirstGame().then((value) {
       if (!mounted) return;
       setState(() {
-        isFirstRoundofFirstGame = value;
+        isFirstGame = value;
       });
     });
   }
@@ -76,7 +76,7 @@ class _GatherAroundScreenState extends State<GatherAroundScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: FunButton.secondary(
-              isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
+              isDisabled: !_hasPlayedAudio && isFirstGame,
               onTap: () {
                 Navigator.of(context)
                     .push(const SummaryScreen().toRoute(context));
