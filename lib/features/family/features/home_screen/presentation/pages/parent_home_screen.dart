@@ -119,9 +119,12 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: SvgPicture.network(
-                      profile.pictureURL,
-                      width: 80,
+                    child: Semantics(
+                      identifier: profile.pictureURL.split('/').last,
+                      child: SvgPicture.network(
+                        profile.pictureURL,
+                        width: 80,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),

@@ -50,10 +50,13 @@ class AvatarWidget extends StatelessWidget {
                             shape: BoxShape.circle,
                             color: Colors.white,
                           ),
-                          child: SvgPicture.network(
-                            uiModel.avatarUrl,
-                            width: circleSize,
-                            height: circleSize,
+                          child: Semantics(
+                            identifier: uiModel.avatarUrl.split('/').last,
+                            child: SvgPicture.network(
+                              uiModel.avatarUrl,
+                              width: circleSize,
+                              height: circleSize,
+                            ),
                           ),
                         ),
                       ),

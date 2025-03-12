@@ -44,10 +44,13 @@ class GameProfileItem extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: Colors.white,
                     ),
-                    child: SvgPicture.network(
-                      profile.pictureURL!,
-                      width: size,
-                      height: size,
+                    child: Semantics(
+                      identifier: profile.pictureURL?.split('/').last,
+                      child: SvgPicture.network(
+                        profile.pictureURL!,
+                        width: size,
+                        height: size,
+                      ),
                     ),
                   ),
                 ),

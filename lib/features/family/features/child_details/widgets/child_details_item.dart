@@ -27,10 +27,13 @@ class ChildDetailsItem extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: SvgPicture.network(
-              profileDetails.pictureURL,
-              width: size.width * 0.25,
-              height: size.width * 0.25,
+            child: Semantics(
+              identifier: profileDetails.pictureURL.split('/').last,
+              child: SvgPicture.network(
+                profileDetails.pictureURL,
+                width: size.width * 0.25,
+                height: size.width * 0.25,
+              ),
             ),
           ),
           const SizedBox(height: 5),
