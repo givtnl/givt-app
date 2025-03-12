@@ -30,10 +30,13 @@ class ProfileItem extends StatelessWidget {
               height: imgSize,
             ),
           if (imageUrl != null)
-            SvgPicture.network(
-              imageUrl!,
-              width: imgSize,
-              height: imgSize,
+            Semantics(
+              identifier: imageUrl?.split('/').last,
+              child: SvgPicture.network(
+                imageUrl!,
+                width: imgSize,
+                height: imgSize,
+              ),
             ),
           const SizedBox(height: 12),
           Row(

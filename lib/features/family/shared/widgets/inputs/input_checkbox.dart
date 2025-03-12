@@ -6,6 +6,7 @@ import 'package:givt_app/utils/utils.dart';
 class InputCheckbox extends StatelessWidget {
   const InputCheckbox({
     required this.label,
+    required this.semanticsLabel,
     required this.value,
     required this.onChanged,
     required this.analyticsEvent,
@@ -13,6 +14,7 @@ class InputCheckbox extends StatelessWidget {
   });
 
   final String label;
+  final String semanticsLabel;
   final bool value;
   final AnalyticsEvent analyticsEvent;
   final void Function(bool? value)? onChanged;
@@ -22,6 +24,7 @@ class InputCheckbox extends StatelessWidget {
     return Row(
       children: [
         Checkbox(
+          semanticLabel: semanticsLabel,
           value: value,
           onChanged: (value) {
             AnalyticsHelper.logEvent(

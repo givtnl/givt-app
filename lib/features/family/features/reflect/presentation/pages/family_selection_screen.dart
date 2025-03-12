@@ -141,10 +141,13 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
           for (var i = 0; i < selectedProfiles.length; i++)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: SvgPicture.network(
-                selectedProfiles[i].pictureURL!,
-                width: 40,
-                height: 40,
+              child: Semantics(
+                identifier: selectedProfiles[i].pictureURL?.split('/').last,
+                child: SvgPicture.network(
+                  selectedProfiles[i].pictureURL!,
+                  width: 40,
+                  height: 40,
+                ),
               ),
             ),
         ],

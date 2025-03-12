@@ -13,9 +13,9 @@ import 'package:givt_app/features/family/features/home_screen/cubit/family_home_
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
-import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_goal_container.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_goal_container.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/missions_container.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/stats_container.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
@@ -121,25 +121,30 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    FamilyAuthUtils.authenticateUser(
-                                      context,
-                                      checkAuthRequest: FamilyCheckAuthRequest(
-                                        navigate: (context) async {
-                                          context.goNamed(
-                                            FamilyPages
-                                                .familyPersonalInfoEdit.name,
-                                          );
-                                        },
-                                      ),
-                                    );
-                                    AnalyticsHelper.logEvent(
-                                      eventName:
-                                          AmplitudeEvents.homeSettingsClicked,
-                                    );
-                                  },
-                                  child: FunIcon.gear(),
+                                Semantics(
+                                  container: true,
+                                  label: 'gear',
+                                  identifier: 'gear_icon',
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      FamilyAuthUtils.authenticateUser(
+                                        context,
+                                        checkAuthRequest: FamilyCheckAuthRequest(
+                                          navigate: (context) async {
+                                            context.goNamed(
+                                              FamilyPages
+                                                  .familyPersonalInfoEdit.name,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                      AnalyticsHelper.logEvent(
+                                        eventName:
+                                            AmplitudeEvents.homeSettingsClicked,
+                                      );
+                                    },
+                                    child: FunIcon.gear(),
+                                  ),
                                 ),
                                 const SizedBox(width: 24),
                               ],

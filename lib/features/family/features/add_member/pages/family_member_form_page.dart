@@ -218,22 +218,26 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppTheme.primary80,
-                    width: 4,
+              Semantics(
+                identifier: state.getAvatarByKey(widget.index.toString()).pictureURL.split('/').last,
+                label: state.getAvatarByKey(widget.index.toString()).pictureURL.split('/').last,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppTheme.primary80,
+                      width: 4,
+                    ),
                   ),
-                ),
-                child: SvgPicture.network(
-                  height: 28,
-                  width: 28,
-                  state.getAvatarByKey(widget.index.toString()).pictureURL,
-                  placeholderBuilder: (context) => const SizedBox(
-                    height: 32,
-                    width: 32,
-                    child: CustomCircularProgressIndicator(),
+                  child: SvgPicture.network(
+                    height: 28,
+                    width: 28,
+                    state.getAvatarByKey(widget.index.toString()).pictureURL,
+                    placeholderBuilder: (context) => const SizedBox(
+                      height: 32,
+                      width: 32,
+                      child: CustomCircularProgressIndicator(),
+                    ),
                   ),
                 ),
               ),

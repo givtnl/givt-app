@@ -94,6 +94,7 @@ class FunMissionCard extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: FaIcon(
+                        semanticLabel: 'icon-${uiModel.actionIcon.fontFamily}-${uiModel.actionIcon.codePoint}',
                         uiModel.actionIcon,
                         color: FamilyAppTheme.primary40.withOpacity(0.75),
                       ),

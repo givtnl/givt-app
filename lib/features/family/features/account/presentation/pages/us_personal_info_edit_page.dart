@@ -288,6 +288,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
           _buildInfoRow(
             context,
             icon: const Icon(
+              semanticLabel: 'userXmark',
               FontAwesomeIcons.userXmark,
             ),
             value: locals.unregister,

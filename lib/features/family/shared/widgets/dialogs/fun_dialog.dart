@@ -130,7 +130,9 @@ class FunDialog extends StatelessWidget {
             right: 8,
             top: 8,
             child: IconButton(
-              icon: const FaIcon(FontAwesomeIcons.xmark),
+              icon: const FaIcon(
+                  semanticLabel: 'xmark',
+                  FontAwesomeIcons.xmark),
               onPressed: () {
                 SystemSound.play(SystemSoundType.click);
                 AnalyticsHelper.logEvent(

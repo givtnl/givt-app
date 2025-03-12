@@ -38,7 +38,9 @@ class AvatarItem extends StatelessWidget {
         splashColor: Theme.of(context).primaryColor,
         child: Stack(
           children: [
-            SvgPicture.network(url),
+            Semantics(
+                identifier: url.split('/').last,
+                child: SvgPicture.network(url)),
             if (isSelected)
               Container(
                 decoration: BoxDecoration(
