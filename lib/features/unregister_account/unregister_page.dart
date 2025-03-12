@@ -130,6 +130,7 @@ class _UnregisterPageState extends State<UnregisterPage> {
         Row(
           children: [
             Checkbox(
+              semanticLabel: 'unregisterCheckbox',
               value: _acceptedTerms,
               onChanged: (value) {
                 setState(() {

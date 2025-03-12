@@ -317,6 +317,8 @@ class FunIcon extends StatelessWidget {
           else
             FaIcon(
               iconData,
+              semanticLabel:
+                  'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
               color: iconColor,
               size: iconSize,
             ),
