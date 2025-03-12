@@ -199,9 +199,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
           child: Padding(
             padding: const EdgeInsets.only(top: 12),
             child: FunTile.gold(
-              titleBig: details.generousDeeds == 1
-                  ? '1 generous deed'
-                  : '${details.generousDeeds} XP\ntotal',
+              titleBig: '${details.totalXp} XP\ntotal',
               iconData: FontAwesomeIcons.bolt,
               assetSize: 32,
               isPressedDown: true,

@@ -19,6 +19,8 @@ class SummaryDetails {
   int? xpEarnedForTime;
   int? xpEarnedForDeeds;
 
+  int get totalXp => (xpEarnedForTime ?? 0) + (xpEarnedForDeeds ?? 0);
+
   bool get showPlayer => audioPath.isNotEmpty;
 
   bool get showRecorder => audioPath.isEmpty;
