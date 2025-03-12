@@ -75,7 +75,7 @@ class _GatherAroundScreenState extends State<GatherAroundScreen> {
           const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: FunButton.secondary(
+            child: FunButton(
               isDisabled: !_hasPlayedAudio && isFirstGame,
               onTap: () {
                 Navigator.of(context)
