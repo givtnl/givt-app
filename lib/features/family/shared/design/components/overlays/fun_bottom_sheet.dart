@@ -106,7 +106,7 @@ class FunBottomSheet extends StatelessWidget {
         if (closeAction != null)
           IconButton(
             icon: FaIcon(
-              semanticLabel: 'closeButton',
+              semanticLabel: 'xmark',
               FontAwesomeIcons.xmark,
               color: titleColor,
             ),

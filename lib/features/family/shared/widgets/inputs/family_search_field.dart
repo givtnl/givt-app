@@ -46,6 +46,7 @@ class FamilySearchField extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(right: 16),
                   child: FaIcon(
+                    semanticLabel: 'clearInput',
                     FontAwesomeIcons.xmark,
                     color: FamilyAppTheme.primary30,
                   ),
