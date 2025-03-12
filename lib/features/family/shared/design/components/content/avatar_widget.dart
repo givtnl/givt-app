@@ -34,23 +34,27 @@ class AvatarWidget extends StatelessWidget {
                 children: [
                   Align(
                     alignment: Alignment.topCenter,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: FamilyAppTheme.primary80,
-                          width: uiModel.isSelected ? 6 : 0,
-                        ),
-                      ),
+                    child: Semantics(
+                      identifier: uiModel.avatarUrl.split('/').last,
+                      label: uiModel.avatarUrl.split('/').last,
                       child: Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white,
+                          border: Border.all(
+                            color: FamilyAppTheme.primary80,
+                            width: uiModel.isSelected ? 6 : 0,
+                          ),
                         ),
-                        child: SvgPicture.network(
-                          uiModel.avatarUrl,
-                          width: circleSize,
-                          height: circleSize,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                          child: SvgPicture.network(
+                            uiModel.avatarUrl,
+                            width: circleSize,
+                            height: circleSize,
+                          ),
                         ),
                       ),
                     ),

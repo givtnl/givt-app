@@ -123,9 +123,12 @@ class _FunModalState extends State<FunModal> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         IconButton(
-          icon: const FaIcon(
-              semanticLabel: 'xmark',
-              FontAwesomeIcons.xmark),
+          icon: Semantics(
+            identifier: 'xmark',
+            child: const FaIcon(
+                semanticLabel: 'xmark',
+                FontAwesomeIcons.xmark),
+          ),
           onPressed: () {
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.modalCloseButtonClicked,

@@ -315,12 +315,15 @@ class FunIcon extends StatelessWidget {
               child: icon,
             )
           else
-            FaIcon(
-              iconData,
-              semanticLabel:
-                  'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
-              color: iconColor,
-              size: iconSize,
+            Semantics(
+              identifier: 'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
+              child: FaIcon(
+                iconData,
+                semanticLabel:
+                    'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
+                color: iconColor,
+                size: iconSize,
+              ),
             ),
         ],
       ),
