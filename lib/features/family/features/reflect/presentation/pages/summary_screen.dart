@@ -204,7 +204,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
               assetSize: 32,
               isPressedDown: true,
               analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.familyReflectSummaryGenerousDeedsClicked,
+                AmplitudeEvents.familyReflectSummaryXpClicked,
               ),
             ),
           ),
