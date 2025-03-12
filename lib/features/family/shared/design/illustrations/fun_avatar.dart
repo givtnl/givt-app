@@ -5,8 +5,8 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class FunAvatar extends FunIcon {
   const FunAvatar({
+    required this.semanticsIdentifier,
     super.key,
-    required this.semanticsLabel,
     this.customCircleColor = FamilyAppTheme.primary95,
     this.customAvatar = const SizedBox(),
     this.customSize = 48,
@@ -14,7 +14,7 @@ class FunAvatar extends FunIcon {
 
   factory FunAvatar.captain({bool isLarge = false}) {
     return FunAvatar(
-      semanticsLabel: 'captain',
+      semanticsIdentifier: 'captain',
       customCircleColor: FamilyAppTheme.neutral95,
       customAvatar: SvgPicture.asset(
         isLarge
@@ -27,7 +27,7 @@ class FunAvatar extends FunIcon {
 
   factory FunAvatar.captainAi({bool withBorder = false, bool isLarge = false}) {
     return FunAvatar(
-      semanticsLabel: 'captainAi',
+      semanticsIdentifier: 'captainAi',
       customCircleColor: FamilyAppTheme.neutral95,
       customAvatar: Image.asset(
         withBorder
@@ -38,7 +38,7 @@ class FunAvatar extends FunIcon {
     );
   }
 
-  final String semanticsLabel;
+  final String semanticsIdentifier;
   final Color customCircleColor;
   final Widget customAvatar;
   final double customSize;
@@ -47,6 +47,7 @@ class FunAvatar extends FunIcon {
   Widget build(BuildContext context) {
     return FunIcon(
       icon: customAvatar,
+      semanticsIdentifier: semanticsIdentifier,
       padding: EdgeInsets.zero,
       circleColor: customCircleColor,
       circleSize: customSize,
