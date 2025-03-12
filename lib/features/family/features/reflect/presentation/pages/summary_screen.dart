@@ -86,10 +86,13 @@ class _SummaryScreenState extends State<SummaryScreen> {
                             text: DateTime.now().formattedFullMonth,
                           ),
                           const SizedBox(height: 16),
+                          const TitleLargeText('Great job Family!'),
+                          const Spacer(),
                           if (details.players.isNotEmpty)
                             AvatarBar(
-                                circleSize: 54,
-                                uiModel: AvatarBarUIModel(avatarUIModels: [
+                              circleSize: 54,
+                              uiModel: AvatarBarUIModel(
+                                avatarUIModels: [
                                   for (var i = 0;
                                       i < details.players.length;
                                       i++)
@@ -97,35 +100,20 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                       avatarUrl: details.players[i].pictureURL,
                                       text: details.players[i].firstName,
                                     ),
-                                ]),
-                                onAvatarTapped: (i) {}),
+                                ],
+                              ),
+                              onAvatarTapped: (i) {},
+                            ),
 
                           // stats button
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 24,
                               right: 24,
-                              top: 12,
                               bottom: 24,
                             ),
                             child: getTileStats(details),
                           ),
-                          const SizedBox(height: 24),
-                          // Record
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Column(
-                              children: [
-                                const TitleMediumText(
-                                  'Save a message for your memories',
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 12),
-                                getAudioWidget(details),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 24),
                           const Spacer(),
                           // Bottom button
                           Padding(
@@ -147,57 +135,80 @@ class _SummaryScreenState extends State<SummaryScreen> {
   }
 
   Widget getTileStats(SummaryDetails details) {
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: FunTile.gold(
-                  titleBig: details.minutesPlayed == 1
-                      ? '1 minute family time'
-                      : '${details.minutesPlayed} minutes family time',
-                  iconData: FontAwesomeIcons.solidClock,
-                  assetSize: 32,
-                  isPressedDown: true,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.familyReflectSummaryMinutesPlayedClicked,
+        Row(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: FunTile.green(
+                      titleBig: details.minutesPlayed == 1
+                          ? '1 minute family time'
+                          : '${details.minutesPlayed} minutes family time',
+                      iconData: FontAwesomeIcons.solidClock,
+                      assetSize: 32,
+                      isPressedDown: true,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents
+                            .familyReflectSummaryMinutesPlayedClicked,
+                      ),
+                    ),
                   ),
-                ),
+                  if (details.xpEarnedForTime != null)
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: FunTag.xp(details.xpEarnedForTime!),
+                    ),
+                ],
               ),
-              if (details.xpEarnedForTime != null)
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: FunTag.xp(details.xpEarnedForTime!),
-                ),
-            ],
-          ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: FunTile.red(
+                      titleBig: details.generousDeeds == 1
+                          ? '1 generous deed'
+                          : '${details.generousDeeds} generous deeds',
+                      iconData: FontAwesomeIcons.solidHeart,
+                      assetSize: 32,
+                      isPressedDown: true,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents
+                            .familyReflectSummaryGenerousDeedsClicked,
+                      ),
+                    ),
+                  ),
+                  if (details.xpEarnedForDeeds != null)
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: FunTag.xp(details.xpEarnedForDeeds!),
+                    ),
+                ],
+              ),
+            ),
+          ],
         ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: FunTile.red(
-                  titleBig: details.generousDeeds == 1
-                      ? '1 generous deed'
-                      : '${details.generousDeeds} generous deeds',
-                  iconData: FontAwesomeIcons.solidHeart,
-                  assetSize: 32,
-                  isPressedDown: true,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.familyReflectSummaryGenerousDeedsClicked,
-                  ),
-                ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 2 - 24,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: FunTile.gold(
+              titleBig: details.generousDeeds == 1
+                  ? '1 generous deed'
+                  : '${details.generousDeeds} XP\ntotal',
+              iconData: FontAwesomeIcons.bolt,
+              assetSize: 32,
+              isPressedDown: true,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.familyReflectSummaryGenerousDeedsClicked,
               ),
-              if (details.xpEarnedForDeeds != null)
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: FunTag.xp(details.xpEarnedForDeeds!),
-                ),
-            ],
+            ),
           ),
         ),
       ],
@@ -205,55 +216,17 @@ class _SummaryScreenState extends State<SummaryScreen> {
   }
 
   FunButton getFunButton(SummaryDetails details) {
-    const text = 'Done';
-
     final analyticEvent = AnalyticsEvent(
-      AmplitudeEvents.familyReflectSummaryBackToHome,
+      AmplitudeEvents.familyReflectSummaryClaimXp,
     );
 
-    if (details.showPlayer) {
-      return FunButton(
-        isLoading: _isDoneBtnLoading,
-        onTap: _onTapDoneBtn,
-        isPressedDown: pressDown,
-        text: text,
-        analyticsEvent: analyticEvent,
-      );
-    } else {
-      return FunButton.secondary(
-        isLoading: _isDoneBtnLoading,
-        onTap: _onTapDoneBtn,
-        isPressedDown: pressDown,
-        text: text,
-        analyticsEvent: analyticEvent,
-      );
-    }
-  }
-
-  Widget getAudioWidget(SummaryDetails details) {
-    if (details.showPlayer) {
-      return FunAudioPlayer(
-        source: details.audioPath,
-        onDelete: _cubit.onDeleteAudio,
-      );
-    } else {
-      return FunTile.green(
-        titleBig: 'Tap to record',
-        titleSmall: 'Only your family can hear this',
-        shrink: true,
-        iconData: FontAwesomeIcons.microphone,
-        assetSize: 32,
-        onTap: () {
-          RecordSummaryMessageBottomsheet.show(
-            context,
-            _cubit.audioAvailable,
-          );
-        },
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.summaryLeaveMessageClicked,
-        ),
-      );
-    }
+    return FunButton(
+      isLoading: _isDoneBtnLoading,
+      onTap: _onTapDoneBtn,
+      isPressedDown: pressDown,
+      text: 'Claim XP',
+      analyticsEvent: analyticEvent,
+    );
   }
 
   void _onCustom(BuildContext context, SummaryDetailsCustom custom) {

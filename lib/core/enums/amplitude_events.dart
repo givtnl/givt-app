@@ -308,7 +308,7 @@ enum AmplitudeEvents {
   reflectAndShareResultShuffleRolesClicked(
     'reflect_and_share_result_shuffle_roles_clicked',
   ),
-  familyReflectSummaryBackToHome('family_reflect_summary_back_to_home'),
+  familyReflectSummaryClaimXp('family_reflect_summary_claim_xp'),
   gratefulTileSubmitted('grateful_tile_submitted'),
   generousTileSubmitted('generous_tile_submitted'),
   generousTileSelected('generous_tile_selected'),
