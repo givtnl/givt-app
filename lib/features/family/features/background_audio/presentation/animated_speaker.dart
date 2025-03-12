@@ -3,14 +3,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 
 class AnimatedSpeaker extends StatefulWidget {
-  const AnimatedSpeaker({super.key, bool pause = false, double height = 25})
-      : _pause = pause,
+  const AnimatedSpeaker({
+    super.key,
+    bool pause = false,
+    double height = 25,
+    this.iconColor,
+  })  : _pause = pause,
         _height = height;
-  factory AnimatedSpeaker.pause() {
-    return const AnimatedSpeaker(pause: true);
+
+  factory AnimatedSpeaker.pause({Color? iconColor}) {
+    return AnimatedSpeaker(pause: true, iconColor: iconColor);
   }
+
   final bool _pause;
   final double _height;
+  final Color? iconColor;
+
   @override
   State<AnimatedSpeaker> createState() => _AnimatedSpeakerState();
 }
@@ -61,6 +69,12 @@ class _AnimatedSpeakerState extends State<AnimatedSpeaker>
           _imagePaths[0],
           fit: BoxFit.fitHeight,
           height: widget._height,
+          colorFilter: widget.iconColor == null
+              ? null
+              : ColorFilter.mode(
+                  widget.iconColor!,
+                  BlendMode.srcIn,
+                ),
         ),
         AnimatedOpacity(
           duration: const Duration(milliseconds: 400),
@@ -70,6 +84,12 @@ class _AnimatedSpeakerState extends State<AnimatedSpeaker>
             _imagePaths[1],
             fit: BoxFit.fitHeight,
             height: widget._height,
+            colorFilter: widget.iconColor == null
+                ? null
+                : ColorFilter.mode(
+                    widget.iconColor!,
+                    BlendMode.srcIn,
+                  ),
           ),
         ),
         AnimatedOpacity(
@@ -80,6 +100,12 @@ class _AnimatedSpeakerState extends State<AnimatedSpeaker>
             _imagePaths[2],
             fit: BoxFit.fitHeight,
             height: widget._height,
+            colorFilter: widget.iconColor == null
+                ? null
+                : ColorFilter.mode(
+                    widget.iconColor!,
+                    BlendMode.srcIn,
+                  ),
           ),
         ),
       ],
