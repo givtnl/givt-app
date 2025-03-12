@@ -36,7 +36,6 @@ class _GoalProgressScreenState extends State<GoalProgressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _cubit.fetchGameStats();
     return FunScaffold(
       canPop: false,
       body: BaseStateConsumer(

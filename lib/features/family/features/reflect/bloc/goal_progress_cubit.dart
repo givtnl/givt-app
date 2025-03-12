@@ -10,10 +10,10 @@ class GoalProgressCubit extends CommonCubit<GoalProgressUIModel, void> {
   final ReflectAndShareRepository _reflectAndShareRepository;
 
   void init() {
-    fetchGameStats();
+    _fetchGameStats();
   }
 
-  void fetchGameStats() {
+  void _fetchGameStats() {
     _reflectAndShareRepository.getGameStats().then((gameStats) {
       // Title based on if goal is achieved
       var title = "You're on a roll";
