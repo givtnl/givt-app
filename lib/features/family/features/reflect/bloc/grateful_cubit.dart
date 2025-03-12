@@ -283,7 +283,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void _onEveryoneDonated() {
-    emitCustom(const GratefulCustom.goToGameSummary());
+    emitCustom(const GratefulCustom.goToGatherAround());
   }
 
   bool isCurrentProfileChild() => _getCurrentProfile().isChild;

@@ -19,7 +19,7 @@ sealed class GratefulCustom {
     required GameProfile profile,
   }) = GratefulOpenActOfServiceSuccess;
 
-  const factory GratefulCustom.goToGameSummary() = GratefulGoToGameSummary;
+  const factory GratefulCustom.goToGatherAround() = GratefulGoToGatherAround;
 
   const factory GratefulCustom.scrollToTop() = ScrollToTop;
 
@@ -57,8 +57,8 @@ class GratefulOpenActOfServiceSuccess extends GratefulCustom {
   final Organisation organisation;
 }
 
-class GratefulGoToGameSummary extends GratefulCustom {
-  const GratefulGoToGameSummary();
+class GratefulGoToGatherAround extends GratefulCustom {
+  const GratefulGoToGatherAround();
 }
 
 class ScrollToTop extends GratefulCustom {
