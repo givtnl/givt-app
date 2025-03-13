@@ -19,25 +19,28 @@ class GivtCloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActionContainer(
-      borderColor: Theme.of(context).colorScheme.primaryContainer,
-      baseBorderSize: 4,
-      isDisabled: isDisabled,
-      onTap: () => context.pop(),
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.bottomsheetCloseButtonClicked,
-      ),
-      child: Container(
-        width: 40,
-        height: 40,
-        color: isDisabled ? FamilyAppTheme.disabledTileBorder : Colors.white,
-        child: Icon(
-          FontAwesomeIcons.xmark,
-          size: 20,
-          color: Theme.of(context)
-              .colorScheme
-              .onPrimaryContainer
-              .withOpacity(isDisabled ? 0.5 : 1),
+    return Semantics(
+      identifier: 'closeButton',
+      child: ActionContainer(
+        borderColor: Theme.of(context).colorScheme.primaryContainer,
+        baseBorderSize: 4,
+        isDisabled: isDisabled,
+        onTap: () => context.pop(),
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.bottomsheetCloseButtonClicked,
+        ),
+        child: Container(
+          width: 40,
+          height: 40,
+          color: isDisabled ? FamilyAppTheme.disabledTileBorder : Colors.white,
+          child: Icon(
+            FontAwesomeIcons.xmark,
+            size: 20,
+            color: Theme.of(context)
+                .colorScheme
+                .onPrimaryContainer
+                .withOpacity(isDisabled ? 0.5 : 1),
+          ),
         ),
       ),
     );

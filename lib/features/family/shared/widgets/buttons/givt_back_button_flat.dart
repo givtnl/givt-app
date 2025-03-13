@@ -20,22 +20,25 @@ class GivtBackButtonFlat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: FaIcon(
-        FontAwesomeIcons.arrowLeft,
-        color: color ?? FamilyAppTheme.primary20,
-      ),
-      onPressed: () async {
-        unawaited(AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.backButtonPressed,
-        ));
+    return Semantics(
+      identifier: 'backButton',
+      child: IconButton(
+        icon: FaIcon(
+          FontAwesomeIcons.arrowLeft,
+          color: color ?? FamilyAppTheme.primary20,
+        ),
+        onPressed: () async {
+          unawaited(AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.backButtonPressed,
+          ));
 
-        unawaited(SystemSound.play(SystemSoundType.click));
-        await onPressedExt?.call();
-        if(context.mounted) {
-          context.pop();
-        }
-      },
+          unawaited(SystemSound.play(SystemSoundType.click));
+          await onPressedExt?.call();
+          if (context.mounted) {
+            context.pop();
+          }
+        },
+      ),
     );
   }
 }
