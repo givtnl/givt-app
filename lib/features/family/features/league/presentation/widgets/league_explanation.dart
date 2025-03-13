@@ -7,8 +7,13 @@ import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.d
 import 'package:givt_app/shared/models/analytics_event.dart';
 
 class LeagueExplanation extends StatelessWidget {
-  const LeagueExplanation({super.key, this.onContinuePressed});
+  const LeagueExplanation({
+    super.key,
+    this.onContinuePressed,
+    this.isInGameVersion = false,
+  });
 
+  final bool isInGameVersion;
   final VoidCallback? onContinuePressed;
 
   @override
@@ -23,8 +28,8 @@ class LeagueExplanation extends StatelessWidget {
             'assets/family/images/league/standing_superhero.svg',
           ),
           const SizedBox(height: 16),
-          const TitleLargeText(
-            'Welcome to the League!',
+          TitleLargeText(
+            isInGameVersion ? 'League Unlocked!' : 'Welcome to the League!',
             textAlign: TextAlign.center,
           ),
           const Padding(
@@ -37,7 +42,7 @@ class LeagueExplanation extends StatelessWidget {
           const Spacer(),
           FunButton(
             onTap: onContinuePressed,
-            text: 'Continue',
+            text: isInGameVersion ? 'Claim reward' : 'Continue',
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.leagueExplanationContinueClicked,
             ),

@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_bottomsheet.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_player.dart';
+import 'package:givt_app/features/family/features/league/presentation/pages/in_game_league_screen.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/summary_details.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/summary_details_custom.dart';
@@ -233,14 +234,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
     switch (custom) {
       case ShowConfetti():
         _showConffetti(context);
-      case NavigateToProfileSelection():
-        _navigateToProfileSelection(context);
-      case final ShowInterviewPopup event:
-        _showInterviewPopup(
-          context,
-          event.uiModel,
-          useDefaultImage: event.useDefaultImage,
-        );
+      case NavigateToInGameLeague():
+        _navigateToInGameLeague(context);
       case NavigateToGoalProgressUpdate():
         _navigateToGoalProgressUpdate(context);
     }
@@ -253,14 +248,11 @@ class _SummaryScreenState extends State<SummaryScreen> {
     ConfettiDialog.show(context);
   }
 
-  void _navigateToProfileSelection(BuildContext context) {
-    // TODO - This is going to be league page
+  void _navigateToInGameLeague(BuildContext context) {
     setState(() {
       _isDoneBtnLoading = false;
     });
-    context.goNamed(
-      FamilyPages.profileSelection.name,
-    );
+    Navigator.of(context).push(const InGameLeagueScreen().toRoute(context));
   }
 
   void _navigateToGoalProgressUpdate(BuildContext context) {
@@ -269,41 +261,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
     });
 
     Navigator.of(context).push(const GoalProgressScreen().toRoute(context));
-  }
-
-  void _showInterviewPopup(
-    BuildContext context,
-    FunDialogUIModel uiModel, {
-    bool useDefaultImage = true,
-  }) {
-    FunDialog.show(
-      context,
-      uiModel: uiModel,
-      image: useDefaultImage ? FunIcon.solidComments() : FunIcon.moneyBill(),
-      onClickPrimary: () {
-        context.pop();
-        launchCalendlyUrl();
-        _showConffetti(context);
-        _navigateToProfileSelection(context);
-      },
-      onClickSecondary: () {
-        context.pop();
-        _showConffetti(context);
-        _navigateToProfileSelection(context);
-      },
-    );
-  }
-
-  Future<void> launchCalendlyUrl() async {
-    const calendlyLinK = 'https://calendly.com/andy-765/45min';
-
-    final url = Uri.parse(calendlyLinK);
-
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      // do nothing, we're probably on a weird platform/ simulator
-    }
   }
 
   void _onTapDoneBtn() {

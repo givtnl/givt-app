@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/league/presentation/pages/in_game_league_screen.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/goal_progress_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
@@ -10,7 +11,6 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:go_router/go_router.dart';
 
 class GoalProgressScreen extends StatefulWidget {
   const GoalProgressScreen({super.key});
@@ -64,9 +64,8 @@ class _GoalProgressScreenState extends State<GoalProgressScreen> {
                 maintainState: true,
                 child: FunButton(
                   onTap: () {
-                    context.goNamed(
-                      FamilyPages.profileSelection.name,
-                    );
+                    Navigator.of(context)
+                        .push(const InGameLeagueScreen().toRoute(context));
                   },
                   text: "We're committed",
                   analyticsEvent: AnalyticsEvent(
