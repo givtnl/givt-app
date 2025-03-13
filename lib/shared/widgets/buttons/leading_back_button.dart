@@ -8,13 +8,16 @@ class LeadingBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(
-        FontAwesomeIcons.arrowLeft,
+    return Semantics(
+      identifier: 'backButton',
+      child: IconButton(
+        icon: const Icon(
+          FontAwesomeIcons.arrowLeft,
+        ),
+        onPressed: () {
+          context.canPop() ? context.pop() : logout(context);
+        },
       ),
-      onPressed: () {
-        context.canPop() ? context.pop() : logout(context);
-      },
     );
   }
 }

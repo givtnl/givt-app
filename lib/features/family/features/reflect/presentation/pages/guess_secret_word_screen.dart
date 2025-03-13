@@ -95,40 +95,44 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                     itemCount: uiModel.guessOptions.length,
                     itemBuilder: (context, index) {
                       final guessOption = uiModel.guessOptions[index];
-                      return FunTile(
-                        shrink: true,
-                        onTap: () {
-                          _cubit.onClickOption(index);
-                        },
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        isPressedDown:
-                            guessOption.state == GuessOptionState.wrong,
-                        titleBig: guessOption.text,
-                        textColor: guessOption.state == GuessOptionState.initial
-                            ? FamilyAppTheme.tertiary40
-                            : guessOption.state == GuessOptionState.correct
-                                ? Colors.green
-                                : Colors.red,
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.reflectAndShareGuessOptionClicked,
-                          parameters: {
-                            'option': guessOption.text,
+                      return Semantics(
+                        identifier: 'funtile_guess_option_$index',
+                        child: FunTile(
+                          shrink: true,
+                          onTap: () {
+                            _cubit.onClickOption(index);
                           },
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          isPressedDown:
+                              guessOption.state == GuessOptionState.wrong,
+                          titleBig: guessOption.text,
+                          textColor: guessOption.state ==
+                                  GuessOptionState.initial
+                              ? FamilyAppTheme.tertiary40
+                              : guessOption.state == GuessOptionState.correct
+                                  ? Colors.green
+                                  : Colors.red,
+                          analyticsEvent: AnalyticsEvent(
+                            AmplitudeEvents.reflectAndShareGuessOptionClicked,
+                            parameters: {
+                              'option': guessOption.text,
+                            },
+                          ),
+                          borderColor: guessOption.state ==
+                                  GuessOptionState.initial
+                              ? FamilyAppTheme.tertiary80
+                              : guessOption.state == GuessOptionState.correct
+                                  ? FamilyAppTheme.primary80
+                                  : FamilyAppTheme.error80,
+                          backgroundColor: guessOption.state ==
+                                  GuessOptionState.initial
+                              ? FamilyAppTheme.tertiary98
+                              : guessOption.state == GuessOptionState.correct
+                                  ? FamilyAppTheme.primary98
+                                  : FamilyAppTheme.error98,
+                          iconPath: '',
+                          hasIcon: false,
                         ),
-                        borderColor:
-                            guessOption.state == GuessOptionState.initial
-                                ? FamilyAppTheme.tertiary80
-                                : guessOption.state == GuessOptionState.correct
-                                    ? FamilyAppTheme.primary80
-                                    : FamilyAppTheme.error80,
-                        backgroundColor:
-                            guessOption.state == GuessOptionState.initial
-                                ? FamilyAppTheme.tertiary98
-                                : guessOption.state == GuessOptionState.correct
-                                    ? FamilyAppTheme.primary98
-                                    : FamilyAppTheme.error98,
-                        iconPath: '',
-                        hasIcon: false,
                       );
                     },
                   ),
