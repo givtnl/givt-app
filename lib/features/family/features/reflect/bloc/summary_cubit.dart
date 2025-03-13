@@ -94,7 +94,10 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
       try {
         final statsChanged =
             await _reflectAndShareRepository.refreshGameStats();
-        if (statsChanged) {
+        final gameStats = await _reflectAndShareRepository.getGameStats();
+
+        if (statsChanged &&
+            gameStats.gratitudeGoalCurrent <= gameStats.gratitudeGoal) {
           emitCustom(const SummaryDetailsCustom.navigateToGoalProgressUpdate());
           return;
         }
