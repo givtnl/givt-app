@@ -47,7 +47,7 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
       emitLoading();
       _profiles = await _profilesRepository.getProfiles();
       _league = await _leagueRepository.fetchLeague();
-    } catch (e, s) {
+    } catch (e) {
       // do nothing
     }
     _emitData();

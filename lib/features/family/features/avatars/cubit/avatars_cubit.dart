@@ -35,12 +35,14 @@ class AvatarsCubit extends Cubit<AvatarsState> {
 
       emit(state.copyWith(assignedAvatars: updatedAvatars));
     } else {
-      emit(state.copyWith(
-        assignedAvatars: [
-          ...state.assignedAvatars,
-          {key: avatar}
-        ],
-      ));
+      emit(
+        state.copyWith(
+          assignedAvatars: [
+            ...state.assignedAvatars,
+            {key: avatar},
+          ],
+        ),
+      );
     }
   }
 
@@ -61,12 +63,14 @@ class AvatarsCubit extends Cubit<AvatarsState> {
 
       emit(state.copyWith(assignedAvatars: updatedAvatars));
     } else {
-      emit(state.copyWith(
-        assignedAvatars: [
-          ...state.assignedAvatars,
-          {key: randomAvatar}
-        ],
-      ));
+      emit(
+        state.copyWith(
+          assignedAvatars: [
+            ...state.assignedAvatars,
+            {key: randomAvatar},
+          ],
+        ),
+      );
     }
   }
 

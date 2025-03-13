@@ -8,7 +8,9 @@ class GratitudeGoalRepository {
   final FamilyAPIService _familyAPIService;
 
   Future<bool> submit(
-      SetAGoalOptions chosenOption, BehaviorOptions behavior) async {
+    SetAGoalOptions chosenOption,
+    BehaviorOptions behavior,
+  ) async {
     final result =
         await _familyAPIService.saveGratitudeGoal(chosenOption, behavior);
     return result;

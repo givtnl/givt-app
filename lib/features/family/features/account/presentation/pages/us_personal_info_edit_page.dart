@@ -120,7 +120,10 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
   }
 
   SingleChildScrollView _buildLayout(
-      FamilyAuthState state, BuildContext context, AppLocalizations locals) {
+    FamilyAuthState state,
+    BuildContext context,
+    AppLocalizations locals,
+  ) {
     final user = (state as Authenticated).user;
     return SingleChildScrollView(
       child: Column(
@@ -342,20 +345,6 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
       ),
     );
   }
-
-  Future<void> _showModalBottomSheet(
-    BuildContext context, {
-    required Widget bottomSheet,
-  }) =>
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        builder: (_) => BlocProvider.value(
-          value: context.read<PersonalInfoEditBloc>(),
-          child: bottomSheet,
-        ),
-      );
 
   Widget _buildInfoRow(
     BuildContext context, {

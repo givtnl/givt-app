@@ -43,9 +43,10 @@ class _SummaryPageState extends State<SummaryPage> {
           ),
         if (widget.uiModel.date != null) const SizedBox(height: 12),
         const TitleMediumText(
-            'We’ve been working on our generosity superpowers!',
-            textAlign: TextAlign.center,
-            color: Colors.white),
+          'We’ve been working on our generosity superpowers!',
+          textAlign: TextAlign.center,
+          color: Colors.white,
+        ),
         const SizedBox(height: 24),
         Expanded(
           child: SummaryConversationList(

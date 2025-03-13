@@ -275,10 +275,10 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                                 country: state.country!,
                                                 email: state.email,
                                                 locale: Localizations.localeOf(
-                                                        context)
-                                                    .languageCode,
+                                                  context,
+                                                ).languageCode,
                                               );
-                                        } catch (e, s) {
+                                        } catch (e) {
                                           //do nothing (error will be shown via custom state)
                                         }
                                         setLoading(state: false);
@@ -311,7 +311,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   }
 
   Future<void> handleCustom(
-      BuildContext context, EmailSignupCustom custom) async {
+    BuildContext context,
+    EmailSignupCustom custom,
+  ) async {
     switch (custom) {
       case EmailSignupCheckingEmail():
         setLoading();

@@ -58,7 +58,6 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final size = MediaQuery.sizeOf(context);
     const messageKey = GlobalObjectKey('messageKey');
     final user = _familyAuthCubit.user;
     return FunBottomSheet(
@@ -99,7 +98,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
               ),
               const SizedBox(height: 24),
               const BodySmallText(
-                "Givt is a product of Givt Inc.\n\nWe are located on 12 N Cheyanne Ave, #305 Tulsa, OK. For questions or complaints you can reach us via +1 918-615-9611 or support@givt.app",
+                'Givt is a product of Givt Inc.\n\nWe are located on 12 N Cheyanne Ave, #305 Tulsa, OK. For questions or complaints you can reach us via +1 918-615-9611 or support@givt.app',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
@@ -82,16 +81,16 @@ class _FunModalState extends State<FunModal> {
                     children: [
                       // Optional Icon
                       if (widget.icon != null) widget.icon!,
-                
+
                       const SizedBox(height: 16),
-                
+
                       // Title
                       if (widget.title != null)
                         TitleMediumText(
                           widget.title!,
                           textAlign: TextAlign.center,
                         ),
-                
+
                       // Subtitle
                       if (widget.subtitle != null)
                         Padding(
@@ -101,9 +100,9 @@ class _FunModalState extends State<FunModal> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                
+
                       const SizedBox(height: 16),
-                
+
                       showButtons(),
                     ],
                   ),
@@ -126,8 +125,9 @@ class _FunModalState extends State<FunModal> {
           icon: Semantics(
             identifier: 'xmark',
             child: const FaIcon(
-                semanticLabel: 'xmark',
-                FontAwesomeIcons.xmark),
+              semanticLabel: 'xmark',
+              FontAwesomeIcons.xmark,
+            ),
           ),
           onPressed: () {
             AnalyticsHelper.logEvent(

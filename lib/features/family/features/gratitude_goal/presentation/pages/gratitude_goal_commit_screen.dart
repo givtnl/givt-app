@@ -17,8 +17,11 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 class GratitudeGoalCommitScreen extends StatefulWidget {
-  const GratitudeGoalCommitScreen(
-      {required this.chosenOption, required this.behavior, super.key});
+  const GratitudeGoalCommitScreen({
+    required this.chosenOption,
+    required this.behavior,
+    super.key,
+  });
 
   final SetAGoalOptions chosenOption;
   final BehaviorOptions behavior;
@@ -112,8 +115,7 @@ class _GratitudeGoalCommitScreenState extends State<GratitudeGoalCommitScreen> {
                           });
                         },
                         analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents
-                              .gratitudeGoalCommitToThisGoalClicked,
+                          AmplitudeEvents.gratitudeGoalCommitToThisGoalClicked,
                           parameters: {
                             'weeksToFormHabit':
                                 widget.chosenOption.weeksToFormHabit,

@@ -203,7 +203,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   Future<UserExt> _fetchAndStoreUserExtension(String guid) async {
     try {
-      UserExt userExt = await fetchUserExtension(guid);
+      final userExt = await fetchUserExtension(guid);
       await _storeUserExt(userExt);
       await _setUserPropsForExternalServices(userExt);
       _updateAuthenticatedUserStream(userExt);
@@ -217,6 +217,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     }
   }
 
+  @override
   Future<UserExt> fetchUserExtension(String guid) async {
     final response = await _apiService.getUserExtension(guid);
     final userExt = UserExt.fromJson(response);
@@ -492,10 +493,12 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     final isSuccess = await _apiService.updateUserExt(newUserExt.toJson());
     if (isSuccess) {
       _updateAuthenticatedUserStream(newUserExt);
-      unawaited(AnalyticsHelper.setUserProperties(
-        userId: newUserExt.guid,
-        userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
-      ));
+      unawaited(
+        AnalyticsHelper.setUserProperties(
+          userId: newUserExt.guid,
+          userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
+        ),
+      );
     } else {
       throw Exception('Phone number update failed');
     }

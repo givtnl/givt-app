@@ -56,7 +56,8 @@ class RemoteConfigRepository {
   }
 
   void _getRemoteConfigValuesAndUpdateListeners(
-      FirebaseRemoteConfig remoteConfig) {
+    FirebaseRemoteConfig remoteConfig,
+  ) {
     for (final key in _subscriptions.keys) {
       final value = remoteConfig.getValue(key);
       _subscriptions[key]?.add(value);

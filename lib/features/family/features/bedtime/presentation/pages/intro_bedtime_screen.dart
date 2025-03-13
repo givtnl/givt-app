@@ -438,12 +438,13 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                   AnimatedBuilder(
                     animation: _nightShiftController,
                     builder: (context, child) => Opacity(
-                        opacity: _cityNightOpacity.value,
-                        child: sun(
-                          MediaQuery.of(context).size.width,
-                          MediaQuery.of(context).size.height,
-                          isNight: true,
-                        )),
+                      opacity: _cityNightOpacity.value,
+                      child: sun(
+                        MediaQuery.of(context).size.width,
+                        MediaQuery.of(context).size.height,
+                        isNight: true,
+                      ),
+                    ),
                   ),
                 if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
                     _currentState == AnimationState.lastBenefitIsOnScreen)
@@ -452,13 +453,14 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                     builder: (context, child) => Opacity(
                       opacity: _newMoonOpacity.value.clamp(0, 1),
                       child: AnimatedBuilder(
-                          animation: _moonTranitionToRight,
-                          builder: (context, child) => newMoon(
-                                MediaQuery.of(context).size.width,
-                                MediaQuery.of(context).size.height,
-                                positionTop: _newMoonPositionTop.value,
-                                positionRight: _newMoonPositionRight.value,
-                              )),
+                        animation: _moonTranitionToRight,
+                        builder: (context, child) => newMoon(
+                          MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height,
+                          positionTop: _newMoonPositionTop.value,
+                          positionRight: _newMoonPositionRight.value,
+                        ),
+                      ),
                     ),
                   ),
                 if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
@@ -490,11 +492,18 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                           onTap: () {
                             Navigator.of(context).push(
                               PageRouteBuilder<dynamic>(
-                                pageBuilder: (context, animation,
-                                        secondaryAnimation) =>
+                                pageBuilder: (
+                                  context,
+                                  animation,
+                                  secondaryAnimation,
+                                ) =>
                                     SetupBedtimeScreen(arguments: arguments!),
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
+                                transitionsBuilder: (
+                                  context,
+                                  animation,
+                                  secondaryAnimation,
+                                  child,
+                                ) {
                                   return FadeTransition(
                                     opacity: animation,
                                     child: child,
@@ -541,10 +550,11 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
               children: [
                 const Spacer(),
                 Center(
-                    child: Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: LabelLargeText('Tap to continue', color: color),
-                )),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: LabelLargeText('Tap to continue', color: color),
+                  ),
+                ),
               ],
             ),
           ),
@@ -554,47 +564,58 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   }
 
   Widget cityAtBottom(
-      double width, double height, double position, double opacity) {
-    return Stack(children: [
-      Positioned(
-        bottom: -height * position,
-        child: AnimatedBuilder(
-          animation: _nightShiftController,
-          builder: (context, child) => Opacity(
-            opacity: 1 - _cityNightOpacity.value,
-            child: SizedBox(
-              height: height * 0.25,
-              width: width,
-              child: SvgPicture.asset(
-                'assets/family/images/city_day.svg',
-                fit: BoxFit.fitHeight,
+    double width,
+    double height,
+    double position,
+    double opacity,
+  ) {
+    return Stack(
+      children: [
+        Positioned(
+          bottom: -height * position,
+          child: AnimatedBuilder(
+            animation: _nightShiftController,
+            builder: (context, child) => Opacity(
+              opacity: 1 - _cityNightOpacity.value,
+              child: SizedBox(
+                height: height * 0.25,
+                width: width,
+                child: SvgPicture.asset(
+                  'assets/family/images/city_day.svg',
+                  fit: BoxFit.fitHeight,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      Positioned(
-        bottom: -height * position,
-        child: AnimatedBuilder(
-          animation: _nightShiftController,
-          builder: (context, child) => Opacity(
-            opacity: _cityNightOpacity.value,
-            child: SizedBox(
-              height: height * 0.25,
-              width: width,
-              child: SvgPicture.asset(
-                'assets/family/images/city_purple.svg',
-                fit: BoxFit.fitHeight,
+        Positioned(
+          bottom: -height * position,
+          child: AnimatedBuilder(
+            animation: _nightShiftController,
+            builder: (context, child) => Opacity(
+              opacity: _cityNightOpacity.value,
+              child: SizedBox(
+                height: height * 0.25,
+                width: width,
+                child: SvgPicture.asset(
+                  'assets/family/images/city_purple.svg',
+                  fit: BoxFit.fitHeight,
+                ),
               ),
             ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 
-  Widget sun(double width, double height,
-      {double scale = 0.5, double position = 0.2, bool isNight = false}) {
+  Widget sun(
+    double width,
+    double height, {
+    double scale = 0.5,
+    double position = 0.2,
+    bool isNight = false,
+  }) {
     const smallestCircleModifier = 80;
     const middleCircleModifier = 40;
 

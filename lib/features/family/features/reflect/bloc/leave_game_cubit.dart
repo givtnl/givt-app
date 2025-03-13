@@ -1,4 +1,3 @@
-import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/leave_game_custom.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';

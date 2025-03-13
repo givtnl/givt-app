@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/shared/design/components/overlays/bloc/
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
-import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/util.dart';
 
 class USChangeEmailAddressBottomSheet extends StatefulWidget {

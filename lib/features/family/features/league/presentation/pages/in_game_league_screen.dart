@@ -53,15 +53,16 @@ class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
           switch (uiModel) {
             case final ShowLeagueOverview state:
               return LeagueOverview(
-                  uiModel: state.uiModel,
-                  isPressedDown: _isBtnPressedDown,
-                  isBtnLoading: _isBtnLoading,
-                  onTap: () {
-                    setState(() {
-                      _isBtnLoading = true;
-                    });
-                    _leagueCubit.onLeagueOverviewContinuePressed();
+                uiModel: state.uiModel,
+                isPressedDown: _isBtnPressedDown,
+                isBtnLoading: _isBtnLoading,
+                onTap: () {
+                  setState(() {
+                    _isBtnLoading = true;
                   });
+                  _leagueCubit.onLeagueOverviewContinuePressed();
+                },
+              );
             case ShowLeagueExplanation():
               return LeagueExplanation(
                 isInGameVersion: true,

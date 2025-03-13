@@ -138,7 +138,7 @@ class NotificationService implements INotificationService {
           notificationAppLaunchDetails.notificationResponse!,
         );
       }
-    } catch (e, s) {
+    } catch (e) {
       // do not let app hang on loading screen forever just because we couldn't init push notifications
       LoggingInfo.instance.error('Error initializing push notifications: $e');
     }
@@ -172,7 +172,7 @@ class NotificationService implements INotificationService {
       payload: {
         'Type': 'FCMTest',
         'Path':
-            'ASSIGN-BEDTIME-RESPONSIBILITY?childName=TestChildName&childId=cd88375a-ca29-492f-8b03-5548434811cf&pictureUrl=https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Default.svg'
+            'ASSIGN-BEDTIME-RESPONSIBILITY?childName=TestChildName&childId=cd88375a-ca29-492f-8b03-5548434811cf&pictureUrl=https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Default.svg',
       },
       scheduledDate: scheduledDate,
     );
@@ -498,8 +498,8 @@ class NotificationService implements INotificationService {
 
     if (pathName.isNotNullAndNotEmpty()) {
       final validValues = [
-        ...FamilyPages.values.map((e) => e.name).toList(),
-        ...Pages.values.map((e) => e.name).toList(),
+        ...FamilyPages.values.map((e) => e.name),
+        ...Pages.values.map((e) => e.name),
       ];
       if (validValues.contains(pathName)) {
         AppRouter.router.goNamed(pathName, queryParameters: param);

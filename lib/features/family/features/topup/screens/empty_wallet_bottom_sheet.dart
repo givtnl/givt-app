@@ -15,10 +15,11 @@ import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
 class EmptyWalletBottomSheet extends StatelessWidget {
-  const EmptyWalletBottomSheet(
-      {required this.afterSuccessAction,
-      this.awaitActiveProfileBalance = false,
-      super.key});
+  const EmptyWalletBottomSheet({
+    required this.afterSuccessAction,
+    this.awaitActiveProfileBalance = false,
+    super.key,
+  });
 
   final VoidCallback afterSuccessAction;
   final bool awaitActiveProfileBalance;

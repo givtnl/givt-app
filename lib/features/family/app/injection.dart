@@ -15,8 +15,8 @@ import 'package:givt_app/features/family/features/game_summary/cubit/game_summar
 import 'package:givt_app/features/family/features/game_summary/data/game_summaries_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/bloc/gratitude_goal_commit_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/domain/repositories/gratitude_goal_repository.dart';
@@ -110,7 +110,8 @@ void initCubits() {
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
     ..registerLazySingleton(() => LeagueCubit(getIt(), getIt(), getIt()))
     ..registerFactory(
-        () => InGameLeagueCubit(getIt(), getIt(), getIt(), getIt()))
+      () => InGameLeagueCubit(getIt(), getIt(), getIt(), getIt()),
+    )
     ..registerLazySingleton<GiveCubit>(
       () => GiveCubit(
         getIt(),
@@ -198,7 +199,6 @@ void initCubits() {
     )
     ..registerFactory<BackgroundAudioCubit>(
       () => BackgroundAudioCubit(
-        getIt(),
         getIt(),
       ),
     )

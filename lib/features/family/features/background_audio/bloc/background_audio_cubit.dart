@@ -1,16 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/domain/models/parent_summary_item.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 
 class BackgroundAudioCubit extends Cubit<bool> {
   BackgroundAudioCubit(
     this._reflectAndShareRepository,
-    this._summaryRepository,
   ) : super(false);
 
   final ReflectAndShareRepository _reflectAndShareRepository;
-  final ParentSummaryRepository _summaryRepository;
   ParentSummaryItem? lastGame;
 
   void onPlay() {

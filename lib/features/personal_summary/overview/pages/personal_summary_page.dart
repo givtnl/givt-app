@@ -116,25 +116,6 @@ class PersonalSummary extends StatelessWidget {
     );
   }
 
-  Widget _buildGiveNowButton({
-    required AppLocalizations locals,
-    required VoidCallback onTap,
-  }) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        child: ElevatedButton(
-          onPressed: onTap,
-          style: ElevatedButton.styleFrom(
-            shape: const StadiumBorder(),
-            backgroundColor: AppTheme.givtBlue,
-          ),
-          child: Text(
-            locals.budgetSummaryGiveNow,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      );
-
   void _showFirstUseDialogs(BuildContext context) {
     getIt<SharedPreferences>().setBool(
       Util.testimonialsSummaryKey,

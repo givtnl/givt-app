@@ -256,7 +256,9 @@ class FamilyAPIService {
   }
 
   Future<bool> saveGratitudeGoal(
-      SetAGoalOptions goal, BehaviorOptions behavior) async {
+    SetAGoalOptions goal,
+    BehaviorOptions behavior,
+  ) async {
     final url =
         Uri.https(_apiURL, '/givtservice/v1/groups/family/gratitude-goal');
 
@@ -343,9 +345,14 @@ class FamilyAPIService {
   }
 
   Future<bool> uploadEndOfRoundHeroAudioFile(
-      String gameGuid, String userGuid, File audioFile) async {
+    String gameGuid,
+    String userGuid,
+    File audioFile,
+  ) async {
     final url = Uri.https(
-        _apiURL, '/givtservice/v1/game/$gameGuid/$userGuid/conversation');
+      _apiURL,
+      '/givtservice/v1/game/$gameGuid/$userGuid/conversation',
+    );
 
     final request = MultipartRequest('POST', url)
       ..headers.addAll({
@@ -473,14 +480,18 @@ class FamilyAPIService {
   }
 
   Future<Map<String, dynamic>> updateGame(
-      String gameGuid, Map<String, dynamic> body) async {
+    String gameGuid,
+    Map<String, dynamic> body,
+  ) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid');
-    final response = await client.put(url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode(body));
+    final response = await client.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(body),
+    );
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
@@ -526,16 +537,18 @@ class FamilyAPIService {
     required String power,
   }) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid/user');
-    final response = await client.post(url,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: jsonEncode({
-          'userid': userid,
-          'category': category,
-          'generous': power,
-        }));
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode({
+        'userid': userid,
+        'category': category,
+        'generous': power,
+      }),
+    );
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,

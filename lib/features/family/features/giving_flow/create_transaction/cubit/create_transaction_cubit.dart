@@ -50,14 +50,16 @@ class CreateTransactionCubit extends Cubit<CreateTransactionState> {
   Future<void> createTransaction({required Transaction transaction}) async {
     emit(
       CreateTransactionUploadingState(
-          amount: state.amount, maxAmount: state.maxAmount),
+        amount: state.amount,
+        maxAmount: state.maxAmount,
+      ),
     );
 
     try {
       await _createTransactionRepository.createTransaction(
         transaction: transaction,
       );
-      if(_profilesCubit.state.activeProfile.isChild) {
+      if (_profilesCubit.state.activeProfile.isChild) {
         await _profilesRepository.refreshChildDetails(transaction.userId);
       } else {
         await _profilesRepository.refreshProfiles();

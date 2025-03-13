@@ -26,7 +26,6 @@ class GivtServerFailure extends Equatable implements Exception {
 enum FailureType {
   ALLOWANCE_NOT_SUCCESSFUL,
   TOPUP_NOT_SUCCESSFUL,
-  VPC_NOT_SUCCESSFUL,
   UNKNOWN,
   ;
 

@@ -37,19 +37,21 @@ class GratitudeGoalCommitCubit
   }
 
   void _emitData() {
-    emitData(profiles.isEmpty
-        ? null
-        : AvatarBarUIModel(
-            avatarUIModels: profiles
-                .map(
-                  (e) => AvatarUIModel(
-                    avatarUrl: e.pictureURL,
-                    text: e.firstName,
-                    guid: e.id,
-                  ),
-                )
-                .toList(),
-          ));
+    emitData(
+      profiles.isEmpty
+          ? null
+          : AvatarBarUIModel(
+              avatarUIModels: profiles
+                  .map(
+                    (e) => AvatarUIModel(
+                      avatarUrl: e.pictureURL,
+                      text: e.firstName,
+                      guid: e.id,
+                    ),
+                  )
+                  .toList(),
+            ),
+    );
   }
 
   Future<void> onTapCommitToThisGoal(

@@ -140,7 +140,9 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
   }
 
   Future<void> _handleExceptionNotDueToInternetConnection(
-      Object e, StackTrace s) async {
+    Object e,
+    StackTrace s,
+  ) async {
     if (_isBENotAvailableDueToDDOS(e)) {
       // let's retry after a bit of time and see if the server is available
       await _retryAfterABitOfTime();

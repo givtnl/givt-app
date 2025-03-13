@@ -157,7 +157,7 @@ class EmailSignupCubit
     String result;
     try {
       result = await _authRepository.checkEmail(email: _currentEmail);
-    } catch (e, s) {
+    } catch (e) {
       emitCustom(const EmailSignupCustom.noInternet());
       return;
     }
@@ -191,9 +191,12 @@ class EmailSignupCubit
       );
       _authRepository.onRegistrationStarted();
       emitCustom(EmailSignupCustom.registerFamily(_currentEmail));
-    } catch (e, s) {
-      emitCustom(const EmailSignupCustom.error(
-          'Could not register with entered e-mailadres. Please try again or submit a different e-mailadres.'));
+    } catch (e) {
+      emitCustom(
+        const EmailSignupCustom.error(
+          'Could not register with entered e-mailadres. Please try again or submit a different e-mailadres.',
+        ),
+      );
     }
   }
 }
