@@ -132,9 +132,9 @@ class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
   }
 
   Future<void> launchCalendlyUrl() async {
-    const calendlyLinK = 'https://calendly.com/andy-765/45min';
+    const calendlyLink = 'https://calendly.com/andy-765/45min';
 
-    final url = Uri.parse(calendlyLinK);
+    final url = Uri.parse(calendlyLink);
 
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
