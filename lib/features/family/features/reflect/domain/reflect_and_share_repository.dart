@@ -670,6 +670,11 @@ class ReflectAndShareRepository {
     return stats;
   }
 
+  void logout() {
+    reset();
+    _gameStatsData = null;
+  }
+
   void reset() {
     completedLoops = 0;
     totalQuestionsAsked = 0;
