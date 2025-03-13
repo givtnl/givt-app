@@ -38,6 +38,15 @@ class FunAvatar extends FunIcon {
     );
   }
 
+  factory FunAvatar.family({bool isLarge = false}) {
+    return FunAvatar(
+      semanticsIdentifier: 'family',
+      customCircleColor: FamilyAppTheme.neutral95,
+      customAvatar: SvgPicture.asset('assets/family/images/family_avatar.svg'),
+      customSize: isLarge ? 120 : 48,
+    );
+  }
+
   final String semanticsIdentifier;
   final Color customCircleColor;
   final Widget customAvatar;
