@@ -11,11 +11,19 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 
 class LeagueOverview extends StatelessWidget {
-  const LeagueOverview(
-      {required this.uiModel, this.dateLabel, super.key, this.onTap});
+  const LeagueOverview({
+    required this.uiModel,
+    this.dateLabel,
+    super.key,
+    this.onTap,
+    this.isPressedDown = false,
+    this.isBtnLoading = false,
+  });
 
   final LeagueOverviewUIModel uiModel;
   final String? dateLabel;
+  final bool isPressedDown;
+  final bool isBtnLoading;
   final VoidCallback? onTap;
 
   @override
@@ -64,6 +72,8 @@ class LeagueOverview extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               child: FunButton(
                 onTap: onTap,
+                isLoading: isBtnLoading,
+                isPressedDown: isPressedDown,
                 text: 'Continue',
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.continueClicked,

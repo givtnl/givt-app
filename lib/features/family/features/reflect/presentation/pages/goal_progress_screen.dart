@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/league/presentation/pages/models/in_game_league_screen.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/league/presentation/pages/in_game_league_screen.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/goal_progress_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
@@ -9,7 +10,6 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GoalProgressScreen extends StatefulWidget {
@@ -65,7 +65,7 @@ class _GoalProgressScreenState extends State<GoalProgressScreen> {
                 child: FunButton(
                   onTap: () {
                     Navigator.of(context)
-                        .push(InGameLeagueScreen().toRoute(context));
+                        .push(const InGameLeagueScreen().toRoute(context));
                   },
                   text: "We're committed",
                   analyticsEvent: AnalyticsEvent(

@@ -1,35 +1,28 @@
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 
-sealed class SummaryDetailsCustom {
-  const SummaryDetailsCustom();
+sealed class InGameLeagueCustom {
+  const InGameLeagueCustom();
 
-  const factory SummaryDetailsCustom.showConfetti() = ShowConfetti;
+  const factory InGameLeagueCustom.showConfetti() = ShowConfetti;
 
-  const factory SummaryDetailsCustom.navigateToProfileSelection() =
+  const factory InGameLeagueCustom.navigateToProfileSelection() =
       NavigateToProfileSelection;
 
-  const factory SummaryDetailsCustom.navigateToGoalProgressUpdate() =
-      NavigateToGoalProgressUpdate;
-
-  const factory SummaryDetailsCustom.showInterviewPopup(
+  const factory InGameLeagueCustom.showInterviewPopup(
     FunDialogUIModel uiModel, {
     bool useDefaultImage,
   }) = ShowInterviewPopup;
 }
 
-class ShowConfetti extends SummaryDetailsCustom {
+class ShowConfetti extends InGameLeagueCustom {
   const ShowConfetti();
 }
 
-class NavigateToProfileSelection extends SummaryDetailsCustom {
+class NavigateToProfileSelection extends InGameLeagueCustom {
   const NavigateToProfileSelection();
 }
 
-class NavigateToGoalProgressUpdate extends SummaryDetailsCustom {
-  const NavigateToGoalProgressUpdate();
-}
-
-class ShowInterviewPopup extends SummaryDetailsCustom {
+class ShowInterviewPopup extends InGameLeagueCustom {
   const ShowInterviewPopup(this.uiModel, {this.useDefaultImage = true});
 
   final FunDialogUIModel uiModel;

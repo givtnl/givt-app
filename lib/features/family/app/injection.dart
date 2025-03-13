@@ -109,7 +109,8 @@ void initCubits() {
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
     ..registerLazySingleton(() => LeagueCubit(getIt(), getIt(), getIt()))
-    ..registerFactory(() => InGameLeagueCubit(getIt(), getIt(), getIt()))
+    ..registerFactory(
+        () => InGameLeagueCubit(getIt(), getIt(), getIt(), getIt()))
     ..registerLazySingleton<GiveCubit>(
       () => GiveCubit(
         getIt(),

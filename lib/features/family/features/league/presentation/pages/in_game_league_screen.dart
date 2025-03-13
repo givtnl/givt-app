@@ -3,13 +3,19 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/league/bloc/in_game_league_cubit.dart';
 import 'package:givt_app/features/family/features/league/presentation/pages/models/in_game_league_screen_uimodel.dart';
+import 'package:givt_app/features/family/features/league/presentation/pages/models/summary_details_custom.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/league_explanation.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/league_overview.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/whos_on_top_of_league.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
+import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InGameLeagueScreen extends StatefulWidget {
   const InGameLeagueScreen({super.key});
@@ -20,6 +26,8 @@ class InGameLeagueScreen extends StatefulWidget {
 
 class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
   final InGameLeagueCubit _leagueCubit = getIt<InGameLeagueCubit>();
+  bool _isBtnPressedDown = false;
+  bool _isBtnLoading = false;
 
   @override
   void didChangeDependencies() {
@@ -39,19 +47,25 @@ class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
       appBar: const FunTopAppBar(title: ''),
       body: BaseStateConsumer(
         cubit: _leagueCubit,
-        onCustom: (context, custom) => context.goNamed(
-            FamilyPages.profileSelection.name), //TODO go to rewards page
+        onCustom: _onCustom,
         onData: (context, uiModel) {
           switch (uiModel) {
             case final ShowLeagueOverview state:
               return LeagueOverview(
                 uiModel: state.uiModel,
+                isPressedDown: _isBtnPressedDown,
+                isBtnLoading: _isBtnLoading,
                 onTap: _leagueCubit.onLeagueOverviewContinuePressed,
               );
             case ShowLeagueExplanation():
               return LeagueExplanation(
                 isInGameVersion: true,
-                onContinuePressed: _leagueCubit.onExplanationContinuePressed,
+                onContinuePressed: () {
+                  setState(() {
+                    _isBtnLoading = true;
+                  });
+                  _leagueCubit.onExplanationContinuePressed();
+                },
               );
             case ShowWhosOnTop():
               return WhosOnTopOfTheLeague(
@@ -61,5 +75,72 @@ class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
         },
       ),
     );
+  }
+
+  void _onCustom(BuildContext context, InGameLeagueCustom custom) {
+    switch (custom) {
+      case ShowConfetti():
+        _showConffetti(context);
+      case NavigateToProfileSelection():
+        _navigateToProfileSelection(context);
+      case final ShowInterviewPopup event:
+        _showInterviewPopup(
+          context,
+          event.uiModel,
+          useDefaultImage: event.useDefaultImage,
+        );
+    }
+  }
+
+  void _showInterviewPopup(
+    BuildContext context,
+    FunDialogUIModel uiModel, {
+    bool useDefaultImage = true,
+  }) {
+    FunDialog.show(
+      context,
+      uiModel: uiModel,
+      image: useDefaultImage ? FunIcon.solidComments() : FunIcon.moneyBill(),
+      onClickPrimary: () {
+        context.pop();
+        launchCalendlyUrl();
+        _showConffetti(context);
+        _navigateToProfileSelection(context);
+      },
+      onClickSecondary: () {
+        context.pop();
+        _showConffetti(context);
+        _navigateToProfileSelection(context);
+      },
+    );
+  }
+
+  void _showConffetti(BuildContext context) {
+    setState(() {
+      _isBtnPressedDown = true;
+    });
+    ConfettiDialog.show(context);
+  }
+
+  void _navigateToProfileSelection(BuildContext context) {
+    // TODO - This is going to the rewards page
+    setState(() {
+      _isBtnLoading = false;
+    });
+    context.goNamed(
+      FamilyPages.profileSelection.name,
+    );
+  }
+
+  Future<void> launchCalendlyUrl() async {
+    const calendlyLinK = 'https://calendly.com/andy-765/45min';
+
+    final url = Uri.parse(calendlyLinK);
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      // do nothing, we're probably on a weird platform/ simulator
+    }
   }
 }

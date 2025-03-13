@@ -13,10 +13,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
   LeagueCubit(
-      this._profilesRepository,
-      this._leagueRepository,
-      this._prefs,
-      ) : super(const BaseState.loading());
+    this._profilesRepository,
+    this._leagueRepository,
+    this._prefs,
+  ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final LeagueRepository _leagueRepository;
@@ -34,14 +34,14 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
   Future<void> init() async {
     _profilesSubscription ??=
         _profilesRepository.onProfilesChanged().listen((profiles) {
-          _profiles = profiles;
-          _emitData();
-        });
+      _profiles = profiles;
+      _emitData();
+    });
     _leagueSubscription ??=
         _leagueRepository.onLeagueChanged().listen((league) {
-          _league = league;
-          _emitData();
-        });
+      _league = league;
+      _emitData();
+    });
     _hasSeenLeagueExplanation = _prefs.getBool(_leagueExplanationKey) ?? false;
     try {
       emitLoading();
