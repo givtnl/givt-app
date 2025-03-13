@@ -37,9 +37,12 @@ class ParentAvatar extends StatelessWidget {
                 },
                 customBorder: const CircleBorder(),
                 splashColor: Theme.of(context).primaryColor,
-                child: SvgPicture.network(
-                  pictureURL,
-                  width: 100,
+                child: Semantics(
+                  identifier: pictureURL.split('/').last,
+                  child: SvgPicture.network(
+                    pictureURL,
+                    width: 100,
+                  ),
                 ),
               ),
             ),

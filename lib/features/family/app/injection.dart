@@ -43,6 +43,7 @@ import 'package:givt_app/features/family/features/recommendation/tags/repositori
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/generous_selection_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/goal_progress_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/gratitude_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
@@ -95,6 +96,7 @@ void initCubits() {
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => LeaveGameCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
+    ..registerFactory(() => GoalProgressCubit(getIt()))
     ..registerLazySingleton<InterviewCubit>(
       () => InterviewCubit(getIt()),
     )
@@ -173,7 +175,7 @@ void initCubits() {
       () => FamilyAuthCubit(getIt()),
     )
     ..registerLazySingleton<RecordCubit>(
-          RecordCubit.new,
+      RecordCubit.new,
     )
     ..registerLazySingleton<FamilyLoginCubit>(
       () => FamilyLoginCubit(getIt()),

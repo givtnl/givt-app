@@ -52,14 +52,17 @@ class _RandomAvatarState extends State<RandomAvatar> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: SvgPicture.network(
-                  _avatarsCubit.state.getAvatarByKey(widget.id).pictureURL,
-                  width: size.width * 0.25,
-                  height: size.width * 0.25,
-                  placeholderBuilder: (context) => SizedBox(
+                child: Semantics(
+                  identifier: _avatarsCubit.state.getAvatarByKey(widget.id).pictureURL.split('/').last,
+                  child: SvgPicture.network(
+                    _avatarsCubit.state.getAvatarByKey(widget.id).pictureURL,
                     width: size.width * 0.25,
                     height: size.width * 0.25,
-                    child: const CustomCircularProgressIndicator(),
+                    placeholderBuilder: (context) => SizedBox(
+                      width: size.width * 0.25,
+                      height: size.width * 0.25,
+                      child: const CustomCircularProgressIndicator(),
+                    ),
                   ),
                 ),
               ),

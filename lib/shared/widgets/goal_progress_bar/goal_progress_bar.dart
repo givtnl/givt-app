@@ -17,7 +17,7 @@ class GoalProgressBar extends StatelessWidget {
     super.key,
   });
 
-  final GoalProgressUImodel model;
+  final GoalCardProgressUImodel model;
   final List<Color> colors;
   final Color goalLabelBackgroundColor;
   final Color currentLabelBackgroundColor;

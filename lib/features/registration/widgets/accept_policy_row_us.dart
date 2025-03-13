@@ -32,6 +32,7 @@ class AcceptPolicyRowUs extends StatelessWidget {
       child: Row(
         children: [
           Checkbox(
+            semanticLabel: 'saveDataCheckbox',
             value: checkBoxValue,
             onChanged: onTap,
             side: const BorderSide(

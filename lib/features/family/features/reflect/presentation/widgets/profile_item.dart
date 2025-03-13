@@ -24,10 +24,13 @@ class ProfileItem extends StatelessWidget {
       feedback: _feedbackCircle(size),
       child: Column(
         children: [
-          SvgPicture.network(
-            profile.pictureURL!,
-            width: size,
-            height: size,
+          Semantics(
+            identifier: profile.pictureURL?.split('/').last,
+            child: SvgPicture.network(
+              profile.pictureURL!,
+              width: size,
+              height: size,
+            ),
           ),
           const SizedBox(height: 12),
           SizedBox(
@@ -53,10 +56,13 @@ class ProfileItem extends StatelessWidget {
         shape: BoxShape.circle,
         color: FamilyAppTheme.primary20,
       ),
-      child: SvgPicture.network(
-        profile.pictureURL!,
-        width: width,
-        height: width,
+      child: Semantics(
+        identifier: profile.pictureURL?.split('/').last,
+        child: SvgPicture.network(
+          profile.pictureURL!,
+          width: width,
+          height: width,
+        ),
       ),
     );
   }

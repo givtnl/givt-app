@@ -3,11 +3,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_bottomsheet.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_player.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/summary_details.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/summary_details_custom.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/goal_progress_screen.dart';
 import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
@@ -231,14 +233,16 @@ class _SummaryScreenState extends State<SummaryScreen> {
     switch (custom) {
       case ShowConfetti():
         _showConffetti(context);
-      case NavigateToNextScreen():
-        _navigateToNextScreen(context);
+      case NavigateToProfileSelection():
+        _navigateToProfileSelection(context);
       case final ShowInterviewPopup event:
         _showInterviewPopup(
           context,
           event.uiModel,
           useDefaultImage: event.useDefaultImage,
         );
+      case NavigateToGoalProgressUpdate():
+        _navigateToGoalProgressUpdate(context);
     }
   }
 
@@ -249,13 +253,22 @@ class _SummaryScreenState extends State<SummaryScreen> {
     ConfettiDialog.show(context);
   }
 
-  void _navigateToNextScreen(BuildContext context) {
+  void _navigateToProfileSelection(BuildContext context) {
+    // TODO - This is going to be league page
     setState(() {
       _isDoneBtnLoading = false;
     });
     context.goNamed(
       FamilyPages.profileSelection.name,
     );
+  }
+
+  void _navigateToGoalProgressUpdate(BuildContext context) {
+    setState(() {
+      _isDoneBtnLoading = false;
+    });
+
+    Navigator.of(context).push(const GoalProgressScreen().toRoute(context));
   }
 
   void _showInterviewPopup(
@@ -271,12 +284,12 @@ class _SummaryScreenState extends State<SummaryScreen> {
         context.pop();
         launchCalendlyUrl();
         _showConffetti(context);
-        _navigateToNextScreen(context);
+        _navigateToProfileSelection(context);
       },
       onClickSecondary: () {
         context.pop();
         _showConffetti(context);
-        _navigateToNextScreen(context);
+        _navigateToProfileSelection(context);
       },
     );
   }

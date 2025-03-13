@@ -39,15 +39,19 @@ class FamilySearchField extends StatelessWidget {
           },
           child: Visibility(
             visible: controller.text.isNotEmpty,
-            child: const SizedBox(
+            child: SizedBox(
               width: 48,
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: EdgeInsets.only(right: 16),
-                  child: FaIcon(
-                    FontAwesomeIcons.xmark,
-                    color: FamilyAppTheme.primary30,
+                  padding: const EdgeInsets.only(right: 16),
+                  child: Semantics(
+                    identifier: 'clearInput',
+                    child: const FaIcon(
+                      semanticLabel: 'clearInput',
+                      FontAwesomeIcons.xmark,
+                      color: FamilyAppTheme.primary30,
+                    ),
                   ),
                 ),
               ),

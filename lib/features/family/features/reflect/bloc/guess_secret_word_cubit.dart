@@ -81,6 +81,8 @@ class GuessSecretWordCubit
         guessOptions: List.generate(
           _guessOptions.length,
           (index) => GuessOptionUIModel(
+            isCorrectOption:
+                _guessOptions[index].toLowerCase() == _secretWord.toLowerCase(),
             text: _guessOptions[index],
             state: _pressedOptions.contains(index)
                 ? _guessOptions[index].toLowerCase() ==

@@ -134,6 +134,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                       icon: const Padding(
                         padding: EdgeInsets.only(top: 2),
                         child: FaIcon(
+                          semanticLabel: 'xmark',
                           FontAwesomeIcons.xmark,
                           size: 16,
                           color: AppTheme.error30,
