@@ -66,9 +66,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
         minimumPadding: EdgeInsets.zero,
         safeAreaBottom: false,
         canPop: false,
-        appBar: const FunTopAppBar(
-          title: 'Family summary',
-        ),
         body: BaseStateConsumer(
           cubit: _cubit,
           onCustom: _onCustom,

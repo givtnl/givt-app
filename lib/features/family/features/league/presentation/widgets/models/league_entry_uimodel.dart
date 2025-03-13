@@ -25,12 +25,17 @@ class LeagueEntryUIModel {
   // Calculate rank
   // Sort on xp, then alphabetically
   static List<LeagueEntryUIModel> listFromEntriesAndProfiles(
-      List<LeagueItem> league, List<Profile> profiles) {
+    List<LeagueItem> league,
+    List<Profile> profiles,
+  ) {
+    // Get unique and sorted list of experience points
     final listOfUniqueAndSortedExperiencePoints = league
         .map((e) => e.experiencePoints)
         .toSet()
         .toList()
       ..sort((a, b) => b!.compareTo(a!));
+
+    // Map league items to league entry UI models
     final list = league.mapIndexed((int index, entry) {
       final profile = profiles.firstWhere(
         (p) => p.id == entry.guid,
@@ -44,11 +49,27 @@ class LeagueEntryUIModel {
           1;
       return LeagueEntryUIModel.fromEntryAndProfile(rank, entry, profile);
     }).toList()
+      // Remove entries without a name
       ..removeWhere(
         (e) => e.name.isNullOrEmpty(),
-      ) //we're waiting on a profiles update
+      ) // we're waiting on a profiles update
       ..sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''))
       ..sort((a, b) => a.rank.compareTo(b.rank));
+
+    // Add profiles without league entries
+    final rank = list.length + 1;
+    for (final profile in profiles) {
+      if (!list.any((e) => e.name == profile.firstName)) {
+        list.add(
+          LeagueEntryUIModel(
+            rank: rank,
+            name: profile.firstName,
+            imageUrl: profile.pictureURL,
+            xp: 0,
+          ),
+        );
+      }
+    }
     return list;
   }
 
