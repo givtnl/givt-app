@@ -96,7 +96,9 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                     itemBuilder: (context, index) {
                       final guessOption = uiModel.guessOptions[index];
                       return Semantics(
-                        identifier: 'funtile_guess_option_$index',
+                        identifier: guessOption.isCorrectOption
+                            ? 'funtile_correct'
+                            : 'funtile_guess_option_$index',
                         child: FunTile(
                           shrink: true,
                           onTap: () {
