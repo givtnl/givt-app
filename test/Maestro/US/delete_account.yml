@@ -5,14 +5,12 @@ env:
     PASSWORD: Test123
 ---
 - tapOn:
-    point: "92%,9%"
+    id: "gear_icon"
 - tapOn: "Password"
 - inputText:
     label: Enter the test user's Password
     text: ${PASSWORD}
-- tapOn:
-    label: Make password visible
-    point: "89%,38%"
+- tapOn: "passwordeye"
 - assertVisible: "Test123"
 - tapOn:
     text: "Login"
