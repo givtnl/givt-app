@@ -60,11 +60,14 @@ class LeagueOverview extends StatelessWidget {
         if (uiModel.isInGameVersion && onTap != null)
           Align(
             alignment: Alignment.bottomCenter,
-            child: FunButton(
-              onTap: onTap,
-              text: 'Continue',
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.continueClicked,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: FunButton(
+                onTap: onTap,
+                text: 'Continue',
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.continueClicked,
+                ),
               ),
             ),
           )
