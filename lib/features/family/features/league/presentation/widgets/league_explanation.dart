@@ -47,7 +47,7 @@ class LeagueExplanation extends StatelessWidget {
               AmplitudeEvents.leagueExplanationContinueClicked,
             ),
           ),
-          const SizedBox(height: 36),
+          const SizedBox(height: 40),
         ],
       ),
     );

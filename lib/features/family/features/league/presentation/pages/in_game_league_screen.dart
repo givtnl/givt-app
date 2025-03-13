@@ -44,7 +44,8 @@ class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
   Widget build(BuildContext context) {
     return FunScaffold(
       minimumPadding: EdgeInsets.zero,
-      appBar: const FunTopAppBar(title: ''),
+      safeAreaBottom: false,
+      appBar: FunTopAppBar.white(),
       body: BaseStateConsumer(
         cubit: _leagueCubit,
         onCustom: _onCustom,

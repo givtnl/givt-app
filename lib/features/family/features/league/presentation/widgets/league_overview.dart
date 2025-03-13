@@ -69,7 +69,7 @@ class LeagueOverview extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
               child: FunButton(
                 onTap: onTap,
                 isLoading: isBtnLoading,
