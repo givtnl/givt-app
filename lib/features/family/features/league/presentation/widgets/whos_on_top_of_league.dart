@@ -17,8 +17,8 @@ class WhosOnTopOfTheLeague extends StatelessWidget {
       child: Column(
         children: [
           const Spacer(),
-          SvgPicture.asset(
-            'assets/family/images/league/top_heroes_reveal.svg',
+          Image.asset(
+            'assets/family/images/league/top_heroes_reveal.png',
           ),
           const SizedBox(height: 16),
           const TitleMediumText(
