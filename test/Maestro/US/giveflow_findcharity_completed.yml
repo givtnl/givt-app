@@ -1,18 +1,18 @@
 appId: net.givtapp.ios.test
-name: Kid gives via Find Charity, no creditcard is setup
-#In this flow the precondition is that there is no creditcard setup yet. A kid will give via the 'Find Charity'-flow. 
+name: Kid gives via Find Charity, creditcard is setup
+#In this flow the precondition is that the creditcard is setup. A kid will give via the 'Find Charity'-flow. 
 env:
-    KIDSNAME: Awesome
+    KIDSNAME: Kira
 ---
 - tapOn: 
     label: Tap on "Give"
     text: "Give\nDonate to a cause"
 - tapOn: 
     label: Tap on kid profile
-    text: ${KIDSNAME}
+    text: ".*${KIDSNAME}"
 - assertVisible: 
     label: Name of kid is visible
-    text: ${KIDSNAME}
+    text: ".*${KIDSNAME}"
     optional: true
 - tapOn:
     label: Tap on Find Charity
@@ -34,8 +34,7 @@ env:
     label: Tap on the first suggestion
     point: "50%,40%"
 - tapOn:
-    label: Close the first suggestion
-    point: "92%,13%"
+    id: "closeButton"
 - "scroll"
 - tapOn:
     label: Tap on the last suggestion
@@ -52,7 +51,7 @@ env:
 - assertVisible: 
     label: Thank you for your is visble
     text: '.*Thank you for your donation.*'
-- tapOn: "Back to home"
+- tapOn: "icon-FontAwesomeSolid-61461.*"
 - tapOn:
     label: Use backbutton to go back to Family Home screen
-    point: 7%,9%
+    id: "backButton"

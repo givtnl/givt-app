@@ -9,7 +9,7 @@ env:
     PARENT_LASTNAME: with Maestro
     KIDSNAME: Awesome
 ---
-- runFlow: "UserRegistration.yml"
+- runFlow: "NewUserRegistration.yml"
 - runFlow: "tutorial.yml"
 - runFlow: "give_findcharity_nocreditcard.yml"
 - runFlow: "delete_account.yml"
