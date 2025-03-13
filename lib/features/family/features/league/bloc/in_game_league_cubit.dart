@@ -82,7 +82,13 @@ class InGameLeagueCubit
     _prefs.setBool(_inGameLeagueExplanationKey, true);
     _shouldShowExplanation = false;
     _shouldShowOnTopOfLeague = true;
-    _emitData();
+
+    _showConfetti();
+    Timer(const Duration(seconds: 1), _emitData);
+  }
+
+  void _showConfetti() {
+    emitCustom(const InGameLeagueCustom.showConfetti());
   }
 
   void onWhosTopOfLeagueContinuePressed() {
