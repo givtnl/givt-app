@@ -21,7 +21,7 @@ env:
 - inputText: 
     label: Enter the test user's Email
     text: ${USERNAME}
-- tapOn: "Continue"
+- tapOn: "Continue.*"
 - tapOn: "First name"
 - inputText: ${PARENT_FIRSTNAME}
 - tapOn: "Surname"

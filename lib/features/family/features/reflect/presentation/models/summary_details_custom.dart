@@ -5,26 +5,21 @@ sealed class SummaryDetailsCustom {
 
   const factory SummaryDetailsCustom.showConfetti() = ShowConfetti;
 
-  const factory SummaryDetailsCustom.navigateToNextScreen() =
-      NavigateToNextScreen;
+  const factory SummaryDetailsCustom.navigateToInGameLeague() =
+      NavigateToInGameLeague;
 
-  const factory SummaryDetailsCustom.showInterviewPopup(
-    FunDialogUIModel uiModel, {
-    bool useDefaultImage,
-  }) = ShowInterviewPopup;
+  const factory SummaryDetailsCustom.navigateToGoalProgressUpdate() =
+      NavigateToGoalProgressUpdate;
 }
 
 class ShowConfetti extends SummaryDetailsCustom {
   const ShowConfetti();
 }
 
-class NavigateToNextScreen extends SummaryDetailsCustom {
-  const NavigateToNextScreen();
+class NavigateToInGameLeague extends SummaryDetailsCustom {
+  const NavigateToInGameLeague();
 }
 
-class ShowInterviewPopup extends SummaryDetailsCustom {
-  const ShowInterviewPopup(this.uiModel, {this.useDefaultImage = true});
-
-  final FunDialogUIModel uiModel;
-  final bool useDefaultImage;
+class NavigateToGoalProgressUpdate extends SummaryDetailsCustom {
+  const NavigateToGoalProgressUpdate();
 }

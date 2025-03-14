@@ -24,7 +24,7 @@ class GoalActiveWidget extends StatelessWidget {
             title: org.organisationName ?? 'Name Placeholder',
             description:
                 '${context.l10n.familyGoalPrefix}\$${currentGoal.goalAmount}',
-            progress: GoalProgressUImodel(
+            progress: GoalCardProgressUImodel(
               amount: currentGoal.amount,
               goalAmount: currentGoal.goalAmount,
               totalAmount: currentGoal.totalAmount,

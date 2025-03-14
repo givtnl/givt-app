@@ -142,6 +142,7 @@ class GiveBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
+                      semanticLabel: 'xmark',
                       FontAwesomeIcons.xmark,
                       size: 24,
                       color: Theme.of(context).colorScheme.onPrimaryContainer,

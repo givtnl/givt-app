@@ -74,7 +74,7 @@ class MissionRepositoryImpl implements MissionRepository {
     var mission =
         (await getMissions()).firstWhere((m) => m.missionKey == missionKey);
     if (_tutorialRepository.bedtimeMissionStartedFromTutorial &&
-        mission.title.toLowerCase().contains('bedtime')) {
+        mission.missionKey == 'GRATITUDEGOAL') {
       mission = mission.copyWith(showAchievedTooltip: true);
     }
     _missionAchievedStreamController.add(mission);

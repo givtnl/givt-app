@@ -1,5 +1,5 @@
-class GoalProgressUImodel {
-  GoalProgressUImodel({
+class GoalCardProgressUImodel {
+  GoalCardProgressUImodel({
     required this.amount,
     this.goalAmount = 100,
     this.totalAmount = 0,

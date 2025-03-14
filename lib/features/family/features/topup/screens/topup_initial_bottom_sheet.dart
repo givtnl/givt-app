@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -64,6 +64,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
           const SizedBox(height: 8),
           if (currentProfile.wallet.givingAllowance.amount == 0)
             InputCheckbox(
+              semanticsLabel: 'recurringCheckbox',
               label: 'Turn this into a monthly recurring amount',
               value: recurring,
               analyticsEvent:

@@ -26,6 +26,7 @@ import 'package:givt_app/features/family/features/home_screen/cubit/family_home_
 import 'package:givt_app/features/family/features/home_screen/cubit/gratitude_goal_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/league/bloc/in_game_league_cubit.dart';
 import 'package:givt_app/features/family/features/league/bloc/league_cubit.dart';
 import 'package:givt_app/features/family/features/league/domain/league_repository.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
@@ -42,6 +43,7 @@ import 'package:givt_app/features/family/features/recommendation/tags/repositori
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/generous_selection_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/goal_progress_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/gratitude_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
@@ -94,6 +96,7 @@ void initCubits() {
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => LeaveGameCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
+    ..registerFactory(() => GoalProgressCubit(getIt()))
     ..registerLazySingleton<InterviewCubit>(
       () => InterviewCubit(getIt()),
     )
@@ -106,6 +109,8 @@ void initCubits() {
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
     ..registerLazySingleton(() => LeagueCubit(getIt(), getIt(), getIt()))
+    ..registerFactory(
+        () => InGameLeagueCubit(getIt(), getIt(), getIt(), getIt()))
     ..registerLazySingleton<GiveCubit>(
       () => GiveCubit(
         getIt(),
@@ -171,7 +176,7 @@ void initCubits() {
       () => FamilyAuthCubit(getIt()),
     )
     ..registerLazySingleton<RecordCubit>(
-          RecordCubit.new,
+      RecordCubit.new,
     )
     ..registerLazySingleton<FamilyLoginCubit>(
       () => FamilyLoginCubit(getIt()),

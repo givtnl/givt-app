@@ -132,7 +132,6 @@ class ReflectAndShareRepository {
         totalTimeSpentInSeconds,
         _gameId,
       );
-      _fetchGameStats();
       return ExperienceStats.fromJson(map);
     } catch (e, s) {
       LoggingInfo.instance.error(
@@ -652,8 +651,15 @@ class ReflectAndShareRepository {
     return _gameStatsData ??= await _fetchGameStats();
   }
 
-  Future<void> refreshGameStats() async {
+  /// Refreshes the game stats
+  /// Returns true if the game stats were changed
+  /// Returns false if the game stats were not changed
+  Future<bool> refreshGameStats() async {
+    final previousStats = _gameStatsData;
     await _fetchGameStats();
+    return previousStats!.gratitudeGoal != _gameStatsData!.gratitudeGoal ||
+        previousStats.gratitudeGoalCurrent !=
+            _gameStatsData!.gratitudeGoalCurrent;
   }
 
   Future<GameStats> _fetchGameStats() async {
@@ -662,6 +668,11 @@ class ReflectAndShareRepository {
     _gameStatsUpdatedStreamController.add(stats);
     _gameStatsData = stats;
     return stats;
+  }
+
+  void logout() {
+    reset();
+    _gameStatsData = null;
   }
 
   void reset() {
@@ -677,7 +688,6 @@ class ReflectAndShareRepository {
     _currentSetOfQuestions.clear();
     _usedSecretWords.clear();
     _currentSecretWord = null;
-    _gameStatsData = null;
     _hasStartedInterview = false;
   }
 

@@ -9,8 +9,8 @@ name: Ask for creditcard details in give flow
     label: Enter the test user's Password
     text: "Test123"
 - tapOn:
-    label: "Tap on Login"
-    point: "50%,55%"
+    text: "Login"
+    index: 1
 - tapOn: "Enter payment details"
 - tapOn: "Name on card"
 - inputText:

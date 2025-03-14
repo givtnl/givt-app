@@ -17,11 +17,13 @@ class FunBackgroundAudioWidget extends StatefulWidget {
     this.isVisible = false,
     this.onPlay,
     this.onPauseOrStop,
+    this.iconColor,
     super.key,
   });
 
   final bool isVisible;
   final String audioPath;
+  final Color? iconColor;
   final VoidCallback? onPlay;
   final VoidCallback? onPauseOrStop;
   @override
@@ -75,12 +77,12 @@ class _FunBackgroundAudioWidgetState extends State<FunBackgroundAudioWidget>
     return Visibility(
       visible: widget.isVisible,
       child: isPlaying
-          ? const AnimatedSpeaker()
+          ? AnimatedSpeaker(iconColor: widget.iconColor)
           : GestureDetector(
               onTap: () {
                 _audioPlayer.play(AssetSource(widget.audioPath));
               },
-              child: AnimatedSpeaker.pause(),
+              child: AnimatedSpeaker.pause(iconColor: widget.iconColor),
             ),
     );
   }

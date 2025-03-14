@@ -190,6 +190,8 @@ class FunButton extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: FaIcon(
+              semanticLabel:
+                  'icon-${leftIcon?.fontFamily}-${leftIcon?.codePoint}',
               leftIcon,
               size: 24,
               color: isDisabled ? FamilyAppTheme.neutralVariant60 : textColor,
@@ -215,6 +217,8 @@ class FunButton extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 12),
             child: FaIcon(
+              semanticLabel:
+                  'icon-${rightIcon?.fontFamily}-${rightIcon?.codePoint}',
               rightIcon,
               size: 24,
               color: isDisabled ? FamilyAppTheme.neutralVariant60 : borderColor,

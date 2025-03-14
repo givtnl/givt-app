@@ -20,8 +20,11 @@ class FunGoal extends FunIcon {
   @override
   Widget build(BuildContext context) {
     return FunIcon(
-      icon: SvgPicture.asset(
-        'assets/family/images/goal_tile.svg',
+      icon: Semantics(
+        label: 'goaltile',
+        child: SvgPicture.asset(
+          'assets/family/images/goal_tile.svg',
+        ),
       ),
       padding: EdgeInsets.zero,
       circleColor: customCircleColor,

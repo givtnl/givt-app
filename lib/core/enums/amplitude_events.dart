@@ -191,6 +191,7 @@ enum AmplitudeEvents {
   homeSettingsClicked('home_settings_clicked'),
   leaguePlayGameClicked('league_play_game_clicked'),
   leagueExplanationContinueClicked('league_explanation_continue_clicked'),
+  leagueButtonClicked('league_button_clicked'),
 
   // Change Password
   changePasswordClicked('change_password_clicked'),
@@ -308,7 +309,8 @@ enum AmplitudeEvents {
   reflectAndShareResultShuffleRolesClicked(
     'reflect_and_share_result_shuffle_roles_clicked',
   ),
-  familyReflectSummaryBackToHome('family_reflect_summary_back_to_home'),
+  reflectAndShareShowSummaryClicked('reflect_and_share_show_summary_clicked'),
+  familyReflectSummaryClaimXp('family_reflect_summary_claim_xp'),
   gratefulTileSubmitted('grateful_tile_submitted'),
   generousTileSubmitted('generous_tile_submitted'),
   generousTileSelected('generous_tile_selected'),
@@ -323,6 +325,9 @@ enum AmplitudeEvents {
       'parent_reflection_flow_organisation_clicked'),
   familyReflectSummaryGenerousDeedsClicked(
     'family_reflect_summary_generous_deeds_clicked',
+  ),
+  familyReflectSummaryXpClicked(
+    'family_reflect_summary_xp_clicked',
   ),
   newActOfGenerosityClicked('new_act_of_generosity_clicked'),
   recommendationTypeSelectorClicked('recommendation_type_selector_clicked'),

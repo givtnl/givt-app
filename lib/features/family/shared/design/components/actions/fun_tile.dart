@@ -90,6 +90,7 @@ class FunTile extends StatelessWidget {
     IconData? iconData,
     VoidCallback? onTap,
     double? assetSize,
+    bool isPressedDown = false,
     bool shrink = false,
   }) {
     return FunTile(
@@ -106,6 +107,7 @@ class FunTile extends StatelessWidget {
       shrink: shrink,
       iconColor: FamilyAppTheme.secondary20,
       analyticsEvent: analyticsEvent,
+      isPressedDown: isPressedDown,
     );
   }
 

@@ -37,7 +37,9 @@ class _LeaveGameButtonState extends State<LeaveGameButton> {
       onCustom: _handleCustom,
       onInitial: (context) {
         return IconButton(
-          icon: const FaIcon(FontAwesomeIcons.xmark),
+          icon: const FaIcon(
+              semanticLabel: 'xmark',
+              FontAwesomeIcons.xmark,),
           onPressed: widget.onPressed ??
               () {
                 LeaveGameDialog(

@@ -21,8 +21,7 @@ env:
 - tapOn: "In my country"
 - tapOn: "Next"
 - tapOn:
-    label: Go back to previous page
-    point: "7%,9%"
+    id: "backButton"
 - tapOn: "All around the world"
 - tapOn: "Next"
 - tapOn: "Child care"
@@ -34,8 +33,7 @@ env:
     label: Tap on the first suggestion
     point: "50%,40%"
 - tapOn:
-    label: Close the first suggestion
-    point: "92%,13%"
+    id: "backButton"
 - "scroll"
 - tapOn:
     label: Tap on the last suggestion
@@ -55,3 +53,6 @@ env:
     text: '.*Thank you for your donation.*'
 - tapOn: "Back to home"
 - assertVisible: " $6"
+- tapOn:
+    label: Use backbutton to go back to Family Home screen
+    id: "backButton"

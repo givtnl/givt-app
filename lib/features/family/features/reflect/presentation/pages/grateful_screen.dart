@@ -22,7 +22,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/m
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/gather_around_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
@@ -225,8 +225,8 @@ class _GratefulScreenState extends State<GratefulScreen> {
           data.profile,
           data.organisation,
         );
-      case GratefulGoToGameSummary():
-        _navigateToSummary(context);
+      case GratefulGoToGatherAround():
+        _navigateToGatherAround(context);
       case ScrollToTop():
         _scrollToTop();
       case ShowDoneOverlay():
@@ -360,8 +360,8 @@ class _GratefulScreenState extends State<GratefulScreen> {
     }
   }
 
-  void _navigateToSummary(BuildContext context) {
-    Navigator.of(context).push(const SummaryScreen().toRoute(context));
+  void _navigateToGatherAround(BuildContext context) {
+    Navigator.of(context).push(const GatherAroundScreen().toRoute(context));
   }
 
   void _showDoneOverlay(BuildContext context) {

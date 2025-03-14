@@ -28,6 +28,7 @@ class AcceptPolicyRow extends StatelessWidget {
       child: Row(
         children: [
           Checkbox(
+            semanticLabel: 'acceptPolicyCheckbox',
             value: checkBoxValue,
             onChanged: onTap,
           ),

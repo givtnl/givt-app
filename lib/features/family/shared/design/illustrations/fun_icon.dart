@@ -37,6 +37,7 @@ class FunIcon extends StatelessWidget {
     this.circleColor = FamilyAppTheme.primary95,
     this.iconColor = FamilyAppTheme.primary20,
     this.padding = const EdgeInsets.all(14),
+    this.semanticsIdentifier,
     super.key,
   });
 
@@ -292,6 +293,7 @@ class FunIcon extends StatelessWidget {
   final Color circleColor;
   final Color iconColor;
   final EdgeInsets padding;
+  final String? semanticsIdentifier;
 
   @override
   Widget build(BuildContext context) {
@@ -309,16 +311,25 @@ class FunIcon extends StatelessWidget {
             ),
           ),
           if (icon != null)
-            SizedBox(
-              width: circleSize,
-              height: circleSize,
-              child: icon,
+            Semantics(
+              identifier: semanticsIdentifier ?? 'icon-custom',
+              child: SizedBox(
+                width: circleSize,
+                height: circleSize,
+                child: icon,
+              ),
             )
           else
-            FaIcon(
-              iconData,
-              color: iconColor,
-              size: iconSize,
+            Semantics(
+              identifier: semanticsIdentifier ??
+                  'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
+              child: FaIcon(
+                iconData,
+                semanticLabel:
+                    'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
+                color: iconColor,
+                size: iconSize,
+              ),
             ),
         ],
       ),
