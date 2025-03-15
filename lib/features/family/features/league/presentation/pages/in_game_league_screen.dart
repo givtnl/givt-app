@@ -116,9 +116,9 @@ class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
   }
 
   void _showConffetti(BuildContext context) {
-    setState(() {
-      _isBtnPressedDown = true;
-    });
+    // setState(() {
+    //   _isBtnPressedDown = true;
+    // });
     ConfettiDialog.show(context);
   }
 
