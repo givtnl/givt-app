@@ -90,7 +90,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
 
     emitCustom(const SummaryDetailsCustom.showConfetti());
 
-    Future<void>.delayed(const Duration(seconds: 1), () async {
+    Future<void>.delayed(const Duration(milliseconds: 1100), () async {
       try {
         final statsChanged =
             await _reflectAndShareRepository.refreshGameStats();
