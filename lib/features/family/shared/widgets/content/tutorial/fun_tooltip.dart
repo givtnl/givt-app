@@ -26,6 +26,7 @@ class FunTooltip extends StatelessWidget {
     this.showImage = true,
     this.imageLeft,
     this.buttonIcon,
+    this.analyticsEvent,
     this.onButtonTap,
     this.onHighlightedWidgetTap,
   });
@@ -57,6 +58,9 @@ class FunTooltip extends StatelessWidget {
 
   // Overrides the default button icon
   final Widget? buttonIcon;
+
+  // Overrides the default analytics event
+  final AmplitudeEvents? analyticsEvent;
 
   // Replaced the default button with a custom one
   final Widget? buttonBottomRightOverride;
@@ -134,12 +138,13 @@ class FunTooltip extends StatelessWidget {
                                             'tooltipNext$tooltipIndex',
                                           ),
                                           onTap: onButtonTap ??
-                                                  () => controller.next(),
+                                              () => controller.next(),
                                           analyticsEvent:
                                               analyticsEventButtonOverride ??
                                                   AnalyticsEvent(
-                                                    AmplitudeEvents
-                                                        .tutorialNextClicked,
+                                                    analyticsEvent ??
+                                                        AmplitudeEvents
+                                                            .tutorialNextClicked,
                                                     parameters: {
                                                       'tutorialLabelBottomLeft':
                                                           labelBottomLeft,
