@@ -32,7 +32,7 @@ class ParentSummaryItem {
     return SummaryUIModel(
       conversations: conversations.map((e) => e.toUIModel()).toList(),
       audioLink: audio,
-      date: date,
+      date: date?.toLocal(),
     );
   }
 }
