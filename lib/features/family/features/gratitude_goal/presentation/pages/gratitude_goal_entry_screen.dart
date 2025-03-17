@@ -4,7 +4,6 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_recognize_this_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -17,7 +16,6 @@ class GratitudeGoalEntryScreen extends StatelessWidget {
     return FunScaffold(
       appBar: const FunTopAppBar(
         title: 'Build a habit',
-        leading: GivtBackButtonFlat(),
       ),
       body: Column(
         children: [
