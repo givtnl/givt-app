@@ -8,7 +8,9 @@ env:
 - launchApp:
     clearState: true
 
-- tapOn: "Select country"
+- tapOn:
+    label: "Select country"
+    id: "icon-FontAwesomeSolid-62845"
 - tapOn: "Netherlands"
 - tapOn: "By continuing you agree to our terms and conditions."
 - assertVisible: '.*GIVT B.V..*'
@@ -19,5 +21,7 @@ env:
 - inputText:
     label: "Enter the test user's email address"
     text: ${USERNAME}
-- tapOn: "Continue"
+- tapOn: 
+    label: "Continue"
+    text: ".*icon-FontAwesomeSolid-61537"
 - tapOn: "Ask me later"
