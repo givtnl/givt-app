@@ -94,8 +94,6 @@ enum AmplitudeEvents {
   removeGivingGoalClicked('remove_giving_goal_clicked'),
   recurringDonationsClicked('recurring_donations_clicked'),
   editAvatarPictureClicked('edit_avatar_picture_clicked'),
-  avatarSelected('avatar_selected'),
-  avatarSaved('avatar_saved'),
   cacheMembersDueToNoFunds('cache_members_due_to_no_funds'),
   changePaymentMethodForFailedVPCClicked(
     'change_payment_method_for_failed_vpc_clicked',
@@ -408,6 +406,11 @@ enum AmplitudeEvents {
 
   // Reward
   claimRewardClicked('claim_reward_clicked'),
+
+  // Change avatar
+  avatarSaved('avatar_saved'),
+  avatarTabChanged('avatar_tab_changed'),
+  lockedButtonClicked('locked_button_clicked'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class FunBubble extends StatelessWidget {
@@ -13,6 +13,18 @@ class FunBubble extends StatelessWidget {
           FunAvatar.captainAi(),
           const SizedBox(width: 12),
           Flexible(child: BodySmallText(text)),
+        ],
+      ),
+    );
+  }
+
+  factory FunBubble.captainGenerosity({required String text}) {
+    return FunBubble(
+      child: Row(
+        children: [
+          FunAvatar.captain(lookRight: true),
+          const SizedBox(width: 12),
+          Flexible(child: TitleSmallText(text)),
         ],
       ),
     );

@@ -5,6 +5,7 @@ sealed class EditAvatarCustom {
 
   const factory EditAvatarCustom.navigateToProfile() = NavigateToProfile;
   const factory EditAvatarCustom.showSaveOnBackDialog() = ShowSaveOnBackDialog;
+
   const factory EditAvatarCustom.navigateToLookingGoodScreen(
     LookingGoodUIModel uiModel,
   ) = NavigateToLookingGoodScreen;

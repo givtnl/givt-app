@@ -1,4 +1,5 @@
-import 'package:flutter/src/widgets/framework.dart';
+import 'dart:async';
+
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
@@ -19,6 +20,9 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   String userGuid = '';
   Profile? _profile;
   String _selectedAvatar = '';
+  String _customMode = 'Default';
+  bool _lockMessageEnabled = false;
+  Timer? _lockMessageTimer;
 
   final EditAvatarRepository _repository;
   final ProfilesRepository _profilesRepository;
@@ -62,10 +66,15 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   /// Set the avatar to the selected avatar
   void setAvatar(String avatarName) {
     _selectedAvatar = avatarName;
+    _emitData();
+  }
 
+  void _emitData() {
     emitData(
       EditAvatarUIModel(
-        avatarName,
+        _selectedAvatar,
+        _customMode,
+        _lockMessageEnabled,
       ),
     );
   }
@@ -78,5 +87,21 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
 
     emitCustom(const EditAvatarCustom.showSaveOnBackDialog());
     return Future.value();
+  }
+
+  void setMode(Set<String> option) {
+    _customMode = option.first;
+    _emitData();
+  }
+
+  void lockedButtonClicked() {
+    _lockMessageEnabled = true;
+    _emitData();
+
+    _lockMessageTimer?.cancel(); // Cancel any existing timer
+    _lockMessageTimer = Timer(const Duration(milliseconds: 6000), () {
+      _lockMessageEnabled = false;
+      _emitData();
+    });
   }
 }

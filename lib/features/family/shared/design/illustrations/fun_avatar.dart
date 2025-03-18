@@ -12,14 +12,18 @@ class FunAvatar extends FunIcon {
     this.customSize = 48,
   });
 
-  factory FunAvatar.captain({bool isLarge = false}) {
+  factory FunAvatar.captain({bool isLarge = false, bool lookRight = false}) {
     return FunAvatar(
       semanticsIdentifier: 'captain',
       customCircleColor: FamilyAppTheme.neutral95,
-      customAvatar: SvgPicture.asset(
-        isLarge
-            ? 'assets/family/images/avatar_captain_large.svg'
-            : 'assets/family/images/avatar_captain.svg',
+      customAvatar: Transform(
+        alignment: Alignment.center,
+        transform: lookRight ? Matrix4.rotationY(3.14159) : Matrix4.identity(),
+        child: SvgPicture.asset(
+          isLarge
+              ? 'assets/family/images/avatar_captain_large.svg'
+              : 'assets/family/images/avatar_captain.svg',
+        ),
       ),
       customSize: isLarge ? 140 : 48,
     );
