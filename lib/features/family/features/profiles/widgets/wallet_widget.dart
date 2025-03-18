@@ -9,9 +9,11 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/edit_avatar_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/my_givts_text_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class WalletWidget extends StatefulWidget {
@@ -73,22 +75,25 @@ class _WalletWidgetState extends State<WalletWidget> {
                         },
                         customBorder: const CircleBorder(),
                         splashColor: Theme.of(context).primaryColor,
-                        child: Stack(
-                          children: [
-                            FunAvatar.hero(widget.avatar),
-                            const Positioned(
-                              top: 0,
-                              right: 0,
-                              child: FaIcon(
-                                FontAwesomeIcons.pen,
-                                size: 20,
-                                color: AppTheme.primary20,
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: FunAvatar.hero(widget.avatar),
                       ),
                     ),
+                  ),
+                  const SizedBox(height: 12),
+                  FunButton.secondary(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        EditAvatarScreen(userGuid: widget.kidid).toRoute(
+                          context,
+                        ),
+                      );
+                    },
+                    text: 'Edit avatar',
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.editProfilePictureClicked,
+                    ),
+                    size: FunButtonSize.small,
+                    leftIcon: FontAwesomeIcons.userPen,
                   ),
                   const SizedBox(height: 12),
                   if (state is ProfilesLoadingState)
@@ -102,6 +107,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                           color: FamilyAppTheme.info40,
                           size: 20,
                         ),
+                        const SizedBox(width: 4),
                         Countup(
                           begin: widget.balance + widget.countdownAmount,
                           end: widget.balance,
@@ -117,6 +123,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                         ),
                       ],
                     ),
+                  const SizedBox(height: 4),
                   MyGivtsButton(
                     userId: widget.kidid,
                   ),
