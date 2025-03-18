@@ -3,9 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/edit_avatar/bloc/edit_avatar_cubit.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_uimodel.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/models/looking_good_uimodel.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/looking_good_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
@@ -68,7 +71,9 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
       case NavigateToProfile():
         context.pop();
       case ShowSaveOnBackDialog():
-        showSaveOnBackDialog(context);
+        _showSaveOnBackDialog(context);
+      case NavigateToLookingGoodScreen():
+        _navigateToLookingGoodScreen(context, custom.uiModel);
     }
   }
 
@@ -157,7 +162,16 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     );
   }
 
-  void showSaveOnBackDialog(BuildContext context) {
+  void _navigateToLookingGoodScreen(
+    BuildContext context,
+    LookingGoodUIModel uiModel,
+  ) {
+    Navigator.of(context).push(
+      LookingGoodScreen(uiModel: uiModel).toRoute(context),
+    );
+  }
+
+  void _showSaveOnBackDialog(BuildContext context) {
     FunModal(
       icon: FunIcon.mask(),
       title: 'Save avatar?',

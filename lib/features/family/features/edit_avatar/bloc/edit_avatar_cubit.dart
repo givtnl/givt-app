@@ -3,6 +3,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_uimodel.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/models/looking_good_uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -48,7 +49,14 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       _selectedAvatar, // Use the selected avatar
     );
 
-    emitCustom(const EditAvatarCustom.navigateToProfile());
+    emitCustom(
+      EditAvatarCustom.navigateToLookingGoodScreen(
+        LookingGoodUIModel(
+          avatar: _selectedAvatar,
+          userFirstName: _profile!.firstName,
+        ),
+      ),
+    );
   }
 
   /// Set the avatar to the selected avatar
