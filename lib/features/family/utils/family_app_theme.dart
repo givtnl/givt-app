@@ -83,6 +83,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const neutral98 = Color(0xFFFBF9F1);
   static const neutral95 = Color(0xFFF3F1E9);
   static const neutral90 = Color(0xFFE4E3DB);
+  static const neutral80 = Color(0xFFC8C7BF);
   static const neutral70 = Color(0xFFACABA4);
 
   static const neutralVariant40 = Color(0xFF5B6055);

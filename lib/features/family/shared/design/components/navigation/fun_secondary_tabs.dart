@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class FunSecondaryTabs extends StatelessWidget {
   const FunSecondaryTabs({
@@ -13,11 +14,15 @@ class FunSecondaryTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: tabs.length, // Number of tabs
+      length: tabs.length,
       child: Column(
         children: [
-          TabBar(
+          TabBar.secondary(
             tabs: tabs,
+            unselectedLabelColor: FamilyAppTheme.neutral70,
+            labelColor: FamilyAppTheme.primary70,
+            dividerColor: FamilyAppTheme.neutral80,
+            indicatorColor: FamilyAppTheme.primary70,
           ),
           Expanded(
             child: TabBarView(
