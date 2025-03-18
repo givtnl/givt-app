@@ -1,3 +1,4 @@
+import 'package:givt_app/features/family/features/reward/presentation/models/reward_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 
 sealed class InGameLeagueCustom {
@@ -7,6 +8,10 @@ sealed class InGameLeagueCustom {
 
   const factory InGameLeagueCustom.navigateToProfileSelection() =
       NavigateToProfileSelection;
+
+  const factory InGameLeagueCustom.navigateToRewardScreen(
+    RewardUIModel uiModel,
+  ) = NavigateToRewardScreen;
 
   const factory InGameLeagueCustom.showInterviewPopup(
     FunDialogUIModel uiModel, {
@@ -20,6 +25,12 @@ class ShowConfetti extends InGameLeagueCustom {
 
 class NavigateToProfileSelection extends InGameLeagueCustom {
   const NavigateToProfileSelection();
+}
+
+class NavigateToRewardScreen extends InGameLeagueCustom {
+  const NavigateToRewardScreen(this.uiModel);
+
+  final RewardUIModel uiModel;
 }
 
 class ShowInterviewPopup extends InGameLeagueCustom {

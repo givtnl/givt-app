@@ -406,6 +406,9 @@ enum AmplitudeEvents {
   tutorialDoneClicked('tutorial_done_clicked'),
   bottomsheet('bottomsheet'),
 
+  // Reward
+  claimRewardClicked('claim_reward_clicked'),
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
   ;
