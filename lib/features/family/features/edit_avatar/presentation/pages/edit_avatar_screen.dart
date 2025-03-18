@@ -46,6 +46,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
 
   @override
   void dispose() {
+    controller.dispose();
     _cubit.close();
     super.dispose();
   }
@@ -111,10 +112,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
           children: [
             const SizedBox(height: 12),
             FunPrimaryTabs(
-              options: const [
-                'Default',
-                'Customize',
-              ],
+              options: options,
               selectedIndex: data.mode == options[0] ? 0 : 1,
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.avatarTabChanged,

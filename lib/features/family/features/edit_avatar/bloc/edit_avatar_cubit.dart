@@ -40,6 +40,12 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     });
   }
 
+  @override
+  Future<void> close() {
+    _lockMessageTimer?.cancel();
+    return super.close();
+  }
+
   /// Save the selected avatar
   void saveAvatar() {
     emitLoading();
