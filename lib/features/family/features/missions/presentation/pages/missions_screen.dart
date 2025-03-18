@@ -56,7 +56,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
           onData: (context, uiModel) {
             return Column(
               children: [
-                FunTabs(
+                FunPrimaryTabs(
                   margin: EdgeInsets.zero,
                   options: options,
                   selectedIndex: _selectedIndex,

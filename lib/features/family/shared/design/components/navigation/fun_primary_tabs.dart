@@ -6,8 +6,8 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class FunTabs extends StatelessWidget {
-  const FunTabs({
+class FunPrimaryTabs extends StatelessWidget {
+  const FunPrimaryTabs({
     required this.options,
     required this.selectedIndex,
     required this.onPressed,

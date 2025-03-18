@@ -125,7 +125,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                         ),
                         const SizedBox(height: 16),
                         Center(
-                          child: FunTabs(
+                          child: FunPrimaryTabs(
                             selectedIndex:
                                 uiModel.recommendationsUIModel.tabIndex,
                             onPressed: _cubit.onSelectionChanged,
