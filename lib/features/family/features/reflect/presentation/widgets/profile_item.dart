@@ -25,10 +25,7 @@ class ProfileItem extends StatelessWidget {
       feedback: _feedbackCircle(size),
       child: Column(
         children: [
-          FunAvatar.hero(
-            profile.avatar!,
-            size: size
-          ),
+          FunAvatar.hero(profile.avatar!, size: size),
           const SizedBox(height: 12),
           SizedBox(
             width: size,
@@ -45,21 +42,13 @@ class ProfileItem extends StatelessWidget {
     );
   }
 
-  Container _feedbackCircle(double width) {
-    return Container(
-      height: width,
-      width: width,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: FamilyAppTheme.primary20,
-      ),
-      child: Semantics(
-        identifier: profile.avatar?.split('/').last,
-        child: SvgPicture.network(
-          profile.avatar!,
-          width: width,
-          height: width,
-        ),
+  Widget _feedbackCircle(double size) {
+    return SizedBox(
+      height: size,
+      width: size,
+      child: FunAvatar.hero(
+        profile.avatar!,
+        size: size,
       ),
     );
   }
