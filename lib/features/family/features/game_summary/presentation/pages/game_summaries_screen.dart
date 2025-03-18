@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/features/game_summary/data/models/game_
 import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summary_screen.dart';
 import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
@@ -139,11 +139,7 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
                 for (int i = 0; i < summary.players.length; i++)
                   Positioned(
                     left: i * 24.0,
-                    child: SvgPicture.network(
-                      summary.players[i].pictureURL,
-                      width: 32,
-                      height: 32,
-                    ),
+                    child: FunAvatar.hero(summary.players[i].avatar, size: 32,),
                   ),
               ],
             ),

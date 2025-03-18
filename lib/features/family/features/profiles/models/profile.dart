@@ -16,6 +16,7 @@ class Profile extends Equatable {
     required this.hasDonations,
     required this.lastDonationItem,
     required this.pictureURL,
+    required this.avatar,
     required this.dateOfBirth,
     this.windDownTime,
     this.bedTime,
@@ -43,6 +44,7 @@ class Profile extends Equatable {
       wallet: walletMap,
       lastDonationItem: donationMap,
       pictureURL: pictureMap['pictureURL'] as String,
+      avatar: pictureMap['fileName'] as String? ?? '',
       dateOfBirth: map['dateOfBirth'] as String? ?? '',
       windDownTime: map['windDownTime'] as int?,
       bedTime: map['bedTime'] as String?,
@@ -61,6 +63,7 @@ class Profile extends Equatable {
           wallet: const Wallet.empty(),
           lastDonationItem: const Donation.empty(),
           pictureURL: '',
+          avatar: '',
           dateOfBirth: '',
         );
 
@@ -74,6 +77,7 @@ class Profile extends Equatable {
   final Wallet wallet;
   final Donation lastDonationItem;
   final String pictureURL;
+  final String avatar;
   final String dateOfBirth;
   final int? windDownTime;
   final String? bedTime;
@@ -106,6 +110,7 @@ class Profile extends Equatable {
         hasDonations,
         wallet,
         pictureURL,
+        avatar,
         dateOfBirth,
         windDownTime,
         bedTime,
@@ -122,6 +127,7 @@ class Profile extends Equatable {
     Wallet? wallet,
     Donation? lastDonationItem,
     String? pictureURL,
+    String? avatar,
     String? dateOfBirth,
     int? windDownTime,
     String? bedTime,
@@ -137,6 +143,7 @@ class Profile extends Equatable {
       wallet: wallet ?? this.wallet,
       lastDonationItem: lastDonationItem ?? this.lastDonationItem,
       pictureURL: pictureURL ?? this.pictureURL,
+      avatar: avatar ?? this.avatar,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       windDownTime: windDownTime ?? this.windDownTime,
       bedTime: bedTime ?? this.bedTime,
@@ -148,7 +155,7 @@ class Profile extends Equatable {
       userId: id,
       firstName: firstName,
       lastName: lastName,
-      pictureURL: pictureURL,
+      avatar: avatar,
       type: type,
     );
   }
@@ -166,6 +173,7 @@ class Profile extends Equatable {
       'latestDonation': lastDonationItem.toJson(),
       'picture': {
         'pictureURL': pictureURL,
+        'filename': avatar,
       },
       'dateOfBirth': dateOfBirth,
       'windDownTime': windDownTime,

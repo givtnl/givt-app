@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/models/league_entry_uimodel.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/rank_widget.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
@@ -34,19 +34,9 @@ class LeagueHighlightedHero extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: _getColor(),
                   ),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: uiModel.imageUrl != null
-                        ? SvgPicture.network(
-                            uiModel.imageUrl!,
-                            width: size,
-                            height: size,
-                          )
-                        : const SizedBox.shrink(),
-                  ),
+                  child: uiModel.avatar != null
+                      ? FunAvatar.hero(uiModel.avatar!)
+                      : const SizedBox.shrink(),
                 ),
               ),
               Align(

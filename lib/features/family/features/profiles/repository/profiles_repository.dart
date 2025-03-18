@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
+import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/edit_child_name/repositories/edit_child_repository.dart';
-import 'package:givt_app/features/family/features/edit_child_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/edit_parent_profile/repositories/edit_parent_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/parental_approval/repositories/parental_approval_repository.dart';
@@ -39,7 +39,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     this._authRepository,
     this._parentalApprovalRepository,
     this._createTransactionRepository,
-    this._editChildProfileRepository,
+    this._editAvatarRepository,
     this._editParentProfileRepository,
   ) {
     _init();
@@ -52,7 +52,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   final FamilyAuthRepository _authRepository;
   final ParentalApprovalRepository _parentalApprovalRepository;
   final CreateTransactionRepository _createTransactionRepository;
-  final EditChildProfileRepository _editChildProfileRepository;
+  final EditAvatarRepository _editAvatarRepository;
   final EditParentProfileRepository _editParentProfileRepository;
 
   final StreamController<List<Profile>> _profilesStreamController =
@@ -69,9 +69,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
 
     _editChildRepository.childChangedStream().listen(refreshChildDetails);
 
-    _editChildProfileRepository
-        .onChildAvatarChanged()
-        .listen(refreshChildDetails);
+    _editAvatarRepository.onChildAvatarChanged().listen(refreshChildDetails);
 
     _impactGroupsRepository.onImpactGroupsChanged().listen(
           (_) => refreshProfiles(),

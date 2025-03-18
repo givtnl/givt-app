@@ -182,7 +182,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
           left: (width / 2) - (80 / 2),
           child: AvatarWidget(
             uiModel: AvatarUIModel(
-              avatarUrl: child.pictureURL,
+              avatar: child.pictureURL,
               text: child.firstName,
             ),
             circleSize: 80,

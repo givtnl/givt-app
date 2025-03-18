@@ -12,10 +12,10 @@ class SummaryUIModel {
 class ConversationUIModel {
   ConversationUIModel({
     required this.sentence,
-    required this.profilePicture,
+    required this.avatar,
     required this.profileName,
   });
   final String sentence;
-  final String profilePicture;
+  final String avatar;
   final String profileName;
 }

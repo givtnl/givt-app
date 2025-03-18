@@ -1,6 +1,6 @@
 class AvatarUIModel {
   AvatarUIModel({
-    required this.avatarUrl,
+    required this.avatar,
     required this.text,
     this.isSelected = false,
     this.hasDonated = false,
@@ -9,7 +9,7 @@ class AvatarUIModel {
 
   final bool isSelected;
   final bool hasDonated;
-  final String avatarUrl;
+  final String avatar;
   final String text;
   final String? guid;
 }

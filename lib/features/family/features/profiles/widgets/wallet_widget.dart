@@ -4,23 +4,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/edit_avatar_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/my_givts_text_button.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:go_router/go_router.dart';
 
 class WalletWidget extends StatefulWidget {
   const WalletWidget({
     required this.balance,
     required this.hasDonations,
     super.key,
-    this.avatarUrl = '',
+    this.avatar = '',
     this.kidid = '',
     this.countdownAmount = 0,
   });
@@ -28,7 +27,7 @@ class WalletWidget extends StatefulWidget {
   final double balance;
   final bool hasDonations;
   final double countdownAmount;
-  final String avatarUrl;
+  final String avatar;
   final String kidid;
 
   @override
@@ -36,15 +35,6 @@ class WalletWidget extends StatefulWidget {
 }
 
 class _WalletWidgetState extends State<WalletWidget> {
-  final AppConfig _appConfig = getIt();
-
-  Future<String> _getAppIDAndVersion() async {
-    final packageInfo = _appConfig.packageInfo;
-    final result =
-        '${packageInfo.packageName} v${packageInfo.version}(${packageInfo.buildNumber})';
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -71,8 +61,11 @@ class _WalletWidgetState extends State<WalletWidget> {
                       child: InkWell(
                         onTap: () {
                           SystemSound.play(SystemSoundType.click);
-                          context
-                              .pushNamed(FamilyPages.kidsAvatarSelection.name);
+                          Navigator.of(context).push(
+                            EditAvatarScreen(userGuid: widget.kidid).toRoute(
+                              context,
+                            ),
+                          );
                           AnalyticsHelper.logEvent(
                             eventName:
                                 AmplitudeEvents.editProfilePictureClicked,
@@ -80,30 +73,20 @@ class _WalletWidgetState extends State<WalletWidget> {
                         },
                         customBorder: const CircleBorder(),
                         splashColor: Theme.of(context).primaryColor,
-                        onDoubleTap: () async {
-                          final appInfoString = await _getAppIDAndVersion();
-
-                          if (!context.mounted) return;
-                          SnackBarHelper.showMessage(
-                            context,
-                            text: appInfoString,
-                          );
-                        },
-                        child: Stack(children: [
-                          SvgPicture.network(
-                            widget.avatarUrl,
-                            width: 100,
-                          ),
-                          const Positioned(
-                            top: 0,
-                            right: 0,
-                            child: FaIcon(
-                              FontAwesomeIcons.pen,
-                              size: 20,
-                              color: AppTheme.primary20,
+                        child: Stack(
+                          children: [
+                            FunAvatar.hero(widget.avatar),
+                            const Positioned(
+                              top: 0,
+                              right: 0,
+                              child: FaIcon(
+                                FontAwesomeIcons.pen,
+                                size: 20,
+                                color: AppTheme.primary20,
+                              ),
                             ),
-                          ),
-                        ]),
+                          ],
+                        ),
                       ),
                     ),
                   ),

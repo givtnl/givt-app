@@ -101,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             balance: state.activeProfile.wallet.balance,
                             countdownAmount: countdownAmount,
                             hasDonations: hasDonations,
-                            avatarUrl: state.activeProfile.pictureURL,
+                            avatar: state.activeProfile.avatar,
                             kidid: state.activeProfile.id,
                           ),
                           Padding(
