@@ -104,7 +104,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
         child: Stack(
           children: [
             Positioned(
-              top: 0,
+              bottom: 0,
               width: MediaQuery.sizeOf(context).width,
               child: SvgPicture.asset(
                 'assets/family/images/parent_home_background.svg',
@@ -118,6 +118,16 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FunAvatar.hero(profile.avatar, size: 100),
+                  const SizedBox(height: 12),
+                  FunButton.secondary(
+                    onTap: () => _onEditAvatarClicked(context),
+                    text: 'Edit avatar',
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.editProfilePictureClicked,
+                    ),
+                    size: FunButtonSize.small,
+                    leftIcon: FontAwesomeIcons.userPen,
+                  ),
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
