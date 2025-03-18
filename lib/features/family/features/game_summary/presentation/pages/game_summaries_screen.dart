@@ -152,7 +152,7 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               LabelMediumText(
-                summary.date.formattedFullUSDate,
+                summary.dateLocalTime.formattedFullUSDate,
                 color: FamilyAppTheme.primary50,
               ),
               const SizedBox(width: 16),

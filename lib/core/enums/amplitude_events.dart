@@ -358,6 +358,9 @@ enum AmplitudeEvents {
   familyHomeScreenShowSummariesClicked(
     'family_home_screen_show_summaries_clicked',
   ),
+  familyHomeScreenStatsContainerClicked(
+    'family_home_screen_stats_container_clicked',
+  ),
   enableCaptainAiClicked('enable_captain_ai_clicked'),
   maybeLaterCaptainAiClicked('maybe_later_captain_ai_clicked'),
   userToggledAIFeature('user_toggled_ai_feature'),
@@ -400,6 +403,7 @@ enum AmplitudeEvents {
   tutorialStartClicked('tutorial_start_clicked'),
   tutorialNextClicked('tutorial_next_clicked'),
   tutorialSkipClicked('tutorial_skip_clicked'),
+  tutorialDoneClicked('tutorial_done_clicked'),
   bottomsheet('bottomsheet'),
 
   // DEBUG ONLY
