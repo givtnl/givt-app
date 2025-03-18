@@ -10,7 +10,8 @@ import 'package:givt_app/features/family/features/background_audio/bloc/backgrou
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
 import 'package:givt_app/features/family/features/box_origin/bloc/box_origin_cubit.dart';
-import 'package:givt_app/features/family/features/edit_child_profile/repositories/edit_profile_repository.dart';
+import 'package:givt_app/features/family/features/edit_avatar/bloc/edit_avatar_cubit.dart';
+import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/game_summary/cubit/game_summaries_cubit.dart';
 import 'package:givt_app/features/family/features/game_summary/data/game_summaries_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
@@ -204,6 +205,12 @@ void initCubits() {
     )
     ..registerFactory<SplashCubit>(
       () => SplashCubit(getIt(), getIt(), getIt(), getIt()),
+    )
+    ..registerFactory<EditAvatarCubit>(
+      () => EditAvatarCubit(
+        getIt(),
+        getIt(),
+      ),
     );
 }
 
@@ -280,11 +287,6 @@ void initRepositories() {
     ..registerLazySingleton<SvgAssetLoaderManager>(
       SvgAssetLoaderManager.new,
     )
-    ..registerLazySingleton<EditChildProfileRepository>(
-      () => EditProfileRepositoryImpl(
-        getIt(),
-      ),
-    )
     ..registerLazySingleton<ImpactGroupsRepository>(
       () => ImpactGroupsRepositoryImpl(
         getIt(),
@@ -322,6 +324,11 @@ void initRepositories() {
       () => MissionRepositoryImpl(
         getIt(),
         getIt(),
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<EditAvatarRepository>(
+      () => EditAvatarRepository(
         getIt(),
       ),
     );

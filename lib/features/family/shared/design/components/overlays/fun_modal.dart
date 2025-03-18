@@ -22,7 +22,7 @@ class FunModal extends StatefulWidget {
   final Widget? icon;
   final String? title;
   final String? subtitle;
-  final List<FunButton> buttons;
+  final List<Widget> buttons;
   final Duration? autoClose;
 
   final VoidCallback? closeAction;

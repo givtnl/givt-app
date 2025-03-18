@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/edit_avatar_screen.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class ParentAvatar extends StatelessWidget {
   const ParentAvatar({
-    required this.firstName,
-    required this.lastName,
-    required this.pictureURL,
+    required this.user,
     super.key,
   });
 
-  final String firstName;
-  final String lastName;
-  final String pictureURL;
+  final UserExt user;
 
   @override
   Widget build(BuildContext context) {
@@ -33,16 +32,15 @@ class ParentAvatar extends StatelessWidget {
                     eventName: AmplitudeEvents.editAvatarPictureClicked,
                   );
 
-                  context.pushNamed(FamilyPages.parentAvatarSelection.name);
+                  Navigator.of(context).push(
+                    EditAvatarScreen(userGuid: user.guid).toRoute(context),
+                  );
                 },
                 customBorder: const CircleBorder(),
                 splashColor: Theme.of(context).primaryColor,
-                child: Semantics(
-                  identifier: pictureURL.split('/').last,
-                  child: SvgPicture.network(
-                    pictureURL,
-                    width: 100,
-                  ),
+                child: FunAvatar.hero(
+                  user.profilePicture.split('/').last,
+                  size: 100,
                 ),
               ),
             ),
@@ -59,7 +57,9 @@ class ParentAvatar extends StatelessWidget {
                     eventName: AmplitudeEvents.editAvatarIconClicked,
                   );
 
-                  context.pushNamed(FamilyPages.parentAvatarSelection.name);
+                  Navigator.of(context).push(
+                    EditAvatarScreen(userGuid: user.guid).toRoute(context),
+                  );
                 },
               ),
             ),
@@ -67,7 +67,7 @@ class ParentAvatar extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          '$firstName $lastName',
+          '${user.firstName} ${user.lastName}',
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ],

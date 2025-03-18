@@ -164,7 +164,7 @@ class FamilyHomeScreenCubit
       avatars: profiles
           .map(
             (e) => AvatarUIModel(
-              avatarUrl: e.pictureURL,
+              avatar: e.avatar,
               text: e.firstName,
               guid: e.id,
             ),

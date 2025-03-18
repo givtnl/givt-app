@@ -47,6 +47,26 @@ class FunAvatar extends FunIcon {
     );
   }
 
+  factory FunAvatar.hero(String heroName, {double size = 120}) {
+    return FunAvatar(
+      semanticsIdentifier: heroName,
+      customCircleColor: FamilyAppTheme.info95,
+      customAvatar: ClipOval(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: size / 15,
+          ), // Add 8px padding above the SVG
+          child: SvgPicture.asset(
+            'assets/family/images/avatar/default/$heroName',
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
+          ),
+        ),
+      ),
+      customSize: size,
+    );
+  }
+
   final String semanticsIdentifier;
   final Color customCircleColor;
   final Widget customAvatar;

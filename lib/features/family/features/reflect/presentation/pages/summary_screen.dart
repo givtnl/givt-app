@@ -89,7 +89,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                       i < details.players.length;
                                       i++)
                                     AvatarUIModel(
-                                      avatarUrl: details.players[i].pictureURL,
+                                      avatar: details.players[i].pictureURL,
                                       text: details.players[i].firstName,
                                     ),
                                 ],

@@ -8,7 +8,7 @@ class LeagueEntryUIModel {
     required this.rank,
     this.name,
     this.xp,
-    this.imageUrl,
+    this.avatar,
   });
 
   factory LeagueEntryUIModel.fromEntryAndProfile(
@@ -17,7 +17,7 @@ class LeagueEntryUIModel {
       rank: rank,
       name: profile.firstName,
       xp: item.experiencePoints,
-      imageUrl: profile.pictureURL,
+      avatar: profile.avatar,
     );
   }
 
@@ -64,7 +64,7 @@ class LeagueEntryUIModel {
           LeagueEntryUIModel(
             rank: rank,
             name: profile.firstName,
-            imageUrl: profile.pictureURL,
+            avatar: profile.avatar,
             xp: 0,
           ),
         );
@@ -76,5 +76,5 @@ class LeagueEntryUIModel {
   final int rank;
   final String? name;
   final int? xp;
-  final String? imageUrl;
+  final String? avatar;
 }

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class GameProfileItem extends StatelessWidget {
@@ -44,13 +45,9 @@ class GameProfileItem extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: Colors.white,
                     ),
-                    child: Semantics(
-                      identifier: profile.pictureURL?.split('/').last,
-                      child: SvgPicture.network(
-                        profile.pictureURL!,
-                        width: size,
-                        height: size,
-                      ),
+                    child: FunAvatar.hero(
+                      profile.avatar!,
+                      size: size,
                     ),
                   ),
                 ),
