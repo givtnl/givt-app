@@ -411,6 +411,8 @@ enum AmplitudeEvents {
   avatarSaved('avatar_saved'),
   avatarTabChanged('avatar_tab_changed'),
   lockedButtonClicked('locked_button_clicked'),
+  saveAvatarYesClicked('save_avatar_yes_clicked'),
+  saveAvatarNoClicked('save_avatar_no_clicked'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

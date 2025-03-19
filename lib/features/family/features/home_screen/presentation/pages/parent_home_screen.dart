@@ -58,13 +58,15 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
     );
   }
 
-  void _onEditAvatarClicked(BuildContext context) {
+  void _onEditAvatarClicked(BuildContext context, bool trackEvent) {
     Navigator.of(context).push(
       EditAvatarScreen(userGuid: widget.profile.id).toRoute(context),
     );
-    AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.editAvatarPictureClicked,
-    );
+    if (trackEvent) {
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.editAvatarPictureClicked,
+      );
+    }
   }
 
   void _onProfileSwitchPressed(BuildContext context) {
@@ -111,33 +113,33 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                 fit: BoxFit.cover,
               ),
             ),
-            GestureDetector(
-              onTap: () => _onEditAvatarClicked(context),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FunAvatar.hero(profile.avatar, size: 100),
-                  const SizedBox(height: 12),
-                  FunButton.secondary(
-                    onTap: () => _onEditAvatarClicked(context),
-                    text: 'Edit avatar',
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.editProfilePictureClicked,
-                    ),
-                    size: FunButtonSize.small,
-                    leftIcon: FontAwesomeIcons.userPen,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () => _onEditAvatarClicked(context, true),
+                  child: FunAvatar.hero(profile.avatar, size: 100),
+                ),
+                const SizedBox(height: 12),
+                FunButton.secondary(
+                  onTap: () => _onEditAvatarClicked(context, false),
+                  text: 'Edit avatar',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.editProfilePictureClicked,
                   ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MyGivtsButton(userId: profile.id),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                ],
-              ),
+                  size: FunButtonSize.small,
+                  leftIcon: FontAwesomeIcons.userPen,
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MyGivtsButton(userId: profile.id),
+                  ],
+                ),
+                const SizedBox(height: 24),
+              ],
             ),
           ],
         ),

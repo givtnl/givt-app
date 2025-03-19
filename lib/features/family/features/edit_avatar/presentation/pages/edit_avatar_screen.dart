@@ -279,7 +279,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
             _cubit.saveAvatar();
             context.pop();
           },
-          analyticsEvent: AnalyticsEvent(AmplitudeEvents.avatarSaved),
+          analyticsEvent: AnalyticsEvent(AmplitudeEvents.saveAvatarYesClicked),
         ),
         FunTextButton(
           textColor: FamilyAppTheme.error30,
@@ -289,7 +289,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
             context.pop();
           },
           text: 'No, delete',
-          analyticsEvent: AnalyticsEvent(AmplitudeEvents.cancelClicked),
+          analyticsEvent: AnalyticsEvent(AmplitudeEvents.saveAvatarNoClicked),
         )
       ],
     ).show(context);
