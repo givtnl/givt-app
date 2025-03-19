@@ -9,6 +9,7 @@ class OutlinedTextFormField extends StatelessWidget {
     this.controller,
     this.minLines,
     this.maxLines = 1,
+    this.errorMaxLines = 1,
     this.initialValue = '', // Only when controller is null
     this.errorStyle,
     this.keyboardType,
@@ -29,6 +30,7 @@ class OutlinedTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final int? minLines;
   final int? maxLines;
+  final int? errorMaxLines;
   final String initialValue;
   final String hintText;
   final TextStyle? errorStyle;
@@ -57,14 +59,14 @@ class OutlinedTextFormField extends StatelessWidget {
                 color: FamilyAppTheme.primary20,
               ),
       decoration: InputDecoration(
-        hintText: hintText,
-        border: enabledInputBorder,
-        enabledBorder: enabledInputBorder,
-        focusedBorder: selectedInputBorder,
-        errorBorder: errorInputBorder,
-        suffixIcon: suffixIcon,
-        errorStyle: errorStyle,
-      ),
+          hintText: hintText,
+          border: enabledInputBorder,
+          enabledBorder: enabledInputBorder,
+          focusedBorder: selectedInputBorder,
+          errorBorder: errorInputBorder,
+          suffixIcon: suffixIcon,
+          errorStyle: errorStyle,
+          errorMaxLines: errorMaxLines),
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
       autofillHints: autofillHints,
