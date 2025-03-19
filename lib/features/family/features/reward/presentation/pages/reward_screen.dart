@@ -33,8 +33,8 @@ class _RewardScreenState extends State<RewardScreen> {
             'assets/family/images/reward.svg',
           ),
           const SizedBox(height: 16),
-          const TitleLargeText(
-            '5 new questions unlocked',
+          TitleLargeText(
+            widget.uiModel.rewardText,
           ),
           const Spacer(),
           FunButton(
