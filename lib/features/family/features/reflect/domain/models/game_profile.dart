@@ -13,6 +13,7 @@ class GameProfile {
     this.roles = const [],
     this.gratitude,
     this.power,
+    String? customAvatar,
   });
 
   final String userId;

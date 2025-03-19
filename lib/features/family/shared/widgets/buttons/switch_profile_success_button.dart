@@ -25,7 +25,7 @@ class SwitchProfileSuccessButton extends StatelessWidget {
       leadingImage: ClipRRect(
         borderRadius: BorderRadius.circular(6),
         child: SvgPicture.network(
-          profilesCubit.state.activeProfile.pictureURL,
+          profilesCubit.state.activeProfile.avatar,
           height: 32,
           width: 32,
         ),

@@ -68,7 +68,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
           final updatedProfile = oldProfile.copyWith(
             firstName: newProfile.firstName,
             lastName: newProfile.lastName,
-            pictureURL: newProfile.pictureURL,
+            avatar: newProfile.avatar,
           );
           newProfiles[state.profiles.indexOf(oldProfile)] = updatedProfile;
         }
