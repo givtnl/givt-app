@@ -110,7 +110,7 @@ class FunTextButton extends StatelessWidget {
             padding: const EdgeInsets.only(left: 6),
             child: FaIcon(
               rightIcon ?? FontAwesomeIcons.arrowRight,
-              size: rightIconSize ?? 24,
+              size: rightIconSize ?? (isMedium ? 24 : 20),
               color: hasDisabledState ? disabledTextColor : textColor,
             ),
           ),

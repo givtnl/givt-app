@@ -20,7 +20,7 @@ class MyGivtsButton extends StatefulWidget {
 class _MyGivtsButtonState extends State<MyGivtsButton> {
   @override
   Widget build(BuildContext context) {
-    return FunTextButton(
+    return FunTextButton.small(
       onTap: () {
         SystemSound.play(SystemSoundType.click);
         getIt<HistoryCubit>().fetchHistory(
@@ -30,7 +30,6 @@ class _MyGivtsButtonState extends State<MyGivtsButton> {
         Navigator.of(context).push(const HistoryScreen().toRoute(context));
       },
       text: 'My Givts',
-      rightIconSize: 16,
       analyticsEvent: AnalyticsEvent(
         AmplitudeEvents.seeDonationHistoryPressed,
         parameters: {'userId': widget.userId},

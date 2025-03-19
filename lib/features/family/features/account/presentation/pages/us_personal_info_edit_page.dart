@@ -131,9 +131,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: ParentAvatar(
-              firstName: user.firstName,
-              lastName: user.lastName,
-              pictureURL: user.profilePicture,
+              user: user,
             ),
           ),
           _buildInfoRow(

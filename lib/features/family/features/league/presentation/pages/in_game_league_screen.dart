@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/league/bloc/in_game_league_cubit.dart';
 import 'package:givt_app/features/family/features/league/presentation/pages/models/in_game_league_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/league/presentation/pages/models/summary_details_custom.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/league_explanation.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/league_overview.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/whos_on_top_of_league.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/features/reward/presentation/models/reward_uimodel.dart';
+import 'package:givt_app/features/family/features/reward/presentation/pages/reward_screen.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
@@ -89,6 +91,8 @@ class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
           event.uiModel,
           useDefaultImage: event.useDefaultImage,
         );
+      case NavigateToRewardScreen():
+        _navigateToRewardScreen(context, custom.uiModel);
     }
   }
 
@@ -116,20 +120,22 @@ class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
   }
 
   void _showConffetti(BuildContext context) {
-    // setState(() {
-    //   _isBtnPressedDown = true;
-    // });
     ConfettiDialog.show(context);
   }
 
   void _navigateToProfileSelection(BuildContext context) {
-    // TODO - This is going to the rewards page
     setState(() {
       _isBtnLoading = false;
     });
     context.goNamed(
       FamilyPages.profileSelection.name,
     );
+  }
+
+  void _navigateToRewardScreen(BuildContext context, RewardUIModel uiModel) {
+    Navigator.of(context).push(RewardScreen(
+      uiModel: uiModel,
+    ).toRoute(context));
   }
 
   Future<void> launchCalendlyUrl() async {

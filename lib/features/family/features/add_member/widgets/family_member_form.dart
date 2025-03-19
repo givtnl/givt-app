@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -125,7 +128,7 @@ class FamilyMemberForm extends StatelessWidget {
         OutlinedTextFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return context.l10n.pleaseEnterChildName;
+              return "Please enter the parent's name";
             }
             if (value.length < 3) {
               return context.l10n.pleaseEnterValidName;
@@ -147,6 +150,9 @@ class FamilyMemberForm extends StatelessWidget {
                 !Util.emailRegEx.hasMatch(value)) {
               return context.l10n.invalidEmail;
             }
+            if (value.trim() == context.read<FamilyAuthCubit>().user?.email) {
+              return "You've already created an account for yourself with this email address";
+            }
             return null;
           },
           keyboardType: TextInputType.emailAddress,
@@ -157,6 +163,7 @@ class FamilyMemberForm extends StatelessWidget {
           controller: emailController,
           hintText: context.l10n.email,
           textInputAction: TextInputAction.done,
+          errorMaxLines: 2,
         ),
         const SizedBox(height: 16),
         const BodySmallText(

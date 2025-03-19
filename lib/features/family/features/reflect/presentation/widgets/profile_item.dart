@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class ProfileItem extends StatelessWidget {
@@ -24,14 +25,7 @@ class ProfileItem extends StatelessWidget {
       feedback: _feedbackCircle(size),
       child: Column(
         children: [
-          Semantics(
-            identifier: profile.pictureURL?.split('/').last,
-            child: SvgPicture.network(
-              profile.pictureURL!,
-              width: size,
-              height: size,
-            ),
-          ),
+          FunAvatar.hero(profile.avatar!, size: size),
           const SizedBox(height: 12),
           SizedBox(
             width: size,
@@ -48,21 +42,13 @@ class ProfileItem extends StatelessWidget {
     );
   }
 
-  Container _feedbackCircle(double width) {
-    return Container(
-      height: width,
-      width: width,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: FamilyAppTheme.primary20,
-      ),
-      child: Semantics(
-        identifier: profile.pictureURL?.split('/').last,
-        child: SvgPicture.network(
-          profile.pictureURL!,
-          width: width,
-          height: width,
-        ),
+  Widget _feedbackCircle(double size) {
+    return SizedBox(
+      height: size,
+      width: size,
+      child: FunAvatar.hero(
+        profile.avatar!,
+        size: size,
       ),
     );
   }

@@ -1,14 +1,6 @@
 enum FamilyPages {
   parentGive(path: 'parent-give', name: 'PARENT-GIVE'),
   profileSelection(path: '/profile-selection', name: 'PROFILE_SELECTION'),
-  kidsAvatarSelection(
-    path: 'kids-avatar-selection',
-    name: 'KIDS-AVATAR-SELECTION',
-  ),
-  parentAvatarSelection(
-    path: 'parent-avatar-selection',
-    name: 'PARENT-AVATAR-SELECTION',
-  ),
   wallet(path: 'wallet', name: 'WALLET'),
   parentHome(path: 'parent-home', name: 'PARENT-HOME'),
   camera(path: 'camera', name: 'CAMERA'),

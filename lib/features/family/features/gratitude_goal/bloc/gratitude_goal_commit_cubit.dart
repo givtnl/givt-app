@@ -43,7 +43,7 @@ class GratitudeGoalCommitCubit
             avatarUIModels: profiles
                 .map(
                   (e) => AvatarUIModel(
-                    avatarUrl: e.pictureURL,
+                    avatar: e.pictureURL,
                     text: e.firstName,
                     guid: e.id,
                   ),

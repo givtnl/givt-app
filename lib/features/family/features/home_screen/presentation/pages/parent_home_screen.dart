@@ -7,12 +7,14 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/edit_avatar_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/my_givts_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -56,11 +58,15 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
     );
   }
 
-  void _onEditAvatarClicked(BuildContext context) {
-    context.pushNamed(FamilyPages.parentAvatarSelection.name);
-    AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.editAvatarPictureClicked,
+  void _onEditAvatarClicked(BuildContext context, bool trackEvent) {
+    Navigator.of(context).push(
+      EditAvatarScreen(userGuid: widget.profile.id).toRoute(context),
     );
+    if (trackEvent) {
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.editAvatarPictureClicked,
+      );
+    }
   }
 
   void _onProfileSwitchPressed(BuildContext context) {
@@ -100,43 +106,40 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
         child: Stack(
           children: [
             Positioned(
-              top: 0,
+              bottom: 0,
               width: MediaQuery.sizeOf(context).width,
               child: SvgPicture.asset(
                 'assets/family/images/parent_home_background.svg',
                 fit: BoxFit.cover,
               ),
             ),
-            GestureDetector(
-              onTap: () => _onEditAvatarClicked(context),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: Semantics(
-                      identifier: profile.pictureURL.split('/').last,
-                      child: SvgPicture.network(
-                        profile.pictureURL,
-                        width: 80,
-                      ),
-                    ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () => _onEditAvatarClicked(context, true),
+                  child: FunAvatar.hero(profile.avatar, size: 100),
+                ),
+                const SizedBox(height: 12),
+                FunButton.secondary(
+                  onTap: () => _onEditAvatarClicked(context, false),
+                  text: 'Edit avatar',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.editProfilePictureClicked,
                   ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MyGivtsButton(userId: profile.id),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                ],
-              ),
+                  size: FunButtonSize.small,
+                  leftIcon: FontAwesomeIcons.userPen,
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    MyGivtsButton(userId: profile.id),
+                  ],
+                ),
+                const SizedBox(height: 24),
+              ],
             ),
           ],
         ),

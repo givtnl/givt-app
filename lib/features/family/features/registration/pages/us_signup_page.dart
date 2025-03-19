@@ -253,7 +253,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             onChanged: (value) => setState(() {
               _formKey.currentState!.validate();
             }),
-            hintText: AppLocalizations.of(context).firstName,
+            hintText: 'Parent first name',
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
             errorStyle: const TextStyle(
@@ -276,7 +276,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               }
               return null;
             },
-            hintText: AppLocalizations.of(context).surname,
+            hintText: 'Parent last name',
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
             errorStyle: const TextStyle(

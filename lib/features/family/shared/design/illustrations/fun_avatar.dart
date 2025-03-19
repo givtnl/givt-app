@@ -12,14 +12,18 @@ class FunAvatar extends FunIcon {
     this.customSize = 48,
   });
 
-  factory FunAvatar.captain({bool isLarge = false}) {
+  factory FunAvatar.captain({bool isLarge = false, bool lookRight = false}) {
     return FunAvatar(
       semanticsIdentifier: 'captain',
       customCircleColor: FamilyAppTheme.neutral95,
-      customAvatar: SvgPicture.asset(
-        isLarge
-            ? 'assets/family/images/avatar_captain_large.svg'
-            : 'assets/family/images/avatar_captain.svg',
+      customAvatar: Transform(
+        alignment: Alignment.center,
+        transform: lookRight ? Matrix4.rotationY(3.14159) : Matrix4.identity(),
+        child: SvgPicture.asset(
+          isLarge
+              ? 'assets/family/images/avatar_captain_large.svg'
+              : 'assets/family/images/avatar_captain.svg',
+        ),
       ),
       customSize: isLarge ? 140 : 48,
     );
@@ -44,6 +48,26 @@ class FunAvatar extends FunIcon {
       customCircleColor: FamilyAppTheme.neutral95,
       customAvatar: SvgPicture.asset('assets/family/images/family_avatar.svg'),
       customSize: isLarge ? 120 : 48,
+    );
+  }
+
+  factory FunAvatar.hero(String heroName, {double size = 120}) {
+    return FunAvatar(
+      semanticsIdentifier: heroName,
+      customCircleColor: FamilyAppTheme.info95,
+      customAvatar: ClipOval(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: size / 15,
+          ), // Add 8px padding above the SVG
+          child: SvgPicture.asset(
+            'assets/family/images/avatar/default/$heroName',
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
+          ),
+        ),
+      ),
+      customSize: size,
     );
   }
 

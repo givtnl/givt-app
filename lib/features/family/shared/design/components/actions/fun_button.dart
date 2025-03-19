@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
+    show LabelMediumText;
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
@@ -31,6 +34,7 @@ class FunButton extends StatelessWidget {
     this.onLongPress,
     this.onLongPressUp,
     this.onlyLongPress = false,
+    this.size = FunButtonSize.large,
   });
 
   factory FunButton.secondary({
@@ -40,6 +44,7 @@ class FunButton extends StatelessWidget {
     bool isDisabled = false,
     bool isLoading = false,
     bool isPressedDown = false,
+    FunButtonSize size = FunButtonSize.large,
     IconData? leftIcon,
     IconData? rightIcon,
     Widget? leadingImage,
@@ -58,6 +63,7 @@ class FunButton extends StatelessWidget {
       borderColor: FamilyAppTheme.primary80,
       fullBorder: true,
       analyticsEvent: analyticsEvent,
+      size: size,
     );
   }
 
@@ -130,6 +136,7 @@ class FunButton extends StatelessWidget {
   final Color? textColor;
   final bool fullBorder;
   final bool isDebugOnly;
+  final FunButtonSize size;
   final AnalyticsEvent analyticsEvent;
 
   @override
@@ -156,8 +163,9 @@ class FunButton extends StatelessWidget {
       borderSize: fullBorder ? 2 : 0.01,
       baseBorderSize: 4,
       child: Container(
-        height: 58 - (fullBorder ? 2 : 0),
-        width: double.infinity,
+        height: (size.isLarge ? 58 : 44) - (fullBorder ? 2 : 0),
+        width: size.isLarge ? double.infinity : null,
+        padding: size.isSmall ? const EdgeInsets.symmetric(horizontal: 16) : null,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: isDisabled ? FamilyAppTheme.neutralVariant60 : backgroundColor,
@@ -193,26 +201,24 @@ class FunButton extends StatelessWidget {
               semanticLabel:
                   'icon-${leftIcon?.fontFamily}-${leftIcon?.codePoint}',
               leftIcon,
-              size: 24,
+              size: size.isLarge ? 24 : 16,
               color: isDisabled ? FamilyAppTheme.neutralVariant60 : textColor,
             ),
           ),
-        Text(
-          text,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          style: isDisabled == true
-              ? themeData.textTheme.labelLarge?.copyWith(
-                  color: FamilyAppTheme.neutralVariant60,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Rouna',
-                )
-              : themeData.textTheme.labelLarge?.copyWith(
-                  color: textColor,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Rouna',
-                ),
-        ),
+        if (size.isLarge)
+          LabelLargeText(
+            text,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            color: isDisabled ? FamilyAppTheme.neutralVariant60 : textColor,
+          ),
+        if (size.isSmall)
+          LabelMediumText(
+            text,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            color: isDisabled ? FamilyAppTheme.neutralVariant60 : textColor,
+          ),
         if (rightIcon != null)
           Padding(
             padding: const EdgeInsets.only(left: 12),
@@ -220,7 +226,7 @@ class FunButton extends StatelessWidget {
               semanticLabel:
                   'icon-${rightIcon?.fontFamily}-${rightIcon?.codePoint}',
               rightIcon,
-              size: 24,
+              size: size.isLarge ? 24 : 20,
               color: isDisabled ? FamilyAppTheme.neutralVariant60 : borderColor,
             ),
           ),
@@ -230,4 +236,14 @@ class FunButton extends StatelessWidget {
       ],
     );
   }
+}
+
+enum FunButtonSize {
+  small,
+  large,
+}
+
+extension on FunButtonSize {
+  bool get isLarge => this == FunButtonSize.large;
+  bool get isSmall => this == FunButtonSize.small;
 }

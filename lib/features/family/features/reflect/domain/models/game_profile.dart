@@ -9,7 +9,7 @@ class GameProfile {
     required this.userId,
     this.firstName,
     this.lastName,
-    this.pictureURL,
+    this.avatar,
     this.roles = const [],
     this.gratitude,
     this.power,
@@ -18,7 +18,7 @@ class GameProfile {
   final String userId;
   final String? firstName;
   final String? lastName;
-  final String? pictureURL;
+  final String? avatar;
   final List<Role> roles;
   final String type;
   final TagCategory? gratitude;
@@ -43,7 +43,7 @@ class GameProfile {
     return AvatarUIModel(
       hasDonated: hasDonated,
       isSelected: isSelected,
-      avatarUrl: pictureURL!,
+      avatar: avatar!,
       text: firstName!,
     );
   }
@@ -52,7 +52,7 @@ class GameProfile {
     String? userId,
     String? firstName,
     String? lastName,
-    String? pictureURL,
+    String? avatar,
     Role? role,
     List<Role>? roles,
     String? type,
@@ -63,7 +63,7 @@ class GameProfile {
       userId: userId ?? this.userId,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
-      pictureURL: pictureURL ?? this.pictureURL,
+      avatar: avatar ?? this.avatar,
       roles: role != null ? [role] : roles ?? this.roles,
       type: type ?? this.type,
       gratitude: gratitude ?? this.gratitude,

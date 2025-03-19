@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -13,6 +12,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/a
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -141,13 +141,9 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
           for (var i = 0; i < selectedProfiles.length; i++)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Semantics(
-                identifier: selectedProfiles[i].pictureURL?.split('/').last,
-                child: SvgPicture.network(
-                  selectedProfiles[i].pictureURL!,
-                  width: 40,
-                  height: 40,
-                ),
+              child: FunAvatar.hero(
+                selectedProfiles[i].avatar!,
+                size: 40,
               ),
             ),
         ],

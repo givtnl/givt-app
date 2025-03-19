@@ -37,7 +37,7 @@ class _ConfettiDialogState extends State<ConfettiDialog> {
   }
 
   Future<void> _schedulePop() => Future.delayed(widget.duration, () {
-        if (!mounted) return;
+        if (!mounted || !context.canPop()) return;
         context.pop();
       });
 
