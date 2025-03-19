@@ -50,10 +50,6 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   void saveAvatar() {
     emitLoading();
 
-    AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.saveAvatarClicked,
-    );
-
     _repository.updateAvatar(
       userGuid,
       _selectedAvatar, // Use the selected avatar
