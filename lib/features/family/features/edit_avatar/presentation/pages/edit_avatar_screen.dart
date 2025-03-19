@@ -22,6 +22,7 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 
@@ -103,7 +104,12 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
           actions: [
             if (data.mode == options[0])
               IconButton(
-                onPressed: _cubit.saveAvatar,
+                onPressed: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.saveAvatarClicked,
+                  );
+                  _cubit.saveAvatar();
+                },
                 icon: const FaIcon(FontAwesomeIcons.check),
               ),
           ],

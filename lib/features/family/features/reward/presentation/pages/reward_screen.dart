@@ -5,6 +5,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/reward/presentation/models/reward_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
+import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -40,9 +41,13 @@ class _RewardScreenState extends State<RewardScreen> {
           const Spacer(),
           FunButton(
             onTap: () {
-              context.goNamed(
-                FamilyPages.profileSelection.name,
-              );
+              ConfettiDialog.show(context);
+              Future.delayed(const Duration(milliseconds: 1500), () {
+                if (!context.mounted) return;
+                context.goNamed(
+                  FamilyPages.profileSelection.name,
+                );
+              });
             },
             text: 'Claim reward',
             analyticsEvent: AnalyticsEvent(
