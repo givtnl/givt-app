@@ -59,7 +59,7 @@ name: Playing the gratitude game with 4 players without AI
     id: "funtile_correct"
 ## Start of the second round
 - repeat:
-    label: Repeat the game round 2 times
+    label: Repeat the game round 3 times
     times: 3
     commands:
       - tapOn: "Shuffle roles.*"
