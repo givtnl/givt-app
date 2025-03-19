@@ -10,7 +10,8 @@ env:
 - launchApp:
     clearState: true
 
-- tapOn: "Select country"
+- tapOn:
+    id: "icon-FontAwesomeSolid-62845"
 - tapOn: "United States of America"
 - tapOn: "By continuing you agree to our terms and conditions."
 - assertVisible: '.*GIVT INC.*'
