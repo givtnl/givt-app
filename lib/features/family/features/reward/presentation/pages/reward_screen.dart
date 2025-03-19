@@ -25,6 +25,7 @@ class _RewardScreenState extends State<RewardScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
