@@ -23,9 +23,9 @@ env:
     label: Enter the test user's Email
     text: ${USERNAME}
 - tapOn: "Continue.*"
-- tapOn: "First name"
+- tapOn: "Parent first name"
 - inputText: ${PARENT_FIRSTNAME}
-- tapOn: "Surname"
+- tapOn: "Parent last name"
 - inputText: ${PARENT_LASTNAME}
 - tapOn: "Mobile number"
 - inputText: "9876543210"
@@ -38,7 +38,7 @@ env:
     point: "95%, 59%"
 - tapOn: "0"
 - tapOn: "Continue"
-- tapOn: "Continue"
+- tapOn: "Continue.*"
 - tapOn: "First name"
 - inputText: 
     label: Enter the kids name
@@ -51,6 +51,6 @@ env:
 - tapOn:
     label: Select other profile image
     point: "81%,35%"
-- tapOn: "Save"
+- tapOn: "Save.*"
 - tapOn: "Done!"
 - tapOn: "Skip"
