@@ -9,22 +9,16 @@ class EditAvatarRepository {
 
   final FamilyAPIService _api;
 
-  final StreamController<String> _childAvatarChangedController =
-      StreamController.broadcast();
-
   final StreamController<void> _avatarChangedController =
       StreamController.broadcast();
 
-  Future<void> updateAvatar(String userId, String image,
-      {bool isChild = false}) async {
+  Future<void> updateAvatar(
+    String userId,
+    String image,
+  ) async {
     await _api.editProfile(userId, {'ProfilePicture': image});
     _avatarChangedController.add(null);
-    if (isChild) {
-      _childAvatarChangedController.add(userId);
-    }
   }
-
-  Stream<String> onChildAvatarChanged() => _childAvatarChangedController.stream;
 
   Stream<void> onAvatarChanged() => _avatarChangedController.stream;
 }

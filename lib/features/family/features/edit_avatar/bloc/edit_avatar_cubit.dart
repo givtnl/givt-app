@@ -51,7 +51,6 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     _repository.updateAvatar(
       userGuid,
       _selectedAvatar, // Use the selected avatar
-      isChild: _profile?.isChild ?? false,
     );
 
     emitCustom(
