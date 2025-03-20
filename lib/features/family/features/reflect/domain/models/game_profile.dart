@@ -1,7 +1,8 @@
-import 'package:givt_app/utils/profile_type.dart';
+import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
+import 'package:givt_app/utils/profile_type.dart';
 
 class GameProfile {
   GameProfile({
@@ -13,7 +14,7 @@ class GameProfile {
     this.roles = const [],
     this.gratitude,
     this.power,
-    String? customAvatar,
+    this.customAvatar,
   });
 
   final String userId;
@@ -24,6 +25,7 @@ class GameProfile {
   final String type;
   final TagCategory? gratitude;
   final TagCategory? power;
+  final CustomAvatarModel? customAvatar;
 
   ProfileType get profileType => ProfileType.getByTypeName(type);
 
@@ -44,8 +46,9 @@ class GameProfile {
     return AvatarUIModel(
       hasDonated: hasDonated,
       isSelected: isSelected,
-      avatar: avatar!,
+      avatar: avatar,
       text: firstName!,
+      customAvatarUIModel: customAvatar?.toUIModel(),
     );
   }
 
@@ -59,6 +62,7 @@ class GameProfile {
     String? type,
     TagCategory? gratitude,
     TagCategory? power,
+    CustomAvatarModel? customAvatar,
   }) {
     return GameProfile(
       userId: userId ?? this.userId,
@@ -69,6 +73,7 @@ class GameProfile {
       type: type ?? this.type,
       gratitude: gratitude ?? this.gratitude,
       power: power ?? this.power,
+      customAvatar: customAvatar ?? this.customAvatar,
     );
   }
 }

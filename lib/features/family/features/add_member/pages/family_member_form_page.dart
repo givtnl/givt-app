@@ -32,7 +32,7 @@ class FamilyMemberFormPage extends StatefulWidget {
     required this.membersToCombine,
     required this.existingFamily,
     this.showTopUp = false,
-    super.key, 
+    super.key,
   });
 
   final int index;
@@ -219,8 +219,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
           child: Column(
             children: [
               Semantics(
-                identifier: state.getAvatarByKey(widget.index.toString()).pictureURL.split('/').last,
-                label: state.getAvatarByKey(widget.index.toString()).pictureURL.split('/').last,
+                identifier:
+                    state.getAvatarByKey(widget.index.toString()).fileName,
+                label: state.getAvatarByKey(widget.index.toString()).fileName,
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -229,10 +230,10 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                       width: 4,
                     ),
                   ),
-                  child: SvgPicture.network(
+                  child: SvgPicture.asset(
                     height: 28,
                     width: 28,
-                    state.getAvatarByKey(widget.index.toString()).pictureURL,
+                    state.getAvatarByKey(widget.index.toString()).fileName,
                     placeholderBuilder: (context) => const SizedBox(
                       height: 32,
                       width: 32,
