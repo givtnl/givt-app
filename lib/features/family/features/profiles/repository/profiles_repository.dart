@@ -69,7 +69,8 @@ class ProfilesRepositoryImpl with ProfilesRepository {
 
     _editChildRepository.childChangedStream().listen(refreshChildDetails);
 
-    _editAvatarRepository.onChildAvatarChanged().listen(refreshChildDetails);
+    //_editAvatarRepository.onChildAvatarChanged().listen(refreshChildDetails);
+    _editAvatarRepository.onAvatarChanged().listen((_) => refreshProfiles());
 
     _impactGroupsRepository.onImpactGroupsChanged().listen(
           (_) => refreshProfiles(),
