@@ -53,10 +53,10 @@ class _MemberCounterState extends State<MemberCounter> {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Column(
                 children: [
-                  SvgPicture.network(
+                  SvgPicture.asset(
                     height: 32,
                     width: 32,
-                    profile.pictureURL,
+                    profile.avatar,
                   ),
                   LabelMediumText(profile.firstName),
                 ],
