@@ -4,6 +4,8 @@ import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_uimodel.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/looking_good_uimodel.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/edit_avatar_screen.dart';
+import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -17,10 +19,11 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
 
   String userGuid = '';
   Profile? _profile;
-  String _selectedAvatar = '';
-  String _customMode = 'Default';
+  String _selectedAvatar = 'Hero1.svg';
+  String _customMode = EditAvatarScreen.options.first;
   bool _lockMessageEnabled = false;
   Timer? _lockMessageTimer;
+  CustomAvatarModel _customAvatar = CustomAvatarModel.initial();
 
   final EditAvatarRepository _repository;
   final ProfilesRepository _profilesRepository;
@@ -37,9 +40,11 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       if (_profile?.avatar != null) {
         setAvatar(_profile!.avatar!);
       } else if (_profile?.customAvatar != null) {
-        //TODO
+        _customAvatar = _profile!.customAvatar!;
+        _customMode = EditAvatarScreen.options.last;
+        _emitData();
       } else {
-        setAvatar('Hero1.svg');
+        _emitData();
       }
     });
   }
@@ -78,9 +83,10 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   void _emitData() {
     emitData(
       EditAvatarUIModel(
-        _selectedAvatar,
-        _customMode,
-        _lockMessageEnabled,
+        avatarName: _selectedAvatar,
+        mode: _customMode,
+        lockMessageEnabled: _lockMessageEnabled,
+        customAvatarUIModel: _customAvatar.toUIModel(),
       ),
     );
   }
