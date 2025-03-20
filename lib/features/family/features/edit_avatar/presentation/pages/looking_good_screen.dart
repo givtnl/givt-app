@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/looking_good_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:go_router/go_router.dart';
 
 class LookingGoodScreen extends StatefulWidget {
   const LookingGoodScreen({required this.uiModel, super.key});
@@ -83,7 +81,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
                 ConfettiDialog.show(context);
                 Future.delayed(const Duration(milliseconds: 1500), () {
                   if (!context.mounted) return;
-                  context.goNamed(FamilyPages.profileSelection.name);
+                  Navigator.of(context).pop();
                 });
               },
               text: 'Done',

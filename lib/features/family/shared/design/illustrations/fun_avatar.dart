@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/custom_avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
@@ -51,6 +53,45 @@ class FunAvatar extends FunIcon {
     );
   }
 
+  factory FunAvatar.fromProfile(Profile profile, {double size = 120}) {
+    if (profile.customAvatar != null) {
+      return FunAvatar.custom(profile.customAvatar!.toUIModel(), size: size);
+    } else if (profile.avatar != null) {
+      return FunAvatar.hero(profile.avatar!, size: size);
+    } else {
+      return FunAvatar.hero('Hero1.svg', size: size);
+    }
+  }
+
+  factory FunAvatar.custom(CustomAvatarUIModel uiModel, {double size = 120}) {
+    return FunAvatar(
+      semanticsIdentifier: uiModel.semanticsIdentifier,
+      customCircleColor: FamilyAppTheme.info95,
+      customAvatar: ClipOval(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: size / 15,
+          ), // Add 8px padding above the SVG
+          child: Stack(
+            children: List.generate(
+              uiModel.assetsToOverlap.length,
+              (index) => SvgPicture.asset(
+                uiModel.assetsToOverlap[index],
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
+            ),
+          ),
+        ),
+      ),
+      customSize: size,
+    );
+  }
+
+  factory FunAvatar.defaultHero({double size = 120}) {
+    return FunAvatar.hero('Hero1.svg', size: size);
+  }
+
   factory FunAvatar.hero(String heroName, {double size = 120}) {
     return FunAvatar(
       semanticsIdentifier: heroName,
@@ -64,6 +105,11 @@ class FunAvatar extends FunIcon {
             'assets/family/images/avatar/default/$heroName',
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
+            errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
+              'assets/family/images/avatar/default/Hero1.svg',
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+            ),
           ),
         ),
       ),

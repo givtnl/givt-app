@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -135,16 +136,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
       Positioned.fill(
         child: Row(
           children: [
-            SvgPicture.network(
-              _familyLeader.pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _familyLeader,
+              size: _avatarSize,
             ),
             const Spacer(),
-            SvgPicture.network(
-              _otherMembers.first.pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers.first,
+              size: _avatarSize,
             ),
           ],
         ),
@@ -160,10 +159,9 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: SvgPicture.network(
-                _familyLeader.pictureURL,
-                width: _avatarSize,
-                height: _avatarSize,
+              child: FunAvatar.fromProfile(
+                _familyLeader,
+                size: _avatarSize,
               ),
             ),
             const Spacer(),
@@ -176,16 +174,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         right: 0,
         child: Row(
           children: [
-            SvgPicture.network(
-              _otherMembers[1].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[1],
+              size: _avatarSize,
             ),
             const Spacer(),
-            SvgPicture.network(
-              _otherMembers[0].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[0],
+              size: _avatarSize,
             ),
           ],
         ),
@@ -200,19 +196,17 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: SvgPicture.network(
-                _familyLeader.pictureURL,
-                width: _avatarSize,
-                height: _avatarSize,
+              child: FunAvatar.fromProfile(
+                _familyLeader,
+                size: _avatarSize,
               ),
             ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: SvgPicture.network(
-                _otherMembers[1].pictureURL,
-                width: _avatarSize,
-                height: _avatarSize,
+              child: FunAvatar.fromProfile(
+                _otherMembers[1],
+                size: _avatarSize,
               ),
             ),
           ],
@@ -221,16 +215,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
       Positioned.fill(
         child: Row(
           children: [
-            SvgPicture.network(
-              _otherMembers[2].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[2],
+              size: _avatarSize,
             ),
             const Spacer(),
-            SvgPicture.network(
-              _otherMembers[0].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[0],
+              size: _avatarSize,
             ),
           ],
         ),
@@ -246,10 +238,9 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: SvgPicture.network(
-                _familyLeader.pictureURL,
-                width: _avatarSize,
-                height: _avatarSize,
+              child: FunAvatar.fromProfile(
+                _familyLeader,
+                size: _avatarSize,
               ),
             ),
             const Spacer(),
@@ -262,16 +253,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         right: 0,
         child: Row(
           children: [
-            SvgPicture.network(
-              _otherMembers[3].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[3],
+              size: _avatarSize,
             ),
             const Spacer(),
-            SvgPicture.network(
-              _otherMembers[0].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[0],
+              size: _avatarSize,
             ),
           ],
         ),
@@ -283,16 +272,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         child: Row(
           children: [
             const Spacer(),
-            SvgPicture.network(
-              _otherMembers[2].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[2],
+              size: _avatarSize,
             ),
             const Spacer(flex: 2),
-            SvgPicture.network(
-              _otherMembers[1].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[1],
+              size: _avatarSize,
             ),
             const Spacer(),
           ],
@@ -309,19 +296,17 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: SvgPicture.network(
-                _familyLeader.pictureURL,
-                width: _avatarSize,
-                height: _avatarSize,
+              child: FunAvatar.fromProfile(
+                _familyLeader,
+                size: _avatarSize,
               ),
             ),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: SvgPicture.network(
-                _otherMembers[2].pictureURL,
-                width: _avatarSize,
-                height: _avatarSize,
+              child: FunAvatar.fromProfile(
+                _otherMembers[2],
+                size: _avatarSize,
               ),
             ),
           ],
@@ -333,16 +318,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         right: 0,
         child: Row(
           children: [
-            SvgPicture.network(
-              _otherMembers[4].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[4],
+              size: _avatarSize,
             ),
             const Spacer(),
-            SvgPicture.network(
-              _otherMembers[0].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[0],
+              size: _avatarSize,
             ),
           ],
         ),
@@ -353,16 +336,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         right: 0,
         child: Row(
           children: [
-            SvgPicture.network(
-              _otherMembers[3].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[3],
+              size: _avatarSize,
             ),
             const Spacer(),
-            SvgPicture.network(
-              _otherMembers[1].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[1],
+              size: _avatarSize,
             ),
           ],
         ),
@@ -379,10 +360,9 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: SvgPicture.network(
-                _familyLeader.pictureURL,
-                width: _avatarSize,
-                height: _avatarSize,
+              child: FunAvatar.fromProfile(
+                _familyLeader,
+                size: _avatarSize,
               ),
             ),
             const Spacer(),
@@ -408,16 +388,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         right: 0,
         child: Row(
           children: [
-            SvgPicture.network(
-              _otherMembers[4].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[4],
+              size: _avatarSize,
             ),
             const Spacer(),
-            SvgPicture.network(
-              _otherMembers[0].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[0],
+              size: _avatarSize,
             ),
           ],
         ),
@@ -428,16 +406,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         right: 0,
         child: Row(
           children: [
-            SvgPicture.network(
-              _otherMembers[3].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[3],
+              size: _avatarSize,
             ),
             const Spacer(),
-            SvgPicture.network(
-              _otherMembers[1].pictureURL,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[1],
+              size: _avatarSize,
             ),
           ],
         ),

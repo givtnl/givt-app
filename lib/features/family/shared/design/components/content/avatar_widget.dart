@@ -45,7 +45,11 @@ class AvatarWidget extends StatelessWidget {
                             width: uiModel.isSelected ? 6 : 0,
                           ),
                         ),
-                        child: FunAvatar.hero(uiModel.avatar),
+                        child: uiModel.avatar != null
+                            ? FunAvatar.hero(uiModel.avatar!)
+                            : uiModel.customAvatarUIModel != null
+                                ? FunAvatar.custom(uiModel.customAvatarUIModel!)
+                                : FunAvatar.defaultHero(),
                       ),
                     ),
                   ),

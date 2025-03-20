@@ -58,8 +58,7 @@ class Conversation {
   ConversationUIModel toUIModel() {
     return ConversationUIModel(
       sentence: sentence,
-      avatar: profile.avatar,
-      profileName: profile.firstName,
+      profile: profile,
     );
   }
 }

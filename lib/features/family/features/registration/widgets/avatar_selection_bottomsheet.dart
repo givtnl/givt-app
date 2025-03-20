@@ -49,7 +49,6 @@ class AvatarSelectionBottomsheet extends StatelessWidget {
                         state.avatars[index],
                       ),
                       filename: state.avatars[index].fileName,
-                      url: state.avatars[index].pictureURL,
                       isSelected:
                           state.avatars[index] == state.getAvatarByKey(id),
                     );

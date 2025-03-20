@@ -29,6 +29,8 @@ import 'package:overlay_tooltip/overlay_tooltip.dart';
 class EditAvatarScreen extends StatefulWidget {
   const EditAvatarScreen({required this.userGuid, super.key});
 
+  static const options = ['Default', 'Customize'];
+
   final String userGuid;
 
   @override
@@ -88,8 +90,6 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     BuildContext context,
     EditAvatarUIModel data,
   ) {
-    const options = ['Default', 'Customize'];
-
     return OverlayTooltipScaffold(
       controller: controller,
       overlayColor: Colors.transparent,
@@ -102,7 +102,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
             onPressed: _cubit.navigateBack,
           ),
           actions: [
-            if (data.mode == options[0])
+            if (data.mode == EditAvatarScreen.options[0])
               IconButton(
                 onPressed: () {
                   AnalyticsHelper.logEvent(
@@ -118,16 +118,18 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
           children: [
             const SizedBox(height: 12),
             FunPrimaryTabs(
-              options: options,
-              selectedIndex: data.mode == options[0] ? 0 : 1,
+              options: EditAvatarScreen.options,
+              selectedIndex: data.mode == EditAvatarScreen.options[0] ? 0 : 1,
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.avatarTabChanged,
               ),
               onPressed: _cubit.setMode,
             ),
             const SizedBox(height: 16),
-            if (data.mode == options[0]) ..._getDefaultView(data),
-            if (data.mode == options[1]) ..._getCustomView(data),
+            if (data.mode == EditAvatarScreen.options[0])
+              ..._getDefaultView(data),
+            if (data.mode == EditAvatarScreen.options[1])
+              ..._getCustomView(data),
           ],
         ),
       ),
@@ -264,13 +266,16 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     );
   }
 
-  void _navigateToLookingGoodScreen(
+  Future<void> _navigateToLookingGoodScreen(
     BuildContext context,
     LookingGoodUIModel uiModel,
-  ) {
-    Navigator.of(context).push(
+  ) async {
+    await Navigator.of(context).push(
       LookingGoodScreen(uiModel: uiModel).toRoute(context),
     );
+    if (context.mounted) {
+      context.pop();
+    }
   }
 
   void _showSaveOnBackDialog(BuildContext context) {

@@ -19,6 +19,18 @@ class AvatarsRepositoryImpl with AvatarsRepository {
     if (true == _avatars?.isNotEmpty) {
       return _avatars!;
     }
+
+    _avatars =
+        List.generate(10, (index) => Avatar(fileName: 'Hero${index + 1}.svg'));
+
+    return _avatars!;
+  }
+
+  Future<List<Avatar>> fetchAvatarsFromApi() async {
+    if (true == _avatars?.isNotEmpty) {
+      return _avatars!;
+    }
+
     final response = await _apiService.fetchAvatars();
 
     final result = <Avatar>[];

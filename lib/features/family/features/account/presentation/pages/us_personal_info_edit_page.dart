@@ -130,7 +130,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
-            child: ParentAvatar(
+            child: LoggedInParentAvatar(
               user: user,
             ),
           ),
