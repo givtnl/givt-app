@@ -88,6 +88,7 @@ name: Playing the gratitude game with 3 players without AI
     commands: 
       - tapOn: "I'm going to do this"
       - tapOn: "Continue"
+## Family gather around
 - tapOn: "Show our summary"
 - tapOn: "Claim XP"
 - tapOn: 
@@ -98,3 +99,7 @@ name: Playing the gratitude game with 3 players without AI
     optional: true
 - tapOn: "Reveal"
 - tapOn: "Continue"
+- tapOn: 
+    label: Claim reward after x games
+    text: "Claim reward"
+    optional: true

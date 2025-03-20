@@ -15,10 +15,10 @@ env:
 - tapOn:
     text: "Login"
     index: 1
-- tapOn: "Terminate account"
+- tapOn: ".*Terminate account"
 - tapOn: 
     label: Agree that you understand the terms
-    text: "0"
+    text: "unregisterCheckbox"
 - tapOn: "Terminate my account"
 - assertVisible: "We're sad to see you leave\n and we hope to see you again."
 - assertVisible: "Let's go!"
