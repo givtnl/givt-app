@@ -52,8 +52,8 @@ class ProfileOverviewTile extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: FunAvatar.hero(
-                profile.avatar,
+              child: FunAvatar.fromProfile(
+                profile,
                 size: 64,
               ),
             ),

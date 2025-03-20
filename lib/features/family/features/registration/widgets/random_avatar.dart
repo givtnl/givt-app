@@ -53,9 +53,10 @@ class _RandomAvatarState extends State<RandomAvatar> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Semantics(
-                  identifier: _avatarsCubit.state.getAvatarByKey(widget.id).pictureURL.split('/').last,
-                  child: SvgPicture.network(
-                    _avatarsCubit.state.getAvatarByKey(widget.id).pictureURL,
+                  identifier:
+                      _avatarsCubit.state.getAvatarByKey(widget.id).fileName,
+                  child: SvgPicture.asset(
+                    _avatarsCubit.state.getAvatarByKey(widget.id).fileName,
                     width: size.width * 0.25,
                     height: size.width * 0.25,
                     placeholderBuilder: (context) => SizedBox(

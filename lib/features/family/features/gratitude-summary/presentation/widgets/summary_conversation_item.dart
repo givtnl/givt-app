@@ -39,8 +39,8 @@ class SummaryConversationItem extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: Colors.white,
                 ),
-                child: FunAvatar.hero(
-                  uiModel.avatar,
+                child: FunAvatar.fromProfile(
+                  uiModel.profile,
                   size: 80,
                 )),
           ),
@@ -51,7 +51,7 @@ class SummaryConversationItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LabelLargeText(
-                  uiModel.profileName,
+                  uiModel.profile.firstName,
                   color: FamilyAppTheme.highlight40,
                 ),
                 const SizedBox(height: 4),

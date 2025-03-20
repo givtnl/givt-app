@@ -139,7 +139,10 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
                 for (int i = 0; i < summary.players.length; i++)
                   Positioned(
                     left: i * 24.0,
-                    child: FunAvatar.hero(summary.players[i].avatar, size: 32,),
+                    child: FunAvatar.fromProfile(
+                      summary.players[i],
+                      size: 32,
+                    ),
                   ),
               ],
             ),

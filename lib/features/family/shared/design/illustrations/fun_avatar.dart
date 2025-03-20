@@ -88,6 +88,10 @@ class FunAvatar extends FunIcon {
     );
   }
 
+  factory FunAvatar.defaultHero({double size = 120}) {
+    return FunAvatar.hero('Hero1.svg', size: size);
+  }
+
   factory FunAvatar.hero(String heroName, {double size = 120}) {
     return FunAvatar(
       semanticsIdentifier: heroName,
@@ -101,6 +105,11 @@ class FunAvatar extends FunIcon {
             'assets/family/images/avatar/default/$heroName',
             fit: BoxFit.cover,
             alignment: Alignment.topCenter,
+            errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
+              'assets/family/images/avatar/default/Hero1.svg',
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+            ),
           ),
         ),
       ),

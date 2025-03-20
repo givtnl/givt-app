@@ -136,16 +136,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
       Positioned.fill(
         child: Row(
           children: [
-            SvgPicture.asset(
-              _familyLeader.avatar,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _familyLeader,
+              size: _avatarSize,
             ),
             const Spacer(),
-            SvgPicture.asset(
-              _otherMembers.first.avatar,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers.first,
+              size: _avatarSize,
             ),
           ],
         ),
@@ -161,10 +159,9 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: SvgPicture.asset(
-                _familyLeader.avatar,
-                width: _avatarSize,
-                height: _avatarSize,
+              child: FunAvatar.fromProfile(
+                _familyLeader,
+                size: _avatarSize,
               ),
             ),
             const Spacer(),
@@ -177,16 +174,14 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         right: 0,
         child: Row(
           children: [
-            SvgPicture.asset(
-              _otherMembers[1].avatar,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[1],
+              size: _avatarSize,
             ),
             const Spacer(),
-            SvgPicture.asset(
-              _otherMembers[0].avatar,
-              width: _avatarSize,
-              height: _avatarSize,
+            FunAvatar.fromProfile(
+              _otherMembers[0],
+              size: _avatarSize,
             ),
           ],
         ),
