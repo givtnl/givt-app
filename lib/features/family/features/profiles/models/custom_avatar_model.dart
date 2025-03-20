@@ -34,10 +34,10 @@ class CustomAvatarModel {
   CustomAvatarUIModel toUIModel() {
     return CustomAvatarUIModel(
       assetsToOverlap: [
-        'assets/avatars/custom/Body$bodyIndex.svg',
-        'assets/avatars/custom/Hair$hairIndex.svg',
-        'assets/avatars/custom/Mask$maskIndex.svg',
-        'assets/avatars/custom/Suit$suitIndex.svg',
+        'assets/family/images/avatar/custom/Body$bodyIndex.svg',
+        'assets/family/images/avatar/custom/Hair$hairIndex.svg',
+        'assets/family/images/avatar/custom/Mask$maskIndex.svg',
+        'assets/family/images/avatar/custom/Suit$suitIndex.svg',
       ],
       semanticsIdentifier:
           'Body$bodyIndex-Hair$hairIndex-Mask$maskIndex-Suit$suitIndex',
