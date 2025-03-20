@@ -270,10 +270,10 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     BuildContext context,
     LookingGoodUIModel uiModel,
   ) async {
-    final result = await Navigator.of(context).push(
+    await Navigator.of(context).push(
       LookingGoodScreen(uiModel: uiModel).toRoute(context),
     );
-    if (result == true) {
+    if (context.mounted) {
       context.pop();
     }
   }
