@@ -264,13 +264,16 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     );
   }
 
-  void _navigateToLookingGoodScreen(
+  Future<void> _navigateToLookingGoodScreen(
     BuildContext context,
     LookingGoodUIModel uiModel,
-  ) {
-    Navigator.of(context).push(
+  ) async {
+    await Navigator.of(context).push(
       LookingGoodScreen(uiModel: uiModel).toRoute(context),
     );
+    if (context.mounted) {
+      context.pop();
+    }
   }
 
   void _showSaveOnBackDialog(BuildContext context) {

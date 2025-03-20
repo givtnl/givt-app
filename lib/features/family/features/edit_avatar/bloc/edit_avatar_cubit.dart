@@ -33,11 +33,15 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       _profile = profiles.firstWhere(
         (profile) => profile.id == userGuid,
       );
-    });
 
-    if (_profile?.avatar == null) {
-      setAvatar(_profile!.avatar!);
-    }
+      if (_profile?.avatar != null) {
+        setAvatar(_profile!.avatar!);
+      } else if (_profile?.customAvatar != null) {
+        //TODO
+      } else {
+        setAvatar('Hero1.svg');
+      }
+    });
   }
 
   @override
