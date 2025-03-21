@@ -37,12 +37,12 @@ class UnlockedItemWidget extends StatelessWidget {
             : FamilyAppTheme.neutral98,
         child: Center(
           child: SvgPicture.asset(
-            'assets/family/images/avatar/custom/${uiModel.type}${uiModel.index}.svg',
-            height: 32,
-            width: 32,
+            'assets/family/images/avatar/custom/tiles/Tile${uiModel.type}${uiModel.index}.svg',
           ),
         ),
       ),
     );
   }
 }
+
+//assets/family/images/avatar/custom/tiles/TileSuit1.svg

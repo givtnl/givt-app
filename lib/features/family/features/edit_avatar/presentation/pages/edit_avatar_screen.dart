@@ -229,39 +229,43 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     );
   }
 
-  Widget _getCustomItems(List<EditAvatarItemUIModel> items,
-      {bool isColors = false}) {
+  Widget _getCustomItems(
+    List<EditAvatarItemUIModel> items, {
+    bool isColors = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
       child: GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: isColors ? 4 : 3,
-            crossAxisSpacing: 20, // Horizontal spacing
-            mainAxisSpacing: 24, // Vertical spacing
-          ),
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            final item = items[index];
-            if (item is LockedItem) {
-              return LockedButtonWidget(
-                onPressed: _cubit.lockedButtonClicked,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: isColors ? 4 : 3,
+          crossAxisSpacing: 20, // Horizontal spacing
+          mainAxisSpacing: 24, // Vertical spacing
+        ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+          if (item is LockedItem) {
+            return LockedButtonWidget(
+              onPressed: _cubit.lockedButtonClicked,
+            );
+          } else {
+            if (isColors) {
+              return UnlockedColorWidget(
+                color: bodyColors[index],
+                uiModel: item as UnlockedItem,
+                onPressed: _cubit.onUnlockedItemClicked,
               );
             } else {
-              if (isColors) {
-                return UnlockedColorWidget(
-                    color: bodyColors[index],
-                    uiModel: item as UnlockedItem,
-                    onPressed: _cubit.onUnlockedItemClicked);
-              } else {
-                return UnlockedItemWidget(
-                  uiModel: item as UnlockedItem,
-                  onPressed: _cubit.onUnlockedItemClicked,
-                );
-              }
+              return UnlockedItemWidget(
+                uiModel: item as UnlockedItem,
+                onPressed: _cubit.onUnlockedItemClicked,
+              );
             }
-          }),
+          }
+        },
+      ),
     );
   }
 
@@ -346,7 +350,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
           },
           text: 'No, delete',
           analyticsEvent: AnalyticsEvent(AmplitudeEvents.saveAvatarNoClicked),
-        )
+        ),
       ],
     ).show(context);
   }
