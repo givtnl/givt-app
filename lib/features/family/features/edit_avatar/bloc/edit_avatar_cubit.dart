@@ -194,33 +194,14 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     );
 
     if (shouldShowEasterEgg()) {
-      list.addAll([
-        UnlockedItem(
+      list.addAll(List.generate(
+        5,
+        (index) => UnlockedItem(
           type: 'Mask',
-          index: 666,
-          isSelected: 666 == _customAvatar.maskIndex,
+          index: 666 + index,
+          isSelected: 666 + index == _customAvatar.maskIndex,
         ),
-        UnlockedItem(
-          type: 'Mask',
-          index: 667,
-          isSelected: 667 == _customAvatar.maskIndex,
-        ),
-        UnlockedItem(
-          type: 'Mask',
-          index: 668,
-          isSelected: 668 == _customAvatar.maskIndex,
-        ),
-        UnlockedItem(
-          type: 'Mask',
-          index: 669,
-          isSelected: 669 == _customAvatar.maskIndex,
-        ),
-        UnlockedItem(
-          type: 'Mask',
-          index: 670,
-          isSelected: 670 == _customAvatar.maskIndex,
-        ),
-      ]);
+      ));
     }
     return list;
   }
