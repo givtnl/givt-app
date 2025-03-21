@@ -34,9 +34,7 @@ class LeagueHighlightedHero extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: _getColor(),
                   ),
-                  child: uiModel.avatar != null
-                      ? FunAvatar.hero(uiModel.avatar!)
-                      : const SizedBox.shrink(),
+                  child: _getAvatar(uiModel),
                 ),
               ),
               Align(
@@ -79,5 +77,17 @@ class LeagueHighlightedHero extends StatelessWidget {
     } else {
       return Colors.transparent;
     }
+  }
+
+  FunAvatar _getAvatar(LeagueEntryUIModel uiModel) {
+    if (uiModel.avatar != null) {
+      return FunAvatar.hero(uiModel.avatar!);
+    }
+
+    if (uiModel.customAvatarUIModel != null) {
+      return FunAvatar.custom(uiModel.customAvatarUIModel!);
+    }
+
+    return FunAvatar.defaultHero();
   }
 }

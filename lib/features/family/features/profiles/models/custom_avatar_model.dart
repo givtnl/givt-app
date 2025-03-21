@@ -18,10 +18,10 @@ class CustomAvatarModel {
 
   factory CustomAvatarModel.fromMap(Map<String, dynamic> map) {
     return CustomAvatarModel(
-      bodyIndex: map['Body'] as int,
-      hairIndex: map['Hair'] as int,
-      maskIndex: map['Mask'] as int,
-      suitIndex: map['Suit'] as int,
+      bodyIndex: map['body'] as int,
+      hairIndex: map['hair'] as int,
+      maskIndex: map['mask'] as int,
+      suitIndex: map['suit'] as int,
     );
   }
 

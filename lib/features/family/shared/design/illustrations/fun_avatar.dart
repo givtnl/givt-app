@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/custom_avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -54,6 +55,16 @@ class FunAvatar extends FunIcon {
   }
 
   factory FunAvatar.fromProfile(Profile profile, {double size = 120}) {
+    if (profile.customAvatar != null) {
+      return FunAvatar.custom(profile.customAvatar!.toUIModel(), size: size);
+    } else if (profile.avatar != null) {
+      return FunAvatar.hero(profile.avatar!, size: size);
+    } else {
+      return FunAvatar.hero('Hero1.svg', size: size);
+    }
+  }
+
+  factory FunAvatar.fromGameProfile(GameProfile profile, {double size = 120}) {
     if (profile.customAvatar != null) {
       return FunAvatar.custom(profile.customAvatar!.toUIModel(), size: size);
     } else if (profile.avatar != null) {

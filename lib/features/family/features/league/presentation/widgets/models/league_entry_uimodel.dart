@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:givt_app/features/family/features/league/domain/models/league_item.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/custom_avatar_uimodel.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 
 class LeagueEntryUIModel {
@@ -9,6 +10,7 @@ class LeagueEntryUIModel {
     this.name,
     this.xp,
     this.avatar,
+    this.customAvatarUIModel,
   });
 
   factory LeagueEntryUIModel.fromEntryAndProfile(
@@ -18,6 +20,7 @@ class LeagueEntryUIModel {
       name: profile.firstName,
       xp: item.experiencePoints,
       avatar: profile.avatar,
+      customAvatarUIModel: profile.customAvatar?.toUIModel(),
     );
   }
 
@@ -77,4 +80,5 @@ class LeagueEntryUIModel {
   final String? name;
   final int? xp;
   final String? avatar;
+  final CustomAvatarUIModel? customAvatarUIModel;
 }

@@ -43,7 +43,7 @@ class Profile extends Equatable {
       hasDonations:
           map['hasDonations'] as bool? ?? map['latestDonation'] != null,
       wallet: walletMap,
-      avatar: pictureMap['fileName'] as String?,
+      avatar: map['avatar'] as String?,
       customAvatar: customAvatarMap,
       dateOfBirth: map['dateOfBirth'] as String? ?? '',
       windDownTime: map['windDownTime'] as int?,
