@@ -155,11 +155,12 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
   }
 
   List<Widget> _getDefaultView(EditAvatarUIModel data) {
+    final size = MediaQuery.sizeOf(context);
     return [
       Center(
         child: SvgPicture.asset(
           'assets/family/images/avatar/default/${data.avatarName}',
-          height: 350,
+          height: size.height > 750 ? 350 : 230,
         ),
       ),
       const SizedBox(height: 24),
@@ -172,21 +173,25 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
   }
 
   List<Widget> _getCustomView(EditAvatarUIModel uiModel) {
+    final size = MediaQuery.sizeOf(context);
     return [
-      Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          if (!uiModel.isFeatureUnlocked)
-            Center(
-              child: SvgPicture.asset(
-                'assets/family/images/avatar/custom/placeholder.svg',
-                height: 350,
+      SizedBox(
+        height: size.height > 750 ? 350 : 230,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            if (!uiModel.isFeatureUnlocked)
+              Center(
+                child: SvgPicture.asset(
+                  'assets/family/images/avatar/custom/placeholder.svg',
+                ),
               ),
-            ),
-          if (uiModel.isFeatureUnlocked)
-            ...FunAvatar.customAvatarWidgetsList(uiModel.customAvatarUIModel),
-          if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
-        ],
+            if (uiModel.isFeatureUnlocked)
+              ...FunAvatar.customAvatarWidgetsList(uiModel.customAvatarUIModel,
+                  fit: BoxFit.contain),
+            if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
+          ],
+        ),
       ),
       const SizedBox(
         height: 8,

@@ -92,12 +92,13 @@ class FunAvatar extends FunIcon {
     );
   }
 
-  static List<Widget> customAvatarWidgetsList(CustomAvatarUIModel uiModel) {
+  static List<Widget> customAvatarWidgetsList(CustomAvatarUIModel uiModel,
+      {BoxFit fit = BoxFit.cover}) {
     return List.generate(
       uiModel.assetsToOverlap.length,
       (index) => SvgPicture.asset(
         uiModel.assetsToOverlap[index],
-        fit: BoxFit.cover,
+        fit: fit,
         alignment: Alignment.topCenter,
       ),
     );
