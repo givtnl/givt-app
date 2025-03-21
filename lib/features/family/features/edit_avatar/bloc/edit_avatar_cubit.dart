@@ -217,18 +217,14 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     );
 
     if (shouldShowEasterEgg()) {
-      list.addAll([
-        UnlockedItem(
+      list.addAll(List.generate(
+        2,
+        (index) => UnlockedItem(
           type: 'Suit',
-          index: 666,
-          isSelected: 666 == _customAvatar.suitIndex,
+          index: 666 + index,
+          isSelected: 666 + index == _customAvatar.suitIndex,
         ),
-        UnlockedItem(
-          type: 'Suit',
-          index: 667,
-          isSelected: 667 == _customAvatar.suitIndex,
-        ),
-      ]);
+      ));
     }
     return list;
   }
