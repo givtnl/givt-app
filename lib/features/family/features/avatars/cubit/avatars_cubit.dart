@@ -44,7 +44,7 @@ class AvatarsCubit extends Cubit<AvatarsState> {
     }
   }
 
-  Future<void> assignRandomAvatarUrl(String key) async {
+  Future<void> assignRandomAvatar(String key) async {
     if (state.avatars.isEmpty) {
       await fetchAvatars();
     }

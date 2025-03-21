@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 
 class RandomAvatar extends StatefulWidget {
@@ -27,7 +28,7 @@ class _RandomAvatarState extends State<RandomAvatar> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _avatarsCubit = getIt<AvatarsCubit>();
-    _avatarsCubit.assignRandomAvatarUrl(widget.id);
+    _avatarsCubit.assignRandomAvatar(widget.id);
   }
 
   @override
@@ -52,19 +53,9 @@ class _RandomAvatarState extends State<RandomAvatar> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Semantics(
-                  identifier:
-                      _avatarsCubit.state.getAvatarByKey(widget.id).fileName,
-                  child: SvgPicture.asset(
-                    _avatarsCubit.state.getAvatarByKey(widget.id).fileName,
-                    width: size.width * 0.25,
-                    height: size.width * 0.25,
-                    placeholderBuilder: (context) => SizedBox(
-                      width: size.width * 0.25,
-                      height: size.width * 0.25,
-                      child: const CustomCircularProgressIndicator(),
-                    ),
-                  ),
+                child: FunAvatar.hero(
+                  _avatarsCubit.state.getAvatarByKey(widget.id).fileName,
+                  size: size.width * 0.25,
                 ),
               ),
               const Positioned(
