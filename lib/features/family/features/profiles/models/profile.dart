@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/family/features/family_history/models/donation.dart';
 import 'package:givt_app/features/family/features/overview/models/wallet.dart';
 import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -20,13 +19,10 @@ class Profile extends Equatable {
     this.customAvatar,
     this.windDownTime,
     this.bedTime,
+    this.unlocks = const [],
   });
   factory Profile.fromMap(Map<String, dynamic> map) {
     final pictureMap = map['picture'] as Map<String, dynamic>;
-
-    final donationMap = map['latestDonation'] == null
-        ? const Donation.empty()
-        : Donation.fromMap(map['latestDonation'] as Map<String, dynamic>);
 
     final walletMap = map['wallet'] == null
         ? const Wallet.empty()
@@ -52,6 +48,10 @@ class Profile extends Equatable {
       dateOfBirth: map['dateOfBirth'] as String? ?? '',
       windDownTime: map['windDownTime'] as int?,
       bedTime: map['bedTime'] as String?,
+      unlocks: (map['unlockedFeatures'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
     );
   }
 
@@ -68,6 +68,7 @@ class Profile extends Equatable {
           avatar: '',
           customAvatar: null,
           dateOfBirth: '',
+          unlocks: [],
         );
 
   final String id;
@@ -83,6 +84,7 @@ class Profile extends Equatable {
   final String dateOfBirth;
   final int? windDownTime;
   final String? bedTime;
+  final List<String> unlocks;
 
   ProfileType get profileType => ProfileType.getByTypeName(type);
 
@@ -115,6 +117,8 @@ class Profile extends Equatable {
         dateOfBirth,
         windDownTime,
         bedTime,
+        customAvatar,
+        unlocks,
       ];
 
   Profile copyWith({
@@ -131,6 +135,7 @@ class Profile extends Equatable {
     String? dateOfBirth,
     int? windDownTime,
     String? bedTime,
+    List<String>? unlocks,
   }) {
     return Profile(
       id: id ?? this.id,
@@ -146,6 +151,7 @@ class Profile extends Equatable {
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       windDownTime: windDownTime ?? this.windDownTime,
       bedTime: bedTime ?? this.bedTime,
+      unlocks: unlocks ?? this.unlocks,
     );
   }
 
@@ -175,6 +181,7 @@ class Profile extends Equatable {
       'dateOfBirth': dateOfBirth,
       'windDownTime': windDownTime,
       'bedTime': bedTime,
+      'unlocks': unlocks,
     };
   }
 }
