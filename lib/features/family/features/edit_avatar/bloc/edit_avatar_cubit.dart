@@ -59,12 +59,26 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         _customMode = EditAvatarScreen.options.last;
         _emitData();
       }
+      if (_isSjoerd) {
+        _customAvatar = CustomAvatarModel.initialSjoerd();
+        _emitData();
+      }
+      if (_isTine) {
+        _customAvatar = CustomAvatarModel.initialTine();
+        _emitData();
+      }
     });
   }
+
+  bool get _isSjoerd => _profile?.id == '7a5d09d4-ab32-45ef-9c77-d156d7e71a0d';
+
+  bool get _isTine => _profile?.id == '1c1bd573-bfa0-4d32-93c1-6e173d0fac58';
 
   bool isGivtEmployee() {
     return _authRepository.getCurrentUser()?.email.contains('givt') ?? false;
   }
+
+  bool shouldShowEasterEgg() => isGivtEmployee() || _isSjoerd || _isTine;
 
   bool isFirstVisitSinceUnlock() {
     final isFirstVisit = !_sharedPreferences
@@ -157,7 +171,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         isSelected: index == _customAvatar.hairIndex,
       ),
     );
-    if (isGivtEmployee()) {
+    if (shouldShowEasterEgg()) {
       list.addAll([
         UnlockedItem(
           type: 'Hair',
@@ -179,7 +193,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       ),
     );
 
-    if (isGivtEmployee()) {
+    if (shouldShowEasterEgg()) {
       list.addAll([
         UnlockedItem(
           type: 'Mask',
@@ -221,7 +235,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       ),
     );
 
-    if (isGivtEmployee()) {
+    if (shouldShowEasterEgg()) {
       list.addAll([
         UnlockedItem(
           type: 'Suit',
