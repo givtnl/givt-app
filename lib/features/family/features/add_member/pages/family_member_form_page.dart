@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -14,8 +13,8 @@ import 'package:givt_app/features/family/features/add_member/widgets/member_coun
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/registration/widgets/random_avatar.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsheet.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -71,14 +70,12 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
               age: int.parse(_ageController.text),
               dateOfBirth: dateOfBirth(),
               allowance: _amount,
-              profilePictureURL: avatar.pictureURL,
               profilePictureName: avatar.fileName,
               type: ProfileType.Child,
             )
           : Member(
               firstName: _nameController.text,
               email: _emailController.text,
-              profilePictureURL: avatar.pictureURL,
               profilePictureName: avatar.fileName,
               type: ProfileType.Parent,
             );
@@ -138,7 +135,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                   otherMembersIcons: [
                     ...widget.membersToCombine.map(
                       (member) => _memberIcon(
-                        member.profilePictureURL ?? '',
+                        member.profilePictureName ?? '',
                         member.firstName ?? '',
                       ),
                     ),
@@ -230,15 +227,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                       width: 4,
                     ),
                   ),
-                  child: SvgPicture.asset(
-                    height: 28,
-                    width: 28,
+                  child: FunAvatar.hero(
                     state.getAvatarByKey(widget.index.toString()).fileName,
-                    placeholderBuilder: (context) => const SizedBox(
-                      height: 32,
-                      width: 32,
-                      child: CustomCircularProgressIndicator(),
-                    ),
+                    size: 28,
                   ),
                 ),
               ),
@@ -249,16 +240,14 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     );
   }
 
-  Widget _memberIcon(String pictureURL, String name) {
+  Widget _memberIcon(String filename, String name) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
-          SvgPicture.network(
-            height: 32,
-            width: 32,
-            pictureURL,
-            placeholderBuilder: (context) => const CircularProgressIndicator(),
+          FunAvatar.hero(
+            filename,
+            size: 32,
           ),
           LabelMediumText(name),
         ],
