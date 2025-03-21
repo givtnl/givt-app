@@ -75,7 +75,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   bool get _isTine => _profile?.id == '1c1bd573-bfa0-4d32-93c1-6e173d0fac58';
 
   bool isGivtEmployee() {
-    return _authRepository.getCurrentUser()?.email.contains('givt') ?? false;
+    return _authRepository.getCurrentUser()?.email.contains('@givt') ?? false;
   }
 
   bool shouldShowEasterEgg() => isGivtEmployee() || _isSjoerd || _isTine;
