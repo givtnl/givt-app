@@ -141,8 +141,8 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
           for (var i = 0; i < selectedProfiles.length; i++)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: FunAvatar.hero(
-                selectedProfiles[i].avatar!,
+              child: FunAvatar.fromGameProfile(
+                selectedProfiles[i],
                 size: 40,
               ),
             ),

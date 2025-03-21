@@ -23,7 +23,7 @@ class ProfileItem extends StatelessWidget {
       feedback: _feedbackCircle(size),
       child: Column(
         children: [
-          FunAvatar.hero(profile.avatar!, size: size),
+          FunAvatar.fromGameProfile(profile, size: size),
           const SizedBox(height: 12),
           SizedBox(
             width: size,
@@ -44,8 +44,8 @@ class ProfileItem extends StatelessWidget {
     return SizedBox(
       height: size,
       width: size,
-      child: FunAvatar.hero(
-        profile.avatar!,
+      child: FunAvatar.fromGameProfile(
+        profile,
         size: size,
       ),
     );
