@@ -58,14 +58,14 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         setFirstVisitSinceUnlock();
         _customMode = EditAvatarScreen.options.last;
         _emitData();
-      }
-      if (_isSjoerd) {
-        _customAvatar = CustomAvatarModel.initialSjoerd();
-        _emitData();
-      }
-      if (_isTine) {
-        _customAvatar = CustomAvatarModel.initialTine();
-        _emitData();
+        if (_isSjoerd) {
+          _customAvatar = CustomAvatarModel.initialSjoerd();
+          _emitData();
+        }
+        if (_isTine) {
+          _customAvatar = CustomAvatarModel.initialTine();
+          _emitData();
+        }
       }
     });
   }
