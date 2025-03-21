@@ -101,7 +101,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   }
 
   bool isFeatureUnlocked() {
-    return _profile?.unlocks.contains('avatar_custom') == true;
+    return _profile?.unlocks.contains('avatar_custom') ?? false;
   }
 
   List<EditAvatarItemUIModel> bodyItems() {
