@@ -173,8 +173,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   }
 
   Future<void> navigateBack({bool force = false}) {
-    if ((_selectedAvatar == _profile!.avatar &&
-            _customAvatar == _profile!.customAvatar) ||
+    if ((_defaultAvatarHasntChanged() && _customAvatarHasntChanged()) ||
         force) {
       emitCustom(const EditAvatarCustom.navigateToProfile());
       return Future.value();
@@ -183,6 +182,11 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     emitCustom(const EditAvatarCustom.showSaveOnBackDialog());
     return Future.value();
   }
+
+  bool _customAvatarHasntChanged() =>
+      !isFeatureUnlocked() || _customAvatar == _profile!.customAvatar;
+
+  bool _defaultAvatarHasntChanged() => _selectedAvatar == _profile!.avatar;
 
   void setMode(Set<String> option) {
     _customMode = option.first;
