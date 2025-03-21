@@ -37,7 +37,9 @@ class GameProfileItem extends StatelessWidget {
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: accentColor ?? profile.role?.color.accentColor ?? Colors.red,
+                    color: accentColor ??
+                        profile.role?.color.accentColor ??
+                        Colors.red,
                   ),
                   child: Container(
                     decoration: const BoxDecoration(
@@ -46,7 +48,7 @@ class GameProfileItem extends StatelessWidget {
                     ),
                     child: FunAvatar.fromGameProfile(
                       profile,
-                      size: size,
+                      size: size - 12,
                     ),
                   ),
                 ),

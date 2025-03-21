@@ -12,7 +12,8 @@ class FunAvatar extends FunIcon {
     super.key,
     this.customCircleColor = FamilyAppTheme.primary95,
     this.customAvatar = const SizedBox(),
-    this.customSize = 48,
+    this.circleSize = 48,
+    this.innerCircleSize,
   });
 
   factory FunAvatar.captain({bool isLarge = false, bool lookRight = false}) {
@@ -28,11 +29,13 @@ class FunAvatar extends FunIcon {
               : 'assets/family/images/avatar_captain.svg',
         ),
       ),
-      customSize: isLarge ? 140 : 48,
+      circleSize: isLarge ? 140 : 48,
     );
   }
 
-  factory FunAvatar.captainAi({bool withBorder = false, bool isLarge = false}) {
+  factory FunAvatar.captainAi(
+      {bool withBorder = false,
+      bool isLarge = false}) {
     return FunAvatar(
       semanticsIdentifier: 'captainAi',
       customCircleColor: FamilyAppTheme.neutral95,
@@ -41,16 +44,18 @@ class FunAvatar extends FunIcon {
             ? 'assets/family/images/beta_captain_with_border.webp'
             : 'assets/family/images/beta_captain.webp',
       ),
-      customSize: isLarge ? 160 : 50,
+      circleSize: isLarge ? 160 : 50,
+      innerCircleSize: isLarge ? 160 : 50,
     );
   }
 
-  factory FunAvatar.family({bool isLarge = false}) {
+  factory FunAvatar.family(
+      {bool isLarge = false}) {
     return FunAvatar(
       semanticsIdentifier: 'family',
       customCircleColor: FamilyAppTheme.neutral95,
       customAvatar: SvgPicture.asset('assets/family/images/family_avatar.svg'),
-      customSize: isLarge ? 120 : 48,
+      circleSize: isLarge ? 120 : 48,
     );
   }
 
@@ -58,9 +63,15 @@ class FunAvatar extends FunIcon {
     if (profile.customAvatar != null) {
       return FunAvatar.custom(profile.customAvatar!.toUIModel(), size: size);
     } else if (profile.avatar != null) {
-      return FunAvatar.hero(profile.avatar!, size: size);
+      return FunAvatar.hero(
+        profile.avatar!,
+        size: size,
+      );
     } else {
-      return FunAvatar.hero('Hero1.svg', size: size);
+      return FunAvatar.hero(
+        'Hero1.svg',
+        size: size,
+      );
     }
   }
 
@@ -88,7 +99,8 @@ class FunAvatar extends FunIcon {
           ),
         ),
       ),
-      customSize: size,
+      circleSize: size,
+      innerCircleSize: size
     );
   }
 
@@ -129,14 +141,16 @@ class FunAvatar extends FunIcon {
           ),
         ),
       ),
-      customSize: size,
+      circleSize: size,
+      innerCircleSize: size
     );
   }
 
   final String semanticsIdentifier;
   final Color customCircleColor;
   final Widget customAvatar;
-  final double customSize;
+  final double circleSize;
+  final double? innerCircleSize;
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +159,8 @@ class FunAvatar extends FunIcon {
       semanticsIdentifier: semanticsIdentifier,
       padding: EdgeInsets.zero,
       circleColor: customCircleColor,
-      circleSize: customSize,
+      circleSize: circleSize,
+      iconSize: innerCircleSize ?? circleSize,
     );
   }
 }

@@ -314,8 +314,8 @@ class FunIcon extends StatelessWidget {
             Semantics(
               identifier: semanticsIdentifier ?? 'icon-custom',
               child: SizedBox(
-                width: circleSize,
-                height: circleSize,
+                width: iconSize,
+                height: iconSize,
                 child: icon,
               ),
             )
