@@ -45,7 +45,6 @@ class FunAvatar extends FunIcon {
             : 'assets/family/images/beta_captain.webp',
       ),
       circleSize: isLarge ? 160 : 50,
-      innerCircleSize: isLarge ? 160 : 50,
     );
   }
 
