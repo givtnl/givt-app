@@ -228,8 +228,8 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                     ),
                   ),
                   child: FunAvatar.hero(
-                    size: 28,
                     state.getAvatarByKey(widget.index.toString()).fileName,
+                    size: 28,
                   ),
                 ),
               ),
