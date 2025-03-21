@@ -172,7 +172,9 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   }
 
   Future<void> navigateBack({bool force = false}) {
-    if (_selectedAvatar == _profile!.avatar || force) {
+    if ((_selectedAvatar == _profile!.avatar &&
+            _customAvatar == _profile!.customAvatar) ||
+        force) {
       emitCustom(const EditAvatarCustom.navigateToProfile());
       return Future.value();
     }
