@@ -175,7 +175,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   }
 
   List<EditAvatarItemUIModel> hairItems() {
-    final list = List.generate(
+    final list = List<EditAvatarItemUIModel>.generate(
       3,
       (index) => UnlockedItem(
         type: 'Hair',
@@ -192,11 +192,18 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         )
       ]);
     }
+
+    // Add locked items
+    list.addAll(List.generate(
+      3,
+      (index) => const LockedItem(),
+    ));
+
     return list;
   }
 
   List<EditAvatarItemUIModel> maskItems() {
-    final list = List.generate(
+    final list = List<EditAvatarItemUIModel>.generate(
       3,
       (index) => UnlockedItem(
         type: 'Mask',
@@ -215,11 +222,18 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         ),
       ));
     }
+
+    // Add locked items
+    list.addAll(List.generate(
+      3,
+      (index) => const LockedItem(),
+    ));
+
     return list;
   }
 
   List<EditAvatarItemUIModel> suitItems() {
-    final list = List.generate(
+    final list = List<EditAvatarItemUIModel>.generate(
       2,
       (index) => UnlockedItem(
         type: 'Suit',
@@ -238,6 +252,13 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         ),
       ));
     }
+
+    // Add locked items
+    list.addAll(List.generate(
+      4,
+      (index) => const LockedItem(),
+    ));
+    
     return list;
   }
 
