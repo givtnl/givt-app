@@ -24,7 +24,13 @@ class UnlockedItemWidget extends StatelessWidget {
           ? FamilyAppTheme.primary80
           : FamilyAppTheme.neutralVariant80,
       onTap: () => onPressed(uiModel.index, uiModel.type),
-      analyticsEvent: AnalyticsEvent(AmplitudeEvents.lockedButtonClicked),
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.unlockedAvatarItemClicked,
+        parameters: {
+          'type': uiModel.type,
+          'index': uiModel.index,
+        },
+      ),
       child: ColoredBox(
         color: uiModel.isSelected
             ? FamilyAppTheme.primary98
