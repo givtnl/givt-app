@@ -11,11 +11,13 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   EditAvatarCubit(
     this._repository,
     this._profilesRepository,
+    this._sharedPreferences,
   ) : super(const BaseState.loading());
 
   String userGuid = '';
@@ -29,6 +31,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
 
   final EditAvatarRepository _repository;
   final ProfilesRepository _profilesRepository;
+  final SharedPreferences _sharedPreferences;
 
   /// Initialize the cubit
   void init(String userGuid) {
@@ -48,7 +51,25 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       } else {
         _emitData();
       }
+      if (isFirstVisitSinceUnlock()) {
+        setFirstVisitSinceUnlock();
+        _customMode = EditAvatarScreen.options.last;
+        _emitData();
+      }
     });
+  }
+
+  bool isFirstVisitSinceUnlock() {
+    final isFirstVisit = !_sharedPreferences
+        .containsKey('edit_avatar_first_visit_${_profile?.id}');
+    return isFirstVisit;
+  }
+
+  void setFirstVisitSinceUnlock() {
+    _sharedPreferences.setBool(
+      'edit_avatar_first_visit_${_profile?.id}',
+      true,
+    );
   }
 
   @override
