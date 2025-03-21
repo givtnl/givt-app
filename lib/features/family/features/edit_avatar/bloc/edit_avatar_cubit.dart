@@ -61,7 +61,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   void saveAvatar() {
     emitLoading();
 
-    if (_customMode == EditAvatarScreen.options.last) {
+    if (_isInCustomAvatarMode) {
       _repository.updateCustomAvatar(
         userGuid,
         _customAvatar,
@@ -76,12 +76,17 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     emitCustom(
       EditAvatarCustom.navigateToLookingGoodScreen(
         LookingGoodUIModel(
-          avatar: _selectedAvatar,
+          avatar: _isInCustomAvatarMode ? null : _selectedAvatar,
+          customAvatarUIModel:
+              _isInCustomAvatarMode ? _customAvatar.toUIModel() : null,
           userFirstName: _profile!.firstName,
         ),
       ),
     );
   }
+
+  bool get _isInCustomAvatarMode =>
+      _customMode == EditAvatarScreen.options.last;
 
   /// Set the avatar to the selected avatar
   void setAvatar(String avatarName) {

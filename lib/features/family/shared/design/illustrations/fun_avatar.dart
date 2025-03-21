@@ -84,18 +84,22 @@ class FunAvatar extends FunIcon {
             top: size / 15,
           ), // Add 8px padding above the SVG
           child: Stack(
-            children: List.generate(
-              uiModel.assetsToOverlap.length,
-              (index) => SvgPicture.asset(
-                uiModel.assetsToOverlap[index],
-                fit: BoxFit.cover,
-                alignment: Alignment.topCenter,
-              ),
-            ),
+            children: customAvatarWidgetsList(uiModel),
           ),
         ),
       ),
       customSize: size,
+    );
+  }
+
+  static List<Widget> customAvatarWidgetsList(CustomAvatarUIModel uiModel) {
+    return List.generate(
+      uiModel.assetsToOverlap.length,
+      (index) => SvgPicture.asset(
+        uiModel.assetsToOverlap[index],
+        fit: BoxFit.cover,
+        alignment: Alignment.topCenter,
+      ),
     );
   }
 

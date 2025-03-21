@@ -169,14 +169,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
               ),
             ),
           if (uiModel.isFeatureUnlocked)
-            ...List.generate(
-              uiModel.customAvatarUIModel.assetsToOverlap.length,
-              (index) => SvgPicture.asset(
-                uiModel.customAvatarUIModel.assetsToOverlap[index],
-                fit: BoxFit.cover,
-                alignment: Alignment.topCenter,
-              ),
-            ),
+            ...FunAvatar.customAvatarWidgetsList(uiModel.customAvatarUIModel),
           if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
         ],
       ),
