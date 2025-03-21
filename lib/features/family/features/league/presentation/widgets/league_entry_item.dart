@@ -19,6 +19,10 @@ class LeagueEntryItem extends StatelessWidget {
           RankWidget(rank: uiModel.rank),
           const SizedBox(width: 12),
           if (uiModel.avatar != null) FunAvatar.hero(uiModel.avatar!, size: 40),
+          if (uiModel.customAvatarUIModel != null)
+            FunAvatar.custom(uiModel.customAvatarUIModel!, size: 40),
+          if (uiModel.avatar == null && uiModel.customAvatarUIModel == null)
+            FunAvatar.defaultHero(size: 40),
           const SizedBox(width: 16),
           if (uiModel.name != null) LabelMediumText(uiModel.name!),
           const Spacer(),
