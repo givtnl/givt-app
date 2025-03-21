@@ -34,7 +34,7 @@ class LeagueHighlightedHero extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: _getColor(),
                   ),
-                  child: _getAvatar(uiModel),
+                  child: _getAvatar(uiModel, size),
                 ),
               ),
               Align(
@@ -79,15 +79,15 @@ class LeagueHighlightedHero extends StatelessWidget {
     }
   }
 
-  FunAvatar _getAvatar(LeagueEntryUIModel uiModel) {
+  FunAvatar _getAvatar(LeagueEntryUIModel uiModel, double size) {
     if (uiModel.avatar != null) {
-      return FunAvatar.hero(uiModel.avatar!);
+      return FunAvatar.hero(uiModel.avatar!, size: size - 12);
     }
 
     if (uiModel.customAvatarUIModel != null) {
-      return FunAvatar.custom(uiModel.customAvatarUIModel!);
+      return FunAvatar.custom(uiModel.customAvatarUIModel!, size: size - 12);
     }
 
-    return FunAvatar.defaultHero();
+    return FunAvatar.defaultHero(size: size - 12);
   }
 }
