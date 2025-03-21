@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_item_uimodel.dart';
@@ -11,6 +12,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
@@ -18,6 +20,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     this._repository,
     this._profilesRepository,
     this._sharedPreferences,
+    this._authRepository,
   ) : super(const BaseState.loading());
 
   String userGuid = '';
@@ -28,16 +31,18 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   Timer? _lockMessageTimer;
   CustomAvatarModel _customAvatar = CustomAvatarModel.initial();
   bool _hasMadeAnyCustomAvatarSelection = false;
+  bool _isProd = true;
 
   final EditAvatarRepository _repository;
   final ProfilesRepository _profilesRepository;
   final SharedPreferences _sharedPreferences;
+  final FamilyAuthRepository _authRepository;
 
   /// Initialize the cubit
-  void init(String userGuid) {
+  Future<void> init(String userGuid) async {
     this.userGuid = userGuid;
-
-    _profilesRepository.getProfiles().then((profiles) {
+    _isProd = !(await isDebugApp());
+    await _profilesRepository.getProfiles().then((profiles) {
       _profile = profiles.firstWhere(
         (profile) => profile.id == userGuid,
       );
@@ -55,9 +60,37 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         setFirstVisitSinceUnlock();
         _customMode = EditAvatarScreen.options.last;
         _emitData();
+        if (_isProd && _isSjoerd) {
+          _customAvatar = CustomAvatarModel.initialSjoerd();
+          _emitData();
+        }
+        if (_isProd && _isTine) {
+          _customAvatar = CustomAvatarModel.initialTine();
+          _emitData();
+        }
       }
     });
   }
+
+  Future<bool> isDebugApp() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      return info.packageName.contains('test');
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool get _isSjoerd => _profile?.id == '7a5d09d4-ab32-45ef-9c77-d156d7e71a0d';
+
+  bool get _isTine => _profile?.id == '1c1bd573-bfa0-4d32-93c1-6e173d0fac58';
+
+  bool isGivtEmployee() {
+    return _authRepository.getCurrentUser()?.email.contains('@givt') ?? false;
+  }
+
+  bool shouldShowEasterEgg() =>
+      _isProd && (isGivtEmployee() || _isSjoerd || _isTine);
 
   bool isFirstVisitSinceUnlock() {
     final isFirstVisit = !_sharedPreferences
@@ -142,7 +175,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   }
 
   List<EditAvatarItemUIModel> hairItems() {
-    return List.generate(
+    final list = List.generate(
       3,
       (index) => UnlockedItem(
         type: 'Hair',
@@ -150,10 +183,20 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         isSelected: index == _customAvatar.hairIndex,
       ),
     );
+    if (shouldShowEasterEgg()) {
+      list.addAll([
+        UnlockedItem(
+          type: 'Hair',
+          index: 666,
+          isSelected: 666 == _customAvatar.hairIndex,
+        )
+      ]);
+    }
+    return list;
   }
 
   List<EditAvatarItemUIModel> maskItems() {
-    return List.generate(
+    final list = List.generate(
       3,
       (index) => UnlockedItem(
         type: 'Mask',
@@ -161,10 +204,22 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         isSelected: index == _customAvatar.maskIndex,
       ),
     );
+
+    if (shouldShowEasterEgg()) {
+      list.addAll(List.generate(
+        5,
+        (index) => UnlockedItem(
+          type: 'Mask',
+          index: 666 + index,
+          isSelected: 666 + index == _customAvatar.maskIndex,
+        ),
+      ));
+    }
+    return list;
   }
 
   List<EditAvatarItemUIModel> suitItems() {
-    return List.generate(
+    final list = List.generate(
       2,
       (index) => UnlockedItem(
         type: 'Suit',
@@ -172,6 +227,18 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         isSelected: index + 1 == _customAvatar.suitIndex,
       ),
     );
+
+    if (shouldShowEasterEgg()) {
+      list.addAll(List.generate(
+        2,
+        (index) => UnlockedItem(
+          type: 'Suit',
+          index: 666 + index,
+          isSelected: 666 + index == _customAvatar.suitIndex,
+        ),
+      ));
+    }
+    return list;
   }
 
   void _emitData() {

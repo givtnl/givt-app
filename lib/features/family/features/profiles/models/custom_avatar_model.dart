@@ -16,6 +16,24 @@ class CustomAvatarModel {
     );
   }
 
+  factory CustomAvatarModel.initialSjoerd() {
+    return CustomAvatarModel(
+      bodyIndex: 6,
+      hairIndex: 0,
+      maskIndex: 666,
+      suitIndex: 666,
+    );
+  }
+
+  factory CustomAvatarModel.initialTine() {
+    return CustomAvatarModel(
+      bodyIndex: 6,
+      hairIndex: 666,
+      maskIndex: 669,
+      suitIndex: 667,
+    );
+  }
+
   factory CustomAvatarModel.fromMap(Map<String, dynamic> map) {
     return CustomAvatarModel(
       bodyIndex: map['body'] as int,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_item_uimodel.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -38,6 +39,11 @@ class UnlockedItemWidget extends StatelessWidget {
         child: Center(
           child: SvgPicture.asset(
             'assets/family/images/avatar/custom/tiles/Tile${uiModel.type}${uiModel.index}.svg',
+            errorBuilder: (context, error, stackTrace) => const FaIcon(
+              FontAwesomeIcons.lock,
+              color: FamilyAppTheme.neutralVariant60,
+              size: 32,
+            ),
           ),
         ),
       ),
