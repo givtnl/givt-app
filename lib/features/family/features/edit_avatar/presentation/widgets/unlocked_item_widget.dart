@@ -15,7 +15,7 @@ class UnlockedItemWidget extends StatelessWidget {
   });
 
   final UnlockedItem uiModel;
-  final Function(int index, String type) onPressed;
+  final void Function(int index, String type) onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class UnlockedItemWidget extends StatelessWidget {
       child: ColoredBox(
         color: uiModel.isSelected
             ? FamilyAppTheme.primary98
-            : FamilyAppTheme.neutral98,
+            : FamilyAppTheme.neutral100,
         child: Center(
           child: SvgPicture.asset(
             'assets/family/images/avatar/custom/tiles/Tile${uiModel.type}${uiModel.index}.svg',
@@ -50,5 +50,3 @@ class UnlockedItemWidget extends StatelessWidget {
     );
   }
 }
-
-//assets/family/images/avatar/custom/tiles/TileSuit1.svg
