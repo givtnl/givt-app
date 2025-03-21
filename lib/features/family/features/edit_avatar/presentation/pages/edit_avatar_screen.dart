@@ -104,7 +104,8 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
             onPressed: _cubit.navigateBack,
           ),
           actions: [
-            if (data.mode == EditAvatarScreen.options[0])
+            if (data.isFeatureUnlocked ||
+                data.mode == EditAvatarScreen.options[0])
               IconButton(
                 onPressed: () {
                   AnalyticsHelper.logEvent(
@@ -160,14 +161,15 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
       Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          ...List.generate(
-            uiModel.customAvatarUIModel.assetsToOverlap.length,
-            (index) => SvgPicture.asset(
-              uiModel.customAvatarUIModel.assetsToOverlap[index],
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
+          if (!uiModel.isFeatureUnlocked)
+            Center(
+              child: SvgPicture.asset(
+                'assets/family/images/avatar/custom/placeholder.svg',
+                height: 350,
+              ),
             ),
-          ),
+          if (uiModel.isFeatureUnlocked)
+            ...FunAvatar.customAvatarWidgetsList(uiModel.customAvatarUIModel),
           if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
         ],
       ),
