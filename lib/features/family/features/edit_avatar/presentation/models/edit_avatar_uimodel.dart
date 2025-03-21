@@ -6,6 +6,7 @@ class EditAvatarUIModel {
     required this.avatarName,
     required this.mode,
     required this.lockMessageEnabled,
+    required this.isFeatureUnlocked,
     required this.customAvatarUIModel,
     required this.bodyItems,
     required this.hairItems,
@@ -16,6 +17,7 @@ class EditAvatarUIModel {
   final String avatarName;
   final String mode;
   final bool lockMessageEnabled;
+  final bool isFeatureUnlocked;
   final CustomAvatarUIModel customAvatarUIModel;
   final List<EditAvatarItemUIModel> bodyItems;
   final List<EditAvatarItemUIModel> hairItems;

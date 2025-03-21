@@ -162,6 +162,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         avatarName: _selectedAvatar,
         mode: _customMode,
         lockMessageEnabled: _lockMessageEnabled,
+        isFeatureUnlocked: isFeatureUnlocked(),
         customAvatarUIModel: _customAvatar.toUIModel(),
         bodyItems: isFeatureUnlocked() ? bodyItems() : everythingLocked(),
         hairItems: isFeatureUnlocked() ? hairItems() : everythingLocked(),

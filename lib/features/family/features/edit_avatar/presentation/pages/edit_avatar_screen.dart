@@ -160,14 +160,22 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
       Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          ...List.generate(
-            uiModel.customAvatarUIModel.assetsToOverlap.length,
-            (index) => SvgPicture.asset(
-              uiModel.customAvatarUIModel.assetsToOverlap[index],
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
+          if (!uiModel.isFeatureUnlocked)
+            Center(
+              child: SvgPicture.asset(
+                'assets/family/images/avatar/custom/placeholder.svg',
+                height: 350,
+              ),
             ),
-          ),
+          if (uiModel.isFeatureUnlocked)
+            ...List.generate(
+              uiModel.customAvatarUIModel.assetsToOverlap.length,
+              (index) => SvgPicture.asset(
+                uiModel.customAvatarUIModel.assetsToOverlap[index],
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
+            ),
           if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
         ],
       ),
