@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
@@ -30,6 +31,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   Timer? _lockMessageTimer;
   CustomAvatarModel _customAvatar = CustomAvatarModel.initial();
   bool _hasMadeAnyCustomAvatarSelection = false;
+  bool _isProd = true;
 
   final EditAvatarRepository _repository;
   final ProfilesRepository _profilesRepository;
@@ -37,10 +39,10 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   final FamilyAuthRepository _authRepository;
 
   /// Initialize the cubit
-  void init(String userGuid) {
+  Future<void> init(String userGuid) async {
     this.userGuid = userGuid;
-
-    _profilesRepository.getProfiles().then((profiles) {
+    _isProd = !(await isDebugApp());
+    await _profilesRepository.getProfiles().then((profiles) {
       _profile = profiles.firstWhere(
         (profile) => profile.id == userGuid,
       );
@@ -58,16 +60,25 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         setFirstVisitSinceUnlock();
         _customMode = EditAvatarScreen.options.last;
         _emitData();
-        if (_isSjoerd) {
+        if (_isProd && _isSjoerd) {
           _customAvatar = CustomAvatarModel.initialSjoerd();
           _emitData();
         }
-        if (_isTine) {
+        if (_isProd && _isTine) {
           _customAvatar = CustomAvatarModel.initialTine();
           _emitData();
         }
       }
     });
+  }
+
+  Future<bool> isDebugApp() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      return info.packageName.contains('test');
+    } catch (e) {
+      return false;
+    }
   }
 
   bool get _isSjoerd => _profile?.id == '7a5d09d4-ab32-45ef-9c77-d156d7e71a0d';
@@ -78,7 +89,8 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     return _authRepository.getCurrentUser()?.email.contains('@givt') ?? false;
   }
 
-  bool shouldShowEasterEgg() => isGivtEmployee() || _isSjoerd || _isTine;
+  bool shouldShowEasterEgg() =>
+      _isProd && (isGivtEmployee() || _isSjoerd || _isTine);
 
   bool isFirstVisitSinceUnlock() {
     final isFirstVisit = !_sharedPreferences
