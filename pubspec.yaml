@@ -180,6 +180,7 @@ flutter:
     - assets/family/images/league/
     - assets/family/images/avatar/default/
     - assets/family/images/avatar/custom/
+    - assets/family/images/avatar/custom/tiles/
     - assets/family/lotties/
     - assets/fun/illustrations/
     - assets/family/audio/

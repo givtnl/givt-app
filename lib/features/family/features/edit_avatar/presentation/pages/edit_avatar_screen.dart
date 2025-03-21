@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/edit_avatar/presentation/model
 import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/looking_good_screen.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/locked_button_widget.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/locked_captain_message_widget.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/unlocked_color_widget.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/unlocked_item_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -42,6 +43,20 @@ class EditAvatarScreen extends StatefulWidget {
 class _EditAvatarScreenState extends State<EditAvatarScreen> {
   final _cubit = getIt<EditAvatarCubit>();
   final TooltipController controller = TooltipController();
+  List<Color> bodyColors = [
+    const Color(0xFF703E3D),
+    const Color(0xFF8E4B26),
+    const Color(0xFFA7674A),
+    const Color(0xFFE99D67),
+    const Color(0xFFF4A27F),
+    const Color(0xFFFFC7BA),
+    const Color(0xFFFECBA8),
+    const Color(0xFFFFE3D8),
+    const Color(0xFFFAE366),
+    const Color(0xFFDAB9FF),
+    const Color(0xFF6FF6F7),
+    const Color(0xFF7EFAB5),
+  ];
 
   @override
   void initState() {
@@ -141,14 +156,14 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
 
   List<Widget> _getDefaultView(EditAvatarUIModel data) {
     return [
-      Center(
+      Expanded(
         child: SvgPicture.asset(
           'assets/family/images/avatar/default/${data.avatarName}',
-          height: 350,
         ),
       ),
       const SizedBox(height: 24),
-      Expanded(
+      SizedBox(
+        height: 320,
         child: SingleChildScrollView(
           child: _getDefaultAvatars(data),
         ),
@@ -158,25 +173,30 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
 
   List<Widget> _getCustomView(EditAvatarUIModel uiModel) {
     return [
-      Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          if (!uiModel.isFeatureUnlocked)
-            Center(
-              child: SvgPicture.asset(
-                'assets/family/images/avatar/custom/placeholder.svg',
-                height: 350,
+      Expanded(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            if (!uiModel.isFeatureUnlocked)
+              Center(
+                child: SvgPicture.asset(
+                  'assets/family/images/avatar/custom/placeholder.svg',
+                ),
               ),
-            ),
-          if (uiModel.isFeatureUnlocked)
-            ...FunAvatar.customAvatarWidgetsList(uiModel.customAvatarUIModel),
-          if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
-        ],
+            if (uiModel.isFeatureUnlocked)
+              ...FunAvatar.customAvatarWidgetsList(
+                uiModel.customAvatarUIModel,
+                fit: BoxFit.contain,
+              ),
+            if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
+          ],
+        ),
       ),
       const SizedBox(
         height: 8,
       ),
-      Expanded(
+      SizedBox(
+        height: 320,
         child: _getCustomTabs(uiModel),
       ),
     ];
@@ -199,7 +219,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
         ),
       ],
       tabContents: [
-        _getCustomItems(uiModel.bodyItems),
+        _getCustomItems(uiModel.bodyItems, isColors: uiModel.isFeatureUnlocked),
         _getCustomItems(uiModel.hairItems),
         _getCustomItems(uiModel.maskItems),
         _getCustomItems(uiModel.suitItems),
@@ -207,23 +227,33 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     );
   }
 
-  Widget _getCustomItems(List<EditAvatarItemUIModel> items) {
+  Widget _getCustomItems(
+    List<EditAvatarItemUIModel> items, {
+    bool isColors = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
       child: GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 20, // Horizontal spacing
-            mainAxisSpacing: 24, // Vertical spacing
-          ),
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            final item = items[index];
-            if (item is LockedItem) {
-              return LockedButtonWidget(
-                onPressed: _cubit.lockedButtonClicked,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: isColors ? 4 : 3,
+          crossAxisSpacing: 20, // Horizontal spacing
+          mainAxisSpacing: 24, // Vertical spacing
+        ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+          if (item is LockedItem) {
+            return LockedButtonWidget(
+              onPressed: _cubit.lockedButtonClicked,
+            );
+          } else {
+            if (isColors) {
+              return UnlockedColorWidget(
+                color: bodyColors[index],
+                uiModel: item as UnlockedItem,
+                onPressed: _cubit.onUnlockedItemClicked,
               );
             } else {
               return UnlockedItemWidget(
@@ -231,7 +261,9 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
                 onPressed: _cubit.onUnlockedItemClicked,
               );
             }
-          }),
+          }
+        },
+      ),
     );
   }
 
@@ -316,7 +348,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
           },
           text: 'No, delete',
           analyticsEvent: AnalyticsEvent(AmplitudeEvents.saveAvatarNoClicked),
-        )
+        ),
       ],
     ).show(context);
   }
