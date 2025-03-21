@@ -44,6 +44,7 @@ class GratitudeGoalCommitCubit
                 .map(
                   (e) => AvatarUIModel(
                     avatar: e.avatar,
+                    customAvatarUIModel: e.customAvatar?.toUIModel(),
                     text: e.firstName,
                     guid: e.id,
                   ),

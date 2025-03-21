@@ -183,6 +183,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
           child: AvatarWidget(
             uiModel: AvatarUIModel(
               avatar: child.avatar,
+              customAvatarUIModel: child.customAvatar?.toUIModel(),
               text: child.firstName,
             ),
             circleSize: 80,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
@@ -45,8 +44,8 @@ class GameProfileItem extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: Colors.white,
                     ),
-                    child: FunAvatar.hero(
-                      profile.avatar!,
+                    child: FunAvatar.fromGameProfile(
+                      profile,
                       size: size,
                     ),
                   ),
