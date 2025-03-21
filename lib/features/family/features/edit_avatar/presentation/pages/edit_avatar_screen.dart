@@ -155,16 +155,15 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
   }
 
   List<Widget> _getDefaultView(EditAvatarUIModel data) {
-    final size = MediaQuery.sizeOf(context);
     return [
-      Center(
+      Expanded(
         child: SvgPicture.asset(
           'assets/family/images/avatar/default/${data.avatarName}',
-          height: size.height > 750 ? 350 : 230,
         ),
       ),
       const SizedBox(height: 24),
-      Expanded(
+      SizedBox(
+        height: 325,
         child: SingleChildScrollView(
           child: _getDefaultAvatars(data),
         ),
@@ -173,10 +172,8 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
   }
 
   List<Widget> _getCustomView(EditAvatarUIModel uiModel) {
-    final size = MediaQuery.sizeOf(context);
     return [
-      SizedBox(
-        height: size.height > 750 ? 350 : 230,
+      Expanded(
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -198,7 +195,8 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
       const SizedBox(
         height: 8,
       ),
-      Expanded(
+      SizedBox(
+        height: 320,
         child: _getCustomTabs(uiModel),
       ),
     ];
