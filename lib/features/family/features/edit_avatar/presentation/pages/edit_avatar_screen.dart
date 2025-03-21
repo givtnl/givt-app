@@ -187,8 +187,10 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
                 ),
               ),
             if (uiModel.isFeatureUnlocked)
-              ...FunAvatar.customAvatarWidgetsList(uiModel.customAvatarUIModel,
-                  fit: BoxFit.contain),
+              ...FunAvatar.customAvatarWidgetsList(
+                uiModel.customAvatarUIModel,
+                fit: BoxFit.contain,
+              ),
             if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
           ],
         ),
