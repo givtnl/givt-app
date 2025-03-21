@@ -104,7 +104,8 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
             onPressed: _cubit.navigateBack,
           ),
           actions: [
-            if (data.mode == EditAvatarScreen.options[0])
+            if (data.isFeatureUnlocked ||
+                data.mode == EditAvatarScreen.options[0])
               IconButton(
                 onPressed: () {
                   AnalyticsHelper.logEvent(
