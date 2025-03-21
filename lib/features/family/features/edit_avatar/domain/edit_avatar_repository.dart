@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class EditAvatarRepository {
@@ -17,6 +18,14 @@ class EditAvatarRepository {
     String image,
   ) async {
     await _api.editProfile(userId, {'ProfilePicture': image});
+    _avatarChangedController.add(null);
+  }
+
+  Future<void> updateCustomAvatar(
+    String userId,
+    CustomAvatarModel customAvatar,
+  ) async {
+    await _api.editProfile(userId, {'customAvatar': customAvatar.toJson()});
     _avatarChangedController.add(null);
   }
 

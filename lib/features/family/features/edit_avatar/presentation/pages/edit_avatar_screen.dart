@@ -6,11 +6,13 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/edit_avatar/bloc/edit_avatar_cubit.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_item_uimodel.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_uimodel.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/looking_good_uimodel.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/looking_good_screen.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/locked_button_widget.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/locked_captain_message_widget.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/unlocked_item_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_secondary_tabs.dart';
@@ -153,30 +155,32 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     ];
   }
 
-  List<Widget> _getCustomView(EditAvatarUIModel data) {
+  List<Widget> _getCustomView(EditAvatarUIModel uiModel) {
     return [
       Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Center(
-            child: SvgPicture.asset(
-              'assets/family/images/avatar/custom/placeholder.svg',
-              height: 350,
+          ...List.generate(
+            uiModel.customAvatarUIModel.assetsToOverlap.length,
+            (index) => SvgPicture.asset(
+              uiModel.customAvatarUIModel.assetsToOverlap[index],
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
           ),
-          if (data.lockMessageEnabled) const LockedCaptainMessageWidget(),
+          if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
         ],
       ),
       const SizedBox(
         height: 8,
       ),
       Expanded(
-        child: _getCustomTabs(),
+        child: _getCustomTabs(uiModel),
       ),
     ];
   }
 
-  Widget _getCustomTabs() {
+  Widget _getCustomTabs(EditAvatarUIModel uiModel) {
     return FunSecondaryTabs(
       tabs: const [
         Tab(
@@ -193,30 +197,39 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
         ),
       ],
       tabContents: [
-        _getCustomItems(),
-        _getCustomItems(),
-        _getCustomItems(),
-        _getCustomItems(),
+        _getCustomItems(uiModel.bodyItems),
+        _getCustomItems(uiModel.hairItems),
+        _getCustomItems(uiModel.maskItems),
+        _getCustomItems(uiModel.suitItems),
       ],
     );
   }
 
-  Widget _getCustomItems() {
+  Widget _getCustomItems(List<EditAvatarItemUIModel> items) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
       child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 20, // Horizontal spacing
-          mainAxisSpacing: 24, // Vertical spacing
-        ),
-        itemCount: 6,
-        itemBuilder: (context, index) => LockedButtonWidget(
-          onPressed: _cubit.lockedButtonClicked,
-        ),
-      ),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 20, // Horizontal spacing
+            mainAxisSpacing: 24, // Vertical spacing
+          ),
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final item = items[index];
+            if (item is LockedItem) {
+              return LockedButtonWidget(
+                onPressed: _cubit.lockedButtonClicked,
+              );
+            } else {
+              return UnlockedItemWidget(
+                uiModel: item as UnlockedItem,
+                onPressed: _cubit.onUnlockedItemClicked,
+              );
+            }
+          }),
     );
   }
 

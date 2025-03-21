@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_item_uimodel.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_uimodel.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/looking_good_uimodel.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/edit_avatar_screen.dart';
@@ -28,6 +29,11 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   final EditAvatarRepository _repository;
   final ProfilesRepository _profilesRepository;
 
+  int _selectedBodyIndex = 1;
+  int _selectedHairIndex = 0;
+  int _selectedMaskIndex = 0;
+  int _selectedSuitIndex = 1;
+
   /// Initialize the cubit
   void init(String userGuid) {
     this.userGuid = userGuid;
@@ -42,6 +48,10 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       } else if (_profile?.customAvatar != null) {
         _customAvatar = _profile!.customAvatar!;
         _customMode = EditAvatarScreen.options.last;
+        _selectedBodyIndex = _customAvatar.bodyIndex;
+        _selectedHairIndex = _customAvatar.hairIndex;
+        _selectedMaskIndex = _customAvatar.maskIndex;
+        _selectedSuitIndex = _customAvatar.suitIndex;
         _emitData();
       } else {
         _emitData();
@@ -59,10 +69,17 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   void saveAvatar() {
     emitLoading();
 
-    _repository.updateAvatar(
-      userGuid,
-      _selectedAvatar, // Use the selected avatar
-    );
+    if (_customMode == EditAvatarScreen.options.last) {
+      _repository.updateCustomAvatar(
+        userGuid,
+        _customAvatar,
+      );
+    } else {
+      _repository.updateAvatar(
+        userGuid,
+        _selectedAvatar, // Use the selected avatar
+      );
+    }
 
     emitCustom(
       EditAvatarCustom.navigateToLookingGoodScreen(
@@ -80,6 +97,65 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     _emitData();
   }
 
+  List<EditAvatarItemUIModel> everythingLocked() {
+    return const [
+      LockedItem(),
+      LockedItem(),
+      LockedItem(),
+      LockedItem(),
+      LockedItem(),
+      LockedItem(),
+    ];
+  }
+
+  bool isFeatureUnlocked() {
+    return _profile?.unlocks.contains('avatar_custom') == true;
+  }
+
+  List<EditAvatarItemUIModel> bodyItems() {
+    return List.generate(
+      12,
+      (index) => UnlockedItem(
+        type: 'Body',
+        index: index + 1,
+        isSelected: index + 1 == _selectedBodyIndex,
+      ),
+    );
+  }
+
+  List<EditAvatarItemUIModel> hairItems() {
+    return List.generate(
+      3,
+      (index) => UnlockedItem(
+        type: 'Hair',
+        index: index,
+        isSelected: index == _selectedHairIndex,
+      ),
+    );
+  }
+
+  List<EditAvatarItemUIModel> maskItems() {
+    return List.generate(
+      3,
+      (index) => UnlockedItem(
+        type: 'Mask',
+        index: index,
+        isSelected: index == _selectedMaskIndex,
+      ),
+    );
+  }
+
+  List<EditAvatarItemUIModel> suitItems() {
+    return List.generate(
+      2,
+      (index) => UnlockedItem(
+        type: 'Suit',
+        index: index + 1,
+        isSelected: index + 1 == _selectedSuitIndex,
+      ),
+    );
+  }
+
   void _emitData() {
     emitData(
       EditAvatarUIModel(
@@ -87,6 +163,10 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         mode: _customMode,
         lockMessageEnabled: _lockMessageEnabled,
         customAvatarUIModel: _customAvatar.toUIModel(),
+        bodyItems: isFeatureUnlocked() ? bodyItems() : everythingLocked(),
+        hairItems: isFeatureUnlocked() ? hairItems() : everythingLocked(),
+        maskItems: isFeatureUnlocked() ? maskItems() : everythingLocked(),
+        suitItems: isFeatureUnlocked() ? suitItems() : everythingLocked(),
       ),
     );
   }
@@ -115,5 +195,27 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       _lockMessageEnabled = false;
       _emitData();
     });
+  }
+
+  void onUnlockedItemClicked(int index, String type) {
+    switch (type) {
+      case 'Body':
+        _selectedBodyIndex = index;
+        _customAvatar = _customAvatar.copyWith(bodyIndex: index);
+        break;
+      case 'Hair':
+        _selectedHairIndex = index;
+        _customAvatar = _customAvatar.copyWith(hairIndex: index);
+        break;
+      case 'Mask':
+        _selectedMaskIndex = index;
+        _customAvatar = _customAvatar.copyWith(maskIndex: index);
+        break;
+      case 'Suit':
+        _selectedSuitIndex = index;
+        _customAvatar = _customAvatar.copyWith(suitIndex: index);
+        break;
+    }
+    _emitData();
   }
 }

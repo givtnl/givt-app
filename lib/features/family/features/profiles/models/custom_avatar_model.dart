@@ -7,6 +7,14 @@ class CustomAvatarModel {
     required this.maskIndex,
     required this.suitIndex,
   });
+  factory CustomAvatarModel.initial() {
+    return CustomAvatarModel(
+      bodyIndex: 1,
+      hairIndex: 0,
+      maskIndex: 0,
+      suitIndex: 1,
+    );
+  }
 
   factory CustomAvatarModel.fromMap(Map<String, dynamic> map) {
     return CustomAvatarModel(
@@ -17,19 +25,33 @@ class CustomAvatarModel {
     );
   }
 
-  factory CustomAvatarModel.initial() {
-    return CustomAvatarModel(
-      bodyIndex: 0,
-      hairIndex: 0,
-      maskIndex: 0,
-      suitIndex: 0,
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      'Body': bodyIndex,
+      'Hair': hairIndex,
+      'Mask': maskIndex,
+      'Suit': suitIndex,
+    };
   }
 
   final int bodyIndex;
   final int hairIndex;
   final int maskIndex;
   final int suitIndex;
+
+  CustomAvatarModel copyWith({
+    int? bodyIndex,
+    int? hairIndex,
+    int? maskIndex,
+    int? suitIndex,
+  }) {
+    return CustomAvatarModel(
+      bodyIndex: bodyIndex ?? this.bodyIndex,
+      hairIndex: hairIndex ?? this.hairIndex,
+      maskIndex: maskIndex ?? this.maskIndex,
+      suitIndex: suitIndex ?? this.suitIndex,
+    );
+  }
 
   CustomAvatarUIModel toUIModel() {
     return CustomAvatarUIModel(
