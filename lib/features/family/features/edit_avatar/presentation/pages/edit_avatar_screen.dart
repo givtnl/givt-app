@@ -163,7 +163,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
       ),
       const SizedBox(height: 24),
       SizedBox(
-        height: 325,
+        height: 320,
         child: SingleChildScrollView(
           child: _getDefaultAvatars(data),
         ),
