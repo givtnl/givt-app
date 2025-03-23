@@ -254,6 +254,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               isLoading: _isLoading,
                               onTap: state.continueButtonEnabled
                                   ? () async {
+                                      // Hide keyboard when continue button is tapped
+                                      FocusScope.of(context).unfocus();
+                                      
                                       _cubit.updateApi();
                                       if (state.country?.isUS == true) {
                                         final fbsdk = FacebookAppEvents();
