@@ -130,11 +130,20 @@ class InGameLeagueCubit
     }
 
     // If there is a reward, redirect user to the reward screen
-    final reward = _reflectAndShareRepository.variableReward;
-    if (reward != null) {
+    final rewardText = _reflectAndShareRepository.variableReward;
+
+    if (rewardText != null) {
+      final rewardImage = _reflectAndShareRepository.variableRewardImage;
+      final fullRewardImagePath = rewardImage == null
+          ? null
+          : 'assets/family/images/reward/$rewardImage';
+
       emitCustom(
         InGameLeagueCustom.navigateToRewardScreen(
-          RewardUIModel(rewardText: _reflectAndShareRepository.variableReward!),
+          RewardUIModel(
+            rewardText: rewardText,
+            rewardImage: fullRewardImagePath,
+          ),
         ),
       );
       return;
