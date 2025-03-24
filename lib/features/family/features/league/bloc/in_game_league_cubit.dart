@@ -133,11 +133,16 @@ class InGameLeagueCubit
     final rewardText = _reflectAndShareRepository.variableReward;
 
     if (rewardText != null) {
+      // Trigger profiles refresh
+      unawaited(_profilesRepository.refreshProfiles());
+
+      // Get reward context from the repository
       final rewardImage = _reflectAndShareRepository.variableRewardImage;
       final fullRewardImagePath = rewardImage == null
           ? null
           : 'assets/family/images/reward/$rewardImage';
 
+      // Trigger navigation to the reward screen
       emitCustom(
         InGameLeagueCustom.navigateToRewardScreen(
           RewardUIModel(

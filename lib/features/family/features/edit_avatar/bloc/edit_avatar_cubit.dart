@@ -258,7 +258,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       4,
       (index) => const LockedItem(),
     ));
-    
+
     return list;
   }
 
@@ -279,7 +279,10 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   }
 
   Future<void> navigateBack({bool force = false}) {
-    if ((_defaultAvatarHasntChanged() && _customAvatarHasntChanged()) ||
+    if ((_customMode == EditAvatarScreen.options.first &&
+            _defaultAvatarHasntChanged()) ||
+        (_customMode == EditAvatarScreen.options.last &&
+            _customAvatarHasntChanged()) ||
         force) {
       emitCustom(const EditAvatarCustom.navigateToProfile());
       return Future.value();
