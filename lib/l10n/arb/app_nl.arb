@@ -1465,5 +1465,11 @@
     "registrationRandomAvatarError": "Failed to load avatar.",
     "registrationAvatarSelectionTitle": "Select your avatar",
     "registrationParentFirstName": "Parent first name",
-    "registrationParentLastName": "Parent last name"
+    "registrationParentLastName": "Parent last name",
+    "homepageParentEmailHint": "Parent email address",
+    "addMemberAdultDescription": "This adult will receive an email adding them to the family, enabling them to also:",
+    "addMemberAdultReason1": "Login to Givt with their own account",
+    "addMemberAdultReason2": "Approve donations of the children",
+    "addMemberAdultReason3": "Explore generosity as a family",
+    "addMemberAdultEmailSameAsLoggedIn": "You've already created an account for yourself with this email address"
 }
