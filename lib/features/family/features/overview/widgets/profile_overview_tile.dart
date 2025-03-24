@@ -72,7 +72,7 @@ class ProfileOverviewTile extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 2),
                 child: Text(
                   profile.wallet.pendingAllowance
-                      ? context.l10n.vpcNoFundsWaiting
+                      ? 'Waiting...'
                       : '$currencySymbol${profile.wallet.balance.toStringAsFixed(0)}',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
