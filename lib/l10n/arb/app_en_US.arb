@@ -1462,14 +1462,8 @@
     "selectCountryHint": "Select country",
     "letsGo": "Let's go!",
     "startJourneyOfGenerosity": "Start your journey of generosity!",
-    "Error message when it's not possible to load a random avatar": {
-        "registrationRandomAvatarError": "Failed to load avatar."
-    },
+    "registrationRandomAvatarError": "Failed to load avatar.",
     "registrationAvatarSelectionTitle": "Select your avatar",
-    "Hint text for the parent first name input field": {
-        "registrationParentFirstName": "Parent first name"
-    },
-    "Hint text for the parent last name input field": {
-        "registrationParentLastName": "Parent last name"
-    }
+    "registrationParentFirstName": "Parent first name",
+    "registrationParentLastName": "Parent last name"
 }
