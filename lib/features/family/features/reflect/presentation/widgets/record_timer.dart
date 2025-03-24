@@ -44,13 +44,13 @@ class _RecordTimerWidgetState extends State<RecordTimerWidget> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (_repository.isAITurnedOn() && true == uiModel?.isRecording)
+        if (_repository.isAITurnedOn())
           RecordWaveform(
             showRedVersion: widget.showRedVersion,
           )
-        else if (widget.showRedVersion)
+        else if (_repository.isAITurnedOn() && widget.showRedVersion)
           recordMicRedIcon()
-        else
+        else if (!_repository.isAITurnedOn())
           recordMicGreenIcon(),
         const SizedBox(height: 16),
         Text(

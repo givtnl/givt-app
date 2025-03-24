@@ -53,6 +53,7 @@ class _RewardScreenState extends State<RewardScreen> {
           const SizedBox(height: 16),
           TitleLargeText(
             widget.uiModel.rewardText,
+            textAlign: TextAlign.center,
           ),
           const Spacer(),
           FunButton(
