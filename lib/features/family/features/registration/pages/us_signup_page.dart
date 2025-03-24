@@ -105,7 +105,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             logout(context, fromLogoutBtn: true);
           },
         ),
-        title: 'Enter your details',
+        title: context.l10n.signUpPageTitle,
         actions: [
           IconButton(
             onPressed: () => showModalBottomSheet<void>(
@@ -253,7 +253,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             onChanged: (value) => setState(() {
               _formKey.currentState!.validate();
             }),
-            hintText: 'Parent first name',
+            hintText: context.l10n.registrationParentFirstName,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
             errorStyle: const TextStyle(
@@ -276,7 +276,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               }
               return null;
             },
-            hintText: 'Parent last name',
+            hintText: context.l10n.registrationParentLastName,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
             errorStyle: const TextStyle(
@@ -288,7 +288,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           MobileNumberFormFieldUs(
             phone: _phoneNumberController,
             selectedCountryPrefix: _selectedCountry.prefix,
-            hintText: 'Mobile number',
+            hintText: context.l10n.phoneNumber,
             onPhoneChanged: (String value) => setState(() {
               _formKey.currentState!.validate();
             }),

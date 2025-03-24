@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class RandomAvatar extends StatefulWidget {
   const RandomAvatar({
@@ -40,7 +40,7 @@ class _RandomAvatarState extends State<RandomAvatar> {
         if (state.status != AvatarsStatus.loaded) {
           if (state.status == AvatarsStatus.error) {
             return Center(
-              child: Text('Failed to load avatar.'),
+              child: Text(context.l10n.registrationRandomAvatarError),
             );
           }
           return const Center(
@@ -59,9 +59,10 @@ class _RandomAvatarState extends State<RandomAvatar> {
                 ),
               ),
               const Positioned(
-                  top: 0,
-                  right: 0,
-                  child: FaIcon(FontAwesomeIcons.pen, size: 20)),
+                top: 0,
+                right: 0,
+                child: FaIcon(FontAwesomeIcons.pen, size: 20),
+              ),
             ],
           ),
         );
