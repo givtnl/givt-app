@@ -169,7 +169,7 @@ class _PassThePhoneState extends State<PassThePhone> {
                     GameProfileItem(
                       accentColor: widget.accentColor,
                       profile: widget.user,
-                      size: 120,
+                      size: 160,
                       displayName: false,
                       displayRole: false,
                     ),

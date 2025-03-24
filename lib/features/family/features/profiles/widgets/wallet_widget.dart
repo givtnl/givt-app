@@ -8,6 +8,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/edit_avatar_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/my_givts_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
@@ -21,7 +22,7 @@ class WalletWidget extends StatefulWidget {
     required this.balance,
     required this.hasDonations,
     super.key,
-    this.avatar = '',
+    this.profile,
     this.kidid = '',
     this.countdownAmount = 0,
   });
@@ -29,7 +30,7 @@ class WalletWidget extends StatefulWidget {
   final double balance;
   final bool hasDonations;
   final double countdownAmount;
-  final String avatar;
+  final Profile? profile;
   final String kidid;
 
   @override
@@ -75,7 +76,9 @@ class _WalletWidgetState extends State<WalletWidget> {
                         },
                         customBorder: const CircleBorder(),
                         splashColor: Theme.of(context).primaryColor,
-                        child: FunAvatar.hero(widget.avatar),
+                        child: widget.profile == null
+                            ? FunAvatar.defaultHero()
+                            : FunAvatar.fromProfile(widget.profile!),
                       ),
                     ),
                   ),

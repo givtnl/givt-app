@@ -119,7 +119,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
               children: [
                 GestureDetector(
                   onTap: () => _onEditAvatarClicked(context, true),
-                  child: FunAvatar.hero(profile.avatar, size: 100),
+                  child: FunAvatar.fromProfile(profile, size: 100),
                 ),
                 const SizedBox(height: 12),
                 FunButton.secondary(

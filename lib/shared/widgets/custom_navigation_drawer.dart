@@ -185,11 +185,6 @@ class CustomNavigationDrawer extends StatelessWidget {
                     builder: (_) => const ChangeAmountPresetsBottomSheet(),
                   ),
                 ),
-                DrawerMenuItem(
-                  title: locals.pincode,
-                  icon: Icons.lock_outline_sharp,
-                  onTap: () {},
-                ),
                 FutureBuilder(
                   initialData: false,
                   future: Future.wait<bool>([

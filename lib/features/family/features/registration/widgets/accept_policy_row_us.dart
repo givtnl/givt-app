@@ -45,7 +45,7 @@ class AcceptPolicyRowUs extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 BodySmallText.primary40(
-                  'Givt is permitted to save my data',
+                  context.l10n.acceptPolicy,
                 ),
               ],
             ),

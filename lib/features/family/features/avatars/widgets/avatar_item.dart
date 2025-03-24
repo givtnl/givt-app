@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class AvatarItem extends StatelessWidget {
   const AvatarItem({
-    required this.url,
     this.filename = '',
     this.isSelected = false,
     this.onSelectProfilePicture,
     super.key,
   });
 
-  final String url;
   final String filename;
   final bool isSelected;
   final void Function(String profilePicture)? onSelectProfilePicture;
@@ -38,9 +37,7 @@ class AvatarItem extends StatelessWidget {
         splashColor: Theme.of(context).primaryColor,
         child: Stack(
           children: [
-            Semantics(
-                identifier: url.split('/').last,
-                child: SvgPicture.network(url)),
+            FunAvatar.hero(filename),
             if (isSelected)
               Container(
                 decoration: BoxDecoration(

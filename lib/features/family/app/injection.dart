@@ -210,6 +210,8 @@ void initCubits() {
       () => EditAvatarCubit(
         getIt(),
         getIt(),
+        getIt(),
+        getIt(),
       ),
     );
 }

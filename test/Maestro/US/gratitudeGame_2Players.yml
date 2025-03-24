@@ -18,6 +18,10 @@ name: Playing the gratitude game with 2 players without AI
       id: "Hero6.svg"
     direction: "DOWN"
 - tapOn: "See the rules"
+- tapOn: 
+    label: Turn up your volume (only shows when volume is off)
+    text: "Ready"
+    optional: true
 ## Start of the first round
 - tapOn: "Continue"
 - tapOn: "Reveal secret word"
@@ -70,6 +74,7 @@ name: Playing the gratitude game with 2 players without AI
 - tapOn: "Continue"
 - tapOn: "I'm going to do this"
 - tapOn: "Continue"
+## Family gather around
 - tapOn: "Show our summary"
 - tapOn: "Claim XP"
 - tapOn: 
@@ -80,3 +85,7 @@ name: Playing the gratitude game with 2 players without AI
     optional: true
 - tapOn: "Reveal"
 - tapOn: "Continue"
+- tapOn: 
+    label: Claim reward after x games
+    text: "Claim reward"
+    optional: true

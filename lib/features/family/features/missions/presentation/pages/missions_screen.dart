@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 
@@ -82,17 +83,28 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   _missions(uiModel).length,
                   (index) {
                     final mission = _missions(uiModel)[index];
+                    const title = 'Tap to begin mission!';
+                    const description =
+                        'Track your progress and complete your missions here.';
+
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 16),
                       child: FunTooltip(
                         tooltipIndex: index,
-                        title: 'Tap to begin mission!',
-                        description:
-                            'Track your progress and complete your missions here.',
+                        title: title,
+                        description: description,
                         labelBottomLeft: '5/6',
                         showButton: false,
                         tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
                         onHighlightedWidgetTap: () {
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents.tutorialNextClicked,
+                            eventProperties: {
+                              'tutorialLabelBottomLeft': '5/6',
+                              'tutorialTitle': title,
+                              'tutorialDescription': description,
+                            },
+                          );
                           _tooltipController.dismiss();
                           if (mission.namedPage != null) {
                             context.goNamed(

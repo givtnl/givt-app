@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class RandomAvatar extends StatefulWidget {
   const RandomAvatar({
@@ -27,7 +28,7 @@ class _RandomAvatarState extends State<RandomAvatar> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _avatarsCubit = getIt<AvatarsCubit>();
-    _avatarsCubit.assignRandomAvatarUrl(widget.id);
+    _avatarsCubit.assignRandomAvatar(widget.id);
   }
 
   @override
@@ -39,7 +40,7 @@ class _RandomAvatarState extends State<RandomAvatar> {
         if (state.status != AvatarsStatus.loaded) {
           if (state.status == AvatarsStatus.error) {
             return Center(
-              child: Text('Failed to load avatar.'),
+              child: Text(context.l10n.registrationRandomAvatarError),
             );
           }
           return const Center(
@@ -52,24 +53,16 @@ class _RandomAvatarState extends State<RandomAvatar> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Semantics(
-                  identifier: _avatarsCubit.state.getAvatarByKey(widget.id).pictureURL.split('/').last,
-                  child: SvgPicture.network(
-                    _avatarsCubit.state.getAvatarByKey(widget.id).pictureURL,
-                    width: size.width * 0.25,
-                    height: size.width * 0.25,
-                    placeholderBuilder: (context) => SizedBox(
-                      width: size.width * 0.25,
-                      height: size.width * 0.25,
-                      child: const CustomCircularProgressIndicator(),
-                    ),
-                  ),
+                child: FunAvatar.hero(
+                  _avatarsCubit.state.getAvatarByKey(widget.id).fileName,
+                  size: size.width * 0.25,
                 ),
               ),
               const Positioned(
-                  top: 0,
-                  right: 0,
-                  child: FaIcon(FontAwesomeIcons.pen, size: 20)),
+                top: 0,
+                right: 0,
+                child: FaIcon(FontAwesomeIcons.pen, size: 20),
+              ),
             ],
           ),
         );

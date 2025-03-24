@@ -20,7 +20,7 @@ class AvatarSelectionBottomsheet extends StatelessWidget {
     final cubit = getIt<AvatarsCubit>();
 
     return FunBottomSheet(
-      title: 'Select your avatar',
+      title: context.l10n.registrationAvatarSelectionTitle,
       content: Column(
         children: [
           const SizedBox(height: 24),
@@ -49,7 +49,6 @@ class AvatarSelectionBottomsheet extends StatelessWidget {
                         state.avatars[index],
                       ),
                       filename: state.avatars[index].fileName,
-                      url: state.avatars[index].pictureURL,
                       isSelected:
                           state.avatars[index] == state.getAvatarByKey(id),
                     );

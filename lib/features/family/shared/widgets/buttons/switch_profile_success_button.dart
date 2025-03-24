@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,10 +25,9 @@ class SwitchProfileSuccessButton extends StatelessWidget {
       text: 'Switch profile',
       leadingImage: ClipRRect(
         borderRadius: BorderRadius.circular(6),
-        child: SvgPicture.network(
-          profilesCubit.state.activeProfile.pictureURL,
-          height: 32,
-          width: 32,
+        child: FunAvatar.fromProfile(
+          profilesCubit.state.activeProfile,
+          size: 32,
         ),
       ),
       onTap: () async {

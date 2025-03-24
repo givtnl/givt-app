@@ -6,11 +6,14 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/edit_avatar/bloc/edit_avatar_cubit.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_item_uimodel.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_uimodel.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/looking_good_uimodel.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/looking_good_screen.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/locked_button_widget.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/locked_captain_message_widget.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/unlocked_color_widget.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/unlocked_item_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_secondary_tabs.dart';
@@ -29,6 +32,8 @@ import 'package:overlay_tooltip/overlay_tooltip.dart';
 class EditAvatarScreen extends StatefulWidget {
   const EditAvatarScreen({required this.userGuid, super.key});
 
+  static const options = ['Default', 'Customize'];
+
   final String userGuid;
 
   @override
@@ -38,6 +43,20 @@ class EditAvatarScreen extends StatefulWidget {
 class _EditAvatarScreenState extends State<EditAvatarScreen> {
   final _cubit = getIt<EditAvatarCubit>();
   final TooltipController controller = TooltipController();
+  List<Color> bodyColors = [
+    const Color(0xFF703E3D),
+    const Color(0xFF8E4B26),
+    const Color(0xFFA7674A),
+    const Color(0xFFE99D67),
+    const Color(0xFFF4A27F),
+    const Color(0xFFFFC7BA),
+    const Color(0xFFFECBA8),
+    const Color(0xFFFFE3D8),
+    const Color(0xFFFAE366),
+    const Color(0xFFDAB9FF),
+    const Color(0xFF6FF6F7),
+    const Color(0xFF7EFAB5),
+  ];
 
   @override
   void initState() {
@@ -88,8 +107,6 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     BuildContext context,
     EditAvatarUIModel data,
   ) {
-    const options = ['Default', 'Customize'];
-
     return OverlayTooltipScaffold(
       controller: controller,
       overlayColor: Colors.transparent,
@@ -102,7 +119,8 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
             onPressed: _cubit.navigateBack,
           ),
           actions: [
-            if (data.mode == options[0])
+            if (data.isFeatureUnlocked ||
+                data.mode == EditAvatarScreen.options[0])
               IconButton(
                 onPressed: () {
                   AnalyticsHelper.logEvent(
@@ -118,16 +136,18 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
           children: [
             const SizedBox(height: 12),
             FunPrimaryTabs(
-              options: options,
-              selectedIndex: data.mode == options[0] ? 0 : 1,
+              options: EditAvatarScreen.options,
+              selectedIndex: data.mode == EditAvatarScreen.options[0] ? 0 : 1,
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.avatarTabChanged,
               ),
               onPressed: _cubit.setMode,
             ),
             const SizedBox(height: 16),
-            if (data.mode == options[0]) ..._getDefaultView(data),
-            if (data.mode == options[1]) ..._getCustomView(data),
+            if (data.mode == EditAvatarScreen.options[0])
+              ..._getDefaultView(data),
+            if (data.mode == EditAvatarScreen.options[1])
+              ..._getCustomView(data),
           ],
         ),
       ),
@@ -136,14 +156,14 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
 
   List<Widget> _getDefaultView(EditAvatarUIModel data) {
     return [
-      Center(
+      Expanded(
         child: SvgPicture.asset(
           'assets/family/images/avatar/default/${data.avatarName}',
-          height: 350,
         ),
       ),
       const SizedBox(height: 24),
-      Expanded(
+      SizedBox(
+        height: 320,
         child: SingleChildScrollView(
           child: _getDefaultAvatars(data),
         ),
@@ -151,30 +171,38 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     ];
   }
 
-  List<Widget> _getCustomView(EditAvatarUIModel data) {
+  List<Widget> _getCustomView(EditAvatarUIModel uiModel) {
     return [
-      Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Center(
-            child: SvgPicture.asset(
-              'assets/family/images/avatar/custom/placeholder.svg',
-              height: 350,
-            ),
-          ),
-          if (data.lockMessageEnabled) const LockedCaptainMessageWidget(),
-        ],
+      Expanded(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            if (!uiModel.isFeatureUnlocked)
+              Center(
+                child: SvgPicture.asset(
+                  'assets/family/images/avatar/custom/placeholder.svg',
+                ),
+              ),
+            if (uiModel.isFeatureUnlocked)
+              ...FunAvatar.customAvatarWidgetsList(
+                uiModel.customAvatarUIModel,
+                fit: BoxFit.contain,
+              ),
+            if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
+          ],
+        ),
       ),
       const SizedBox(
         height: 8,
       ),
-      Expanded(
-        child: _getCustomTabs(),
+      SizedBox(
+        height: 320,
+        child: _getCustomTabs(uiModel),
       ),
     ];
   }
 
-  Widget _getCustomTabs() {
+  Widget _getCustomTabs(EditAvatarUIModel uiModel) {
     return FunSecondaryTabs(
       tabs: const [
         Tab(
@@ -191,29 +219,50 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
         ),
       ],
       tabContents: [
-        _getCustomItems(),
-        _getCustomItems(),
-        _getCustomItems(),
-        _getCustomItems(),
+        _getCustomItems(uiModel.bodyItems, isColors: uiModel.isFeatureUnlocked),
+        _getCustomItems(uiModel.hairItems),
+        _getCustomItems(uiModel.maskItems),
+        _getCustomItems(uiModel.suitItems),
       ],
     );
   }
 
-  Widget _getCustomItems() {
+  Widget _getCustomItems(
+    List<EditAvatarItemUIModel> items, {
+    bool isColors = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: isColors ? 4 : 3,
           crossAxisSpacing: 20, // Horizontal spacing
           mainAxisSpacing: 24, // Vertical spacing
         ),
-        itemCount: 6,
-        itemBuilder: (context, index) => LockedButtonWidget(
-          onPressed: _cubit.lockedButtonClicked,
-        ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+          if (item is LockedItem) {
+            return LockedButtonWidget(
+              onPressed: _cubit.lockedButtonClicked,
+            );
+          } else {
+            if (isColors) {
+              return UnlockedColorWidget(
+                color: bodyColors[index],
+                uiModel: item as UnlockedItem,
+                onPressed: _cubit.onUnlockedItemClicked,
+              );
+            } else {
+              return UnlockedItemWidget(
+                uiModel: item as UnlockedItem,
+                onPressed: _cubit.onUnlockedItemClicked,
+              );
+            }
+          }
+        },
       ),
     );
   }
@@ -264,13 +313,16 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     );
   }
 
-  void _navigateToLookingGoodScreen(
+  Future<void> _navigateToLookingGoodScreen(
     BuildContext context,
     LookingGoodUIModel uiModel,
-  ) {
-    Navigator.of(context).push(
+  ) async {
+    await Navigator.of(context).push(
       LookingGoodScreen(uiModel: uiModel).toRoute(context),
     );
+    if (context.mounted) {
+      context.pop();
+    }
   }
 
   void _showSaveOnBackDialog(BuildContext context) {
@@ -296,7 +348,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
           },
           text: 'No, delete',
           analyticsEvent: AnalyticsEvent(AmplitudeEvents.saveAvatarNoClicked),
-        )
+        ),
       ],
     ).show(context);
   }

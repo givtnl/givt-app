@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/family/features/family_history/models/donation.dart';
 import 'package:givt_app/features/family/features/overview/models/wallet.dart';
-import 'package:givt_app/utils/profile_type.dart';
+import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/utils/profile_type.dart';
 
 class Profile extends Equatable {
   const Profile({
@@ -14,23 +14,24 @@ class Profile extends Equatable {
     required this.comment,
     required this.wallet,
     required this.hasDonations,
-    required this.lastDonationItem,
-    required this.pictureURL,
-    required this.avatar,
     required this.dateOfBirth,
+    this.avatar,
+    this.customAvatar,
     this.windDownTime,
     this.bedTime,
+    this.unlocks = const [],
   });
   factory Profile.fromMap(Map<String, dynamic> map) {
     final pictureMap = map['picture'] as Map<String, dynamic>;
 
-    final donationMap = map['latestDonation'] == null
-        ? const Donation.empty()
-        : Donation.fromMap(map['latestDonation'] as Map<String, dynamic>);
-
     final walletMap = map['wallet'] == null
         ? const Wallet.empty()
         : Wallet.fromMap(map['wallet'] as Map<String, dynamic>);
+
+    final customAvatarMap = map['customAvatar'] == null
+        ? null
+        : CustomAvatarModel.fromMap(
+            map['customAvatar'] as Map<String, dynamic>);
 
     return Profile(
       id: map['id'] as String,
@@ -42,12 +43,15 @@ class Profile extends Equatable {
       hasDonations:
           map['hasDonations'] as bool? ?? map['latestDonation'] != null,
       wallet: walletMap,
-      lastDonationItem: donationMap,
-      pictureURL: pictureMap['pictureURL'] as String,
-      avatar: pictureMap['fileName'] as String? ?? '',
+      avatar: map['avatar'] as String?,
+      customAvatar: customAvatarMap,
       dateOfBirth: map['dateOfBirth'] as String? ?? '',
       windDownTime: map['windDownTime'] as int?,
       bedTime: map['bedTime'] as String?,
+      unlocks: (map['unlockedFeatures'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
     );
   }
 
@@ -61,10 +65,10 @@ class Profile extends Equatable {
           type: '',
           hasDonations: false,
           wallet: const Wallet.empty(),
-          lastDonationItem: const Donation.empty(),
-          pictureURL: '',
           avatar: '',
+          customAvatar: null,
           dateOfBirth: '',
+          unlocks: [],
         );
 
   final String id;
@@ -75,12 +79,12 @@ class Profile extends Equatable {
   final String type;
   final bool hasDonations;
   final Wallet wallet;
-  final Donation lastDonationItem;
-  final String pictureURL;
-  final String avatar;
+  final String? avatar;
+  final CustomAvatarModel? customAvatar;
   final String dateOfBirth;
   final int? windDownTime;
   final String? bedTime;
+  final List<String> unlocks;
 
   ProfileType get profileType => ProfileType.getByTypeName(type);
 
@@ -109,11 +113,12 @@ class Profile extends Equatable {
         type,
         hasDonations,
         wallet,
-        pictureURL,
         avatar,
         dateOfBirth,
         windDownTime,
         bedTime,
+        customAvatar,
+        unlocks,
       ];
 
   Profile copyWith({
@@ -125,12 +130,12 @@ class Profile extends Equatable {
     String? type,
     bool? hasDonations,
     Wallet? wallet,
-    Donation? lastDonationItem,
-    String? pictureURL,
     String? avatar,
+    CustomAvatarModel? customAvatar,
     String? dateOfBirth,
     int? windDownTime,
     String? bedTime,
+    List<String>? unlocks,
   }) {
     return Profile(
       id: id ?? this.id,
@@ -141,12 +146,12 @@ class Profile extends Equatable {
       type: type ?? this.type,
       hasDonations: hasDonations ?? this.hasDonations,
       wallet: wallet ?? this.wallet,
-      lastDonationItem: lastDonationItem ?? this.lastDonationItem,
-      pictureURL: pictureURL ?? this.pictureURL,
       avatar: avatar ?? this.avatar,
+      customAvatar: customAvatar ?? this.customAvatar,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       windDownTime: windDownTime ?? this.windDownTime,
       bedTime: bedTime ?? this.bedTime,
+      unlocks: unlocks ?? this.unlocks,
     );
   }
 
@@ -156,6 +161,7 @@ class Profile extends Equatable {
       firstName: firstName,
       lastName: lastName,
       avatar: avatar,
+      customAvatar: customAvatar,
       type: type,
     );
   }
@@ -170,14 +176,12 @@ class Profile extends Equatable {
       'type': type,
       'hasDonations': hasDonations,
       'wallet': wallet.toJson(),
-      'latestDonation': lastDonationItem.toJson(),
-      'picture': {
-        'pictureURL': pictureURL,
-        'filename': avatar,
-      },
+      'avatar': avatar,
+      'customAvatar': customAvatar,
       'dateOfBirth': dateOfBirth,
       'windDownTime': windDownTime,
       'bedTime': bedTime,
+      'unlocks': unlocks,
     };
   }
 }

@@ -133,9 +133,11 @@ class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
   }
 
   void _navigateToRewardScreen(BuildContext context, RewardUIModel uiModel) {
-    Navigator.of(context).push(RewardScreen(
-      uiModel: uiModel,
-    ).toRoute(context));
+    Navigator.of(context).push(
+      RewardScreen(
+        uiModel: uiModel,
+      ).toRoute(context),
+    );
   }
 
   Future<void> launchCalendlyUrl() async {
