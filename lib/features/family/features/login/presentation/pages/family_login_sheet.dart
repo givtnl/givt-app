@@ -200,9 +200,6 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
     switch (state) {
       case LoginSuccess():
         if (!context.mounted) return;
-        context.pop();
-
-        if (!context.mounted) return;
         await widget.navigate(context);
       case TwoAttemptsLeftDialog():
         await showDialog<void>(
