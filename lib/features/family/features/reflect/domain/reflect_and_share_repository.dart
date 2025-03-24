@@ -56,7 +56,9 @@ class ReflectAndShareRepository {
   String? _currentSecretWord;
   bool _hasStartedInterview = false;
   bool _isAIEnabled = false;
+
   String? variableReward;
+  String? variableRewardImage;
 
   void setAIEnabled({required bool value}) {
     _isAIEnabled = value;
@@ -135,6 +137,8 @@ class ReflectAndShareRepository {
       );
       final response = ExperienceStats.fromJson(map);
       variableReward = response.variableReward;
+      variableRewardImage = response.variableRewardImage;
+
       return response;
     } catch (e, s) {
       LoggingInfo.instance.error(
