@@ -151,7 +151,7 @@ class FamilyMemberForm extends StatelessWidget {
               return context.l10n.invalidEmail;
             }
             if (value.trim() == context.read<FamilyAuthCubit>().user?.email) {
-              return "You've already created an account for yourself with this email address";
+              return context.l10n.addMemberAdultEmailSameAsLoggedIn;
             }
             return null;
           },
@@ -166,13 +166,13 @@ class FamilyMemberForm extends StatelessWidget {
           errorMaxLines: 2,
         ),
         const SizedBox(height: 16),
-        const BodySmallText(
-          'They will receive an email inviting them to the family, enabling them to also:',
+        BodySmallText(
+          context.l10n.addMemberAdultDescription,
         ),
         const SizedBox(height: 8),
-        _createDescriptionItem('Login to Givt with their own account'),
-        _createDescriptionItem('Approve donations of the children'),
-        _createDescriptionItem('Explore generosity as a family'),
+        _createDescriptionItem(context.l10n.addMemberAdultReason1),
+        _createDescriptionItem(context.l10n.addMemberAdultReason2),
+        _createDescriptionItem(context.l10n.addMemberAdultReason3),
       ],
     );
   }
