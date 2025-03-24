@@ -129,7 +129,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                                     onTap: () {
                                       FamilyAuthUtils.authenticateUser(
                                         context,
-                                        checkAuthRequest: FamilyCheckAuthRequest(
+                                        checkAuthRequest:
+                                            FamilyCheckAuthRequest(
                                           navigate: (context) async {
                                             context.goNamed(
                                               FamilyPages
@@ -341,16 +342,28 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     FamilyHomeScreenUIModel uiModel,
     bool hasMissions,
   ) {
+    const title = 'Let’s complete your first mission!';
+    const description =
+        'New missions help your family grow together. Tap above to begin!';
+
     final items = [
       FunTooltip(
         tooltipIndex: 3,
-        title: 'Let’s complete your first mission!',
-        description:
-            'New missions help your family grow together. Tap above to begin!',
+        title: title,
+        description: description,
         labelBottomLeft: '4/6',
         showButton: false,
         tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
         onHighlightedWidgetTap: () {
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.tutorialNextClicked,
+            eventProperties: {
+              'tutorialLabelBottomLeft': '4/6',
+              'tutorialTitle': title,
+              'tutorialDescription': description,
+            },
+          );
+
           widget.tooltipController.dismiss();
           context.goNamed(
             FamilyPages.missions.name,

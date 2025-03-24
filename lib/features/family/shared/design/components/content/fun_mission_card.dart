@@ -39,14 +39,14 @@ class FunMissionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onTap?.call();
-
         unawaited(
           AnalyticsHelper.logEvent(
             eventName: analyticsEvent.name,
             eventProperties: analyticsEvent.parameters,
           ),
         );
+        
+        onTap?.call();
       },
       child: Container(
         decoration: BoxDecoration(
