@@ -1461,5 +1461,15 @@
     "goToSettingsBody": "Um den QR-Code zu scannen, müssen wir die Kamera einschalten. Gehen Sie zu Einstellungen, um dies zuzulassen.",
     "selectCountryHint": "Land auswählen",
     "letsGo": "Los geht’s!",
-    "startJourneyOfGenerosity": "Beginne hier dein Spenden Abenteuer!"
+    "startJourneyOfGenerosity": "Beginne hier dein Spenden Abenteuer!",
+    "Error message when it's not possible to load a random avatar": {
+        "registrationRandomAvatarError": "Failed to load avatar."
+    },
+    "registrationAvatarSelectionTitle": "Select your avatar",
+    "Hint text for the parent first name input field": {
+        "registrationParentFirstName": "Parent first name"
+    },
+    "Hint text for the parent last name input field": {
+        "registrationParentLastName": "Parent last name"
+    }
 }
