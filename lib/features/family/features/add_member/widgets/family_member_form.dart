@@ -112,7 +112,7 @@ class FamilyMemberForm extends StatelessWidget {
             amount: allowanceAmount.toDouble(),
             textStyle: const FamilyAppTheme().toThemeData().textTheme.bodySmall,
           ),
-        ]
+        ],
       ],
     );
   }
@@ -127,7 +127,7 @@ class FamilyMemberForm extends StatelessWidget {
         OutlinedTextFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "Please enter the parent's name";
+              return "Please enter the adult's name";
             }
             if (value.length < 3) {
               return context.l10n.pleaseEnterValidName;
