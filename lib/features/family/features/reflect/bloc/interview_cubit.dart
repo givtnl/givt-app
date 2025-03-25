@@ -109,11 +109,6 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
       if (!_hasOnlyOneReporter()) {
         // Show the pass the phone screen in between every question if there are multiple reporters
         _showPassThePhoneScreen = true;
-
-        // When AI is turned on, start recording again
-        // if (_reflectAndShareRepository.isAITurnedOn()) {
-        //   emitCustom(const InterviewCustom.startRecording());
-        // }
       } else {
         // Reset the timer
         emitCustom(const InterviewCustom.resetTimer());
