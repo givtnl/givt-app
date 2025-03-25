@@ -11,7 +11,6 @@ class ActionContainer extends StatefulWidget {
     required this.onTap,
     required this.child,
     required this.analyticsEvent,
-    this.onlyLongPress = false,
     this.isDisabled = false,
     this.isSelected = false,
     this.isPressedDown = false,
@@ -34,7 +33,6 @@ class ActionContainer extends StatefulWidget {
   final VoidCallback? onTapDown;
   final VoidCallback? onLongPress;
   final VoidCallback? onLongPressUp;
-  final bool onlyLongPress;
   final bool isDisabled;
   final bool isSelected;
   final bool isPressedDown;
@@ -68,11 +66,11 @@ class _ActionContainerState extends State<ActionContainer> {
   }
 
   void _setManualPressed(bool value) {
-    if (mounted) {
-      setState(() {
-        _isManualPressed = value;
-      });
-    }
+    if (!mounted) return;
+
+    setState(() {
+      _isManualPressed = value;
+    });
   }
 
   @override
@@ -85,14 +83,6 @@ class _ActionContainerState extends State<ActionContainer> {
             onLongPress: widget.onLongPress == null
                 ? null
                 : () {
-                    if (widget.onlyLongPress) {
-                      unawaited(
-                        AnalyticsHelper.logEvent(
-                          eventName: widget.analyticsEvent.name,
-                          eventProperties: widget.analyticsEvent.parameters,
-                        ),
-                      );
-                    }
                     widget.onLongPress?.call();
                     _setManualPressed(true);
                   },
@@ -102,39 +92,32 @@ class _ActionContainerState extends State<ActionContainer> {
                     widget.onLongPressUp?.call();
                     _unpress(immediately: true);
                   },
-            onTap: widget.onlyLongPress
-                ? null
-                : () async {
-                    unawaited(
-                      AnalyticsHelper.logEvent(
-                        eventName: widget.analyticsEvent.name,
-                        eventProperties: widget.analyticsEvent.parameters,
-                      ),
-                    );
-                    widget.onTap?.call();
-                    await _actionDelay();
-                  },
-            onTapDown: widget.onlyLongPress
-                ? null
-                : (details) {
-                    widget.onTapDown?.call();
-                    if (!widget.isMuted) {
-                      SystemSound.play(SystemSoundType.click);
-                    }
-                    _setManualPressed(true);
-                  },
-            onTapCancel: widget.onlyLongPress
-                ? null
-                : () {
-                    widget.onTapCancel?.call();
-                    _unpress();
-                  },
-            onTapUp: widget.onlyLongPress
-                ? null
-                : (details) {
-                    widget.onTapUp?.call();
-                    _unpress();
-                  },
+            onTap: () async {
+              unawaited(
+                AnalyticsHelper.logEvent(
+                  eventName: widget.analyticsEvent.name,
+                  eventProperties: widget.analyticsEvent.parameters,
+                ),
+              );
+              widget.onTap?.call();
+              // await _actionDelay();
+            },
+            onTapDown: (details) {
+              _setManualPressed(true);
+              if (!widget.isMuted) {
+                SystemSound.play(SystemSoundType.click);
+              }
+
+              widget.onTapDown?.call();
+            },
+            onTapCancel: () {
+              widget.onTapCancel?.call();
+              _unpress();
+            },
+            onTapUp: (details) {
+              _unpress();
+              widget.onTapUp?.call();
+            },
             child: _buildContainer(widget.child),
           );
   }
