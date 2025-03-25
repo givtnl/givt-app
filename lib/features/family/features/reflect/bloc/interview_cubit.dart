@@ -31,11 +31,11 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
     questionForHero = null;
 
     _getQuestionForHero();
+    _emitData();
   }
 
   Future<void> _getQuestionForHero({String? audioPath}) async {
     if (_reflectAndShareRepository.isAITurnedOn() == false) {
-      _emitData();
       return;
     }
     emitLoading();
@@ -47,7 +47,6 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
         'Could not fetch question for hero.\nError: $e, StackTrace: $s',
       );
     }
-    _emitData();
   }
 
   Future<QuestionForHeroModel> _questionForHero({
@@ -98,10 +97,12 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
     } else {
       questionForHero = null;
       await _getQuestionForHero(audioPath: audioPath);
+
       if (!_hasOnlyOneReporter()) _showPassThePhoneScreen = true;
       if (_hasOnlyOneReporter() && _reflectAndShareRepository.isAITurnedOn()) {
         emitCustom(const InterviewCustom.startRecording());
       }
+
       if (_hasOnlyOneReporter()) emitCustom(const InterviewCustom.resetTimer());
       if (_currentReporterIndex < _reporters.length - 1) {
         _currentReporterIndex++;
@@ -109,6 +110,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
         _currentReporterIndex = 0;
         _currentQuestionIndex++;
       }
+
       _emitData();
     }
   }
