@@ -258,7 +258,6 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
 
   Widget _primaryButton(bool isChildSelected) {
     return FunButton(
-      // isDisabled: !_formKey.currentState!.validate(),
       onTap: () => onDone(isChildSelected: isChildSelected),
       text: 'Done',
       analyticsEvent: AnalyticsEvent(AmplitudeEvents.addMemberDoneClicked),
@@ -267,7 +266,6 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
 
   Widget _secondaryButton(bool isChildSelected) {
     return FunButton.secondary(
-      // isDisabled: !_formKey.currentState!.validate(),
       onTap: () {
         final member = addMember(isChildSelected: isChildSelected);
         if (member != null) {
