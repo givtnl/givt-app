@@ -27,16 +27,16 @@ abstract class ProfilesState extends Equatable {
   }
 
   List<Profile> get children {
-    return profiles.where((p) => p.type.contains('Child')).toList();
+    return profiles.where((p) => p.type == tabsOptions.first).toList();
   }
 
   List<Profile> get parents {
-    return profiles.where((p) => p.type.contains('Parent')).toList();
+    return profiles.where((p) => p.type == tabsOptions.last).toList();
   }
 
   bool get isOnlyChild {
     if (profiles.isEmpty) return false;
-    return profiles.where((element) => element.type.contains('Child')).length ==
+    return profiles.where((element) => element.type == tabsOptions.first).length ==
         1;
   }
 }

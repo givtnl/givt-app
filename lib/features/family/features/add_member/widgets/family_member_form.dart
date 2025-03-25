@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
@@ -113,7 +112,7 @@ class FamilyMemberForm extends StatelessWidget {
             amount: allowanceAmount.toDouble(),
             textStyle: const FamilyAppTheme().toThemeData().textTheme.bodySmall,
           ),
-        ]
+        ],
       ],
     );
   }
@@ -128,7 +127,7 @@ class FamilyMemberForm extends StatelessWidget {
         OutlinedTextFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return "Please enter the parent's name";
+              return "Please enter the adult's name";
             }
             if (value.length < 3) {
               return context.l10n.pleaseEnterValidName;
@@ -151,7 +150,7 @@ class FamilyMemberForm extends StatelessWidget {
               return context.l10n.invalidEmail;
             }
             if (value.trim() == context.read<FamilyAuthCubit>().user?.email) {
-              return "You've already created an account for yourself with this email address";
+              return context.l10n.addMemberAdultEmailSameAsLoggedIn;
             }
             return null;
           },
@@ -166,13 +165,13 @@ class FamilyMemberForm extends StatelessWidget {
           errorMaxLines: 2,
         ),
         const SizedBox(height: 16),
-        const BodySmallText(
-          'They will receive an email inviting them to the family, enabling them to also:',
+        BodySmallText(
+          context.l10n.addMemberAdultDescription,
         ),
         const SizedBox(height: 8),
-        _createDescriptionItem('Login to Givt with their own account'),
-        _createDescriptionItem('Approve donations of the children'),
-        _createDescriptionItem('Explore generosity as a family'),
+        _createDescriptionItem(context.l10n.addMemberAdultReason1),
+        _createDescriptionItem(context.l10n.addMemberAdultReason2),
+        _createDescriptionItem(context.l10n.addMemberAdultReason3),
       ],
     );
   }
