@@ -167,9 +167,11 @@ class ReflectAndShareRepository {
         audioFile: file,
         questionNumber: questionNumber,
       );
+
       if (true == file?.existsSync()) {
         file?.deleteSync();
       }
+      
       return QuestionForHeroModel.fromJson(response);
     } catch (e, s) {
       LoggingInfo.instance.error(

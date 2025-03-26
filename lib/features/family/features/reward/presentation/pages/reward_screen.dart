@@ -38,12 +38,12 @@ class _RewardScreenState extends State<RewardScreen> {
           if (widget.uiModel.rewardImage != null &&
               widget.uiModel.rewardImage!.endsWith('.svg'))
             SvgPicture.asset(
-              'assets/family/images/reward/${widget.uiModel.rewardImage!}',
+              widget.uiModel.rewardImage!,
             ),
           if (widget.uiModel.rewardImage != null &&
               !widget.uiModel.rewardImage!.endsWith('.svg'))
             Image.asset(
-              'assets/family/images/reward/${widget.uiModel.rewardImage!}',
+              widget.uiModel.rewardImage!,
             ),
           const SizedBox(height: 16),
           TitleLargeText(

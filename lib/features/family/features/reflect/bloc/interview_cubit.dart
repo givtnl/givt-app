@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/question_for_hero_model.dart';
@@ -81,10 +83,15 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
     return totalQuestions == _nrOfQuestionsAsked;
   }
 
-  // Advance to the next reporter/question
+  /// Advance to the next reporter/question
   Future<void> advanceToNext({String? audioPath}) async {
+    // Increase the number of total questions asked
     _reflectAndShareRepository.totalQuestionsAsked++;
+
+    // Increase the number of questions asked for the current reporter
     _nrOfQuestionsAsked++;
+
+    // If the current reporter is the last one, finish up the interview
     if (_isLastQuestion()) {
       _sendLastRecording(audioPath: audioPath);
       if (_currentReporterIndex < _reporters.length - 1) {
@@ -95,15 +102,18 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
       }
       return;
     } else {
+      // Fetch new question current hero
       questionForHero = null;
       await _getQuestionForHero(audioPath: audioPath);
 
-      if (!_hasOnlyOneReporter()) _showPassThePhoneScreen = true;
-      if (_hasOnlyOneReporter() && _reflectAndShareRepository.isAITurnedOn()) {
-        emitCustom(const InterviewCustom.startRecording());
+      if (!_hasOnlyOneReporter()) {
+        // Show the pass the phone screen in between every question if there are multiple reporters
+        _showPassThePhoneScreen = true;
+      } else {
+        // Reset the timer
+        emitCustom(const InterviewCustom.resetTimer());
       }
 
-      if (_hasOnlyOneReporter()) emitCustom(const InterviewCustom.resetTimer());
       if (_currentReporterIndex < _reporters.length - 1) {
         _currentReporterIndex++;
       } else {
@@ -131,8 +141,10 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
 
   void _emitData() {
     if (_showPassThePhoneScreen) {
+      log('Showing pass the phone screen');
       emitData(InterviewUIModel.passThePhone(reporter: getCurrentReporter()));
     } else {
+      log('Showing question screen');
       emitData(
         InterviewUIModel.recordAnswer(
           reporter: getCurrentReporter(),

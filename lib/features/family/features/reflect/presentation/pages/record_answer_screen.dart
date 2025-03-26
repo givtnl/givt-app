@@ -58,6 +58,14 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     _startCountdown();
   }
 
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _recordCubit.stop();
+    WakelockPlus.disable();
+    super.dispose();
+  }
+
   String _displayMinutes() => (_remainingSeconds ~/ 60).toString();
 
   String _displaySeconds() {
@@ -97,13 +105,6 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
       final audioPath = await _recordCubit.stop();
       cubit.timeForQuestionRanOut(audioPath: audioPath);
     }
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    WakelockPlus.disable();
-    super.dispose();
   }
 
   void _resetTimer() {
