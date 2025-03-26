@@ -188,7 +188,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             OutlinedTextFormField(
                               key: const ValueKey('Email-Input'),
                               initialValue: state.email,
-                              hintText: locals.email,
+                              hintText: state.country?.isUS == true ? locals.homepageParentEmailHint : locals.email,
                               onChanged: _cubit.updateEmail,
                               validator: (value) {
                                 if (!_cubit.validateEmail(value)) {

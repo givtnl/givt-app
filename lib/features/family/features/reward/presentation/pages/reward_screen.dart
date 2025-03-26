@@ -31,24 +31,19 @@ class _RewardScreenState extends State<RewardScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(),
-          if (widget.uiModel.rewardImage == null) _defaultRewardImage(),
+          if (widget.uiModel.rewardImage == null)
+            SvgPicture.asset(
+              'assets/family/images/reward.svg',
+            ),
           if (widget.uiModel.rewardImage != null &&
               widget.uiModel.rewardImage!.endsWith('.svg'))
             SvgPicture.asset(
               widget.uiModel.rewardImage!,
-              errorBuilder: (_, __, ___) {
-                // User is probably not a version that contains the image
-                return _defaultRewardImage();
-              },
             ),
           if (widget.uiModel.rewardImage != null &&
               !widget.uiModel.rewardImage!.endsWith('.svg'))
             Image.asset(
               widget.uiModel.rewardImage!,
-              errorBuilder: (_, __, ___) {
-                // User is probably not a version that contains the image
-                return _defaultRewardImage();
-              },
             ),
           const SizedBox(height: 16),
           TitleLargeText(
@@ -72,12 +67,6 @@ class _RewardScreenState extends State<RewardScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _defaultRewardImage() {
-    return SvgPicture.asset(
-      'assets/family/images/reward.svg',
     );
   }
 }

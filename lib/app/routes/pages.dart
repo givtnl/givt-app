@@ -38,7 +38,6 @@ enum Pages {
   ),
   overview(path: 'overview', name: 'OVERVIEW'),
   personalInfoEdit(path: 'personal-info-edit', name: 'PERSONAL-INFO-EDIT'),
-  giveVPC(path: 'give-vpc', name: 'GIVE-VPC'),
   unregister(path: 'unregister', name: 'UNREGISTER'),
   personalSummary(path: 'personal-summary', name: 'PERSONAL-SUMMARY'),
   yearlyOverview(path: 'yearly-overview', name: 'YEARLY-OVERVIEW'),

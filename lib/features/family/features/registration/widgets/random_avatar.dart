@@ -11,11 +11,15 @@ class RandomAvatar extends StatefulWidget {
   const RandomAvatar({
     required this.id,
     required this.onClick,
+    required this.profileType,
     super.key,
   });
 
   final String id;
   final void Function() onClick;
+  
+  /// 0 for child, 1 for parent
+  final int profileType;
 
   @override
   State<RandomAvatar> createState() => _RandomAvatarState();
@@ -28,9 +32,17 @@ class _RandomAvatarState extends State<RandomAvatar> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _avatarsCubit = getIt<AvatarsCubit>();
-    _avatarsCubit.assignRandomAvatar(widget.id);
+    _avatarsCubit.assignRandomAvatar(widget.id, widget.profileType);
   }
 
+  @override
+  void didUpdateWidget(covariant RandomAvatar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.profileType != widget.profileType) {
+      _avatarsCubit.assignRandomAvatar(widget.id, widget.profileType);
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/data/record_utils.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -74,10 +74,8 @@ class _FunAudioRecorderState extends State<FunAudioRecorder>
           eventName: AmplitudeEvents.audioRecordingStarted,
         );
       }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
     }
   }
 

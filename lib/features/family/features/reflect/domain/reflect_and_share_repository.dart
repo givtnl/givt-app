@@ -130,6 +130,8 @@ class ReflectAndShareRepository {
   Future<ExperienceStats?> saveSummaryStats() async {
     try {
       _endTime = DateTime.now();
+      if (_startTime == null) throw Exception('Start time is null');
+
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
       final map = await _familyApiService.saveGratitudeStats(
         totalTimeSpentInSeconds,
@@ -165,9 +167,11 @@ class ReflectAndShareRepository {
         audioFile: file,
         questionNumber: questionNumber,
       );
+
       if (true == file?.existsSync()) {
         file?.deleteSync();
       }
+      
       return QuestionForHeroModel.fromJson(response);
     } catch (e, s) {
       LoggingInfo.instance.error(

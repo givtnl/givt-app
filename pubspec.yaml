@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.10.4
+version: 4.10.5
 publish_to: none
 
 environment:
@@ -18,15 +18,12 @@ dependencies:
   currency_text_input_formatter: ^2.2.8
   dart_jsonwebtoken: ^2.17.0
   device_info_plus: ^11.3.0
-  overlay_tooltip:
-    path: ./packages/overlay_tooltip
   diacritic: ^0.1.6
   dotted_border: ^2.1.0
   equatable: ^2.0.7
-  firebase_core: ^3.11.0
-  # firebase_core: ^2.31.0
-  firebase_messaging: ^15.2.2
-  firebase_crashlytics: ^4.3.2
+  firebase_core: ^3.12.1
+  firebase_crashlytics: ^4.3.4
+  firebase_messaging: ^15.2.4
   flutter:
     sdk: flutter
   flutter_bloc: ^9.0.0
@@ -60,8 +57,10 @@ dependencies:
   logging: ^1.3.0
   lottie: ^3.3.1
   material_color_utilities: ^0.11.0
-  mobile_scanner: ^6.0.6
+  mobile_scanner: ^6.0.7
   nfc_manager: ^3.5.0
+  overlay_tooltip:
+    path: ./packages/overlay_tooltip
   package_info_plus: ^8.2.1
   path: ^1.9.0
   path_provider: ^2.1.5
@@ -77,29 +76,16 @@ dependencies:
   vibration: ^3.1.3
   wakelock_plus: ^1.2.10
   collection: ^1.19.0
-  flutter_keyboard_visibility: ^6.0.0
   dropdown_button2: ^2.3.9
-  page_transition: ^2.2.1
   record: ^5.2.0
   audioplayers: ^6.1.2
   firebase_remote_config: ^5.4.0
   rxdart: ^0.28.0
-  facebook_app_events: ^0.19.5
+  facebook_app_events: ^0.19.6
   volume_controller: ^3.2.0
-  flutter_animate: ^4.5.2
   waveform_flutter:
     path: ./packages/waveform
   backoff: ^1.0.1
-
-
-# Override needed because inappwebview >=6.1.0 requires this version
-# firebase_messaging_web is using an older version (and we can't upgrade to a more recent message version because of MLKIT)
-# MLKit is used in mobile_scanner
-# So its a bit of a mess but this is the only way to make it work
-# _-(ツ)_/¯
-# https://github.com/juliansteenbakker/mobile_scanner/issues/1165
-dependency_overrides:
-  web: 1.0.0
 
 dev_dependencies:
   flutter_test:

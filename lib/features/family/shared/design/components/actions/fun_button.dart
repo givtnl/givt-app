@@ -33,7 +33,6 @@ class FunButton extends StatelessWidget {
     this.onTapDown,
     this.onLongPress,
     this.onLongPressUp,
-    this.onlyLongPress = false,
     this.size = FunButtonSize.large,
   });
 
@@ -122,7 +121,6 @@ class FunButton extends StatelessWidget {
   final VoidCallback? onTapDown;
   final VoidCallback? onLongPress;
   final VoidCallback? onLongPressUp;
-  final bool onlyLongPress;
   final bool isDisabled;
   final bool isPressedDown;
   final String text;
@@ -156,7 +154,6 @@ class FunButton extends StatelessWidget {
       onTapUp: onTapUp,
       onLongPress: onLongPress,
       onLongPressUp: onLongPressUp,
-      onlyLongPress: onlyLongPress,
       borderColor: borderColor,
       isDisabled: isDisabled,
       isPressedDown: isPressedDown,

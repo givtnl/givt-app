@@ -131,6 +131,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               children: [
                 RandomAvatar(
                   id: user.guid,
+                  profileType: 1,
                   onClick: () {
                     AvatarSelectionBottomsheet.show(
                       context,

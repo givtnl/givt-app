@@ -84,7 +84,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
           GratitudeSelectionScreen(reporter: data.reporter).toRoute(context),
         );
       case ResetTimer():
-      //do nothing here
+        break;
       case StartRecording():
         _recordCubit.start();
     }

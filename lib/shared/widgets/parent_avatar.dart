@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,6 +24,9 @@ class LoggedInParentAvatar extends StatelessWidget {
     return BlocBuilder<ProfilesCubit, ProfilesState>(
       bloc: context.read<ProfilesCubit>(),
       builder: (context, state) {
+        if (state is ProfilesLoadingState) {
+          return const CircularProgressIndicator();
+        }
         return Column(
           children: [
             Stack(

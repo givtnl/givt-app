@@ -22,7 +22,7 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/profile_type.dart';
 
-const tabsOptions = ['Child', 'Parent'];
+const tabsOptions = ['Child', 'Adult'];
 
 class FamilyMemberFormPage extends StatefulWidget {
   const FamilyMemberFormPage({
@@ -155,6 +155,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 const SizedBox(height: 16),
                 RandomAvatar(
                   id: widget.index.toString(),
+                  profileType: selectedIndex,
                   onClick: () {
                     AvatarSelectionBottomsheet.show(
                       context,
@@ -258,7 +259,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   Widget _primaryButton(bool isChildSelected) {
     return FunButton(
       onTap: () => onDone(isChildSelected: isChildSelected),
-      text: 'Done!',
+      text: 'Done',
       analyticsEvent: AnalyticsEvent(AmplitudeEvents.addMemberDoneClicked),
     );
   }
