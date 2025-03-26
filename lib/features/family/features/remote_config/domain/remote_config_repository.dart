@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rxdart/rxdart.dart';
 
 /*

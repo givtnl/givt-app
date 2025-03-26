@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar_label.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 import 'package:givt_app/utils/utils.dart';

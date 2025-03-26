@@ -1,5 +1,3 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:givt_app/app/app.dart';
 import 'package:patrol/patrol.dart';
 
 import 'features/auth/pages/login_test_page.dart';

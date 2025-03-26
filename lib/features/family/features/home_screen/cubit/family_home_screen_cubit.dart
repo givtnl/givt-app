@@ -16,7 +16,6 @@ import 'package:givt_app/features/family/features/reflect/domain/models/mission_
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/custom_avatar_uimodel.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';

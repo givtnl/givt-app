@@ -1,4 +1,3 @@
-import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
 sealed class GuessTheWordCustom {
   const GuessTheWordCustom();

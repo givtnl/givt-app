@@ -1,4 +1,3 @@
-import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 
 sealed class SummaryDetailsCustom {
   const SummaryDetailsCustom();
