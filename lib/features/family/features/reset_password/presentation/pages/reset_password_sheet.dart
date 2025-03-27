@@ -99,11 +99,6 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
                     context.l10n.forgotPasswordText,
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 24),
-                  Image.asset(
-                    'assets/images/givy_question_big.png',
-                    width: 120,
-                  ),
                 ],
               ),
             ),
