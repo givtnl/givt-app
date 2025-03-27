@@ -403,6 +403,7 @@ enum AmplitudeEvents {
   unlockedAvatarItemClicked('unlocked_avatar_item_clicked'),
   saveAvatarYesClicked('save_avatar_yes_clicked'),
   saveAvatarNoClicked('save_avatar_no_clicked'),
+  newBadgeSeen('new_badge_seen'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

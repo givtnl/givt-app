@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
@@ -14,6 +15,7 @@ import 'package:givt_app/features/family/features/unlocked_badge/repository/mode
 import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -340,5 +342,11 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
 
   void manualUnlockBadge(String featureId) {
     _unlockBadgeRepository.markFeatureAsSeen(userGuid, featureId);
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.newBadgeSeen,
+      eventProperties: {
+        'featureId': featureId,
+      },
+    );
   }
 }

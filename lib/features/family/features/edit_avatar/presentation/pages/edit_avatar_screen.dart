@@ -154,7 +154,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
                 null,
                 UnlockedBadgeWidget(
                   offset: 3,
-                  featureId: Features.tabsOrderOfFeatures[1],
+                  featureId: Features.profileEditAvatarButton,
                   profileId: data.userId,
                 ),
               ],

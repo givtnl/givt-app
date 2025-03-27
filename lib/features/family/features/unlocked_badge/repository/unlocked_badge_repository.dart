@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/unlock_badge_feature.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/unlock_badge_stream.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class UnlockedBadgeRepository {
   Stream<UnlockBadgeStream> onFeatureUnlocksChanged();
@@ -19,30 +21,42 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
   // Map to store unlocked features per user
   final Map<String, List<UnlockBadgeFeature>> _userUnlockedFeatures = {};
 
+  final SharedPreferences _prefs = getIt<SharedPreferences>();
+
+  static const _prefsStorageKeyPrefix = 'unlocked_feature_prefix_';
+
   // Default features for new users
-  List<UnlockBadgeFeature> _getDefaultFeatures() => [
-        const UnlockBadgeFeature(
+  List<UnlockBadgeFeature> _getDefaultFeatures(String userId) => [
+        UnlockBadgeFeature(
           id: Features.avatarCustomBody,
-          isSeen: false,
+          isSeen: _prefs.containsKey(
+            _getKey(userId, Features.avatarCustomBody),
+          ),
         ),
-        const UnlockBadgeFeature(
+        UnlockBadgeFeature(
           id: Features.avatarCustomHair,
-          isSeen: false,
+          isSeen: _prefs.containsKey(
+            _getKey(userId, Features.avatarCustomHair),
+          ),
         ),
-        const UnlockBadgeFeature(
+        UnlockBadgeFeature(
           id: Features.avatarCustomMask,
-          isSeen: false,
+          isSeen: _prefs.containsKey(
+            _getKey(userId, Features.avatarCustomMask),
+          ),
         ),
-        const UnlockBadgeFeature(
+        UnlockBadgeFeature(
           id: Features.avatarCustomSuit,
-          isSeen: false,
+          isSeen: _prefs.containsKey(
+            _getKey(userId, Features.avatarCustomSuit),
+          ),
         ),
       ];
 
   // Get or initialize features for a user
   List<UnlockBadgeFeature> _getUserFeatures(String userId) {
     if (!_userUnlockedFeatures.containsKey(userId)) {
-      _userUnlockedFeatures[userId] = _getDefaultFeatures();
+      _userUnlockedFeatures[userId] = _getDefaultFeatures(userId);
     }
     return _userUnlockedFeatures[userId]!;
   }
@@ -76,11 +90,20 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
         unlockBadgeFeatures: updatedFeatures,
       ),
     );
+
+    unawaited(_prefs.setBool(_getKey(userId, featureId), true));
   }
+
+  String _getKey(String userId, String? featureId) =>
+      '$_prefsStorageKeyPrefix$featureId$userId';
 
   @override
   bool isFeatureSeen(String userId, String? featureId) {
     final userFeatures = _getUserFeatures(userId);
+
+    if (_prefs.containsKey(_getKey(userId, featureId))) {
+      return true;
+    }
 
     if (featureId == null ||
         !userFeatures.any((feature) => feature.id == featureId)) {
