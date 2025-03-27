@@ -42,9 +42,11 @@ class EditAvatarScreen extends StatefulWidget {
   State<EditAvatarScreen> createState() => _EditAvatarScreenState();
 }
 
-class _EditAvatarScreenState extends State<EditAvatarScreen> {
+class _EditAvatarScreenState extends State<EditAvatarScreen>
+    with TickerProviderStateMixin {
   final _cubit = getIt<EditAvatarCubit>();
-  final TooltipController controller = TooltipController();
+  final TooltipController _tooltipController = TooltipController();
+  late TabController _tabController;
   List<Color> bodyColors = [
     const Color(0xFF703E3D),
     const Color(0xFF8E4B26),
@@ -60,15 +62,30 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     const Color(0xFF7EFAB5),
   ];
 
+  static const features = [
+    Features.avatarCustomBody,
+    Features.avatarCustomHair,
+    Features.avatarCustomMask,
+    Features.avatarCustomSuit,
+  ];
+
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(
+      length: features.length,
+      vsync: this,
+    );
+    _tabController.addListener(() {
+      _cubit.manualUnlockBadge(features[_tabController.index]);
+    });
     _cubit.init(widget.userGuid);
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _tabController.dispose();
+    _tooltipController.dispose();
     _cubit.close();
     super.dispose();
   }
@@ -110,7 +127,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     EditAvatarUIModel data,
   ) {
     return OverlayTooltipScaffold(
-      controller: controller,
+      controller: _tooltipController,
       overlayColor: Colors.transparent,
       builder: (context) => FunScaffold(
         safeAreaBottom: false,
@@ -205,14 +222,8 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
   }
 
   Widget _getCustomTabs(EditAvatarUIModel uiModel) {
-    final features = [
-      Features.avatarCustomBody,
-      Features.avatarCustomHair,
-      Features.avatarCustomMask,
-      Features.avatarCustomSuit,
-    ];
-
     return FunSecondaryTabs(
+      controller: _tabController,
       onTap: (index) => _cubit.manualUnlockBadge(features[index]),
       tabs: [
         Tab(
