@@ -150,6 +150,14 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
             const SizedBox(height: 12),
             FunPrimaryTabs(
               options: EditAvatarScreen.options,
+              icons: [
+                null,
+                UnlockedBadgeWidget(
+                  offset: 3,
+                  featureId: Features.tabsOrderOfFeatures[1],
+                  profileId: data.userId,
+                ),
+              ],
               selectedIndex: data.mode == EditAvatarScreen.options[0] ? 0 : 1,
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.avatarTabChanged,

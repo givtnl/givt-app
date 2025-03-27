@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -12,11 +13,13 @@ class FunPrimaryTabs extends StatelessWidget {
     required this.selectedIndex,
     required this.onPressed,
     required this.analyticsEvent,
+    this.icons = const [],
     this.margin,
     super.key,
   });
 
   final List<String> options;
+  final List<Widget?> icons;
   final int selectedIndex;
   final EdgeInsets? margin;
   final void Function(Set<String>) onPressed;
@@ -41,9 +44,10 @@ class FunPrimaryTabs extends StatelessWidget {
           ),
         ),
         segments: [
-          ...options.map(
-            (option) => ButtonSegment(
+          ...options.mapIndexed(
+            (index, option) => ButtonSegment(
               value: option,
+              icon: icons.elementAtOrNull(index),
               label: LabelMediumText(
                 option,
                 color: FamilyAppTheme.primary40,
