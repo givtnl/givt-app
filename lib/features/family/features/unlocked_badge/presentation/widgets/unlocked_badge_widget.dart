@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/cubit/unlocked_badge_cubit.dart';
-import 'package:givt_app/features/family/features/unlocked_badge/repository/models/unlock_badge_feature.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/presentation/models/unlocked_badge_uimodel.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
 class UnlockedBadgeWidget extends StatefulWidget {
@@ -10,7 +11,6 @@ class UnlockedBadgeWidget extends StatefulWidget {
     required this.profileId,
     this.offset = 0,
     this.child,
-    this.unlockedFeatures = const [],
     this.position = BadgePosition.topRight,
     super.key,
   });
@@ -19,7 +19,6 @@ class UnlockedBadgeWidget extends StatefulWidget {
   final Widget? child;
   final String? featureId;
   final String profileId;
-  final List<UnlockBadgeFeature> unlockedFeatures;
   final BadgePosition position;
 
   @override
@@ -71,12 +70,12 @@ class _UnlockedBadgeWidgetState extends State<UnlockedBadgeWidget> {
                           widget.position == BadgePosition.bottomLeft
                       ? (0 + widget.offset)
                       : null,
-                  child: _showBadge(),
+                  child: _showBadge(uiModel),
                 )
               else
                 Padding(
                   padding: const EdgeInsets.all(4),
-                  child: _showBadge(),
+                  child: _showBadge(uiModel),
                 ),
           ],
         ),
@@ -84,14 +83,25 @@ class _UnlockedBadgeWidgetState extends State<UnlockedBadgeWidget> {
     );
   }
 
-  Widget _showBadge() {
+  bool shouldShowNumber(UnlockedBadgeUIModel uiModel) => uiModel.count > 1;
+
+  Widget _showBadge(UnlockedBadgeUIModel uiModel) {
+    final showNumber = shouldShowNumber(uiModel);
     return Container(
-      width: 12,
-      height: 12,
+      alignment: Alignment.center,
+      width: showNumber ? 16 : 12,
+      height: showNumber ? 16 : 12,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.red,
       ),
+      child: showNumber
+          ? LabelBadgeText(
+              uiModel.count.toString(),
+              color: Colors.white,
+              textAlign: TextAlign.center,
+            )
+          : null,
     );
   }
 }

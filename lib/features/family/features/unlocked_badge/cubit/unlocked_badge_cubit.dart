@@ -41,9 +41,19 @@ class UnlockedBadgeCubit extends CommonCubit<UnlockedBadgeUIModel, dynamic> {
       BaseState.data(
         UnlockedBadgeUIModel(
           showBadge: showBadge,
+          count: count(),
         ),
       ),
     );
+  }
+
+  int count() {
+    for (final feature in _unlockedFeatures) {
+      if (feature.id == featureId) {
+        return feature.count;
+      }
+    }
+    return 0;
   }
 
   bool shouldShowBadge() {

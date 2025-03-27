@@ -10,6 +10,7 @@ abstract class UnlockedBadgeRepository {
   Stream<UnlockBadgeStream> onFeatureUnlocksChanged();
   List<UnlockBadgeFeature> getUnlockedFeatures(String userId);
   Future<void> markFeatureAsSeen(String userId, String featureId);
+  Future<void> markFeatureAsUnseen(String userId, String featureId);
   bool isFeatureSeen(String userId, String? featureId);
 }
 
@@ -38,6 +39,7 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
           isSeen: _prefs.containsKey(
             _getKey(userId, Features.avatarCustomHair),
           ),
+          count: 3,
         ),
         UnlockBadgeFeature(
           id: Features.avatarCustomMask,
@@ -92,6 +94,31 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
     );
 
     unawaited(_prefs.setBool(_getKey(userId, featureId), true));
+  }
+
+  @override
+  Future<void> markFeatureAsUnseen(String userId, String featureId) async {
+    final userFeatures = _getUserFeatures(userId);
+
+    final updatedFeatures = userFeatures.map((feature) {
+      if (feature.id == featureId) {
+        return UnlockBadgeFeature(
+          id: feature.id,
+          isSeen: false,
+        );
+      }
+      return feature;
+    }).toList();
+
+    _userUnlockedFeatures[userId] = updatedFeatures;
+    _featureUnlocksController.add(
+      UnlockBadgeStream(
+        userId: userId,
+        unlockBadgeFeatures: updatedFeatures,
+      ),
+    );
+
+    unawaited(_prefs.remove(_getKey(userId, featureId)));
   }
 
   String _getKey(String userId, String? featureId) =>
