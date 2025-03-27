@@ -29,7 +29,7 @@ class FunPrimaryTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 24),
+      margin: margin ?? const EdgeInsets.symmetric(horizontal: 24),
       child: SegmentedButton<String>(
         style: SegmentedButton.styleFrom(
           backgroundColor: Colors.white,

@@ -148,28 +148,34 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
         body: Column(
           children: [
             const SizedBox(height: 12),
-            FunPrimaryTabs(
-              options: EditAvatarScreen.options,
-              icons: [
-                null,
-                UnlockedBadgeWidget(
-                  offset: 3,
-                  featureId: Features.profileEditAvatarButton,
-                  profileId: data.userId,
+            Stack(
+              children: [
+                FunPrimaryTabs(
+                  options: EditAvatarScreen.options,
+                  selectedIndex:
+                      data.mode == EditAvatarScreen.options[0] ? 0 : 1,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.avatarTabChanged,
+                  ),
+                  onPressed: (Set<String> options) {
+                    _cubit.setMode(options);
+                    if (options.first == EditAvatarScreen.options[1]) {
+                      _cubit.manualUnlockBadge(
+                        Features.tabsOrderOfFeatures[_tabController.index],
+                      );
+                    }
+                  },
                 ),
+                if (data.mode == EditAvatarScreen.options[0])
+                  Positioned(
+                    right: 24 - (12 / 2),
+                    top: 0,
+                    child: UnlockedBadgeWidget(
+                      featureId: Features.profileEditAvatarButton,
+                      profileId: data.userId,
+                    ),
+                  ),
               ],
-              selectedIndex: data.mode == EditAvatarScreen.options[0] ? 0 : 1,
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.avatarTabChanged,
-              ),
-              onPressed: (Set<String> options) {
-                _cubit.setMode(options);
-                if (options.first == EditAvatarScreen.options[1]) {
-                  _cubit.manualUnlockBadge(
-                    Features.tabsOrderOfFeatures[_tabController.index],
-                  );
-                }
-              },
             ),
             const SizedBox(height: 16),
             if (data.mode == EditAvatarScreen.options[0])
