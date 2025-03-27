@@ -401,6 +401,7 @@ enum AmplitudeEvents {
   avatarTabChanged('avatar_tab_changed'),
   lockedButtonClicked('locked_button_clicked'),
   unlockedAvatarItemClicked('unlocked_avatar_item_clicked'),
+  customAvatarSaved('custom_avatar_saved'),
   saveAvatarYesClicked('save_avatar_yes_clicked'),
   saveAvatarNoClicked('save_avatar_no_clicked'),
   newBadgeSeen('new_badge_seen'),

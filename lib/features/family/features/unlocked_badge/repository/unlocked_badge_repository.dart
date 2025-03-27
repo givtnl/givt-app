@@ -33,6 +33,7 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
           isSeen: _prefs.containsKey(
             _getKey(userId, Features.avatarCustomBody),
           ),
+          count: 12,
         ),
         UnlockBadgeFeature(
           id: Features.avatarCustomHair,
@@ -46,12 +47,14 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
           isSeen: _prefs.containsKey(
             _getKey(userId, Features.avatarCustomMask),
           ),
+          count: 3,
         ),
         UnlockBadgeFeature(
           id: Features.avatarCustomSuit,
           isSeen: _prefs.containsKey(
             _getKey(userId, Features.avatarCustomSuit),
           ),
+          count: 2,
         ),
       ];
 

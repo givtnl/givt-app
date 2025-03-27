@@ -128,6 +128,10 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         userGuid,
         _customAvatar,
       );
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.customAvatarSaved,
+        eventProperties: _customAvatar.toJson(),
+      );
     } else {
       _repository.updateAvatar(
         userGuid,
