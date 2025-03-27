@@ -3,6 +3,7 @@ import 'package:givt_app/features/family/shared/design/components/content/models
 
 class EditAvatarUIModel {
   EditAvatarUIModel({
+    required this.userId,
     required this.avatarName,
     required this.mode,
     required this.lockMessageEnabled,
@@ -14,6 +15,7 @@ class EditAvatarUIModel {
     required this.suitItems,
   });
 
+  final String userId;
   final String avatarName;
   final String mode;
   final bool lockMessageEnabled;

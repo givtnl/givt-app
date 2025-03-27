@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/edit_avatar/presentation/pages
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/my_givts_text_button.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -124,6 +125,10 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                   ),
                   size: FunButtonSize.small,
                   leftIcon: FontAwesomeIcons.userPen,
+                  funButtonBadge: FunButtonBadge(
+                    featureId: Features.profileEditAvatarButton,
+                    profileId: profile.id,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Row(

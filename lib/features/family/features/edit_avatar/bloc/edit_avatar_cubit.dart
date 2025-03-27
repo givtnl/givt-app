@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/edit_avatar/presentation/pages
 import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -21,6 +22,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     this._profilesRepository,
     this._sharedPreferences,
     this._authRepository,
+    this._unlockBadgeRepository,
   ) : super(const BaseState.loading());
 
   String userGuid = '';
@@ -37,6 +39,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   final ProfilesRepository _profilesRepository;
   final SharedPreferences _sharedPreferences;
   final FamilyAuthRepository _authRepository;
+  final UnlockedBadgeRepository _unlockBadgeRepository;
 
   /// Initialize the cubit
   Future<void> init(String userGuid) async {
@@ -265,6 +268,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   void _emitData() {
     emitData(
       EditAvatarUIModel(
+        userId: userGuid,
         avatarName: _selectedAvatar,
         mode: _customMode,
         lockMessageEnabled: _lockMessageEnabled,
@@ -320,17 +324,18 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     switch (type) {
       case 'Body':
         _customAvatar = _customAvatar.copyWith(bodyIndex: index);
-        break;
       case 'Hair':
         _customAvatar = _customAvatar.copyWith(hairIndex: index);
-        break;
       case 'Mask':
         _customAvatar = _customAvatar.copyWith(maskIndex: index);
-        break;
       case 'Suit':
         _customAvatar = _customAvatar.copyWith(suitIndex: index);
-        break;
     }
+
     _emitData();
+  }
+
+  void manualUnlockBadge(String featureId) {
+    _unlockBadgeRepository.markFeatureAsSeen(userGuid, featureId);
   }
 }
