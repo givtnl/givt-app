@@ -62,22 +62,16 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
     const Color(0xFF7EFAB5),
   ];
 
-  static const features = [
-    Features.avatarCustomBody,
-    Features.avatarCustomHair,
-    Features.avatarCustomMask,
-    Features.avatarCustomSuit,
-  ];
-
   @override
   void initState() {
     super.initState();
     _tabController = TabController(
-      length: features.length,
+      length: Features.tabsOrderOfFeatures.length,
       vsync: this,
     );
     _tabController.addListener(() {
-      _cubit.manualUnlockBadge(features[_tabController.index]);
+      _cubit.manualUnlockBadge(
+          Features.tabsOrderOfFeatures[_tabController.index]);
     });
     _cubit.init(widget.userGuid);
   }
@@ -160,7 +154,14 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.avatarTabChanged,
               ),
-              onPressed: _cubit.setMode,
+              onPressed: (Set<String> options) {
+                _cubit.setMode(options);
+                if (options.first == EditAvatarScreen.options[1]) {
+                  _cubit.manualUnlockBadge(
+                    Features.tabsOrderOfFeatures[_tabController.index],
+                  );
+                }
+              },
             ),
             const SizedBox(height: 16),
             if (data.mode == EditAvatarScreen.options[0])
@@ -224,32 +225,33 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
   Widget _getCustomTabs(EditAvatarUIModel uiModel) {
     return FunSecondaryTabs(
       controller: _tabController,
-      onTap: (index) => _cubit.manualUnlockBadge(features[index]),
+      onTap: (index) =>
+          _cubit.manualUnlockBadge(Features.tabsOrderOfFeatures[index]),
       tabs: [
         Tab(
           icon: UnlockedBadgeWidget(
-            featureId: features[0],
+            featureId: Features.tabsOrderOfFeatures[0],
             profileId: uiModel.userId,
             child: const FaIcon(FontAwesomeIcons.solidFaceSmile),
           ),
         ),
         Tab(
           icon: UnlockedBadgeWidget(
-            featureId: features[1],
+            featureId: Features.tabsOrderOfFeatures[1],
             profileId: uiModel.userId,
             child: const FaIcon(FontAwesomeIcons.scissors),
           ),
         ),
         Tab(
           icon: UnlockedBadgeWidget(
-            featureId: features[2],
+            featureId: Features.tabsOrderOfFeatures[2],
             profileId: uiModel.userId,
             child: const FaIcon(FontAwesomeIcons.mask),
           ),
         ),
         Tab(
           icon: UnlockedBadgeWidget(
-            featureId: features[3],
+            featureId: Features.tabsOrderOfFeatures[3],
             profileId: uiModel.userId,
             child: const FaIcon(FontAwesomeIcons.shirt),
           ),

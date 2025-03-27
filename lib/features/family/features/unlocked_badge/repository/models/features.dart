@@ -8,12 +8,18 @@ class Features {
   static const String avatarCustomSuit = 'avatar_custom_suit';
 
   static const String profileEditAvatarButton = 'profile_edit_avatar_button';
-  
+
   static const String familyHomeProfile = 'family_home_profile';
 
-  
+  static const List<String> tabsOrderOfFeatures = [
+    Features.avatarCustomBody,
+    Features.avatarCustomHair,
+    Features.avatarCustomMask,
+    Features.avatarCustomSuit,
+  ];
+
   /// A map that defines the hierarchy of features.
-  /// 
+  ///
   /// The keys in the map represent feature names, and the values are lists
   /// of strings that specify the sub-features or dependencies associated
   /// with each feature.

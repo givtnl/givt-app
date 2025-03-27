@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/edit_avatar/presentation/pages
 import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
@@ -54,6 +55,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         setAvatar(_profile!.avatar!);
       } else if (_profile?.customAvatar != null) {
         _customAvatar = _profile!.customAvatar!;
+        manualUnlockBadge(Features.tabsOrderOfFeatures[0]);
         _customMode = EditAvatarScreen.options.last;
         _emitData();
       } else {
@@ -62,6 +64,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       if (isFirstVisitSinceUnlock()) {
         setFirstVisitSinceUnlock();
         _customMode = EditAvatarScreen.options.last;
+        manualUnlockBadge(Features.tabsOrderOfFeatures[0]);
         _emitData();
         if (_isProd && _isSjoerd) {
           _customAvatar = CustomAvatarModel.initialSjoerd();
