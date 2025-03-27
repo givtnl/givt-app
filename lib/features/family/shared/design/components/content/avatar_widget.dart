@@ -53,7 +53,8 @@ class AvatarWidget extends StatelessWidget {
                             ),
                           ),
                           child: uiModel.avatar != null
-                              ? FunAvatar.hero(uiModel.avatar!, size: circleSize)
+                              ? FunAvatar.hero(uiModel.avatar!,
+                                  size: circleSize)
                               : uiModel.customAvatarUIModel != null
                                   ? FunAvatar.custom(
                                       uiModel.customAvatarUIModel!,

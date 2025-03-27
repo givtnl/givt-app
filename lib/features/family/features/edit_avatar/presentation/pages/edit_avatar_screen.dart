@@ -230,6 +230,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
       tabs: [
         Tab(
           icon: UnlockedBadgeWidget(
+            offset: 3,
             featureId: Features.tabsOrderOfFeatures[0],
             profileId: uiModel.userId,
             child: const FaIcon(FontAwesomeIcons.solidFaceSmile),
@@ -237,6 +238,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
         ),
         Tab(
           icon: UnlockedBadgeWidget(
+            offset: 3,
             featureId: Features.tabsOrderOfFeatures[1],
             profileId: uiModel.userId,
             child: const FaIcon(FontAwesomeIcons.scissors),
@@ -244,6 +246,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
         ),
         Tab(
           icon: UnlockedBadgeWidget(
+            offset: 3,
             featureId: Features.tabsOrderOfFeatures[2],
             profileId: uiModel.userId,
             child: const FaIcon(FontAwesomeIcons.mask),
@@ -251,6 +254,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
         ),
         Tab(
           icon: UnlockedBadgeWidget(
+            offset: 3,
             featureId: Features.tabsOrderOfFeatures[3],
             profileId: uiModel.userId,
             child: const FaIcon(FontAwesomeIcons.shirt),

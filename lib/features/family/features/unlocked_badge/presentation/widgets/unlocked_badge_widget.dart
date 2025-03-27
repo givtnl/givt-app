@@ -8,12 +8,14 @@ class UnlockedBadgeWidget extends StatefulWidget {
   const UnlockedBadgeWidget({
     required this.featureId,
     required this.profileId,
+    this.offset = 0,
     this.child,
     this.unlockedFeatures = const [],
     this.position = BadgePosition.topRight,
     super.key,
   });
 
+  final double offset;
   final Widget? child;
   final String? featureId;
   final String profileId;
@@ -55,19 +57,19 @@ class _UnlockedBadgeWidgetState extends State<UnlockedBadgeWidget> {
                 Positioned(
                   top: widget.position == BadgePosition.topRight ||
                           widget.position == BadgePosition.topLeft
-                      ? -3
+                      ? (0 - widget.offset)
                       : null,
                   right: widget.position == BadgePosition.topRight ||
                           widget.position == BadgePosition.bottomRight
-                      ? -3
+                      ? (0 - widget.offset)
                       : null,
                   bottom: widget.position == BadgePosition.bottomRight ||
                           widget.position == BadgePosition.bottomLeft
-                      ? -3
+                      ? (0 + widget.offset)
                       : null,
                   left: widget.position == BadgePosition.topLeft ||
                           widget.position == BadgePosition.bottomLeft
-                      ? -3
+                      ? (0 + widget.offset)
                       : null,
                   child: _showBadge(),
                 )
