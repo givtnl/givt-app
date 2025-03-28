@@ -305,6 +305,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
       final authstate = context.read<FamilyAuthCubit>().state;
       if (authstate is Unauthenticated ||
           profile.id != (authstate as Authenticated).user.guid) {
+        _cubit.markAllFeaturesAsSeen(profile.id);
         return;
       }
 

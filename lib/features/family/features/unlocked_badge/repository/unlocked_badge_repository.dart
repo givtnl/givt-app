@@ -12,6 +12,7 @@ abstract class UnlockedBadgeRepository {
   Future<void> markFeatureAsSeen(String userId, String featureId);
   Future<void> markFeatureAsUnseen(String userId, String featureId);
   bool isFeatureSeen(String userId, String? featureId);
+  Future<void> markAllFeaturesAsSeenForUser(String userId);
 }
 
 class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
@@ -141,5 +142,23 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
     }
 
     return userFeatures.firstWhere((feature) => feature.id == featureId).isSeen;
+  }
+
+  @override
+  Future<void> markAllFeaturesAsSeenForUser(String userId) async {
+    final userFeatures = _getUserFeatures(userId);
+
+    final updatedFeatures = userFeatures.map((feature) {
+      unawaited(_prefs.setBool(_getKey(userId, feature.id), true));
+      return feature.copyWith(isSeen: true);
+    }).toList();
+
+    _userUnlockedFeatures[userId] = updatedFeatures;
+    _featureUnlocksController.add(
+      UnlockBadgeStream(
+        userId: userId,
+        unlockBadgeFeatures: updatedFeatures,
+      ),
+    );
   }
 }
