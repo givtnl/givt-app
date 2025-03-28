@@ -345,7 +345,8 @@ void initRepositories() {
     )
     ..registerLazySingleton<UnlockedBadgeRepository>(
       () => UnlockedBadgeRepositoryImpl(
-          // getIt(),
-          ),
+        getIt(),
+        getIt(),
+      ),
     );
 }

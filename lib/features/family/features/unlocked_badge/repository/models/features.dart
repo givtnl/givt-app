@@ -23,7 +23,15 @@ class Features {
   /// The keys in the map represent feature names, and the values are lists
   /// of strings that specify the sub-features or dependencies associated
   /// with each feature.
-  static const Map<String, List<String>> featureHierarchy = {
+  static Map<String, List<String>> featureHierarchy = {
+    Features.avatarCustomBody:
+        List.generate(666, (index) => '$avatarCustomBody$index'),
+    Features.avatarCustomHair:
+        List.generate(666, (index) => '$avatarCustomHair$index'),
+    Features.avatarCustomMask:
+        List.generate(666, (index) => '$avatarCustomMask$index'),
+    Features.avatarCustomSuit:
+        List.generate(666, (index) => '$avatarCustomSuit$index'),
     Features.profileEditAvatarButton: [
       Features.avatarCustomBody,
       Features.avatarCustomHair,
@@ -34,4 +42,24 @@ class Features {
       Features.profileEditAvatarButton,
     ],
   };
+
+  static bool isItemFeature(String feature) {
+    return feature.contains(avatarCustomBody) ||
+        feature.contains(avatarCustomHair) ||
+        feature.contains(avatarCustomMask) ||
+        feature.contains(avatarCustomSuit);
+  }
+
+  static int? extractItemFeatureNumber(String feature) {
+    if (feature.contains(avatarCustomBody)) {
+      return int.tryParse(feature.substring(avatarCustomBody.length));
+    } else if (feature.contains(avatarCustomHair)) {
+      return int.tryParse(feature.substring(avatarCustomHair.length));
+    } else if (feature.contains(avatarCustomMask)) {
+      return int.tryParse(feature.substring(avatarCustomMask.length));
+    } else if (feature.contains(avatarCustomSuit)) {
+      return int.tryParse(feature.substring(avatarCustomSuit.length));
+    }
+    return null;
+  }
 }

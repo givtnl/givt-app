@@ -12,8 +12,8 @@ class UnlockedBadgeCubit extends CommonCubit<UnlockedBadgeUIModel, dynamic> {
   final UnlockedBadgeRepository _unlockedBadgeRepository;
 
   List<UnlockBadgeFeature> _unlockedFeatures = [];
-  String? featureId;
-  String? profileId;
+  late String? featureId;
+  late String profileId;
 
   void init(String featureId, String profileId) {
     _unlockedFeatures = _unlockedBadgeRepository.getUnlockedFeatures(profileId);
@@ -60,7 +60,8 @@ class UnlockedBadgeCubit extends CommonCubit<UnlockedBadgeUIModel, dynamic> {
     // Check if this feature or any hierarchically related feature is unlocked
     for (final feature in _unlockedFeatures) {
       if (!feature.isSeen &&
-          (feature.id == featureId || feature.isChildOf(featureId))) {
+          (feature.id == featureId ||
+              isUnseenChildOrDescendantOf(profileId, feature.id, featureId!))) {
         return true;
       }
     }
@@ -68,28 +69,33 @@ class UnlockedBadgeCubit extends CommonCubit<UnlockedBadgeUIModel, dynamic> {
   }
 
   void markFeatureAsSeen() {
-    if (_unlockedBadgeRepository.isFeatureSeen(profileId!, featureId)) {
+    if (_unlockedBadgeRepository.isFeatureSeen(profileId, featureId)) {
       return;
     }
     if (featureId != null) {
-      _unlockedBadgeRepository.markFeatureAsSeen(profileId!, featureId!);
+      _unlockedBadgeRepository.markFeatureAsSeen(profileId, featureId!);
     }
   }
-}
 
-extension on UnlockBadgeFeature {
-  bool isChildOf(String? featureId) {
-    for (final childId in Features.featureHierarchy[featureId] ?? []) {
-      if (childId == id) {
-        return true;
-      }
-
-      if (Features.featureHierarchy.containsKey(childId) &&
-          Features.featureHierarchy[childId]!.contains(id)) {
-        return true;
+  bool isUnseenChildOrDescendantOf(
+    String userId,
+    String currentFeature,
+    String featureToCheckAsPossibleParent,
+  ) {
+    final children =
+        Features.featureHierarchy[featureToCheckAsPossibleParent] ?? [];
+    if (children.contains(currentFeature)) {
+      return !_unlockedBadgeRepository.isFeatureSeen(userId, currentFeature);
+    } else {
+      for (final child in children) {
+        if (isUnseenChildOrDescendantOf(userId, currentFeature, child)) {
+          return !_unlockedBadgeRepository.isFeatureSeen(
+            userId,
+            currentFeature,
+          );
+        }
       }
     }
-
     return false;
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/unlock_badge_feature.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/unlock_badge_stream.dart';
@@ -16,6 +16,9 @@ abstract class UnlockedBadgeRepository {
 }
 
 class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
+  UnlockedBadgeRepositoryImpl(this._profilesRepository, this._prefs) {
+    _init();
+  }
 // Implementation in ProfilesRepositoryImpl
   final StreamController<UnlockBadgeStream> _featureUnlocksController =
       StreamController<UnlockBadgeStream>.broadcast();
@@ -23,46 +26,43 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
   // Map to store unlocked features per user
   final Map<String, List<UnlockBadgeFeature>> _userUnlockedFeatures = {};
 
-  final SharedPreferences _prefs = getIt<SharedPreferences>();
+  final SharedPreferences _prefs;
+  final ProfilesRepository _profilesRepository;
 
   static const _prefsStorageKeyPrefix = 'unlocked_feature_prefix_';
 
-  // Default features for new users
-  List<UnlockBadgeFeature> _getDefaultFeatures(String userId) => [
-        UnlockBadgeFeature(
-          id: Features.avatarCustomBody,
-          isSeen: _prefs.containsKey(
-            _getKey(userId, Features.avatarCustomBody),
+  void _init() {
+    _profilesRepository.onProfilesChanged().listen((profiles) {
+      for (final profile in profiles) {
+        final features = <UnlockBadgeFeature>[];
+        for (final unlockedFeature in profile.unlocks) {
+          if (Features.isItemFeature(unlockedFeature)) {
+            if (!isFeatureSeen(profile.id, unlockedFeature)) {
+              features.add(
+                UnlockBadgeFeature(
+                  id: unlockedFeature,
+                  isSeen: false,
+                  count: 1,
+                ),
+              );
+            }
+          }
+        }
+        _userUnlockedFeatures[profile.id] = features;
+        _featureUnlocksController.add(
+          UnlockBadgeStream(
+            userId: profile.id,
+            unlockBadgeFeatures: features,
           ),
-          count: 12,
-        ),
-        UnlockBadgeFeature(
-          id: Features.avatarCustomHair,
-          isSeen: _prefs.containsKey(
-            _getKey(userId, Features.avatarCustomHair),
-          ),
-          count: 3,
-        ),
-        UnlockBadgeFeature(
-          id: Features.avatarCustomMask,
-          isSeen: _prefs.containsKey(
-            _getKey(userId, Features.avatarCustomMask),
-          ),
-          count: 3,
-        ),
-        UnlockBadgeFeature(
-          id: Features.avatarCustomSuit,
-          isSeen: _prefs.containsKey(
-            _getKey(userId, Features.avatarCustomSuit),
-          ),
-          count: 2,
-        ),
-      ];
+        );
+      }
+    });
+  }
 
   // Get or initialize features for a user
   List<UnlockBadgeFeature> _getUserFeatures(String userId) {
     if (!_userUnlockedFeatures.containsKey(userId)) {
-      _userUnlockedFeatures[userId] = _getDefaultFeatures(userId);
+      _userUnlockedFeatures[userId] = [];
     }
     return _userUnlockedFeatures[userId]!;
   }
@@ -80,7 +80,7 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
     final userFeatures = _getUserFeatures(userId);
 
     final updatedFeatures = userFeatures.map((feature) {
-      if (feature.id == featureId) {
+      if (feature.id.contains(featureId)) {
         return UnlockBadgeFeature(
           id: feature.id,
           isSeen: true,
@@ -97,7 +97,11 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
       ),
     );
 
-    unawaited(_prefs.setBool(_getKey(userId, featureId), true));
+    userFeatures
+        .where((feature) => feature.id.contains(featureId))
+        .forEach((feature) {
+      unawaited(_prefs.setBool(_getKey(userId, featureId), true));
+    });
   }
 
   @override
@@ -122,7 +126,11 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
       ),
     );
 
-    unawaited(_prefs.remove(_getKey(userId, featureId)));
+    userFeatures
+        .where((feature) => feature.id.contains(featureId))
+        .forEach((feature) {
+      unawaited(_prefs.remove(_getKey(userId, featureId)));
+    });
   }
 
   String _getKey(String userId, String? featureId) =>
@@ -137,11 +145,19 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
     }
 
     if (featureId == null ||
-        !userFeatures.any((feature) => feature.id == featureId)) {
+        !userFeatures.any((feature) => feature.id.contains(featureId))) {
       return false;
     }
 
-    return userFeatures.firstWhere((feature) => feature.id == featureId).isSeen;
+    var hasAnyNotBeenSeen = false;
+    for (final feature in userFeatures) {
+      if (feature.id.contains(featureId) && !feature.isSeen) {
+        hasAnyNotBeenSeen = true;
+        break;
+      }
+    }
+
+    return !hasAnyNotBeenSeen;
   }
 
   @override
