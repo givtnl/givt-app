@@ -209,6 +209,7 @@ enum AmplitudeEvents {
   avatarImageSelected('avatar_image_selected'),
   editProfilePictureClicked('edit_profile_picture_clicked'),
   saveAvatarClicked('save_avatar_clicked'),
+  shareAvatarClicked('share_avatar_clicked'),
   rewardAchieved('reward_achieved'),
   goalTrackerTapped('goal_tracker_tapped'),
   goalDismissed('goal_dismissed'),
