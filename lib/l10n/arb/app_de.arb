@@ -913,5 +913,9 @@
     "addMemberAdultReason1": "Login to Givt with their own account",
     "addMemberAdultReason2": "Approve donations of the children",
     "addMemberAdultReason3": "Explore generosity as a family",
-    "addMemberAdultEmailSameAsLoggedIn": "You've already created an account for yourself with this email address"
+    "addMemberAdultEmailSameAsLoggedIn": "You've already created an account for yourself with this email address",
+    "unregisterTitle": "Konto kündigen",
+    "unregisterPrimaryBtnText": "Konto kündigen",
+    "unregisterDescription": "Es tut uns leid, dass Sie gehen!\\nNach der Kündigung Ihres Kontos können wir es nicht wiederherstellen.\n",
+    "unregisterCheckboxText": "Ja, ich möchte mein Konto kündigen\n"
 }
