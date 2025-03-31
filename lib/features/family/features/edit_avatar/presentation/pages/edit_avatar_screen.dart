@@ -62,6 +62,12 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
     const Color(0xFF7EFAB5),
   ];
 
+  List<Color> hairColors = [
+    const Color(0xFF282A25),
+    const Color(0xFF8F4F23),
+    const Color(0xFFFFDF8D),
+  ];
+
   @override
   void initState() {
     super.initState();

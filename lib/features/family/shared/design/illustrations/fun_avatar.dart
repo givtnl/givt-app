@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -33,9 +34,7 @@ class FunAvatar extends FunIcon {
     );
   }
 
-  factory FunAvatar.captainAi(
-      {bool withBorder = false,
-      bool isLarge = false}) {
+  factory FunAvatar.captainAi({bool withBorder = false, bool isLarge = false}) {
     return FunAvatar(
       semanticsIdentifier: 'captainAi',
       customCircleColor: FamilyAppTheme.neutral95,
@@ -48,8 +47,7 @@ class FunAvatar extends FunIcon {
     );
   }
 
-  factory FunAvatar.family(
-      {bool isLarge = false}) {
+  factory FunAvatar.family({bool isLarge = false}) {
     return FunAvatar(
       semanticsIdentifier: 'family',
       customCircleColor: FamilyAppTheme.neutral95,
@@ -86,33 +84,118 @@ class FunAvatar extends FunIcon {
 
   factory FunAvatar.custom(CustomAvatarUIModel uiModel, {double size = 120}) {
     return FunAvatar(
-      semanticsIdentifier: uiModel.semanticsIdentifier,
-      customCircleColor: FamilyAppTheme.info95,
-      customAvatar: ClipOval(
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: size / 15,
-          ), // Add 8px padding above the SVG
-          child: Stack(
-            children: customAvatarWidgetsList(uiModel),
+        semanticsIdentifier: uiModel.semanticsIdentifier,
+        customCircleColor: FamilyAppTheme.info95,
+        customAvatar: ClipOval(
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: size / 15,
+            ), // Add 8px padding above the SVG
+            child: Stack(
+              children: customAvatarWidgetsList(uiModel),
+            ),
           ),
         ),
-      ),
-      circleSize: size,
-      innerCircleSize: size
-    );
+        circleSize: size,
+        innerCircleSize: size);
   }
 
   static List<Widget> customAvatarWidgetsList(CustomAvatarUIModel uiModel,
       {BoxFit fit = BoxFit.cover}) {
     return List.generate(
       uiModel.assetsToOverlap.length,
-      (index) => SvgPicture.asset(
-        uiModel.assetsToOverlap[index],
-        fit: fit,
-        alignment: Alignment.topCenter,
-      ),
+      (index) => index != 0
+          ? FutureBuilder(
+              future: loadSvgFromAsset(
+                uiModel.assetsToOverlap[index],
+                color: index == 3
+                    ? Colors.purple
+                    : index == 1
+                        ? Colors.yellow
+                        : Colors.green,
+              ),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                return snapshot.data != null
+                    ? SvgPicture.string(
+                        snapshot.data!,
+                        fit: fit,
+                        alignment: Alignment.topCenter,
+                      )
+                    : regularSvgAsset(index, uiModel, fit);
+              },
+            )
+          : regularSvgAsset(index, uiModel, fit),
     );
+  }
+
+  static SvgPicture regularSvgAsset(
+      int index, CustomAvatarUIModel uiModel, BoxFit fit) {
+    return SvgPicture.asset(
+      colorFilter:
+          index == 1 ? ColorFilter.mode(Colors.red, BlendMode.srcIn) : null,
+      uiModel.assetsToOverlap[index],
+      fit: fit,
+      alignment: Alignment.topCenter,
+    );
+  }
+
+  static Future<String> loadSvgFromAsset(String svgAssetPath,
+      {required Color color}) async {
+    // Read SVG content from asset file
+    String rawSvgContent = await rootBundle.loadString(svgAssetPath);
+
+    // Modify SVG content
+    String modifiedSvgContent = modifySvgContent(rawSvgContent, color: color);
+
+    return modifiedSvgContent;
+  }
+
+  static String modifySvgContent(String rawSvgContent, {required Color color}) {
+    print("ORIGINAL: $rawSvgContent");
+
+    // Parse the SVG content to find paths
+    final pathRegex = RegExp(r'<path[^>]*>', multiLine: true);
+    final paths = pathRegex.allMatches(rawSvgContent);
+
+    String? longestPath;
+    int maxLength = 0;
+    String? currentFillColor;
+
+    for (final match in paths) {
+      final path = match.group(0);
+      if (path != null) {
+        // Check the length of the 'd' attribute
+        final dAttributeRegex = RegExp(r'd="([^"]+)"');
+        final dMatch = dAttributeRegex.firstMatch(path);
+        if (dMatch != null) {
+          final dValue = dMatch.group(1);
+          if (dValue != null && dValue.length > maxLength) {
+            maxLength = dValue.length;
+            longestPath = path;
+
+            // Extract the fill color of the longest path
+            final fillRegex = RegExp(r'fill="([^"]+)"');
+            final fillMatch = fillRegex.firstMatch(path);
+            currentFillColor = fillMatch?.group(1);
+          }
+        }
+      }
+    }
+
+    if (longestPath != null && currentFillColor != null) {
+      // Replace the fill color of the longest path
+      final newFillColor = '#${color.value.toRadixString(16).substring(2)}';
+      rawSvgContent = rawSvgContent.replaceAll(
+        'fill="$currentFillColor"',
+        'fill="$newFillColor"',
+      );
+      print("Longest path found and modified. New fill color: $newFillColor");
+    } else {
+      print("No path found or no fill color detected.");
+    }
+
+    print("MODIFIED: $rawSvgContent");
+    return rawSvgContent;
   }
 
   factory FunAvatar.defaultHero({double size = 120}) {
@@ -121,28 +204,27 @@ class FunAvatar extends FunIcon {
 
   factory FunAvatar.hero(String heroName, {double size = 120}) {
     return FunAvatar(
-      semanticsIdentifier: heroName,
-      customCircleColor: FamilyAppTheme.info95,
-      customAvatar: ClipOval(
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: size / 15,
-          ), // Add 8px padding above the SVG
-          child: SvgPicture.asset(
-            'assets/family/images/avatar/default/$heroName',
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-            errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
-              'assets/family/images/avatar/default/Hero1.svg',
+        semanticsIdentifier: heroName,
+        customCircleColor: FamilyAppTheme.info95,
+        customAvatar: ClipOval(
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: size / 15,
+            ), // Add 8px padding above the SVG
+            child: SvgPicture.asset(
+              'assets/family/images/avatar/default/$heroName',
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
+              errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
+                'assets/family/images/avatar/default/Hero1.svg',
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
             ),
           ),
         ),
-      ),
-      circleSize: size,
-      innerCircleSize: size
-    );
+        circleSize: size,
+        innerCircleSize: size);
   }
 
   final String semanticsIdentifier;
