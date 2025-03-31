@@ -37,7 +37,7 @@ class _USTerminateAccountBottomSheetState
     final locals = context.l10n;
     return FunBottomSheet(
       closeAction: () => Navigator.of(context).pop(),
-      title: 'Terminate Account',
+      title: locals.unregisterTitle,
       primaryButton: FunButton.destructive(
         onTap: () {
           widget.asyncCubit.doAsyncAction(() async {
@@ -47,7 +47,7 @@ class _USTerminateAccountBottomSheetState
             widget.onSuccess?.call();
           });
         },
-        text: 'Terminate account',
+        text: locals.unregisterPrimaryBtnText,
         isDisabled: !isCheckboxChecked,
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.terminateAccountStarted,
@@ -66,8 +66,8 @@ class _USTerminateAccountBottomSheetState
             circleColor: FamilyAppTheme.error90,
           ),
           const SizedBox(height: 16),
-          const BodyMediumText(
-            'We’re sorry to see you go!\nAfter terminating your account, we cannot recover it for you.',
+          BodyMediumText(
+            locals.unregisterDescription,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
@@ -91,8 +91,9 @@ class _USTerminateAccountBottomSheetState
                   onTap: () => setState(() {
                     isCheckboxChecked = !isCheckboxChecked;
                   }),
-                  child: const LabelMediumText(
-                      'Yes, I want to terminate my account'),
+                  child: LabelMediumText(
+                    locals.unregisterCheckboxText,
+                  ),
                 ),
               ),
             ],

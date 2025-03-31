@@ -306,8 +306,8 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Row(),
-                  const TitleMediumText(
-                    'We’re sad to see you leave and we hope to see you again.',
+                  TitleMediumText(
+                    locals.unregisterSuccessText,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
@@ -316,8 +316,8 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                   SvgPicture.asset('assets/family/images/captain_sad.svg'),
                 ],
               ),
-              successText: 'Account succesfully deleted!',
-              loadingText: 'Terminating account',
+              successText: '',
+              loadingText: locals.unregisterLoading,
               analyticsName: 'us_terminate_account_bottom_sheet',
             ),
           ),
