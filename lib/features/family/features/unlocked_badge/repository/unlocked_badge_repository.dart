@@ -13,6 +13,7 @@ abstract class UnlockedBadgeRepository {
   Future<void> markFeatureAsUnseen(String userId, String featureId);
   bool isFeatureSeen(String userId, String? featureId);
   Future<void> markAllFeaturesAsSeenForUser(String userId);
+  int getTotalCount(String userId, String featureId);
 }
 
 class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
@@ -176,5 +177,14 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
         unlockBadgeFeatures: updatedFeatures,
       ),
     );
+  }
+
+  @override
+  int getTotalCount(String userId, String featureId) {
+    final userFeatures = _getUserFeatures(userId);
+
+    return userFeatures
+        .where((feature) => feature.id.contains(featureId) && !feature.isSeen)
+        .fold(0, (sum, feature) => sum + feature.count);
   }
 }
