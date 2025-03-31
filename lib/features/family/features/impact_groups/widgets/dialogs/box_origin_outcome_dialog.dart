@@ -27,18 +27,24 @@ Future<void> showBoxOriginSuccessDialog(
 
 Future<void> showBoxOriginErrorDialog(
   BuildContext context, {
-      void Function()? onTap,
+  void Function()? onTapRetry,
+  void Function()? onTapSkip,
 }) async {
   await FunModal(
     title: 'Oops, something went wrong...',
     buttons: [
       FunButton(
         text: 'Retry',
-        onTap: onTap ?? () => context.pop(),
+        onTap: onTapRetry ?? () => context.pop(),
         leftIcon: Icons.refresh_rounded,
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.retryClicked,
         ),
+      ),
+      FunButton.secondary(
+        onTap: onTapSkip,
+        text: 'Skip',
+        analyticsEvent: AnalyticsEvent(AmplitudeEvents.skipClicked),
       ),
     ],
   ).show(context);

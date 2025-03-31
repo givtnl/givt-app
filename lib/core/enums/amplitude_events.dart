@@ -23,6 +23,7 @@ enum AmplitudeEvents {
   continueClicked('continue_clicked'),
   readyClicked('ready_clicked'),
   retryClicked('retry_clicked'),
+  skipClicked('skip_clicked'),
   createChildProfileClicked('create_child_profile_clicked'),
   directNoticeClicked('direct_notice_clicked'),
   enterCardDetailsClicked('enter_card_details_clicked'),
