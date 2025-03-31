@@ -17,6 +17,7 @@ class FunBottomSheetWithAsyncAction extends StatefulWidget {
     required this.successText,
     required this.analyticsName,
     super.key,
+    this.successState,
     this.errorText,
   });
 
@@ -24,6 +25,7 @@ class FunBottomSheetWithAsyncAction extends StatefulWidget {
   final Widget initialState;
   final String loadingText;
   final String successText;
+  final Widget? successState;
   final String? errorText;
   final String analyticsName;
 
@@ -38,6 +40,7 @@ class FunBottomSheetWithAsyncAction extends StatefulWidget {
     required String loadingText,
     required String successText,
     required String analyticsName,
+    Widget? successState,
     String? errorText,
   }) {
     showModalBottomSheet<void>(
@@ -53,6 +56,7 @@ class FunBottomSheetWithAsyncAction extends StatefulWidget {
         loadingText: loadingText,
         successText: successText,
         analyticsName: analyticsName,
+        successState: successState,
         errorText: errorText,
       ),
     );
@@ -73,21 +77,22 @@ class _FunBottomSheetWithAsyncActionState
             case InitialState():
               return widget.initialState;
             case SuccessState():
-              return FunBottomSheet(
-                title: widget.successText,
-                content: FunIcon.checkmark(),
-                primaryButton: FunButton(
-                  text: 'Done',
-                  onTap: () => context.pop(),
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.bottomsheet,
-                    parameters: {
-                      'bottomsheet_name': widget.analyticsName,
-                      'action': 'successStateDoneClicked',
-                    },
-                  ),
-                ),
-              );
+              return widget.successState ??
+                  FunBottomSheet(
+                    title: widget.successText,
+                    content: FunIcon.checkmark(),
+                    primaryButton: FunButton(
+                      text: 'Done',
+                      onTap: () => context.pop(),
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.bottomsheet,
+                        parameters: {
+                          'bottomsheet_name': widget.analyticsName,
+                          'action': 'successStateDoneClicked',
+                        },
+                      ),
+                    ),
+                  );
             case LoadingState():
               return FunBottomSheet(
                 title: widget.loadingText,

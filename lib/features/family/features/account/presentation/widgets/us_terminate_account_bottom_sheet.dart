@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
@@ -12,10 +14,14 @@ import 'package:givt_app/utils/app_theme.dart';
 class USTerminateAccountBottomSheet extends StatefulWidget {
   const USTerminateAccountBottomSheet({
     required this.asyncCubit,
+    required this.email,
     super.key,
+    this.onSuccess,
   });
 
+  final String email;
   final FunBottomSheetWithAsyncActionCubit asyncCubit;
+  final VoidCallback? onSuccess;
 
   @override
   State<USTerminateAccountBottomSheet> createState() =>
@@ -24,7 +30,7 @@ class USTerminateAccountBottomSheet extends StatefulWidget {
 
 class _USTerminateAccountBottomSheetState
     extends State<USTerminateAccountBottomSheet> {
-  bool isButtonEnabled = false;
+  bool isCheckboxChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +41,14 @@ class _USTerminateAccountBottomSheetState
       primaryButton: FunButton.destructive(
         onTap: () {
           widget.asyncCubit.doAsyncAction(() async {
-            // Add termination logic here
-            await Future.delayed(const Duration(seconds: 2));
+            await getIt<AuthRepository>().unregisterUser(
+              email: widget.email,
+            );
+            widget.onSuccess?.call();
           });
         },
         text: 'Terminate account',
-        isDisabled: !isButtonEnabled,
+        isDisabled: !isCheckboxChecked,
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.terminateAccountStarted,
         ),
@@ -66,11 +74,11 @@ class _USTerminateAccountBottomSheetState
           Row(
             children: [
               Checkbox(
-                semanticLabel: 'saveDataCheckbox',
-                value: isButtonEnabled,
+                semanticLabel: 'terminateAccountCheckbox',
+                value: isCheckboxChecked,
                 onChanged: (bool? value) {
                   setState(() {
-                    isButtonEnabled = value ?? false;
+                    isCheckboxChecked = value ?? false;
                   });
                 },
                 side: const BorderSide(
@@ -78,9 +86,15 @@ class _USTerminateAccountBottomSheetState
                   width: 2,
                 ),
               ),
-              const Flexible(
-                  child:
-                      LabelMediumText('Yes, I want to terminate my account')),
+              Flexible(
+                child: GestureDetector(
+                  onTap: () => setState(() {
+                    isCheckboxChecked = !isCheckboxChecked;
+                  }),
+                  child: const LabelMediumText(
+                      'Yes, I want to terminate my account'),
+                ),
+              ),
             ],
           ),
         ],
