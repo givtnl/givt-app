@@ -917,5 +917,7 @@
     "unregisterTitle": "Verwijder account",
     "unregisterPrimaryBtnText": "Verwijder account",
     "unregisterDescription": "We vinden het jammer dat je gaat.\\nNa het verwijderen van je account kunnen we dit niet meer voor je herstellen.",
-    "unregisterCheckboxText": "Ja, ik wil mijn account verwijderen"
+    "unregisterCheckboxText": "Ja, ik wil mijn account verwijderen",
+    "unregisterLoading": "Account verwijderen",
+    "unregisterSuccessText": "We vinden het jammer om je te zien gaan en we hopen om je weer terug te zien."
 }
