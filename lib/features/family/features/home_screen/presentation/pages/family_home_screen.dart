@@ -20,6 +20,7 @@ import 'package:givt_app/features/family/features/home_screen/widgets/missions_c
 import 'package:givt_app/features/family/features/home_screen/widgets/stats_container.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
@@ -27,6 +28,8 @@ import 'package:givt_app/features/family/shared/design/components/content/models
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -306,6 +309,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
       if (authstate is Unauthenticated ||
           profile.id != (authstate as Authenticated).user.guid) {
         _cubit.markAllFeaturesAsSeen(profile.id);
+        _showSecondParentDialog(context, profile);
         return;
       }
 
@@ -329,6 +333,19 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         extra: profile,
       );
     }
+  }
+
+  void _showSecondParentDialog(BuildContext context, Profile profile) {
+    FunDialog.show(
+      context,
+      uiModel: FunDialogUIModel(
+        title: '${profile.firstName} needs to use their own account',
+        description: 'Use the Givt App on your own device',
+        primaryButtonText: 'Got it',
+        showCloseButton: false,
+      ),
+      image: FunIcon.userLarge(),
+    );
   }
 
   void closeOverlay() {
