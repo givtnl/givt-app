@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
@@ -10,8 +11,11 @@ import 'package:givt_app/features/family/features/edit_avatar/presentation/pages
 import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,6 +25,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     this._profilesRepository,
     this._sharedPreferences,
     this._authRepository,
+    this._unlockBadgeRepository,
   ) : super(const BaseState.loading());
 
   String userGuid = '';
@@ -37,6 +42,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   final ProfilesRepository _profilesRepository;
   final SharedPreferences _sharedPreferences;
   final FamilyAuthRepository _authRepository;
+  final UnlockedBadgeRepository _unlockBadgeRepository;
 
   /// Initialize the cubit
   Future<void> init(String userGuid) async {
@@ -51,6 +57,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         setAvatar(_profile!.avatar!);
       } else if (_profile?.customAvatar != null) {
         _customAvatar = _profile!.customAvatar!;
+        manualUnlockBadge(Features.tabsOrderOfFeatures[0]);
         _customMode = EditAvatarScreen.options.last;
         _emitData();
       } else {
@@ -59,6 +66,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       if (isFirstVisitSinceUnlock()) {
         setFirstVisitSinceUnlock();
         _customMode = EditAvatarScreen.options.last;
+        manualUnlockBadge(Features.tabsOrderOfFeatures[0]);
         _emitData();
         if (_isProd && _isSjoerd) {
           _customAvatar = CustomAvatarModel.initialSjoerd();
@@ -119,6 +127,10 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       _repository.updateCustomAvatar(
         userGuid,
         _customAvatar,
+      );
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.customAvatarSaved,
+        eventProperties: _customAvatar.toJson(),
       );
     } else {
       _repository.updateAvatar(
@@ -265,6 +277,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   void _emitData() {
     emitData(
       EditAvatarUIModel(
+        userId: userGuid,
         avatarName: _selectedAvatar,
         mode: _customMode,
         lockMessageEnabled: _lockMessageEnabled,
@@ -320,17 +333,24 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     switch (type) {
       case 'Body':
         _customAvatar = _customAvatar.copyWith(bodyIndex: index);
-        break;
       case 'Hair':
         _customAvatar = _customAvatar.copyWith(hairIndex: index);
-        break;
       case 'Mask':
         _customAvatar = _customAvatar.copyWith(maskIndex: index);
-        break;
       case 'Suit':
         _customAvatar = _customAvatar.copyWith(suitIndex: index);
-        break;
     }
+
     _emitData();
+  }
+
+  void manualUnlockBadge(String featureId) {
+    _unlockBadgeRepository.markFeatureAsSeen(userGuid, featureId);
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.newBadgeSeen,
+      eventProperties: {
+        'featureId': featureId,
+      },
+    );
   }
 }

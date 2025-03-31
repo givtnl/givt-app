@@ -15,6 +15,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_sta
 import 'package:givt_app/features/family/features/reflect/domain/models/mission_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -31,6 +32,7 @@ class FamilyHomeScreenCubit
     this._missionRepository,
     this._networkInfo,
     this._tutorialRepository,
+    this._unlockedBadgeRepository,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
@@ -40,6 +42,7 @@ class FamilyHomeScreenCubit
   final MissionRepository _missionRepository;
   final NetworkInfo _networkInfo;
   final TutorialRepository _tutorialRepository;
+  final UnlockedBadgeRepository _unlockedBadgeRepository;
 
   List<Profile> profiles = [];
   ImpactGroup? _familyGroup;
@@ -192,5 +195,9 @@ class FamilyHomeScreenCubit
       emitCustom(const FamilyHomeScreenCustom.slideCarousel(1));
     }
     emitCustom(const FamilyHomeScreenCustom.startTutorial());
+  }
+
+  void markAllFeaturesAsSeen(String userId) {
+    _unlockedBadgeRepository.markAllFeaturesAsSeenForUser(userId);
   }
 }
