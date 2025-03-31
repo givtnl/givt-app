@@ -41,7 +41,7 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
               features.add(
                 UnlockBadgeFeature(
                   id: unlockedFeature,
-                  isSeen: false,
+                  isSeen: isFeatureSeen(profile.id, unlockedFeature),
                   count: 1,
                 ),
               );
@@ -100,7 +100,7 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
     userFeatures
         .where((feature) => feature.id.contains(featureId))
         .forEach((feature) {
-      unawaited(_prefs.setBool(_getKey(userId, featureId), true));
+      unawaited(_prefs.setBool(_getKey(userId, feature.id), true));
     });
   }
 

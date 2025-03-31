@@ -85,17 +85,34 @@ class UnlockedBadgeCubit extends CommonCubit<UnlockedBadgeUIModel, dynamic> {
     final children =
         Features.featureHierarchy[featureToCheckAsPossibleParent] ?? [];
     if (children.contains(currentFeature)) {
-      return !_unlockedBadgeRepository.isFeatureSeen(userId, currentFeature);
+      return _isParentAndChildUnseen(
+        userId,
+        featureToCheckAsPossibleParent,
+        currentFeature,
+      );
     } else {
       for (final child in children) {
         if (isUnseenChildOrDescendantOf(userId, currentFeature, child)) {
-          return !_unlockedBadgeRepository.isFeatureSeen(
+          return _isParentAndChildUnseen(
             userId,
+            featureToCheckAsPossibleParent,
             currentFeature,
           );
         }
       }
     }
     return false;
+  }
+
+  bool _isParentAndChildUnseen(
+    String userId,
+    String featureToCheckAsPossibleParent,
+    String currentFeature,
+  ) {
+    return !_unlockedBadgeRepository.isFeatureSeen(
+          userId,
+          featureToCheckAsPossibleParent,
+        ) &&
+        !_unlockedBadgeRepository.isFeatureSeen(userId, currentFeature);
   }
 }
