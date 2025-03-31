@@ -917,5 +917,7 @@
     "unregisterTitle": "Konto kündigen",
     "unregisterPrimaryBtnText": "Konto kündigen",
     "unregisterDescription": "Es tut uns leid, dass Sie gehen!\\nNach der Kündigung Ihres Kontos können wir es nicht wiederherstellen.\n",
-    "unregisterCheckboxText": "Ja, ich möchte mein Konto kündigen\n"
+    "unregisterCheckboxText": "Ja, ich möchte mein Konto kündigen\n",
+    "unregisterLoading": "Konto wird gekündigt\n",
+    "unregisterSuccessText": "Es macht uns traurig, dass Sie gehen, und wir hoffen, Sie wiederzusehen.\n"
 }
