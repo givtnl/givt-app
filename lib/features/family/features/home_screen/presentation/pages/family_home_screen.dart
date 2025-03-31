@@ -21,6 +21,7 @@ import 'package:givt_app/features/family/features/home_screen/widgets/stats_cont
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
@@ -183,6 +184,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           maintainAnimation: true,
                           maintainState: true,
                           child: AvatarBar(
+                            featureId: Features.familyHomeProfile,
                             circleSize: 58,
                             uiModel: AvatarBarUIModel(
                               avatarUIModels: uiModel.avatars,
@@ -306,6 +308,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
       final authstate = context.read<FamilyAuthCubit>().state;
       if (authstate is Unauthenticated ||
           profile.id != (authstate as Authenticated).user.guid) {
+        _cubit.markAllFeaturesAsSeen(profile.id);
         _showSecondParentDialog(profile);
         return;
       }

@@ -60,6 +60,8 @@ import 'package:givt_app/features/family/features/remote_config/domain/remote_co
 import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/repositories/reset_password_repository.dart';
 import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/cubit/unlocked_badge_cubit.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
@@ -152,6 +154,7 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<AvatarsCubit>(
@@ -211,6 +214,12 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
+        getIt(),
+      ),
+    )
+    ..registerFactory<UnlockedBadgeCubit>(
+      () => UnlockedBadgeCubit(
         getIt(),
       ),
     );
@@ -331,6 +340,12 @@ void initRepositories() {
     )
     ..registerLazySingleton<EditAvatarRepository>(
       () => EditAvatarRepository(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<UnlockedBadgeRepository>(
+      () => UnlockedBadgeRepositoryImpl(
+        getIt(),
         getIt(),
       ),
     );

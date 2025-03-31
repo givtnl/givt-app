@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
@@ -96,6 +97,7 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
                     },
                     tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
                     child: AvatarBar(
+                      featureId: Features.familyHomeProfile,
                       circleSize: 58,
                       textColor: Colors.white,
                       uiModel: AvatarBarUIModel(
