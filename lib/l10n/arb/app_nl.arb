@@ -913,5 +913,9 @@
     "addMemberAdultReason1": "Login to Givt with their own account",
     "addMemberAdultReason2": "Approve donations of the children",
     "addMemberAdultReason3": "Explore generosity as a family",
-    "addMemberAdultEmailSameAsLoggedIn": "You've already created an account for yourself with this email address"
+    "addMemberAdultEmailSameAsLoggedIn": "You've already created an account for yourself with this email address",
+    "unregisterTitle": "Verwijder account",
+    "unregisterPrimaryBtnText": "Verwijder account",
+    "unregisterDescription": "We vinden het jammer dat je gaat.\\nNa het verwijderen van je account kunnen we dit niet meer voor je herstellen.",
+    "unregisterCheckboxText": "Ja, ik wil mijn account verwijderen"
 }
