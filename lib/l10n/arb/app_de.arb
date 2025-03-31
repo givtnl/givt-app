@@ -916,8 +916,8 @@
     "addMemberAdultEmailSameAsLoggedIn": "You've already created an account for yourself with this email address",
     "unregisterTitle": "Konto kündigen",
     "unregisterPrimaryBtnText": "Konto kündigen",
-    "unregisterDescription": "Es tut uns leid, dass Sie gehen!\\nNach der Kündigung Ihres Kontos können wir es nicht wiederherstellen.\n",
+    "unregisterDescription": "Es tut uns leid, dass Sie gehen!\nNach der Kündigung Ihres Kontos können wir es nicht wiederherstellen.",
     "unregisterCheckboxText": "Ja, ich möchte mein Konto kündigen\n",
-    "unregisterLoading": "Konto wird gekündigt\n",
-    "unregisterSuccessText": "Es macht uns traurig, dass Sie gehen, und wir hoffen, Sie wiederzusehen.\n"
+    "unregisterLoading": "Konto wird gekündigt",
+    "unregisterSuccessText": "Es macht uns traurig, dass Sie gehen, und wir hoffen, Sie wiederzusehen."
 }
