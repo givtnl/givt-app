@@ -917,5 +917,7 @@
     "unregisterTitle": "Terminate account",
     "unregisterPrimaryBtnText": "Terminate account",
     "unregisterDescription": "We’re sorry to see you go!\\nAfter terminating your account, we cannot recover it for you.",
-    "unregisterCheckboxText": "Yes, I want to terminate my account"
+    "unregisterCheckboxText": "Yes, I want to terminate my account",
+    "unregisterLoading": "Terminating account",
+    "unregisterSuccessText": "We’re sad to see you leave and we hope to see you again."
 }
