@@ -6,6 +6,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -13,6 +14,7 @@ import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.d
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/account/presentation/widgets/us_change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/family/features/account/presentation/widgets/us_change_phone_number_bottom_sheet.dart';
+import 'package:givt_app/features/family/features/account/presentation/widgets/us_terminate_account_bottom_sheet.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
@@ -26,6 +28,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/pages/fingerprint_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/parent_avatar.dart';
 import 'package:givt_app/shared/widgets/us_about_givt_bottom_sheet.dart';
@@ -290,8 +293,15 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.userXmark,
             ),
             value: locals.unregister,
-            onTap: () async => context.pushNamed(
-              FamilyPages.unregisterUS.name,
+            onTap: () => FunBottomSheetWithAsyncAction.show(
+              context,
+              cubit: _asyncCubit,
+              initialState: USTerminateAccountBottomSheet(
+                asyncCubit: _asyncCubit,
+              ),
+              successText: 'Account succesfully deleted!',
+              loadingText: 'Terminating account',
+              analyticsName: 'us_terminate_account_bottom_sheet',
             ),
           ),
           const Divider(
