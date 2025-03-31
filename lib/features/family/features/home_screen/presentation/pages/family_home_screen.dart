@@ -309,7 +309,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
       if (authstate is Unauthenticated ||
           profile.id != (authstate as Authenticated).user.guid) {
         _cubit.markAllFeaturesAsSeen(profile.id);
-        _showSecondParentDialog(profile);
+        _showSecondParentDialog(context, profile);
         return;
       }
 
@@ -335,18 +335,16 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     }
   }
 
-  void _showSecondParentDialog(Profile profile) {
-    showDialog<void>(
-      context: context,
-      builder: (context) => FunDialog(
-        uiModel: FunDialogUIModel(
-          title: '${profile.firstName} needs to use their own account',
-          description: 'Use the Givt App on your own device',
-          primaryButtonText: 'Got it',
-          showCloseButton: false,
-        ),
-        image: FunIcon.userLarge(),
+  void _showSecondParentDialog(BuildContext context, Profile profile) {
+    FunDialog.show(
+      context,
+      uiModel: FunDialogUIModel(
+        title: '${profile.firstName} needs to use their own account',
+        description: 'Use the Givt App on your own device',
+        primaryButtonText: 'Got it',
+        showCloseButton: false,
       ),
+      image: FunIcon.userLarge(),
     );
   }
 
