@@ -28,7 +28,7 @@ class AvatarWidget extends StatelessWidget {
       onTap: uiModel.hasDonated ? null : onTap,
       child: UnlockedBadgeWidget(
         featureId: featureId,
-        profileId: uiModel.guid!,
+        profileId: uiModel.guid,
         child: SizedBox(
           width: circleSize,
           height: circleSize + 44,

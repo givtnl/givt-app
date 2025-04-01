@@ -69,7 +69,7 @@ class _GoalProgressScreenState extends State<GoalProgressScreen> {
                   },
                   text: "We're committed",
                   analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.reflectAndShareShowSummaryClicked,
+                    AmplitudeEvents.reflectAndShareWereCommitted,
                   ),
                 ),
               ),

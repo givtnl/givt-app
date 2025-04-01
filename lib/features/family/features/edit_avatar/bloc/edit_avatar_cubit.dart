@@ -345,6 +345,9 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   }
 
   void manualUnlockBadge(String featureId) {
+    if (_unlockBadgeRepository.isFeatureSeen(userGuid, featureId)) {
+      return;
+    }
     _unlockBadgeRepository.markFeatureAsSeen(userGuid, featureId);
     AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.newBadgeSeen,
