@@ -24,9 +24,8 @@ class _GratitudeGoalEntryScreenState extends State<GratitudeGoalEntryScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.fromTutorial) {
-      getIt<TutorialRepository>().gratitudeMissionStartedFromTutorial = true;
-    }
+    getIt<TutorialRepository>().gratitudeMissionStartedFromTutorial =
+        widget.fromTutorial;
   }
 
   @override
