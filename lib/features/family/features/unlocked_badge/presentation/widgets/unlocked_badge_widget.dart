@@ -8,7 +8,7 @@ import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 class UnlockedBadgeWidget extends StatefulWidget {
   const UnlockedBadgeWidget({
     required this.featureId,
-    required this.profileId,
+    this.profileId,
     this.offset = 0,
     this.child,
     this.position = BadgePosition.topRight,
@@ -18,7 +18,7 @@ class UnlockedBadgeWidget extends StatefulWidget {
   final double offset;
   final Widget? child;
   final String? featureId;
-  final String profileId;
+  final String? profileId;
   final BadgePosition position;
 
   @override
@@ -34,8 +34,8 @@ class _UnlockedBadgeWidgetState extends State<UnlockedBadgeWidget> {
 
     // Initializing is only needed when a featureId is provided,
     // otherwise we don't show a badge
-    if (widget.featureId != null) {
-      _cubit.init(widget.featureId!, widget.profileId);
+    if (widget.featureId != null && widget.profileId != null) {
+      _cubit.init(widget.featureId!, widget.profileId!);
     }
   }
 
