@@ -35,9 +35,17 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
   void _init() {
     _profilesRepository.onProfilesChanged().listen((profiles) {
       for (final profile in profiles) {
+        final oldFeatures = _userUnlockedFeatures[profile.id];
         final features = <UnlockBadgeFeature>[];
         for (final unlockedFeature in profile.unlocks) {
-          if (Features.isItemFeature(unlockedFeature)) {
+          if (Features.isItemFeature(unlockedFeature) &&
+              (oldFeatures == null ||
+                  oldFeatures
+                          .where(
+                            (oldFeature) => oldFeature.id == unlockedFeature,
+                          )
+                          .isEmpty ==
+                      true)) {
             if (!isFeatureSeen(profile.id, unlockedFeature)) {
               features.add(
                 UnlockBadgeFeature(
@@ -49,11 +57,11 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
             }
           }
         }
-        _userUnlockedFeatures[profile.id] = features;
+        _userUnlockedFeatures[profile.id] = [...?oldFeatures, ...features];
         _featureUnlocksController.add(
           UnlockBadgeStream(
             userId: profile.id,
-            unlockBadgeFeatures: features,
+            unlockBadgeFeatures: _userUnlockedFeatures[profile.id] ?? [],
           ),
         );
       }
