@@ -177,6 +177,8 @@ class FamilyHomeScreenCubit
       familyGroupName: _familyGroup?.name,
       gameStats: _gameStats,
       missionStats: _missionStats,
+      hasAnyUnseenBadges:
+          _unlockedBadgeRepository.hasAnyProfileAnyUnseenBadges(),
     );
   }
 

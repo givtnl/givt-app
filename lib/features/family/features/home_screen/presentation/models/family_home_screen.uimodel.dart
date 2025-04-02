@@ -8,10 +8,12 @@ class FamilyHomeScreenUIModel {
     this.familyGroupName,
     this.gameStats,
     this.missionStats,
+    this.hasAnyUnseenBadges = false,
   });
 
   final List<AvatarUIModel> avatars;
   final String? familyGroupName;
   final GameStats? gameStats;
   final MissionStats? missionStats;
+  final bool hasAnyUnseenBadges;
 }
