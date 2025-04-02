@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/helpers/color_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/custom_avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -84,35 +85,34 @@ class FunAvatar extends FunIcon {
 
   factory FunAvatar.custom(CustomAvatarUIModel uiModel, {double size = 120}) {
     return FunAvatar(
-        semanticsIdentifier: uiModel.semanticsIdentifier,
-        customCircleColor: FamilyAppTheme.info95,
-        customAvatar: ClipOval(
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: size / 15,
-            ), // Add 8px padding above the SVG
-            child: Stack(
-              children: customAvatarWidgetsList(uiModel),
-            ),
+      semanticsIdentifier: uiModel.semanticsIdentifier,
+      customCircleColor: FamilyAppTheme.info95,
+      customAvatar: ClipOval(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: size / 15,
+          ), // Add 8px padding above the SVG
+          child: Stack(
+            children: customAvatarWidgetsList(uiModel),
           ),
         ),
-        circleSize: size,
-        innerCircleSize: size);
+      ),
+      circleSize: size,
+      innerCircleSize: size,
+    );
   }
 
-  static List<Widget> customAvatarWidgetsList(CustomAvatarUIModel uiModel,
-      {BoxFit fit = BoxFit.cover}) {
+  static List<Widget> customAvatarWidgetsList(
+    CustomAvatarUIModel uiModel, {
+    BoxFit fit = BoxFit.cover,
+  }) {
     return List.generate(
       uiModel.assetsToOverlap.length,
-      (index) => index != 0
+      (index) => index == 1 && uiModel.hairColor != null
           ? FutureBuilder(
               future: loadSvgFromAsset(
                 uiModel.assetsToOverlap[index],
-                color: index == 3
-                    ? Colors.purple
-                    : index == 1
-                        ? Colors.yellow
-                        : Colors.green,
+                color: colorFromHex(uiModel.hairColor!),
               ),
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                 return snapshot.data != null
@@ -129,18 +129,21 @@ class FunAvatar extends FunIcon {
   }
 
   static SvgPicture regularSvgAsset(
-      int index, CustomAvatarUIModel uiModel, BoxFit fit) {
+    int index,
+    CustomAvatarUIModel uiModel,
+    BoxFit fit,
+  ) {
     return SvgPicture.asset(
-      colorFilter:
-          index == 1 ? ColorFilter.mode(Colors.red, BlendMode.srcIn) : null,
       uiModel.assetsToOverlap[index],
       fit: fit,
       alignment: Alignment.topCenter,
     );
   }
 
-  static Future<String> loadSvgFromAsset(String svgAssetPath,
-      {required Color color}) async {
+  static Future<String> loadSvgFromAsset(
+    String svgAssetPath, {
+    required Color color,
+  }) async {
     // Read SVG content from asset file
     String rawSvgContent = await rootBundle.loadString(svgAssetPath);
 
@@ -184,12 +187,14 @@ class FunAvatar extends FunIcon {
 
     if (longestPath != null && currentFillColor != null) {
       // Replace the fill color of the longest path
-      final newFillColor = '#${color.value.toRadixString(16).substring(2)}';
+      final newFillColor = colorToHex(color);
       rawSvgContent = rawSvgContent.replaceAll(
         'fill="$currentFillColor"',
         'fill="$newFillColor"',
       );
-      print("Longest path found and modified. New fill color: $newFillColor");
+      print(
+        "Longest path found and modified. New fill color: $newFillColor. Current fill color: $currentFillColor",
+      );
     } else {
       print("No path found or no fill color detected.");
     }
@@ -204,27 +209,28 @@ class FunAvatar extends FunIcon {
 
   factory FunAvatar.hero(String heroName, {double size = 120}) {
     return FunAvatar(
-        semanticsIdentifier: heroName,
-        customCircleColor: FamilyAppTheme.info95,
-        customAvatar: ClipOval(
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: size / 15,
-            ), // Add 8px padding above the SVG
-            child: SvgPicture.asset(
-              'assets/family/images/avatar/default/$heroName',
+      semanticsIdentifier: heroName,
+      customCircleColor: FamilyAppTheme.info95,
+      customAvatar: ClipOval(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: size / 15,
+          ), // Add 8px padding above the SVG
+          child: SvgPicture.asset(
+            'assets/family/images/avatar/default/$heroName',
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
+            errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
+              'assets/family/images/avatar/default/Hero1.svg',
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
-              errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
-                'assets/family/images/avatar/default/Hero1.svg',
-                fit: BoxFit.cover,
-                alignment: Alignment.topCenter,
-              ),
             ),
           ),
         ),
-        circleSize: size,
-        innerCircleSize: size);
+      ),
+      circleSize: size,
+      innerCircleSize: size,
+    );
   }
 
   final String semanticsIdentifier;

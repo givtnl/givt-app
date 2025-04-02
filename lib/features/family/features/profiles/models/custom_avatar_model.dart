@@ -6,7 +6,7 @@ class CustomAvatarModel {
     required this.hairIndex,
     required this.maskIndex,
     required this.suitIndex,
-    this.hairColor,
+    this.hairColor = '#282A25',
     this.maskColor,
     this.suitColor,
   });
@@ -43,7 +43,7 @@ class CustomAvatarModel {
       hairIndex: map['hair'] as int,
       maskIndex: map['mask'] as int,
       suitIndex: map['suit'] as int,
-      hairColor: map['hairColor'] as String?,
+      hairColor: map['hairColor'] as String? ?? '#282A25',
       maskColor: map['maskColor'] as String?,
       suitColor: map['suitColor'] as String?,
     );
@@ -65,7 +65,7 @@ class CustomAvatarModel {
   final int hairIndex;
   final int maskIndex;
   final int suitIndex;
-  final String? hairColor;
+  final String hairColor;
   final String? maskColor;
   final String? suitColor;
 

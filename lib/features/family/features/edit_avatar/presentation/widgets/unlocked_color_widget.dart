@@ -15,13 +15,13 @@ class UnlockedColorWidget extends StatelessWidget {
 
   final Color color;
   final UnlockedItem uiModel;
-  final Function(int index, String type) onPressed;
+  final Function(int index, String type, {Color? color}) onPressed;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onPressed.call(uiModel.index, uiModel.type);
+        onPressed.call(uiModel.index, uiModel.type, color: color);
         AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.unlockedAvatarItemClicked,
           eventProperties: {

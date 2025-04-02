@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
@@ -342,7 +343,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     _emitData();
   }
 
-  void onUnlockedItemClicked(int index, String type) {
+  void onUnlockedItemClicked(int index, String type, {Color? color}) {
     _hasMadeAnyCustomAvatarSelection = true;
     switch (type) {
       case 'Body':
