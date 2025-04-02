@@ -14,6 +14,8 @@ abstract class UnlockedBadgeRepository {
   bool isFeatureSeen(String userId, String? featureId);
   Future<void> markAllFeaturesAsSeenForUser(String userId);
   int getTotalCount(String userId, String featureId);
+
+  bool hasAnyProfileAnyUnseenBadges();
 }
 
 class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
@@ -194,5 +196,16 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
     return userFeatures
         .where((feature) => feature.id.contains(featureId) && !feature.isSeen)
         .fold(0, (sum, feature) => sum + feature.count);
+  }
+
+  @override
+  bool hasAnyProfileAnyUnseenBadges() {
+    for (final userId in _userUnlockedFeatures.keys) {
+      final userFeatures = _getUserFeatures(userId);
+      if (userFeatures.any((feature) => !feature.isSeen)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

@@ -99,6 +99,10 @@ class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
                     ),
                     child: Stack(
                       children: [
+                        const Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox.shrink(),
+                        ),
                         if (widget.playAudio)
                           const FunBackgroundAudioWidget(
                             audioPath: 'family/audio/ready_its_showtime.wav',
