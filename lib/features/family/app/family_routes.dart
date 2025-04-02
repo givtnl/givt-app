@@ -146,7 +146,9 @@ class FamilyAppRoutes {
           path: FamilyPages.gratitudeGoal.path,
           name: FamilyPages.gratitudeGoal.name,
           builder: (context, state) {
-            return const GratitudeGoalEntryScreen();
+            final map = state.extra as Map<String, dynamic>? ?? {};
+            final fromTutorial = map['fromTutorial'] as bool? ?? false;
+            return GratitudeGoalEntryScreen(fromTutorial: fromTutorial);
           },
         ),
         GoRoute(

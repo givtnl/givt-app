@@ -73,7 +73,7 @@ class MissionRepositoryImpl implements MissionRepository {
   Future<void> missionAchieved(String missionKey) async {
     var mission =
         (await getMissions()).firstWhere((m) => m.missionKey == missionKey);
-    if (_tutorialRepository.bedtimeMissionStartedFromTutorial &&
+    if (_tutorialRepository.gratitudeMissionStartedFromTutorial &&
         mission.missionKey == 'GRATITUDEGOAL') {
       mission = mission.copyWith(showAchievedTooltip: true);
     }
