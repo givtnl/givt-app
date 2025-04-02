@@ -7,7 +7,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/repositories/organisations_repository.dart';
-import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
 import 'package:givt_app/utils/utils.dart';
 

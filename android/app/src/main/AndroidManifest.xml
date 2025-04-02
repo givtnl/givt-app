@@ -70,6 +70,7 @@
                 <data android:host="*.givtapp.net"/>
                 <data android:host="givtapp.net"/>
                 <data android:path="/download" />
+                <data android:path="/givt" />
                 <data android:path="/*/download" />
                 <data android:scheme="https"/>
                 <data android:scheme="http"/>
@@ -85,6 +86,7 @@
                 <data android:host="*.givt.app"/>
                 <data android:host="givt.app"/>
                 <data android:path="/download" />
+                <data android:path="/givt" />
                 <data android:path="/*/download" />
                 <data android:scheme="https"/>
                 <data android:scheme="http"/>

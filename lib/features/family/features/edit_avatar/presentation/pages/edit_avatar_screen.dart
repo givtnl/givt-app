@@ -14,6 +14,8 @@ import 'package:givt_app/features/family/features/edit_avatar/presentation/widge
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/locked_captain_message_widget.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/unlocked_color_widget.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/unlocked_item_widget.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/presentation/widgets/unlocked_badge_widget.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_secondary_tabs.dart';
@@ -40,9 +42,11 @@ class EditAvatarScreen extends StatefulWidget {
   State<EditAvatarScreen> createState() => _EditAvatarScreenState();
 }
 
-class _EditAvatarScreenState extends State<EditAvatarScreen> {
+class _EditAvatarScreenState extends State<EditAvatarScreen>
+    with TickerProviderStateMixin {
   final _cubit = getIt<EditAvatarCubit>();
-  final TooltipController controller = TooltipController();
+  final TooltipController _tooltipController = TooltipController();
+  late TabController _tabController;
   List<Color> bodyColors = [
     const Color(0xFF703E3D),
     const Color(0xFF8E4B26),
@@ -61,12 +65,21 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(
+      length: Features.tabsOrderOfFeatures.length,
+      vsync: this,
+    );
+    _tabController.addListener(() {
+      _cubit.manualUnlockBadge(
+          Features.tabsOrderOfFeatures[_tabController.index]);
+    });
     _cubit.init(widget.userGuid);
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _tabController.dispose();
+    _tooltipController.dispose();
     _cubit.close();
     super.dispose();
   }
@@ -108,7 +121,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
     EditAvatarUIModel data,
   ) {
     return OverlayTooltipScaffold(
-      controller: controller,
+      controller: _tooltipController,
       overlayColor: Colors.transparent,
       builder: (context) => FunScaffold(
         safeAreaBottom: false,
@@ -135,13 +148,34 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
         body: Column(
           children: [
             const SizedBox(height: 12),
-            FunPrimaryTabs(
-              options: EditAvatarScreen.options,
-              selectedIndex: data.mode == EditAvatarScreen.options[0] ? 0 : 1,
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.avatarTabChanged,
-              ),
-              onPressed: _cubit.setMode,
+            Stack(
+              children: [
+                FunPrimaryTabs(
+                  options: EditAvatarScreen.options,
+                  selectedIndex:
+                      data.mode == EditAvatarScreen.options[0] ? 0 : 1,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.avatarTabChanged,
+                  ),
+                  onPressed: (Set<String> options) {
+                    _cubit.setMode(options);
+                    if (options.first == EditAvatarScreen.options[1]) {
+                      _cubit.manualUnlockBadge(
+                        Features.tabsOrderOfFeatures[_tabController.index],
+                      );
+                    }
+                  },
+                ),
+                if (data.mode == EditAvatarScreen.options[0])
+                  Positioned(
+                    right: 24 - (12 / 2),
+                    top: 0,
+                    child: UnlockedBadgeWidget(
+                      featureId: Features.profileEditAvatarButton,
+                      profileId: data.userId,
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(height: 16),
             if (data.mode == EditAvatarScreen.options[0])
@@ -204,18 +238,41 @@ class _EditAvatarScreenState extends State<EditAvatarScreen> {
 
   Widget _getCustomTabs(EditAvatarUIModel uiModel) {
     return FunSecondaryTabs(
-      tabs: const [
+      controller: _tabController,
+      onTap: (index) =>
+          _cubit.manualUnlockBadge(Features.tabsOrderOfFeatures[index]),
+      tabs: [
         Tab(
-          icon: FaIcon(FontAwesomeIcons.solidFaceSmile),
+          icon: UnlockedBadgeWidget(
+            offset: 3,
+            featureId: Features.tabsOrderOfFeatures[0],
+            profileId: uiModel.userId,
+            child: const FaIcon(FontAwesomeIcons.solidFaceSmile),
+          ),
         ),
         Tab(
-          icon: FaIcon(FontAwesomeIcons.scissors),
+          icon: UnlockedBadgeWidget(
+            offset: 3,
+            featureId: Features.tabsOrderOfFeatures[1],
+            profileId: uiModel.userId,
+            child: const FaIcon(FontAwesomeIcons.scissors),
+          ),
         ),
         Tab(
-          icon: FaIcon(FontAwesomeIcons.mask),
+          icon: UnlockedBadgeWidget(
+            offset: 3,
+            featureId: Features.tabsOrderOfFeatures[2],
+            profileId: uiModel.userId,
+            child: const FaIcon(FontAwesomeIcons.mask),
+          ),
         ),
         Tab(
-          icon: FaIcon(FontAwesomeIcons.shirt),
+          icon: UnlockedBadgeWidget(
+            offset: 3,
+            featureId: Features.tabsOrderOfFeatures[3],
+            profileId: uiModel.userId,
+            child: const FaIcon(FontAwesomeIcons.shirt),
+          ),
         ),
       ],
       tabContents: [

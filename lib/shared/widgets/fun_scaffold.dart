@@ -10,7 +10,6 @@ class FunScaffold extends StatelessWidget {
     this.canPop = true,
     this.safeAreaBottom = true,
     this.withSafeArea = true,
-    this.resizeToAvoidBottomInset = true,
     this.floatingActionButton,
     this.backgroundColor = Colors.white,
     this.onPopInvokedWithResult,
@@ -23,7 +22,6 @@ class FunScaffold extends StatelessWidget {
   final bool canPop;
   final bool safeAreaBottom;
   final bool withSafeArea;
-  final bool resizeToAvoidBottomInset;
   final Color backgroundColor;
   final FunButton? floatingActionButton;
   final void Function(bool, dynamic)? onPopInvokedWithResult;
@@ -39,7 +37,6 @@ class FunScaffold extends StatelessWidget {
           canPop: canPop,
           onPopInvokedWithResult: onPopInvokedWithResult,
           child: Scaffold(
-            resizeToAvoidBottomInset: resizeToAvoidBottomInset,
             backgroundColor: backgroundColor,
             appBar: appBar,
             body: withSafeArea

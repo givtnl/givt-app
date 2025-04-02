@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/presentation/widgets/unlocked_badge_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
     show LabelMediumText;
@@ -34,6 +35,7 @@ class FunButton extends StatelessWidget {
     this.onLongPress,
     this.onLongPressUp,
     this.size = FunButtonSize.large,
+    this.funButtonBadge,
   });
 
   factory FunButton.secondary({
@@ -47,6 +49,7 @@ class FunButton extends StatelessWidget {
     IconData? leftIcon,
     IconData? rightIcon,
     Widget? leadingImage,
+    FunButtonBadge? funButtonBadge,
   }) {
     return FunButton(
       onTap: onTap,
@@ -63,6 +66,7 @@ class FunButton extends StatelessWidget {
       fullBorder: true,
       analyticsEvent: analyticsEvent,
       size: size,
+      funButtonBadge: funButtonBadge,
     );
   }
 
@@ -75,6 +79,7 @@ class FunButton extends StatelessWidget {
     IconData? leftIcon,
     IconData? rightIcon,
     Widget? leadingImage,
+    FunButtonBadge? funButtonBadge,
   }) {
     return FunButton(
       onTap: onTap,
@@ -87,6 +92,7 @@ class FunButton extends StatelessWidget {
       backgroundColor: FamilyAppTheme.neutral100,
       borderColor: AppTheme.secondary80,
       analyticsEvent: analyticsEvent,
+      funButtonBadge: funButtonBadge,
     );
   }
 
@@ -99,6 +105,7 @@ class FunButton extends StatelessWidget {
     IconData? leftIcon,
     IconData? rightIcon,
     Widget? leadingImage,
+    FunButtonBadge? funButtonBadge,
   }) {
     return FunButton(
       onTap: onTap,
@@ -112,6 +119,7 @@ class FunButton extends StatelessWidget {
       borderColor: AppTheme.error30,
       textColor: AppTheme.error30,
       analyticsEvent: analyticsEvent,
+      funButtonBadge: funButtonBadge,
     );
   }
 
@@ -136,6 +144,7 @@ class FunButton extends StatelessWidget {
   final bool isDebugOnly;
   final FunButtonSize size;
   final AnalyticsEvent analyticsEvent;
+  final FunButtonBadge? funButtonBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +171,8 @@ class FunButton extends StatelessWidget {
       child: Container(
         height: (size.isLarge ? 58 : 44) - (fullBorder ? 2 : 0),
         width: size.isLarge ? double.infinity : null,
-        padding: size.isSmall ? const EdgeInsets.symmetric(horizontal: 16) : null,
+        padding:
+            size.isSmall ? const EdgeInsets.symmetric(horizontal: 16) : null,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: isDisabled ? FamilyAppTheme.neutralVariant60 : backgroundColor,
@@ -227,6 +237,11 @@ class FunButton extends StatelessWidget {
               color: isDisabled ? FamilyAppTheme.neutralVariant60 : borderColor,
             ),
           ),
+        if (funButtonBadge != null)
+          UnlockedBadgeWidget(
+            featureId: funButtonBadge!.featureId,
+            profileId: funButtonBadge!.profileId,
+          ),
         // all leading images must be 32 pixels wide
         // this centers the text
         if (leadingImage != null) const SizedBox(width: 32),
@@ -243,4 +258,14 @@ enum FunButtonSize {
 extension on FunButtonSize {
   bool get isLarge => this == FunButtonSize.large;
   bool get isSmall => this == FunButtonSize.small;
+}
+
+class FunButtonBadge {
+  const FunButtonBadge({
+    required this.featureId,
+    required this.profileId,
+  });
+
+  final String featureId;
+  final String profileId;
 }

@@ -5,11 +5,15 @@ class FunSecondaryTabs extends StatelessWidget {
   const FunSecondaryTabs({
     required this.tabs,
     required this.tabContents,
+    this.controller,
+    this.onTap,
     super.key,
   });
 
   final List<Tab> tabs;
   final List<Widget> tabContents;
+  final TabController? controller;
+  final Function(int)? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +22,8 @@ class FunSecondaryTabs extends StatelessWidget {
       child: Column(
         children: [
           TabBar.secondary(
+            controller: controller,
+            onTap: onTap,
             tabs: tabs,
             unselectedLabelColor: FamilyAppTheme.neutral70,
             labelColor: FamilyAppTheme.primary70,
@@ -26,6 +32,7 @@ class FunSecondaryTabs extends StatelessWidget {
           ),
           Expanded(
             child: TabBarView(
+              controller: controller,
               children: tabContents.map((content) {
                 return SingleChildScrollView(
                   child: content,

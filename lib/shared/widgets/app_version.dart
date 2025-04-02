@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/body_large_text.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
 import 'package:givt_app/l10n/l10n.dart';
 

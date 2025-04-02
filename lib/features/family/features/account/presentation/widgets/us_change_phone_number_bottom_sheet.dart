@@ -5,7 +5,6 @@ import 'package:givt_app/features/family/features/auth/data/family_auth_reposito
 import 'package:givt_app/features/family/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
-import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/util.dart';

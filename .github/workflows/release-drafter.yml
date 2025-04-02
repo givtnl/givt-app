@@ -47,7 +47,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           echo "builddate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
-        id: version  # this is used on variable path
+        id: version 
         
       - uses: actions/setup-node@v3
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -73,7 +73,7 @@ jobs:
             })
             return response.choices[0].message.content;
           result-encoding: string
-      
+          
       # Post slack message for new release
       - name: Slack Notification
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -140,4 +140,24 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASENOTES_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-      
+
+
+      # Create release in Amplitude
+      - name: Create Amplitude Release
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://amplitude.com/api/2/release'
+          method: 'POST'
+          username: ${{ secrets.AMPLITUDE_GIVT_API_KEY }}
+          password: ${{ secrets.AMPLITUDE_GIVT_SECRET_KEY }}
+          contentType: 'application/json'
+          data: >
+            {
+              "chart_visibility": "true",
+              "description": "${{ steps.generate-text.outputs.result }}",
+              "platforms": "iOS,Android",
+              "release_start": "${{ steps.version.outputs.builddate }} 00:00:00",
+              "title": "Version ${{ steps.yq.outputs.result }}",
+              "version": "${{ steps.yq.outputs.result }}"
+            }

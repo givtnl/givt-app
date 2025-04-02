@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/features/background_audio/presentation/
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';

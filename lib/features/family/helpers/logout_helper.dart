@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/features/auth/data/family_auth_reposito
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';

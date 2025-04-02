@@ -66,9 +66,13 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
     } else {
       await showBoxOriginErrorDialog(
         context,
-        onTap: () {
+        onTapRetry: () {
           Navigator.of(context).pop();
           _onTapConfirm(context);
+        },
+        onTapSkip: () {
+          Navigator.of(context).pop();
+          context.goNamed(FamilyPages.profileSelection.name);
         },
       );
     }

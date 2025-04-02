@@ -5,6 +5,7 @@ import 'package:givt_app/features/family/shared/design/components/content/models
 class AvatarBar extends StatelessWidget {
   const AvatarBar({
     required this.uiModel,
+    this.featureId,
     this.onAvatarTapped,
     this.backgroundColor = Colors.transparent,
     this.circleSize = 64,
@@ -17,6 +18,7 @@ class AvatarBar extends StatelessWidget {
   final Color backgroundColor;
   final double circleSize;
   final Color? textColor;
+  final String? featureId;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class AvatarBar extends StatelessWidget {
       child: SizedBox(
         height: circleSize + 28,
         child: ListView.builder(
+          clipBehavior: Clip.none,
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           itemCount: uiModel.avatarUIModels.length,
@@ -38,6 +41,7 @@ class AvatarBar extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(left: index == 0 ? 24 : 0),
                 child: AvatarWidget(
+                  featureId: featureId,
                   uiModel: avatarUIModel,
                   onTap: () => onAvatarTapped?.call(index),
                   circleSize: circleSize,
