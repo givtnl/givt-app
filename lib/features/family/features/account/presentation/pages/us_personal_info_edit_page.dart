@@ -306,9 +306,14 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Row(),
-                  TitleMediumText(
-                    locals.unregisterSuccessText,
-                    textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                    ),
+                    child: TitleMediumText(
+                      locals.unregisterSuccessText,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   const SizedBox(
                     height: 24,
