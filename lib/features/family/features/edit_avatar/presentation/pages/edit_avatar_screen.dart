@@ -283,7 +283,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
       ],
       tabContents: [
         _getCustomItems(uiModel.bodyItems, isColors: uiModel.isFeatureUnlocked),
-        _getCustomItems(uiModel.hairItems),
+        _getCustomItems(uiModel.hairItems, isHair: uiModel.isFeatureUnlocked),
         _getCustomItems(uiModel.maskItems),
         _getCustomItems(uiModel.suitItems),
       ],
@@ -293,6 +293,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
   Widget _getCustomItems(
     List<EditAvatarItemUIModel> items, {
     bool isColors = false,
+    bool isHair = false,
   }) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),

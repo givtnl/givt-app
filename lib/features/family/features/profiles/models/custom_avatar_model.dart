@@ -6,6 +6,9 @@ class CustomAvatarModel {
     required this.hairIndex,
     required this.maskIndex,
     required this.suitIndex,
+    this.hairColor,
+    this.maskColor,
+    this.suitColor,
   });
   factory CustomAvatarModel.initial() {
     return CustomAvatarModel(
@@ -40,6 +43,9 @@ class CustomAvatarModel {
       hairIndex: map['hair'] as int,
       maskIndex: map['mask'] as int,
       suitIndex: map['suit'] as int,
+      hairColor: map['hairColor'] as String?,
+      maskColor: map['maskColor'] as String?,
+      suitColor: map['suitColor'] as String?,
     );
   }
 
@@ -49,6 +55,9 @@ class CustomAvatarModel {
       'Hair': hairIndex,
       'Mask': maskIndex,
       'Suit': suitIndex,
+      'HairColor': hairColor,
+      'MaskColor': maskColor,
+      'SuitColor': suitColor,
     };
   }
 
@@ -56,23 +65,35 @@ class CustomAvatarModel {
   final int hairIndex;
   final int maskIndex;
   final int suitIndex;
+  final String? hairColor;
+  final String? maskColor;
+  final String? suitColor;
 
   CustomAvatarModel copyWith({
     int? bodyIndex,
     int? hairIndex,
     int? maskIndex,
     int? suitIndex,
+    String? hairColor,
+    String? maskColor,
+    String? suitColor,
   }) {
     return CustomAvatarModel(
       bodyIndex: bodyIndex ?? this.bodyIndex,
       hairIndex: hairIndex ?? this.hairIndex,
       maskIndex: maskIndex ?? this.maskIndex,
       suitIndex: suitIndex ?? this.suitIndex,
+      hairColor: hairColor ?? this.hairColor,
+      maskColor: maskColor ?? this.maskColor,
+      suitColor: suitColor ?? this.suitColor,
     );
   }
 
   CustomAvatarUIModel toUIModel() {
     return CustomAvatarUIModel(
+      hairColor: hairColor,
+      maskColor: maskColor,
+      suitColor: suitColor,
       assetsToOverlap: [
         'assets/family/images/avatar/custom/Body$bodyIndex.svg',
         'assets/family/images/avatar/custom/Hair$hairIndex.svg',
@@ -80,7 +101,7 @@ class CustomAvatarModel {
         'assets/family/images/avatar/custom/Suit$suitIndex.svg',
       ],
       semanticsIdentifier:
-          'Body$bodyIndex-Hair$hairIndex-Mask$maskIndex-Suit$suitIndex',
+          'Body$bodyIndex-Hair$hairIndex-Mask$maskIndex-Suit$suitIndex-HairColor$hairColor-MaskColor$maskColor-SuitColor$suitColor',
     );
   }
 }

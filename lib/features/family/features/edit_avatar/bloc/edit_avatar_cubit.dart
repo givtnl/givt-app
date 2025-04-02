@@ -328,6 +328,20 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     });
   }
 
+  void onColorChanged(String type, String? color) {
+    _hasMadeAnyCustomAvatarSelection = true;
+    switch (type) {
+      case 'Hair':
+        _customAvatar = _customAvatar.copyWith(hairColor: color);
+      case 'Mask':
+        _customAvatar = _customAvatar.copyWith(maskColor: color);
+      case 'Suit':
+        _customAvatar = _customAvatar.copyWith(suitColor: color);
+    }
+
+    _emitData();
+  }
+
   void onUnlockedItemClicked(int index, String type) {
     _hasMadeAnyCustomAvatarSelection = true;
     switch (type) {
