@@ -53,7 +53,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
                       )
                     ],
                     subject:
-                        'Head to the Givt app to create your own superhero and spread generosity!',
+                        'Head to the Givt app to create your own superhero and spread generosity!\ndownload.givt.com',
                   );
                 });
               },
