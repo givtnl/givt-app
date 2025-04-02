@@ -46,8 +46,7 @@ String modifySvgContent(
         if (dValue != null) {
           if (dValue.length > maxLength) {
             // Update second longest path before updating the longest path
-            secondLongestPath = longestPath;
-            secondMaxLength = maxLength;
+            final previousPath = longestPath;
 
             // Update longest path
             maxLength = dValue.length;
@@ -56,17 +55,24 @@ String modifySvgContent(
             // Extract the fill color of the longest path
             final fillRegex = RegExp(r'fill="([^"]+)"');
             final fillMatch = fillRegex.firstMatch(path);
+            final secondFillMatch =
+                fillRegex.firstMatch(secondLongestPath ?? '');
             longestFillColor = fillMatch?.group(1);
+            final previousColor = secondFillMatch?.group(1);
+            if (previousColor != longestFillColor) {
+              secondLongestPath = previousPath;
+              secondLongestFillColor = previousColor;
+              secondMaxLength = previousPath?.length ?? 0;
+            }
           } else if (dValue.length > secondMaxLength) {
             // Update second longest path
             secondMaxLength = dValue.length;
             secondLongestPath = path;
+
             // Extract the fill color of the second longest path
             final fillRegex = RegExp(r'fill="([^"]+)"');
             final fillMatch = fillRegex.firstMatch(path);
-            if (fillMatch != null) {
-              secondLongestFillColor = fillMatch.group(1);
-            }
+            secondLongestFillColor = fillMatch?.group(1);
           }
         }
       }
@@ -77,9 +83,11 @@ String modifySvgContent(
     // Replace the fill color of the longest path
     final newFillColor = colorToHex(color);
     if (useSecondLongestPath) {
-      if (secondLongestPath != null && secondLongestFillColor != null) {
+      if (secondLongestPath != null &&
+          secondLongestFillColor != null &&
+          secondLongestFillColor != longestFillColor) {
         rawSvgContent = rawSvgContent.replaceAll(
-          'fill="$longestFillColor"',
+          'fill="$secondLongestFillColor"',
           'fill="$newFillColor"',
         );
       }
