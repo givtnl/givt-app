@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_recognize_this_screen.dart';
+import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
-class GratitudeGoalEntryScreen extends StatelessWidget {
-  const GratitudeGoalEntryScreen({super.key});
+class GratitudeGoalEntryScreen extends StatefulWidget {
+  const GratitudeGoalEntryScreen({super.key, this.fromTutorial = false});
+
+  final bool fromTutorial;
+
+  @override
+  State<GratitudeGoalEntryScreen> createState() =>
+      _GratitudeGoalEntryScreenState();
+}
+
+class _GratitudeGoalEntryScreenState extends State<GratitudeGoalEntryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    getIt<TutorialRepository>().gratitudeMissionStartedFromTutorial =
+        widget.fromTutorial;
+  }
 
   @override
   Widget build(BuildContext context) {
