@@ -301,7 +301,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
   }) {
     final items = uiModel.hairItems;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+      padding: EdgeInsets.fromLTRB(24, isFeatureUnlocked ? 8 : 28, 24, 16),
       child: Column(
         children: [
           if (isFeatureUnlocked)
@@ -322,6 +322,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
                 );
               }).toList(),
             ),
+          if (isFeatureUnlocked) const SizedBox(height: 8),
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -359,7 +360,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
     bool isColors = false,
   }) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+      padding: const EdgeInsets.fromLTRB(24, 28, 24, 16),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

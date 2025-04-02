@@ -85,7 +85,7 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   FunTooltip(
                     tooltipIndex: 0,
                     title: 'Here’s your super family!',
