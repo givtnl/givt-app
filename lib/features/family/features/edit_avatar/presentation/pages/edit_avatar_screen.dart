@@ -16,6 +16,7 @@ import 'package:givt_app/features/family/features/edit_avatar/presentation/widge
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/unlocked_item_widget.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/presentation/widgets/unlocked_badge_widget.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
+import 'package:givt_app/features/family/helpers/color_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_secondary_tabs.dart';
@@ -77,7 +78,8 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
     );
     _tabController.addListener(() {
       _cubit.manualUnlockBadge(
-          Features.tabsOrderOfFeatures[_tabController.index]);
+        Features.tabsOrderOfFeatures[_tabController.index],
+      );
     });
     _cubit.init(widget.userGuid);
   }
@@ -283,17 +285,83 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
       ],
       tabContents: [
         _getCustomItems(uiModel.bodyItems, isColors: uiModel.isFeatureUnlocked),
-        _getCustomItems(uiModel.hairItems, isHair: uiModel.isFeatureUnlocked),
+        _getCustomHairItems(
+          uiModel,
+          isFeatureUnlocked: uiModel.isFeatureUnlocked,
+        ),
         _getCustomItems(uiModel.maskItems),
         _getCustomItems(uiModel.suitItems),
       ],
     );
   }
 
+  Widget _getCustomHairItems(
+    EditAvatarUIModel uiModel, {
+    bool isFeatureUnlocked = false,
+  }) {
+    final items = uiModel.hairItems;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+      child: Column(
+        children: [
+          if (isFeatureUnlocked)
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 32, // Horizontal spacing
+                mainAxisSpacing: 24, // Vertical spacing
+              ),
+              itemCount: hairColors.length,
+              itemBuilder: (context, index) {
+                return UnlockedColorWidget(
+                  color: hairColors[index],
+                  uiModel: UnlockedItem(
+                    type: 'HairColor',
+                    index: index,
+                    isSelected: uiModel.customAvatarUIModel.hairColor ==
+                        colorToHex(hairColors[index]),
+                  ),
+                  onPressed: _cubit.onUnlockedItemClicked,
+                );
+              },
+            ),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 20, // Horizontal spacing
+              mainAxisSpacing: 24, // Vertical spacing
+            ),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+              if (item is LockedItem) {
+                return LockedButtonWidget(
+                  onPressed: _cubit.lockedButtonClicked,
+                );
+              } else {
+                return UnlockedItemWidget(
+                  uiModel: item as UnlockedItem,
+                  recolor: uiModel.customAvatarUIModel.hairColor != null
+                      ? colorFromHex(uiModel.customAvatarUIModel.hairColor!)
+                      : null,
+                  useSecondLongestPath: false,
+                  onPressed: _cubit.onUnlockedItemClicked,
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _getCustomItems(
     List<EditAvatarItemUIModel> items, {
     bool isColors = false,
-    bool isHair = false,
   }) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),

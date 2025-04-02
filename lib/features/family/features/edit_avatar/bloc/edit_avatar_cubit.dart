@@ -14,6 +14,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
+import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -354,6 +355,10 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         _customAvatar = _customAvatar.copyWith(maskIndex: index);
       case 'Suit':
         _customAvatar = _customAvatar.copyWith(suitIndex: index);
+      case 'HairColor':
+        if (color != null) {
+          _customAvatar = _customAvatar.copyWith(hairColor: colorToHex(color));
+        }
     }
 
     _emitData();
