@@ -305,27 +305,22 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
       child: Column(
         children: [
           if (isFeatureUnlocked)
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 32, // Horizontal spacing
-                mainAxisSpacing: 24, // Vertical spacing
-              ),
-              itemCount: hairColors.length,
-              itemBuilder: (context, index) {
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: hairColors.map((color) {
+                final index = hairColors.indexOf(color);
                 return UnlockedColorWidget(
-                  color: hairColors[index],
+                  size: 48,
+                  color: color,
                   uiModel: UnlockedItem(
                     type: 'HairColor',
                     index: index,
                     isSelected: uiModel.customAvatarUIModel.hairColor ==
-                        colorToHex(hairColors[index]),
+                        colorToHex(color),
                   ),
                   onPressed: _cubit.onUnlockedItemClicked,
                 );
-              },
+              }).toList(),
             ),
           GridView.builder(
             shrinkWrap: true,
