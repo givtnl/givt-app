@@ -81,29 +81,39 @@ class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
           cubit: _stageCubit,
           onCustom: _handleCustom,
           onData: (context, uiModel) {
-            return Stack(
+            return Column(
               children: [
-                Opacity(
-                  opacity: uiModel.isAITurnedOn ? 1 : 0,
-                  child: Image.asset('assets/family/images/stage_with_ai.png'),
-                ),
-                Opacity(
-                  opacity: uiModel.isAITurnedOn ? 0 : 1,
-                  child: Image.asset(
-                    'assets/family/images/stage_without_ai.png',
-                  ),
-                ),
-                if (widget.playAudio)
-                  const FunBackgroundAudioWidget(
-                    audioPath: 'family/audio/ready_its_showtime.wav',
-                  ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 40,
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: FamilyAppTheme.tertiary10,
+                      image: DecorationImage(
+                        image: AssetImage(
+                          uiModel.isAITurnedOn
+                              ? 'assets/family/images/stage_with_ai.png'
+                              : 'assets/family/images/stage_without_ai.png',
+                        ),
+                        fit: BoxFit.cover,
+                        alignment: Alignment.bottomCenter,
+                      ),
                     ),
+                    child: Stack(
+                      children: [
+                        if (widget.playAudio)
+                          const FunBackgroundAudioWidget(
+                            audioPath: 'family/audio/ready_its_showtime.wav',
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
+                  color: FamilyAppTheme.tertiary10,
+                  child: SafeArea(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -135,7 +145,7 @@ class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
                                   );
                                   AnalyticsHelper.logEvent(
                                     eventName:
-                                    AmplitudeEvents.userToggledAIFeature,
+                                        AmplitudeEvents.userToggledAIFeature,
                                     eventProperties: {
                                       'on': value,
                                     },
