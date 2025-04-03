@@ -216,6 +216,30 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     return list;
   }
 
+  List<EditAvatarItemUIModel> unlockedItemsOfType(
+    String type,
+    int selectedIndex,
+  ) {
+    final unlockString = 'avatar_custom_${type.toLowerCase()}';
+    final matchingUnlocks = _profile?.unlocks
+            .where(
+              (unlock) => unlock.contains(unlockString),
+            )
+            .map((item) => int.tryParse(item.replaceAll(unlockString, '')))
+            .whereType<int>()
+            .toList() ??
+        [];
+
+    return List.generate(
+      matchingUnlocks.length,
+      (index) => UnlockedItem(
+        type: type,
+        index: matchingUnlocks[index],
+        isSelected: index == selectedIndex,
+      ),
+    );
+  }
+
   List<EditAvatarItemUIModel> maskItems() {
     final list = List<EditAvatarItemUIModel>.generate(
       3,
@@ -237,11 +261,13 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       ));
     }
 
-    // Add locked items
-    list.addAll(List.generate(
-      3,
-      (index) => const LockedItem(),
-    ));
+    list
+      ..addAll(unlockedItemsOfType('Mask', _customAvatar.maskIndex))
+      // Add locked items
+      ..addAll(List.generate(
+        3,
+        (index) => const LockedItem(),
+      ));
 
     return list;
   }
