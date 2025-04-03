@@ -71,9 +71,7 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: TitleLargeText(
-                      widget.uiModel.hasAnyUnseenBadges
-                          ? 'Discover your reward!'
-                          : 'Who would like to give?',
+                      'Who would like to give?',
                       textAlign: TextAlign.center,
                       color: Colors.white,
                       shadows: [
