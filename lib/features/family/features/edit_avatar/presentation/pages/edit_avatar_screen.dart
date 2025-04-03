@@ -16,6 +16,7 @@ import 'package:givt_app/features/family/features/edit_avatar/presentation/widge
 import 'package:givt_app/features/family/features/edit_avatar/presentation/widgets/unlocked_item_widget.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/presentation/widgets/unlocked_badge_widget.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
+import 'package:givt_app/features/family/helpers/color_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_secondary_tabs.dart';
@@ -62,6 +63,12 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
     const Color(0xFF7EFAB5),
   ];
 
+  List<Color> hairColors = [
+    const Color(0xFF282A25),
+    const Color(0xFF8F4F23),
+    const Color(0xFFFFDF8D),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -71,7 +78,8 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
     );
     _tabController.addListener(() {
       _cubit.manualUnlockBadge(
-          Features.tabsOrderOfFeatures[_tabController.index]);
+        Features.tabsOrderOfFeatures[_tabController.index],
+      );
     });
     _cubit.init(widget.userGuid);
   }
@@ -277,10 +285,73 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
       ],
       tabContents: [
         _getCustomItems(uiModel.bodyItems, isColors: uiModel.isFeatureUnlocked),
-        _getCustomItems(uiModel.hairItems),
+        _getCustomHairItems(
+          uiModel,
+          isFeatureUnlocked: uiModel.isFeatureUnlocked,
+        ),
         _getCustomItems(uiModel.maskItems),
         _getCustomItems(uiModel.suitItems),
       ],
+    );
+  }
+
+  Widget _getCustomHairItems(
+    EditAvatarUIModel uiModel, {
+    bool isFeatureUnlocked = false,
+  }) {
+    final items = uiModel.hairItems;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(24, isFeatureUnlocked ? 8 : 28, 24, 16),
+      child: Column(
+        children: [
+          if (isFeatureUnlocked)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: hairColors.map((color) {
+                final index = hairColors.indexOf(color);
+                return UnlockedColorWidget(
+                  size: 48,
+                  color: color,
+                  uiModel: UnlockedItem(
+                    type: 'HairColor',
+                    index: index,
+                    isSelected: uiModel.customAvatarUIModel.hairColor ==
+                        colorToHex(color),
+                  ),
+                  onPressed: _cubit.onUnlockedItemClicked,
+                );
+              }).toList(),
+            ),
+          if (isFeatureUnlocked) const SizedBox(height: 8),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 20, // Horizontal spacing
+              mainAxisSpacing: 24, // Vertical spacing
+            ),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+              if (item is LockedItem) {
+                return LockedButtonWidget(
+                  onPressed: _cubit.lockedButtonClicked,
+                );
+              } else {
+                return UnlockedItemWidget(
+                  uiModel: item as UnlockedItem,
+                  recolor: uiModel.customAvatarUIModel.hairColor != null
+                      ? colorFromHex(uiModel.customAvatarUIModel.hairColor!)
+                      : null,
+                  replacePlaceholders: true,
+                  onPressed: _cubit.onUnlockedItemClicked,
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -289,7 +360,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
     bool isColors = false,
   }) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+      padding: const EdgeInsets.fromLTRB(24, 28, 24, 16),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

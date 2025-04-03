@@ -10,18 +10,20 @@ class UnlockedColorWidget extends StatelessWidget {
     required this.color,
     required this.uiModel,
     required this.onPressed,
+    this.size = 54,
     super.key,
   });
 
   final Color color;
   final UnlockedItem uiModel;
-  final Function(int index, String type) onPressed;
+  final double size;
+  final Function(int index, String type, {Color? color}) onPressed;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onPressed.call(uiModel.index, uiModel.type);
+        onPressed.call(uiModel.index, uiModel.type, color: color);
         AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.unlockedAvatarItemClicked,
           eventProperties: {
@@ -31,8 +33,8 @@ class UnlockedColorWidget extends StatelessWidget {
         );
       },
       child: FunIcon(
-        circleSize: 54,
-        iconSize: 54,
+        circleSize: size,
+        iconSize: size,
         circleColor:
             uiModel.isSelected ? FamilyAppTheme.primary80 : Colors.transparent,
         icon: Container(
@@ -46,8 +48,8 @@ class UnlockedColorWidget extends StatelessWidget {
             color: color,
             shape: BoxShape.circle,
           ),
-          height: 54,
-          width: 54,
+          height: size,
+          width: size,
         ),
       ),
     );
