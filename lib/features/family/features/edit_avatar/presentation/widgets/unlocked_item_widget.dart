@@ -14,12 +14,14 @@ class UnlockedItemWidget extends StatelessWidget {
     required this.onPressed,
     this.recolor,
     this.useSecondLongestPath = false,
+    this.replacePlaceholders = false,
     super.key,
   });
 
   final UnlockedItem uiModel;
   final Color? recolor;
   final bool useSecondLongestPath;
+  final bool replacePlaceholders;
   final void Function(int index, String type) onPressed;
 
   @override
@@ -46,11 +48,13 @@ class UnlockedItemWidget extends StatelessWidget {
         child: Center(
           child: recolor != null
               ? FutureBuilder(
-                  future: loadSvgFromAsset(
-                    path,
-                    color: recolor!,
-                    useSecondLongestPath: useSecondLongestPath,
-                  ),
+                  future: replacePlaceholders
+                      ? recolorPlaceholdersSvgFromAsset(path, color: recolor!)
+                      : recolorSvgFromAsset(
+                          path,
+                          color: recolor!,
+                          useSecondLongestPath: useSecondLongestPath,
+                        ),
                   builder:
                       (BuildContext context, AsyncSnapshot<String> snapshot) {
                     return snapshot.data != null

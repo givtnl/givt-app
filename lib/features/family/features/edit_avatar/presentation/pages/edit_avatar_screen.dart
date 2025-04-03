@@ -344,7 +344,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
                   recolor: uiModel.customAvatarUIModel.hairColor != null
                       ? colorFromHex(uiModel.customAvatarUIModel.hairColor!)
                       : null,
-                  useSecondLongestPath: true,
+                  replacePlaceholders: true,
                   onPressed: _cubit.onUnlockedItemClicked,
                 );
               }

@@ -109,7 +109,7 @@ class FunAvatar extends FunIcon {
       uiModel.assetsToOverlap.length,
       (index) => index == 1 && uiModel.hairColor != null
           ? FutureBuilder(
-              future: loadSvgFromAsset(
+              future: recolorSvgFromAsset(
                 uiModel.assetsToOverlap[index],
                 color: colorFromHex(uiModel.hairColor!),
               ),

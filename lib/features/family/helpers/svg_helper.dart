@@ -1,16 +1,43 @@
 import 'package:flutter/services.dart';
 import 'package:givt_app/features/family/helpers/color_helper.dart';
 
-Future<String> loadSvgFromAsset(
+Future<String> recolorPlaceholdersSvgFromAsset(
+  String svgAssetPath, {
+  required Color color,
+}) async {
+  // Read SVG content from asset file
+  final rawSvgContent = await rootBundle.loadString(svgAssetPath);
+
+  // Modify SVG content
+  final modifiedSvgContent = replacePlaceholdersSvgContent(
+    rawSvgContent,
+    color,
+  );
+
+  return modifiedSvgContent;
+}
+
+String replacePlaceholdersSvgContent(String rawSvgContent, Color color) {
+  // Replace the placeholder color with the new color
+  final newFillColor = colorToHex(color);
+  rawSvgContent = rawSvgContent.replaceAll(
+    'fill="placeholder"',
+    'fill="$newFillColor"',
+  );
+
+  return rawSvgContent;
+}
+
+Future<String> recolorSvgFromAsset(
   String svgAssetPath, {
   required Color color,
   bool useSecondLongestPath = false,
 }) async {
   // Read SVG content from asset file
-  String rawSvgContent = await rootBundle.loadString(svgAssetPath);
+  final rawSvgContent = await rootBundle.loadString(svgAssetPath);
 
   // Modify SVG content
-  String modifiedSvgContent = modifySvgContent(
+  final modifiedSvgContent = modifySvgContent(
     rawSvgContent,
     color: color,
     useSecondLongestPath: useSecondLongestPath,
@@ -30,8 +57,8 @@ String modifySvgContent(
 
   String? longestPath;
   String? secondLongestPath;
-  int maxLength = 0;
-  int secondMaxLength = 0;
+  var maxLength = 0;
+  var secondMaxLength = 0;
   String? longestFillColor;
   String? secondLongestFillColor;
 
