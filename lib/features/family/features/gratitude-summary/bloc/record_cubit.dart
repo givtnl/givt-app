@@ -91,7 +91,7 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
   void _initAudioRecorder() {
     _audioRecorder = AudioRecorder();
     _amplitudeSub = _audioRecorder!
-        .onAmplitudeChanged(const Duration(milliseconds: 300))
+        .onAmplitudeChanged(const Duration(milliseconds: 60))
         .listen((amp) {
       _amplitude = amp;
       _amplitudeStreamController.add(
