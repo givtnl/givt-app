@@ -200,4 +200,14 @@ class FamilyHomeScreenCubit
   void markAllFeaturesAsSeen(String userId) {
     _unlockedBadgeRepository.markAllFeaturesAsSeenForUser(userId);
   }
+
+  Future<void> showRewardOverlay() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    emitCustom(
+      FamilyHomeScreenCustom.openAvatarOverlay(
+        _createUIModel(),
+        withRewardText: true,
+      ),
+    );
+  }
 }

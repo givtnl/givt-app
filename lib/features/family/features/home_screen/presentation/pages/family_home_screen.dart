@@ -87,6 +87,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
               context,
               event.uiModel,
               withTutorial: event.withTutorial,
+              withRewardText: event.withRewardText,
             );
           case StartTutorial():
             widget.tooltipController.start();
@@ -254,10 +255,18 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
   }
 
-  void _openAvatarOverlay(BuildContext context, FamilyHomeScreenUIModel uiModel,
-      {bool withTutorial = false}) {
+  void _openAvatarOverlay(
+    BuildContext context,
+    FamilyHomeScreenUIModel uiModel, {
+    bool withTutorial = false,
+    bool withRewardText = false,
+  }) {
     if (!overlayVisible) {
-      createOverlay(uiModel, withTutorial: withTutorial);
+      createOverlay(
+        uiModel,
+        withTutorial: withTutorial,
+        withRewardText: withRewardText,
+      );
       setState(() {
         overlayVisible = true;
       });
@@ -265,8 +274,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     }
   }
 
-  void createOverlay(FamilyHomeScreenUIModel uiModel,
-      {required bool withTutorial}) {
+  void createOverlay(
+    FamilyHomeScreenUIModel uiModel, {
+    required bool withTutorial,
+    required bool withRewardText,
+  }) {
     overlayEntry = OverlayEntry(
       builder: (context) => FamilyHomeOverlay(
         uiModel: uiModel,
@@ -274,6 +286,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         onAvatarTapped: (index) => onAvatarTapped(index, uiModel),
         onNextTutorialClicked: _cubit.onNextTutorialClicked,
         withTutorial: withTutorial,
+        withRewardText: withRewardText,
       ),
     );
   }

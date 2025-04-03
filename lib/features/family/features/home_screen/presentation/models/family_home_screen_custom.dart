@@ -9,6 +9,7 @@ sealed class FamilyHomeScreenCustom {
   const factory FamilyHomeScreenCustom.openAvatarOverlay(
     FamilyHomeScreenUIModel uiModel, {
     bool withTutorial,
+    bool withRewardText,
   }) = OpenAvatarOverlay;
 
   const factory FamilyHomeScreenCustom.startTutorial() = StartTutorial;
@@ -21,10 +22,15 @@ class SlideCarouselTo extends FamilyHomeScreenCustom {
 }
 
 class OpenAvatarOverlay extends FamilyHomeScreenCustom {
-  const OpenAvatarOverlay(this.uiModel, {this.withTutorial = false});
+  const OpenAvatarOverlay(
+    this.uiModel, {
+    this.withTutorial = false,
+    this.withRewardText = false,
+  });
 
   final FamilyHomeScreenUIModel uiModel;
   final bool withTutorial;
+  final bool withRewardText;
 }
 
 class StartTutorial extends FamilyHomeScreenCustom {
