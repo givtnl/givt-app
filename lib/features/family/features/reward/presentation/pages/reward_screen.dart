@@ -4,11 +4,17 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/reward/presentation/models/reward_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
 import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RewardScreen extends StatefulWidget {
   const RewardScreen({
@@ -23,6 +29,18 @@ class RewardScreen extends StatefulWidget {
 }
 
 class _RewardScreenState extends State<RewardScreen> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (widget.uiModel.triggerAppReview) {
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.inAppReviewTriggered,
+      );
+
+      InAppReview.instance.requestReview();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
@@ -55,9 +73,15 @@ class _RewardScreenState extends State<RewardScreen> {
               ConfettiDialog.show(context);
               Future.delayed(const Duration(milliseconds: 1500), () {
                 if (!context.mounted) return;
-                context.goNamed(
-                  FamilyPages.profileSelection.name,
-                );
+                if (widget.uiModel.interviewUIModel != null) {
+                  _showInterviewPopup(
+                    context,
+                    widget.uiModel.interviewUIModel!,
+                    useDefaultImage: widget.uiModel.useDefaultInterviewIcon,
+                  );
+                } else {
+                  _navigateToProfileSelection(context);
+                }
               });
             },
             text: 'Claim reward',
@@ -71,6 +95,45 @@ class _RewardScreenState extends State<RewardScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showInterviewPopup(
+    BuildContext context,
+    FunDialogUIModel uiModel, {
+    bool useDefaultImage = true,
+  }) {
+    FunDialog.show(
+      context,
+      uiModel: uiModel,
+      image: useDefaultImage ? FunIcon.solidComments() : FunIcon.moneyBill(),
+      onClickPrimary: () {
+        context.pop();
+        launchCalendlyUrl();
+        _navigateToProfileSelection(context);
+      },
+      onClickSecondary: () {
+        context.pop();
+        _navigateToProfileSelection(context);
+      },
+    );
+  }
+
+  Future<void> launchCalendlyUrl() async {
+    const calendlyLink = 'https://calendly.com/andy-765/45min';
+
+    final url = Uri.parse(calendlyLink);
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      // do nothing, we're probably on a weird platform/ simulator
+    }
+  }
+
+  void _navigateToProfileSelection(BuildContext context) {
+    context.goNamed(
+      FamilyPages.profileSelection.name,
     );
   }
 }

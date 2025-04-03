@@ -42,9 +42,11 @@ class LeagueExplanation extends StatelessWidget {
           const Spacer(),
           FunButton(
             onTap: onContinuePressed,
-            text: isInGameVersion ? 'Claim reward' : 'Continue',
+            text: isInGameVersion ? 'Unlock league' : 'Continue',
             analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.leagueExplanationContinueClicked,
+              isInGameVersion
+                  ? AmplitudeEvents.unlockLeagueClicked
+                  : AmplitudeEvents.leagueExplanationContinueClicked,
             ),
           ),
           const SizedBox(height: 40),

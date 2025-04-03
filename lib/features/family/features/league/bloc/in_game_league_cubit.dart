@@ -101,38 +101,37 @@ class InGameLeagueCubit
     final amountGamePlays =
         await _reflectAndShareRepository.getTotalGamePlays();
 
-    if (await _shouldAskForAppReview(amountGamePlays)) {
-      await AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.inAppReviewTriggered,
-      );
+    final shouldAskForAppReview = await _shouldAskForAppReview(amountGamePlays);
 
-      await InAppReview.instance.requestReview();
-    }
-
-    if (await _shouldAskForInterview(amountGamePlays)) {
-      await AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.askForInterviewTriggered,
-      );
-
-      emitCustom(
-        InGameLeagueCustom.showInterviewPopup(
-          FunDialogUIModel(
-            title: _reflectAndShareRepository.getAskForInterviewTitle(),
-            description: _reflectAndShareRepository.getAskForInterviewMessage(),
-            primaryButtonText: 'Yes, I’m interested!',
-            secondaryButtonText: 'No, thanks',
-            showCloseButton: false,
-          ),
-          useDefaultImage: _reflectAndShareRepository.useDefaultInterviewIcon(),
-        ),
-      );
-      return;
-    }
+    final shouldAskForInterview = await _shouldAskForInterview(amountGamePlays);
 
     // If there is a reward, redirect user to the reward screen
     final rewardText = _reflectAndShareRepository.variableReward;
 
-    if (rewardText != null) {
+    if (rewardText == null) {
+      if (shouldAskForAppReview) {
+        await AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.inAppReviewTriggered,
+        );
+
+        await InAppReview.instance.requestReview();
+      }
+
+      if (shouldAskForInterview) {
+        await AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.askForInterviewTriggered,
+        );
+
+        emitCustom(
+          InGameLeagueCustom.showInterviewPopup(
+            _getInterviewUIModel(),
+            useDefaultImage:
+                _reflectAndShareRepository.useDefaultInterviewIcon(),
+          ),
+        );
+        return;
+      }
+    } else {
       // Trigger profiles refresh
       unawaited(_profilesRepository.refreshProfiles());
 
@@ -148,6 +147,11 @@ class InGameLeagueCubit
           RewardUIModel(
             rewardText: rewardText,
             rewardImage: fullRewardImagePath,
+            interviewUIModel:
+                shouldAskForInterview ? _getInterviewUIModel() : null,
+            useDefaultInterviewIcon:
+                _reflectAndShareRepository.useDefaultInterviewIcon(),
+            triggerAppReview: shouldAskForAppReview,
           ),
         ),
       );
@@ -155,6 +159,16 @@ class InGameLeagueCubit
     }
 
     _goToHome();
+  }
+
+  FunDialogUIModel _getInterviewUIModel() {
+    return FunDialogUIModel(
+      title: _reflectAndShareRepository.getAskForInterviewTitle(),
+      description: _reflectAndShareRepository.getAskForInterviewMessage(),
+      primaryButtonText: 'Yes, I’m interested!',
+      secondaryButtonText: 'No, thanks',
+      showCloseButton: false,
+    );
   }
 
   Future<bool> _shouldAskForAppReview(int gameplays) async {
