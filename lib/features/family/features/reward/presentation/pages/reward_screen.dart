@@ -57,6 +57,9 @@ class _RewardScreenState extends State<RewardScreen> {
                 if (!context.mounted) return;
                 context.goNamed(
                   FamilyPages.profileSelection.name,
+                  queryParameters: {
+                    'checkForRewardOverlay': 'true',
+                  },
                 );
               });
             },
