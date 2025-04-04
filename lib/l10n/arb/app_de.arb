@@ -919,5 +919,9 @@
     "unregisterDescription": "Es tut uns leid, dass Sie gehen!\nNach der Kündigung Ihres Kontos können wir es nicht wiederherstellen.",
     "unregisterCheckboxText": "Ja, ich möchte mein Konto kündigen\n",
     "unregisterLoading": "Konto wird gekündigt",
-    "unregisterSuccessText": "Es macht uns traurig, dass Sie gehen, und wir hoffen, Sie wiederzusehen."
+    "unregisterSuccessText": "Es macht uns traurig, dass Sie gehen, und wir hoffen, Sie wiederzusehen.",
+    "homeScreenWelcome": "Welcome!",
+    "homeScreenHeyFamily": "'Hey {family}!'",
+    "HomeScreenGratitudeGameButtonTitle": "Gratitude Game",
+    "homeScreenGratitudeGameDescription": "This game helps you to build gratitude by reflecting on your day as a family"
 }
