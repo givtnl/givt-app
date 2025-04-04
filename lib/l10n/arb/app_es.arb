@@ -919,5 +919,9 @@
     "unregisterDescription": "We’re sorry to see you go!\nAfter terminating your account, we cannot recover it for you.",
     "unregisterCheckboxText": "Yes, I want to terminate my account",
     "unregisterLoading": "Terminating account",
-    "unregisterSuccessText": "We’re sad to see you leave and we hope to see you again."
+    "unregisterSuccessText": "We’re sad to see you leave and we hope to see you again.",
+    "homeScreenWelcome": "Welcome!",
+    "homeScreenHeyFamily": "'Hey {family}!'",
+    "HomeScreenGratitudeGameButtonTitle": "Gratitude Game",
+    "homeScreenGratitudeGameDescription": "This game helps you to build gratitude by reflecting on your day as a family"
 }
