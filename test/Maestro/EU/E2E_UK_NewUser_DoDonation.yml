@@ -1,0 +1,9 @@
+appId: net.givtapp.ios.test
+name: UK User registration, List Giving
+#This end-to-end test verifies that a new UK user can successfully register, and make a donation via List. 
+#The test ensures that the correct user flow is followed.
+---
+- runFlow: "UK_CreateNewAccount.yml"
+- runFlow: "UK_UserRegistration_Successful.yml"
+- runFlow: "UK_GiveViaList_Successful.yml"
+- runFlow: "EU_delete_account.yml"

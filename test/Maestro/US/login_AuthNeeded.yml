@@ -1,0 +1,15 @@
+appId: net.givtapp.ios.test
+name: Logging in the user
+
+env:
+    PASSWORD: Test123
+---
+- tapOn: "Password"
+- inputText:
+    label: Enter the test user's Password
+    text: ${PASSWORD}
+- tapOn: "passwordeye"
+- assertVisible: "Test123"
+- tapOn:
+    text: "Login"
+    index: 1
