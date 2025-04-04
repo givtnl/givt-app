@@ -1,0 +1,105 @@
+appId: net.givtapp.ios.test
+name: Playing the gratitude game with 3 players without AI
+
+---
+- tapOn: ".*Play now!"
+- tapOn: "Let's go"
+- tapOn: 
+    label: Tap on "Maybe later" (only showing first time)
+    text: "Maybe later"
+    optional: true
+- tapOn: "Start"
+- swipe:
+    label: Select player
+    from:
+      id: "Hero9.svg"
+    direction: "DOWN"
+- swipe:
+    label: Select player
+    from:
+      id: "Hero6.svg"
+    direction: "DOWN"
+- swipe:
+    label: Select player
+    from:
+      id: "Hero7.svg"
+    direction: "DOWN"
+- tapOn: "See the rules"
+## Start of the first round
+- tapOn: "Continue"
+- tapOn: "Reveal secret word"
+- swipe:
+    label: "Scrath to reveal the word"
+    start: "20%, 50%"
+    end: "80%, 50%"
+- swipe:
+    label: "Scrath to reveal the word"
+    start: "20%, 54%"
+    end: "80%, 54%"
+- tapOn: "Next"
+- tapOn: "Continue"
+- tapOn: "Next"
+- tapOn: "Continue"
+- tapOn: "Next"
+- tapOn: "It's showtime!"
+- tapOn: "Next Question"
+- tapOn: "Next Question"
+- tapOn: "You got to help someone"
+- tapOn: "Last Question"
+- tapOn: "Treasure.*"
+- tapOn: "Next"
+- tapOn: "Continue"
+- tapOn:
+    id: "funtile_correct"
+## Start of the second round
+- repeat:
+    label: Repeat the game round 2 times
+    times: 2
+    commands:
+      - tapOn: "Shuffle roles.*"
+      - tapOn: "Start"
+      - tapOn: "Continue"
+      - swipe:
+          label: "Scrath to reveal the word"
+          start: "20%, 50%"
+          end: "80%, 50%"
+      - swipe:
+          label: "Scrath to reveal the word"
+          start: "20%, 54%"
+          end: "80%, 54%"
+      - tapOn: "Next"
+      - tapOn: "Continue"
+      - tapOn: "It's showtime!"
+      - tapOn: "Next Question"
+      - tapOn: "Next Question"
+      - tapOn: "Something you learned"
+      - tapOn: "Last Question"
+      - tapOn: "Talents.*"
+      - tapOn: "Next"
+      - tapOn: 
+          label: Pass phone to Sidekick
+          text: "Continue"
+      - tapOn:
+          id: "funtile_correct"
+## Last round is played
+- repeat: 
+    label: Repeat giving 3 times
+    times: 3
+    commands: 
+      - tapOn: "I'm going to do this"
+      - tapOn: "Continue"
+## Family gather around
+- tapOn: "Show our summary"
+- tapOn: "Claim XP"
+- tapOn: 
+    text: "We're committed"
+    optional: true
+- tapOn: 
+    text: "Claim reward"
+    optional: true
+- tapOn: "Reveal"
+- tapOn: "Continue"
+- tapOn: 
+    label: Claim reward after x games
+    text: "Claim reward"
+    optional: true

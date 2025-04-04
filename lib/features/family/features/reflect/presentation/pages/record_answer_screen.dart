@@ -5,13 +5,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_bubble.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -36,18 +39,31 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   Timer? _timer;
   int _remainingSeconds;
   InterviewCubit cubit = getIt<InterviewCubit>();
+  final RecordCubit _recordCubit = getIt<RecordCubit>();
+  final ReflectAndShareRepository _repository = getIt<ReflectAndShareRepository>();
   AppConfig config = getIt<AppConfig>();
 
   @override
   void initState() {
     super.initState();
     WakelockPlus.enable();
+    if(_repository.isAITurnedOn()) {
+      _recordCubit.start();
+    }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _startCountdown();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _recordCubit.stop();
+    WakelockPlus.disable();
+    super.dispose();
   }
 
   String _displayMinutes() => (_remainingSeconds ~/ 60).toString();
@@ -81,20 +97,14 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     });
   }
 
-  void _handleEffects() {
+  Future<void> _handleEffects() async {
     if (_isLastTenSeconds()) {
       Vibrator.tryVibrate();
     } else if (_isLastSecond()) {
       Vibrator.tryVibratePattern();
-      cubit.timeForQuestionRanOut();
+      final audioPath = await _recordCubit.stop();
+      cubit.timeForQuestionRanOut(audioPath: audioPath);
     }
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    WakelockPlus.disable();
-    super.dispose();
   }
 
   void _resetTimer() {
@@ -121,6 +131,9 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
         body: Column(
           children: [
             const Spacer(),
+            if (widget.uiModel.summary != null)
+              FunBubble.captainAi(text: widget.uiModel.summary!),
+            if (widget.uiModel.summary != null) const Spacer(),
             const BodyMediumText(
               'Ask the superhero',
               textAlign: TextAlign.center,
@@ -130,7 +143,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
               widget.uiModel.question,
               textAlign: TextAlign.center,
             ),
-            const Spacer(),
+            const SizedBox(height: 48),
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
@@ -151,8 +164,9 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: FunButton(
-                      onTap: () {
-                        cubit.advanceToNext();
+                      onTap: () async {
+                        final audioPath = await _recordCubit.stop();
+                        unawaited(cubit.advanceToNext(audioPath: audioPath));
                       },
                       text: widget.uiModel.buttonText,
                       analyticsEvent: AnalyticsEvent(

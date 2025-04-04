@@ -19,9 +19,13 @@ sealed class GratefulCustom {
     required GameProfile profile,
   }) = GratefulOpenActOfServiceSuccess;
 
-  const factory GratefulCustom.goToGameSummary() = GratefulGoToGameSummary;
+  const factory GratefulCustom.goToGatherAround() = GratefulGoToGatherAround;
 
   const factory GratefulCustom.scrollToTop() = ScrollToTop;
+
+  const factory GratefulCustom.showDoneOverlay() = ShowDoneOverlay;
+
+  const factory GratefulCustom.showSkippedOverlay() = ShowSkippedOverlay;
 }
 
 class GratefulOpenKidDonationFlow extends GratefulCustom {
@@ -53,10 +57,18 @@ class GratefulOpenActOfServiceSuccess extends GratefulCustom {
   final Organisation organisation;
 }
 
-class GratefulGoToGameSummary extends GratefulCustom {
-  const GratefulGoToGameSummary();
+class GratefulGoToGatherAround extends GratefulCustom {
+  const GratefulGoToGatherAround();
 }
 
 class ScrollToTop extends GratefulCustom {
   const ScrollToTop();
+}
+
+class ShowDoneOverlay extends GratefulCustom {
+  const ShowDoneOverlay();
+}
+
+class ShowSkippedOverlay extends GratefulCustom {
+  const ShowSkippedOverlay();
 }

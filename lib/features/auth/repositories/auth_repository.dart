@@ -68,6 +68,7 @@ mixin AuthRepository {
   Future<bool> updateNotificationId({
     required String guid,
     required String notificationId,
+    required bool notificationPermissionStatus,
   });
 
   void updateSessionStream(bool hasSession);
@@ -490,12 +491,13 @@ class AuthRepositoyImpl with AuthRepository {
   Future<bool> updateNotificationId({
     required String guid,
     required String notificationId,
+    required bool notificationPermissionStatus,
   }) =>
       _apiService.updateNotificationId(
         guid: guid,
         body: {
           'PushNotificationId': notificationId,
-          'OS': 1, // Always use firebase implementation from Android
+          'PushNotificationsEnabled': notificationPermissionStatus,
         },
       );
 

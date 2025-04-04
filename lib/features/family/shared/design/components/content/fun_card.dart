@@ -5,23 +5,25 @@ import 'package:givt_app/features/family/utils/utils.dart';
 
 class FunCard extends StatelessWidget {
   const FunCard({
-    required this.title,
-    required this.content,
-    required this.button,
-    required this.icon,
+    this.icon,
+    this.title,
+    this.backgroundColor,
+    this.content,
+    this.button,
     super.key,
   });
 
-  final FunIcon icon;
-  final String title;
-  final Widget content;
+  final FunIcon? icon;
+  final String? title;
+  final Color? backgroundColor;
+  final Widget? content;
   final Widget? button;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: backgroundColor ?? Colors.white,
         border: Border.all(
           color: FamilyAppTheme.neutralVariant95,
           width: 2,
@@ -33,7 +35,7 @@ class FunCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
+            if(icon != null) Container(
               padding: EdgeInsets.zero,
               child: SizedBox(
                 width: 140,
@@ -41,15 +43,19 @@ class FunCard extends StatelessWidget {
                 child: icon,
               ),
             ),
-            const SizedBox(height: 16),
-            TitleMediumText(
-              title,
-              textAlign: TextAlign.center,
-            ),
+            if (title != null) ...[
+              const SizedBox(height: 16),
+              TitleMediumText(
+                title!,
+                textAlign: TextAlign.center,
+              ),
+            ],
             const SizedBox(height: 8),
-            content,
-            if (button != null) const SizedBox(height: 16),
-            if (button != null) button!,
+            content ?? const SizedBox(),
+            if (button != null) ...[
+              const SizedBox(height: 16),
+              button!,
+            ],
           ],
         ),
       ),

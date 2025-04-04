@@ -19,13 +19,19 @@ class LabelLargeText extends StatelessWidget {
     this.selectionColor,
     this.textWidthBasis,
     this.strutStyle,
+    this.fontFeatures,
   });
 
   factory LabelLargeText.primary30(String text) =>
       LabelLargeText(text, color: FamilyAppTheme.primary30);
 
-  factory LabelLargeText.primary40(String text) =>
-      LabelLargeText(text, color: FamilyAppTheme.primary40);
+  factory LabelLargeText.primary40(String text,
+          {List<FontFeature>? fontFeatures}) =>
+      LabelLargeText(
+        text,
+        color: FamilyAppTheme.primary40,
+        fontFeatures: fontFeatures,
+      );
 
   factory LabelLargeText.secondary20(String text) =>
       LabelLargeText(text, color: FamilyAppTheme.secondary20);
@@ -56,6 +62,7 @@ class LabelLargeText extends StatelessWidget {
   final Color? selectionColor;
   final TextWidthBasis? textWidthBasis;
   final StrutStyle? strutStyle;
+  final List<FontFeature>? fontFeatures;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +80,10 @@ class LabelLargeText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: color),
+      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+            color: color,
+            fontFeatures: fontFeatures,
+          ),
     );
   }
 }

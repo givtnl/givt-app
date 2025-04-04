@@ -37,6 +37,7 @@ class FunIcon extends StatelessWidget {
     this.circleColor = FamilyAppTheme.primary95,
     this.iconColor = FamilyAppTheme.primary20,
     this.padding = const EdgeInsets.all(14),
+    this.semanticsIdentifier,
     super.key,
   });
 
@@ -62,6 +63,64 @@ class FunIcon extends StatelessWidget {
         iconSize: iconsize,
         circleSize: circleSize,
       );
+
+  factory FunIcon.moneyBill({
+    Color circleColor = FamilyAppTheme.primary95,
+    double iconsize = 48,
+    double circleSize = 112,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.moneyBill,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.solidComments({
+    Color circleColor = FamilyAppTheme.primary95,
+    double iconsize = 48,
+    double circleSize = 112,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.solidComments,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.bell(
+          {Color circleColor = FamilyAppTheme.primary95,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.solidBell,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.userLarge(
+          {Color circleColor = FamilyAppTheme.primary95,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.userLarge,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.exclamation(
+          {Color circleColor = FamilyAppTheme.primary95,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.exclamation,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
   factory FunIcon.recordingSquare(
           {Color circleColor = FamilyAppTheme.error90,
           Color iconColor = FamilyAppTheme.error30,
@@ -99,6 +158,11 @@ class FunIcon extends StatelessWidget {
         iconColor: iconColor,
       );
 
+  factory FunIcon.xmarkPlain() => FunIcon(
+        iconData: FontAwesomeIcons.xmark,
+        circleColor: Colors.transparent,
+      );
+
   factory FunIcon.bowlFood({
     Color circleColor = FamilyAppTheme.primary95,
     Color iconColor = FamilyAppTheme.primary20,
@@ -129,6 +193,116 @@ class FunIcon extends StatelessWidget {
         iconColor: iconColor,
       );
 
+  factory FunIcon.church(
+          {Color circleColor = FamilyAppTheme.primary95,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.church,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.globe(
+          {Color circleColor = FamilyAppTheme.primary95,
+          Color iconColor = FamilyAppTheme.primary20,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.earthAmericas,
+        circleColor: circleColor,
+        iconColor: iconColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.guitar(
+          {Color circleColor = FamilyAppTheme.primary95,
+          Color iconColor = FamilyAppTheme.primary20,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.guitar,
+        circleColor: circleColor,
+        iconColor: iconColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.seedling(
+          {Color circleColor = FamilyAppTheme.primary95,
+          Color iconColor = FamilyAppTheme.primary20,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.seedling,
+        circleColor: circleColor,
+        iconColor: iconColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.solidFlagPlain({
+    Color iconColor = FamilyAppTheme.primary20,
+    EdgeInsets padding = const EdgeInsets.all(14),
+    double iconSize = 48,
+    double circleSize = 112,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.solidFlag,
+        iconColor: iconColor,
+        circleColor: Colors.transparent,
+        circleSize: circleSize,
+        padding: padding,
+        iconSize: iconSize,
+      );
+
+  factory FunIcon.earthAmericas({
+    Color iconColor = FamilyAppTheme.neutralVariant40,
+    EdgeInsets padding = EdgeInsets.zero,
+    double iconSize = 24,
+    double circleSize = 24,
+  }) =>
+      FunIcon(
+        padding: padding,
+        iconData: FontAwesomeIcons.earthAmericas,
+        iconColor: iconColor,
+        circleColor: Colors.transparent,
+        circleSize: circleSize,
+        iconSize: iconSize,
+      );
+
+  factory FunIcon.gear({
+    Color iconColor = FamilyAppTheme.primary20,
+    EdgeInsets padding = EdgeInsets.zero,
+    double iconSize = 24,
+    double circleSize = 24,
+  }) =>
+      FunIcon(
+        padding: padding,
+        iconData: FontAwesomeIcons.gear,
+        iconColor: iconColor,
+        circleColor: Colors.transparent,
+        circleSize: circleSize,
+        iconSize: iconSize,
+      );
+
+  factory FunIcon.clock({
+    Color iconColor = FamilyAppTheme.primary40,
+    EdgeInsets padding = EdgeInsets.zero,
+    double iconSize = 16,
+    double circleSize = 16,
+  }) =>
+      FunIcon(
+        padding: padding,
+        iconData: FontAwesomeIcons.solidClock,
+        iconColor: iconColor,
+        circleColor: Colors.transparent,
+        circleSize: circleSize,
+        iconSize: iconSize,
+      );
+
   /// The icon to be displayed in the center of the circle.
   /// If [icon] is provided, it will be used instead of [iconData].
   final IconData? iconData;
@@ -141,6 +315,7 @@ class FunIcon extends StatelessWidget {
   final Color circleColor;
   final Color iconColor;
   final EdgeInsets padding;
+  final String? semanticsIdentifier;
 
   @override
   Widget build(BuildContext context) {
@@ -157,12 +332,27 @@ class FunIcon extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          icon ??
-              FaIcon(
+          if (icon != null)
+            Semantics(
+              identifier: semanticsIdentifier ?? 'icon-custom',
+              child: SizedBox(
+                width: iconSize,
+                height: iconSize,
+                child: icon,
+              ),
+            )
+          else
+            Semantics(
+              identifier: semanticsIdentifier ??
+                  'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
+              child: FaIcon(
                 iconData,
+                semanticLabel:
+                    'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
                 color: iconColor,
                 size: iconSize,
               ),
+            ),
         ],
       ),
     );

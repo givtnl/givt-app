@@ -66,7 +66,9 @@ Future<void> bootstrap(
   );
 
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: await getApplicationDocumentsDirectory(),
+    storageDirectory: HydratedStorageDirectory(
+      (await getApplicationDocumentsDirectory()).path,
+    ),
   );
 
   // Initialize the dependency injection

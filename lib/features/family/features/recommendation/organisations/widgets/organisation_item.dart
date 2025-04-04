@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/w
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_header.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -33,13 +34,15 @@ class OrganisationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ActionContainer(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      borderColor: Theme.of(context).colorScheme.primaryContainer,
+      borderColor:
+          isActOfService ? FamilyAppTheme.tertiary80 : FamilyAppTheme.primary80,
       onTap: () {
         final generatedMediumId =
             base64.encode(organisation.namespace.codeUnits);
-        context
-            .read<CollectGroupDetailsCubit>()
-            .getOrganisationDetails(generatedMediumId);
+        context.read<CollectGroupDetailsCubit>().getOrganisationDetails(
+              generatedMediumId,
+              experiencePoints: organisation.experiencePoints,
+            );
 
         context.read<ScanNfcCubit>().stopScanningSession();
 
@@ -75,7 +78,7 @@ class OrganisationItem extends StatelessWidget {
             if (organisation.promoPictureUrl.isNotEmpty) ...[
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 12),
-                height: 150,
+                height: 126,
                 child: Image.network(
                   organisation.promoPictureUrl,
                   width: double.maxFinite,

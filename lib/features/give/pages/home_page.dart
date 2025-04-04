@@ -68,6 +68,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
 
@@ -112,7 +117,8 @@ class _HomePageState extends State<HomePage> {
             start: 30,
           ),
           child: IconButton(
-            icon: const Icon(Icons.menu),
+            icon: const Icon(Icons.menu,
+            semanticLabel: 'homeMenu',),
             onPressed: () => _key.currentState?.openDrawer(),
           ),
         ),
@@ -126,6 +132,7 @@ class _HomePageState extends State<HomePage> {
               builder: (_) => const FAQBottomSheet(),
             ),
             icon: const Icon(
+              semanticLabel: 'homeQuestionMark',
               Icons.question_mark_outlined,
               size: 26,
             ),
@@ -155,6 +162,7 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               icon: const Icon(
+                semanticLabel: 'homeAdminPanel',
                 Icons.admin_panel_settings,
                 size: 26,
               ),

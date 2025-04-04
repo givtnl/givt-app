@@ -32,6 +32,7 @@ class AcceptPolicyRowUs extends StatelessWidget {
       child: Row(
         children: [
           Checkbox(
+            semanticLabel: 'saveDataCheckbox',
             value: checkBoxValue,
             onChanged: onTap,
             side: const BorderSide(
@@ -44,7 +45,7 @@ class AcceptPolicyRowUs extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 BodySmallText.primary40(
-                  'Givt is permitted to save my data',
+                  context.l10n.acceptPolicy,
                 ),
               ],
             ),

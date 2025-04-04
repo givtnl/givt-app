@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class Avatar extends Equatable {
   const Avatar({
     required this.fileName,
-    required this.pictureURL,
+    this.pictureURL,
   });
 
   factory Avatar.fromMap(Map<String, dynamic> map) {
@@ -17,7 +17,7 @@ class Avatar extends Equatable {
         pictureURL = '';
 
   final String fileName;
-  final String pictureURL;
+  final String? pictureURL;
 
   @override
   List<Object?> get props => [fileName, pictureURL];

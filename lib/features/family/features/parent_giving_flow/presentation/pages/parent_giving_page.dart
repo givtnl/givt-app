@@ -19,6 +19,7 @@ class ParentGivingPage extends StatefulWidget {
   const ParentGivingPage({
     super.key,
   });
+
   @override
   State<ParentGivingPage> createState() => _ParentGivingPageState();
 }
@@ -107,6 +108,7 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
       yesSuccess: context.l10n.yesSuccess,
       close: context.l10n.close,
       collect: context.l10n.collect,
+      experiencePoints: state.experiencePoints,
     ).toJson();
   }
 

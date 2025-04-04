@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class GameProfileItem extends StatelessWidget {
@@ -28,7 +28,7 @@ class GameProfileItem extends StatelessWidget {
       children: [
         SizedBox(
           width: size,
-          height: size + 20,
+          height: size + 16,
           child: Stack(
             children: [
               Align(
@@ -37,17 +37,18 @@ class GameProfileItem extends StatelessWidget {
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: accentColor ?? profile.role?.color.accentColor ?? Colors.red,
+                    color: accentColor ??
+                        profile.role?.color.accentColor ??
+                        Colors.red,
                   ),
                   child: Container(
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
                     ),
-                    child: SvgPicture.network(
-                      profile.pictureURL!,
-                      width: size,
-                      height: size,
+                    child: FunAvatar.fromGameProfile(
+                      profile,
+                      size: size - 12,
                     ),
                   ),
                 ),

@@ -1,7 +1,8 @@
-import 'package:givt_app/utils/profile_type.dart';
+import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
+import 'package:givt_app/utils/profile_type.dart';
 
 class GameProfile {
   GameProfile({
@@ -9,20 +10,22 @@ class GameProfile {
     required this.userId,
     this.firstName,
     this.lastName,
-    this.pictureURL,
+    this.avatar,
     this.roles = const [],
     this.gratitude,
     this.power,
+    this.customAvatar,
   });
 
   final String userId;
   final String? firstName;
   final String? lastName;
-  final String? pictureURL;
+  final String? avatar;
   final List<Role> roles;
   final String type;
   final TagCategory? gratitude;
   final TagCategory? power;
+  final CustomAvatarModel? customAvatar;
 
   ProfileType get profileType => ProfileType.getByTypeName(type);
 
@@ -43,8 +46,9 @@ class GameProfile {
     return AvatarUIModel(
       hasDonated: hasDonated,
       isSelected: isSelected,
-      avatarUrl: pictureURL!,
+      avatar: avatar,
       text: firstName!,
+      customAvatarUIModel: customAvatar?.toUIModel(),
     );
   }
 
@@ -52,22 +56,24 @@ class GameProfile {
     String? userId,
     String? firstName,
     String? lastName,
-    String? pictureURL,
+    String? avatar,
     Role? role,
     List<Role>? roles,
     String? type,
     TagCategory? gratitude,
     TagCategory? power,
+    CustomAvatarModel? customAvatar,
   }) {
     return GameProfile(
       userId: userId ?? this.userId,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
-      pictureURL: pictureURL ?? this.pictureURL,
+      avatar: avatar ?? this.avatar,
       roles: role != null ? [role] : roles ?? this.roles,
       type: type ?? this.type,
       gratitude: gratitude ?? this.gratitude,
       power: power ?? this.power,
+      customAvatar: customAvatar ?? this.customAvatar,
     );
   }
 }

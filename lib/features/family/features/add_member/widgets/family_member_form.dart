@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/features/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -37,7 +39,7 @@ class FamilyMemberForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: selectedIndex == childSelectedIndex
+      child: selectedIndex == tabsOptions.indexOf('Child')
           ? _buildChildForm(context, nameController, ageController)
           : _buildParentForm(context, nameController, emailController),
     );
@@ -110,7 +112,7 @@ class FamilyMemberForm extends StatelessWidget {
             amount: allowanceAmount.toDouble(),
             textStyle: const FamilyAppTheme().toThemeData().textTheme.bodySmall,
           ),
-        ]
+        ],
       ],
     );
   }
@@ -125,7 +127,7 @@ class FamilyMemberForm extends StatelessWidget {
         OutlinedTextFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return context.l10n.pleaseEnterChildName;
+              return "Please enter the adult's name";
             }
             if (value.length < 3) {
               return context.l10n.pleaseEnterValidName;
@@ -147,6 +149,9 @@ class FamilyMemberForm extends StatelessWidget {
                 !Util.emailRegEx.hasMatch(value)) {
               return context.l10n.invalidEmail;
             }
+            if (value.trim() == context.read<FamilyAuthCubit>().user?.email) {
+              return context.l10n.addMemberAdultEmailSameAsLoggedIn;
+            }
             return null;
           },
           keyboardType: TextInputType.emailAddress,
@@ -157,15 +162,16 @@ class FamilyMemberForm extends StatelessWidget {
           controller: emailController,
           hintText: context.l10n.email,
           textInputAction: TextInputAction.done,
+          errorMaxLines: 2,
         ),
         const SizedBox(height: 16),
-        const BodySmallText(
-          'They will receive an email inviting them to the family, enabling them to also:',
+        BodySmallText(
+          context.l10n.addMemberAdultDescription,
         ),
         const SizedBox(height: 8),
-        _createDescriptionItem('Login to Givt with their own account'),
-        _createDescriptionItem('Approve donations of the children'),
-        _createDescriptionItem('Explore generosity as a family'),
+        _createDescriptionItem(context.l10n.addMemberAdultReason1),
+        _createDescriptionItem(context.l10n.addMemberAdultReason2),
+        _createDescriptionItem(context.l10n.addMemberAdultReason3),
       ],
     );
   }

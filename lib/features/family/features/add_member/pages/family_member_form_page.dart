@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/family/features/add_member/models/member.dart';
 import 'package:givt_app/features/family/features/add_member/widgets/add_member_loading_page.dart';
 import 'package:givt_app/features/family/features/add_member/widgets/child_or_parent_selector.dart';
 import 'package:givt_app/features/family/features/add_member/widgets/family_member_form.dart';
 import 'package:givt_app/features/family/features/add_member/widgets/member_counter.dart';
-import 'package:givt_app/utils/profile_type.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/registration/widgets/random_avatar.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsheet.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/profile_type.dart';
 
-const childSelectedIndex = 0;
+const tabsOptions = ['Child', 'Adult'];
 
 class FamilyMemberFormPage extends StatefulWidget {
   const FamilyMemberFormPage({
     required this.index,
     required this.totalCount,
     required this.membersToCombine,
+    required this.existingFamily,
     this.showTopUp = false,
     super.key,
   });
@@ -38,6 +38,7 @@ class FamilyMemberFormPage extends StatefulWidget {
   final int totalCount;
   final List<Member> membersToCombine;
   final bool showTopUp;
+  final bool existingFamily;
 
   @override
   State<FamilyMemberFormPage> createState() => _FamilyMemberFormPageState();
@@ -69,14 +70,12 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
               age: int.parse(_ageController.text),
               dateOfBirth: dateOfBirth(),
               allowance: _amount,
-              profilePictureURL: avatar.pictureURL,
               profilePictureName: avatar.fileName,
               type: ProfileType.Child,
             )
           : Member(
               firstName: _nameController.text,
               email: _emailController.text,
-              profilePictureURL: avatar.pictureURL,
               profilePictureName: avatar.fileName,
               type: ProfileType.Parent,
             );
@@ -109,7 +108,11 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
       ..addAllMembers(members)
       ..createMember();
 
-    Navigator.push(context, const AddMemberLoadingPage().toRoute(context));
+    Navigator.push(
+      context,
+      AddMemberLoadingPage(skipHeardAboutGivt: widget.existingFamily)
+          .toRoute(context),
+    );
   }
 
   @override
@@ -132,7 +135,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                   otherMembersIcons: [
                     ...widget.membersToCombine.map(
                       (member) => _memberIcon(
-                        member.profilePictureURL ?? '',
+                        member.profilePictureName ?? '',
                         member.firstName ?? '',
                       ),
                     ),
@@ -141,18 +144,18 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 ),
                 const SizedBox(height: 24),
                 ChildOrParentSelector(
-                  selectedIndex: selectedIndex,
-                  onPressed: (int index) {
-                    setState(() {
-                      selectedIndex = index;
-                    });
-
-                    FocusScope.of(context).unfocus();
-                  },
-                ),
+                    selectedIndex: selectedIndex,
+                    options: tabsOptions,
+                    onPressed: (set) {
+                      setState(() {
+                        selectedIndex = set.first == tabsOptions.first ? 0 : 1;
+                        FocusScope.of(context).unfocus();
+                      });
+                    }),
                 const SizedBox(height: 16),
                 RandomAvatar(
                   id: widget.index.toString(),
+                  profileType: selectedIndex,
                   onClick: () {
                     AvatarSelectionBottomsheet.show(
                       context,
@@ -186,9 +189,10 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
               children: [
                 const Spacer(),
                 if (isLast)
-                  _primaryButton(selectedIndex == childSelectedIndex)
+                  _primaryButton(selectedIndex == tabsOptions.indexOf('Child'))
                 else
-                  _secondaryButton(selectedIndex == childSelectedIndex),
+                  _secondaryButton(
+                      selectedIndex == tabsOptions.indexOf('Child')),
               ],
             ),
           ),
@@ -212,22 +216,21 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppTheme.primary80,
-                    width: 4,
+              Semantics(
+                identifier:
+                    state.getAvatarByKey(widget.index.toString()).fileName,
+                label: state.getAvatarByKey(widget.index.toString()).fileName,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppTheme.primary80,
+                      width: 4,
+                    ),
                   ),
-                ),
-                child: SvgPicture.network(
-                  height: 28,
-                  width: 28,
-                  state.getAvatarByKey(widget.index.toString()).pictureURL,
-                  placeholderBuilder: (context) => const SizedBox(
-                    height: 32,
-                    width: 32,
-                    child: CustomCircularProgressIndicator(),
+                  child: FunAvatar.hero(
+                    state.getAvatarByKey(widget.index.toString()).fileName,
+                    size: 28,
                   ),
                 ),
               ),
@@ -238,16 +241,14 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     );
   }
 
-  Widget _memberIcon(String pictureURL, String name) {
+  Widget _memberIcon(String filename, String name) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         children: [
-          SvgPicture.network(
-            height: 32,
-            width: 32,
-            pictureURL,
-            placeholderBuilder: (context) => const CircularProgressIndicator(),
+          FunAvatar.hero(
+            filename,
+            size: 32,
           ),
           LabelMediumText(name),
         ],
@@ -258,7 +259,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   Widget _primaryButton(bool isChildSelected) {
     return FunButton(
       onTap: () => onDone(isChildSelected: isChildSelected),
-      text: 'Done!',
+      text: 'Done',
       analyticsEvent: AnalyticsEvent(AmplitudeEvents.addMemberDoneClicked),
     );
   }
@@ -277,6 +278,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 ...widget.membersToCombine,
                 member,
               ],
+              existingFamily: widget.existingFamily,
               showTopUp: widget.showTopUp,
             ).toRoute(context),
           );

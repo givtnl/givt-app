@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:go_router/go_router.dart';
 
 class LeaveGameDialog extends StatelessWidget {
   const LeaveGameDialog({super.key, this.onConfirmLeaveGame});

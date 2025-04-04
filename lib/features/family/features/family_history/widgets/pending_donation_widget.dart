@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/family_history/family_history_cubit/family_history_cubit.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation_helper.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/features/parental_approval/dialogs/parental_approval_dialog.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
@@ -18,7 +18,7 @@ class PendingDonationWidget extends StatefulWidget {
     super.key,
   });
 
-  final ChildDonation donation;
+  final Donation donation;
 
   @override
   State<PendingDonationWidget> createState() => _PendingDonationWidgetState();

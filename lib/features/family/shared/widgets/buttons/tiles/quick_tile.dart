@@ -41,6 +41,7 @@ class QuickTile extends StatelessWidget {
             assetSize: 32,
             iconPath: iconPath,
             iconData: iconData,
+            iconColor: colorCombo.textColor,
             titleBig: titleBig,
             titleSmall: titleSmall,
             mainAxisAlignment: MainAxisAlignment.center,

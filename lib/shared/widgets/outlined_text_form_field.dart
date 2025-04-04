@@ -7,6 +7,9 @@ class OutlinedTextFormField extends StatelessWidget {
   const OutlinedTextFormField({
     required this.hintText,
     this.controller,
+    this.minLines,
+    this.maxLines = 1,
+    this.errorMaxLines = 1,
     this.initialValue = '', // Only when controller is null
     this.errorStyle,
     this.keyboardType,
@@ -18,12 +21,16 @@ class OutlinedTextFormField extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
     this.suffixIcon,
     this.onChanged,
+    this.focusNode,
     this.validator,
     this.onTapOutside,
     super.key,
   });
 
   final TextEditingController? controller;
+  final int? minLines;
+  final int? maxLines;
+  final int? errorMaxLines;
   final String initialValue;
   final String hintText;
   final TextStyle? errorStyle;
@@ -36,32 +43,36 @@ class OutlinedTextFormField extends StatelessWidget {
   final IconButton? suffixIcon;
   final List<String> autofillHints;
   final List<TextInputFormatter>? inputFormatters;
+  final FocusNode? focusNode;
   final TextCapitalization textCapitalization;
   final void Function(PointerDownEvent)? onTapOutside;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: focusNode,
       controller: controller,
       initialValue: controller == null ? initialValue : null,
       onChanged: onChanged,
       style:
           const FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
-                color: FamilyAppTheme.primary40,
+                color: FamilyAppTheme.primary20,
               ),
       decoration: InputDecoration(
-        hintText: hintText,
-        border: enabledInputBorder,
-        enabledBorder: enabledInputBorder,
-        focusedBorder: selectedInputBorder,
-        errorBorder: errorInputBorder,
-        suffixIcon: suffixIcon,
-        errorStyle: errorStyle,
-      ),
+          hintText: hintText,
+          border: enabledInputBorder,
+          enabledBorder: enabledInputBorder,
+          focusedBorder: selectedInputBorder,
+          errorBorder: errorInputBorder,
+          suffixIcon: suffixIcon,
+          errorStyle: errorStyle,
+          errorMaxLines: errorMaxLines),
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
       autofillHints: autofillHints,
       readOnly: readOnly,
+      minLines: minLines,
+      maxLines: maxLines,
       autocorrect: false,
       validator: validator,
       obscureText: obscureText,

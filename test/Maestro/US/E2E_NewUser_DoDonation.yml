@@ -1,0 +1,15 @@
+appId: net.givtapp.ios.test
+name: User registratrion, Tutorial, Kid Donation
+#This end-to-end test verifies that a new user can successfully register, complete the tutorial, and make a kid donation. 
+#The test ensures that the correct user flow is followed and that a parent receives an email notification upon the kid’s donation.
+env:
+    USERNAME: donna+maestrous@givtapp.net
+    PASSWORD: Test123
+    PARENT_FIRSTNAME: Automate
+    PARENT_LASTNAME: with Maestro
+    KIDSNAME: Awesome
+---
+- runFlow: "NewUserRegistration.yml"
+- runFlow: "tutorial.yml"
+- runFlow: "give_findcharity_nocreditcard.yml"
+- runFlow: "delete_account.yml"

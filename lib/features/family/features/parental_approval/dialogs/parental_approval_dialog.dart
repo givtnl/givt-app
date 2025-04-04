@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation.dart';
 import 'package:givt_app/features/family/features/parental_approval/cubit/parental_approval_cubit.dart';
 import 'package:givt_app/features/family/features/parental_approval/widgets/parental_approval_dialog_content.dart';
 
@@ -11,7 +11,7 @@ class ParentalApprovalDialog extends StatelessWidget {
     super.key,
   });
 
-  final ChildDonation donation;
+  final Donation donation;
 
   @override
   Widget build(BuildContext context) {

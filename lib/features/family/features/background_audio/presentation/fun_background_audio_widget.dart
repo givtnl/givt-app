@@ -1,8 +1,10 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/animated_speaker.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 /*
   There's two ways to listen to the audio state of this widget.
@@ -15,11 +17,13 @@ class FunBackgroundAudioWidget extends StatefulWidget {
     this.isVisible = false,
     this.onPlay,
     this.onPauseOrStop,
+    this.iconColor,
     super.key,
   });
 
   final bool isVisible;
   final String audioPath;
+  final Color? iconColor;
   final VoidCallback? onPlay;
   final VoidCallback? onPauseOrStop;
   @override
@@ -40,12 +44,18 @@ class _FunBackgroundAudioWidgetState extends State<FunBackgroundAudioWidget>
       ..onPlayerStateChanged.listen((event) {
         if (event == PlayerState.playing) {
           if (mounted) {
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.audioWidgetPlayClicked,
+            );
             setState(() => isPlaying = true);
             widget.onPlay?.call();
             _cubit.onPlay();
           }
         } else {
           if (mounted) {
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.audioWidgetPauseOrStopClicked,
+            );
             setState(() => isPlaying = false);
             widget.onPauseOrStop?.call();
             _cubit.onPauseOrStop();
@@ -67,10 +77,12 @@ class _FunBackgroundAudioWidgetState extends State<FunBackgroundAudioWidget>
     return Visibility(
       visible: widget.isVisible,
       child: isPlaying
-          ? const AnimatedSpeaker()
+          ? AnimatedSpeaker(iconColor: widget.iconColor)
           : GestureDetector(
-              onTap: () => _audioPlayer.play(AssetSource(widget.audioPath)),
-              child: AnimatedSpeaker.pause(),
+              onTap: () {
+                _audioPlayer.play(AssetSource(widget.audioPath));
+              },
+              child: AnimatedSpeaker.pause(iconColor: widget.iconColor),
             ),
     );
   }

@@ -18,6 +18,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const Cubic gentle = Cubic(0.47, 0, 0.23, 1.38);
 
 // extra colors within pallette
+  static const primary10 = Color(0xFF002111);
   static const primary20 = Color(0xFF003920);
   static const primary30 = Color(0xFF005231);
   static const primary40 = Color(0xFF006D42);
@@ -40,6 +41,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const secondary98 = Color(0xFFE2FFFE);
   static const secondary99 = Color(0xFFF1FFFE);
 
+  static const tertiary10 = Color(0xFF2A0053);
   static const tertiary20 = Color(0xFF431573);
   static const tertiary40 = Color(0xFF744AA5);
   static const tertiary50 = Color(0xFF8E63C0);
@@ -51,6 +53,8 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const info20 = Color(0xFF4E2600);
   static const info30 = Color(0xFF6F3900);
   static const info40 = Color(0xFF914C00);
+  static const info70 = Color.fromRGBO(240, 150, 72, 1);
+  static const info80 = Color(0xFFE6A87F);
   static const info90 = Color(0xFFFFDCC3);
   static const info95 = Color(0xFFFFEDE3);
 
@@ -68,6 +72,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const error30 = Color(0xFF920700);
   static const error40 = Color(0xFFB91F0F);
   static const error50 = Color.fromRGBO(220, 58, 38, 1);
+  static const error60 = Color(0xFFE06A5F);
   static const error80 = Color(0xFFFFB4A7);
   static const error90 = Color(0xFFFFDAD4);
   static const error98 = Color.fromRGBO(255, 248, 246, 1);
@@ -75,7 +80,10 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const stageColorPulse = Color(0xFFFFD669);
   static const stageColorPodium = Color(0xFFF5A563);
   static const neutral100 = Color(0xFFFEFFFF);
+  static const neutral98 = Color(0xFFFBF9F1);
+  static const neutral95 = Color(0xFFF3F1E9);
   static const neutral90 = Color(0xFFE4E3DB);
+  static const neutral80 = Color(0xFFC8C7BF);
   static const neutral70 = Color(0xFFACABA4);
 
   static const neutralVariant40 = Color(0xFF5B6055);
@@ -84,8 +92,11 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const neutralVariant80 = Color(0xFFC8C7BF);
   static const neutralVariant90 = Color(0xFFE4E3DB);
   static const neutralVariant95 = Color(0xFFEEF2E4);
+  static const neutralVariant99 = Color.fromRGBO(254, 252, 244, 1);
 
   static const opacityWhite75 = Color(0x4CFFFFFF);
+
+  static const opacityBlack50 = Color(0x80000000);
 
   static const disabledTileBackground = Color(0xFFF5F4F5);
   static const disabledTileBorder = Color(0xFFC8C6C9);

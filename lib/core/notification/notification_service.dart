@@ -12,6 +12,7 @@ import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -195,18 +196,9 @@ class NotificationService implements INotificationService {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     await flutterLocalNotificationsPlugin.initialize(
-      InitializationSettings(
-        android: const AndroidInitializationSettings('icon'),
-        iOS: DarwinInitializationSettings(
-          onDidReceiveLocalNotification: (id, title, body, payload) async =>
-              _navigateToScreen(
-            NotificationResponse(
-              payload: payload,
-              notificationResponseType:
-                  NotificationResponseType.selectedNotification,
-            ),
-          ),
-        ),
+      const InitializationSettings(
+        android: AndroidInitializationSettings('icon'),
+        iOS: DarwinInitializationSettings(),
       ),
       onDidReceiveBackgroundNotificationResponse: _navigateToScreen,
       onDidReceiveNotificationResponse: _navigateToScreen,
@@ -216,7 +208,7 @@ class NotificationService implements INotificationService {
     /// default FCM channel to enable heads up notifications.
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     await FirebaseMessaging.instance
@@ -296,6 +288,10 @@ class NotificationService implements INotificationService {
           title: customData['title'] as String,
           payload: {'Type': 'GenerosityChallenge'},
         );
+      case 'MissionAchieved':
+        LoggingInfo.instance.info('MissionAchieved received');
+        final missionRepository = getIt<MissionRepository>();
+        await missionRepository.missionAchieved(customData['key'] as String);
     }
   }
 

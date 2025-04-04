@@ -90,6 +90,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
           onTap: () {},
           child: GameProfileItem(
             profile: profiles[i],
+            size: 70,
           ),
         ),
       );

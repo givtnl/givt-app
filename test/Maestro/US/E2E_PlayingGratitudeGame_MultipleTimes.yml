@@ -1,0 +1,11 @@
+appId: net.givtapp.ios.test
+name: Playing the Gratitude Game multiple times with different number of players.
+#This end-to-end test verifies that the game can be played with 2, 3, 4 and 5 players. 
+env:
+    USERNAME: donna+maestrofamily@givtapp.net
+    PASSWORD: Test123
+---
+- runFlow: loginWithAccount.yml
+- runFlow: gratitudeGame_2Players.yml
+- runFlow: gratitudeGame_3Players.yml
+- runFlow: gratitudeGame_4Players.yml

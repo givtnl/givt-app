@@ -9,16 +9,16 @@ import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 part 'unregister_state.dart';
 
 class UnregisterCubit extends Cubit<UnregisterState> {
-  UnregisterCubit(this.authRepositoy) : super(const UnregisterInitial());
+  UnregisterCubit(this.authRepository) : super(const UnregisterInitial());
 
-  final AuthRepository authRepositoy;
+  final AuthRepository authRepository;
 
   Future<void> unregister({
     required String email,
   }) async {
     emit(const UnregisterLoading());
     try {
-      await authRepositoy.unregisterUser(email: email);
+      await authRepository.unregisterUser(email: email);
       emit(const UnregisterGivy());
       await Future.delayed(const Duration(seconds: 5), () {
         emit(const UnregisterSuccess());

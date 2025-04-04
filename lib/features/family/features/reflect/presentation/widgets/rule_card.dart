@@ -10,6 +10,7 @@ class RuleCard extends StatelessWidget {
     required this.button,
     required this.icon,
     required this.color,
+    required this.title,
     super.key,
   });
 
@@ -18,58 +19,51 @@ class RuleCard extends StatelessWidget {
   final Widget button;
   final FunIcon icon;
   final Color color;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(alignment: Alignment.bottomCenter, children: [
-      Padding(
-        padding: const EdgeInsets.only(top: 48),
-        child: Container(
-          height: 464,
-          width: double.infinity,
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      clipBehavior: Clip.none,
+      children: [
+        Container(
           decoration: BoxDecoration(
             color: color,
-            border: Border.all(
-              color: Colors.white,
-              width: 0,
-            ),
             borderRadius: BorderRadius.circular(20),
           ),
-        ),
-      ),
-      Container(
-        height: 410,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            color: FamilyAppTheme.neutralVariant95,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
-              const Spacer(flex: 3),
-              header,
-              const Spacer(),
-              const SizedBox(height: 4),
-              content,
-              const Spacer(),
-              const SizedBox(height: 4),
-              button,
-              const Spacer(flex: 3),
+              const SizedBox(height: 24),
+              TitleMediumText(title),
+              const SizedBox(height: 12),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: FamilyAppTheme.neutralVariant95,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+                  child: Column(
+                    children: [
+                      header,
+                      const SizedBox(height: 16),
+                      content,
+                      const SizedBox(height: 16),
+                      button,
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
-      ),
-      Positioned(top: 0, child: icon),
-      Positioned(
-        top: icon.circleSize,
-        child: const TitleMediumText('Read out loud'),
-      ),
-    ]);
+        Positioned(top: -48, child: icon),
+      ],
+    );
   }
 }

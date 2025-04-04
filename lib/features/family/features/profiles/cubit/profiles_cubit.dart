@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/family/features/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -38,7 +39,9 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         _authRepository.authenticatedUserStream().listen(
       (user) {
         if (user != null) {
-          clearProfiles(clearIndex: false);
+          if (state.profiles.where((e) => e.id == user.guid).isEmpty) {
+            clearProfiles();
+          }
           fetchAllProfiles();
         } else {
           clearProfiles();
@@ -66,7 +69,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
           final updatedProfile = oldProfile.copyWith(
             firstName: newProfile.firstName,
             lastName: newProfile.lastName,
-            pictureURL: newProfile.pictureURL,
+            avatar: newProfile.avatar,
           );
           newProfiles[state.profiles.indexOf(oldProfile)] = updatedProfile;
         }
@@ -99,17 +102,29 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   void _emitProfilesUpdated(
     List<Profile> profiles,
   ) {
+    int? newIndex;
+    try {
+      final currentId = state.profiles[state.activeProfileIndex].id;
+      final newActiveProfile = profiles.firstWhere(
+        (element) => element.id == currentId,
+        orElse: Profile.empty,
+      );
+      newIndex = profiles.indexOf(newActiveProfile);
+    } catch (e, s) {
+      // we probably didn't have profiles before, ignore this error
+    }
+
     emit(
       ProfilesUpdatedState(
         profiles: profiles,
-        activeProfileIndex: state.activeProfileIndex,
+        activeProfileIndex: newIndex ?? state.activeProfileIndex,
       ),
     );
   }
 
   Future<void> refresh() async => _profilesRepository.refreshProfiles();
 
-  Future<void> setActiveProfile(String id) async {
+  void setActiveProfile(String id) {
     try {
       final profile = state.profiles.firstWhere(
         (element) => element.id == id,

@@ -32,7 +32,7 @@ class ParentSummaryItem {
     return SummaryUIModel(
       conversations: conversations.map((e) => e.toUIModel()).toList(),
       audioLink: audio,
-      date: date,
+      date: date?.toLocal(),
     );
   }
 }
@@ -44,7 +44,7 @@ class Conversation {
   });
 
   factory Conversation.fromMap(Map<String, dynamic> map) {
-    final sentence = map['sentence'] as String;
+    final sentence = map['sentence'] as String? ?? '';
     final profile = Profile.fromMap(map['profile'] as Map<String, dynamic>);
     return Conversation(
       sentence: sentence,
@@ -58,8 +58,7 @@ class Conversation {
   ConversationUIModel toUIModel() {
     return ConversationUIModel(
       sentence: sentence,
-      profilePicture: profile.pictureURL,
-      profileName: profile.firstName,
+      profile: profile,
     );
   }
 }

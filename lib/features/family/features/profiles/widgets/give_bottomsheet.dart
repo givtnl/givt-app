@@ -142,6 +142,7 @@ class GiveBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
+                      semanticLabel: 'xmark',
                       FontAwesomeIcons.xmark,
                       size: 24,
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -189,7 +190,9 @@ class GiveBottomSheet extends StatelessWidget {
   }
 
   void showEmptyWalletBottomSheet(
-      BuildContext context, VoidCallback afterPopAction) {
+    BuildContext context,
+    VoidCallback afterPopAction,
+  ) {
     EmptyWalletBottomSheet.show(context, afterPopAction);
   }
 }

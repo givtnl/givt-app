@@ -1,37 +1,41 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/data/record_utils.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
-import 'package:givt_app/shared/widgets/common_icons.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:record/record.dart';
 
 class FunAudioRecorder extends StatefulWidget {
-  const FunAudioRecorder({super.key, required this.onStop});
+  const FunAudioRecorder({required this.onStop, super.key});
+
   final void Function(String path) onStop;
 
   @override
   State<FunAudioRecorder> createState() => _FunAudioRecorderState();
 }
 
-class _FunAudioRecorderState extends State<FunAudioRecorder> with AudioRecorderMixin {
+class _FunAudioRecorderState extends State<FunAudioRecorder>
+    with AudioRecorderMixin {
   int _recordDuration = 0;
   Timer? _timer;
   late final AudioRecorder _audioRecorder;
   StreamSubscription<RecordState>? _recordSub;
   RecordState _recordState = RecordState.stop;
   StreamSubscription<Amplitude>? _amplitudeSub;
-  Amplitude? _amplitude;
+
+  // ignore: unused_field
+  late Amplitude? _amplitude;
 
   @override
   void initState() {
     _audioRecorder = AudioRecorder();
 
-    _recordSub = _audioRecorder.onStateChanged().listen((recordState) {
-      _updateRecordState(recordState);
-    });
+    _recordSub = _audioRecorder.onStateChanged().listen(_updateRecordState);
 
     _amplitudeSub = _audioRecorder
         .onAmplitudeChanged(const Duration(milliseconds: 300))
@@ -65,16 +69,22 @@ class _FunAudioRecorderState extends State<FunAudioRecorder> with AudioRecorderM
         _recordDuration = 0;
 
         _startTimer();
+
+        await AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.audioRecordingStarted,
+        );
       }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
     }
   }
 
   Future<void> _stop() async {
     final path = await _audioRecorder.stop();
+
+    await AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.audioRecordingStopped,
+    );
 
     if (path != null) {
       widget.onStop(path);
@@ -178,21 +188,24 @@ class _FunAudioRecorderState extends State<FunAudioRecorder> with AudioRecorderM
       return _buildTimer();
     }
 
-    return const BodySmallText("Tap to record");
+    return const BodySmallText(
+      'Tap to record',
+      color: FamilyAppTheme.primary60,
+    );
   }
 
   Widget _buildTimer() {
     final minutes = _formatNumber(_recordDuration ~/ 60);
     final seconds = _formatNumber(_recordDuration % 60);
 
-    return Text(
+    return TitleMediumText(
       '$minutes : $seconds',
-      style: const TextStyle(color: Colors.red),
+      color: FamilyAppTheme.error40,
     );
   }
 
   String _formatNumber(int number) {
-    String numberStr = number.toString();
+    var numberStr = number.toString();
     if (number < 10) {
       numberStr = '0$numberStr';
     }

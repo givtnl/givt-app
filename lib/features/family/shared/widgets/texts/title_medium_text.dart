@@ -21,8 +21,12 @@ class TitleMediumText extends StatelessWidget {
     this.strutStyle,
   });
 
-  factory TitleMediumText.primary30(String text) =>
-      TitleMediumText(text, color: FamilyAppTheme.primary30);
+  factory TitleMediumText.primary30(String text, {TextAlign? textAlign}) =>
+      TitleMediumText(
+        text,
+        color: FamilyAppTheme.primary30,
+        textAlign: textAlign,
+      );
 
   factory TitleMediumText.primary40(String text) =>
       TitleMediumText(text, color: FamilyAppTheme.primary40);

@@ -1,20 +1,24 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/pages/record_summary_message_.bottomsheet.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_player.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/league/presentation/pages/in_game_league_screen.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/summary_details.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/summary_details_custom.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/goal_progress_screen.dart';
+import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:go_router/go_router.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class SummaryScreen extends StatefulWidget {
@@ -27,6 +31,7 @@ class SummaryScreen extends StatefulWidget {
 class _SummaryScreenState extends State<SummaryScreen> {
   final _cubit = getIt<SummaryCubit>();
   bool pressDown = false;
+  bool _isDoneBtnLoading = false;
 
   @override
   void initState() {
@@ -50,107 +55,71 @@ class _SummaryScreenState extends State<SummaryScreen> {
   Widget build(BuildContext context) {
     return Scrollbar(
       child: FunScaffold(
-        minimumPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+        minimumPadding: EdgeInsets.zero,
+        safeAreaBottom: false,
         canPop: false,
-        appBar: const FunTopAppBar(
-          title: 'Awesome work heroes!',
-        ),
         body: BaseStateConsumer(
           cubit: _cubit,
+          onCustom: _onCustom,
           onData: (context, details) {
-            return SingleChildScrollView(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 24),
-                    TitleMediumText(
-                      details.isShareableSummary
-                          ? 'Let’s share your superhero activity with the rest of the family!'
-                          : 'Your mission to turn your gratitude into generosity was a success!',
-                      textAlign: TextAlign.center,
+            return LayoutBuilder(
+              builder:
+                  (BuildContext context, BoxConstraints viewportConstraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: viewportConstraints.maxHeight,
                     ),
-                    const SizedBox(height: 8),
-                    SvgPicture.asset(
-                        'assets/family/images/family_superheroes.svg'),
-                    const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: FunTile.gold(
-                            titleBig: details.minutesPlayed == 1
-                                ? '1 minute family time'
-                                : '${details.minutesPlayed} minutes family time',
-                            iconData: FontAwesomeIcons.solidClock,
-                            assetSize: 32,
-                            isPressedDown: true,
-                            analyticsEvent: AnalyticsEvent(
-                              AmplitudeEvents
-                                  .familyReflectSummaryMinutesPlayedClicked,
-                            ),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 24),
+                          FunTag.purple(
+                            text: DateTime.now().formattedFullMonth,
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: FunTile.red(
-                            titleBig: details.generousDeeds == 1
-                                ? '1 generous deed'
-                                : '${details.generousDeeds} generous deeds',
-                            iconData: FontAwesomeIcons.solidHeart,
-                            assetSize: 32,
-                            isPressedDown: true,
-                            analyticsEvent: AnalyticsEvent(
-                              AmplitudeEvents
-                                  .familyReflectSummaryGenerousDeedsClicked,
+                          const SizedBox(height: 16),
+                          const TitleLargeText('Great job Family!'),
+                          const Spacer(),
+                          if (details.players.isNotEmpty)
+                            AvatarBar(
+                              circleSize: 54,
+                              uiModel: AvatarBarUIModel(
+                                avatarUIModels: [
+                                  for (var i = 0;
+                                      i < details.players.length;
+                                      i++)
+                                    AvatarUIModel(
+                                      avatar: details.players[i].avatar,
+                                      customAvatarUIModel: details.players[i].customAvatar?.toUIModel(),
+                                      text: details.players[i].firstName,
+                                    ),
+                                ],
+                              ),
+                              onAvatarTapped: (i) {},
                             ),
+
+                          // stats button
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 24,
+                              right: 24,
+                              bottom: 24,
+                            ),
+                            child: getTileStats(details),
                           ),
-                        ),
-                      ],
-                    ),
-                    if (details.showRecorder) const SizedBox(height: 8),
-                    if (details.showRecorder)
-                      FunButton.secondary(
-                        leftIcon: FontAwesomeIcons.microphone,
-                        onTap: () {
-                          RecordSummaryMessageBottomsheet.show(
-                            context,
-                            details.adultName,
-                            _cubit.audioAvailable,
-                          );
-                        },
-                        text: 'Leave a message',
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.summaryLeaveMessageClicked,
-                        ),
-                      ),
-                    if (details.showPlayer)
-                      FunAudioPlayer(
-                        source: details.audioPath,
-                        onDelete: _cubit.onDeleteAudio,
-                      ),
-                    const SizedBox(height: 8),
-                    FunButton(
-                      onTap: () {
-                        if (details.audioPath.isNotEmpty) {
-                          sendAudioAndNavigate(details.audioPath);
-                          return;
-                        }
-                        navigateWithConfetti();
-                      },
-                      isPressedDown: pressDown,
-                      text: details.isShareableSummary
-                          ? pressDown
-                              ? 'Sent!'
-                              : 'Share summary'
-                          : 'Back to home',
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.familyReflectSummaryBackToHome,
+                          const Spacer(),
+                          // Bottom button
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: getFunButton(details),
+                          ),
+                          const SizedBox(height: 40),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 40),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             );
           },
         ),
@@ -158,22 +127,130 @@ class _SummaryScreenState extends State<SummaryScreen> {
     );
   }
 
-  Future<void> sendAudioAndNavigate(String path) async {
-    await _cubit.shareAudio(path);
-    await navigateWithConfetti();
+  Widget getTileStats(SummaryDetails details) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: FunTile.green(
+                      titleBig: details.minutesPlayed == 1
+                          ? '1 minute family time'
+                          : '${details.minutesPlayed} minutes family time',
+                      iconData: FontAwesomeIcons.solidClock,
+                      assetSize: 32,
+                      isPressedDown: true,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents
+                            .familyReflectSummaryMinutesPlayedClicked,
+                      ),
+                    ),
+                  ),
+                  if (details.xpEarnedForTime != null)
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: FunTag.xp(details.xpEarnedForTime!),
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: FunTile.red(
+                      titleBig: details.generousDeeds == 1
+                          ? '1 generous deed'
+                          : '${details.generousDeeds} generous deeds',
+                      iconData: FontAwesomeIcons.solidHeart,
+                      assetSize: 32,
+                      isPressedDown: true,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents
+                            .familyReflectSummaryGenerousDeedsClicked,
+                      ),
+                    ),
+                  ),
+                  if (details.xpEarnedForDeeds != null)
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: FunTag.xp(details.xpEarnedForDeeds!),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 2 - 24,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: FunTile.gold(
+              titleBig: '${details.totalXp} XP\ntotal',
+              iconData: FontAwesomeIcons.bolt,
+              assetSize: 32,
+              isPressedDown: true,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.familyReflectSummaryXpClicked,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
-  Future<void> navigateWithConfetti() async {
-    _cubit.onCloseGame();
+  FunButton getFunButton(SummaryDetails details) {
+    final analyticEvent = AnalyticsEvent(
+      AmplitudeEvents.familyReflectSummaryClaimXp,
+    );
+
+    return FunButton(
+      isLoading: _isDoneBtnLoading,
+      onTap: _onTapDoneBtn,
+      isPressedDown: pressDown,
+      text: 'Claim XP',
+      analyticsEvent: analyticEvent,
+    );
+  }
+
+  void _onCustom(BuildContext context, SummaryDetailsCustom custom) {
+    switch (custom) {
+      case ShowConfetti():
+        _showConffetti(context);
+      case NavigateToInGameLeague():
+        _navigateToInGameLeague(context);
+      case NavigateToGoalProgressUpdate():
+        _navigateToGoalProgressUpdate(context);
+    }
+  }
+
+  void _showConffetti(BuildContext context) {
     setState(() {
       pressDown = true;
     });
-    await ConfettiDialog.show(context);
-    await Future<void>.delayed(const Duration(seconds: 1));
-    if (mounted) {
-      context.goNamed(
-        FamilyPages.profileSelection.name,
-      );
-    }
+    
+    ConfettiDialog.show(context, duration: const Duration(milliseconds: 1000));
+  }
+
+  void _navigateToInGameLeague(BuildContext context) {
+    Navigator.of(context).push(const InGameLeagueScreen().toRoute(context));
+  }
+
+  void _navigateToGoalProgressUpdate(BuildContext context) {
+    Navigator.of(context).push(const GoalProgressScreen().toRoute(context));
+  }
+
+  void _onTapDoneBtn() {
+    setState(() {
+      _isDoneBtnLoading = true;
+    });
+    _cubit.doneButtonPressed();
   }
 }

@@ -1,14 +1,6 @@
 enum FamilyPages {
   parentGive(path: 'parent-give', name: 'PARENT-GIVE'),
   profileSelection(path: '/profile-selection', name: 'PROFILE_SELECTION'),
-  kidsAvatarSelection(
-    path: 'kids-avatar-selection',
-    name: 'KIDS-AVATAR-SELECTION',
-  ),
-  parentAvatarSelection(
-    path: 'parent-avatar-selection',
-    name: 'PARENT-AVATAR-SELECTION',
-  ),
   wallet(path: 'wallet', name: 'WALLET'),
   parentHome(path: 'parent-home', name: 'PARENT-HOME'),
   camera(path: 'camera', name: 'CAMERA'),
@@ -22,11 +14,13 @@ enum FamilyPages {
     path: 'family-personal-info-edit',
     name: 'FAMILY-PERSONAL-INFO-EDIT',
   ),
+  gratitudeGoal(path: 'gratitude-goal', name: 'GRATITUDE-GOAL'),
   registrationUS(path: '/registration-us', name: 'REGISTRATION-US'),
   permitUSBiometric(
     path: '/permit-biometric-us',
     name: 'US-PERMIT-BIOMETRIC-US',
   ),
+  heardAboutGivt(path: 'heard-about-givt', name: 'HEARD-ABOUT-GIVT'),
   giveByListFamily(path: 'give-by-list-family', name: 'GIVE-BY-LIST-FAMILY'),
   test(path: 'test', name: 'TEST'),
   scanNFC(path: 'scan-nfc', name: 'SCAN_NFC'),
@@ -68,13 +62,19 @@ enum FamilyPages {
   ),
 
   //reflect and share:
-  reflectIntro(path: 'reflect-intro', name: 'REFLECT-INTRO'),
-  assignBedtimeResponsibility(
-      path: 'assign-bedtime-responsibility',
-      name: 'ASSIGN-BEDTIME-RESPONSIBILITY'),
+  reflectIntro(
+    path: 'reflect-intro',
+    name: 'REFLECT-INTRO',
+  ),
+  setupBedtime(
+    path: 'setup-bedtime',
+    name: 'SETUP-BEDTIME',
+  ),
 
   //Missions
   missions(path: 'missions', name: 'MISSIONS'),
+  setupPushNotification(
+      path: 'setup-pushnotification', name: 'SETUP-PUSHNOTIFICATION'),
 
   //Game summaries
   gameSummaries(path: 'game-summaries', name: 'GAME-SUMMARIES'),

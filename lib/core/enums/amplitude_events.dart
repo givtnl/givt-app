@@ -1,5 +1,6 @@
 enum AmplitudeEvents {
   letsGo('lets_go'),
+  loading('loading'),
   welcomeContinueClicked('welcome_continue_clicked'),
   loginClicked('login_clicked'),
   emailSignupContinueClicked('email_signup_continue_clicked'),
@@ -14,7 +15,6 @@ enum AmplitudeEvents {
   addMemberContinueClicked('add_member_continue_clicked'),
   addMemberTypeSelectorClicked('add_member_type_selector_clicked'),
   failedToCreateMember('failed_to_create_member'),
-  failedToGetVpc('failed_to_get_vpc'),
   failedTopUpNoFunds('failed_top_up_no_funds'),
   allowanceNotSuccessful('allowance_not_successful'),
   backClicked('back_clicked'),
@@ -23,15 +23,13 @@ enum AmplitudeEvents {
   continueClicked('continue_clicked'),
   readyClicked('ready_clicked'),
   retryClicked('retry_clicked'),
+  skipClicked('skip_clicked'),
   createChildProfileClicked('create_child_profile_clicked'),
   directNoticeClicked('direct_notice_clicked'),
   enterCardDetailsClicked('enter_card_details_clicked'),
   infoGivingAllowanceClicked('info_giving_allowance_clicked'),
   infoGivingAllowanceDismissed('info_giving_allowance_dismissed'),
   setUpChildProfileClicked('set_up_child_profile_clicked'),
-  vpcAccepted('vpc_accepted'),
-  vpcSuccess('vpc_successful'),
-  vpcCancelled('vpc_cancelled'),
   childDetailsEditAppBarClicked('child_details_edit_app_bar_clicked'),
   childDetailsEditCardClicked(
     'child_details_edit_card_clicked',
@@ -42,6 +40,24 @@ enum AmplitudeEvents {
   childEditMonthlyAllowanceSaveClicked(
     'child_edit_monthly_allowance_save_clicked',
   ),
+  aboutGivtSendFeedbackClicked('about_givt_send_feedback_clicked'),
+  editPhoneNumberSaveClicked('edit_phone_number_save_clicked'),
+  editEmailSaveClicked('edit_email_save_clicked'),
+  inAppReviewTriggered('in_app_review_triggered'),
+  askForInterviewTriggered('ask_for_interview_triggered'),
+
+  // Gratitude Goal
+  gratitudeGoalStartClicked('gratitude_goal_start_clicked'),
+  gratitudeGoalBehaviorClicked('gratitude_goal_behavior_clicked'),
+  gratitudeGoalLetsDoItClicked('gratitude_goal_lets_do_it_clicked'),
+  gratitudeGoalYesOfCourseClicked('gratitude_goal_yes_of_course_clicked'),
+  gratitudeGoalNoNotReallyClicked('gratitude_goal_no_not_really_clicked'),
+  gratitudeGoalMaybeLaterClicked('gratitude_goal_maybe_later_clicked'),
+  gratitudeGoalLaterDoneClicked('gratitude_goal_later_done_clicked'),
+  gratitudeGoalTapToContinueClicked('gratitude_goal_tap_to_continue_clicked'),
+  gratitudeGoalCommitToThisGoalClicked(
+      'gratitude_goal_commit_to_this_goal_clicked'),
+  gratitudeGoalCloseClicked('gratitude_goal_close_clicked'),
 
   // Topup flow
   topupFailed('topup_failed'),
@@ -55,7 +71,6 @@ enum AmplitudeEvents {
 
   // Edit Recurring Giving allowance flow
   editRGAConfirmClicked('edit_rga_confirm_clicked'),
-
   childEditCancelClicked('child_edit_cancel_clicked'),
   childProfileClicked('child_profile_clicked'),
   adultProfileTileClicked('adult_profile_tile_clicked'),
@@ -76,15 +91,6 @@ enum AmplitudeEvents {
   removeGivingGoalClicked('remove_giving_goal_clicked'),
   recurringDonationsClicked('recurring_donations_clicked'),
   editAvatarPictureClicked('edit_avatar_picture_clicked'),
-  avatarSelected('avatar_selected'),
-  avatarSaved('avatar_saved'),
-  cacheMembersDueToNoFunds('cache_members_due_to_no_funds'),
-  changePaymentMethodForFailedVPCClicked(
-    'change_payment_method_for_failed_vpc_clicked',
-  ),
-  vpcReadyClicked('vpc_ready_clicked'),
-  tryAgainForFailedVPCClicked('try_again_for_failed_vpc_clicked'),
-  failedToCreateMembersFromCache('failed_to_create_members_from_cache'),
   familyGoalCreateClicked('family_goal_create_clicked'),
   familyGoalCauseSet('family_goal_cause_set'),
   familyGoalAmountSet('family_goal_amount_set'),
@@ -107,7 +113,6 @@ enum AmplitudeEvents {
     'invited_to_impact_group_bottom_sheet_shown',
   ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
-
   organisationCardClicked('organisation_card_clicked'),
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
   sliderAmountChanged('slider_amount_changed'),
@@ -153,6 +158,9 @@ enum AmplitudeEvents {
   loginPressed('login_pressed'),
   logoutClicked('log_out_pressed'),
   terminateAccountSuccess('terminate_account_success'),
+  terminateAccountStarted('terminate_account_started'),
+  terminateAccountCheckboxChecked('terminate_account_checkbox_checked'),
+  terminateAccountCancelled('terminate_account_cancelled'),
   profilePressed('profile_pressed'),
   profileSwitchPressed('profile_switch_pressed'),
   assignCoinPressed('assign_coin_pressed'),
@@ -171,6 +179,10 @@ enum AmplitudeEvents {
   walletTracker('wallet_tracker'),
   parentProfileIconClicked('parent_profile_icon_clicked'),
   mySettingsClicked('my_settings_clicked'),
+  homeSettingsClicked('home_settings_clicked'),
+  leaguePlayGameClicked('league_play_game_clicked'),
+  leagueExplanationContinueClicked('league_explanation_continue_clicked'),
+  leagueButtonClicked('league_button_clicked'),
 
   // Change Password
   changePasswordClicked('change_password_clicked'),
@@ -196,7 +208,6 @@ enum AmplitudeEvents {
   coinMediumIdNotRecognizedTryAgainClicked(
     'coin_medium_id_not_recognized_try_again_clicked',
   ),
-
   organisationSelected('organisation_is_set'),
   editAvatarIconClicked('edit_avatar_icon_clicked'),
   avatarImageSelected('avatar_image_selected'),
@@ -212,6 +223,7 @@ enum AmplitudeEvents {
   schoolEventFlowConfirmButtonClicked(
     'school_event_flow_confirm_button_clicked',
   ),
+  funDialogAction('fun_dialog_action'),
   schoolEventLogOutTriggered('school_event_log_out_triggered'),
   permissionsGoToSettingsClicked('open_app_permissions_settings'),
   permissionsNextClicked('next_permissions_clicked'),
@@ -223,7 +235,6 @@ enum AmplitudeEvents {
   goToChallengeFromRegistrationClicked(
     'go_to_challenge_from_registration_clicked',
   ),
-
   bottomsheetCloseButtonClicked('bottomsheet_close_button_clicked'),
 
   // BoxOrigin flow
@@ -289,7 +300,9 @@ enum AmplitudeEvents {
   reflectAndShareResultShuffleRolesClicked(
     'reflect_and_share_result_shuffle_roles_clicked',
   ),
-  familyReflectSummaryBackToHome('family_reflect_summary_back_to_home'),
+  reflectAndShareShowSummaryClicked('reflect_and_share_show_summary_clicked'),
+  reflectAndShareWereCommitted('reflect_and_share_were_committed'),
+  familyReflectSummaryClaimXp('family_reflect_summary_claim_xp'),
   gratefulTileSubmitted('grateful_tile_submitted'),
   generousTileSubmitted('generous_tile_submitted'),
   generousTileSelected('generous_tile_selected'),
@@ -305,7 +318,9 @@ enum AmplitudeEvents {
   familyReflectSummaryGenerousDeedsClicked(
     'family_reflect_summary_generous_deeds_clicked',
   ),
-
+  familyReflectSummaryXpClicked(
+    'family_reflect_summary_xp_clicked',
+  ),
   newActOfGenerosityClicked('new_act_of_generosity_clicked'),
   recommendationTypeSelectorClicked('recommendation_type_selector_clicked'),
   skipGenerosActPressed('skip_generous_act_pressed'),
@@ -320,6 +335,7 @@ enum AmplitudeEvents {
   introBedtimeAnimationContinuePressed(
     'intro_bedtime_animation_continue_pressed',
   ),
+  introBedtimeTapToContinueClicked('intro_bedtime_tap_to_continue_clicked'),
   familyMissionAcceptanceScreenAcceptLongPressReleaseToAccept(
     'family_mission_acceptance_screen_accept_long_press_release_to_accept',
   ),
@@ -334,29 +350,66 @@ enum AmplitudeEvents {
   familyHomeScreenShowSummariesClicked(
     'family_home_screen_show_summaries_clicked',
   ),
+  familyHomeScreenStatsContainerClicked(
+    'family_home_screen_stats_container_clicked',
+  ),
+  enableCaptainAiClicked('enable_captain_ai_clicked'),
+  maybeLaterCaptainAiClicked('maybe_later_captain_ai_clicked'),
+  userToggledAIFeature('user_toggled_ai_feature'),
 
   // Fun Counter
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
   funCounterIncrementClicked('fun_counter_increment_clicked'),
-
   boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
 
-  // Gratitude Summary
-  whoDoesBedtimePushYesClicked('who_does_bedtime_push_yes_clicked'),
-  whoDoesBedtimePushNoClicked('who_does_bedtime_push_no_clicked'),
+  updateNowClicked('update_now_clicked'),
+
   //Bedtime summary
   summaryLeaveMessageClicked(
     'summary_leave_message_clicked',
   ),
-  afterGameSummaryDoneClicked('after_game_usmmary_done_clicked'),
+  afterGameSummaryDoneClicked('after_game_summary_done_clicked'),
   doneRecordingSummaryMessageClicked(
     'done_recording_summary_message_clicked',
   ),
-
   volumeBottomSheetReadyClicked('volume_bottom_sheet_ready_clicked'),
 
   //Missions
   missionTabsChanged('mission_tabs_changed'),
+  funMissionCardClicked('fun_mission_card_clicked'),
+  noGoalSetCardClicked('no_goal_set_card_clicked'),
+  goalActiveCardClicked('goal_active_card_clicked'),
+  goalCompletedCardClicked('goal_completed_card_clicked'),
+  notificationsGoToSettingsClicked('notifications_go_to_settings_clicked'),
+
+  // Audio recording/player
+  audioWidgetPlayClicked('audio_widget_play_clicked'),
+  audioWidgetPauseOrStopClicked('audio_widget_pause_or_stop_clicked'),
+  audioRecordingStarted('audio_recording_started'),
+  audioRecordingStopped('audio_recording_stopped'),
+  audioRecordingPlayed('audio_recording_played'),
+  audioRecordingPlayPaused('audio_recording_play_paused'),
+  audioRecordingPlayStopped('audio_recording_play_stopped'),
+
+  // Tutorial
+  tutorialStartClicked('tutorial_start_clicked'),
+  tutorialNextClicked('tutorial_next_clicked'),
+  tutorialSkipClicked('tutorial_skip_clicked'),
+  tutorialDoneClicked('tutorial_done_clicked'),
+  bottomsheet('bottomsheet'),
+
+  // Reward
+  claimRewardClicked('claim_reward_clicked'),
+
+  // Change avatar
+  avatarSaved('avatar_saved'),
+  avatarTabChanged('avatar_tab_changed'),
+  lockedButtonClicked('locked_button_clicked'),
+  unlockedAvatarItemClicked('unlocked_avatar_item_clicked'),
+  customAvatarSaved('custom_avatar_saved'),
+  saveAvatarYesClicked('save_avatar_yes_clicked'),
+  saveAvatarNoClicked('save_avatar_no_clicked'),
+  newBadgeSeen('new_badge_seen'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

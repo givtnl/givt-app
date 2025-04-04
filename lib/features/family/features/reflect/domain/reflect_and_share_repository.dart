@@ -4,18 +4,21 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:firebase_remote_config_platform_interface/src/remote_config_value.dart';
-import 'package:flutter/foundation.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/experience_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/gratitude_game_config.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/question_for_hero_model.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/remote_config/domain/remote_config_repository.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ReflectAndShareRepository {
   ReflectAndShareRepository(
@@ -23,6 +26,8 @@ class ReflectAndShareRepository {
     this._familyApiService,
     this._familyAuthRepository,
     this._remoteConfigRepository,
+    this._createTransactionRepository,
+    this._sharedPreferences,
   ) {
     _init();
   }
@@ -31,8 +36,11 @@ class ReflectAndShareRepository {
   final FamilyAPIService _familyApiService;
   final FamilyAuthRepository _familyAuthRepository;
   final RemoteConfigRepository _remoteConfigRepository;
+  final CreateTransactionRepository _createTransactionRepository;
+  final SharedPreferences _sharedPreferences;
 
   static const String _gameConfigKey = 'gratitude_game_config';
+  static const String _prefIsAiEnabledKey = 'pref_is_ai_enabled_key';
 
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
@@ -47,6 +55,15 @@ class ReflectAndShareRepository {
   final List<String> _currentSetOfQuestions = [];
   String? _currentSecretWord;
   bool _hasStartedInterview = false;
+  bool _isAIEnabled = false;
+
+  String? variableReward;
+  String? variableRewardImage;
+
+  void setAIEnabled({required bool value}) {
+    _isAIEnabled = value;
+    _sharedPreferences.setBool(_prefIsAiEnabledKey, value);
+  }
 
   GameStats? _gameStatsData;
 
@@ -59,7 +76,17 @@ class ReflectAndShareRepository {
 
   int getAmountOfGenerousDeeds() => _generousDeeds;
 
+  final StreamController<GameStats> _gameStatsUpdatedStreamController =
+      StreamController.broadcast();
+
+  Stream<GameStats> get onGameStatsUpdated =>
+      _gameStatsUpdatedStreamController.stream;
+
   void _init() {
+    _isAIEnabled = _sharedPreferences.getBool(_prefIsAiEnabledKey) ?? false;
+    _createTransactionRepository.onTransactionByUser().listen((_) {
+      _fetchGameStats();
+    });
     _familyAuthRepository.authenticatedUserStream().listen((user) {
       if (user == null) {
         reset();
@@ -70,6 +97,17 @@ class ReflectAndShareRepository {
         ?.listen(
           _handleGameConfigUpdated,
         );
+  }
+
+  bool isAiAllowed() {
+    if (_gameConfig != null) {
+      return _gameConfig!.isAiAllowed;
+    }
+    return false;
+  }
+
+  bool isAITurnedOn() {
+    return _isAIEnabled && isAiAllowed();
   }
 
   void _handleGameConfigUpdated(RemoteConfigValue value) {
@@ -89,15 +127,73 @@ class ReflectAndShareRepository {
     _generousDeeds++;
   }
 
-  Future<void> saveSummaryStats() async {
+  Future<ExperienceStats?> saveSummaryStats() async {
     try {
       _endTime = DateTime.now();
+      if (_startTime == null) throw Exception('Start time is null');
+
       totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
-      await _familyApiService.saveGratitudeStats(
+      final map = await _familyApiService.saveGratitudeStats(
         totalTimeSpentInSeconds,
         _gameId,
       );
-      await _fetchGameStats();
+      final response = ExperienceStats.fromJson(map);
+      variableReward = response.variableReward;
+      variableRewardImage = response.variableRewardImage;
+
+      return response;
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+      return null;
+    }
+  }
+
+  Future<QuestionForHeroModel> getQuestionForHero({
+    String? audioPath,
+    int questionNumber = 0,
+  }) async {
+    try {
+      final currentHero = _selectedProfiles[_getCurrentSuperHeroIndex()];
+      File? file;
+      if (audioPath != null) {
+        file = File(audioPath)..existsSync();
+      }
+      final response = await _familyApiService.getQuestionForHero(
+        _gameId!,
+        currentHero.userId,
+        audioFile: file,
+        questionNumber: questionNumber,
+      );
+
+      if (true == file?.existsSync()) {
+        file?.deleteSync();
+      }
+      
+      return QuestionForHeroModel.fromJson(response);
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+      return const QuestionForHeroModel();
+    }
+  }
+
+  Future<void> shareHeroAudio(String path) async {
+    try {
+      final currentHero = _selectedProfiles[_getCurrentSuperHeroIndex()];
+      final file = File(path);
+      if (file.existsSync()) {
+        await _familyApiService.uploadEndOfRoundHeroAudioFile(
+          _gameId!,
+          currentHero.userId,
+          file,
+        );
+        await file.delete();
+      }
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -202,16 +298,16 @@ class ReflectAndShareRepository {
     return _allProfiles!;
   }
 
-//list of adult users that did not play in this game
-  Future<List<Profile>> missingAdults() async {
-    final profiles = await _profilesRepository.getProfiles();
-    final missingAdults = profiles
-        .where((profile) => profile.isAdult)
-        .where((profile) => !_selectedProfiles
-            .map((selectedProfile) => selectedProfile.userId)
-            .contains(profile.id))
+  /// Retrieves the profiles of players who have participated in the game.
+  Future<List<Profile>> getPlayerProfiles() async {
+    final allProfiles = await _profilesRepository.getProfiles();
+    final allPlayers = getPlayers();
+    final profileMap = {for (var profil in allProfiles) profil.id: profil};
+    final playerProfiles = allPlayers
+        .map((player) => profileMap[player.userId])
+        .whereType<Profile>()
         .toList();
-    return missingAdults;
+    return playerProfiles;
   }
 
   void emptyAllProfiles() {
@@ -222,7 +318,9 @@ class ReflectAndShareRepository {
 
   Future<void> createGameSession() async {
     try {
-      _gameId = await _familyApiService.createGame();
+      _gameId = await _familyApiService.createGame(
+        guids: _selectedProfiles.map((e) => e.userId).toList(),
+      );
     } catch (e, s) {
       _gameId = null;
       LoggingInfo.instance.error(
@@ -236,10 +334,9 @@ class ReflectAndShareRepository {
   void selectProfiles(List<GameProfile> selectedProfiles) {
     // Reset game state
     reset();
+    _selectedProfiles = selectedProfiles;
     createGameSession();
     _startTime = DateTime.now();
-
-    _selectedProfiles = selectedProfiles;
   }
 
   // randomly assign roles to the selected family members (superhero, sidekick, reporter)
@@ -565,10 +662,28 @@ class ReflectAndShareRepository {
     return _gameStatsData ??= await _fetchGameStats();
   }
 
+  /// Refreshes the game stats
+  /// Returns true if the game stats were changed
+  /// Returns false if the game stats were not changed
+  Future<bool> refreshGameStats() async {
+    final previousStats = _gameStatsData;
+    await _fetchGameStats();
+    return previousStats!.gratitudeGoal != _gameStatsData!.gratitudeGoal ||
+        previousStats.gratitudeGoalCurrent !=
+            _gameStatsData!.gratitudeGoalCurrent;
+  }
+
   Future<GameStats> _fetchGameStats() async {
     final result = await _familyApiService.fetchGameStats();
     final stats = GameStats.fromJson(result);
+    _gameStatsUpdatedStreamController.add(stats);
+    _gameStatsData = stats;
     return stats;
+  }
+
+  void logout() {
+    reset();
+    _gameStatsData = null;
   }
 
   void reset() {
@@ -584,7 +699,6 @@ class ReflectAndShareRepository {
     _currentSetOfQuestions.clear();
     _usedSecretWords.clear();
     _currentSecretWord = null;
-    _gameStatsData = null;
     _hasStartedInterview = false;
   }
 
@@ -598,4 +712,28 @@ class ReflectAndShareRepository {
   }
 
   bool hasStartedInterview() => _hasStartedInterview;
+
+  Future<int> getTotalGamePlays() async =>
+      _familyApiService.fetchTotalFamilyGameCount();
+
+  /// The amount of games played by the user before we show the store review popup
+  /// This is a (remotely) configurable value, by default it's 2
+  int getStoreReviewMinimumGameCount() =>
+      _gameConfig?.storeReviewGameCount ?? 2;
+
+  /// The amount of games played by the user before we ask for an interview
+  /// This is a (remotely) configurable value, by default it's 1
+  int getInterviewMinimumGameCount() => _gameConfig?.interviewGameCount ?? 1;
+
+  /// Whether or not to use the default interview icon
+  /// for the popup that asks for an interview (default is comments, else its money-bill)
+  bool useDefaultInterviewIcon() =>
+      _gameConfig?.useDefaultInterviewIcon ?? true;
+
+  String getAskForInterviewTitle() =>
+      _gameConfig?.askForInterviewTitle ?? 'Earn \$50 for helping us!';
+
+  String getAskForInterviewMessage() =>
+      _gameConfig?.askForInterviewMessage ??
+      'We’d love to hear your feedback about Givt on a quick call.';
 }

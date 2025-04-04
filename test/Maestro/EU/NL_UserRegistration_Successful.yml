@@ -1,0 +1,57 @@
+appId: net.givtapp.ios.test
+name: Finish registration for NL user
+
+env:
+    FIRSTNAME: Automate
+    LASTNAME: with Maestro
+    PASSWORD: Test123
+    STREETNUMBER: Bloemetjes 13
+    POSTALCODE: 1234AA
+    CITY: Lelystad
+    PHONENUMBER: 612345678
+    IBAN: DE86100000001234400013
+
+---
+- tapOn:
+    label: "Open the menu"
+    point: "6%,9%"
+- tapOn: "Finish registration"
+- tapOn: "First name"
+- inputText:
+    label: "Enter the test user's Firstname"
+    text: ${FIRSTNAME}
+- tapOn: "Surname"
+- inputText:
+    label: "Enter the test user's Lastname"
+    text: ${LASTNAME}
+- tapOn: "Password"
+- inputText:
+    label: "Enter the test user's Password"
+    text: ${PASSWORD}
+- tapOn: "0"
+- tapOn: "Next"
+- tapOn: "Street name and number"
+- inputText:
+    label: "Enter the test user's Street + Number"
+    text: ${STREETNUMBER}
+- tapOn: "Postal Code"
+- inputText:
+    label: "Enter Postal Code"
+    text: ${POSTALCODE}
+- tapOn: "City/Town"
+- inputText:
+    label: "Enter City/Town"
+    text: ${CITY}
+- tapOn: "Mobile number"
+- inputText:
+    label: "Enter Phonenumber"
+    text: ${PHONENUMBER}
+- tapOn: 
+    label: "Enter IBAN"
+    point: 46%,56%
+- inputText:
+    text: ${IBAN}
+- tapOn: "Next"
+- tapOn: "Next"
+- tapOn: "Sign mandate"
+- tapOn: "Continue"

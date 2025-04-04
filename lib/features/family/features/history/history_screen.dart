@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/family/features/family_history/models/child_donation.dart';
+import 'package:givt_app/features/family/features/family_history/models/donation.dart';
 import 'package:givt_app/features/family/features/family_history/models/history_item.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/models/donation_item_uimodel.dart';
@@ -14,6 +14,8 @@ import 'package:givt_app/features/family/shared/widgets/content/donation_item_wi
 import 'package:givt_app/features/family/shared/widgets/content/income_item_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class HistoryScreen extends StatelessWidget {
@@ -22,7 +24,7 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    final childid = context.read<ProfilesCubit>().state.activeProfile.id;
+    final userid = context.read<ProfilesCubit>().state.activeProfile.id;
     final historyCubit = getIt<HistoryCubit>();
 
     scrollController.addListener(() {
@@ -30,7 +32,7 @@ class HistoryScreen extends StatelessWidget {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
         if (historyCubit.state.status != HistoryStatus.loading) {
-          historyCubit.fetchHistory(childid);
+          historyCubit.fetchHistory(userid);
         }
       }
     });
@@ -44,6 +46,21 @@ class HistoryScreen extends StatelessWidget {
           // Display loading indicator if no data is available
           if (state.status == HistoryStatus.loading && state.history.isEmpty) {
             return const FullScreenLoadingWidget();
+          }
+
+          if (state.history.isEmpty) {
+            return Column(
+              children: [
+                const SizedBox(height: 20),
+                walletEmptyIcon(),
+                const SizedBox(height: 16),
+                Center(
+                  child: BodyMediumText.opacityBlack50(
+                    'You haven’t made any Givts yet!',
+                  ),
+                ),
+              ],
+            );
           }
 
           // Display error message if data is not available
@@ -61,7 +78,8 @@ class HistoryScreen extends StatelessWidget {
                 controller: scrollController,
                 itemCount: state.history.length,
                 itemBuilder: (BuildContext context, int index) {
-                  if (state.history[index].type != HistoryTypes.donation) {
+                  if (state.history[index].type != HistoryTypes.donation &&
+                      state.history[index].type != HistoryTypes.adultDonation) {
                     return IncomeItemWidget(
                       uimodel: IncomeItemUIModel(
                         context,
@@ -73,7 +91,7 @@ class HistoryScreen extends StatelessWidget {
                   return DonationItemWidget(
                     uimodel: DonationItemUIModel(
                       context,
-                      donation: state.history[index] as ChildDonation,
+                      donation: state.history[index] as Donation,
                     ),
                   );
                 },

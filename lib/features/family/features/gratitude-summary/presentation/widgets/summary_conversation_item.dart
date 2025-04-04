@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/parent_summary_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
@@ -34,16 +34,14 @@ class SummaryConversationItem extends StatelessWidget {
               color: FamilyAppTheme.info95,
             ),
             child: Container(
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-              ),
-              child: SvgPicture.network(
-                uiModel.profilePicture,
-                width: 80,
-                height: 80,
-              ),
-            ),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+                child: FunAvatar.fromProfile(
+                  uiModel.profile,
+                  size: 80,
+                )),
           ),
           const SizedBox(width: 8),
           Flexible(
@@ -52,7 +50,7 @@ class SummaryConversationItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LabelLargeText(
-                  uiModel.profileName,
+                  uiModel.profile.firstName,
                   color: FamilyAppTheme.highlight40,
                 ),
                 const SizedBox(height: 4),

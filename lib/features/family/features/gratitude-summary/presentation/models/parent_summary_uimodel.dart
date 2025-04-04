@@ -1,3 +1,5 @@
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+
 class SummaryUIModel {
   SummaryUIModel({
     required this.conversations,
@@ -12,10 +14,8 @@ class SummaryUIModel {
 class ConversationUIModel {
   ConversationUIModel({
     required this.sentence,
-    required this.profilePicture,
-    required this.profileName,
+    required this.profile,
   });
   final String sentence;
-  final String profilePicture;
-  final String profileName;
+  final Profile profile;
 }

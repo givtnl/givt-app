@@ -11,6 +11,7 @@ class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.color,
     this.titleColor,
     this.systemNavigationBarColor,
+    this.overridePreferredSize,
     super.key,
   });
 
@@ -48,6 +49,7 @@ class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? color;
   final Color? titleColor;
   final Color? systemNavigationBarColor;
+  final Size? overridePreferredSize;
 
   @override
   Widget build(BuildContext context) {
@@ -76,5 +78,5 @@ class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => overridePreferredSize ?? const Size.fromHeight(kToolbarHeight);
 }

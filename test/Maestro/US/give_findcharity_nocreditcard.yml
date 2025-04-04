@@ -1,0 +1,58 @@
+appId: net.givtapp.ios.test
+name: Kid gives via Find Charity, no creditcard is setup
+#In this flow the precondition is that there is no creditcard setup yet. A kid will give via the 'Find Charity'-flow. 
+env:
+    KIDSNAME: Awesome
+---
+- tapOn: 
+    label: Tap on "Give"
+    text: "Give\nDonate to a cause"
+- tapOn: 
+    label: Tap on kid profile
+    text: ${KIDSNAME}
+- assertVisible: 
+    label: Name of kid is visible
+    text: ${KIDSNAME}
+    optional: true
+- tapOn:
+    label: Tap on Find Charity
+    text: "Find Charity"
+- tapOn: "Start"
+- tapOn: "In my country"
+- tapOn: "Next"
+- tapOn:
+    id: "backButton"
+- tapOn: "All around the world"
+- tapOn: "Next"
+- tapOn: "Child care"
+- tapOn: "Clean oceans"
+- "scroll"
+- tapOn: "Houseless"
+- tapOn: "Next"
+- tapOn:
+    label: Tap on the first suggestion
+    point: "50%,40%"
+- tapOn:
+    id: "backButton"
+- "scroll"
+- tapOn:
+    label: Tap on the last suggestion
+    point: "51%,92%"
+- assertVisible: ".*5 XP.*"
+- tapOn:
+    label: Tap on Give
+    point: 50%,90%
+- runFlow: "giveflow_need_creditcard_details.yml" # This redirects to the no creditcard details known flow.
+- tapOn:
+    label: User selects amount
+    point: "39%,64%"
+- tapOn: "Give"
+- assertVisible: "5 XP"
+- assertVisible: 
+    label: Thank you for your is visble
+    text: '.*Thank you for your donation.*'
+- tapOn: "Back to home"
+- assertVisible: " $6"
+- tapOn:
+    label: Use backbutton to go back to Family Home screen
+    id: "backButton"

@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
 import '../../../widget_tester_extension.dart';
-import '../../email_signup/presentation/pages/email_signup_test_page.dart';
 
 class LoginTestPage {
 

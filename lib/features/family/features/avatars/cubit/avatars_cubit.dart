@@ -44,12 +44,12 @@ class AvatarsCubit extends Cubit<AvatarsState> {
     }
   }
 
-  Future<void> assignRandomAvatarUrl(String key) async {
+  Future<void> assignRandomAvatar(String key, int profileType) async {
     if (state.avatars.isEmpty) {
       await fetchAvatars();
     }
 
-    final randomAvatar = getRandomAvatar();
+    final randomAvatar = profileType == 0 ? getRandomAvatarChild() : getRandomAvatarParent();
 
     final existingAssignmentIndex =
         state.assignedAvatars.indexWhere((element) => element.containsKey(key));
@@ -70,8 +70,15 @@ class AvatarsCubit extends Cubit<AvatarsState> {
     }
   }
 
-  Avatar getRandomAvatar() {
-    final index = Random().nextInt(state.avatars.length);
+  Avatar getRandomAvatarChild() {
+    final rand = Random().nextInt(8);
+    final index = [1,2,3,5,6,7,8,9][rand];
+    return state.avatars[index];
+  }
+
+  Avatar getRandomAvatarParent() {
+    final rand = Random().nextInt(2);
+    final index = [0,4][rand];
     return state.avatars[index];
   }
 

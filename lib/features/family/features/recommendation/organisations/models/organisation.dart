@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
 import 'package:givt_app/features/family/features/reflect/data/recommendation_types.dart';
 
@@ -17,9 +19,11 @@ class Organisation extends Equatable {
     required this.collectGroupId,
     required this.namespace,
     required this.qrCodeURL,
+    this.experiencePoints = 0,
   });
 
   factory Organisation.fromMap(Map<String, dynamic> map) {
+    final experiencePoints = (map['experiencePoints'] ?? 0) as int;
     return Organisation(
       guid: (map['guid'] ?? '') as String,
       name: (map['name'] ?? 'Organisation Name') as String,
@@ -32,11 +36,19 @@ class Organisation extends Equatable {
       qrCodeURL: (map['qrCodeURL'] ?? '') as String,
       type: RecommendationTypes.fromString((map['type'] ?? '') as String),
       tags: map['tags'] != null
-          ? List<Tag>.from(
-              (map['tags'] as List<dynamic>)
-                  .map((e) => Tag.fromMap(e as Map<String, dynamic>)),
-            )
-          : [],
+          ? [
+              ...List<Tag>.from(
+                (map['tags'] as List<dynamic>)
+                    .map((e) => Tag.fromMap(e as Map<String, dynamic>)),
+              ),
+              if (experiencePoints > 0)
+                _experiencePointsTag(xp: experiencePoints),
+            ]
+          : [
+              if (experiencePoints > 0)
+                _experiencePointsTag(xp: experiencePoints),
+            ],
+      experiencePoints: experiencePoints,
     );
   }
 
@@ -51,6 +63,8 @@ class Organisation extends Equatable {
   final String collectGroupId;
   final String namespace;
   final String qrCodeURL;
+  final int experiencePoints;
+
   @override
   List<Object?> get props => [
         guid,
@@ -64,6 +78,7 @@ class Organisation extends Equatable {
         shortDescription,
         longDescription,
         tags,
+        experiencePoints,
       ];
 
   Organisation copyWith({
@@ -78,6 +93,7 @@ class Organisation extends Equatable {
     String? shortDescription,
     String? longDescription,
     List<Tag>? tags,
+    int? xp,
   }) =>
       Organisation(
         type: type ?? this.type,
@@ -91,6 +107,7 @@ class Organisation extends Equatable {
         shortDescription: shortDescription ?? this.shortDescription,
         longDescription: longDescription ?? this.longDescription,
         tags: tags ?? this.tags,
+        experiencePoints: xp ?? this.experiencePoints,
       );
 
   Map<String, dynamic> toJson() {
@@ -106,6 +123,19 @@ class Organisation extends Equatable {
       'shortDescription': shortDescription,
       'longDescription': longDescription,
       'tags': jsonEncode(tags),
+      'ExperiencePoints': experiencePoints,
     };
   }
+
+  static Tag _experiencePointsTag({int? xp}) => Tag(
+        key: 'ExperiencePoints',
+        displayText: '$xp XP',
+        area: Areas.gold,
+        pictureUrl: '',
+        type: TagType.XP,
+        iconData: FontAwesomeIcons.bolt,
+        iconSize: 12,
+  );
+
+  Tag xpTag() => _experiencePointsTag(xp: experiencePoints);
 }

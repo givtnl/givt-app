@@ -10,22 +10,27 @@ import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
-import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
-import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/account/presentation/widgets/us_change_email_address_bottom_sheet.dart';
+import 'package:givt_app/features/family/features/account/presentation/widgets/us_change_phone_number_bottom_sheet.dart';
+import 'package:givt_app/features/family/features/account/presentation/widgets/us_terminate_account_bottom_sheet.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
 import 'package:givt_app/features/family/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/fun_bottom_sheet_with_async_action.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/fingerprint_bottom_sheet.dart';
-import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/parent_avatar.dart';
+import 'package:givt_app/shared/widgets/us_about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -41,6 +46,8 @@ class USPersonalInfoEditPage extends StatefulWidget {
 
 class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
   final FamilyAuthCubit _authCubit = getIt<FamilyAuthCubit>();
+  final FunBottomSheetWithAsyncActionCubit _asyncCubit =
+      FunBottomSheetWithAsyncActionCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +55,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
     return Scaffold(
       appBar: FunTopAppBar(
         title: locals.personalInfo,
+        leading: const GivtBackButtonFlat(),
       ),
       body: BlocListener<PersonalInfoEditBloc, PersonalInfoEditState>(
         listener: (context, state) {
@@ -105,7 +113,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
         child: BlocBuilder(
           bloc: _authCubit,
           buildWhen: (previous, current) => current is Authenticated,
-          builder: (context, state) {
+          builder: (context, FamilyAuthState state) {
             return _buildLayout(state, context, locals);
           },
         ),
@@ -113,9 +121,15 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
     );
   }
 
-  SingleChildScrollView _buildLayout(
-      Object? state, BuildContext context, AppLocalizations locals) {
-    final user = (state! as Authenticated).user;
+  Widget _buildLayout(
+    FamilyAuthState state,
+    BuildContext context,
+    AppLocalizations locals,
+  ) {
+    if (state is! Authenticated) {
+      return const CustomCircularProgressIndicator();
+    }
+    final user = state.user;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -124,10 +138,8 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
-            child: ParentAvatar(
-              firstName: user.firstName,
-              lastName: user.lastName,
-              pictureURL: user.profilePicture,
+            child: LoggedInParentAvatar(
+              user: user,
             ),
           ),
           _buildInfoRow(
@@ -139,11 +151,16 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               ),
             ),
             value: user.email,
-            onTap: () => _showModalBottomSheet(
+            onTap: () => FunBottomSheetWithAsyncAction.show(
               context,
-              bottomSheet: ChangeEmailAddressBottomSheet(
+              cubit: _asyncCubit,
+              initialState: USChangeEmailAddressBottomSheet(
                 email: user.email,
+                asyncCubit: _asyncCubit,
               ),
+              successText: 'Changes saved!',
+              loadingText: 'Updating profile information',
+              analyticsName: 'us_change_email_bottom_sheet',
             ),
           ),
           _buildInfoRow(
@@ -152,12 +169,17 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.phone,
             ),
             value: user.phoneNumber,
-            onTap: () => _showModalBottomSheet(
+            onTap: () => FunBottomSheetWithAsyncAction.show(
               context,
-              bottomSheet: ChangePhoneNumberBottomSheet(
+              cubit: _asyncCubit,
+              initialState: USChangePhoneNumberBottomSheet(
                 country: user.country,
                 phoneNumber: user.phoneNumber,
+                asyncCubit: _asyncCubit,
               ),
+              successText: 'Changes saved!',
+              loadingText: 'Updating profile information',
+              analyticsName: 'us_change_phone_number_bottom_sheet',
             ),
           ),
           _buildInfoRow(
@@ -272,11 +294,43 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
           _buildInfoRow(
             context,
             icon: const Icon(
+              semanticLabel: 'userXmark',
               FontAwesomeIcons.userXmark,
             ),
             value: locals.unregister,
-            onTap: () async => context.pushNamed(
-              FamilyPages.unregisterUS.name,
+            onTap: () => FunBottomSheetWithAsyncAction.show(
+              context,
+              cubit: _asyncCubit,
+              initialState: USTerminateAccountBottomSheet(
+                email: user.email,
+                asyncCubit: _asyncCubit,
+                onSuccess: () async {
+                  await Future.delayed(const Duration(seconds: 3));
+                  logout(context);
+                },
+              ),
+              successState: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Row(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                    ),
+                    child: TitleMediumText(
+                      locals.unregisterSuccessText,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  SvgPicture.asset('assets/family/images/captain_sad.svg'),
+                ],
+              ),
+              successText: '',
+              loadingText: locals.unregisterLoading,
+              analyticsName: 'us_terminate_account_bottom_sheet',
             ),
           ),
           const Divider(
@@ -288,14 +342,14 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.circleInfo,
             ),
             value: locals.titleAboutGivt,
-            onTap: () => showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              useSafeArea: true,
-              builder: (_) => Theme(
-                data: const FamilyAppTheme().toThemeData(),
-                child: const AboutGivtBottomSheet(),
-              ),
+            onTap: () => FunBottomSheetWithAsyncAction.show(
+              context,
+              cubit: _asyncCubit,
+              initialState: USAboutGivtBottomSheet(asyncCubit: _asyncCubit),
+              successText:
+                  'Thanks for reaching out!\nWe will be in touch shortly',
+              loadingText: 'Sending message',
+              analyticsName: 'us_about_givt_bottom_sheet',
             ),
           ),
           const Divider(

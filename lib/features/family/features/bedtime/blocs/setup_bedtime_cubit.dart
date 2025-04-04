@@ -1,14 +1,19 @@
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/family/features/edit_child_name/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
+import 'package:givt_app/features/family/features/edit_child_name/repositories/edit_child_repository.dart';
+import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class SetupBedtimeCubit extends CommonCubit<dynamic, Bedtime> {
-  SetupBedtimeCubit(this._editChildRepository)
+  SetupBedtimeCubit(this._editChildRepository, this._tutorialRepository)
       : super(const BaseState.initial());
 
   final EditChildRepository _editChildRepository;
+  final TutorialRepository _tutorialRepository;
+
+  bool fromTutorial = false;
+
   String _bedtimeSliderValueToUtc(double amount) {
     final hours = getMilitaryTimeHour(amount.floor());
     final minutes = ((amount - amount.floor()) * 60).toInt();
@@ -53,11 +58,17 @@ class SetupBedtimeCubit extends CommonCubit<dynamic, Bedtime> {
       winddownMinutes: windDownValue,
     );
     try {
+      _tutorialRepository.bedtimeMissionStartedFromTutorial = fromTutorial;
       await _editChildRepository.editChildBedtime(bedtime);
       emitCustom(bedtime);
+      emitInitial();
     } catch (e, s) {
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
       emitError('An unexpected error occurred while saving bedtime settings.');
     }
+  }
+
+  void init({bool fromTutorial = false}) {
+    this.fromTutorial = fromTutorial;
   }
 }

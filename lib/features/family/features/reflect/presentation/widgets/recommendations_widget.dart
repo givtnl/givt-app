@@ -10,6 +10,7 @@ class RecommendationsWidget extends StatelessWidget {
     this.onRecommendationChosen,
     this.onTapRetry,
     this.onSkip,
+    this.onIndexChanged, // Add this line
     super.key,
   });
 
@@ -17,6 +18,7 @@ class RecommendationsWidget extends StatelessWidget {
   final void Function(int index)? onRecommendationChosen;
   final void Function()? onTapRetry;
   final void Function()? onSkip;
+  final void Function(int index)? onIndexChanged; // Add this line
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class RecommendationsWidget extends StatelessWidget {
         uiModel: uiModel,
         onRecommendationChosen: onRecommendationChosen,
         onSkip: onSkip,
+        onIndexChanged: onIndexChanged, // Add this line
       );
     }
   }

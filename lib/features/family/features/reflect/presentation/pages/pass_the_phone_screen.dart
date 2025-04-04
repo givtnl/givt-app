@@ -26,8 +26,9 @@ class PassThePhone extends StatefulWidget {
     this.accentColor,
     this.backgroundColor,
     this.customHeader,
-    super.key,
     this.customBtnText,
+    this.startRecording = false,
+    super.key,
   });
 
   factory PassThePhone.toSuperhero(GameProfile superhero,
@@ -62,13 +63,16 @@ class PassThePhone extends StatefulWidget {
   factory PassThePhone.toReporters(List<GameProfile> reporters,
       {bool skipRules = false}) {
     return PassThePhone(
-      audioPath: 'family/audio/pass_phone_to_the_reporter.wav',
+      audioPath: reporters.length > 1
+          ? 'family/audio/pass_phone_to_first_reporter.wav'
+          : 'family/audio/pass_phone_to_the_reporter.wav',
       user: reporters.first,
       customHeader: ReportersWidget(
         reporters: reporters,
         circleSize: 120,
         displayName: false,
       ),
+      startRecording: skipRules,
       onTap: (context) {
         if (skipRules) {
           Navigator.pushReplacement(
@@ -97,6 +101,7 @@ class PassThePhone extends StatefulWidget {
   final String? customBtnText;
   final Widget? customHeader;
   final String audioPath;
+  final bool startRecording;
 
   final GameProfile user;
   final void Function(BuildContext context) onTap;
@@ -132,79 +137,76 @@ class _PassThePhoneState extends State<PassThePhone> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
+    return FunScaffold(
       canPop: false,
-      child: FunScaffold(
-        minimumPadding: EdgeInsets.zero,
-        appBar: FunTopAppBar(
-          title: '',
-          color:
-              widget.backgroundColor ?? widget.user.role!.color.backgroundColor,
-          systemNavigationBarColor:
-              widget.backgroundColor ?? widget.user.role!.color.backgroundColor,
-        ),
-        backgroundColor:
+      minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
+      appBar: FunTopAppBar(
+        title: null,
+        color:
             widget.backgroundColor ?? widget.user.role!.color.backgroundColor,
-        body: SafeArea(
-          child: Stack(
+        systemNavigationBarColor:
+            widget.backgroundColor ?? widget.user.role!.color.backgroundColor,
+      ),
+      backgroundColor:
+          widget.backgroundColor ?? widget.user.role!.color.backgroundColor,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: SvgPicture.asset(
+              'assets/family/images/pass-the-phone.svg',
+              fit: BoxFit.cover,
+              width: MediaQuery.sizeOf(context).width,
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
+              const Spacer(),
               Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: SvgPicture.asset(
-                  'assets/family/images/pass-the-phone.svg',
-                  fit: BoxFit.cover,
-                  width: MediaQuery.sizeOf(context).width,
-                ),
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: widget.customHeader ??
-                        GameProfileItem(
-                          accentColor: widget.accentColor,
-                          profile: widget.user,
-                          size: 120,
-                          displayName: false,
-                          displayRole: false,
-                        ),
-                  ),
-                  const SizedBox(height: 4),
-                  FunBackgroundAudioWidget(
-                      isVisible: true,
-                      audioPath: widget.user.roles.length > 1
-                          ? _multiRoleString
-                          : widget.audioPath,
-                      onPauseOrStop: () {
-                        setState(() {
-                          _hasPlayedAudio = true;
-                        });
-                      }),
-                  const SizedBox(height: 16),
-                  TitleMediumText(
-                    widget.user.roles.length > 1
-                        ? 'Pass the phone to the\n ${widget.user.roles.first.name} and ${widget.user.roles.last.name} ${widget.user.firstName}'
-                        : 'Pass the phone to the\n ${widget.user.role!.name} ${widget.user.firstName}',
-                    textAlign: TextAlign.center,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: FunButton.secondary(
-                      isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
-                      onTap: () => widget.onTap.call(context),
-                      text: widget.customBtnText ?? 'Continue',
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.reflectAndSharePassThePhoneClicked,
-                      ),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: widget.customHeader ??
+                    GameProfileItem(
+                      accentColor: widget.accentColor,
+                      profile: widget.user,
+                      size: 160,
+                      displayName: false,
+                      displayRole: false,
                     ),
+              ),
+              const SizedBox(height: 4),
+              FunBackgroundAudioWidget(
+                  isVisible: true,
+                  audioPath: widget.user.roles.length > 1
+                      ? _multiRoleString
+                      : widget.audioPath,
+                  onPauseOrStop: () {
+                    setState(() {
+                      _hasPlayedAudio = true;
+                    });
+                  }),
+              const SizedBox(height: 16),
+              TitleMediumText(
+                widget.user.roles.length > 1
+                    ? 'Pass the phone to the\n ${widget.user.roles.first.name} and ${widget.user.roles.last.name} ${widget.user.firstName}'
+                    : 'Pass the phone to the\n ${widget.user.role!.name} ${widget.user.firstName}',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: FunButton.secondary(
+                  isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
+                  onTap: () => widget.onTap.call(context),
+                  text: widget.customBtnText ?? 'Continue',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.reflectAndSharePassThePhoneClicked,
                   ),
-                ],
+                ),
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }

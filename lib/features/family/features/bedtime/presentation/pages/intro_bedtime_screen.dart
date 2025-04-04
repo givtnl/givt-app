@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/pages/setup_bedtime_screen.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:lottie/lottie.dart';
 
 enum AnimationState {
@@ -19,10 +22,12 @@ enum AnimationState {
 
 class IntroBedtimeScreen extends StatefulWidget {
   const IntroBedtimeScreen({
-    required this.arguments,
     super.key,
+    this.fromTutorial = false,
   });
-  final BedtimeArguments arguments;
+
+  final bool fromTutorial;
+
   @override
   State<IntroBedtimeScreen> createState() => _IntroBedtimeScreenState();
 }
@@ -32,6 +37,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   late List<AnimationController> _controllers;
   late AnimationController _firstTextController;
   late AnimationController _secondTextController;
+  late AnimationController _inbetweenSecondAndThirdTextController;
   late AnimationController _thirdTextController;
   late AnimationController _fourthTextController;
   late AnimationController _fifthTextController;
@@ -45,6 +51,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
 
   late Animation<double> _firstTextOpacity;
   late Animation<double> _secondTextOpacity;
+  late Animation<double> _inbetweenSecondAndThirdTextOpacity;
   late Animation<double> _thirdTextOpacity;
   late Animation<double> _fourthTextOpacity;
   late Animation<double> _fifthTextOpacity;
@@ -66,10 +73,21 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   AnimationState _currentState = AnimationState.initial;
   int tapCount = 0;
 
+  BedtimeArguments? arguments;
+
   @override
   void initState() {
     super.initState();
-    _controllers = List.generate(12, (index) {
+
+    final reflectAndShareRepository = getIt<ReflectAndShareRepository>();
+    reflectAndShareRepository.getKidsWithoutBedtime().then((profiles) {
+      arguments = BedtimeArguments(
+        profiles: profiles,
+        fromTutorial: widget.fromTutorial,
+      );
+    });
+
+    _controllers = List.generate(13, (index) {
       int duration;
       if (index == 0) {
         duration = 1000;
@@ -88,16 +106,17 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
 
     _firstTextController = _controllers[0];
     _secondTextController = _controllers[1];
-    _thirdTextController = _controllers[2];
-    _fourthTextController = _controllers[3];
-    _fifthTextController = _controllers[4];
-    _sixthTextController = _controllers[5];
-    _seventhTextController = _controllers[6];
-    _eigthTextController = _controllers[7];
-    _sunTransition = _controllers[8];
-    _nightShiftController = _controllers[9];
-    _cityDownTransition = _controllers[10];
-    _moonTranitionToRight = _controllers[11];
+    _inbetweenSecondAndThirdTextController = _controllers[2];
+    _thirdTextController = _controllers[3];
+    _fourthTextController = _controllers[4];
+    _fifthTextController = _controllers[5];
+    _sixthTextController = _controllers[6];
+    _seventhTextController = _controllers[7];
+    _eigthTextController = _controllers[8];
+    _sunTransition = _controllers[9];
+    _nightShiftController = _controllers[10];
+    _cityDownTransition = _controllers[11];
+    _moonTranitionToRight = _controllers[12];
 
     _firstTextOpacity = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
@@ -111,7 +130,13 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
         curve: Curves.easeInCubic,
       ),
     );
-
+    _inbetweenSecondAndThirdTextOpacity =
+        Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _inbetweenSecondAndThirdTextController,
+        curve: Curves.easeInCubic,
+      ),
+    );
     _thirdTextOpacity = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _thirdTextController,
@@ -246,6 +271,12 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
       onTap: () {
         if (_currentState == AnimationState.initial) return;
         tapCount++;
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.introBedtimeTapToContinueClicked,
+          eventProperties: {
+            'tap_count': tapCount,
+          },
+        );
         if (tapCount == 1) {
           _firstTextController
             ..duration = const Duration(milliseconds: 500)
@@ -257,9 +288,15 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
           _secondTextController
             ..duration = const Duration(milliseconds: 300)
             ..reverse();
-          _thirdTextController.forward();
+          _inbetweenSecondAndThirdTextController.forward();
         }
         if (tapCount == 3) {
+          _inbetweenSecondAndThirdTextController
+            ..duration = const Duration(milliseconds: 300)
+            ..reverse();
+          _thirdTextController.forward();
+        }
+        if (tapCount == 4) {
           setState(() {
             _currentState = AnimationState.shiftedToNight;
           });
@@ -269,7 +306,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
           _fourthTextController.forward();
           _nightShiftController.forward().then((value) {});
         }
-        if (tapCount == 4) {
+        if (tapCount == 5) {
           _fourthTextController
             ..duration = const Duration(milliseconds: 300)
             ..reverse();
@@ -278,22 +315,22 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
           });
           _moonTranitionToRight.forward();
         }
-        if (tapCount == 5) {
+        if (tapCount == 6) {
           _fifthTextController.forward();
         }
-        if (tapCount == 6) {
+        if (tapCount == 7) {
           _fifthTextController
             ..duration = const Duration(milliseconds: 300)
             ..reverse();
           _sixthTextController.forward();
         }
-        if (tapCount == 7) {
+        if (tapCount == 8) {
           _sixthTextController
             ..duration = const Duration(milliseconds: 300)
             ..reverse();
           _seventhTextController.forward();
         }
-        if (tapCount == 8) {
+        if (tapCount == 9) {
           setState(() {
             _currentState = AnimationState.lastBenefitIsOnScreen;
           });
@@ -303,8 +340,8 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
           _eigthTextController.forward();
           _cityDownTransition.forward();
         }
-        if (tapCount >= 8) {
-          tapCount = 8;
+        if (tapCount >= 9) {
+          tapCount = 9;
           return;
         }
       },
@@ -333,12 +370,16 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                     animation: _sunTransition,
                   ),
                 _buildText(
-                  'Great job\nsuperheroes!',
+                  'Mission\nBedtime',
                   _firstTextOpacity,
                 ),
                 _buildText(
-                  'Keep using your gratitude superpowers everyday',
+                  'Build a habit of Gratitude',
                   _secondTextOpacity,
+                ),
+                _buildText(
+                  'The Gratitude Game is a fun and easy way to build this habit',
+                  _inbetweenSecondAndThirdTextOpacity,
                 ),
                 _buildText(
                   'We have found that the best time to play the Gratitude Game',
@@ -446,21 +487,22 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: FunButton(
-                          onTap: () => Navigator.of(context).push(
-                            PageRouteBuilder<dynamic>(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) =>
-                                      SetupBedtimeScreen(
-                                          arguments: widget.arguments),
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                return FadeTransition(
-                                  opacity: animation,
-                                  child: child,
-                                );
-                              },
-                            ),
-                          ),
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder<dynamic>(
+                                pageBuilder: (context, animation,
+                                        secondaryAnimation) =>
+                                    SetupBedtimeScreen(arguments: arguments!),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
+                          },
                           text: 'Continue',
                           analyticsEvent: AnalyticsEvent(
                             AmplitudeEvents

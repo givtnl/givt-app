@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
@@ -41,7 +40,6 @@ import 'package:givt_app/features/splash/pages/splash_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
-import 'package:givt_app/shared/pages/loading_page.dart';
 import 'package:givt_app/shared/pages/redirect_to_browser_page.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -76,41 +74,10 @@ class AppRouter {
         path: '/search-for-coin',
         name: 'search-for-coin',
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) {
-            if (state.status == AuthStatus.loading) {
-              // do nothing
-              return;
-            }
-            if (state.status == AuthStatus.authenticated) {
-              context.go(
-                '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${routerState.uri.query}',
-              );
-            } else {
-              final isTestApp = getIt<AppConfig>().isTestApp;
-              final code = routerState.uri.queryParameters['code'];
-              if (isTestApp && code != null) {
-                context.go(
-                  '${Pages.redirectToBrowser.path}?uri=https://dev-coin.givt.app/?mediumId=$code',
-                );
-              } else {
-                context.go(
-                  '${Pages.redirectToBrowser.path}?uri=${routerState.uri}',
-                );
-              }
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.redirectCoinToNoAppFlow,
-                eventProperties: {
-                  'url': routerState.uri.toString(),
-                },
-              );
-            }
-          },
-          child: Builder(
-            builder: (context) {
-              context.read<AuthCubit>().checkAuth();
-              return const LoadingPage();
-            },
-          ),
+          listener: (context, state) =>
+          // Temp solution to redirect users to the app as it is (not a specific page)
+              _checkAndRedirectAuth(state, context, routerState),
+          child: const SplashPage(),
         ),
       ),
       GoRoute(

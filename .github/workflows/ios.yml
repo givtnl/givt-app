@@ -103,4 +103,5 @@ jobs:
           FLAVOR: ${{ env.FLAVOR }}
           STRIPE_PK: ${{ env.STRIPE_PK }}
           STRIPE_MERCHANT_ID: ${{ env.STRIPE_MERCHANT_ID }}
+          FASTLANE_XCODE_LIST_TIMEOUT: 120
           

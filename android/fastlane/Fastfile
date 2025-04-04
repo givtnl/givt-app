@@ -6,7 +6,7 @@ default_platform(:android)
 platform :android do
   desc "Upload keystore"
   lane :keystore do
-    match_keystore(git_url: "git@github.com:givtnl/givt.apps.codesigning.git", package_name: "net.givtapp.droid2", override_keystore: true)
+    match_android(git_url: "git@github.com:givtnl/givt.apps.codesigning.git", package_name: "net.givtapp.droid2", override_keystore: true)
   end
 
   desc "Runs all the tests"
@@ -45,7 +45,7 @@ platform :android do
           "--dart-define=STRIPE_MERCHANT_ID=#{stripe_merchant_id}"
         )
     end
-    signed_aab_path = match_keystore(git_url: "git@github.com:givtnl/givt.apps.codesigning.git", 
+    signed_aab_path = match_android(git_url: "git@github.com:givtnl/givt.apps.codesigning.git", 
                     package_name: package_name,
                     aab_path: "../build/app/outputs/bundle/#{flavor}Release/app-#{flavor}-release.aab",
                     match_secret: ENV['MATCH_PASSWORD'],

@@ -69,8 +69,7 @@ class GiveFromListPage extends StatelessWidget {
       ParentAmountPage(
         currency: r'$',
         organisationName: collectGroup.orgName,
-        colorCombo: CollectGroupType.getColorComboByType(collectGroup.type),
-        icon: CollectGroupType.getIconByTypeUS(collectGroup.type),
+        icon: CollectGroupType.getFunIconByType(collectGroup.type),
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {

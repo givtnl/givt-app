@@ -4,25 +4,26 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
-import 'package:givt_app/features/family/features/history/history_screen.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/edit_avatar_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/my_givts_text_button.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:go_router/go_router.dart';
 
 class WalletWidget extends StatefulWidget {
   const WalletWidget({
     required this.balance,
     required this.hasDonations,
     super.key,
-    this.avatarUrl = '',
+    this.profile,
     this.kidid = '',
     this.countdownAmount = 0,
   });
@@ -30,7 +31,7 @@ class WalletWidget extends StatefulWidget {
   final double balance;
   final bool hasDonations;
   final double countdownAmount;
-  final String avatarUrl;
+  final Profile? profile;
   final String kidid;
 
   @override
@@ -38,15 +39,6 @@ class WalletWidget extends StatefulWidget {
 }
 
 class _WalletWidgetState extends State<WalletWidget> {
-  final AppConfig _appConfig = getIt();
-
-  Future<String> _getAppIDAndVersion() async {
-    final packageInfo = _appConfig.packageInfo;
-    final result =
-        '${packageInfo.packageName} v${packageInfo.version}(${packageInfo.buildNumber})';
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,8 +65,11 @@ class _WalletWidgetState extends State<WalletWidget> {
                       child: InkWell(
                         onTap: () {
                           SystemSound.play(SystemSoundType.click);
-                          context
-                              .pushNamed(FamilyPages.kidsAvatarSelection.name);
+                          Navigator.of(context).push(
+                            EditAvatarScreen(userGuid: widget.kidid).toRoute(
+                              context,
+                            ),
+                          );
                           AnalyticsHelper.logEvent(
                             eventName:
                                 AmplitudeEvents.editProfilePictureClicked,
@@ -82,31 +77,30 @@ class _WalletWidgetState extends State<WalletWidget> {
                         },
                         customBorder: const CircleBorder(),
                         splashColor: Theme.of(context).primaryColor,
-                        onDoubleTap: () async {
-                          final appInfoString = await _getAppIDAndVersion();
-
-                          if (!context.mounted) return;
-                          SnackBarHelper.showMessage(
-                            context,
-                            text: appInfoString,
-                          );
-                        },
-                        child: Stack(children: [
-                          SvgPicture.network(
-                            widget.avatarUrl,
-                            width: 100,
-                          ),
-                          const Positioned(
-                            top: 0,
-                            right: 0,
-                            child: FaIcon(
-                              FontAwesomeIcons.pen,
-                              size: 20,
-                              color: AppTheme.primary20,
-                            ),
-                          ),
-                        ]),
+                        child: widget.profile == null
+                            ? FunAvatar.defaultHero()
+                            : FunAvatar.fromProfile(widget.profile!),
                       ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  FunButton.secondary(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        EditAvatarScreen(userGuid: widget.kidid).toRoute(
+                          context,
+                        ),
+                      );
+                    },
+                    text: 'Edit avatar',
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.editProfilePictureClicked,
+                    ),
+                    size: FunButtonSize.small,
+                    leftIcon: FontAwesomeIcons.userPen,
+                    funButtonBadge: FunButtonBadge(
+                      featureId: Features.profileEditAvatarButton,
+                      profileId: widget.kidid,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -121,6 +115,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                           color: FamilyAppTheme.info40,
                           size: 20,
                         ),
+                        const SizedBox(width: 4),
                         Countup(
                           begin: widget.balance + widget.countdownAmount,
                           end: widget.balance,
@@ -136,45 +131,11 @@ class _WalletWidgetState extends State<WalletWidget> {
                         ),
                       ],
                     ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      alignment: Alignment.topCenter,
-                    ),
-                    onPressed: () {
-                      SystemSound.play(SystemSoundType.click);
-                      AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.seeDonationHistoryPressed,
-                      );
-                      getIt<HistoryCubit>().fetchHistory(
-                        widget.kidid,
-                        fromBeginning: true,
-                      );
-                      Navigator.of(context)
-                          .push(const HistoryScreen().toRoute(context));
-                    },
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'My givts',
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: Icon(
-                            FontAwesomeIcons.arrowRight,
-                            size: 20,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimaryContainer,
-                          ),
-                        ),
-                      ],
-                    ),
+                  const SizedBox(height: 4),
+                  MyGivtsButton(
+                    userId: widget.kidid,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 24),
                 ],
               );
             },

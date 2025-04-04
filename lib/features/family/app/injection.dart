@@ -9,21 +9,32 @@ import 'package:givt_app/features/family/features/avatars/repositories/avatars_r
 import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
-import 'package:givt_app/features/family/features/edit_child_profile/repositories/edit_profile_repository.dart';
+import 'package:givt_app/features/family/features/box_origin/bloc/box_origin_cubit.dart';
+import 'package:givt_app/features/family/features/edit_avatar/bloc/edit_avatar_cubit.dart';
+import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/game_summary/cubit/game_summaries_cubit.dart';
 import 'package:givt_app/features/family/features/game_summary/data/game_summaries_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/bloc/bedtime_responsibility_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/bloc/gratitude_goal_commit_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude_goal/domain/repositories/gratitude_goal_repository.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/gratitude_goal_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/league/bloc/in_game_league_cubit.dart';
+import 'package:givt_app/features/family/features/league/bloc/league_cubit.dart';
+import 'package:givt_app/features/family/features/league/domain/league_repository.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
+import 'package:givt_app/features/family/features/missions/bloc/notif_mission_cubit.dart';
+import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
+import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository_impl.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -33,10 +44,13 @@ import 'package:givt_app/features/family/features/recommendation/tags/repositori
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/generous_selection_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/goal_progress_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/gratitude_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/leave_game_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/reflect_intro_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/stage_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
@@ -45,8 +59,12 @@ import 'package:givt_app/features/family/features/registration/cubit/us_signup_c
 import 'package:givt_app/features/family/features/remote_config/domain/remote_config_repository.dart';
 import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/repositories/reset_password_repository.dart';
+import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/cubit/unlocked_badge_cubit.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
@@ -73,15 +91,19 @@ void initCubits() {
     ..registerLazySingleton<InternetConnectionCubit>(
       () => InternetConnectionCubit(getIt()),
     )
+    ..registerFactory(() => StageCubit(getIt(), getIt()))
+    ..registerFactory(() => ReflectIntroCubit(getIt()))
     ..registerFactory(ParentSummaryCubit.new)
-    ..registerFactory(AssignBedtimeResponsibilityCubit.new)
+    ..registerFactory(FunBottomSheetWithAsyncActionCubit.new)
+    ..registerFactory(() => GratitudeGoalCubit(getIt()))
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => LeaveGameCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
+    ..registerFactory(() => GoalProgressCubit(getIt()))
     ..registerLazySingleton<InterviewCubit>(
       () => InterviewCubit(getIt()),
     )
-    ..registerFactory(() => SetupBedtimeCubit(getIt()))
+    ..registerFactory(() => SetupBedtimeCubit(getIt(), getIt()))
     ..registerFactory<GratitudeSelectionCubit>(
       () => GratitudeSelectionCubit(getIt()),
     )
@@ -89,6 +111,9 @@ void initCubits() {
       CameraCubit.new,
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
+    ..registerLazySingleton(() => LeagueCubit(getIt(), getIt(), getIt()))
+    ..registerFactory(
+        () => InGameLeagueCubit(getIt(), getIt(), getIt(), getIt()))
     ..registerLazySingleton<GiveCubit>(
       () => GiveCubit(
         getIt(),
@@ -126,6 +151,10 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<AvatarsCubit>(
@@ -144,8 +173,14 @@ void initCubits() {
         getIt(),
       ),
     )
+    ..registerLazySingleton<BoxOriginCubit>(
+      () => BoxOriginCubit(getIt()),
+    )
     ..registerLazySingleton<FamilyAuthCubit>(
       () => FamilyAuthCubit(getIt()),
+    )
+    ..registerLazySingleton<RecordCubit>(
+      RecordCubit.new,
     )
     ..registerLazySingleton<FamilyLoginCubit>(
       () => FamilyLoginCubit(getIt()),
@@ -154,7 +189,13 @@ void initCubits() {
       () => UsSignupCubit(getIt(), getIt()),
     )
     ..registerFactory<MissionsCubit>(
-      () => MissionsCubit(),
+      () => MissionsCubit(getIt()),
+    )
+    ..registerFactory<NotificationMissionsCubit>(
+      () => NotificationMissionsCubit(getIt()),
+    )
+    ..registerFactory<GratitudeGoalCommitCubit>(
+      () => GratitudeGoalCommitCubit(getIt(), getIt(), getIt()),
     )
     ..registerFactory<GameSummariesCubit>(
       GameSummariesCubit.new,
@@ -166,7 +207,21 @@ void initCubits() {
       ),
     )
     ..registerFactory<SplashCubit>(
-      () => SplashCubit(getIt(), getIt()),
+      () => SplashCubit(getIt(), getIt(), getIt(), getIt()),
+    )
+    ..registerFactory<EditAvatarCubit>(
+      () => EditAvatarCubit(
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+      ),
+    )
+    ..registerFactory<UnlockedBadgeCubit>(
+      () => UnlockedBadgeCubit(
+        getIt(),
+      ),
     );
 }
 
@@ -176,6 +231,15 @@ void initRepositories() {
       AdminFeeRepository(
         getIt(),
       ),
+    )
+    ..registerLazySingleton<LeagueRepository>(
+      () => LeagueRepository(getIt(), getIt(), getIt()),
+    )
+    ..registerLazySingleton<GratitudeGoalRepository>(
+      () => GratitudeGoalRepository(getIt()),
+    )
+    ..registerSingleton<TutorialRepository>(
+      TutorialRepository(),
     )
     ..registerSingleton<ParentSummaryRepository>(
       ParentSummaryRepository(
@@ -234,11 +298,6 @@ void initRepositories() {
     ..registerLazySingleton<SvgAssetLoaderManager>(
       SvgAssetLoaderManager.new,
     )
-    ..registerLazySingleton<EditChildProfileRepository>(
-      () => EditProfileRepositoryImpl(
-        getIt(),
-      ),
-    )
     ..registerLazySingleton<ImpactGroupsRepository>(
       () => ImpactGroupsRepositoryImpl(
         getIt(),
@@ -255,6 +314,8 @@ void initRepositories() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<RemoteConfigRepository>(
@@ -267,6 +328,24 @@ void initRepositories() {
     )
     ..registerLazySingleton<ResetPasswordRepository>(
       () => ResetPasswordRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<MissionRepository>(
+      () => MissionRepositoryImpl(
+        getIt(),
+        getIt(),
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<EditAvatarRepository>(
+      () => EditAvatarRepository(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<UnlockedBadgeRepository>(
+      () => UnlockedBadgeRepositoryImpl(
+        getIt(),
         getIt(),
       ),
     );

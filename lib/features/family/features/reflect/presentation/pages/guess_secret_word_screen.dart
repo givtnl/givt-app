@@ -3,9 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
-import 'package:givt_app/features/family/features/bedtime/presentation/pages/intro_bedtime_screen.dart';
+import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
+import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
@@ -29,12 +28,20 @@ class GuessSecretWordScreen extends StatefulWidget {
 
 class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
   final GuessSecretWordCubit _cubit = GuessSecretWordCubit(getIt());
+  final BackgroundAudioCubit _audioCubit = getIt<BackgroundAudioCubit>();
+
   String currentGuessedWord = '';
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _cubit.init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _audioCubit.close();
   }
 
   @override
@@ -57,17 +64,6 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               Navigator.of(context).pushReplacement(
                 const GratefulScreen().toRoute(context),
               );
-            case RedirectToBedtimeSelection():
-              _cubit.saveSummary();
-              Navigator.of(context).push(IntroBedtimeScreen(
-                arguments: BedtimeArguments(
-                  BedtimeConfig.defaultBedtimeHour,
-                  BedtimeConfig.defaultWindDownMinutes,
-                  profiles: custom.kidsWithoutBedtime,
-                  bedtimes: const [],
-                  index: 0,
-                ),
-              ).toRoute(context));
           }
         },
         onData: (context, uiModel) {
@@ -76,6 +72,11 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               const Spacer(),
               Column(
                 children: [
+                  const FunBackgroundAudioWidget(
+                    isVisible: true,
+                    audioPath: 'family/audio/guess_secret_word.wav',
+                  ),
+                  const SizedBox(height: 8),
                   TitleMediumText(
                     uiModel.text,
                     textAlign: TextAlign.center,
@@ -94,40 +95,46 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                     itemCount: uiModel.guessOptions.length,
                     itemBuilder: (context, index) {
                       final guessOption = uiModel.guessOptions[index];
-                      return FunTile(
-                        shrink: true,
-                        onTap: () {
-                          _cubit.onClickOption(index);
-                        },
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        isPressedDown:
-                            guessOption.state == GuessOptionState.wrong,
-                        titleBig: guessOption.text,
-                        textColor: guessOption.state == GuessOptionState.initial
-                            ? FamilyAppTheme.tertiary40
-                            : guessOption.state == GuessOptionState.correct
-                                ? Colors.green
-                                : Colors.red,
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.reflectAndShareGuessOptionClicked,
-                          parameters: {
-                            'option': guessOption.text,
+                      return Semantics(
+                        identifier: guessOption.isCorrectOption
+                            ? 'funtile_correct'
+                            : 'funtile_guess_option_$index',
+                        child: FunTile(
+                          shrink: true,
+                          onTap: () {
+                            _cubit.onClickOption(index);
                           },
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          isPressedDown:
+                              guessOption.state == GuessOptionState.wrong,
+                          titleBig: guessOption.text,
+                          textColor: guessOption.state ==
+                                  GuessOptionState.initial
+                              ? FamilyAppTheme.tertiary40
+                              : guessOption.state == GuessOptionState.correct
+                                  ? Colors.green
+                                  : Colors.red,
+                          analyticsEvent: AnalyticsEvent(
+                            AmplitudeEvents.reflectAndShareGuessOptionClicked,
+                            parameters: {
+                              'option': guessOption.text,
+                            },
+                          ),
+                          borderColor: guessOption.state ==
+                                  GuessOptionState.initial
+                              ? FamilyAppTheme.tertiary80
+                              : guessOption.state == GuessOptionState.correct
+                                  ? FamilyAppTheme.primary80
+                                  : FamilyAppTheme.error80,
+                          backgroundColor: guessOption.state ==
+                                  GuessOptionState.initial
+                              ? FamilyAppTheme.tertiary98
+                              : guessOption.state == GuessOptionState.correct
+                                  ? FamilyAppTheme.primary98
+                                  : FamilyAppTheme.error98,
+                          iconPath: '',
+                          hasIcon: false,
                         ),
-                        borderColor:
-                            guessOption.state == GuessOptionState.initial
-                                ? FamilyAppTheme.tertiary80
-                                : guessOption.state == GuessOptionState.correct
-                                    ? FamilyAppTheme.primary80
-                                    : FamilyAppTheme.error80,
-                        backgroundColor:
-                            guessOption.state == GuessOptionState.initial
-                                ? FamilyAppTheme.tertiary98
-                                : guessOption.state == GuessOptionState.correct
-                                    ? FamilyAppTheme.primary98
-                                    : FamilyAppTheme.error98,
-                        iconPath: '',
-                        hasIcon: false,
                       );
                     },
                   ),
@@ -148,7 +155,6 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                     AmplitudeEvents.reflectAndShareResultShuffleRolesClicked,
                   ),
                 ),
-                const SizedBox(height: 16),
               ],
             ],
           );

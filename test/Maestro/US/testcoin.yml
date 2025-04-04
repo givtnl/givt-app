@@ -1,0 +1,6 @@
+appId: net.givtapp.ios.test
+---
+
+- openLink: 
+    link: https://www.givt.app/search-for-coin?code=NjFmN2VkMDE1NTUzMDUyNGMwMDEuZmMwMDAwMDAwMDAx
+    autoVerify: true

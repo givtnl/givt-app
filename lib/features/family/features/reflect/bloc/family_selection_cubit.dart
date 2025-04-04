@@ -11,7 +11,7 @@ class FamilySelectionCubit
       : super(const BaseState.initial());
 
   final ReflectAndShareRepository _reflectAndShareRepository;
-  final VolumeController _volumeController = VolumeController();
+  final VolumeController _volumeController = VolumeController.instance;
   GameProfile? _superhero;
 
   void init() {

@@ -47,7 +47,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           echo "builddate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
-        id: version  # this is used on variable path
+        id: version 
         
       - uses: actions/setup-node@v3
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -65,14 +65,15 @@ jobs:
             const { OpenAI } = require('openai')
             const openai = new OpenAI({ apiKey: "${{ secrets.OPENAI_API_KEY }}"})
             const response = await openai.chat.completions.create({
-              model: "gpt-4o-mini",
+              model: "gpt-4o",
               messages: [
-                { role: 'system', content: `You are a slack message writer. Your job is to translate a changelog to a short message (1 or 2 sentences) about what is changed. This message will be read by colleagues in our company. You can make use of 'mrkdwn' to highlight keywords or the make the message prettier. When a changelog is provided, respond with the message.` },
+                { role: 'system', content: `You are a slack message writer. Your job is to translate a changelog to a short message (1 or 2 sentences) about what is changed. This message will be read by colleagues in our company. You can make use of 'mrkdwn' to highlight keywords or the make the message prettier. When a changelog is provided, respond with the message. If something is new, don't mention the bugfixes about the same thing` },
                 { role: 'user', content: `${{ steps.release-drafter.outputs.body }}` }
               ]
             })
-            console.log("::set-output name=generated_text::" + response.choices[0].message.content)
-      
+            return response.choices[0].message.content;
+          result-encoding: string
+          
       # Post slack message for new release
       - name: Slack Notification
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -113,7 +114,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "Release notes: ${{ steps.generate-text.outputs.generated_text }}"
+                    "text": "${{ steps.generate-text.outputs.result }}"
                   }
                 },
                 {
@@ -139,4 +140,24 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASENOTES_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-      
+
+
+      # Create release in Amplitude
+      - name: Create Amplitude Release
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://amplitude.com/api/2/release'
+          method: 'POST'
+          username: ${{ secrets.AMPLITUDE_GIVT_API_KEY }}
+          password: ${{ secrets.AMPLITUDE_GIVT_SECRET_KEY }}
+          contentType: 'application/json'
+          data: >
+            {
+              "chart_visibility": "true",
+              "description": "${{ steps.generate-text.outputs.result }}",
+              "platforms": "iOS,Android",
+              "release_start": "${{ steps.version.outputs.builddate }} 00:00:00",
+              "title": "Version ${{ steps.yq.outputs.result }}",
+              "version": "${{ steps.yq.outputs.result }}"
+            }

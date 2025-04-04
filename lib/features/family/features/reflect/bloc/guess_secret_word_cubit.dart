@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
@@ -49,15 +48,9 @@ class GuessSecretWordCubit
       emitCustom(const GuessTheWordCustom.showConfetti());
       // just to make sure we fire the analytics events once and save the stats once
       if (!_hasSuccess) {
-        final kidsWithoutBedtime =
-            await _reflectAndShareRepository.getKidsWithoutBedtime();
         // Check if it's the last game and delay for 2 seconds before continuing
         if (_reflectAndShareRepository.isGameFinished()) {
           Timer(const Duration(seconds: 2), () {
-            if (kidsWithoutBedtime.isNotEmpty) {
-              redirectToBedtimeSelection(kidsWithoutBedtime);
-              return;
-            }
             emitCustom(const GuessTheWordCustom.redirectToSummary());
           });
         }
@@ -75,21 +68,6 @@ class GuessSecretWordCubit
     _emitData();
   }
 
-  void redirectToBedtimeSelection(List<Profile> kidsWithoutBedtime) {
-    emitCustom(
-      GuessTheWordCustom.redirectToBedtimeSelection(
-        kidsWithoutBedtime,
-      ),
-    );
-    _emitData();
-    AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.redirectedFromGratitudeGameToBedtimeSelection,
-      eventProperties: {
-        'total': _attempts,
-      },
-    );
-  }
-
   void saveSummary() {
     _reflectAndShareRepository.saveSummaryStats();
   }
@@ -103,6 +81,8 @@ class GuessSecretWordCubit
         guessOptions: List.generate(
           _guessOptions.length,
           (index) => GuessOptionUIModel(
+            isCorrectOption:
+                _guessOptions[index].toLowerCase() == _secretWord.toLowerCase(),
             text: _guessOptions[index],
             state: _pressedOptions.contains(index)
                 ? _guessOptions[index].toLowerCase() ==

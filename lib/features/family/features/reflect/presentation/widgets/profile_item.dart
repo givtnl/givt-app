@@ -1,35 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 
 class ProfileItem extends StatelessWidget {
   const ProfileItem({
     required this.profile,
+    this.size = 80,
     super.key,
   });
 
   final GameProfile profile;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
     return Draggable<GameProfile>(
       data: profile,
-      childWhenDragging: const SizedBox(
-        width: 80,
-        height: 80,
+      childWhenDragging: SizedBox(
+        width: size,
+        height: size,
       ),
-      feedback: _feedbackCircle(80),
+      feedback: _feedbackCircle(size),
       child: Column(
         children: [
-          SvgPicture.network(
-            profile.pictureURL!,
-            width: 80,
-            height: 80,
-          ),
+          FunAvatar.fromGameProfile(profile, size: size),
           const SizedBox(height: 12),
           SizedBox(
-            width: 80,
+            width: size,
             child: Text(
               profile.firstName!,
               textAlign: TextAlign.center,
@@ -43,18 +40,13 @@ class ProfileItem extends StatelessWidget {
     );
   }
 
-  Container _feedbackCircle(double width) {
-    return Container(
-      height: width,
-      width: width,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: FamilyAppTheme.primary20,
-      ),
-      child: SvgPicture.network(
-        profile.pictureURL!,
-        width: 80,
-        height: 80,
+  Widget _feedbackCircle(double size) {
+    return SizedBox(
+      height: size,
+      width: size,
+      child: FunAvatar.fromGameProfile(
+        profile,
+        size: size,
       ),
     );
   }

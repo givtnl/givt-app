@@ -28,6 +28,8 @@ class LocationSelectionScreen extends StatelessWidget {
         final svgManager = getIt<SvgAssetLoaderManager>();
         final isCitySelection = state.status == LocationSelectionStatus.city;
         return FunScaffold(
+          minimumPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+          safeAreaBottom: false,
           appBar: const CharityFinderAppBar(),
           body: CustomScrollView(
             slivers: [
@@ -101,46 +103,43 @@ class LocationSelectionScreen extends StatelessWidget {
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: state is! TagsStateFetching
-                    ? Column(
+                    ? const Column(
                         children: [
-                          const Spacer(),
-                          FunButton(
-                            isDisabled: state is TagsStateFetched &&
-                                    state.selectedLocation != const Tag.empty()
-                                ? isCitySelection && state.selectedCity.isEmpty
-                                : true,
-                            text: 'Next',
-                            onTap: state is TagsStateFetched &&
-                                    state.selectedLocation != const Tag.empty()
-                                ? () {
-                                    if (state.selectedLocation.key == 'STATE' &&
-                                        state.status ==
-                                            LocationSelectionStatus.general) {
-                                      context
-                                          .read<TagsCubit>()
-                                          .goToCitySelection();
-                                      return;
-                                    }
-                                    svgManager.preloadSvgAssets(
-                                      state.interests
-                                          .map((e) => e.pictureUrl)
-                                          .toList(),
-                                    );
-                                    context.pushNamed(
-                                      FamilyPages.interestsSelection.name,
-                                      extra: state,
-                                    );
-                                  }
-                                : null,
-                            analyticsEvent: AnalyticsEvent(
-                              AmplitudeEvents.locationNextClicked,
-                            ),
-                          ),
+                          Spacer(),
+                          SizedBox(height: 40),
                         ],
                       )
                     : null,
               ),
             ],
+          ),
+          floatingActionButton: 
+          (state is TagsStateFetched &&
+                    state.selectedLocation != const Tag.empty()
+                ? isCitySelection && state.selectedCity.isEmpty
+                : true) == true ? null :
+          FunButton(
+            text: 'Next',
+            onTap: state is TagsStateFetched &&
+                    state.selectedLocation != const Tag.empty()
+                ? () {
+                    if (state.selectedLocation.key == 'STATE' &&
+                        state.status == LocationSelectionStatus.general) {
+                      context.read<TagsCubit>().goToCitySelection();
+                      return;
+                    }
+                    svgManager.preloadSvgAssets(
+                      state.interests.map((e) => e.pictureUrl).toList(),
+                    );
+                    context.pushNamed(
+                      FamilyPages.interestsSelection.name,
+                      extra: state,
+                    );
+                  }
+                : null,
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.locationNextClicked,
+            ),
           ),
         );
       },

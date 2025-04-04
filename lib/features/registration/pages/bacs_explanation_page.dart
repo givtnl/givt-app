@@ -132,6 +132,7 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
       child: Row(
         children: [
           Checkbox(
+            semanticLabel: 'bacsCheckbox',
             value: _acceptedTerms,
             onChanged: (value) {
               setState(() {

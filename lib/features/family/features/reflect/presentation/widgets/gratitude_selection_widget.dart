@@ -105,27 +105,27 @@ class GratitudeSelectionWidget extends StatelessWidget {
                 ),
               ),
             ),
-            if (uimodel.selectedTag != null)
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.only(bottom: 24, top: 8),
-                  child: FunButton(
-                    onTap: onNext,
-                    text: 'Last Question',
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.gratefulTileSubmitted,
-                      parameters: {
-                        'superhero': uimodel.superheroName,
-                        'gratefulFor': uimodel.selectedTag?.displayText,
-                      },
-                    ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                color: Colors.white,
+                padding: const EdgeInsets.only(bottom: 24, top: 8),
+                child: FunButton(
+                  isDisabled: uimodel.selectedTag == null,
+                  onTap: onNext,
+                  text: 'Last Question',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.gratefulTileSubmitted,
+                    parameters: {
+                      'superhero': uimodel.superheroName,
+                      'gratefulFor': uimodel.selectedTag?.displayText,
+                    },
                   ),
                 ),
               ),
+            ),
           ],
         ),
       ),

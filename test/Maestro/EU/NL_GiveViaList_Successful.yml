@@ -1,0 +1,29 @@
+appId: net.givtapp.ios.test
+name: Give to 3 collections via the list
+
+---
+
+- tapOn: "4"
+- tapOn: "Add a collection"
+- tapOn: "3"
+- tapOn: "Add a collection"
+- tapOn: "2"
+- tapOn: "Next"
+- tapOn:
+    label: Select the List option
+    point: "50%,68%"
+- tapOn: "Bassie&Adriaan"
+- tapOn: "Search ..."
+- inputText:
+    label: "Search for an organization"
+    text: "Gamers"
+- tapOn: "Gamers4Life Lelytown"
+- tapOn: "Give"
+- assertVisible: ".*€.*"
+- assertVisible: "This Givt will be converted into a transaction."
+- assertVisible: "Collection 1"
+- assertVisible: "Collection 2"
+- assertVisible: "Collection 3"
+- tapOn: "Next"
+- assertVisible: "Yes, success!"
+- tapOn: "Close"

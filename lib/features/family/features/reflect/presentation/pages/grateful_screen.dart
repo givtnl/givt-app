@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -21,13 +22,15 @@ import 'package:givt_app/features/family/features/recommendation/organisations/m
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/gather_around_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -49,6 +52,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
   final _give = getIt<GiveCubit>();
   final _medium = getIt<MediumCubit>();
   final ScrollController _scrollController = ScrollController();
+  int _currentIndex = 0;
 
   @override
   void didChangeDependencies() {
@@ -86,53 +90,107 @@ class _GratefulScreenState extends State<GratefulScreen> {
         onCustom: _handleCustom,
         onLoading: (context) => const GratefulLoading(),
         onData: (context, uiModel) {
+          if (_currentIndex >=
+              uiModel.recommendationsUIModel.organisations.length) {
+            _currentIndex = 0;
+          }
           return FunScaffold(
             canPop: false,
-            withSafeArea: false,
-            minimumPadding: EdgeInsets.zero,
+            minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
             appBar: const FunTopAppBar(
-              title: 'Share your gratitude',
+              title: 'Generosity time',
             ),
-            body: SingleChildScrollView(
-              controller: _scrollController,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height,
-                ),
-                child: Column(
-                  children: [
-                    AvatarBar(
-                      backgroundColor: FamilyAppTheme.primary99,
-                      uiModel: uiModel.avatarBarUIModel,
-                      onAvatarTapped: _cubit.onAvatarTapped,
-                    ),
-                    const SizedBox(height: 24),
-                    Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: TitleMediumText(
-                        '${uiModel.recommendationsUIModel.name} you were grateful for ${uiModel.recommendationsUIModel.category!.displayText.toLowerCase()}, here are some ways to help',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Center(
-                      child: FunTabs(
-                        selectedIndex: uiModel.recommendationsUIModel.tabIndex,
-                        onPressed: _cubit.onSelectionChanged,
-                        options: const ['Ways to help', 'Give'],
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.recommendationTypeSelectorClicked,
+            body: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(
+                      children: [
+                        AvatarBar(
+                          backgroundColor: FamilyAppTheme.primary99,
+                          uiModel: uiModel.avatarBarUIModel,
+                          onAvatarTapped: _cubit.onAvatarTapped,
+                          circleSize: 50,
                         ),
+                        const SizedBox(height: 16),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 48,
+                          ),
+                          child: TitleMediumText(
+                            '${uiModel.recommendationsUIModel.name} would you like to Help or Give?',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Center(
+                          child: FunPrimaryTabs(
+                            selectedIndex:
+                                uiModel.recommendationsUIModel.tabIndex,
+                            onPressed: _cubit.onSelectionChanged,
+                            options: _cubit.tabsOptions,
+                            analyticsEvent: AnalyticsEvent(
+                              AmplitudeEvents.recommendationTypeSelectorClicked,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        RecommendationsWidget(
+                          uiModel: uiModel.recommendationsUIModel,
+                          onRecommendationChosen: _cubit.onRecommendationChosen,
+                          onTapRetry: _cubit.onRetry,
+                          onSkip: _cubit.onSkip,
+                          onIndexChanged: (index) {
+                            _currentIndex = index;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                if (!uiModel.recommendationsUIModel.isNotLoggedInParent ||
+                    uiModel.recommendationsUIModel.isShowingActsOfService)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+                    child: FunButton(
+                      onTap: () => _cubit.onRecommendationChosen(_currentIndex),
+                      text:
+                          uiModel.recommendationsUIModel.isShowingActsOfService
+                              ? "I'm going to do this"
+                              : 'Give',
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.newActOfGenerosityClicked,
+                        parameters: {
+                          uiModel.recommendationsUIModel.isShowingActsOfService
+                                  ? 'act_of_service'
+                                  : 'donation':
+                              uiModel.recommendationsUIModel.organisations
+                                  .elementAtOrNull(_currentIndex)
+                                  ?.name,
+                          AnalyticsHelper.firstNameKey:
+                              uiModel.recommendationsUIModel.name,
+                        },
                       ),
                     ),
-                    RecommendationsWidget(
-                      uiModel: uiModel.recommendationsUIModel,
-                      onRecommendationChosen: _cubit.onRecommendationChosen,
-                      onTapRetry: _cubit.onRetry,
-                      onSkip: _cubit.onSkip,
-                    ),
-                  ],
+                  ),
+                const SizedBox(height: 4),
+                TextButton(
+                  onPressed: () {
+                    _cubit.onSkip();
+                    unawaited(
+                      AnalyticsHelper.logEvent(
+                        eventName: AmplitudeEvents.skipGenerosActPressed,
+                        eventProperties: {
+                          AnalyticsHelper.firstNameKey:
+                              uiModel.recommendationsUIModel.name,
+                        },
+                      ),
+                    );
+                  },
+                  child: const LabelLargeText('Skip this time'),
                 ),
-              ),
+              ],
             ),
           );
         },
@@ -167,10 +225,14 @@ class _GratefulScreenState extends State<GratefulScreen> {
           data.profile,
           data.organisation,
         );
-      case GratefulGoToGameSummary():
-        _navigateToSummary(context);
+      case GratefulGoToGatherAround():
+        _navigateToGatherAround(context);
       case ScrollToTop():
         _scrollToTop();
+      case ShowDoneOverlay():
+        _showDoneOverlay(context);
+      case ShowSkippedOverlay():
+        _showSkippedOverlay(context);
     }
   }
 
@@ -180,11 +242,12 @@ class _GratefulScreenState extends State<GratefulScreen> {
     Organisation organisation,
   ) async {
     final generatedMediumId = base64.encode(organisation.namespace.codeUnits);
-    await context
-        .read<CollectGroupDetailsCubit>()
-        .getOrganisationDetails(generatedMediumId);
+    await context.read<CollectGroupDetailsCubit>().getOrganisationDetails(
+          generatedMediumId,
+          experiencePoints: organisation.experiencePoints,
+        );
     final profiles = context.read<ProfilesCubit>();
-    await profiles.setActiveProfile(profile.userId);
+    profiles.setActiveProfile(profile.userId);
     if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
       EmptyWalletBottomSheet.show(context, () {
         context.pop();
@@ -202,7 +265,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
     await Navigator.of(context).push(
       BlocProvider(
         create: (BuildContext context) => CreateTransactionCubit(
-            context.read<ProfilesCubit>(), getIt(), getIt()),
+          context.read<ProfilesCubit>(),
+          getIt(),
+          getIt(),
+        ),
         child: ChooseAmountSliderScreen(
           onCustomSuccess: () {
             _cubit.onDeed(profile);
@@ -223,6 +289,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     await Navigator.push(
       context,
       SuccessScreen(
+        experiencePoints: org.experiencePoints,
         isActOfService: true,
         onCustomSuccess: () {
           _cubit.onDeed(profile);
@@ -251,9 +318,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
         authcheck: true,
         currency: r'$',
         organisationName: org.name,
-        colorCombo:
-            CollectGroupType.getColorComboByType(CollectGroupType.charities),
-        icon: CollectGroupType.getIconByTypeUS(CollectGroupType.charities),
+        icon: CollectGroupType.getFunIconByType(CollectGroupType.charities),
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {
@@ -273,6 +338,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
         isGratitude: true,
         orgName: org.name,
         mediumId: org.namespace,
+        experiencePoints: org.experiencePoints,
       );
 
       await Navigator.push(
@@ -294,7 +360,29 @@ class _GratefulScreenState extends State<GratefulScreen> {
     }
   }
 
-  void _navigateToSummary(BuildContext context) {
-    Navigator.of(context).push(const SummaryScreen().toRoute(context));
+  void _navigateToGatherAround(BuildContext context) {
+    Navigator.of(context).push(const GatherAroundScreen().toRoute(context));
+  }
+
+  void _showDoneOverlay(BuildContext context) {
+    FunModal(
+      autoClose: const Duration(milliseconds: 1500),
+      icon: FunIcon.checkmark(),
+      title: 'Done',
+      closeAction: () {
+        context.pop();
+      },
+    ).show(context);
+  }
+
+  void _showSkippedOverlay(BuildContext context) {
+    FunModal(
+      autoClose: const Duration(milliseconds: 1500),
+      icon: FunIcon.checkmark(),
+      title: 'Skipped',
+      closeAction: () {
+        context.pop();
+      },
+    ).show(context);
   }
 }

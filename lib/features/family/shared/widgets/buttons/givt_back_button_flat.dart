@@ -11,31 +11,41 @@ import 'package:go_router/go_router.dart';
 class GivtBackButtonFlat extends StatelessWidget {
   const GivtBackButtonFlat({
     super.key,
+    this.onPressed,
     this.onPressedExt,
     this.color,
   });
 
+  /// Extend the onPressed function
   final Future<void> Function()? onPressedExt;
+
+  /// Override the entire onPressed function
+  final Future<void> Function()? onPressed;
+
   final Color? color;
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: FaIcon(
-        FontAwesomeIcons.arrowLeft,
-        color: color ?? FamilyAppTheme.primary20,
-      ),
-      onPressed: () async {
-        unawaited(AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.backButtonPressed,
-        ));
+    return Semantics(
+      identifier: 'backButton',
+      child: IconButton(
+        icon: FaIcon(
+          FontAwesomeIcons.arrowLeft,
+          color: color ?? FamilyAppTheme.primary20,
+        ),
+        onPressed: onPressed ??
+            () async {
+              unawaited(AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.backButtonPressed,
+              ));
 
-        unawaited(SystemSound.play(SystemSoundType.click));
-        await onPressedExt?.call();
-        if(context.mounted) {
-          context.pop();
-        }
-      },
+              unawaited(SystemSound.play(SystemSoundType.click));
+              await onPressedExt?.call();
+              if (context.mounted) {
+                context.pop();
+              }
+            },
+      ),
     );
   }
 }

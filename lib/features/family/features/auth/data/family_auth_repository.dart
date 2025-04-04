@@ -11,6 +11,7 @@ import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class FamilyAuthRepository {
@@ -37,9 +38,15 @@ abstract class FamilyAuthRepository {
     required String email,
   });
 
+  Future<UserExt> fetchUserExtension(String guid);
+
   Future<void> updateNotificationId();
 
   Stream<UserExt?> authenticatedUserStream();
+
+  Stream<void> registrationFinishedStream();
+
+  Stream<void> refreshTokenFailedStream();
 
   Session getStoredSession();
 
@@ -53,6 +60,18 @@ abstract class FamilyAuthRepository {
   });
 
   Future<void> refreshUser() async {}
+
+  Future<void> onRegistrationFinished();
+
+  void onRegistrationStarted();
+
+  void onRegistrationCancelled();
+
+  bool hasUserStartedRegistration();
+
+  Future<void> updateNumber(String number);
+
+  Future<void> updateEmail(String email);
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -69,44 +88,67 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   final StreamController<UserExt?> _authenticatedUserStream =
       StreamController<UserExt?>.broadcast();
 
+  final StreamController<void> _onRegistrationFinishedStream =
+      StreamController<void>.broadcast();
+
+  final StreamController<void> _refreshTokenFailedStream =
+      StreamController<void>.broadcast();
+
+  bool _startedRegistration = false;
+
   //emits a userExt object when we have an authenticated user, else null
   @override
   Stream<UserExt?> authenticatedUserStream() =>
       _authenticatedUserStream.stream.distinct();
+
+  //emits an event when we have failed to refresh the token
+  @override
+  Stream<void> refreshTokenFailedStream() => _refreshTokenFailedStream.stream;
 
   @override
   Future<Session> refreshToken() async {
     final session = getStoredSession();
     if (session == const Session.empty()) {
       _authenticatedUserStream.add(null);
+      _refreshTokenFailedStream.add(null);
       throw Exception(
         'Cannot refresh token, no current session found to refresh.',
       );
     }
     if (session.isLoggedIn == false) {
       _authenticatedUserStream.add(null);
+      _refreshTokenFailedStream.add(null);
       throw Exception('Cannot refresh token, user is not logged in.');
     }
-    final response = await _apiService.refreshToken(
-      {
-        'refresh_token': session.refreshToken,
-        'grant_type': 'refresh_token',
-      },
-    );
-    var newSession = Session.fromJson(response);
-    newSession = newSession.copyWith(
-      isLoggedIn: true,
-    );
-    await _storeSession(newSession);
     try {
-      await _fetchUserExtension(newSession.userGUID);
-    } catch (e, s) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: s.toString(),
+      final response = await _apiService.refreshToken(
+        {
+          'refresh_token': session.refreshToken,
+          'grant_type': 'refresh_token',
+        },
       );
+      var newSession = Session.fromJson(response);
+      newSession = newSession.copyWith(
+        isLoggedIn: true,
+      );
+      await _storeSession(newSession);
+      try {
+        await _fetchAndStoreUserExtension(newSession.userGUID);
+      } catch (e, s) {
+        LoggingInfo.instance.error(
+          e.toString(),
+          methodName: s.toString(),
+        );
+      }
+      return newSession;
+    } catch (e, s) {
+      _refreshTokenFailedStream.add(null);
+      LoggingInfo.instance.error(
+        s.toString(),
+        methodName: 'FamilyAuthRepositoryImpl.refreshToken',
+      );
+      rethrow;
     }
-    return newSession;
   }
 
   @override
@@ -125,7 +167,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     );
 
     await _storeSession(session);
-    await _fetchUserExtension(session.userGUID);
+    await _fetchAndStoreUserExtension(session.userGUID);
   }
 
   Future<bool> _storeSession(Session session) async {
@@ -159,10 +201,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   Future<String> checkEmail({required String email}) async =>
       _apiService.checkEmail(email);
 
-  Future<UserExt> _fetchUserExtension(String guid) async {
+  Future<UserExt> _fetchAndStoreUserExtension(String guid) async {
     try {
-      final response = await _apiService.getUserExtension(guid);
-      final userExt = UserExt.fromJson(response);
+      UserExt userExt = await fetchUserExtension(guid);
       await _storeUserExt(userExt);
       await _setUserPropsForExternalServices(userExt);
       _updateAuthenticatedUserStream(userExt);
@@ -174,6 +215,12 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       );
       rethrow;
     }
+  }
+
+  Future<UserExt> fetchUserExtension(String guid) async {
+    final response = await _apiService.getUserExtension(guid);
+    final userExt = UserExt.fromJson(response);
+    return userExt;
   }
 
   Future<void> _storeUserExt(UserExt userExt) async {
@@ -245,6 +292,8 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   @override
   Future<bool> logout() async {
+    _startedRegistration = false;
+
     // _prefs.clear();
     final sessionString = _prefs.getString(Session.tag);
 
@@ -313,7 +362,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }) async {
     try {
       final result = await _apiService.updateUser(guid, newUserExt);
-      await _fetchUserExtension(guid);
+      await _fetchAndStoreUserExtension(guid);
       return result;
     } catch (e) {
       return false;
@@ -325,8 +374,15 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     Map<String, dynamic> newUserExt,
   ) async {
     try {
+      final userExt = UserExt.fromJson(newUserExt);
       final result = _apiService.updateUserExt(newUserExt);
       await refreshUser();
+      unawaited(
+        AnalyticsHelper.setUserProperties(
+          userId: userExt.guid,
+          userProperties: AnalyticsHelper.getUserPropertiesFromExt(userExt),
+        ),
+      );
       return result;
     } catch (e) {
       return false;
@@ -345,14 +401,8 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     final notificationId = await FirebaseMessaging.instance.getToken();
 
     LoggingInfo.instance.info('New FCM token: $notificationId');
-
-    if (_userExt!.notificationId == notificationId) {
-      LoggingInfo.instance.info(
-        'FCM token: $notificationId is the same as the current one',
-      );
-
-      return;
-    }
+    final notificationPermissionStatus =
+        await Permission.notification.status.isGranted;
 
     if (notificationId == null) {
       LoggingInfo.instance.warning(
@@ -360,14 +410,23 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       );
       return;
     }
+    if (_userExt!.notificationId == notificationId &&
+        _userExt!.pushNotificationsEnabled == notificationPermissionStatus) {
+      LoggingInfo.instance.info(
+        'FCM token: $notificationId is the same as the current one',
+      );
+
+      return;
+    }
 
     await _apiService.updateNotificationId(
       guid: _userExt!.guid,
       body: {
         'PushNotificationId': notificationId,
-        'OS': 1, // Always use firebase implementation in backend (android)
+        'PushNotificationsEnabled': notificationPermissionStatus,
       },
     );
+    await _fetchAndStoreUserExtension(_userExt!.guid);
   }
 
   Future<void> _setUserPropsForExternalServices(UserExt newUserExt) {
@@ -403,6 +462,77 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   @override
   Future<void> refreshUser() async {
-    await _fetchUserExtension(_userExt!.guid);
+    await _fetchAndStoreUserExtension(_userExt!.guid);
   }
+
+  @override
+  Future<void> onRegistrationFinished() async {
+    // a little delay to allow navigation to resolve first
+    await Future.delayed(const Duration(milliseconds: 30));
+    _startedRegistration = false;
+    _onRegistrationFinishedStream.add(null);
+  }
+
+  @override
+  void onRegistrationStarted() => _startedRegistration = true;
+
+  @override
+  bool hasUserStartedRegistration() => _startedRegistration;
+
+  @override
+  Stream<void> registrationFinishedStream() =>
+      _onRegistrationFinishedStream.stream;
+
+  @override
+  void onRegistrationCancelled() => _startedRegistration = false;
+
+  @override
+  Future<void> updateNumber(String number) async {
+    final newUserExt = _userExt!.copyWith(phoneNumber: number);
+    final isSuccess = await _apiService.updateUserExt(newUserExt.toJson());
+    if (isSuccess) {
+      _updateAuthenticatedUserStream(newUserExt);
+      unawaited(AnalyticsHelper.setUserProperties(
+        userId: newUserExt.guid,
+        userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
+      ));
+    } else {
+      throw Exception('Phone number update failed');
+    }
+  }
+
+  @override
+  Future<void> updateEmail(String email) async {
+    final newUserExt = _userExt!.copyWith(email: email);
+    if (!await _apiService.checktld(email)) {
+      throw invalidEmailException();
+    }
+
+    final result = await _apiService.checkEmail(email);
+    if (result.contains('temp')) {
+      throw invalidEmailException();
+    }
+    if (result.contains('true')) {
+      throw invalidEmailException();
+    }
+
+    final isSuccess = await _apiService.updateUser(
+      newUserExt.guid,
+      newUserExt.toJson(),
+    );
+    if (isSuccess) {
+      _updateAuthenticatedUserStream(newUserExt);
+      unawaited(
+        AnalyticsHelper.setUserProperties(
+          userId: newUserExt.guid,
+          userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
+        ),
+      );
+    } else {
+      throw Exception('Oops, something went wrong!\nPlease try again later.');
+    }
+  }
+
+  Exception invalidEmailException() =>
+      Exception('The email you entered is invalid or already in use');
 }

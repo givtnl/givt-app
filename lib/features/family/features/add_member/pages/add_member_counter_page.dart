@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/family/features/add_member/widgets/member_counter.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -11,14 +11,17 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class AddMemberCounterPage extends StatefulWidget {
-  const AddMemberCounterPage(
-      {this.initialAmount,
-      this.showTopUp = false,
-      this.canPop = false,
-      super.key});
+  const AddMemberCounterPage({
+    this.initialAmount,
+    this.showTopUp = false,
+    this.existingFamily = false,
+    super.key,
+  });
+
   final int? initialAmount;
   final bool showTopUp;
-  final bool canPop;
+  final bool existingFamily;
+
   @override
   State<AddMemberCounterPage> createState() => _AddMemberCounterPageState();
 }
@@ -35,10 +38,10 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      canPop: widget.canPop,
+      canPop: widget.existingFamily,
       appBar: FunTopAppBar.primary99(
         title: 'Set up Family',
-        leading: widget.canPop ? const GivtBackButtonFlat() : null,
+        leading: widget.existingFamily ? const GivtBackButtonFlat() : null,
       ),
       body: Column(
         children: [
@@ -69,6 +72,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
                   totalCount: _amount,
                   membersToCombine: const [],
                   showTopUp: widget.showTopUp,
+                  existingFamily: widget.existingFamily,
                 ).toRoute(context),
               );
             },

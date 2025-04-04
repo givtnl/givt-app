@@ -101,76 +101,82 @@ class _ProfileScreenState extends State<ProfileScreen>
                             balance: state.activeProfile.wallet.balance,
                             countdownAmount: countdownAmount,
                             hasDonations: hasDonations,
-                            avatarUrl: state.activeProfile.pictureURL,
+                            profile: state.activeProfile,
                             kidid: state.activeProfile.id,
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: FunTile(
-                                    titleBig: 'Give',
-                                    iconPath:
-                                        'assets/family/images/give_tile.svg',
-                                    backgroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondary,
-                                    borderColor: Theme.of(context)
-                                        .colorScheme
-                                        .onInverseSurface,
-                                    textColor:
-                                        Theme.of(context).colorScheme.secondary,
-                                    analyticsEvent: AnalyticsEvent(
-                                      AmplitudeEvents.iWantToGivePressed,
-                                      parameters: {
-                                        AnalyticsHelper.walletAmountKey:
-                                            state.activeProfile.wallet.balance,
+                            child: IntrinsicHeight(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: FunTile(
+                                      titleBig: 'Give',
+                                      iconPath:
+                                          'assets/family/images/give_tile.svg',
+                                      backgroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary,
+                                      borderColor: Theme.of(context)
+                                          .colorScheme
+                                          .onInverseSurface,
+                                      textColor: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      analyticsEvent: AnalyticsEvent(
+                                        AmplitudeEvents.iWantToGivePressed,
+                                        parameters: {
+                                          AnalyticsHelper.walletAmountKey: state
+                                              .activeProfile.wallet.balance,
+                                        },
+                                      ),
+                                      onTap: () => showModalBottomSheet<void>(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        backgroundColor: Colors.white,
+                                        builder: (context) => GiveBottomSheet(
+                                          isiPad: isiPad,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: FunTile(
+                                      titleBig: 'Find Charity',
+                                      iconPath:
+                                          'assets/family/images/find_tile.svg',
+                                      backgroundColor: FamilyAppTheme.primary98,
+                                      borderColor: Theme.of(context)
+                                          .colorScheme
+                                          .primaryContainer,
+                                      textColor: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer,
+                                      analyticsEvent: AnalyticsEvent(
+                                        AmplitudeEvents
+                                            .helpMeFindCharityPressed,
+                                      ),
+                                      onTap: () {
+                                        context
+                                            .read<FlowsCubit>()
+                                            .startRecommendationFlow();
+
+                                        context.pushNamed(
+                                          FamilyPages.recommendationStart.name,
+                                        );
                                       },
                                     ),
-                                    onTap: () => showModalBottomSheet<void>(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      backgroundColor: Colors.white,
-                                      builder: (context) => GiveBottomSheet(
-                                        isiPad: isiPad,
-                                      ),
-                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: FunTile(
-                                    titleBig: 'Find Charity',
-                                    iconPath:
-                                        'assets/family/images/find_tile.svg',
-                                    backgroundColor: FamilyAppTheme.primary98,
-                                    borderColor: Theme.of(context)
-                                        .colorScheme
-                                        .primaryContainer,
-                                    textColor: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimaryContainer,
-                                    analyticsEvent: AnalyticsEvent(
-                                      AmplitudeEvents.helpMeFindCharityPressed,
-                                    ),
-                                    onTap: () {
-                                      context
-                                          .read<FlowsCubit>()
-                                          .startRecommendationFlow();
-
-                                      context.pushNamed(
-                                        FamilyPages.recommendationStart.name,
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],

@@ -30,12 +30,14 @@ class RuleScreen extends StatefulWidget {
     required this.header,
     required this.iconData,
     required this.audioPath,
+    required this.title,
     this.backgroundColor,
     super.key,
   });
 
   factory RuleScreen.toSuperhero(GameProfile superhero) {
     return RuleScreen(
+      title: 'Superhero',
       user: superhero,
       audioPath: 'family/audio/superhero_instructions.wav',
       header: GameProfileItem(
@@ -45,7 +47,7 @@ class RuleScreen extends StatefulWidget {
       ),
       iconData: FontAwesomeIcons.mask,
       bodyText:
-          "I'm the superhero! I'll answer questions about my day and sneak a secret word into one of my answers.",
+          "You're the superhero! You'll answer questions about your day and sneak a secret word into one of your answers.",
       onTap: (context) => Navigator.of(context).pushReplacement(
         const RevealSecretWordScreen().toRoute(context),
       ),
@@ -55,6 +57,7 @@ class RuleScreen extends StatefulWidget {
 
   factory RuleScreen.toSidekick(GameProfile sidekick) {
     return RuleScreen(
+      title: 'Sidekick',
       user: sidekick,
       audioPath: 'family/audio/sidekick_instructions.wav',
       backgroundColor: sidekick.sidekickRole!.color.backgroundColor,
@@ -66,7 +69,7 @@ class RuleScreen extends StatefulWidget {
       ),
       iconData: FontAwesomeIcons.solidHandshake,
       bodyText:
-          "I'm the sidekick! I'll listen to the superhero's answers and try to guess their secret word at the end.",
+          "You're the sidekick! You'll listen to the superhero's answers and try to guess their secret word at the end.",
       onTap: (context) {
         final reporters = getIt<InterviewCubit>().getReporters();
         if (sidekick.roles.length > 1) {
@@ -85,6 +88,7 @@ class RuleScreen extends StatefulWidget {
 
   factory RuleScreen.toReporters(List<GameProfile> reporters) {
     return RuleScreen(
+      title: 'Reporter',
       user: reporters.first,
       audioPath: reporters.length > 1
           ? 'family/audio/reporters_plural_instructions.wav'
@@ -112,9 +116,9 @@ class RuleScreen extends StatefulWidget {
 
   static String getReportersText(int reportersCount) {
     if (reportersCount == 1) {
-      return 'I am the reporter! At the start of the game, I will ask the superhero 4 questions about their day.';
+      return 'You are the reporter! At the start of the game, you will ask the superhero 4 questions about their day.';
     } else {
-      return "We're the reporters! At the start of the game, we'll ask the superhero ${reportersCount > 3 ? reportersCount + 1 : 4} questions about their day.";
+      return "You're the reporters! At the start of the game, you'll ask the superhero 4 questions about their day.";
     }
   }
 
@@ -126,6 +130,7 @@ class RuleScreen extends StatefulWidget {
   final IconData iconData;
   final Color? backgroundColor;
   final String audioPath;
+  final String title;
 
   @override
   State<RuleScreen> createState() => _RuleScreenState();
@@ -163,48 +168,48 @@ class _RuleScreenState extends State<RuleScreen> {
           LeaveGameButton(),
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 56),
-          child: RuleCard(
-            color: widget.backgroundColor ??
-                widget.user.role!.color.backgroundColor,
-            icon: FunIcon(
-              iconData: widget.iconData,
-              circleColor: widget.backgroundColor ??
+      body: LayoutBuilder(
+        builder: (context, constraints) => Center(
+          child: SingleChildScrollView(
+            child: RuleCard(
+              color: widget.backgroundColor ??
                   widget.user.role!.color.backgroundColor,
-              circleSize: 64,
-              iconSize: 32,
-            ),
-            header: widget.header,
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 8),
-                FunBackgroundAudioWidget(
-                  isVisible: true,
-                  audioPath: widget.audioPath,
-                  onPauseOrStop: () {
-                    setState(() {
-                      _hasPlayedAudio = true;
-                    });
-                  },
+              title: widget.title,
+              icon: FunIcon(
+                iconData: widget.iconData,
+                circleColor: widget.backgroundColor ??
+                    widget.user.role!.color.backgroundColor,
+                circleSize: 64,
+                iconSize: 32,
+              ),
+              header: widget.header,
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 8),
+                  FunBackgroundAudioWidget(
+                    isVisible: true,
+                    audioPath: widget.audioPath,
+                    onPauseOrStop: () {
+                      setState(() {
+                        _hasPlayedAudio = true;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  BodyMediumText(
+                    widget.bodyText,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              button: FunButton(
+                isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
+                onTap: () => widget.onTap(context),
+                text: widget.buttonText,
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.reflectAndShareRulesNextClicked,
                 ),
-                const SizedBox(height: 8),
-                BodyMediumText(
-                  widget.bodyText,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-            button: FunButton(
-              isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
-              onTap: () {
-                widget.onTap(context);
-              },
-              text: widget.buttonText,
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.reflectAndShareRulesNextClicked,
               ),
             ),
           ),

@@ -1,0 +1,27 @@
+appId: net.givtapp.ios.test
+name: NL - Sign up with new email address
+
+env:
+    USERNAME: donna+maestronl@givtapp.net
+
+---
+- launchApp:
+    clearState: true
+
+- tapOn:
+    label: "Select country"
+    id: "icon-FontAwesomeSolid-62845"
+- tapOn: "Netherlands"
+- tapOn: "By continuing you agree to our terms and conditions."
+- assertVisible: '.*GIVT B.V..*'
+- tapOn:
+    label: Close the popup
+    point: "94%,10%"
+- tapOn: "E-mail address"
+- inputText:
+    label: "Enter the test user's email address"
+    text: ${USERNAME}
+- tapOn: 
+    label: "Continue"
+    text: ".*icon-FontAwesomeSolid-61537"
+- tapOn: "Ask me later"

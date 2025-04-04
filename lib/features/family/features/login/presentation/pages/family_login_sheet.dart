@@ -156,6 +156,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
               hintText: context.l10n.password,
               suffixIcon: IconButton(
                 icon: Icon(
+                  semanticLabel: 'passwordeye',
                   obscureText ? Icons.visibility : Icons.visibility_off,
                 ),
                 onPressed: () {
@@ -200,8 +201,6 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
       case LoginSuccess():
         if (!context.mounted) return;
         context.pop();
-
-        if (!context.mounted) return;
         await widget.navigate(context);
       case TwoAttemptsLeftDialog():
         await showDialog<void>(
@@ -235,7 +234,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
           context: context,
           builder: (context) => WarningDialog(
             title: context.l10n.loginFailure,
-            content: context.l10n.wrongCredentials,
+            content: context.l10n.noInternet,
             onConfirm: () => context.pop(),
           ),
         );

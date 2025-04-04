@@ -1,0 +1,10 @@
+appId: net.givtapp.ios.test
+name: User registration, List and Location Giving
+#This end-to-end test verifies that a new user can successfully register, and make a donation via List and Location. 
+#The test ensures that the correct user flow is followed.
+---
+- runFlow: "NL_CreateNewAccount.yml"
+- runFlow: "NL_UserRegistration_Successful.yml"
+- runFlow: "NL_GiveViaList_Successful.yml"
+- runFlow: "NL_GiveViaLocation.yml"
+- runFlow: "EU_delete_account.yml"
