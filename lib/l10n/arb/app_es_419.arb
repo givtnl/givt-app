@@ -112,7 +112,7 @@
     "amountPresetsBody": "Establezca sus importes predefinidos a continuación.",
     "amountPresetsErrGivingLimit": "El importe es superior a su importe máximo",
     "amountPresetsErr25C": "El importe debe ser al menos {value0}",
-    "amountPresetsErrEmpty": "Introduzca un importe",
+    "amountPresetsErrEmpty": "Introduzca un valor",
     "alertSepaMessage": "Dado que indicó {value0} como opción de país, asumimos que prefiere donar a través de BACS Direct Debit (£), necesitamos su código de clasificación y número de cuenta para eso. Si prefiere utilizar SEPA (€), necesitamos su IBAN.",
     "important": "Importante",
     "fingerprintTitle": "Huella dactilar",
@@ -919,5 +919,9 @@
     "unregisterDescription": "Lamentamos verte partir.\nDespués de cerrar tu cuenta, no podremos recuperarla.",
     "unregisterCheckboxText": "Lamentamos verte partir.\\nDespués de cerrar tu cuenta, no podremos recuperarla.\n",
     "unregisterLoading": "Cerrando cuenta",
-    "unregisterSuccessText": "Nos da tristeza que te vayas y esperamos verte de nuevo."
+    "unregisterSuccessText": "Nos da tristeza que te vayas y esperamos verte de nuevo.",
+    "homeScreenWelcome": "Bienvenidos",
+    "homeScreenHeyFamily": "Hola {family}!",
+    "HomeScreenGratitudeGameButtonTitle": "Gratitude Game",
+    "homeScreenGratitudeGameDescription": "This game helps you to build gratitude by reflecting on your day as a family"
 }
