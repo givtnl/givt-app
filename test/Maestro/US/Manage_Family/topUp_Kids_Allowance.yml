@@ -1,0 +1,23 @@
+appId: net.givtapp.ios.test
+name: Entering the creditcard details because they are not known yet
+
+---
+
+- tapOn: "One-time Top Up.*"
+- runFlow:
+    when:
+      visible:
+        text: "Name on card"
+    file: ../firsttime_need_creditcard_details.yml
+- repeat:
+    label: "Add more money +"
+    times: 6
+    commands:
+    - tapOn:
+        text: "plus"
+- tapOn:
+    label: "Decrease money -"
+    text: "minus"
+#- assertVisible: "An admin fee of $1.00 will be added"
+- tapOn: "Confirm"
+- tapOn: "Done"

@@ -6,19 +6,11 @@ env:
 ---
 - tapOn:
     id: "gear_icon"
-- tapOn: "Password"
-- inputText:
-    label: Enter the test user's Password
-    text: ${PASSWORD}
-- tapOn: "passwordeye"
-- assertVisible: "Test123"
-- tapOn:
-    text: "Login"
-    index: 1
+- runFlow: login_AuthNeeded.yml
 - tapOn: ".*Terminate account"
+- tapOn: "terminateAccountCheckbox"
 - tapOn: 
-    label: Agree that you understand the terms
-    text: "unregisterCheckbox"
-- tapOn: "Terminate my account"
-- assertVisible: "We're sad to see you leave\n and we hope to see you again."
+    text: "Terminate account"
+    index: 1
+- assertVisible: "We're sad to see you leave.*"
 - assertVisible: "Let's go!"

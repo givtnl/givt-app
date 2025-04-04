@@ -1,15 +1,20 @@
 appId: net.givtapp.ios.test
-env:
-    USERNAME: donna+maestro@givtapp.net
-    PASSWORD: Test123
-    PARENT_FIRSTNAME: Automate
-    PARENT_LASTNAME: with Maestro
-    KIDSNAME: Awesome
+#env:
+#    USERNAME: donna+maestrous@givtapp.net
+#    PASSWORD: Test123
+#    PARENT_FIRSTNAME: Automate
+#    PARENT_LASTNAME: with Maestro
+#    KIDSNAME: Awesome
 
 ---
 - launchApp:
     clearState: true
 
+- extendedWaitUntil:
+    visible: 
+        text: "Start your journey of generosity!"
+    timeout: 10000
+- tapOn: "Start your journey of generosity!"
 - tapOn:
     id: "icon-FontAwesomeSolid-62845"
 - tapOn: "United States of America"
@@ -18,7 +23,7 @@ env:
 - tapOn:
     label: Close the popup
     point: "94%,10%"
-- tapOn: "E-mail address"
+- tapOn: "Parent email address" 
 - inputText: 
     label: Enter the test user's Email
     text: ${USERNAME}
@@ -49,8 +54,9 @@ env:
     label: Click on profile image
     point: "50%,36%"
 - tapOn:
-    label: Select other profile image
-    point: "81%,35%"
+    id: "Hero2.svg"
 - tapOn: "Save.*"
-- tapOn: "Done!"
-- tapOn: "Skip"
+- tapOn: "Done"
+- tapOn: 
+    label: Skip the hear about Givt question
+    text: "Skip"

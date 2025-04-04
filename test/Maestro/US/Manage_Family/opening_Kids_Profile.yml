@@ -1,0 +1,19 @@
+appId: net.givtapp.ios.test
+name: Opening a Kids Profile
+
+---
+
+- tapOn:
+    id: "Hero2.svg"
+- assertVisible: 
+    label: Kids name is visible in top bar
+    text: "Awesome"
+- assertVisible:
+    label: Kids avatar is visible
+    id: "Hero2.svg"
+- assertVisible:
+    label: Recurring Amount tile is visible
+    text: "Recurring Amount.*"
+- assertVisible: 
+    label: One-Time Top Up tile is visible
+    text: "One-time Top Up.*"
