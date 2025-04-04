@@ -32,6 +32,7 @@ import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart'
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -162,8 +163,10 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               overlayVisible
                                   ? ''
                                   : uiModel.familyGroupName == null
-                                      ? 'Welcome!'
-                                      : 'Hey ${uiModel.familyGroupName}!',
+                                      ? context.l10n.homeScreenWelcome
+                                      : context.l10n.homeScreenHeyFamily(
+                                          uiModel.familyGroupName!,
+                                        ),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -226,9 +229,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             children: [
                               FunTooltip(
                                 tooltipIndex: 2,
-                                title: 'Gratitude Game',
+                                title: context.l10n.homeScreenGratitudeGameButtonTitle,
                                 description:
-                                    'This game helps you to build gratitude by reflecting on your day as a family',
+                                    context.l10n.homeScreenGratitudeGameButtonDescription,
                                 labelBottomLeft: '3/6',
                                 child: GratitudeGameButton(
                                   onPressed: () => context
