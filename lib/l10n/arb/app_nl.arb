@@ -919,5 +919,9 @@
     "unregisterDescription": "We vinden het jammer dat je gaat.\nNa het verwijderen van je account kunnen we dit niet meer voor je herstellen.",
     "unregisterCheckboxText": "Ja, ik wil mijn account verwijderen",
     "unregisterLoading": "Account verwijderen",
-    "unregisterSuccessText": "We vinden het jammer om je te zien gaan en we hopen om je weer terug te zien."
+    "unregisterSuccessText": "We vinden het jammer om je te zien gaan en we hopen om je weer terug te zien.",
+    "homeScreenWelcome": "Welcome!",
+    "homeScreenHeyFamily": "'Hey {family}!'",
+    "HomeScreenGratitudeGameButtonTitle": "Gratitude Game",
+    "homeScreenGratitudeGameDescription": "This game helps you to build gratitude by reflecting on your day as a family"
 }
