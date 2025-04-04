@@ -5,7 +5,7 @@ name: Opening a Kids Profile
 
 - tapOn:
     id: "Hero2.svg"
-- assertVisible: 
+- assertVisible:
     label: Kids name is visible in top bar
     text: "Awesome"
 - assertVisible:
@@ -14,6 +14,6 @@ name: Opening a Kids Profile
 - assertVisible:
     label: Recurring Amount tile is visible
     text: "Recurring Amount.*"
-- assertVisible: 
+- assertVisible:
     label: One-Time Top Up tile is visible
     text: "One-time Top Up.*"

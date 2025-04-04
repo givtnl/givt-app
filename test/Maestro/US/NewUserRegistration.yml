@@ -23,8 +23,8 @@ appId: net.givtapp.ios.test
 - tapOn:
     label: Close the popup
     point: "94%,10%"
-- tapOn: "Parent email address" 
-- inputText: 
+- tapOn: "Parent email address"
+- inputText:
     label: Enter the test user's Email
     text: ${USERNAME}
 - tapOn: "Continue.*"
@@ -57,6 +57,6 @@ appId: net.givtapp.ios.test
     id: "Hero2.svg"
 - tapOn: "Save.*"
 - tapOn: "Done"
-- tapOn: 
-    label: Skip the hear about Givt question
+- tapOn:
+    label: Skip the 'hear about Givt' question
     text: "Skip"
