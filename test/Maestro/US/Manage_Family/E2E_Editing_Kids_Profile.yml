@@ -1,6 +1,6 @@
 appId: net.givtapp.ios.test
 name: Do everything what you can with a kids profile, adjusting details and adding allowance
-#This end-to-end test verifies 
+#This end-to-end covers a lot of features which can be accessed through the Manage Family page
 env:
     USERNAME: donna+maestrous@givtapp.net
     PASSWORD: Test123
