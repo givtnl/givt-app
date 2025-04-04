@@ -61,6 +61,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     emit(state.copyWith(status: RegistrationStatus.loading));
 
     try {
+      // Trim spaces from IBAN and phone number to avoid duplicates - KIDS-2075
+      final cleanedIban = event.iban.replaceAll(' ', '');
+      final cleanedPhoneNumber = event.phoneNumber.replaceAll(' ', '');
+
       final tempUser = TempUser(
         email: state.email,
         country: event.country,
@@ -71,10 +75,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         address: event.address,
         city: event.city,
         firstName: state.firstName,
-        iban: event.iban,
+        iban: cleanedIban,
         lastName: state.lastName,
         password: state.password,
-        phoneNumber: event.phoneNumber,
+        phoneNumber: cleanedPhoneNumber,
         postalCode: event.postalCode,
         accountNumber: event.accountNumber,
         sortCode: event.sortCode,
@@ -95,7 +99,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         );
         return;
       }
-      if (event.iban.isNotEmpty && event.iban != Util.defaultIban) {
+      if (cleanedIban.isNotEmpty && cleanedIban != Util.defaultIban) {
         emit(
           state.copyWith(
             status: RegistrationStatus.sepaMandateExplanation,
