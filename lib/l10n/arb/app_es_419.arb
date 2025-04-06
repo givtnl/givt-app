@@ -922,11 +922,13 @@
     "unregisterSuccessText": "Nos da tristeza que te vayas y esperamos verte de nuevo.",
     "homeScreenWelcome": "Bienvenidos",
     "homeScreenHeyFamily": "Hola {family}!",
-    "homeScreenGratitudeGameButtonTitle": "Gratitude Game",
-    "homeScreenGratitudeGameButtonDescription": "Este juego te ayuda a cultivar la gratitud al reflexionar sobre tu día en familia.",
+    "tutorialGratitudeGameTitle": "Gratitude Game",
+    "tutorialGratitudeGameDescription": "Este juego te ayuda a cultivar la gratitud al reflexionar sobre tu día en familia.",
     "homeScreenSecondParentDialogTitle": "{firstName} necesita usar su propia cuenta.",
     "homeScreenSecondParentDialogDescription": "Usa la app Givt en tu propio dispositivo.",
     "homeScreenSecondParentDialogConfirmButton": "Entendido",
     "tutorialFirstMissionTitle": "¡Vamos a completar tu primera misión!",
-    "tutorialFirstMissionDescription": "Nuevas misiones ayudan a tu familia a crecer juntos. ¡Toca arriba para empezar!"
+    "tutorialFirstMissionDescription": "Nuevas misiones ayudan a tu familia a crecer juntos. ¡Toca arriba para empezar!",
+    "homeScreenGratitudeGameButtonTitle": "Juego en Familia",
+    "homeScreenGratitudeGameButtonSubtitle": "¡Juega ahora!"
 }
