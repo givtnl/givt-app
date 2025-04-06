@@ -41,31 +41,58 @@ class UnlockedItemWidget extends StatelessWidget {
           'index': uiModel.index,
         },
       ),
-      child: ColoredBox(
-        color: uiModel.isSelected
-            ? FamilyAppTheme.primary98
-            : FamilyAppTheme.neutral100,
-        child: Center(
-          child: recolor != null
-              ? FutureBuilder(
-                  future: replacePlaceholders
-                      ? recolorPlaceholdersSvgFromAsset(path, color: recolor!)
-                      : recolorSvgFromAsset(
-                          path,
-                          color: recolor!,
-                          useSecondLongestPath: useSecondLongestPath,
-                        ),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<String> snapshot) {
-                    return snapshot.data != null
-                        ? SvgPicture.string(
-                            snapshot.data!,
-                          )
-                        : _regularSvg(path);
-                  },
-                )
-              : _regularSvg(path),
+      child: Stack(
+        children: [
+          ColoredBox(
+            color: uiModel.isSelected
+                ? FamilyAppTheme.primary98
+                : FamilyAppTheme.neutral100,
+            child: Center(
+              child: recolor != null
+                  ? FutureBuilder(
+                      future: replacePlaceholders
+                          ? recolorPlaceholdersSvgFromAsset(path, color: recolor!)
+                          : recolorSvgFromAsset(
+                              path,
+                              color: recolor!,
+                              useSecondLongestPath: useSecondLongestPath,
+                            ),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<String> snapshot) {
+                        return snapshot.data != null
+                            ? SvgPicture.string(
+                                snapshot.data!,
+                              )
+                            : _regularSvg(path);
+                      },
+                    )
+                  : _regularSvg(path),
+            ),
+          ),
+          if (uiModel.isEasterEgg)
+            Positioned(
+              top: 0,
+              right: 0,
+              child: _buildEasterEggBanner(),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEasterEggBanner() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: FamilyAppTheme.tertiary80,
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(8),
+          bottomLeft: Radius.circular(8),
         ),
+      ),
+      child: const Text(
+        '🥚',
+        style: TextStyle(fontSize: 10),
       ),
     );
   }

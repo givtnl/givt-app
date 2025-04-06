@@ -17,40 +17,73 @@ class UnlockedColorWidget extends StatelessWidget {
   final Color color;
   final UnlockedItem uiModel;
   final double size;
-  final Function(int index, String type, {Color? color}) onPressed;
+  final void Function(int index, String type, {Color? color}) onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        onPressed.call(uiModel.index, uiModel.type, color: color);
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.unlockedAvatarItemClicked,
-          eventProperties: {
-            'type': uiModel.type,
-            'index': uiModel.index,
-          },
-        );
-      },
-      child: FunIcon(
-        circleSize: size,
-        iconSize: size,
-        circleColor:
-            uiModel.isSelected ? FamilyAppTheme.primary80 : Colors.transparent,
-        icon: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: uiModel.isSelected
-                  ? FamilyAppTheme.primary80
-                  : Colors.transparent,
-              width: 4,
+    return Stack(
+      children: [
+        // Main color button
+        FunIcon(
+          circleSize: size,
+          iconSize: size,
+          circleColor: uiModel.isSelected ? FamilyAppTheme.primary80 : Colors.transparent,
+          icon: GestureDetector(
+            onTap: () {
+              onPressed.call(uiModel.index, uiModel.type, color: color);
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.unlockedAvatarItemClicked,
+                eventProperties: {
+                  'type': uiModel.type,
+                  'index': uiModel.index,
+                },
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: uiModel.isSelected
+                      ? FamilyAppTheme.primary80
+                      : Colors.transparent,
+                  width: 4,
+                ),
+                color: color,
+                shape: BoxShape.circle,
+              ),
+              height: size,
+              width: size,
+              // Easter egg badge positioned inside the container
+              child: uiModel.isEasterEgg
+                  ? Stack(
+                      children: [
+                        Positioned(
+                          top: -2,
+                          right: -2,
+                          child: _buildEasterEggBanner(),
+                        ),
+                      ],
+                    )
+                  : null,
             ),
-            color: color,
-            shape: BoxShape.circle,
           ),
-          height: size,
-          width: size,
         ),
+      ],
+    );
+  }
+
+  Widget _buildEasterEggBanner() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: FamilyAppTheme.tertiary80,
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(8),
+          bottomLeft: Radius.circular(8),
+        ),
+      ),
+      child: const Text(
+        '🥚',
+        style: TextStyle(fontSize: 10),
       ),
     );
   }

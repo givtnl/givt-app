@@ -99,8 +99,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     return _authRepository.getCurrentUser()?.email.contains('@givt') ?? false;
   }
 
-  bool shouldShowEasterEgg() =>
-      _isProd && (isGivtEmployee() || _isSjoerd || _isTine);
+  bool shouldShowEasterEgg() => true;
 
   bool isFirstVisitSinceUnlock() {
     final isFirstVisit = !_sharedPreferences
@@ -203,6 +202,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Hair',
           index: 666,
           isSelected: 666 == _customAvatar.hairIndex,
+          isEasterEgg: true,
         )
       ]);
     }
@@ -233,6 +233,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Mask',
           index: 666 + index,
           isSelected: 666 + index == _customAvatar.maskIndex,
+          isEasterEgg: true,
         ),
       ));
     }
@@ -263,6 +264,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Suit',
           index: 666 + index,
           isSelected: 666 + index == _customAvatar.suitIndex,
+          isEasterEgg: true,
         ),
       ));
     }
