@@ -921,7 +921,7 @@
     "unregisterLoading": "Terminating account",
     "unregisterSuccessText": "We’re sad to see you leave and we hope to see you again.",
     "homeScreenWelcome": "Welcome!",
-    "homeScreenHeyFamily": "'Hey {family}!'",
+    "homeScreenHeyFamily": "Hey {family}!",
     "tutorialGratitudeGameTitle": "Gratitude Game",
     "tutorialGratitudeGameDescription": "This game helps you to build gratitude by reflecting on your day as a family",
     "homeScreenSecondParentDialogTitle": "{firstName} needs to use their own account",

@@ -921,7 +921,7 @@
     "unregisterLoading": "Account verwijderen",
     "unregisterSuccessText": "We vinden het jammer om je te zien gaan en we hopen om je weer terug te zien.",
     "homeScreenWelcome": "Welcome!",
-    "homeScreenHeyFamily": "'Hey {family}!'",
+    "homeScreenHeyFamily": "Hey {family}!",
     "tutorialGratitudeGameTitle": "Gratitude Game",
     "tutorialGratitudeGameDescription": "This game helps you to build gratitude by reflecting on your day as a family",
     "homeScreenSecondParentDialogTitle": "{firstName} needs to use their own account",
