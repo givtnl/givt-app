@@ -1,24 +1,30 @@
 appId: net.givtapp.ios.test
 name: Going through tutorial after registration
 #After registration you'll go through the tutorial screens.
+#This test scenario is based on iPhone 14 Pro Max screen because we need to work with % on the screen and we don't have id's
 ---
 - tapOn: "Let's go!"
+- assertVisible: "Here’s your super family!.*"
 - tapOn:
     label: Step 1/6
     point: "85%,46%" 
+- assertVisible: "Managing your family.*"
 - tapOn:
     label: Step 2/6
     point: "85%,81%" 
+- assertVisible: "Gratitude Game.*"
 - tapOn:
     label: Step 3/6
     point: "87%,42%"
+- assertVisible: "Let's complete your first mission!.*"
 - tapOn:
     label: Step 4/6 Mission available
     point: "62%,37%" 
+- assertVisible: "Tap to begin mission!.*"
 - tapOn:
-    label: Step 5/6 Mission bedtime
+    label: Step 5/6 Mission Build a Habit
     point: "50%,30%"
-- runFlow: "setup_bedtime.yml"
+#- runFlow: "setup_bedtime.yml"
 - assertVisible: 
     label: Step 6/6 can't be tested. Will not show due the backend notifications can't be shown in emulator
     text: ${KIDSNAME}

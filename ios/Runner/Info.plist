@@ -20,6 +20,7 @@
 		<string>de</string>
 		<string>en_US</string>
 		<string>nl</string>
+		<string>es_419</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>$(FLAVOR_APP_NAME)</string>

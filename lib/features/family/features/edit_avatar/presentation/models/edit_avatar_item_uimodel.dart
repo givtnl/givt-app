@@ -11,8 +11,10 @@ class UnlockedItem extends EditAvatarItemUIModel {
     required this.type,
     required this.index,
     this.isSelected = false,
+    this.isEasterEgg = false,
   });
   final String type;
   final int index;
   final bool isSelected;
+  final bool isEasterEgg;
 }

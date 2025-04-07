@@ -919,5 +919,16 @@
     "unregisterDescription": "Es tut uns leid, dass Sie gehen!\nNach der Kündigung Ihres Kontos können wir es nicht wiederherstellen.",
     "unregisterCheckboxText": "Ja, ich möchte mein Konto kündigen\n",
     "unregisterLoading": "Konto wird gekündigt",
-    "unregisterSuccessText": "Es macht uns traurig, dass Sie gehen, und wir hoffen, Sie wiederzusehen."
+    "unregisterSuccessText": "Es macht uns traurig, dass Sie gehen, und wir hoffen, Sie wiederzusehen.",
+    "homeScreenWelcome": "Welcome!",
+    "homeScreenHeyFamily": "Hey {family}!",
+    "tutorialGratitudeGameTitle": "Gratitude Game",
+    "tutorialGratitudeGameDescription": "This game helps you to build gratitude by reflecting on your day as a family",
+    "homeScreenSecondParentDialogTitle": "{firstName} needs to use their own account",
+    "homeScreenSecondParentDialogDescription": "Use the Givt App on your own device",
+    "homeScreenSecondParentDialogConfirmButton": "Got it",
+    "tutorialFirstMissionTitle": "Let's complete your first mission!",
+    "tutorialFirstMissionDescription": "New missions help your family grow together. Tap above to begin!",
+    "homeScreenGratitudeGameButtonTitle": "Family Game",
+    "homeScreenGratitudeGameButtonSubtitle": "Play now!"
 }

@@ -19,11 +19,13 @@ class FamilyHomeOverlay extends StatefulWidget {
     required this.onNextTutorialClicked,
     required this.onAvatarTapped,
     this.withTutorial = false,
+    this.withRewardText = false,
     super.key,
   });
 
   final FamilyHomeScreenUIModel uiModel;
   final bool withTutorial;
+  final bool withRewardText;
   final void Function() onNextTutorialClicked;
   final void Function() onDismiss;
   final void Function(int index) onAvatarTapped;
@@ -71,7 +73,9 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: TitleLargeText(
-                      'Who would like to give?',
+                      widget.withRewardText
+                          ? 'Discover your reward!'
+                          : 'Who would like to give?',
                       textAlign: TextAlign.center,
                       color: Colors.white,
                       shadows: [
@@ -83,7 +87,7 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   FunTooltip(
                     tooltipIndex: 0,
                     title: 'Here’s your super family!',
