@@ -109,7 +109,10 @@ class InGameLeagueCubit
       await InAppReview.instance.requestReview();
     }
 
-    if (await _shouldAskForInterview(amountGamePlays)) {
+    // If there is a reward, redirect user to the reward screen
+    final rewardText = _reflectAndShareRepository.variableReward;
+
+    if (await _shouldAskForInterview(amountGamePlays) && rewardText == null) {
       await AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.askForInterviewTriggered,
       );
@@ -128,9 +131,6 @@ class InGameLeagueCubit
       );
       return;
     }
-
-    // If there is a reward, redirect user to the reward screen
-    final rewardText = _reflectAndShareRepository.variableReward;
 
     if (rewardText != null) {
       // Trigger profiles refresh
