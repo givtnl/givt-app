@@ -99,7 +99,8 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     return _authRepository.getCurrentUser()?.email.contains('@givt') ?? false;
   }
 
-  bool shouldShowEasterEgg() => true;
+  bool shouldShowEasterEgg() =>
+      _isProd && (isGivtEmployee() || _isSjoerd || _isTine);
 
   bool isFirstVisitSinceUnlock() {
     final isFirstVisit = !_sharedPreferences
