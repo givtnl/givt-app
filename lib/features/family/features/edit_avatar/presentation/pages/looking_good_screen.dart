@@ -129,14 +129,15 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
             ),
           ),
           Positioned(
-            bottom: 16,
-            left: 8,
-            right: 8,
+            bottom: 20,
+            left: 16,
+            right: 16,
             child: TitleMediumText(
               text,
               textAlign: TextAlign.center,
               softWrap: true,
               overflow: TextOverflow.visible,
+              maxLines: 2,
             ),
           ),
         ],
