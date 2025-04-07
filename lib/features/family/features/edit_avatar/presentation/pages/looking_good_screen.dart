@@ -53,7 +53,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
                         mimeType: 'image/png',
                       )
                     ],
-                    subject:
+                    text:
                         'Head to the Givt app to create your own superhero and spread generosity!\ndownload.givt.com',
                   );
                 });
