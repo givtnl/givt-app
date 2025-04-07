@@ -148,6 +148,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           customAvatarUIModel:
               _isInCustomAvatarMode ? _customAvatar.toUIModel() : null,
           userFirstName: _profile!.firstName,
+          possessiveFirstName: _profile!.possessiveName,
         ),
       ),
     );
