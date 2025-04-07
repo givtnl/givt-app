@@ -16,4 +16,6 @@ class TutorialRepository {
   bool hasTutorialStarted = false;
 
   bool bedtimeMissionStartedFromTutorial = false;
+
+  bool gratitudeMissionStartedFromTutorial = false;
 }

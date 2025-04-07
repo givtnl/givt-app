@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/custom_avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -33,9 +34,7 @@ class FunAvatar extends FunIcon {
     );
   }
 
-  factory FunAvatar.captainAi(
-      {bool withBorder = false,
-      bool isLarge = false}) {
+  factory FunAvatar.captainAi({bool withBorder = false, bool isLarge = false}) {
     return FunAvatar(
       semanticsIdentifier: 'captainAi',
       customCircleColor: FamilyAppTheme.neutral95,
@@ -48,8 +47,7 @@ class FunAvatar extends FunIcon {
     );
   }
 
-  factory FunAvatar.family(
-      {bool isLarge = false}) {
+  factory FunAvatar.family({bool isLarge = false}) {
     return FunAvatar(
       semanticsIdentifier: 'family',
       customCircleColor: FamilyAppTheme.neutral95,
@@ -99,19 +97,45 @@ class FunAvatar extends FunIcon {
         ),
       ),
       circleSize: size,
-      innerCircleSize: size
+      innerCircleSize: size,
     );
   }
 
-  static List<Widget> customAvatarWidgetsList(CustomAvatarUIModel uiModel,
-      {BoxFit fit = BoxFit.cover}) {
+  static List<Widget> customAvatarWidgetsList(
+    CustomAvatarUIModel uiModel, {
+    BoxFit fit = BoxFit.cover,
+  }) {
     return List.generate(
       uiModel.assetsToOverlap.length,
-      (index) => SvgPicture.asset(
-        uiModel.assetsToOverlap[index],
-        fit: fit,
-        alignment: Alignment.topCenter,
-      ),
+      (index) => index == 1 && uiModel.hairColor != null
+          ? FutureBuilder(
+              future: recolorSvgFromAsset(
+                uiModel.assetsToOverlap[index],
+                color: colorFromHex(uiModel.hairColor!),
+              ),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                return snapshot.data != null
+                    ? SvgPicture.string(
+                        snapshot.data!,
+                        fit: fit,
+                        alignment: Alignment.topCenter,
+                      )
+                    : regularSvgAsset(index, uiModel, fit);
+              },
+            )
+          : regularSvgAsset(index, uiModel, fit),
+    );
+  }
+
+  static SvgPicture regularSvgAsset(
+    int index,
+    CustomAvatarUIModel uiModel,
+    BoxFit fit,
+  ) {
+    return SvgPicture.asset(
+      uiModel.assetsToOverlap[index],
+      fit: fit,
+      alignment: Alignment.topCenter,
     );
   }
 
@@ -141,7 +165,7 @@ class FunAvatar extends FunIcon {
         ),
       ),
       circleSize: size,
-      innerCircleSize: size
+      innerCircleSize: size,
     );
   }
 

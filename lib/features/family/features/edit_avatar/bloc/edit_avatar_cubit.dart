@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:ui';
 
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
@@ -10,8 +12,12 @@ import 'package:givt_app/features/family/features/edit_avatar/presentation/pages
 import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
+import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,6 +27,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     this._profilesRepository,
     this._sharedPreferences,
     this._authRepository,
+    this._unlockBadgeRepository,
   ) : super(const BaseState.loading());
 
   String userGuid = '';
@@ -37,6 +44,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   final ProfilesRepository _profilesRepository;
   final SharedPreferences _sharedPreferences;
   final FamilyAuthRepository _authRepository;
+  final UnlockedBadgeRepository _unlockBadgeRepository;
 
   /// Initialize the cubit
   Future<void> init(String userGuid) async {
@@ -51,6 +59,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         setAvatar(_profile!.avatar!);
       } else if (_profile?.customAvatar != null) {
         _customAvatar = _profile!.customAvatar!;
+        manualUnlockBadge(Features.tabsOrderOfFeatures[0]);
         _customMode = EditAvatarScreen.options.last;
         _emitData();
       } else {
@@ -59,6 +68,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       if (isFirstVisitSinceUnlock()) {
         setFirstVisitSinceUnlock();
         _customMode = EditAvatarScreen.options.last;
+        manualUnlockBadge(Features.tabsOrderOfFeatures[0]);
         _emitData();
         if (_isProd && _isSjoerd) {
           _customAvatar = CustomAvatarModel.initialSjoerd();
@@ -89,8 +99,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     return _authRepository.getCurrentUser()?.email.contains('@givt') ?? false;
   }
 
-  bool shouldShowEasterEgg() =>
-      _isProd && (isGivtEmployee() || _isSjoerd || _isTine);
+  bool shouldShowEasterEgg() => true;
 
   bool isFirstVisitSinceUnlock() {
     final isFirstVisit = !_sharedPreferences
@@ -119,6 +128,10 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
       _repository.updateCustomAvatar(
         userGuid,
         _customAvatar,
+      );
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.customAvatarSaved,
+        eventProperties: _customAvatar.toJson(),
       );
     } else {
       _repository.updateAvatar(
@@ -190,6 +203,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Hair',
           index: 666,
           isSelected: 666 == _customAvatar.hairIndex,
+          isEasterEgg: true,
         )
       ]);
     }
@@ -220,6 +234,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Mask',
           index: 666 + index,
           isSelected: 666 + index == _customAvatar.maskIndex,
+          isEasterEgg: true,
         ),
       ));
     }
@@ -250,6 +265,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Suit',
           index: 666 + index,
           isSelected: 666 + index == _customAvatar.suitIndex,
+          isEasterEgg: true,
         ),
       ));
     }
@@ -266,6 +282,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   void _emitData() {
     emitData(
       EditAvatarUIModel(
+        userId: userGuid,
         avatarName: _selectedAvatar,
         mode: _customMode,
         lockMessageEnabled: _lockMessageEnabled,
@@ -316,22 +333,50 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     });
   }
 
-  void onUnlockedItemClicked(int index, String type) {
+  void onColorChanged(String type, String? color) {
+    _hasMadeAnyCustomAvatarSelection = true;
+    switch (type) {
+      case 'Hair':
+        _customAvatar = _customAvatar.copyWith(hairColor: color);
+      case 'Mask':
+        _customAvatar = _customAvatar.copyWith(maskColor: color);
+      case 'Suit':
+        _customAvatar = _customAvatar.copyWith(suitColor: color);
+    }
+
+    _emitData();
+  }
+
+  void onUnlockedItemClicked(int index, String type, {Color? color}) {
     _hasMadeAnyCustomAvatarSelection = true;
     switch (type) {
       case 'Body':
         _customAvatar = _customAvatar.copyWith(bodyIndex: index);
-        break;
       case 'Hair':
         _customAvatar = _customAvatar.copyWith(hairIndex: index);
-        break;
       case 'Mask':
         _customAvatar = _customAvatar.copyWith(maskIndex: index);
-        break;
       case 'Suit':
         _customAvatar = _customAvatar.copyWith(suitIndex: index);
-        break;
+      case 'HairColor':
+        if (color != null) {
+          _customAvatar = _customAvatar.copyWith(hairColor: colorToHex(color));
+        }
     }
+
     _emitData();
+  }
+
+  void manualUnlockBadge(String featureId) {
+    if (_unlockBadgeRepository.isFeatureSeen(userGuid, featureId)) {
+      return;
+    }
+    _unlockBadgeRepository.markFeatureAsSeen(userGuid, featureId);
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.newBadgeSeen,
+      eventProperties: {
+        'featureId': featureId,
+      },
+    );
   }
 }

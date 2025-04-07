@@ -20,14 +20,19 @@ import 'package:givt_app/features/family/features/home_screen/widgets/missions_c
 import 'package:givt_app/features/family/features/home_screen/widgets/stats_container.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -83,6 +88,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
               context,
               event.uiModel,
               withTutorial: event.withTutorial,
+              withRewardText: event.withRewardText,
             );
           case StartTutorial():
             widget.tooltipController.start();
@@ -157,8 +163,10 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               overlayVisible
                                   ? ''
                                   : uiModel.familyGroupName == null
-                                      ? 'Welcome!'
-                                      : 'Hey ${uiModel.familyGroupName}!',
+                                      ? context.l10n.homeScreenWelcome
+                                      : context.l10n.homeScreenHeyFamily(
+                                          uiModel.familyGroupName!,
+                                        ),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -180,6 +188,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           maintainAnimation: true,
                           maintainState: true,
                           child: AvatarBar(
+                            featureId: Features.familyHomeProfile,
                             circleSize: 58,
                             uiModel: AvatarBarUIModel(
                               avatarUIModels: uiModel.avatars,
@@ -220,9 +229,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                             children: [
                               FunTooltip(
                                 tooltipIndex: 2,
-                                title: 'Gratitude Game',
-                                description:
-                                    'This game helps you to build gratitude by reflecting on your day as a family',
+                                title: context.l10n.tutorialGratitudeGameTitle,
+                                description: context
+                                    .l10n.tutorialGratitudeGameDescription,
                                 labelBottomLeft: '3/6',
                                 child: GratitudeGameButton(
                                   onPressed: () => context
@@ -249,10 +258,18 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
   }
 
-  void _openAvatarOverlay(BuildContext context, FamilyHomeScreenUIModel uiModel,
-      {bool withTutorial = false}) {
+  void _openAvatarOverlay(
+    BuildContext context,
+    FamilyHomeScreenUIModel uiModel, {
+    bool withTutorial = false,
+    bool withRewardText = false,
+  }) {
     if (!overlayVisible) {
-      createOverlay(uiModel, withTutorial: withTutorial);
+      createOverlay(
+        uiModel,
+        withTutorial: withTutorial,
+        withRewardText: withRewardText,
+      );
       setState(() {
         overlayVisible = true;
       });
@@ -260,8 +277,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     }
   }
 
-  void createOverlay(FamilyHomeScreenUIModel uiModel,
-      {required bool withTutorial}) {
+  void createOverlay(
+    FamilyHomeScreenUIModel uiModel, {
+    required bool withTutorial,
+    required bool withRewardText,
+  }) {
     overlayEntry = OverlayEntry(
       builder: (context) => FamilyHomeOverlay(
         uiModel: uiModel,
@@ -269,6 +289,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         onAvatarTapped: (index) => onAvatarTapped(index, uiModel),
         onNextTutorialClicked: _cubit.onNextTutorialClicked,
         withTutorial: withTutorial,
+        withRewardText: withRewardText,
       ),
     );
   }
@@ -303,6 +324,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
       final authstate = context.read<FamilyAuthCubit>().state;
       if (authstate is Unauthenticated ||
           profile.id != (authstate as Authenticated).user.guid) {
+        _cubit.markAllFeaturesAsSeen(profile.id);
+        _showSecondParentDialog(context, profile);
         return;
       }
 
@@ -328,6 +351,21 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     }
   }
 
+  void _showSecondParentDialog(BuildContext context, Profile profile) {
+    FunDialog.show(
+      context,
+      uiModel: FunDialogUIModel(
+        title:
+            context.l10n.homeScreenSecondParentDialogTitle(profile.firstName),
+        description: context.l10n.homeScreenSecondParentDialogDescription,
+        primaryButtonText:
+            context.l10n.homeScreenSecondParentDialogConfirmButton,
+        showCloseButton: false,
+      ),
+      image: FunIcon.userLarge(),
+    );
+  }
+
   void closeOverlay() {
     overlayEntry?.remove();
     overlayEntry?.dispose();
@@ -342,15 +380,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     FamilyHomeScreenUIModel uiModel,
     bool hasMissions,
   ) {
-    const title = 'Let’s complete your first mission!';
-    const description =
-        'New missions help your family grow together. Tap above to begin!';
-
     final items = [
       FunTooltip(
         tooltipIndex: 3,
-        title: title,
-        description: description,
+        title: context.l10n.tutorialFirstMissionTitle,
+        description: context.l10n.tutorialFirstMissionDescription,
         labelBottomLeft: '4/6',
         showButton: false,
         tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
@@ -359,8 +393,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
             eventName: AmplitudeEvents.tutorialNextClicked,
             eventProperties: {
               'tutorialLabelBottomLeft': '4/6',
-              'tutorialTitle': title,
-              'tutorialDescription': description,
+              'tutorialTitle': context.l10n.tutorialFirstMissionTitle,
+              'tutorialDescription':
+                  context.l10n.tutorialFirstMissionDescription,
             },
           );
 

@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fuzzywuzzy/fuzzywuzzy.dart';
+import 'package:fuzzywuzzy/model/extracted_result.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -13,6 +15,9 @@ import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
 part 'organisation_event.dart';
 part 'organisation_state.dart';
+
+// Minimum score threshold for fuzzy search results (0-100)
+const int _fuzzyScoreThreshold = 80;
 
 class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   OrganisationBloc(
@@ -47,7 +52,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       final organisations = unFiltered
           .where(
             (organisation) => organisation.accountType == userAccountType,
-      )
+          )
           .toList();
       var selectedGroup = state.selectedCollectGroup;
       if (event.showLastDonated) {
@@ -149,42 +154,67 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
-      var filteredOrganisations = state.organisations
-          .where(
-            (organisation) =>
-                _removeDiacritics(organisation.orgName.toLowerCase()).contains(
-              _removeDiacritics(event.query.toLowerCase()),
-            ),
-          )
-          .where(
-            (org) =>
-                state.selectedType == CollectGroupType.none.index ||
+      final query = _removeDiacritics(event.query.toLowerCase());
+      
+      // Filter organizations by type first if there's a selected type
+      final typeFilteredOrgs = state.organisations.where(
+        (org) => state.selectedType == CollectGroupType.none.index || 
                 org.type.index == state.selectedType,
-          )
-          .toList();
-
-      if (filteredOrganisations.isEmpty) {
+      ).toList();
+      
+      // If query is empty, just apply the type filter
+      if (query.isEmpty) {
         emit(
           state.copyWith(
             status: OrganisationStatus.filtered,
-            filteredOrganisations: filteredOrganisations,
+            filteredOrganisations: typeFilteredOrgs,
             previousSearchQuery: event.query,
           ),
         );
         return;
       }
-      if (state.selectedType != CollectGroupType.none.index &&
-          event.query.isEmpty) {
-        filteredOrganisations = filteredOrganisations
-            .where(
-              (organisation) => organisation.type.index == state.selectedType,
-            )
-            .toList();
+      
+      // First try exact substring matching
+      final exactMatches = typeFilteredOrgs
+          .where(
+            (org) => _removeDiacritics(org.orgName.toLowerCase())
+                .contains(query),
+          )
+          .toList();
+      
+      // If we have exact matches, use those
+      if (exactMatches.isNotEmpty) {
+        emit(
+          state.copyWith(
+            status: OrganisationStatus.filtered,
+            filteredOrganisations: exactMatches,
+            previousSearchQuery: event.query,
+          ),
+        );
+        return;
       }
+      
+      // If no exact matches, use fuzzy matching
+      final orgNames = typeFilteredOrgs.map(
+        (org) => _removeDiacritics(org.orgName.toLowerCase()),
+      ).toList();
+      
+      // Extract fuzzy matched results
+      final fuzzyResults = extractAllSorted(
+        query: query,
+        choices: orgNames,
+      ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
+      
+      // Map fuzzy results back to organization objects
+      final fuzzyMatches = fuzzyResults.map((result) {
+        final index = orgNames.indexOf(result.choice);
+        return typeFilteredOrgs[index];
+      }).toList();
+      
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
-          filteredOrganisations: filteredOrganisations,
+          filteredOrganisations: fuzzyMatches,
           previousSearchQuery: event.query,
         ),
       );
@@ -201,29 +231,53 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     OrganisationTypeChanged event,
     Emitter<OrganisationState> emit,
   ) async {
+    final newSelectedType = state.selectedType == event.type
+        ? CollectGroupType.none.index
+        : event.type;
+    
+    // Get all organizations or just those of the selected type
     var orgs = state.organisations;
-    if (event.type != CollectGroupType.none.index) {
+    if (newSelectedType != CollectGroupType.none.index) {
       orgs = state.organisations
-          .where((organisation) => organisation.type.index == event.type)
+          .where((org) => org.type.index == newSelectedType)
           .toList();
     }
 
+    // If there's an active search query, apply both filters
     if (state.previousSearchQuery.isNotEmpty) {
-      orgs = orgs
+      final query = _removeDiacritics(state.previousSearchQuery.toLowerCase());
+      
+      // First try exact matching
+      var filteredOrgs = orgs
           .where(
-            (organisation) =>
-                _removeDiacritics(organisation.orgName.toLowerCase()).contains(
-              _removeDiacritics(state.previousSearchQuery.toLowerCase()),
-            ),
+            (org) => _removeDiacritics(org.orgName.toLowerCase())
+                .contains(query),
           )
           .toList();
+      
+      // If no exact matches, try fuzzy matching
+      if (filteredOrgs.isEmpty) {
+        final orgNames = orgs.map(
+          (org) => _removeDiacritics(org.orgName.toLowerCase()),
+        ).toList();
+        
+        final fuzzyResults = extractAllSorted(
+          query: query,
+          choices: orgNames,
+        ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
+        
+        filteredOrgs = fuzzyResults.map((result) {
+          final index = orgNames.indexOf(result.choice);
+          return orgs[index];
+        }).toList();
+      }
+      
+      orgs = filteredOrgs;
     }
 
     emit(
       state.copyWith(
-        selectedType: state.selectedType == event.type
-            ? CollectGroupType.none.index
-            : event.type,
+        selectedType: newSelectedType,
         filteredOrganisations: orgs,
       ),
     );

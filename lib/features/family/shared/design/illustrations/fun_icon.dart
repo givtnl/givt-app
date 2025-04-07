@@ -99,6 +99,28 @@ class FunIcon extends StatelessWidget {
         circleSize: circleSize,
       );
 
+  factory FunIcon.userLarge(
+          {Color circleColor = FamilyAppTheme.primary95,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.userLarge,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
+  factory FunIcon.exclamation(
+          {Color circleColor = FamilyAppTheme.primary95,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.exclamation,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
+
   factory FunIcon.recordingSquare(
           {Color circleColor = FamilyAppTheme.error90,
           Color iconColor = FamilyAppTheme.error30,

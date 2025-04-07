@@ -107,20 +107,20 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         ),
         title: context.l10n.signUpPageTitle,
         actions: [
-          IconButton(
-            onPressed: () => showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              useSafeArea: true,
-              backgroundColor: AppTheme.givtBlue,
-              builder: (_) => const FAQBottomSheet(),
-            ),
-            icon: const Icon(
-              FontAwesomeIcons.question,
-              size: 26,
-              color: AppTheme.primary30,
-            ),
-          ),
+          // IconButton(
+          //   onPressed: () => showModalBottomSheet<void>(
+          //     context: context,
+          //     isScrollControlled: true,
+          //     useSafeArea: true,
+          //     backgroundColor: AppTheme.givtBlue,
+          //     builder: (_) => const FAQBottomSheet(),
+          //   ),
+          //   icon: const Icon(
+          //     FontAwesomeIcons.question,
+          //     size: 26,
+          //     color: AppTheme.primary30,
+          //   ),
+          // ),
         ],
       ),
       body: CustomScrollView(

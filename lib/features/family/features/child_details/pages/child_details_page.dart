@@ -111,24 +111,27 @@ class ChildDetailsPage extends StatelessWidget {
               if (state is ChildDetailsFetchedState)
                 Padding(
                   padding: const EdgeInsets.only(right: 14),
-                  child: IconButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.pen,
-                      color: AppTheme.primary20,
-                    ),
-                    onPressed: () {
-                      AnalyticsHelper.logEvent(
-                        eventName:
-                            AmplitudeEvents.childDetailsEditAppBarClicked,
-                        eventProperties: {
-                          'child_name': state.profileDetails.firstName,
-                          'giving_allowance': state
-                              .profileDetails.wallet.givingAllowance.amount,
-                        },
-                      );
+                  child: Semantics(
+                    identifier: 'penIcon',
+                    child: IconButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.pen,
+                        color: AppTheme.primary20,
+                      ),
+                      onPressed: () {
+                        AnalyticsHelper.logEvent(
+                          eventName:
+                              AmplitudeEvents.childDetailsEditAppBarClicked,
+                          eventProperties: {
+                            'child_name': state.profileDetails.firstName,
+                            'giving_allowance': state
+                                .profileDetails.wallet.givingAllowance.amount,
+                          },
+                        );
 
-                      _pushToEdit(context);
-                    },
+                        _pushToEdit(context);
+                      },
+                    ),
                   ),
                 ),
             ],

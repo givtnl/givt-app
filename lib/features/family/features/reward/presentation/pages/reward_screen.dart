@@ -57,12 +57,19 @@ class _RewardScreenState extends State<RewardScreen> {
                 if (!context.mounted) return;
                 context.goNamed(
                   FamilyPages.profileSelection.name,
+                  queryParameters: {
+                    'checkForRewardOverlay': 'true',
+                  },
                 );
               });
             },
             text: 'Claim reward',
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.claimRewardClicked,
+              parameters: {
+                'reward': widget.uiModel.rewardText,
+                'rewardImage': widget.uiModel.rewardImage,
+              },
             ),
           ),
         ],
