@@ -41,6 +41,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
                   delay: const Duration(milliseconds: 50),
                   _showAvatarCard(
                     'Check out ${widget.uiModel.possessiveFirstName} superhero avatar',
+                    share: true,
                   ),
                 )
                     .then((capturedImage) {
@@ -79,7 +80,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
     );
   }
 
-  Widget _showAvatarCard(String text) {
+  Widget _showAvatarCard(String text, {bool share = false}) {
     return Container(
       width: 300,
       decoration: BoxDecoration(
@@ -94,11 +95,14 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
-          ClipRRect(
-            child: Image.asset(
-              'assets/family/images/looking_good_background.png',
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
+          Padding(
+            padding: EdgeInsets.only(top: share ? 4 : 0),
+            child: ClipRRect(
+              child: Image.asset(
+                  'assets/family/images/looking_good_background.png',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                  width: 300),
             ),
           ),
           Padding(
@@ -123,13 +127,16 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
           ),
           ClipRRect(
             child: SvgPicture.asset(
-              'assets/family/images/looking_good_frame.svg',
+              share
+                  ? 'assets/family/images/looking_good_share_frame.svg'
+                  : 'assets/family/images/looking_good_frame.svg',
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
+              width: 300,
             ),
           ),
           Positioned(
-            bottom: 20,
+            bottom: share ? 52 : 20,
             left: 16,
             right: 16,
             child: TitleMediumText(
