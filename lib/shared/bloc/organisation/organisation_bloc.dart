@@ -17,7 +17,7 @@ part 'organisation_event.dart';
 part 'organisation_state.dart';
 
 // Minimum score threshold for fuzzy search results (0-100)
-const int _fuzzyScoreThreshold = 80;
+const int _fuzzyScoreThreshold = 70;
 
 class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   OrganisationBloc(
