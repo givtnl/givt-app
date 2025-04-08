@@ -10,7 +10,7 @@
         "description": "Alleen wanneer je zelf een bedrag geeft \n met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.",
         "type": "text"
     },
-    "continueKey": "Continue",
+    "buttonContinue": "Continue",
     "slimPayInfoDetail": "Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n \n\n Better World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n \n\n The money will be collected in a Better World Payments account. \n Givt will ensure that the money is distributed correctly.",
     "slimPayInfoDetailTitle": "What is Better World Payments?",
     "unregisterButton": "Terminate my account",
@@ -902,8 +902,8 @@
     "goToSettings": "Go to Settings",
     "goToSettingsBody": "To scan the QR Code we need to turn on the camera. Go to Settings to allow that.",
     "selectCountryHint": "Select country",
-    "letsGo": "Let's go!",
-    "startJourneyOfGenerosity": "Start your journey of generosity!",
+    "homescreenLetsGo": "Let's go!",
+    "homescreenJourneyOfGenerosity": "Start your journey of generosity!",
     "registrationRandomAvatarError": "Failed to load avatar.",
     "registrationAvatarSelectionTitle": "Select your avatar",
     "registrationParentFirstName": "Parent first name",
@@ -935,5 +935,13 @@
     "setupFamilyHowManyTitle": "How many people are in your family?",
     "childKey": "Child",
     "adultKey": "Adult",
-    "setupFamilyAddNextMember": "Add next member"
+    "setupFamilyAddNextMember": "Add next member",
+    "homescreenFamilyWelcome": "Welcome, super family!",
+    "homescreenFamilyGenerosity": "Let's foster generosity together",
+    "buttonSkip": "Skip",
+    "leagueUnlockLeague": "Unlock League",
+    "leagueUnlocked": "League Unlocked!",
+    "leagueWelcome": "Welcome to the League!",
+    "leagueExplanation": "Your XP sets your rank. Grow in generosity and climb to the top!",
+    "buttonDone": "Done"
 }
