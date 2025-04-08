@@ -10,7 +10,7 @@
         "description": "Alleen wanneer je zelf een bedrag geeft \n met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.",
         "type": "text"
     },
-    "continueKey": "Continuar",
+    "buttonContinue": "Continuar",
     "slimPayInfoDetail": "Givt trabaja junto con Better World Payments para ejecutar las transacciones. Better World Payments se especializa en la gestión de mandatos y transferencias automáticas de dinero en plataformas digitales. Better World Payments ejecuta estas solicitudes para Givt a las tarifas más bajas del mercado y a gran velocidad.\n \n\nBetter World Payments es un socio ideal para Givt porque facilita mucho la donación sin efectivo de forma segura. \n \n\n El dinero se recogerá en una cuenta de Better World Payments. \n Givt se asegurará de que el dinero se distribuya correctamente.",
     "slimPayInfoDetailTitle": "¿Qué es Better World Payments?",
     "unregisterButton": "Eliminar mi cuenta",
@@ -398,17 +398,17 @@
         "description": "Hoe kan ik mij afmelden voor Givt?",
         "type": "text"
     },
-    "faQantwoord1": "Donar con su smartphone\n Givt es la solución para donar con tu smartphone cuando no llevas efectivo. Todo el mundo tiene un smartphone y con la aplicación Givt puedes participar fácilmente en la colecta. \n Es un momento personal y consciente, ya que creemos que hacer una donación no es solo una transacción financiera. Usar Givt se siente tan natural como dar dinero en efectivo. \n \n\n ¿Por qué 'Givt'?\n El nombre Givt fue elegido porque se trata tanto de 'dar' (giving) como de hacer un 'regalo' (gift). Buscábamos un nombre moderno y compacto que pareciera amigable y divertido. En nuestro logo puede notar que la barra verde combinada con la letra 'v' forma la figura de una bolsa de colecta, lo que da una idea de la función. \n \n\n Países Bajos, Bélgica y Reino Unido\n Detrás de Givt hay un equipo de especialistas, repartidos entre los Países Bajos, Bélgica y el Reino Unido. Cada uno de nosotros trabaja activamente en el desarrollo y mejora de Givt. Lea más sobre nosotros en www.givtapp.net.",
+    "faQantwoord1": "Donar con su smartphone\n Givt es la solución para donar con tu smartphone cuando no llevas efectivo. Todo el mundo tiene un smartphone y con la aplicación Givt puedes participar fácilmente en la colecta. \n Es un momento personal y consciente, ya que creemos que hacer una donación no es solo una transacción financiera. Usar Givt se siente tan natural como dar dinero en efectivo. \n \n\n ¿Por qué 'Givt'?\n El nombre Givt fue elegido porque se trata tanto de 'dar' (giving) como de hacer un 'regalo' (gift). Buscábamos un nombre moderno y compacto que pareciera amigable y divertido. En nuestro logo puedes notar que la barra verde combinada con la letra 'v' forma la figura de una bolsa de colecta, lo que da una idea de la función. \n \n\n Países Bajos, Bélgica y Reino Unido\n Detrás de Givt hay un equipo de especialistas, repartidos entre los Países Bajos, Bélgica y el Reino Unido. Cada uno de nosotros trabaja activamente en el desarrollo y mejora de Givt. Lea más sobre nosotros en www.givtapp.net.",
     "@faQantwoord1": {
         "description": "Antwoord op FAQ vraag1",
         "type": "text"
     },
-    "faQantwoord2": "El primer paso fue instalar la aplicación. Para que Givt funcione eficazmente, es importante que active el Bluetooth y tenga una conexión a internet funcional. \n \n\n Luego regístrese completando su información y firmando un mandato. \n ¡Está listo para donar! Abra la aplicación, seleccione un importe y escanee un código QR, acerque su teléfono a la bolsa o cesta de colecta, o seleccione una causa de la lista.\n El importe elegido se guardará, se retirará de su cuenta y se distribuirá a la iglesia u organizaciones benéficas que recolectan.\n \n\n Si no tiene conexión a internet al hacer su donación, la donación se enviará más tarde cuando vuelva a abrir la aplicación. Como cuando esté en una zona WiFi.",
+    "faQantwoord2": "El primer paso fue instalar la aplicación. Para que Givt funcione eficazmente, es importante que actives el Bluetooth y tengas una conexión a internet funcional. \n \n\n Luego regístrate completando tu información y firmando un mandato. \n ¡Estás listo para donar! Abre la aplicación, selecciona un importe y escanea un código QR, acerca tu teléfono a la bolsa o cesta de colecta, o selecciona una causa de la lista.\n El monto elegido se guardará, se retirará de tu cuenta y se distribuirá a la iglesia u organizaciones benéficas que recolectan.\n \n\n Si no tienes conexión a internet al hacer tu donación, la donación se enviará más tarde cuando vuelva a abrir la aplicación. Como cuando estas en una zona WiFi.",
     "@faQantwoord2": {
         "description": "Klopt dit?\n Na inloggen komt er een melding in het scherm met ‘Verstuur openstaande Givts’. Door op deze melding te klikken geef je alsnog het bedrag dat je tijdens de collecte wilde geven. \n  Antwoord op FAQ vraag2",
         "type": "text"
     },
-    "faQantwoord3": "Puede acceder al menú de la aplicación tocando el menú en la parte superior izquierda de la pantalla 'Importe'. Para cambiar su configuración, debe iniciar sesión con su dirección de correo electrónico y contraseña, huella digital/Touch ID o Face ID. En el menú puede encontrar un resumen de sus donaciones, ajustar su importe máximo, revisar y/o cambiar su información personal, cambiar sus importes preestablecidos, huella digital/Touch ID o Face ID, o cancelar su cuenta de Givt.",
+    "faQantwoord3": "Puedes acceder al menú de la aplicación tocando el menú en la parte superior izquierda de la pantalla 'Importe'. Para cambiar su configuración, debe iniciar sesión con su dirección de correo electrónico y contraseña, huella digital/Touch ID o Face ID. En el menú puede encontrar un resumen de sus donaciones, ajustar su importe máximo, revisar y/o cambiar su información personal, cambiar sus importes preestablecidos, huella digital/Touch ID o Face ID, o cancelar su cuenta de Givt.",
     "@faQantwoord3": {
         "description": "Je komt nu meteen in het betaalscherm. (ipv je komt nu gelijk in het betaalscherm) \n  Antwoord op FAQ vraag3",
         "type": "text"
@@ -937,5 +937,11 @@
     "adultKey": "Adulto",
     "setupFamilyAddNextMember": "Agregar nuevo miembro",
     "homescreenFamilyWelcome": "¡Bienvenidos, súper familia!",
-    "homescreenFamilyGenerosity": "¡Fomentemos la generosidad juntos!"
+    "homescreenFamilyGenerosity": "¡Fomentemos la generosidad juntos!",
+    "buttonSkip": "Saltar",
+    "leagueUnlockLeague": "Desbloquear Liga",
+    "leagueUnlocked": "¡Liga Desbloqueada!",
+    "leagueWelcome": "¡Bienvenidos a la Liga!",
+    "leagueExplanation": "Tu XP determina tu rango. ¡Crece en generosidad y escala hasta la cima!",
+    "buttonDone": "Listo"
 }
