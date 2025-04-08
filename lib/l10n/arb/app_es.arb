@@ -902,8 +902,8 @@
     "goToSettings": "Go to Settings",
     "goToSettingsBody": "To scan the QR Code we need to turn on the camera. Go to Settings to allow that.",
     "selectCountryHint": "Select country",
-    "letsGo": "Let's go!",
-    "startJourneyOfGenerosity": "Start your journey of generosity!",
+    "homescreenLetsGo": "Let's go!",
+    "homescreenJourneyOfGenerosity": "Start your journey of generosity!",
     "registrationRandomAvatarError": "Failed to load avatar.",
     "registrationAvatarSelectionTitle": "Select your avatar",
     "registrationParentFirstName": "Parent first name",
@@ -935,5 +935,7 @@
     "setupFamilyHowManyTitle": "How many people are in your family?",
     "childKey": "Child",
     "adultKey": "Adult",
-    "setupFamilyAddNextMember": "Add next member"
+    "setupFamilyAddNextMember": "Add next member",
+    "homescreenFamilyWelcome": "Welcome, super family!",
+    "homescreenFamilyGenerosity": "Let's foster generosity together"
 }
