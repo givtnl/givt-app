@@ -8,14 +8,14 @@ import 'package:givt_app/features/family/shared/design/components/content/fun_pr
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
 class GratitudeGoalContainer extends StatefulWidget {
   const GratitudeGoalContainer({super.key});
 
   @override
-  State<GratitudeGoalContainer> createState() =>
-      _GratitudeGoalContainerState();
+  State<GratitudeGoalContainer> createState() => _GratitudeGoalContainerState();
 }
 
 class _GratitudeGoalContainerState extends State<GratitudeGoalContainer> {
@@ -76,7 +76,7 @@ class _GratitudeGoalContainerState extends State<GratitudeGoalContainer> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   LabelLargeText.primary40(
-                    'Play ${uiModel.gratitudeGoal}x Weekly',
+                    context.l10n.gratitudeWeeklyGoal(uiModel.gratitudeGoal),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -86,7 +86,8 @@ class _GratitudeGoalContainerState extends State<GratitudeGoalContainer> {
                       if (_timer != null)
                         LabelMediumText.primary40(
                           _remainingHours > 24
-                              ? '${_remainingHours ~/ 24} days left'
+                              ? context.l10n
+                                  .gratitudeGoalDaysLeft(_remainingHours ~/ 24)
                               : _remainingHours > 0
                                   ? '${_remainingHours}h ${_remainingMinutes}m'
                                   : '${_remainingMinutes}m',

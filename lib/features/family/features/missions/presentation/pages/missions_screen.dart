@@ -14,6 +14,7 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -48,9 +49,9 @@ class _MissionsScreenState extends State<MissionsScreen> {
       overlayColor: FamilyAppTheme.primary50.withOpacity(0.5),
       controller: _tooltipController,
       builder: (context) => FunScaffold(
-        appBar: const FunTopAppBar(
-          leading: GivtBackButtonFlat(),
-          title: 'Missions available',
+        appBar: FunTopAppBar(
+          leading: const GivtBackButtonFlat(),
+          title: context.l10n.missionsTitle,
         ),
         body: BaseStateConsumer(
           cubit: _cubit,
@@ -73,8 +74,8 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   FunCard(
                     content: BodyMediumText.opacityBlack50(
                       _selectedIndex == 0
-                          ? "You don't have any missions currently"
-                          : "You haven't completed any missions yet",
+                          ? context.l10n.missionsNoMissions
+                          : context.l10n.missionsNoCompletedMissions,
                       textAlign: TextAlign.center,
                     ),
                     icon: FunGoal.neutral95(),
@@ -83,9 +84,9 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   _missions(uiModel).length,
                   (index) {
                     final mission = _missions(uiModel)[index];
-                    const title = 'Tap to begin mission!';
-                    const description =
-                        'Track your progress and complete your missions here.';
+                    final title = context.l10n.familyTutorialMissionTitle;
+                    final description =
+                        context.l10n.familyTutorialMissionDescription;
 
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 16),

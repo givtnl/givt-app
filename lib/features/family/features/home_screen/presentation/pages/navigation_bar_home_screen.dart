@@ -152,9 +152,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
         onDestinationSelected: (int index) =>
             _onDestinationSelected(index, uiModel: uiModel),
         destinations: [
-          const NavigationDestination(
-            icon: FaIcon(FontAwesomeIcons.house),
-            label: 'Home',
+          NavigationDestination(
+            icon: const FaIcon(FontAwesomeIcons.house),
+            label: context.l10n.familyNavigationBarHome,
           ),
           NavigationDestination(
             icon: FunTooltip(
@@ -168,15 +168,15 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
                 FontAwesomeIcons.mask,
               ),
             ),
-            label: 'Family',
+            label: context.l10n.familyNavigationBarFamily,
           ),
-          const NavigationDestination(
-            icon: FaIcon(FontAwesomeIcons.solidCalendar),
-            label: 'Memories',
+          NavigationDestination(
+            icon: const FaIcon(FontAwesomeIcons.solidCalendar),
+            label: context.l10n.familyNavigationBarMemories,
           ),
-          const NavigationDestination(
-            icon: FaIcon(FontAwesomeIcons.medal),
-            label: 'League',
+          NavigationDestination(
+            icon: const FaIcon(FontAwesomeIcons.medal),
+            label: context.l10n.familyNavigationBarLeague,
           ),
         ],
         analyticsEvent: (int index) => _analyticsEvents[index],
