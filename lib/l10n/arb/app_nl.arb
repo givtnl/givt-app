@@ -933,6 +933,6 @@
     "homeScreenGratitudeGameButtonSubtitle": "Play now!",
     "setupFamilyTitle": "Set up Family",
     "setupFamilyHowManyTitle": "How many people are in your family?",
-    "childKey": "",
-    "adultKey": ""
+    "childKey": "Child",
+    "adultKey": "Adult"
 }
