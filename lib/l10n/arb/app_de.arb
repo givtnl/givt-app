@@ -10,7 +10,7 @@
         "description": "Alleen wanneer je zelf een bedrag geeft \n met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.",
         "type": "text"
     },
-    "continueKey": "Continue",
+    "buttonContinue": "Continue",
     "slimPayInfoDetail": "Givt arbeitet bei der Ausführung der Transaktionen mit Better World Payments zusammen. Better World Payments ist spezialisiert auf die Abwicklung von Mandaten und automatischen Geldüberweisungen auf digitalen Plattformen. Better World Payments führt diese Aufträge für Givt zu den niedrigsten Preisen auf diesem Markt und mit hoher Geschwindigkeit aus.\n\n Better World Payments ist ein idealer Partner für Givt, weil sie das bargeldlose Spenden sehr einfach und sicher machen. \n \n Das Geld wird auf einem Better World Payments-Konto gesammelt. \n Givt wird sicherstellen, dass das Geld korrekt ausgegeben wird.",
     "slimPayInfoDetailTitle": "Was ist Better World Payments?`",
     "unregisterButton": "Meinen Account schließen",
@@ -937,5 +937,11 @@
     "adultKey": "Adult",
     "setupFamilyAddNextMember": "Add next member",
     "homescreenFamilyWelcome": "Welcome, super family!",
-    "homescreenFamilyGenerosity": "Let's foster generosity together"
+    "homescreenFamilyGenerosity": "Let's foster generosity together",
+    "buttonSkip": "Skip",
+    "leagueUnlockLeague": "Unlock League",
+    "leagueUnlocked": "League Unlocked!",
+    "leagueWelcome": "Welcome to the League!",
+    "leagueExplanation": "Your XP sets your rank. Grow in generosity and climb to the top!",
+    "buttonDone": "Done"
 }
