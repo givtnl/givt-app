@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/features/add_member/pages/family_member
 import 'package:givt_app/features/family/features/add_member/widgets/member_counter.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -32,12 +33,12 @@ class _AddFamilyCounterPageState extends State<AddFamilyCounterPage> {
     return FunScaffold(
       canPop: false,
       appBar: FunTopAppBar.primary99(
-        title: 'Set up Family',
+        title: context.l10n.setupFamilyTitle,
       ),
       body: Column(
         children: [
-          const TitleMediumText(
-            'How many people are in your family?',
+          TitleMediumText(
+            context.l10n.setupFamilyHowManyTitle,
             textAlign: TextAlign.center,
           ),
           const Spacer(),
@@ -68,7 +69,7 @@ class _AddFamilyCounterPageState extends State<AddFamilyCounterPage> {
                 ).toRoute(context),
               );
             },
-            text: 'Continue',
+            text: context.l10n.continueKey,
             rightIcon: FontAwesomeIcons.arrowRight,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.addMemberContinueClicked,

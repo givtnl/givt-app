@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsheet.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -120,7 +121,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     final isLast = widget.index == widget.totalCount;
     return FunScaffold(
       appBar: FunTopAppBar.primary99(
-        title: 'Set up Family',
+        title: context.l10n.setupFamilyTitle,
         leading: const GivtBackButtonFlat(),
       ),
       body: CustomScrollView(
@@ -145,7 +146,10 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 const SizedBox(height: 24),
                 ChildOrParentSelector(
                     selectedIndex: selectedIndex,
-                    options: tabsOptions,
+                    options: [
+                      context.l10n.childKey,
+                      context.l10n.adultKey,
+                    ],
                     onPressed: (set) {
                       setState(() {
                         selectedIndex = set.first == tabsOptions.first ? 0 : 1;

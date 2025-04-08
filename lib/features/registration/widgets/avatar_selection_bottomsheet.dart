@@ -20,7 +20,7 @@ class AvatarSelectionBottomsheet extends StatelessWidget {
     final cubit = getIt<AvatarsCubit>();
 
     return FunBottomSheet(
-      title: 'Select your avatar',
+      title: context.l10n.registrationAvatarSelectionTitle,
       content: Column(
         children: [
           const SizedBox(height: 24),

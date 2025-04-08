@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 
 class LeagueExplanation extends StatelessWidget {
@@ -42,7 +43,7 @@ class LeagueExplanation extends StatelessWidget {
           const Spacer(),
           FunButton(
             onTap: onContinuePressed,
-            text: isInGameVersion ? 'Unlock League' : 'Continue',
+            text: isInGameVersion ? 'Unlock League' : context.l10n.continueKey,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.leagueExplanationContinueClicked,
             ),

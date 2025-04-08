@@ -15,6 +15,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/g
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/reporters_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -198,7 +199,7 @@ class _PassThePhoneState extends State<PassThePhone> {
                 child: FunButton.secondary(
                   isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
                   onTap: () => widget.onTap.call(context),
-                  text: widget.customBtnText ?? 'Continue',
+                  text: widget.customBtnText ?? context.l10n.continueKey,
                   analyticsEvent: AnalyticsEvent(
                     AmplitudeEvents.reflectAndSharePassThePhoneClicked,
                   ),

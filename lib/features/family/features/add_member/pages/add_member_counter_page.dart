@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/features/add_member/widgets/member_coun
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -40,7 +41,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
     return FunScaffold(
       canPop: widget.existingFamily,
       appBar: FunTopAppBar.primary99(
-        title: 'Set up Family',
+        title: context.l10n.setupFamilyTitle,
         leading: widget.existingFamily ? const GivtBackButtonFlat() : null,
       ),
       body: Column(
@@ -76,7 +77,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
                 ).toRoute(context),
               );
             },
-            text: 'Continue',
+            text: context.l10n.continueKey,
             rightIcon: FontAwesomeIcons.arrowRight,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.addMemberContinueClicked,

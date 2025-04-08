@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/features/league/presentation/widgets/mo
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 
@@ -74,7 +75,7 @@ class LeagueOverview extends StatelessWidget {
                 onTap: onTap,
                 isLoading: isBtnLoading,
                 isPressedDown: isPressedDown,
-                text: 'Continue',
+                text: context.l10n.continueKey,
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.continueClicked,
                 ),
