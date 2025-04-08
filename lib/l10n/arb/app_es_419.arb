@@ -943,5 +943,10 @@
     "leagueUnlocked": "¡Liga Desbloqueada!",
     "leagueWelcome": "¡Bienvenidos a la Liga!",
     "leagueExplanation": "Tu XP determina tu rango. ¡Crece en generosidad y escala hasta la cima!",
-    "buttonDone": "Listo"
+    "buttonDone": "Listo",
+    "originQuestionTitle": "Último paso",
+    "originQuestionSubtitle": "¿Dónde conseguiste tu caja?",
+    "originSelectLocation": "Seleccionar ubicación",
+    "homeScreenGiveButtonTitle": "Dar",
+    "homeScreenGivtButtonDescription": "Donar a una causa"
 }
