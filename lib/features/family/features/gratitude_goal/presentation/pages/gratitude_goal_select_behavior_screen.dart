@@ -137,7 +137,6 @@ class _GratitudeGoalSelectBehaviorScreenState
                     if (!widget.isRecognized)
                       FunTextButton(
                         text: 'Maybe later',
-                        rightIconSize: 0,
                         onTap: () => Navigator.of(context).push(
                           const GratitudeGoalLaterScreen().toRoute(context),
                         ),
