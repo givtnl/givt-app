@@ -61,7 +61,6 @@ class AvatarSelectionBottomsheet extends StatelessWidget {
           FunButton(
             text: context.l10n.save,
             onTap: () => context.pop(),
-            rightIcon: FontAwesomeIcons.arrowRight,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.avatarSaved,
               parameters: {

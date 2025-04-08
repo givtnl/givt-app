@@ -70,7 +70,6 @@ class _AddFamilyCounterPageState extends State<AddFamilyCounterPage> {
               );
             },
             text: context.l10n.continueKey,
-            rightIcon: FontAwesomeIcons.arrowRight,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.addMemberContinueClicked,
               parameters: {'nrOfAddedMembers': _amount - 1},
