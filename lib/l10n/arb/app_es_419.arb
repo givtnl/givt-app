@@ -443,7 +443,7 @@
         "description": "Titel op het scherm van de privacyverklaring",
         "type": "text"
     },
-    "acceptTerms": "Al continuar",
+    "acceptTerms": "Al continuar, aceptas nuestros términos y condiciones.",
     "@acceptTerms": {
         "description": "Tekst op het einde van de registratie \"Bij het doorgaan ga je akkoord met de algemene voorwaarden.\"",
         "type": "text"
@@ -909,7 +909,7 @@
     "registrationParentFirstName": "Nombre del padre/madre",
     "registrationParentLastName": "Apellido del padre/madre",
     "homepageParentEmailHint": "Correo electrónico del padre/madre",
-    "addMemberAdultDescription": "This adult will receive an email adding them to the family, enabling them to also:",
+    "addMemberAdultDescription": "Este adulto recibirá un correo electrónico confirmando su incorporación a la familia, lo que también le permitirá:",
     "addMemberAdultReason1": "Iniciar sesión en Givt con su propia cuenta",
     "addMemberAdultReason2": "Aprobar las donaciones de los niños/as",
     "addMemberAdultReason3": "Explorar la generosidad como familia",
