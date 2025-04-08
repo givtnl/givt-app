@@ -966,5 +966,6 @@
     "missionsCardTitleSingular": "Mission available",
     "missionsCardTitlePlural": "Missions available",
     "missionsCardDescriptionSingular": "1 mission available to be completed",
-    "missionsCardDescriptionPlural": "{amount} missions available to be completed"
+    "missionsCardDescriptionPlural": "{amount} missions available to be completed",
+    "progressbarPlayed": "played"
 }
