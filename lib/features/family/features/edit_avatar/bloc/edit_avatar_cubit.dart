@@ -318,8 +318,8 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
 
   bool _defaultAvatarHasntChanged() => _selectedAvatar == _profile!.avatar;
 
-  void setMode(Set<String> option) {
-    _customMode = option.first;
+  void setMode(int index) {
+    _customMode = EditAvatarScreen.options[index];
     _emitData();
   }
 

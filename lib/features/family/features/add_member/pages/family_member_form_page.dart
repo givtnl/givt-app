@@ -150,9 +150,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                       context.l10n.childKey,
                       context.l10n.adultKey,
                     ],
-                    onPressed: (set) {
+                    onPressed: (index) {
                       setState(() {
-                        selectedIndex = set.first == tabsOptions.first ? 0 : 1;
+                        selectedIndex = index;
                         FocusScope.of(context).unfocus();
                       });
                     }),
@@ -288,7 +288,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
           );
         }
       },
-      text: 'Add next member',
+      text: context.l10n.setupFamilyAddNextMember,
       analyticsEvent: AnalyticsEvent(AmplitudeEvents.addMemberClicked),
     );
   }

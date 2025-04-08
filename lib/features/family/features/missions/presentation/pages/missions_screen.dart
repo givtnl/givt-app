@@ -61,8 +61,8 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   margin: EdgeInsets.zero,
                   options: options,
                   selectedIndex: _selectedIndex,
-                  onPressed: (set) => setState(
-                    () => _selectedIndex = set.first == options[0] ? 0 : 1,
+                  onPressed: (index) => setState(
+                    () => _selectedIndex = index,
                   ),
                   analyticsEvent: AnalyticsEvent(
                     AmplitudeEvents.missionTabsChanged,

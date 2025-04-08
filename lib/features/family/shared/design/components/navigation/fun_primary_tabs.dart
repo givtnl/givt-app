@@ -22,7 +22,7 @@ class FunPrimaryTabs extends StatelessWidget {
   final List<Widget?> icons;
   final int selectedIndex;
   final EdgeInsets? margin;
-  final void Function(Set<String>) onPressed;
+  final void Function(int) onPressed;
   final AnalyticsEvent analyticsEvent;
 
   @override
@@ -57,9 +57,12 @@ class FunPrimaryTabs extends StatelessWidget {
         ],
         selected: <String>{options[selectedIndex]},
         onSelectionChanged: (set) {
-          onPressed(set);
           final selectedOption = set.first;
           final newSelectedIndex = options.indexOf(selectedOption);
+
+          // Pass back the index of the selected option, starting from 0
+          onPressed(newSelectedIndex);
+
           unawaited(
             AnalyticsHelper.logEvent(
               eventName: analyticsEvent.name,
