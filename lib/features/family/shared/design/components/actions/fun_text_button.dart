@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
@@ -15,8 +14,6 @@ class FunTextButton extends StatelessWidget {
     this.onTap,
     super.key,
     this.isDisabled = false,
-    this.rightIcon,
-    this.rightIconSize,
     this.disabledTextColor = FamilyAppTheme.neutralVariant60,
     this.textColor = FamilyAppTheme.primary30,
     this.isMedium = true,
@@ -29,15 +26,11 @@ class FunTextButton extends StatelessWidget {
     void Function()? onTap,
     bool isDisabled = false,
     bool isMedium = true,
-    IconData? rightIcon,
-    double? rightIconSize,
   }) {
     return FunTextButton(
       onTap: onTap,
       text: text,
       isDisabled: isDisabled,
-      rightIcon: rightIcon,
-      rightIconSize: rightIconSize,
       analyticsEvent: analyticsEvent,
       isMedium: isMedium,
     );
@@ -49,13 +42,11 @@ class FunTextButton extends StatelessWidget {
     void Function()? onTap,
     bool isDisabled = false,
     bool isMedium = false,
-    IconData? rightIcon,
   }) {
     return FunTextButton(
       onTap: onTap,
       text: text,
       isDisabled: isDisabled,
-      rightIcon: rightIcon,
       analyticsEvent: analyticsEvent,
       isMedium: isMedium,
     );
@@ -64,8 +55,6 @@ class FunTextButton extends StatelessWidget {
   final void Function()? onTap;
   final bool isDisabled;
   final String text;
-  final IconData? rightIcon;
-  final double? rightIconSize;
   final Color disabledTextColor;
   final Color? textColor;
   final bool isMedium;
@@ -106,14 +95,6 @@ class FunTextButton extends StatelessWidget {
               text,
               color: hasDisabledState ? disabledTextColor : textColor,
             ),
-          Padding(
-            padding: const EdgeInsets.only(left: 6),
-            child: FaIcon(
-              rightIcon ?? FontAwesomeIcons.arrowRight,
-              size: rightIconSize ?? (isMedium ? 24 : 20),
-              color: hasDisabledState ? disabledTextColor : textColor,
-            ),
-          ),
         ],
       ),
     );

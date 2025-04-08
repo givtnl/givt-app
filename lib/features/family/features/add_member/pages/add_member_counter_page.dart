@@ -78,7 +78,6 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
               );
             },
             text: context.l10n.continueKey,
-            rightIcon: FontAwesomeIcons.arrowRight,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.addMemberContinueClicked,
               parameters: {'amount': _amount},
