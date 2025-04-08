@@ -930,5 +930,9 @@
     "tutorialFirstMissionTitle": "¡Vamos a completar tu primera misión!",
     "tutorialFirstMissionDescription": "Nuevas misiones ayudan a tu familia a crecer juntos. ¡Toca arriba para empezar!",
     "homeScreenGratitudeGameButtonTitle": "Juego en Familia",
-    "homeScreenGratitudeGameButtonSubtitle": "¡Juega ahora!"
+    "homeScreenGratitudeGameButtonSubtitle": "¡Juega ahora!",
+    "setupFamilyTitle": "Crear Familia",
+    "setupFamilyHowManyTitle": "¿Cuántas personas hay en tu familia?",
+    "childKey": "",
+    "adultKey": ""
 }
