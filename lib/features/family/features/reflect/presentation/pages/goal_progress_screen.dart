@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -55,6 +56,7 @@ class _GoalProgressScreenState extends State<GoalProgressScreen> {
                 key: const ValueKey('Daily-Experience-Progressbar'),
                 currentProgress: uiModel.currentProgress,
                 total: uiModel.goal,
+                suffix: context.l10n.progressbarPlayed,
               ),
               const Spacer(),
               Visibility(

@@ -21,6 +21,7 @@ class FunProgressbar extends StatefulWidget {
   factory FunProgressbar.gratitudeGoal({
     required int currentProgress,
     required int total,
+    required String suffix,
     EdgeInsets? margin,
     Key? key,
   }) {
@@ -36,7 +37,7 @@ class FunProgressbar extends StatefulWidget {
           size: 12,
         ),
       ),
-      suffix: 'played',
+      suffix: suffix,
       margin: margin,
     );
   }

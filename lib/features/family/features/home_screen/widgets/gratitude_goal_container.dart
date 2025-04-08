@@ -102,6 +102,7 @@ class _GratitudeGoalContainerState extends State<GratitudeGoalContainer> {
                 key: const ValueKey('Daily-Experience-Progressbar'),
                 currentProgress: uiModel.gratitudeGoalCurrent,
                 total: uiModel.gratitudeGoal,
+                suffix: context.l10n.progressbarPlayed
               ),
               const SizedBox(height: 16),
             ],
