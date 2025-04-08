@@ -504,7 +504,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                               ),
                             );
                           },
-                          text: context.l10n.continueKey,
+                          text: context.l10n.buttonContinue,
                           analyticsEvent: AnalyticsEvent(
                             AmplitudeEvents
                                 .introBedtimeAnimationContinuePressed,

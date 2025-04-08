@@ -367,7 +367,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     FunModal(
       autoClose: const Duration(milliseconds: 1500),
       icon: FunIcon.checkmark(),
-      title: 'Done',
+      title: context.l10n.buttonDone,
       closeAction: () {
         context.pop();
       },

@@ -62,7 +62,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _cubit.init();
+    _cubit.init(
+      language: Localizations.localeOf(context).languageCode,
+    );
   }
 
   @override
@@ -164,13 +166,14 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               ),
                             if (!isUS) const Spacer(),
                             TitleLargeText(
-                              isUS ? 'Welcome, super family!' : locals.letsGo,
+                              isUS ? locals.homescreenFamilyWelcome : locals.homescreenLetsGo,
+                              textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 4),
                             BodyMediumText(
                               isUS
-                                  ? "Let's foster generosity together"
-                                  : locals.startJourneyOfGenerosity,
+                                  ? locals.homescreenFamilyGenerosity
+                                  : locals.homescreenJourneyOfGenerosity,
                               textAlign: TextAlign.center,
                             ),
                             const Spacer(),
@@ -188,7 +191,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             OutlinedTextFormField(
                               key: const ValueKey('Email-Input'),
                               initialValue: state.email,
-                              hintText: state.country?.isUS == true ? locals.homepageParentEmailHint : locals.email,
+                              hintText: state.country?.isUS == true
+                                  ? locals.homepageParentEmailHint
+                                  : locals.email,
                               onChanged: _cubit.updateEmail,
                               validator: (value) {
                                 if (!_cubit.validateEmail(value)) {
@@ -256,7 +261,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                   ? () async {
                                       // Hide keyboard when continue button is tapped
                                       FocusScope.of(context).unfocus();
-                                      
+
                                       _cubit.updateApi();
                                       if (state.country?.isUS == true) {
                                         final fbsdk = FacebookAppEvents();
@@ -288,7 +293,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                       }
                                     }
                                   : null,
-                              text: locals.continueKey,
+                              text: locals.buttonContinue,
                               analyticsEvent: AnalyticsEvent(
                                 AmplitudeEvents.emailSignupContinueClicked,
                                 parameters: {

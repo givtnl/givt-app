@@ -75,7 +75,7 @@ class LeagueOverview extends StatelessWidget {
                 onTap: onTap,
                 isLoading: isBtnLoading,
                 isPressedDown: isPressedDown,
-                text: context.l10n.continueKey,
+                text: context.l10n.buttonContinue,
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.continueClicked,
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,7 +17,7 @@ Future<void> showBoxOriginSuccessDialog(
     icon: FunIcon.checkmark(),
     buttons: [
       FunButton(
-        text: 'Done',
+        text: context.l10n.buttonDone,
         onTap: onTap ?? () => Navigator.of(context).pop(),
         analyticsEvent:
             AnalyticsEvent(AmplitudeEvents.boxOriginSuccessDialogDone),
@@ -43,7 +44,7 @@ Future<void> showBoxOriginErrorDialog(
       ),
       FunButton.secondary(
         onTap: onTapSkip,
-        text: 'Skip',
+        text: context.l10n.buttonSkip,
         analyticsEvent: AnalyticsEvent(AmplitudeEvents.skipClicked),
       ),
     ],

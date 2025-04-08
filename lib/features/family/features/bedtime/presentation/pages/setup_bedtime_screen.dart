@@ -267,7 +267,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
               windDownValue,
             ),
             isLoading: isLoading,
-            text: isLast ? 'Done' : context.l10n.continueKey,
+            text: isLast ? context.l10n.buttonDone : context.l10n.buttonContinue,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.childBedtimeSet,
               parameters: {

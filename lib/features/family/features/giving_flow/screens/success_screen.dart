@@ -125,7 +125,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
           child: widget.onCustomSuccess != null
               ? FunButton(
                   onTap: widget.onCustomSuccess,
-                  text: context.l10n.continueKey,
+                  text: context.l10n.buttonContinue,
                   analyticsEvent: AnalyticsEvent(
                     AmplitudeEvents.continueClicked,
                   ),

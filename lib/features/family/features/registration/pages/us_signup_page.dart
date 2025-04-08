@@ -225,7 +225,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         FunButton(
           isDisabled: !_isEnabled,
           onTap: _isEnabled ? () => _register(user) : null,
-          text: context.l10n.continueKey,
+          text: context.l10n.buttonContinue,
           analyticsEvent: AnalyticsEvent(
             AmplitudeEvents.registrationContinueAfterPersonalInfoClicked,
           ),

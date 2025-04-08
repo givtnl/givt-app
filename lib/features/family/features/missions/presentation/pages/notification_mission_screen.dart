@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/features/missions/bloc/notif_mission_cu
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -79,7 +80,7 @@ class _NotificationMissionScreenState extends State<NotificationMissionScreen>
                       openAppSettings();
                     }
                   },
-                  text: uiModel.notifEnabled ? 'Done' : 'Go to Settings',
+                  text: uiModel.notifEnabled ? context.l10n.buttonDone : 'Go to Settings',
                   analyticsEvent: AnalyticsEvent(
                       AmplitudeEvents.notificationsGoToSettingsClicked)),
             ],

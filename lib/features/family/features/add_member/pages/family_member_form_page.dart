@@ -263,7 +263,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   Widget _primaryButton(bool isChildSelected) {
     return FunButton(
       onTap: () => onDone(isChildSelected: isChildSelected),
-      text: 'Done',
+      text: context.l10n.buttonDone,
       analyticsEvent: AnalyticsEvent(AmplitudeEvents.addMemberDoneClicked),
     );
   }

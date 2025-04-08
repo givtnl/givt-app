@@ -147,7 +147,7 @@ class _GratitudeGoalSetAGoalScreenState
                     children: [
                       const SizedBox(height: 24),
                       FunButton(
-                        text: context.l10n.continueKey,
+                        text: context.l10n.buttonContinue,
                         onTap: () => Navigator.of(context).push(
                           GratitudeGoalCommitScreen(
                             chosenOption: _currentGoal(),

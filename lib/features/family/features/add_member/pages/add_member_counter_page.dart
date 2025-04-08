@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/add_member/pages/family_member_form_page.dart';
@@ -77,7 +76,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
                 ).toRoute(context),
               );
             },
-            text: context.l10n.continueKey,
+            text: context.l10n.buttonContinue,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.addMemberContinueClicked,
               parameters: {'amount': _amount},

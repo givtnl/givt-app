@@ -5,6 +5,7 @@ import 'package:givt_app/features/family/features/edit_avatar/presentation/model
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -71,7 +72,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
                   Navigator.of(context).pop();
                 });
               },
-              text: 'Done',
+              text: context.l10n.buttonDone,
               analyticsEvent: AnalyticsEvent(AmplitudeEvents.continueClicked),
             ),
           ],

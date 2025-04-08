@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/shared/design/components/overlays/bloc/
 import 'package:givt_app/features/family/shared/design/components/overlays/models/fun_bottom_sheet_with_async_action_state.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
@@ -82,7 +83,7 @@ class _FunBottomSheetWithAsyncActionState
                     title: widget.successText,
                     content: FunIcon.checkmark(),
                     primaryButton: FunButton(
-                      text: 'Done',
+                      text: context.l10n.buttonDone,
                       onTap: () => context.pop(),
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents.bottomsheet,

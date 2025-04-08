@@ -118,7 +118,7 @@ class _GratitudeGoalSelectBehaviorScreenState
                     const SizedBox(height: 24),
                     FunButton(
                       isDisabled: _pressedIndex == null,
-                      text: context.l10n.continueKey,
+                      text: context.l10n.buttonContinue,
                       onTap: () {
                         Navigator.of(context).push(
                           GratitudeGoalExplanationScreen(

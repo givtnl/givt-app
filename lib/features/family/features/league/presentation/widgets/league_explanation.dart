@@ -30,20 +30,20 @@ class LeagueExplanation extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           TitleLargeText(
-            isInGameVersion ? 'League Unlocked!' : 'Welcome to the League!',
+            isInGameVersion ? context.l10n.leagueUnlocked : context.l10n.leagueWelcome,
             textAlign: TextAlign.center,
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: BodyMediumText(
-              'Your XP sets your rank. Grow in generosity and climb to the top!',
+              context.l10n.leagueExplanation,
               textAlign: TextAlign.center,
             ),
           ),
           const Spacer(),
           FunButton(
             onTap: onContinuePressed,
-            text: isInGameVersion ? 'Unlock League' : context.l10n.continueKey,
+            text: isInGameVersion ? context.l10n.leagueUnlockLeague : context.l10n.buttonContinue,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.leagueExplanationContinueClicked,
             ),
