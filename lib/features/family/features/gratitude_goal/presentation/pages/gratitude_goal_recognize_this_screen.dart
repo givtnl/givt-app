@@ -79,7 +79,6 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
                 ),
                 FunTextButton(
                   text: 'No, not really',
-                  rightIconSize: 0,
                   onTap: () =>
                       _navigateToGratitudeGoalSelectBehaviorScreen(
                     context,

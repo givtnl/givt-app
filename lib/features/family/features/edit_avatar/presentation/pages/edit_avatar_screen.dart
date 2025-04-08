@@ -469,7 +469,6 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
         ),
         FunTextButton(
           textColor: FamilyAppTheme.error30,
-          rightIconSize: 0,
           onTap: () {
             _cubit.navigateBack(force: true);
             context.pop();
