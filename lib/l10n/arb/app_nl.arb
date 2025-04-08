@@ -902,8 +902,8 @@
     "goToSettings": "Ga naar Instellingen",
     "goToSettingsBody": "Om de QR-code te scannen, moeten we de camera inschakelen. Ga naar Instellingen om dat toe te staan.",
     "selectCountryHint": "Selecteer land",
-    "letsGo": "Let's go!",
-    "startJourneyOfGenerosity": "Begin hier je geefavontuur!",
+    "homescreenLetsGo": "Let's go!",
+    "homescreenJourneyOfGenerosity": "Begin hier je geefavontuur!",
     "registrationRandomAvatarError": "Failed to load avatar.",
     "registrationAvatarSelectionTitle": "Select your avatar",
     "registrationParentFirstName": "Parent first name",
@@ -935,5 +935,7 @@
     "setupFamilyHowManyTitle": "How many people are in your family?",
     "childKey": "Child",
     "adultKey": "Adult",
-    "setupFamilyAddNextMember": "Add next member"
+    "setupFamilyAddNextMember": "Add next member",
+    "homescreenFamilyWelcome": "Welcome, super family!",
+    "homescreenFamilyGenerosity": "Let's foster generosity together"
 }
