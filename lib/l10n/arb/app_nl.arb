@@ -934,5 +934,6 @@
     "setupFamilyTitle": "Set up Family",
     "setupFamilyHowManyTitle": "How many people are in your family?",
     "childKey": "Child",
-    "adultKey": "Adult"
+    "adultKey": "Adult",
+    "setupFamilyAddNextMember": "Add next member"
 }
