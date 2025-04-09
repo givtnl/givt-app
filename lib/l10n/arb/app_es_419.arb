@@ -967,5 +967,10 @@
     "missionsCardTitlePlural": "Misiones disponibles",
     "missionsCardDescriptionSingular": "1 misión disponible por completar",
     "missionsCardDescriptionPlural": "{amount} misiones disponibles por completar",
-    "progressbarPlayed": "jugados"
+    "progressbarPlayed": "jugados",
+    "gameStatsActivityThisWeek": "Actividad en el juego esta semana",
+    "gameStatsPlayGame": "Jugar el Juego de la Gratitud",
+    "gameStatsAmountOfDeedsOne": "{amount} acto",
+    "gameStatsAmountOfDeedsMany": "{amount} actos",
+    "gameStatsAmountOfDeedsOther": "{amount} actos"
 }
