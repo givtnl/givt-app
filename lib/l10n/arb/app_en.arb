@@ -967,5 +967,9 @@
     "missionsCardTitlePlural": "Missions available",
     "missionsCardDescriptionSingular": "1 mission available to be completed",
     "missionsCardDescriptionPlural": "{amount} missions available to be completed",
-    "progressbarPlayed": "played"
+    "progressbarPlayed": "played",
+    "gameStatsActivityThisWeek": "Game activity this week",
+    "gameStatsPlayGame": "Play the Gratitude Game",
+    "gameStatsAmountOfDeedsOne": "{amount} deed",
+    "gameStatsAmountOfDeedsOther": "{amount} deeds"
 }
