@@ -970,6 +970,5 @@
     "progressbarPlayed": "played",
     "gameStatsActivityThisWeek": "Game activity this week",
     "gameStatsPlayGame": "Play the Gratitude Game",
-    "gameStatsAmountOfDeedsOne": "{amount} deed",
-    "gameStatsAmountOfDeedsOther": "{amount} deeds"
+    "gameStatsAmountOfDeeds": "{amount} deeds"
 }
