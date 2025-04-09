@@ -970,7 +970,5 @@
     "progressbarPlayed": "jugados",
     "gameStatsActivityThisWeek": "Actividad en el juego esta semana",
     "gameStatsPlayGame": "Jugar el Juego de la Gratitud",
-    "gameStatsAmountOfDeedsOne": "{amount} acto",
-    "gameStatsAmountOfDeedsMany": "{amount} actos",
-    "gameStatsAmountOfDeedsOther": "{amount} actos"
+    "gameStatsAmountOfDeeds": "{amount} actos"
 }
