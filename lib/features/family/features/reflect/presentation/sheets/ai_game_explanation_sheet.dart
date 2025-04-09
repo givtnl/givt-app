@@ -78,7 +78,6 @@ class AiGameExplanationSheet extends StatelessWidget {
         ),
       ),
       secondaryButton: FunTextButton.medium(
-        rightIconSize: 0,
         onTap: () => maybeLaterClicked?.call(),
         text: 'Maybe later',
         analyticsEvent: AnalyticsEvent(

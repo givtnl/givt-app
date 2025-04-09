@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 
@@ -44,23 +45,23 @@ class GiveButton extends StatelessWidget {
                   const Spacer(),
                 ],
               ),
-              const Row(
+              Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       LabelLargeText(
-                        'Give',
+                        context.l10n.homeScreenGiveButtonTitle,
                         color: FamilyAppTheme.secondary40,
                       ),
                       BodySmallText(
-                        'Donate to a cause',
+                        context.l10n.homeScreenGivtButtonDescription,
                         color: FamilyAppTheme.secondary40,
                       ),
                     ],
                   ),
-                  SizedBox(width: 24),
+                  const SizedBox(width: 24),
                 ],
               ),
             ],

@@ -165,9 +165,9 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
                   analyticsEvent: AnalyticsEvent(
                     AmplitudeEvents.avatarTabChanged,
                   ),
-                  onPressed: (Set<String> options) {
-                    _cubit.setMode(options);
-                    if (options.first == EditAvatarScreen.options[1]) {
+                  onPressed: (index) {
+                    _cubit.setMode(index);
+                    if (index == 1) {
                       _cubit.manualUnlockBadge(
                         Features.tabsOrderOfFeatures[_tabController.index],
                       );
@@ -469,7 +469,6 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
         ),
         FunTextButton(
           textColor: FamilyAppTheme.error30,
-          rightIconSize: 0,
           onTap: () {
             _cubit.navigateBack(force: true);
             context.pop();

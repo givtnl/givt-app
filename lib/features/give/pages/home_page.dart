@@ -317,7 +317,7 @@ class _HomePageState extends State<HomePage> {
               }
             },
             child: Text(
-              locals.continueKey,
+              locals.buttonContinue,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),

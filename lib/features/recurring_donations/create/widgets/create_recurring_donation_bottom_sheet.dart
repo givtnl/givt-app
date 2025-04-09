@@ -179,7 +179,7 @@ class _CreateRecurringDonationBottomSheetViewState
                             maxLimit: user.amountLimit,
                           );
                       },
-                      child: Text(context.l10n.continueKey),
+                      child: Text(context.l10n.buttonContinue),
                     ),
                   ],
                 ),

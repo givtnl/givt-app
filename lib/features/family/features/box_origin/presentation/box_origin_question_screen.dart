@@ -7,9 +7,11 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/box_origin/bloc/box_origin_cubit.dart';
 import 'package:givt_app/features/family/features/box_origin/presentation/box_origin_selection_page.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -30,14 +32,15 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
     return FunScaffold(
       canPop: false,
       appBar: FunTopAppBar.primary99(
-        title: 'Last step',
+        title: context.l10n.originQuestionTitle, // Last step
       ),
       body: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.topCenter,
             child: TitleMediumText(
-              'Where did you hear about Givt?',
+              context
+                  .l10n.originQuestionSubtitle, // Where did you get your box?
               textAlign: TextAlign.center,
             ),
           ),
@@ -52,7 +55,7 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               FunButton(
-                text: 'Select location',
+                text: context.l10n.originSelectLocation, // Select location
                 onTap: () async {
                   await Navigator.push(
                     context,
@@ -65,8 +68,8 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-              FunButton.secondary(
-                text: 'Skip',
+              FunTextButton(
+                text: context.l10n.buttonSkip,
                 onTap: () {
                   _cubit.onSkipClicked();
                   context.goNamed(FamilyPages.profileSelection.name);

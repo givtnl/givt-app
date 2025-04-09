@@ -17,7 +17,7 @@ class Util {
   static const String defaultPhoneNumber = '060000000';
   static const String defaultFirstName = 'John';
   static const String defaultLastName = 'Doe';
-  static const String defaulAppLanguage = 'en';
+  static const String defaultAppLanguage = 'en';
   static const String defaultTimeZoneId = 'Europe/Amsterdam';
   static const String nativeAppKeysMigration = 'nativeAppKeysMigration';
   static const String defaultUSPhoneNumber = '1231231234';

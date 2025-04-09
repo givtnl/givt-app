@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/features/home_screen/widgets/stats_chip
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,7 +34,7 @@ class StatsContainer extends StatelessWidget {
           ? showLoadingState()
           : gameStats!.totalSecondsPlayed == 0
               ? showEmptyState(context)
-              : showStatsColumn(),
+              : showStatsColumn(context),
     );
   }
 
@@ -47,7 +48,10 @@ class StatsContainer extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const LabelMediumText('Game activity this week'),
+        LabelMediumText(
+          context.l10n.gameStatsActivityThisWeek,
+          textAlign: TextAlign.center,
+        ),
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -58,13 +62,14 @@ class StatsContainer extends StatelessWidget {
                   FamilyPages.reflectIntro.name,
                 );
 
-                AnalyticsHelper.logEvent(eventName: 
-                  AmplitudeEvents.familyHomeScreenStatsContainerClicked,
+                AnalyticsHelper.logEvent(
+                  eventName:
+                      AmplitudeEvents.familyHomeScreenStatsContainerClicked,
                 );
               },
-              child: const StatsChip(
+              child: StatsChip(
                 icon: FontAwesomeIcons.arrowDown,
-                text: 'Play the Gratitude Game',
+                text: context.l10n.gameStatsPlayGame,
               ),
             ),
           ],
@@ -73,14 +78,17 @@ class StatsContainer extends StatelessWidget {
     );
   }
 
-  Widget showStatsColumn() {
+  Widget showStatsColumn(BuildContext context) {
     final minutes = (gameStats!.totalSecondsPlayed / 60).ceil();
     final minutesText = minutes == 1 ? ' min together' : ' mins together';
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const LabelMediumText('Game activity this week'),
+        LabelMediumText(
+          context.l10n.gameStatsActivityThisWeek,
+          textAlign: TextAlign.center,
+        ),
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -91,7 +99,9 @@ class StatsContainer extends StatelessWidget {
             ),
             StatsChip(
               icon: FontAwesomeIcons.solidHeart,
-              text: '${gameStats!.totalActions} deeds',
+              text: context.l10n.gameStatsAmountOfDeeds(
+                gameStats!.totalActions,
+              ),
             ),
           ],
         ),

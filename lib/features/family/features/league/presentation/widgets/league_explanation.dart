@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 
 class LeagueExplanation extends StatelessWidget {
@@ -29,20 +30,20 @@ class LeagueExplanation extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           TitleLargeText(
-            isInGameVersion ? 'League Unlocked!' : 'Welcome to the League!',
+            isInGameVersion ? context.l10n.leagueUnlocked : context.l10n.leagueWelcome,
             textAlign: TextAlign.center,
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: BodyMediumText(
-              'Your XP sets your rank. Grow in generosity and climb to the top!',
+              context.l10n.leagueExplanation,
               textAlign: TextAlign.center,
             ),
           ),
           const Spacer(),
           FunButton(
             onTap: onContinuePressed,
-            text: isInGameVersion ? 'Unlock League' : 'Continue',
+            text: isInGameVersion ? context.l10n.leagueUnlockLeague : context.l10n.buttonContinue,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.leagueExplanationContinueClicked,
             ),
