@@ -28,9 +28,6 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      appBar: FunTopAppBar.white(
-        leading: const GivtBackButtonFlat(),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
