@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class USTerminateAccountBottomSheet extends StatefulWidget {
   const USTerminateAccountBottomSheet({
@@ -80,6 +80,13 @@ class _USTerminateAccountBottomSheetState
                   setState(() {
                     isCheckboxChecked = value ?? false;
                   });
+
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.terminateAccountCheckboxChecked,
+                    eventProperties: {
+                      'isChecked': value ?? false,
+                    },
+                  );
                 },
                 side: const BorderSide(
                   color: AppTheme.inputFieldBorderEnabled,
@@ -90,6 +97,14 @@ class _USTerminateAccountBottomSheetState
                 child: GestureDetector(
                   onTap: () => setState(() {
                     isCheckboxChecked = !isCheckboxChecked;
+
+                    AnalyticsHelper.logEvent(
+                      eventName:
+                          AmplitudeEvents.terminateAccountCheckboxChecked,
+                      eventProperties: {
+                        'isChecked': isCheckboxChecked,
+                      },
+                    );
                   }),
                   child: LabelMediumText(
                     locals.unregisterCheckboxText,
