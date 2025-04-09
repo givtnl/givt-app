@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/looking_good_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
@@ -25,6 +28,9 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      appBar: FunTopAppBar.white(
+        leading: const GivtBackButtonFlat(),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -32,6 +38,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
             const Spacer(),
             _showAvatarCard(
               'Looking good\n${widget.uiModel.userFirstName}!',
+              share: true,
             ),
             const Spacer(),
             FunButton(
@@ -59,6 +66,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
                   );
                 });
               },
+              leftIcon: FontAwesomeIcons.arrowUpFromBracket,
               text: 'Share',
               analyticsEvent:
                   AnalyticsEvent(AmplitudeEvents.shareAvatarClicked),
@@ -96,14 +104,13 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: share ? 4 : 0),
-            child: ClipRRect(
-              child: Image.asset(
-                  'assets/family/images/looking_good_background.png',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topCenter,
-                  width: 300),
+          ClipRRect(
+            child: Image.asset(
+              'assets/family/images/looking_good_background.png',
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+              width: 300,
+              height: 450,
             ),
           ),
           Padding(
