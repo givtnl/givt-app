@@ -30,7 +30,9 @@ class LeagueExplanation extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           TitleLargeText(
-            isInGameVersion ? context.l10n.leagueUnlocked : context.l10n.leagueWelcome,
+            isInGameVersion
+                ? context.l10n.leagueUnlocked
+                : context.l10n.leagueWelcome,
             textAlign: TextAlign.center,
           ),
           Padding(
@@ -43,9 +45,13 @@ class LeagueExplanation extends StatelessWidget {
           const Spacer(),
           FunButton(
             onTap: onContinuePressed,
-            text: isInGameVersion ? context.l10n.leagueUnlockLeague : context.l10n.buttonContinue,
+            text: isInGameVersion
+                ? context.l10n.leagueUnlockLeague
+                : context.l10n.buttonContinue,
             analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.leagueExplanationContinueClicked,
+              isInGameVersion
+                  ? AmplitudeEvents.unlockLeagueClicked
+                  : AmplitudeEvents.leagueExplanationContinueClicked,
             ),
           ),
           const SizedBox(height: 40),
