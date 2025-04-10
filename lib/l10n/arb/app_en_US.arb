@@ -979,5 +979,7 @@
     "tutorialManagingFamilyDescription": "Encourage your heroes by topping up wallets and approving donations.",
     "tutorialTheEndTitle": "Amazing work, superhero!",
     "tutorialTheEndDescription": "I’ll let you take it from here. Head to your next mission and keep making a difference!",
-    "completedKey": "Completed"
+    "completedKey": "Completed",
+    "tutorialIntroductionTitle": "Hey, I’m Captain Generosity",
+    "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'"
 }
