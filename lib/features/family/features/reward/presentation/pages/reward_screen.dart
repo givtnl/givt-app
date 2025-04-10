@@ -69,9 +69,9 @@ class _RewardScreenState extends State<RewardScreen> {
           ),
           const Spacer(),
           FunButton(
-            onTap: () {
-              ConfettiDialog.show(context);
-              Future.delayed(const Duration(milliseconds: 1500), () {
+            onTap: () async {
+              await ConfettiDialog.show(context);
+              await Future.delayed(const Duration(milliseconds: 1501), () {
                 if (!context.mounted) return;
                 if (widget.uiModel.interviewUIModel != null) {
                   _showInterviewPopup(
