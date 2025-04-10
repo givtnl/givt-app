@@ -159,9 +159,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
           NavigationDestination(
             icon: FunTooltip(
               tooltipIndex: 1,
-              title: 'Managing your family',
-              description:
-                  'Encourage your heroes by topping up wallets and approving donations.',
+              title: context.l10n.tutorialManagingFamilyTitle,
+              description: context.l10n.tutorialManagingFamilyDescription,
               labelBottomLeft: '2/6',
               triangleOffset: Offset(-halfPart, 0),
               child: const FaIcon(
@@ -303,9 +302,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   void _showTutorialPopup(BuildContext context) {
     FunModal(
       icon: FunAvatar.captain(isLarge: true),
-      title: 'Hey, I’m Captain Generosity ',
-      subtitle:
-          'I’m here to help your family build gratitude and foster generosity. Let’s get started!',
+      title: context.l10n.tutorialIntroductionTitle,
+      subtitle: context.l10n.tutorialIntroductionDescription,
       buttons: [
         FunButton(
           onTap: () {

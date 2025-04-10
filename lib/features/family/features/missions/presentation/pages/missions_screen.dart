@@ -44,7 +44,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const options = ['To do', 'Completed'];
+    final options = ['To do', context.l10n.completedKey];
     return OverlayTooltipScaffold(
       overlayColor: FamilyAppTheme.primary50.withOpacity(0.5),
       controller: _tooltipController,
@@ -84,9 +84,8 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   _missions(uiModel).length,
                   (index) {
                     final mission = _missions(uiModel)[index];
-                    final title = context.l10n.familyTutorialMissionTitle;
-                    final description =
-                        context.l10n.familyTutorialMissionDescription;
+                    final title = context.l10n.tutorialMissionTitle;
+                    final description = context.l10n.tutorialMissionDescription;
 
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 16),

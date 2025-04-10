@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/widgets/content/givt_banner.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 
@@ -119,9 +120,8 @@ class _MissionCompletedBannerDialogState
   Widget _tooltip() {
     return FunTooltip(
       tooltipIndex: 0,
-      title: 'Amazing work, superhero!',
-      description:
-          'I’ll let you take it from here. Head to your next mission and keep making a difference!',
+      title: context.l10n.tutorialTheEndTitle,
+      description: context.l10n.tutorialTheEndDescription,
       labelBottomLeft: '6/6',
       tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
       buttonIcon: const FaIcon(
@@ -140,7 +140,7 @@ class _MissionCompletedBannerDialogState
   GivtBanner _banner() {
     return GivtBanner(
       badgeImage: 'assets/family/images/reward_badge.svg',
-      title: 'Completed',
+      title: context.l10n.completedKey,
       content: widget.missionName,
     );
   }
