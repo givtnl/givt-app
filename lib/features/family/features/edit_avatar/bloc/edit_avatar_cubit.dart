@@ -190,30 +190,29 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   }
 
   List<EditAvatarItemUIModel> hairItems() {
-    final list = List<EditAvatarItemUIModel>.generate(
-      3,
-      (index) => UnlockedItem(
-        type: 'Hair',
-        index: index,
-        isSelected: index == _customAvatar.hairIndex,
-      ),
-    );
+    final list = <EditAvatarItemUIModel>[];
+    const type = 'Hair';
+
     if (shouldShowEasterEgg()) {
       list.addAll([
         UnlockedItem(
-          type: 'Hair',
+          type: type,
           index: 666,
           isSelected: 666 == _customAvatar.hairIndex,
           isEasterEgg: true,
-        )
+        ),
       ]);
     }
 
-    // Add locked items
-    list.addAll(List.generate(
-      3,
-      (index) => const LockedItem(),
-    ));
+    list
+      ..addAll(unlockedItemsOfType(type, _customAvatar.hairIndex))
+      // Add locked items
+      ..addAll(
+        List.generate(
+          3,
+          (index) => const LockedItem(),
+        ),
+      );
 
     return list;
   }
@@ -244,57 +243,62 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
 
   List<EditAvatarItemUIModel> maskItems() {
     final list = <EditAvatarItemUIModel>[];
+    const type = 'Mask';
 
     if (shouldShowEasterEgg()) {
-      list.addAll(List.generate(
-        5,
-        (index) => UnlockedItem(
-          type: 'Mask',
-          index: 666 + index,
-          isSelected: 666 + index == _customAvatar.maskIndex,
-          isEasterEgg: true,
+      list.addAll(
+        List.generate(
+          5,
+          (index) => UnlockedItem(
+            type: type,
+            index: 666 + index,
+            isSelected: 666 + index == _customAvatar.maskIndex,
+            isEasterEgg: true,
+          ),
         ),
-      ));
+      );
     }
 
     list
-      ..addAll(unlockedItemsOfType('Mask', _customAvatar.maskIndex))
+      ..addAll(unlockedItemsOfType(type, _customAvatar.maskIndex))
       // Add locked items
-      ..addAll(List.generate(
-        3,
-        (index) => const LockedItem(),
-      ));
+      ..addAll(
+        List.generate(
+          3,
+          (index) => const LockedItem(),
+        ),
+      );
 
     return list;
   }
 
   List<EditAvatarItemUIModel> suitItems() {
-    final list = List<EditAvatarItemUIModel>.generate(
-      2,
-      (index) => UnlockedItem(
-        type: 'Suit',
-        index: index + 1,
-        isSelected: index + 1 == _customAvatar.suitIndex,
-      ),
-    );
+    final list = <EditAvatarItemUIModel>[];
+    const type = 'Suit';
 
     if (shouldShowEasterEgg()) {
-      list.addAll(List.generate(
-        2,
-        (index) => UnlockedItem(
-          type: 'Suit',
-          index: 666 + index,
-          isSelected: 666 + index == _customAvatar.suitIndex,
-          isEasterEgg: true,
+      list.addAll(
+        List.generate(
+          2,
+          (index) => UnlockedItem(
+            type: type,
+            index: 666 + index,
+            isSelected: 666 + index == _customAvatar.suitIndex,
+            isEasterEgg: true,
+          ),
         ),
-      ));
+      );
     }
 
-    // Add locked items
-    list.addAll(List.generate(
-      4,
-      (index) => const LockedItem(),
-    ));
+    list
+      ..addAll(unlockedItemsOfType(type, _customAvatar.suitIndex))
+      // Add locked items
+      ..addAll(
+        List.generate(
+          4,
+          (index) => const LockedItem(),
+        ),
+      );
 
     return list;
   }
