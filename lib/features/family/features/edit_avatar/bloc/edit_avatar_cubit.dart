@@ -243,14 +243,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   }
 
   List<EditAvatarItemUIModel> maskItems() {
-    final list = List<EditAvatarItemUIModel>.generate(
-      3,
-      (index) => UnlockedItem(
-        type: 'Mask',
-        index: index,
-        isSelected: index == _customAvatar.maskIndex,
-      ),
-    );
+    final list = <EditAvatarItemUIModel>[];
 
     if (shouldShowEasterEgg()) {
       list.addAll(List.generate(
