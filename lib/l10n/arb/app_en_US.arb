@@ -958,8 +958,8 @@
     "missionsTitle": "Missions available",
     "missionsNoMissions": "You don't have any missions currently",
     "missionsNoCompletedMissions": "You haven't completed any missions yet",
-    "familyTutorialMissionTitle": "Tap to begin mission!",
-    "familyTutorialMissionDescription": "Track your progress and complete your missions here.",
+    "tutorialMissionTitle": "Tap to begin mission!",
+    "tutorialMissionDescription": "Track your progress and complete your missions here.",
     "missionsCardNoMissionsTitle": "No missions available",
     "missionsCardNoMissionsDescription": "Your work here is done",
     "missionsCardTitle": "",
@@ -970,5 +970,14 @@
     "progressbarPlayed": "played",
     "gameStatsActivityThisWeek": "Game activity this week",
     "gameStatsPlayGame": "Play the Gratitude Game",
-    "gameStatsAmountOfDeeds": "{amount} deeds"
+    "gameStatsAmountOfDeeds": "{amount} deeds",
+    "homescreenOverlayDiscoverTitle": "Discover your reward!",
+    "homescreenOverlayGiveTitle": "Who would like to give?",
+    "tutorialFamilyExplanationTitle": "Here’s your super family!",
+    "tutorialFamilyExplanationDescription": "Work together to find causes to support and spread kindness.",
+    "tutorialManagingFamilyTitle": "Managing your family",
+    "tutorialManagingFamilyDescription": "Encourage your heroes by topping up wallets and approving donations.",
+    "tutorialTheEndTitle": "Amazing work, superhero!",
+    "tutorialTheEndDescription": "I’ll let you take it from here. Head to your next mission and keep making a difference!",
+    "completedKey": "Completed"
 }
