@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -85,7 +86,7 @@ class FamilyPermitBiometricPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              FunButton.secondary(
+              FunTextButton(
                 text: context.l10n.permitBiometricSkip,
                 onTap: () {
                   context.read<PermitBiometricCubit>().denyBiometric();

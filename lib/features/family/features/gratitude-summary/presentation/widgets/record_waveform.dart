@@ -25,13 +25,13 @@ class _RecordWaveformState extends State<RecordWaveform> {
       child: AnimatedWaveList(
         barBuilder: (Animation<double> animation, Amplitude amplitude) =>
             WaveFormBar(
-                      maxHeight: 3,
-                      animation: animation,
-                      amplitude: amplitude,
-                      color: widget.showRedVersion
+          maxHeight: 8,
+          animation: animation,
+          amplitude: amplitude,
+          color: widget.showRedVersion
               ? FamilyAppTheme.error60
               : FamilyAppTheme.primary70,
-                    ),
+        ),
         stream: _recordCubit.getAmplitudeStream(),
       ),
     );

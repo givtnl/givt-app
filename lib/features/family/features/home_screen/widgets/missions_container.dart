@@ -5,8 +5,8 @@ import 'package:givt_app/features/family/features/reflect/domain/models/mission_
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:go_router/go_router.dart';
 
 class MissionsContainer extends StatelessWidget {
@@ -29,18 +29,23 @@ class MissionsContainer extends StatelessWidget {
   }
 
   FunMissionCard missionsAvailableCard(BuildContext context) {
+    final missionAmount = missionStats!.missionsToBeCompleted;
+
     return FunMissionCard(
       uiModel: FunMissionCardUIModel(
-        title: '${missionsText.capitalize()} available',
-        description:
-            '${missionStats!.missionsToBeCompleted} $missionsText to be completed',
+        title: missionAmount == 1
+            ? context.l10n.missionsCardTitleSingular
+            : context.l10n.missionsCardTitlePlural,
+        description: missionAmount == 1
+            ? context.l10n.missionsCardDescriptionSingular
+            : context.l10n.missionsCardDescriptionPlural(missionAmount),
         headerIcon: FunAvatar.captain(),
       ),
       onTap: () => context.pushNamed(FamilyPages.missions.name),
       analyticsEvent: AnalyticsEvent(
         AmplitudeEvents.funMissionCardClicked,
         parameters: {
-          'missionsToBeCompleted': missionStats!.missionsToBeCompleted,
+          'missionsToBeCompleted': missionAmount,
         },
       ),
     );
@@ -49,8 +54,8 @@ class MissionsContainer extends StatelessWidget {
   FunMissionCard noMissionCard(BuildContext context) {
     return FunMissionCard(
       uiModel: FunMissionCardUIModel(
-        title: 'No $missionsText available',
-        description: 'Your work here is done',
+        title: context.l10n.missionsCardNoMissionsTitle,
+        description: context.l10n.missionsCardNoMissionsDescription,
         headerIcon: FunAvatar.captain(),
       ),
       onTap: () => context.pushNamed(FamilyPages.missions.name),

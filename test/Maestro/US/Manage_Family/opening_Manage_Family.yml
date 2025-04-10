@@ -1,0 +1,22 @@
+appId: net.givtapp.ios.test
+name: Opening the Manage Family page
+
+---
+
+- tapOn: 
+    label: Tap on Family
+    text: ".*Tab 2 of 4"
+- runFlow: ../login_AuthNeeded.yml
+- assertVisible: "Manage Family"
+- assertVisible:
+    label: Family Goal tile is visible
+    id: "icon-FontAwesomeSolid-61476"
+- assertVisible: 
+    label: Parents tile is visible
+    text: ${PARENT_FIRSTNAME}
+- assertVisible: 
+    label: Kids tile is visible
+    text: "${KIDSNAME}.*"
+- assertVisible: 
+    label: All givts subject is visible
+    text: "All givts"

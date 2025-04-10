@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/giving_flow/collectgroup_detai
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -126,33 +127,13 @@ class GiveBottomSheet extends StatelessWidget {
                 ],
               ),
               SizedBox(height: size.width * 0.05),
-              ElevatedButton(
-                onPressed: () {
+              FunTextButton(
+                onTap: () {
                   context.pop();
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.cancelGive,
-                  );
                 },
-                style: TextButton.styleFrom(
-                  elevation: 0,
-                  backgroundColor: Colors.transparent,
-                  minimumSize: const Size(double.maxFinite, 60),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      semanticLabel: 'xmark',
-                      FontAwesomeIcons.xmark,
-                      size: 24,
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Cancel',
-                      style: Theme.of(context).textTheme.labelLarge,
-                    ),
-                  ],
+                text: 'Cancel',
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.cancelGive,
                 ),
               ),
             ],

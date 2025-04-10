@@ -1,0 +1,23 @@
+appId: net.givtapp.ios.test
+name: Entering the creditcard details because they are not known yet
+
+---
+
+- tapOn: "Name on card"
+- inputText:
+    label: "Enter the Name on card"
+    text: "TextCard"
+- tapOn: "Card number"
+- inputText:
+    label: "Enter the creditcard number"
+    text: "4242424242424242"
+- inputText:
+    label: "Enter mm/yy"
+    text: "01/35"
+- inputText:
+    label: "Enter the CVC"
+    text: "123"
+- tapOn: "Set up"
+- assertVisible: 
+    text: ".*Hold on.*"
+    optional: true

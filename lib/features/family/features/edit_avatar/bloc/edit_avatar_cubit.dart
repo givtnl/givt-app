@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
@@ -13,6 +14,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
+import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -146,6 +148,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           customAvatarUIModel:
               _isInCustomAvatarMode ? _customAvatar.toUIModel() : null,
           userFirstName: _profile!.firstName,
+          possessiveFirstName: _profile!.possessiveName,
         ),
       ),
     );
@@ -201,6 +204,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Hair',
           index: 666,
           isSelected: 666 == _customAvatar.hairIndex,
+          isEasterEgg: true,
         )
       ]);
     }
@@ -231,6 +235,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Mask',
           index: 666 + index,
           isSelected: 666 + index == _customAvatar.maskIndex,
+          isEasterEgg: true,
         ),
       ));
     }
@@ -261,6 +266,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Suit',
           index: 666 + index,
           isSelected: 666 + index == _customAvatar.suitIndex,
+          isEasterEgg: true,
         ),
       ));
     }
@@ -312,8 +318,8 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
 
   bool _defaultAvatarHasntChanged() => _selectedAvatar == _profile!.avatar;
 
-  void setMode(Set<String> option) {
-    _customMode = option.first;
+  void setMode(int index) {
+    _customMode = EditAvatarScreen.options[index];
     _emitData();
   }
 
@@ -328,7 +334,21 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     });
   }
 
-  void onUnlockedItemClicked(int index, String type) {
+  void onColorChanged(String type, String? color) {
+    _hasMadeAnyCustomAvatarSelection = true;
+    switch (type) {
+      case 'Hair':
+        _customAvatar = _customAvatar.copyWith(hairColor: color);
+      case 'Mask':
+        _customAvatar = _customAvatar.copyWith(maskColor: color);
+      case 'Suit':
+        _customAvatar = _customAvatar.copyWith(suitColor: color);
+    }
+
+    _emitData();
+  }
+
+  void onUnlockedItemClicked(int index, String type, {Color? color}) {
     _hasMadeAnyCustomAvatarSelection = true;
     switch (type) {
       case 'Body':
@@ -339,6 +359,10 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         _customAvatar = _customAvatar.copyWith(maskIndex: index);
       case 'Suit':
         _customAvatar = _customAvatar.copyWith(suitIndex: index);
+      case 'HairColor':
+        if (color != null) {
+          _customAvatar = _customAvatar.copyWith(hairColor: colorToHex(color));
+        }
     }
 
     _emitData();

@@ -11,6 +11,7 @@ import 'package:givt_app/features/family/features/overview/widgets/allowance_war
 import 'package:givt_app/features/family/features/overview/widgets/children_loading_page.dart';
 import 'package:givt_app/features/family/features/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/add_member_util.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -52,7 +53,7 @@ class FamilyOverviewPage extends StatelessWidget {
             title: state is FamilyOverviewUpdatedState &&
                     !state.hasChildren &&
                     state.isAdultSingle
-                ? 'Set up Family'
+                ? context.l10n.setupFamilyTitle
                 : 'Manage Family',
             actions: [
               if (state is FamilyOverviewUpdatedState &&

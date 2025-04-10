@@ -21,7 +21,6 @@ class FunButton extends StatelessWidget {
     this.isLoading = false,
     this.isPressedDown = false,
     this.leftIcon,
-    this.rightIcon,
     this.leadingImage,
     this.backgroundColor = FamilyAppTheme.primary80,
     this.disabledBackgroundColor = FamilyAppTheme.neutralVariant90,
@@ -47,7 +46,6 @@ class FunButton extends StatelessWidget {
     bool isPressedDown = false,
     FunButtonSize size = FunButtonSize.large,
     IconData? leftIcon,
-    IconData? rightIcon,
     Widget? leadingImage,
     FunButtonBadge? funButtonBadge,
   }) {
@@ -58,7 +56,6 @@ class FunButton extends StatelessWidget {
       isLoading: isLoading,
       isPressedDown: isPressedDown,
       leftIcon: leftIcon,
-      rightIcon: rightIcon,
       leadingImage: leadingImage,
       backgroundColor: FamilyAppTheme.neutral100,
       disabledBackgroundColor: FamilyAppTheme.neutral100,
@@ -77,7 +74,6 @@ class FunButton extends StatelessWidget {
     bool isDisabled = false,
     bool isLoading = false,
     IconData? leftIcon,
-    IconData? rightIcon,
     Widget? leadingImage,
     FunButtonBadge? funButtonBadge,
   }) {
@@ -87,7 +83,6 @@ class FunButton extends StatelessWidget {
       isDisabled: isDisabled,
       isLoading: isLoading,
       leftIcon: leftIcon,
-      rightIcon: rightIcon,
       leadingImage: leadingImage,
       backgroundColor: FamilyAppTheme.neutral100,
       borderColor: AppTheme.secondary80,
@@ -103,7 +98,6 @@ class FunButton extends StatelessWidget {
     bool isDisabled = false,
     bool isLoading = false,
     IconData? leftIcon,
-    IconData? rightIcon,
     Widget? leadingImage,
     FunButtonBadge? funButtonBadge,
   }) {
@@ -113,7 +107,6 @@ class FunButton extends StatelessWidget {
       isDisabled: isDisabled,
       isLoading: isLoading,
       leftIcon: leftIcon,
-      rightIcon: rightIcon,
       leadingImage: leadingImage,
       backgroundColor: FamilyAppTheme.error80,
       borderColor: AppTheme.error30,
@@ -134,7 +127,6 @@ class FunButton extends StatelessWidget {
   final String text;
   final bool isLoading;
   final IconData? leftIcon;
-  final IconData? rightIcon;
   final Widget? leadingImage;
   final Color backgroundColor;
   final Color disabledBackgroundColor;
@@ -225,17 +217,6 @@ class FunButton extends StatelessWidget {
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             color: isDisabled ? FamilyAppTheme.neutralVariant60 : textColor,
-          ),
-        if (rightIcon != null)
-          Padding(
-            padding: const EdgeInsets.only(left: 12),
-            child: FaIcon(
-              semanticLabel:
-                  'icon-${rightIcon?.fontFamily}-${rightIcon?.codePoint}',
-              rightIcon,
-              size: size.isLarge ? 24 : 20,
-              color: isDisabled ? FamilyAppTheme.neutralVariant60 : borderColor,
-            ),
           ),
         if (funButtonBadge != null)
           UnlockedBadgeWidget(

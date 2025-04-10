@@ -189,7 +189,7 @@ class _CreateFamilyGoalAmountPageState
                           bottom: 16,
                         ),
                         child: CustomElevatedButton(
-                          title: context.l10n.continueKey,
+                          title: context.l10n.buttonContinue,
                           onPressed: parsedAmount > 0
                               ? () {
                                   context.read<CreateFamilyGoalCubit>()

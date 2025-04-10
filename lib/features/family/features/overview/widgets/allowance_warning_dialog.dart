@@ -67,7 +67,7 @@ class AllowancesWarningDialog extends StatelessWidget {
               ),
             ),
             child: Text(
-              'Continue',
+              context.l10n.buttonContinue,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: AppTheme.givtGreen40,
                     fontFamily: 'Poppins',

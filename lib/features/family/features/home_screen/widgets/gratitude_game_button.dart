@@ -3,6 +3,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 
@@ -13,6 +14,7 @@ class GratitudeGameButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return ActionContainer(
       analyticsEvent: AnalyticsEvent(
         AmplitudeEvents.familyHomeScreenGratitudeGameButtonClicked,
@@ -46,24 +48,25 @@ class GratitudeGameButton extends StatelessWidget {
                   const Spacer(),
                 ],
               ),
-              const Row(
+              Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       LabelLargeText(
-                        'Family Game',
+                        l10n.homeScreenGratitudeGameButtonTitle,
                         color: FamilyAppTheme.highlight40,
                       ),
                       BodySmallText(
-                        'Play now!',
+                        l10n.homeScreenGratitudeGameButtonSubtitle,
                         color: FamilyAppTheme.highlight40,
+                        maxLines: 1,
                       ),
                     ],
                   ),
-                  SizedBox(width: 24),
+                  const SizedBox(width: 24),
                 ],
               ),
             ],

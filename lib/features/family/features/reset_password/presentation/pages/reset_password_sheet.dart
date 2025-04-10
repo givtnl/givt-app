@@ -136,7 +136,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
             textAlign: TextAlign.center,
           ),
           primaryButton: FunButton(
-            text: 'Done',
+            text: context.l10n.buttonDone,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.okClicked,
             ),

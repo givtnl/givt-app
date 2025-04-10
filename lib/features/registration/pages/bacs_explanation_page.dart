@@ -107,7 +107,7 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
                 style: ElevatedButton.styleFrom(
                   disabledBackgroundColor: Colors.grey,
                 ),
-                child: Text(locals.continueKey),
+                child: Text(locals.buttonContinue),
               ),
             ),
           ],

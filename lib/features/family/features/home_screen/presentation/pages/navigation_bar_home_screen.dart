@@ -29,6 +29,7 @@ import 'package:givt_app/features/family/shared/widgets/loading/full_screen_load
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -151,9 +152,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
         onDestinationSelected: (int index) =>
             _onDestinationSelected(index, uiModel: uiModel),
         destinations: [
-          const NavigationDestination(
-            icon: FaIcon(FontAwesomeIcons.house),
-            label: 'Home',
+          NavigationDestination(
+            icon: const FaIcon(FontAwesomeIcons.house),
+            label: context.l10n.familyNavigationBarHome,
           ),
           NavigationDestination(
             icon: FunTooltip(
@@ -167,15 +168,15 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
                 FontAwesomeIcons.mask,
               ),
             ),
-            label: 'Family',
+            label: context.l10n.familyNavigationBarFamily,
           ),
-          const NavigationDestination(
-            icon: FaIcon(FontAwesomeIcons.solidCalendar),
-            label: 'Memories',
+          NavigationDestination(
+            icon: const FaIcon(FontAwesomeIcons.solidCalendar),
+            label: context.l10n.familyNavigationBarMemories,
           ),
-          const NavigationDestination(
-            icon: FaIcon(FontAwesomeIcons.medal),
-            label: 'League',
+          NavigationDestination(
+            icon: const FaIcon(FontAwesomeIcons.medal),
+            label: context.l10n.familyNavigationBarLeague,
           ),
         ],
         analyticsEvent: (int index) => _analyticsEvents[index],
@@ -318,7 +319,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
           onTap: () {
             context.pop();
           },
-          text: 'Skip',
+          text: context.l10n.buttonSkip,
           analyticsEvent: AnalyticsEvent(AmplitudeEvents.tutorialSkipClicked),
         ),
       ],

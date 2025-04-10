@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -66,7 +67,7 @@ class _SummaryPageState extends State<SummaryPage> {
           ),
         FunButton(
           isDisabled: widget.uiModel.audioLink != null && !_hasClickedAudio,
-          text: 'Done',
+          text: context.l10n.buttonDone,
           onTap: () => context.pop(),
           analyticsEvent: AnalyticsEvent(
             AmplitudeEvents.afterGameSummaryDoneClicked,

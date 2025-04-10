@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/features/reflect/domain/reflect_and_sha
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:lottie/lottie.dart';
@@ -503,7 +504,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                               ),
                             );
                           },
-                          text: 'Continue',
+                          text: context.l10n.buttonContinue,
                           analyticsEvent: AnalyticsEvent(
                             AmplitudeEvents
                                 .introBedtimeAnimationContinuePressed,
