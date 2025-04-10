@@ -182,6 +182,7 @@ enum AmplitudeEvents {
   homeSettingsClicked('home_settings_clicked'),
   leaguePlayGameClicked('league_play_game_clicked'),
   leagueExplanationContinueClicked('league_explanation_continue_clicked'),
+  unlockLeagueClicked('unlock_league_clicked'),
   leagueButtonClicked('league_button_clicked'),
 
   // Change Password
@@ -213,6 +214,7 @@ enum AmplitudeEvents {
   avatarImageSelected('avatar_image_selected'),
   editProfilePictureClicked('edit_profile_picture_clicked'),
   saveAvatarClicked('save_avatar_clicked'),
+  shareAvatarClicked('share_avatar_clicked'),
   rewardAchieved('reward_achieved'),
   goalTrackerTapped('goal_tracker_tapped'),
   goalDismissed('goal_dismissed'),

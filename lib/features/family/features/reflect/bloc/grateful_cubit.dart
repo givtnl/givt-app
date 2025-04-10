@@ -187,15 +187,12 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void resetTabs() {
-    onSelectionChanged({tabsOptions[0]});
+    onSelectionChanged(0);
     emitCustom(const GratefulCustom.scrollToTop());
   }
 
-  void onSelectionChanged(Set<String> set) {
-    if (set.isEmpty || !tabsOptions.contains(set.first)) {
-      return;
-    }
-    tabIndex = set.first == tabsOptions.first ? 0 : 1;
+  void onSelectionChanged(int index) {
+    tabIndex = index;
     _emitData();
   }
 

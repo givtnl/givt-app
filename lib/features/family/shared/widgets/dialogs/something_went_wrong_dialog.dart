@@ -19,7 +19,6 @@ class SomethingWentWrongDialog extends StatefulWidget {
     this.circleColor,
     this.showLoading,
     this.primaryBtnLeftIcon,
-    this.primaryBtnRightIcon,
     this.primaryBtnLeadingImage,
     this.onClickSecondaryBtn,
   });
@@ -31,7 +30,6 @@ class SomethingWentWrongDialog extends StatefulWidget {
   final Color? iconColor;
   final Color? circleColor;
   final IconData? primaryBtnLeftIcon;
-  final IconData? primaryBtnRightIcon;
   final Widget? primaryBtnLeadingImage;
   final bool? showLoading;
   final AmplitudeEvents amplitudeEvent;
@@ -63,7 +61,6 @@ class SomethingWentWrongDialog extends StatefulWidget {
         secondaryBtnText: secondaryBtnText,
         onClickSecondaryBtn: onClickSecondaryBtn,
         primaryBtnLeftIcon: primaryLeftIcon,
-        primaryBtnRightIcon: primaryRightIcon,
         primaryBtnLeadingImage: primaryLeadingImage,
         description: description,
         icon: icon,
@@ -125,7 +122,6 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
                 });
               },
               leftIcon: widget.primaryBtnLeftIcon,
-              rightIcon: widget.primaryBtnRightIcon,
               leadingImage: widget.primaryBtnLeadingImage,
               isLoading: _isLoading,
               analyticsEvent: AnalyticsEvent(

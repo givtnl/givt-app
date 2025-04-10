@@ -3,6 +3,7 @@ import 'package:givt_app/features/family/shared/design/components/content/models
 class LookingGoodUIModel {
   LookingGoodUIModel({
     required this.userFirstName,
+    required this.possessiveFirstName,
     this.avatar,
     this.customAvatarUIModel,
   });
@@ -10,4 +11,5 @@ class LookingGoodUIModel {
   final String? avatar;
   final CustomAvatarUIModel? customAvatarUIModel;
   final String userFirstName;
+  final String possessiveFirstName;
 }

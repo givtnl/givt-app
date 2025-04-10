@@ -52,7 +52,7 @@ class TempUser extends Equatable {
     String address = Util.defaultAddress,
     String city = Util.defaultCity,
     String postalCode = Util.defaultPostCode,
-    String appLanguage = Util.defaulAppLanguage,
+    String appLanguage = Util.defaultAppLanguage,
     String timeZoneId = Util.defaultTimeZoneId,
     String accountNumber = '',
     String sortCode = '',

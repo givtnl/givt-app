@@ -22,7 +22,7 @@ class RegistrationCompletedPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           onPressed: () => context.goNamed(Pages.home.name),
-          label: Text(locals.continueKey),
+          label: Text(locals.buttonContinue),
         ),
       ),
       body: Stack(

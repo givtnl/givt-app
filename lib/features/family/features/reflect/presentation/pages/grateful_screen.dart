@@ -26,6 +26,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/gat
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
@@ -175,20 +176,18 @@ class _GratefulScreenState extends State<GratefulScreen> {
                     ),
                   ),
                 const SizedBox(height: 4),
-                TextButton(
-                  onPressed: () {
+                FunTextButton(
+                  onTap: () {
                     _cubit.onSkip();
-                    unawaited(
-                      AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.skipGenerosActPressed,
-                        eventProperties: {
-                          AnalyticsHelper.firstNameKey:
-                              uiModel.recommendationsUIModel.name,
-                        },
-                      ),
-                    );
                   },
-                  child: const LabelLargeText('Skip this time'),
+                  text: 'Skip this time',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.skipGenerosActPressed,
+                    parameters: {
+                      AnalyticsHelper.firstNameKey:
+                          uiModel.recommendationsUIModel.name,
+                    },
+                  ),
                 ),
               ],
             ),
@@ -368,7 +367,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     FunModal(
       autoClose: const Duration(milliseconds: 1500),
       icon: FunIcon.checkmark(),
-      title: 'Done',
+      title: context.l10n.buttonDone,
       closeAction: () {
         context.pop();
       },

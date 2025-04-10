@@ -24,12 +24,14 @@ class EmailSignupCubit
 
   Country? _currentCountry;
   String _currentEmail = '';
+  String? _language;
 
-  Future<void> init() async {
+  Future<void> init({String? language}) async {
     emitLoading();
 
     _currentCountry = await getStoredCountry();
     _currentEmail = await getEmail();
+    _language = language ?? Util.defaultAppLanguage;
 
     emitData(
       EmailSignupUiModel(
@@ -179,6 +181,7 @@ class EmailSignupCubit
     // Otherwise we create a temp user
     final tempUser = TempUser.prefilled(
       email: _currentEmail,
+      appLanguage: _language!,
       country: _currentCountry!.countryCode,
       timeZoneId: await FlutterTimezone.getLocalTimezone(),
       amountLimit: _currentCountry!.isUS ? 4999 : 499,

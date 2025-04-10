@@ -12,7 +12,7 @@ class ChildOrParentSelector extends StatelessWidget {
   });
 
   final int selectedIndex;
-  final void Function(Set<String>) onPressed;
+  final void Function(int) onPressed;
   final List<String> options;
 
   @override

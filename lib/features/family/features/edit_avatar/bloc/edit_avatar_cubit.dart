@@ -148,6 +148,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           customAvatarUIModel:
               _isInCustomAvatarMode ? _customAvatar.toUIModel() : null,
           userFirstName: _profile!.firstName,
+          possessiveFirstName: _profile!.possessiveName,
         ),
       ),
     );
@@ -203,6 +204,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Hair',
           index: 666,
           isSelected: 666 == _customAvatar.hairIndex,
+          isEasterEgg: true,
         )
       ]);
     }
@@ -257,6 +259,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Mask',
           index: 666 + index,
           isSelected: 666 + index == _customAvatar.maskIndex,
+          isEasterEgg: true,
         ),
       ));
     }
@@ -289,6 +292,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
           type: 'Suit',
           index: 666 + index,
           isSelected: 666 + index == _customAvatar.suitIndex,
+          isEasterEgg: true,
         ),
       ));
     }
@@ -340,8 +344,8 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
 
   bool _defaultAvatarHasntChanged() => _selectedAvatar == _profile!.avatar;
 
-  void setMode(Set<String> option) {
-    _customMode = option.first;
+  void setMode(int index) {
+    _customMode = EditAvatarScreen.options[index];
     _emitData();
   }
 

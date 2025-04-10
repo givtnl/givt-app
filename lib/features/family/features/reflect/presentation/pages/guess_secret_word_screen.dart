@@ -150,7 +150,6 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                     );
                   },
                   text: 'Shuffle roles',
-                  rightIcon: FontAwesomeIcons.arrowRight,
                   analyticsEvent: AnalyticsEvent(
                     AmplitudeEvents.reflectAndShareResultShuffleRolesClicked,
                   ),

@@ -153,7 +153,7 @@ class SignBacsMandatePage extends StatelessWidget {
                         guid: user.guid,
                       ),
                     ),
-                    child: Text(locals.continueKey),
+                    child: Text(locals.buttonContinue),
                   ),
                 ),
               ],
