@@ -124,6 +124,7 @@ void initCubits() {
       () => OrganisationBloc(
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton(() => HistoryCubit(getIt()))
