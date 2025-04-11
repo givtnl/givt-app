@@ -33,7 +33,7 @@ class AuthUtils {
       LoggingInfo.instance.info(
         'Check token request is forced, displaying login bottom sheet.',
       );
-      await _displayLoginBottomSheet(
+      await displayLoginBottomSheet(
         context,
         checkAuthRequest: checkAuthRequest,
       );
@@ -53,7 +53,7 @@ class AuthUtils {
       LoggingInfo.instance.info(
         'Token expired, biometrics not available, displaying login bottom sheet.',
       );
-      await _displayLoginBottomSheet(
+      await displayLoginBottomSheet(
         context,
         checkAuthRequest: checkAuthRequest,
       );
@@ -81,7 +81,7 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      await _displayLoginBottomSheet(
+      await displayLoginBottomSheet(
         context,
         checkAuthRequest: checkAuthRequest,
       );
@@ -92,7 +92,7 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      await _displayLoginBottomSheet(
+      await displayLoginBottomSheet(
         context,
         checkAuthRequest: checkAuthRequest,
       );
@@ -102,7 +102,7 @@ class AuthUtils {
   /// Displays the login bottom sheet.
   /// If the user successfully logs in, the [navigate] callback is called.
   /// If the user cancels the login, nothing happens.
-  static Future<void> _displayLoginBottomSheet(
+  static Future<void> displayLoginBottomSheet(
     BuildContext context, {
     required CheckAuthRequest checkAuthRequest,
   }) async {

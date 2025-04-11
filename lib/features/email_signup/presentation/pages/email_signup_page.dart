@@ -166,7 +166,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               ),
                             if (!isUS) const Spacer(),
                             TitleLargeText(
-                              isUS ? locals.homescreenFamilyWelcome : locals.homescreenLetsGo,
+                              isUS
+                                  ? locals.homescreenFamilyWelcome
+                                  : locals.homescreenLetsGo,
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 4),
@@ -396,9 +398,22 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
 
     // When authenticated we go to the home route
     if (!mounted) return;
-    await context.read<AuthCubit>().authenticate();
+    final didAuthenticate = await context.read<AuthCubit>().authenticate();
 
     if (!mounted) return;
-    context.goNamed(Pages.home.name);
+    if (didAuthenticate) {
+      context.goNamed(Pages.home.name);
+    } else {
+      await AuthUtils.displayLoginBottomSheet(
+        context,
+        checkAuthRequest: CheckAuthRequest(
+          navigate: (context) async {
+            context.goNamed(Pages.home.name);
+          },
+          email: user.email,
+          forceLogin: true,
+        ),
+      );
+    }
   }
 }
