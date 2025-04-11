@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -8,6 +9,7 @@ import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
@@ -48,6 +50,21 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   final CampaignRepository _campaignRepository;
   final SharedPreferences _sharedPreferences;
 
+  String _getFavoritedOrganisationsKey(String userGuid) {
+    return '_favoritedOrganisationsKey_$userGuid';
+  }
+
+  String _getUserGuid() {
+    final sessionString = _sharedPreferences.getString(Session.tag);
+    if (sessionString == null) {
+      return '';
+    }
+    final session = Session.fromJson(
+      jsonDecode(sessionString) as Map<String, dynamic>,
+    );
+    return session.userGUID;
+  }
+
   List<CollectGroup> _applyFavoriteSortingIfNeeded(
       List<CollectGroup> organisations) {
     if (state.sortByFavorites) {
@@ -73,9 +90,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
-      // Fetch favorited organizations from SharedPreferences
+      final userGuid = _getUserGuid();
+      final key = _getFavoritedOrganisationsKey(userGuid);
       final favoritedOrganisations =
-          _sharedPreferences.getStringList(_favoritedOrganisationsKey) ?? [];
+          _sharedPreferences.getStringList(key) ?? [];
 
       var unFiltered = await _collectGroupRepository.getCollectGroupList();
       if (unFiltered.isEmpty) {
@@ -353,10 +371,11 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     AddOrganisationToFavorites event,
     Emitter<OrganisationState> emit,
   ) {
+    final userGuid = _getUserGuid();
+    final key = _getFavoritedOrganisationsKey(userGuid);
     final updatedFavorites = List<String>.from(state.favoritedOrganisations)
       ..add(event.nameSpace);
-    _sharedPreferences.setStringList(
-        _favoritedOrganisationsKey, updatedFavorites);
+    _sharedPreferences.setStringList(key, updatedFavorites);
     emit(state.copyWith(favoritedOrganisations: updatedFavorites));
   }
 
@@ -364,10 +383,11 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     RemoveOrganisationFromFavorites event,
     Emitter<OrganisationState> emit,
   ) {
+    final userGuid = _getUserGuid();
+    final key = _getFavoritedOrganisationsKey(userGuid);
     final updatedFavorites = List<String>.from(state.favoritedOrganisations)
       ..remove(event.nameSpace);
-    _sharedPreferences.setStringList(
-        _favoritedOrganisationsKey, updatedFavorites);
+    _sharedPreferences.setStringList(key, updatedFavorites);
     emit(state.copyWith(favoritedOrganisations: updatedFavorites));
   }
 
