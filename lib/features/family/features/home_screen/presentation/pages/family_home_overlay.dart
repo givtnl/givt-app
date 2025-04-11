@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/shared/design/components/navigation/fun
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 
@@ -74,8 +75,8 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: TitleLargeText(
                       widget.withRewardText
-                          ? 'Discover your reward!'
-                          : 'Who would like to give?',
+                          ? context.l10n.homescreenOverlayDiscoverTitle
+                          : context.l10n.homescreenOverlayGiveTitle,
                       textAlign: TextAlign.center,
                       color: Colors.white,
                       shadows: [
@@ -90,9 +91,9 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
                   const SizedBox(height: 8),
                   FunTooltip(
                     tooltipIndex: 0,
-                    title: 'Here’s your super family!',
+                    title: context.l10n.tutorialFamilyExplanationTitle,
                     description:
-                        'Work together to find causes to support and spread kindness.',
+                        context.l10n.tutorialFamilyExplanationDescription,
                     labelBottomLeft: '1/6',
                     onButtonTap: () {
                       controller.dismiss();
