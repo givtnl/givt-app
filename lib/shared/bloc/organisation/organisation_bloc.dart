@@ -52,6 +52,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
+      // Fetch favorited organizations from SharedPreferences
+      final favoritedOrganisations =
+          _sharedPreferences.getStringList(_favoritedOrganisationsKey) ?? [];
+
       var unFiltered = await _collectGroupRepository.getCollectGroupList();
       if (unFiltered.isEmpty) {
         unFiltered = await _collectGroupRepository.fetchCollectGroupList();
@@ -96,6 +100,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           organisations: organisations,
           filteredOrganisations: organisations,
           selectedCollectGroup: selectedGroup,
+          favoritedOrganisations: favoritedOrganisations,
         ),
       );
       if (event.type == CollectGroupType.none.index) {
