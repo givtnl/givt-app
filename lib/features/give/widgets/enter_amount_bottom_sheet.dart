@@ -53,6 +53,7 @@ class _EnterAmountBottomSheetState extends State<EnterAmountBottomSheet> {
               ),
         ),
         child: ChooseAmount(
+          initialAmount: null,
           country: Country.fromCode(auth.user.country),
           amountLimit: auth.user.amountLimit,
           hasGiven: false,

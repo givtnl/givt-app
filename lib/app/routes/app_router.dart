@@ -75,7 +75,7 @@ class AppRouter {
         name: 'search-for-coin',
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
           listener: (context, state) =>
-          // Temp solution to redirect users to the app as it is (not a specific page)
+              // Temp solution to redirect users to the app as it is (not a specific page)
               _checkAndRedirectAuth(state, context, routerState),
           child: const SplashPage(),
         ),
@@ -321,6 +321,7 @@ class AppRouter {
                       extra['code'] as String,
                       extra['afterGivingRedirection'] as String,
                       auth.user.guid,
+                      amount: extra['amount'] as String? ?? '',
                     ),
                   );
                 }
@@ -482,6 +483,9 @@ class AppRouter {
               getIt(),
             )..add(const RemoteDataSourceSyncRequested()),
             child: HomePage(
+              initialAmount: routerState.uri.queryParameters['amount'] != null
+                  ? double.tryParse(routerState.uri.queryParameters['amount']!)
+                  : null,
               code: routerState.uri.queryParameters['code'] ?? '',
               afterGivingRedirection:
                   routerState.uri.queryParameters['afterGivingRedirection'] ??
@@ -516,6 +520,7 @@ class AppRouter {
     var code = '';
     var navigatingPage = '';
     var afterGivingRedirection = '';
+    var amount = '';
 
     UTMHelper.trackToAnalytics(uri: state.uri);
 
@@ -529,6 +534,10 @@ class AppRouter {
 
     if (state.uri.queryParameters.containsKey('from')) {
       afterGivingRedirection = state.uri.queryParameters['from']!;
+    }
+
+    if (state.uri.queryParameters.containsKey('amount')) {
+      amount = state.uri.queryParameters['amount']!;
     }
 
     /// If user comes from a custome url_scheme
@@ -550,6 +559,10 @@ class AppRouter {
 
     if (navigatingPage.isNotEmpty) {
       params['page'] = navigatingPage;
+    }
+
+    if (amount.isNotEmpty) {
+      params['amount'] = amount;
     }
 
     params['afterGivingRedirection'] = afterGivingRedirection;

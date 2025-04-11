@@ -385,6 +385,34 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         return;
       }
 
+      // Check if amount parameter is present and valid
+      double? firstCollectionAmount;
+      if (event.amount.isNotEmpty) {
+        try {
+          final parsedAmount =
+              double.tryParse(event.amount.replaceAll(',', '.'));
+          if (parsedAmount != null && parsedAmount > 0) {
+            firstCollectionAmount = parsedAmount;
+            LoggingInfo.instance
+                .info('Using amount from QR code: $firstCollectionAmount');
+          }
+        } catch (e) {
+          LoggingInfo.instance
+              .warning('Failed to parse amount from QR code: ${event.amount}');
+        }
+      }
+
+      // Update state with the scanned amount if available
+      if (firstCollectionAmount != null) {
+        emit(
+          state.copyWith(
+            firstCollection: firstCollectionAmount,
+            secondCollection: 0,
+            thirdCollection: 0,
+          ),
+        );
+      }
+
       final organisation = await _getOrganisation(mediumId);
       final transactionList = _createTransationList(
         mediumId: mediumId,
