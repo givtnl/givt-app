@@ -43,8 +43,20 @@ class AuthUtils {
     final auth = context.read<AuthCubit>();
     final isExpired = auth.state.session.isExpired;
     if (!isExpired) {
-      await checkAuthRequest.navigate(context);
-      return;
+      final didTokenRefresh = await context.read<AuthCubit>().refreshSession();
+      if (!context.mounted) {
+        return;
+      }
+      if (didTokenRefresh) {
+        await checkAuthRequest.navigate(
+          context,
+        );
+      } else {
+        await _displayLoginBottomSheet(
+          context,
+          checkAuthRequest: checkAuthRequest,
+        );
+      }
     }
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
       if (!context.mounted) {
@@ -67,13 +79,20 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      await context.read<AuthCubit>().refreshSession();
+      final didTokenRefresh = await context.read<AuthCubit>().refreshSession();
       if (!context.mounted) {
         return;
       }
-      await checkAuthRequest.navigate(
-        context,
-      );
+      if (didTokenRefresh) {
+        await checkAuthRequest.navigate(
+          context,
+        );
+      } else {
+        await _displayLoginBottomSheet(
+          context,
+          checkAuthRequest: checkAuthRequest,
+        );
+      }
     } on PlatformException catch (e) {
       LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
