@@ -483,10 +483,9 @@ class AppRouter {
               getIt(),
             )..add(const RemoteDataSourceSyncRequested()),
             child: HomePage(
-              initialAmount: double.tryParse(
-                    routerState.uri.queryParameters['amount'].toString(),
-                  ) ??
-                  null,
+              initialAmount: routerState.uri.queryParameters['amount'] != null
+                  ? double.tryParse(routerState.uri.queryParameters['amount']!)
+                  : null,
               code: routerState.uri.queryParameters['code'] ?? '',
               afterGivingRedirection:
                   routerState.uri.queryParameters['afterGivingRedirection'] ??
