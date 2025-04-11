@@ -31,6 +31,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
+    required this.initialAmount,
     required this.code,
     required this.afterGivingRedirection,
     required this.navigateTo,
@@ -38,6 +39,7 @@ class HomePage extends StatefulWidget {
     super.key,
   });
 
+  final double? initialAmount;
   final String code;
   final String navigateTo;
   final String afterGivingRedirection;
@@ -117,8 +119,10 @@ class _HomePageState extends State<HomePage> {
             start: 30,
           ),
           child: IconButton(
-            icon: const Icon(Icons.menu,
-            semanticLabel: 'homeMenu',),
+            icon: const Icon(
+              Icons.menu,
+              semanticLabel: 'homeMenu',
+            ),
             onPressed: () => _key.currentState?.openDrawer(),
           ),
         ),
@@ -214,6 +218,7 @@ class _HomePageState extends State<HomePage> {
         ],
         child: SafeArea(
           child: _HomePageView(
+            initialAmount: widget.initialAmount,
             given: widget.given,
             code: widget.code,
             afterGivingRedirection: widget.afterGivingRedirection,
@@ -331,12 +336,14 @@ class _HomePageState extends State<HomePage> {
 
 class _HomePageView extends StatefulWidget {
   const _HomePageView({
+    required this.initialAmount,
     required this.onPageChanged,
     required this.given,
     required this.afterGivingRedirection,
     required this.code,
   });
 
+  final double? initialAmount;
   final bool given;
   final String code;
   final String afterGivingRedirection;
@@ -369,6 +376,7 @@ class _HomePageViewState extends State<_HomePageView> {
             onPageChanged: onPageChanged,
             children: [
               ChooseAmount(
+                initialAmount: widget.initialAmount,
                 country: Country.fromCode(auth.user.country),
                 amountLimit: auth.user.amountLimit,
                 hasGiven: widget.given,

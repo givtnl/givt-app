@@ -18,6 +18,7 @@ typedef ChooseAmountNextCallback = void Function(
 
 class ChooseAmount extends StatefulWidget {
   const ChooseAmount({
+    required this.initialAmount,
     required this.amountLimit,
     required this.onAmountChanged,
     required this.country,
@@ -28,6 +29,7 @@ class ChooseAmount extends StatefulWidget {
     super.key,
   });
 
+  final double? initialAmount;
   final int amountLimit;
   final Country country;
   final bool hasGiven;
@@ -43,11 +45,7 @@ class ChooseAmount extends StatefulWidget {
 class _ChooseAmountState extends State<ChooseAmount> {
   final _formKey = GlobalKey<FormState>();
   List<bool> collectionFields = [true, false, false];
-  final List<TextEditingController> controllers = [
-    TextEditingController(text: '0'),
-    TextEditingController(text: '0'),
-    TextEditingController(text: '0'),
-  ];
+  late final List<TextEditingController> controllers;
 
   final List<FocusNode> focusNodes = [
     FocusNode(),
@@ -60,6 +58,30 @@ class _ChooseAmountState extends State<ChooseAmount> {
 
   String _comma = ',';
   final String _zero = '0';
+
+  @override
+  void initState() {
+    super.initState();
+    String initialAmountText = '0';
+    
+    if (widget.initialAmount != null) {
+      // Format the initial amount to either be a whole number or have exactly 2 digits after comma
+      double amount = widget.initialAmount!;
+      if (amount == amount.roundToDouble()) {
+        // It's a whole number, don't add decimal part
+        initialAmountText = amount.toInt().toString();
+      } else {
+        // Format with exactly 2 decimal places
+        initialAmountText = amount.toStringAsFixed(2).replaceAll('.', _comma);
+      }
+    }
+    
+    controllers = [
+      TextEditingController(text: initialAmountText),
+      TextEditingController(text: '0'),
+      TextEditingController(text: '0'),
+    ];
+  }
 
   @override
   void dispose() {
