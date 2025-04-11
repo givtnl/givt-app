@@ -52,7 +52,7 @@ class AuthUtils {
           context,
         );
       } else {
-        await _displayLoginBottomSheet(
+        await displayLoginBottomSheet(
           context,
           checkAuthRequest: checkAuthRequest,
         );
@@ -88,7 +88,7 @@ class AuthUtils {
           context,
         );
       } else {
-        await _displayLoginBottomSheet(
+        await displayLoginBottomSheet(
           context,
           checkAuthRequest: checkAuthRequest,
         );
