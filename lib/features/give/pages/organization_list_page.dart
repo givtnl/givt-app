@@ -112,15 +112,38 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                 _buildFilterType(bloc, locals),
                 Padding(
                   padding: const EdgeInsets.all(8),
-                  child: CupertinoSearchTextField(
-                    autocorrect: false,
-                    focusNode: focusNode,
-                    onChanged: (value) => context
-                        .read<OrganisationBloc>()
-                        .add(OrganisationFilterQueryChanged(value)),
-                    placeholder: locals.searchHere,
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: const Icon(Icons.close),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CupertinoSearchTextField(
+                          autocorrect: false,
+                          focusNode: focusNode,
+                          onChanged: (value) => context
+                              .read<OrganisationBloc>()
+                              .add(OrganisationFilterQueryChanged(value)),
+                          placeholder: locals.searchHere,
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon: const Icon(Icons.close),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        icon: Icon(
+                          state.sortByFavorites
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color:
+                              state.sortByFavorites ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: () {
+                          context.read<OrganisationBloc>().add(
+                                OrganisationSortByFavoritesToggled(
+                                  !state.sortByFavorites,
+                                ),
+                              );
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 if (state.status == OrganisationStatus.filtered)

@@ -75,3 +75,12 @@ class RemoveOrganisationFromFavorites extends OrganisationEvent {
   @override
   List<Object> get props => [nameSpace];
 }
+
+class OrganisationSortByFavoritesToggled extends OrganisationEvent {
+  const OrganisationSortByFavoritesToggled(this.sortByFavorites);
+
+  final bool sortByFavorites;
+
+  @override
+  List<Object> get props => [sortByFavorites];
+}

@@ -40,11 +40,32 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
     on<AddOrganisationToFavorites>(_onAddOrganisationToFavorites);
     on<RemoveOrganisationFromFavorites>(_onRemoveOrganisationFromFavorites);
+    on<OrganisationSortByFavoritesToggled>(
+        _onOrganisationSortByFavoritesToggled);
   }
 
   final CollectGroupRepository _collectGroupRepository;
   final CampaignRepository _campaignRepository;
   final SharedPreferences _sharedPreferences;
+
+  List<CollectGroup> _applyFavoriteSortingIfNeeded(
+      List<CollectGroup> organisations) {
+    if (state.sortByFavorites) {
+      organisations.sort((CollectGroup a, CollectGroup b) {
+        final aIsFavorited = state.favoritedOrganisations.contains(a.nameSpace);
+        final bIsFavorited = state.favoritedOrganisations.contains(b.nameSpace);
+        if (aIsFavorited && !bIsFavorited) return -1;
+        if (!aIsFavorited && bIsFavorited) return 1;
+        return a.orgName.compareTo(b.orgName);
+      });
+    } else {
+      // sort by name if not sorting by favorites
+      organisations.sort((CollectGroup a, CollectGroup b) {
+        return a.orgName.compareTo(b.orgName);
+      });
+    }
+    return organisations;
+  }
 
   FutureOr<void> _onOrganisationFetch(
     OrganisationFetch event,
@@ -183,7 +204,8 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         emit(
           state.copyWith(
             status: OrganisationStatus.filtered,
-            filteredOrganisations: typeFilteredOrgs,
+            filteredOrganisations:
+                _applyFavoriteSortingIfNeeded(typeFilteredOrgs),
             previousSearchQuery: event.query,
           ),
         );
@@ -203,7 +225,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         emit(
           state.copyWith(
             status: OrganisationStatus.filtered,
-            filteredOrganisations: exactMatches,
+            filteredOrganisations: _applyFavoriteSortingIfNeeded(exactMatches),
             previousSearchQuery: event.query,
           ),
         );
@@ -232,7 +254,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
-          filteredOrganisations: fuzzyMatches,
+          filteredOrganisations: _applyFavoriteSortingIfNeeded(fuzzyMatches),
           previousSearchQuery: event.query,
         ),
       );
@@ -253,6 +275,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         ? CollectGroupType.none.index
         : event.type;
 
+    _handleTypeChange(newSelectedType, emit);
+  }
+
+  void _handleTypeChange(int newSelectedType, Emitter<OrganisationState> emit) {
     // Get all organizations or just those of the selected type
     var orgs = state.organisations;
     if (newSelectedType != CollectGroupType.none.index) {
@@ -298,7 +324,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     emit(
       state.copyWith(
         selectedType: newSelectedType,
-        filteredOrganisations: orgs,
+        filteredOrganisations: _applyFavoriteSortingIfNeeded(orgs),
       ),
     );
   }
@@ -329,7 +355,8 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) {
     final updatedFavorites = List<String>.from(state.favoritedOrganisations)
       ..add(event.nameSpace);
-    _sharedPreferences.setStringList(_favoritedOrganisationsKey, updatedFavorites);
+    _sharedPreferences.setStringList(
+        _favoritedOrganisationsKey, updatedFavorites);
     emit(state.copyWith(favoritedOrganisations: updatedFavorites));
   }
 
@@ -339,8 +366,20 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) {
     final updatedFavorites = List<String>.from(state.favoritedOrganisations)
       ..remove(event.nameSpace);
-    _sharedPreferences.setStringList(_favoritedOrganisationsKey, updatedFavorites);
+    _sharedPreferences.setStringList(
+        _favoritedOrganisationsKey, updatedFavorites);
     emit(state.copyWith(favoritedOrganisations: updatedFavorites));
+  }
+
+  FutureOr<void> _onOrganisationSortByFavoritesToggled(
+    OrganisationSortByFavoritesToggled event,
+    Emitter<OrganisationState> emit,
+  ) {
+    emit(state.copyWith(sortByFavorites: event.sortByFavorites));
+    _handleTypeChange(
+      state.selectedType,
+      emit,
+    );
   }
 
   Future<AccountType> _getAccountType(Country country) async {
