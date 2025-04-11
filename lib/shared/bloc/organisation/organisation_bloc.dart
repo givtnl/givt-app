@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
@@ -166,6 +167,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     OrganisationFetchForSelection event,
     Emitter<OrganisationState> emit,
   ) async {
+    final userGuid = _getUserGuid();
+    final key = _getFavoritedOrganisationsKey(userGuid);
+    final favoritedOrganisations = _sharedPreferences.getStringList(key) ?? [];
+
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
       final unFiltered = await _collectGroupRepository.getCollectGroupList();
@@ -180,6 +185,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           status: OrganisationStatus.filtered,
           organisations: organisations,
           filteredOrganisations: organisations,
+          favoritedOrganisations: favoritedOrganisations,
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
