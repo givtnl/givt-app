@@ -15,6 +15,7 @@ class OrganisationState extends Equatable {
     this.selectedCollectGroup = const CollectGroup.empty(),
     this.status = OrganisationStatus.initial,
     this.previousSearchQuery = '',
+    this.favoritedOrganisations = const [],
   });
 
   final List<CollectGroup> organisations;
@@ -23,6 +24,7 @@ class OrganisationState extends Equatable {
   final String previousSearchQuery;
   final CollectGroup selectedCollectGroup;
   final OrganisationStatus status;
+  final List<String> favoritedOrganisations;
 
   OrganisationState copyWith({
     List<CollectGroup>? organisations,
@@ -31,6 +33,7 @@ class OrganisationState extends Equatable {
     OrganisationStatus? status,
     CollectGroup? selectedCollectGroup,
     String? previousSearchQuery,
+    List<String>? favoritedOrganisations,
   }) {
     return OrganisationState(
       organisations: organisations ?? this.organisations,
@@ -40,6 +43,8 @@ class OrganisationState extends Equatable {
       status: status ?? this.status,
       selectedCollectGroup: selectedCollectGroup ?? this.selectedCollectGroup,
       previousSearchQuery: previousSearchQuery ?? this.previousSearchQuery,
+      favoritedOrganisations:
+          favoritedOrganisations ?? this.favoritedOrganisations,
     );
   }
 
@@ -51,5 +56,6 @@ class OrganisationState extends Equatable {
         status,
         selectedCollectGroup,
         previousSearchQuery,
+        favoritedOrganisations,
       ];
 }

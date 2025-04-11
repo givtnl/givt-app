@@ -75,7 +75,7 @@ class AppRouter {
         name: 'search-for-coin',
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
           listener: (context, state) =>
-          // Temp solution to redirect users to the app as it is (not a specific page)
+              // Temp solution to redirect users to the app as it is (not a specific page)
               _checkAndRedirectAuth(state, context, routerState),
           child: const SplashPage(),
         ),
@@ -373,6 +373,7 @@ class AppRouter {
                         create: (_) => OrganisationBloc(
                           getIt(),
                           getIt(),
+                          getIt(),
                         )..add(
                             OrganisationFetch(
                               Country.fromCode(user.country),
@@ -425,6 +426,7 @@ class AppRouter {
                   ),
                   BlocProvider(
                     create: (_) => OrganisationBloc(
+                      getIt(),
                       getIt(),
                       getIt(),
                     )..add(

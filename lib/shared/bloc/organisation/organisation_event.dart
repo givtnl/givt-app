@@ -57,3 +57,21 @@ class OrganisationFilterQueryChanged extends OrganisationEvent {
   @override
   List<Object> get props => [query];
 }
+
+class AddOrganisationToFavorites extends OrganisationEvent {
+  const AddOrganisationToFavorites(this.nameSpace);
+
+  final String nameSpace;
+
+  @override
+  List<Object> get props => [nameSpace];
+}
+
+class RemoveOrganisationFromFavorites extends OrganisationEvent {
+  const RemoveOrganisationFromFavorites(this.nameSpace);
+
+  final String nameSpace;
+
+  @override
+  List<Object> get props => [nameSpace];
+}
