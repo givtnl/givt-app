@@ -1,17 +1,20 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
-import 'package:fuzzywuzzy/model/extracted_result.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'organisation_event.dart';
 part 'organisation_state.dart';
@@ -19,10 +22,14 @@ part 'organisation_state.dart';
 // Minimum score threshold for fuzzy search results (0-100)
 const int _fuzzyScoreThreshold = 70;
 
+// Add a private field for the SharedPreferences key
+const String _favoritedOrganisationsKey = 'favoritedOrganisations';
+
 class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   OrganisationBloc(
     this._collectGroupRepository,
     this._campaignRepository,
+    this._sharedPreferences,
   ) : super(const OrganisationState()) {
     on<OrganisationFetch>(_onOrganisationFetch);
 
@@ -33,10 +40,50 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     on<OrganisationTypeChanged>(_onTypeChanged);
 
     on<OrganisationSelectionChanged>(_onSelectionChanged);
+
+    on<AddOrganisationToFavorites>(_onAddOrganisationToFavorites);
+    on<RemoveOrganisationFromFavorites>(_onRemoveOrganisationFromFavorites);
+    on<OrganisationSortByFavoritesToggled>(
+        _onOrganisationSortByFavoritesToggled);
   }
 
   final CollectGroupRepository _collectGroupRepository;
   final CampaignRepository _campaignRepository;
+  final SharedPreferences _sharedPreferences;
+
+  String _getFavoritedOrganisationsKey(String userGuid) {
+    return '_favoritedOrganisationsKey_$userGuid';
+  }
+
+  String _getUserGuid() {
+    final sessionString = _sharedPreferences.getString(Session.tag);
+    if (sessionString == null) {
+      return '';
+    }
+    final session = Session.fromJson(
+      jsonDecode(sessionString) as Map<String, dynamic>,
+    );
+    return session.userGUID;
+  }
+
+  List<CollectGroup> _applyFavoriteSortingIfNeeded(
+      List<CollectGroup> organisations) {
+    if (state.sortByFavorites) {
+      organisations.sort((CollectGroup a, CollectGroup b) {
+        final aIsFavorited = state.favoritedOrganisations.contains(a.nameSpace);
+        final bIsFavorited = state.favoritedOrganisations.contains(b.nameSpace);
+        if (aIsFavorited && !bIsFavorited) return -1;
+        if (!aIsFavorited && bIsFavorited) return 1;
+        return a.orgName.compareTo(b.orgName);
+      });
+    } else {
+      // sort by name if not sorting by favorites
+      organisations.sort((CollectGroup a, CollectGroup b) {
+        return a.orgName.compareTo(b.orgName);
+      });
+    }
+    return organisations;
+  }
 
   FutureOr<void> _onOrganisationFetch(
     OrganisationFetch event,
@@ -44,6 +91,11 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
+      final userGuid = _getUserGuid();
+      final key = _getFavoritedOrganisationsKey(userGuid);
+      final favoritedOrganisations =
+          _sharedPreferences.getStringList(key) ?? [];
+
       var unFiltered = await _collectGroupRepository.getCollectGroupList();
       if (unFiltered.isEmpty) {
         unFiltered = await _collectGroupRepository.fetchCollectGroupList();
@@ -88,6 +140,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           organisations: organisations,
           filteredOrganisations: organisations,
           selectedCollectGroup: selectedGroup,
+          favoritedOrganisations: favoritedOrganisations,
         ),
       );
       if (event.type == CollectGroupType.none.index) {
@@ -114,6 +167,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     OrganisationFetchForSelection event,
     Emitter<OrganisationState> emit,
   ) async {
+    final userGuid = _getUserGuid();
+    final key = _getFavoritedOrganisationsKey(userGuid);
+    final favoritedOrganisations = _sharedPreferences.getStringList(key) ?? [];
+
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
       final unFiltered = await _collectGroupRepository.getCollectGroupList();
@@ -128,6 +185,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           status: OrganisationStatus.filtered,
           organisations: organisations,
           filteredOrganisations: organisations,
+          favoritedOrganisations: favoritedOrganisations,
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
@@ -155,66 +213,72 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
       final query = _removeDiacritics(event.query.toLowerCase());
-      
+
       // Filter organizations by type first if there's a selected type
-      final typeFilteredOrgs = state.organisations.where(
-        (org) => state.selectedType == CollectGroupType.none.index || 
+      final typeFilteredOrgs = state.organisations
+          .where(
+            (org) =>
+                state.selectedType == CollectGroupType.none.index ||
                 org.type.index == state.selectedType,
-      ).toList();
-      
+          )
+          .toList();
+
       // If query is empty, just apply the type filter
       if (query.isEmpty) {
         emit(
           state.copyWith(
             status: OrganisationStatus.filtered,
-            filteredOrganisations: typeFilteredOrgs,
+            filteredOrganisations:
+                _applyFavoriteSortingIfNeeded(typeFilteredOrgs),
             previousSearchQuery: event.query,
           ),
         );
         return;
       }
-      
+
       // First try exact substring matching
       final exactMatches = typeFilteredOrgs
           .where(
-            (org) => _removeDiacritics(org.orgName.toLowerCase())
-                .contains(query),
+            (org) =>
+                _removeDiacritics(org.orgName.toLowerCase()).contains(query),
           )
           .toList();
-      
+
       // If we have exact matches, use those
       if (exactMatches.isNotEmpty) {
         emit(
           state.copyWith(
             status: OrganisationStatus.filtered,
-            filteredOrganisations: exactMatches,
+            filteredOrganisations: _applyFavoriteSortingIfNeeded(exactMatches),
             previousSearchQuery: event.query,
           ),
         );
         return;
       }
-      
+
       // If no exact matches, use fuzzy matching
-      final orgNames = typeFilteredOrgs.map(
-        (org) => _removeDiacritics(org.orgName.toLowerCase()),
-      ).toList();
-      
+      final orgNames = typeFilteredOrgs
+          .map(
+            (org) => _removeDiacritics(org.orgName.toLowerCase()),
+          )
+          .toList();
+
       // Extract fuzzy matched results
       final fuzzyResults = extractAllSorted(
         query: query,
         choices: orgNames,
       ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
-      
+
       // Map fuzzy results back to organization objects
       final fuzzyMatches = fuzzyResults.map((result) {
         final index = orgNames.indexOf(result.choice);
         return typeFilteredOrgs[index];
       }).toList();
-      
+
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
-          filteredOrganisations: fuzzyMatches,
+          filteredOrganisations: _applyFavoriteSortingIfNeeded(fuzzyMatches),
           previousSearchQuery: event.query,
         ),
       );
@@ -234,7 +298,11 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     final newSelectedType = state.selectedType == event.type
         ? CollectGroupType.none.index
         : event.type;
-    
+
+    _handleTypeChange(newSelectedType, emit);
+  }
+
+  void _handleTypeChange(int newSelectedType, Emitter<OrganisationState> emit) {
     // Get all organizations or just those of the selected type
     var orgs = state.organisations;
     if (newSelectedType != CollectGroupType.none.index) {
@@ -246,39 +314,41 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     // If there's an active search query, apply both filters
     if (state.previousSearchQuery.isNotEmpty) {
       final query = _removeDiacritics(state.previousSearchQuery.toLowerCase());
-      
+
       // First try exact matching
       var filteredOrgs = orgs
           .where(
-            (org) => _removeDiacritics(org.orgName.toLowerCase())
-                .contains(query),
+            (org) =>
+                _removeDiacritics(org.orgName.toLowerCase()).contains(query),
           )
           .toList();
-      
+
       // If no exact matches, try fuzzy matching
       if (filteredOrgs.isEmpty) {
-        final orgNames = orgs.map(
-          (org) => _removeDiacritics(org.orgName.toLowerCase()),
-        ).toList();
-        
+        final orgNames = orgs
+            .map(
+              (org) => _removeDiacritics(org.orgName.toLowerCase()),
+            )
+            .toList();
+
         final fuzzyResults = extractAllSorted(
           query: query,
           choices: orgNames,
         ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
-        
+
         filteredOrgs = fuzzyResults.map((result) {
           final index = orgNames.indexOf(result.choice);
           return orgs[index];
         }).toList();
       }
-      
+
       orgs = filteredOrgs;
     }
 
     emit(
       state.copyWith(
         selectedType: newSelectedType,
-        filteredOrganisations: orgs,
+        filteredOrganisations: _applyFavoriteSortingIfNeeded(orgs),
       ),
     );
   }
@@ -300,6 +370,41 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
             ? const CollectGroup.empty()
             : selectedNow,
       ),
+    );
+  }
+
+  FutureOr<void> _onAddOrganisationToFavorites(
+    AddOrganisationToFavorites event,
+    Emitter<OrganisationState> emit,
+  ) {
+    final userGuid = _getUserGuid();
+    final key = _getFavoritedOrganisationsKey(userGuid);
+    final updatedFavorites = List<String>.from(state.favoritedOrganisations)
+      ..add(event.nameSpace);
+    _sharedPreferences.setStringList(key, updatedFavorites);
+    emit(state.copyWith(favoritedOrganisations: updatedFavorites));
+  }
+
+  FutureOr<void> _onRemoveOrganisationFromFavorites(
+    RemoveOrganisationFromFavorites event,
+    Emitter<OrganisationState> emit,
+  ) {
+    final userGuid = _getUserGuid();
+    final key = _getFavoritedOrganisationsKey(userGuid);
+    final updatedFavorites = List<String>.from(state.favoritedOrganisations)
+      ..remove(event.nameSpace);
+    _sharedPreferences.setStringList(key, updatedFavorites);
+    emit(state.copyWith(favoritedOrganisations: updatedFavorites));
+  }
+
+  FutureOr<void> _onOrganisationSortByFavoritesToggled(
+    OrganisationSortByFavoritesToggled event,
+    Emitter<OrganisationState> emit,
+  ) {
+    emit(state.copyWith(sortByFavorites: event.sortByFavorites));
+    _handleTypeChange(
+      state.selectedType,
+      emit,
     );
   }
 

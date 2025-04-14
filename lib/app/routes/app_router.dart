@@ -374,6 +374,7 @@ class AppRouter {
                         create: (_) => OrganisationBloc(
                           getIt(),
                           getIt(),
+                          getIt(),
                         )..add(
                             OrganisationFetch(
                               Country.fromCode(user.country),
@@ -426,6 +427,7 @@ class AppRouter {
                   ),
                   BlocProvider(
                     create: (_) => OrganisationBloc(
+                      getIt(),
                       getIt(),
                       getIt(),
                     )..add(
