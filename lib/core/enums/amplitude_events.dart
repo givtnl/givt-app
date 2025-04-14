@@ -46,6 +46,7 @@ enum AmplitudeEvents {
   inAppReviewTriggered('in_app_review_triggered'),
   askForInterviewTriggered('ask_for_interview_triggered'),
   organisationFavoriteToggled('organisation_favorite_toggled'),
+  organisationSortByFavoritesToggled('organisation_sort_by_favorites_toggled'),
 
   // Gratitude Goal
   gratitudeGoalStartClicked('gratitude_goal_start_clicked'),

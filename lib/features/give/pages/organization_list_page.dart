@@ -137,11 +137,19 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                               state.sortByFavorites ? Colors.red : Colors.grey,
                         ),
                         onPressed: () {
+                          final newSortState = !state.sortByFavorites;
                           context.read<OrganisationBloc>().add(
                                 OrganisationSortByFavoritesToggled(
-                                  !state.sortByFavorites,
+                                  newSortState,
                                 ),
                               );
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents
+                                .organisationSortByFavoritesToggled,
+                            eventProperties: {
+                              'is_sorted_by_favorites': newSortState,
+                            },
+                          );
                         },
                       ),
                     ],
