@@ -51,11 +51,13 @@ class AuthUtils {
         await checkAuthRequest.navigate(
           context,
         );
+        return;
       } else {
         await displayLoginBottomSheet(
           context,
           checkAuthRequest: checkAuthRequest,
         );
+        return;
       }
     }
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
