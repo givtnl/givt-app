@@ -49,6 +49,18 @@ class GivtGroup extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'givts': givts.map((x) => x.toJson()).toList(),
+      'timeStamp': timeStamp?.toIso8601String(),
+      'organisationName': organisationName,
+      'status': status,
+      'amount': amount,
+      'isGiftAidEnabled': isGiftAidEnabled,
+      'taxYear': taxYear,
+    };
+  }
+
   @override
   List<Object?> get props => [
         givts,

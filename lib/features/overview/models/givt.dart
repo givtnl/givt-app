@@ -29,6 +29,21 @@ class Givt extends Equatable {
         timeStamp = null,
         mediumId = '';
 
+  Map<String, dynamic> toJson() {
+    return {
+      'Id': id,
+      'Amount': amount,
+      'CollectGroupId': collectGroupId,
+      'OrgName': organisationName,
+      'OrganisationTaxDeductible': organisationTaxDeductible,
+      'CollectId': collectId,
+      'GiftAidEnabled': isGiftAidEnabled,
+      'Status': status,
+      'Timestamp': timeStamp?.toIso8601String(),
+      'MediumId': mediumId,
+    };
+  }
+
   factory Givt.fromJson(Map<String, dynamic> json) {
     var taxYear = 0;
     final timestamp = DateTime.parse(json['Timestamp'] as String);

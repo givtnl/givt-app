@@ -154,12 +154,9 @@ class GivtListItem extends StatelessWidget {
                   ),
                 );
                 if (confirmed ?? false) {
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.organisationFavoriteToggled,
-                    eventProperties: {
-                      'organisation_name': givtGroup.organisationName,
-                      'is_canceled': true,
-                    },
+                  await AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.donationCancelled,
+                    eventProperties: givtGroup.toJson(),
                   );
                   onCancel?.call();
                 }
