@@ -368,6 +368,7 @@ enum AmplitudeEvents {
   boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
 
   updateNowClicked('update_now_clicked'),
+  changeNameSubmitted('change_name_submitted'),
 
   //Bedtime summary
   summaryLeaveMessageClicked(
