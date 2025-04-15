@@ -75,6 +75,7 @@ class GivtListItem extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 5),
                   Text(
                     DateFormat('HH:mm').format(givtGroup.timeStamp!.toLocal()),
                     style: textTheme.bodySmall!.copyWith(
