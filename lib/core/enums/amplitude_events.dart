@@ -416,6 +416,9 @@ enum AmplitudeEvents {
   saveAvatarNoClicked('save_avatar_no_clicked'),
   newBadgeSeen('new_badge_seen'),
 
+  // Refund
+  refundInfoRequested('refund_info_viewed'),
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
   ;

@@ -4,7 +4,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/models/givt_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/confirmation_dialog.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
@@ -30,6 +30,17 @@ class GivtListItem extends StatelessWidget {
     final currency = NumberFormat.simpleCurrency(
       name: country.currency,
     );
+
+    // Check if donation was made within the last month
+    final now = DateTime.now();
+    final oneMonthAgo = DateTime(now.year, now.month - 1, now.day);
+    final isWithinLastMonth = givtGroup.timeStamp != null &&
+        givtGroup.timeStamp!.isAfter(oneMonthAgo);
+
+    // Determine if any button should be shown
+    final showCancelButton = givtGroup.status == 1;
+    final showRefundButton = givtGroup.status == 3 && isWithinLastMonth;
+    final showAnyButton = showCancelButton || showRefundButton;
 
     return Container(
       decoration: BoxDecoration(
@@ -133,7 +144,7 @@ class GivtListItem extends StatelessWidget {
               ),
             ],
           ),
-          if (givtGroup.status == 1)
+          if (showCancelButton)
             Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 2),
               child: ElevatedButton(
@@ -169,6 +180,45 @@ class GivtListItem extends StatelessWidget {
                 ),
                 child: Text(
                   context.l10n.cancel,
+                  style: textTheme.labelLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          if (showRefundButton)
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 2),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await showDialog<void>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => WarningDialog(
+                      title: context.l10n.refundTitle,
+                      content: country.isBACS
+                          ? context.l10n.refundMessageBACS
+                          : context.l10n.refundMessageGeneral,
+                      onConfirm: () => context.pop(),
+                    ),
+                  );
+                  await AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.refundInfoRequested,
+                    eventProperties: givtGroup.toJson(),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.givtBlue,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                child: Text(
+                  context.l10n.requestRefund,
                   style: textTheme.labelLarge?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
