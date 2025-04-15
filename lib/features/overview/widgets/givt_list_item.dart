@@ -23,7 +23,6 @@ class GivtListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     final textTheme = Theme.of(context).textTheme;
     final userCountry = context.read<AuthCubit>().state.user.country;
     final country = Country.fromCode(userCountry);
@@ -40,7 +39,6 @@ class GivtListItem extends StatelessWidget {
     // Determine if any button should be shown
     final showCancelButton = givtGroup.status == 1;
     final showRefundButton = givtGroup.status == 3 && isWithinLastMonth;
-    final showAnyButton = showCancelButton || showRefundButton;
 
     return Container(
       decoration: BoxDecoration(
