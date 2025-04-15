@@ -21,6 +21,8 @@ class PersonalInfoEditBloc
             loggedInUserExt: loggedInUserExt,
           ),
         ) {
+    on<PersonalInfoEditName>(_onNameChanged);
+
     on<PersonalInfoEditEmail>(_onEmailChanged);
 
     on<PersonalInfoEditAddress>(_onAddressChanged);
@@ -35,6 +37,49 @@ class PersonalInfoEditBloc
   }
 
   final AuthRepository authRepository;
+
+  FutureOr<void> _onNameChanged(
+    PersonalInfoEditName event,
+    Emitter<PersonalInfoEditState> emit,
+  ) async {
+    emit(state.copyWith(status: PersonalInfoEditStatus.loading));
+    try {
+      LoggingInfo.instance.info(
+        'Changing name to ${event.firstName} ${event.lastName}',
+      );
+
+      final stateUser = state.loggedInUserExt.copyWith(
+        firstName: event.firstName,
+        lastName: event.lastName,
+      );
+      await authRepository.updateUserExt(
+        stateUser.toUpdateJson(),
+      );
+      emit(
+        state.copyWith(
+          status: PersonalInfoEditStatus.success,
+          loggedInUserExt: stateUser,
+        ),
+      );
+    } on SocketException catch (e, stackTrace) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
+    } on GivtServerFailure catch (e, stackTrace) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(
+        state.copyWith(
+          status: PersonalInfoEditStatus.error,
+          error: e.body.toString(),
+        ),
+      );
+    }
+  }
 
   FutureOr<void> _onEmailChanged(
     PersonalInfoEditEmail event,
@@ -182,7 +227,7 @@ class PersonalInfoEditBloc
       LoggingInfo.instance.info(
         'Changing bank details to ${event.iban} ${event.accountNumber} ${event.sortCode}',
       );
-      
+
       final cleanedIban = event.iban.replaceAll(' ', '');
 
       final stateUser = state.loggedInUserExt.copyWith(

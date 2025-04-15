@@ -6,6 +6,7 @@ import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.d
 import 'package:givt_app/features/account_details/pages/change_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_bank_details_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
+import 'package:givt_app/features/account_details/pages/change_name_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
@@ -110,14 +111,6 @@ class PersonalInfoEditPage extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    locals.personalPageSubHeader,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
                 ],
               ),
               _buildInfoRow(
@@ -125,6 +118,13 @@ class PersonalInfoEditPage extends StatelessWidget {
                   Icons.person,
                 ),
                 value: '${user.firstName} ${user.lastName}',
+                onTap: () => _showModalBottomSheet(
+                  context,
+                  bottomSheet: ChangeNameBottomSheet(
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                  ),
+                ),
               ),
               _buildInfoRow(
                 icon: const Text(
