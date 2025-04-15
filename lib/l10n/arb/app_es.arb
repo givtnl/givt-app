@@ -981,5 +981,9 @@
     "tutorialTheEndDescription": "I’ll let you take it from here. Head to your next mission and keep making a difference!",
     "completedKey": "Completed",
     "tutorialIntroductionTitle": "Hey, I’m Captain Generosity",
-    "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'"
+    "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'",
+    "refundTitle": "Refund donation",
+    "refundMessageBACS": "Por favor, contáctanos para que podamos reembolsar tu donación.",
+    "refundMessageGeneral": "Accede a tu banca en línea para revertir tu donación.",
+    "requestRefund": "Refund"
 }
