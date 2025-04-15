@@ -222,42 +222,12 @@ class _OverviewPageState extends State<OverviewPage> {
                   children: [
                     GivtListItem(
                       givtGroup: givtGroup,
-                      onDismiss: (direction) {
+                      onCancel: () {
                         context.read<GivtBloc>().add(
                               GiveDelete(
                                 timestamp: givtGroup.timeStamp!,
                               ),
                             );
-                      },
-                      confirmDismiss: (direction) async {
-                        if (givtGroup.status == 1 || givtGroup.status == 2) {
-                          return Future.value(
-                            await showDialog<bool>(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (_) => ConfirmationDialog(
-                                title: locals.cancelGiftAlertTitle,
-                                content: locals.cancelGiftAlertMessage,
-                                onConfirm: () => context.pop(true),
-                                onCancel: () => context.pop(false),
-                                confirmText: locals.yes,
-                                cancelText: locals.no,
-                              ),
-                            ),
-                          );
-                        }
-
-                        return Future.value(
-                          await showDialog<bool>(
-                                context: context,
-                                builder: (_) => WarningDialog(
-                                  title: locals.cancelFailed,
-                                  content: locals.cantCancelAlreadyProcessed,
-                                  onConfirm: () => context.pop(false),
-                                ),
-                              ) ??
-                              false,
-                        );
                       },
                     ),
                     const Divider(
