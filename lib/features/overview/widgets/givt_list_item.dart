@@ -49,7 +49,7 @@ class GivtListItem extends StatelessWidget {
           ),
         ),
       ),
-      padding: const EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 12),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
       child: Column(
         children: [
           Row(
@@ -148,86 +148,93 @@ class GivtListItem extends StatelessWidget {
               // .. More buttons :)
               const SizedBox(width: 4),
               if (showCancelButton)
-                ElevatedButton(
-                  onPressed: () async {
-                    final confirmed = await showDialog<bool>(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) => ConfirmationDialog(
-                        title: context.l10n.cancelGiftAlertTitle,
-                        content: context.l10n.cancelGiftAlertMessage,
-                        onConfirm: () => context.pop(true),
-                        onCancel: () => context.pop(false),
-                        confirmText: context.l10n.yes,
-                        cancelText: context.l10n.no,
-                      ),
-                    );
-                    if (confirmed ?? false) {
-                      await AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.donationCancelled,
-                        eventProperties: givtGroup.toJson(),
-                      );
-                      onCancel?.call();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.givtRed,
-                    foregroundColor: Colors.white,
-                    minimumSize: Size.zero,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    textStyle: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  child: Text(
-                    context.l10n.cancel,
-                    style: textTheme.labelLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                )
+                _cancelButton(context, textTheme)
               else if (showRefundButton)
-                ElevatedButton(
-                  onPressed: () async {
-                    await showDialog<void>(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) => WarningDialog(
-                        title: context.l10n.refundTitle,
-                        content: country.isBACS
-                            ? context.l10n.refundMessageBACS
-                            : context.l10n.refundMessageGeneral,
-                        onConfirm: () => context.pop(),
-                      ),
-                    );
-                    await AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.refundInfoRequested,
-                      eventProperties: givtGroup.toJson(),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.givtBlue,
-                    foregroundColor: Colors.white,
-                    minimumSize: Size.zero,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    textStyle: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  child: Text(
-                    context.l10n.requestRefund,
-                    style: textTheme.labelLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+                _refundButton(context, country, textTheme),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  ElevatedButton _refundButton(
+      BuildContext context, Country country, TextTheme textTheme) {
+    return ElevatedButton(
+      onPressed: () async {
+        await showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => WarningDialog(
+            title: context.l10n.refundTitle,
+            content: country.isBACS
+                ? context.l10n.refundMessageBACS
+                : context.l10n.refundMessageGeneral,
+            onConfirm: () => context.pop(),
+          ),
+        );
+        await AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.refundInfoRequested,
+          eventProperties: givtGroup.toJson(),
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppTheme.givtBlue,
+        foregroundColor: Colors.white,
+        minimumSize: Size.zero,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      child: Text(
+        context.l10n.requestRefund,
+        style: textTheme.labelLarge?.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  ElevatedButton _cancelButton(BuildContext context, TextTheme textTheme) {
+    return ElevatedButton(
+      onPressed: () async {
+        final confirmed = await showDialog<bool>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => ConfirmationDialog(
+            title: context.l10n.cancelGiftAlertTitle,
+            content: context.l10n.cancelGiftAlertMessage,
+            onConfirm: () => context.pop(true),
+            onCancel: () => context.pop(false),
+            confirmText: context.l10n.yes,
+            cancelText: context.l10n.no,
+          ),
+        );
+        if (confirmed ?? false) {
+          await AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.donationCancelled,
+            eventProperties: givtGroup.toJson(),
+          );
+          onCancel?.call();
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppTheme.givtRed,
+        foregroundColor: Colors.white,
+        minimumSize: Size.zero,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      child: Text(
+        context.l10n.cancel,
+        style: textTheme.labelLarge?.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
