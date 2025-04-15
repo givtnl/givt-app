@@ -5,8 +5,14 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class Util {
-  /// Features overlay keys
-  static const String cancelFeatureOverlayKey = 'cancelFeatureOverlayKey';
+  static const String tokenKey = 'tokenKey';
+  static const String userKey = 'userKey';
+  static const String sessionKey = 'session';
+  static const String organizationKey = 'organization';
+  static const String hasSeenExplanationVideo = 'hasSeenExplanationVideo';
+  static const String hasSeenCancelExplanation = 'hasSeenCancelExplanation';
+  static const String selectedCountryKey = 'selectedCountryKey';
+
   static const String testimonialsSummaryKey = 'testimonialsSummaryKey';
 
   // Default user info

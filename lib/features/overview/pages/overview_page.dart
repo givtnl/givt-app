@@ -25,43 +25,11 @@ class OverviewPage extends StatefulWidget {
 }
 
 class _OverviewPageState extends State<OverviewPage> {
-  OverlayEntry? overlayEntry;
   bool disposed = false;
 
   @override
   void initState() {
     super.initState();
-    initOverlay();
-  }
-
-  Future<void> initOverlay() async {
-    final prefs = getIt<SharedPreferences>();
-
-    if (prefs.getBool(Util.cancelFeatureOverlayKey) ?? false) {
-      return;
-    }
-
-    overlayEntry = OverlayEntry(
-      builder: (context) => FeatureOverlay(
-        onDismiss: () {
-          disposed = true;
-          overlayEntry!
-            ..remove()
-            ..dispose();
-        },
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    if (overlayEntry != null) {
-      if (overlayEntry!.mounted) {
-        overlayEntry!.remove();
-        overlayEntry!.dispose();
-      }
-    }
-    super.dispose();
   }
 
   @override
@@ -130,13 +98,6 @@ class _OverviewPageState extends State<OverviewPage> {
           return _buildEmptyScaffold(context);
         }
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (overlayEntry == null || disposed) {
-            return;
-          }
-
-          Overlay.of(context).insert(overlayEntry!);
-        });
         return _buildFilledScaffold(
           context,
           state,
