@@ -33,7 +33,7 @@ class AuthUtils {
       LoggingInfo.instance.info(
         'Check token request is forced, displaying login bottom sheet.',
       );
-      await _displayLoginBottomSheet(
+      await displayLoginBottomSheet(
         context,
         checkAuthRequest: checkAuthRequest,
       );
@@ -43,8 +43,22 @@ class AuthUtils {
     final auth = context.read<AuthCubit>();
     final isExpired = auth.state.session.isExpired;
     if (!isExpired) {
-      await checkAuthRequest.navigate(context);
-      return;
+      final didTokenRefresh = await context.read<AuthCubit>().refreshSession();
+      if (!context.mounted) {
+        return;
+      }
+      if (didTokenRefresh) {
+        await checkAuthRequest.navigate(
+          context,
+        );
+        return;
+      } else {
+        await displayLoginBottomSheet(
+          context,
+          checkAuthRequest: checkAuthRequest,
+        );
+        return;
+      }
     }
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
       if (!context.mounted) {
@@ -53,7 +67,7 @@ class AuthUtils {
       LoggingInfo.instance.info(
         'Token expired, biometrics not available, displaying login bottom sheet.',
       );
-      await _displayLoginBottomSheet(
+      await displayLoginBottomSheet(
         context,
         checkAuthRequest: checkAuthRequest,
       );
@@ -67,13 +81,20 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      await context.read<AuthCubit>().refreshSession();
+      final didTokenRefresh = await context.read<AuthCubit>().refreshSession();
       if (!context.mounted) {
         return;
       }
-      await checkAuthRequest.navigate(
-        context,
-      );
+      if (didTokenRefresh) {
+        await checkAuthRequest.navigate(
+          context,
+        );
+      } else {
+        await displayLoginBottomSheet(
+          context,
+          checkAuthRequest: checkAuthRequest,
+        );
+      }
     } on PlatformException catch (e) {
       LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
@@ -81,7 +102,7 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      await _displayLoginBottomSheet(
+      await displayLoginBottomSheet(
         context,
         checkAuthRequest: checkAuthRequest,
       );
@@ -92,7 +113,7 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      await _displayLoginBottomSheet(
+      await displayLoginBottomSheet(
         context,
         checkAuthRequest: checkAuthRequest,
       );
@@ -102,7 +123,7 @@ class AuthUtils {
   /// Displays the login bottom sheet.
   /// If the user successfully logs in, the [navigate] callback is called.
   /// If the user cancels the login, nothing happens.
-  static Future<void> _displayLoginBottomSheet(
+  static Future<void> displayLoginBottomSheet(
     BuildContext context, {
     required CheckAuthRequest checkAuthRequest,
   }) async {

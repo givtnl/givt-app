@@ -45,6 +45,8 @@ enum AmplitudeEvents {
   editEmailSaveClicked('edit_email_save_clicked'),
   inAppReviewTriggered('in_app_review_triggered'),
   askForInterviewTriggered('ask_for_interview_triggered'),
+  organisationFavoriteToggled('organisation_favorite_toggled'),
+  organisationSortByFavoritesToggled('organisation_sort_by_favorites_toggled'),
 
   // Gratitude Goal
   gratitudeGoalStartClicked('gratitude_goal_start_clicked'),
@@ -182,6 +184,7 @@ enum AmplitudeEvents {
   homeSettingsClicked('home_settings_clicked'),
   leaguePlayGameClicked('league_play_game_clicked'),
   leagueExplanationContinueClicked('league_explanation_continue_clicked'),
+  unlockLeagueClicked('unlock_league_clicked'),
   leagueButtonClicked('league_button_clicked'),
 
   // Change Password

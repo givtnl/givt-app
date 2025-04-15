@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
@@ -112,15 +113,46 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                 _buildFilterType(bloc, locals),
                 Padding(
                   padding: const EdgeInsets.all(8),
-                  child: CupertinoSearchTextField(
-                    autocorrect: false,
-                    focusNode: focusNode,
-                    onChanged: (value) => context
-                        .read<OrganisationBloc>()
-                        .add(OrganisationFilterQueryChanged(value)),
-                    placeholder: locals.searchHere,
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: const Icon(Icons.close),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: CupertinoSearchTextField(
+                          autocorrect: false,
+                          focusNode: focusNode,
+                          onChanged: (value) => context
+                              .read<OrganisationBloc>()
+                              .add(OrganisationFilterQueryChanged(value)),
+                          placeholder: locals.searchHere,
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon: const Icon(Icons.close),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        icon: Icon(
+                          state.sortByFavorites
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color:
+                              state.sortByFavorites ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: () {
+                          final newSortState = !state.sortByFavorites;
+                          context.read<OrganisationBloc>().add(
+                                OrganisationSortByFavoritesToggled(
+                                  newSortState,
+                                ),
+                              );
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents
+                                .organisationSortByFavoritesToggled,
+                            eventProperties: {
+                              'is_sorted_by_favorites': newSortState,
+                            },
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 if (state.status == OrganisationStatus.filtered)
@@ -163,11 +195,16 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                             ),
                           );
                         }
+                        final organisation = state.filteredOrganisations[index];
+                        final isFavorited = bloc.state.favoritedOrganisations
+                            .contains(organisation.nameSpace);
                         return _buildListTile(
                           type: state.filteredOrganisations[index].type,
                           title: state.filteredOrganisations[index].orgName,
                           isSelected: state.selectedCollectGroup.nameSpace ==
                               state.filteredOrganisations[index].nameSpace,
+                          isFavorited:
+                              isFavorited, // Placeholder for favorite state
                           onTap: () {
                             if (widget.isChooseCategory) {
                               _buildActionSheet(
@@ -182,6 +219,37 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                                         .filteredOrganisations[index].nameSpace,
                                   ),
                                 );
+                          },
+                          onFavoritePressed: () {
+                            if (isFavorited) {
+                              bloc.add(
+                                RemoveOrganisationFromFavorites(
+                                  organisation.nameSpace,
+                                ),
+                              );
+                              AnalyticsHelper.logEvent(
+                                eventName:
+                                    AmplitudeEvents.organisationFavoriteToggled,
+                                eventProperties: {
+                                  'organisation_name': organisation.orgName,
+                                  'is_favorited': false,
+                                },
+                              );
+                            } else {
+                              bloc.add(
+                                AddOrganisationToFavorites(
+                                  organisation.nameSpace,
+                                ),
+                              );
+                              AnalyticsHelper.logEvent(
+                                eventName:
+                                    AmplitudeEvents.organisationFavoriteToggled,
+                                eventProperties: {
+                                  'organisation_name': organisation.orgName,
+                                  'is_favorited': true,
+                                },
+                              );
+                            }
                           },
                         );
                       },
@@ -285,6 +353,8 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
     required bool isSelected,
     required String title,
     required CollectGroupType type,
+    required bool isFavorited,
+    required VoidCallback onFavoritePressed,
   }) =>
       ListTile(
         key: UniqueKey(),
@@ -300,6 +370,13 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
           style: const TextStyle(
             color: AppTheme.givtBlue,
           ),
+        ),
+        trailing: IconButton(
+          icon: Icon(
+            isFavorited ? Icons.favorite : Icons.favorite_border,
+            color: isFavorited ? Colors.red : Colors.grey,
+          ),
+          onPressed: onFavoritePressed,
         ),
       );
 

@@ -958,8 +958,8 @@
     "missionsTitle": "Misiones disponibles",
     "missionsNoMissions": "No tienes ninguna misión actualmente",
     "missionsNoCompletedMissions": "Todavía no has completado ninguna misión",
-    "familyTutorialMissionTitle": "¡Toca para empezar la misión!",
-    "familyTutorialMissionDescription": "Sigue tu progreso y completa tus misiones aquí.",
+    "tutorialMissionTitle": "¡Toca para empezar la misión!",
+    "tutorialMissionDescription": "Sigue tu progreso y completa tus misiones aquí.",
     "missionsCardNoMissionsTitle": "No hay misiones disponibles",
     "missionsCardNoMissionsDescription": "Tu trabajo aquí ha terminado",
     "missionsCardTitle": "",
@@ -970,5 +970,16 @@
     "progressbarPlayed": "jugados",
     "gameStatsActivityThisWeek": "Actividad en el juego esta semana",
     "gameStatsPlayGame": "Jugar el Juego de la Gratitud",
-    "gameStatsAmountOfDeeds": "{amount} actos"
+    "gameStatsAmountOfDeeds": "{amount} actos",
+    "homescreenOverlayDiscoverTitle": "¡Descubre tu recompensa!",
+    "homescreenOverlayGiveTitle": "¿A quién le gustaría dar?",
+    "tutorialFamilyExplanationTitle": "¡Aquí está tu súper familia!",
+    "tutorialFamilyExplanationDescription": "Trabajen juntos para encontrar causas para apoyar y difundir la bondad.",
+    "tutorialManagingFamilyTitle": "Gestión de tu familia",
+    "tutorialManagingFamilyDescription": "Anima a tus héroes recargando sus monederos y aprobando las donaciones.",
+    "tutorialTheEndTitle": "¡Excelente trabajo, superhéroe!",
+    "tutorialTheEndDescription": "Puedes seguir por tu cuenta. ¡Ve a tu próxima misión y sigue marcando la diferencia!",
+    "completedKey": "Completado",
+    "tutorialIntroductionTitle": "¡Hola! Soy el Capitán Generosidad.",
+    "tutorialIntroductionDescription": "Estoy aquí para ayudar a tu familia a cultivar gratitud y fomentar la generosidad. ¡Empecemos!"
 }

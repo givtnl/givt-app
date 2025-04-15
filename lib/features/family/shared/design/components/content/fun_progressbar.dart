@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_small_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class FunProgressbar extends StatefulWidget {
   const FunProgressbar({
@@ -158,7 +159,7 @@ class _FunProgressbarState extends State<FunProgressbar> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       LabelSmallText(
-                        widget.completedText ?? 'Completed',
+                        widget.completedText ?? context.l10n.completedKey,
                         color: widget.textColor ?? FamilyAppTheme.highlight30,
                       ),
                     ],
