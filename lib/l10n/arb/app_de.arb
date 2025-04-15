@@ -985,5 +985,6 @@
     "refundTitle": "Spende zurückbuchen",
     "refundMessageBACS": "Bitte kontaktiere uns, damit wir deine Spende erstatten können.",
     "refundMessageGeneral": "Gehe zu deinem Online-Banking, um deine Spende zurückzubuchen.",
-    "requestRefund": "Zurückbuchen"
+    "requestRefund": "Zurückbuchen",
+    "changeName": "Name bearbeiten"
 }
