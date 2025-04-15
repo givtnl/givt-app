@@ -144,7 +144,6 @@ class GivtListItem extends StatelessWidget {
               ),
             ],
           ),
-          // Add cancel button at the bottom when status is 1
           if (showCancelButton)
             Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 2),
@@ -188,7 +187,6 @@ class GivtListItem extends StatelessWidget {
                 ),
               ),
             ),
-          // Add refund button at the bottom when status is 3 and donation is within last month
           if (showRefundButton)
             Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 2),
