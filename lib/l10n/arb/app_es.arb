@@ -985,5 +985,6 @@
     "refundTitle": "Refund donation",
     "refundMessageBACS": "Por favor, contáctanos para que podamos reembolsar tu donación.",
     "refundMessageGeneral": "Accede a tu banca en línea para revertir tu donación.",
-    "requestRefund": "Refund"
+    "requestRefund": "Refund",
+    "changeName": "Edit name"
 }
