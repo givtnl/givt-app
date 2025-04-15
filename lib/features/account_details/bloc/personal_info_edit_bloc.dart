@@ -182,8 +182,11 @@ class PersonalInfoEditBloc
       LoggingInfo.instance.info(
         'Changing bank details to ${event.iban} ${event.accountNumber} ${event.sortCode}',
       );
+      
+      final cleanedIban = event.iban.replaceAll(' ', '');
+
       final stateUser = state.loggedInUserExt.copyWith(
-        iban: event.iban,
+        iban: cleanedIban,
         accountNumber: event.accountNumber,
         sortCode: event.sortCode,
       );
