@@ -1,3 +1,5 @@
+// ignore_for_file: await_only_futures
+
 import 'dart:async';
 import 'dart:ui';
 
@@ -50,7 +52,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   Future<void> init(String userGuid) async {
     this.userGuid = userGuid;
     _isProd = !(await isDebugApp());
-    await _profilesRepository.getProfiles().then((profiles) {
+    await _profilesRepository.getProfiles().then((profiles) async {
       _profile = profiles.firstWhere(
         (profile) => profile.id == userGuid,
       );
@@ -59,17 +61,17 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         setAvatar(_profile!.avatar!);
       } else if (_profile?.customAvatar != null) {
         _customAvatar = _profile!.customAvatar!;
-        manualUnlockBadge(Features.tabsOrderOfFeatures[0]);
         _customMode = EditAvatarScreen.options.last;
         _emitData();
+        await manualUnlockBadge(Features.tabsOrderOfFeatures[0]);
       } else {
         _emitData();
       }
       if (isFirstVisitSinceUnlock()) {
         setFirstVisitSinceUnlock();
         _customMode = EditAvatarScreen.options.last;
-        manualUnlockBadge(Features.tabsOrderOfFeatures[0]);
         _emitData();
+        await manualUnlockBadge(Features.tabsOrderOfFeatures[0]);
         if (_isProd && _isSjoerd) {
           _customAvatar = CustomAvatarModel.initialSjoerd();
           _emitData();
@@ -105,7 +107,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
   bool isFirstVisitSinceUnlock() {
     final isFirstVisit = !_sharedPreferences
         .containsKey('edit_avatar_first_visit_${_profile?.id}');
-    return isFirstVisit;
+    return isFirstVisit && _customMode != EditAvatarScreen.options.last;
   }
 
   void setFirstVisitSinceUnlock() {
@@ -368,12 +370,12 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     _emitData();
   }
 
-  void manualUnlockBadge(String featureId) {
-    if (_unlockBadgeRepository.isFeatureSeen(userGuid, featureId)) {
+  Future<void> manualUnlockBadge(String featureId) async {
+    if (await _unlockBadgeRepository.isFeatureSeen(userGuid, featureId)) {
       return;
     }
-    _unlockBadgeRepository.markFeatureAsSeen(userGuid, featureId);
-    AnalyticsHelper.logEvent(
+    await _unlockBadgeRepository.markFeatureAsSeen(userGuid, featureId);
+    await AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.newBadgeSeen,
       eventProperties: {
         'featureId': featureId,

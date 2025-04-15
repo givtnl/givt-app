@@ -247,8 +247,6 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
   Widget _getCustomTabs(EditAvatarUIModel uiModel) {
     return FunSecondaryTabs(
       controller: _tabController,
-      onTap: (index) =>
-          _cubit.manualUnlockBadge(Features.tabsOrderOfFeatures[index]),
       tabs: [
         Tab(
           icon: UnlockedBadgeWidget(

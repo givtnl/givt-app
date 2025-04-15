@@ -8,11 +8,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class UnlockedBadgeRepository {
   Stream<UnlockBadgeStream> onFeatureUnlocksChanged();
+
   List<UnlockBadgeFeature> getUnlockedFeatures(String userId);
+
   Future<void> markFeatureAsSeen(String userId, String featureId);
+
   Future<void> markFeatureAsUnseen(String userId, String featureId);
+
   bool isFeatureSeen(String userId, String? featureId);
+
   Future<void> markAllFeaturesAsSeenForUser(String userId);
+
   int getTotalCount(String userId, String featureId);
 }
 
@@ -20,6 +26,7 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
   UnlockedBadgeRepositoryImpl(this._profilesRepository, this._prefs) {
     _init();
   }
+
 // Implementation in ProfilesRepositoryImpl
   final StreamController<UnlockBadgeStream> _featureUnlocksController =
       StreamController<UnlockBadgeStream>.broadcast();
@@ -39,22 +46,14 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
         final features = <UnlockBadgeFeature>[];
         for (final unlockedFeature in profile.unlocks) {
           if (Features.isItemFeature(unlockedFeature) &&
-              (oldFeatures == null ||
-                  oldFeatures
-                          .where(
-                            (oldFeature) => oldFeature.id == unlockedFeature,
-                          )
-                          .isEmpty ==
-                      true)) {
-            if (!isFeatureSeen(profile.id, unlockedFeature)) {
-              features.add(
-                UnlockBadgeFeature(
-                  id: unlockedFeature,
-                  isSeen: isFeatureSeen(profile.id, unlockedFeature),
-                  count: 1,
-                ),
-              );
-            }
+              _oldFeaturesDoesNotContainFeature(oldFeatures, unlockedFeature)) {
+            features.add(
+              UnlockBadgeFeature(
+                id: unlockedFeature,
+                isSeen: isFeatureSeen(profile.id, unlockedFeature),
+                count: 1,
+              ),
+            );
           }
         }
         _userUnlockedFeatures[profile.id] = [...?oldFeatures, ...features];
@@ -66,6 +65,18 @@ class UnlockedBadgeRepositoryImpl extends UnlockedBadgeRepository {
         );
       }
     });
+    _profilesRepository.refreshProfiles();
+  }
+
+  bool _oldFeaturesDoesNotContainFeature(
+      List<UnlockBadgeFeature>? oldFeatures, String unlockedFeature) {
+    return (oldFeatures == null ||
+        oldFeatures
+                .where(
+                  (oldFeature) => oldFeature.id == unlockedFeature,
+                )
+                .isEmpty ==
+            true);
   }
 
   // Get or initialize features for a user
