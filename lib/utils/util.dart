@@ -5,8 +5,6 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class Util {
-  static const String tokenKey = 'tokenKey';
-
   static const String testimonialsSummaryKey = 'testimonialsSummaryKey';
 
   // Default user info
