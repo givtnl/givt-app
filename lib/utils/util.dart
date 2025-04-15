@@ -6,12 +6,6 @@ import 'package:intl/intl.dart';
 
 class Util {
   static const String tokenKey = 'tokenKey';
-  static const String userKey = 'userKey';
-  static const String sessionKey = 'session';
-  static const String organizationKey = 'organization';
-  static const String hasSeenExplanationVideo = 'hasSeenExplanationVideo';
-  static const String hasSeenCancelExplanation = 'hasSeenCancelExplanation';
-  static const String selectedCountryKey = 'selectedCountryKey';
 
   static const String testimonialsSummaryKey = 'testimonialsSummaryKey';
 
