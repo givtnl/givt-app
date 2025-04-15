@@ -41,6 +41,7 @@ class Givt extends Equatable {
       'Status': status,
       'Timestamp': timeStamp?.toIso8601String(),
       'MediumId': mediumId,
+      'TaxYear': taxYear,
     };
   }
 
