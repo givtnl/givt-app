@@ -25,43 +25,11 @@ class OverviewPage extends StatefulWidget {
 }
 
 class _OverviewPageState extends State<OverviewPage> {
-  OverlayEntry? overlayEntry;
   bool disposed = false;
 
   @override
   void initState() {
     super.initState();
-    initOverlay();
-  }
-
-  Future<void> initOverlay() async {
-    final prefs = getIt<SharedPreferences>();
-
-    if (prefs.getBool(Util.cancelFeatureOverlayKey) ?? false) {
-      return;
-    }
-
-    overlayEntry = OverlayEntry(
-      builder: (context) => FeatureOverlay(
-        onDismiss: () {
-          disposed = true;
-          overlayEntry!
-            ..remove()
-            ..dispose();
-        },
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    if (overlayEntry != null) {
-      if (overlayEntry!.mounted) {
-        overlayEntry!.remove();
-        overlayEntry!.dispose();
-      }
-    }
-    super.dispose();
   }
 
   @override
@@ -130,13 +98,6 @@ class _OverviewPageState extends State<OverviewPage> {
           return _buildEmptyScaffold(context);
         }
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (overlayEntry == null || disposed) {
-            return;
-          }
-
-          Overlay.of(context).insert(overlayEntry!);
-        });
         return _buildFilledScaffold(
           context,
           state,
@@ -222,42 +183,12 @@ class _OverviewPageState extends State<OverviewPage> {
                   children: [
                     GivtListItem(
                       givtGroup: givtGroup,
-                      onDismiss: (direction) {
+                      onCancel: () {
                         context.read<GivtBloc>().add(
                               GiveDelete(
                                 timestamp: givtGroup.timeStamp!,
                               ),
                             );
-                      },
-                      confirmDismiss: (direction) async {
-                        if (givtGroup.status == 1 || givtGroup.status == 2) {
-                          return Future.value(
-                            await showDialog<bool>(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (_) => ConfirmationDialog(
-                                title: locals.cancelGiftAlertTitle,
-                                content: locals.cancelGiftAlertMessage,
-                                onConfirm: () => context.pop(true),
-                                onCancel: () => context.pop(false),
-                                confirmText: locals.yes,
-                                cancelText: locals.no,
-                              ),
-                            ),
-                          );
-                        }
-
-                        return Future.value(
-                          await showDialog<bool>(
-                                context: context,
-                                builder: (_) => WarningDialog(
-                                  title: locals.cancelFailed,
-                                  content: locals.cantCancelAlreadyProcessed,
-                                  onConfirm: () => context.pop(false),
-                                ),
-                              ) ??
-                              false,
-                        );
                       },
                     ),
                     const Divider(

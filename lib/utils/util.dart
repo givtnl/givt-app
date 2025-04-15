@@ -5,8 +5,6 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class Util {
-  /// Features overlay keys
-  static const String cancelFeatureOverlayKey = 'cancelFeatureOverlayKey';
   static const String testimonialsSummaryKey = 'testimonialsSummaryKey';
 
   // Default user info

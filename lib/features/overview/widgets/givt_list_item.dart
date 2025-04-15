@@ -4,21 +4,22 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/models/givt_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/confirmation_dialog.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class GivtListItem extends StatelessWidget {
   const GivtListItem({
     required this.givtGroup,
-    required this.onDismiss,
-    required this.confirmDismiss,
+    required this.onCancel,
     super.key,
   });
 
   final GivtGroup givtGroup;
-  final void Function(DismissDirection)? onDismiss;
-  final Future<bool> Function(DismissDirection)? confirmDismiss;
+  final void Function()? onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -30,130 +31,152 @@ class GivtListItem extends StatelessWidget {
       name: country.currency,
     );
 
-    return Dismissible(
-      key: Key(givtGroup.timeStamp.toString()),
-      direction: DismissDirection.endToStart,
-      background: const ColoredBox(
-        color: AppTheme.givtRed,
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.delete,
-              color: Colors.white,
-              size: 30,
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          left: BorderSide(
+            color: Util.getStatusColor(givtGroup.status),
+            width: 10,
           ),
         ),
       ),
-      confirmDismiss: confirmDismiss,
-      onDismissed: onDismiss,
-      child: Container(
-        height: givtGroup.givts.length == 3
-            ? size.height * 0.16
-            : size.height * 0.11,
-        width: size.width,
-        decoration: BoxDecoration(
-          border: Border(
-            left: BorderSide(
-              color: Util.getStatusColor(givtGroup.status),
-              width: 10,
-            ),
-          ),
-        ),
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-        child: Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: size.width * 0.1,
-                  height: size.width * 0.1,
-                  decoration: const BoxDecoration(
-                    color: AppTheme.givtLightGray,
-                  ),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        top: BorderSide(
-                          width: 5,
-                          color: AppTheme.givtLightPurple,
-                        ),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        DateFormat('dd').format(givtGroup.timeStamp!.toLocal()),
-                        style: textTheme.titleLarge!.copyWith(
-                          color: AppTheme.givtBlue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  DateFormat('HH:mm').format(givtGroup.timeStamp!.toLocal()),
-                  style: textTheme.bodySmall!.copyWith(
-                    color: AppTheme.givtBlue,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    children: [
-                      Visibility(
-                        visible: givtGroup.isGiftAidEnabled,
-                        child: Image.asset(
-                          'assets/images/gift_aid_yellow.png',
-                          height: 20,
+                  Container(
+                    width: size.width * 0.1,
+                    height: size.width * 0.1,
+                    decoration: const BoxDecoration(
+                      color: AppTheme.givtLightGray,
+                    ),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            width: 5,
+                            color: AppTheme.givtLightPurple,
+                          ),
                         ),
                       ),
-                      Text(
-                        givtGroup.organisationName,
-                        style: textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
+                      child: Center(
+                        child: Text(
+                          DateFormat('dd')
+                              .format(givtGroup.timeStamp!.toLocal()),
+                          style: textTheme.titleLarge!.copyWith(
+                            color: AppTheme.givtBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  ...givtGroup.givts.map(
-                    (collection) => ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: size.width * 0.74,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            '${context.l10n.collect} ${collection.collectId}',
-                            textAlign: TextAlign.start,
-                          ),
-                          Expanded(child: Container()),
-                          Text(
-                            '${currency.currencySymbol} ${Util.formatNumberComma(
-                              collection.amount,
-                              country,
-                            )}',
-                            textAlign: TextAlign.end,
-                          ),
-                        ],
-                      ),
+                  const SizedBox(height: 5),
+                  Text(
+                    DateFormat('HH:mm').format(givtGroup.timeStamp!.toLocal()),
+                    style: textTheme.bodySmall!.copyWith(
+                      color: AppTheme.givtBlue,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
               ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          Visibility(
+                            visible: givtGroup.isGiftAidEnabled,
+                            child: Image.asset(
+                              'assets/images/gift_aid_yellow.png',
+                              height: 20,
+                            ),
+                          ),
+                          Text(
+                            givtGroup.organisationName,
+                            style: textTheme.titleLarge!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ...givtGroup.givts.map(
+                        (collection) => Row(
+                          children: [
+                            Text(
+                              '${context.l10n.collect} ${collection.collectId}',
+                              textAlign: TextAlign.start,
+                            ),
+                            Expanded(child: Container()),
+                            Text(
+                              '${currency.currencySymbol} ${Util.formatNumberComma(
+                                collection.amount,
+                                country,
+                              )}',
+                              textAlign: TextAlign.end,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (givtGroup.status == 1)
+            Padding(
+              padding: const EdgeInsets.only(top: 4, bottom: 2),
+              child: ElevatedButton(
+                onPressed: () async {
+                  final confirmed = await showDialog<bool>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => ConfirmationDialog(
+                      title: context.l10n.cancelGiftAlertTitle,
+                      content: context.l10n.cancelGiftAlertMessage,
+                      onConfirm: () => context.pop(true),
+                      onCancel: () => context.pop(false),
+                      confirmText: context.l10n.yes,
+                      cancelText: context.l10n.no,
+                    ),
+                  );
+                  if (confirmed ?? false) {
+                    await AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents.donationCancelled,
+                      eventProperties: givtGroup.toJson(),
+                    );
+                    onCancel?.call();
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.givtRed,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  textStyle: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                child: Text(
+                  context.l10n.cancel,
+                  style: textTheme.labelLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }
