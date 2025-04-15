@@ -985,5 +985,6 @@
     "refundTitle": "Donatie terugboeken",
     "refundMessageBACS": "Neem contact met ons op zodat wij uw donatie kunnen terugboeken.",
     "refundMessageGeneral": "Ga naar je online bankomgeving om je donatie terug te boeken.",
-    "requestRefund": "Terugboeken"
+    "requestRefund": "Terugboeken",
+    "changeName": "Naam wijzigen"
 }
