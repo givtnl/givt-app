@@ -985,5 +985,6 @@
     "refundTitle": "Revertir donación",
     "refundMessageBACS": "Please contact us so we can refund your donation.",
     "refundMessageGeneral": "Go to your online banking environment to refund your donation.",
-    "requestRefund": "Revertir"
+    "requestRefund": "Revertir",
+    "changeName": "Editar nombre"
 }
