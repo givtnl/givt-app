@@ -51,7 +51,7 @@ class GivtListItem extends StatelessWidget {
           ),
         ),
       ),
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
       child: Column(
         children: [
           Row(
