@@ -23,7 +23,6 @@ class GivtListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     final textTheme = Theme.of(context).textTheme;
     final userCountry = context.read<AuthCubit>().state.user.country;
     final country = Country.fromCode(userCountry);
@@ -40,7 +39,6 @@ class GivtListItem extends StatelessWidget {
     // Determine if any button should be shown
     final showCancelButton = givtGroup.status == 1;
     final showRefundButton = givtGroup.status == 3 && isWithinLastMonth;
-    final showAnyButton = showCancelButton || showRefundButton;
 
     return Container(
       decoration: BoxDecoration(
@@ -51,7 +49,7 @@ class GivtListItem extends StatelessWidget {
           ),
         ),
       ),
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
       child: Column(
         children: [
           Row(
@@ -60,8 +58,8 @@ class GivtListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: size.width * 0.1,
-                    height: size.width * 0.1,
+                    width: 40,
+                    height: 40,
                     decoration: const BoxDecoration(
                       color: AppTheme.givtLightGray,
                     ),
@@ -144,89 +142,99 @@ class GivtListItem extends StatelessWidget {
               ),
             ],
           ),
-          if (showCancelButton)
-            Padding(
-              padding: const EdgeInsets.only(top: 4, bottom: 2),
-              child: ElevatedButton(
-                onPressed: () async {
-                  final confirmed = await showDialog<bool>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) => ConfirmationDialog(
-                      title: context.l10n.cancelGiftAlertTitle,
-                      content: context.l10n.cancelGiftAlertMessage,
-                      onConfirm: () => context.pop(true),
-                      onCancel: () => context.pop(false),
-                      confirmText: context.l10n.yes,
-                      cancelText: context.l10n.no,
-                    ),
-                  );
-                  if (confirmed ?? false) {
-                    await AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.donationCancelled,
-                      eventProperties: givtGroup.toJson(),
-                    );
-                    onCancel?.call();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.givtRed,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                child: Text(
-                  context.l10n.cancel,
-                  style: textTheme.labelLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-          if (showRefundButton)
-            Padding(
-              padding: const EdgeInsets.only(top: 4, bottom: 2),
-              child: ElevatedButton(
-                onPressed: () async {
-                  await showDialog<void>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) => WarningDialog(
-                      title: context.l10n.refundTitle,
-                      content: country.isBACS
-                          ? context.l10n.refundMessageBACS
-                          : context.l10n.refundMessageGeneral,
-                      onConfirm: () => context.pop(),
-                    ),
-                  );
-                  await AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.refundInfoRequested,
-                    eventProperties: givtGroup.toJson(),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.givtBlue,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                child: Text(
-                  context.l10n.requestRefund,
-                  style: textTheme.labelLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              // .. More buttons :)
+              const SizedBox(width: 4),
+              if (showCancelButton)
+                _cancelButton(context, textTheme)
+              else if (showRefundButton)
+                _refundButton(context, country, textTheme),
+            ],
+          ),
         ],
+      ),
+    );
+  }
+
+  ElevatedButton _refundButton(
+      BuildContext context, Country country, TextTheme textTheme) {
+    return ElevatedButton(
+      onPressed: () async {
+        await showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => WarningDialog(
+            title: context.l10n.refundTitle,
+            content: country.isBACS
+                ? context.l10n.refundMessageBACS
+                : context.l10n.refundMessageGeneral,
+            onConfirm: () => context.pop(),
+          ),
+        );
+        await AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.refundInfoRequested,
+          eventProperties: givtGroup.toJson(),
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppTheme.givtBlue,
+        foregroundColor: Colors.white,
+        minimumSize: Size.zero,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      child: Text(
+        context.l10n.requestRefund,
+        style: textTheme.labelLarge?.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  ElevatedButton _cancelButton(BuildContext context, TextTheme textTheme) {
+    return ElevatedButton(
+      onPressed: () async {
+        final confirmed = await showDialog<bool>(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => ConfirmationDialog(
+            title: context.l10n.cancelGiftAlertTitle,
+            content: context.l10n.cancelGiftAlertMessage,
+            onConfirm: () => context.pop(true),
+            onCancel: () => context.pop(false),
+            confirmText: context.l10n.yes,
+            cancelText: context.l10n.no,
+          ),
+        );
+        if (confirmed ?? false) {
+          await AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.donationCancelled,
+            eventProperties: givtGroup.toJson(),
+          );
+          onCancel?.call();
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppTheme.givtRed,
+        foregroundColor: Colors.white,
+        minimumSize: Size.zero,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      child: Text(
+        context.l10n.cancel,
+        style: textTheme.labelLarge?.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

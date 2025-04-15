@@ -193,6 +193,7 @@ class _OverviewPageState extends State<OverviewPage> {
                     ),
                     const Divider(
                       height: 0,
+                      color: AppTheme.givtGraycece,
                     ),
                   ],
                 );
