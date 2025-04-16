@@ -24,6 +24,7 @@ const int _fuzzyScoreThreshold = 70;
 
 // Add a private field for the SharedPreferences key
 const String _favoritedOrganisationsKey = 'favoritedOrganisations';
+const String _lastSelectedOrganisationKey = 'lastSelectedOrganisation';
 
 class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   OrganisationBloc(
@@ -107,6 +108,27 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           )
           .toList();
       var selectedGroup = state.selectedCollectGroup;
+
+      // Check for a previously selected organization in this category
+      if (event.type != CollectGroupType.none.index) {
+        final typeKey =
+            '${_lastSelectedOrganisationKey}_${event.type}_$userGuid';
+        final lastSelectedNameSpace = _sharedPreferences.getString(typeKey);
+
+        if (lastSelectedNameSpace != null && lastSelectedNameSpace.isNotEmpty) {
+          // Find the previously selected organization in the current list
+          final lastSelectedOrg = organisations.firstWhere(
+            (org) => org.nameSpace == lastSelectedNameSpace,
+            orElse: () => const CollectGroup.empty(),
+          );
+
+          // If found, set it as the selected organization
+          if (lastSelectedOrg.nameSpace.isNotEmpty) {
+            selectedGroup = lastSelectedOrg;
+          }
+        }
+      }
+
       if (event.showLastDonated) {
         final lastDonatedOrganisation =
             await _campaignRepository.getLastOrganisationDonated();
@@ -309,6 +331,25 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       orgs = state.organisations
           .where((org) => org.type.index == newSelectedType)
           .toList();
+
+      // Try to restore the last selected organization for this type
+      final userGuid = _getUserGuid();
+      final key =
+          '${_lastSelectedOrganisationKey}_${newSelectedType}_$userGuid';
+      final lastSelectedNameSpace = _sharedPreferences.getString(key);
+
+      if (lastSelectedNameSpace != null && lastSelectedNameSpace.isNotEmpty) {
+        // Find the previously selected organization in the current filtered list
+        final lastSelectedOrg = orgs.firstWhere(
+          (org) => org.nameSpace == lastSelectedNameSpace,
+          orElse: () => const CollectGroup.empty(),
+        );
+
+        // If found, update the selectedCollectGroup
+        if (lastSelectedOrg.nameSpace.isNotEmpty) {
+          emit(state.copyWith(selectedCollectGroup: lastSelectedOrg));
+        }
+      }
     }
 
     // If there's an active search query, apply both filters
@@ -363,6 +404,15 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     final selectedNow = state.organisations.firstWhere(
       (organisation) => organisation.nameSpace == event.mediumId,
     );
+
+    // Store selection to SharedPreferences if it's a new selection
+    if (state.selectedCollectGroup != selectedNow) {
+      final userGuid = _getUserGuid();
+      final key =
+          '${_lastSelectedOrganisationKey}_${selectedNow.type.index}_$userGuid';
+      _sharedPreferences.setString(key, event.mediumId);
+    }
+
     emit(
       state.copyWith(
         status: OrganisationStatus.filtered,
