@@ -225,22 +225,23 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           .toList();
       var selectedGroup = state.selectedCollectGroup;
 
-      // Check for a previously selected organization
-      final lastSelectedNameSpace =
-          _sharedPreferences.getString(_lastSelectedOrganisationKey);
+      // Check for a previously selected organization in this category
+      if (event.type != CollectGroupType.none.index) {
+        final typeKey =
+            '${_lastSelectedOrganisationKey}_${event.type}_$userGuid';
+        final lastSelectedNameSpace = _sharedPreferences.getString(typeKey);
 
-      if (lastSelectedNameSpace != null && lastSelectedNameSpace.isNotEmpty) {
-        // Find the previously selected organization in the current list
-        final lastSelectedOrg = organisations.firstWhere(
-          (org) => org.nameSpace == lastSelectedNameSpace,
-          orElse: () => const CollectGroup.empty(),
-        );
+        if (lastSelectedNameSpace != null && lastSelectedNameSpace.isNotEmpty) {
+          // Find the previously selected organization in the current list
+          final lastSelectedOrg = organisations.firstWhere(
+            (org) => org.nameSpace == lastSelectedNameSpace,
+            orElse: () => const CollectGroup.empty(),
+          );
 
-        // If found and belongs to the current type (or we're showing all types), set it as the selected organization
-        if (lastSelectedOrg.nameSpace.isNotEmpty &&
-            (event.type == CollectGroupType.none.index ||
-                lastSelectedOrg.type.index == event.type)) {
-          selectedGroup = lastSelectedOrg;
+          // If found, set it as the selected organization
+          if (lastSelectedOrg.nameSpace.isNotEmpty) {
+            selectedGroup = lastSelectedOrg;
+          }
         }
       }
 
@@ -393,7 +394,8 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     // Try to restore the last selected organization for this type
     if (newSelectedType != CollectGroupType.none.index) {
       final userGuid = _getUserGuid();
-      final key = _lastSelectedOrganisationKey;
+      final key =
+          '${_lastSelectedOrganisationKey}_${newSelectedType}_$userGuid';
       final lastSelectedNameSpace = _sharedPreferences.getString(key);
 
       if (lastSelectedNameSpace != null && lastSelectedNameSpace.isNotEmpty) {
@@ -443,9 +445,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
     // Store selection to SharedPreferences if it's a new selection
     if (state.selectedCollectGroup != selectedNow) {
-      // Using a single key for storing the selected organization, without the type
-      _sharedPreferences.setString(
-          _lastSelectedOrganisationKey, event.mediumId);
+      final userGuid = _getUserGuid();
+      final key =
+          '${_lastSelectedOrganisationKey}_${selectedNow.type.index}_$userGuid';
+      _sharedPreferences.setString(key, event.mediumId);
     }
 
     emit(
