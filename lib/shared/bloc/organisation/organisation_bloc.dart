@@ -14,6 +14,7 @@ import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'organisation_event.dart';
@@ -69,6 +70,23 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
   List<CollectGroup> _applyFavoriteSortingIfNeeded(
       List<CollectGroup> organisations) {
+    // First, check if there's a selected organization in the list
+    final isSelectedOrgInList =
+        state.selectedCollectGroup.nameSpace.isNotEmpty &&
+            organisations.any(
+                (org) => org.nameSpace == state.selectedCollectGroup.nameSpace);
+
+    // If there is a selected organization, remove it temporarily
+    CollectGroup? selectedOrg;
+    if (isSelectedOrgInList) {
+      selectedOrg = organisations.firstWhere(
+          (org) => org.nameSpace == state.selectedCollectGroup.nameSpace);
+      organisations = List.from(organisations)
+        ..removeWhere(
+            (org) => org.nameSpace == state.selectedCollectGroup.nameSpace);
+    }
+
+    // Apply normal sorting
     if (state.sortByFavorites) {
       organisations.sort((CollectGroup a, CollectGroup b) {
         final aIsFavorited = state.favoritedOrganisations.contains(a.nameSpace);
@@ -83,7 +101,113 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         return a.orgName.compareTo(b.orgName);
       });
     }
+
+    // Re-add the selected organization at the top if it exists
+    if (isSelectedOrgInList && selectedOrg != null) {
+      organisations.insert(0, selectedOrg);
+    }
+
     return organisations;
+  }
+
+  // Helper method to get type-filtered organizations based on the selected type
+  List<CollectGroup> _getTypeFilteredOrganisations(int selectedType) {
+    return state.organisations
+        .where(
+          (org) =>
+              selectedType == CollectGroupType.none.index ||
+              org.type.index == selectedType,
+        )
+        .toList();
+  }
+
+  // Helper method to filter organizations by search query
+  List<CollectGroup> _filterOrganisationsByQuery(
+    List<CollectGroup> organisations,
+    String query,
+  ) {
+    if (query.isEmpty) {
+      return organisations;
+    }
+
+    // First try exact substring matching
+    final exactMatches = organisations
+        .where(
+          (org) => _removeDiacritics(org.orgName.toLowerCase()).contains(query),
+        )
+        .toList();
+
+    // If we have exact matches, use those
+    if (exactMatches.isNotEmpty) {
+      return exactMatches;
+    }
+
+    // If no exact matches, use fuzzy matching
+    final orgNames = organisations
+        .map(
+          (org) => _removeDiacritics(org.orgName.toLowerCase()),
+        )
+        .toList();
+
+    // Extract fuzzy matched results
+    final fuzzyResults = extractAllSorted(
+      query: query,
+      choices: orgNames,
+    ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
+
+    // Map fuzzy results back to organization objects
+    return fuzzyResults.map((result) {
+      final index = orgNames.indexOf(result.choice);
+      return organisations[index];
+    }).toList();
+  }
+
+  // Helper method to ensure the selected organization is always at the top of results
+  List<CollectGroup> _ensureSelectedOrganisationOnTop(
+    List<CollectGroup> filteredResults,
+    CollectGroup selectedGroup,
+    List<CollectGroup> typeFilteredOrgs,
+    String query,
+  ) {
+    // Check if there's a currently selected organization
+    if (selectedGroup.nameSpace.isEmpty) {
+      return filteredResults;
+    }
+
+    // Check if the current selection exists in the type-filtered organizations
+    final selectedOrgInType = typeFilteredOrgs.firstWhere(
+      (org) => org.nameSpace == selectedGroup.nameSpace,
+      orElse: () => const CollectGroup.empty(),
+    );
+
+    // If it exists, ensure it's at the top of results
+    if (selectedOrgInType.nameSpace.isNotEmpty) {
+      // Remove the selected organization if it exists in the filtered results
+      filteredResults
+          .removeWhere((org) => org.nameSpace == selectedOrgInType.nameSpace);
+
+      // Always add the selected organization at the top
+      filteredResults.insert(0, selectedOrgInType);
+
+      // Log and track analytics only if it wouldn't normally appear in results
+      if (!_removeDiacritics(selectedOrgInType.orgName.toLowerCase())
+              .contains(query) &&
+          query.isNotEmpty) {
+        LoggingInfo.instance.info(
+            'Currently selected organization "${selectedOrgInType.orgName}" added to search results despite not matching query "$query"');
+
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.changeNameSubmitted,
+          eventProperties: {
+            'included_in_search': 'force_included',
+            'organisation_name': selectedOrgInType.orgName,
+            'search_query': query,
+          },
+        );
+      }
+    }
+
+    return filteredResults;
   }
 
   FutureOr<void> _onOrganisationFetch(
@@ -236,71 +360,30 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     try {
       final query = _removeDiacritics(event.query.toLowerCase());
 
+      // Store current selection to ensure it's not lost during filtering
+      final currentSelection = state.selectedCollectGroup;
+
       // Filter organizations by type first if there's a selected type
-      final typeFilteredOrgs = state.organisations
-          .where(
-            (org) =>
-                state.selectedType == CollectGroupType.none.index ||
-                org.type.index == state.selectedType,
-          )
-          .toList();
+      final typeFilteredOrgs =
+          _getTypeFilteredOrganisations(state.selectedType);
 
-      // If query is empty, just apply the type filter
-      if (query.isEmpty) {
-        emit(
-          state.copyWith(
-            status: OrganisationStatus.filtered,
-            filteredOrganisations:
-                _applyFavoriteSortingIfNeeded(typeFilteredOrgs),
-            previousSearchQuery: event.query,
-          ),
-        );
-        return;
-      }
+      // Create a list for search results
+      var filteredResults =
+          _filterOrganisationsByQuery(typeFilteredOrgs, query);
 
-      // First try exact substring matching
-      final exactMatches = typeFilteredOrgs
-          .where(
-            (org) =>
-                _removeDiacritics(org.orgName.toLowerCase()).contains(query),
-          )
-          .toList();
-
-      // If we have exact matches, use those
-      if (exactMatches.isNotEmpty) {
-        emit(
-          state.copyWith(
-            status: OrganisationStatus.filtered,
-            filteredOrganisations: _applyFavoriteSortingIfNeeded(exactMatches),
-            previousSearchQuery: event.query,
-          ),
-        );
-        return;
-      }
-
-      // If no exact matches, use fuzzy matching
-      final orgNames = typeFilteredOrgs
-          .map(
-            (org) => _removeDiacritics(org.orgName.toLowerCase()),
-          )
-          .toList();
-
-      // Extract fuzzy matched results
-      final fuzzyResults = extractAllSorted(
-        query: query,
-        choices: orgNames,
-      ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
-
-      // Map fuzzy results back to organization objects
-      final fuzzyMatches = fuzzyResults.map((result) {
-        final index = orgNames.indexOf(result.choice);
-        return typeFilteredOrgs[index];
-      }).toList();
+      // Ensure the selected organization is always at the top
+      filteredResults = _ensureSelectedOrganisationOnTop(
+        filteredResults,
+        currentSelection,
+        typeFilteredOrgs,
+        query,
+      );
 
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
-          filteredOrganisations: _applyFavoriteSortingIfNeeded(fuzzyMatches),
+          filteredOrganisations: _applyFavoriteSortingIfNeeded(filteredResults),
+          selectedCollectGroup: currentSelection, // Keep the selection
           previousSearchQuery: event.query,
         ),
       );
@@ -325,14 +408,11 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   }
 
   void _handleTypeChange(int newSelectedType, Emitter<OrganisationState> emit) {
-    // Get all organizations or just those of the selected type
-    var orgs = state.organisations;
-    if (newSelectedType != CollectGroupType.none.index) {
-      orgs = state.organisations
-          .where((org) => org.type.index == newSelectedType)
-          .toList();
+    // Get organizations filtered by the selected type
+    var orgs = _getTypeFilteredOrganisations(newSelectedType);
 
-      // Try to restore the last selected organization for this type
+    // Try to restore the last selected organization for this type
+    if (newSelectedType != CollectGroupType.none.index) {
       final userGuid = _getUserGuid();
       final key =
           '${_lastSelectedOrganisationKey}_${newSelectedType}_$userGuid';
@@ -356,34 +436,12 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     if (state.previousSearchQuery.isNotEmpty) {
       final query = _removeDiacritics(state.previousSearchQuery.toLowerCase());
 
-      // First try exact matching
-      var filteredOrgs = orgs
-          .where(
-            (org) =>
-                _removeDiacritics(org.orgName.toLowerCase()).contains(query),
-          )
-          .toList();
+      // Filter by query
+      orgs = _filterOrganisationsByQuery(orgs, query);
 
-      // If no exact matches, try fuzzy matching
-      if (filteredOrgs.isEmpty) {
-        final orgNames = orgs
-            .map(
-              (org) => _removeDiacritics(org.orgName.toLowerCase()),
-            )
-            .toList();
-
-        final fuzzyResults = extractAllSorted(
-          query: query,
-          choices: orgNames,
-        ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
-
-        filteredOrgs = fuzzyResults.map((result) {
-          final index = orgNames.indexOf(result.choice);
-          return orgs[index];
-        }).toList();
-      }
-
-      orgs = filteredOrgs;
+      // Ensure selected organization is at the top if it exists
+      orgs = _ensureSelectedOrganisationOnTop(orgs, state.selectedCollectGroup,
+          _getTypeFilteredOrganisations(newSelectedType), query);
     }
 
     emit(
