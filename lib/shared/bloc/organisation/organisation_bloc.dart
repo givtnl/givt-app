@@ -70,44 +70,36 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
   List<CollectGroup> _applyFavoriteSortingIfNeeded(
       List<CollectGroup> organisations) {
-    // First, check if there's a selected organization in the list
-    final isSelectedOrgInList =
-        state.selectedCollectGroup.nameSpace.isNotEmpty &&
-            organisations.any(
-                (org) => org.nameSpace == state.selectedCollectGroup.nameSpace);
+    // Create a copy of the list to avoid modifying the original
+    final result = List<CollectGroup>.from(organisations);
+    final selectedOrg = state.selectedCollectGroup;
 
-    // If there is a selected organization, remove it temporarily
-    CollectGroup? selectedOrg;
-    if (isSelectedOrgInList) {
-      selectedOrg = organisations.firstWhere(
-          (org) => org.nameSpace == state.selectedCollectGroup.nameSpace);
-      organisations = List.from(organisations)
-        ..removeWhere(
-            (org) => org.nameSpace == state.selectedCollectGroup.nameSpace);
+    // Remove selected organization if it exists in the list
+    final hasSelectedOrg = selectedOrg.nameSpace.isNotEmpty &&
+        result.any((org) => org.nameSpace == selectedOrg.nameSpace);
+    if (hasSelectedOrg) {
+      result.removeWhere((org) => org.nameSpace == selectedOrg.nameSpace);
     }
 
-    // Apply normal sorting
+    // Sort the list (by favorites or alphabetically)
     if (state.sortByFavorites) {
-      organisations.sort((CollectGroup a, CollectGroup b) {
+      result.sort((a, b) {
         final aIsFavorited = state.favoritedOrganisations.contains(a.nameSpace);
         final bIsFavorited = state.favoritedOrganisations.contains(b.nameSpace);
-        if (aIsFavorited && !bIsFavorited) return -1;
-        if (!aIsFavorited && bIsFavorited) return 1;
-        return a.orgName.compareTo(b.orgName);
+        return aIsFavorited == bIsFavorited
+            ? a.orgName.compareTo(b.orgName)
+            : (aIsFavorited ? -1 : 1);
       });
     } else {
-      // sort by name if not sorting by favorites
-      organisations.sort((CollectGroup a, CollectGroup b) {
-        return a.orgName.compareTo(b.orgName);
-      });
+      result.sort((a, b) => a.orgName.compareTo(b.orgName));
     }
 
-    // Re-add the selected organization at the top if it exists
-    if (isSelectedOrgInList && selectedOrg != null) {
-      organisations.insert(0, selectedOrg);
+    // Add selected organization at the top if it existed
+    if (hasSelectedOrg) {
+      result.insert(0, selectedOrg);
     }
 
-    return organisations;
+    return result;
   }
 
   // Helper method to get type-filtered organizations based on the selected type
@@ -359,39 +351,26 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
       final query = _removeDiacritics(event.query.toLowerCase());
-
-      // Store current selection to ensure it's not lost during filtering
-      final currentSelection = state.selectedCollectGroup;
-
-      // Filter organizations by type first if there's a selected type
       final typeFilteredOrgs =
           _getTypeFilteredOrganisations(state.selectedType);
 
-      // Create a list for search results
-      var filteredResults =
-          _filterOrganisationsByQuery(typeFilteredOrgs, query);
-
-      // Ensure the selected organization is always at the top
-      filteredResults = _ensureSelectedOrganisationOnTop(
-        filteredResults,
-        currentSelection,
+      // Apply query filtering and ensure selected org stays on top
+      final filteredResults = _ensureSelectedOrganisationOnTop(
+        _filterOrganisationsByQuery(typeFilteredOrgs, query),
+        state.selectedCollectGroup,
         typeFilteredOrgs,
         query,
       );
 
-      emit(
-        state.copyWith(
-          status: OrganisationStatus.filtered,
-          filteredOrganisations: _applyFavoriteSortingIfNeeded(filteredResults),
-          selectedCollectGroup: currentSelection, // Keep the selection
-          previousSearchQuery: event.query,
-        ),
-      );
+      emit(state.copyWith(
+        status: OrganisationStatus.filtered,
+        filteredOrganisations: _applyFavoriteSortingIfNeeded(filteredResults),
+        selectedCollectGroup: state.selectedCollectGroup,
+        previousSearchQuery: event.query,
+      ));
     } catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
+      LoggingInfo.instance
+          .error(e.toString(), methodName: stackTrace.toString());
       emit(state.copyWith(status: OrganisationStatus.error));
     }
   }
@@ -410,6 +389,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   void _handleTypeChange(int newSelectedType, Emitter<OrganisationState> emit) {
     // Get organizations filtered by the selected type
     var orgs = _getTypeFilteredOrganisations(newSelectedType);
+    CollectGroup selectedOrg = state.selectedCollectGroup;
 
     // Try to restore the last selected organization for this type
     if (newSelectedType != CollectGroupType.none.index) {
@@ -425,31 +405,31 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           orElse: () => const CollectGroup.empty(),
         );
 
-        // If found, update the selectedCollectGroup
+        // If found, update the selection
         if (lastSelectedOrg.nameSpace.isNotEmpty) {
-          emit(state.copyWith(selectedCollectGroup: lastSelectedOrg));
+          selectedOrg = lastSelectedOrg;
         }
       }
     }
 
-    // If there's an active search query, apply both filters
+    // Apply search filter if there's an active query
     if (state.previousSearchQuery.isNotEmpty) {
       final query = _removeDiacritics(state.previousSearchQuery.toLowerCase());
-
-      // Filter by query
       orgs = _filterOrganisationsByQuery(orgs, query);
-
-      // Ensure selected organization is at the top if it exists
-      orgs = _ensureSelectedOrganisationOnTop(orgs, state.selectedCollectGroup,
-          _getTypeFilteredOrganisations(newSelectedType), query);
     }
 
-    emit(
-      state.copyWith(
-        selectedType: newSelectedType,
-        filteredOrganisations: _applyFavoriteSortingIfNeeded(orgs),
-      ),
-    );
+    // Ensure selected organization is at the top
+    orgs = _ensureSelectedOrganisationOnTop(
+        orgs,
+        selectedOrg,
+        _getTypeFilteredOrganisations(newSelectedType),
+        state.previousSearchQuery.toLowerCase());
+
+    emit(state.copyWith(
+      selectedType: newSelectedType,
+      selectedCollectGroup: selectedOrg,
+      filteredOrganisations: _applyFavoriteSortingIfNeeded(orgs),
+    ));
   }
 
   FutureOr<void> _onSelectionChanged(
