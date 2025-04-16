@@ -104,14 +104,12 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
   // Helper method to get type-filtered organizations based on the selected type
   List<CollectGroup> _getTypeFilteredOrganisations(int selectedType) {
-    // If no type filter is active, return all organizations
-    if (selectedType == CollectGroupType.none.index) {
-      return state.organisations;
-    }
-
-    // Otherwise, filter by the selected type
     return state.organisations
-        .where((org) => org.type.index == selectedType)
+        .where(
+          (org) =>
+              selectedType == CollectGroupType.none.index ||
+              org.type.index == selectedType,
+        )
         .toList();
   }
 
@@ -168,37 +166,33 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       return filteredResults;
     }
 
-    // Find the selected organization in the full organization list, regardless of type
-    final selectedOrgInAllOrgs = state.organisations.firstWhere(
+    // Check if the current selection exists in the type-filtered organizations
+    final selectedOrgInType = typeFilteredOrgs.firstWhere(
       (org) => org.nameSpace == selectedGroup.nameSpace,
       orElse: () => const CollectGroup.empty(),
     );
 
-    // If it exists in the full list, use it
-    if (selectedOrgInAllOrgs.nameSpace.isNotEmpty) {
+    // If it exists, ensure it's at the top of results
+    if (selectedOrgInType.nameSpace.isNotEmpty) {
       // Remove the selected organization if it exists in the filtered results
-      filteredResults.removeWhere(
-          (org) => org.nameSpace == selectedOrgInAllOrgs.nameSpace);
+      filteredResults
+          .removeWhere((org) => org.nameSpace == selectedOrgInType.nameSpace);
 
       // Always add the selected organization at the top
-      filteredResults.insert(0, selectedOrgInAllOrgs);
+      filteredResults.insert(0, selectedOrgInType);
 
       // Log and track analytics only if it wouldn't normally appear in results
-      if (query.isNotEmpty &&
-              !_removeDiacritics(selectedOrgInAllOrgs.orgName.toLowerCase())
-                  .contains(query) ||
-          (state.selectedType != CollectGroupType.none.index &&
-              selectedOrgInAllOrgs.type.index != state.selectedType)) {
+      if (!_removeDiacritics(selectedOrgInType.orgName.toLowerCase())
+              .contains(query) &&
+          query.isNotEmpty) {
         LoggingInfo.instance.info(
-            'Currently selected organization "${selectedOrgInAllOrgs.orgName}" added to search results despite not matching filter criteria');
+            'Currently selected organization "${selectedOrgInType.orgName}" added to search results despite not matching query "$query"');
 
         AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.changeNameSubmitted,
           eventProperties: {
             'included_in_search': 'force_included',
-            'organisation_name': selectedOrgInAllOrgs.orgName,
-            'filter_type': state.selectedType,
-            'organisation_type': selectedOrgInAllOrgs.type.index,
+            'organisation_name': selectedOrgInType.orgName,
             'search_query': query,
           },
         );
