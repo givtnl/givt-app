@@ -982,8 +982,8 @@
     "completedKey": "Completed",
     "tutorialIntroductionTitle": "Hey, I’m Captain Generosity",
     "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'",
-    "refundTitle": "Refund donation",
-    "refundMessageBACS": "Please contact us so we can refund your donation.",
+    "refundTitle": "Refund donation?",
+    "refundMessageBACS": "Please contact us at support@givt.co.uk so we can refund your donation.",
     "refundMessageGeneral": "Go to your online banking environment to refund your donation.",
     "requestRefund": "Refund",
     "changeName": "Edit name"
