@@ -982,8 +982,8 @@
     "completedKey": "Completed",
     "tutorialIntroductionTitle": "Hey, I’m Captain Generosity",
     "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'",
-    "refundTitle": "Donatie terugboeken",
-    "refundMessageBACS": "Neem contact met ons op zodat wij uw donatie kunnen terugboeken.",
+    "refundTitle": "Donatie terugboeken?",
+    "refundMessageBACS": "Neem contact met ons op via support@givt.co.uk zodat wij de donatie kunnen terugboeken.",
     "refundMessageGeneral": "Ga naar je online bankomgeving om je donatie terug te boeken.",
     "requestRefund": "Terugboeken",
     "changeName": "Naam wijzigen"
