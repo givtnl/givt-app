@@ -302,6 +302,7 @@ class _CreateRecurringDonationBottomSheetViewState
                                     getIt(),
                                     getIt(),
                                     getIt(),
+                                    getIt(),
                                   )..add(
                                       OrganisationFetchForSelection(
                                         Country.fromCode(user.country),

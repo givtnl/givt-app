@@ -125,6 +125,7 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton(() => HistoryCubit(getIt()))

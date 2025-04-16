@@ -218,6 +218,7 @@ class FamilyAppRoutes {
                     getIt(),
                     getIt(),
                     getIt(),
+                    getIt(),
                   )..add(
                       OrganisationFetch(
                         Country.fromCode(user.country),
@@ -471,6 +472,7 @@ class FamilyAppRoutes {
                 ),
                 BlocProvider(
                   create: (_) => OrganisationBloc(
+                    getIt(),
                     getIt(),
                     getIt(),
                     getIt(),
