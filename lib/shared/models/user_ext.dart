@@ -171,6 +171,8 @@ class UserExt extends Equatable {
     if (phoneNumber.isNotEmpty) json['phoneNumber'] = phoneNumber;
     if (sortCode.isNotEmpty) json['sortCode'] = sortCode;
     if (accountNumber.isNotEmpty) json['accountNumber'] = accountNumber;
+    if (firstName.isNotEmpty) json['firstName'] = firstName;
+    if (lastName.isNotEmpty) json['lastName'] = lastName;
 
     json['address'] = address;
     json['postalCode'] = postalCode;
