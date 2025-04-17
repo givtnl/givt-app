@@ -135,7 +135,7 @@ class GivtListItem extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(4),
                                   ),
                                   child: Text(
-                                    'Online Giving',
+                                    context.l10n.onlineGivingLabel,
                                     style: textTheme.bodySmall!.copyWith(
                                       color: AppTheme.givtBlue,
                                       fontWeight: FontWeight.w500,
