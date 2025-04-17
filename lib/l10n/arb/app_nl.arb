@@ -986,5 +986,6 @@
     "refundMessageBACS": "Neem contact met ons op via support@givt.co.uk zodat wij de donatie kunnen terugboeken.",
     "refundMessageGeneral": "Ga naar je online bankomgeving om je donatie terug te boeken.",
     "requestRefund": "Terugboeken",
-    "changeName": "Naam wijzigen"
+    "changeName": "Naam wijzigen",
+    "onlineGivingLabel": "Online geven"
 }

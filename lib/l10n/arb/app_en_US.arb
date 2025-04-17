@@ -986,5 +986,6 @@
     "refundMessageBACS": "Please contact us so we can refund your donation.",
     "refundMessageGeneral": "Go to your online banking environment to refund your donation.",
     "requestRefund": "Refund",
-    "changeName": "Edit name"
+    "changeName": "Edit name",
+    "onlineGivingLabel": "Online giving"
 }
