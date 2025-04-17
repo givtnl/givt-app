@@ -13,7 +13,6 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
-import 'package:givt_app/shared/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
@@ -23,7 +22,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'give_event.dart';
-
 part 'give_state.dart';
 
 class GiveBloc extends Bloc<GiveEvent, GiveState> {
@@ -296,15 +294,13 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       organisation,
     );
 
-    // Handle auto-favorites functionality
-    await _handleAutoFavorites(namespace, userGUID);
-
     try {
       LoggingInfo.instance.info('Submitting Givts');
       await _givtRepository.submitGivts(
         guid: userGUID,
         body: {'donations': GivtTransaction.toJsonList(transactionList)},
       );
+      await _handleAutoFavorites(namespace, userGUID);
     } on SocketException catch (e) {
       log(e.toString());
       emit(
