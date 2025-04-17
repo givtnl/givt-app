@@ -40,9 +40,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
     on<AddOrganisationToFavorites>(_onAddOrganisationToFavorites);
     on<RemoveOrganisationFromFavorites>(_onRemoveOrganisationFromFavorites);
-    on<OrganisationSortByFavoritesToggled>(
-      _onOrganisationSortByFavoritesToggled,
-    );
+    on<FavoritesRefresh>(_onFavoritesRefresh);
   }
 
   final CollectGroupRepository _collectGroupRepository;
@@ -64,18 +62,43 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     return session.userGUID;
   }
 
-  List<CollectGroup> _applyFavoriteSorting(
+  List<CollectGroup> _applySorting(
     List<CollectGroup> organisations,
   ) {
-    // Always sort favorites to the top
+    // Always sort the selected group to the top
     organisations.sort((CollectGroup a, CollectGroup b) {
+      if (a == state.selectedCollectGroup) return -1;
+      if (b == state.selectedCollectGroup) return 1;
+
+      // Then sort favorites to the top
       final aIsFavorited = state.favoritedOrganisations.contains(a.nameSpace);
       final bIsFavorited = state.favoritedOrganisations.contains(b.nameSpace);
       if (aIsFavorited && !bIsFavorited) return -1;
       if (!aIsFavorited && bIsFavorited) return 1;
+
+      // Finally, sort alphabetically by organization name
       return a.orgName.compareTo(b.orgName);
     });
     return organisations;
+  }
+
+  FutureOr<void> _onFavoritesRefresh(
+    OrganisationEvent event,
+    Emitter<OrganisationState> emit,
+  ) {
+    final userGuid = _getUserGuid();
+    final key = _getFavoritedOrganisationsKey(userGuid);
+    final favoritedOrganisations = _sharedPreferences.getStringList(key) ?? [];
+    emit(
+      state.copyWith(favoritedOrganisations: favoritedOrganisations),
+    );
+    emit(
+      state.copyWith(
+        filteredOrganisations: _applySorting(
+          state.filteredOrganisations,
+        ),
+      ),
+    );
   }
 
   FutureOr<void> _onOrganisationFetch(
@@ -129,12 +152,16 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           }
         }
       }
-
+      emit(
+        state.copyWith(
+          selectedCollectGroup: selectedGroup,
+        ),
+      );
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
           organisations: organisations,
-          filteredOrganisations: _applyFavoriteSorting(organisations),
+          filteredOrganisations: _applySorting(organisations),
           selectedCollectGroup: selectedGroup,
           favoritedOrganisations: favoritedOrganisations,
         ),
@@ -183,7 +210,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         state.copyWith(
           status: OrganisationStatus.filtered,
           organisations: organisations,
-          filteredOrganisations: _applyFavoriteSorting(organisations),
+          filteredOrganisations: _applySorting(organisations),
           favoritedOrganisations: favoritedOrganisations,
         ),
       );
@@ -227,7 +254,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         emit(
           state.copyWith(
             status: OrganisationStatus.filtered,
-            filteredOrganisations: _applyFavoriteSorting(typeFilteredOrgs),
+            filteredOrganisations: _applySorting(typeFilteredOrgs),
             previousSearchQuery: event.query,
           ),
         );
@@ -247,7 +274,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         emit(
           state.copyWith(
             status: OrganisationStatus.filtered,
-            filteredOrganisations: _applyFavoriteSorting(exactMatches),
+            filteredOrganisations: _applySorting(exactMatches),
             previousSearchQuery: event.query,
           ),
         );
@@ -276,7 +303,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
-          filteredOrganisations: _applyFavoriteSorting(fuzzyMatches),
+          filteredOrganisations: _applySorting(fuzzyMatches),
           previousSearchQuery: event.query,
         ),
       );
@@ -346,7 +373,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     emit(
       state.copyWith(
         selectedType: newSelectedType,
-        filteredOrganisations: _applyFavoriteSorting(orgs),
+        filteredOrganisations: _applySorting(orgs),
       ),
     );
   }
@@ -363,13 +390,17 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     );
     emit(
       state.copyWith(
-        status: OrganisationStatus.filtered,
-        filteredOrganisations: _applyFavoriteSorting(
-          state.filteredOrganisations,
-        ),
         selectedCollectGroup: state.selectedCollectGroup == selectedNow
             ? const CollectGroup.empty()
             : selectedNow,
+      ),
+    );
+    emit(
+      state.copyWith(
+        status: OrganisationStatus.filtered,
+        filteredOrganisations: _applySorting(
+          state.filteredOrganisations,
+        ),
       ),
     );
   }
@@ -388,7 +419,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     );
     emit(
       state.copyWith(
-        filteredOrganisations: _applyFavoriteSorting(
+        filteredOrganisations: _applySorting(
           state.filteredOrganisations,
         ),
       ),
@@ -409,20 +440,8 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     );
     emit(
       state.copyWith(
-        filteredOrganisations:
-            _applyFavoriteSorting(state.filteredOrganisations),
+        filteredOrganisations: _applySorting(state.filteredOrganisations),
       ),
-    );
-  }
-
-  FutureOr<void> _onOrganisationSortByFavoritesToggled(
-    OrganisationSortByFavoritesToggled event,
-    Emitter<OrganisationState> emit,
-  ) {
-    emit(state.copyWith(sortByFavorites: event.sortByFavorites));
-    _handleTypeChange(
-      state.selectedType,
-      emit,
     );
   }
 

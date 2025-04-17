@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
-import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
@@ -78,6 +78,12 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               onConfirm: () => context.pop(),
             ),
           );
+        }
+        if (state.status == GiveStatus.readyToGive ||
+            state.status == GiveStatus.success) {
+          context.read<OrganisationBloc>().add(
+                const FavoritesRefresh(),
+              );
         }
       },
       child: Scaffold(

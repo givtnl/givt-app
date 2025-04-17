@@ -40,6 +40,13 @@ class OrganisationTypeChanged extends OrganisationEvent {
   List<Object> get props => [type];
 }
 
+class FavoritesRefresh extends OrganisationEvent {
+  const FavoritesRefresh();
+
+  @override
+  List<Object> get props => [];
+}
+
 class OrganisationSelectionChanged extends OrganisationEvent {
   const OrganisationSelectionChanged(this.mediumId);
 
@@ -74,13 +81,4 @@ class RemoveOrganisationFromFavorites extends OrganisationEvent {
 
   @override
   List<Object> get props => [nameSpace];
-}
-
-class OrganisationSortByFavoritesToggled extends OrganisationEvent {
-  const OrganisationSortByFavoritesToggled(this.sortByFavorites);
-
-  final bool sortByFavorites;
-
-  @override
-  List<Object> get props => [sortByFavorites];
 }

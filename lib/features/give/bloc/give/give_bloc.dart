@@ -670,13 +670,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       // Check if this is a consecutive donation to the same organization
       final isConsecutiveDonation = namespace == previousDonationOrg;
 
-      // Save current organization as the previous one for next time
-      await prefs.setString(previousDonationKey, namespace);
-
       // If this is the second consecutive donation to the same organization, add it to favorites
       if (isConsecutiveDonation && previousDonationOrg.isNotEmpty) {
         // Get favorited organizations
-        final favoritesKey = '${Util.favoritedOrganisationsKey}_$userGUID';
+        final favoritesKey = '${Util.favoritedOrganisationsKey}$userGUID';
         final favoritedOrganisations = prefs.getStringList(favoritesKey) ?? [];
 
         // Only add to favorites if it's not already a favorite
@@ -705,6 +702,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           );
         }
       }
+
+      // Save current organization as the previous one for next time
+      await prefs.setString(previousDonationKey, namespace);
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
         'Error in auto-favorites: ${e.toString()}',
