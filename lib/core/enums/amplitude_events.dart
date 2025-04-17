@@ -66,6 +66,9 @@ enum AmplitudeEvents {
   topupFailed('topup_failed'),
   topUpConfirmClicked('top_up_confirm_clicked'),
 
+  // Auto-favorites events
+  favoriteAutoAdded('favorite_auto_added'),
+
   // Cancel Recurring Giving allowance flow
   cancelRGA('cancel_reccuring_giving_allowance'),
   failedToCancelRGA('failed_to_cancel_allowance'),
