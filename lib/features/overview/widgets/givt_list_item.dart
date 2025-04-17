@@ -40,6 +40,9 @@ class GivtListItem extends StatelessWidget {
     final showCancelButton = givtGroup.status == 1;
     final showRefundButton = givtGroup.status == 3 && isWithinLastMonth;
 
+    // Check if this is an online giving donation (type 7)
+    final isOnlineGiving = givtGroup.status == 7;
+
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -101,20 +104,45 @@ class GivtListItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Visibility(
-                            visible: givtGroup.isGiftAidEnabled,
-                            child: Image.asset(
-                              'assets/images/gift_aid_yellow.png',
-                              height: 20,
-                            ),
-                          ),
-                          Text(
-                            givtGroup.organisationName,
-                            style: textTheme.titleLarge!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            children: [
+                              Visibility(
+                                visible: givtGroup.isGiftAidEnabled,
+                                child: Image.asset(
+                                  'assets/images/gift_aid_yellow.png',
+                                  height: 20,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  givtGroup.organisationName,
+                                  style: textTheme.titleLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              if (isOnlineGiving)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(
+                                    'Online Giving',
+                                    style: textTheme.bodySmall!.copyWith(
+                                      color: AppTheme.givtBlue,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         ],
                       ),
