@@ -200,6 +200,12 @@ class GivtListItem extends StatelessWidget {
   ElevatedButton _cancelButton(BuildContext context, TextTheme textTheme) {
     return ElevatedButton(
       onPressed: () async {
+        // Log when the cancel button is initially pressed
+        await AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.cancelDonationButtonClicked,
+          eventProperties: givtGroup.toJson(),
+        );
+
         final confirmed = await showDialog<bool>(
           context: context,
           barrierDismissible: false,
@@ -214,10 +220,16 @@ class GivtListItem extends StatelessWidget {
         );
         if (confirmed ?? false) {
           await AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.donationCancelled,
+            eventName: AmplitudeEvents.onConfirmCancelDonation,
             eventProperties: givtGroup.toJson(),
           );
           onCancel?.call();
+        } else {
+          // Log when user clicks "No" on the confirmation dialog
+          await AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.cancelDonationNoClicked,
+            eventProperties: givtGroup.toJson(),
+          );
         }
       },
       style: ElevatedButton.styleFrom(
