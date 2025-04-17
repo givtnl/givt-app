@@ -12,11 +12,8 @@ import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
-import 'package:givt_app/features/overview/models/givt.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
-import 'package:givt_app/shared/repositories/givt_repository.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'organisation_event.dart';
@@ -27,16 +24,12 @@ const int _fuzzyScoreThreshold = 70;
 
 // Add a private field for the SharedPreferences key
 const String _favoritedOrganisationsKey = 'favoritedOrganisations';
-const String _lastSelectedOrganisationKey = 'lastSelectedOrganisation';
-const String _organisationDonationCountsKey = 'organisationDonationCounts';
-const int _autoFavoriteThreshold = 2;
 
 class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   OrganisationBloc(
     this._collectGroupRepository,
     this._campaignRepository,
     this._sharedPreferences,
-    this._givtRepository,
   ) : super(const OrganisationState()) {
     on<OrganisationFetch>(_onOrganisationFetch);
 
@@ -57,7 +50,6 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   final CollectGroupRepository _collectGroupRepository;
   final CampaignRepository _campaignRepository;
   final SharedPreferences _sharedPreferences;
-  final GivtRepository _givtRepository;
 
   String _getFavoritedOrganisationsKey(String userGuid) {
     return '_favoritedOrganisationsKey_$userGuid';
@@ -139,73 +131,6 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
                 );
             }
           }
-        }
-      }
-
-      // If GivtRepository is provided, fetch givts and analyze for auto-favoriting
-      if (_givtRepository != null) {
-        try {
-          final givts = await _givtRepository!.fetchGivts();
-
-          // Count organization occurrences in successful donations
-          final donationCounts = <String, int>{};
-          for (final givt in givts) {
-            if (givt.mediumId.isNotEmpty && givt.status >= 1) {
-              donationCounts[givt.mediumId] =
-                  (donationCounts[givt.mediumId] ?? 0) + 1;
-            }
-          }
-
-          // Auto-favorite organizations that appear 2 or more times
-          for (final entry in donationCounts.entries) {
-            if (entry.value >= _autoFavoriteThreshold &&
-                !favoritedOrganisations.contains(entry.key) &&
-                entry.key.isNotEmpty) {
-              // Find organization name from the collected organizations
-              final org = organisations.firstWhere(
-                (org) => org.nameSpace == entry.key,
-                orElse: () => const CollectGroup.empty(),
-              );
-
-              if (org.nameSpace.isNotEmpty) {
-                // Add to favorites in SharedPreferences
-                final updatedFavorites =
-                    List<String>.from(favoritedOrganisations)..add(entry.key);
-                _sharedPreferences.setStringList(key, updatedFavorites);
-                favoritedOrganisations.add(entry.key);
-
-                // Log the auto-favorite action
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.organisationFavoriteToggled,
-                  eventProperties: {
-                    'organisation_name': org.orgName,
-                    'organisation_id': entry.key,
-                    'is_favorited': true,
-                    'auto_favorited': true,
-                    'donation_count': entry.value,
-                  },
-                );
-
-                // Update donation count in SharedPreferences
-                final countsKey = '${_organisationDonationCountsKey}_$userGuid';
-                Map<String, dynamic> storedCounts = {};
-                final countsString = _sharedPreferences.getString(countsKey);
-                if (countsString != null && countsString.isNotEmpty) {
-                  storedCounts =
-                      jsonDecode(countsString) as Map<String, dynamic>;
-                }
-                storedCounts[entry.key] = entry.value;
-                _sharedPreferences.setString(
-                    countsKey, jsonEncode(storedCounts));
-              }
-            }
-          }
-        } catch (e, stackTrace) {
-          // Just log the error but don't throw it to continue with the rest of the organizations fetch
-          LoggingInfo.instance.error(
-            'Failed to auto-favorite organizations from givts: ${e.toString()}',
-            methodName: stackTrace.toString(),
-          );
         }
       }
 
@@ -494,77 +419,4 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   }
 
   String _removeDiacritics(String string) => removeDiacritics(string);
-
-  // Track donation counts per organization and auto-favorite organizations with >= 2 donations
-  void trackDonationAndAutoFavorite(String nameSpace) {
-    if (nameSpace.isEmpty) return;
-
-    final userGuid = _getUserGuid();
-    final countsKey = '${_organisationDonationCountsKey}_$userGuid';
-
-    // Get current donation counts from SharedPreferences
-    Map<String, dynamic> donationCounts = {};
-    final countsString = _sharedPreferences.getString(countsKey);
-    if (countsString != null && countsString.isNotEmpty) {
-      donationCounts = jsonDecode(countsString) as Map<String, dynamic>;
-    }
-
-    // Increment donation count for this organization
-    final currentCount = (donationCounts[nameSpace] as int?) ?? 0;
-    final newCount = currentCount + 1;
-    donationCounts[nameSpace] = newCount;
-
-    // Save updated counts back to SharedPreferences
-    _sharedPreferences.setString(countsKey, jsonEncode(donationCounts));
-
-    // Auto-favorite if threshold is reached
-    if (newCount >= _autoFavoriteThreshold &&
-        !state.favoritedOrganisations.contains(nameSpace)) {
-      // Add to favorites
-      final favKey = _getFavoritedOrganisationsKey(userGuid);
-      final updatedFavorites = List<String>.from(state.favoritedOrganisations)
-        ..add(nameSpace);
-      _sharedPreferences.setStringList(favKey, updatedFavorites);
-
-      // Get organization name for analytics
-      final orgName = state.organisations
-          .firstWhere(
-            (org) => org.nameSpace == nameSpace,
-            orElse: () => const CollectGroup.empty(),
-          )
-          .orgName;
-
-      // Log the auto-favorite action
-      AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.organisationFavoriteToggled,
-        eventProperties: {
-          'organisation_name': orgName,
-          'organisation_id': nameSpace,
-          'is_favorited': true,
-          'auto_favorited': true,
-          'donation_count': newCount,
-        },
-      );
-
-      // Update state
-      add(AddOrganisationToFavorites(nameSpace));
-    }
-  }
-
-  // Get donation count for an organization
-  int getDonationCount(String nameSpace) {
-    if (nameSpace.isEmpty) return 0;
-
-    final userGuid = _getUserGuid();
-    final countsKey = '${_organisationDonationCountsKey}_$userGuid';
-
-    // Get current donation counts from SharedPreferences
-    final countsString = _sharedPreferences.getString(countsKey);
-    if (countsString == null || countsString.isEmpty) {
-      return 0;
-    }
-
-    final donationCounts = jsonDecode(countsString) as Map<String, dynamic>;
-    return (donationCounts[nameSpace] as int?) ?? 0;
-  }
 }
