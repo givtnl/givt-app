@@ -41,7 +41,8 @@ class GivtListItem extends StatelessWidget {
     final showRefundButton = givtGroup.status == 3 && isWithinLastMonth;
 
     // Check if this is an online giving donation (type 7)
-    final isOnlineGiving = givtGroup.status == 7;
+    final isOnlineGiving =
+        givtGroup.givts.any((givt) => givt.donationType == 7);
 
     return Container(
       decoration: BoxDecoration(
