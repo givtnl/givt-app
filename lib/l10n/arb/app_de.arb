@@ -982,9 +982,10 @@
     "completedKey": "Completed",
     "tutorialIntroductionTitle": "Hey, I’m Captain Generosity",
     "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'",
-    "refundTitle": "Spende zurückbuchen",
+    "refundTitle": "Spende zurückbuchen?",
     "refundMessageBACS": "Bitte kontaktiere uns, damit wir deine Spende erstatten können.",
     "refundMessageGeneral": "Gehe zu deinem Online-Banking, um deine Spende zurückzubuchen.",
     "requestRefund": "Zurückbuchen",
-    "changeName": "Name bearbeiten"
+    "changeName": "Name bearbeiten",
+    "onlineGivingLabel": "Online-Spende"
 }
