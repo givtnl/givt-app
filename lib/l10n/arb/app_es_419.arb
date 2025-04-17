@@ -983,8 +983,9 @@
     "tutorialIntroductionTitle": "¡Hola! Soy el Capitán Generosidad.",
     "tutorialIntroductionDescription": "Estoy aquí para ayudar a tu familia a cultivar gratitud y fomentar la generosidad. ¡Empecemos!",
     "refundTitle": "Revertir donación",
-    "refundMessageBACS": "Please contact us so we can refund your donation.",
+    "refundMessageBACS": "Please contact us at support@givt.co.uk so we can refund your donation.",
     "refundMessageGeneral": "Go to your online banking environment to refund your donation.",
     "requestRefund": "Revertir",
-    "changeName": "Editar nombre"
+    "changeName": "Editar nombre",
+    "onlineGivingLabel": "Donación en línea"
 }
