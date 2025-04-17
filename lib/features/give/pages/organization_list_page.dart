@@ -127,31 +127,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                           suffixIcon: const Icon(Icons.close),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      IconButton(
-                        icon: Icon(
-                          state.sortByFavorites
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color:
-                              state.sortByFavorites ? Colors.red : Colors.grey,
-                        ),
-                        onPressed: () {
-                          final newSortState = !state.sortByFavorites;
-                          context.read<OrganisationBloc>().add(
-                                OrganisationSortByFavoritesToggled(
-                                  newSortState,
-                                ),
-                              );
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents
-                                .organisationSortByFavoritesToggled,
-                            eventProperties: {
-                              'is_sorted_by_favorites': newSortState,
-                            },
-                          );
-                        },
-                      ),
+                      // Sort toggle button has been removed - favorites are always shown at the top
                     ],
                   ),
                 ),
