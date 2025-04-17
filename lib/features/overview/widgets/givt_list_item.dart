@@ -54,139 +54,132 @@ class GivtListItem extends StatelessWidget {
         ),
       ),
       padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
-      child: Stack(
+      child: Column(
         children: [
-          if (isOnlineGiving)
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 2,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  context.l10n.onlineGivingLabel,
-                  style: textTheme.bodySmall!.copyWith(
-                    color: AppTheme.givtBlue,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-          Column(
+          Row(
             children: [
-              Row(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: const BoxDecoration(
-                          color: AppTheme.givtLightGray,
-                        ),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                width: 5,
-                                color: AppTheme.givtLightPurple,
-                              ),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              DateFormat('dd')
-                                  .format(givtGroup.timeStamp!.toLocal()),
-                              style: textTheme.titleLarge!.copyWith(
-                                color: AppTheme.givtBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      color: AppTheme.givtLightGray,
+                    ),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            width: 5,
+                            color: AppTheme.givtLightPurple,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        DateFormat('HH:mm').format(givtGroup.timeStamp!.toLocal()),
-                        style: textTheme.bodySmall!.copyWith(
-                          color: AppTheme.givtBlue,
-                          fontWeight: FontWeight.bold,
+                      child: Center(
+                        child: Text(
+                          DateFormat('dd')
+                              .format(givtGroup.timeStamp!.toLocal()),
+                          style: textTheme.titleLarge!.copyWith(
+                            color: AppTheme.givtBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Visibility(
-                                    visible: givtGroup.isGiftAidEnabled,
-                                    child: Image.asset(
-                                      'assets/images/gift_aid_yellow.png',
-                                      height: 20,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      givtGroup.organisationName,
-                                      style: textTheme.titleLarge!.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          ...givtGroup.givts.map(
-                            (collection) => Row(
-                              children: [
-                                Text(
-                                  '${context.l10n.collect} ${collection.collectId}',
-                                  textAlign: TextAlign.start,
-                                ),
-                                Expanded(child: Container()),
-                                Text(
-                                  '${currency.currencySymbol} ${Util.formatNumberComma(
-                                    collection.amount,
-                                    country,
-                                  )}',
-                                  textAlign: TextAlign.end,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                  const SizedBox(height: 5),
+                  Text(
+                    DateFormat('HH:mm').format(givtGroup.timeStamp!.toLocal()),
+                    style: textTheme.bodySmall!.copyWith(
+                      color: AppTheme.givtBlue,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  // .. More buttons :)
-                  const SizedBox(width: 4),
-                  if (showCancelButton)
-                    _cancelButton(context, textTheme)
-                  else if (showRefundButton)
-                    _refundButton(context, country, textTheme),
-                ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Visibility(
+                                visible: givtGroup.isGiftAidEnabled,
+                                child: Image.asset(
+                                  'assets/images/gift_aid_yellow.png',
+                                  height: 20,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  givtGroup.organisationName,
+                                  style: textTheme.titleLarge!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              if (isOnlineGiving)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(
+                                    context.l10n.onlineGivingLabel,
+                                    style: textTheme.bodySmall!.copyWith(
+                                      color: AppTheme.givtBlue,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      ...givtGroup.givts.map(
+                        (collection) => Row(
+                          children: [
+                            Text(
+                              '${context.l10n.collect} ${collection.collectId}',
+                              textAlign: TextAlign.start,
+                            ),
+                            Expanded(child: Container()),
+                            Text(
+                              '${currency.currencySymbol} ${Util.formatNumberComma(
+                                collection.amount,
+                                country,
+                              )}',
+                              textAlign: TextAlign.end,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              // .. More buttons :)
+              const SizedBox(width: 4),
+              if (showCancelButton)
+                _cancelButton(context, textTheme)
+              else if (showRefundButton)
+                _refundButton(context, country, textTheme),
             ],
           ),
         ],
