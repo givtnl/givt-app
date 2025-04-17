@@ -47,7 +47,7 @@ enum AmplitudeEvents {
   askForInterviewTriggered('ask_for_interview_triggered'),
   organisationFavoriteToggled('organisation_favorite_toggled'),
   organisationSortByFavoritesToggled('organisation_sort_by_favorites_toggled'),
-  donationCancelled('donation_cancelled'),
+  onInfoRowClicked('on_info_row_clicked'),
 
   // Gratitude Goal
   gratitudeGoalStartClicked('gratitude_goal_start_clicked'),
@@ -419,6 +419,11 @@ enum AmplitudeEvents {
 
   // Refund
   refundInfoRequested('refund_info_viewed'),
+
+  // Cancel Donation
+  cancelDonationButtonClicked('cancel_donation_button_clicked'),
+  cancelDonationNoClicked('cancel_donation_no_clicked'),
+  onConfirmCancelDonation('donation_cancelled'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

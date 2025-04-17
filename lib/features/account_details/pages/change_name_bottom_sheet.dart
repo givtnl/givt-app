@@ -129,9 +129,15 @@ class _ChangeNameBottomSheetState extends State<ChangeNameBottomSheet> {
   bool get isEnabled {
     if (formKey.currentState == null) return false;
     if (formKey.currentState!.validate() == false) return false;
-    return firstNameController.text.isNotEmpty &&
+
+    final isNameValid = firstNameController.text.isNotEmpty &&
         lastNameController.text.isNotEmpty &&
         Util.nameFieldsRegEx.hasMatch(firstNameController.text) &&
         Util.nameFieldsRegEx.hasMatch(lastNameController.text);
+
+    final isNameDifferent = firstNameController.text != widget.firstName ||
+        lastNameController.text != widget.lastName;
+
+    return isNameValid && isNameDifferent;
   }
 }
