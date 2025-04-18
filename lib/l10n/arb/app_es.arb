@@ -987,5 +987,6 @@
     "refundMessageGeneral": "Accede a tu banca en línea para revertir tu donación.",
     "requestRefund": "Refund",
     "changeName": "Edit name",
-    "onlineGivingLabel": "Online giving"
+    "onlineGivingLabel": "Online giving",
+    "accountDisabled": "Your account has been blocked. Please contact us at support@givtapp.net"
 }

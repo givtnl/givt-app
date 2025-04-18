@@ -987,5 +987,6 @@
     "refundMessageGeneral": "Gehe zu deinem Online-Banking, um deine Spende zurückzubuchen.",
     "requestRefund": "Zurückbuchen",
     "changeName": "Name bearbeiten",
-    "onlineGivingLabel": "Online-Spende"
+    "onlineGivingLabel": "Online-Spende",
+    "accountDisabled": "Dein Konto wurde gesperrt. Bitte kontaktiere uns unter support@givtapp.net"
 }

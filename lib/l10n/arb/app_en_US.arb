@@ -987,5 +987,6 @@
     "refundMessageGeneral": "Go to your online banking environment to refund your donation.",
     "requestRefund": "Refund",
     "changeName": "Edit name",
-    "onlineGivingLabel": "Online giving"
+    "onlineGivingLabel": "Online giving",
+    "accountDisabled": "Your account has been blocked. Please contact us at support@givtapp.net"
 }
