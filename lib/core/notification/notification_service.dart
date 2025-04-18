@@ -465,7 +465,7 @@ class NotificationService implements INotificationService {
   }) {
     final now = tz.TZDateTime.now(tz.local);
     if (kDebugMode) {
-      return now.add(const Duration(seconds: 30));
+      return now.add(const Duration(minutes: 10)); // Changed from 30 seconds to 10 minutes
     }
 
     if (isMonthly) {
