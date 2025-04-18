@@ -140,6 +140,16 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               );
             }
+            if (state.status == AuthStatus.accountDisabled) {
+              showDialog<void>(
+                context: context,
+                builder: (context) => WarningDialog(
+                  title: locals.loginFailure,
+                  content: locals.accountDisabled,
+                  onConfirm: () => context.pop(),
+                ),
+              );
+            }
           },
           child: Form(
             key: formKey,
