@@ -987,5 +987,6 @@
     "refundMessageGeneral": "Ga naar je online bankomgeving om je donatie terug te boeken.",
     "requestRefund": "Terugboeken",
     "changeName": "Naam wijzigen",
-    "onlineGivingLabel": "Online geven"
+    "onlineGivingLabel": "Online geven",
+    "accountDisabled": "Je account is geblokkeerd. Neem contact met ons op via support@givtapp.net"
 }
