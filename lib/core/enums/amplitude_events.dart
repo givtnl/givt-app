@@ -428,6 +428,9 @@ enum AmplitudeEvents {
   cancelDonationNoClicked('cancel_donation_no_clicked'),
   onConfirmCancelDonation('donation_cancelled'),
 
+  // Memory summary
+  memorySummaryClicked('memory_summary_clicked'),
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
   ;
