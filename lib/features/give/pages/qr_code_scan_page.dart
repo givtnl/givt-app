@@ -193,8 +193,8 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
               child: Text(locals.cancel),
             ),
             TextButton(
-              onPressed: () {
-                _controller.start();
+              onPressed: () async {
+                await _controller.start();
                 Navigator.of(context).pop();
               },
               child: Text(locals.tryAgain),
