@@ -17,6 +17,7 @@ enum AuthStatus {
   twoAttemptsLeft,
   oneAttemptLeft,
   biometricCheck,
+  accountDisabled,
 }
 
 class AuthState extends Equatable {

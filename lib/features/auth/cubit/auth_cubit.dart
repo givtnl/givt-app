@@ -116,6 +116,12 @@ class AuthCubit extends Cubit<AuthState> {
           );
           return;
         }
+        if (e.toString().contains('AccountDisabled')) {
+          emit(
+            state.copyWith(status: AuthStatus.accountDisabled),
+          );
+          return;
+        }
       } else if (e is SocketException) {
         emit(
           state.copyWith(
