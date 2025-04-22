@@ -10,6 +10,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/models/models.dart';
+import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
@@ -47,6 +48,8 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   final CampaignRepository _campaignRepository;
   final SharedPreferences _sharedPreferences;
 
+  Organisation lastDonatedOrganisation = const Organisation.empty();
+
   String _getFavoritedOrganisationsKey(String userGuid) {
     return '${Util.favoritedOrganisationsKey}$userGuid';
   }
@@ -67,8 +70,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) {
     // Always sort the selected group to the top
     organisations.sort((CollectGroup a, CollectGroup b) {
-      if (a == state.selectedCollectGroup) return -1;
-      if (b == state.selectedCollectGroup) return 1;
+      if (a == state.selectedCollectGroup &&
+          a.orgName == lastDonatedOrganisation.organisationName) return -1;
+      if (b == state.selectedCollectGroup &&
+          b.orgName == lastDonatedOrganisation.organisationName) return 1;
 
       // Then sort favorites to the top
       final aIsFavorited = state.favoritedOrganisations.contains(a.nameSpace);
@@ -127,7 +132,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           .toList();
       var selectedGroup = state.selectedCollectGroup;
       if (event.showLastDonated) {
-        final lastDonatedOrganisation =
+        lastDonatedOrganisation =
             await _campaignRepository.getLastOrganisationDonated();
         if (lastDonatedOrganisation.mediumId != null) {
           if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
