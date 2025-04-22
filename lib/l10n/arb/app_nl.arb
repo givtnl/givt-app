@@ -57,7 +57,7 @@
     "answerWhyAreMyDataStored": "Lees hieronder welke gegevens we waarvoor nodig hebben:\n \n\n Adresgegevens: We hebben je adresgegevens nodig om het mandaat aan te kunnen maken, zonder deze gegevens is het mandaat niet geldig en kun je je registratie niet afronden. Welke gegevens hiervoor nodig zijn, is wettelijk bepaald.\n \n\n Mobiele nummer: We gebruiken je mobiele nummer enkel voor support doeleinden.\n \n\n Betalingsgegevens: Je betalingsgegevens hebben we nodig om je gedane gift af te kunnen schrijven.\n \n\n E-mailadres: We gebruiken je e-mailadres om je Givt-account aan te maken. Je logt in met je e-mailadres en je wachtwoord. Ook sturen we je af en toe een update maar hier kun je je ook altijd weer voor uitschrijven.\n Hierover kun je meer lezen in onze privacyverklaring die je vindt onderaan deze faq.",
     "cantCancelGiftAfter15Minutes": "Helaas, deze gift kan je niet meer annuleren vanuit de Givt-app.",
     "faqVraag16": "Kan ik mijn giften annuleren?",
-    "faqAntwoord16": "Je kan via het giftenoverzicht je gift annuleren door naar links te swipen (vegen). Als je de Gift niet meer kan verwijderen is deze al verwerkt. Let op: dit kan alleen als je je registratie in de Givt-app hebt voltooid.\n \n\n Je kunt je giften ook op een later moment herroepen. Er vinden geen overschrijvingen plaats tijdens het geven met Givt, dit gebeurt achteraf door middel van een automatische incasso. Alle automatische incasso’s zijn achteraf via je eigen bank te herroepen.",
+    "faqAntwoord16": "Je kan via het giftenoverzicht je gift annuleren door op de annuleren knop onder de specifieke donatie te drukken. Als je de Gift niet meer kan annuleren is deze al verwerkt. Let op: dit kan alleen als je je registratie in de Givt-app hebt voltooid.\n \n\n Je kunt je giften ook op een later moment herroepen. Er vinden geen overschrijvingen plaats tijdens het geven met Givt, dit gebeurt achteraf door middel van een automatische incasso. Alle automatische incasso’s zijn achteraf via je eigen bank te herroepen.",
     "selectContextCollect": "Geef in de kerk, aan de deur of op straat",
     "giveContextQr": "Geef door middel van een QR-code",
     "selectContextList": "Kies een doel uit de lijst",
@@ -981,5 +981,12 @@
     "tutorialTheEndDescription": "I’ll let you take it from here. Head to your next mission and keep making a difference!",
     "completedKey": "Completed",
     "tutorialIntroductionTitle": "Hey, I’m Captain Generosity",
-    "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'"
+    "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'",
+    "refundTitle": "Donatie terugboeken?",
+    "refundMessageBACS": "Neem contact met ons op via support@givt.co.uk zodat wij de donatie kunnen terugboeken.",
+    "refundMessageGeneral": "Ga naar je online bankomgeving om je donatie terug te boeken.",
+    "requestRefund": "Terugboeken",
+    "changeName": "Naam wijzigen",
+    "onlineGivingLabel": "Online geven",
+    "accountDisabled": "Je account is geblokkeerd. Neem contact met ons op via support@givtapp.net"
 }

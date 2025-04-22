@@ -14,6 +14,7 @@ class Givt extends Equatable {
     required this.timeStamp,
     required this.mediumId,
     required this.taxYear,
+    this.donationType = 0,
   });
 
   const Givt.empty()
@@ -27,7 +28,25 @@ class Givt extends Equatable {
         isGiftAidEnabled = false,
         status = 0,
         timeStamp = null,
-        mediumId = '';
+        mediumId = '',
+        donationType = 0;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Id': id,
+      'Amount': amount,
+      'CollectGroupId': collectGroupId,
+      'OrgName': organisationName,
+      'OrganisationTaxDeductible': organisationTaxDeductible,
+      'CollectId': collectId,
+      'GiftAidEnabled': isGiftAidEnabled,
+      'Status': status,
+      'Timestamp': timeStamp?.toIso8601String(),
+      'MediumId': mediumId,
+      'TaxYear': taxYear,
+      'DonationType': donationType,
+    };
+  }
 
   factory Givt.fromJson(Map<String, dynamic> json) {
     var taxYear = 0;
@@ -58,6 +77,8 @@ class Givt extends Equatable {
       timeStamp: timestamp,
       mediumId: json['MediumId'] as String,
       taxYear: taxYear,
+      donationType:
+          json.containsKey('DonationType') ? json['DonationType'] as int : 0,
     );
   }
 
@@ -80,6 +101,7 @@ class Givt extends Equatable {
   final DateTime? timeStamp;
   final String mediumId;
   final int taxYear;
+  final int donationType;
 
   Givt copyWith({
     int? id,
@@ -93,6 +115,7 @@ class Givt extends Equatable {
     DateTime? timeStamp,
     String? mediumId,
     int? taxYear,
+    int? donationType,
   }) =>
       Givt(
         id: id ?? this.id,
@@ -107,6 +130,7 @@ class Givt extends Equatable {
         status: status ?? this.status,
         timeStamp: timeStamp ?? this.timeStamp,
         mediumId: mediumId ?? this.mediumId,
+        donationType: donationType ?? this.donationType,
       );
 
   @override
@@ -121,5 +145,6 @@ class Givt extends Equatable {
         status,
         timeStamp,
         mediumId,
+        donationType,
       ];
 }

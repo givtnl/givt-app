@@ -7,6 +7,19 @@ abstract class PersonalInfoEditEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class PersonalInfoEditName extends PersonalInfoEditEvent {
+  const PersonalInfoEditName({
+    required this.firstName,
+    required this.lastName,
+  });
+
+  final String firstName;
+  final String lastName;
+
+  @override
+  List<Object> get props => [firstName, lastName];
+}
+
 class PersonalInfoEditEmail extends PersonalInfoEditEvent {
   const PersonalInfoEditEmail({
     required this.email,

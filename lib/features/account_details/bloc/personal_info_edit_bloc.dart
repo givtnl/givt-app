@@ -5,7 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 
 part 'personal_info_edit_event.dart';
@@ -21,6 +23,8 @@ class PersonalInfoEditBloc
             loggedInUserExt: loggedInUserExt,
           ),
         ) {
+    on<PersonalInfoEditName>(_onNameChanged);
+
     on<PersonalInfoEditEmail>(_onEmailChanged);
 
     on<PersonalInfoEditAddress>(_onAddressChanged);
@@ -35,6 +39,86 @@ class PersonalInfoEditBloc
   }
 
   final AuthRepository authRepository;
+
+  void _handleSocketException(
+    Exception e,
+    StackTrace stackTrace,
+    Emitter<PersonalInfoEditState> emit,
+  ) {
+    LoggingInfo.instance.error(
+      e.toString(),
+      methodName: stackTrace.toString(),
+    );
+    emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
+  }
+
+  void _handleGivtServerFailure(
+    GivtServerFailure e,
+    StackTrace stackTrace,
+    Emitter<PersonalInfoEditState> emit,
+  ) {
+    LoggingInfo.instance.error(
+      e.toString(),
+      methodName: stackTrace.toString(),
+    );
+    emit(
+      state.copyWith(
+        status: PersonalInfoEditStatus.error,
+        error: e.body.toString(),
+      ),
+    );
+  }
+
+  void _handleGenericException(
+    Object e,
+    StackTrace stackTrace,
+    Emitter<PersonalInfoEditState> emit,
+  ) {
+    LoggingInfo.instance.error(
+      e.toString(),
+      methodName: stackTrace.toString(),
+    );
+    final hasInternet = getIt<NetworkInfo>().isConnected;
+    emit(
+      state.copyWith(
+        status: hasInternet
+            ? PersonalInfoEditStatus.error
+            : PersonalInfoEditStatus.noInternet,
+      ),
+    );
+  }
+
+  FutureOr<void> _onNameChanged(
+    PersonalInfoEditName event,
+    Emitter<PersonalInfoEditState> emit,
+  ) async {
+    emit(state.copyWith(status: PersonalInfoEditStatus.loading));
+    try {
+      LoggingInfo.instance.info(
+        'Changing name to ${event.firstName} ${event.lastName}',
+      );
+
+      final stateUser = state.loggedInUserExt.copyWith(
+        firstName: event.firstName,
+        lastName: event.lastName,
+      );
+      await authRepository.updateUserExt(
+        stateUser.toUpdateJson(),
+      );
+      emit(
+        state.copyWith(
+          status: PersonalInfoEditStatus.success,
+          loggedInUserExt: stateUser,
+        ),
+      );
+    } on SocketException catch (e, stackTrace) {
+      _handleSocketException(e, stackTrace, emit);
+    } on GivtServerFailure catch (e, stackTrace) {
+      _handleGivtServerFailure(e, stackTrace, emit);
+    } catch (e, stackTrace) {
+      _handleGenericException(e, stackTrace, emit);
+    }
+  }
 
   FutureOr<void> _onEmailChanged(
     PersonalInfoEditEmail event,
@@ -71,23 +155,12 @@ class PersonalInfoEditBloc
           loggedInUserExt: stateUser,
         ),
       );
-    } on SocketException catch (e) {
-      LoggingInfo.instance.error(e.toString());
-      emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
-    } on GivtServerFailure catch (e) {
-      LoggingInfo.instance.warning(e.toString());
-      emit(
-        state.copyWith(
-          status: PersonalInfoEditStatus.error,
-          error: e.body.toString(),
-        ),
-      );
+    } on SocketException catch (e, stackTrace) {
+      _handleSocketException(e, stackTrace, emit);
+    } on GivtServerFailure catch (e, stackTrace) {
+      _handleGivtServerFailure(e, stackTrace, emit);
     } catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(state.copyWith(status: PersonalInfoEditStatus.error));
+      _handleGenericException(e, stackTrace, emit);
     }
   }
 
@@ -114,22 +187,11 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
+      _handleSocketException(e, stackTrace, emit);
     } on GivtServerFailure catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(
-        state.copyWith(
-          status: PersonalInfoEditStatus.error,
-          error: e.body.toString(),
-        ),
-      );
+      _handleGivtServerFailure(e, stackTrace, emit);
+    } catch (e, stackTrace) {
+      _handleGenericException(e, stackTrace, emit);
     }
   }
 
@@ -154,22 +216,11 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
+      _handleSocketException(e, stackTrace, emit);
     } on GivtServerFailure catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(
-        state.copyWith(
-          status: PersonalInfoEditStatus.error,
-          error: e.body.toString(),
-        ),
-      );
+      _handleGivtServerFailure(e, stackTrace, emit);
+    } catch (e, stackTrace) {
+      _handleGenericException(e, stackTrace, emit);
     }
   }
 
@@ -182,7 +233,7 @@ class PersonalInfoEditBloc
       LoggingInfo.instance.info(
         'Changing bank details to ${event.iban} ${event.accountNumber} ${event.sortCode}',
       );
-      
+
       final cleanedIban = event.iban.replaceAll(' ', '');
 
       final stateUser = state.loggedInUserExt.copyWith(
@@ -200,22 +251,11 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
+      _handleSocketException(e, stackTrace, emit);
     } on GivtServerFailure catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(
-        state.copyWith(
-          status: PersonalInfoEditStatus.error,
-          error: e.body.toString(),
-        ),
-      );
+      _handleGivtServerFailure(e, stackTrace, emit);
+    } catch (e, stackTrace) {
+      _handleGenericException(e, stackTrace, emit);
     }
   }
 
@@ -243,22 +283,11 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
+      _handleSocketException(e, stackTrace, emit);
     } on GivtServerFailure catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(
-        state.copyWith(
-          status: PersonalInfoEditStatus.error,
-          error: e.body.toString(),
-        ),
-      );
+      _handleGivtServerFailure(e, stackTrace, emit);
+    } catch (e, stackTrace) {
+      _handleGenericException(e, stackTrace, emit);
     }
   }
 
@@ -287,33 +316,11 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
+      _handleSocketException(e, stackTrace, emit);
     } on GivtServerFailure catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(
-        state.copyWith(
-          status: PersonalInfoEditStatus.error,
-          error: e.body.toString(),
-        ),
-      );
+      _handleGivtServerFailure(e, stackTrace, emit);
     } catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(
-        state.copyWith(
-          status: PersonalInfoEditStatus.error,
-          error: e.toString(),
-        ),
-      );
+      _handleGenericException(e, stackTrace, emit);
     }
   }
 }

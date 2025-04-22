@@ -5,8 +5,6 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class Util {
-  /// Features overlay keys
-  static const String cancelFeatureOverlayKey = 'cancelFeatureOverlayKey';
   static const String testimonialsSummaryKey = 'testimonialsSummaryKey';
 
   // Default user info
@@ -23,6 +21,10 @@ class Util {
   static const String defaultUSPhoneNumber = '1231231234';
   static const String empty = '';
   static const String countryIso = 'countryIso';
+
+  // Auto-favorites feature keys
+  static const String favoritedOrganisationsKey = 'favoritedOrganisations';
+  static const String previousDonationOrgKey = 'previousDonationOrg';
 
   static final ukPostCodeRegEx = RegExp(
     r'^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$',

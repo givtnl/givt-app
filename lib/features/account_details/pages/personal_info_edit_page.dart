@@ -6,6 +6,7 @@ import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.d
 import 'package:givt_app/features/account_details/pages/change_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_bank_details_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
+import 'package:givt_app/features/account_details/pages/change_name_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
@@ -110,14 +111,6 @@ class PersonalInfoEditPage extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    locals.personalPageSubHeader,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
                 ],
               ),
               _buildInfoRow(
@@ -125,6 +118,19 @@ class PersonalInfoEditPage extends StatelessWidget {
                   Icons.person,
                 ),
                 value: '${user.firstName} ${user.lastName}',
+                onTap: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventProperties: {'row_type': 'name'},
+                  );
+                  _showModalBottomSheet(
+                    context,
+                    bottomSheet: ChangeNameBottomSheet(
+                      firstName: user.firstName,
+                      lastName: user.lastName,
+                    ),
+                  );
+                },
               ),
               _buildInfoRow(
                 icon: const Text(
@@ -135,12 +141,18 @@ class PersonalInfoEditPage extends StatelessWidget {
                   ),
                 ),
                 value: user.email,
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: ChangeEmailAddressBottomSheet(
-                    email: user.email,
-                  ),
-                ),
+                onTap: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventProperties: {'row_type': 'email'},
+                  );
+                  _showModalBottomSheet(
+                    context,
+                    bottomSheet: ChangeEmailAddressBottomSheet(
+                      email: user.email,
+                    ),
+                  );
+                },
               ),
               _buildInfoRow(
                 icon: const Icon(
@@ -152,15 +164,21 @@ class PersonalInfoEditPage extends StatelessWidget {
                   user.country,
                   locals,
                 )}',
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: ChangeAddressBottomSheet(
-                    address: user.address,
-                    postalCode: user.postalCode,
-                    city: user.city,
-                    country: user.country,
-                  ),
-                ),
+                onTap: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventProperties: {'row_type': 'address'},
+                  );
+                  _showModalBottomSheet(
+                    context,
+                    bottomSheet: ChangeAddressBottomSheet(
+                      address: user.address,
+                      postalCode: user.postalCode,
+                      city: user.city,
+                      country: user.country,
+                    ),
+                  );
+                },
               ),
               _buildInfoRow(
                 icon: const Icon(
@@ -168,13 +186,19 @@ class PersonalInfoEditPage extends StatelessWidget {
                   color: AppTheme.givtRed,
                 ),
                 value: user.phoneNumber,
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: ChangePhoneNumberBottomSheet(
-                    country: user.country,
-                    phoneNumber: user.phoneNumber,
-                  ),
-                ),
+                onTap: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventProperties: {'row_type': 'phone'},
+                  );
+                  _showModalBottomSheet(
+                    context,
+                    bottomSheet: ChangePhoneNumberBottomSheet(
+                      country: user.country,
+                      phoneNumber: user.phoneNumber,
+                    ),
+                  );
+                },
               ),
               _buildInfoRow(
                 icon: const Icon(
@@ -187,14 +211,20 @@ class PersonalInfoEditPage extends StatelessWidget {
                         user.accountNumber,
                       )
                     : user.iban,
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: ChangeBankDetailsBottomSheet(
-                    sortCode: user.sortCode,
-                    accountNumber: user.accountNumber,
-                    iban: user.iban,
-                  ),
-                ),
+                onTap: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventProperties: {'row_type': 'bank_details'},
+                  );
+                  _showModalBottomSheet(
+                    context,
+                    bottomSheet: ChangeBankDetailsBottomSheet(
+                      sortCode: user.sortCode,
+                      accountNumber: user.accountNumber,
+                      iban: user.iban,
+                    ),
+                  );
+                },
               ),
               _buildInfoRow(
                 visible: isUkUser,
@@ -203,17 +233,23 @@ class PersonalInfoEditPage extends StatelessWidget {
                   height: size.height * 0.04,
                 ),
                 value: 'Gift Aid',
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: GiftAidPage(
-                    onGiftAidChanged: (useGiftAid) =>
-                        context.read<PersonalInfoEditBloc>().add(
-                              PersonalInfoEditGiftAid(
-                                isGiftAidEnabled: useGiftAid,
+                onTap: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventProperties: {'row_type': 'gift_aid'},
+                  );
+                  _showModalBottomSheet(
+                    context,
+                    bottomSheet: GiftAidPage(
+                      onGiftAidChanged: (useGiftAid) =>
+                          context.read<PersonalInfoEditBloc>().add(
+                                PersonalInfoEditGiftAid(
+                                  isGiftAidEnabled: useGiftAid,
+                                ),
                               ),
-                            ),
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
               _buildInfoRow(
                 icon: const Icon(
@@ -221,12 +257,18 @@ class PersonalInfoEditPage extends StatelessWidget {
                   color: AppTheme.givtBlue,
                 ),
                 value: locals.changePassword,
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: ChangePasswordPage(
-                    email: user.email,
-                  ),
-                ),
+                onTap: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventProperties: {'row_type': 'password'},
+                  );
+                  _showModalBottomSheet(
+                    context,
+                    bottomSheet: ChangePasswordPage(
+                      email: user.email,
+                    ),
+                  );
+                },
               ),
               const Divider(
                 height: 0,

@@ -44,7 +44,7 @@
     "updatePersonalInfoError": "Alas! We are not able to update your personal information at the moment. Could you try again later?",
     "loadingTitle": "Please wait...",
     "finalizeRegistrationPopupText": "Important: Donations can only be processed after you have finished your registration.",
-    "finalizeRegistration": "Continue",
+    "finalizeRegistration": "Finish registration",
     "importantReminder": "Important reminder",
     "shareTheGivtButton": "Share with my friends",
     "shareTheGivtText": "I've just used Givt to donate to {value0}!",
@@ -57,7 +57,7 @@
     "answerWhyAreMyDataStored": "Everyday we work very hard at improving Givt. To do this we use the data we have at our disposal.\n We require some of your data to create your mandate. Other information is used to create your personal account.\n We also use your data to answer your service questions.\n In no case we give your personal details to third parties.",
     "cantCancelGiftAfter15Minutes": "Alas, you can't cancel this donation within the Givt app",
     "faqVraag16": "Can I revoke donations?",
-    "faqAntwoord16": "Yes, simply go to the donation overview and swipe the donation you want to cancel to the left. If this it not possible the donation has already been processed. Note: You can only cancel your donation if you have completed your registration in the Givt app.\n \n\n We believe giving should never come with obligations. We're therefore happy to reverse any donations you've made. Simply contact us through the contact field in the menu to get in touch.",
+    "faqAntwoord16": "Yes, simply go to the donation overview and click the cancel button below the specific donation that you want to cancel. If the cancel button is not visible the donation has already been processed. Note: You can only cancel your donation if you have completed your registration in the Givt app.\n \n\n We believe giving should never come with obligations. We're therefore happy to reverse any donations you've made. Simply contact us through the contact field in the menu to get in touch.",
     "selectContextCollect": "Give in the church, at the door or on the street",
     "giveContextQr": "Give by scanning a QR code",
     "selectContextList": "Select a cause from the list",
@@ -981,5 +981,12 @@
     "tutorialTheEndDescription": "I’ll let you take it from here. Head to your next mission and keep making a difference!",
     "completedKey": "Completed",
     "tutorialIntroductionTitle": "Hey, I’m Captain Generosity",
-    "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'"
+    "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'",
+    "refundTitle": "Refund donation?",
+    "refundMessageBACS": "Please contact us so we can refund your donation.",
+    "refundMessageGeneral": "Go to your online banking environment to refund your donation.",
+    "requestRefund": "Refund",
+    "changeName": "Edit name",
+    "onlineGivingLabel": "Online giving",
+    "accountDisabled": "Your account has been blocked. Please contact us at support@givtapp.net"
 }

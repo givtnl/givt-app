@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
-import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
@@ -79,6 +79,12 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
             ),
           );
         }
+        if (state.status == GiveStatus.readyToGive ||
+            state.status == GiveStatus.success) {
+          context.read<OrganisationBloc>().add(
+                const FavoritesRefresh(),
+              );
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -127,31 +133,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                           suffixIcon: const Icon(Icons.close),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      IconButton(
-                        icon: Icon(
-                          state.sortByFavorites
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color:
-                              state.sortByFavorites ? Colors.red : Colors.grey,
-                        ),
-                        onPressed: () {
-                          final newSortState = !state.sortByFavorites;
-                          context.read<OrganisationBloc>().add(
-                                OrganisationSortByFavoritesToggled(
-                                  newSortState,
-                                ),
-                              );
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents
-                                .organisationSortByFavoritesToggled,
-                            eventProperties: {
-                              'is_sorted_by_favorites': newSortState,
-                            },
-                          );
-                        },
-                      ),
+                      // Sort toggle button has been removed - favorites are always shown at the top
                     ],
                   ),
                 ),

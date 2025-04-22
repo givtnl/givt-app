@@ -7,6 +7,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/give/models/models.dart';
@@ -15,10 +16,12 @@ import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'give_event.dart';
-
 part 'give_state.dart';
 
 class GiveBloc extends Bloc<GiveEvent, GiveState> {
@@ -290,12 +293,14 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     await _campaignRepository.saveLastDonation(
       organisation,
     );
+
     try {
       LoggingInfo.instance.info('Submitting Givts');
       await _givtRepository.submitGivts(
         guid: userGUID,
         body: {'donations': GivtTransaction.toJsonList(transactionList)},
       );
+      await _handleAutoFavorites(namespace, userGUID);
     } on SocketException catch (e) {
       log(e.toString());
       emit(
@@ -646,5 +651,61 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     Emitter<GiveState> emit,
   ) {
     emit(const GiveState());
+  }
+
+  /// Tracks donations to organizations and automatically adds an organization to favorites
+  /// after a user gives to the same organization twice in a row (consecutive donations)
+  Future<void> _handleAutoFavorites(String namespace, String userGUID) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      // Get previous donation organization
+      final previousDonationKey = '${Util.previousDonationOrgKey}_$userGUID';
+      final previousDonationOrg = prefs.getString(previousDonationKey) ?? '';
+
+      // Check if this is a consecutive donation to the same organization
+      final isConsecutiveDonation = namespace == previousDonationOrg;
+
+      // If this is the second consecutive donation to the same organization, add it to favorites
+      if (isConsecutiveDonation && previousDonationOrg.isNotEmpty) {
+        // Get favorited organizations
+        final favoritesKey = '${Util.favoritedOrganisationsKey}$userGUID';
+        final favoritedOrganisations = prefs.getStringList(favoritesKey) ?? [];
+
+        // Only add to favorites if it's not already a favorite
+        if (!favoritedOrganisations.contains(namespace)) {
+          // Add to favorites
+          favoritedOrganisations.add(namespace);
+          await prefs.setStringList(favoritesKey, favoritedOrganisations);
+
+          // Get organization name for analytics
+          final collectGroupList =
+              await _collectGroupRepository.getCollectGroupList();
+          final orgName = collectGroupList
+              .firstWhere(
+                (org) => org.nameSpace == namespace,
+                orElse: () => const CollectGroup.empty(),
+              )
+              .orgName;
+
+          // Log the auto-favorite action
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.favoriteAutoAdded,
+            eventProperties: {
+              'organisation_name': orgName,
+              'organisation_namespace': namespace,
+            },
+          );
+        }
+      }
+
+      // Save current organization as the previous one for next time
+      await prefs.setString(previousDonationKey, namespace);
+    } catch (e, stackTrace) {
+      LoggingInfo.instance.error(
+        'Error in auto-favorites: ${e.toString()}',
+        methodName: stackTrace.toString(),
+      );
+    }
   }
 }

@@ -230,7 +230,10 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
                 uiModel.customAvatarUIModel,
                 fit: BoxFit.contain,
               ),
-            if (uiModel.lockMessageEnabled) const LockedCaptainMessageWidget(),
+            if (uiModel.lockMessageEnabled)
+              LockedCaptainMessageWidget(
+                isCustomizationUnlocked: uiModel.isFeatureUnlocked,
+              ),
           ],
         ),
       ),

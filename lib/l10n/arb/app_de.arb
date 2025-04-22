@@ -57,7 +57,7 @@
     "answerWhyAreMyDataStored": "Jeden Tag arbeiten wir sehr hart daran, Givt zu verbessern. Dazu verwenden wir die uns zur Verfügung stehenden Daten.\n Für die Erstellung deines Mandates benötigen wir einige Angaben. Andere Informationen werden verwendet, um dein persönliches Konto zu erstellen.\n Wir verwenden deine Daten ebenfalls, um etwaige Support-Fragen zu beantworten.\n In keinem Fall geben wir jedoch deine persönlichen Daten an Dritte weiter.",
     "cantCancelGiftAfter15Minutes": "Leider kannst du diese Spende innerhalb der Givt App nicht mehr stornieren, da diese Spende bereits länger als 15 Minuten her ist.",
     "faqVraag16": "Kann ich einen Spende zurückziehen?",
-    "faqAntwoord16": "Wechseln Sie einfach in die Spendenübersicht und wische die betreffende Spende nach links. Die Stornierung ist kostenlos, wenn es auf diese Weise geschieht. Hinweis: Die Spende kann nur storniert werden, wenn die Registrierung in der Givt App abgeschlossen wurde.\n \n\n Im Moment der Spende finden keinerlei Transaktionen statt. Die Transaktionen erfolgen ausschließlich per Lastschrift danach. Da diese Transaktionen der Bank ebenfalls reversibel sind, sind diese absolut sicher und vor Betrug geschützt. Diese Art der Rückabwicklung verursacht aber ggf. Kosten für die Organisation, der du gespendet hast.",
+    "faqAntwoord16": "Du kannst deine Spende über die Spendenübersicht stornieren, indem du auf den „Abbrechen“-Button unter der entsprechenden Spende klickst. Wenn du die Spende nicht mehr löschen kannst, wurde sie bereits verarbeitet. Achtung: Das ist nur möglich, wenn du deine Registrierung in der Givt-App abgeschlossen hast.\n\nDu kannst deine Spenden auch zu einem späteren Zeitpunkt widerrufen. Beim Geben mit Givt finden keine Überweisungen in Echtzeit statt – diese erfolgen nachträglich per Lastschrift. Alle Lastschriften können im Nachhinein über deine eigene Bank widerrufen werden.",
     "selectContextCollect": "Spende in der Kirche, an der Haustür oder auf der Straße",
     "giveContextQr": "Spende, indem du einen QR-Code scannst",
     "selectContextList": "Suche ein Spendenziel aus der Liste aus",
@@ -981,5 +981,12 @@
     "tutorialTheEndDescription": "I’ll let you take it from here. Head to your next mission and keep making a difference!",
     "completedKey": "Completed",
     "tutorialIntroductionTitle": "Hey, I’m Captain Generosity",
-    "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'"
+    "tutorialIntroductionDescription": "I’m here to help your family build gratitude and foster generosity. Let’s get started!'",
+    "refundTitle": "Spende zurückbuchen?",
+    "refundMessageBACS": "Bitte kontaktiere uns, damit wir deine Spende erstatten können.",
+    "refundMessageGeneral": "Gehe zu deinem Online-Banking, um deine Spende zurückzubuchen.",
+    "requestRefund": "Zurückbuchen",
+    "changeName": "Name bearbeiten",
+    "onlineGivingLabel": "Online-Spende",
+    "accountDisabled": "Dein Konto wurde gesperrt. Bitte kontaktiere uns unter support@givtapp.net"
 }

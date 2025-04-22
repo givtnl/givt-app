@@ -47,6 +47,7 @@ enum AmplitudeEvents {
   askForInterviewTriggered('ask_for_interview_triggered'),
   organisationFavoriteToggled('organisation_favorite_toggled'),
   organisationSortByFavoritesToggled('organisation_sort_by_favorites_toggled'),
+  onInfoRowClicked('on_info_row_clicked'),
 
   // Gratitude Goal
   gratitudeGoalStartClicked('gratitude_goal_start_clicked'),
@@ -64,6 +65,9 @@ enum AmplitudeEvents {
   // Topup flow
   topupFailed('topup_failed'),
   topUpConfirmClicked('top_up_confirm_clicked'),
+
+  // Auto-favorites events
+  favoriteAutoAdded('favorite_auto_added'),
 
   // Cancel Recurring Giving allowance flow
   cancelRGA('cancel_reccuring_giving_allowance'),
@@ -367,6 +371,7 @@ enum AmplitudeEvents {
   boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
 
   updateNowClicked('update_now_clicked'),
+  changeNameSubmitted('change_name_submitted'),
 
   //Bedtime summary
   summaryLeaveMessageClicked(
@@ -414,6 +419,17 @@ enum AmplitudeEvents {
   saveAvatarYesClicked('save_avatar_yes_clicked'),
   saveAvatarNoClicked('save_avatar_no_clicked'),
   newBadgeSeen('new_badge_seen'),
+
+  // Refund
+  refundInfoRequested('refund_info_viewed'),
+
+  // Cancel Donation
+  cancelDonationButtonClicked('cancel_donation_button_clicked'),
+  cancelDonationNoClicked('cancel_donation_no_clicked'),
+  onConfirmCancelDonation('donation_cancelled'),
+
+  // Memory summary
+  memorySummaryClicked('memory_summary_clicked'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

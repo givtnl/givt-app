@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,6 +20,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class GameSummariesScreen extends StatefulWidget {
@@ -87,15 +90,18 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
           if (_cubit.gameSummaries.isEmpty) {
             return const FullScreenLoadingWidget();
           } else {
-            return Stack(children: [
-              buildListView(_cubit.gameSummaries),
-              ColoredBox(
+            return Stack(
+              children: [
+                buildListView(_cubit.gameSummaries),
+                ColoredBox(
                   color: Colors.white.withOpacity(0.5),
-                  child: const SizedBox.expand()),
-              const Center(
-                child: CustomCircularProgressIndicator(),
-              )
-            ]);
+                  child: const SizedBox.expand(),
+                ),
+                const Center(
+                  child: CustomCircularProgressIndicator(),
+                ),
+              ],
+            );
           }
         },
       ),
@@ -124,8 +130,22 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
   Widget buildTile(GameSummaryItem summary) => InkWell(
         onTap: () async {
           final uiModel = await _cubit.getSummaryUIModel(summary.id);
-          await Navigator.of(context).push(
-            GameSummaryScreen(uiModel: uiModel).toRoute(context),
+          unawaited(
+            Navigator.of(context).push(
+              GameSummaryScreen(uiModel: uiModel).toRoute(context),
+            ),
+          );
+
+          // Track when user taps on a specific memory summary
+          unawaited(
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.memorySummaryClicked,
+              eventProperties: {
+                'memory_id': summary.id,
+                'memory_date': summary.dateLocalTime.formattedFullUSDate,
+                'player_count': summary.players.length,
+              },
+            ),
           );
         },
         highlightColor: FamilyAppTheme.primary60.withOpacity(0.1),
