@@ -10,8 +10,15 @@ import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class SelectGivingWayPage extends StatelessWidget {
+class SelectGivingWayPage extends StatefulWidget {
   const SelectGivingWayPage({super.key});
+
+  @override
+  State<SelectGivingWayPage> createState() => _SelectGivingWayPageState();
+}
+
+class _SelectGivingWayPageState extends State<SelectGivingWayPage> {
+  bool showErrorDialog = true;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +53,7 @@ class SelectGivingWayPage extends StatelessWidget {
                     },
                   );
                 }
-                if (state.status == GiveStatus.error) {
+                if (state.status == GiveStatus.error && showErrorDialog) {
                   showDialog<void>(
                     context: context,
                     builder: (_) => WarningDialog(
@@ -122,37 +129,57 @@ class SelectGivingWayPage extends StatelessWidget {
                       ),
                     ),
                     _buildListTile(
-                      onTap: () => context.goNamed(
-                        Pages.giveByBeacon.name,
-                        extra: context.read<GiveBloc>(),
-                      ),
+                      onTap: () {
+                        context.goNamed(
+                          Pages.giveByBeacon.name,
+                          extra: context.read<GiveBloc>(),
+                        );
+                        setState(() {
+                          showErrorDialog = true;
+                        });
+                      },
                       title: locals.givingContextCollectionBag,
                       subtitle: locals.selectContextCollect,
                       image: 'assets/images/select_givtbox.png',
                     ),
                     _buildListTile(
-                      onTap: () => context.goNamed(
-                        Pages.giveByQrCode.name,
-                        extra: context.read<GiveBloc>(),
-                      ),
+                      onTap: () {
+                        context.goNamed(
+                          Pages.giveByQrCode.name,
+                          extra: context.read<GiveBloc>(),
+                        );
+                        setState(() {
+                          showErrorDialog = false;
+                        });
+                      },
                       title: locals.givingContextQrCode,
                       subtitle: locals.giveContextQr,
                       image: 'assets/images/select_qr_phone_scan.png',
                     ),
                     _buildListTile(
-                      onTap: () => context.goNamed(
-                        Pages.giveByList.name,
-                        extra: context.read<GiveBloc>(),
-                      ),
+                      onTap: () {
+                        context.goNamed(
+                          Pages.giveByList.name,
+                          extra: context.read<GiveBloc>(),
+                        );
+                        setState(() {
+                          showErrorDialog = true;
+                        });
+                      },
                       title: locals.givingContextCollectionBagList,
                       subtitle: locals.selectContextList,
                       image: 'assets/images/select_list.png',
                     ),
                     _buildListTile(
-                      onTap: () => context.goNamed(
-                        Pages.giveByLocation.name,
-                        extra: context.read<GiveBloc>(),
-                      ),
+                      onTap: () {
+                        context.goNamed(
+                          Pages.giveByLocation.name,
+                          extra: context.read<GiveBloc>(),
+                        );
+                        setState(() {
+                          showErrorDialog = true;
+                        });
+                      },
                       title: locals.givingContextLocation,
                       subtitle: locals.selectLocationContextLong,
                       image: 'assets/images/select_location.png',
