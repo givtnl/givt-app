@@ -81,7 +81,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
       await _checkQRCode(mediumId: mediumId, emit: emit);
 
-      if (state.status == GiveStatus.beaconNotActive) {
+      if (state.status == GiveStatus.beaconNotActive ||
+          state.status == GiveStatus.error) {
         return;
       }
 
@@ -386,7 +387,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
       await _checkQRCode(mediumId: mediumId, emit: emit);
 
-      if (state.status == GiveStatus.beaconNotActive) {
+      if (state.status == GiveStatus.beaconNotActive ||
+          state.status == GiveStatus.error) {
         return;
       }
 
