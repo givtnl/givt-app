@@ -256,7 +256,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             }),
             autofillHints: const [AutofillHints.givenName],
             hintText: context.l10n.registrationParentFirstName,
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.sentences,
             errorStyle: const TextStyle(
               height: 0,
@@ -280,7 +280,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             },
             autofillHints: const [AutofillHints.familyName],
             hintText: context.l10n.registrationParentLastName,
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.sentences,
             errorStyle: const TextStyle(
               height: 0,
@@ -347,6 +347,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               AutofillHints.password,
               AutofillHints.newPassword
             ],
+            keyboardType: TextInputType.visiblePassword,
             errorStyle: const TextStyle(
               height: 0,
               fontSize: 0,
