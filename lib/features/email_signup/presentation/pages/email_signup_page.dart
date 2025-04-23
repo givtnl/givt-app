@@ -206,7 +206,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               },
                               keyboardType: TextInputType.emailAddress,
                               autofillHints: const [
-                                AutofillHints.username,
                                 AutofillHints.email,
                               ],
                             ),

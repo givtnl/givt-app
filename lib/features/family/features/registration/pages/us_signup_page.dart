@@ -254,6 +254,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             onChanged: (value) => setState(() {
               _formKey.currentState!.validate();
             }),
+            autofillHints: const [AutofillHints.givenName],
             hintText: context.l10n.registrationParentFirstName,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
@@ -277,6 +278,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               }
               return null;
             },
+            autofillHints: const [AutofillHints.familyName],
             hintText: context.l10n.registrationParentLastName,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
@@ -341,6 +343,10 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
 
               return null;
             },
+            autofillHints: const [
+              AutofillHints.password,
+              AutofillHints.newPassword
+            ],
             errorStyle: const TextStyle(
               height: 0,
               fontSize: 0,

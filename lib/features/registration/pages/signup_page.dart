@@ -225,6 +225,7 @@ class _SignUpPageState extends State<SignUpPage> {
             onChanged: (value) => setState(() {
               _formKey.currentState!.validate();
             }),
+            autofillHints: const [AutofillHints.givenName],
             style:
                 Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
             decoration: InputDecoration(
@@ -252,6 +253,7 @@ class _SignUpPageState extends State<SignUpPage> {
               return null;
             },
             textInputAction: TextInputAction.next,
+            autofillHints: const [AutofillHints.familyName],
             style:
                 Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
             decoration: InputDecoration(
@@ -281,6 +283,10 @@ class _SignUpPageState extends State<SignUpPage> {
               return null;
             },
             textInputAction: TextInputAction.next,
+            autofillHints: const [
+              AutofillHints.email,
+              AutofillHints.username,
+            ],
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontSize: 16,
                   color: widget.email.isNotEmpty
@@ -316,6 +322,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
               return null;
             },
+            autofillHints: const [
+              AutofillHints.password,
+              AutofillHints.newPassword,
+            ],
             obscureText: _obscureText,
             textInputAction: TextInputAction.next,
             style:
