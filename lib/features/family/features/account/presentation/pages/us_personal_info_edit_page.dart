@@ -31,6 +31,7 @@ import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/fingerprint_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/parent_avatar.dart';
 import 'package:givt_app/shared/widgets/us_about_givt_bottom_sheet.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -151,17 +152,23 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               ),
             ),
             value: user.email,
-            onTap: () => FunBottomSheetWithAsyncAction.show(
-              context,
-              cubit: _asyncCubit,
-              initialState: USChangeEmailAddressBottomSheet(
-                email: user.email,
-                asyncCubit: _asyncCubit,
-              ),
-              successText: 'Changes saved!',
-              loadingText: 'Updating profile information',
-              analyticsName: 'us_change_email_bottom_sheet',
-            ),
+            onTap: () {
+              FunBottomSheetWithAsyncAction.show(
+                context,
+                cubit: _asyncCubit,
+                initialState: USChangeEmailAddressBottomSheet(
+                  email: user.email,
+                  asyncCubit: _asyncCubit,
+                ),
+                successText: 'Changes saved!',
+                loadingText: 'Updating profile information',
+                analyticsName: 'us_change_email_bottom_sheet',
+              );
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.profileSectionClicked,
+                eventProperties: {'section': 'email'},
+              );
+            },
           ),
           _buildInfoRow(
             context,
@@ -169,18 +176,24 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.phone,
             ),
             value: user.phoneNumber,
-            onTap: () => FunBottomSheetWithAsyncAction.show(
-              context,
-              cubit: _asyncCubit,
-              initialState: USChangePhoneNumberBottomSheet(
-                country: user.country,
-                phoneNumber: user.phoneNumber,
-                asyncCubit: _asyncCubit,
-              ),
-              successText: 'Changes saved!',
-              loadingText: 'Updating profile information',
-              analyticsName: 'us_change_phone_number_bottom_sheet',
-            ),
+            onTap: () {
+              FunBottomSheetWithAsyncAction.show(
+                context,
+                cubit: _asyncCubit,
+                initialState: USChangePhoneNumberBottomSheet(
+                  country: user.country,
+                  phoneNumber: user.phoneNumber,
+                  asyncCubit: _asyncCubit,
+                ),
+                successText: 'Changes saved!',
+                loadingText: 'Updating profile information',
+                analyticsName: 'us_change_phone_number_bottom_sheet',
+              );
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.profileSectionClicked,
+                eventProperties: {'section': 'phone_number'},
+              );
+            },
           ),
           _buildInfoRow(
             context,
@@ -203,7 +216,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
 
                 if (!context.mounted) return;
                 await context.read<FamilyAuthCubit>().refreshUser();
-              } on StripeException catch (e, stackTrace) {
+              } catch (e, stackTrace) {
                 await AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.editPaymentDetailsCanceled,
                 );
@@ -211,12 +224,18 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                 /* Logged as info as stripe is giving exception
                when for example people close the bottomsheet.
                So it's not a real error :)
-            */
+               */
                 LoggingInfo.instance.info(
                   e.toString(),
                   methodName: stackTrace.toString(),
                 );
               }
+
+              // Log analytics outside of try/catch block to ensure it always executes
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.profileSectionClicked,
+                eventProperties: {'section': 'payment_details'},
+              );
             },
           ),
           _buildInfoRow(
@@ -225,8 +244,13 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.lock,
             ),
             value: locals.changePassword,
-            onTap: () =>
-                ResetPasswordSheet(initialEmail: user.email).show(context),
+            onTap: () {
+              ResetPasswordSheet(initialEmail: user.email).show(context);
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.profileSectionClicked,
+                eventProperties: {'section': 'change_password'},
+              );
+            },
           ),
           FutureBuilder(
             initialData: false,
@@ -266,19 +290,25 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                               width: 24,
                             )
                           : const Icon(Icons.fingerprint),
-                      onTap: () async => FamilyAuthUtils.authenticateUser(
-                        context,
-                        checkAuthRequest: FamilyCheckAuthRequest(
-                          navigate: (context) => showModalBottomSheet<void>(
-                            context: context,
-                            isScrollControlled: true,
-                            useSafeArea: true,
-                            builder: (_) => FingerprintBottomSheet(
-                              isFingerprint: isFingerprintAvailable,
+                      onTap: () async {
+                        await FamilyAuthUtils.authenticateUser(
+                          context,
+                          checkAuthRequest: FamilyCheckAuthRequest(
+                            navigate: (context) => showModalBottomSheet<void>(
+                              context: context,
+                              isScrollControlled: true,
+                              useSafeArea: true,
+                              builder: (_) => FingerprintBottomSheet(
+                                isFingerprint: isFingerprintAvailable,
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                        AnalyticsHelper.logEvent(
+                          eventName: AmplitudeEvents.profileSectionClicked,
+                          eventProperties: {'section': 'biometric_auth'},
+                        );
+                      },
                     ),
                   if (shouldShow)
                     const Divider(
@@ -298,40 +328,46 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.userXmark,
             ),
             value: locals.unregister,
-            onTap: () => FunBottomSheetWithAsyncAction.show(
-              context,
-              cubit: _asyncCubit,
-              initialState: USTerminateAccountBottomSheet(
-                email: user.email,
-                asyncCubit: _asyncCubit,
-                onSuccess: () async {
-                  await Future.delayed(const Duration(seconds: 3));
-                  logout(context, fromTerminateAccount: true);
-                },
-              ),
-              successState: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Row(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
+            onTap: () {
+              FunBottomSheetWithAsyncAction.show(
+                context,
+                cubit: _asyncCubit,
+                initialState: USTerminateAccountBottomSheet(
+                  email: user.email,
+                  asyncCubit: _asyncCubit,
+                  onSuccess: () async {
+                    await Future.delayed(const Duration(seconds: 3));
+                    logout(context, fromTerminateAccount: true);
+                  },
+                ),
+                successState: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Row(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                      ),
+                      child: TitleMediumText(
+                        locals.unregisterSuccessText,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    child: TitleMediumText(
-                      locals.unregisterSuccessText,
-                      textAlign: TextAlign.center,
+                    const SizedBox(
+                      height: 24,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  SvgPicture.asset('assets/family/images/captain_sad.svg'),
-                ],
-              ),
-              successText: '',
-              loadingText: locals.unregisterLoading,
-              analyticsName: 'us_terminate_account_bottom_sheet',
-            ),
+                    SvgPicture.asset('assets/family/images/captain_sad.svg'),
+                  ],
+                ),
+                successText: '',
+                loadingText: locals.unregisterLoading,
+                analyticsName: 'us_terminate_account_bottom_sheet',
+              );
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.profileSectionClicked,
+                eventProperties: {'section': 'unregister'},
+              );
+            },
           ),
           const Divider(
             height: 0,
@@ -342,15 +378,21 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.circleInfo,
             ),
             value: locals.titleAboutGivt,
-            onTap: () => FunBottomSheetWithAsyncAction.show(
-              context,
-              cubit: _asyncCubit,
-              initialState: USAboutGivtBottomSheet(asyncCubit: _asyncCubit),
-              successText:
-                  'Thanks for reaching out!\nWe will be in touch shortly',
-              loadingText: 'Sending message',
-              analyticsName: 'us_about_givt_bottom_sheet',
-            ),
+            onTap: () {
+              FunBottomSheetWithAsyncAction.show(
+                context,
+                cubit: _asyncCubit,
+                initialState: USAboutGivtBottomSheet(asyncCubit: _asyncCubit),
+                successText:
+                    'Thanks for reaching out!\nWe will be in touch shortly',
+                loadingText: 'Sending message',
+                analyticsName: 'us_about_givt_bottom_sheet',
+              );
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.profileSectionClicked,
+                eventProperties: {'section': 'about_givt'},
+              );
+            },
           ),
           const Divider(
             height: 0,
@@ -362,7 +404,13 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               FontAwesomeIcons.rightFromBracket,
             ),
             value: 'Logout',
-            onTap: () => logout(context, fromLogoutBtn: true),
+            onTap: () {
+              logout(context, fromLogoutBtn: true);
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.profileSectionClicked,
+                eventProperties: {'section': 'logout'},
+              );
+            },
           ),
           Padding(
             padding: const EdgeInsets.only(left: 70, right: 70, top: 20),
