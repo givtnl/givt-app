@@ -149,163 +149,168 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                     child: IntrinsicHeight(
                       child: Form(
                         key: _formKey,
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 24,
-                            ),
-                            Image.asset(
-                              isUS
-                                  ? 'assets/images/logo_green.png'
-                                  : 'assets/images/logo.png',
-                              width: 100,
-                            ),
-                            if (isUS)
+                        child: AutofillGroup(
+                          child: Column(
+                            children: [
                               const SizedBox(
                                 height: 24,
                               ),
-                            if (!isUS) const Spacer(),
-                            TitleLargeText(
-                              isUS
-                                  ? locals.homescreenFamilyWelcome
-                                  : locals.homescreenLetsGo,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 4),
-                            BodyMediumText(
-                              isUS
-                                  ? locals.homescreenFamilyGenerosity
-                                  : locals.homescreenJourneyOfGenerosity,
-                              textAlign: TextAlign.center,
-                            ),
-                            const Spacer(),
-                            if (isUS && size.height > 750)
-                              SvgPicture.asset(
-                                'assets/family/images/captain.svg',
+                              Image.asset(
+                                isUS
+                                    ? 'assets/images/logo_green.png'
+                                    : 'assets/images/logo.png',
+                                width: 100,
                               ),
-                            CountryDropDown(
-                              selectedCountry: state.country,
-                              onChanged: (Country? newValue) {
-                                _cubit.updateCountry(newValue!);
-                              },
-                            ),
-                            const SizedBox(height: 12),
-                            OutlinedTextFormField(
-                              key: const ValueKey('Email-Input'),
-                              initialValue: state.email,
-                              hintText: state.country?.isUS == true
-                                  ? locals.homepageParentEmailHint
-                                  : locals.email,
-                              onChanged: _cubit.updateEmail,
-                              validator: (value) {
-                                if (!_cubit.validateEmail(value)) {
-                                  return context.l10n.invalidEmail;
-                                }
-
-                                return null;
-                              },
-                              keyboardType: TextInputType.emailAddress,
-                              autofillHints: const [
-                                AutofillHints.username,
-                                AutofillHints.email,
-                              ],
-                            ),
-                            const Spacer(),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: GestureDetector(
-                                onTap: state.country == null
-                                    ? null
-                                    : () => showModalBottomSheet<void>(
-                                          context: context,
-                                          useSafeArea: true,
-                                          scrollControlDisabledMaxHeightRatio:
-                                              1,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          builder: (BuildContext context) =>
-                                              TermsAndConditionsDialog(
-                                            content: locals.termsText,
-                                            overrideCountryIso:
-                                                state.country?.countryCode,
-                                          ),
-                                        ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Icon(
-                                      FontAwesomeIcons.circleInfo,
-                                      size: 20,
-                                      color: FamilyAppTheme.primary20,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Flexible(
-                                      child: BodySmallText(
-                                        locals.acceptTerms,
-                                        color: state.country == null
-                                            ? FamilyAppTheme.neutralVariant40
-                                            : FamilyAppTheme.primary40,
-                                      ),
-                                    ),
-                                  ],
+                              if (isUS)
+                                const SizedBox(
+                                  height: 24,
                                 ),
+                              if (!isUS) const Spacer(),
+                              TitleLargeText(
+                                isUS
+                                    ? locals.homescreenFamilyWelcome
+                                    : locals.homescreenLetsGo,
+                                textAlign: TextAlign.center,
                               ),
-                            ),
-                            const SizedBox(height: 12),
-                            FunButton(
-                              key: const ValueKey('Email-Continue-Button'),
-                              isDisabled: !state.continueButtonEnabled,
-                              isLoading: _isLoading,
-                              onTap: state.continueButtonEnabled
-                                  ? () async {
-                                      // Hide keyboard when continue button is tapped
-                                      FocusScope.of(context).unfocus();
-
-                                      _cubit.updateApi();
-                                      if (state.country?.isUS == true) {
-                                        final fbsdk = FacebookAppEvents();
-                                        await fbsdk
-                                            .setAutoLogAppEventsEnabled(true);
-                                        await fbsdk.logEvent(
-                                          name: 'email_signup_continue_clicked',
-                                        );
-
-                                        await _cubit.login();
-                                      } else {
-                                        setLoading();
-                                        AppThemeSwitcher.of(context)
-                                            .switchTheme(isFamilyApp: false);
-                                        try {
-                                          await context
-                                              .read<AuthCubit>()
-                                              .register(
-                                                country: state.country!,
-                                                email: state.email,
-                                                locale: Localizations.localeOf(
-                                                        context)
-                                                    .languageCode,
-                                              );
-                                        } catch (e, s) {
-                                          //do nothing (error will be shown via custom state)
-                                        }
-                                        setLoading(state: false);
-                                      }
-                                    }
-                                  : null,
-                              text: locals.buttonContinue,
-                              analyticsEvent: AnalyticsEvent(
-                                AmplitudeEvents.emailSignupContinueClicked,
-                                parameters: {
-                                  'email': state.email,
-                                  'country': state.country?.name,
+                              const SizedBox(height: 4),
+                              BodyMediumText(
+                                isUS
+                                    ? locals.homescreenFamilyGenerosity
+                                    : locals.homescreenJourneyOfGenerosity,
+                                textAlign: TextAlign.center,
+                              ),
+                              const Spacer(),
+                              if (isUS && size.height > 750)
+                                SvgPicture.asset(
+                                  'assets/family/images/captain.svg',
+                                ),
+                              CountryDropDown(
+                                selectedCountry: state.country,
+                                onChanged: (Country? newValue) {
+                                  _cubit.updateCountry(newValue!);
                                 },
                               ),
-                            ),
-                            const SizedBox(height: 24),
-                          ],
+                              const SizedBox(height: 12),
+                              OutlinedTextFormField(
+                                key: const ValueKey('Email-Input'),
+                                initialValue: state.email,
+                                hintText: state.country?.isUS == true
+                                    ? locals.homepageParentEmailHint
+                                    : locals.email,
+                                onChanged: _cubit.updateEmail,
+                                validator: (value) {
+                                  if (!_cubit.validateEmail(value)) {
+                                    return context.l10n.invalidEmail;
+                                  }
+
+                                  return null;
+                                },
+                                keyboardType: TextInputType.emailAddress,
+                                autofillHints: const [
+                                  AutofillHints.username,
+                                  AutofillHints.email,
+                                ],
+                              ),
+                              const Spacer(),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: GestureDetector(
+                                  onTap: state.country == null
+                                      ? null
+                                      : () => showModalBottomSheet<void>(
+                                            context: context,
+                                            useSafeArea: true,
+                                            scrollControlDisabledMaxHeightRatio:
+                                                1,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            builder: (BuildContext context) =>
+                                                TermsAndConditionsDialog(
+                                              content: locals.termsText,
+                                              overrideCountryIso:
+                                                  state.country?.countryCode,
+                                            ),
+                                          ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Icon(
+                                        FontAwesomeIcons.circleInfo,
+                                        size: 20,
+                                        color: FamilyAppTheme.primary20,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Flexible(
+                                        child: BodySmallText(
+                                          locals.acceptTerms,
+                                          color: state.country == null
+                                              ? FamilyAppTheme.neutralVariant40
+                                              : FamilyAppTheme.primary40,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              FunButton(
+                                key: const ValueKey('Email-Continue-Button'),
+                                isDisabled: !state.continueButtonEnabled,
+                                isLoading: _isLoading,
+                                onTap: state.continueButtonEnabled
+                                    ? () async {
+                                        // Hide keyboard when continue button is tapped
+                                        FocusScope.of(context).unfocus();
+
+                                        _cubit.updateApi();
+                                        if (state.country?.isUS == true) {
+                                          final fbsdk = FacebookAppEvents();
+                                          await fbsdk
+                                              .setAutoLogAppEventsEnabled(true);
+                                          await fbsdk.logEvent(
+                                            name:
+                                                'email_signup_continue_clicked',
+                                          );
+
+                                          await _cubit.login();
+                                        } else {
+                                          setLoading();
+                                          AppThemeSwitcher.of(context)
+                                              .switchTheme(isFamilyApp: false);
+                                          try {
+                                            await context
+                                                .read<AuthCubit>()
+                                                .register(
+                                                  country: state.country!,
+                                                  email: state.email,
+                                                  locale:
+                                                      Localizations.localeOf(
+                                                              context)
+                                                          .languageCode,
+                                                );
+                                          } catch (e, s) {
+                                            //do nothing (error will be shown via custom state)
+                                          }
+                                          setLoading(state: false);
+                                        }
+                                      }
+                                    : null,
+                                text: locals.buttonContinue,
+                                analyticsEvent: AnalyticsEvent(
+                                  AmplitudeEvents.emailSignupContinueClicked,
+                                  parameters: {
+                                    'email': state.email,
+                                    'country': state.country?.name,
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+                            ],
+                          ),
                         ),
                       ),
                     ),
