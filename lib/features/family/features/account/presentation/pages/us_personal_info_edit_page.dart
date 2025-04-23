@@ -216,7 +216,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
 
                 if (!context.mounted) return;
                 await context.read<FamilyAuthCubit>().refreshUser();
-              } catch (e, stackTrace) {
+              } on StripeException catch (e, stackTrace) {
                 await AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.editPaymentDetailsCanceled,
                 );
@@ -230,12 +230,6 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                   methodName: stackTrace.toString(),
                 );
               }
-
-              // Log analytics outside of try/catch block to ensure it always executes
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.profileSectionClicked,
-                eventProperties: {'section': 'payment_details'},
-              );
             },
           ),
           _buildInfoRow(
