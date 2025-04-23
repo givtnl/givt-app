@@ -325,6 +325,15 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             ),
             const SizedBox(height: 16),
             OutlinedTextFormField(
+              controller: _emailController,
+              enabled: false,
+              readOnly: true,
+              autofillHints: const [AutofillHints.email],
+              keyboardType: TextInputType.emailAddress,
+              hintText: AppLocalizations.of(context).email,
+            ),
+            const SizedBox(height: 16),
+            OutlinedTextFormField(
               controller: _passwordController,
               onChanged: (value) => setState(() {
                 _formKey.currentState!.validate();
