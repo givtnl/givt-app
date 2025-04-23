@@ -238,7 +238,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
               keyboardType: TextInputType.name,
-              textCapitalization: TextCapitalization.sentences,
+              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -266,7 +266,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
               keyboardType: TextInputType.name,
-              textCapitalization: TextCapitalization.sentences,
+              textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -327,7 +327,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 return null;
               },
               autofillHints: const [
-                AutofillHints.password,
                 AutofillHints.newPassword,
               ],
               obscureText: _obscureText,

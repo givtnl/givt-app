@@ -5,7 +5,7 @@ import 'package:givt_app/shared/widgets/widgets.dart';
 
 class OutlinedTextFormField extends StatelessWidget {
   const OutlinedTextFormField({
-    required this.hintText,
+    this.hintText,
     this.controller,
     this.minLines,
     this.maxLines = 1,
@@ -32,7 +32,7 @@ class OutlinedTextFormField extends StatelessWidget {
   final int? maxLines;
   final int? errorMaxLines;
   final String initialValue;
-  final String hintText;
+  final String? hintText;
   final TextStyle? errorStyle;
   final ValueChanged<String>? onChanged;
   final String? Function(String?)? validator;
