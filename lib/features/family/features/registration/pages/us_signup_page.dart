@@ -328,7 +328,10 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               controller: _emailController,
               enabled: false,
               readOnly: true,
-              autofillHints: const [AutofillHints.email],
+              autofillHints: const [
+                AutofillHints.email,
+                AutofillHints.username
+              ],
               keyboardType: TextInputType.emailAddress,
               hintText: AppLocalizations.of(context).email,
             ),
