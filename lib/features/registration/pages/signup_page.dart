@@ -125,7 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Future<void> _register() async {
-    TextInput.finishAutofillContext(); // <-- this
+    TextInput.finishAutofillContext();
     setState(() {
       isLoading = true;
     });
