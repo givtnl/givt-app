@@ -69,13 +69,11 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
         padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
         child: FunTile(
           onTap: () {
-            // Add authentication when clicking the Give button
-            FamilyAuthUtils.authenticateUser(
-              context,
-              checkAuthRequest: FamilyCheckAuthRequest(
-                navigate: (context) =>
-                    context.pushNamed(FamilyPages.giveByListFamily.name),
-              ),
+            context.pushNamed(
+              FamilyPages.giveByListFamily.name,
+              extra: {
+                'shouldAuthenticate': true,
+              },
             );
 
             // Track analytics event
