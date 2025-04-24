@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
+import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:screenshot/screenshot.dart';
@@ -71,7 +71,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
             const SizedBox(height: 16),
             FunButton.secondary(
               onTap: () {
-                ConfettiDialog.show(
+                ConfettiHelper.show(
                   context,
                   onFinished: () {
                     Navigator.of(context).pop();
