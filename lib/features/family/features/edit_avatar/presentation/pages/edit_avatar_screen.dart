@@ -203,9 +203,16 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
           'assets/family/images/avatar/default/${data.avatarName}',
         ),
       ),
-      const SizedBox(height: 24),
+      // sizes are to align with the custom avatar
+      const SizedBox(
+        height: 24,
+      ),
+      Container(
+        color: FamilyAppTheme.neutral80,
+        height: 1,
+      ),
       SizedBox(
-        height: 320,
+        height: 304,
         child: SingleChildScrollView(
           child: _getDefaultAvatars(data),
         ),
@@ -459,11 +466,15 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
   void _showSaveOnBackDialog(BuildContext context) {
     FunModal(
       icon: FunIcon.mask(),
-      title: 'Save avatar?',
-      subtitle: 'Any edits that you made to your avatar will be saved',
+      title: 'Save changes?',
+      subtitle:
+          'Your avatar has been updated. Would you like to save these changes?',
+      closeAction: () {
+        context.pop();
+      },
       buttons: [
         FunButton(
-          text: 'Yes',
+          text: 'Yes, save',
           onTap: () {
             _cubit.saveAvatar();
             context.pop();
@@ -476,7 +487,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
             _cubit.navigateBack(force: true);
             context.pop();
           },
-          text: 'No, delete',
+          text: 'No, discard',
           analyticsEvent: AnalyticsEvent(AmplitudeEvents.saveAvatarNoClicked),
         ),
       ],
