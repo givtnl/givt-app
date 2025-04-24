@@ -14,7 +14,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/l
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
+import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -59,7 +59,7 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
         onCustom: (context, custom) {
           switch (custom) {
             case ShowConfetti():
-              ConfettiDialog.show(context);
+              ConfettiHelper.show(context);
             case RedirectToSummary():
               Navigator.of(context).pushReplacement(
                 const GratefulScreen().toRoute(context),

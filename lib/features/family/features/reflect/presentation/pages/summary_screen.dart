@@ -15,7 +15,7 @@ import 'package:givt_app/features/family/shared/design/components/content/fun_ta
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
+import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -90,7 +90,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                       i++)
                                     AvatarUIModel(
                                       avatar: details.players[i].avatar,
-                                      customAvatarUIModel: details.players[i].customAvatar?.toUIModel(),
+                                      customAvatarUIModel: details
+                                          .players[i].customAvatar
+                                          ?.toUIModel(),
                                       text: details.players[i].firstName,
                                     ),
                                 ],
@@ -235,8 +237,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
     setState(() {
       pressDown = true;
     });
-    
-    ConfettiDialog.show(context, duration: const Duration(milliseconds: 1000));
+
+    ConfettiHelper.show(context);
   }
 
   void _navigateToInGameLeague(BuildContext context) {
