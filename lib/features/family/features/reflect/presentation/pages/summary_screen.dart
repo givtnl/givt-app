@@ -90,7 +90,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                       i++)
                                     AvatarUIModel(
                                       avatar: details.players[i].avatar,
-                                      customAvatarUIModel: details.players[i].customAvatar?.toUIModel(),
+                                      customAvatarUIModel: details
+                                          .players[i].customAvatar
+                                          ?.toUIModel(),
                                       text: details.players[i].firstName,
                                     ),
                                 ],
@@ -235,8 +237,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
     setState(() {
       pressDown = true;
     });
-    
-    ConfettiDialog.show(context, duration: const Duration(milliseconds: 1000));
+
+    ConfettiDialog.show(context);
   }
 
   void _navigateToInGameLeague(BuildContext context) {

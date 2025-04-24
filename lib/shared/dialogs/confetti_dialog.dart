@@ -1,66 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter_confetti/flutter_confetti.dart';
 
-class ConfettiDialog extends StatefulWidget {
-  const ConfettiDialog({
-    required this.duration,
-    super.key,
-  });
-
-  final Duration duration;
-
-  static Future<void> show(
+class ConfettiDialog {
+  static void show(
     BuildContext context, {
-    Duration duration = _defaultDuration,
-  }) async {
-    await showDialog<void>(
-      useSafeArea: false,
-      context: context,
-      barrierDismissible: false,
-      barrierColor: Colors.transparent,
-      builder: (_) => ConfettiDialog(duration: duration),
-    );
-  }
-
-  static const Duration _defaultDuration = Duration(milliseconds: 1500);
-
-  @override
-  State<ConfettiDialog> createState() => _ConfettiDialogState();
-}
-
-class _ConfettiDialogState extends State<ConfettiDialog> {
-  @override
-  void initState() {
-    super.initState();
-    _schedulePop();
-  }
-
-  Future<void> _schedulePop() => Future.delayed(widget.duration, () {
-        if (!mounted || !context.canPop()) return;
-        context.pop();
-      });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-            child:
-                Align(alignment: Alignment.topCenter, child: _confettiAsset())),
-        Expanded(child: Align(child: _confettiAsset())),
-        Expanded(
-            child: Align(
-                alignment: Alignment.bottomCenter, child: _confettiAsset())),
-      ],
-    );
-  }
-
-  LottieBuilder _confettiAsset() {
-    return Lottie.asset(
-      'assets/lotties/confetti.json',
-      fit: BoxFit.fitWidth,
-      width: double.infinity,
+    VoidCallback? onFinished,
+  }) {
+    Confetti.launch(
+      context,
+      options: const ConfettiOptions(particleCount: 100, spread: 70, y: 0.6),
+      onFinished: (overlayEntry) {
+        overlayEntry.remove();
+        onFinished?.call();
+      },
     );
   }
 }

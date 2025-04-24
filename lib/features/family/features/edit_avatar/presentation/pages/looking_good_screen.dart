@@ -71,11 +71,12 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
             const SizedBox(height: 16),
             FunButton.secondary(
               onTap: () {
-                ConfettiDialog.show(context);
-                Future.delayed(const Duration(milliseconds: 1500), () {
-                  if (!context.mounted) return;
-                  Navigator.of(context).pop();
-                });
+                ConfettiDialog.show(
+                  context,
+                  onFinished: () {
+                    Navigator.of(context).pop();
+                  },
+                );
               },
               text: context.l10n.buttonDone,
               analyticsEvent: AnalyticsEvent(AmplitudeEvents.continueClicked),

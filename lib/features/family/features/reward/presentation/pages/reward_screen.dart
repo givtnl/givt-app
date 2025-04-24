@@ -70,19 +70,21 @@ class _RewardScreenState extends State<RewardScreen> {
           const Spacer(),
           FunButton(
             onTap: () async {
-              await ConfettiDialog.show(context);
-              await Future.delayed(const Duration(milliseconds: 1501), () {
-                if (!context.mounted) return;
-                if (widget.uiModel.interviewUIModel != null) {
-                  _showInterviewPopup(
-                    context,
-                    widget.uiModel.interviewUIModel!,
-                    useDefaultImage: widget.uiModel.useDefaultInterviewIcon,
-                  );
-                } else {
-                  _navigateToProfileSelection(context);
-                }
-              });
+              ConfettiDialog.show(
+                context,
+                onFinished: () {
+                  if (!context.mounted) return;
+                  if (widget.uiModel.interviewUIModel != null) {
+                    _showInterviewPopup(
+                      context,
+                      widget.uiModel.interviewUIModel!,
+                      useDefaultImage: widget.uiModel.useDefaultInterviewIcon,
+                    );
+                  } else {
+                    _navigateToProfileSelection(context);
+                  }
+                },
+              );
             },
             text: 'Claim reward',
             analyticsEvent: AnalyticsEvent(

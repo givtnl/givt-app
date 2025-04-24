@@ -88,6 +88,7 @@ dependencies:
   waveform_flutter:
     path: ./packages/waveform
   backoff: ^1.0.1
+  flutter_confetti: ^0.5.1
 
 dev_dependencies:
   flutter_test:
