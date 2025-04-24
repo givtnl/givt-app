@@ -13,13 +13,16 @@ import 'package:givt_app/features/family/features/parent_giving_flow/cubit/mediu
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_amount_page.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class GiveFromListPage extends StatelessWidget {
-  const GiveFromListPage({super.key});
+  const GiveFromListPage({this.shouldAuthenticate = false, super.key});
+
+  final bool shouldAuthenticate;
 
   @override
   Widget build(BuildContext context) {
@@ -83,12 +86,28 @@ class GiveFromListPage extends StatelessWidget {
           },
         ),
       );
-      await getIt<GiveCubit>().createTransaction(
-        userId: context.read<FamilyAuthCubit>().user!.guid,
-        amount: result,
-        orgName: collectGroup.orgName,
-        mediumId: collectGroup.nameSpace,
-      );
+      if (shouldAuthenticate) {
+        // Add authentication when clicking the Give button
+        await FamilyAuthUtils.authenticateUser(
+          context,
+          checkAuthRequest: FamilyCheckAuthRequest(
+            navigate: (context) async =>
+                _createTransaction(context, result, collectGroup),
+          ),
+        );
+      } else {
+        await _createTransaction(context, result, collectGroup);
+      }
     }
+  }
+
+  Future<void> _createTransaction(
+      BuildContext context, int result, CollectGroup collectGroup) async {
+    await getIt<GiveCubit>().createTransaction(
+      userId: context.read<FamilyAuthCubit>().user!.guid,
+      amount: result,
+      orgName: collectGroup.orgName,
+      mediumId: collectGroup.nameSpace,
+    );
   }
 }

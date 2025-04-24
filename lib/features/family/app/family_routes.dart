@@ -210,6 +210,9 @@ class FamilyAppRoutes {
           path: FamilyPages.giveByListFamily.path,
           name: FamilyPages.giveByListFamily.name,
           builder: (context, state) {
+            final map = state.extra as Map<String, dynamic>? ?? {};
+            final shouldAuthenticate =
+                map['shouldAuthenticate'] as bool? ?? false;
             final user = context.read<FamilyAuthCubit>().user!;
             return MultiBlocProvider(
               providers: [
@@ -226,7 +229,9 @@ class FamilyAppRoutes {
                     ),
                 ),
               ],
-              child: const GiveFromListPage(),
+              child: GiveFromListPage(
+                shouldAuthenticate: shouldAuthenticate,
+              ),
             );
           },
         ),

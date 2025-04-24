@@ -328,20 +328,12 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         _showSecondParentDialog(context, profile);
         return;
       }
-
-      await FamilyAuthUtils.authenticateUser(
-        context,
-        checkAuthRequest: FamilyCheckAuthRequest(
-          navigate: (context) async {
-            await context.pushNamed(
-              FamilyPages.parentHome.name,
-              extra: profile,
-            );
-            await AnalyticsHelper.setUserProperties(
-              userId: profile.id,
-            );
-          },
-        ),
+      context.pushNamed(
+        FamilyPages.parentHome.name,
+        extra: profile,
+      );
+      await AnalyticsHelper.setUserProperties(
+        userId: profile.id,
       );
     } else {
       context.goNamed(
