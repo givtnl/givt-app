@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
@@ -52,6 +53,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
   }
 
   Future<void> onLogin(BuildContext context) async {
+    TextInput.finishAutofillContext();
     if (!formKey.currentState!.validate()) return;
 
     await _cubit.login(
@@ -93,93 +95,95 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
       closeAction: () => context.pop(),
       content: Form(
         key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 24),
-            BodyMediumText(
-              context.l10n.loginText,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            OutlinedTextFormField(
-              controller: emailController,
-              keyboardType: TextInputType.emailAddress,
-              readOnly: true,
-              autofillHints: const [
-                AutofillHints.username,
-                AutofillHints.email,
-              ],
-              onChanged: (value) {
-                setState(() {
-                  formKey.currentState!.validate();
-                });
-              },
-              validator: (value) {
-                if (value == null ||
-                    value.isEmpty ||
-                    !Util.emailRegEx.hasMatch(value)) {
-                  return context.l10n.invalidEmail;
-                }
-                return null;
-              },
-              hintText: context.l10n.email,
-            ),
-            const SizedBox(height: 16),
-            OutlinedTextFormField(
-              controller: passwordController,
-              autofillHints: const [AutofillHints.password],
-              keyboardType: TextInputType.visiblePassword,
-              onChanged: (value) {
-                setState(() {
-                  formKey.currentState!.validate();
-                });
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return context.l10n.passwordRule;
-                }
-                if (value.length < 7) {
-                  return context.l10n.passwordRule;
-                }
-                if (value.contains(RegExp('[0-9]')) == false) {
-                  return context.l10n.passwordRule;
-                }
-                if (value.contains(RegExp('[A-Z]')) == false) {
-                  return context.l10n.passwordRule;
-                }
-
-                return null;
-              },
-              obscureText: obscureText,
-              textInputAction: TextInputAction.done,
-              hintText: context.l10n.password,
-              suffixIcon: IconButton(
-                icon: Icon(
-                  semanticLabel: 'passwordeye',
-                  obscureText ? Icons.visibility : Icons.visibility_off,
-                ),
-                onPressed: () {
+        child: AutofillGroup(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 24),
+              BodyMediumText(
+                context.l10n.loginText,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              OutlinedTextFormField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                readOnly: true,
+                autofillHints: const [
+                  AutofillHints.username,
+                  AutofillHints.email,
+                ],
+                onChanged: (value) {
                   setState(() {
-                    obscureText = !obscureText;
+                    formKey.currentState!.validate();
                   });
                 },
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      !Util.emailRegEx.hasMatch(value)) {
+                    return context.l10n.invalidEmail;
+                  }
+                  return null;
+                },
+                hintText: context.l10n.email,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Align(
-                child: TextButton(
-                  onPressed: () => ResetPasswordSheet(
-                    initialEmail: emailController.text,
-                  ).show(context),
-                  child: TitleSmallText(
-                    context.l10n.forgotPassword,
+              const SizedBox(height: 16),
+              OutlinedTextFormField(
+                controller: passwordController,
+                autofillHints: const [AutofillHints.password],
+                keyboardType: TextInputType.visiblePassword,
+                onChanged: (value) {
+                  setState(() {
+                    formKey.currentState!.validate();
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return context.l10n.passwordRule;
+                  }
+                  if (value.length < 7) {
+                    return context.l10n.passwordRule;
+                  }
+                  if (value.contains(RegExp('[0-9]')) == false) {
+                    return context.l10n.passwordRule;
+                  }
+                  if (value.contains(RegExp('[A-Z]')) == false) {
+                    return context.l10n.passwordRule;
+                  }
+
+                  return null;
+                },
+                obscureText: obscureText,
+                textInputAction: TextInputAction.done,
+                hintText: context.l10n.password,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    semanticLabel: 'passwordeye',
+                    obscureText ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Align(
+                  child: TextButton(
+                    onPressed: () => ResetPasswordSheet(
+                      initialEmail: emailController.text,
+                    ).show(context),
+                    child: TitleSmallText(
+                      context.l10n.forgotPassword,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       primaryButton: FunButton(

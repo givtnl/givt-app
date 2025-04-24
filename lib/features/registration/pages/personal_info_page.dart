@@ -119,63 +119,86 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           padding: const EdgeInsets.all(20),
           child: Form(
             key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Text(locals.registerPersonalPage),
-                  _buildTextFormField(
-                    hintText: locals.streetAndHouseNumber,
-                    controller: _address,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  _buildTextFormField(
-                    hintText: locals.postalCode,
-                    controller: _postalCode,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      if (!isUk) {
+            child: AutofillGroup(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Text(locals.registerPersonalPage),
+                    _buildTextFormField(
+                      hintText: locals.streetAndHouseNumber,
+                      controller: _address,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
                         return null;
-                      }
+                      },
+                      autofillHints: const [AutofillHints.fullStreetAddress],
+                      keyboardType: TextInputType.streetAddress,
+                    ),
+                    _buildTextFormField(
+                      hintText: locals.postalCode,
+                      controller: _postalCode,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        if (!isUk) {
+                          return null;
+                        }
 
-                      if (!Util.ukPostCodeRegEx.hasMatch(value)) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  _buildTextFormField(
-                    hintText: locals.city,
-                    controller: _city,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  _buildCountryAndMobileNumber(
-                    size,
-                    locals,
-                    context,
-                  ),
-                  PaymentSystemTab(
-                    isUK: isUk,
-                    bankAccount: bankAccount,
-                    ibanNumber: ibanNumber,
-                    sortCode: sortCode,
-                    onFieldChanged: (value) => setState(() {}),
-                    onPaymentChanged: (value) {
-                      if (value == 0) {
-                        bankAccount.clear();
-                        sortCode.clear();
-                        if (isUk) {
+                        if (!Util.ukPostCodeRegEx.hasMatch(value)) {
+                          return '';
+                        }
+                        return null;
+                      },
+                      autofillHints: const [AutofillHints.postalCode],
+                      keyboardType: TextInputType.streetAddress,
+                    ),
+                    _buildTextFormField(
+                      hintText: locals.city,
+                      controller: _city,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                      autofillHints: const [AutofillHints.addressCity],
+                      keyboardType: TextInputType.streetAddress,
+                    ),
+                    _buildCountryAndMobileNumber(
+                      size,
+                      locals,
+                      context,
+                    ),
+                    PaymentSystemTab(
+                      isUK: isUk,
+                      bankAccount: bankAccount,
+                      ibanNumber: ibanNumber,
+                      sortCode: sortCode,
+                      onFieldChanged: (value) => setState(() {}),
+                      onPaymentChanged: (value) {
+                        if (value == 0) {
+                          bankAccount.clear();
+                          sortCode.clear();
+                          if (isUk) {
+                            showDialog<void>(
+                              context: context,
+                              builder: (context) => _buildWarningDialog(
+                                message: locals.alertSepaMessage(
+                                  Country.getCountry(
+                                    _selectedCountry.countryCode,
+                                    locals,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          setState(() {});
+                          return;
+                        }
+                        if (!isUk) {
                           showDialog<void>(
                             context: context,
                             builder: (context) => _buildWarningDialog(
@@ -188,29 +211,14 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                             ),
                           );
                         }
-                        setState(() {});
-                        return;
-                      }
-                      if (!isUk) {
-                        showDialog<void>(
-                          context: context,
-                          builder: (context) => _buildWarningDialog(
-                            message: locals.alertSepaMessage(
-                              Country.getCountry(
-                                _selectedCountry.countryCode,
-                                locals,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      setState(ibanNumber.clear);
-                    },
-                  ),
-                  SizedBox(
-                    height: size.height * 0.2,
-                  ),
-                ],
+                        setState(ibanNumber.clear);
+                      },
+                    ),
+                    SizedBox(
+                      height: size.height * 0.2,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -372,6 +380,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
               return null;
             },
+            autofillHints: const [AutofillHints.telephoneNumber],
           ),
         ],
       ),
@@ -379,6 +388,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   }
 
   Future<void> _onNext() async {
+    TextInput.finishAutofillContext();
     if (_formKey.currentState!.validate() == false) {
       return;
     }
@@ -414,6 +424,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     required String? Function(String?) validator,
     bool toUpperCase = false,
     bool isVisible = true,
+    List<String>? autofillHints,
+    TextInputType? keyboardType,
   }) {
     return Visibility(
       visible: isVisible,
@@ -425,6 +437,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           _formKey.currentState!.validate();
         }),
         validator: validator,
+        autofillHints: autofillHints,
+        keyboardType: keyboardType,
       ),
     );
   }

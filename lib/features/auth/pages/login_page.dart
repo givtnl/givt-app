@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
@@ -38,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> onLogin(BuildContext context) async {
+    TextInput.finishAutofillContext();
     if (formKey.currentState!.validate()) {
       try {
         await context
@@ -153,122 +155,124 @@ class _LoginPageState extends State<LoginPage> {
           },
           child: Form(
             key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  locals.loginText,
-                  style: theme.textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: size.height * 0.05),
-                CustomTextFormField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  readOnly: !widget.isEmailEditable,
-                  autofillHints: const [
-                    AutofillHints.username,
-                    AutofillHints.email,
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      formKey.currentState!.validate();
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        !Util.emailRegEx.hasMatch(value)) {
-                      return locals.invalidEmail;
-                    }
-                    return null;
-                  },
-                  hintText: locals.email,
-                ),
-                const SizedBox(height: 15),
-                CustomTextFormField(
-                  key: const ValueKey('Login-Bottomsheet-Password-Input'),
-                  controller: passwordController,
-                  autocorrect: false,
-                  autofillHints: const [AutofillHints.password],
-                  keyboardType: TextInputType.visiblePassword,
-                  onChanged: (value) {
-                    setState(() {
-                      formKey.currentState!.validate();
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return locals.passwordRule;
-                    }
-                    if (value.length < 7) {
-                      return locals.passwordRule;
-                    }
-                    if (value.contains(RegExp('[0-9]')) == false) {
-                      return locals.passwordRule;
-                    }
-                    if (value.contains(RegExp('[A-Z]')) == false) {
-                      return locals.passwordRule;
-                    }
-
-                    return null;
-                  },
-                  obscureText: obscureText,
-                  textInputAction: TextInputAction.done,
-                  hintText: locals.password,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      obscureText ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
+            child: AutofillGroup(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    locals.loginText,
+                    style: theme.textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: size.height * 0.05),
+                  CustomTextFormField(
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    readOnly: !widget.isEmailEditable,
+                    autofillHints: const [
+                      AutofillHints.username,
+                      AutofillHints.email,
+                    ],
+                    onChanged: (value) {
                       setState(() {
-                        obscureText = !obscureText;
+                        formKey.currentState!.validate();
                       });
                     },
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          !Util.emailRegEx.hasMatch(value)) {
+                        return locals.invalidEmail;
+                      }
+                      return null;
+                    },
+                    hintText: locals.email,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Align(
-                    child: TextButton(
-                      onPressed: () => showModalBottomSheet<void>(
-                        context: context,
-                        isScrollControlled: true,
-                        useSafeArea: true,
-                        builder: (context) => ChangePasswordPage(
-                          email: emailController.text,
-                        ),
+                  const SizedBox(height: 15),
+                  CustomTextFormField(
+                    key: const ValueKey('Login-Bottomsheet-Password-Input'),
+                    controller: passwordController,
+                    autocorrect: false,
+                    autofillHints: const [AutofillHints.password],
+                    keyboardType: TextInputType.visiblePassword,
+                    onChanged: (value) {
+                      setState(() {
+                        formKey.currentState!.validate();
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return locals.passwordRule;
+                      }
+                      if (value.length < 7) {
+                        return locals.passwordRule;
+                      }
+                      if (value.contains(RegExp('[0-9]')) == false) {
+                        return locals.passwordRule;
+                      }
+                      if (value.contains(RegExp('[A-Z]')) == false) {
+                        return locals.passwordRule;
+                      }
+
+                      return null;
+                    },
+                    obscureText: obscureText,
+                    textInputAction: TextInputAction.done,
+                    hintText: locals.password,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obscureText ? Icons.visibility : Icons.visibility_off,
                       ),
-                      child: Text(
-                        locals.forgotPassword,
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
+                      onPressed: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Align(
+                      child: TextButton(
+                        onPressed: () => showModalBottomSheet<void>(
+                          context: context,
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          builder: (context) => ChangePasswordPage(
+                            email: emailController.text,
+                          ),
+                        ),
+                        child: Text(
+                          locals.forgotPassword,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const Spacer(),
-                ElevatedButton(
-                  key: const ValueKey('Login-Bottomsheet-Login-Button'),
-                  onPressed: context.watch<AuthCubit>().state.status ==
-                          AuthStatus.loading
-                      ? null
-                      : isEnabled
-                          ? () => onLogin(context)
-                          : null,
-                  style: ElevatedButton.styleFrom(
-                    disabledBackgroundColor: Colors.grey,
+                  const Spacer(),
+                  ElevatedButton(
+                    key: const ValueKey('Login-Bottomsheet-Login-Button'),
+                    onPressed: context.watch<AuthCubit>().state.status ==
+                            AuthStatus.loading
+                        ? null
+                        : isEnabled
+                            ? () => onLogin(context)
+                            : null,
+                    style: ElevatedButton.styleFrom(
+                      disabledBackgroundColor: Colors.grey,
+                    ),
+                    child: context.watch<AuthCubit>().state.status ==
+                            AuthStatus.loading
+                        ? const CircularProgressIndicator.adaptive()
+                        : Text(
+                            locals.login,
+                          ),
                   ),
-                  child: context.watch<AuthCubit>().state.status ==
-                          AuthStatus.loading
-                      ? const CircularProgressIndicator.adaptive()
-                      : Text(
-                          locals.login,
-                        ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

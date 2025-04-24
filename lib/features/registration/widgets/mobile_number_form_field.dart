@@ -14,6 +14,7 @@ class MobileNumberFormField extends StatelessWidget {
     required this.hintText,
     required this.validator,
     this.formatter,
+    this.autofillHints = const [AutofillHints.telephoneNumberLocal],
     super.key,
   });
 
@@ -24,6 +25,7 @@ class MobileNumberFormField extends StatelessWidget {
   final String selectedCountryPrefix;
   final String hintText;
   final List<TextInputFormatter>? formatter;
+  final List<String> autofillHints;
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +76,7 @@ class MobileNumberFormField extends StatelessWidget {
               onChanged: onPhoneChanged,
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.phone,
+              autofillHints: autofillHints,
               style:
                   Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
               decoration: InputDecoration(
