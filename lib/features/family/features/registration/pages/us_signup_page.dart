@@ -173,7 +173,6 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   }
 
   Future<void> _register(UserExt user) async {
-    TextInput.finishAutofillContext();
     unawaited(
       AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
@@ -238,152 +237,134 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   Widget _buildSignUpForm(AppLocalizations locals) {
     return Form(
       key: _formKey,
-      child: AutofillGroup(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            OutlinedTextFormField(
-              controller: _firstNameController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (!Util.nameFieldsRegEx.hasMatch(value)) {
-                  return '';
-                }
-                return null;
-              },
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
-              autofillHints: const [AutofillHints.givenName],
-              hintText: context.l10n.registrationParentFirstName,
-              keyboardType: TextInputType.name,
-              textCapitalization: TextCapitalization.words,
-              errorStyle: const TextStyle(
-                height: 0,
-                fontSize: 0,
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          OutlinedTextFormField(
+            controller: _firstNameController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
+              if (!Util.nameFieldsRegEx.hasMatch(value)) {
+                return '';
+              }
+              return null;
+            },
+            onChanged: (value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            hintText: context.l10n.registrationParentFirstName,
+            keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.sentences,
+            errorStyle: const TextStyle(
+              height: 0,
+              fontSize: 0,
             ),
-            const SizedBox(height: 16),
-            OutlinedTextFormField(
-              controller: _lastNameController,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (!Util.nameFieldsRegEx.hasMatch(value)) {
-                  return '';
-                }
-                return null;
-              },
-              autofillHints: const [AutofillHints.familyName],
-              hintText: context.l10n.registrationParentLastName,
-              keyboardType: TextInputType.name,
-              textCapitalization: TextCapitalization.words,
-              errorStyle: const TextStyle(
-                height: 0,
-                fontSize: 0,
-              ),
+          ),
+          const SizedBox(height: 16),
+          OutlinedTextFormField(
+            controller: _lastNameController,
+            onChanged: (value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
+              if (!Util.nameFieldsRegEx.hasMatch(value)) {
+                return '';
+              }
+              return null;
+            },
+            hintText: context.l10n.registrationParentLastName,
+            keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.sentences,
+            errorStyle: const TextStyle(
+              height: 0,
+              fontSize: 0,
             ),
-            const SizedBox(height: 16),
-            MobileNumberFormFieldUs(
-              phone: _phoneNumberController,
-              selectedCountryPrefix: _selectedCountry.prefix,
-              hintText: context.l10n.phoneNumber,
-              onPhoneChanged: (String value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
-              onPrefixChanged: (String selected) {
+          ),
+          const SizedBox(height: 16),
+          MobileNumberFormFieldUs(
+            phone: _phoneNumberController,
+            selectedCountryPrefix: _selectedCountry.prefix,
+            hintText: context.l10n.phoneNumber,
+            onPhoneChanged: (String value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            onPrefixChanged: (String selected) {
+              setState(() {
+                _selectedCountry = Country.sortedCountries().firstWhere(
+                  (Country country) => country.countryCode == selected,
+                );
+              });
+            },
+            formatter: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(10),
+            ],
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
+
+              if (Country.us == _selectedCountry) {
+                if (!Util.usPhoneNumberRegEx
+                    .hasMatch(Util.formatPhoneNrUs(value))) {
+                  return '';
+                }
+              }
+
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          OutlinedTextFormField(
+            controller: _passwordController,
+            onChanged: (value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
+              if (value.length < 7) {
+                return '';
+              }
+              if (value.contains(RegExp('[0-9]')) == false) {
+                return '';
+              }
+              if (value.contains(RegExp('[A-Z]')) == false) {
+                return '';
+              }
+
+              return null;
+            },
+            errorStyle: const TextStyle(
+              height: 0,
+              fontSize: 0,
+            ),
+            obscureText: _obscureText,
+            hintText: AppLocalizations.of(context).password,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureText
+                    ? FontAwesomeIcons.solidEye
+                    : FontAwesomeIcons.solidEyeSlash,
+              ),
+              onPressed: () {
                 setState(() {
-                  _selectedCountry = Country.sortedCountries().firstWhere(
-                    (Country country) => country.countryCode == selected,
-                  );
+                  _obscureText = !_obscureText;
                 });
               },
-              formatter: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(10),
-              ],
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-
-                if (Country.us == _selectedCountry) {
-                  if (!Util.usPhoneNumberRegEx
-                      .hasMatch(Util.formatPhoneNrUs(value))) {
-                    return '';
-                  }
-                }
-
-                return null;
-              },
             ),
-            const SizedBox(height: 16),
-            OutlinedTextFormField(
-              controller: _emailController,
-              enabled: false,
-              readOnly: true,
-              autofillHints: const [
-                AutofillHints.email,
-                AutofillHints.username
-              ],
-              keyboardType: TextInputType.emailAddress,
-              hintText: AppLocalizations.of(context).email,
-            ),
-            const SizedBox(height: 16),
-            OutlinedTextFormField(
-              controller: _passwordController,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (value.length < 7) {
-                  return '';
-                }
-                if (value.contains(RegExp('[0-9]')) == false) {
-                  return '';
-                }
-                if (value.contains(RegExp('[A-Z]')) == false) {
-                  return '';
-                }
-
-                return null;
-              },
-              autofillHints: const [AutofillHints.newPassword],
-              keyboardType: TextInputType.visiblePassword,
-              errorStyle: const TextStyle(
-                height: 0,
-                fontSize: 0,
-              ),
-              obscureText: _obscureText,
-              hintText: AppLocalizations.of(context).password,
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscureText
-                      ? FontAwesomeIcons.solidEye
-                      : FontAwesomeIcons.solidEyeSlash,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscureText = !_obscureText;
-                  });
-                },
-              ),
-            ),
-            const SizedBox(height: 16),
-            BodySmallText.primary40(
-              locals.passwordRule,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 16),
+          BodySmallText.primary40(
+            locals.passwordRule,
+          ),
+        ],
       ),
     );
   }
