@@ -48,6 +48,7 @@ enum AmplitudeEvents {
   organisationFavoriteToggled('organisation_favorite_toggled'),
   organisationSortByFavoritesToggled('organisation_sort_by_favorites_toggled'),
   onInfoRowClicked('on_info_row_clicked'),
+  profileSectionClicked('profile_section_clicked'),
 
   // Gratitude Goal
   gratitudeGoalStartClicked('gratitude_goal_start_clicked'),
