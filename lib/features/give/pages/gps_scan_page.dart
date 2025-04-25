@@ -11,6 +11,8 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,7 +20,10 @@ import 'package:permission_handler/permission_handler.dart';
 class GPSScanPage extends StatefulWidget {
   const GPSScanPage({
     super.key,
+    this.isSelection = false,
   });
+
+  final bool isSelection;
 
   @override
   State<GPSScanPage> createState() => _GPSScanPageState();
@@ -118,6 +123,62 @@ class _GPSScanPageState extends State<GPSScanPage> {
     });
   }
 
+  void _handleLocationFound(BuildContext context, GiveState state) {
+    final userGUID = context.read<AuthCubit>().state.user.guid;
+    
+    if (widget.isSelection && state.nearestLocation.beaconId.isNotEmpty) {
+      // In selection mode, fetch the CollectGroup and return it via Navigator.pop()
+      final collectGroupRepository = context.read<CollectGroupRepository>();
+      collectGroupRepository.getCollectGroupList().then((collectGroupList) {
+        try {
+          final namespace = state.nearestLocation.beaconId.split('.').first;
+          final collectGroup = collectGroupList.firstWhere(
+            (group) => group.nameSpace == namespace,
+            orElse: () => const CollectGroup.empty(),
+          );
+          
+          if (collectGroup.nameSpace.isNotEmpty) {
+            context.pop(collectGroup);
+          } else {
+            LoggingInfo.instance.warning(
+              'No matching CollectGroup found for GPS location: ${state.nearestLocation.name}',
+            );
+            _showNoOrganizationFoundDialog(context);
+          }
+        } catch (e, stackTrace) {
+          LoggingInfo.instance.error(
+            'Error finding CollectGroup: ${e.toString()}',
+            methodName: stackTrace.toString(),
+          );
+          _showNoOrganizationFoundDialog(context);
+        }
+      });
+    } else {
+      // Original behavior for non-selection mode
+      if (state.organisation.organisationName?.isNotEmpty == true) {
+        context.read<GiveBloc>().add(
+              GiveGPSConfirm(userGUID),
+            );
+      } else {
+        context.goNamed(
+          Pages.giveByList.name,
+          extra: context.read<GiveBloc>(),
+        );
+      }
+    }
+  }
+
+  void _showNoOrganizationFoundDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (_) => WarningDialog(
+        title: context.l10n.notFoundTitle,
+        content: context.l10n.noOrganizationFoundNearby,
+        onConfirm: () => context.pop(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
@@ -152,18 +213,7 @@ class _GPSScanPageState extends State<GPSScanPage> {
                     child: ElevatedButton(
                       onPressed: () {
                         GiveLoadingDialog.showGiveLoadingDialog(context);
-                        if (orgName!.isNotEmpty) {
-                          context.read<GiveBloc>().add(
-                                GiveToLastOrganisation(
-                                  context.read<AuthCubit>().state.user.guid,
-                                ),
-                              );
-                          return;
-                        }
-                        context.goNamed(
-                          Pages.giveByList.name,
-                          extra: context.read<GiveBloc>(),
-                        );
+                        _handleLocationFound(context, state);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.givtBlue,
