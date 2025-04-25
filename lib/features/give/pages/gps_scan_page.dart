@@ -125,7 +125,7 @@ class _GPSScanPageState extends State<GPSScanPage> {
 
   void _handleLocationFound(BuildContext context, GiveState state) {
     final userGUID = context.read<AuthCubit>().state.user.guid;
-    
+
     if (widget.isSelection && state.nearestLocation.beaconId.isNotEmpty) {
       // In selection mode, fetch the CollectGroup and return it via Navigator.pop()
       final collectGroupRepository = context.read<CollectGroupRepository>();
@@ -136,7 +136,7 @@ class _GPSScanPageState extends State<GPSScanPage> {
             (group) => group.nameSpace == namespace,
             orElse: () => const CollectGroup.empty(),
           );
-          
+
           if (collectGroup.nameSpace.isNotEmpty) {
             context.pop(collectGroup);
           } else {
@@ -172,8 +172,8 @@ class _GPSScanPageState extends State<GPSScanPage> {
     showDialog<void>(
       context: context,
       builder: (_) => WarningDialog(
-        title: context.l10n.notFoundTitle,
-        content: context.l10n.noOrganizationFoundNearby,
+        title: context.l10n.unknownError,
+        content: context.l10n.somethingWentWrong,
         onConfirm: () => context.pop(),
       ),
     );

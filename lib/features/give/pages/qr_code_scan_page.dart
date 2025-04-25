@@ -1,5 +1,5 @@
-import 'dart:developer';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +11,9 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/features/collect_group/models/collect_group.dart';
-import 'package:givt_app/features/collect_group/repositories/collect_group_repository.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -149,28 +149,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     }
 
     if (widget.isSelection) {
-      final collectGroupList = await getIt<CollectGroupRepository>().getCollectGroupList();
-      final namespace = utf8.decode(base64.decode(encodedMediumId)).split('.').first;
-      
-      try {
-        final collectGroup = collectGroupList.firstWhere(
-          (group) => group.nameSpace == namespace,
-          orElse: () => const CollectGroup.empty(),
-        );
-        
-        if (collectGroup.nameSpace.isNotEmpty) {
-          context.pop(collectGroup);
-        } else {
-          LoggingInfo.instance.warning('No matching CollectGroup found for encoded medium ID: $encodedMediumId');
-          await displayErrorDialog();
-        }
-      } catch (e, stackTrace) {
-        LoggingInfo.instance.error(
-          'Error finding CollectGroup: ${e.toString()}',
-          methodName: stackTrace.toString(),
-        );
-        await displayErrorDialog();
-      }
+      await _handleSelectionCase(encodedMediumId);
     } else {
       context.read<GiveBloc>().add(
             GiveQRCodeScanned(
@@ -178,6 +157,34 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
               userGuid,
             ),
           );
+    }
+  }
+
+  Future<void> _handleSelectionCase(String encodedMediumId) async {
+    final collectGroupList =
+        await getIt<CollectGroupRepository>().getCollectGroupList();
+    final namespace =
+        utf8.decode(base64.decode(encodedMediumId)).split('.').first;
+
+    try {
+      final collectGroup = collectGroupList.firstWhere(
+        (group) => group.nameSpace == namespace,
+        orElse: () => const CollectGroup.empty(),
+      );
+
+      if (collectGroup.nameSpace.isNotEmpty) {
+        context.pop(collectGroup);
+      } else {
+        LoggingInfo.instance.warning(
+            'No matching CollectGroup found for encoded medium ID: $encodedMediumId');
+        await displayErrorDialog();
+      }
+    } catch (e, stackTrace) {
+      LoggingInfo.instance.error(
+        'Error finding CollectGroup: ${e.toString()}',
+        methodName: stackTrace.toString(),
+      );
+      await displayErrorDialog();
     }
   }
 
