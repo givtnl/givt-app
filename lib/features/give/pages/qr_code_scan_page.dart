@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,13 +12,18 @@ import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart'
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/features/collect_group/models/collect_group.dart';
+import 'package:givt_app/features/collect_group/repositories/collect_group_repository.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QrCodeScanPage extends StatefulWidget {
   const QrCodeScanPage({
     super.key,
+    this.isSelection = false,
   });
+
+  final bool isSelection;
 
   @override
   State<QrCodeScanPage> createState() => _QrCodeScanPageState();
@@ -142,12 +148,37 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
       return;
     }
 
-    context.read<GiveBloc>().add(
-          GiveQRCodeScanned(
-            encodedMediumId,
-            userGuid,
-          ),
+    if (widget.isSelection) {
+      final collectGroupList = await getIt<CollectGroupRepository>().getCollectGroupList();
+      final namespace = utf8.decode(base64.decode(encodedMediumId)).split('.').first;
+      
+      try {
+        final collectGroup = collectGroupList.firstWhere(
+          (group) => group.nameSpace == namespace,
+          orElse: () => const CollectGroup.empty(),
         );
+        
+        if (collectGroup.nameSpace.isNotEmpty) {
+          context.pop(collectGroup);
+        } else {
+          LoggingInfo.instance.warning('No matching CollectGroup found for encoded medium ID: $encodedMediumId');
+          await displayErrorDialog();
+        }
+      } catch (e, stackTrace) {
+        LoggingInfo.instance.error(
+          'Error finding CollectGroup: ${e.toString()}',
+          methodName: stackTrace.toString(),
+        );
+        await displayErrorDialog();
+      }
+    } else {
+      context.read<GiveBloc>().add(
+            GiveQRCodeScanned(
+              encodedMediumId,
+              userGuid,
+            ),
+          );
+    }
   }
 
   /// Checks if the given barcodes contain a Givt QR code.
