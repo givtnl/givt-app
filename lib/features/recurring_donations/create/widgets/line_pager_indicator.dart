@@ -61,7 +61,7 @@ class LinePagerIndicator extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(pageCount, (index) {
-        final isActive = index == currentPage;
+        final isActive = index <= currentPage;
         return Container(
           margin: EdgeInsets.only(right: spacing),
           width: isActive ? activeWidth : width,
