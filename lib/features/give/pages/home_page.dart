@@ -15,7 +15,6 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/give/widgets/triple_animated_switch.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
@@ -407,15 +406,10 @@ class _HomePageViewState extends State<_HomePageView> {
               left: 15,
               bottom: 5,
             ),
-            child: auth.user.isUsUser
-                ? TripleAnimatedSwitch(
-                    pageIndex: pageIndex,
-                    onChanged: onPageChanged,
-                  )
-                : AnimatedSwitch(
-                    pageIndex: pageIndex,
-                    onChanged: onPageChanged,
-                  ),
+            child: AnimatedSwitch(
+              pageIndex: pageIndex,
+              onChanged: onPageChanged,
+            ),
           ),
         ),
       ],

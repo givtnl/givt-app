@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
 class FunBottomSheet extends StatelessWidget {
@@ -31,68 +32,71 @@ class FunBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      minimum: EdgeInsets.fromLTRB(
-        0,
-        0,
-        0,
-        MediaQuery.of(context).viewInsets.bottom + 40,
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Title
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Spacer(),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 96,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 40),
-                    child: TitleMediumText(
-                      title,
-                      textAlign: TextAlign.center,
-                      color: titleColor,
+    return Theme(
+      data: const FamilyAppTheme().toThemeData(),
+      child: SafeArea(
+        minimum: EdgeInsets.fromLTRB(
+          0,
+          0,
+          0,
+          MediaQuery.of(context).viewInsets.bottom + 40,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Title
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Spacer(),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 96,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 40),
+                      child: TitleMediumText(
+                        title,
+                        textAlign: TextAlign.center,
+                        color: titleColor,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: showCloseButton(),
-                ),
-              ],
-            ),
-
-            // Icon
-            if (icon != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: SizedBox(
-                  width: 140,
-                  height: 140,
-                  child: icon,
-                ),
-              ),
-
-            if (icon == null) const SizedBox(height: 8),
-            // Content
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  content,
-
-                  // Extra text above buttons
-                  showHeadlineContent(),
-
-                  // Buttons
-                  showPrimaryButton(),
-                  showSecondaryButton(),
+                  Expanded(
+                    child: showCloseButton(),
+                  ),
                 ],
               ),
-            ),
-          ],
+
+              // Icon
+              if (icon != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: SizedBox(
+                    width: 140,
+                    height: 140,
+                    child: icon,
+                  ),
+                ),
+
+              if (icon == null) const SizedBox(height: 8),
+              // Content
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    content,
+
+                    // Extra text above buttons
+                    showHeadlineContent(),
+
+                    // Buttons
+                    showPrimaryButton(),
+                    showSecondaryButton(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
