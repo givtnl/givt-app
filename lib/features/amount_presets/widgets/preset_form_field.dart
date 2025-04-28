@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -49,97 +51,86 @@ class _PresetFormFieldState extends State<PresetFormField> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      child: Material(
-        elevation: 2,
-        borderRadius: BorderRadius.circular(5),
-        child: TextFormField(
-          controller: widget.controller,
-          keyboardType: const TextInputType.numberWithOptions(
-            decimal: true,
-          ),
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(
-              Util.numberInputFieldRegExp(),
-            ),
-          ],
-          onChanged: (value) {
-            widget.onChanged(value);
-            setState(() {
-              errorMessage = validateField(
+    return TextFormField(
+      controller: widget.controller,
+      keyboardType: const TextInputType.numberWithOptions(
+        decimal: true,
+      ),
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(
+          Util.numberInputFieldRegExp(),
+        ),
+      ],
+      onChanged: (value) {
+        widget.onChanged(value);
+        setState(() {
+          errorMessage = validateField(
+            value: value,
+            locals: locals,
+          );
+        });
+      },
+      validator: (value) => validateField(
                 value: value,
                 locals: locals,
-              );
-            });
-          },
-          validator: (value) => validateField(
-                    value: value,
-                    locals: locals,
-                  ) !=
-                  null
-              ? ''
-              : null,
-          textInputAction: TextInputAction.next,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: 28,
-                color: AppTheme.givtBlue,
-              ),
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(24),
-            suffixStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.givtBlue,
-                ),
-            suffixIcon: const Icon(
-              Icons.edit,
-              color: AppTheme.givtBlue,
-            ),
-            labelText: errorMessage,
-            labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppTheme.givtRed,
-                ),
-            errorStyle: const TextStyle(
-              height: 0,
-            ),
-            focusedErrorBorder: const UnderlineInputBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
-              ),
-              borderSide: BorderSide(
-                color: Colors.red,
-                width: 8,
-              ),
-            ),
-            errorBorder: const UnderlineInputBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
-              ),
-              borderSide: BorderSide(
-                color: Colors.red,
-                width: 8,
-              ),
-            ),
-            focusedBorder: const UnderlineInputBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
-              ),
-              borderSide: BorderSide(
-                color: AppTheme.givtLightGreen,
-                width: 8,
-              ),
-            ),
-            enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.transparent,
-                width: 0,
-              ),
-            ),
-          ),
+              ) !=
+              null
+          ? ''
+          : null,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
+        suffixIcon: const Icon(
+          FontAwesomeIcons.penToSquare,
+          color: FamilyAppTheme.primary30,
+          size: 20,
         ),
+        labelText: errorMessage,
+        labelStyle: TextStyle(
+          fontFamily: 'Raleway',
+          fontSize: 14,
+          color: errorMessage != null
+              ? FamilyAppTheme.error50
+              : FamilyAppTheme.primary30,
+        ),
+        errorStyle: const TextStyle(
+          height: 0,
+        ),
+        focusedErrorBorder: _buildErrorBorder(),
+        errorBorder: _buildErrorBorder(),
+        focusedBorder: _buildFocusedBorder(),
+        enabledBorder: _buildEnabledBorder(),
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildErrorBorder() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(
+        color: FamilyAppTheme.error50,
+        width: 2,
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildFocusedBorder() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(
+        color: FamilyAppTheme.primary30,
+        width: 2,
+      ),
+    );
+  }
+
+  OutlineInputBorder _buildEnabledBorder() {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(
+        color: FamilyAppTheme.neutral95,
+        width: 1,
       ),
     );
   }

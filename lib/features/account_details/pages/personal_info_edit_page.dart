@@ -9,8 +9,8 @@ import 'package:givt_app/features/account_details/pages/change_email_address_bot
 import 'package:givt_app/features/account_details/pages/change_name_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/gift_aid_page.dart';
@@ -264,8 +264,8 @@ class PersonalInfoEditPage extends StatelessWidget {
                   );
                   _showModalBottomSheet(
                     context,
-                    bottomSheet: ChangePasswordPage(
-                      email: user.email,
+                    bottomSheet: ResetPasswordSheet(
+                      initialEmail: user.email,
                     ),
                   );
                 },
