@@ -341,6 +341,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
 
               return null;
             },
+            autofillHints: const [
+              AutofillHints.newPassword,
+            ],
             errorStyle: const TextStyle(
               height: 0,
               fontSize: 0,
