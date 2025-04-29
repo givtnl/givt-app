@@ -252,10 +252,24 @@ class _ChangeMaxAmountBottomSheetViewState
               keyboardType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(
+                  maxAmountLimit.toString().length + 1,
+                ),
               ],
               onChanged: (value) {
                 if (value.isEmpty) {
                   amountController.text = minAmountLimit.toString();
+                } else {
+                  // Check if value exceeds maximum limit
+                  final numValue = int.tryParse(value) ?? 0;
+                  if (numValue > maxAmountLimit) {
+                    amountController
+                      ..text = maxAmountLimit.toString()
+                      // Set cursor position at the end
+                      ..selection = TextSelection.fromPosition(
+                        TextPosition(offset: amountController.text.length),
+                      );
+                  }
                 }
                 setState(() {});
               },
