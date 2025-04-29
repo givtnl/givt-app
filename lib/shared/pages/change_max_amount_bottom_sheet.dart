@@ -292,8 +292,8 @@ class _ChangeMaxAmountBottomSheetViewState
           : null,
       text: locals.save,
       analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.onInfoRowClicked,
-        parameters: {'row_type': 'max_amount'},
+        AmplitudeEvents.maxAmountSaveClicked,
+        parameters: {'new_max_amount': amountController.text},
       ),
     );
   }

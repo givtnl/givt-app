@@ -188,6 +188,12 @@ class _ChangeAmountPresetsBottomSheetState
             value: _useAmountPresets,
             activeColor: AppTheme.givtLightGreen,
             onChanged: (value) {
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.amountPresetsToggleClicked,
+                eventProperties: {
+                  'is_enabled': value,
+                },
+              );
               setState(() {
                 _useAmountPresets = value;
               });
@@ -287,8 +293,12 @@ class _ChangeAmountPresetsBottomSheetState
         text: locals.save,
         onTap: () => _saveAmountPresets(context),
         analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.onInfoRowClicked,
-          parameters: {'action': 'save_presets_values'},
+          AmplitudeEvents.amountPresetsSaveClicked,
+          parameters: {
+            'preset_1': _firstPreset.text,
+            'preset_2': _secondPreset.text,
+            'preset_3': _thirdPreset.text,
+          },
         ),
       ),
     );
