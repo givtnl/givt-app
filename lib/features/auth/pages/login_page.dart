@@ -47,7 +47,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> onLogin(BuildContext context) async {
-    TextInput.finishAutofillContext();
+    // This will trigger the autofill context too many times
+    // TextInput.finishAutofillContext();
+
     if (formKey.currentState!.validate()) {
       try {
         await context
