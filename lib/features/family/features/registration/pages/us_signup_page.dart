@@ -375,6 +375,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
                 });
               },
             ),
+            keyboardType: TextInputType.visiblePassword,
           ),
           const SizedBox(height: 8),
           BodySmallText.primary40(
