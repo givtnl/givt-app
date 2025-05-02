@@ -119,86 +119,69 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           padding: const EdgeInsets.all(20),
           child: Form(
             key: _formKey,
-            child: AutofillGroup(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Text(locals.registerPersonalPage),
-                    _buildTextFormField(
-                      hintText: locals.streetAndHouseNumber,
-                      controller: _address,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '';
-                        }
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(locals.registerPersonalPage),
+                  _buildTextFormField(
+                    hintText: locals.streetAndHouseNumber,
+                    controller: _address,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '';
+                      }
+                      return null;
+                    },
+                    autofillHints: const [AutofillHints.fullStreetAddress],
+                    keyboardType: TextInputType.streetAddress,
+                  ),
+                  _buildTextFormField(
+                    hintText: locals.postalCode,
+                    controller: _postalCode,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '';
+                      }
+                      if (!isUk) {
                         return null;
-                      },
-                      autofillHints: const [AutofillHints.fullStreetAddress],
-                      keyboardType: TextInputType.streetAddress,
-                    ),
-                    _buildTextFormField(
-                      hintText: locals.postalCode,
-                      controller: _postalCode,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '';
-                        }
-                        if (!isUk) {
-                          return null;
-                        }
+                      }
 
-                        if (!Util.ukPostCodeRegEx.hasMatch(value)) {
-                          return '';
-                        }
-                        return null;
-                      },
-                      autofillHints: const [AutofillHints.postalCode],
-                      keyboardType: TextInputType.streetAddress,
-                    ),
-                    _buildTextFormField(
-                      hintText: locals.city,
-                      controller: _city,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '';
-                        }
-                        return null;
-                      },
-                      autofillHints: const [AutofillHints.addressCity],
-                      keyboardType: TextInputType.streetAddress,
-                    ),
-                    _buildCountryAndMobileNumber(
-                      size,
-                      locals,
-                      context,
-                    ),
-                    PaymentSystemTab(
-                      isUK: isUk,
-                      bankAccount: bankAccount,
-                      ibanNumber: ibanNumber,
-                      sortCode: sortCode,
-                      onFieldChanged: (value) => setState(() {}),
-                      onPaymentChanged: (value) {
-                        if (value == 0) {
-                          bankAccount.clear();
-                          sortCode.clear();
-                          if (isUk) {
-                            showDialog<void>(
-                              context: context,
-                              builder: (context) => _buildWarningDialog(
-                                message: locals.alertSepaMessage(
-                                  Country.getCountry(
-                                    _selectedCountry.countryCode,
-                                    locals,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                          setState(() {});
-                          return;
-                        }
-                        if (!isUk) {
+                      if (!Util.ukPostCodeRegEx.hasMatch(value)) {
+                        return '';
+                      }
+                      return null;
+                    },
+                    autofillHints: const [AutofillHints.postalCode],
+                    keyboardType: TextInputType.streetAddress,
+                  ),
+                  _buildTextFormField(
+                    hintText: locals.city,
+                    controller: _city,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '';
+                      }
+                      return null;
+                    },
+                    autofillHints: const [AutofillHints.addressCity],
+                    keyboardType: TextInputType.streetAddress,
+                  ),
+                  _buildCountryAndMobileNumber(
+                    size,
+                    locals,
+                    context,
+                  ),
+                  PaymentSystemTab(
+                    isUK: isUk,
+                    bankAccount: bankAccount,
+                    ibanNumber: ibanNumber,
+                    sortCode: sortCode,
+                    onFieldChanged: (value) => setState(() {}),
+                    onPaymentChanged: (value) {
+                      if (value == 0) {
+                        bankAccount.clear();
+                        sortCode.clear();
+                        if (isUk) {
                           showDialog<void>(
                             context: context,
                             builder: (context) => _buildWarningDialog(
@@ -211,14 +194,29 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                             ),
                           );
                         }
-                        setState(ibanNumber.clear);
-                      },
-                    ),
-                    SizedBox(
-                      height: size.height * 0.2,
-                    ),
-                  ],
-                ),
+                        setState(() {});
+                        return;
+                      }
+                      if (!isUk) {
+                        showDialog<void>(
+                          context: context,
+                          builder: (context) => _buildWarningDialog(
+                            message: locals.alertSepaMessage(
+                              Country.getCountry(
+                                _selectedCountry.countryCode,
+                                locals,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      setState(ibanNumber.clear);
+                    },
+                  ),
+                  SizedBox(
+                    height: size.height * 0.2,
+                  ),
+                ],
               ),
             ),
           ),

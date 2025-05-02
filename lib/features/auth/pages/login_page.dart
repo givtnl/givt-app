@@ -166,105 +166,102 @@ class _LoginPageState extends State<LoginPage> {
       closeAction: () => context.pop(),
       content: Form(
         key: formKey,
-        child: AutofillGroup(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 24),
-              BodyMediumText(
-                locals.loginText,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              OutlinedTextFormField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                readOnly: !widget.isEmailEditable,
-                autofillHints: const [
-                  AutofillHints.username,
-                  AutofillHints.email,
-                ],
-                onChanged: (value) {
-                  if (_debounceTimer?.isActive ?? false)
-                    _debounceTimer!.cancel();
-                  _debounceTimer = Timer(const Duration(milliseconds: 300), () {
-                    setState(() {
-                      formKey.currentState!.validate();
-                    });
-                  });
-                },
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      !Util.emailRegEx.hasMatch(value)) {
-                    return locals.invalidEmail;
-                  }
-                  return null;
-                },
-                hintText: locals.email,
-              ),
-              const SizedBox(height: 16),
-              OutlinedTextFormField(
-                key: const ValueKey('Login-Bottomsheet-Password-Input'),
-                controller: passwordController,
-                autofillHints: const [AutofillHints.password],
-                keyboardType: TextInputType.visiblePassword,
-                onChanged: (value) {
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 24),
+            BodyMediumText(
+              locals.loginText,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            OutlinedTextFormField(
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
+              readOnly: !widget.isEmailEditable,
+              autofillHints: const [
+                AutofillHints.username,
+                AutofillHints.email,
+              ],
+              onChanged: (value) {
+                if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
+                _debounceTimer = Timer(const Duration(milliseconds: 300), () {
                   setState(() {
                     formKey.currentState!.validate();
                   });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return locals.passwordRule;
-                  }
-                  if (value.length < 7) {
-                    return locals.passwordRule;
-                  }
-                  if (value.contains(RegExp('[0-9]')) == false) {
-                    return locals.passwordRule;
-                  }
-                  if (value.contains(RegExp('[A-Z]')) == false) {
-                    return locals.passwordRule;
-                  }
+                });
+              },
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    !Util.emailRegEx.hasMatch(value)) {
+                  return locals.invalidEmail;
+                }
+                return null;
+              },
+              hintText: locals.email,
+            ),
+            const SizedBox(height: 16),
+            OutlinedTextFormField(
+              key: const ValueKey('Login-Bottomsheet-Password-Input'),
+              controller: passwordController,
+              autofillHints: const [AutofillHints.password],
+              keyboardType: TextInputType.visiblePassword,
+              onChanged: (value) {
+                setState(() {
+                  formKey.currentState!.validate();
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return locals.passwordRule;
+                }
+                if (value.length < 7) {
+                  return locals.passwordRule;
+                }
+                if (value.contains(RegExp('[0-9]')) == false) {
+                  return locals.passwordRule;
+                }
+                if (value.contains(RegExp('[A-Z]')) == false) {
+                  return locals.passwordRule;
+                }
 
-                  return null;
+                return null;
+              },
+              obscureText: obscureText,
+              textInputAction: TextInputAction.done,
+              hintText: locals.password,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  semanticLabel: 'passwordeye',
+                  obscureText ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    obscureText = !obscureText;
+                  });
                 },
-                obscureText: obscureText,
-                textInputAction: TextInputAction.done,
-                hintText: locals.password,
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    semanticLabel: 'passwordeye',
-                    obscureText ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      obscureText = !obscureText;
-                    });
-                  },
-                ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: Align(
-                  child: TextButton(
-                    onPressed: () => showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (context) => ResetPasswordSheet(
-                        initialEmail: emailController.text,
-                      ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Align(
+                child: TextButton(
+                  onPressed: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    builder: (context) => ResetPasswordSheet(
+                      initialEmail: emailController.text,
                     ),
-                    child: TitleSmallText(
-                      locals.forgotPassword,
-                    ),
+                  ),
+                  child: TitleSmallText(
+                    locals.forgotPassword,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       primaryButton: FunButton(

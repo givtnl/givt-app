@@ -96,6 +96,8 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
     final locals = AppLocalizations.of(context);
     // Show the form
     return FunScaffold(
+      minimumPadding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      safeAreaBottom: false,
       canPop: false,
       appBar: FunTopAppBar.primary99(
         leading: GivtBackButtonFlat(
@@ -104,47 +106,35 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           },
         ),
         title: context.l10n.signUpPageTitle,
-        actions: [
-          // IconButton(
-          //   onPressed: () => showModalBottomSheet<void>(
-          //     context: context,
-          //     isScrollControlled: true,
-          //     useSafeArea: true,
-          //     backgroundColor: AppTheme.givtBlue,
-          //     builder: (_) => const FAQBottomSheet(),
-          //   ),
-          //   icon: const Icon(
-          //     FontAwesomeIcons.question,
-          //     size: 26,
-          //     color: AppTheme.primary30,
-          //   ),
-          // ),
-        ],
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Column(
-              children: [
-                RandomAvatar(
-                  id: user.guid,
-                  profileType: 1,
-                  onClick: () {
-                    AvatarSelectionBottomsheet.show(
-                      context,
-                      user.guid,
-                    );
-                  },
-                ),
-                const SizedBox(height: 16),
-                _buildSignUpForm(locals),
-                const Spacer(),
-                _buildBottomWidgetGroup(locals, user),
-              ],
+      body: AutofillGroup(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  RandomAvatar(
+                    id: user.guid,
+                    profileType: 1,
+                    onClick: () {
+                      AvatarSelectionBottomsheet.show(
+                        context,
+                        user.guid,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  _buildSignUpForm(locals),
+                  const Spacer(),
+                  _buildBottomWidgetGroup(locals, user),
+                  const SizedBox(height: 32),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -319,6 +309,29 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               return null;
             },
           ),
+          const SizedBox(height: 32),
+          OutlinedTextFormField(
+            controller: _emailController,
+            enabled: widget.email.isEmpty,
+            readOnly: widget.email.isNotEmpty,
+            onChanged: (value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return context.l10n.invalidEmail;
+              }
+              if (!Util.emailRegEx.hasMatch(value)) {
+                return context.l10n.invalidEmail;
+              }
+              return null;
+            },
+            autofillHints: const [
+              AutofillHints.email,
+              AutofillHints.username,
+            ],
+            keyboardType: TextInputType.emailAddress,
+          ),
           const SizedBox(height: 16),
           OutlinedTextFormField(
             controller: _passwordController,
@@ -363,10 +376,11 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               },
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           BodySmallText.primary40(
             locals.passwordRule,
           ),
+          const SizedBox(height: 8),
         ],
       ),
     );
