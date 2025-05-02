@@ -1,0 +1,23 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Analytics Rules
+
+## Event Implementation
+- Include analytics events for all user interactions
+- Use `AnalyticsEvent` class with `AmplitudeEvents` enum values
+- Add `analyticsEvent` parameter to all interactive components
+- Required for FUN components like `FunButton`
+
+## Event Naming
+- Use only predefined event names from `AmplitudeEvents` enum
+- Never create custom event strings
+- Follow naming pattern: `componentNameActionVerb`
+- Add new event types to `AmplitudeEvents` enum
+
+## Event Parameters
+- Use established key names from `AnalyticsHelper` constants
+- Never log sensitive user data
+- Never log personally identifiable information

@@ -1,0 +1,46 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# CommonCubit Pattern Rules
+
+## Basic Structure
+- Extend `CommonCubit<UIModel, CustomState>` where:
+  - `UIModel` is the main UI state model
+  - `CustomState` is for custom events/actions
+- Use `BaseState` for initial state: `super(const BaseState.loading())`
+
+## Repository Pattern
+- Inject all required repositories through constructor
+- Make repositories final private fields with underscore prefix
+- Group related repositories together
+- Example:
+```dart
+final ProfilesRepository _profilesRepository;
+final ImpactGroupsRepository _impactGroupsRepository;
+```
+
+## State Management
+- Use private fields for complex state objects
+- Implement `_emitData()` method to update UI state
+- Create a `_createUIModel()` method to construct the UI state
+- Use `emitData()` for regular state updates
+- Use `emitCustom()` for custom events/actions
+
+## Stream Handling
+- Set up repository streams in `init()` method
+- Use `listen()` for reactive updates
+- Handle stream errors appropriately
+- Example:
+```dart
+_profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
+```
+
+## Best Practices
+- Keep cubit focused on a single feature
+- Use clear, descriptive method names
+- Implement proper cleanup in dispose if needed
+- Handle loading and error states
+- Use private methods for internal logic
+- Keep UI model creation separate from business logic
