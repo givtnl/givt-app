@@ -183,95 +183,102 @@ class FunTile extends StatelessWidget {
           Container(
             color: newBackgroundColor,
             width: double.infinity,
-            child: Column(
-              mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
-              children: [
-                if (hasIcon)
-                  SizedBox(height: iconData != null && !shrink ? 24 : 10),
-                if (hasIcon)
-                  Opacity(
-                    opacity: isDisabled ? 0.5 : 1,
-                    child: iconData == null
-                        ? isOnlineIcon
-                            ? SvgPicture.network(
-                                iconPath,
-                                height: assetSize ?? 140,
-                                width: assetSize ?? 140,
-                              )
-                            : SvgPicture.asset(
-                                iconPath,
-                                height: assetSize ?? 140,
-                                width: assetSize ?? 140,
-                                color: iconColor,
-                              )
-                        : FaIcon(
-                            iconData,
-                            size: assetSize ?? 140,
-                            color: iconColor ?? textColor.withOpacity(0.6),
-                          ),
+            constraints: const BoxConstraints(
+              minHeight: 0,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
+                children: [
+                  if (hasIcon)
+                    SizedBox(height: iconData != null && !shrink ? 24 : 10),
+                  if (hasIcon)
+                    Opacity(
+                      opacity: isDisabled ? 0.5 : 1,
+                      child: iconData == null
+                          ? isOnlineIcon
+                              ? SvgPicture.network(
+                                  iconPath,
+                                  height: assetSize ?? 140,
+                                  width: assetSize ?? 140,
+                                )
+                              : SvgPicture.asset(
+                                  iconPath,
+                                  height: assetSize ?? 140,
+                                  width: assetSize ?? 140,
+                                  color: iconColor,
+                                )
+                          : FaIcon(
+                              iconData,
+                              size: assetSize ?? 140,
+                              color: iconColor ?? textColor.withOpacity(0.6),
+                            ),
+                    ),
+                  Padding(
+                    padding: padding ??
+                        (hasIcon
+                            ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16)
+                            : EdgeInsets.zero),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (titleBig != null)
+                          Text(
+                            titleBig!,
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.labelLarge?.copyWith(
+                                      color: isDisabled
+                                          ? FamilyAppTheme.disabledTileBorder
+                                          : textColor,
+                                    ),
+                          )
+                        else
+                          const SizedBox(),
+                        if (titleMedium != null)
+                          Text(
+                            titleMedium!,
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.labelMedium?.copyWith(
+                                      color: isDisabled
+                                          ? FamilyAppTheme.disabledTileBorder
+                                          : textColor,
+                                    ),
+                          )
+                        else
+                          const SizedBox(),
+                        if (titleSmall != null)
+                          Text(
+                            titleSmall!,
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.labelMedium?.copyWith(
+                                      color: isDisabled
+                                          ? FamilyAppTheme.disabledTileBorder
+                                          : textColor,
+                                    ),
+                          )
+                        else
+                          const SizedBox(),
+                        if (hasIcon) const SizedBox(height: 8),
+                        if (subtitle != null)
+                          Text(
+                            subtitle!,
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.labelMedium?.copyWith(
+                                      color: textColor.withAlpha(200),
+                                    ),
+                          )
+                        else
+                          const SizedBox(),
+                      ],
+                    ),
                   ),
-                Padding(
-                  padding: padding ??
-                      (hasIcon
-                          ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16)
-                          : EdgeInsets.zero),
-                  child: Column(
-                    children: [
-                      if (titleBig != null)
-                        Text(
-                          titleBig!,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.labelLarge?.copyWith(
-                                    color: isDisabled
-                                        ? FamilyAppTheme.disabledTileBorder
-                                        : textColor,
-                                  ),
-                        )
-                      else
-                        const SizedBox(),
-                      if (titleMedium != null)
-                        Text(
-                          titleMedium!,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: isDisabled
-                                        ? FamilyAppTheme.disabledTileBorder
-                                        : textColor,
-                                  ),
-                        )
-                      else
-                        const SizedBox(),
-                      if (titleSmall != null)
-                        Text(
-                          titleSmall!,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: isDisabled
-                                        ? FamilyAppTheme.disabledTileBorder
-                                        : textColor,
-                                  ),
-                        )
-                      else
-                        const SizedBox(),
-                      if (hasIcon) const SizedBox(height: 8),
-                      if (subtitle != null)
-                        Text(
-                          subtitle!,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: textColor.withAlpha(200),
-                                  ),
-                        )
-                      else
-                        const SizedBox(),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           if (isSelected)

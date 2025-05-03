@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/widgets/errors/unrecoverable_error.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 
 class BaseStateConsumer<E, K> extends StatelessWidget {
@@ -77,7 +78,11 @@ class BaseStateConsumer<E, K> extends StatelessWidget {
               );
         } else if (state is LoadingState) {
           return onLoading?.call(context) ??
-              const CustomCircularProgressIndicator();
+              const FunScaffold(
+                body: Center(
+                  child: CustomCircularProgressIndicator(),
+                ),
+              );
         } else if (state is DataState<E, K>) {
           return onData?.call(context, state.data) ??
               UnrecoverableError(
@@ -85,7 +90,11 @@ class BaseStateConsumer<E, K> extends StatelessWidget {
               );
         } else {
           return onLoading?.call(context) ??
-              const CustomCircularProgressIndicator();
+              const FunScaffold(
+                body: Center(
+                  child: CustomCircularProgressIndicator(),
+                ),
+              );
         }
       },
     );

@@ -441,6 +441,26 @@ enum AmplitudeEvents {
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
+
+  // Recurring Donations New Flow - Step 2 Set Amount
+  step2SetAmountFrequencySelected('step2_set_amount_frequency_selected'),
+  step2SetAmountAmountEntered('step2_set_amount_amount_entered'),
+  step2SetAmountContinueClicked('step2_set_amount_continue_clicked'),
+  
+  step3SetDurationStartDate('step3_set_duration_start_date'),
+  step3SetDurationOption('step3_set_duration_option'),
+  step3SetDurationNumber('step3_set_duration_number'),
+  step3SetDurationEndDate('step3_set_duration_end_date'),
+  step3SetDurationContinue('step3_set_duration_continue'),
+
+  // Recurring Donation New Flow - Step 4 Confirm
+  step4ConfirmClose('step4_confirm_close'),
+  step4ConfirmEditOrganisation('step4_confirm_edit_organisation'),
+  step4ConfirmEditAmount('step4_confirm_edit_amount'),
+  step4ConfirmEditFrequency('step4_confirm_edit_frequency'),
+  step4ConfirmEditStartDate('step4_confirm_edit_start_date'),
+  step4ConfirmEditEndDate('step4_confirm_edit_end_date'),
+  step4ConfirmDonation('step4_confirm_donation'),
   ;
 
   const AmplitudeEvents(this.value);
