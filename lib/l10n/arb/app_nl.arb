@@ -988,5 +988,17 @@
     "requestRefund": "Terugboeken",
     "changeName": "Naam wijzigen",
     "onlineGivingLabel": "Online geven",
-    "accountDisabled": "Je account is geblokkeerd. Neem contact met ons op via support@givtapp.net"
+    "accountDisabled": "Je account is geblokkeerd. Neem contact met ons op via support@givtapp.net",
+    "recurringDonationsFrequenciesWeekly": "Wekelijks",
+    "recurringDonationsFrequenciesMonthly": "Maandelijks",
+    "recurringDonationsFrequenciesQuarterly": "Per kwartaal",
+    "recurringDonationsFrequenciesHalfYearly": "Halfjaarlijks",
+    "recurringDonationsFrequenciesYearly": "Jaarlijks",
+    "closeModalAreYouSure": "Weet je zeker dat je wilt stoppen?",
+    "closeModalWontBeSaved": "Als je nu stopt, worden je wijzigingen niet opgeslagen",
+    "closeModalYesExit": "Ja, sluit af",
+    "closeModalNoBack": "Nee, ik wil terug",
+    "recurringDonationsSetAmountTitle": "Hoevaak en hoeveel wil je geven?",
+    "recurringDonationsFrequencyTitle": "Donatie Frequentie",
+    "recurringDonationsAmountTitle": "Donatie bedrag"
 }

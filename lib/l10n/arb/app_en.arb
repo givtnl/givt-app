@@ -988,5 +988,17 @@
     "requestRefund": "Refund",
     "changeName": "Edit name",
     "onlineGivingLabel": "Online giving",
-    "accountDisabled": "Your account has been blocked. Please contact us at support@givtapp.net"
+    "accountDisabled": "Your account has been blocked. Please contact us at support@givtapp.net",
+    "recurringDonationsFrequenciesWeekly": "Weekly",
+    "recurringDonationsFrequenciesMonthly": "Monthly",
+    "recurringDonationsFrequenciesQuarterly": "Quarterly",
+    "recurringDonationsFrequenciesHalfYearly": "Half Yearly",
+    "recurringDonationsFrequenciesYearly": "Yearly",
+    "closeModalAreYouSure": "Are you sure you want to exit?",
+    "closeModalWontBeSaved": "If you exit now, your current changes won't be saved.",
+    "closeModalYesExit": "Yes, exit",
+    "closeModalNoBack": "No, go back",
+    "recurringDonationsSetAmountTitle": "How often do you want to give, and how much?",
+    "recurringDonationsFrequencyTitle": "Donation frequency",
+    "recurringDonationsAmountTitle": "Donation amount"
 }
