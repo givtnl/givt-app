@@ -36,13 +36,13 @@ class GivtListItem extends StatelessWidget {
     final isWithinLastMonth = givtGroup.timeStamp != null &&
         givtGroup.timeStamp!.isAfter(oneMonthAgo);
 
-    // Determine if any button should be shown
-    final showCancelButton = givtGroup.status == 1;
-    final showRefundButton = givtGroup.status == 3 && isWithinLastMonth;
-
     // Check if this is an online giving donation (type 7)
     final isOnlineGiving =
         givtGroup.givts.any((givt) => givt.donationType == 7);
+
+    // Determine if any button should be shown
+    final showCancelButton = givtGroup.status == 1 && !isOnlineGiving;
+    final showRefundButton = givtGroup.status == 3 && isWithinLastMonth && !isOnlineGiving;
 
     return Container(
       decoration: BoxDecoration(
