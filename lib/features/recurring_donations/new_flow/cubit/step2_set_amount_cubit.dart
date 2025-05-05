@@ -46,10 +46,16 @@ enum SetAmountAction {
 
 class Step2SetAmountCubit
     extends CommonCubit<SetAmountUIModel, SetAmountAction> {
-  Step2SetAmountCubit(this._repository)
-      : super(const BaseState.data(SetAmountUIModel()));
+  Step2SetAmountCubit(this._repository) : super(const BaseState.loading());
 
   final RecurringDonationNewFlowRepository _repository;
+
+  void init() {
+    _emitData(
+      selectedFrequency: _repository.frequency,
+      amount: _repository.amount,
+    );
+  }
 
   void selectFrequency(String frequency) {
     _repository.frequency = frequency;

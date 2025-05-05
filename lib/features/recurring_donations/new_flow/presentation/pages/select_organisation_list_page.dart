@@ -14,8 +14,8 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
-class SelectOrganisationList extends StatefulWidget {
-  const SelectOrganisationList({
+class SelectOrganisationListPage extends StatefulWidget {
+  const SelectOrganisationListPage({
     required this.onCollectGroupSelected,
     super.key,
   });
@@ -23,12 +23,15 @@ class SelectOrganisationList extends StatefulWidget {
   final void Function(CollectGroup) onCollectGroupSelected;
 
   @override
-  State<SelectOrganisationList> createState() => _SelectOrganisationListState();
+  State<SelectOrganisationListPage> createState() =>
+      _SelectOrganisationListPageState();
 }
 
-class _SelectOrganisationListState extends State<SelectOrganisationList> {
+class _SelectOrganisationListPageState
+    extends State<SelectOrganisationListPage> {
   final OrganisationBloc bloc = getIt<OrganisationBloc>();
-  final Step1SelectOrganizationCubit _cubit = getIt<Step1SelectOrganizationCubit>();
+  final Step1SelectOrganizationCubit _cubit =
+      getIt<Step1SelectOrganizationCubit>();
   CollectGroup selectedCollectgroup = const CollectGroup.empty();
 
   @override

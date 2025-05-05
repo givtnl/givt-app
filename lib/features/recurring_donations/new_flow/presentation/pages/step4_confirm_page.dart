@@ -9,60 +9,72 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/recurring_donations/new_flow/cubit/step4_confirm_cubit.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/confirm_ui_model.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/pages/step1_select_organisation_page.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/pages/step2_set_amount_page.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/widgets/fun_modal_close_flow.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/widgets/summary_row.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:intl/intl.dart';
+import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/pages/success_page.dart';
 
-class Step4ConfirmPage extends StatelessWidget {
+class Step4ConfirmPage extends StatefulWidget {
   const Step4ConfirmPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => Step4ConfirmCubit(
-        getIt(),
-      )..init(),
-      child: const _Step4ConfirmView(),
-    );
-  }
+  State<Step4ConfirmPage> createState() => _Step4ConfirmPageState();
 }
 
-class _Step4ConfirmView extends StatelessWidget {
-  const _Step4ConfirmView();
+class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
+  final Step4ConfirmCubit _cubit = getIt<Step4ConfirmCubit>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _cubit.init();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BaseStateConsumer<ConfirmUIModel, ConfirmAction>(
-      cubit: context.read<Step4ConfirmCubit>(),
+      cubit: _cubit,
       onCustom: (context, action) {
+        var amountOfPops = 0;
         switch (action) {
           case ConfirmAction.navigateToOrganization:
-            Navigator.of(context).popUntil((route) => route.isFirst);
+            amountOfPops = 4;
           case ConfirmAction.navigateToAmount:
-            Navigator.of(context).pop();
+            amountOfPops = 2;
           case ConfirmAction.navigateToFrequency:
-            Navigator.of(context).pop();
+            amountOfPops = 2;
           case ConfirmAction.navigateToStartDate:
-            Navigator.of(context).pop();
+            amountOfPops = 1;
           case ConfirmAction.navigateToEndDate:
-            Navigator.of(context).pop();
+            amountOfPops = 1;
           case ConfirmAction.donationConfirmed:
-            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.of(context).pushReplacement(
+              SuccessPage(model: _cubit.getCurrent()).toRoute(context),
+            );
+            return;
+        }
+
+        for (var i = 0; i < amountOfPops; i++) {
+          Navigator.of(context).pop();
         }
       },
       onData: (context, model) {
         var endsText = '';
         if (model.selectedEndOption ==
             RecurringDonationStringKeys.whenIDecide) {
-          endsText = RecurringDonationStringKeys.whenIDecide;
+          endsText = 'When I decide';
         } else if (model.selectedEndOption ==
                 RecurringDonationStringKeys.afterNumberOfDonations &&
             model.numberOfDonations.isNotEmpty) {
-          endsText = RecurringDonationStringKeys.afterNumberOfDonations;
+          endsText = 'After ${model.numberOfDonations} of donations';
         } else if (model.selectedEndOption ==
                 RecurringDonationStringKeys.onSpecificDate &&
             model.endDate != null) {
@@ -80,37 +92,7 @@ class _Step4ConfirmView extends StatelessWidget {
                   AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.step4ConfirmClose,
                   );
-                  FunModal(
-                    icon: FunIcon.xmark(),
-                    title: 'Are you sure you want to exit?',
-                    subtitle: "If you exit now, your current changes won't be saved.",
-                    buttons: [
-                      FunButton.destructive(
-                        onTap: () {
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.step4ConfirmClose,
-                          );
-                          Navigator.of(context).popUntil((route) => route.isFirst);
-                        },
-                        text: 'Yes, exit',
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.step4ConfirmClose,
-                        ),
-                      ),
-                      FunButton.secondary(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        text: 'No, go back',
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.backClicked,
-                        ),
-                      ),
-                    ],
-                    closeAction: () {
-                      Navigator.of(context).pop();
-                    },
-                  ).show(context);
+                  const FunModalCloseFlow().show(context);
                 },
               ),
             ],
@@ -133,7 +115,7 @@ class _Step4ConfirmView extends StatelessWidget {
                   AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.step4ConfirmEditOrganisation,
                   );
-                  context.read<Step4ConfirmCubit>().navigateToOrganization();
+                  _cubit.navigateToOrganization();
                 },
               ),
               SummaryRow(
@@ -144,7 +126,7 @@ class _Step4ConfirmView extends StatelessWidget {
                   AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.step4ConfirmEditAmount,
                   );
-                  context.read<Step4ConfirmCubit>().navigateToAmount();
+                  _cubit.navigateToAmount();
                 },
               ),
               SummaryRow(
@@ -155,7 +137,7 @@ class _Step4ConfirmView extends StatelessWidget {
                   AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.step4ConfirmEditFrequency,
                   );
-                  context.read<Step4ConfirmCubit>().navigateToFrequency();
+                  _cubit.navigateToFrequency();
                 },
               ),
               SummaryRow(
@@ -168,7 +150,7 @@ class _Step4ConfirmView extends StatelessWidget {
                   AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.step4ConfirmEditStartDate,
                   );
-                  context.read<Step4ConfirmCubit>().navigateToStartDate();
+                  _cubit.navigateToStartDate();
                 },
               ),
               SummaryRow(
@@ -179,7 +161,7 @@ class _Step4ConfirmView extends StatelessWidget {
                   AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.step4ConfirmEditEndDate,
                   );
-                  context.read<Step4ConfirmCubit>().navigateToEndDate();
+                  _cubit.navigateToEndDate();
                 },
               ),
               const Spacer(),
@@ -193,9 +175,9 @@ class _Step4ConfirmView extends StatelessWidget {
                   AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.step4ConfirmDonation,
                   );
-                  context.read<Step4ConfirmCubit>().confirmDonation(
-                        context.read<AuthCubit>().state.user.country,
-                      );
+                  _cubit.confirmDonation(
+                    context.read<AuthCubit>().state.user.country,
+                  );
                 },
               ),
             ],

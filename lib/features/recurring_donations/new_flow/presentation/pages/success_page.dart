@@ -1,0 +1,113 @@
+import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/confirm_ui_model.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:intl/intl.dart';
+
+class SuccessPage extends StatefulWidget {
+  final ConfirmUIModel model;
+  const SuccessPage({Key? key, required this.model}) : super(key: key);
+
+  @override
+  State<SuccessPage> createState() => _SuccessPageState();
+}
+
+class _SuccessPageState extends State<SuccessPage> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ConfettiHelper.show(context);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FunScaffold(
+      canPop: false,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Spacer(),
+            Center(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 180,
+                    height: 180,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFEFFFFF),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                  Image.asset(
+                    'assets/images/givy_gave.png',
+                    width: 160,
+                    height: 160,
+                    fit: BoxFit.contain,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            const TitleLargeText(
+              'Thanks for your support',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            BodyMediumText(
+              _buildSubtitle(),
+              textAlign: TextAlign.center,
+            ),
+            const Spacer(),
+            FunButton(
+              text: 'Done',
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.step4ConfirmDonation,
+                parameters: widget.model.analyticsParams,
+              ),
+              onTap: () {
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.step4ConfirmDonation,
+                );
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _buildSubtitle() {
+    if (widget.model.selectedEndOption ==
+            RecurringDonationStringKeys.afterNumberOfDonations &&
+        widget.model.numberOfDonations.isNotEmpty) {
+      return "For the next ${widget.model.numberOfDonations} months, you'll be helping ${widget.model.organizationName} make an impact";
+    }
+    if (widget.model.selectedEndOption ==
+        RecurringDonationStringKeys.whenIDecide) {
+      return "You'll be helping ${widget.model.organizationName} make an impact until you decide to stop.";
+    }
+    if (widget.model.selectedEndOption ==
+            RecurringDonationStringKeys.onSpecificDate &&
+        widget.model.endDate != null) {
+      return "Until ${_formatDate(widget.model.endDate!)}, you'll be helping ${widget.model.organizationName} make an impact";
+    }
+    return "You'll be helping ${widget.model.organizationName} make an impact";
+  }
+
+  String _formatDate(DateTime date) {
+    return DateFormat('dd MMM yyyy').format(date);
+  }
+}

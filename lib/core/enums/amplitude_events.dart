@@ -446,7 +446,7 @@ enum AmplitudeEvents {
   step2SetAmountFrequencySelected('step2_set_amount_frequency_selected'),
   step2SetAmountAmountEntered('step2_set_amount_amount_entered'),
   step2SetAmountContinueClicked('step2_set_amount_continue_clicked'),
-  
+
   step3SetDurationStartDate('step3_set_duration_start_date'),
   step3SetDurationOption('step3_set_duration_option'),
   step3SetDurationNumber('step3_set_duration_number'),

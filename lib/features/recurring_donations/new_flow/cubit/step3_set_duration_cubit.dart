@@ -1,71 +1,8 @@
-import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/set_duration_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/repository/recurring_donation_new_flow_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
-
-class SetDurationUIModel extends Equatable {
-  const SetDurationUIModel({
-    this.startDate,
-    this.selectedOption,
-    this.numberOfDonations = '',
-    this.endDate,
-    this.isLoading = false,
-    this.error,
-    this.isContinueEnabled = false,
-    this.frequencyMessage = '',
-  });
-
-  final DateTime? startDate;
-  final String? selectedOption;
-  final String numberOfDonations;
-  final DateTime? endDate;
-  final bool isLoading;
-  final String? error;
-  final bool isContinueEnabled;
-  final String frequencyMessage;
-
-  Map<String, dynamic> get analyticsParams => {
-        'startDate': startDate?.toIso8601String() ?? '',
-        'selectedOption': selectedOption ?? '',
-        'numberOfDonations': numberOfDonations,
-        'endDate': endDate?.toIso8601String() ?? '',
-      };
-
-  SetDurationUIModel copyWith({
-    DateTime? startDate,
-    String? selectedOption,
-    String? numberOfDonations,
-    DateTime? endDate,
-    bool? isLoading,
-    String? error,
-    bool? isContinueEnabled,
-    String? frequencyMessage,
-  }) {
-    return SetDurationUIModel(
-      startDate: startDate ?? this.startDate,
-      selectedOption: selectedOption ?? this.selectedOption,
-      numberOfDonations: numberOfDonations ?? this.numberOfDonations,
-      endDate: endDate ?? this.endDate,
-      isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-      isContinueEnabled: isContinueEnabled ?? this.isContinueEnabled,
-      frequencyMessage: frequencyMessage ?? this.frequencyMessage,
-    );
-  }
-
-  @override
-  List<Object?> get props => [
-        startDate,
-        selectedOption,
-        numberOfDonations,
-        endDate,
-        isLoading,
-        error,
-        isContinueEnabled,
-        frequencyMessage
-      ];
-}
 
 enum SetDurationAction {
   navigateToConfirm,
@@ -77,14 +14,14 @@ class Step3SetDurationCubit
 
   final RecurringDonationNewFlowRepository repository;
 
-  void onInit() {
+  void init() {
     emitLoading();
 
     // Default selectedOption to 'When I decide' if not set
     repository.selectedEndOption ??= RecurringDonationStringKeys.whenIDecide;
 
     final frequency = repository.frequency;
-    String frequencyMessage = '';
+    var frequencyMessage = '';
     if (frequency != null) {
       final now = repository.startDate ?? DateTime.now();
       final day = now.day;
@@ -114,18 +51,22 @@ class Step3SetDurationCubit
   }
 
   void updateStartDate(DateTime date) {
+    repository.startDate = date;
     _emitData(startDate: date);
   }
 
   void updateEndDate(DateTime date) {
+    repository.endDate = date;
     _emitData(endDate: date);
   }
 
   void updateNumberOfDonations(String number) {
+    repository.numberOfDonations = number;
     _emitData(numberOfDonations: number);
   }
 
   void updateSelectedOption(String option) {
+    repository.selectedEndOption = option;
     _emitData(selectedOption: option);
   }
 
@@ -133,7 +74,8 @@ class Step3SetDurationCubit
     if (repository.startDate != null &&
         (repository.endDate != null ||
             repository.numberOfDonations != null ||
-            repository.selectedEndOption == 'When I decide')) {
+            repository.selectedEndOption ==
+                RecurringDonationStringKeys.whenIDecide)) {
       emitCustom(SetDurationAction.navigateToConfirm);
     }
   }

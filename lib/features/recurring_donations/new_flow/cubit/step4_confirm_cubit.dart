@@ -4,6 +4,7 @@ import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/models/recurring_donation_frequency.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/confirm_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/repository/recurring_donation_new_flow_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -39,7 +40,7 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
   }
 
   Future<void> confirmDonation(String country) async {
-    final current = _getCurrent();
+    final current = getCurrent();
     emitData(current.copyWith(isLoading: true));
 
     try {
@@ -126,7 +127,7 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
     emitCustom(ConfirmAction.navigateToEndDate);
   }
 
-  ConfirmUIModel _getCurrent() {
+  ConfirmUIModel getCurrent() {
     if (state is DataState<ConfirmUIModel, ConfirmAction>) {
       return (state as DataState<ConfirmUIModel, ConfirmAction>).data;
     }
@@ -157,11 +158,13 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
     DateTime? endDate,
     RecurringDonationFrequency frequency,
   ) {
-    if (selectedEndOption == 'When I decide') {
+    if (selectedEndOption == RecurringDonationStringKeys.whenIDecide) {
       return 999; // 999 means no end date
-    } else if (selectedEndOption == 'After a number of donations') {
+    } else if (selectedEndOption ==
+        RecurringDonationStringKeys.afterNumberOfDonations) {
       return int.parse(numberOfDonations);
-    } else if (selectedEndOption == 'On a specific date' && endDate != null) {
+    } else if (selectedEndOption == RecurringDonationStringKeys.onSpecificDate &&
+        endDate != null) {
       var counter = 0;
       var tempDate = startDate!;
 

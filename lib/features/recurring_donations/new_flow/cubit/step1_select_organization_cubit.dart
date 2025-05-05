@@ -3,6 +3,7 @@ import 'package:givt_app/features/recurring_donations/new_flow/repository/recurr
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 
 enum SelectOrganizationAction {
   navigateToAmount,
@@ -15,9 +16,20 @@ class Step1SelectOrganizationCubit
 
   final RecurringDonationNewFlowRepository _repository;
 
-  Future<void> init() async {
+  Future<void> init(UserExt user, [CollectGroup? collectGroup]) async {
     emitLoading();
     try {
+      _repository.init(user.guid, user.country, collectGroup);
+
+      // If this flow is triggered from an organization, we don't need to fetch the organizations
+      if (collectGroup != null) {
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () => emitCustom(SelectOrganizationAction.navigateToAmount),
+        );
+        return;
+      }
+
       final organizations = await _repository.fetchOrganizations();
       _emitData(organizations: organizations);
     } catch (e) {

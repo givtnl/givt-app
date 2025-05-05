@@ -62,4 +62,16 @@ class RecurringDonationNewFlowRepository {
 
     return response;
   }
+
+  void init(String guid, String country, CollectGroup? collectGroup) {
+    _selectedOrganization = collectGroup;
+    _frequency = null;
+    _amount = null;
+    _startDate = null;
+    _endDate = null;
+    _numberOfDonations = null;
+    _selectedEndOption = null;
+    _guid = guid;
+    _country = country;
+  }
 }

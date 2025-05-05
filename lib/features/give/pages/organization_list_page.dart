@@ -443,7 +443,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                   navigate: (context) =>
                       _showCreateRecurringDonationBottomSheet(
                     context,
-                    recipient: recipient,
+                    collectGroup: recipient,
                   ),
                 ),
               ),
@@ -490,7 +490,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               checkAuthRequest: CheckAuthRequest(
                 navigate: (context) => _showCreateRecurringDonationBottomSheet(
                   context,
-                  recipient: recipient,
+                  collectGroup: recipient,
                 ),
               ),
             ),
@@ -515,20 +515,14 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
 
   Future<void> _showCreateRecurringDonationBottomSheet(
     BuildContext context, {
-    required CollectGroup recipient,
+    required CollectGroup collectGroup,
   }) {
     return Navigator.push(
       context,
-      const Step1SelectOrganisationPage().toRoute(context),
+      Step1SelectOrganisationPage(
+        collectGroup: collectGroup,
+      ).toRoute(context),
     );
-    // return showModalBottomSheet<void>(
-    //   context: context,
-    //   isScrollControlled: true,
-    //   useSafeArea: true,
-    //   builder: (_) => CreateRecurringDonationBottomSheet(
-    //     recipient: recipient,
-    //   ),
-    // );
   }
 
   Future<void> _showEnterAmountBottomSheet(
