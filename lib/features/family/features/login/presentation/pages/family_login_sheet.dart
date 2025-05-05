@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
@@ -52,6 +53,9 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
   }
 
   Future<void> onLogin(BuildContext context) async {
+    // This will trigger the autofill context too many times
+    // TextInput.finishAutofillContext();
+
     if (!formKey.currentState!.validate()) return;
 
     await _cubit.login(

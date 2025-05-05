@@ -103,9 +103,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
-              AppVersion(
-                isOldStyle: false,
-              ),
+              AppVersion(),
               const SizedBox(height: 32),
               Row(
                 children: [

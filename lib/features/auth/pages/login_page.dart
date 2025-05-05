@@ -1,10 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/change_password_page.dart';
+import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,6 +37,8 @@ class _LoginPageState extends State<LoginPage> {
   late TextEditingController passwordController;
   bool obscureText = true;
 
+  Timer? _debounceTimer;
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +47,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> onLogin(BuildContext context) async {
+    // This will trigger the autofill context too many times
+    // TextInput.finishAutofillContext();
+
     if (formKey.currentState!.validate()) {
       try {
         await context
@@ -76,201 +88,189 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
-    final theme = AppTheme.lightTheme;
-    return Theme(
-      data: theme,
-      child: BottomSheetLayout(
-        title: Text(
-          locals.login,
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        child: BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) {
-            if (state.status == AuthStatus.failure) {
-              showDialog<void>(
-                context: context,
-                builder: (context) => WarningDialog(
-                  title: locals.loginFailure,
-                  content: locals.noInternet,
-                  onConfirm: () => context.pop(),
-                ),
-              );
-            }
-            if (state.status == AuthStatus.noInternet) {
-              showDialog<void>(
-                context: context,
-                builder: (context) => WarningDialog(
-                  title: locals.noInternetConnectionTitle,
-                  content: locals.noInternet,
-                  onConfirm: () => context.pop(),
-                ),
-              );
-            }
-            if (state.status == AuthStatus.twoAttemptsLeft) {
-              showDialog<void>(
-                context: context,
-                builder: (context) => WarningDialog(
-                  title: locals.loginFailure,
-                  content: locals.wrongCredentials,
-                  onConfirm: () => context.pop(),
-                ),
-              );
-            }
-            if (state.status == AuthStatus.oneAttemptLeft) {
-              showDialog<void>(
-                context: context,
-                builder: (context) => WarningDialog(
-                  title: locals.loginFailure,
-                  content: locals.wrongCredentials,
-                  onConfirm: () => context.pop(),
-                ),
-              );
-            }
-            if (state.status == AuthStatus.lockedOut) {
-              showDialog<void>(
-                context: context,
-                builder: (context) => WarningDialog(
-                  title: locals.loginFailure,
-                  content: locals.wrongPasswordLockedOut,
-                  onConfirm: () => context.pop(),
-                ),
-              );
-            }
-            if (state.status == AuthStatus.accountDisabled) {
-              showDialog<void>(
-                context: context,
-                builder: (context) => WarningDialog(
-                  title: locals.loginFailure,
-                  content: locals.accountDisabled,
-                  onConfirm: () => context.pop(),
-                ),
-              );
-            }
-          },
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  locals.loginText,
-                  style: theme.textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: size.height * 0.05),
-                CustomTextFormField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  readOnly: !widget.isEmailEditable,
-                  autofillHints: const [
-                    AutofillHints.username,
-                    AutofillHints.email,
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      formKey.currentState!.validate();
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        !Util.emailRegEx.hasMatch(value)) {
-                      return locals.invalidEmail;
-                    }
-                    return null;
-                  },
-                  hintText: locals.email,
-                ),
-                const SizedBox(height: 15),
-                CustomTextFormField(
-                  key: const ValueKey('Login-Bottomsheet-Password-Input'),
-                  controller: passwordController,
-                  autocorrect: false,
-                  autofillHints: const [AutofillHints.password],
-                  keyboardType: TextInputType.visiblePassword,
-                  onChanged: (value) {
-                    setState(() {
-                      formKey.currentState!.validate();
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return locals.passwordRule;
-                    }
-                    if (value.length < 7) {
-                      return locals.passwordRule;
-                    }
-                    if (value.contains(RegExp('[0-9]')) == false) {
-                      return locals.passwordRule;
-                    }
-                    if (value.contains(RegExp('[A-Z]')) == false) {
-                      return locals.passwordRule;
-                    }
 
-                    return null;
-                  },
-                  obscureText: obscureText,
-                  textInputAction: TextInputAction.done,
-                  hintText: locals.password,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      obscureText ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        obscureText = !obscureText;
-                      });
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Align(
-                    child: TextButton(
-                      onPressed: () => showModalBottomSheet<void>(
-                        context: context,
-                        isScrollControlled: true,
-                        useSafeArea: true,
-                        builder: (context) => ChangePasswordPage(
-                          email: emailController.text,
-                        ),
-                      ),
-                      child: Text(
-                        locals.forgotPassword,
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const Spacer(),
-                ElevatedButton(
-                  key: const ValueKey('Login-Bottomsheet-Login-Button'),
-                  onPressed: context.watch<AuthCubit>().state.status ==
-                          AuthStatus.loading
-                      ? null
-                      : isEnabled
-                          ? () => onLogin(context)
-                          : null,
-                  style: ElevatedButton.styleFrom(
-                    disabledBackgroundColor: Colors.grey,
-                  ),
-                  child: context.watch<AuthCubit>().state.status ==
-                          AuthStatus.loading
-                      ? const CircularProgressIndicator.adaptive()
-                      : Text(
-                          locals.login,
-                        ),
-                ),
-              ],
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state.status == AuthStatus.failure) {
+          showDialog<void>(
+            context: context,
+            builder: (context) => WarningDialog(
+              title: locals.loginFailure,
+              content: locals.noInternet,
+              onConfirm: () => context.pop(),
             ),
-          ),
+          );
+        }
+        if (state.status == AuthStatus.noInternet) {
+          showDialog<void>(
+            context: context,
+            builder: (context) => WarningDialog(
+              title: locals.noInternetConnectionTitle,
+              content: locals.noInternet,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
+        if (state.status == AuthStatus.twoAttemptsLeft) {
+          showDialog<void>(
+            context: context,
+            builder: (context) => WarningDialog(
+              title: locals.loginFailure,
+              content: locals.wrongCredentials,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
+        if (state.status == AuthStatus.oneAttemptLeft) {
+          showDialog<void>(
+            context: context,
+            builder: (context) => WarningDialog(
+              title: locals.loginFailure,
+              content: locals.wrongCredentials,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
+        if (state.status == AuthStatus.lockedOut) {
+          showDialog<void>(
+            context: context,
+            builder: (context) => WarningDialog(
+              title: locals.loginFailure,
+              content: locals.wrongPasswordLockedOut,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
+        if (state.status == AuthStatus.accountDisabled) {
+          showDialog<void>(
+            context: context,
+            builder: (context) => WarningDialog(
+              title: locals.loginFailure,
+              content: locals.accountDisabled,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
+      },
+      child: _buildLoginForm(context, locals),
+    );
+  }
+
+  Widget _buildLoginForm(BuildContext context, AppLocalizations locals) {
+    final isLoading =
+        context.watch<AuthCubit>().state.status == AuthStatus.loading;
+
+    return FunBottomSheet(
+      title: locals.login,
+      closeAction: () => context.pop(),
+      content: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 24),
+            BodyMediumText(
+              locals.loginText,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            OutlinedTextFormField(
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
+              readOnly: !widget.isEmailEditable,
+              autofillHints: const [
+                AutofillHints.username,
+                AutofillHints.email,
+              ],
+              onChanged: (value) {
+                if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
+                _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+                  setState(() {
+                    formKey.currentState!.validate();
+                  });
+                });
+              },
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    !Util.emailRegEx.hasMatch(value)) {
+                  return locals.invalidEmail;
+                }
+                return null;
+              },
+              hintText: locals.email,
+            ),
+            const SizedBox(height: 16),
+            OutlinedTextFormField(
+              key: const ValueKey('Login-Bottomsheet-Password-Input'),
+              controller: passwordController,
+              autofillHints: const [AutofillHints.password],
+              keyboardType: TextInputType.visiblePassword,
+              onChanged: (value) {
+                setState(() {
+                  formKey.currentState!.validate();
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return locals.passwordRule;
+                }
+                if (value.length < 7) {
+                  return locals.passwordRule;
+                }
+                if (value.contains(RegExp('[0-9]')) == false) {
+                  return locals.passwordRule;
+                }
+                if (value.contains(RegExp('[A-Z]')) == false) {
+                  return locals.passwordRule;
+                }
+
+                return null;
+              },
+              obscureText: obscureText,
+              textInputAction: TextInputAction.done,
+              hintText: locals.password,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  semanticLabel: 'passwordeye',
+                  obscureText ? Icons.visibility : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    obscureText = !obscureText;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Align(
+                child: TextButton(
+                  onPressed: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    builder: (context) => ResetPasswordSheet(
+                      initialEmail: emailController.text,
+                    ),
+                  ),
+                  child: TitleSmallText(
+                    locals.forgotPassword,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      primaryButton: FunButton(
+        isDisabled: !isEnabled || isLoading,
+        onTap: isEnabled && !isLoading ? () => onLogin(context) : null,
+        text: locals.login,
+        isLoading: isLoading,
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.loginClicked,
         ),
       ),
     );

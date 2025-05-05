@@ -5,7 +5,7 @@ import 'package:givt_app/shared/widgets/widgets.dart';
 
 class OutlinedTextFormField extends StatelessWidget {
   const OutlinedTextFormField({
-    required this.hintText,
+    this.hintText,
     this.controller,
     this.minLines,
     this.maxLines = 1,
@@ -14,6 +14,7 @@ class OutlinedTextFormField extends StatelessWidget {
     this.errorStyle,
     this.keyboardType,
     this.readOnly = false,
+    this.enabled = true,
     this.autofillHints = const [],
     this.inputFormatters,
     this.obscureText = false,
@@ -32,12 +33,13 @@ class OutlinedTextFormField extends StatelessWidget {
   final int? maxLines;
   final int? errorMaxLines;
   final String initialValue;
-  final String hintText;
+  final String? hintText;
   final TextStyle? errorStyle;
   final ValueChanged<String>? onChanged;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final bool readOnly;
+  final bool enabled;
   final bool obscureText;
   final TextInputAction textInputAction;
   final IconButton? suffixIcon;
@@ -71,6 +73,7 @@ class OutlinedTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       autofillHints: autofillHints,
       readOnly: readOnly,
+      enabled: enabled,
       minLines: minLines,
       maxLines: maxLines,
       autocorrect: false,

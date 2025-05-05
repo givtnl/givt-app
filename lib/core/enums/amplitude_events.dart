@@ -48,6 +48,14 @@ enum AmplitudeEvents {
   organisationFavoriteToggled('organisation_favorite_toggled'),
   organisationSortByFavoritesToggled('organisation_sort_by_favorites_toggled'),
   onInfoRowClicked('on_info_row_clicked'),
+  profileSectionClicked('profile_section_clicked'),
+
+  // Give limit / Max amount
+  maxAmountSaveClicked('max_amount_save_clicked'),
+
+  // Amount presets
+  amountPresetsSaveClicked('amount_presets_save_clicked'),
+  amountPresetsToggleClicked('amount_presets_toggle_clicked'),
 
   // Gratitude Goal
   gratitudeGoalStartClicked('gratitude_goal_start_clicked'),

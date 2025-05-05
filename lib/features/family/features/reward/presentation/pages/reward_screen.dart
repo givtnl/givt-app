@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
-import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
+import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -70,19 +70,21 @@ class _RewardScreenState extends State<RewardScreen> {
           const Spacer(),
           FunButton(
             onTap: () async {
-              await ConfettiDialog.show(context);
-              await Future.delayed(const Duration(milliseconds: 1501), () {
-                if (!context.mounted) return;
-                if (widget.uiModel.interviewUIModel != null) {
-                  _showInterviewPopup(
-                    context,
-                    widget.uiModel.interviewUIModel!,
-                    useDefaultImage: widget.uiModel.useDefaultInterviewIcon,
-                  );
-                } else {
-                  _navigateToProfileSelection(context);
-                }
-              });
+              ConfettiHelper.show(
+                context,
+                onFinished: () {
+                  if (!context.mounted) return;
+                  if (widget.uiModel.interviewUIModel != null) {
+                    _showInterviewPopup(
+                      context,
+                      widget.uiModel.interviewUIModel!,
+                      useDefaultImage: widget.uiModel.useDefaultInterviewIcon,
+                    );
+                  } else {
+                    _navigateToProfileSelection(context);
+                  }
+                },
+              );
             },
             text: 'Claim reward',
             analyticsEvent: AnalyticsEvent(

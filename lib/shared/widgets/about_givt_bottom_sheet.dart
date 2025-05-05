@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 class AboutGivtBottomSheet extends StatefulWidget {
   const AboutGivtBottomSheet({
@@ -14,6 +20,19 @@ class AboutGivtBottomSheet extends StatefulWidget {
   });
 
   final String initialMessage;
+
+  static void show(BuildContext context, {String initialMessage = ''}) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      backgroundColor: Colors.white,
+      builder: (_) => AboutGivtBottomSheet(initialMessage: initialMessage),
+    );
+  }
 
   @override
   State<AboutGivtBottomSheet> createState() => _AboutGivtBottomSheetState();
@@ -47,124 +66,105 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final size = MediaQuery.sizeOf(context);
     final user = context.read<AuthCubit>().state.user;
     const messageKey = GlobalObjectKey('messageKey');
-    return BottomSheetLayout(
-      title: Text(
-        locals.titleAboutGivt,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+
+    return BlocConsumer<InfraCubit, InfraState>(
+      listener: (context, state) {
+        if (state is InfraSuccess) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: locals.success,
+              content: locals.feedbackMailSent,
+              onConfirm: () => context.pop(),
             ),
-      ),
-      child: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: size.height,
+          ).whenComplete(() => context.pop());
+        }
+        if (state is InfraFailure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(locals.somethingWentWrong),
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        return FunBottomSheet(
+          title: locals.titleAboutGivt,
+          closeAction: () => context.pop(),
+          content: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      height: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  BodySmallText(
+                    user.country == Country.us.countryCode
+                        ? locals.informationAboutUsUs
+                        : Country.unitedKingdomCodes().contains(user.country)
+                            ? locals.informationAboutUsGb
+                            : locals.informationAboutUs,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  AppVersion(),
+                  const SizedBox(height: 16),
+                  TitleSmallText(
+                    locals.feedbackTitle,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  OutlinedTextFormField(
+                    key: messageKey,
+                    focusNode: messageFocusNode,
+                    controller: messageController,
+                    minLines: 3,
+                    maxLines: 3,
+                    keyboardType: TextInputType.multiline,
+                    onChanged: (_) => setState(() {}),
+                  ),
+                ],
+              ),
+            ),
           ),
-          child: BlocConsumer<InfraCubit, InfraState>(
-            listener: (context, state) {
-              if (state is InfraSuccess) {
-                showDialog<void>(
-                  context: context,
-                  builder: (_) => WarningDialog(
-                    title: locals.success,
-                    content: locals.feedbackMailSent,
-                    onConfirm: () => Navigator.of(context).pop(),
-                  ),
-                ).whenComplete(() => Navigator.of(context).pop());
-              }
-              if (state is InfraFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(locals.somethingWentWrong),
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
-              return Form(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/images/logo.png',
-                        height: size.height * 0.03,
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        user.country == Country.us.countryCode
-                            ? locals.informationAboutUsUs
-                            : Country.unitedKingdomCodes()
-                                    .contains(user.country)
-                                ? locals.informationAboutUsGb
-                                : locals.informationAboutUs,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              fontSize: 16,
-                            ),
-                      ),
-                      const SizedBox(height: 20),
-                      AppVersion(),
-                      SizedBox(
-                        height: size.height * 0.1,
-                      ),
-                      Text(
-                        locals.feedbackTitle,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        key: messageKey,
-                        focusNode: messageFocusNode,
-                        controller: messageController,
-                        minLines: 10,
-                        maxLines: 10,
-                        decoration: InputDecoration(
-                          hintText: locals.typeMessage,
-                        ),
-                        keyboardType: TextInputType.multiline,
-                        onChanged: (_) => setState(() {}),
-                      ),
-                      const SizedBox(height: 20),
-                      if (state is InfraLoading)
-                        const CircularProgressIndicator()
-                      else
-                        ElevatedButton(
-                          onPressed: isEnabled
-                              ? () async {
-                                  if (!_formKey.currentState!.validate()) {
-                                    return;
-                                  }
-                                  await context
-                                      .read<InfraCubit>()
-                                      .contactSupportSafely(
-                                        message: messageController.text,
-                                        appLanguage: locals.localeName,
-                                        email: user.email,
-                                        guid: user.guid,
-                                      );
-                                }
-                              : null,
-                          style: ElevatedButton.styleFrom(
-                            disabledBackgroundColor: Colors.grey,
-                          ),
-                          child: Text(
-                            locals.send,
-                          ),
-                        ),
-                    ],
+          icon: state is InfraLoading
+              ? const CustomCircularProgressIndicator()
+              : null,
+          primaryButton: state is InfraLoading
+              ? null // No button when loading
+              : FunButton(
+                  isDisabled: !isEnabled,
+                  onTap: isEnabled
+                      ? () async {
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          }
+                          await context.read<InfraCubit>().contactSupportSafely(
+                                message: messageController.text,
+                                appLanguage: locals.localeName,
+                                email: user.email,
+                                guid: user.guid,
+                              );
+                        }
+                      : null,
+                  text: locals.send,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.onInfoRowClicked,
+                    parameters: {'action': 'send_feedback'},
                   ),
                 ),
-              );
-            },
-          ),
-        ),
-      ),
+        );
+      },
     );
   }
 

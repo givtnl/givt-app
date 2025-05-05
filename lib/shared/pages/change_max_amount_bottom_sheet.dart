@@ -3,11 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -98,17 +103,27 @@ class _ChangeMaxAmountBottomSheetViewState
     super.initState();
   }
 
+  // Track whether we're showing the success state
+  bool _showSuccess = false;
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final size = MediaQuery.sizeOf(context);
     return BlocConsumer<PersonalInfoEditBloc, PersonalInfoEditState>(
       listener: (context, state) {
         if (state.status == PersonalInfoEditStatus.success) {
-          context
-              .read<AuthCubit>()
-              .refreshUser()
-              .whenComplete(() => context.pop());
+          setState(() {
+            _showSuccess = true;
+          });
+          // Wait a moment before closing to show the success state
+          Future.delayed(const Duration(seconds: 1), () {
+            if (mounted) {
+              context
+                  .read<AuthCubit>()
+                  .refreshUser()
+                  .whenComplete(() => context.pop());
+            }
+          });
         }
         if (state.status == PersonalInfoEditStatus.noInternet) {
           showDialog<void>(
@@ -132,119 +147,193 @@ class _ChangeMaxAmountBottomSheetViewState
         }
       },
       builder: (context, state) {
-        return BottomSheetLayout(
-          title: Text(locals.giveLimit),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
+        if (state.status == PersonalInfoEditStatus.loading) {
+          return _buildLoadingSheet(context);
+        }
+
+        if (_showSuccess) {
+          return _buildSuccessSheet(context);
+        }
+
+        return _buildEditSheet(context);
+      },
+    );
+  }
+
+  /// Builds the loading state UI
+  Widget _buildLoadingSheet(BuildContext context) {
+    return FunBottomSheet(
+      title: context.l10n.giveLimit,
+      icon: const CustomCircularProgressIndicator(),
+      content: Column(
+        children: [
+          BodyMediumText(
+            context.l10n.loadingTitle,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Builds the success state UI
+  Widget _buildSuccessSheet(BuildContext context) {
+    final locals = context.l10n;
+    return FunBottomSheet(
+      title: locals.giveLimit,
+      icon: primaryCircleWithIcon(
+        circleSize: 140,
+        iconData: FontAwesomeIcons.check,
+        iconSize: 48,
+      ),
+      content: Column(
+        children: [
+          BodyMediumText(
+            context.l10n.success,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Builds the amount control UI
+  Widget _buildAmountControls(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        IconButton.filled(
+          onPressed: decreaseAmount,
+          icon: const Icon(
+            FontAwesomeIcons.circleMinus,
+            color: AppTheme.givtLightGreen,
+          ),
+          iconSize: 48,
+          padding: EdgeInsets.zero,
+        ),
+        _buildAmountField(context),
+        IconButton.filled(
+          onPressed: increaseAmount,
+          icon: const Icon(
+            FontAwesomeIcons.circlePlus,
+          ),
+          color: AppTheme.givtLightGreen,
+          iconSize: 48,
+          padding: EdgeInsets.zero,
+        ),
+      ],
+    );
+  }
+
+  /// Builds the amount input field
+  Widget _buildAmountField(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: AppTheme.givtLightGreen,
+            width: 7,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            widget.icon,
+            size: 16,
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          SizedBox(
+            width: 80,
+            child: TextFormField(
+              controller: amountController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(
+                  maxAmountLimit.toString().length + 1,
+                ),
+              ],
+              onChanged: (value) {
+                if (value.isEmpty) {
+                  amountController.text = minAmountLimit.toString();
+                } else {
+                  // Check if value exceeds maximum limit
+                  final numValue = int.tryParse(value) ?? 0;
+                  if (numValue > maxAmountLimit) {
+                    amountController
+                      ..text = maxAmountLimit.toString()
+                      // Set cursor position at the end
+                      ..selection = TextSelection.fromPosition(
+                        TextPosition(offset: amountController.text.length),
+                      );
+                  }
+                }
+                setState(() {});
+              },
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
               ),
-              Text(
-                locals.amountLimit,
-                style: Theme.of(context).textTheme.bodyLarge,
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: size.height * 0.3,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton.filled(
-                    onPressed: decreaseAmount,
-                    icon: const Icon(
-                      FontAwesomeIcons.circleMinus,
-                    ),
-                    color: AppTheme.softenedGivtPurple,
-                    iconSize: size.width * 0.1,
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontSize: 27,
                   ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: AppTheme.givtLightGreen,
-                          width: 7,
-                        ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Builds the primary action button
+  FunButton _buildActionButton(BuildContext context) {
+    final locals = context.l10n;
+    return FunButton(
+      isDisabled: !isEnabled,
+      onTap: isEnabled
+          ? () {
+              context.read<PersonalInfoEditBloc>().add(
+                    PersonalInfoEditChangeMaxAmount(
+                      newAmountLimit: int.parse(
+                        amountController.text,
                       ),
                     ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          widget.icon,
-                          size: size.width * 0.04,
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        SizedBox(
-                          width: size.width * 0.15,
-                          child: TextFormField(
-                            controller: amountController,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            onChanged: (value) {
-                              if (value.isEmpty) {
-                                amountController.text =
-                                    minAmountLimit.toString();
-                              }
-                              setState(() {});
-                            },
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                            ),
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(
-                                  fontSize: 27,
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton.filled(
-                    onPressed: increaseAmount,
-                    icon: const Icon(
-                      FontAwesomeIcons.circlePlus,
-                    ),
-                    color: AppTheme.softenedGivtPurple,
-                    iconSize: size.width * 0.1,
-                  ),
-                ],
-              ),
-              const Spacer(),
-              if (context.watch<PersonalInfoEditBloc>().state.status ==
-                  PersonalInfoEditStatus.loading)
-                const Center(
-                  child: CircularProgressIndicator(),
-                )
-              else
-                ElevatedButton(
-                  onPressed: isEnabled
-                      ? () {
-                          context.read<PersonalInfoEditBloc>().add(
-                                PersonalInfoEditChangeMaxAmount(
-                                  newAmountLimit: int.parse(
-                                    amountController.text,
-                                  ),
-                                ),
-                              );
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    disabledBackgroundColor: Colors.grey,
-                  ),
-                  child: Text(locals.save),
-                ),
-            ],
+                  );
+            }
+          : null,
+      text: locals.save,
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.maxAmountSaveClicked,
+        parameters: {'new_max_amount': amountController.text},
+      ),
+    );
+  }
+
+  /// Builds the main editing interface
+  Widget _buildEditSheet(BuildContext context) {
+    final locals = context.l10n;
+    return FunBottomSheet(
+      title: locals.giveLimit,
+      closeAction: () => context.pop(),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 24),
+          BodyMediumText(
+            locals.amountLimit,
+            textAlign: TextAlign.center,
           ),
-        );
-      },
+          const SizedBox(
+            height: 40,
+          ),
+          _buildAmountControls(context),
+          const SizedBox(height: 24),
+        ],
+      ),
+      primaryButton: _buildActionButton(context),
     );
   }
 }

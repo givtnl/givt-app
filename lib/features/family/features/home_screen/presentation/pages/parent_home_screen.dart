@@ -14,6 +14,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -64,17 +65,22 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
     }
   }
 
-  void _onProfileSwitchPressed(BuildContext context) {
-    context.pop();
-    AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.profileSwitchPressed,
-    );
-  }
-
   Widget _giveTile(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
         child: FunTile(
-          onTap: () => context.pushNamed(FamilyPages.giveByListFamily.name),
+          onTap: () {
+            context.pushNamed(
+              FamilyPages.giveByListFamily.name,
+              extra: {
+                'shouldAuthenticate': true,
+              },
+            );
+
+            // Track analytics event
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.parentGiveTileClicked,
+            );
+          },
           borderColor: ColorCombo.secondary.borderColor,
           backgroundColor: ColorCombo.secondary.backgroundColor,
           textColor: ColorCombo.secondary.textColor,

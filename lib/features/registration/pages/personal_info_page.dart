@@ -132,6 +132,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       }
                       return null;
                     },
+                    autofillHints: const [AutofillHints.fullStreetAddress],
+                    keyboardType: TextInputType.streetAddress,
                   ),
                   _buildTextFormField(
                     hintText: locals.postalCode,
@@ -149,6 +151,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       }
                       return null;
                     },
+                    autofillHints: const [AutofillHints.postalCode],
+                    keyboardType: TextInputType.streetAddress,
                   ),
                   _buildTextFormField(
                     hintText: locals.city,
@@ -159,6 +163,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       }
                       return null;
                     },
+                    autofillHints: const [AutofillHints.addressCity],
+                    keyboardType: TextInputType.streetAddress,
                   ),
                   _buildCountryAndMobileNumber(
                     size,
@@ -372,6 +378,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
               return null;
             },
+            autofillHints: const [AutofillHints.telephoneNumber],
           ),
         ],
       ),
@@ -379,6 +386,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   }
 
   Future<void> _onNext() async {
+    TextInput.finishAutofillContext();
     if (_formKey.currentState!.validate() == false) {
       return;
     }
@@ -414,6 +422,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     required String? Function(String?) validator,
     bool toUpperCase = false,
     bool isVisible = true,
+    List<String>? autofillHints,
+    TextInputType? keyboardType,
   }) {
     return Visibility(
       visible: isVisible,
@@ -425,6 +435,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           _formKey.currentState!.validate();
         }),
         validator: validator,
+        autofillHints: autofillHints,
+        keyboardType: keyboardType,
       ),
     );
   }

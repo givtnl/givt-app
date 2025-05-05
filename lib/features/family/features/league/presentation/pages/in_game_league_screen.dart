@@ -13,7 +13,7 @@ import 'package:givt_app/features/family/features/reward/presentation/pages/rewa
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
-import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
+import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -120,7 +120,7 @@ class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
   }
 
   void _showConffetti(BuildContext context) {
-    ConfettiDialog.show(context);
+    ConfettiHelper.show(context);
   }
 
   void _navigateToProfileSelection(BuildContext context) {

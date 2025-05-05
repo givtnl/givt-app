@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:givt_app/features/give/widgets/triple_animated_switch.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
@@ -20,7 +19,6 @@ class HomeTestPage {
   final Finder pageView = find.byType(PageView);
   final Finder chooseAmount = find.byType(ChooseAmount);
   final Finder chooseCategory = find.byType(ChooseCategory);
-  final Finder tripleAnimatedSwitch = find.byType(TripleAnimatedSwitch);
   final Finder animatedSwitch = find.byType(AnimatedSwitch);
 
   // Actions
@@ -81,10 +79,6 @@ class HomeTestPage {
 
   Future<void> verifyChooseCategoryIsVisible() async {
     expect(chooseCategory, findsOneWidget);
-  }
-
-  Future<void> verifyTripleAnimatedSwitchIsVisible() async {
-    expect(tripleAnimatedSwitch, findsOneWidget);
   }
 
   Future<void> verifyAnimatedSwitchIsVisible() async {

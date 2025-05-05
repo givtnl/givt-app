@@ -20,7 +20,6 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -28,7 +27,6 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/add_member_util.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -98,6 +96,8 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
     final locals = AppLocalizations.of(context);
     // Show the form
     return FunScaffold(
+      minimumPadding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      safeAreaBottom: false,
       canPop: false,
       appBar: FunTopAppBar.primary99(
         leading: GivtBackButtonFlat(
@@ -106,47 +106,35 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           },
         ),
         title: context.l10n.signUpPageTitle,
-        actions: [
-          // IconButton(
-          //   onPressed: () => showModalBottomSheet<void>(
-          //     context: context,
-          //     isScrollControlled: true,
-          //     useSafeArea: true,
-          //     backgroundColor: AppTheme.givtBlue,
-          //     builder: (_) => const FAQBottomSheet(),
-          //   ),
-          //   icon: const Icon(
-          //     FontAwesomeIcons.question,
-          //     size: 26,
-          //     color: AppTheme.primary30,
-          //   ),
-          // ),
-        ],
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: Column(
-              children: [
-                RandomAvatar(
-                  id: user.guid,
-                  profileType: 1,
-                  onClick: () {
-                    AvatarSelectionBottomsheet.show(
-                      context,
-                      user.guid,
-                    );
-                  },
-                ),
-                const SizedBox(height: 16),
-                _buildSignUpForm(locals),
-                const Spacer(),
-                _buildBottomWidgetGroup(locals, user),
-              ],
+      body: AutofillGroup(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  RandomAvatar(
+                    id: user.guid,
+                    profileType: 1,
+                    onClick: () {
+                      AvatarSelectionBottomsheet.show(
+                        context,
+                        user.guid,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  _buildSignUpForm(locals),
+                  const Spacer(),
+                  _buildBottomWidgetGroup(locals, user),
+                  const SizedBox(height: 32),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -173,6 +161,8 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   }
 
   Future<void> _register(UserExt user) async {
+    TextInput.finishAutofillContext();
+
     unawaited(
       AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
@@ -319,6 +309,29 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               return null;
             },
           ),
+          const SizedBox(height: 32),
+          OutlinedTextFormField(
+            controller: _emailController,
+            enabled: widget.email.isEmpty,
+            readOnly: widget.email.isNotEmpty,
+            onChanged: (value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return context.l10n.invalidEmail;
+              }
+              if (!Util.emailRegEx.hasMatch(value)) {
+                return context.l10n.invalidEmail;
+              }
+              return null;
+            },
+            autofillHints: const [
+              AutofillHints.email,
+              AutofillHints.username,
+            ],
+            keyboardType: TextInputType.emailAddress,
+          ),
           const SizedBox(height: 16),
           OutlinedTextFormField(
             controller: _passwordController,
@@ -341,6 +354,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
 
               return null;
             },
+            autofillHints: const [
+              AutofillHints.newPassword,
+            ],
             errorStyle: const TextStyle(
               height: 0,
               fontSize: 0,
@@ -359,11 +375,13 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
                 });
               },
             ),
+            keyboardType: TextInputType.visiblePassword,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           BodySmallText.primary40(
             locals.passwordRule,
           ),
+          const SizedBox(height: 8),
         ],
       ),
     );

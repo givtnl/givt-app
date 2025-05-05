@@ -81,6 +81,7 @@ class MobileNumberFormFieldUs extends StatelessWidget {
             onChanged: onPhoneChanged,
             keyboardType: TextInputType.phone,
             hintText: hintText,
+            autofillHints: const [AutofillHints.telephoneNumber],
             errorStyle: const TextStyle(
               height: 0,
               fontSize: 0,

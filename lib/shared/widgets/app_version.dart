@@ -6,27 +6,17 @@ import 'package:givt_app/l10n/l10n.dart';
 
 class AppVersion extends StatelessWidget {
   AppVersion({
-    this.isOldStyle = true,
     super.key,
   });
 
   final AppConfig _appConfig = getIt();
-  final bool isOldStyle;
 
   @override
   Widget build(BuildContext context) {
     final packageInfo = _appConfig.packageInfo;
-    return isOldStyle
-        ? Text(
-            '''${context.l10n.appVersion} ${packageInfo.version}.${packageInfo.buildNumber}''',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  fontSize: 15,
-                ),
-          )
-        : BodySmallText(
-            '''${context.l10n.appVersion} ${packageInfo.version}.${packageInfo.buildNumber}''',
-            textAlign: TextAlign.center,
-          );
+    return BodySmallText(
+      '''${context.l10n.appVersion} ${packageInfo.version}.${packageInfo.buildNumber}''',
+      textAlign: TextAlign.center,
+    );
   }
 }

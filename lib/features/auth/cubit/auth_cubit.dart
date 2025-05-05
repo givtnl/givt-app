@@ -431,40 +431,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> changePassword({required String email}) async {
-    emit(state.copyWith(status: AuthStatus.loading));
-    try {
-      // check email
-      final result = await _authRepositoy.checkEmail(email);
-      if (result.contains('temp')) {
-        emit(
-          state.copyWith(
-            status: AuthStatus.tempAccountWarning,
-            email: email,
-          ),
-        );
-        return;
-      }
-      if (result.contains('false')) {
-        emit(
-          state.copyWith(
-            status: AuthStatus.changePasswordWrongEmail,
-            email: email,
-          ),
-        );
-        return;
-      }
-      await _authRepositoy.resetPassword(email);
-      emit(state.copyWith(status: AuthStatus.changePasswordSuccess));
-    } catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
-      );
-      emit(state.copyWith(status: AuthStatus.changePasswordFailure));
-    }
-  }
-
   Future<void> updatePresets({required UserPresets presets}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {

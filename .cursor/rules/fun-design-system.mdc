@@ -1,0 +1,33 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# FUN Design System Rules
+
+## Component Usage
+- Use FUN design system components for all UI elements
+- Components must be prefixed with 'Fun' (e.g., `FunButton`, `FunPrimaryTabs`)
+- Import from: `package:givt_app/features/family/shared/design/components/components.dart`
+
+## Component Categories
+- Actions: `FunButton`, `FunTile`
+- Content: `FunCard`
+- Navigation: `FunTopAppBar`, `FunPrimaryTabs`, `FunNavigationBar`
+- Overlays: `FunBottomSheet`
+- Inputs: `FunCounter`
+
+## Typography
+- Use specialized text components:
+  - `TitleMediumText`
+  - `BodyMediumText`
+  - etc.
+
+## Theming
+- Use FUN color palette
+- Use `FamilyAppTheme` constants
+- Ensure responsive design across screen sizes
+
+## Refactoring
+- When modifying UI, refactor to use FUN components
+- Replace custom UI elements with FUN components

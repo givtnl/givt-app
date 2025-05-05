@@ -4,13 +4,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/looking_good_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
-import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
@@ -70,12 +68,14 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
             ),
             const SizedBox(height: 16),
             FunButton.secondary(
-              onTap: () {
-                ConfettiDialog.show(context);
-                Future.delayed(const Duration(milliseconds: 1500), () {
-                  if (!context.mounted) return;
+              onTap: () async {
+                ConfettiHelper.show(
+                  context,
+                );
+                await Future.delayed(const Duration(milliseconds: 1200));
+                if (context.mounted) {
                   Navigator.of(context).pop();
-                });
+                }
               },
               text: context.l10n.buttonDone,
               analyticsEvent: AnalyticsEvent(AmplitudeEvents.continueClicked),
