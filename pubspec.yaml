@@ -7,7 +7,7 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  amplitude_flutter: ^3.16.7
+  amplitude_flutter: ^4.3.1
   animated_toggle_switch: ^0.8.4
   app_settings: ^5.2.0
   badges: ^3.1.2
