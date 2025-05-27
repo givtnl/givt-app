@@ -81,7 +81,7 @@ name: Playing the gratitude game with 2 players without AI
     text: "We're committed"
     optional: true
 - tapOn: 
-    text: "Claim reward"
+    text: "Unlock League"
     optional: true
 - tapOn: "Reveal"
 - tapOn: "Continue"

@@ -21,7 +21,5 @@ env:
 - inputText:
     label: "Enter the test user's email address"
     text: ${USERNAME}
-- tapOn: 
-    label: "Continue"
-    text: ".*icon-FontAwesomeSolid-61537"
+- tapOn: "Continue"
 - tapOn: "Ask me later"
