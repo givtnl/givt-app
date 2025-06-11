@@ -1000,5 +1000,10 @@
     "closeModalNoBack": "Nee, ik wil terug",
     "recurringDonationsSetAmountTitle": "Hoevaak en hoeveel wil je geven?",
     "recurringDonationsFrequencyTitle": "Donatie Frequentie",
-    "recurringDonationsAmountTitle": "Donatie bedrag"
+    "recurringDonationsAmountTitle": "Donatie bedrag",
+    "donationSubtotal": "Subtotaal",
+    "donationTotal": "Totaal",
+    "platformFeeTitle": "Platformbijdrage (optioneel)",
+    "platformFeeText": "Met jouw platformbijdrage zijn er geen platformkosten voor de ontvanger.",
+    "platformFeeNoContribution": "Geen bijdrage"
 }
