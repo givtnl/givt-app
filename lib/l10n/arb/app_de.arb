@@ -1000,5 +1000,10 @@
     "closeModalNoBack": "No, go back",
     "recurringDonationsSetAmountTitle": "How often do you want to give, and how much?",
     "recurringDonationsFrequencyTitle": "Donation frequency",
-    "recurringDonationsAmountTitle": "Donation amount"
+    "recurringDonationsAmountTitle": "Donation amount",
+    "donationSubtotal": "Zwischensumme",
+    "donationTotal": "Insgesamt",
+    "platformFeeTitle": "Plattformbeitrag (optional)",
+    "platformFeeText": "Mit Ihrem Plattformbeitrag zahlt die Organisation keine Plattformgebühren.",
+    "platformFeeNoContribution": "Kein Beitrag"
 }
