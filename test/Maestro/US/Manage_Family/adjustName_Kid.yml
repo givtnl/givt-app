@@ -10,6 +10,6 @@ name: Adjust the name of the kid
     label: "Adjust kids firstname"
     text: "ness"
 - tapOn: "Save"
-- assertVisible: 
+- assertVisible:
     label: "See if the name is adjusted to 'Awesomeness'"
     text: "Awesomeness"
