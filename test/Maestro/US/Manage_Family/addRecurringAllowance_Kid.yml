@@ -1,0 +1,13 @@
+appId: net.givtapp.ios.test
+name: Add Recurring Allowance to kid profile successfully
+
+---
+- tapOn: "Recurring Amount.*"
+- tapOn: "Confirm"
+- tapOn: "Done"
+- assertVisible:
+    label: "Check if $15 is shown"
+    text: ".*15.*"
+- assertVisible:
+    label: "Check if next date is shown"
+    text: ".*Next due:.*"

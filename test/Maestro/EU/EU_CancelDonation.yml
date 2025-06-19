@@ -1,0 +1,17 @@
+# EU_CancelDonation.yml
+appId: net.givtapp.ios.test
+name: Canceling a donation in the EU region
+
+---
+
+- tapOn: "homeMenu"
+- tapOn: "Donations history"
+- runFlow: 
+    - file: ../login_AuthNeeded.yml
+    - optional: true
+- tapOn: "Cancel"
+- tapOn: "Yes"
+- tapOn: "Back"
+- tapOn:
+    label: "Close menu"
+    point: "95%,48%"

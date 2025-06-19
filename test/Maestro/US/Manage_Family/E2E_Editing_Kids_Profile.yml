@@ -12,3 +12,10 @@ env:
 - runFlow: opening_Manage_Family.yml
 - runFlow: opening_Kids_Profile.yml
 - runFlow: topUp_Kids_Allowance.yml
+- runFlow: addRecurringAllowance_Kid.yml
+- runFlow: cancelRecurringAllowance_Kid.yml
+- runFlow: adjustName_Kid.yml
+- tapOn:
+    label: "Go back to the home screen"
+    id: "backButton"
+- runFlow: ../delete_account.yml

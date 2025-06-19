@@ -1,0 +1,12 @@
+appId: net.givtapp.ios.test
+name: Cancel Recurring Allowance on kids profile
+
+---
+- tapOn: ".*Recurring Amount.*"
+- tapOn: ".*Cancel Recurring Amount.*"
+- tapOn: "No, go back"
+- tapOn: ".*Cancel Recurring Amount.*"
+- tapOn: ".*Yes, cancel"
+- assertVisible: "The Recurring Amount has been canceled."
+- tapOn: "Done"
+- assertVisible: ".*Build a habit of generosity.*"
