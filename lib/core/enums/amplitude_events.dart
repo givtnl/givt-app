@@ -441,6 +441,8 @@ enum AmplitudeEvents {
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
+
+  familyHomeScreenNewGameButtonClicked('family_home_screen_new_game_button_clicked'),
   ;
 
   const AmplitudeEvents(this.value);

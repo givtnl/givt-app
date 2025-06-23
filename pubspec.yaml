@@ -171,6 +171,7 @@ flutter:
     - assets/family/images/avatar/default/
     - assets/family/images/avatar/custom/
     - assets/family/images/avatar/custom/tiles/
+    - assets/family/images/barcode_hunt/products/
     - assets/family/lotties/
     - assets/fun/illustrations/
     - assets/family/audio/

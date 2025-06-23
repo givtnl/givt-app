@@ -303,6 +303,21 @@ class FunIcon extends StatelessWidget {
         iconSize: iconSize,
       );
 
+  factory FunIcon.lock({
+    Color iconColor = FamilyAppTheme.primary40,
+    EdgeInsets padding = EdgeInsets.zero,
+    double iconSize = 16,
+    double circleSize = 16,
+  }) =>
+      FunIcon(
+        padding: padding,
+        iconData: FontAwesomeIcons.lock,
+        iconColor: iconColor,
+        circleColor: Colors.transparent,
+        circleSize: circleSize,
+        iconSize: iconSize,
+      );
+
   /// The icon to be displayed in the center of the circle.
   /// If [icon] is provided, it will be used instead of [iconData].
   final IconData? iconData;

@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/features/home_screen/cubit/family_home_
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/barcode_hunt.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_goal_container.dart';
@@ -227,6 +228,12 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                           child: Column(
                             children: [
+                              BarcodeHunt(
+                                onPressed: () {
+                                  context.goNamed(FamilyPages.newGame.name);
+                                },
+                              ),
+                              const SizedBox(height: 16),
                               FunTooltip(
                                 tooltipIndex: 2,
                                 title: context.l10n.tutorialGratitudeGameTitle,
@@ -263,12 +270,14 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     FamilyHomeScreenUIModel uiModel, {
     bool withTutorial = false,
     bool withRewardText = false,
+    bool openNewGame = false,
   }) {
     if (!overlayVisible) {
       createOverlay(
         uiModel,
         withTutorial: withTutorial,
         withRewardText: withRewardText,
+        openNewGame: openNewGame,
       );
       setState(() {
         overlayVisible = true;
@@ -281,12 +290,14 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     FamilyHomeScreenUIModel uiModel, {
     required bool withTutorial,
     required bool withRewardText,
+    bool openNewGame = false,
   }) {
     overlayEntry = OverlayEntry(
       builder: (context) => FamilyHomeOverlay(
         uiModel: uiModel,
         onDismiss: closeOverlay,
-        onAvatarTapped: (index) => onAvatarTapped(index, uiModel),
+        onAvatarTapped: (index) =>
+            onAvatarTapped(index, uiModel, openNewGame: openNewGame),
         onNextTutorialClicked: _cubit.onNextTutorialClicked,
         withTutorial: withTutorial,
         withRewardText: withRewardText,
@@ -294,8 +305,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
   }
 
-  Future<void> onAvatarTapped(
-      int index, FamilyHomeScreenUIModel uiModel) async {
+  Future<void> onAvatarTapped(int index, FamilyHomeScreenUIModel uiModel,
+      {bool openNewGame = false}) async {
     if (overlayVisible) {
       closeOverlay();
     }
@@ -319,6 +330,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
 
     context.read<ImpactGroupsCubit>().fetchImpactGroups(profile.id, true);
+
+    if (openNewGame) {
+      context.goNamed(FamilyPages.newGame.name);
+      return;
+    }
 
     if (profile.profileType == ProfileType.Parent) {
       final authstate = context.read<FamilyAuthCubit>().state;
