@@ -28,6 +28,12 @@ class WebViewInput extends Equatable {
     this.apiUrl = '',
     this.givtObj = const [],
     this.experiencePoints,
+    this.subtotalText = '',
+    this.totalText = '',
+    this.platformFeeNoContributionText = '',
+    this.platformFeeText = '',
+    this.platformFeeTitle = '',
+    this.transactionIds = const [],
   });
 
   factory WebViewInput.fromJson(Map<String, dynamic> json) => WebViewInput(
@@ -57,6 +63,12 @@ class WebViewInput extends Equatable {
         apiUrl: json['apiUrl'] as String,
         givtObj: json['givtObj'] as List<Map<String, dynamic>>,
         experiencePoints: json['experiencePoints'] as int?,
+        subtotalText: json['subtotalText'] as String,
+        totalText: json['totalText'] as String,
+        platformFeeNoContributionText: json['platformFeeNoContributionText'] as String,
+        platformFeeText: json['platformFeeText'] as String,
+        platformFeeTitle: json['platformFeeTitle'] as String,
+        transactionIds: json['transactionIds'] as List<int>,
       );
 
   final String advertisementImageUrl;
@@ -85,6 +97,12 @@ class WebViewInput extends Equatable {
   final String apiUrl;
   final List<Map<String, dynamic>> givtObj;
   final int? experiencePoints;
+  final String subtotalText;
+  final String totalText;
+  final String platformFeeNoContributionText;
+  final String platformFeeText;
+  final String platformFeeTitle;
+  final List<int> transactionIds;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'advertisementImageUrl': advertisementImageUrl,
@@ -113,6 +131,12 @@ class WebViewInput extends Equatable {
         'apiUrl': apiUrl,
         'givtObj': givtObj,
         'experiencePoints': experiencePoints,
+        'subtotalText': subtotalText,
+        'totalText': totalText,
+        'platformFeeNoContributionText': platformFeeNoContributionText,
+        'platformFeeText': platformFeeText,
+        'platformFeeTitle': platformFeeTitle,
+        'transactionIds': transactionIds,
       };
 
   WebViewInput copyWith({
@@ -142,6 +166,12 @@ class WebViewInput extends Equatable {
     String? apiUrl,
     List<Map<String, dynamic>>? givtObj,
     int? experiencePoints,
+    String? subtotalText,
+    String? totalText,
+    String? platformFeeNoContributionText,
+    String? platformFeeText,
+    String? platformFeeTitle,
+    List<int>? transactionIds,
   }) {
     return WebViewInput(
       advertisementImageUrl:
@@ -173,6 +203,12 @@ class WebViewInput extends Equatable {
       apiUrl: apiUrl ?? this.apiUrl,
       givtObj: givtObj ?? this.givtObj,
       experiencePoints: experiencePoints ?? this.experiencePoints,
+      subtotalText: subtotalText ?? this.subtotalText,
+      totalText: totalText ?? this.totalText,
+      platformFeeNoContributionText: platformFeeNoContributionText ?? this.platformFeeNoContributionText,
+      platformFeeText: platformFeeText ?? this.platformFeeText,
+      platformFeeTitle: platformFeeTitle ?? this.platformFeeTitle,
+      transactionIds: transactionIds ?? this.transactionIds,
     );
   }
 
@@ -204,5 +240,11 @@ class WebViewInput extends Equatable {
         apiUrl,
         givtObj,
         experiencePoints,
+        subtotalText,
+        totalText,
+        platformFeeNoContributionText,
+        platformFeeText,
+        platformFeeTitle,
+        transactionIds,
       ];
 }
