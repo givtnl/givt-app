@@ -150,7 +150,7 @@ class APIService {
     });
   }
 
-  Future<bool> submitGivts({
+  Future<List<int>> submitGivts({
     required Map<String, dynamic> body,
     required String guid,
   }) async {
@@ -171,7 +171,13 @@ class APIService {
           body: jsonDecode(response.body) as Map<String, dynamic>,
         );
       }
-      return response.statusCode >= 200;
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        final body = jsonDecode(response.body) as Map<String, dynamic>;
+        final ids = body['TransactionIds'] as List<dynamic>;
+        return ids.map((e) => e as int).toList();
+      }
+
+      return [];
     });
   }
 
