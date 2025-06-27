@@ -14,7 +14,7 @@ import 'package:givt_app/shared/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin GivtRepository {
-  Future<void> submitGivts({
+  Future<List<int>> submitGivts({
     required String guid,
     required Map<String, dynamic> body,
   });
@@ -66,7 +66,7 @@ class GivtRepositoryImpl with GivtRepository {
   final SharedPreferences prefs;
 
   @override
-  Future<void> submitGivts({
+  Future<List<int>> submitGivts({
     required String guid,
     required Map<String, dynamic> body,
   }) async {
@@ -75,10 +75,12 @@ class GivtRepositoryImpl with GivtRepository {
     }..addAll(body);
     try {
       await syncOfflineGivts();
-      await apiClient.submitGivts(
+      final result = await apiClient.submitGivts(
         body: givts,
         guid: guid,
       );
+
+      return result;
     } on SocketException {
       await _cacheGivts(body);
 

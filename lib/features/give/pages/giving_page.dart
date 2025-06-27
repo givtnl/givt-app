@@ -110,6 +110,12 @@ class _GivingPageState extends State<GivingPage> {
       yesSuccess: context.l10n.yesSuccess,
       close: context.l10n.close,
       collect: context.l10n.collect,
+      subtotalText: context.l10n.donationSubtotal,
+      totalText: context.l10n.donationTotal,
+      platformFeeNoContributionText: context.l10n.platformFeeNoContribution,
+      platformFeeText: context.l10n.platformFeeText,
+      platformFeeTitle: context.l10n.platformFeeTitle,
+      transactionIds: giveBlocState.transactionIds,
     ).toJson();
   }
 
@@ -129,6 +135,7 @@ class _GivingPageState extends State<GivingPage> {
           LoggingInfo.instance.info(
             'Opening browser with $givt',
           );
+
           browserIsOpened = true;
           _customInAppBrowser.openUrlRequest(
             urlRequest: URLRequest(

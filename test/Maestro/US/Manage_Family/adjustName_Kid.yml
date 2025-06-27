@@ -1,0 +1,15 @@
+appId: net.givtapp.ios.test
+name: Adjust the name of the kid
+
+---
+- tapOn:
+    label: "Tap on pencil icon"
+    id: "penIcon"
+- tapOn: "First name"
+- inputText:
+    label: "Adjust kids firstname"
+    text: "ness"
+- tapOn: "Save"
+- assertVisible:
+    label: "See if the name is adjusted to 'Awesomeness'"
+    text: "Awesomeness"

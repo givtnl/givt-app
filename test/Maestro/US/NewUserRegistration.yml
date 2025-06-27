@@ -60,3 +60,6 @@ appId: net.givtapp.ios.test
 - tapOn:
     label: Skip the 'hear about Givt' question
     text: "Skip"
+- tapOn:
+    label: Skip the tutorial mission
+    text: "Skip"
