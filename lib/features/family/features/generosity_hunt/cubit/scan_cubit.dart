@@ -1,12 +1,12 @@
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
-import '../app/barcode_hunt_repository.dart';
+import '../app/generosity_hunt_repository.dart';
 
 part 'scan_custom.dart';
 part 'scan_uimodel.dart';
 
 class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
-  final BarcodeHuntRepository _repository;
+  final GenerosityHuntRepository _repository;
 
   ScanCubit(this._repository) : super(const BaseState.loading()) {
     _repository.addListener(_emitData);

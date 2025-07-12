@@ -3,10 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/barcode_hunt/cubit/barcode_hunt_level_intro_cubit.dart';
-import 'package:givt_app/features/family/features/barcode_hunt/presentation/pages/barcode_level_scan_page.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/cubit/generosity_hunt_level_intro_cubit.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/presentation/pages/generosity_level_scan_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -17,6 +18,8 @@ class LevelIntroData {
     required this.imageAsset,
     required this.title,
     required this.subtitle,
+    required this.amountOfItems,
+    required this.scanText,
     this.description,
     this.buttonText = 'Start level',
   });
@@ -24,6 +27,8 @@ class LevelIntroData {
   final String imageAsset;
   final String title;
   final String subtitle;
+  final int amountOfItems;
+  final String scanText;
   final String? description;
   final String? buttonText;
 }
@@ -31,8 +36,10 @@ class LevelIntroData {
 const Map<int, LevelIntroData> levelIntroData = {
   1: LevelIntroData(
     imageAsset: 'assets/family/images/level_1_explenation_image.svg',
-    title: 'Scan 1 item you can eat',
-    subtitle: 'Complete the level and earn Givt Credits!',
+    title: 'Find 1 item you can eat and scan its barcode',
+    subtitle: 'Ready to earn your first Givt Credits?',
+    scanText: 'Scan 1 item you can eat',
+    amountOfItems: 1,
   ),
   // Add more levels here:
   // 2: LevelIntroData(
@@ -44,17 +51,17 @@ const Map<int, LevelIntroData> levelIntroData = {
   // ),
 };
 
-class BarcodeHuntLevelIntroductionPage extends StatefulWidget {
-  const BarcodeHuntLevelIntroductionPage({super.key});
+class GenerosityHuntLevelIntroductionPage extends StatefulWidget {
+  const GenerosityHuntLevelIntroductionPage({super.key});
 
   @override
-  State<BarcodeHuntLevelIntroductionPage> createState() =>
-      _BarcodeHuntLevelIntroductionPageState();
+  State<GenerosityHuntLevelIntroductionPage> createState() =>
+      _GenerosityHuntLevelIntroductionPageState();
 }
 
-class _BarcodeHuntLevelIntroductionPageState
-    extends State<BarcodeHuntLevelIntroductionPage> {
-  final BarcodeHuntLevelIntroCubit cubit = BarcodeHuntLevelIntroCubit(getIt());
+class _GenerosityHuntLevelIntroductionPageState
+    extends State<GenerosityHuntLevelIntroductionPage> {
+  final GenerosityHuntLevelIntroCubit cubit = GenerosityHuntLevelIntroCubit(getIt());
 
   @override
   void didChangeDependencies() {
@@ -97,7 +104,7 @@ class _BarcodeHuntLevelIntroductionPageState
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 12),
-                BodyMediumText(
+                BodySmallText(
                   data.subtitle,
                   textAlign: TextAlign.center,
                 ),

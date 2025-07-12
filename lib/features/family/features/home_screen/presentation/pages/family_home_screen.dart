@@ -13,7 +13,7 @@ import 'package:givt_app/features/family/features/home_screen/cubit/family_home_
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
-import 'package:givt_app/features/family/features/home_screen/widgets/barcode_hunt.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/generosity_hunt_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_goal_container.dart';
@@ -99,7 +99,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         final hasMissions =
             uiModel.missionStats?.missionsToBeCompleted != null &&
                 uiModel.missionStats!.missionsToBeCompleted > 0;
-        final carrouselItems = _buildCarouselItems(uiModel, hasMissions);
+        final carrouselItems = uiModel.showBarcodeHunt
+            ? <Widget>[]
+            : _buildCarouselItems(uiModel, hasMissions);
         return FunScaffold(
           canPop: !overlayVisible,
           onPopInvokedWithResult: (didPop, _) {
@@ -201,19 +203,20 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                         const GratitudeGoalContainer(
                           key: ValueKey('Homepage-Daily-Experience'),
                         ),
-                        CarouselSlider(
-                          carouselController: _carouselSliderController,
-                          items: carrouselItems,
-                          options: CarouselOptions(
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                _carrouselIndex = index;
-                              });
-                            },
-                            viewportFraction: 1,
-                            height: 150,
+                        if (carrouselItems.isNotEmpty)
+                          CarouselSlider(
+                            carouselController: _carouselSliderController,
+                            items: carrouselItems,
+                            options: CarouselOptions(
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _carrouselIndex = index;
+                                });
+                              },
+                              viewportFraction: 1,
+                              height: 150,
+                            ),
                           ),
-                        ),
                         if (carrouselItems.length > 1) ...[
                           const SizedBox(height: 8),
                           PagerDotIndicator(
@@ -228,12 +231,13 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                           child: Column(
                             children: [
-                              BarcodeHunt(
-                                onPressed: () {
-                                  context.goNamed(FamilyPages.newGame.name);
-                                },
-                              ),
-                              const SizedBox(height: 16),
+                              if (uiModel.showBarcodeHunt)
+                                GenerosityHuntButton(
+                                  onPressed: () {
+                                    context.goNamed(FamilyPages.newGame.name);
+                                  },
+                                ),
+                              if (!uiModel.showBarcodeHunt)
                               FunTooltip(
                                 tooltipIndex: 2,
                                 title: context.l10n.tutorialGratitudeGameTitle,

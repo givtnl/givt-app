@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class BarcodeHuntRepository extends ChangeNotifier {
+class GenerosityHuntRepository extends ChangeNotifier {
   int? _selectedLevel;
 
   int? get selectedLevel => _selectedLevel;
@@ -9,4 +9,4 @@ class BarcodeHuntRepository extends ChangeNotifier {
     _selectedLevel = level;
     notifyListeners();
   }
-} 
+}

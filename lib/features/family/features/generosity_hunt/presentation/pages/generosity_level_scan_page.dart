@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/barcode_hunt/cubit/scan_cubit.dart';
-import 'package:givt_app/features/family/features/barcode_hunt/presentation/pages/barcode_hunt_level_introduction_page.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/cubit/scan_cubit.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/presentation/pages/generosity_hunt_level_introduction_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -37,49 +39,63 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     return BaseStateConsumer(
       cubit: cubit,
       onData: (context, state) {
+        final data = levelIntroData[state.selectedLevel];
+
         return FunScaffold(
           minimumPadding: EdgeInsets.zero,
           appBar: FunTopAppBar(
             title: 'Level ${state.selectedLevel}',
             leading: const GivtBackButtonFlat(),
           ),
-          body: Stack(
-            alignment: Alignment.center,
+          body: Column(
             children: [
-              Positioned.fill(
+              Expanded(
                 child: _BarcodeScannerBody(),
               ),
-              // Bottom message using levelIntroData
-              Positioned(
-                left: 24,
-                right: 24,
-                bottom: 48,
-                child: Builder(
-                  builder: (context) {
-                    final data = levelIntroData[state.selectedLevel];
-                    if (data == null) return const SizedBox.shrink();
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 24, horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 24,
+                  horizontal: 24,
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Row of circles for each item
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(data!.amountOfItems, (index) {
+                        return Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: FamilyAppTheme.neutral70,
+                              width: 4,
+                            ),
+                            color: Colors.white,
                           ),
-                        ],
-                      ),
-                      child: Center(
-                        child: BodyMediumText(
-                          data.title,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    );
-                  },
+                          alignment: Alignment.center,
+                          child: TitleMediumText(
+                            (index + 1).toString(),
+                            color: FamilyAppTheme.neutral70,
+                          ),
+                        );
+                      }),
+                    ),
+                    const SizedBox(height: 16),
+                    TitleMediumText(
+                      data!.scanText,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -203,79 +219,82 @@ class _BarcodeScannerBodyState extends State<_BarcodeScannerBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Positioned.fill(
-          child: MobileScanner(
-            controller: _cameraController,
-            onDetect:
-                (_barcodeFound || _isSpinning) ? null : _onBarcodeDetected,
-          ),
-        ),
-        // Overlay with scan area
-        if (!_barcodeFound && !_isSpinning)
+    return SizedBox(
+      width: double.infinity,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
           Positioned.fill(
-            child: CustomPaint(
-              painter: _BarcodeOverlayPainter(),
+            child: MobileScanner(
+              controller: _cameraController,
+              onDetect:
+                  (_barcodeFound || _isSpinning) ? null : _onBarcodeDetected,
             ),
           ),
-        if (_isSpinning && _spinningImage != null)
-          // Spinning product image
-          Center(
-            child: SvgPicture.asset(
-              _spinningImage!,
-              width: 120,
-              height: 240,
+          // Overlay with scan area
+          if (!_barcodeFound && !_isSpinning)
+            Positioned.fill(
+              child: CustomPaint(
+                painter: _BarcodeOverlayPainter(),
+              ),
             ),
-          ),
-        if (_selectedProductImage != null)
-          // Final product image with FunCard overlay
-          Center(
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                SvgPicture.asset(
-                  _selectedProductImage!,
-                  width: 120,
-                  height: 240,
-                ),
-                Positioned(
-                  bottom: -40,
-                  child: FunCard(
-                    content: const Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.monetization_on,
-                            size: 48, color: Color(0xFF4CAF50)),
-                        SizedBox(height: 12),
-                        BodyMediumText(
-                          'You have earned 5 Givt Credits!',
-                          textAlign: TextAlign.center,
+          if (_isSpinning && _spinningImage != null)
+            // Spinning product image
+            Center(
+              child: SvgPicture.asset(
+                _spinningImage!,
+                width: 120,
+                height: 240,
+              ),
+            ),
+          if (_selectedProductImage != null)
+            // Final product image with FunCard overlay
+            Center(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SvgPicture.asset(
+                    _selectedProductImage!,
+                    width: 120,
+                    height: 240,
+                  ),
+                  Positioned(
+                    bottom: -40,
+                    child: FunCard(
+                      content: const Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.monetization_on,
+                              size: 48, color: Color(0xFF4CAF50)),
+                          SizedBox(height: 12),
+                          BodyMediumText(
+                            'You have earned 5 Givt Credits!',
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                      button: FunButton(
+                        onTap: _resetScan,
+                        text: 'Claim',
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.claimRewardClicked,
                         ),
-                      ],
-                    ),
-                    button: FunButton(
-                      onTap: _resetScan,
-                      text: 'Claim',
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.claimRewardClicked,
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        if (_barcodeFound && !_isSpinning && _selectedProductImage == null)
-          // Show loading spinner while preparing spin
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
-        if (!_barcodeFound && !_isSpinning && _selectedProductImage == null)
-          // Optionally, show nothing or a hint
-          const SizedBox.shrink(),
-      ],
+          if (_barcodeFound && !_isSpinning && _selectedProductImage == null)
+            // Show loading spinner while preparing spin
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+          if (!_barcodeFound && !_isSpinning && _selectedProductImage == null)
+            // Optionally, show nothing or a hint
+            const SizedBox.shrink(),
+        ],
+      ),
     );
   }
 }
@@ -289,7 +308,7 @@ class _BarcodeOverlayPainter extends CustomPainter {
 
     // Scan area (centered rectangle)
     final scanWidth = size.width * 0.7;
-    final scanHeight = size.height * 0.35;
+    final scanHeight = size.height * 0.5;
     final left = (size.width - scanWidth) / 2;
     final top = (size.height - scanHeight) / 2;
     final scanRect = RRect.fromRectAndRadius(
@@ -307,9 +326,9 @@ class _BarcodeOverlayPainter extends CustomPainter {
 
     // Draw scan area border
     final borderPaint = Paint()
-      ..color = Colors.red
+      ..color = FamilyAppTheme.primary80
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 4;
+      ..strokeWidth = 6;
     canvas.drawRRect(scanRect, borderPaint);
   }
 

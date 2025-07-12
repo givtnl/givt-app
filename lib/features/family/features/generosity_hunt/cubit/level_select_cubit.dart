@@ -1,6 +1,6 @@
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
-import '../app/barcode_hunt_repository.dart';
+import '../app/generosity_hunt_repository.dart';
 
 part 'level_select_custom.dart';
 part 'level_select_uimodel.dart';
@@ -10,12 +10,12 @@ class LevelSelectCubit
       
   LevelSelectCubit(this._repository) : super(const BaseState.initial());
 
-  final BarcodeHuntRepository _repository;
+  final GenerosityHuntRepository _repository;
 
   void selectLevel(int level) {
     _repository.setLevel(level);
     emitCustom(NavigateToLevelIntroduction(level));
-    emitData(_createUIModel());
+    // emitData(_createUIModel());
   }
 
   void init() {

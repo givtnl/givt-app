@@ -7,9 +7,9 @@ import 'package:givt_app/features/family/features/auth/data/family_auth_reposito
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
-import 'package:givt_app/features/family/features/barcode_hunt/app/barcode_hunt_repository.dart';
-import 'package:givt_app/features/family/features/barcode_hunt/cubit/level_select_cubit.dart';
-import 'package:givt_app/features/family/features/barcode_hunt/cubit/new_game_cubit.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/app/generosity_hunt_repository.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/cubit/level_select_cubit.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/cubit/new_game_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
 import 'package:givt_app/features/family/features/box_origin/bloc/box_origin_cubit.dart';
@@ -353,7 +353,7 @@ void initRepositories() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<BarcodeHuntRepository>(
-      () => BarcodeHuntRepository(),
+    ..registerLazySingleton<GenerosityHuntRepository>(
+      () => GenerosityHuntRepository(),
     );
 }
