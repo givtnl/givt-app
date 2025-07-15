@@ -144,50 +144,58 @@ class FunTooltip extends StatelessWidget {
                                   description,
                                   color: FamilyAppTheme.secondary30,
                                 ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                if(labelBottomLeft.isNotEmpty || showButton)
+                                Column(
                                   children: [
-                                    LabelMediumText(
-                                      labelBottomLeft,
-                                    ),
-                                    Opacity(
-                                      opacity: showButton ? 1 : 0,
-                                      child: Semantics(
-                                        identifier: 'tooltipNext$tooltipIndex',
-                                        label: 'tooltipNext$tooltipIndex',
-                                        child: buttonBottomRightOverride ??
-                                            CustomIconBorderButton(
-                                              key: ValueKey(
+                                    const SizedBox(height: 12),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        if (labelBottomLeft.isNotEmpty)
+                                          LabelMediumText(
+                                            labelBottomLeft,
+                                          ),
+                                        Opacity(
+                                          opacity: showButton ? 1 : 0,
+                                          child: Semantics(
+                                            identifier:
                                                 'tooltipNext$tooltipIndex',
-                                              ),
-                                              onTap: onButtonTap ??
-                                                  () => controller.next(),
-                                              analyticsEvent:
-                                                  analyticsEventButtonOverride ??
-                                                      AnalyticsEvent(
-                                                        analyticsEvent ??
-                                                            AmplitudeEvents
-                                                                .tutorialNextClicked,
-                                                        parameters: {
-                                                          'tutorialLabelBottomLeft':
-                                                              labelBottomLeft,
-                                                          'tutorialTitle':
-                                                              title,
-                                                          'tutorialDescription':
-                                                              description,
-                                                        },
-                                                      ),
-                                              child: buttonIcon ??
-                                                  const FaIcon(
-                                                    FontAwesomeIcons.arrowRight,
+                                            label: 'tooltipNext$tooltipIndex',
+                                            child: buttonBottomRightOverride ??
+                                                CustomIconBorderButton(
+                                                  key: ValueKey(
+                                                    'tooltipNext$tooltipIndex',
                                                   ),
-                                            ),
-                                      ),
+                                                  onTap: onButtonTap ??
+                                                      () => controller.next(),
+                                                  analyticsEvent:
+                                                      analyticsEventButtonOverride ??
+                                                          AnalyticsEvent(
+                                                            analyticsEvent ??
+                                                                AmplitudeEvents
+                                                                    .tutorialNextClicked,
+                                                            parameters: {
+                                                              'tutorialLabelBottomLeft':
+                                                                  labelBottomLeft,
+                                                              'tutorialTitle':
+                                                                  title,
+                                                              'tutorialDescription':
+                                                                  description,
+                                                            },
+                                                          ),
+                                                  child: buttonIcon ??
+                                                      const FaIcon(
+                                                        FontAwesomeIcons
+                                                            .arrowRight,
+                                                      ),
+                                                ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
-                                ),
+                                )
                               ],
                             ),
                           ),
