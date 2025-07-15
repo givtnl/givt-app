@@ -1005,5 +1005,8 @@
     "donationTotal": "Insgesamt",
     "platformFeeTitle": "Plattformbeitrag (optional)",
     "platformFeeText": "Mit Ihrem Plattformbeitrag zahlt die Organisation keine Plattformgebühren.",
-    "platformFeeNoContribution": "Kein Beitrag"
+    "platformFeeNoContribution": "Kein Beitrag",
+    "donationOverviewPlatformContribution": "Beitrag der Plattform",
+    "donationOverviewPlatformContributionTitle": "Danke für deinen Beitrag!",
+    "donationOverviewPlatformContributionText": "Dank dieses Beitrags fallen für den Empfänger keine Plattformkosten an."
 }

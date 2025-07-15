@@ -1005,5 +1005,8 @@
     "donationTotal": "Total",
     "platformFeeTitle": "Platform contribution (optional)",
     "platformFeeText": "With your platform contribution there are no platform costs for the receiver.",
-    "platformFeeNoContribution": "No contribution"
+    "platformFeeNoContribution": "No contribution",
+    "donationOverviewPlatformContribution": "Platform Contribution",
+    "donationOverviewPlatformContributionTitle": "Thanks for your contribution!",
+    "donationOverviewPlatformContributionText": "Because of this contribution there are no platform costs for the receiver."
 }
