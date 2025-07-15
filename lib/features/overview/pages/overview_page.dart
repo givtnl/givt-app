@@ -12,6 +12,7 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
@@ -26,10 +27,17 @@ class OverviewPage extends StatefulWidget {
 
 class _OverviewPageState extends State<OverviewPage> {
   bool disposed = false;
+  final TooltipController _tooltipController = TooltipController();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tooltipController.dispose();
+    super.dispose();
   }
 
   @override
@@ -114,93 +122,100 @@ class _OverviewPageState extends State<OverviewPage> {
     final user = context.read<AuthCubit>().state.user;
     final monthSections =
         state.givtGroups.where((element) => element.givts.isEmpty).toList();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(locals.historyTitle),
-        leading: const BackButton(),
-        actions: [
-          _buildAppBarItem(
-            context: context,
-            state: state,
-            color: Colors.white,
-            icon: const Icon(Icons.download),
-            child: DownloadYearOverviewSheet(
+        
+    return OverlayTooltipScaffold(
+      controller: _tooltipController,
+      overlayColor: Colors.transparent,
+      builder: (context) => Scaffold(
+        appBar: AppBar(
+          title: Text(locals.historyTitle),
+          leading: const BackButton(),
+          actions: [
+            _buildAppBarItem(
+              context: context,
               state: state,
-              givtbloc: context.read<GivtBloc>(),
+              color: Colors.white,
+              icon: const Icon(Icons.download),
+              child: DownloadYearOverviewSheet(
+                state: state,
+                givtbloc: context.read<GivtBloc>(),
+              ),
             ),
-          ),
-          _buildAppBarItem(
-            state: state,
-            context: context,
-            icon: const Icon(Icons.info_rounded),
-            child: const DonationTypeExplanationSheet(),
-          ),
-        ],
-      ),
-      body: ListView.builder(
-        itemCount: _getSectionCount(state),
-        itemBuilder: (_, int index) {
-          return StickyHeader(
-            key: Key(monthSections[index].timeStamp!.toString()),
-            header: Column(
-              children: [
-                Visibility(
-                  visible: user.isGiftAidEnabled,
-                  child: _buildHeader(
-                    context: context,
-                    amount: state.givtAided[monthSections[index].taxYear] ?? 0,
-                    country: user.country,
-                    color: AppTheme.givtYellow,
-                    giftAidTitle: locals.giftOverviewGiftAidBanner(
-                      "'${monthSections[index].taxYear.toString().substring(2)}",
+            _buildAppBarItem(
+              state: state,
+              context: context,
+              icon: const Icon(Icons.info_rounded),
+              child: const DonationTypeExplanationSheet(),
+            ),
+          ],
+        ),
+        body: ListView.builder(
+          itemCount: _getSectionCount(state),
+          itemBuilder: (_, int index) {
+            return StickyHeader(
+              key: Key(monthSections[index].timeStamp!.toString()),
+              header: Column(
+                children: [
+                  Visibility(
+                    visible: user.isGiftAidEnabled,
+                    child: _buildHeader(
+                      context: context,
+                      amount:
+                          state.givtAided[monthSections[index].taxYear] ?? 0,
+                      country: user.country,
+                      color: AppTheme.givtYellow,
+                      giftAidTitle: locals.giftOverviewGiftAidBanner(
+                        "'${monthSections[index].taxYear.toString().substring(2)}",
+                      ),
                     ),
                   ),
-                ),
-                _buildHeader(
-                  context: context,
-                  timesStamp: monthSections[index].timeStamp,
-                  amount: monthSections[index].amount,
-                  country: user.country,
-                ),
-              ],
-            ),
-            content: Column(
-              children: state.givtGroups.map((givtGroup) {
-                if (givtGroup.givts.isEmpty) {
-                  return const SizedBox.shrink();
-                }
-                if (givtGroup.timeStamp!.month !=
-                    monthSections[index].timeStamp!.month) {
-                  return const SizedBox.shrink();
-                }
+                  _buildHeader(
+                    context: context,
+                    timesStamp: monthSections[index].timeStamp,
+                    amount: monthSections[index].amount,
+                    country: user.country,
+                  ),
+                ],
+              ),
+              content: Column(
+                children: state.givtGroups.map((givtGroup) {
+                  if (givtGroup.givts.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  if (givtGroup.timeStamp!.month !=
+                      monthSections[index].timeStamp!.month) {
+                    return const SizedBox.shrink();
+                  }
 
-                if (givtGroup.timeStamp!.year !=
-                    monthSections[index].timeStamp!.year) {
-                  return const SizedBox.shrink();
-                }
+                  if (givtGroup.timeStamp!.year !=
+                      monthSections[index].timeStamp!.year) {
+                    return const SizedBox.shrink();
+                  }
 
-                return Column(
-                  children: [
-                    GivtListItem(
-                      givtGroup: givtGroup,
-                      onCancel: () {
-                        context.read<GivtBloc>().add(
-                              GiveDelete(
-                                timestamp: givtGroup.timeStamp!,
-                              ),
-                            );
-                      },
-                    ),
-                    const Divider(
-                      height: 0,
-                      color: AppTheme.givtGraycece,
-                    ),
-                  ],
-                );
-              }).toList(),
-            ),
-          );
-        },
+                  return Column(
+                    children: [
+                      GivtListItem(
+                        givtGroup: givtGroup,
+                        onCancel: () {
+                          context.read<GivtBloc>().add(
+                                GiveDelete(
+                                  timestamp: givtGroup.timeStamp!,
+                                ),
+                              );
+                        },
+                        tooltipController: _tooltipController, // Pass controller
+                      ),
+                      const Divider(
+                        height: 0,
+                        color: AppTheme.givtGraycece,
+                      ),
+                    ],
+                  );
+                }).toList(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
