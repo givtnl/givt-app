@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/overview/models/givt_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -10,16 +13,19 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class GivtListItem extends StatelessWidget {
   const GivtListItem({
     required this.givtGroup,
     required this.onCancel,
+    this.tooltipController,
     super.key,
   });
 
   final GivtGroup givtGroup;
   final void Function()? onCancel;
+  final TooltipController? tooltipController;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +48,8 @@ class GivtListItem extends StatelessWidget {
 
     // Determine if any button should be shown
     final showCancelButton = givtGroup.status == 1 && !isOnlineGiving;
-    final showRefundButton = givtGroup.status == 3 && isWithinLastMonth && !isOnlineGiving;
-
+    final showRefundButton =
+        givtGroup.status == 3 && isWithinLastMonth && !isOnlineGiving;
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -165,6 +171,54 @@ class GivtListItem extends StatelessWidget {
                           ],
                         ),
                       ),
+                      if (givtGroup.platformFeeAmount > 0)
+                        FunTooltip(
+                          tooltipIndex: givtGroup.givts.first.id,
+                          title: 'Thanks for your contribution!',
+                          description:
+                              'Because of this contribution there are no platform costs for the receiver',
+                          labelBottomLeft: '',
+                          showImage: false,
+                          showButton: false,
+                          dropShadow: true,
+                          enableTapToDismiss: true,
+                          onButtonTap: () => tooltipController!.dismiss(),
+                          onHighlightedWidgetTap: () =>
+                              tooltipController!.dismiss(),
+                          tooltipVerticalPosition:
+                              TooltipVerticalPosition.BOTTOM,
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Platform contribution',
+                              ),
+                              const SizedBox(width: 4),
+                              if (tooltipController != null)
+                                GestureDetector(
+                                  onTap: () {
+                                    tooltipController!
+                                        .start(givtGroup.givts.first.id);
+                                    // auto close after 1000 ms
+                                    Future.delayed(const Duration(milliseconds: 4000), () {
+                                      tooltipController!.pause();
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.info_outline,
+                                    size: 18,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              Expanded(child: Container()),
+                              Text(
+                                '${currency.currencySymbol} ${Util.formatNumberComma(
+                                  givtGroup.platformFeeAmount,
+                                  country,
+                                )}',
+                              ),
+                            ],
+                          ),
+                        ),
                     ],
                   ),
                 ),
