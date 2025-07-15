@@ -174,9 +174,8 @@ class GivtListItem extends StatelessWidget {
                       if (givtGroup.platformFeeAmount > 0)
                         FunTooltip(
                           tooltipIndex: givtGroup.givts.first.id,
-                          title: 'Thanks for your contribution!',
-                          description:
-                              'Because of this contribution there are no platform costs for the receiver',
+                          title: context.l10n.donationOverviewPlatformContributionTitle,
+                          description: context.l10n.donationOverviewPlatformContributionText,
                           labelBottomLeft: '',
                           showImage: false,
                           showButton: false,
@@ -189,8 +188,8 @@ class GivtListItem extends StatelessWidget {
                               TooltipVerticalPosition.BOTTOM,
                           child: Row(
                             children: [
-                              const Text(
-                                'Platform contribution',
+                              Text(
+                                context.l10n.donationOverviewPlatformContribution,
                               ),
                               const SizedBox(width: 4),
                               if (tooltipController != null)
