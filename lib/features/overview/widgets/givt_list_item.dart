@@ -198,8 +198,8 @@ class GivtListItem extends StatelessWidget {
                                   onTap: () {
                                     tooltipController!
                                         .start(givtGroup.givts.first.id);
-                                    // auto close after 1000 ms
-                                    Future.delayed(const Duration(milliseconds: 4000), () {
+                                    // auto close after 5000 ms
+                                    Future.delayed(const Duration(milliseconds: 5000), () {
                                       tooltipController!.pause();
                                     });
                                   },
