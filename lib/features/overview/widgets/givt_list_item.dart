@@ -194,7 +194,11 @@ class GivtListItem extends StatelessWidget {
                               const SizedBox(width: 4),
                               if (tooltipController != null)
                                 GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
+                                    await AnalyticsHelper.logEvent(
+                                      eventName: AmplitudeEvents.donationOverviewPlatformContributionClicked,
+                                      eventProperties: givtGroup.toJson(),
+                                    );
                                     tooltipController!
                                         .start(givtGroup.givts.first.id);
                                     // auto close after 5000 ms
@@ -256,7 +260,7 @@ class GivtListItem extends StatelessWidget {
           ),
         );
         await AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.refundInfoRequested,
+          eventName: AmplitudeEvents.donationOverviewRefundInfoRequested,
           eventProperties: givtGroup.toJson(),
         );
       },
