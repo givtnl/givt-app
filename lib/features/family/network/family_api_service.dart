@@ -610,6 +610,20 @@ class FamilyAPIService {
     }
   }
 
+  Future<List<dynamic>> fetchGenerosityHuntLevels() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/generosity-hunt/levels');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['items'] as List<dynamic>;
+  }
+
   Future<bool> _postRequest(String endpoint, Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, endpoint);
     final response = await client.post(

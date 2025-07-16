@@ -2,5 +2,6 @@ part of 'scan_cubit.dart';
 
 class ScanUIModel {
   final int? selectedLevel;
-  const ScanUIModel({this.selectedLevel});
+  final LevelUIModel? level;
+  const ScanUIModel({this.selectedLevel, this.level});
 } 

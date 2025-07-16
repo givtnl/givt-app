@@ -93,6 +93,7 @@ class FunMissionCard extends StatelessWidget {
                           color: uiModel.disabled
                               ? FamilyAppTheme.neutral60
                               : null,
+                          textAlign: TextAlign.center,
                         ),
                         if (uiModel.progress != null)
                           Padding(

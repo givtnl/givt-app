@@ -226,6 +226,9 @@ void initCubits() {
       () => UnlockedBadgeCubit(
         getIt(),
       ),
+    )
+    ..registerFactory<LevelSelectCubit>(
+      () => LevelSelectCubit(getIt()),
     );
 }
 
@@ -354,6 +357,6 @@ void initRepositories() {
       ),
     )
     ..registerLazySingleton<GenerosityHuntRepository>(
-      () => GenerosityHuntRepository(),
+      () => GenerosityHuntRepository(getIt()),
     );
 }

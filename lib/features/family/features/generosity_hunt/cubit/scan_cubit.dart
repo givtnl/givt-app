@@ -1,6 +1,7 @@
+import 'package:givt_app/features/family/features/generosity_hunt/app/generosity_hunt_repository.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/cubit/level_select_cubit.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
-import '../app/generosity_hunt_repository.dart';
 
 part 'scan_custom.dart';
 part 'scan_uimodel.dart';
@@ -21,7 +22,9 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
   }
 
   ScanUIModel _createUIModel() {
-    return ScanUIModel(selectedLevel: _repository.selectedLevel);
+    final selectedLevel = _repository.selectedLevel;
+    final level = _repository.getLevelByNumber(selectedLevel);
+    return ScanUIModel(selectedLevel: selectedLevel, level: level);
   }
 
   @override

@@ -39,12 +39,14 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     return BaseStateConsumer(
       cubit: cubit,
       onData: (context, state) {
-        final data = levelIntroData[state.selectedLevel];
-
+        final level = state.level;
+        if (level == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
         return FunScaffold(
           minimumPadding: EdgeInsets.zero,
           appBar: FunTopAppBar(
-            title: 'Level ${state.selectedLevel}',
+            title: 'Level ${level.level}',
             leading: const GivtBackButtonFlat(),
           ),
           body: Column(
@@ -71,7 +73,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                     // Row of circles for each item
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(data!.amountOfItems, (index) {
+                      children: List.generate(level.itemsNeeded, (index) {
                         return Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
@@ -92,7 +94,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                     ),
                     const SizedBox(height: 16),
                     TitleMediumText(
-                      data!.scanText,
+                      level.assignment,
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -182,8 +184,8 @@ class _BarcodeScannerBodyState extends State<_BarcodeScannerBody> {
     final images = List<String>.from(_productImages)..shuffle();
     const spinDuration = Duration(milliseconds: 2000);
     const spinInterval = Duration(milliseconds: 60); // Fast spin
-    int tick = 0;
-    String currentImage = images[0];
+    var tick = 0;
+    var currentImage = images[0];
     final timer = Stopwatch()..start();
     while (timer.elapsed < spinDuration) {
       await Future.delayed(spinInterval);

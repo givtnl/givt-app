@@ -13,44 +13,6 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
-class LevelIntroData {
-  const LevelIntroData({
-    required this.imageAsset,
-    required this.title,
-    required this.subtitle,
-    required this.amountOfItems,
-    required this.scanText,
-    this.description,
-    this.buttonText = 'Start level',
-  });
-
-  final String imageAsset;
-  final String title;
-  final String subtitle;
-  final int amountOfItems;
-  final String scanText;
-  final String? description;
-  final String? buttonText;
-}
-
-const Map<int, LevelIntroData> levelIntroData = {
-  1: LevelIntroData(
-    imageAsset: 'assets/family/images/level_1_explenation_image.svg',
-    title: 'Find 1 item you can eat and scan its barcode',
-    subtitle: 'Ready to earn your first Givt Credits?',
-    scanText: 'Scan 1 item you can eat',
-    amountOfItems: 1,
-  ),
-  // Add more levels here:
-  // 2: LevelIntroData(
-  //   imageAsset: 'assets/family/images/level_2_explenation_image.svg',
-  //   title: 'Level 2 Title',
-  //   subtitle: 'Level 2 Subtitle',
-  //   description: 'Optional description for level 2',
-  //   buttonText: 'Start level',
-  // ),
-};
-
 class GenerosityHuntLevelIntroductionPage extends StatefulWidget {
   const GenerosityHuntLevelIntroductionPage({super.key});
 
@@ -74,11 +36,11 @@ class _GenerosityHuntLevelIntroductionPageState
     return BaseStateConsumer(
       cubit: cubit,
       onData: (context, state) {
-        final data = levelIntroData[state.selectedLevel];
-        if (data != null) {
+        final level = state.level;
+        if (level != null) {
           return FunScaffold(
             appBar: FunTopAppBar(
-              title: 'Level ${state.selectedLevel}',
+              title: 'Level ${level.level}',
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.of(context).pop(),
@@ -95,29 +57,22 @@ class _GenerosityHuntLevelIntroductionPageState
               children: [
                 const Spacer(),
                 SvgPicture.asset(
-                  data.imageAsset,
+                  level.imageAsset,
                   height: 180,
                 ),
                 const SizedBox(height: 32),
                 TitleMediumText(
-                  data.title,
+                  level.subtitle,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 12),
                 BodySmallText(
-                  data.subtitle,
+                  level.description,
                   textAlign: TextAlign.center,
                 ),
-                if (data.description != null) ...[
-                  const SizedBox(height: 12),
-                  BodyMediumText(
-                    data.description!,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
                 const Spacer(),
                 FunButton(
-                  text: data.buttonText ?? 'Start level',
+                  text: 'Start level',
                   analyticsEvent:
                       AnalyticsEvent(AmplitudeEvents.funMissionCardClicked),
                   onTap: () {
@@ -140,7 +95,7 @@ class _GenerosityHuntLevelIntroductionPageState
             ),
           ),
           body: Center(
-            child: Text('Introduction for Level #${state.selectedLevel}'),
+            child: Text('Introduction for Level {state.selectedLevel}'),
           ),
         );
       },

@@ -1,6 +1,6 @@
+import 'package:givt_app/features/family/features/generosity_hunt/app/generosity_hunt_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
-import '../app/generosity_hunt_repository.dart';
 
 part 'level_select_custom.dart';
 part 'level_select_uimodel.dart';
@@ -8,7 +8,9 @@ part 'level_select_uimodel.dart';
 class LevelSelectCubit
     extends CommonCubit<LevelSelectUIModel, LevelSelectCustom> {
       
-  LevelSelectCubit(this._repository) : super(const BaseState.initial());
+  LevelSelectCubit(this._repository) : super(const BaseState.initial()) {
+    loadLevels();
+  }
 
   final GenerosityHuntRepository _repository;
 
@@ -18,11 +20,18 @@ class LevelSelectCubit
     // emitData(_createUIModel());
   }
 
-  void init() {
+  Future<void> loadLevels() async {
+    await _repository.fetchLevels();
     emitData(_createUIModel());
   }
 
   LevelSelectUIModel _createUIModel() {
-    return LevelSelectUIModel(selectedLevel: _repository.selectedLevel);
+    final levels = (_repository.levels ?? [])
+        .map((e) => LevelUIModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+    return LevelSelectUIModel(
+      selectedLevel: _repository.selectedLevel,
+      levels: levels,
+    );
   }
 }
