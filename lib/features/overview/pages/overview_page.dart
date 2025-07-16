@@ -122,7 +122,19 @@ class _OverviewPageState extends State<OverviewPage> {
     final user = context.read<AuthCubit>().state.user;
     final monthSections =
         state.givtGroups.where((element) => element.givts.isEmpty).toList();
-        
+    
+    // Helper to calculate total platform fee for a month section
+    double _getMonthPlatformFee(DateTime? monthTimeStamp) {
+      if (monthTimeStamp == null) return 0;
+      return state.givtGroups
+          .where((g) =>
+              g.givts.isNotEmpty &&
+              g.timeStamp != null &&
+              g.timeStamp!.year == monthTimeStamp.year &&
+              g.timeStamp!.month == monthTimeStamp.month)
+          .fold(0.0, (sum, g) => sum + g.platformFeeAmount);
+    }
+    
     return OverlayTooltipScaffold(
       controller: _tooltipController,
       overlayColor: Colors.transparent,
@@ -152,6 +164,7 @@ class _OverviewPageState extends State<OverviewPage> {
         body: ListView.builder(
           itemCount: _getSectionCount(state),
           itemBuilder: (_, int index) {
+            final monthPlatformFee = _getMonthPlatformFee(monthSections[index].timeStamp);
             return StickyHeader(
               key: Key(monthSections[index].timeStamp!.toString()),
               header: Column(
@@ -172,7 +185,7 @@ class _OverviewPageState extends State<OverviewPage> {
                   _buildHeader(
                     context: context,
                     timesStamp: monthSections[index].timeStamp,
-                    amount: monthSections[index].amount,
+                    amount: monthSections[index].amount + monthPlatformFee,
                     country: user.country,
                   ),
                 ],
@@ -257,6 +270,7 @@ class _OverviewPageState extends State<OverviewPage> {
     DateTime? timesStamp,
     Color? color,
     String? giftAidTitle,
+    double? platformFee,
   }) {
     final currencySymbol = Util.getCurrencySymbol(countryCode: country);
     final headerTitle = timesStamp == null
