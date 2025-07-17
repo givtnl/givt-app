@@ -29,6 +29,20 @@ class GivtGroup extends Equatable {
   final bool isGiftAidEnabled;
   final int taxYear;
 
+  double get platformFeeAmount {
+    final seenIds = <int>{};
+    double sum = 0;
+    for (final givt in givts) {
+      final id = givt.platformFeeTransactionId;
+      final fee = givt.platformFeeAmount;
+      if (id != null && fee != null && !seenIds.contains(id)) {
+        sum += fee;
+        seenIds.add(id);
+      }
+    }
+    return sum;
+  }
+
   GivtGroup copyWith({
     List<Givt>? givts,
     DateTime? timeStamp,
@@ -58,6 +72,7 @@ class GivtGroup extends Equatable {
       'amount': amount,
       'isGiftAidEnabled': isGiftAidEnabled,
       'taxYear': taxYear,
+      'platformFeeAmount': platformFeeAmount,
     };
   }
 
@@ -70,5 +85,6 @@ class GivtGroup extends Equatable {
         amount,
         isGiftAidEnabled,
         taxYear,
+        platformFeeAmount,
       ];
 }
