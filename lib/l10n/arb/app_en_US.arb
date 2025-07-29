@@ -11,7 +11,7 @@
         "type": "text"
     },
     "buttonContinue": "Continue",
-    "slimPayInfoDetail": "Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n \n\n Better World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n \n\n The money will be collected in a Better World Payments account. \n Givt will ensure that the money is distributed correctly.",
+    "slimPayInfoDetail": "Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n \n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n \n\nThe money will be collected in a Better World Payments account. \n Givt will ensure that the money is distributed correctly.",
     "slimPayInfoDetailTitle": "What is Better World Payments?",
     "unregisterButton": "Terminate my account",
     "unregisterUnderstood": "I understand",
@@ -1005,5 +1005,8 @@
     "donationTotal": "Total",
     "platformFeeTitle": "Platform contribution (optional)",
     "platformFeeText": "With your platform contribution there are no platform costs for the receiver.",
-    "platformFeeNoContribution": "No contribution"
+    "platformFeeNoContribution": "No contribution",
+    "donationOverviewPlatformContribution": "Platform Contribution",
+    "donationOverviewPlatformContributionTitle": "Thanks for your contribution!",
+    "donationOverviewPlatformContributionText": "Because of this contribution there are no platform costs for the receiver."
 }

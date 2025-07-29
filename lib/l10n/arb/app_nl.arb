@@ -463,7 +463,7 @@
         "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
         "type": "text"
     },
-    "slimPayInformationPart2": "Er wordt alleen geïncasseerd, wanneer je zelf een bedrag geeft met Givt.\n \n\n Omdat we met een machtiging werken, is het eventueel mogelijk om achteraf een gift te herroepen.",
+    "slimPayInformationPart2": "Er wordt alleen geïncasseerd, wanneer je zelf een bedrag geeft met Givt.\n \n\nOmdat we met een machtiging werken, is het eventueel mogelijk om achteraf een gift te herroepen.",
     "@slimPayInformationPart2": {
         "description": "SlimPay informatie onder het Givy icoon",
         "type": "text"
@@ -1005,5 +1005,8 @@
     "donationTotal": "Totaal",
     "platformFeeTitle": "Platformbijdrage (optioneel)",
     "platformFeeText": "Met jouw platformbijdrage zijn er geen platformkosten voor de ontvanger.",
-    "platformFeeNoContribution": "Geen bijdrage"
+    "platformFeeNoContribution": "Geen bijdrage",
+    "donationOverviewPlatformContribution": "Vrijwillige Platformbijdrage",
+    "donationOverviewPlatformContributionTitle": "Bedankt voor je vrijgevigheid!",
+    "donationOverviewPlatformContributionText": "Dankzij jouw gekozen vrijwillige platformbijdrage kunnen we het ontvangen van donaties goedkoper maken."
 }
