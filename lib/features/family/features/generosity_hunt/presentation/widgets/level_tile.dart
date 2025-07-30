@@ -39,8 +39,10 @@ class LevelTile extends StatelessWidget {
       ),
       onTap: unlocked ? onTap : null,
       analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents
-            .debugButtonClicked, // TODO: Use a more specific event if available
+        AmplitudeEvents.generosityHuntLevelTileClicked,
+        parameters: {
+          'level': level,
+        },
       ),
     );
   }

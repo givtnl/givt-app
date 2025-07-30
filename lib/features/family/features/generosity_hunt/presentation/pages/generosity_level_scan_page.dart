@@ -249,7 +249,9 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
           Navigator.pop(context);
         },
         text: 'Try again',
-        analyticsEvent: AnalyticsEvent(AmplitudeEvents.debugButtonClicked),
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.generosityHuntScanTryAgainClicked,
+        ),
       ),
     ).show(
       context,
@@ -283,7 +285,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
         },
         text: 'Claim',
         analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.debugButtonClicked,
+          AmplitudeEvents.generosityHuntScanClaimClicked,
         ),
       ),
     ).show(context);

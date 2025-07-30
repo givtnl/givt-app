@@ -16,7 +16,7 @@ class GenerosityHuntButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ActionContainer(
       analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.debugButtonClicked,
+        AmplitudeEvents.homeGenerosityHuntButtonClicked,
       ),
       onTap: onPressed,
       borderColor: FamilyAppTheme.highlight80,
