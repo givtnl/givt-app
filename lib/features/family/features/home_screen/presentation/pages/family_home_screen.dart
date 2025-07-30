@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/features/home_screen/cubit/family_home_
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/generosity_hunt_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_goal_container.dart';
@@ -98,7 +99,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         final hasMissions =
             uiModel.missionStats?.missionsToBeCompleted != null &&
                 uiModel.missionStats!.missionsToBeCompleted > 0;
-        final carrouselItems = _buildCarouselItems(uiModel, hasMissions);
+        final carrouselItems = uiModel.showBarcodeHunt
+            ? <Widget>[]
+            : _buildCarouselItems(uiModel, hasMissions);
         return FunScaffold(
           canPop: !overlayVisible,
           onPopInvokedWithResult: (didPop, _) {
@@ -200,19 +203,20 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                         const GratitudeGoalContainer(
                           key: ValueKey('Homepage-Daily-Experience'),
                         ),
-                        CarouselSlider(
-                          carouselController: _carouselSliderController,
-                          items: carrouselItems,
-                          options: CarouselOptions(
-                            onPageChanged: (index, reason) {
-                              setState(() {
-                                _carrouselIndex = index;
-                              });
-                            },
-                            viewportFraction: 1,
-                            height: 150,
+                        if (carrouselItems.isNotEmpty)
+                          CarouselSlider(
+                            carouselController: _carouselSliderController,
+                            items: carrouselItems,
+                            options: CarouselOptions(
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _carrouselIndex = index;
+                                });
+                              },
+                              viewportFraction: 1,
+                              height: 150,
+                            ),
                           ),
-                        ),
                         if (carrouselItems.length > 1) ...[
                           const SizedBox(height: 8),
                           PagerDotIndicator(
@@ -227,17 +231,26 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                           ),
                           child: Column(
                             children: [
-                              FunTooltip(
-                                tooltipIndex: 2,
-                                title: context.l10n.tutorialGratitudeGameTitle,
-                                description: context
-                                    .l10n.tutorialGratitudeGameDescription,
-                                labelBottomLeft: '3/6',
-                                child: GratitudeGameButton(
-                                  onPressed: () => context
-                                      .goNamed(FamilyPages.reflectIntro.name),
+                              if (uiModel.showBarcodeHunt)
+                                GenerosityHuntButton(
+                                  onPressed: () {
+                                    _openAvatarOverlay(context, uiModel,
+                                        openNewGame: true);
+                                  },
                                 ),
-                              ),
+                              if (!uiModel.showBarcodeHunt)
+                                FunTooltip(
+                                  tooltipIndex: 2,
+                                  title:
+                                      context.l10n.tutorialGratitudeGameTitle,
+                                  description: context
+                                      .l10n.tutorialGratitudeGameDescription,
+                                  labelBottomLeft: '3/6',
+                                  child: GratitudeGameButton(
+                                    onPressed: () => context
+                                        .goNamed(FamilyPages.reflectIntro.name),
+                                  ),
+                                ),
                               const SizedBox(height: 16),
                               GiveButton(
                                 onPressed: () =>
@@ -263,12 +276,14 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     FamilyHomeScreenUIModel uiModel, {
     bool withTutorial = false,
     bool withRewardText = false,
+    bool openNewGame = false,
   }) {
     if (!overlayVisible) {
       createOverlay(
         uiModel,
         withTutorial: withTutorial,
         withRewardText: withRewardText,
+        openNewGame: openNewGame,
       );
       setState(() {
         overlayVisible = true;
@@ -281,12 +296,14 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     FamilyHomeScreenUIModel uiModel, {
     required bool withTutorial,
     required bool withRewardText,
+    bool openNewGame = false,
   }) {
     overlayEntry = OverlayEntry(
       builder: (context) => FamilyHomeOverlay(
         uiModel: uiModel,
         onDismiss: closeOverlay,
-        onAvatarTapped: (index) => onAvatarTapped(index, uiModel),
+        onAvatarTapped: (index) =>
+            onAvatarTapped(index, uiModel, openNewGame: openNewGame),
         onNextTutorialClicked: _cubit.onNextTutorialClicked,
         withTutorial: withTutorial,
         withRewardText: withRewardText,
@@ -295,7 +312,10 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   }
 
   Future<void> onAvatarTapped(
-      int index, FamilyHomeScreenUIModel uiModel) async {
+    int index,
+    FamilyHomeScreenUIModel uiModel, {
+    bool openNewGame = false,
+  }) async {
     if (overlayVisible) {
       closeOverlay();
     }
@@ -319,6 +339,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
 
     context.read<ImpactGroupsCubit>().fetchImpactGroups(profile.id, true);
+
+    if (openNewGame) {
+      context.goNamed(FamilyPages.newGame.name);
+      return;
+    }
 
     if (profile.profileType == ProfileType.Parent) {
       final authstate = context.read<FamilyAuthCubit>().state;

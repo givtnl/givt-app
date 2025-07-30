@@ -13,6 +13,7 @@ import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:collection/collection.dart';
 
 class NavigationBarHomeCubit
     extends CommonCubit<NavigationBarHomeScreenUIModel, NavigationBarHomeCustom>
@@ -96,11 +97,17 @@ class NavigationBarHomeCubit
   }
 
   void _emitData() {
-    emitData(
-      NavigationBarHomeScreenUIModel(
-        familyInviteGroup: _familyInviteGroup,
-      ),
-    );
+    // Fetch all impact groups and find the family group
+    _impactGroupsRepository.getImpactGroups().then((groups) {
+      final familyGroup = groups.firstWhereOrNull((g) => g.isFamilyGroup);
+      final showMemoriesTab = familyGroup?.boxOrigin?.mediumId?.toLowerCase() != 'FF8EC1E5-8D2F-4238-519C-08DC57CE1CE7'.toLowerCase();
+      emitData(
+        NavigationBarHomeScreenUIModel(
+          familyInviteGroup: _familyInviteGroup,
+          showMemoriesTab: showMemoriesTab,
+        ),
+      );
+    });
   }
 
   Future<void> logout() async {

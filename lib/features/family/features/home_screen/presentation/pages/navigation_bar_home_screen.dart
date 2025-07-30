@@ -144,40 +144,49 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   Scaffold _regularLayout({NavigationBarHomeScreenUIModel? uiModel}) {
     final width = MediaQuery.of(context).size.width;
-    final onePart = width / NavigationBarHomeScreen.validIndexes.length;
-    final halfPart = onePart / 2;
+    final showMemoriesTab = uiModel?.showMemoriesTab ?? true;
+    final destinations = <NavigationDestination>[
+      NavigationDestination(
+        icon: const FaIcon(FontAwesomeIcons.house),
+        label: context.l10n.familyNavigationBarHome,
+      ),
+      NavigationDestination(
+        icon: FunTooltip(
+          tooltipIndex: 1,
+          title: context.l10n.tutorialManagingFamilyTitle,
+          description: context.l10n.tutorialManagingFamilyDescription,
+          labelBottomLeft: '2/6',
+          triangleOffset: Offset(-(width / (showMemoriesTab ? 4 : 3)) / 2, 0),
+          child: const FaIcon(
+            FontAwesomeIcons.mask,
+          ),
+        ),
+        label: context.l10n.familyNavigationBarFamily,
+      ),
+      if (showMemoriesTab)
+        NavigationDestination(
+          icon: const FaIcon(FontAwesomeIcons.solidCalendar),
+          label: context.l10n.familyNavigationBarMemories,
+        ),
+      NavigationDestination(
+        icon: const FaIcon(FontAwesomeIcons.medal),
+        label: context.l10n.familyNavigationBarLeague,
+      ),
+    ];
+    final pages = <Widget>[
+      FamilyHomeScreen(
+        tooltipController: _tooltipController,
+      ),
+      const FamilyOverviewPage(),
+      if (showMemoriesTab) const GameSummariesScreen(),
+      const LeagueScreen(),
+    ];
     return Scaffold(
       bottomNavigationBar: FunNavigationBar(
         index: _currentIndex,
         onDestinationSelected: (int index) =>
             _onDestinationSelected(index, uiModel: uiModel),
-        destinations: [
-          NavigationDestination(
-            icon: const FaIcon(FontAwesomeIcons.house),
-            label: context.l10n.familyNavigationBarHome,
-          ),
-          NavigationDestination(
-            icon: FunTooltip(
-              tooltipIndex: 1,
-              title: context.l10n.tutorialManagingFamilyTitle,
-              description: context.l10n.tutorialManagingFamilyDescription,
-              labelBottomLeft: '2/6',
-              triangleOffset: Offset(-halfPart, 0),
-              child: const FaIcon(
-                FontAwesomeIcons.mask,
-              ),
-            ),
-            label: context.l10n.familyNavigationBarFamily,
-          ),
-          NavigationDestination(
-            icon: const FaIcon(FontAwesomeIcons.solidCalendar),
-            label: context.l10n.familyNavigationBarMemories,
-          ),
-          NavigationDestination(
-            icon: const FaIcon(FontAwesomeIcons.medal),
-            label: context.l10n.familyNavigationBarLeague,
-          ),
-        ],
+        destinations: destinations,
         analyticsEvent: (int index) => _analyticsEvents[index],
       ),
       body: AnimatedSwitcher(
@@ -195,14 +204,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
               child: child,
             );
           },
-          child: <Widget>[
-            FamilyHomeScreen(
-              tooltipController: _tooltipController,
-            ),
-            const FamilyOverviewPage(),
-            const GameSummariesScreen(),
-            const LeagueScreen(),
-          ][_currentIndex],
+          child: pages[_currentIndex],
         ),
       ),
     );
