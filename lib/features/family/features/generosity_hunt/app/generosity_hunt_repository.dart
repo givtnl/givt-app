@@ -1,16 +1,21 @@
 import 'package:flutter/foundation.dart';
-import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/level_select_cubit.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/models/scan_response.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class GenerosityHuntRepository extends ChangeNotifier {
+  GenerosityHuntRepository(this._apiService);
+
   int? _selectedLevel;
   List<dynamic>? _levels;
+  String? _gameId;
+  ScanResponse? _lastScanResponse;
   final FamilyAPIService _apiService;
-
-  GenerosityHuntRepository(this._apiService);
 
   int? get selectedLevel => _selectedLevel;
   List<dynamic>? get levels => _levels;
+  String? get gameId => _gameId;
+  ScanResponse? get lastScanResponse => _lastScanResponse;
 
   Future<void> fetchLevels() async {
     _levels = await _apiService.fetchGenerosityHuntLevels();
@@ -20,6 +25,35 @@ class GenerosityHuntRepository extends ChangeNotifier {
   void setLevel(int level) {
     _selectedLevel = level;
     notifyListeners();
+  }
+
+  Future<void> createGame(String userId) async {
+    try {
+      // For now, don't send user guids as requested
+      final guids = <String>[userId];
+      _gameId = await _apiService.createGame(
+        guids: guids,
+        type: 'GenerosityHunt',
+      );
+      notifyListeners();
+    } catch (e) {
+      // Handle error appropriately
+      rethrow;
+    }
+  }
+
+  Future<ScanResponse> scanBarcode(String barcode, String userId) async {
+    try {
+      _lastScanResponse = await _apiService.scanBarcode(
+        userId: userId,
+        barcode: barcode,
+      );
+      notifyListeners();
+      return _lastScanResponse!;
+    } catch (e) {
+      // Handle error appropriately
+      rethrow;
+    }
   }
 
   LevelUIModel? getLevelByNumber(int? level) {

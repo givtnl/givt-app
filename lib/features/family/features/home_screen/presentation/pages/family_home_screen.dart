@@ -234,21 +234,23 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               if (uiModel.showBarcodeHunt)
                                 GenerosityHuntButton(
                                   onPressed: () {
-                                    context.goNamed(FamilyPages.newGame.name);
+                                    _openAvatarOverlay(context, uiModel,
+                                        openNewGame: true);
                                   },
                                 ),
                               if (!uiModel.showBarcodeHunt)
-                              FunTooltip(
-                                tooltipIndex: 2,
-                                title: context.l10n.tutorialGratitudeGameTitle,
-                                description: context
-                                    .l10n.tutorialGratitudeGameDescription,
-                                labelBottomLeft: '3/6',
-                                child: GratitudeGameButton(
-                                  onPressed: () => context
-                                      .goNamed(FamilyPages.reflectIntro.name),
+                                FunTooltip(
+                                  tooltipIndex: 2,
+                                  title:
+                                      context.l10n.tutorialGratitudeGameTitle,
+                                  description: context
+                                      .l10n.tutorialGratitudeGameDescription,
+                                  labelBottomLeft: '3/6',
+                                  child: GratitudeGameButton(
+                                    onPressed: () => context
+                                        .goNamed(FamilyPages.reflectIntro.name),
+                                  ),
                                 ),
-                              ),
                               const SizedBox(height: 16),
                               GiveButton(
                                 onPressed: () =>
@@ -309,8 +311,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
   }
 
-  Future<void> onAvatarTapped(int index, FamilyHomeScreenUIModel uiModel,
-      {bool openNewGame = false}) async {
+  Future<void> onAvatarTapped(
+    int index,
+    FamilyHomeScreenUIModel uiModel, {
+    bool openNewGame = false,
+  }) async {
     if (overlayVisible) {
       closeOverlay();
     }

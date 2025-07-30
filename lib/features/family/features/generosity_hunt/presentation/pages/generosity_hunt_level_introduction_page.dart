@@ -23,7 +23,8 @@ class GenerosityHuntLevelIntroductionPage extends StatefulWidget {
 
 class _GenerosityHuntLevelIntroductionPageState
     extends State<GenerosityHuntLevelIntroductionPage> {
-  final GenerosityHuntLevelIntroCubit cubit = GenerosityHuntLevelIntroCubit(getIt());
+  final GenerosityHuntLevelIntroCubit cubit =
+      GenerosityHuntLevelIntroCubit(getIt());
 
   @override
   void didChangeDependencies() {
@@ -76,7 +77,7 @@ class _GenerosityHuntLevelIntroductionPageState
                   analyticsEvent:
                       AnalyticsEvent(AmplitudeEvents.funMissionCardClicked),
                   onTap: () {
-                    Navigator.of(context).push(
+                    Navigator.of(context).pushReplacement(
                       const BarcodeLevelScanPage().toRoute(context),
                     );
                   },

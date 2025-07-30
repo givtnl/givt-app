@@ -1,13 +1,13 @@
 // This page implements the BarcodeLevelScanPage, which allows users to scan barcodes for the game level.
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/scan_cubit.dart';
-import 'package:givt_app/features/family/features/generosity_hunt/presentation/pages/generosity_hunt_level_introduction_page.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -28,98 +28,15 @@ class BarcodeLevelScanPage extends StatefulWidget {
 class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
   final ScanCubit cubit = ScanCubit(getIt());
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    cubit.init();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BaseStateConsumer(
-      cubit: cubit,
-      onData: (context, state) {
-        final level = state.level;
-        if (level == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        return FunScaffold(
-          minimumPadding: EdgeInsets.zero,
-          appBar: FunTopAppBar(
-            title: 'Level ${level.level}',
-            leading: const GivtBackButtonFlat(),
-          ),
-          body: Column(
-            children: [
-              Expanded(
-                child: _BarcodeScannerBody(),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 24,
-                  horizontal: 24,
-                ),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24),
-                    topRight: Radius.circular(24),
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Row of circles for each item
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(level.itemsNeeded, (index) {
-                        return Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: FamilyAppTheme.neutral70,
-                              width: 4,
-                            ),
-                            color: Colors.white,
-                          ),
-                          alignment: Alignment.center,
-                          child: TitleMediumText(
-                            (index + 1).toString(),
-                            color: FamilyAppTheme.neutral70,
-                          ),
-                        );
-                      }),
-                    ),
-                    const SizedBox(height: 16),
-                    TitleMediumText(
-                      level.assignment,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _BarcodeScannerBody extends StatefulWidget {
-  @override
-  State<_BarcodeScannerBody> createState() => _BarcodeScannerBodyState();
-}
-
-class _BarcodeScannerBodyState extends State<_BarcodeScannerBody> {
   final MobileScannerController _cameraController = MobileScannerController(
     returnImage: true,
   );
-
   bool _barcodeFound = false;
-  String? _barcodeValue;
+
+  // Spinning state
+  bool _isSpinning = false;
+  String? _selectedProductImage;
+  String? _spinningImage;
 
   // Product images (hardcoded list)
   static const List<String> _productImages = [
@@ -147,31 +64,102 @@ class _BarcodeScannerBodyState extends State<_BarcodeScannerBody> {
     'assets/family/images/barcode_hunt/products/Banana.svg',
     'assets/family/images/barcode_hunt/products/Bag chips.svg',
   ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-  // Spinning state
-  bool _isSpinning = false;
-  String? _selectedProductImage;
-  String? _spinningImage;
+    final userId = context.read<ProfilesCubit>().state.activeProfile.id;
+    cubit.init(userId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseStateConsumer(
+      cubit: cubit,
+      onInitial: (context) => const Center(child: CircularProgressIndicator()),
+      onCustom: _onCustom,
+      onData: (context, state) {
+        return FunScaffold(
+          minimumPadding: EdgeInsets.zero,
+          appBar: FunTopAppBar(
+            title: 'Level ${state.level?.level}',
+            leading: const GivtBackButtonFlat(),
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: _barcodeScannerBody(),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 24,
+                  horizontal: 24,
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Row of circles for each item
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:
+                          List.generate(state.level?.itemsNeeded ?? 0, (index) {
+                        return Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: FamilyAppTheme.neutral70,
+                              width: 4,
+                            ),
+                            color: Colors.white,
+                          ),
+                          alignment: Alignment.center,
+                          child: TitleMediumText(
+                            (index + 1).toString(),
+                            color: FamilyAppTheme.neutral70,
+                          ),
+                        );
+                      }),
+                    ),
+                    const SizedBox(height: 16),
+                    TitleMediumText(
+                      state.levelFinished
+                          ? 'You did it!'
+                          : state.level?.assignment ?? '',
+                      textAlign: TextAlign.center,
+                    ),
+                    if (state.levelFinished) const SizedBox(height: 16),
+
+                    if (state.levelFinished)
+                      FunButton(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        text: 'Continue',
+                        analyticsEvent:
+                            AnalyticsEvent(AmplitudeEvents.continueClicked),
+                      )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   void dispose() {
     _cameraController.dispose();
     super.dispose();
-  }
-
-  Future<void> _onBarcodeDetected(BarcodeCapture barcodeCapture) async {
-    if (_barcodeFound || _isSpinning) return;
-    final barcode = barcodeCapture.barcodes.firstOrNull;
-    if (barcode != null && barcode.rawValue != null) {
-      setState(() {
-        _barcodeFound = true;
-        _barcodeValue = barcode.rawValue;
-      });
-      await _cameraController.pause();
-      if (mounted) {
-        await _startProductSpin();
-      }
-    }
   }
 
   Future<void> _startProductSpin() async {
@@ -180,14 +168,14 @@ class _BarcodeScannerBodyState extends State<_BarcodeScannerBody> {
       _spinningImage = null;
       _selectedProductImage = null;
     });
+
     // Shuffle the images for random order
     final images = List<String>.from(_productImages)..shuffle();
-    const spinDuration = Duration(milliseconds: 2000);
     const spinInterval = Duration(milliseconds: 60); // Fast spin
     var tick = 0;
     var currentImage = images[0];
-    final timer = Stopwatch()..start();
-    while (timer.elapsed < spinDuration) {
+
+    while (_isSpinning) {
       await Future.delayed(spinInterval);
       setState(() {
         currentImage = images[tick % images.length];
@@ -195,23 +183,11 @@ class _BarcodeScannerBodyState extends State<_BarcodeScannerBody> {
       });
       tick++;
     }
-    timer.stop();
-    // Pick a random product at the end
-    final selected = (images..shuffle()).first;
-    setState(() {
-      _isSpinning = false;
-      _selectedProductImage = selected;
-      _spinningImage = null;
-    });
-    if (mounted) {
-      ConfettiHelper.show(context);
-    }
   }
 
   void _resetScan() {
     setState(() {
       _barcodeFound = false;
-      _barcodeValue = null;
       _selectedProductImage = null;
       _spinningImage = null;
       _isSpinning = false;
@@ -219,8 +195,7 @@ class _BarcodeScannerBodyState extends State<_BarcodeScannerBody> {
     _cameraController.start();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _barcodeScannerBody() {
     return SizedBox(
       width: double.infinity,
       child: Stack(
@@ -229,8 +204,7 @@ class _BarcodeScannerBodyState extends State<_BarcodeScannerBody> {
           Positioned.fill(
             child: MobileScanner(
               controller: _cameraController,
-              onDetect:
-                  (_barcodeFound || _isSpinning) ? null : _onBarcodeDetected,
+              onDetect: cubit.onBarcodeDetected,
             ),
           ),
           // Overlay with scan area
@@ -249,55 +223,70 @@ class _BarcodeScannerBodyState extends State<_BarcodeScannerBody> {
                 height: 240,
               ),
             ),
-          if (_selectedProductImage != null)
-            // Final product image with FunCard overlay
-            Center(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  SvgPicture.asset(
-                    _selectedProductImage!,
-                    width: 120,
-                    height: 240,
-                  ),
-                  Positioned(
-                    bottom: -40,
-                    child: FunCard(
-                      content: const Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.monetization_on,
-                              size: 48, color: Color(0xFF4CAF50)),
-                          SizedBox(height: 12),
-                          BodyMediumText(
-                            'You have earned 5 Givt Credits!',
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                      button: FunButton(
-                        onTap: _resetScan,
-                        text: 'Claim',
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.claimRewardClicked,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          if (_barcodeFound && !_isSpinning && _selectedProductImage == null)
-            // Show loading spinner while preparing spin
-            const Center(
-              child: CircularProgressIndicator(),
-            ),
-          if (!_barcodeFound && !_isSpinning && _selectedProductImage == null)
-            // Optionally, show nothing or a hint
-            const SizedBox.shrink(),
         ],
       ),
     );
+  }
+
+  void _onCustom(BuildContext context, ScanCustom custom) {
+    switch (custom) {
+      case ScanCustomBarcodeFound():
+        _startProductSpin();
+      case ScanCustomSuccessFullScan():
+        _successFullScan(custom.itemsRemaining);
+      case ScanCustomNotRecognized():
+        _showNotRecognized();
+    }
+  }
+
+  void _showNotRecognized() {
+    FunBottomSheet(
+      title: 'Oops, not recognized',
+      content: const BodyMediumText(''), // TODO
+      primaryButton: FunButton(
+        onTap: () {
+          cubit.restartScan();
+          Navigator.pop(context);
+        },
+        text: 'Try again',
+        analyticsEvent: AnalyticsEvent(AmplitudeEvents.debugButtonClicked),
+      ),
+    ).show(
+      context,
+      isDismissible: false,
+    );
+  }
+
+  void _successFullScan(int itemsRemaining) {
+    setState(() {
+      _isSpinning = false;
+      // Pick a random product at the end (in future based on product category)
+      _selectedProductImage = (_productImages..shuffle()).first;
+      _spinningImage = null;
+    });
+
+    // Show confetti
+    if (!mounted) return;
+    ConfettiHelper.show(context);
+
+    FunBottomSheet(
+      title: '+5 Givt Credits!',
+      content: const BodyMediumText(''),
+      primaryButton: FunButton(
+        onTap: () {
+          if (itemsRemaining > 0) {
+            cubit.restartScan();
+          } else {
+            cubit.completeLevel();
+          }
+          Navigator.pop(context);
+        },
+        text: 'Claim',
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.debugButtonClicked,
+        ),
+      ),
+    ).show(context);
   }
 }
 

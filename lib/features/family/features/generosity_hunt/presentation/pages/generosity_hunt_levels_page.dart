@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/level_select_cubit.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/presentation/pages/generosity_hunt_level_introduction_page.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/presentation/widgets/level_tile.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
-class GenerosityHuntLevelsPage extends StatelessWidget {
+class GenerosityHuntLevelsPage extends StatefulWidget {
   const GenerosityHuntLevelsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final cubit = getIt<LevelSelectCubit>();
+  State<GenerosityHuntLevelsPage> createState() =>
+      _GenerosityHuntLevelsPageState();
+}
 
+class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
+  final cubit = getIt<LevelSelectCubit>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final userId = context.read<ProfilesCubit>().state.activeProfile.id;
+    cubit.init(userId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: FunTopAppBar(
         title: 'Levels',
@@ -55,7 +71,9 @@ class GenerosityHuntLevelsPage extends StatelessWidget {
                   title: level.title,
                   subtitle: 'Level ${level.level}',
                   unlocked: index == 0,
-                  onTap: () => cubit.selectLevel(level.level),
+                  onTap: () async {
+                    await cubit.selectLevel(level.level);
+                  },
                 );
               },
             );

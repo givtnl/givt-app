@@ -7,17 +7,27 @@ part 'level_select_uimodel.dart';
 
 class LevelSelectCubit
     extends CommonCubit<LevelSelectUIModel, LevelSelectCustom> {
-      
-  LevelSelectCubit(this._repository) : super(const BaseState.initial()) {
+  LevelSelectCubit(this._repository) : super(const BaseState.initial());
+
+  final GenerosityHuntRepository _repository;
+  String? _currentProfileId;
+
+  void init(String currentProfileId) {
+    _currentProfileId = currentProfileId;
     loadLevels();
   }
 
-  final GenerosityHuntRepository _repository;
-
-  void selectLevel(int level) {
+  Future<void> selectLevel(int level) async {
     _repository.setLevel(level);
-    emitCustom(NavigateToLevelIntroduction(level));
-    // emitData(_createUIModel());
+
+    // Create a game when a level is selected
+    try {
+      await _repository.createGame(_currentProfileId!);
+      emitCustom(NavigateToLevelIntroduction(level));
+    } catch (e) {
+      // Handle error - for now just rethrow, but could emit error state
+      rethrow;
+    }
   }
 
   Future<void> loadLevels() async {
