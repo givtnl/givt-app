@@ -62,9 +62,24 @@ class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
             }
             return ListView.separated(
               padding: const EdgeInsets.only(top: 24, bottom: 24),
-              itemCount: state.levels.length,
+              itemCount: state.levels.length + 1,
               separatorBuilder: (_, __) => const SizedBox(height: 8),
               itemBuilder: (context, index) {
+                if (index == state.levels.length) {
+                  // Show "More levels coming soon" text after the last level
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Center(
+                      child: Text(
+                        'More levels coming soon',
+                        style: context.bodyMedium.copyWith(
+                          color: context.colorScheme.onSurface.withOpacity(0.6),
+                        ),
+                      ),
+                    ),
+                  );
+                }
+                
                 final level = state.levels[index];
                 return LevelTile(
                   level: level.level,
