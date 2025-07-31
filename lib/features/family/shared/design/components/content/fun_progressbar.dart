@@ -43,6 +43,30 @@ class FunProgressbar extends StatefulWidget {
     );
   }
 
+  factory FunProgressbar.generosityHunt({
+    required int currentProgress,
+    required int total,
+    required String suffix,
+    EdgeInsets? margin,
+    Key? key,
+  }) {
+    return FunProgressbar(
+      key: key,
+      currentProgress: currentProgress,
+      total: total,
+      prefixWidget: const Padding(
+        padding: EdgeInsets.only(right: 4),
+        child: FaIcon(
+          FontAwesomeIcons.hourglassEnd,
+          color: FamilyAppTheme.highlight30,
+          size: 12,
+        ),
+      ),
+      suffix: suffix,
+      margin: margin,
+    );
+  }
+
   factory FunProgressbar.powerstones({
     required int currentProgress,
     required int total,

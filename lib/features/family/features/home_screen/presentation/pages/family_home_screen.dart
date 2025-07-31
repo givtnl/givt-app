@@ -14,6 +14,7 @@ import 'package:givt_app/features/family/features/home_screen/presentation/model
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/generosity_hunt_button.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/generosity_hunt_countdown_container.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_goal_container.dart';
@@ -200,9 +201,12 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                                 onAvatarTapped(index, uiModel),
                           ),
                         ),
-                        const GratitudeGoalContainer(
-                          key: ValueKey('Homepage-Daily-Experience'),
-                        ),
+                        if (!uiModel.showBarcodeHunt)
+                          const GratitudeGoalContainer(
+                            key: ValueKey('Homepage-Daily-Experience'),
+                          ),
+                        if (uiModel.showBarcodeHunt)
+                          const GenerosityHuntCountdownContainer(),
                         if (carrouselItems.isNotEmpty)
                           CarouselSlider(
                             carouselController: _carouselSliderController,
