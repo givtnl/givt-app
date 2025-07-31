@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/scan_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -81,10 +81,19 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
       onCustom: _onCustom,
       onData: (context, state) {
         return FunScaffold(
+          canPop: false,
           minimumPadding: EdgeInsets.zero,
           appBar: FunTopAppBar(
             title: 'Level ${state.level?.level}',
-            leading: const GivtBackButtonFlat(),
+            actions: [
+              IconButton(
+                icon: const FaIcon(
+                  FontAwesomeIcons.xmark,
+                  semanticLabel: 'Close',
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
           ),
           body: Column(
             children: [
