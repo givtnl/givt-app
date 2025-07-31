@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/features/generosity_hunt/presentation/w
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
 class GenerosityHuntLevelsPage extends StatefulWidget {
@@ -70,16 +71,17 @@ class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Center(
-                      child: Text(
+                      child: BodyMediumText(
                         'More levels coming soon',
-                        style: context.bodyMedium.copyWith(
-                          color: context.colorScheme.onSurface.withOpacity(0.6),
-                        ),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.6),
                       ),
                     ),
                   );
                 }
-                
+
                 final level = state.levels[index];
                 return LevelTile(
                   level: level.level,
