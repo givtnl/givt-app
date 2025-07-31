@@ -12,6 +12,7 @@ class LevelTile extends StatelessWidget {
     required this.title,
     required this.subtitle,
     this.unlocked = false,
+    this.completed = false,
     this.onTap,
     super.key,
   });
@@ -20,6 +21,7 @@ class LevelTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final bool unlocked;
+  final bool completed;
   final VoidCallback? onTap;
 
   @override
@@ -31,7 +33,7 @@ class LevelTile extends StatelessWidget {
         headerIcon: !unlocked ? FunIcon.lock(iconSize: 24) : null,
         progress: unlocked
             ? GoalCardProgressUImodel(
-                amount: 0,
+                amount: completed ? 1 : 0,
                 goalAmount: 1,
               )
             : null,

@@ -628,6 +628,20 @@ class FamilyAPIService {
     return decodedBody['items'] as List<dynamic>;
   }
 
+  Future<Map<String, dynamic>> fetchGenerosityHuntUserState(String userId) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/generosity-hunt/$userId');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['item'] as Map<String, dynamic>;
+  }
+
   Future<ScanResponse> scanBarcode({
     required String userId,
     required String barcode,

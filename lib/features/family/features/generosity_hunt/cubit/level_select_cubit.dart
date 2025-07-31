@@ -32,6 +32,7 @@ class LevelSelectCubit
 
   Future<void> loadLevels() async {
     await _repository.fetchLevels();
+    await _repository.fetchUserState(_currentProfileId!);
     emitData(_createUIModel());
   }
 
@@ -39,6 +40,13 @@ class LevelSelectCubit
     final levels = (_repository.levels ?? [])
         .map((e) => LevelUIModel.fromJson(e as Map<String, dynamic>))
         .toList();
+    
+    // Update levels with unlock and completion status
+    for (final level in levels) {
+      level.isUnlocked = _repository.isLevelUnlocked(level.level);
+      level.isCompleted = _repository.isLevelCompleted(level.level);
+    }
+    
     return LevelSelectUIModel(
       selectedLevel: _repository.selectedLevel,
       levels: levels,
