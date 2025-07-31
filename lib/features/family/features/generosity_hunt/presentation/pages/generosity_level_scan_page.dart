@@ -133,7 +133,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                             ),
                           );
                         }
-  
+
                         // Show numbered circle for unscanned items
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -261,7 +261,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
       case ScanCustomBarcodeFound():
         _startProductSpin();
       case ScanCustomSuccessFullScan():
-        _successFullScan(custom.itemsRemaining);
+        _successFullScan(custom.itemsRemaining, custom.creditsEarned);
       case ScanCustomNotRecognized():
         _showNotRecognized();
       case ScanCustomStopSpinner():
@@ -295,7 +295,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     );
   }
 
-  void _successFullScan(int itemsRemaining) {
+  void _successFullScan(int itemsRemaining, int credits) {
     setState(() {
       _isSpinning = false;
       // Pick a random product at the end (in future based on product category)
@@ -308,7 +308,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     ConfettiHelper.show(context);
 
     FunBottomSheet(
-      title: '+5 Givt Credits!',
+      title: '+${credits} Givt Credits!',
       content: const BodyMediumText(''),
       primaryButton: FunButton(
         onTap: () {
