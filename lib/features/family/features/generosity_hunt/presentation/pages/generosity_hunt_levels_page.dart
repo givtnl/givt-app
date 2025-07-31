@@ -70,7 +70,8 @@ class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
                   level: level.level,
                   title: level.title,
                   subtitle: 'Level ${level.level}',
-                  unlocked: index == 0,
+                  unlocked: level.isUnlocked,
+                  completed: level.isCompleted,
                   onTap: () async {
                     await cubit.selectLevel(level.level);
                   },

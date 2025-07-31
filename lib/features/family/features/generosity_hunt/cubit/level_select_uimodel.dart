@@ -18,6 +18,8 @@ class LevelUIModel {
     required this.description,
     required this.assignment,
     this.imageAsset = 'assets/family/images/barcode_hunt/level_default_image.svg',
+    this.isUnlocked = false,
+    this.isCompleted = false,
   });
 
   factory LevelUIModel.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,8 @@ class LevelUIModel {
       description: json['description'] as String? ?? '',
       assignment: json['assignment'] as String? ?? '',
       imageAsset: 'assets/family/images/barcode_hunt/level_default_image.svg',
+      isUnlocked: false, // Will be set after fetching user state
+      isCompleted: false, // Will be set after fetching user state
     );
   }
 
@@ -41,5 +45,7 @@ class LevelUIModel {
   final String description;
   final String assignment;
   final String imageAsset;
+  bool isUnlocked;
+  bool isCompleted;
 
 }

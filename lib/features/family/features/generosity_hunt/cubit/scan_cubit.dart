@@ -88,7 +88,8 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
     _emitData();
   }
 
-  void completeLevel() {
+  Future<void> completeLevel() async {
+    await _repository.fetchUserState(_currentProfileId!);
     emitData(_createUIModel());
   }
 }
