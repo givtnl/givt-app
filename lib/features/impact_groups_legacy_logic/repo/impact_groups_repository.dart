@@ -186,11 +186,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
       if (_impactGroups == null || _impactGroups!.isEmpty) {
         await getImpactGroups(fetchWhenEmpty: true);
       }
-      // TODO: remove the .preferredChurch when new Preferred Church is implemented
       return _impactGroups
-              ?.firstWhere((element) => element.type == ImpactGroupType.family)
-              .preferredChurch ??
-          _impactGroups
               ?.firstWhere((element) => element.type == ImpactGroupType.family)
               .boxOrigin;
     } catch (e) {

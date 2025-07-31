@@ -163,6 +163,8 @@ class FamilyHomeScreenCubit
 
   FamilyHomeScreenUIModel _createUIModel() {
     _sortProfiles();
+    final showBarcodeHunt = _familyGroup?.boxOrigin?.mediumId?.toLowerCase() ==
+        'FF8EC1E5-8D2F-4238-519C-08DC57CE1CE7'.toLowerCase();
     return FamilyHomeScreenUIModel(
       avatars: profiles
           .map(
@@ -177,6 +179,7 @@ class FamilyHomeScreenCubit
       familyGroupName: _familyGroup?.name,
       gameStats: _gameStats,
       missionStats: _missionStats,
+      showBarcodeHunt: showBarcodeHunt,
     );
   }
 

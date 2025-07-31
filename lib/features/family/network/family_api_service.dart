@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/models/scan_response.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/domain/models/behavior_options.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/domain/models/set_a_goal_options.dart';
@@ -493,7 +494,8 @@ class FamilyAPIService {
     return decodedBody['item']! as Map<String, dynamic>;
   }
 
-  Future<String> createGame({required List<String> guids}) async {
+  Future<String> createGame(
+      {required List<String> guids, String type = 'Gratitude'}) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/Game');
     final response = await client.post(
       url,
@@ -503,6 +505,7 @@ class FamilyAPIService {
       },
       body: jsonEncode({
         'Players': guids,
+        'Type': type,
       }),
     );
     if (response.statusCode >= 300) {
@@ -608,6 +611,69 @@ class FamilyAPIService {
       final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
       return decodedBody['item'] as Map<String, dynamic>;
     }
+  }
+
+  Future<List<dynamic>> fetchGenerosityHuntLevels() async {
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/game/generosity-hunt/levels');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['items'] as List<dynamic>;
+  }
+
+  Future<Map<String, dynamic>> fetchGenerosityHuntUserState(String userId) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/generosity-hunt/$userId');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['item'] as Map<String, dynamic>;
+  }
+
+  Future<ScanResponse> scanBarcode({
+    required String userId,
+    required String barcode,
+  }) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/generosity-hunt/scan');
+    final body = {
+      'userid': userId,
+      'barcode': barcode,
+    };
+
+    final response = await client.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode == 404) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: {'error': 'Barcode not found'},
+      );
+    }
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return ScanResponse.fromJson(decodedBody);
   }
 
   Future<bool> _postRequest(String endpoint, Map<String, dynamic> body) async {

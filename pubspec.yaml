@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.10.14
+version: 4.11.0
 publish_to: none
 
 environment:
@@ -83,7 +83,7 @@ dependencies:
   audioplayers: ^6.1.2
   firebase_remote_config: ^5.4.0
   rxdart: ^0.28.0
-  facebook_app_events: ^0.19.6
+  facebook_app_events: ^0.20.1
   volume_controller: ^3.2.0
   waveform_flutter:
     path: ./packages/waveform
@@ -171,6 +171,8 @@ flutter:
     - assets/family/images/avatar/default/
     - assets/family/images/avatar/custom/
     - assets/family/images/avatar/custom/tiles/
+    - assets/family/images/barcode_hunt/
+    - assets/family/images/barcode_hunt/products/
     - assets/family/lotties/
     - assets/fun/illustrations/
     - assets/family/audio/

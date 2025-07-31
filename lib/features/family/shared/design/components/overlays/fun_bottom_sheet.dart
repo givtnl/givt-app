@@ -153,10 +153,11 @@ class FunBottomSheet extends StatelessWidget {
     );
   }
 
-  void show(BuildContext context) {
+  void show(BuildContext context, {bool isDismissible = true}) {
     showModalBottomSheet<void>(
       context: context,
       useSafeArea: true,
+      isDismissible: isDismissible,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),

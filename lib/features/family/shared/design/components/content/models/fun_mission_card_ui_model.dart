@@ -11,6 +11,7 @@ class FunMissionCardUIModel {
     this.progress,
     this.headerIcon,
     this.namedPage,
+    this.disabled = false,
   });
 
   final String title;
@@ -19,4 +20,5 @@ class FunMissionCardUIModel {
   final GoalCardProgressUImodel? progress;
   final FunIcon? headerIcon;
   final String? namedPage;
+  final bool disabled;
 }

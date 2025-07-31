@@ -38,6 +38,8 @@ class FunIcon extends StatelessWidget {
     this.iconColor = FamilyAppTheme.primary20,
     this.padding = const EdgeInsets.all(14),
     this.semanticsIdentifier,
+    this.iconColorOverride,
+    this.circleColorOverride,
     super.key,
   });
 
@@ -142,10 +144,19 @@ class FunIcon extends StatelessWidget {
         circleColor: circleColor,
       );
 
-  factory FunIcon.checkmark({Color circleColor = FamilyAppTheme.primary95}) =>
+  factory FunIcon.checkmark(
+          {Color circleColor = FamilyAppTheme.primary95,
+          Color iconColor = FamilyAppTheme.primary20,
+          double circleSize = 112,
+          double iconSize = 48,
+          EdgeInsets padding = const EdgeInsets.all(14)}) =>
       FunIcon(
         iconData: FontAwesomeIcons.check,
+        iconColor: iconColor,
         circleColor: circleColor,
+        circleSize: circleSize,
+        iconSize: iconSize,
+        padding: padding,
       );
 
   factory FunIcon.xmark({
@@ -303,6 +314,49 @@ class FunIcon extends StatelessWidget {
         iconSize: iconSize,
       );
 
+  factory FunIcon.lock({
+    Color iconColor = FamilyAppTheme.primary40,
+    EdgeInsets padding = EdgeInsets.zero,
+    double iconSize = 16,
+    double circleSize = 16,
+  }) =>
+      FunIcon(
+        padding: padding,
+        iconData: FontAwesomeIcons.lock,
+        iconColor: iconColor,
+        circleColor: Colors.transparent,
+        circleSize: circleSize,
+        iconSize: iconSize,
+      );
+
+  FunIcon copyWith({
+    IconData? iconData,
+    Widget? icon,
+    double? circleSize,
+    double? iconSize,
+    Color? circleColor,
+    Color? iconColor,
+    EdgeInsets? padding,
+    String? semanticsIdentifier,
+    Color? iconColorOverride,
+    Color? circleColorOverride,
+    Key? key,
+  }) {
+    return FunIcon(
+      iconData: iconData ?? this.iconData,
+      icon: icon ?? this.icon,
+      circleSize: circleSize ?? this.circleSize,
+      iconSize: iconSize ?? this.iconSize,
+      circleColor: circleColor ?? this.circleColor,
+      iconColor: iconColor ?? this.iconColor,
+      padding: padding ?? this.padding,
+      semanticsIdentifier: semanticsIdentifier ?? this.semanticsIdentifier,
+      iconColorOverride: iconColorOverride ?? this.iconColorOverride,
+      circleColorOverride: circleColorOverride ?? this.circleColorOverride,
+      key: key ?? this.key,
+    );
+  }
+
   /// The icon to be displayed in the center of the circle.
   /// If [icon] is provided, it will be used instead of [iconData].
   final IconData? iconData;
@@ -317,6 +371,12 @@ class FunIcon extends StatelessWidget {
   final EdgeInsets padding;
   final String? semanticsIdentifier;
 
+  /// Optional override for the icon color at build time.
+  final Color? iconColorOverride;
+
+  /// Optional override for the circle color at build time.
+  final Color? circleColorOverride;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -328,7 +388,7 @@ class FunIcon extends StatelessWidget {
             width: circleSize,
             height: circleSize,
             decoration: BoxDecoration(
-              color: circleColor,
+              color: circleColorOverride ?? circleColor,
               shape: BoxShape.circle,
             ),
           ),
@@ -349,7 +409,7 @@ class FunIcon extends StatelessWidget {
                 iconData,
                 semanticLabel:
                     'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
-                color: iconColor,
+                color: iconColorOverride ?? iconColor,
                 size: iconSize,
               ),
             ),

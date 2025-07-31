@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 
 class FunMissionCard extends StatelessWidget {
   const FunMissionCard({
@@ -45,7 +46,7 @@ class FunMissionCard extends StatelessWidget {
             eventProperties: analyticsEvent.parameters,
           ),
         );
-        
+
         onTap?.call();
       },
       child: Container(
@@ -72,14 +73,28 @@ class FunMissionCard extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (uiModel.headerIcon != null) uiModel.headerIcon!,
+                        if (uiModel.headerIcon != null)
+                          uiModel.disabled
+                              ? uiModel.headerIcon!.copyWith(
+                                  iconColorOverride: FamilyAppTheme.neutral40,
+                                )
+                              : uiModel.headerIcon!,
                         const SizedBox(height: 12),
                         TitleSmallText(
                           uiModel.title,
                           textAlign: TextAlign.center,
+                          color: uiModel.disabled
+                              ? FamilyAppTheme.neutral50
+                              : null,
                         ),
                         const SizedBox(height: 4),
-                        BodySmallText.primary40(uiModel.description),
+                        BodySmallText(
+                          uiModel.description,
+                          color: uiModel.disabled
+                              ? FamilyAppTheme.neutral60
+                              : null,
+                          textAlign: TextAlign.center,
+                        ),
                         if (uiModel.progress != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 16, bottom: 8),
@@ -94,7 +109,8 @@ class FunMissionCard extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: FaIcon(
-                        semanticLabel: 'icon-${uiModel.actionIcon.fontFamily}-${uiModel.actionIcon.codePoint}',
+                        semanticLabel:
+                            'icon-${uiModel.actionIcon.fontFamily}-${uiModel.actionIcon.codePoint}',
                         uiModel.actionIcon,
                         color: FamilyAppTheme.primary40.withOpacity(0.75),
                       ),
