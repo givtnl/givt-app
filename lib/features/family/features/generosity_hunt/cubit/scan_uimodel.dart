@@ -6,10 +6,12 @@ class ScanUIModel {
     this.level,
     this.levelFinished = false,
     this.scannedItems = 0,
+    this.itemScanned = false,
   });
 
   final int? selectedLevel;
   final LevelUIModel? level;
   final bool levelFinished;
   final int scannedItems;
+  final bool itemScanned;
 }

@@ -160,10 +160,13 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                     TitleMediumText(
                       state.levelFinished
                           ? 'You did it!'
-                          : state.level?.assignment ?? '',
+                          : state.itemScanned
+                              ? 'You did it!\nOnly ${state.level!.itemsNeeded - state.scannedItems ?? 0} to go!'
+                              : state.level?.assignment ?? '',
                       textAlign: TextAlign.center,
                     ),
-                    if (state.levelFinished) const SizedBox(height: 16),
+                    if (state.levelFinished || state.itemScanned)
+                      const SizedBox(height: 16),
 
                     if (state.levelFinished)
                       FunButton(
@@ -173,7 +176,15 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                         text: 'Continue',
                         analyticsEvent:
                             AnalyticsEvent(AmplitudeEvents.continueClicked),
-                      )
+                      ),
+
+                    if (state.itemScanned && !state.levelFinished)
+                      FunButton(
+                        onTap: cubit.restartScan,
+                        text: "Let's go",
+                        analyticsEvent:
+                            AnalyticsEvent(AmplitudeEvents.continueClicked),
+                      ),
                   ],
                 ),
               ),
@@ -330,7 +341,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     _isSpinning = false;
     _selectedProductImage =
         'assets/family/images/barcode_hunt/products/Rock.svg';
-        
+
     FunBottomSheet(
       title: 'Wrong product scanned',
       content: const BodyMediumText(''),
@@ -367,9 +378,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
       content: const BodyMediumText(''),
       primaryButton: FunButton(
         onTap: () {
-          if (itemsRemaining > 0) {
-            cubit.restartScan();
-          } else {
+          if (itemsRemaining == 0) {
             cubit.completeLevel();
           }
           Navigator.pop(context);

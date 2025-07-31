@@ -19,6 +19,8 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
 
   final GenerosityHuntRepository _repository;
   bool _scanningBarcode = false;
+  bool _itemScanned = false;
+
   String? _currentProfileId;
 
   // TODO: Fetch from repo when we have the API
@@ -55,6 +57,7 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
       level: level,
       levelFinished: _itemsRemaining == 0,
       scannedItems: _scannedItems,
+      itemScanned: _itemScanned,  
     );
   }
 
@@ -104,12 +107,16 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
         } else if (response.item!.wrongProductScanned) {
           emitCustom(const ScanCustom.wrongProductScanned());
         } else {
+          _itemScanned = true;
+          _emitData();
           emitCustom(
             ScanCustom.successFullScan(
               response.item!.creditsEarned,
               response.item!.itemsRemaining,
             ),
           );
+
+
         }
 
         return;
@@ -135,6 +142,7 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
   void restartScan() {
     emitCustom(const ScanCustom.stopSpinner());
     _scanningBarcode = true;
+    _itemScanned = false;
     _emitData();
   }
 
