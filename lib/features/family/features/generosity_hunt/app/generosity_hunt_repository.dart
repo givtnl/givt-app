@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/level_select_cubit.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/models/scan_response.dart';
@@ -32,8 +34,6 @@ class GenerosityHuntRepository extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       // If user state fetch fails, default to level 1
-      _userState = const UserStateItem(currentLevel: 1, isCompleted: false);
-      notifyListeners();
     }
   }
 
@@ -69,6 +69,11 @@ class GenerosityHuntRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setGameId(String gameId) {
+    _gameId = gameId;
+    notifyListeners();
+  }
+
   Future<void> createGame(String userId) async {
     try {
       // For now, don't send user guids as requested
@@ -77,6 +82,8 @@ class GenerosityHuntRepository extends ChangeNotifier {
         guids: guids,
         type: 'GenerosityHunt',
       );
+
+      unawaited(fetchUserState(userId));
       notifyListeners();
     } catch (e) {
       // Handle error appropriately
