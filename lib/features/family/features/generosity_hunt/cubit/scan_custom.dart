@@ -10,6 +10,8 @@ sealed class ScanCustom {
   ) = ScanCustomSuccessFullScan;
   const factory ScanCustom.notRecognized() = ScanCustomNotRecognized;
   const factory ScanCustom.stopSpinner() = ScanCustomStopSpinner;
+  const factory ScanCustom.productAlreadyScanned() = ScanCustomProductAlreadyScanned;
+  const factory ScanCustom.wrongProductScanned() = ScanCustomWrongProductScanned;
 }
 
 class ScanCustomBarcodeFound extends ScanCustom {
@@ -32,4 +34,12 @@ class ScanCustomNotRecognized extends ScanCustom {
 
 class ScanCustomStopSpinner extends ScanCustom {
   const ScanCustomStopSpinner();
+}
+
+class ScanCustomProductAlreadyScanned extends ScanCustom {
+  const ScanCustomProductAlreadyScanned();
+}
+
+class ScanCustomWrongProductScanned extends ScanCustom {
+  const ScanCustomWrongProductScanned();
 }

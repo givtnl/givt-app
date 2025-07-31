@@ -266,6 +266,10 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
         _showNotRecognized();
       case ScanCustomStopSpinner():
         _stopSpinner();
+      case ScanCustomProductAlreadyScanned():
+        _showProductAlreadyScanned();
+      case ScanCustomWrongProductScanned():
+        _showWrongProductScanned();
     }
   }
 
@@ -276,9 +280,60 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
   }
 
   void _showNotRecognized() {
+    _spinningImage = null;
+    _isSpinning = false;
+
     FunBottomSheet(
       title: 'Oops, not recognized',
       content: const BodyMediumText(''), // TODO
+      primaryButton: FunButton(
+        onTap: () {
+          cubit.restartScan();
+          Navigator.pop(context);
+        },
+        text: 'Try again',
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.generosityHuntScanTryAgainClicked,
+        ),
+      ),
+    ).show(
+      context,
+      isDismissible: false,
+    );
+  }
+
+  void _showProductAlreadyScanned() {
+    _spinningImage = null;
+    _isSpinning = false;
+
+    FunBottomSheet(
+      title: 'Product already scanned',
+      content: const BodyMediumText(''),
+      primaryButton: FunButton(
+        onTap: () {
+          cubit.restartScan();
+          Navigator.pop(context);
+        },
+        text: 'Try again',
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.generosityHuntScanTryAgainClicked,
+        ),
+      ),
+    ).show(
+      context,
+      isDismissible: false,
+    );
+  }
+
+  void _showWrongProductScanned() {
+    _spinningImage = null;
+    _isSpinning = false;
+    _selectedProductImage =
+        'assets/family/images/barcode_hunt/products/Rock.svg';
+        
+    FunBottomSheet(
+      title: 'Wrong product scanned',
+      content: const BodyMediumText(''),
       primaryButton: FunButton(
         onTap: () {
           cubit.restartScan();
@@ -308,7 +363,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     ConfettiHelper.show(context);
 
     FunBottomSheet(
-      title: '+${credits} Givt Credits!',
+      title: '+$credits Givt Credits!',
       content: const BodyMediumText(''),
       primaryButton: FunButton(
         onTap: () {

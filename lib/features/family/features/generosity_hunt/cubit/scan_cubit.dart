@@ -85,22 +85,32 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
         _itemsRemaining = response.item!.itemsRemaining;
 
         _emitData();
-        unawaited(
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.generosityHuntBarcodeScanned,
-            eventProperties: {
-              'barcode': barcode.rawValue,
-              'recognized': true,
-            },
-          ),
-        );
-        
-        emitCustom(
-          ScanCustom.successFullScan(
-            response.item!.creditsEarned,
-            response.item!.itemsRemaining,
-          ),
-        );
+
+          unawaited(
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.generosityHuntBarcodeScanned,
+              eventProperties: {
+                'barcode': barcode.rawValue,
+                'recognized': true,
+                'productAlreadyScanned': response.item!.productAlreadyScanned,
+                'wrongProductScanned': response.item!.wrongProductScanned,
+              },
+            ),
+          );
+
+
+        if (response.item!.productAlreadyScanned) {
+          emitCustom(const ScanCustom.productAlreadyScanned());
+        } else if (response.item!.wrongProductScanned) {
+          emitCustom(const ScanCustom.wrongProductScanned());
+        } else {
+          emitCustom(
+            ScanCustom.successFullScan(
+              response.item!.creditsEarned,
+              response.item!.itemsRemaining,
+            ),
+          );
+        }
 
         return;
       }
