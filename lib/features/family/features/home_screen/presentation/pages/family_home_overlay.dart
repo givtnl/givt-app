@@ -21,12 +21,14 @@ class FamilyHomeOverlay extends StatefulWidget {
     required this.onAvatarTapped,
     this.withTutorial = false,
     this.withRewardText = false,
+    this.openNewGame = false,
     super.key,
   });
 
   final FamilyHomeScreenUIModel uiModel;
   final bool withTutorial;
   final bool withRewardText;
+  final bool openNewGame;
   final void Function() onNextTutorialClicked;
   final void Function() onDismiss;
   final void Function(int index) onAvatarTapped;
@@ -74,9 +76,11 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: TitleLargeText(
-                      widget.withRewardText
-                          ? context.l10n.homescreenOverlayDiscoverTitle
-                          : context.l10n.homescreenOverlayGiveTitle,
+                      widget.openNewGame
+                          ? 'Who is going to play?'
+                          : widget.withRewardText
+                              ? context.l10n.homescreenOverlayDiscoverTitle
+                              : context.l10n.homescreenOverlayGiveTitle,
                       textAlign: TextAlign.center,
                       color: Colors.white,
                       shadows: [

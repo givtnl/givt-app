@@ -307,6 +307,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         onNextTutorialClicked: _cubit.onNextTutorialClicked,
         withTutorial: withTutorial,
         withRewardText: withRewardText,
+        openNewGame: openNewGame,
       ),
     );
   }
