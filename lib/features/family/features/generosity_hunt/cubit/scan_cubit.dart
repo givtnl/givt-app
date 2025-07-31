@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/app/generosity_hunt_repository.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/level_select_cubit.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 part 'scan_custom.dart';
@@ -24,13 +28,13 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
   void init(String currentProfileId) {
     _scanningBarcode = true;
     _currentProfileId = currentProfileId;
-    
+
     // Initialize items remaining based on the selected level
     final selectedLevel = _repository.selectedLevel;
     final level = _repository.getLevelByNumber(selectedLevel);
     _itemsRemaining = level?.itemsNeeded ?? 1;
     _scannedItems = 0;
-    
+
     _emitData();
   }
 
@@ -41,11 +45,11 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
   ScanUIModel _createUIModel() {
     final selectedLevel = _repository.selectedLevel;
     final level = _repository.getLevelByNumber(selectedLevel);
-    
+
     // Calculate scanned items based on items remaining
     final totalItems = level?.itemsNeeded ?? 0;
     _scannedItems = (totalItems - _itemsRemaining).clamp(0, totalItems);
-    
+
     return ScanUIModel(
       selectedLevel: selectedLevel,
       level: level,
@@ -81,6 +85,16 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
         _itemsRemaining = response.item!.itemsRemaining;
 
         _emitData();
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.generosityHuntBarcodeScanned,
+            eventProperties: {
+              'barcode': barcode.rawValue,
+              'recognized': true,
+            },
+          ),
+        );
+        
         emitCustom(
           ScanCustom.successFullScan(
             response.item!.creditsEarned,
@@ -93,6 +107,17 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
     } catch (e) {
       if (kDebugMode) print(e);
     }
+
+    // Log that the barcode was not recognized
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.generosityHuntBarcodeScanned,
+        eventProperties: {
+          'barcode': barcode.rawValue,
+          'recognized': false,
+        },
+      ),
+    );
 
     emitCustom(const ScanCustom.notRecognized());
   }

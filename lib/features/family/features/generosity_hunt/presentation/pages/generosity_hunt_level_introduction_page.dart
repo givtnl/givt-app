@@ -75,7 +75,7 @@ class _GenerosityHuntLevelIntroductionPageState
                 FunButton(
                   text: 'Start level',
                   analyticsEvent:
-                      AnalyticsEvent(AmplitudeEvents.funMissionCardClicked),
+                      AnalyticsEvent(AmplitudeEvents.generosityHuntLevelStart),
                   onTap: () {
                     Navigator.of(context).pushReplacement(
                       const BarcodeLevelScanPage().toRoute(context),

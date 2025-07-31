@@ -448,6 +448,9 @@ enum AmplitudeEvents {
   generosityHuntScanTryAgainClicked('generosity_hunt_scan_try_again_clicked'),
   generosityHuntScanClaimClicked('generosity_hunt_scan_claim_clicked'),
   generosityHuntLevelTileClicked('generosity_hunt_level_tile_clicked'),
+  generosityHuntLevelStart('generosity_hunt_level_start'),
+  generosityHuntBarcodeScanned('generosity_hunt_barcode_scanned'),
+  
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
 
