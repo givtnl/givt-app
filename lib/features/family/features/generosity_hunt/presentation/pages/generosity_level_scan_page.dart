@@ -236,7 +236,15 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
         _successFullScan(custom.itemsRemaining);
       case ScanCustomNotRecognized():
         _showNotRecognized();
+      case ScanCustomStopSpinner():
+        _stopSpinner();
     }
+  }
+
+  void _stopSpinner() {
+    setState(() {
+      _isSpinning = false;
+    });
   }
 
   void _showNotRecognized() {
@@ -263,7 +271,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     setState(() {
       _isSpinning = false;
       // Pick a random product at the end (in future based on product category)
-      _selectedProductImage = (_productImages..shuffle()).first;
+      // _selectedProductImage = (_productImages..shuffle()).first;
       _spinningImage = null;
     });
 

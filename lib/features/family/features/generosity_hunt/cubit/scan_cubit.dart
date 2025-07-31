@@ -84,6 +84,7 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
   }
 
   void restartScan() {
+    emitCustom(const ScanCustom.stopSpinner());
     _scanningBarcode = true;
     _emitData();
   }

@@ -144,10 +144,19 @@ class FunIcon extends StatelessWidget {
         circleColor: circleColor,
       );
 
-  factory FunIcon.checkmark({Color circleColor = FamilyAppTheme.primary95}) =>
+  factory FunIcon.checkmark(
+          {Color circleColor = FamilyAppTheme.primary95,
+          Color iconColor = FamilyAppTheme.primary20,
+          double circleSize = 112,
+          double iconSize = 48,
+          EdgeInsets padding = const EdgeInsets.all(14)}) =>
       FunIcon(
         iconData: FontAwesomeIcons.check,
+        iconColor: iconColor,
         circleColor: circleColor,
+        circleSize: circleSize,
+        iconSize: iconSize,
+        padding: padding,
       );
 
   factory FunIcon.xmark({
@@ -361,8 +370,10 @@ class FunIcon extends StatelessWidget {
   final Color iconColor;
   final EdgeInsets padding;
   final String? semanticsIdentifier;
+
   /// Optional override for the icon color at build time.
   final Color? iconColorOverride;
+
   /// Optional override for the circle color at build time.
   final Color? circleColorOverride;
 
