@@ -19,10 +19,18 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
 
   // TODO: Fetch from repo when we have the API
   int _itemsRemaining = 1;
+  int _scannedItems = 0;
 
   void init(String currentProfileId) {
     _scanningBarcode = true;
     _currentProfileId = currentProfileId;
+    
+    // Initialize items remaining based on the selected level
+    final selectedLevel = _repository.selectedLevel;
+    final level = _repository.getLevelByNumber(selectedLevel);
+    _itemsRemaining = level?.itemsNeeded ?? 1;
+    _scannedItems = 0;
+    
     _emitData();
   }
 
@@ -33,10 +41,16 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
   ScanUIModel _createUIModel() {
     final selectedLevel = _repository.selectedLevel;
     final level = _repository.getLevelByNumber(selectedLevel);
+    
+    // Calculate scanned items based on items remaining
+    final totalItems = level?.itemsNeeded ?? 0;
+    _scannedItems = (totalItems - _itemsRemaining).clamp(0, totalItems);
+    
     return ScanUIModel(
       selectedLevel: selectedLevel,
       level: level,
       levelFinished: _itemsRemaining == 0,
+      scannedItems: _scannedItems,
     );
   }
 

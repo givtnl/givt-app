@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/scan_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -110,20 +111,38 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children:
                           List.generate(state.level?.itemsNeeded ?? 0, (index) {
-                        return Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: FamilyAppTheme.neutral70,
-                              width: 4,
+                        // Show checkmark if item is scanned (index < scannedItems)
+                        if (index < state.scannedItems) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: FunIcon.checkmark(
+                              circleColor: FamilyAppTheme.primary50,
+                              iconColor: Colors.white,
+                              circleSize: 44,
+                              iconSize: 24,
+                              padding: EdgeInsets.zero,
                             ),
-                            color: Colors.white,
-                          ),
-                          alignment: Alignment.center,
-                          child: TitleMediumText(
-                            (index + 1).toString(),
-                            color: FamilyAppTheme.neutral70,
+                          );
+                        }
+  
+                        // Show numbered circle for unscanned items
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: FamilyAppTheme.neutral70,
+                                width: 4,
+                              ),
+                              color: Colors.white,
+                            ),
+                            alignment: Alignment.center,
+                            child: TitleMediumText(
+                              (index + 1).toString(),
+                              color: FamilyAppTheme.neutral70,
+                            ),
                           ),
                         );
                       }),
