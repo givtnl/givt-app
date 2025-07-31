@@ -74,32 +74,44 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   int _currentIndex = 0;
   bool _hasShownTutorialPopup = false;
 
-  final List<AnalyticsEvent> _analyticsEvents = [
-    AnalyticsEvent(
-      AmplitudeEvents.navigationBarPressed,
-      parameters: {
-        'destination': 'Home',
-      },
-    ),
-    AnalyticsEvent(
-      AmplitudeEvents.navigationBarPressed,
-      parameters: {
-        'destination': 'Family',
-      },
-    ),
-    AnalyticsEvent(
-      AmplitudeEvents.navigationBarPressed,
-      parameters: {
-        'destination': 'Memories',
-      },
-    ),
-    AnalyticsEvent(
-      AmplitudeEvents.navigationBarPressed,
-      parameters: {
-        'destination': 'League',
-      },
-    ),
-  ];
+  List<AnalyticsEvent> _getAnalyticsEvents(bool showMemoriesTab) {
+    final events = <AnalyticsEvent>[
+      AnalyticsEvent(
+        AmplitudeEvents.navigationBarPressed,
+        parameters: {
+          'destination': 'Home',
+        },
+      ),
+      AnalyticsEvent(
+        AmplitudeEvents.navigationBarPressed,
+        parameters: {
+          'destination': 'Family',
+        },
+      ),
+    ];
+    
+    if (showMemoriesTab) {
+      events.add(
+        AnalyticsEvent(
+          AmplitudeEvents.navigationBarPressed,
+          parameters: {
+            'destination': 'Memories',
+          },
+        ),
+      );
+    }
+    
+    events.add(
+      AnalyticsEvent(
+        AmplitudeEvents.navigationBarPressed,
+        parameters: {
+          'destination': 'League',
+        },
+      ),
+    );
+    
+    return events;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +199,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
         onDestinationSelected: (int index) =>
             _onDestinationSelected(index, uiModel: uiModel),
         destinations: destinations,
-        analyticsEvent: (int index) => _analyticsEvents[index],
+        analyticsEvent: (int index) => _getAnalyticsEvents(showMemoriesTab)[index],
       ),
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
