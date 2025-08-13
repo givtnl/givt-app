@@ -220,7 +220,10 @@ class CustomNavigationDrawer extends StatelessWidget {
                           ? SvgPicture.asset(
                               'assets/images/face_id.svg',
                               width: 24,
-                              color: AppTheme.givtBlue,
+                              colorFilter: const ColorFilter.mode(
+                                AppTheme.givtBlue,
+                                BlendMode.srcIn,
+                              ),
                             )
                           : null,
                       onTap: () async => AuthUtils.checkToken(

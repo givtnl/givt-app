@@ -28,7 +28,7 @@ class SummaryCubit extends CommonCubit<SummaryDetails, SummaryDetailsCustom> {
       _tagsWereSelected =
           _reflectAndShareRepository.hasAnyGenerousPowerBeenSelected();
       await getPlayerProfiles();
-    } catch (e, s) {
+    } catch (e) {
       // it's ok to fail we can still show some data
     }
 

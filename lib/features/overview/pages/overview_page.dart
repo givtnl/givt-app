@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
@@ -13,7 +12,6 @@ import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class OverviewPage extends StatefulWidget {
@@ -122,7 +120,7 @@ class _OverviewPageState extends State<OverviewPage> {
     final user = context.read<AuthCubit>().state.user;
     final monthSections =
         state.givtGroups.where((element) => element.givts.isEmpty).toList();
-    
+
     // Helper to calculate total platform fee for a month section
     double _getMonthPlatformFee(DateTime? monthTimeStamp) {
       if (monthTimeStamp == null) return 0;
@@ -134,7 +132,7 @@ class _OverviewPageState extends State<OverviewPage> {
               g.timeStamp!.month == monthTimeStamp.month)
           .fold(0.0, (sum, g) => sum + g.platformFeeAmount);
     }
-    
+
     return OverlayTooltipScaffold(
       controller: _tooltipController,
       overlayColor: Colors.transparent,
@@ -164,7 +162,8 @@ class _OverviewPageState extends State<OverviewPage> {
         body: ListView.builder(
           itemCount: _getSectionCount(state),
           itemBuilder: (_, int index) {
-            final monthPlatformFee = _getMonthPlatformFee(monthSections[index].timeStamp);
+            final monthPlatformFee =
+                _getMonthPlatformFee(monthSections[index].timeStamp);
             return StickyHeader(
               key: Key(monthSections[index].timeStamp!.toString()),
               header: Column(
@@ -216,7 +215,8 @@ class _OverviewPageState extends State<OverviewPage> {
                                 ),
                               );
                         },
-                        tooltipController: _tooltipController, // Pass controller
+                        tooltipController:
+                            _tooltipController, // Pass controller
                       ),
                       const Divider(
                         height: 0,
@@ -270,7 +270,6 @@ class _OverviewPageState extends State<OverviewPage> {
     DateTime? timesStamp,
     Color? color,
     String? giftAidTitle,
-    double? platformFee,
   }) {
     final currencySymbol = Util.getCurrencySymbol(countryCode: country);
     final headerTitle = timesStamp == null

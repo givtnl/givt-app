@@ -90,7 +90,7 @@ class _RecommendationsListWidgetState extends State<RecommendationsListWidget> {
                       const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
                   child: TitleSmallText(
                     "Right now, only the logged in parent can donate using their account. We're working on a way to allow all parents to be able to do this in the game. Stay tuned!",
-                    color: Colors.black.withOpacity(0.25),
+                    color: Colors.black.withValues(alpha: 0.25),
                   ),
                 );
               }

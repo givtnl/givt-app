@@ -36,7 +36,6 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
 
   // Spinning state
   bool _isSpinning = false;
-  String? _selectedProductImage;
   String? _spinningImage;
 
   // Product images (hardcoded list)
@@ -161,7 +160,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                       state.levelFinished
                           ? 'You did it!'
                           : state.itemScanned
-                              ? 'You did it!\nOnly ${state.level!.itemsNeeded - state.scannedItems ?? 0} to go!'
+                              ? 'You did it!\nOnly ${state.level!.itemsNeeded - state.scannedItems} to go!'
                               : state.level?.assignment ?? '',
                       textAlign: TextAlign.center,
                     ),
@@ -205,7 +204,6 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     setState(() {
       _isSpinning = true;
       _spinningImage = null;
-      _selectedProductImage = null;
     });
 
     // Shuffle the images for random order
@@ -222,16 +220,6 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
       });
       tick++;
     }
-  }
-
-  void _resetScan() {
-    setState(() {
-      _barcodeFound = false;
-      _selectedProductImage = null;
-      _spinningImage = null;
-      _isSpinning = false;
-    });
-    _cameraController.start();
   }
 
   Widget _barcodeScannerBody() {
@@ -339,8 +327,6 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
   void _showWrongProductScanned() {
     _spinningImage = null;
     _isSpinning = false;
-    _selectedProductImage =
-        'assets/family/images/barcode_hunt/products/Rock.svg';
 
     FunBottomSheet(
       title: 'Wrong product scanned',
@@ -364,8 +350,6 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
   void _successFullScan(int itemsRemaining, int credits) {
     setState(() {
       _isSpinning = false;
-      // Pick a random product at the end (in future based on product category)
-      // _selectedProductImage = (_productImages..shuffle()).first;
       _spinningImage = null;
     });
 

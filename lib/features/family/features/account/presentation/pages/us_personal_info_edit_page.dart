@@ -26,6 +26,7 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/fingerprint_bottom_sheet.dart';
@@ -421,20 +422,6 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
       ),
     );
   }
-
-  Future<void> _showModalBottomSheet(
-    BuildContext context, {
-    required Widget bottomSheet,
-  }) =>
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        builder: (_) => BlocProvider.value(
-          value: context.read<PersonalInfoEditBloc>(),
-          child: bottomSheet,
-        ),
-      );
 
   Widget _buildInfoRow(
     BuildContext context, {

@@ -151,27 +151,6 @@ class ExternalDonation extends Equatable {
     }
   }
 
-  String _getDayOfWeek(int dayOfWeek) {
-    switch (dayOfWeek) {
-      case DateTime.monday:
-        return 'MON';
-      case DateTime.tuesday:
-        return 'TUE';
-      case DateTime.wednesday:
-        return 'WED';
-      case DateTime.thursday:
-        return 'THU';
-      case DateTime.friday:
-        return 'FRI';
-      case DateTime.saturday:
-        return 'SAT';
-      case DateTime.sunday:
-        return 'SUN';
-      default:
-        return 'MON';
-    }
-  }
-
   @override
   List<Object?> get props =>
       [id, amount, description, cronExpression, creationDate, taxDeductible];

@@ -288,7 +288,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                                         context)
                                                     .languageCode,
                                               );
-                                        } catch (e, s) {
+                                        } catch (e) {
                                           //do nothing (error will be shown via custom state)
                                         }
                                         setLoading(state: false);

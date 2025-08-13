@@ -124,10 +124,10 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const givtBlue = Color(0xFF2e2957);
 
   Scheme _schemeLight() {
-    final base = CorePalette.of(primaryColor.value);
+    final base = CorePalette.of(primaryColor.toARGB32());
     final primary = base.primary;
-    final secondary = CorePalette.of(secondaryColor.value).primary;
-    final tertiary = CorePalette.of(tertiaryColor.value).primary;
+    final secondary = CorePalette.of(secondaryColor.toARGB32()).primary;
+    final tertiary = CorePalette.of(tertiaryColor.toARGB32()).primary;
     return Scheme(
       primary: primary.get(50),
       onPrimary: primary.get(99),
@@ -184,7 +184,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.white,
       bottomSheetTheme: BottomSheetThemeData(
-        modalBarrierColor: primaryColor.withOpacity(0.5),
+        modalBarrierColor: primaryColor.withValues(alpha: 0.5),
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
@@ -197,10 +197,10 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       fontFamily: 'Rouna',
       textTheme: textTheme,
       primaryColor: colorScheme.primary,
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         surfaceTintColor: Colors.transparent,
         backgroundColor: Colors.white,
-        barrierColor: primaryColor.withOpacity(0.5),
+        barrierColor: primaryColor.withValues(alpha: 0.5),
       ),
       appBarTheme: const AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
@@ -235,11 +235,10 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
           ),
         ),
       ),
-      dialogBackgroundColor: Colors.white,
       extensions: [this],
       colorScheme: colorScheme,
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: colorScheme.surface,
         surfaceTintColor: Colors.transparent,
       ),

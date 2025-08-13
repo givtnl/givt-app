@@ -110,7 +110,7 @@ class _GoalProgressBarState extends State<GoalProgressBar> {
                     borderRadius: BorderRadius.circular(5),
                     gradient: LinearGradient(
                       colors:
-                          widget.colors.map((e) => e.withOpacity(0.3)).toList(),
+                          widget.colors.map((e) => e.withValues(alpha: 0.3)).toList(),
                     ),
                   ),
                   child: Stack(
@@ -128,7 +128,7 @@ class _GoalProgressBarState extends State<GoalProgressBar> {
                           ),
                           decoration: _gradientProgressBarDecoration(
                             widget.colors
-                                .map((e) => e.withOpacity(0.4))
+                                .map((e) => e.withValues(alpha: 0.4))
                                 .toList(),
                             _totalProgress,
                             false,

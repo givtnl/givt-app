@@ -8,6 +8,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';

@@ -34,7 +34,7 @@ class MonthlyBarChart extends StatelessWidget {
                   height: height,
                   width: 20,
                   color: isCurrentMonth
-                      ? AppTheme.givtPurple.withOpacity(0.2)
+                      ? AppTheme.givtPurple.withValues(alpha: 0.2)
                       : AppTheme.givtPurple,
                 ),
               ),

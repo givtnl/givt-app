@@ -45,7 +45,7 @@ class LevelSelectCubit
 
     if (hasExistingGame) {
       // Use the existing game from UserState
-      _repository.setGameId(userState!.gameGuid);
+      _repository.setGameId(userState.gameGuid);
       emitCustom(NavigateToLevelIntroduction(level));
     } else {
       await _repository.createGame(_currentProfileId!);

@@ -20,7 +20,7 @@ import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/utils.dart';
