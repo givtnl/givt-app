@@ -98,7 +98,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
                 onContinuePressed: _leagueCubit.onExplanationContinuePressed,
               );
             case ShowEmptyLeague():
-              return const EmptyLeague();
+              return EmptyLeague(showGenerosityHunt: uiModel.showGenerosityHunt);
           }
         },
       ),
