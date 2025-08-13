@@ -9,7 +9,7 @@ sealed class LeagueScreenUIModel {
 
   const factory LeagueScreenUIModel.showLeagueExplanation() = ShowLeagueExplanation;
 
-  const factory LeagueScreenUIModel.showEmptyLeague() = ShowEmptyLeague;
+  const factory LeagueScreenUIModel.showEmptyLeague({bool showGenerosityHunt}) = ShowEmptyLeague;
 }
 
 class ShowLeagueOverview extends LeagueScreenUIModel {
@@ -23,5 +23,7 @@ class ShowLeagueExplanation extends LeagueScreenUIModel {
 }
 
 class ShowEmptyLeague extends LeagueScreenUIModel {
-  const ShowEmptyLeague();
+  const ShowEmptyLeague({this.showGenerosityHunt = false});
+
+  final bool showGenerosityHunt;
 }
