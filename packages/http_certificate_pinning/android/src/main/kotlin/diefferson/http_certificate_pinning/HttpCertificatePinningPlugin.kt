@@ -29,18 +29,20 @@ public class HttpCertificatePinningPlugin : FlutterPlugin, MethodCallHandler {
 
   private var threadExecutorService: ExecutorService? = null
   private var handler: Handler? = null
+  private lateinit var channel: MethodChannel
 
   init {
     threadExecutorService = Executors.newSingleThreadExecutor()
     handler = Handler(Looper.getMainLooper())
   }
+  
+  override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+      channel = MethodChannel(flutterPluginBinding.binaryMessenger, "cpu_reader")
+      channel.setMethodCallHandler(this)
+  }
 
-  companion object {
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "http_certificate_pinning")
-      channel.setMethodCallHandler(HttpCertificatePinningPlugin())
-    }
+  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+      channel.setMethodCallHandler(null)
   }
 
   override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
