@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
@@ -7,7 +9,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 
-class LevelTile extends StatelessWidget {
+class LevelTile extends StatefulWidget {
   const LevelTile({
     required this.level,
     required this.title,
@@ -26,31 +28,73 @@ class LevelTile extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
+  State<LevelTile> createState() => _LevelTileState();
+}
+
+class _LevelTileState extends State<LevelTile> {
+  Timer? _debounceTimer;
+  bool _isProcessing = false;
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    super.dispose();
+  }
+
+  void _handleTap() {
+    if (_isProcessing || !_shouldAllowTap() || widget.onTap == null) {
+      return;
+    }
+
+    // Cancel any existing timer
+    if (_debounceTimer?.isActive ?? false) {
+      _debounceTimer!.cancel();
+    }
+
+    // Set processing flag to prevent multiple taps
+    setState(() {
+      _isProcessing = true;
+    });
+
+    // Call the original onTap callback
+    widget.onTap!();
+
+    // Reset processing flag after a delay to allow for navigation
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        setState(() {
+          _isProcessing = false;
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FunMissionCard(
       uiModel: FunMissionCardUIModel(
-        title: title,
-        description: subtitle,
+        title: widget.title,
+        description: widget.subtitle,
         headerIcon: _getHeaderIcon(),
         progress: _getProgress(),
-        disabled: !unlocked,
+        disabled: !widget.unlocked,
       ),
-      onTap: _shouldAllowTap() ? onTap : null,
+      onTap: _shouldAllowTap() ? _handleTap : null,
       analyticsEvent: AnalyticsEvent(
         AmplitudeEvents.generosityHuntLevelTileClicked,
         parameters: {
-          'level': level,
+          'level': widget.level,
         },
       ),
     );
   }
 
   FunIcon? _getHeaderIcon() {
-    if (!unlocked) {
+    if (!widget.unlocked) {
       return FunIcon.lock(iconSize: 24);
     }
 
-    if (completed) {
+    if (widget.completed) {
       return FunIcon.checkmark(
         circleColor: Colors.transparent,
         iconColor: FamilyAppTheme.primary60,
@@ -64,7 +108,7 @@ class LevelTile extends StatelessWidget {
 
   GoalCardProgressUImodel? _getProgress() {
     // Only show progress for unlocked but not completed levels
-    if (unlocked && !completed) {
+    if (widget.unlocked && !widget.completed) {
       return GoalCardProgressUImodel(
         amount: 0,
         goalAmount: 1,
@@ -75,6 +119,6 @@ class LevelTile extends StatelessWidget {
 
   bool _shouldAllowTap() {
     // Only allow tap for unlocked but not completed levels
-    return unlocked && !completed;
+    return widget.unlocked && !widget.completed;
   }
 }
