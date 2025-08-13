@@ -17,10 +17,9 @@ class EmptyLeague extends StatelessWidget {
     final titleText = showGenerosityHunt
         ? "Play the Generosity Hunt to unlock this week's League!"
         : "Play the Gratitude Game to unlock this week's League!";
-    
-    final buttonText = showGenerosityHunt
-        ? 'Play Generosity Hunt'
-        : 'Play Gratitude Game';
+
+    final buttonText =
+        showGenerosityHunt ? 'Play Generosity Hunt' : 'Play Gratitude Game';
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -36,17 +35,17 @@ class EmptyLeague extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const Spacer(),
-          FunButton(
-            onTap: () => context.goNamed(
-              showGenerosityHunt
-                  ? FamilyPages.newGame.name
-                  : FamilyPages.reflectIntro.name,
+          if (!showGenerosityHunt) ...[
+            FunButton(
+              onTap: () => context.goNamed(
+                FamilyPages.reflectIntro.name,
+              ),
+              text: buttonText,
+              analyticsEvent:
+                  AnalyticsEvent(AmplitudeEvents.leaguePlayGameClicked),
             ),
-            text: buttonText,
-            analyticsEvent:
-            AnalyticsEvent(AmplitudeEvents.leaguePlayGameClicked),
-          ),
-          const SizedBox(height: 36),
+            const SizedBox(height: 36),
+          ],
         ],
       ),
     );
