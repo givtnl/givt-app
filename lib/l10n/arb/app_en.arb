@@ -1008,5 +1008,7 @@
     "platformFeeNoContribution": "No contribution",
     "donationOverviewPlatformContribution": "Voluntary Platform Contribution",
     "donationOverviewPlatformContributionTitle": "Thanks for your generosity!",
-    "donationOverviewPlatformContributionText": "Because of the voluntary platform contribution you've chosen, we can lower the costs of receiving donations."
+    "donationOverviewPlatformContributionText": "Because of the voluntary platform contribution you've chosen, we can lower the costs of receiving donations.",
+    "platformFeePlaceholder": "Select contribution",
+    "platformFeeRequired": "Field required"
 }
