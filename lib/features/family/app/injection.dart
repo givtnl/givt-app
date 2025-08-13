@@ -114,7 +114,7 @@ void initCubits() {
       CameraCubit.new,
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
-    ..registerLazySingleton(() => LeagueCubit(getIt(), getIt(), getIt()))
+    ..registerLazySingleton(() => LeagueCubit(getIt(), getIt(), getIt(), getIt()))
     ..registerFactory(
         () => InGameLeagueCubit(getIt(), getIt(), getIt(), getIt()))
     ..registerLazySingleton<GiveCubit>(
