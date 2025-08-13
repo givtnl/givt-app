@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/generosity_hunt_level_intro_cubit.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/presentation/pages/generosity_level_scan_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -36,6 +36,11 @@ class _GenerosityHuntLevelIntroductionPageState
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: cubit,
+      onLoading: (context) => const FunScaffold(
+        body: Center(
+          child: CustomCircularProgressIndicator(),
+        ),
+      ),
       onData: (context, state) {
         final level = state.level;
         if (level != null) {

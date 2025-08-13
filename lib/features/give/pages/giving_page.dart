@@ -115,6 +115,8 @@ class _GivingPageState extends State<GivingPage> {
       platformFeeNoContributionText: context.l10n.platformFeeNoContribution,
       platformFeeText: context.l10n.platformFeeText,
       platformFeeTitle: context.l10n.platformFeeTitle,
+      platformFeePlaceholder: context.l10n.platformFeePlaceholder,
+      platformFeeRequired: context.l10n.platformFeeRequired,
       transactionIds: giveBlocState.transactionIds,
     ).toJson();
   }

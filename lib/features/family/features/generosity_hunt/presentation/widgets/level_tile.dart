@@ -60,7 +60,7 @@ class _LevelTileState extends State<LevelTile> {
     widget.onTap!();
 
     // Reset processing flag after a delay to allow for navigation
-    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+    _debounceTimer = Timer(const Duration(milliseconds: 1000), () {
       if (mounted) {
         setState(() {
           _isProcessing = false;

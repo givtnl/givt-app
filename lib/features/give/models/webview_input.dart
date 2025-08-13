@@ -33,6 +33,8 @@ class WebViewInput extends Equatable {
     this.platformFeeNoContributionText = '',
     this.platformFeeText = '',
     this.platformFeeTitle = '',
+    this.platformFeePlaceholder = '',
+    this.platformFeeRequired = '',
     this.transactionIds = const [],
   });
 
@@ -102,6 +104,8 @@ class WebViewInput extends Equatable {
   final String platformFeeNoContributionText;
   final String platformFeeText;
   final String platformFeeTitle;
+  final String platformFeePlaceholder;
+  final String platformFeeRequired;
   final List<int> transactionIds;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -136,6 +140,8 @@ class WebViewInput extends Equatable {
         'platformFeeNoContributionText': platformFeeNoContributionText,
         'platformFeeText': platformFeeText,
         'platformFeeTitle': platformFeeTitle,
+        'platformFeePlaceholder': platformFeePlaceholder,
+        'platformFeeRequired': platformFeeRequired,
         'transactionIds': transactionIds,
       };
 
@@ -171,6 +177,8 @@ class WebViewInput extends Equatable {
     String? platformFeeNoContributionText,
     String? platformFeeText,
     String? platformFeeTitle,
+    String? platformFeePlaceholder,
+    String? platformFeeRequired,
     List<int>? transactionIds,
   }) {
     return WebViewInput(
@@ -208,6 +216,8 @@ class WebViewInput extends Equatable {
       platformFeeNoContributionText: platformFeeNoContributionText ?? this.platformFeeNoContributionText,
       platformFeeText: platformFeeText ?? this.platformFeeText,
       platformFeeTitle: platformFeeTitle ?? this.platformFeeTitle,
+      platformFeePlaceholder: platformFeePlaceholder ?? this.platformFeePlaceholder,
+      platformFeeRequired: platformFeeRequired ?? this.platformFeeRequired,
       transactionIds: transactionIds ?? this.transactionIds,
     );
   }
@@ -245,6 +255,8 @@ class WebViewInput extends Equatable {
         platformFeeNoContributionText,
         platformFeeText,
         platformFeeTitle,
+        platformFeePlaceholder,
+        platformFeeRequired,
         transactionIds,
       ];
 }
