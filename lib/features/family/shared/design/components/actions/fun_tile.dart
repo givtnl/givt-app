@@ -202,10 +202,12 @@ class FunTile extends StatelessWidget {
                                 iconPath,
                                 height: assetSize ?? 140,
                                 width: assetSize ?? 140,
-                                colorFilter: ColorFilter.mode(
-                                  iconColor ?? textColor,
-                                  BlendMode.srcIn,
-                                ),
+                                colorFilter: iconColor != null
+                                    ? ColorFilter.mode(
+                                        iconColor!,
+                                    BlendMode.srcIn,
+                                  )
+                                    : null,
                               )
                         : FaIcon(
                             iconData,

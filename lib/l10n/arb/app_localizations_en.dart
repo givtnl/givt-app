@@ -332,8 +332,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bacsDdGuaranteeTitle => 'Direct Debit Guarantee';
 
   @override
-  String bacsVerifyBodyDetails(Object value0, Object value1, Object value2,
-      Object value3, Object value4) {
+  String bacsVerifyBodyDetails(
+    Object value0,
+    Object value1,
+    Object value2,
+    Object value3,
+    Object value4,
+  ) {
     return 'Name: $value0\n Address: $value1\n E-mail address: $value2\n Sort code: $value3\n Account number: $value4\n Frequency type: Incidental, when you use the Givt app to make a donation';
   }
 
@@ -1511,7 +1516,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String childParentalApprovalConfirmationSubTitle(
-      Object value0, Object value1) {
+    Object value0,
+    Object value1,
+  ) {
     return 'to $value0\n$value1';
   }
 
@@ -2398,8 +2405,13 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get bacsDdGuaranteeTitle => 'Direct Debit Guarantee';
 
   @override
-  String bacsVerifyBodyDetails(Object value0, Object value1, Object value2,
-      Object value3, Object value4) {
+  String bacsVerifyBodyDetails(
+    Object value0,
+    Object value1,
+    Object value2,
+    Object value3,
+    Object value4,
+  ) {
     return 'Name: $value0\n Address: $value1\n E-mail address: $value2\n Sort code: $value3\n Account number: $value4\n Frequency type: Incidental, when you use the Givt app to make a donation';
   }
 
@@ -3577,7 +3589,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String childParentalApprovalConfirmationSubTitle(
-      Object value0, Object value1) {
+    Object value0,
+    Object value1,
+  ) {
     return 'to $value0\n$value1';
   }
 

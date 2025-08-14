@@ -336,8 +336,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bacsDdGuaranteeTitle => 'Lastschrift-Garantie';
 
   @override
-  String bacsVerifyBodyDetails(Object value0, Object value1, Object value2,
-      Object value3, Object value4) {
+  String bacsVerifyBodyDetails(
+    Object value0,
+    Object value1,
+    Object value2,
+    Object value3,
+    Object value4,
+  ) {
     return 'Name: $value0\n Adresse: $value1\n E-Mail-Adresse: $value2\n Bankleitzahl: $value3\n Kontonummer: $value4\n Frequenzart: nach Nutzung, falls du die Givt App zum Spenden benutzt';
   }
 
@@ -1528,7 +1533,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String childParentalApprovalConfirmationSubTitle(
-      Object value0, Object value1) {
+    Object value0,
+    Object value1,
+  ) {
     return 'to $value0\n$value1';
   }
 

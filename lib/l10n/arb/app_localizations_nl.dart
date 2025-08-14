@@ -335,8 +335,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get bacsDdGuaranteeTitle => 'Automatische incasso garantie';
 
   @override
-  String bacsVerifyBodyDetails(Object value0, Object value1, Object value2,
-      Object value3, Object value4) {
+  String bacsVerifyBodyDetails(
+    Object value0,
+    Object value1,
+    Object value2,
+    Object value3,
+    Object value4,
+  ) {
     return 'Naam: $value0\n Adres: $value1\n Email adres: $value2\n Sortcode: $value3 \n Account nummer: $value4\n Frequentie type: Incidenteel, wanneer je de Givt-app gebruikt om te geven';
   }
 
@@ -1518,7 +1523,9 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String childParentalApprovalConfirmationSubTitle(
-      Object value0, Object value1) {
+    Object value0,
+    Object value1,
+  ) {
     return 'to $value0\n$value1';
   }
 
