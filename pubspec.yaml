@@ -34,7 +34,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_stripe: ^11.4.0
-  flutter_svg: ^2.0.17
+  flutter_svg: ^2.2.0
   flutter_timezone: ^4.1.0
   font_awesome_flutter: ^10.8.0
   fuzzywuzzy: ^1.2.0
