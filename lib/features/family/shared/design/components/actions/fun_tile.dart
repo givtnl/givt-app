@@ -202,12 +202,18 @@ class FunTile extends StatelessWidget {
                                 iconPath,
                                 height: assetSize ?? 140,
                                 width: assetSize ?? 140,
-                                color: iconColor,
+                                colorFilter: iconColor != null
+                                    ? ColorFilter.mode(
+                                        iconColor!,
+                                    BlendMode.srcIn,
+                                  )
+                                    : null,
                               )
                         : FaIcon(
                             iconData,
                             size: assetSize ?? 140,
-                            color: iconColor ?? textColor.withOpacity(0.6),
+                            color:
+                                iconColor ?? textColor.withValues(alpha: 0.6),
                           ),
                   ),
                 Padding(
@@ -263,7 +269,7 @@ class FunTile extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: textColor.withAlpha(200),
+                                    color: textColor.withValues(alpha: 0.2),
                                   ),
                         )
                       else

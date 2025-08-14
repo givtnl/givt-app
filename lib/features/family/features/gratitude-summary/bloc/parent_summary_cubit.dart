@@ -1,4 +1,3 @@
-
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/domain/models/parent_summary_item.dart';
@@ -24,7 +23,7 @@ class ParentSummaryCubit extends CommonCubit<SummaryUIModel?, dynamic> {
       emitLoading();
       final summary = await _summaryRepository.fetchLatestGameSummary();
       _summary = summary;
-    } catch (e, s) {
+    } catch (e) {
       LoggingInfo.instance
           .error('Failed to fetch summary', methodName: 'fetchSummary');
     }

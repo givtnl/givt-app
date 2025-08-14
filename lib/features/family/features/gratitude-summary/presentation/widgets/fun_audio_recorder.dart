@@ -91,24 +91,17 @@ class _FunAudioRecorderState extends State<FunAudioRecorder>
     }
   }
 
-  Future<void> _pause() => _audioRecorder.pause();
-
-  Future<void> _resume() => _audioRecorder.resume();
-
   void _updateRecordState(RecordState recordState) {
     setState(() => _recordState = recordState);
 
     switch (recordState) {
       case RecordState.pause:
         _timer?.cancel();
-        break;
       case RecordState.record:
         _startTimer();
-        break;
       case RecordState.stop:
         _timer?.cancel();
         _recordDuration = 0;
-        break;
     }
   }
 

@@ -52,9 +52,11 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
       emitLoading();
       _profiles = await _profilesRepository.getProfiles();
       _league = await _leagueRepository.fetchLeague();
-      _familyGroup = await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true)
-          .then((groups) => groups.where((element) => element.isFamilyGroup).firstOrNull);
-    } catch (e, s) {
+      _familyGroup = await _impactGroupsRepository
+          .getImpactGroups(fetchWhenEmpty: true)
+          .then((groups) =>
+              groups.where((element) => element.isFamilyGroup).firstOrNull);
+    } catch (e) {
       // do nothing
     }
     _emitData();
@@ -85,9 +87,11 @@ class LeagueCubit extends CommonCubit<LeagueScreenUIModel, dynamic> {
   }
 
   void _emitEmptyLeague() {
-    final showGenerosityHunt = _familyGroup?.boxOrigin?.mediumId?.toLowerCase() ==
-        'FF8EC1E5-8D2F-4238-519C-08DC57CE1CE7'.toLowerCase();
-    emitData(LeagueScreenUIModel.showEmptyLeague(showGenerosityHunt: showGenerosityHunt));
+    final showGenerosityHunt =
+        _familyGroup?.boxOrigin?.mediumId?.toLowerCase() ==
+            'FF8EC1E5-8D2F-4238-519C-08DC57CE1CE7'.toLowerCase();
+    emitData(LeagueScreenUIModel.showEmptyLeague(
+        showGenerosityHunt: showGenerosityHunt));
   }
 
   void onExplanationContinuePressed() {

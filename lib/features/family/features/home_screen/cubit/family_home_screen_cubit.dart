@@ -82,7 +82,7 @@ class FamilyHomeScreenCubit
       );
 
       _emitData();
-    } catch (e, s) {
+    } catch (e) {
       // do nothing
     }
   }
@@ -118,7 +118,7 @@ class FamilyHomeScreenCubit
     try {
       _gameStats = await _reflectAndShareRepository.getGameStats();
       _emitData();
-    } catch (e, s) {
+    } catch (e) {
       // do nothing
     }
   }

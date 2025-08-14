@@ -85,7 +85,7 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
-              color: AppTheme.childHistoryPendingLight.withOpacity(0.1),
+              color: AppTheme.childHistoryPendingLight.withValues(alpha: 0.1),
               borderRadius: const BorderRadius.all(Radius.circular(20)),
             ),
             child: Row(

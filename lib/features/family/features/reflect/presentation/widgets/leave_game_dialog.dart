@@ -44,7 +44,7 @@ class LeaveGameDialog extends StatelessWidget {
   void show(BuildContext context) {
     showDialog<void>(
       context: context,
-      barrierColor: FamilyAppTheme.primary50.withOpacity(0.5),
+      barrierColor: FamilyAppTheme.primary50.withValues(alpha: 0.5),
       builder: (context) => this,
     );
   }

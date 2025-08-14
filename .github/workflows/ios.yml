@@ -59,6 +59,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+        # Temp fix because of https://github.com/actions/runner-images/issues/12758
+      - name: "Change xcode version"
+        run: |
+          sudo xcode-select -s "/Applications/Xcode_16.4.app/Contents/Developer"
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with: 

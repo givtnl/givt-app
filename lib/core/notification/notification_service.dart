@@ -138,7 +138,7 @@ class NotificationService implements INotificationService {
           notificationAppLaunchDetails.notificationResponse!,
         );
       }
-    } catch (e, s) {
+    } catch (e) {
       // do not let app hang on loading screen forever just because we couldn't init push notifications
       LoggingInfo.instance.error('Error initializing push notifications: $e');
     }
@@ -208,7 +208,7 @@ class NotificationService implements INotificationService {
     /// default FCM channel to enable heads up notifications.
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     await FirebaseMessaging.instance
@@ -465,7 +465,8 @@ class NotificationService implements INotificationService {
   }) {
     final now = tz.TZDateTime.now(tz.local);
     if (kDebugMode) {
-      return now.add(const Duration(minutes: 10)); // Changed from 30 seconds to 10 minutes
+      return now.add(
+          const Duration(minutes: 10)); // Changed from 30 seconds to 10 minutes
     }
 
     if (isMonthly) {

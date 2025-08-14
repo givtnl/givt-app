@@ -69,7 +69,7 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
                   const SizedBox(height: 16),
                   BodyMediumText(
                     'You haven’t played the Gratitude Game yet',
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withValues(alpha: 0.5),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -94,7 +94,7 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
               children: [
                 buildListView(_cubit.gameSummaries),
                 ColoredBox(
-                  color: Colors.white.withOpacity(0.5),
+                  color: Colors.white.withValues(alpha: 0.5),
                   child: const SizedBox.expand(),
                 ),
                 const Center(
@@ -148,8 +148,8 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
             ),
           );
         },
-        highlightColor: FamilyAppTheme.primary60.withOpacity(0.1),
-        splashColor: FamilyAppTheme.primary60.withOpacity(0.1),
+        highlightColor: FamilyAppTheme.primary60.withValues(alpha: 0.1),
+        splashColor: FamilyAppTheme.primary60.withValues(alpha: 0.1),
         child: ListTile(
           contentPadding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
           title: SizedBox(
@@ -177,7 +177,7 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
               const SizedBox(width: 16),
               FaIcon(
                 FontAwesomeIcons.chevronRight,
-                color: FamilyAppTheme.primary50.withOpacity(0.5),
+                color: FamilyAppTheme.primary50.withValues(alpha: 0.5),
               ),
             ],
           ),
