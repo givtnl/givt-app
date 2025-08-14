@@ -131,8 +131,4 @@ public class HttpCertificatePinningPlugin : FlutterPlugin, MethodCallHandler {
                   .map { String.format("%02X", it) }
                   .joinToString(separator = "")
 
-
-  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {}
-
-
 }
