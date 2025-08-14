@@ -45,12 +45,6 @@ public class HttpCertificatePinningPlugin : FlutterPlugin, MethodCallHandler {
       channel.setMethodCallHandler(null)
   }
 
-  override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    val channel = MethodChannel(binding.binaryMessenger, "http_certificate_pinning")
-    channel.setMethodCallHandler(HttpCertificatePinningPlugin())
-  }
-
-
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     try {
       when (call.method) {
