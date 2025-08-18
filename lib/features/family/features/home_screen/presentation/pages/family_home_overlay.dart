@@ -60,7 +60,7 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
           sigmaY: 4,
         ),
         child: FunScaffold(
-          backgroundColor: FamilyAppTheme.primary50.withOpacity(0.5),
+          backgroundColor: FamilyAppTheme.primary50.withValues(alpha: 0.5),
           minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
           appBar: const FunTopAppBar(
             title: null,
@@ -87,7 +87,7 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
                         Shadow(
                           offset: const Offset(0, 4),
                           blurRadius: 4,
-                          color: Colors.black.withOpacity(0.25),
+                          color: Colors.black.withValues(alpha: 0.25),
                         ),
                       ],
                     ),

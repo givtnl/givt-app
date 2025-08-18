@@ -46,7 +46,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
   Widget build(BuildContext context) {
     final options = ['To do', context.l10n.completedKey];
     return OverlayTooltipScaffold(
-      overlayColor: FamilyAppTheme.primary50.withOpacity(0.5),
+      overlayColor: FamilyAppTheme.primary50.withValues(alpha: 0.5),
       controller: _tooltipController,
       builder: (context) => FunScaffold(
         appBar: FunTopAppBar(

@@ -118,7 +118,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     return OverlayTooltipScaffold(
       controller: _tooltipController,
       preferredOverlay: Container(
-        color: FamilyAppTheme.primary50.withOpacity(0.5),
+        color: FamilyAppTheme.primary50.withValues(alpha: 0.5),
       ),
       builder: (context) => BlocConsumer<FamilyAuthCubit, FamilyAuthState>(
         listener: (context, state) {},
@@ -278,7 +278,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
       showDialog<void>(
         context: context,
         barrierDismissible: false,
-        barrierColor: Theme.of(context).colorScheme.primary.withOpacity(.25),
+        barrierColor: Theme.of(context).colorScheme.primary.withValues(alpha: .25),
         builder: (context) => MissionCompletedBannerDialog(
           missionName: mission.title,
           showTooltip: mission.showAchievedTooltip ?? false,

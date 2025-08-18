@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 
 class FunMissionCard extends StatelessWidget {
   const FunMissionCard({
@@ -112,7 +111,7 @@ class FunMissionCard extends StatelessWidget {
                         semanticLabel:
                             'icon-${uiModel.actionIcon.fontFamily}-${uiModel.actionIcon.codePoint}',
                         uiModel.actionIcon,
-                        color: FamilyAppTheme.primary40.withOpacity(0.75),
+                        color: FamilyAppTheme.primary40.withValues(alpha: 0.75),
                       ),
                     ),
                 ],

@@ -7,9 +7,6 @@ import 'package:givt_app/features/family/features/auth/data/family_auth_reposito
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
-import 'package:givt_app/features/family/features/generosity_hunt/app/generosity_hunt_repository.dart';
-import 'package:givt_app/features/family/features/generosity_hunt/cubit/level_select_cubit.dart';
-import 'package:givt_app/features/family/features/generosity_hunt/cubit/new_game_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
 import 'package:givt_app/features/family/features/box_origin/bloc/box_origin_cubit.dart';
@@ -17,10 +14,12 @@ import 'package:givt_app/features/family/features/edit_avatar/bloc/edit_avatar_c
 import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/game_summary/cubit/game_summaries_cubit.dart';
 import 'package:givt_app/features/family/features/game_summary/data/game_summaries_repository.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/app/generosity_hunt_repository.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/cubit/level_select_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
+import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/domain/repositories/parent_summary_repository.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/bloc/gratitude_goal_commit_cubit.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/domain/repositories/gratitude_goal_repository.dart';
@@ -114,7 +113,8 @@ void initCubits() {
       CameraCubit.new,
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
-    ..registerLazySingleton(() => LeagueCubit(getIt(), getIt(), getIt(), getIt()))
+    ..registerLazySingleton(
+        () => LeagueCubit(getIt(), getIt(), getIt(), getIt()))
     ..registerFactory(
         () => InGameLeagueCubit(getIt(), getIt(), getIt(), getIt()))
     ..registerLazySingleton<GiveCubit>(
@@ -206,7 +206,6 @@ void initCubits() {
     )
     ..registerFactory<BackgroundAudioCubit>(
       () => BackgroundAudioCubit(
-        getIt(),
         getIt(),
       ),
     )

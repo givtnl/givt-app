@@ -154,7 +154,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
         key: UniqueKey(),
         onTap: onTap,
         selected: isSelected,
-        selectedTileColor: AppTheme.givtLightGreen.withOpacity(0.25),
+        selectedTileColor: AppTheme.givtLightGreen.withValues(alpha: 0.25),
         //temporary solution with svgs
         //let's replace with fontawesomeicons (pro) when possible
         leading: SvgPicture.asset(

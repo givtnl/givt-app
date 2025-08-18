@@ -1,5 +1,6 @@
 // This page implements the BarcodeLevelScanPage, which allows users to scan barcodes for the game level.
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -36,7 +37,6 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
 
   // Spinning state
   bool _isSpinning = false;
-  String? _selectedProductImage;
   String? _spinningImage;
 
   // Product images (hardcoded list)
@@ -118,8 +118,9 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                     // Row of circles for each item
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children:
-                          List.generate(state.level?.itemsNeeded ?? 0, (index) {
+                      children: List.generate(state.level?.itemsNeeded ?? 0, (
+                        index,
+                      ) {
                         // Show checkmark if item is scanned (index < scannedItems)
                         if (index < state.scannedItems) {
                           return Padding(
@@ -161,8 +162,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                       state.levelFinished
                           ? 'You did it!'
                           : state.itemScanned
-                              ? 'You did it!\nOnly ${state.level!.itemsNeeded - state.scannedItems ?? 0} to go!'
-                              : state.level?.assignment ?? '',
+                          ? 'You did it!\nOnly ${state.level!.itemsNeeded - state.scannedItems} to go!'
+                          : state.level?.assignment ?? '',
                       textAlign: TextAlign.center,
                     ),
                     if (state.levelFinished || state.itemScanned)
@@ -174,16 +175,18 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                           Navigator.pop(context);
                         },
                         text: 'Continue',
-                        analyticsEvent:
-                            AnalyticsEvent(AmplitudeEvents.continueClicked),
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.continueClicked,
+                        ),
                       ),
 
                     if (state.itemScanned && !state.levelFinished)
                       FunButton(
                         onTap: cubit.restartScan,
                         text: "Let's go",
-                        analyticsEvent:
-                            AnalyticsEvent(AmplitudeEvents.continueClicked),
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.continueClicked,
+                        ),
                       ),
                   ],
                 ),
@@ -205,7 +208,6 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     setState(() {
       _isSpinning = true;
       _spinningImage = null;
-      _selectedProductImage = null;
     });
 
     // Shuffle the images for random order
@@ -220,18 +222,9 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
         currentImage = images[tick % images.length];
         _spinningImage = currentImage;
       });
+      await HapticFeedback.selectionClick();
       tick++;
     }
-  }
-
-  void _resetScan() {
-    setState(() {
-      _barcodeFound = false;
-      _selectedProductImage = null;
-      _spinningImage = null;
-      _isSpinning = false;
-    });
-    _cameraController.start();
   }
 
   Widget _barcodeScannerBody() {
@@ -294,6 +287,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     _spinningImage = null;
     _isSpinning = false;
 
+    HapticFeedback.mediumImpact();
+
     FunBottomSheet(
       title: 'Oops, not recognized',
       content: const BodyMediumText(''), // TODO
@@ -317,6 +312,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     _spinningImage = null;
     _isSpinning = false;
 
+    HapticFeedback.mediumImpact();
+
     FunBottomSheet(
       title: 'Product already scanned',
       content: const BodyMediumText(''),
@@ -339,8 +336,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
   void _showWrongProductScanned() {
     _spinningImage = null;
     _isSpinning = false;
-    _selectedProductImage =
-        'assets/family/images/barcode_hunt/products/Rock.svg';
+
+    HapticFeedback.heavyImpact();
 
     FunBottomSheet(
       title: 'Wrong product scanned',
@@ -364,10 +361,10 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
   void _successFullScan(int itemsRemaining, int credits) {
     setState(() {
       _isSpinning = false;
-      // Pick a random product at the end (in future based on product category)
-      // _selectedProductImage = (_productImages..shuffle()).first;
       _spinningImage = null;
     });
+
+    HapticFeedback.lightImpact();
 
     // Show confetti
     if (!mounted) return;
@@ -375,6 +372,18 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
 
     FunBottomSheet(
       title: '+$credits Givt Credits!',
+      icon: FunIcon(
+        circleSize: 140,
+        iconSize: 112,
+        icon: Semantics(
+          label: 'givt coin',
+          child: Image.asset(
+            'assets/images/givt_coin_game.png',
+          ),
+        ),
+        padding: EdgeInsets.zero,
+        circleColor: Colors.white,
+      ),
       content: const BodyMediumText(''),
       primaryButton: FunButton(
         onTap: () {

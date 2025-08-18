@@ -85,7 +85,7 @@ class _MissionCompletedBannerDialogState
             startWhen: (instantiatedWidgetLength) async {
               return true == widget.showTooltip;
             },
-            overlayColor: FamilyAppTheme.primary50.withOpacity(0.5),
+            overlayColor: FamilyAppTheme.primary50.withValues(alpha: 0.5),
             controller: _tooltipController,
             builder: (context) => _content(),
           )

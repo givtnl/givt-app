@@ -17,7 +17,6 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
 
   AudioRecorder? _audioRecorder;
   String? _path;
-  StreamSubscription<Amplitude>? _amplitudeSub;
   Amplitude? _amplitude;
 
   static const String audioPath = 'audio_recording_message.m4a';
@@ -90,17 +89,6 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
 
   void _initAudioRecorder() {
     _audioRecorder = AudioRecorder();
-    _amplitudeSub = _audioRecorder!
-        .onAmplitudeChanged(const Duration(milliseconds: 60))
-        .listen((amp) {
-      _amplitude = amp;
-      _amplitudeStreamController.add(
-        waveform.Amplitude(
-          current: amp.current,
-          max: amp.max,
-        ),
-      );
-    });
   }
 
   Future<String?> stop() async {

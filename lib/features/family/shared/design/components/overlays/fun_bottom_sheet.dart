@@ -127,7 +127,7 @@ class FunBottomSheet extends StatelessWidget {
   }
 
   Widget showHeadlineContent() {
-    if (headlineContent == null) return const SizedBox(height: 24);
+    if (headlineContent == null) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.only(top: 36),

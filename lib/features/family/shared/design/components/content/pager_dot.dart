@@ -16,7 +16,7 @@ class PagerDot extends StatelessWidget {
         shape: BoxShape.circle,
         color: isSelected
             ? FamilyAppTheme.primary40
-            : Colors.black.withOpacity(0.1),
+            : Colors.black.withValues(alpha: 0.1),
       ),
     );
   }

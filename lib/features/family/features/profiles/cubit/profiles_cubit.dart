@@ -110,7 +110,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         orElse: Profile.empty,
       );
       newIndex = profiles.indexOf(newActiveProfile);
-    } catch (e, s) {
+    } catch (e) {
       // we probably didn't have profiles before, ignore this error
     }
 

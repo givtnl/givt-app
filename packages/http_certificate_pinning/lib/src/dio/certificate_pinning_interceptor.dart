@@ -18,7 +18,7 @@ class CertificatePinningInterceptor extends Interceptor {
   Future<String>? secure = Future.value('');
 
   @override
-  Future onRequest(
+  Future<dynamic> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {

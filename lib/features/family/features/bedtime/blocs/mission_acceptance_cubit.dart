@@ -28,11 +28,11 @@ class MissionAcceptanceCubit
       if (true == name?.isNullOrEmpty()) {
         final profileLastName =
             profiles.firstWhereOrNull((profile) => profile.isAdult)?.lastName;
-        if(profileLastName.isNotNullAndNotEmpty()) {
+        if (profileLastName.isNotNullAndNotEmpty()) {
           name = '$profileLastName Family';
         }
       }
-    } catch (e, s) {
+    } catch (e) {
       // fallback is not showing the family name
     }
     emitData(

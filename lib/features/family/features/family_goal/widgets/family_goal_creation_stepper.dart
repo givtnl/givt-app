@@ -73,10 +73,13 @@ class FamilyGoalCreationStepper extends StatelessWidget {
                     SvgPicture.asset(
                       'assets/images/stepper_flag.svg',
                       height: 22,
-                      color: currentStep.index >=
-                              FamilyGoalCreationStatus.confirmation.index
-                          ? AppTheme.givtLightGreen
-                          : AppTheme.familyGoalStepperGray,
+                      colorFilter: ColorFilter.mode(
+                        currentStep.index >=
+                                FamilyGoalCreationStatus.confirmation.index
+                            ? AppTheme.givtLightGreen
+                            : AppTheme.familyGoalStepperGray,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ],
                 ),

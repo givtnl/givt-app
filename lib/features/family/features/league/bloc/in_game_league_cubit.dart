@@ -48,7 +48,7 @@ class InGameLeagueCubit
       _shouldShowOnTopOfLeague = !_shouldShowExplanation;
       _profiles = await _profilesRepository.getProfiles();
       _league = await _leagueRepository.fetchLeague();
-    } catch (e, s) {
+    } catch (e) {
       // do nothing
     }
     _emitData();

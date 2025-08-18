@@ -91,7 +91,8 @@ class GoalProgressBar extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     gradient: LinearGradient(
-                      colors: colors.map((e) => e.withOpacity(0.3)).toList(),
+                      colors:
+                          colors.map((e) => e.withValues(alpha: 0.3)).toList(),
                     ),
                   ),
                   child: Stack(
@@ -108,7 +109,11 @@ class GoalProgressBar extends StatelessWidget {
                             height: 12,
                           ),
                           decoration: _gradientProgressBarDecoration(
-                            colors.map((e) => e.withOpacity(0.4)).toList(),
+                            colors
+                                .map(
+                                  (e) => e.withValues(alpha: 0.4),
+                                )
+                                .toList(),
                             totalProgress0,
                             false,
                           ),

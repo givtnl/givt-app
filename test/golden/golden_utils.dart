@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 

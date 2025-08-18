@@ -613,7 +613,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                 shape: BoxShape.circle,
                 color: isNight
                     ? const Color(0xFF1A2C3A)
-                    : const Color(0xFFFFF9EB).withOpacity(0.7),
+                    : const Color(0xFFFFF9EB).withValues(alpha: 0.7),
               ),
             ),
           ),
