@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/models/recurring_donation.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/models/recurring_donation_frequency.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/confirm_ui_model.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/repository/recurring_donation_new_flow_repository.dart';
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation.dart';
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
+import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
+import 'package:givt_app/features/recurring_donations/create/presentation/models/confirm_ui_model.dart';
+import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 

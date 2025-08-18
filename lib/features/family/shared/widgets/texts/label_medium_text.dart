@@ -20,6 +20,7 @@ class LabelMediumText extends StatelessWidget {
     this.textWidthBasis,
     this.strutStyle,
     this.fontFeatures,
+    this.fontWeight,
   });
 
   factory LabelMediumText.primary30(String text) =>
@@ -65,7 +66,8 @@ class LabelMediumText extends StatelessWidget {
   final TextWidthBasis? textWidthBasis;
   final StrutStyle? strutStyle;
   final List<FontFeature>? fontFeatures;
-
+  final FontWeight? fontWeight;
+  
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -85,7 +87,7 @@ class LabelMediumText extends StatelessWidget {
       style: Theme.of(context)
           .textTheme
           .labelMedium
-          ?.copyWith(color: color, fontFeatures: fontFeatures),
+          ?.copyWith(color: color, fontFeatures: fontFeatures, fontWeight: fontWeight),
     );
   }
 }
