@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/set_amount_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/repository/recurring_donation_new_flow_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';

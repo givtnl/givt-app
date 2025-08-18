@@ -25,7 +25,7 @@ class FunModalCloseFlow extends StatelessWidget {
             );
             Navigator.of(context).popUntil((route) => route.isFirst);
           },
-          text: 'Yes, exit',
+          text: context.l10n.closeModalYesExit,
           analyticsEvent: AnalyticsEvent(
             AmplitudeEvents.cancelClicked,
           ),
@@ -34,7 +34,7 @@ class FunModalCloseFlow extends StatelessWidget {
           onTap: () {
             Navigator.of(context).pop();
           },
-          text: 'No, go back',
+          text: context.l10n.closeModalNoBack,
           analyticsEvent: AnalyticsEvent(
             AmplitudeEvents.backClicked,
           ),
