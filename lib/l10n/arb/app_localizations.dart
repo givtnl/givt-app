@@ -3872,6 +3872,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your donation will occur once a year on the {day} of {month}'**
   String recurringDonationsEndDateHintEveryYear(Object day, Object month);
+
+  /// No description provided for @recurringDonationsEndsAfterXDonations.
+  ///
+  /// In en, this message translates to:
+  /// **'After {amount} of donations'**
+  String recurringDonationsEndsAfterXDonations(Object amount);
+
+  /// No description provided for @recurringDonationsStep4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get recurringDonationsStep4Title;
+
+  /// No description provided for @recurringDonationsStep4Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to make a difference?'**
+  String get recurringDonationsStep4Description;
+
+  /// No description provided for @recurringDonationsStep4YoullDonateTo.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll donate to'**
+  String get recurringDonationsStep4YoullDonateTo;
+
+  /// No description provided for @recurringDonationsStep4Amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get recurringDonationsStep4Amount;
+
+  /// No description provided for @recurringDonationsStep4Frequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get recurringDonationsStep4Frequency;
+
+  /// No description provided for @recurringDonationsStep4Starts.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts'**
+  String get recurringDonationsStep4Starts;
+
+  /// No description provided for @recurringDonationsStep4Ends.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get recurringDonationsStep4Ends;
+
+  /// No description provided for @recurringDonationsStep4ConfirmMyDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm my donation'**
+  String get recurringDonationsStep4ConfirmMyDonation;
 }
 
 class _AppLocalizationsDelegate

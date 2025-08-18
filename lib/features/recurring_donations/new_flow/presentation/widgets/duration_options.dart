@@ -11,6 +11,7 @@ import 'package:givt_app/features/recurring_donations/new_flow/presentation/mode
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:intl/intl.dart';
+import 'package:moment_dart/moment_dart.dart';
 
 class DurationOptions extends StatelessWidget {
   const DurationOptions({
@@ -76,13 +77,12 @@ class DurationOptions extends StatelessWidget {
 
     switch (optionKey) {
       case RecurringDonationStringKeys.whenIDecide:
-        final day = uiModel.startDate?.day ?? DateTime.now().day;
-        final ordinal = _getDayOrdinal(day);
+        final day = _getDayWithOrdinal(uiModel.startDate ?? DateTime.now());
         FunSnackbar.show(
           context,
           message: context.l10n.recurringDonationsEndDateHintEveryMonth(
-            '$day$ordinal',
-            '$day$ordinal',
+            day,
+            day,
           ),
           icon: const Icon(
             Icons.calendar_today,
@@ -301,16 +301,15 @@ DateTime _calculateEndDateFromNumberOfDonations(
 
 String _monthName(int month) {
   if (month < 1 || month > 12) return '';
-  
+
   // Use localized month names from the current locale
   final now = DateTime.now();
   final date = DateTime(now.year, month, 1);
   return DateFormat('MMM').format(date);
 }
 
-String _getDayOrdinal(int day) {
+String _getDayWithOrdinal(DateTime date) {
   // Use localized ordinal formatting from the current locale
-  final now = DateTime.now();
-  final date = DateTime(now.year, now.month, day);
-  return DateFormat('d').format(date).replaceAll(day.toString(), '');
+  final now = date.toMoment();
+  return now.format('Do');
 }

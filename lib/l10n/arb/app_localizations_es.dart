@@ -2134,6 +2134,36 @@ class AppLocalizationsEs extends AppLocalizations {
   String recurringDonationsEndDateHintEveryYear(Object day, Object month) {
     return 'Your donation will occur once a year on the $day of $month';
   }
+
+  @override
+  String recurringDonationsEndsAfterXDonations(Object amount) {
+    return 'After $amount of donations';
+  }
+
+  @override
+  String get recurringDonationsStep4Title => 'Confirm';
+
+  @override
+  String get recurringDonationsStep4Description =>
+      'Ready to make a difference?';
+
+  @override
+  String get recurringDonationsStep4YoullDonateTo => 'You\'ll donate to';
+
+  @override
+  String get recurringDonationsStep4Amount => 'Amount';
+
+  @override
+  String get recurringDonationsStep4Frequency => 'Frequency';
+
+  @override
+  String get recurringDonationsStep4Starts => 'Starts';
+
+  @override
+  String get recurringDonationsStep4Ends => 'Ends';
+
+  @override
+  String get recurringDonationsStep4ConfirmMyDonation => 'Confirm my donation';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4288,4 +4318,34 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String recurringDonationsEndDateHintEveryYear(Object day, Object month) {
     return 'Your donation will occur once a year on the $day of $month';
   }
+
+  @override
+  String recurringDonationsEndsAfterXDonations(Object amount) {
+    return 'After $amount of donations';
+  }
+
+  @override
+  String get recurringDonationsStep4Title => 'Confirm';
+
+  @override
+  String get recurringDonationsStep4Description =>
+      'Ready to make a difference?';
+
+  @override
+  String get recurringDonationsStep4YoullDonateTo => 'You\'ll donate to';
+
+  @override
+  String get recurringDonationsStep4Amount => 'Amount';
+
+  @override
+  String get recurringDonationsStep4Frequency => 'Frequency';
+
+  @override
+  String get recurringDonationsStep4Starts => 'Starts';
+
+  @override
+  String get recurringDonationsStep4Ends => 'Ends';
+
+  @override
+  String get recurringDonationsStep4ConfirmMyDonation => 'Confirm my donation';
 }

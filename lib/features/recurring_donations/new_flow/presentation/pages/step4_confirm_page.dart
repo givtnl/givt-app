@@ -68,11 +68,13 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
         var endsText = '';
         if (model.selectedEndOption ==
             RecurringDonationStringKeys.whenIDecide) {
-          endsText = 'When I decide';
+          endsText = context.l10n.recurringDonationsEndsWhenIDecide;
         } else if (model.selectedEndOption ==
                 RecurringDonationStringKeys.afterNumberOfDonations &&
             model.numberOfDonations.isNotEmpty) {
-          endsText = 'After ${model.numberOfDonations} of donations';
+          endsText = context.l10n.recurringDonationsEndsAfterXDonations(
+            model.numberOfDonations,
+          );
         } else if (model.selectedEndOption ==
                 RecurringDonationStringKeys.onSpecificDate &&
             model.endDate != null) {
@@ -81,7 +83,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
 
         return FunScaffold(
           appBar: FunTopAppBar.white(
-            title: 'Confirm',
+            title: context.l10n.recurringDonationsStep4Title,
             leading: const BackButton(),
             actions: [
               IconButton(
@@ -100,14 +102,14 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
             children: [
               const FunStepper(currentStep: 3, stepCount: 4),
               const SizedBox(height: 32),
-              const TitleMediumText(
-                'Ready to make a difference?',
+              TitleMediumText(
+                context.l10n.recurringDonationsStep4Description,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
               SummaryRow(
                 icon: FontAwesomeIcons.building,
-                label: "You'll donate to",
+                label: context.l10n.recurringDonationsStep4YoullDonateTo,
                 value: model.organizationName,
                 onEdit: () {
                   AnalyticsHelper.logEvent(
@@ -119,7 +121,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.moneyBillWave,
-                label: 'Amount',
+                label: context.l10n.recurringDonationsStep4Amount,
                 value: model.amount.isNotEmpty ? '€${model.amount}' : '',
                 onEdit: () {
                   AnalyticsHelper.logEvent(
@@ -130,7 +132,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.calendar,
-                label: 'Frequency',
+                label: context.l10n.recurringDonationsStep4Frequency,
                 value: model.frequency,
                 onEdit: () {
                   AnalyticsHelper.logEvent(
@@ -142,7 +144,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.play,
-                label: 'Starts',
+                label: context.l10n.recurringDonationsStep4Starts,
                 value: model.startDate != null
                     ? _formatDate(model.startDate!)
                     : '',
@@ -156,7 +158,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.stop,
-                label: context.l10n.recurringDonationsEndsTitle,
+                label: context.l10n.recurringDonationsStep4Ends,
                 value: endsText,
                 onEdit: () {
                   AnalyticsHelper.logEvent(
@@ -167,7 +169,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
               ),
               const Spacer(),
               FunButton(
-                text: 'Confirm my donation',
+                text: context.l10n.recurringDonationsStep4ConfirmMyDonation,
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.recurringStep4ConfirmDonation,
                   parameters: model.analyticsParams,

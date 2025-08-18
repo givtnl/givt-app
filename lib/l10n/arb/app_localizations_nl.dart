@@ -2141,4 +2141,35 @@ class AppLocalizationsNl extends AppLocalizations {
   String recurringDonationsEndDateHintEveryYear(Object day, Object month) {
     return 'Je donatie vindt elk jaar plaats op de $day van $month';
   }
+
+  @override
+  String recurringDonationsEndsAfterXDonations(Object amount) {
+    return 'Na $amount donaties';
+  }
+
+  @override
+  String get recurringDonationsStep4Title => 'Samenvatting';
+
+  @override
+  String get recurringDonationsStep4Description =>
+      'Klaar om een verschil te maken?';
+
+  @override
+  String get recurringDonationsStep4YoullDonateTo => 'Je doneert aan';
+
+  @override
+  String get recurringDonationsStep4Amount => 'Bedrag';
+
+  @override
+  String get recurringDonationsStep4Frequency => 'Frequentie';
+
+  @override
+  String get recurringDonationsStep4Starts => 'Vanaf';
+
+  @override
+  String get recurringDonationsStep4Ends => 'Eindigt op';
+
+  @override
+  String get recurringDonationsStep4ConfirmMyDonation =>
+      'Bevestig mijn donatie';
 }
