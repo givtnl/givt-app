@@ -990,8 +990,10 @@ class APIService {
     return itemMap;
   }
 
-  Future<bool> setBoxOrigin(
-      {required String orgId, required String groupId}) async {
+  Future<bool> setBoxOrigin({
+    required String orgId,
+    required String groupId,
+  }) async {
     final url =
         Uri.https(_apiURL, '/givtservice/v1/groups/$groupId/box-origin');
 
@@ -1038,7 +1040,10 @@ class APIService {
   }
 
   Future<bool> editChildBedtime(
-      String childGUID, String bedtime, int winddownMinutes) async {
+    String childGUID,
+    String bedtime,
+    int winddownMinutes,
+  ) async {
     final url =
         Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/bedtime');
     final response = await client.put(

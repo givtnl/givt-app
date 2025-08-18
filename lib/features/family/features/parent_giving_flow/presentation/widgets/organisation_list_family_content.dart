@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/utils/utils.dart';
+
+class OrganisationListFamilyContent extends StatefulWidget {
+  const OrganisationListFamilyContent({
+    required this.bloc,
+    required this.onTapListItem,
+    required this.removedCollectGroupTypes,
+    super.key,
+  });
+
+  final OrganisationBloc bloc;
+  final void Function(CollectGroup) onTapListItem;
+  final List<CollectGroupType> removedCollectGroupTypes;
+
+  @override
+  State<OrganisationListFamilyContent> createState() =>
+      _OrganisationListFamilyContentState();
+}
+
+class _OrganisationListFamilyContentState
+    extends State<OrganisationListFamilyContent> {
+  final TextEditingController controller = TextEditingController();
+  CollectGroup selectedCollectgroup = const CollectGroup.empty();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final locals = context.l10n;
+    return BlocConsumer<OrganisationBloc, OrganisationState>(
+      bloc: widget.bloc,
+      listener: (context, state) {
+        if (state.status == OrganisationStatus.error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(locals.somethingWentWrong),
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        return Column(
+          children: [
+            FunOrganisationFilterTilesBar(
+              onFilterChanged: (type) {
+                if (selectedCollectgroup.type != type) {
+                  setState(() {
+                    selectedCollectgroup = const CollectGroup.empty();
+                  });
+                }
+              },
+              stratPadding: 0,
+              removedTypes: [
+                ...widget.removedCollectGroupTypes.map((e) => e.name),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: FamilySearchField(
+                autocorrect: false,
+                controller: controller,
+                onChanged: (value) =>
+                    widget.bloc.add(OrganisationFilterQueryChanged(value)),
+              ),
+            ),
+            if (state.status == OrganisationStatus.filtered)
+              Expanded(
+                child: ListView.separated(
+                  separatorBuilder: (_, index) => const Divider(
+                    height: 1,
+                    color: AppTheme.neutralVariant95,
+                  ),
+                  shrinkWrap: true,
+                  itemCount: state.filteredOrganisations.length,
+                  itemBuilder: (context, index) {
+                    if (widget.removedCollectGroupTypes
+                        .contains(state.filteredOrganisations[index].type)) {
+                      return const SizedBox.shrink();
+                    }
+                    return _buildListTile(
+                      type: state.filteredOrganisations[index].type,
+                      title: state.filteredOrganisations[index].orgName,
+                      isSelected: selectedCollectgroup ==
+                          state.filteredOrganisations[index],
+                      onTap: () {
+                        widget
+                            .onTapListItem(state.filteredOrganisations[index]);
+                        setState(() {
+                          selectedCollectgroup =
+                              state.filteredOrganisations[index];
+                        });
+                      },
+                    );
+                  },
+                ),
+              )
+            else
+              const Center(
+                child: CustomCircularProgressIndicator(),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildListTile({
+    required VoidCallback onTap,
+    required String title,
+    required CollectGroupType type,
+    required bool isSelected,
+  }) =>
+      ListTile(
+        key: UniqueKey(),
+        onTap: () => onTap.call(),
+        splashColor: FamilyAppTheme.highlight99,
+        selected: isSelected,
+        selectedTileColor:
+            CollectGroupType.getColorComboByType(type).backgroundColor,
+        leading: Icon(
+          CollectGroupType.getIconByTypeUS(type),
+          color: FamilyAppTheme.primary20,
+        ),
+        title: LabelMediumText(title, color: AppTheme.primary20),
+      );
+}

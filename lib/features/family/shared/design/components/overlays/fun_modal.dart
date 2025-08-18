@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
 class FunModal extends StatefulWidget {
@@ -59,58 +60,61 @@ class _FunModalState extends State<FunModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 24),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Stack(
-            children: [
-              showCloseButton(),
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
-                  child: Column(
-                    children: [
-                      // Optional Icon
-                      if (widget.icon != null) widget.icon!,
-                
-                      const SizedBox(height: 16),
-                
-                      // Title
-                      if (widget.title != null)
-                        TitleMediumText(
-                          widget.title!,
-                          textAlign: TextAlign.center,
-                        ),
-                
-                      // Subtitle
-                      if (widget.subtitle != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: BodyMediumText(
-                            widget.subtitle!,
+    return Theme(
+      data: const FamilyAppTheme().toThemeData(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Stack(
+              children: [
+                showCloseButton(),
+                SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+                    child: Column(
+                      children: [
+                        // Optional Icon
+                        if (widget.icon != null) widget.icon!,
+
+                        const SizedBox(height: 16),
+
+                        // Title
+                        if (widget.title != null)
+                          TitleMediumText(
+                            widget.title!,
                             textAlign: TextAlign.center,
                           ),
-                        ),
-                
-                      const SizedBox(height: 16),
-                
-                      showButtons(),
-                    ],
+
+                        // Subtitle
+                        if (widget.subtitle != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: BodyMediumText(
+                              widget.subtitle!,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+
+                        const SizedBox(height: 16),
+
+                        showButtons(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -123,9 +127,7 @@ class _FunModalState extends State<FunModal> {
         IconButton(
           icon: Semantics(
             identifier: 'xmark',
-            child: const FaIcon(
-                semanticLabel: 'xmark',
-                FontAwesomeIcons.xmark),
+            child: const FaIcon(semanticLabel: 'xmark', FontAwesomeIcons.xmark),
           ),
           onPressed: () {
             AnalyticsHelper.logEvent(

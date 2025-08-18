@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/box_origin_outcome_dialog.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
@@ -30,7 +32,9 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.read<FamilyAuthCubit>().user!;
     return OrganisationListFamilyPage(
+      countryCode: user.country,
       onTapListItem: (collectgroup) {
         getIt<MediumCubit>().setMediumId(collectgroup.nameSpace);
       },
