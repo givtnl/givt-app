@@ -47,7 +47,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
       onData: (context, uiModel) {
         return FunScaffold(
           appBar: FunTopAppBar.white(
-            title: 'Set duration',
+            title: context.l10n.recurringDonationsStep3Title,
             leading: const BackButton(),
             actions: [
               IconButton(
@@ -66,12 +66,12 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
             children: [
               const FunStepper(currentStep: 2, stepCount: 4),
               const SizedBox(height: 32),
-              const TitleMediumText(
-                'How long would you like to schedule this donation for?',
+              TitleMediumText(
+                context.l10n.recurringDonationsStep3Description,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
-              const LabelMediumText('Starting on'),
+              LabelMediumText(context.l10n.recurringDonationsStartingTitle),
               const SizedBox(height: 8),
               FunDatePicker(
                 selectedDate: uiModel.startDate,

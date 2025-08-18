@@ -2050,7 +2050,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get closeModalNoBack => 'No, go back';
 
   @override
-  String get recurringDonationsSetAmountTitle =>
+  String get recurringDonationsStep2Description =>
       'How often do you want to give, and how much?';
 
   @override
@@ -2092,4 +2092,63 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get platformFeeRequired => 'Pflichtfeld';
+
+  @override
+  String get recurringDonationsStep1Title => 'Select organisation';
+
+  @override
+  String get recurringDonationsStep1Description =>
+      'Who do you want to give to?';
+
+  @override
+  String get recurringDonationsStep1ListTitle => 'Select from list';
+
+  @override
+  String get recurringDonationsStep1ListSubtitle =>
+      'Select a cause from the list';
+
+  @override
+  String get recurringDonationsStep2Title => 'Set amount';
+
+  @override
+  String get recurringDonationsStep3Title => 'Set duration';
+
+  @override
+  String get recurringDonationsStep3Description =>
+      'How long would you like to schedule this donation for?';
+
+  @override
+  String get recurringDonationsStartingTitle => 'Starting on';
+
+  @override
+  String get recurringDonationsEndsTitle => 'Ends';
+
+  @override
+  String get recurringDonationsEndsWhenIDecide => 'When I decide';
+
+  @override
+  String get recurringDonationsEndsAfterNumber => 'After a number of donations';
+
+  @override
+  String get recurringDonationsEndsAfterDate => 'On a specific date';
+
+  @override
+  String recurringDonationsEndDateHintEveryMonth(Object dag, Object day) {
+    return 'Your donation will occur on the $day of every month';
+  }
+
+  @override
+  String recurringDonationsEndDateHintEveryWeek(Object day) {
+    return 'Your donation will occur every week on the $day';
+  }
+
+  @override
+  String recurringDonationsEndDateHintEveryXMonth(Object day, Object freq) {
+    return 'Your donation will occur every $freq months on the $day';
+  }
+
+  @override
+  String recurringDonationsEndDateHintEveryYear(Object day, Object month) {
+    return 'Your donation will occur once a year on the $day of $month';
+  }
 }

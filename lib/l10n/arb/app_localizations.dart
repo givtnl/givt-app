@@ -3699,11 +3699,11 @@ abstract class AppLocalizations {
   /// **'No, go back'**
   String get closeModalNoBack;
 
-  /// No description provided for @recurringDonationsSetAmountTitle.
+  /// No description provided for @recurringDonationsStep2Description.
   ///
   /// In en, this message translates to:
   /// **'How often do you want to give, and how much?'**
-  String get recurringDonationsSetAmountTitle;
+  String get recurringDonationsStep2Description;
 
   /// No description provided for @recurringDonationsFrequencyTitle.
   ///
@@ -3776,6 +3776,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Field required'**
   String get platformFeeRequired;
+
+  /// No description provided for @recurringDonationsStep1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Select organisation'**
+  String get recurringDonationsStep1Title;
+
+  /// No description provided for @recurringDonationsStep1Description.
+  ///
+  /// In en, this message translates to:
+  /// **'Who do you want to give to?'**
+  String get recurringDonationsStep1Description;
+
+  /// No description provided for @recurringDonationsStep1ListTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select from list'**
+  String get recurringDonationsStep1ListTitle;
+
+  /// No description provided for @recurringDonationsStep1ListSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a cause from the list'**
+  String get recurringDonationsStep1ListSubtitle;
+
+  /// No description provided for @recurringDonationsStep2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Set amount'**
+  String get recurringDonationsStep2Title;
+
+  /// No description provided for @recurringDonationsStep3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Set duration'**
+  String get recurringDonationsStep3Title;
+
+  /// No description provided for @recurringDonationsStep3Description.
+  ///
+  /// In en, this message translates to:
+  /// **'How long would you like to schedule this donation for?'**
+  String get recurringDonationsStep3Description;
+
+  /// No description provided for @recurringDonationsStartingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting on'**
+  String get recurringDonationsStartingTitle;
+
+  /// No description provided for @recurringDonationsEndsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get recurringDonationsEndsTitle;
+
+  /// No description provided for @recurringDonationsEndsWhenIDecide.
+  ///
+  /// In en, this message translates to:
+  /// **'When I decide'**
+  String get recurringDonationsEndsWhenIDecide;
+
+  /// No description provided for @recurringDonationsEndsAfterNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'After a number of donations'**
+  String get recurringDonationsEndsAfterNumber;
+
+  /// No description provided for @recurringDonationsEndsAfterDate.
+  ///
+  /// In en, this message translates to:
+  /// **'On a specific date'**
+  String get recurringDonationsEndsAfterDate;
+
+  /// No description provided for @recurringDonationsEndDateHintEveryMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation will occur on the {day} of every month'**
+  String recurringDonationsEndDateHintEveryMonth(Object dag, Object day);
+
+  /// No description provided for @recurringDonationsEndDateHintEveryWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation will occur every week on the {day}'**
+  String recurringDonationsEndDateHintEveryWeek(Object day);
+
+  /// No description provided for @recurringDonationsEndDateHintEveryXMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation will occur every {freq} months on the {day}'**
+  String recurringDonationsEndDateHintEveryXMonth(Object day, Object freq);
+
+  /// No description provided for @recurringDonationsEndDateHintEveryYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation will occur once a year on the {day} of {month}'**
+  String recurringDonationsEndDateHintEveryYear(Object day, Object month);
 }
 
 class _AppLocalizationsDelegate

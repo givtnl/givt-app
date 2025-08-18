@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/recurring_donations/new_flow/cubit/step3_set_duration_cubit.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/set_duration_ui_model.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:intl/intl.dart';
 
@@ -38,7 +39,7 @@ class DurationOptions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const LabelMediumText('Ends'),
+        LabelMediumText(context.l10n.recurringDonationsEndsTitle),
         const SizedBox(height: 8),
         ..._optionKeys.map((optionKey) {
           final isSelected = selectedOption == optionKey;
@@ -46,7 +47,7 @@ class DurationOptions extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FunInputRadio(
-                label: _translateOption(optionKey),
+                label: _translateOption(context, optionKey),
                 isSelected: isSelected,
                 onTap: () => _handleOptionTap(context, optionKey, isSelected),
               ),
@@ -65,7 +66,10 @@ class DurationOptions extends StatelessWidget {
   }
 
   void _handleOptionTap(
-      BuildContext context, String optionKey, bool isSelected) {
+    BuildContext context,
+    String optionKey,
+    bool isSelected,
+  ) {
     onOptionSelected(optionKey);
     final frequency = getIt<Step3SetDurationCubit>().repository.frequency;
     if (frequency == null) return;
@@ -76,8 +80,10 @@ class DurationOptions extends StatelessWidget {
         final ordinal = _getDayOrdinal(day);
         FunSnackbar.show(
           context,
-          message:
-              'Your donation will occur on the $day$ordinal of every month',
+          message: context.l10n.recurringDonationsEndDateHintEveryMonth(
+            '$day$ordinal',
+            '$day$ordinal',
+          ),
           icon: const Icon(
             Icons.calendar_today,
             color: Color(0xFF234B5E),
@@ -195,14 +201,14 @@ class DurationOptions extends StatelessWidget {
     );
   }
 
-  String _translateOption(String optionKey) {
+  String _translateOption(BuildContext context, String optionKey) {
     switch (optionKey) {
       case RecurringDonationStringKeys.whenIDecide:
-        return 'When I decide';
+        return context.l10n.recurringDonationsEndsWhenIDecide;
       case RecurringDonationStringKeys.afterNumberOfDonations:
-        return 'After a number of donations';
+        return context.l10n.recurringDonationsEndsAfterNumber;
       case RecurringDonationStringKeys.onSpecificDate:
-        return 'On a specific date';
+        return context.l10n.recurringDonationsEndsAfterDate;
     }
 
     return '';
@@ -224,19 +230,22 @@ String _buildSnackbarMessage(
       amountOfDonations = (startDate.difference(endDate).inDays.abs() ~/ 7) + 1;
     case 'Monthly':
       // Calculate months between dates, including partial months
-      amountOfDonations = ((endDate.year - startDate.year) * 12) +
+      amountOfDonations =
+          ((endDate.year - startDate.year) * 12) +
           endDate.month -
           startDate.month +
           1;
     case 'Quarterly':
       // Calculate quarters between dates, including partial quarters
-      final months = ((endDate.year - startDate.year) * 12) +
+      final months =
+          ((endDate.year - startDate.year) * 12) +
           endDate.month -
           startDate.month;
       amountOfDonations = (months ~/ 3) + 1;
     case 'Half year':
       // Calculate half-years between dates, including partial half-years
-      final months = ((endDate.year - startDate.year) * 12) +
+      final months =
+          ((endDate.year - startDate.year) * 12) +
           endDate.month -
           startDate.month;
       amountOfDonations = (months ~/ 6) + 1;

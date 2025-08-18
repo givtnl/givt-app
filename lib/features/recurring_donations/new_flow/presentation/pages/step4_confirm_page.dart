@@ -9,18 +9,16 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/recurring_donations/new_flow/cubit/step4_confirm_cubit.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/confirm_ui_model.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/presentation/pages/step1_select_organisation_page.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/presentation/pages/step2_set_amount_page.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/pages/success_page.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/widgets/fun_modal_close_flow.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/widgets/summary_row.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:intl/intl.dart';
-import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/presentation/pages/success_page.dart';
 
 class Step4ConfirmPage extends StatefulWidget {
   const Step4ConfirmPage({super.key});
@@ -113,7 +111,8 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 value: model.organizationName,
                 onEdit: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep4ConfirmEditOrganisation,
+                    eventName:
+                        AmplitudeEvents.recurringStep4ConfirmEditOrganisation,
                   );
                   _cubit.navigateToOrganization();
                 },
@@ -135,7 +134,8 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 value: model.frequency,
                 onEdit: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep4ConfirmEditFrequency,
+                    eventName:
+                        AmplitudeEvents.recurringStep4ConfirmEditFrequency,
                   );
                   _cubit.navigateToFrequency();
                 },
@@ -148,14 +148,15 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                     : '',
                 onEdit: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep4ConfirmEditStartDate,
+                    eventName:
+                        AmplitudeEvents.recurringStep4ConfirmEditStartDate,
                   );
                   _cubit.navigateToStartDate();
                 },
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.stop,
-                label: 'Ends',
+                label: context.l10n.recurringDonationsEndsTitle,
                 value: endsText,
                 onEdit: () {
                   AnalyticsHelper.logEvent(

@@ -50,7 +50,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
       onData: (context, uiModel) {
         return FunScaffold(
           appBar: FunTopAppBar.white(
-            title: 'Set Amount',
+            title: context.l10n.recurringDonationsStep2Title,
             leading: const BackButton(),
             actions: [
               IconButton(
@@ -70,7 +70,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               const FunStepper(currentStep: 1, stepCount: 4),
               const SizedBox(height: 32),
               TitleMediumText(
-                context.l10n.recurringDonationsSetAmountTitle,
+                context.l10n.recurringDonationsAmountTitle,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
@@ -93,8 +93,8 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                 },
               ),
               const SizedBox(height: 24),
-              const LabelMediumText(
-                'Donation amount',
+              LabelMediumText(
+                context.l10n.recurringDonationsAmountTitle,
                 color: FamilyAppTheme.primary40,
               ),
               const SizedBox(height: 8),

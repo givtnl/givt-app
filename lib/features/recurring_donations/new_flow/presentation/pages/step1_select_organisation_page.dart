@@ -13,6 +13,7 @@ import 'package:givt_app/features/recurring_donations/new_flow/presentation/page
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/pages/step2_set_amount_page.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/widgets/fun_modal_close_flow.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/widgets/method_button.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
@@ -63,7 +64,7 @@ class _Step1SelectOrganisationPageState
       onData: (context, uiModel) {
         return FunScaffold(
           appBar: FunTopAppBar.white(
-            title: 'Select organisation',
+            title: context.l10n.recurringDonationsStep1Title,
             leading: const GivtBackButtonFlat(),
             actions: [
               IconButton(
@@ -85,11 +86,11 @@ class _Step1SelectOrganisationPageState
                 stepCount: 4,
               ),
               const SizedBox(height: 32),
-              const TitleMediumText(
-                'Who do you want to give to?',
+              TitleMediumText(
+                context.l10n.recurringDonationsStep1Description,
                 textAlign: TextAlign.center,
               ),
-              const Spacer(),
+              const SizedBox(height: 32),
               MethodButton(
                 onPressed: () {
                   Navigator.push(
@@ -100,23 +101,23 @@ class _Step1SelectOrganisationPageState
                   );
                 },
                 imagePath: 'assets/images/select_list.png',
-                title: 'Select from list',
-                subtitle: 'Search and select an organisation',
+                title: context.l10n.recurringDonationsStep1ListTitle,
+                subtitle: context.l10n.recurringDonationsStep1ListSubtitle,
               ),
-              const SizedBox(height: 16),
-              MethodButton(
-                onPressed: () {},
-                imagePath: 'assets/images/select_qr_phone_scan.png',
-                title: 'QR code',
-                subtitle: 'Give by scanning a QR code',
-              ),
-              const SizedBox(height: 16),
-              MethodButton(
-                onPressed: () {},
-                imagePath: 'assets/images/select_location.png',
-                title: 'Location',
-                subtitle: 'Give based on your location',
-              ),
+              // const SizedBox(height: 16),
+              // MethodButton(
+              //   onPressed: () {},
+              //   imagePath: 'assets/images/select_qr_phone_scan.png',
+              //   title: 'QR code',
+              //   subtitle: 'Give by scanning a QR code',
+              // ),
+              // const SizedBox(height: 16),
+              // MethodButton(
+              //   onPressed: () {},
+              //   imagePath: 'assets/images/select_location.png',
+              //   title: 'Location',
+              //   subtitle: 'Give based on your location',
+              // ),
               const Spacer(),
             ],
           ),

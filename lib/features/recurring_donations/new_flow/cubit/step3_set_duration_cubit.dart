@@ -21,12 +21,17 @@ class Step3SetDurationCubit
     repository.selectedEndOption ??= RecurringDonationStringKeys.whenIDecide;
 
     final frequency = repository.frequency;
-    var frequencyMessage = '';
+    var frequencyData = <String, dynamic>{};
     if (frequency != null) {
       final now = repository.startDate ?? DateTime.now();
       final day = now.day;
       final month = _monthName(now.month);
-      frequencyMessage = _getFrequencyMessage(frequency, day, month);
+      frequencyData = {
+        'frequency': frequency,
+        'day': day,
+        'month': month,
+        'messageKey': _getFrequencyMessage(frequency, day, month),
+      };
     }
 
     if (repository.startDate == null) {
@@ -37,7 +42,7 @@ class Step3SetDurationCubit
         selectedOption: repository.selectedEndOption,
         numberOfDonations: repository.numberOfDonations ?? '',
         endDate: repository.endDate,
-        frequencyMessage: frequencyMessage,
+        frequencyData: frequencyData,
       );
     } else {
       _emitData(
@@ -45,7 +50,7 @@ class Step3SetDurationCubit
         selectedOption: repository.selectedEndOption,
         numberOfDonations: repository.numberOfDonations ?? '',
         endDate: repository.endDate,
-        frequencyMessage: frequencyMessage,
+        frequencyData: frequencyData,
       );
     }
   }
@@ -85,7 +90,7 @@ class Step3SetDurationCubit
     DateTime? endDate,
     String? numberOfDonations,
     String? selectedOption,
-    String? frequencyMessage,
+    Map<String, dynamic>? frequencyData,
   }) {
     SetDurationUIModel? currentData;
     if (state is DataState<SetDurationUIModel, SetDurationAction>) {
@@ -107,8 +112,7 @@ class Step3SetDurationCubit
             numberOfDonations ?? currentData?.numberOfDonations ?? '',
         selectedOption: selectedOption ?? currentData?.selectedOption,
         isContinueEnabled: isContinueEnabled,
-        frequencyMessage:
-            frequencyMessage ?? currentData?.frequencyMessage ?? '',
+        frequencyData: frequencyData ?? currentData?.frequencyData ?? const {},
       ),
     );
   }
@@ -136,15 +140,15 @@ class Step3SetDurationCubit
   String _getFrequencyMessage(String frequency, int day, String month) {
     switch (frequency) {
       case 'Weekly':
-        return 'Your donation will occur every week on the $day';
+        return 'recurringDonationsEndDateHintEveryWeek';
       case 'Monthly':
-        return 'Your donation will occur on the $day of every month';
+        return 'recurringDonationsEndDateHintEveryMonth';
       case 'Quarterly':
-        return 'Your donation will occur every 3 months on the $day';
+        return 'recurringDonationsEndDateHintEveryXMonth';
       case 'Half year':
-        return 'Your donation will occur every 6 months on the $day';
+        return 'recurringDonationsEndDateHintEveryXMonth';
       case 'Yearly':
-        return 'Your donation will occur once a year on the $day of $month';
+        return 'recurringDonationsEndDateHintEveryYear';
       default:
         return '';
     }

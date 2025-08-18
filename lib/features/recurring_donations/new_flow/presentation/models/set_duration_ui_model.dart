@@ -9,7 +9,7 @@ class SetDurationUIModel extends Equatable {
     this.isLoading = false,
     this.error,
     this.isContinueEnabled = false,
-    this.frequencyMessage = '',
+    this.frequencyData = const {},
   });
 
   final DateTime? startDate;
@@ -19,7 +19,7 @@ class SetDurationUIModel extends Equatable {
   final bool isLoading;
   final String? error;
   final bool isContinueEnabled;
-  final String frequencyMessage;
+  final Map<String, dynamic> frequencyData;
 
   Map<String, dynamic> get analyticsParams => {
         'startDate': startDate?.toIso8601String() ?? '',
@@ -36,7 +36,7 @@ class SetDurationUIModel extends Equatable {
     bool? isLoading,
     String? error,
     bool? isContinueEnabled,
-    String? frequencyMessage,
+    Map<String, dynamic>? frequencyData,
   }) {
     return SetDurationUIModel(
       startDate: startDate ?? this.startDate,
@@ -46,7 +46,7 @@ class SetDurationUIModel extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
       isContinueEnabled: isContinueEnabled ?? this.isContinueEnabled,
-      frequencyMessage: frequencyMessage ?? this.frequencyMessage,
+      frequencyData: frequencyData ?? this.frequencyData,
     );
   }
 
@@ -59,6 +59,6 @@ class SetDurationUIModel extends Equatable {
         isLoading,
         error,
         isContinueEnabled,
-        frequencyMessage
+        frequencyData
       ];
 }

@@ -2039,7 +2039,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get closeModalNoBack => 'Nee, ik wil terug';
 
   @override
-  String get recurringDonationsSetAmountTitle =>
+  String get recurringDonationsStep2Description =>
       'Hoevaak en hoeveel wil je geven?';
 
   @override
@@ -2081,4 +2081,64 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get platformFeeRequired => 'Verplicht veld';
+
+  @override
+  String get recurringDonationsStep1Title => 'Kies organisatie';
+
+  @override
+  String get recurringDonationsStep1Description =>
+      'Aan welke organisatie wil je geven?';
+
+  @override
+  String get recurringDonationsStep1ListTitle => 'Kies van lijst';
+
+  @override
+  String get recurringDonationsStep1ListSubtitle =>
+      'Kies een doel uit de lijst';
+
+  @override
+  String get recurringDonationsStep2Title => 'Kies bedrag';
+
+  @override
+  String get recurringDonationsStep3Title => 'Kies periode';
+
+  @override
+  String get recurringDonationsStep3Description =>
+      'Voor welke periode wil je deze donatie plannen?';
+
+  @override
+  String get recurringDonationsStartingTitle => 'Beginnen op';
+
+  @override
+  String get recurringDonationsEndsTitle => 'Eindigen op';
+
+  @override
+  String get recurringDonationsEndsWhenIDecide => 'Wanneer ik daarvoor kies';
+
+  @override
+  String get recurringDonationsEndsAfterNumber =>
+      'Na een gekozen aantal donaties';
+
+  @override
+  String get recurringDonationsEndsAfterDate => 'Op een gekozen datum';
+
+  @override
+  String recurringDonationsEndDateHintEveryMonth(Object dag, Object day) {
+    return 'Je donatie vindt plaats op de $dag van elke maand';
+  }
+
+  @override
+  String recurringDonationsEndDateHintEveryWeek(Object day) {
+    return 'Je donatie vindt elke week plaats op de $day';
+  }
+
+  @override
+  String recurringDonationsEndDateHintEveryXMonth(Object day, Object freq) {
+    return 'Je donatie vindt elke $freq maanden plaats op de $day';
+  }
+
+  @override
+  String recurringDonationsEndDateHintEveryYear(Object day, Object month) {
+    return 'Je donatie vindt elk jaar plaats op de $day van $month';
+  }
 }
