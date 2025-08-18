@@ -1,5 +1,6 @@
 // This page implements the BarcodeLevelScanPage, which allows users to scan barcodes for the game level.
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -221,6 +222,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
         currentImage = images[tick % images.length];
         _spinningImage = currentImage;
       });
+      await HapticFeedback.selectionClick();
       tick++;
     }
   }
@@ -285,6 +287,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     _spinningImage = null;
     _isSpinning = false;
 
+    HapticFeedback.mediumImpact();
+
     FunBottomSheet(
       title: 'Oops, not recognized',
       content: const BodyMediumText(''), // TODO
@@ -308,6 +312,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     _spinningImage = null;
     _isSpinning = false;
 
+    HapticFeedback.mediumImpact();
+
     FunBottomSheet(
       title: 'Product already scanned',
       content: const BodyMediumText(''),
@@ -330,6 +336,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
   void _showWrongProductScanned() {
     _spinningImage = null;
     _isSpinning = false;
+
+    HapticFeedback.heavyImpact();
 
     FunBottomSheet(
       title: 'Wrong product scanned',
@@ -355,6 +363,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
       _isSpinning = false;
       _spinningImage = null;
     });
+
+    HapticFeedback.lightImpact();
 
     // Show confetti
     if (!mounted) return;
