@@ -300,36 +300,17 @@ DateTime _calculateEndDateFromNumberOfDonations(
 }
 
 String _monthName(int month) {
-  const months = [
-    '',
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  return months[month];
+  if (month < 1 || month > 12) return '';
+  
+  // Use localized month names from the current locale
+  final now = DateTime.now();
+  final date = DateTime(now.year, month, 1);
+  return DateFormat('MMM').format(date);
 }
 
 String _getDayOrdinal(int day) {
-  if (day >= 11 && day <= 13) {
-    return 'th';
-  }
-  switch (day % 10) {
-    case 1:
-      return 'st';
-    case 2:
-      return 'nd';
-    case 3:
-      return 'rd';
-    default:
-      return 'th';
-  }
+  // Use localized ordinal formatting from the current locale
+  final now = DateTime.now();
+  final date = DateTime(now.year, now.month, day);
+  return DateFormat('d').format(date).replaceAll(day.toString(), '');
 }
