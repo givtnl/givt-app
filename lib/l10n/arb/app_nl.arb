@@ -1023,8 +1023,8 @@
     "recurringDonationsEndsWhenIDecide": "Wanneer ik daarvoor kies",
     "recurringDonationsEndsAfterNumber": "Na een gekozen aantal donaties",
     "recurringDonationsEndsAfterDate": "Op een gekozen datum",
-    "recurringDonationsEndDateHintEveryMonth": "Je donatie vindt plaats op de {{dag}} van elke maand",
-    "recurringDonationsEndDateHintEveryWeek": "Je donatie vindt elke week plaats op de {{day}}",
-    "recurringDonationsEndDateHintEveryXMonth": "Je donatie vindt elke {{freq}} maanden plaats op de {{day}}",
-    "recurringDonationsEndDateHintEveryYear": "Je donatie vindt elk jaar plaats op de {{day}} van {{month}}"
+    "recurringDonationsEndDateHintEveryMonth": "Je donatie vindt plaats op de {dag} van elke maand",
+    "recurringDonationsEndDateHintEveryWeek": "Je donatie vindt elke week plaats op de {day}",
+    "recurringDonationsEndDateHintEveryXMonth": "Je donatie vindt elke {freq} maanden plaats op de {day}",
+    "recurringDonationsEndDateHintEveryYear": "Je donatie vindt elk jaar plaats op de {day} van {month}"
 }

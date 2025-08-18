@@ -1023,8 +1023,8 @@
     "recurringDonationsEndsWhenIDecide": "When I decide",
     "recurringDonationsEndsAfterNumber": "After a number of donations",
     "recurringDonationsEndsAfterDate": "On a specific date",
-    "recurringDonationsEndDateHintEveryMonth": "Your donation will occur on the {{day}} of every month",
-    "recurringDonationsEndDateHintEveryWeek": "Your donation will occur every week on the {{day}}",
-    "recurringDonationsEndDateHintEveryXMonth": "Your donation will occur every {{freq}} months on the {{day}}",
-    "recurringDonationsEndDateHintEveryYear": "Your donation will occur once a year on the {{day}} of {{month}}"
+    "recurringDonationsEndDateHintEveryMonth": "Your donation will occur on the {day} of every month",
+    "recurringDonationsEndDateHintEveryWeek": "Your donation will occur every week on the {day}",
+    "recurringDonationsEndDateHintEveryXMonth": "Your donation will occur every {freq} months on the {day}",
+    "recurringDonationsEndDateHintEveryYear": "Your donation will occur once a year on the {day} of {month}"
 }
