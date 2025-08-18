@@ -375,6 +375,9 @@ enum AmplitudeEvents {
   profileGenerosityHuntButtonClicked(
     'profile_generosity_hunt_button_clicked',
   ),
+  parentGenerosityHuntButtonClicked(
+    'parent_generosity_hunt_button_clicked',
+  ),
 
   enableCaptainAiClicked('enable_captain_ai_clicked'),
   maybeLaterCaptainAiClicked('maybe_later_captain_ai_clicked'),
