@@ -4,15 +4,17 @@ abstract class ProfilesState extends Equatable {
   const ProfilesState({
     required this.profiles,
     required this.activeProfileIndex,
+    required this.showBarcodeHunt,
   });
 
   static const int _loggedInUserSelected = 0;
 
   final List<Profile> profiles;
   final int activeProfileIndex;
+  final bool showBarcodeHunt;
 
   @override
-  List<Object> get props => [profiles, activeProfileIndex];
+  List<Object> get props => [profiles, activeProfileIndex, showBarcodeHunt];
 
   bool get isProfileSelected {
     return profiles.isNotEmpty;
@@ -45,6 +47,7 @@ class ProfilesInitialState extends ProfilesState {
   const ProfilesInitialState({
     super.profiles = const [],
     super.activeProfileIndex = ProfilesState._loggedInUserSelected,
+    super.showBarcodeHunt = false,
   });
 }
 
@@ -53,6 +56,7 @@ class ProfilesLoadingState extends ProfilesState {
   const ProfilesLoadingState({
     super.profiles = const [],
     super.activeProfileIndex = ProfilesState._loggedInUserSelected,
+    super.showBarcodeHunt = false,
   });
 }
 
@@ -61,6 +65,7 @@ class ProfilesUpdatedState extends ProfilesState {
   const ProfilesUpdatedState({
     required super.profiles,
     required super.activeProfileIndex,
+    required super.showBarcodeHunt,
   });
 }
 
@@ -68,24 +73,26 @@ class ProfilesExternalErrorState extends ProfilesState {
   const ProfilesExternalErrorState({
     required super.profiles,
     required super.activeProfileIndex,
+    required super.showBarcodeHunt,
     this.errorMessage = '',
   });
 
   final String errorMessage;
 
   @override
-  List<Object> get props => [profiles, activeProfileIndex, errorMessage];
+  List<Object> get props => [profiles, activeProfileIndex, showBarcodeHunt, errorMessage];
 }
 
 class ProfilesCountdownState extends ProfilesState {
   const ProfilesCountdownState({
     required super.profiles,
     required super.activeProfileIndex,
+    required super.showBarcodeHunt,
     required this.amount,
   });
 
   final double amount;
 
   @override
-  List<Object> get props => [profiles, activeProfileIndex, amount];
+  List<Object> get props => [profiles, activeProfileIndex, showBarcodeHunt, amount];
 }
