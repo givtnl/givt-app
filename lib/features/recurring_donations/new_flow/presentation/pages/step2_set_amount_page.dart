@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/cubit/step2_set_amount_cubit.dart';
+import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/set_amount_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/pages/step3_set_duration_page.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/widgets/frequency_dropdown.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/widgets/fun_modal_close_flow.dart';
