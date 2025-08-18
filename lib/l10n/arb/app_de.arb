@@ -1026,5 +1026,14 @@
     "recurringDonationsEndDateHintEveryMonth": "Your donation will occur on the {day} of every month",
     "recurringDonationsEndDateHintEveryWeek": "Your donation will occur every week on the {day}",
     "recurringDonationsEndDateHintEveryXMonth": "Your donation will occur every {freq} months on the {day}",
-    "recurringDonationsEndDateHintEveryYear": "Your donation will occur once a year on the {day} of {month}"
+    "recurringDonationsEndDateHintEveryYear": "Your donation will occur once a year on the {day} of {month}",
+    "recurringDonationsEndsAfterXDonations": "After {amount} of donations",
+    "recurringDonationsStep4Title": "Confirm",
+    "recurringDonationsStep4Description": "Ready to make a difference?",
+    "recurringDonationsStep4YoullDonateTo": "You'll donate to",
+    "recurringDonationsStep4Amount": "Amount",
+    "recurringDonationsStep4Frequency": "Frequency",
+    "recurringDonationsStep4Starts": "Starts",
+    "recurringDonationsStep4Ends": "Ends",
+    "recurringDonationsStep4ConfirmMyDonation": "Confirm my donation"
 }
