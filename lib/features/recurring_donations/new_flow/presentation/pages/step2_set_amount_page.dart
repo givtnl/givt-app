@@ -85,7 +85,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                   _cubit.selectFrequency(value);
 
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step2SetAmountFrequencySelected,
+                    eventName: AmplitudeEvents.recurringStep2SetAmountFrequencySelected,
                     eventProperties: {
                       'Frequency': value,
                     },
@@ -106,7 +106,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                   _cubit.enterAmount(value);
 
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step2SetAmountAmountEntered,
+                    eventName: AmplitudeEvents.recurringStep2SetAmountAmountEntered,
                     eventProperties: {
                       'Amount': value,
                     },
@@ -118,7 +118,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                 text: context.l10n.buttonContinue,
                 isDisabled: !uiModel.isContinueEnabled,
                 analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.step2SetAmountContinueClicked,
+                  AmplitudeEvents.recurringStep2SetAmountContinueClicked,
                   parameters: {
                     AnalyticsHelper.amountKey: uiModel.amount,
                     'frequency': uiModel.selectedFrequency ?? '',

@@ -127,7 +127,7 @@ class FunBottomSheet extends StatelessWidget {
   }
 
   Widget showHeadlineContent() {
-    if (headlineContent == null) return const SizedBox(height: 24);
+    if (headlineContent == null) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.only(top: 36),
@@ -153,10 +153,11 @@ class FunBottomSheet extends StatelessWidget {
     );
   }
 
-  void show(BuildContext context) {
+  void show(BuildContext context, {bool isDismissible = true}) {
     showModalBottomSheet<void>(
       context: context,
       useSafeArea: true,
+      isDismissible: isDismissible,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),

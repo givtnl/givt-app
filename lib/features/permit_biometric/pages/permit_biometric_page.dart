@@ -33,6 +33,7 @@ class PermitBiometricPage extends StatelessWidget {
         return Theme(
           data: AppTheme.lightTheme,
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             body: _buildContent(context, state),
           ),
         );

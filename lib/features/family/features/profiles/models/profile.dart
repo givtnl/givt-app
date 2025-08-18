@@ -22,8 +22,6 @@ class Profile extends Equatable {
     this.unlocks = const [],
   });
   factory Profile.fromMap(Map<String, dynamic> map) {
-    final pictureMap = map['picture'] as Map<String, dynamic>;
-
     final walletMap = map['wallet'] == null
         ? const Wallet.empty()
         : Wallet.fromMap(map['wallet'] as Map<String, dynamic>);

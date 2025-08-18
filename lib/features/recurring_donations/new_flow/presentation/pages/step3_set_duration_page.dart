@@ -78,7 +78,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                 onDateSelected: (date) {
                   _cubit.updateStartDate(date);
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step3SetDurationStartDate,
+                    eventName: AmplitudeEvents.recurringStep3SetDurationStartDate,
                     eventProperties: {'date': date.toIso8601String()},
                   );
                 },
@@ -89,7 +89,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                 onOptionSelected: (option) {
                   _cubit.updateSelectedOption(option);
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step3SetDurationOption,
+                    eventName: AmplitudeEvents.recurringStep3SetDurationOption,
                     eventProperties: {'option': option},
                   );
                 },
@@ -97,14 +97,14 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                 onNumberChanged: (number) {
                   _cubit.updateNumberOfDonations(number);
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step3SetDurationNumber,
+                    eventName: AmplitudeEvents.recurringStep3SetDurationNumber,
                     eventProperties: {'number': number},
                   );
                 },
                 onDateChanged: (date) {
                   _cubit.updateEndDate(date);
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step3SetDurationEndDate,
+                    eventName: AmplitudeEvents.recurringStep3SetDurationEndDate,
                     eventProperties: {'date': date.toIso8601String()},
                   );
                 },
@@ -114,7 +114,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                 text: context.l10n.buttonContinue,
                 isDisabled: !uiModel.isContinueEnabled,
                 analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.step3SetDurationContinue,
+                  AmplitudeEvents.recurringStep3SetDurationContinue,
                   parameters: uiModel.analyticsParams,
                 ),
                 onTap: uiModel.isContinueEnabled

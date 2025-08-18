@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/presentation/pages/generosity_hunt_intro_page.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/pages/intro_bedtime_screen.dart';
 import 'package:givt_app/features/family/features/box_origin/presentation/box_origin_question_screen.dart';
 import 'package:givt_app/features/family/features/child_details/cubit/child_details_cubit.dart';
@@ -64,7 +65,7 @@ import 'package:givt_app/features/permit_biometric/models/permit_biometric_reque
 import 'package:givt_app/features/permit_biometric/pages/family_permit_biometric_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/bloc/organisation/organisation.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -568,6 +569,11 @@ class FamilyAppRoutes {
           path: FamilyPages.setupPushNotification.path,
           name: FamilyPages.setupPushNotification.name,
           builder: (context, state) => const NotificationMissionScreen(),
+        ),
+        GoRoute(
+          path: FamilyPages.newGame.path,
+          name: FamilyPages.newGame.name,
+          builder: (context, state) => const GenerosityHuntIntroPage(),
         ),
       ],
     ),

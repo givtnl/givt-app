@@ -178,7 +178,7 @@ class AnnualBarChart extends StatelessWidget {
               width: constraints.maxWidth - 50,
               height: 16,
               decoration: BoxDecoration(
-                color: AppTheme.givtLightGreen.withOpacity(0.2),
+                color: AppTheme.givtLightGreen.withValues(alpha: 0.2),
                 borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(4),
                   bottomRight: Radius.circular(4),

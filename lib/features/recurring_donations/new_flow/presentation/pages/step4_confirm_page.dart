@@ -90,7 +90,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 icon: const Icon(Icons.close),
                 onPressed: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step4ConfirmClose,
+                    eventName: AmplitudeEvents.recurringStep4ConfirmClose,
                   );
                   const FunModalCloseFlow().show(context);
                 },
@@ -113,7 +113,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 value: model.organizationName,
                 onEdit: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step4ConfirmEditOrganisation,
+                    eventName: AmplitudeEvents.recurringStep4ConfirmEditOrganisation,
                   );
                   _cubit.navigateToOrganization();
                 },
@@ -124,7 +124,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 value: model.amount.isNotEmpty ? '€${model.amount}' : '',
                 onEdit: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step4ConfirmEditAmount,
+                    eventName: AmplitudeEvents.recurringStep4ConfirmEditAmount,
                   );
                   _cubit.navigateToAmount();
                 },
@@ -135,7 +135,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 value: model.frequency,
                 onEdit: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step4ConfirmEditFrequency,
+                    eventName: AmplitudeEvents.recurringStep4ConfirmEditFrequency,
                   );
                   _cubit.navigateToFrequency();
                 },
@@ -148,7 +148,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                     : '',
                 onEdit: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step4ConfirmEditStartDate,
+                    eventName: AmplitudeEvents.recurringStep4ConfirmEditStartDate,
                   );
                   _cubit.navigateToStartDate();
                 },
@@ -159,7 +159,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 value: endsText,
                 onEdit: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step4ConfirmEditEndDate,
+                    eventName: AmplitudeEvents.recurringStep4ConfirmEditEndDate,
                   );
                   _cubit.navigateToEndDate();
                 },
@@ -168,12 +168,12 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
               FunButton(
                 text: 'Confirm my donation',
                 analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.step4ConfirmDonation,
+                  AmplitudeEvents.recurringStep4ConfirmDonation,
                   parameters: model.analyticsParams,
                 ),
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.step4ConfirmDonation,
+                    eventName: AmplitudeEvents.recurringStep4ConfirmDonation,
                   );
                   _cubit.confirmDonation(
                     context.read<AuthCubit>().state.user.country,

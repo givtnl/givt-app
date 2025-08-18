@@ -49,12 +49,12 @@ abstract class TooltipControllerImpl {
     _widgetsPlayController.sink.add(_playableWidgets[_nextPlayIndex]);
   }
 
-  void setStartWhen(
+  Future<void> setStartWhen(
       Future<bool> Function(int initializedWidgetLength) callback) async {
     _startWhenCallback = callback;
   }
 
-  next() {
+  void next() {
     _nextPlayIndex++;
     if (_nextPlayIndex < _playableWidgets.length) {
       _widgetsPlayController.sink.add(_playableWidgets[_nextPlayIndex]);
@@ -64,28 +64,28 @@ abstract class TooltipControllerImpl {
     }
   }
 
-  previous() {
+  void previous() {
     if (_nextPlayIndex > 0) {
       _nextPlayIndex--;
       _widgetsPlayController.sink.add(_playableWidgets[_nextPlayIndex]);
     }
   }
 
-  pause() {
+  void pause() {
     _widgetsPlayController.sink.add(null);
   }
 
-  dismiss() {
+  void dismiss() {
     _widgetsPlayController.sink.add(null);
     _onDoneCallback?.call();
   }
 
-  void addPlayableWidget(OverlayTooltipModel model) async {
+  Future<void> addPlayableWidget(OverlayTooltipModel model) async {
     if (_playableWidgets
         .map((e) => e.displayIndex)
         .toList()
         .contains(model.displayIndex)) {
-      int prevIndex = _playableWidgets.indexOf(model);
+      final prevIndex = _playableWidgets.indexOf(model);
       _playableWidgets[prevIndex] = model;
     } else {
       _playableWidgets.add(model);

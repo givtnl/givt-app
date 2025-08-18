@@ -29,6 +29,8 @@ class FunTooltip extends StatelessWidget {
     this.analyticsEvent,
     this.onButtonTap,
     this.onHighlightedWidgetTap,
+    this.dropShadow = false,
+    this.enableTapToDismiss = false,
   });
 
   final int tooltipIndex;
@@ -65,6 +67,9 @@ class FunTooltip extends StatelessWidget {
   // Replaced the default button with a custom one
   final Widget? buttonBottomRightOverride;
 
+  final bool dropShadow;
+  final bool enableTapToDismiss;
+
   final Widget child;
 
   static const horizontalPadding = 24.0;
@@ -79,98 +84,129 @@ class FunTooltip extends StatelessWidget {
       onHighlightedWidgetTap: onHighlightedWidgetTap,
       tooltip: (TooltipController controller) {
         final width = MediaQuery.of(context).size.width;
-        return Tooltip(
-          enableTapToDismiss: false,
-          message: title,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-              vertical: 12,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (tooltipVerticalPosition == TooltipVerticalPosition.BOTTOM)
-                  _bubbleTriangle(),
-                Container(
-                  width: width - (horizontalPadding * 2),
-                  padding: const EdgeInsets.only(
-                      left: 16, top: 16, right: 16, bottom: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (showImage) imageLeft ?? FunAvatar.captain(),
-                      if (showImage) const SizedBox(width: 12),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TitleSmallText(
-                              title,
-                              color: FamilyAppTheme.secondary30,
-                              textAlign: TextAlign.start,
-                            ),
-                            BodySmallText(
-                              description,
-                              color: FamilyAppTheme.secondary30,
-                            ),
-                            const SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return Theme(
+          data: const FamilyAppTheme().toThemeData(),
+          child: Tooltip(
+            enableTapToDismiss: enableTapToDismiss,
+            message: title,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: horizontalPadding,
+                vertical: 12,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: dropShadow
+                      ? [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.25),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ]
+                      : [],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (tooltipVerticalPosition ==
+                        TooltipVerticalPosition.BOTTOM)
+                      _bubbleTriangle(),
+                    Container(
+                      width: width - (horizontalPadding * 2),
+                      padding: const EdgeInsets.only(
+                        left: 16,
+                        top: 16,
+                        right: 16,
+                        bottom: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (showImage) imageLeft ?? FunAvatar.captain(),
+                          if (showImage) const SizedBox(width: 12),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                LabelMediumText(
-                                  labelBottomLeft,
+                                TitleSmallText(
+                                  title,
+                                  color: FamilyAppTheme.secondary30,
+                                  textAlign: TextAlign.start,
                                 ),
-                                Opacity(
-                                  opacity: showButton ? 1 : 0,
-                                  child: Semantics(
-                                    identifier: 'tooltipNext$tooltipIndex',
-                                    label: 'tooltipNext$tooltipIndex',
-                                    child: buttonBottomRightOverride ??
-                                        CustomIconBorderButton(
-                                          key: ValueKey(
-                                            'tooltipNext$tooltipIndex',
+                                BodySmallText(
+                                  description,
+                                  color: FamilyAppTheme.secondary30,
+                                ),
+                                if(labelBottomLeft.isNotEmpty || showButton)
+                                Column(
+                                  children: [
+                                    const SizedBox(height: 12),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        if (labelBottomLeft.isNotEmpty)
+                                          LabelMediumText(
+                                            labelBottomLeft,
                                           ),
-                                          onTap: onButtonTap ??
-                                              () => controller.next(),
-                                          analyticsEvent:
-                                              analyticsEventButtonOverride ??
-                                                  AnalyticsEvent(
-                                                    analyticsEvent ??
-                                                        AmplitudeEvents
-                                                            .tutorialNextClicked,
-                                                    parameters: {
-                                                      'tutorialLabelBottomLeft':
-                                                          labelBottomLeft,
-                                                      'tutorialTitle': title,
-                                                      'tutorialDescription':
-                                                          description,
-                                                    },
+                                        Opacity(
+                                          opacity: showButton ? 1 : 0,
+                                          child: Semantics(
+                                            identifier:
+                                                'tooltipNext$tooltipIndex',
+                                            label: 'tooltipNext$tooltipIndex',
+                                            child: buttonBottomRightOverride ??
+                                                CustomIconBorderButton(
+                                                  key: ValueKey(
+                                                    'tooltipNext$tooltipIndex',
                                                   ),
-                                          child: buttonIcon ??
-                                              const FaIcon(
-                                                FontAwesomeIcons.arrowRight,
-                                              ),
+                                                  onTap: onButtonTap ??
+                                                      () => controller.next(),
+                                                  analyticsEvent:
+                                                      analyticsEventButtonOverride ??
+                                                          AnalyticsEvent(
+                                                            analyticsEvent ??
+                                                                AmplitudeEvents
+                                                                    .tutorialNextClicked,
+                                                            parameters: {
+                                                              'tutorialLabelBottomLeft':
+                                                                  labelBottomLeft,
+                                                              'tutorialTitle':
+                                                                  title,
+                                                              'tutorialDescription':
+                                                                  description,
+                                                            },
+                                                          ),
+                                                  child: buttonIcon ??
+                                                      const FaIcon(
+                                                        FontAwesomeIcons
+                                                            .arrowRight,
+                                                      ),
+                                                ),
+                                          ),
                                         ),
-                                  ),
-                                ),
+                                      ],
+                                    ),
+                                  ],
+                                )
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    if (tooltipVerticalPosition == TooltipVerticalPosition.TOP)
+                      _bubbleTriangle(),
+                  ],
                 ),
-                if (tooltipVerticalPosition == TooltipVerticalPosition.TOP)
-                  _bubbleTriangle(),
-              ],
+              ),
             ),
           ),
         );

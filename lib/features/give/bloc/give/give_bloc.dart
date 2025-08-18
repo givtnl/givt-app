@@ -295,9 +295,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       organisation,
     );
 
+    var transactionIds = <int>[];
     try {
       LoggingInfo.instance.info('Submitting Givts');
-      await _givtRepository.submitGivts(
+      transactionIds = await _givtRepository.submitGivts(
         guid: userGUID,
         body: {'donations': GivtTransaction.toJsonList(transactionList)},
       );
@@ -320,6 +321,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         status: GiveStatus.readyToGive,
         organisation: organisation,
         givtTransactions: transactionList,
+        transactionIds: transactionIds,
       ),
     );
   }

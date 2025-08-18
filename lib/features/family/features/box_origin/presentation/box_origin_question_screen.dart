@@ -39,8 +39,7 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
           Align(
             alignment: Alignment.topCenter,
             child: TitleMediumText(
-              context
-                  .l10n.originQuestionSubtitle, // Where did you get your box?
+              'What church do you go to?', // Where did you get your box?
               textAlign: TextAlign.center,
             ),
           ),

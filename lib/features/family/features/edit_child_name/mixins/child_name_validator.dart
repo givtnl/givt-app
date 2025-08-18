@@ -1,4 +1,4 @@
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 
 mixin ChildNameValidator {
   static const int nameMinLength = 3;

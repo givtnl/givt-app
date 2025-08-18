@@ -7,9 +7,8 @@ env:
 - tapOn: 
     label: Tap on "Give"
     text: "Give\nDonate to a cause"
-- tapOn: 
-    label: Tap on kid profile
-    text: ${KIDSNAME}
+- tapOn:
+    id: "Hero2.svg"
 - assertVisible: 
     label: Name of kid is visible
     text: ${KIDSNAME}
@@ -33,7 +32,7 @@ env:
     label: Tap on the first suggestion
     point: "50%,40%"
 - tapOn:
-    id: "backButton"
+    id: "closeButton"
 - "scroll"
 - tapOn:
     label: Tap on the last suggestion

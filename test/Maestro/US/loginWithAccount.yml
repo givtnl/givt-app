@@ -2,10 +2,12 @@ appId: net.givtapp.ios.test
 name: Login with an existing account.
 
 ---
+- launchApp:
+    clearState: true
 - tapOn:
     id: "icon-FontAwesomeSolid-62845"
 - tapOn: "United States of America"
-- tapOn: "E-mail address"
+- tapOn: "Parent email address"
 - inputText: 
     label: Enter the test user's Email
     text: ${USERNAME}

@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/features/edit_child_name/mixins/mixins.
 import 'package:givt_app/features/family/features/edit_child_name/models/edit_child.dart';
 import 'package:givt_app/features/family/features/edit_child_name/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/utils/utils.dart';
 
 part 'edit_child_state.dart';

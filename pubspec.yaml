@@ -1,10 +1,10 @@
 name: givt_app
 description: Givt App
-version: 4.10.10
+version: 4.12.0
 publish_to: none
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
 
 dependencies:
   amplitude_flutter: ^3.16.7
@@ -34,7 +34,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_stripe: ^11.4.0
-  flutter_svg: ^2.0.17
+  flutter_svg: ^2.2.0
   flutter_timezone: ^4.1.0
   font_awesome_flutter: ^10.8.0
   fuzzywuzzy: ^1.2.0
@@ -51,7 +51,7 @@ dependencies:
   image_picker: ^1.1.2
   in_app_review: ^2.0.10
   internet_connection_checker_plus: ^2.7.0
-  intl: ^0.19.0
+  intl: ^0.20.2
   ios_utsname_ext: ^2.3.0
   jiffy: ^6.3.2
   local_auth: ^2.3.0
@@ -83,7 +83,7 @@ dependencies:
   audioplayers: ^6.1.2
   firebase_remote_config: ^5.4.0
   rxdart: ^0.28.0
-  facebook_app_events: ^0.19.6
+  facebook_app_events: ^0.20.1
   volume_controller: ^3.2.0
   waveform_flutter:
     path: ./packages/waveform
@@ -95,7 +95,7 @@ dev_dependencies:
     sdk: flutter
   golden_toolkit: ^0.15.0
   melos: ^6.3.2
-  very_good_analysis: ^7.0.0
+  very_good_analysis: ^9.0.0
   patrol: ^3.14.0
   patrol_finders: ^2.7.0
   integration_test:
@@ -171,6 +171,8 @@ flutter:
     - assets/family/images/avatar/default/
     - assets/family/images/avatar/custom/
     - assets/family/images/avatar/custom/tiles/
+    - assets/family/images/barcode_hunt/
+    - assets/family/images/barcode_hunt/products/
     - assets/family/lotties/
     - assets/fun/illustrations/
     - assets/family/audio/

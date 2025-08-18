@@ -37,7 +37,6 @@ class StageScreen extends StatefulWidget {
 
 class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
   final StageCubit _stageCubit = getIt<StageCubit>();
-  final RecordCubit _recordCubit = getIt<RecordCubit>();
 
   @override
   void initState() {

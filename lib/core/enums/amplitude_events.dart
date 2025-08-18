@@ -369,6 +369,10 @@ enum AmplitudeEvents {
   familyHomeScreenStatsContainerClicked(
     'family_home_screen_stats_container_clicked',
   ),
+  homeGenerosityHuntButtonClicked(
+    'home_generosity_hunt_button_clicked',
+  ),
+
   enableCaptainAiClicked('enable_captain_ai_clicked'),
   maybeLaterCaptainAiClicked('maybe_later_captain_ai_clicked'),
   userToggledAIFeature('user_toggled_ai_feature'),
@@ -428,9 +432,6 @@ enum AmplitudeEvents {
   saveAvatarNoClicked('save_avatar_no_clicked'),
   newBadgeSeen('new_badge_seen'),
 
-  // Refund
-  refundInfoRequested('refund_info_viewed'),
-
   // Cancel Donation
   cancelDonationButtonClicked('cancel_donation_button_clicked'),
   cancelDonationNoClicked('cancel_donation_no_clicked'),
@@ -439,28 +440,41 @@ enum AmplitudeEvents {
   // Memory summary
   memorySummaryClicked('memory_summary_clicked'),
 
+  // Donation overview (EU)
+  donationOverviewPlatformContributionClicked('donation_overview_platform_contribution_clicked'),
+  donationOverviewRefundInfoRequested('refund_info_viewed'),
+
+  // Generosity Hunt
+  generosityHuntScanTryAgainClicked('generosity_hunt_scan_try_again_clicked'),
+  generosityHuntScanClaimClicked('generosity_hunt_scan_claim_clicked'),
+  generosityHuntLevelTileClicked('generosity_hunt_level_tile_clicked'),
+  generosityHuntLevelStart('generosity_hunt_level_start'),
+  generosityHuntBarcodeScanned('generosity_hunt_barcode_scanned'),
+  
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
 
   // Recurring Donations New Flow - Step 2 Set Amount
-  step2SetAmountFrequencySelected('step2_set_amount_frequency_selected'),
-  step2SetAmountAmountEntered('step2_set_amount_amount_entered'),
-  step2SetAmountContinueClicked('step2_set_amount_continue_clicked'),
+  recurringStep2SetAmountFrequencySelected('recurring_step2_set_amount_frequency_selected'),
+  recurringStep2SetAmountAmountEntered('recurring_step2_set_amount_amount_entered'),
+  recurringStep2SetAmountContinueClicked('recurring_step2_set_amount_continue_clicked'),
 
-  step3SetDurationStartDate('step3_set_duration_start_date'),
-  step3SetDurationOption('step3_set_duration_option'),
-  step3SetDurationNumber('step3_set_duration_number'),
-  step3SetDurationEndDate('step3_set_duration_end_date'),
-  step3SetDurationContinue('step3_set_duration_continue'),
+  recurringStep3SetDurationStartDate('recurring_step3_set_duration_start_date'),
+  recurringStep3SetDurationOption('recurring_step3_set_duration_option'),
+  recurringStep3SetDurationNumber('recurring_step3_set_duration_number'),
+  recurringStep3SetDurationEndDate('recurring_step3_set_duration_end_date'),
+  recurringStep3SetDurationContinue('recurring_step3_set_duration_continue'),
 
   // Recurring Donation New Flow - Step 4 Confirm
-  step4ConfirmClose('step4_confirm_close'),
-  step4ConfirmEditOrganisation('step4_confirm_edit_organisation'),
-  step4ConfirmEditAmount('step4_confirm_edit_amount'),
-  step4ConfirmEditFrequency('step4_confirm_edit_frequency'),
-  step4ConfirmEditStartDate('step4_confirm_edit_start_date'),
-  step4ConfirmEditEndDate('step4_confirm_edit_end_date'),
-  step4ConfirmDonation('step4_confirm_donation'),
+  recurringStep4ConfirmClose('recurring_step4_confirm_close'),
+  recurringStep4ConfirmEditOrganisation('recurring_step4_confirm_edit_organisation'),
+  recurringStep4ConfirmEditAmount('recurring_step4_confirm_edit_amount'),
+  recurringStep4ConfirmEditFrequency('recurring_step4_confirm_edit_frequency'),
+  recurringStep4ConfirmEditStartDate('recurring_step4_confirm_edit_start_date'),
+  recurringStep4ConfirmEditEndDate('recurring_step4_confirm_edit_end_date'),
+  recurringStep4ConfirmDonation('recurring_step4_confirm_donation'),
+
+  familyHomeScreenNewGameButtonClicked('family_home_screen_new_game_button_clicked'),
   ;
 
   const AmplitudeEvents(this.value);

@@ -3,7 +3,7 @@ name: Ask for creditcard details in give flow
 #When the user didn't fill in creditcard details yet it will be asked in the giving flow.
 ---
 - assertVisible: "Oops, an empty Wallet"
-- tapOn: "Top up"
+- tapOn: ".*Top up"
 - tapOn: "Password"
 - inputText:
     label: Enter the test user's Password

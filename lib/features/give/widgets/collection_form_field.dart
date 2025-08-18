@@ -91,7 +91,7 @@ class _CollectionFormFieldState extends State<CollectionFormField> {
                   fontWeight: FontWeight.normal,
                   fontSize: MediaQuery.sizeOf(context).height < 600 ? null : 28,
                   color: _isTapped
-                      ? widget.textColor.withOpacity(0.40)
+                      ? widget.textColor.withValues(alpha: 0.40)
                       : widget.textColor,
                 ),
             decoration: InputDecoration(

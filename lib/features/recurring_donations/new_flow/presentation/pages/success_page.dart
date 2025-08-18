@@ -73,12 +73,12 @@ class _SuccessPageState extends State<SuccessPage> {
             FunButton(
               text: 'Done',
               analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.step4ConfirmDonation,
+                AmplitudeEvents.recurringStep4ConfirmDonation,
                 parameters: widget.model.analyticsParams,
               ),
               onTap: () {
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.step4ConfirmDonation,
+                  eventName: AmplitudeEvents.recurringStep4ConfirmDonation,
                 );
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },

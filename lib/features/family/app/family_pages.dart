@@ -79,6 +79,7 @@ enum FamilyPages {
   //Game summaries
   gameSummaries(path: 'game-summaries', name: 'GAME-SUMMARIES'),
   parentSummary(path: 'parent-summary', name: 'PARENT-SUMMARY'),
+  newGame(path: 'new-game', name: 'NEW-GAME'),
   ;
 
   final String path;

@@ -322,7 +322,7 @@ class YearlyDetailBottomSheet extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color:
-            isEven ? AppTheme.givtLightPurple.withOpacity(0.2) : Colors.white,
+            isEven ? AppTheme.givtLightPurple.withValues(alpha: 0.2) : Colors.white,
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: 20,

@@ -45,7 +45,7 @@ class FunMissionCard extends StatelessWidget {
             eventProperties: analyticsEvent.parameters,
           ),
         );
-        
+
         onTap?.call();
       },
       child: Container(
@@ -72,14 +72,28 @@ class FunMissionCard extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (uiModel.headerIcon != null) uiModel.headerIcon!,
+                        if (uiModel.headerIcon != null)
+                          uiModel.disabled
+                              ? uiModel.headerIcon!.copyWith(
+                                  iconColorOverride: FamilyAppTheme.neutral40,
+                                )
+                              : uiModel.headerIcon!,
                         const SizedBox(height: 12),
                         TitleSmallText(
                           uiModel.title,
                           textAlign: TextAlign.center,
+                          color: uiModel.disabled
+                              ? FamilyAppTheme.neutral50
+                              : null,
                         ),
                         const SizedBox(height: 4),
-                        BodySmallText.primary40(uiModel.description),
+                        BodySmallText(
+                          uiModel.description,
+                          color: uiModel.disabled
+                              ? FamilyAppTheme.neutral60
+                              : null,
+                          textAlign: TextAlign.center,
+                        ),
                         if (uiModel.progress != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 16, bottom: 8),
@@ -94,9 +108,10 @@ class FunMissionCard extends StatelessWidget {
                     Align(
                       alignment: Alignment.topRight,
                       child: FaIcon(
-                        semanticLabel: 'icon-${uiModel.actionIcon.fontFamily}-${uiModel.actionIcon.codePoint}',
+                        semanticLabel:
+                            'icon-${uiModel.actionIcon.fontFamily}-${uiModel.actionIcon.codePoint}',
                         uiModel.actionIcon,
-                        color: FamilyAppTheme.primary40.withOpacity(0.75),
+                        color: FamilyAppTheme.primary40.withValues(alpha: 0.75),
                       ),
                     ),
                 ],

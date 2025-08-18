@@ -197,8 +197,8 @@ class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
                 color: (Theme.of(context).brightness == Brightness.dark
                         ? Colors.white
                         : Colors.black)
-                    .withOpacity(
-                  currentIndex == entry.key ? 0.9 : 0.4,
+                    .withValues(
+                  alpha: currentIndex == entry.key ? 0.9 : 0.4,
                 ),
               ),
             ),

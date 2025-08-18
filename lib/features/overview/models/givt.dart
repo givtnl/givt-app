@@ -15,6 +15,8 @@ class Givt extends Equatable {
     required this.mediumId,
     required this.taxYear,
     this.donationType = 0,
+    this.platformFeeTransactionId,
+    this.platformFeeAmount,
   });
 
   const Givt.empty()
@@ -29,7 +31,9 @@ class Givt extends Equatable {
         status = 0,
         timeStamp = null,
         mediumId = '',
-        donationType = 0;
+        donationType = 0,
+        platformFeeTransactionId = null,
+        platformFeeAmount = null;
 
   Map<String, dynamic> toJson() {
     return {
@@ -45,6 +49,8 @@ class Givt extends Equatable {
       'MediumId': mediumId,
       'TaxYear': taxYear,
       'DonationType': donationType,
+      'PlatformFeeTransactionId': platformFeeTransactionId,
+      'PlatformFeeAmount': platformFeeAmount,
     };
   }
 
@@ -79,6 +85,8 @@ class Givt extends Equatable {
       taxYear: taxYear,
       donationType:
           json.containsKey('DonationType') ? json['DonationType'] as int : 0,
+      platformFeeTransactionId: json['PlatformFeeTransactionId'] as int?,
+      platformFeeAmount: json['PlatformFeeAmount'] as double?,
     );
   }
 
@@ -102,6 +110,8 @@ class Givt extends Equatable {
   final String mediumId;
   final int taxYear;
   final int donationType;
+  final int? platformFeeTransactionId;
+  final double? platformFeeAmount;
 
   Givt copyWith({
     int? id,
@@ -116,6 +126,8 @@ class Givt extends Equatable {
     String? mediumId,
     int? taxYear,
     int? donationType,
+    int? platformFeeTransactionId,
+    double? platformFeeAmount,
   }) =>
       Givt(
         id: id ?? this.id,
@@ -131,6 +143,9 @@ class Givt extends Equatable {
         timeStamp: timeStamp ?? this.timeStamp,
         mediumId: mediumId ?? this.mediumId,
         donationType: donationType ?? this.donationType,
+        platformFeeTransactionId:
+            platformFeeTransactionId ?? this.platformFeeTransactionId,
+        platformFeeAmount: platformFeeAmount ?? this.platformFeeAmount,
       );
 
   @override
@@ -146,5 +161,7 @@ class Givt extends Equatable {
         timeStamp,
         mediumId,
         donationType,
+        platformFeeTransactionId,
+        platformFeeAmount,
       ];
 }

@@ -10,7 +10,6 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.URL
@@ -29,25 +28,21 @@ public class HttpCertificatePinningPlugin : FlutterPlugin, MethodCallHandler {
 
   private var threadExecutorService: ExecutorService? = null
   private var handler: Handler? = null
+  private lateinit var channel: MethodChannel
 
   init {
     threadExecutorService = Executors.newSingleThreadExecutor()
     handler = Handler(Looper.getMainLooper())
   }
-
-  companion object {
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "http_certificate_pinning")
-      channel.setMethodCallHandler(HttpCertificatePinningPlugin())
-    }
+  
+  override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+      channel = MethodChannel(flutterPluginBinding.binaryMessenger, "cpu_reader")
+      channel.setMethodCallHandler(this)
   }
 
-  override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    val channel = MethodChannel(binding.binaryMessenger, "http_certificate_pinning")
-    channel.setMethodCallHandler(HttpCertificatePinningPlugin())
+  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+      channel.setMethodCallHandler(null)
   }
-
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     try {
@@ -128,9 +123,5 @@ public class HttpCertificatePinningPlugin : FlutterPlugin, MethodCallHandler {
                   .digest(input)
                   .map { String.format("%02X", it) }
                   .joinToString(separator = "")
-
-
-  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {}
-
 
 }

@@ -21,12 +21,14 @@ class FamilyHomeOverlay extends StatefulWidget {
     required this.onAvatarTapped,
     this.withTutorial = false,
     this.withRewardText = false,
+    this.openNewGame = false,
     super.key,
   });
 
   final FamilyHomeScreenUIModel uiModel;
   final bool withTutorial;
   final bool withRewardText;
+  final bool openNewGame;
   final void Function() onNextTutorialClicked;
   final void Function() onDismiss;
   final void Function(int index) onAvatarTapped;
@@ -58,7 +60,7 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
           sigmaY: 4,
         ),
         child: FunScaffold(
-          backgroundColor: FamilyAppTheme.primary50.withOpacity(0.5),
+          backgroundColor: FamilyAppTheme.primary50.withValues(alpha: 0.5),
           minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
           appBar: const FunTopAppBar(
             title: null,
@@ -74,16 +76,18 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: TitleLargeText(
-                      widget.withRewardText
-                          ? context.l10n.homescreenOverlayDiscoverTitle
-                          : context.l10n.homescreenOverlayGiveTitle,
+                      widget.openNewGame
+                          ? 'Who is going to play?'
+                          : widget.withRewardText
+                              ? context.l10n.homescreenOverlayDiscoverTitle
+                              : context.l10n.homescreenOverlayGiveTitle,
                       textAlign: TextAlign.center,
                       color: Colors.white,
                       shadows: [
                         Shadow(
                           offset: const Offset(0, 4),
                           blurRadius: 4,
-                          color: Colors.black.withOpacity(0.25),
+                          color: Colors.black.withValues(alpha: 0.25),
                         ),
                       ],
                     ),
