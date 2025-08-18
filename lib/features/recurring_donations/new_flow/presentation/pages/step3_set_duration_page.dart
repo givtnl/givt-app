@@ -94,6 +94,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                   );
                 },
                 uiModel: uiModel,
+                frequency: uiModel.frequencyData['frequency'] as String?,
                 onNumberChanged: (number) {
                   _cubit.updateNumberOfDonations(number);
                   AnalyticsHelper.logEvent(

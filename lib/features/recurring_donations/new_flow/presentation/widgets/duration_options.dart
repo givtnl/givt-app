@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_radio.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/cubit/step3_set_duration_cubit.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/set_duration_ui_model.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -20,10 +18,11 @@ class DurationOptions extends StatelessWidget {
     required this.uiModel,
     required this.onNumberChanged,
     required this.onDateChanged,
+    required this.frequency,
     super.key,
   });
 
-  static const _optionKeys = [
+  static const List<String> _optionKeys = [
     RecurringDonationStringKeys.whenIDecide,
     RecurringDonationStringKeys.afterNumberOfDonations,
     RecurringDonationStringKeys.onSpecificDate,
@@ -34,6 +33,7 @@ class DurationOptions extends StatelessWidget {
   final SetDurationUIModel uiModel;
   final ValueChanged<String> onNumberChanged;
   final ValueChanged<DateTime> onDateChanged;
+  final String? frequency;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,6 @@ class DurationOptions extends StatelessWidget {
     bool isSelected,
   ) {
     onOptionSelected(optionKey);
-    final frequency = getIt<Step3SetDurationCubit>().repository.frequency;
     if (frequency == null) return;
 
     switch (optionKey) {
@@ -94,7 +93,7 @@ class DurationOptions extends StatelessWidget {
         final numberOfDonations = int.tryParse(uiModel.numberOfDonations) ?? 1;
         final calculatedEndDate = _calculateEndDateFromNumberOfDonations(
           uiModel.startDate!,
-          frequency,
+          frequency!,
           numberOfDonations,
         );
         final message = _buildSnackbarMessage(
@@ -144,13 +143,12 @@ class DurationOptions extends StatelessWidget {
         onChanged: (number) {
           onNumberChanged(number);
           final n = number.isNotEmpty ? number : 'X';
-          final frequency = getIt<Step3SetDurationCubit>().repository.frequency;
           DateTime endDate;
           if (frequency != null && number.isNotEmpty) {
             final numberOfDonations = int.tryParse(number) ?? 1;
             endDate = _calculateEndDateFromNumberOfDonations(
               uiModel.startDate!,
-              frequency,
+              frequency!,
               numberOfDonations,
             );
             onDateChanged(endDate);
@@ -181,7 +179,6 @@ class DurationOptions extends StatelessWidget {
         selectedDate: uiModel.endDate,
         onDateSelected: (date) {
           onDateChanged(date);
-          final frequency = getIt<Step3SetDurationCubit>().repository.frequency;
           final message = _buildSnackbarMessage(
             frequency,
             uiModel.startDate!,
