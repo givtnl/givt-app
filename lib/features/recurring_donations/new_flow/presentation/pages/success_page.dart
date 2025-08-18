@@ -5,6 +5,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.d
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/confirm_ui_model.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -71,7 +72,7 @@ class _SuccessPageState extends State<SuccessPage> {
             ),
             const Spacer(),
             FunButton(
-              text: 'Done',
+              text: context.l10n.buttonDone,
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.recurringStep4ConfirmDonation,
                 parameters: widget.model.analyticsParams,
