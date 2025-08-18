@@ -25,6 +25,7 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
   ) : super(const BaseState.data(ConfirmUIModel()));
 
   final RecurringDonationNewFlowRepository _repository;
+  bool _isLoading = false;
 
   void init() {
     final model = ConfirmUIModel(
@@ -40,8 +41,9 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
   }
 
   Future<void> confirmDonation(String country) async {
-    final current = getCurrent();
-    emitData(current.copyWith(isLoading: true));
+    _isLoading = true;
+    var current = getCurrent();
+    emitData(current);
 
     try {
       // Convert frequency string to enum
@@ -72,16 +74,21 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
           await _repository.createRecurringDonation(recurringDonation);
 
       if (!isSuccess) {
-        emitData(current.copyWith(
+        _isLoading = false;
+        current = current.copyWith(
           isLoading: false,
           error: 'Failed to create recurring donation',
-        ));
+        );
+
+        emitData(current);
         return;
       }
 
+      _isLoading = false;
       emitData(current.copyWith(isLoading: false));
       emitCustom(ConfirmAction.donationConfirmed);
     } on SocketException {
+      _isLoading = false;
       emitData(current.copyWith(
         isLoading: false,
         error: 'No internet connection',
@@ -89,6 +96,7 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
     } catch (e, stackTrace) {
       if (e is GivtServerFailure) {
         if (e.statusCode == 409) {
+          _isLoading = false;
           emitData(current.copyWith(
             isLoading: false,
             error: 'A recurring donation already exists for this organization',
@@ -100,6 +108,7 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
         'Error while creating recurring donation, $e',
         methodName: stackTrace.toString(),
       );
+      _isLoading = false;
       emitData(current.copyWith(
         isLoading: false,
         error: 'An error occurred while creating the recurring donation',
@@ -128,10 +137,17 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
   }
 
   ConfirmUIModel getCurrent() {
-    if (state is DataState<ConfirmUIModel, ConfirmAction>) {
-      return (state as DataState<ConfirmUIModel, ConfirmAction>).data;
-    }
-    return const ConfirmUIModel();
+    final model = ConfirmUIModel(
+      organizationName: _repository.selectedOrganization?.orgName ?? '',
+      amount: _repository.amount ?? '',
+      frequency: _repository.frequency ?? '',
+      startDate: _repository.startDate,
+      endDate: _repository.endDate,
+      numberOfDonations: _repository.numberOfDonations ?? '',
+      selectedEndOption: _repository.selectedEndOption ?? '',
+    );
+
+    return model;
   }
 
   RecurringDonationFrequency _convertFrequencyToEnum(String frequency) {

@@ -3,7 +3,6 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/confirm_ui_model.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -13,8 +12,9 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:intl/intl.dart';
 
 class SuccessPage extends StatefulWidget {
+  const SuccessPage({required this.model, super.key});
+
   final ConfirmUIModel model;
-  const SuccessPage({Key? key, required this.model}) : super(key: key);
 
   @override
   State<SuccessPage> createState() => _SuccessPageState();
