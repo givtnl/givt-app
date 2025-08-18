@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/generosity_hunt_button.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/give_bottomsheet.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/wallet_widget.dart';
@@ -179,6 +180,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                             ),
                           ),
+                          // Generosity Hunt button - only show for Redeemer Church users
+                          if (state.showBarcodeHunt) ...[
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+                              child: GenerosityHuntButton(
+                                analyticsEvent: AnalyticsEvent(
+                                  AmplitudeEvents.profileGenerosityHuntButtonClicked,
+                                ),
+                                onPressed: () {
+                                  // Set the current profile as active and navigate to the game
+                                  context.read<ProfilesCubit>().setActiveProfile(
+                                    state.activeProfile.id,
+                                  );
+                                  context.goNamed(FamilyPages.newGame.name);
+                                },
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ],
