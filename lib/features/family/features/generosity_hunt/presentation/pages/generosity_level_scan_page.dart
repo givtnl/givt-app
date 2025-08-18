@@ -117,8 +117,9 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                     // Row of circles for each item
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children:
-                          List.generate(state.level?.itemsNeeded ?? 0, (index) {
+                      children: List.generate(state.level?.itemsNeeded ?? 0, (
+                        index,
+                      ) {
                         // Show checkmark if item is scanned (index < scannedItems)
                         if (index < state.scannedItems) {
                           return Padding(
@@ -160,8 +161,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                       state.levelFinished
                           ? 'You did it!'
                           : state.itemScanned
-                              ? 'You did it!\nOnly ${state.level!.itemsNeeded - state.scannedItems} to go!'
-                              : state.level?.assignment ?? '',
+                          ? 'You did it!\nOnly ${state.level!.itemsNeeded - state.scannedItems} to go!'
+                          : state.level?.assignment ?? '',
                       textAlign: TextAlign.center,
                     ),
                     if (state.levelFinished || state.itemScanned)
@@ -173,16 +174,18 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                           Navigator.pop(context);
                         },
                         text: 'Continue',
-                        analyticsEvent:
-                            AnalyticsEvent(AmplitudeEvents.continueClicked),
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.continueClicked,
+                        ),
                       ),
 
                     if (state.itemScanned && !state.levelFinished)
                       FunButton(
                         onTap: cubit.restartScan,
                         text: "Let's go",
-                        analyticsEvent:
-                            AnalyticsEvent(AmplitudeEvents.continueClicked),
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.continueClicked,
+                        ),
                       ),
                   ],
                 ),
@@ -359,6 +362,18 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
 
     FunBottomSheet(
       title: '+$credits Givt Credits!',
+      icon: FunIcon(
+        circleSize: 140,
+        iconSize: 112,
+        icon: Semantics(
+          label: 'givt coin',
+          child: Image.asset(
+            'assets/images/givt_coin_game.png',
+          ),
+        ),
+        padding: EdgeInsets.zero,
+        circleColor: Colors.white,
+      ),
       content: const BodyMediumText(''),
       primaryButton: FunButton(
         onTap: () {
