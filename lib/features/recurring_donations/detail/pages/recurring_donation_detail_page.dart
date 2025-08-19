@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -13,6 +14,7 @@ import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recu
 import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_donation_detail_cubit.dart';
 import 'package:givt_app/features/recurring_donations/detail/repositories/recurring_donation_detail_repository.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
+import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -467,7 +469,6 @@ class _RecurringDonationDetailPageState
                 style: TextStyle(color: Colors.red),
               ),
               onTap: () {
-                Navigator.of(context).pop();
                 // Show cancel confirmation dialog
                 showDialog<bool>(
                   context: context,
@@ -478,7 +479,9 @@ class _RecurringDonationDetailPageState
                 ).then((result) {
                   // If cancellation was successful, navigate back to overview
                   if (result == true && context.mounted) {
-                    context.pop();
+                    Navigator.of(context).push(
+                      const RecurringDonationsOverviewPage().toRoute(context),
+                    );
                   }
                 });
               },

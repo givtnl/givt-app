@@ -54,10 +54,13 @@ class _RecurringDonationsOverviewPageState
     final locals = context.l10n;
 
     return FunScaffold(
+      canPop: false,
       appBar: FunTopAppBar.white(
         title: locals.menuItemRecurringDonation,
         leading: GivtBackButtonFlat(
-          onPressed: () async => context.pop(),
+          onPressed: () async => {
+            Navigator.of(context).popUntil((route) => route.isFirst),
+          },
         ),
       ),
       body: BaseStateConsumer(

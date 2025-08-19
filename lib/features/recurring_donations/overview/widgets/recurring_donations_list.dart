@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/shared/design/components/content/fun_mi
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/detail/pages/recurring_donation_detail_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
+import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
@@ -69,9 +70,19 @@ class RecurringDonationsList extends StatelessWidget {
   String _buildDescription(RecurringDonationWithProgress donationWithProgress, String currency) {
     final amount = donationWithProgress.donation.amountPerTurn.toString();
     final frequency = _getFrequencyText(donationWithProgress.donation.frequency);
-    final nextDate = donationWithProgress.nextDonationDate;
+    
+    // Check if this is a past donation (not active or completed)
+    final isPastDonation = donationWithProgress.donation.currentState != RecurringDonationState.active || 
+                           donationWithProgress.isCompleted;
+    
+    final statusText = isPastDonation ? 'Ended' : 'Next up';
+    
+    // Use end date for past donations, next date for current donations
+    final dateToShow = isPastDonation 
+        ? donationWithProgress.donation.endDate 
+        : donationWithProgress.nextDonationDate;
 
-    return '$frequency $currency$amount · Next up ${_formatDate(nextDate)}';
+    return '$frequency $currency$amount · $statusText ${_formatDate(dateToShow)}';
   }
 
   String _getFrequencyText(int frequency) {

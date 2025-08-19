@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/confirm_ui_model.dart';
+import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class SuccessPage extends StatefulWidget {
@@ -81,7 +85,10 @@ class _SuccessPageState extends State<SuccessPage> {
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.recurringStep4ConfirmDonation,
                 );
-                Navigator.of(context).popUntil((route) => route.isFirst);
+                // Navigate to recurring donations overview and clear the entire navigation stack
+                Navigator.of(context).push(
+                  const RecurringDonationsOverviewPage().toRoute(context),
+                );
               },
             ),
           ],
