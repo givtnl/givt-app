@@ -4,6 +4,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_radio.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -33,7 +34,7 @@ class DurationOptions extends StatelessWidget {
   final SetDurationUIModel uiModel;
   final ValueChanged<String> onNumberChanged;
   final ValueChanged<DateTime> onDateChanged;
-  final String? frequency;
+  final RecurringDonationFrequency? frequency;
 
   @override
   Widget build(BuildContext context) {
@@ -213,86 +214,84 @@ class DurationOptions extends StatelessWidget {
 }
 
 String _buildSnackbarMessage(
-  String? frequency,
+  RecurringDonationFrequency? frequency,
   DateTime startDate,
   DateTime endDate,
 ) {
-  if (frequency == null) return '';
-
-  // Calculate the amount of donations
   final int amountOfDonations;
   switch (frequency) {
-    case 'Weekly':
+    case RecurringDonationFrequency.week:
       // Calculate weeks between dates, including partial weeks
       amountOfDonations = (startDate.difference(endDate).inDays.abs() ~/ 7) + 1;
-    case 'Monthly':
+    case RecurringDonationFrequency.month:
       // Calculate months between dates, including partial months
       amountOfDonations =
-          ((endDate.year - startDate.year) * 12) +
+          (endDate.year - startDate.year) * 12 +
           endDate.month -
           startDate.month +
           1;
-    case 'Quarterly':
+    case RecurringDonationFrequency.quarter:
       // Calculate quarters between dates, including partial quarters
       final months =
-          ((endDate.year - startDate.year) * 12) +
+          (endDate.year - startDate.year) * 12 +
           endDate.month -
           startDate.month;
       amountOfDonations = (months ~/ 3) + 1;
-    case 'Half year':
+    case RecurringDonationFrequency.halfYear:
       // Calculate half-years between dates, including partial half-years
       final months =
-          ((endDate.year - startDate.year) * 12) +
+          (endDate.year - startDate.year) * 12 +
           endDate.month -
           startDate.month;
       amountOfDonations = (months ~/ 6) + 1;
-    case 'Yearly':
+    case RecurringDonationFrequency.year:
       // Calculate years between dates, including partial years
       amountOfDonations = (endDate.year - startDate.year) + 1;
-    default:
+    case null:
       amountOfDonations = 0;
   }
 
-  final formattedDate = DateFormat('dd MMM yyyy').format(endDate);
-  return "You'll donate $amountOfDonations times, ending on $formattedDate";
+  if (amountOfDonations == 1) {
+    return "You'll donate 1 time, ending on ${DateFormat('dd MMM yyyy').format(endDate)}";
+  }
+
+  return "You'll donate $amountOfDonations times, ending on ${DateFormat('dd MMM yyyy').format(endDate)}";
 }
 
 DateTime _calculateEndDateFromNumberOfDonations(
   DateTime startDate,
-  String frequency,
+  RecurringDonationFrequency frequency,
   int numberOfDonations,
 ) {
   switch (frequency) {
-    case 'Weekly':
+    case RecurringDonationFrequency.week:
       return startDate.add(Duration(days: (numberOfDonations - 1) * 7));
-    case 'Monthly':
+    case RecurringDonationFrequency.month:
       return DateTime(
         startDate.year + ((startDate.month + numberOfDonations - 1) ~/ 12),
         ((startDate.month + numberOfDonations - 1) % 12) + 1,
         startDate.day,
       );
-    case 'Quarterly':
+    case RecurringDonationFrequency.quarter:
       return DateTime(
         startDate.year +
-            ((startDate.month + (numberOfDonations - 1) * 3) ~/ 12),
-        ((startDate.month + (numberOfDonations - 1) * 3) % 12) + 1,
+            ((startDate.month + (numberOfDonations - 1) * 3 - 1) ~/ 12),
+        ((startDate.month + (numberOfDonations - 1) * 3 - 1) % 12) + 1,
         startDate.day,
       );
-    case 'Half year':
+    case RecurringDonationFrequency.halfYear:
       return DateTime(
         startDate.year +
-            ((startDate.month + (numberOfDonations - 1) * 6) ~/ 12),
-        ((startDate.month + (numberOfDonations - 1) * 6) % 12) + 1,
+            ((startDate.month + (numberOfDonations - 1) * 6 - 1) ~/ 12),
+        ((startDate.month + (numberOfDonations - 1) * 6 - 1) % 12) + 1,
         startDate.day,
       );
-    case 'Yearly':
+    case RecurringDonationFrequency.year:
       return DateTime(
         startDate.year + numberOfDonations - 1,
         startDate.month,
         startDate.day,
       );
-    default:
-      return startDate;
   }
 }
 

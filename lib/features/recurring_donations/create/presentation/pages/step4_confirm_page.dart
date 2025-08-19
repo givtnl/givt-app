@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step4_confirm_cubit.dart';
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/confirm_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/success_page.dart';
@@ -15,7 +15,6 @@ import 'package:givt_app/features/recurring_donations/create/presentation/widget
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:intl/intl.dart';
@@ -53,11 +52,10 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
             amountOfPops = 1;
           case ConfirmAction.navigateToEndDate:
             amountOfPops = 1;
-          case ConfirmAction.donationConfirmed:
+          case ConfirmAction.navigateToSuccess:
             Navigator.of(context).pushReplacement(
               SuccessPage(model: _cubit.getCurrent()).toRoute(context),
             );
-            return;
         }
 
         for (var i = 0; i < amountOfPops; i++) {
@@ -133,7 +131,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
               SummaryRow(
                 icon: FontAwesomeIcons.calendar,
                 label: context.l10n.recurringDonationsStep4Frequency,
-                value: model.frequency,
+                value: _getFrequencyDisplayText(model.frequency, context),
                 onEdit: () {
                   AnalyticsHelper.logEvent(
                     eventName:
@@ -178,9 +176,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                   AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.recurringStep4ConfirmDonation,
                   );
-                  _cubit.confirmDonation(
-                    context.read<AuthCubit>().state.user.country,
-                  );
+                  _cubit.createRecurringDonation();
                 },
               ),
             ],
@@ -192,5 +188,25 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
 
   String _formatDate(DateTime date) {
     return DateFormat('dd MMM yyyy').format(date);
+  }
+
+  String _getFrequencyDisplayText(
+    RecurringDonationFrequency? frequency,
+    BuildContext context,
+  ) {
+    if (frequency == null) return '';
+
+    switch (frequency) {
+      case RecurringDonationFrequency.week:
+        return context.l10n.recurringDonationsFrequenciesWeekly;
+      case RecurringDonationFrequency.month:
+        return context.l10n.recurringDonationsFrequenciesMonthly;
+      case RecurringDonationFrequency.quarter:
+        return context.l10n.recurringDonationsFrequenciesQuarterly;
+      case RecurringDonationFrequency.halfYear:
+        return context.l10n.recurringDonationsFrequenciesHalfYearly;
+      case RecurringDonationFrequency.year:
+        return context.l10n.recurringDonationsFrequenciesYearly;
+    }
   }
 }

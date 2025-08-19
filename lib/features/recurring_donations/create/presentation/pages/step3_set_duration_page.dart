@@ -15,6 +15,7 @@ import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 
 class Step3SetDurationPage extends StatefulWidget {
   const Step3SetDurationPage({super.key});
@@ -94,7 +95,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                   );
                 },
                 uiModel: uiModel,
-                frequency: uiModel.frequencyData['frequency'] as String?,
+                frequency: uiModel.frequencyData['frequency'] as RecurringDonationFrequency?,
                 onNumberChanged: (number) {
                   _cubit.updateNumberOfDonations(number);
                   AnalyticsHelper.logEvent(

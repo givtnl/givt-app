@@ -477,8 +477,8 @@ class _RecurringDonationDetailPageState
                       ),
                 ).then((result) {
                   // If cancellation was successful, navigate back to overview
-                  if (result == true) {
-                    Navigator.of(context).pop(); // Close the detail page
+                  if (result == true && context.mounted) {
+                    context.pop();
                   }
                 });
               },

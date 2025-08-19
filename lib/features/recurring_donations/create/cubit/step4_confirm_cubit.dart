@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:givt_app/core/failures/failure.dart';
-import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
@@ -16,40 +12,33 @@ enum ConfirmAction {
   navigateToFrequency,
   navigateToStartDate,
   navigateToEndDate,
-  donationConfirmed,
+  navigateToSuccess,
 }
 
 class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
-  Step4ConfirmCubit(
-    this._repository,
-  ) : super(const BaseState.data(ConfirmUIModel()));
+  Step4ConfirmCubit(this._repository) : super(const BaseState.loading());
 
   final RecurringDonationNewFlowRepository _repository;
   bool _isLoading = false;
 
   void init() {
-    final model = ConfirmUIModel(
-      organizationName: _repository.selectedOrganization?.orgName ?? '',
-      amount: _repository.amount ?? '',
-      frequency: _repository.frequency ?? '',
-      startDate: _repository.startDate,
-      endDate: _repository.endDate,
-      numberOfDonations: _repository.numberOfDonations ?? '',
-      selectedEndOption: _repository.selectedEndOption ?? '',
-    );
-    emitData(model);
+    _emitData();
   }
 
-  Future<void> confirmDonation(String country) async {
+  void createRecurringDonation() async {
+    if (_isLoading) return;
+
     _isLoading = true;
-    var current = getCurrent();
-    emitData(current);
+    _emitData(isLoading: true);
 
     try {
-      // Convert frequency string to enum
-      final frequency = _convertFrequencyToEnum(current.frequency);
+      final current = getCurrent();
+      final frequency = current.frequency;
 
-      // Calculate number of turns based on end option
+      if (frequency == null) {
+        throw Exception('Frequency is required');
+      }
+
       final turns = _calculateTurns(
         current.selectedEndOption,
         current.numberOfDonations,
@@ -58,61 +47,37 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
         frequency,
       );
 
-      // Create recurring donation model
       final recurringDonation = RecurringDonation(
+        userId: _repository.guid ?? '',
+        frequency: _convertFrequencyToInt(frequency),
+        startDate: current.startDate ?? DateTime.now(),
         amountPerTurn: double.parse(current.amount),
-        startDate: current.startDate!,
-        frequency: frequency.index,
-        endsAfterTurns: turns,
-        userId: _repository.guid!,
         namespace: _repository.selectedOrganization!.nameSpace,
-        country: country,
+        endsAfterTurns: turns,
+        country: _repository.country ?? '',
       );
 
-      // Submit to backend
-      final isSuccess =
-          await _repository.createRecurringDonation(recurringDonation);
+      final success = await _repository.createRecurringDonation(
+        recurringDonation,
+      );
 
-      if (!isSuccess) {
+      if (success) {
         _isLoading = false;
-        current = current.copyWith(
+        _emitData(isLoading: false);
+        emitCustom(ConfirmAction.navigateToSuccess);
+      } else {
+        _isLoading = false;
+        _emitData(
           isLoading: false,
           error: 'Failed to create recurring donation',
         );
-
-        emitData(current);
-        return;
       }
-
+    } catch (e) {
       _isLoading = false;
-      emitData(current.copyWith(isLoading: false));
-      emitCustom(ConfirmAction.donationConfirmed);
-    } on SocketException {
-      _isLoading = false;
-      emitData(current.copyWith(
-        isLoading: false,
-        error: 'No internet connection',
-      ));
-    } catch (e, stackTrace) {
-      if (e is GivtServerFailure) {
-        if (e.statusCode == 409) {
-          _isLoading = false;
-          emitData(current.copyWith(
-            isLoading: false,
-            error: 'A recurring donation already exists for this organization',
-          ));
-          return;
-        }
-      }
-      LoggingInfo.instance.warning(
-        'Error while creating recurring donation, $e',
-        methodName: stackTrace.toString(),
-      );
-      _isLoading = false;
-      emitData(current.copyWith(
+      _emitData(
         isLoading: false,
         error: 'An error occurred while creating the recurring donation',
-      ));
+      );
     }
   }
 
@@ -140,7 +105,7 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
     final model = ConfirmUIModel(
       organizationName: _repository.selectedOrganization?.orgName ?? '',
       amount: _repository.amount ?? '',
-      frequency: _repository.frequency ?? '',
+      frequency: _repository.frequency,
       startDate: _repository.startDate,
       endDate: _repository.endDate,
       numberOfDonations: _repository.numberOfDonations ?? '',
@@ -150,20 +115,18 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
     return model;
   }
 
-  RecurringDonationFrequency _convertFrequencyToEnum(String frequency) {
-    switch (frequency.toLowerCase()) {
-      case 'weekly':
-        return RecurringDonationFrequency.week;
-      case 'monthly':
-        return RecurringDonationFrequency.month;
-      case 'quarterly':
-        return RecurringDonationFrequency.quarter;
-      case 'half-yearly':
-        return RecurringDonationFrequency.halfYear;
-      case 'yearly':
-        return RecurringDonationFrequency.year;
-      default:
-        throw Exception('Invalid frequency: $frequency');
+  int _convertFrequencyToInt(RecurringDonationFrequency frequency) {
+    switch (frequency) {
+      case RecurringDonationFrequency.week:
+        return 0;
+      case RecurringDonationFrequency.month:
+        return 1;
+      case RecurringDonationFrequency.quarter:
+        return 2;
+      case RecurringDonationFrequency.halfYear:
+        return 3;
+      case RecurringDonationFrequency.year:
+        return 4;
     }
   }
 
@@ -179,7 +142,8 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
     } else if (selectedEndOption ==
         RecurringDonationStringKeys.afterNumberOfDonations) {
       return int.parse(numberOfDonations);
-    } else if (selectedEndOption == RecurringDonationStringKeys.onSpecificDate &&
+    } else if (selectedEndOption ==
+            RecurringDonationStringKeys.onSpecificDate &&
         endDate != null) {
       var counter = 0;
       var tempDate = startDate!;
@@ -204,5 +168,17 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
     }
 
     throw Exception('Invalid end option: $selectedEndOption');
+  }
+
+  void _emitData({
+    bool? isLoading,
+    String? error,
+  }) {
+    emitData(
+      getCurrent().copyWith(
+        isLoading: isLoading ?? false,
+        error: error,
+      ),
+    );
   }
 }

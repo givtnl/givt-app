@@ -1,5 +1,6 @@
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation.dart';
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
@@ -13,7 +14,7 @@ class RecurringDonationNewFlowRepository {
   final APIService _apiService;
 
   CollectGroup? _selectedOrganization;
-  String? _frequency;
+  RecurringDonationFrequency? _frequency;
   String? _amount;
   DateTime? _startDate;
   DateTime? _endDate;
@@ -26,8 +27,8 @@ class RecurringDonationNewFlowRepository {
   set selectedOrganization(CollectGroup? value) =>
       _selectedOrganization = value;
 
-  String? get frequency => _frequency;
-  set frequency(String? value) => _frequency = value;
+  RecurringDonationFrequency? get frequency => _frequency;
+  set frequency(RecurringDonationFrequency? value) => _frequency = value;
 
   String? get amount => _amount;
   set amount(String? value) => _amount = value;

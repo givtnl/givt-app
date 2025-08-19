@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 
 class ConfirmUIModel extends Equatable {
   const ConfirmUIModel({
     this.organizationName = '',
     this.amount = '',
-    this.frequency = '',
+    this.frequency,
     this.startDate,
     this.endDate,
     this.numberOfDonations = '',
@@ -15,7 +16,7 @@ class ConfirmUIModel extends Equatable {
 
   final String organizationName;
   final String amount;
-  final String frequency;
+  final RecurringDonationFrequency? frequency;
   final DateTime? startDate;
   final DateTime? endDate;
   final String numberOfDonations;
@@ -26,7 +27,7 @@ class ConfirmUIModel extends Equatable {
   Map<String, dynamic> get analyticsParams => {
         'organization': organizationName,
         'amount': amount,
-        'frequency': frequency,
+        'frequency': frequency?.name ?? '',
         'startDate': startDate?.toIso8601String() ?? '',
         'endDate': endDate?.toIso8601String() ?? '',
         'numberOfDonations': numberOfDonations,
@@ -36,7 +37,7 @@ class ConfirmUIModel extends Equatable {
   ConfirmUIModel copyWith({
     String? organizationName,
     String? amount,
-    String? frequency,
+    RecurringDonationFrequency? frequency,
     DateTime? startDate,
     DateTime? endDate,
     String? numberOfDonations,

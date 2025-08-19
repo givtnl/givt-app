@@ -88,7 +88,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                   AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.recurringStep2SetAmountFrequencySelected,
                     eventProperties: {
-                      'Frequency': value,
+                      'Frequency': value.name,
                     },
                   );
                 },
@@ -122,7 +122,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                   AmplitudeEvents.recurringStep2SetAmountContinueClicked,
                   parameters: {
                     AnalyticsHelper.amountKey: uiModel.amount,
-                    'frequency': uiModel.selectedFrequency ?? '',
+                    'frequency': uiModel.selectedFrequency?.name ?? '',
                   },
                 ),
                 onTap: uiModel.isContinueEnabled

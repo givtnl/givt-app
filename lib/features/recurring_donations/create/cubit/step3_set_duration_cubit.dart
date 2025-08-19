@@ -1,3 +1,4 @@
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
@@ -137,20 +138,18 @@ class Step3SetDurationCubit
     }
   }
 
-  String _getFrequencyMessage(String frequency, int day, String month) {
+  String _getFrequencyMessage(RecurringDonationFrequency frequency, int day, String month) {
     switch (frequency) {
-      case 'Weekly':
+      case RecurringDonationFrequency.week:
         return 'recurringDonationsEndDateHintEveryWeek';
-      case 'Monthly':
+      case RecurringDonationFrequency.month:
         return 'recurringDonationsEndDateHintEveryMonth';
-      case 'Quarterly':
+      case RecurringDonationFrequency.quarter:
         return 'recurringDonationsEndDateHintEveryXMonth';
-      case 'Half year':
+      case RecurringDonationFrequency.halfYear:
         return 'recurringDonationsEndDateHintEveryXMonth';
-      case 'Yearly':
+      case RecurringDonationFrequency.year:
         return 'recurringDonationsEndDateHintEveryYear';
-      default:
-        return '';
     }
   }
 
