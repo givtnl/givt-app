@@ -4,8 +4,8 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_radio.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/presentation/constants/string_keys.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/presentation/models/set_duration_ui_model.dart';
+import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
+import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:intl/intl.dart';

@@ -21,13 +21,13 @@ import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
-import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/cubit/step1_select_organization_cubit.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/cubit/step2_set_amount_cubit.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/cubit/step3_set_duration_cubit.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/cubit/step4_confirm_cubit.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/repository/recurring_donation_new_flow_repository.dart';
-import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
+import 'package:givt_app/features/recurring_donations/detail/injection.dart';
+import 'package:givt_app/features/recurring_donations/create/cubit/step1_select_organization_cubit.dart';
+import 'package:givt_app/features/recurring_donations/create/cubit/step2_set_amount_cubit.dart';
+import 'package:givt_app/features/recurring_donations/create/cubit/step3_set_duration_cubit.dart';
+import 'package:givt_app/features/recurring_donations/create/cubit/step4_confirm_cubit.dart';
+import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
+import 'package:givt_app/features/recurring_donations/overview/injection.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
@@ -44,6 +44,10 @@ Future<void> init() async {
 
   /// Init repositories
   initRepositories();
+
+  /// Init feature-specific dependencies
+  registerRecurringDonationsOverviewDependencies();
+  registerRecurringDonationDetailDependencies();
 }
 
 Future<void> initAPIService() async {
@@ -64,8 +68,12 @@ Future<RequestHelper> _initRequestHelper() async {
     baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
   }
   log('Using API URL: $baseUrl');
-  final requestHelper =
-      RequestHelper(getIt(), getIt(), apiURL: baseUrl, apiURLAWS: baseUrlAWS);
+  final requestHelper = RequestHelper(
+    getIt(),
+    getIt(),
+    apiURL: baseUrl,
+    apiURLAWS: baseUrlAWS,
+  );
   await requestHelper.init();
   getIt.registerSingleton<RequestHelper>(requestHelper);
   return requestHelper;
@@ -80,8 +88,9 @@ Future<String> _checkCountry() async {
   if (prefs.containsKey(UserExt.tag)) {
     final userExtString = prefs.getString(UserExt.tag);
     if (userExtString != null) {
-      final user =
-          UserExt.fromJson(jsonDecode(userExtString) as Map<String, dynamic>);
+      final user = UserExt.fromJson(
+        jsonDecode(userExtString) as Map<String, dynamic>,
+      );
       return user.country;
     }
   }
@@ -157,18 +166,8 @@ void initRepositories() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<RecurringDonationsRepository>(
-      () => RecurringDonationsRepositoryImpl(
-        getIt(),
-      ),
-    )
     ..registerLazySingleton<CancelRecurringDonationRepository>(
       () => CancelRecurringDonationRepositoryImpl(
-        getIt(),
-      ),
-    )
-    ..registerLazySingleton<DetailRecurringDonationsRepository>(
-      () => DetailRecurringDonationsRepositoryImpl(
         getIt(),
       ),
     )

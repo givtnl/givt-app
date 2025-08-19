@@ -1,5 +1,5 @@
 import 'package:givt_app/core/network/network.dart';
-import 'package:givt_app/features/recurring_donations/new_flow/models/recurring_donation.dart';
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 

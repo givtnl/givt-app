@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
@@ -198,30 +200,32 @@ class FunTile extends StatelessWidget {
                       opacity: isDisabled ? 0.5 : 1,
                       child: iconData == null
                           ? isOnlineIcon
-                              ? SvgPicture.network(
-                                  iconPath,
-                                  height: assetSize ?? 140,
-                                  width: assetSize ?? 140,
-                                )
-                              : SvgPicture.asset(
-                                  iconPath,
-                                  height: assetSize ?? 140,
-                                  width: assetSize ?? 140,
-                                  colorFilter: iconColor != null
-                                      ? ColorFilter.mode(
-                                          iconColor!,
-                                          BlendMode.srcIn,
-                                        )
-                                      : null,
-                                )
+                                ? SvgPicture.network(
+                                    iconPath,
+                                    height: assetSize ?? 140,
+                                    width: assetSize ?? 140,
+                                  )
+                                : SvgPicture.asset(
+                                    iconPath,
+                                    height: assetSize ?? 140,
+                                    width: assetSize ?? 140,
+                                    colorFilter: iconColor != null
+                                        ? ColorFilter.mode(
+                                            iconColor!,
+                                            BlendMode.srcIn,
+                                          )
+                                        : null,
+                                  )
                           : FaIcon(
                               iconData,
                               size: assetSize ?? 140,
-                              color: iconColor ?? textColor.withValues(alpha: 0.6),
+                              color:
+                                  iconColor ?? textColor.withValues(alpha: 0.6),
                             ),
                     ),
                   Padding(
-                    padding: padding ??
+                    padding:
+                        padding ??
                         (hasIcon
                             ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16)
                             : EdgeInsets.zero),
@@ -229,53 +233,41 @@ class FunTile extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (titleBig != null)
-                          Text(
+                          LabelLargeText(
                             titleBig!,
                             textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.labelLarge?.copyWith(
-                                      color: isDisabled
-                                          ? FamilyAppTheme.disabledTileBorder
-                                          : textColor,
-                                    ),
+                            color: isDisabled
+                                ? FamilyAppTheme.disabledTileBorder
+                                : textColor,
                           )
                         else
                           const SizedBox(),
                         if (titleMedium != null)
-                          Text(
+                          LabelMediumText(
                             titleMedium!,
                             textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.labelMedium?.copyWith(
-                                      color: isDisabled
-                                          ? FamilyAppTheme.disabledTileBorder
-                                          : textColor,
-                                    ),
+                            color: isDisabled
+                                ? FamilyAppTheme.disabledTileBorder
+                                : textColor,
                           )
                         else
                           const SizedBox(),
                         if (titleSmall != null)
-                          Text(
+                          LabelMediumText(
                             titleSmall!,
                             textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.labelMedium?.copyWith(
-                                      color: isDisabled
-                                          ? FamilyAppTheme.disabledTileBorder
-                                          : textColor,
-                                    ),
+                            color: isDisabled
+                                ? FamilyAppTheme.disabledTileBorder
+                                : textColor,
                           )
                         else
                           const SizedBox(),
-                        if (hasIcon) const SizedBox(height: 8),
+                        if (hasIcon) const SizedBox(height: 4),
                         if (subtitle != null)
-                          Text(
+                          LabelMediumText(
                             subtitle!,
                             textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.labelMedium?.copyWith(
-                                      color: textColor.withValues(alpha: 0.2),
-                                    ),
+                            color: textColor.withValues(alpha: 0.7),
                           )
                         else
                           const SizedBox(),
