@@ -1,5 +1,48 @@
 part of 'recurring_donations_overview_cubit.dart';
 
+/// UI Model for a recurring donation with calculated progress information
+class RecurringDonationWithProgress {
+  const RecurringDonationWithProgress({
+    required this.donation,
+    required this.completedTurns,
+    required this.remainingTurns,
+    required this.progressPercentage,
+    required this.isCompleted,
+    required this.nextDonationDate,
+  });
+
+  final RecurringDonation donation;
+  final int completedTurns;
+  final int remainingTurns;
+  final double progressPercentage;
+  final bool isCompleted;
+  final DateTime nextDonationDate;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is RecurringDonationWithProgress &&
+        other.donation == donation &&
+        other.completedTurns == completedTurns &&
+        other.remainingTurns == remainingTurns &&
+        other.progressPercentage == progressPercentage &&
+        other.isCompleted == isCompleted &&
+        other.nextDonationDate == nextDonationDate;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      donation,
+      completedTurns,
+      remainingTurns,
+      progressPercentage,
+      isCompleted,
+      nextDonationDate,
+    );
+  }
+}
+
 /// UI Model for the recurring donations overview screen
 class RecurringDonationsOverviewUIModel {
   const RecurringDonationsOverviewUIModel({
@@ -9,8 +52,8 @@ class RecurringDonationsOverviewUIModel {
     this.error,
   });
 
-  final List<RecurringDonation> currentDonations;
-  final List<RecurringDonation> pastDonations;
+  final List<RecurringDonationWithProgress> currentDonations;
+  final List<RecurringDonationWithProgress> pastDonations;
   final bool isLoading;
   final String? error;
 

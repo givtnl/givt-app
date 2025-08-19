@@ -5,7 +5,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/detail/pages/recurring_donation_detail_page.dart';
-import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
+import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
@@ -18,7 +18,7 @@ class RecurringDonationsList extends StatelessWidget {
     super.key,
   });
 
-  final List<RecurringDonation> donations;
+  final List<RecurringDonationWithProgress> donations;
   final bool isCurrentTab;
 
   @override
@@ -39,34 +39,37 @@ class RecurringDonationsList extends StatelessWidget {
     );
   }
 
-  Widget _buildDonationCard(BuildContext context, RecurringDonation donation) {
+  Widget _buildDonationCard(BuildContext context, RecurringDonationWithProgress donationWithProgress) {
     final auth = context.read<AuthCubit>().state;
     final currency = Util.getCurrencySymbol(countryCode: auth.user.country);
-    final progress = _getProgressModel(donation);
+    final progress = _getProgressModel(donationWithProgress);
 
     return FunMissionCard(
       uiModel: FunMissionCardUIModel(
-        title: donation.collectGroup.orgName,
-        description: _buildDescription(donation, currency),
+        title: donationWithProgress.donation.collectGroup.orgName,
+        description: _buildDescription(donationWithProgress, currency),
         progress: progress,
       ),
-      onTap: () => _onDonationTap(context, donation),
+      onTap: () => _onDonationTap(context, donationWithProgress),
       useFunProgressbar: true,
       analyticsEvent: AnalyticsEvent(
         AmplitudeEvents.recurringDonationsClicked,
         parameters: {
-          'donation_id': donation.id,
-          'organisation': donation.collectGroup.orgName,
-          'amount': donation.amountPerTurn.toString(),
+          'donation_id': donationWithProgress.donation.id,
+          'organisation': donationWithProgress.donation.collectGroup.orgName,
+          'amount': donationWithProgress.donation.amountPerTurn.toString(),
+          'completed_turns': donationWithProgress.completedTurns.toString(),
+          'total_turns': donationWithProgress.donation.endsAfterTurns.toString(),
+          'frequency': donationWithProgress.donation.frequency.toString(),
         },
       ),
     );
   }
 
-  String _buildDescription(RecurringDonation donation, String currency) {
-    final amount = donation.amountPerTurn.toString();
-    final frequency = _getFrequencyText(donation.frequency);
-    final nextDate = donation.getNextDonationDate(DateTime.now());
+  String _buildDescription(RecurringDonationWithProgress donationWithProgress, String currency) {
+    final amount = donationWithProgress.donation.amountPerTurn.toString();
+    final frequency = _getFrequencyText(donationWithProgress.donation.frequency);
+    final nextDate = donationWithProgress.nextDonationDate;
 
     return '$frequency $currency$amount · Next up ${_formatDate(nextDate)}';
   }
@@ -111,13 +114,12 @@ class RecurringDonationsList extends StatelessWidget {
     return '$day $month $year';
   }
 
-  GoalCardProgressUImodel? _getProgressModel(RecurringDonation donation) {
+  GoalCardProgressUImodel? _getProgressModel(RecurringDonationWithProgress donationWithProgress) {
     // Don't show progress bar for unlimited donations (endsAfterTurns = 999)
-    if (donation.endsAfterTurns > 0 && donation.endsAfterTurns != 999) {
-      // Calculate progress based on remaining turns
-      // This is a simplified calculation - you might want to track actual progress
-      final totalTurns = donation.endsAfterTurns;
-      const completedTurns = 0; // This would need to come from actual data
+    if (donationWithProgress.donation.endsAfterTurns > 0 && donationWithProgress.donation.endsAfterTurns != 999) {
+      // Use pre-calculated progress information from the cubit
+      final totalTurns = donationWithProgress.donation.endsAfterTurns;
+      final completedTurns = donationWithProgress.completedTurns;
 
       return GoalCardProgressUImodel(
         amount: completedTurns.toDouble(),
@@ -128,11 +130,11 @@ class RecurringDonationsList extends StatelessWidget {
     return null;
   }
 
-  void _onDonationTap(BuildContext context, RecurringDonation donation) {
+  void _onDonationTap(BuildContext context, RecurringDonationWithProgress donationWithProgress) {
     // Navigate to the detail page
     Navigator.of(context).push(
       RecurringDonationDetailPage(
-        recurringDonation: donation,
+        recurringDonation: donationWithProgress.donation,
       ).toRoute(context),
     );
   }
