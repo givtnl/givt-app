@@ -7,9 +7,9 @@ import 'package:givt_app/features/family/shared/design/components/content/models
 import 'package:givt_app/features/recurring_donations/detail/pages/recurring_donation_detail_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 import 'package:givt_app/utils/util.dart';
-import 'package:go_router/go_router.dart';
 
 class RecurringDonationsList extends StatelessWidget {
   const RecurringDonationsList({
@@ -67,7 +67,7 @@ class RecurringDonationsList extends StatelessWidget {
     final amount = donation.amountPerTurn.toString();
     final frequency = _getFrequencyText(donation.frequency);
     final nextDate = donation.getNextDonationDate(DateTime.now());
-    
+
     return '$frequency $currency$amount · Next up ${_formatDate(nextDate)}';
   }
 
@@ -90,14 +90,24 @@ class RecurringDonationsList extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     final months = [
-      'january', 'february', 'march', 'april', 'may', 'june',
-      'july', 'august', 'september', 'october', 'november', 'december'
+      'january',
+      'february',
+      'march',
+      'april',
+      'may',
+      'june',
+      'july',
+      'august',
+      'september',
+      'october',
+      'november',
+      'december',
     ];
-    
+
     final day = date.day;
     final month = months[date.month - 1];
     final year = date.year;
-    
+
     return '$day $month $year';
   }
 
@@ -121,11 +131,9 @@ class RecurringDonationsList extends StatelessWidget {
   void _onDonationTap(BuildContext context, RecurringDonation donation) {
     // Navigate to the detail page
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => RecurringDonationDetailPage(
-          recurringDonation: donation,
-        ),
-      ),
+      RecurringDonationDetailPage(
+        recurringDonation: donation,
+      ).toRoute(context),
     );
   }
 }

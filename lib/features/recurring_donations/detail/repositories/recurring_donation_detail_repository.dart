@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_donation_detail_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
@@ -16,7 +17,8 @@ mixin RecurringDonationDetailRepository {
   void setRecurringDonation(RecurringDonation donation);
 }
 
-class RecurringDonationDetailRepositoryImpl with RecurringDonationDetailRepository {
+class RecurringDonationDetailRepositoryImpl
+    with RecurringDonationDetailRepository {
   RecurringDonationDetailRepositoryImpl(
     this.apiService,
     this.collectGroupRepository,
@@ -24,8 +26,9 @@ class RecurringDonationDetailRepositoryImpl with RecurringDonationDetailReposito
 
   final APIService apiService;
   final CollectGroupRepository collectGroupRepository;
-  final StreamController<RecurringDonationDetailUIModel> _detailController = StreamController<RecurringDonationDetailUIModel>.broadcast();
-  
+  final StreamController<RecurringDonationDetailUIModel> _detailController =
+      StreamController<RecurringDonationDetailUIModel>.broadcast();
+
   RecurringDonation? _recurringDonation;
   RecurringDonationDetailUIModel _detail = const RecurringDonationDetailUIModel(
     organizationName: '',
@@ -81,8 +84,8 @@ class RecurringDonationDetailRepositoryImpl with RecurringDonationDetailReposito
 
     _isLoading = true;
     _error = null;
-          _detail = _detail.copyWith(isLoading: true);
-      _emitDetail(_detail);
+    _detail = _detail.copyWith(isLoading: true);
+    _emitDetail(_detail);
 
     try {
       // Fetch collect groups and merge them with the recurring donation
@@ -90,29 +93,39 @@ class RecurringDonationDetailRepositoryImpl with RecurringDonationDetailReposito
       final collectGroup = collectGroups.firstWhere(
         (element) => element.nameSpace == _recurringDonation!.namespace,
         orElse: () {
-          print('Collection with namespace ${_recurringDonation!.namespace} not found');
+          debugPrint(
+            'Collection with namespace ${_recurringDonation!.namespace} not found',
+          );
           return const CollectGroup.empty();
         },
       );
 
       // Update the recurring donation with collect group information
-      final recurringDonationWithCollectGroup = _recurringDonation!.copyWith(collectGroup: collectGroup);
+      final recurringDonationWithCollectGroup = _recurringDonation!.copyWith(
+        collectGroup: collectGroup,
+      );
       _recurringDonation = recurringDonationWithCollectGroup;
 
       // Fetch donation instances from API
-      final instancesResponse = await apiService.fetchRecurringInstances(_recurringDonation!.id);
-      
+      final instancesResponse = await apiService.fetchRecurringInstances(
+        _recurringDonation!.id,
+      );
+
       // Parse the response and create history items (without status determination yet)
-      final rawHistory = _parseRawHistoryFromResponse(instancesResponse as Map<String, dynamic>);
-      
+      final rawHistory = _parseRawHistoryFromResponse(
+        instancesResponse,
+      );
+
       // Now determine the correct status for each item based on recurring donation context
       final history = _determineHistoryStatuses(rawHistory);
-      
+
       // Calculate basic details first (without progress, as we need _detail to be initialized)
       final totalDonated = _calculateTotalDonated(history);
       final remainingTime = _calculateRemainingTime();
-      final endDate = _recurringDonation!.endsAfterTurns != 999 ? _recurringDonation!.endDate : null;
-      
+      final endDate = _recurringDonation!.endsAfterTurns != 999
+          ? _recurringDonation!.endDate
+          : null;
+
       // Create the detail model with the parsed history first
       _detail = RecurringDonationDetailUIModel(
         organizationName: _recurringDonation!.collectGroup.orgName,
@@ -125,23 +138,23 @@ class RecurringDonationDetailRepositoryImpl with RecurringDonationDetailReposito
         isLoading: false,
         error: null,
       );
-      
+
       // Now calculate progress (after _detail is initialized)
       final progress = _calculateProgress();
-      
+
       // Only add upcoming donation if the recurring donation is still active
-      List<DonationHistoryItem> finalHistory = history;
+      var finalHistory = history;
       if (_isRecurringDonationActive()) {
         final upcomingDonation = _createUpcomingDonation();
         finalHistory = [upcomingDonation, ...history];
       }
-      
+
       // Update the detail with the complete history including progress
       _detail = _detail.copyWith(
         history: finalHistory,
         progress: progress,
       );
-      
+
       _error = null;
     } catch (error) {
       _error = error.toString();
@@ -152,45 +165,53 @@ class RecurringDonationDetailRepositoryImpl with RecurringDonationDetailReposito
     }
   }
 
-  List<Map<String, dynamic>> _parseRawHistoryFromResponse(Map<String, dynamic> response) {
+  List<Map<String, dynamic>> _parseRawHistoryFromResponse(
+    Map<String, dynamic> response,
+  ) {
     final results = response['results'] as List<dynamic>? ?? [];
     final rawHistory = <Map<String, dynamic>>[];
-    
+
     for (final item in results) {
       final itemMap = item as Map<String, dynamic>;
       rawHistory.add(itemMap);
     }
-    
+
     return rawHistory;
   }
 
-  List<DonationHistoryItem> _determineHistoryStatuses(List<Map<String, dynamic>> rawHistory) {
+  List<DonationHistoryItem> _determineHistoryStatuses(
+    List<Map<String, dynamic>> rawHistory,
+  ) {
     final history = <DonationHistoryItem>[];
-    
+
     for (final item in rawHistory) {
       final amount = (item['amount'] as num?)?.toDouble() ?? 0.0;
-      final date = DateTime.tryParse(item['timestamp'] as String? ?? '') ?? DateTime.now();
+      final date =
+          DateTime.tryParse(item['timestamp'] as String? ?? '') ??
+          DateTime.now();
       final status = _determineStatus(item);
       final icon = _getIconForStatus(status);
-      
-      history.add(DonationHistoryItem(
-        amount: amount,
-        date: date,
-        status: status,
-        icon: icon,
-      ));
+
+      history.add(
+        DonationHistoryItem(
+          amount: amount,
+          date: date,
+          status: status,
+          icon: icon,
+        ),
+      );
     }
-    
+
     // Sort by date, most recent first
     history.sort((a, b) => b.date.compareTo(a.date));
-    
+
     return history;
   }
 
   DonationStatus _determineStatus(Map<String, dynamic> item) {
     final timestamp = DateTime.tryParse(item['timestamp'] as String? ?? '');
     if (timestamp == null) return DonationStatus.pending;
-    
+
     final now = DateTime.now();
     // Only show upcoming status if the recurring donation is still active
     if (timestamp.isAfter(now) && _isRecurringDonationActive()) {
@@ -213,13 +234,13 @@ class RecurringDonationDetailRepositoryImpl with RecurringDonationDetailReposito
 
   DonationProgress? _calculateProgress() {
     if (_recurringDonation!.endsAfterTurns == 999) return null;
-    
+
     final total = _recurringDonation!.endsAfterTurns;
     // Count only completed donations (excluding upcoming ones)
     final completed = _detail.history
         .where((h) => h.status == DonationStatus.completed)
         .length;
-    
+
     return DonationProgress(
       completed: completed,
       total: total,
@@ -234,13 +255,13 @@ class RecurringDonationDetailRepositoryImpl with RecurringDonationDetailReposito
 
   String _calculateRemainingTime() {
     if (_recurringDonation!.endsAfterTurns == 999) return 'Unlimited';
-    
+
     final endDate = _recurringDonation!.endDate;
     if (endDate == null) return 'Unknown';
-    
+
     final now = DateTime.now();
     final difference = endDate.difference(now);
-    
+
     if (difference.inDays > 365) {
       final years = (difference.inDays / 365).floor();
       return '$years year${years > 1 ? 's' : ''}';
@@ -256,12 +277,12 @@ class RecurringDonationDetailRepositoryImpl with RecurringDonationDetailReposito
   bool _isRecurringDonationActive() {
     // Check if the recurring donation is still active (not in the past)
     if (_recurringDonation == null) return false;
-    
+
     // Check if the end date is in the future
     if (_recurringDonation!.endDate != null) {
       return _recurringDonation!.endDate!.isAfter(DateTime.now());
     }
-    
+
     // If no end date, check the current state
     return _recurringDonation!.currentState == RecurringDonationState.active;
   }
@@ -269,18 +290,21 @@ class RecurringDonationDetailRepositoryImpl with RecurringDonationDetailReposito
   DonationHistoryItem _createUpcomingDonation() {
     // Calculate the next donation date
     DateTime nextDonationDate;
-    
+
     // Get completed donations from the current history (excluding upcoming ones)
     final completedDonations = _detail.history
         .where((h) => h.status == DonationStatus.completed)
         .toList();
-    
+
     if (completedDonations.isNotEmpty) {
       // If we have completed donations, calculate next date from the most recent one
       try {
-        final lastDonation = completedDonations
-            .reduce((a, b) => a.date.isAfter(b.date) ? a : b);
-        nextDonationDate = _recurringDonation!.getNextDonationDate(lastDonation.date);
+        final lastDonation = completedDonations.reduce(
+          (a, b) => a.date.isAfter(b.date) ? a : b,
+        );
+        nextDonationDate = _recurringDonation!.getNextDonationDate(
+          lastDonation.date,
+        );
       } catch (e) {
         // Fallback to start date if there's an issue with the reduce operation
         print('Error calculating next date from completed donations: $e');
