@@ -76,6 +76,7 @@ class GenerosityHuntRepository extends ChangeNotifier {
 
   Future<void> createGame(String userId) async {
     try {
+      
       // For now, don't send user guids as requested
       final guids = <String>[userId];
       _gameId = await _apiService.createGame(
@@ -83,6 +84,7 @@ class GenerosityHuntRepository extends ChangeNotifier {
         type: 'GenerosityHunt',
       );
 
+      setGameId(_gameId!);
       unawaited(fetchUserState(userId));
       notifyListeners();
     } catch (e) {
