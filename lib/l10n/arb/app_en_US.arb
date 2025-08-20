@@ -1067,5 +1067,13 @@
   "recurringDonationsSuccessSubtitleNextXMonths": "For the next {months} months, you'll be helping {organization} make an impact",
   "recurringDonationsSuccessSubtitleUntilDecide": "You'll be helping {organization} make an impact until you decide to stop.",
   "recurringDonationsSuccessSubtitleUntilDate": "Until {date}, you'll be helping {organization} make an impact",
-  "recurringDonationsSuccessSubtitleDefault": "You'll be helping {organization} make an impact"
+  "recurringDonationsSuccessSubtitleDefault": "You'll be helping {organization} make an impact",
+  "recurringDonationsListStatusEnded": "Ended",
+  "recurringDonationsListStatusNextUp": "Next up",
+  "recurringDonationsListFrequencyWeekly": "Weekly",
+  "recurringDonationsListFrequencyMonthly": "Monthly",
+  "recurringDonationsListFrequencyQuarterly": "Quarterly",
+  "recurringDonationsListFrequencySemiAnnually": "Semi-annually",
+  "recurringDonationsListFrequencyAnnually": "Annually",
+  "recurringDonationsListFrequencyRecurring": "Recurring"
 }
