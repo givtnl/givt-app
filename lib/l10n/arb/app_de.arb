@@ -1009,7 +1009,7 @@
   "donationOverviewPlatformContribution": "Freiwilliger Plattformbeitrag",
   "donationOverviewPlatformContributionTitle": "Vielen Dank für Ihre Großzügigkeit!",
   "donationOverviewPlatformContributionText": "Dank Ihres freiwilligen Beitrags zur Plattform können wir den Spendenempfang günstiger gestalten.",
-  "platformFeePlaceholder": "Beitrag auswählen",
+  "platformFeePlaceholder": "Betrag auswählen",
   "platformFeeRequired": "Pflichtfeld",
   "recurringDonationsStep1Title": "Select organisation",
   "recurringDonationsStep1Description": "Who do you want to give to?",
