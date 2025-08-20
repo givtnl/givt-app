@@ -6,6 +6,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/edit_avatar_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/generosity_hunt_button.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/my_givts_text_button.dart';
@@ -46,6 +47,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
               children: [
                 _parentHeaderWidget(activeProfile, context),
                 _giveTile(context),
+                _generosityHuntButton(context, state),
               ],
             ),
           ),
@@ -91,6 +93,26 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
           ),
         ),
       );
+
+  Widget _generosityHuntButton(BuildContext context, ProfilesState state) {
+    if (!state.showBarcodeHunt) return const SizedBox.shrink();
+    
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+      child: GenerosityHuntButton(
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.parentGenerosityHuntButtonClicked,
+        ),
+        onPressed: () {
+          // Set the current profile as active and navigate to the game
+          context.read<ProfilesCubit>().setActiveProfile(
+            state.activeProfile.id,
+          );
+          context.goNamed(FamilyPages.newGame.name);
+        },
+      ),
+    );
+  }
 
   FunTopAppBar _topAppBar(Profile profile, BuildContext context) =>
       FunTopAppBar(

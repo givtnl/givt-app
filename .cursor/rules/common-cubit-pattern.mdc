@@ -1,24 +1,77 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # CommonCubit Pattern Rules
 
-## Basic Structure
-- Extend `CommonCubit<UIModel, CustomState>` where:
-  - `UIModel` is the main UI state model
-  - `CustomState` is for custom events/actions
-- Use `BaseState` for initial state: `super(const BaseState.loading())`
+## Architecture Overview
+- Each page/screen has its own cubit (e.g., `FamilyHomeScreen` has `FamilyHomeScreenCubit`)
+- Features can have one or more repositories
+- Cubits can use repositories from other features when needed
+- Example from FamilyHomeScreen:
+```dart
+// FamilyHomeScreen uses multiple repositories from different features
+final ProfilesRepository _profilesRepository;
+final ImpactGroupsRepository _impactGroupsRepository;
+final MissionsRepository _missionsRepository;
+```
+
+## Dependency Injection with get_it
+- Register repositories and cubits in the feature's injection file
+- Use `getIt.registerLazySingleton` for repositories
+- Use `getIt.registerFactory` for cubits (new instance per page)
+- Example:
+```dart
+// In injection.dart
+void registerDependencies() {
+  // Repositories
+  getIt.registerLazySingleton<ProfilesRepository>(
+    () => ProfilesRepositoryImpl(),
+  );
+  
+  // Cubits
+  getIt.registerFactory<FamilyHomeScreenCubit>(
+    () => FamilyHomeScreenCubit(
+      getIt<ProfilesRepository>(),
+      getIt<ImpactGroupsRepository>(),
+    ),
+  );
+}
+
+// In the page
+final _cubit = getIt<FamilyHomeScreenCubit>();
+```
 
 ## Repository Pattern
 - Inject all required repositories through constructor
 - Make repositories final private fields with underscore prefix
 - Group related repositories together
+- A feature typically has one main repository, but can have more if needed
+- Repositories can be shared across features (e.g., ProfilesRepository used in multiple features)
+- Repositories can store temporary state for multi-page flows
 - Example:
 ```dart
+// Main repository for the feature
 final ProfilesRepository _profilesRepository;
+// Additional repositories from other features
 final ImpactGroupsRepository _impactGroupsRepository;
+
+// In repository implementation
+class ProfilesRepositoryImpl implements ProfilesRepository {
+  // Temporary state for multi-page flow
+  Profile? _temporaryProfile;
+  
+  void setTemporaryProfile(Profile profile) {
+    _temporaryProfile = profile;
+  }
+  
+  Profile? getTemporaryProfile() => _temporaryProfile;
+  
+  void clearTemporaryProfile() {
+    _temporaryProfile = null;
+  }
+}
 ```
 
 ## State Management
@@ -27,6 +80,24 @@ final ImpactGroupsRepository _impactGroupsRepository;
 - Create a `_createUIModel()` method to construct the UI state
 - Use `emitData()` for regular state updates
 - Use `emitCustom()` for custom events/actions
+- For multi-page flows, consider using repository for temporary state
+- Example:
+```dart
+// In cubit
+void startProfileCreation() {
+  final profile = Profile();
+  _profilesRepository.setTemporaryProfile(profile);
+  emitCustom(const NavigateToNextStep());
+}
+
+// In next page's cubit
+void loadTemporaryProfile() {
+  final profile = _profilesRepository.getTemporaryProfile();
+  if (profile != null) {
+    // Use profile data
+  }
+}
+```
 
 ## Stream Handling
 - Set up repository streams in `init()` method
@@ -37,6 +108,44 @@ final ImpactGroupsRepository _impactGroupsRepository;
 _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
 ```
 
+## UI Integration with BaseStateConsumer
+- Use `BaseStateConsumer` widget to handle state changes
+- Implement both `onData` and `onCustom` callbacks
+- `onData`: Handle regular UI state updates
+- `onCustom`: Handle custom events/actions
+- Example:
+```dart
+BaseStateConsumer(
+  cubit: _cubit,
+  onCustom: (context, custom) {
+    switch (custom) {
+      case final SlideCarouselTo event:
+        // Handle custom event
+      case final OpenAvatarOverlay event:
+        // Handle custom event
+    }
+  },
+  onData: (context, uiModel) {
+    // Build UI based on uiModel
+    return YourWidget(uiModel);
+  },
+)
+```
+
+## Custom State Handling
+- Define custom states as sealed classes
+- Use pattern matching with switch statements
+- Keep custom states focused and specific
+- Example:
+```dart
+sealed class FamilyHomeScreenCustom {
+  const FamilyHomeScreenCustom();
+  
+  const factory FamilyHomeScreenCustom.slideCarouselTo(int index) = SlideCarouselTo;
+  const factory FamilyHomeScreenCustom.openAvatarOverlay() = OpenAvatarOverlay;
+}
+```
+
 ## Best Practices
 - Keep cubit focused on a single feature
 - Use clear, descriptive method names
@@ -44,3 +153,19 @@ _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
 - Handle loading and error states
 - Use private methods for internal logic
 - Keep UI model creation separate from business logic
+- Use sealed classes for custom states to ensure exhaustive pattern matching
+- Keep UI state models immutable
+- Document custom states and their purposes
+- When using repositories from other features, ensure proper error handling
+- Keep repository usage focused - only inject repositories you actually need
+- Document cross-feature repository dependencies in the cubit's documentation
+- For multi-page flows, use repository for temporary state instead of passing data through navigation
+- Clear temporary state in repository when flow is completed or cancelled
+- Use get_it for dependency injection to maintain clean architecture 
+
+/// Cubit responsible for managing game summaries state.
+/// Uses [GameSummariesRepository] for fetching summary data and
+/// [ProfilesRepository] for profile information.
+class GameSummariesCubit extends CommonCubit<List<GameSummaryItem>, dynamic> {
+  // ... rest of the implementation
+} 

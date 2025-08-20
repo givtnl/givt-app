@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
@@ -183,101 +185,97 @@ class FunTile extends StatelessWidget {
           Container(
             color: newBackgroundColor,
             width: double.infinity,
-            child: Column(
-              mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
-              children: [
-                if (hasIcon)
-                  SizedBox(height: iconData != null && !shrink ? 24 : 10),
-                if (hasIcon)
-                  Opacity(
-                    opacity: isDisabled ? 0.5 : 1,
-                    child: iconData == null
-                        ? isOnlineIcon
-                            ? SvgPicture.network(
-                                iconPath,
-                                height: assetSize ?? 140,
-                                width: assetSize ?? 140,
-                              )
-                            : SvgPicture.asset(
-                                iconPath,
-                                height: assetSize ?? 140,
-                                width: assetSize ?? 140,
-                                colorFilter: iconColor != null
-                                    ? ColorFilter.mode(
-                                        iconColor!,
-                                    BlendMode.srcIn,
+            constraints: const BoxConstraints(
+              minHeight: 0,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
+                children: [
+                  if (hasIcon)
+                    SizedBox(height: iconData != null && !shrink ? 24 : 10),
+                  if (hasIcon)
+                    Opacity(
+                      opacity: isDisabled ? 0.5 : 1,
+                      child: iconData == null
+                          ? isOnlineIcon
+                                ? SvgPicture.network(
+                                    iconPath,
+                                    height: assetSize ?? 140,
+                                    width: assetSize ?? 140,
                                   )
-                                    : null,
-                              )
-                        : FaIcon(
-                            iconData,
-                            size: assetSize ?? 140,
-                            color:
-                                iconColor ?? textColor.withValues(alpha: 0.6),
-                          ),
+                                : SvgPicture.asset(
+                                    iconPath,
+                                    height: assetSize ?? 140,
+                                    width: assetSize ?? 140,
+                                    colorFilter: iconColor != null
+                                        ? ColorFilter.mode(
+                                            iconColor!,
+                                            BlendMode.srcIn,
+                                          )
+                                        : null,
+                                  )
+                          : FaIcon(
+                              iconData,
+                              size: assetSize ?? 140,
+                              color:
+                                  iconColor ?? textColor.withValues(alpha: 0.6),
+                            ),
+                    ),
+                  Padding(
+                    padding:
+                        padding ??
+                        (hasIcon
+                            ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16)
+                            : EdgeInsets.zero),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (titleBig != null)
+                          LabelLargeText(
+                            titleBig!,
+                            textAlign: TextAlign.center,
+                            color: isDisabled
+                                ? FamilyAppTheme.disabledTileBorder
+                                : textColor,
+                          )
+                        else
+                          const SizedBox(),
+                        if (titleMedium != null)
+                          LabelMediumText(
+                            titleMedium!,
+                            textAlign: TextAlign.center,
+                            color: isDisabled
+                                ? FamilyAppTheme.disabledTileBorder
+                                : textColor,
+                          )
+                        else
+                          const SizedBox(),
+                        if (titleSmall != null)
+                          LabelMediumText(
+                            titleSmall!,
+                            textAlign: TextAlign.center,
+                            color: isDisabled
+                                ? FamilyAppTheme.disabledTileBorder
+                                : textColor,
+                          )
+                        else
+                          const SizedBox(),
+                        if (hasIcon) const SizedBox(height: 4),
+                        if (subtitle != null)
+                          LabelMediumText(
+                            subtitle!,
+                            textAlign: TextAlign.center,
+                            color: textColor.withValues(alpha: 0.7),
+                          )
+                        else
+                          const SizedBox(),
+                      ],
+                    ),
                   ),
-                Padding(
-                  padding: padding ??
-                      (hasIcon
-                          ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16)
-                          : EdgeInsets.zero),
-                  child: Column(
-                    children: [
-                      if (titleBig != null)
-                        Text(
-                          titleBig!,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.labelLarge?.copyWith(
-                                    color: isDisabled
-                                        ? FamilyAppTheme.disabledTileBorder
-                                        : textColor,
-                                  ),
-                        )
-                      else
-                        const SizedBox(),
-                      if (titleMedium != null)
-                        Text(
-                          titleMedium!,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: isDisabled
-                                        ? FamilyAppTheme.disabledTileBorder
-                                        : textColor,
-                                  ),
-                        )
-                      else
-                        const SizedBox(),
-                      if (titleSmall != null)
-                        Text(
-                          titleSmall!,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: isDisabled
-                                        ? FamilyAppTheme.disabledTileBorder
-                                        : textColor,
-                                  ),
-                        )
-                      else
-                        const SizedBox(),
-                      if (hasIcon) const SizedBox(height: 8),
-                      if (subtitle != null)
-                        Text(
-                          subtitle!,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: textColor.withValues(alpha: 0.2),
-                                  ),
-                        )
-                      else
-                        const SizedBox(),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           if (isSelected)

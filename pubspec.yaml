@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.12.0
+version: 4.13.0
 publish_to: none
 
 environment:
@@ -59,6 +59,7 @@ dependencies:
   lottie: ^3.3.1
   material_color_utilities: ^0.11.0
   mobile_scanner: ^6.0.7
+  moment_dart: ^5.2.3
   nfc_manager: ^3.5.0
   overlay_tooltip:
     path: ./packages/overlay_tooltip

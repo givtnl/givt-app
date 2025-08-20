@@ -116,8 +116,9 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Row of circles for each item
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
                       children: List.generate(state.level?.itemsNeeded ?? 0, (
                         index,
                       ) {
@@ -136,23 +137,21 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                         }
 
                         // Show numbered circle for unscanned items
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: FamilyAppTheme.neutral70,
-                                width: 4,
-                              ),
-                              color: Colors.white,
-                            ),
-                            alignment: Alignment.center,
-                            child: TitleMediumText(
-                              (index + 1).toString(),
+                        return Container(
+                          width: 60,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
                               color: FamilyAppTheme.neutral70,
+                              width: 4,
                             ),
+                            color: Colors.white,
+                          ),
+                          alignment: Alignment.center,
+                          child: TitleMediumText(
+                            (index + 1).toString(),
+                            color: FamilyAppTheme.neutral70,
                           ),
                         );
                       }),

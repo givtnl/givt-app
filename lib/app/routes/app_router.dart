@@ -32,7 +32,7 @@ import 'package:givt_app/features/personal_summary/overview/bloc/personal_summar
 import 'package:givt_app/features/personal_summary/overview/pages/personal_summary_page.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/pages/yearly_overview_page.dart';
-import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
+import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/pages.dart';
@@ -209,10 +209,7 @@ class AppRouter {
             path: Pages.recurringDonations.path,
             name: Pages.recurringDonations.name,
             builder: (context, state) => BlocProvider(
-              create: (_) => RecurringDonationsCubit(getIt(), getIt())
-                ..fetchRecurringDonations(
-                  context.read<AuthCubit>().state.user.guid,
-                ),
+              create: (_) => RecurringDonationsOverviewCubit(getIt()),
               child: const RecurringDonationsOverviewPage(),
             ),
           ),

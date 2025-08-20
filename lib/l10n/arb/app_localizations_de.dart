@@ -2050,7 +2050,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get closeModalNoBack => 'No, go back';
 
   @override
-  String get recurringDonationsSetAmountTitle =>
+  String get recurringDonationsStep2Description =>
       'How often do you want to give, and how much?';
 
   @override
@@ -2066,14 +2066,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get donationTotal => 'Insgesamt';
 
   @override
-  String get platformFeeTitle => 'Plattformbeitrag (optional)';
+  String get platformFeeTitle =>
+      'Hilf uns, die Kosten für Organisationen zu senken';
 
   @override
   String get platformFeeText =>
-      'Mit Ihrem Plattformbeitrag zahlt die Organisation keine Plattformgebühren.';
+      'Givt strebt 0% Servicefee an. Mit einer kleinen Spende an Givt hilfst du, das zu erreichen.';
 
   @override
-  String get platformFeeNoContribution => 'Kein Beitrag';
+  String get platformFeeNoContribution => 'Diesmal nicht';
 
   @override
   String get donationOverviewPlatformContribution =>
@@ -2088,8 +2089,258 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dank Ihres freiwilligen Beitrags zur Plattform können wir den Spendenempfang günstiger gestalten.';
 
   @override
-  String get platformFeePlaceholder => 'Beitrag auswählen';
+  String get platformFeePlaceholder => 'Betrag auswählen';
 
   @override
   String get platformFeeRequired => 'Pflichtfeld';
+
+  @override
+  String get recurringDonationsStep1Title => 'Select organisation';
+
+  @override
+  String get recurringDonationsStep1Description =>
+      'Who do you want to give to?';
+
+  @override
+  String get recurringDonationsStep1ListTitle => 'Select from list';
+
+  @override
+  String get recurringDonationsStep1ListSubtitle =>
+      'Select a cause from the list';
+
+  @override
+  String get recurringDonationsStep2Title => 'Set amount';
+
+  @override
+  String get recurringDonationsStep3Title => 'Set duration';
+
+  @override
+  String get recurringDonationsStep3Description =>
+      'How long would you like to schedule this donation for?';
+
+  @override
+  String get recurringDonationsStartingTitle => 'Starting on';
+
+  @override
+  String get recurringDonationsEndsTitle => 'Ends';
+
+  @override
+  String get recurringDonationsEndsWhenIDecide => 'When I decide';
+
+  @override
+  String get recurringDonationsEndsAfterNumber => 'After a number of donations';
+
+  @override
+  String get recurringDonationsEndsAfterDate => 'On a specific date';
+
+  @override
+  String recurringDonationsEndDateHintEveryMonth(Object dag, Object day) {
+    return 'Your donation will occur on the $day of every month';
+  }
+
+  @override
+  String recurringDonationsEndDateHintEveryWeek(Object day) {
+    return 'Your donation will occur every week on the $day';
+  }
+
+  @override
+  String recurringDonationsEndDateHintEveryXMonth(Object day, Object freq) {
+    return 'Your donation will occur every $freq months on the $day';
+  }
+
+  @override
+  String recurringDonationsEndDateHintEveryYear(Object day, Object month) {
+    return 'Your donation will occur once a year on the $day of $month';
+  }
+
+  @override
+  String recurringDonationsEndsAfterXDonations(Object amount) {
+    return 'After $amount of donations';
+  }
+
+  @override
+  String get recurringDonationsStep4Title => 'Confirm';
+
+  @override
+  String get recurringDonationsStep4Description =>
+      'Ready to make a difference?';
+
+  @override
+  String get recurringDonationsStep4YoullDonateTo => 'You\'ll donate to';
+
+  @override
+  String get recurringDonationsStep4Amount => 'Amount';
+
+  @override
+  String get recurringDonationsStep4Frequency => 'Frequency';
+
+  @override
+  String get recurringDonationsStep4Starts => 'Starts';
+
+  @override
+  String get recurringDonationsStep4Ends => 'Ends';
+
+  @override
+  String get recurringDonationsStep4ConfirmMyDonation => 'Confirm my donation';
+
+  @override
+  String get recurringDonationsEmptyStateTitle =>
+      'Einfaches Spenden, volle Kontrolle';
+
+  @override
+  String get recurringDonationsEmptyStateDescription =>
+      'Richten Sie eine wiederkehrende Spende ein, die Sie jederzeit anpassen oder stornieren können.';
+
+  @override
+  String get recurringDonationsOverviewTabCurrent => 'Aktuell';
+
+  @override
+  String get recurringDonationsOverviewTabPast => 'Vergangen';
+
+  @override
+  String get recurringDonationsOverviewAddButton => 'Wiederkehrende Spende';
+
+  @override
+  String get recurringDonationsDetailProgressSuffix => 'Spenden';
+
+  @override
+  String get recurringDonationsDetailSummaryDonated => 'Gespendet';
+
+  @override
+  String get recurringDonationsDetailSummaryHelping => 'Helfen';
+
+  @override
+  String get recurringDonationsDetailSummaryHelped => 'Geholfen';
+
+  @override
+  String recurringDonationsDetailEndsTag(Object date) {
+    return 'Endet $date';
+  }
+
+  @override
+  String get recurringDonationsDetailHistoryTitle => 'Verlauf';
+
+  @override
+  String get recurringDonationsDetailStatusUpcoming => 'Anstehend';
+
+  @override
+  String get recurringDonationsDetailStatusCompleted => 'Abgeschlossen';
+
+  @override
+  String get recurringDonationsDetailStatusPending => 'Ausstehend';
+
+  @override
+  String recurringDonationsDetailTimeDisplayDays(Object days) {
+    return '$days Tage';
+  }
+
+  @override
+  String get recurringDonationsDetailManageButton => 'Spende verwalten';
+
+  @override
+  String get recurringDonationsDetailEditDonation => 'Spende bearbeiten';
+
+  @override
+  String get recurringDonationsDetailEditComingSoon =>
+      'Bearbeitungsfunktion kommt bald';
+
+  @override
+  String get recurringDonationsDetailPauseDonation => 'Spende pausieren';
+
+  @override
+  String get recurringDonationsDetailPauseComingSoon =>
+      'Pausierungsfunktion kommt bald';
+
+  @override
+  String get recurringDonationsDetailCancelDonation => 'Spende stornieren';
+
+  @override
+  String get recurringDonationsCreateStep2AmountHint => 'Betrag eingeben';
+
+  @override
+  String get recurringDonationsCreateFrequencyHint => 'Einen auswählen';
+
+  @override
+  String get recurringDonationsCreateDurationNumberHint => 'Anzahl eingeben';
+
+  @override
+  String recurringDonationsCreateDurationSnackbarTimes(
+    Object date,
+    Object number,
+  ) {
+    return 'Sie spenden $number mal, endend am $date';
+  }
+
+  @override
+  String recurringDonationsCreateDurationSnackbarOnce(Object date) {
+    return 'Sie spenden 1 mal, endend am $date';
+  }
+
+  @override
+  String recurringDonationsCreateDurationSnackbarMultiple(
+    Object count,
+    Object date,
+  ) {
+    return 'Sie spenden $count mal, endend am $date';
+  }
+
+  @override
+  String get recurringDonationsSuccessTitle =>
+      'Vielen Dank für Ihre Unterstützung';
+
+  @override
+  String recurringDonationsSuccessSubtitleNextXMonths(
+    Object months,
+    Object organization,
+  ) {
+    return 'Für die nächsten $months Monate helfen Sie $organization dabei, etwas zu bewirken';
+  }
+
+  @override
+  String recurringDonationsSuccessSubtitleUntilDecide(Object organization) {
+    return 'Sie helfen $organization dabei, etwas zu bewirken, bis Sie sich entscheiden aufzuhören.';
+  }
+
+  @override
+  String recurringDonationsSuccessSubtitleUntilDate(
+    Object date,
+    Object organization,
+  ) {
+    return 'Bis $date helfen Sie $organization dabei, etwas zu bewirken';
+  }
+
+  @override
+  String recurringDonationsSuccessSubtitleDefault(Object organization) {
+    return 'Sie helfen $organization dabei, etwas zu bewirken';
+  }
+
+  @override
+  String get recurringDonationsListStatusEnded => 'Beendet';
+
+  @override
+  String get recurringDonationsListStatusNextUp => 'Nächste';
+
+  @override
+  String get recurringDonationsListFrequencyWeekly => 'Wöchentlich';
+
+  @override
+  String get recurringDonationsListFrequencyMonthly => 'Monatlich';
+
+  @override
+  String get recurringDonationsListFrequencyQuarterly => 'Vierteljährlich';
+
+  @override
+  String get recurringDonationsListFrequencySemiAnnually => 'Halbjährlich';
+
+  @override
+  String get recurringDonationsListFrequencyAnnually => 'Jährlich';
+
+  @override
+  String get recurringDonationsListFrequencyRecurring => 'Wiederkehrend';
+
+  @override
+  String get platformFeeCommonOption => 'Am beliebtesten';
+
+  @override
+  String get platformFeeGenerousOption => 'Am beliebtesten';
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -16,6 +17,7 @@ class FunMissionCard extends StatelessWidget {
     required this.analyticsEvent,
     this.onTap,
     this.isLoading = false,
+    this.useFunProgressbar = false,
     super.key,
   });
 
@@ -34,6 +36,7 @@ class FunMissionCard extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isLoading;
   final AnalyticsEvent analyticsEvent;
+  final bool useFunProgressbar;
 
   @override
   Widget build(BuildContext context) {
@@ -91,13 +94,20 @@ class FunMissionCard extends StatelessWidget {
                           uiModel.description,
                           color: uiModel.disabled
                               ? FamilyAppTheme.neutral60
-                              : null,
+                              : FamilyAppTheme.primary40,
                           textAlign: TextAlign.center,
                         ),
                         if (uiModel.progress != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 16, bottom: 8),
-                            child: GoalProgressBar(
+                            child: useFunProgressbar ? FunProgressbar(
+                              currentProgress: uiModel.progress!.amount.toInt(),
+                              total: uiModel.progress!.totalAmount.toInt(),
+                              backgroundColor: FamilyAppTheme.neutralVariant95,
+                              progressColor: FamilyAppTheme.primary90,
+                              textColor: FamilyAppTheme.primary20,
+                              suffix: uiModel.progress!.suffix,
+                            ) : GoalProgressBar(
                               model: uiModel.progress!,
                             ),
                           ),

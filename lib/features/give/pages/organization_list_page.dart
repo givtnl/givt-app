@@ -12,12 +12,13 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
-import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
+import 'package:givt_app/features/recurring_donations/create/presentation/pages/step1_select_organisation_page.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -443,7 +444,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                   navigate: (context) =>
                       _showCreateRecurringDonationBottomSheet(
                     context,
-                    recipient: recipient,
+                    collectGroup: recipient,
                   ),
                 ),
               ),
@@ -490,7 +491,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               checkAuthRequest: CheckAuthRequest(
                 navigate: (context) => _showCreateRecurringDonationBottomSheet(
                   context,
-                  recipient: recipient,
+                  collectGroup: recipient,
                 ),
               ),
             ),
@@ -515,15 +516,13 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
 
   Future<void> _showCreateRecurringDonationBottomSheet(
     BuildContext context, {
-    required CollectGroup recipient,
+    required CollectGroup collectGroup,
   }) {
-    return showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) => CreateRecurringDonationBottomSheet(
-        recipient: recipient,
-      ),
+    return Navigator.push(
+      context,
+      Step1SelectOrganisationPage(
+        collectGroup: collectGroup,
+      ).toRoute(context),
     );
   }
 

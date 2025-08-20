@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
@@ -32,41 +30,18 @@ class LevelTile extends StatefulWidget {
 }
 
 class _LevelTileState extends State<LevelTile> {
-  Timer? _debounceTimer;
-  bool _isProcessing = false;
-
   @override
   void dispose() {
-    _debounceTimer?.cancel();
     super.dispose();
   }
 
   void _handleTap() {
-    if (_isProcessing || !_shouldAllowTap() || widget.onTap == null) {
+    if (!_shouldAllowTap() || widget.onTap == null) {
       return;
     }
 
-    // Cancel any existing timer
-    if (_debounceTimer?.isActive ?? false) {
-      _debounceTimer!.cancel();
-    }
-
-    // Set processing flag to prevent multiple taps
-    setState(() {
-      _isProcessing = true;
-    });
-
     // Call the original onTap callback
     widget.onTap!();
-
-    // Reset processing flag after a delay to allow for navigation
-    _debounceTimer = Timer(const Duration(milliseconds: 1000), () {
-      if (mounted) {
-        setState(() {
-          _isProcessing = false;
-        });
-      }
-    });
   }
 
   @override
@@ -103,6 +78,7 @@ class _LevelTileState extends State<LevelTile> {
         padding: EdgeInsets.zero,
       );
     }
+    
     return null;
   }
 

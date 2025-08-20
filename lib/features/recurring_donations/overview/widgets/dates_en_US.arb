@@ -1,0 +1,10 @@
+{
+  "recurringDonationsListStatusEnded": "Ended",
+  "recurringDonationsListStatusNextUp": "Next up",
+  "recurringDonationsListFrequencyWeekly": "Weekly",
+  "recurringDonationsListFrequencyMonthly": "Monthly",
+  "recurringDonationsListFrequencyQuarterly": "Quarterly",
+  "recurringDonationsListFrequencySemiAnnually": "Semi-annually",
+  "recurringDonationsListFrequencyAnnually": "Annually",
+  "recurringDonationsListFrequencyRecurring": "Recurring"
+}

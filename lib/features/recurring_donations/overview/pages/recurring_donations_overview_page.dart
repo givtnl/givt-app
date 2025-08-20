@@ -1,195 +1,162 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
-import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
-import 'package:givt_app/features/recurring_donations/detail/cubit/detailed_recurring_donations_cubit.dart';
-import 'package:givt_app/features/recurring_donations/detail/pages/recurring_donations_detail_page.dart';
-import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
-import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
-import 'package:givt_app/features/recurring_donations/overview/widgets/create_recurring_donation_button.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/recurring_donations/create/presentation/pages/step1_select_organisation_page.dart';
+import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
+import 'package:givt_app/features/recurring_donations/overview/widgets/recurring_donations_empty_state.dart';
 import 'package:givt_app/features/recurring_donations/overview/widgets/recurring_donations_list.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
-class RecurringDonationsOverviewPage extends StatelessWidget {
-  const RecurringDonationsOverviewPage({
-    super.key,
-  });
+class RecurringDonationsOverviewPage extends StatefulWidget {
+  const RecurringDonationsOverviewPage({super.key});
 
-  Future<void> _fetchRecurringDonations(BuildContext context) async {
-    await context
-        .read<RecurringDonationsCubit>()
-        .fetchRecurringDonations(context.read<AuthCubit>().state.user.guid);
+  @override
+  State<RecurringDonationsOverviewPage> createState() =>
+      _RecurringDonationsOverviewPageState();
+}
+
+class _RecurringDonationsOverviewPageState
+    extends State<RecurringDonationsOverviewPage> {
+  late final RecurringDonationsOverviewCubit _cubit;
+  int _selectedTabIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _cubit = getIt<RecurringDonationsOverviewCubit>();
+    _cubit.init();
   }
 
-  Future<void> _onViewDetailInstances(
-    BuildContext context,
-    RecurringDonation selected,
-  ) async {
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) => BlocProvider(
-        create: (_) => DetailedRecurringDonationsCubit(getIt())
-          ..fetchRecurringInstances(selected),
-        child: RecurringDonationsDetailPage(
-          recurringDonation: selected,
+  @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
+
+  void _onTabChanged(int index) {
+    setState(() {
+      _selectedTabIndex = index;
+    });
+    _cubit.onTabChanged(index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final locals = context.l10n;
+
+    return FunScaffold(
+      canPop: false,
+      appBar: FunTopAppBar.white(
+        title: locals.menuItemRecurringDonation,
+        leading: GivtBackButtonFlat(
+          onPressed: () async => {
+            Navigator.of(context).popUntil((route) => route.isFirst),
+          },
+        ),
+      ),
+      body: BaseStateConsumer(
+        cubit: _cubit,
+        onCustom: (context, custom) {
+          switch (custom) {
+            case NavigateToAddRecurringDonation():
+              // Navigate to add recurring donation flow
+              Navigator.of(context).push(
+                const Step1SelectOrganisationPage().toRoute(context),
+              );
+          }
+        },
+        onData: (context, uiModel) {
+          if (uiModel.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: FamilyAppTheme.error80,
+                  ),
+                  const SizedBox(height: 16),
+                  TitleMediumText(
+                    locals.somethingWentWrong,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  BodyMediumText.opacityBlack50(
+                    uiModel.error ?? '',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return Column(
+            children: [
+              FunPrimaryTabs(
+                margin: EdgeInsets.zero,
+                options: [locals.recurringDonationsOverviewTabCurrent, locals.recurringDonationsOverviewTabPast],
+                selectedIndex: _selectedTabIndex,
+                onPressed: _onTabChanged,
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.recurringDonationsTabsChanged,
+                ),
+              ),
+              const SizedBox(height: 32),
+              Expanded(
+                child: _selectedTabIndex == 0
+                    ? _buildCurrentTab(uiModel, locals)
+                    : _buildPastTab(uiModel, locals),
+              ),
+            ],
+          );
+        },
+      ),
+      floatingActionButton: FunButton(
+        onTap: () => _cubit.onAddRecurringDonationPressed(),
+        text: locals.recurringDonationsOverviewAddButton,
+        leftIcon: Icons.add,
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.recurringDonationsAddClicked,
         ),
       ),
     );
   }
 
-  void _onCancelRecurringDonationPressed(
-    BuildContext context,
-    RecurringDonation recurringDonation,
+  Widget _buildCurrentTab(
+    RecurringDonationsOverviewUIModel uiModel,
+    dynamic locals,
   ) {
-    showDialog<bool>(
-      context: context,
-      builder: (_) => CancelRecurringDonationConfirmationDialog(
-        recurringDonation: recurringDonation,
-      ),
-    ).then((result) {
-      if (result != null && result == true) {
-        _fetchRecurringDonations(context);
-      }
-    });
+    if (!uiModel.hasCurrentDonations) {
+      return const RecurringDonationsEmptyState();
+    }
+
+    return RecurringDonationsList(
+      donations: uiModel.currentDonations,
+      isCurrentTab: true,
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    final locals = context.l10n;
+  Widget _buildPastTab(
+    RecurringDonationsOverviewUIModel uiModel,
+    dynamic locals,
+  ) {
+    if (!uiModel.hasPastDonations) {
+      return const RecurringDonationsEmptyState();
+    }
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text(
-          locals.menuItemRecurringDonation,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-      ),
-      body: BlocConsumer<RecurringDonationsCubit, RecurringDonationsState>(
-        listener: (context, state) {
-          if (state is RecurringDonationsErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  locals.somethingWentWrong,
-                  textAlign: TextAlign.center,
-                ),
-                backgroundColor: Theme.of(context).colorScheme.error,
-              ),
-            );
-            context.pop();
-          }
-        },
-        builder: (context, state) {
-          if (state is RecurringDonationsFetchingState) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
-          final recurringDonations = <RecurringDonation>[];
-          if (state is RecurringDonationsFetchedState) {
-            recurringDonations.addAll(state.activeRecurringDonations);
-          }
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              children: [
-                CreateRecurringDonationButton(
-                  onClick: () async {
-                    await showModalBottomSheet<void>(
-                      context: context,
-                      useSafeArea: true,
-                      isScrollControlled: true,
-                      builder: (_) =>
-                          const CreateRecurringDonationBottomSheet(),
-                    );
-                    if (context.mounted) {
-                      await _fetchRecurringDonations(context);
-                    }
-                  },
-                ),
-                const SizedBox(height: 5),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 3,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppTheme.givtLightGray.withAlpha(100),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    width: double.infinity,
-                    height: size.height * 0.76,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          locals.menuItemRecurringDonation,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          height: 2,
-                          color: AppTheme.givtBlue,
-                        ),
-                        const SizedBox(height: 10),
-                        if (recurringDonations.isEmpty)
-                          Column(
-                            children: [
-                              Text(
-                                locals.emptyRecurringDonationList,
-                              ),
-                              SizedBox(
-                                height: size.height * 0.5,
-                                child: Center(
-                                  child: Image.asset(
-                                    'assets/images/givy_money.png',
-                                    width: size.width * 0.5,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                        else
-                          RecurringDonationsList(
-                            height: size.height * 0.68,
-                            recurringDonations: recurringDonations,
-                            onOverview: (RecurringDonation recurringDonation) {
-                              _onViewDetailInstances(
-                                context,
-                                recurringDonation,
-                              );
-                            },
-                            onCancel: (RecurringDonation recurringDonation) {
-                              _onCancelRecurringDonationPressed(
-                                context,
-                                recurringDonation,
-                              );
-                            },
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+    return RecurringDonationsList(
+      donations: uiModel.pastDonations,
+      isCurrentTab: false,
     );
   }
 }

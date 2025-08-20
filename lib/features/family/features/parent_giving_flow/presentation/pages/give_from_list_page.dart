@@ -28,6 +28,7 @@ class GiveFromListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final give = getIt<GiveCubit>();
+    final user = context.read<FamilyAuthCubit>().user!;
     return BlocConsumer<GiveCubit, GiveState>(
       bloc: give,
       listener: (context, state) {
@@ -47,6 +48,7 @@ class GiveFromListPage extends StatelessWidget {
       builder: (context, giveState) => giveState is GiveLoading
           ? const Scaffold(body: CustomCircularProgressIndicator())
           : OrganisationListFamilyPage(
+              countryCode: user.country,
               onTapListItem: (CollectGroup collectGroup) {
                 _navigateToGivingScreen(context, collectGroup);
               },

@@ -1251,6 +1251,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  moment_dart:
+    dependency: "direct main"
+    description:
+      name: moment_dart
+      sha256: "74e4241d412b87aac99fc2eaaf948e682c9c876b31850b82e35bdf2606fdf178"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.3"
   mustache_template:
     dependency: transitive
     description:

@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/features/generosity_hunt/presentation/p
 import 'package:givt_app/features/family/features/generosity_hunt/presentation/widgets/level_tile.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -20,7 +21,7 @@ class GenerosityHuntLevelsPage extends StatefulWidget {
 }
 
 class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
-  final cubit = getIt<LevelSelectCubit>();
+  final LevelSelectCubit cubit = getIt<LevelSelectCubit>();
 
   @override
   void didChangeDependencies() {
@@ -35,9 +36,8 @@ class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
     return Scaffold(
       appBar: FunTopAppBar(
         title: 'Levels',
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
+        leading: GivtBackButtonFlat(
+          onPressed: () async => Navigator.of(context).pop(),
         ),
       ),
       body: Padding(
@@ -45,10 +45,11 @@ class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
         child: BaseStateConsumer(
           cubit: cubit,
           onCustom: (context, custom) {
-            if (custom is NavigateToLevelIntroduction) {
-              Navigator.of(context).push(
-                const GenerosityHuntLevelIntroductionPage().toRoute(context),
-              );
+            switch (custom) {
+              case NavigateToLevelIntroduction():
+                Navigator.of(context).push(
+                  const GenerosityHuntLevelIntroductionPage().toRoute(context),
+                );
             }
           },
           onInitial: (context) => const Center(
@@ -58,9 +59,6 @@ class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
             child: CustomCircularProgressIndicator(),
           ),
           onData: (context, state) {
-            if (state.levels.isEmpty) {
-              return const Center(child: CircularProgressIndicator());
-            }
             return ListView.separated(
               padding: const EdgeInsets.only(top: 24, bottom: 24),
               itemCount: state.levels.length + 1,
@@ -73,10 +71,9 @@ class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
                     child: Center(
                       child: BodyMediumText(
                         'More levels coming soon',
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.6),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   );
@@ -89,9 +86,7 @@ class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
                   subtitle: 'Level ${level.level}',
                   unlocked: level.isUnlocked,
                   completed: level.isCompleted,
-                  onTap: () async {
-                    await cubit.selectLevel(level.level);
-                  },
+                  onTap: () => cubit.selectLevel(level.level),
                 );
               },
             );

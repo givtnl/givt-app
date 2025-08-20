@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
@@ -21,6 +22,7 @@ class OutlinedTextFormField extends StatelessWidget {
     this.textInputAction = TextInputAction.next,
     this.textCapitalization = TextCapitalization.none,
     this.suffixIcon,
+    this.prefixText,
     this.onChanged,
     this.focusNode,
     this.validator,
@@ -43,6 +45,7 @@ class OutlinedTextFormField extends StatelessWidget {
   final bool obscureText;
   final TextInputAction textInputAction;
   final IconButton? suffixIcon;
+  final String? prefixText;
   final List<String> autofillHints;
   final List<TextInputFormatter>? inputFormatters;
   final FocusNode? focusNode;
@@ -67,6 +70,10 @@ class OutlinedTextFormField extends StatelessWidget {
           focusedBorder: selectedInputBorder,
           errorBorder: errorInputBorder,
           suffixIcon: suffixIcon,
+          prefix: prefixText != null ? Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: LabelLargeText(prefixText!, color: FamilyAppTheme.primary20),
+          ) : null,
           errorStyle: errorStyle,
           errorMaxLines: errorMaxLines),
       inputFormatters: inputFormatters,

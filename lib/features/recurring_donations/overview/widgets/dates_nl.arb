@@ -1,0 +1,10 @@
+{
+  "recurringDonationsListStatusEnded": "Beëindigd",
+  "recurringDonationsListStatusNextUp": "Volgende",
+  "recurringDonationsListFrequencyWeekly": "Wekelijks",
+  "recurringDonationsListFrequencyMonthly": "Maandelijks",
+  "recurringDonationsListFrequencyQuarterly": "Kwartaal",
+  "recurringDonationsListFrequencySemiAnnually": "Halfjaarlijks",
+  "recurringDonationsListFrequencyAnnually": "Jaarlijks",
+  "recurringDonationsListFrequencyRecurring": "Terugkerend"
+}

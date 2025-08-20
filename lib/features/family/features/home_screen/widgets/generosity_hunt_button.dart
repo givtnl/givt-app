@@ -8,14 +8,19 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 
 class GenerosityHuntButton extends StatelessWidget {
-  const GenerosityHuntButton({required this.onPressed, super.key});
+  const GenerosityHuntButton({
+    required this.onPressed,
+    this.analyticsEvent,
+    super.key,
+  });
 
   final VoidCallback onPressed;
+  final AnalyticsEvent? analyticsEvent;
 
   @override
   Widget build(BuildContext context) {
     return ActionContainer(
-      analyticsEvent: AnalyticsEvent(
+      analyticsEvent: analyticsEvent ?? AnalyticsEvent(
         AmplitudeEvents.homeGenerosityHuntButtonClicked,
       ),
       onTap: onPressed,

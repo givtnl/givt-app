@@ -163,8 +163,9 @@ class FunButton extends StatelessWidget {
       child: Container(
         height: (size.isLarge ? 58 : 44) - (fullBorder ? 2 : 0),
         width: size.isLarge ? double.infinity : null,
-        padding:
-            size.isSmall ? const EdgeInsets.symmetric(horizontal: 16) : null,
+        padding: size.isSmall
+            ? const EdgeInsets.symmetric(horizontal: 16)
+            : null,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: isDisabled ? FamilyAppTheme.neutralVariant60 : backgroundColor,
@@ -184,12 +185,12 @@ class FunButton extends StatelessWidget {
   Widget getChild(BuildContext context, ThemeData themeData) {
     if (isLoading) {
       return const Center(
-          child: CircularProgressIndicator(
-        key: ValueKey('Splash-Loader'),
-      ));
+        child: CircularProgressIndicator(
+          key: ValueKey('Splash-Loader'),
+        ),
+      );
     }
     return Row(
-      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (leadingImage != null) leadingImage!,

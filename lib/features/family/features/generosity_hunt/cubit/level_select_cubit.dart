@@ -14,6 +14,7 @@ class LevelSelectCubit
 
   final GenerosityHuntRepository _repository;
   String? _currentProfileId;
+  bool _isLoadingLevel = false;
 
   @override
   Future<void> close() {
@@ -35,21 +36,36 @@ class LevelSelectCubit
   }
 
   Future<void> selectLevel(int level) async {
-    _repository.setLevel(level);
+    if (_isLoadingLevel) return;
 
-    // Check if there's already a game for the current level
-    final userState = _repository.userState;
-    final hasExistingGame = userState != null &&
-        userState.gameGuid.isNotEmpty &&
-        userState.currentLevel == level;
+    _isLoadingLevel = true;
+    // emitLoading();
 
-    if (hasExistingGame) {
-      // Use the existing game from UserState
-      _repository.setGameId(userState.gameGuid);
-      emitCustom(NavigateToLevelIntroduction(level));
-    } else {
-      await _repository.createGame(_currentProfileId!);
-      emitCustom(NavigateToLevelIntroduction(level));
+    try {
+      _repository.setLevel(level);
+
+      // Check if there's already a game for the current level
+      final userState = _repository.userState;
+      final hasExistingGame =
+          userState != null &&
+          userState.gameGuid.isNotEmpty &&
+          userState.currentLevel == level;
+
+      if (hasExistingGame) {
+        // Use the existing game from UserState
+        _repository.setGameId(userState.gameGuid);
+        emitCustom(const NavigateToLevelIntroduction());
+      } else {
+        await _repository.createGame(_currentProfileId!);
+        emitCustom(const NavigateToLevelIntroduction());
+      }
+    } catch (e) {
+      // Re-emit data state on error to restore the UI
+      emitData(_createUIModel());
+      rethrow;
+    }
+    finally {
+      _isLoadingLevel = false;
     }
   }
 
