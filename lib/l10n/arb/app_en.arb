@@ -1010,7 +1010,7 @@
   "donationOverviewPlatformContributionTitle": "Thanks for your generosity!",
   "donationOverviewPlatformContributionText": "Because of the voluntary platform contribution you've chosen, we can lower the costs of receiving donations.",
   "platformFeePlaceholder": "Select contribution",
-  "platformFeeRequired": "Field required",
+  "platformFeeRequired": "Required field",
   "recurringDonationsStep1Title": "Select organisation",
   "recurringDonationsStep1Description": "Who do you want to give to?",
   "recurringDonationsStep1ListTitle": "Select from list",
