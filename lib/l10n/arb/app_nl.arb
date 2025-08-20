@@ -1040,7 +1040,7 @@
   "recurringDonationsEmptyStateDescription": "Stel een terugkerende donatie in die je altijd kunt aanpassen of annuleren.",
   "recurringDonationsOverviewTabCurrent": "Huidig",
   "recurringDonationsOverviewTabPast": "Verleden",
-  "recurringDonationsOverviewAddButton": "Terugkerende donatie toevoegen",
+  "recurringDonationsOverviewAddButton": "Terugkerende donatie",
   "recurringDonationsDetailProgressSuffix": "donaties",
   "recurringDonationsDetailSummaryDonated": "Gedoneerd",
   "recurringDonationsDetailSummaryHelping": "Helpen",
@@ -1067,5 +1067,13 @@
   "recurringDonationsSuccessSubtitleNextXMonths": "Voor de komende {months} maanden help je {organization} om impact te maken",
   "recurringDonationsSuccessSubtitleUntilDecide": "Je helpt {organization} om impact te maken totdat je besluit te stoppen.",
   "recurringDonationsSuccessSubtitleUntilDate": "Tot {date} help je {organization} om impact te maken",
-  "recurringDonationsSuccessSubtitleDefault": "Je helpt {organization} om impact te maken"
+  "recurringDonationsSuccessSubtitleDefault": "Je helpt {organization} om impact te maken",
+  "recurringDonationsListStatusEnded": "Beëindigd",
+  "recurringDonationsListStatusNextUp": "Volgende",
+  "recurringDonationsListFrequencyWeekly": "Wekelijks",
+  "recurringDonationsListFrequencyMonthly": "Maandelijks",
+  "recurringDonationsListFrequencyQuarterly": "Kwartaal",
+  "recurringDonationsListFrequencySemiAnnually": "Halfjaarlijks",
+  "recurringDonationsListFrequencyAnnually": "Jaarlijks",
+  "recurringDonationsListFrequencyRecurring": "Terugkerend"
 }
