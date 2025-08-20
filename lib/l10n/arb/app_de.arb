@@ -1003,9 +1003,9 @@
   "recurringDonationsAmountTitle": "Donation amount",
   "donationSubtotal": "Zwischensumme",
   "donationTotal": "Insgesamt",
-  "platformFeeTitle": "Plattformbeitrag (optional)",
-  "platformFeeText": "Mit Ihrem Plattformbeitrag zahlt die Organisation keine Plattformgebühren.",
-  "platformFeeNoContribution": "Kein Beitrag",
+  "platformFeeTitle": "Hilf uns, die Kosten für Organisationen zu senken",
+  "platformFeeText": "Givt strebt 0% Servicefee an. Mit einer kleinen Spende an Givt hilfst du, das zu erreichen.",
+  "platformFeeNoContribution": "Diesmal nicht",
   "donationOverviewPlatformContribution": "Freiwilliger Plattformbeitrag",
   "donationOverviewPlatformContributionTitle": "Vielen Dank für Ihre Großzügigkeit!",
   "donationOverviewPlatformContributionText": "Dank Ihres freiwilligen Beitrags zur Plattform können wir den Spendenempfang günstiger gestalten.",
@@ -1075,5 +1075,7 @@
   "recurringDonationsListFrequencyQuarterly": "Vierteljährlich",
   "recurringDonationsListFrequencySemiAnnually": "Halbjährlich",
   "recurringDonationsListFrequencyAnnually": "Jährlich",
-  "recurringDonationsListFrequencyRecurring": "Wiederkehrend"
+  "recurringDonationsListFrequencyRecurring": "Wiederkehrend",
+  "platformFeeCommonOption": "Am beliebtesten",
+  "platformFeeGenerousOption": "Am beliebtesten"
 }
