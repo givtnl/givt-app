@@ -3926,6 +3926,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm my donation'**
   String get recurringDonationsStep4ConfirmMyDonation;
+
+  /// No description provided for @recurringDonationsEmptyStateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy giving, full control'**
+  String get recurringDonationsEmptyStateTitle;
+
+  /// No description provided for @recurringDonationsEmptyStateDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up a recurring donation you can adjust or cancel anytime.'**
+  String get recurringDonationsEmptyStateDescription;
+
+  /// No description provided for @recurringDonationsOverviewTabCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get recurringDonationsOverviewTabCurrent;
+
+  /// No description provided for @recurringDonationsOverviewTabPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get recurringDonationsOverviewTabPast;
+
+  /// No description provided for @recurringDonationsOverviewAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add recurring donation'**
+  String get recurringDonationsOverviewAddButton;
+
+  /// No description provided for @recurringDonationsDetailProgressSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'donations'**
+  String get recurringDonationsDetailProgressSuffix;
+
+  /// No description provided for @recurringDonationsDetailSummaryDonated.
+  ///
+  /// In en, this message translates to:
+  /// **'Donated'**
+  String get recurringDonationsDetailSummaryDonated;
+
+  /// No description provided for @recurringDonationsDetailSummaryHelping.
+  ///
+  /// In en, this message translates to:
+  /// **'Helping'**
+  String get recurringDonationsDetailSummaryHelping;
+
+  /// No description provided for @recurringDonationsDetailSummaryHelped.
+  ///
+  /// In en, this message translates to:
+  /// **'Helped'**
+  String get recurringDonationsDetailSummaryHelped;
+
+  /// No description provided for @recurringDonationsDetailEndsTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends {date}'**
+  String recurringDonationsDetailEndsTag(Object date);
+
+  /// No description provided for @recurringDonationsDetailHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get recurringDonationsDetailHistoryTitle;
+
+  /// No description provided for @recurringDonationsDetailStatusUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get recurringDonationsDetailStatusUpcoming;
+
+  /// No description provided for @recurringDonationsDetailStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get recurringDonationsDetailStatusCompleted;
+
+  /// No description provided for @recurringDonationsDetailStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get recurringDonationsDetailStatusPending;
+
+  /// No description provided for @recurringDonationsDetailTimeDisplayDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
+  String recurringDonationsDetailTimeDisplayDays(Object days);
+
+  /// No description provided for @recurringDonationsDetailManageButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage donation'**
+  String get recurringDonationsDetailManageButton;
+
+  /// No description provided for @recurringDonationsDetailEditDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit donation'**
+  String get recurringDonationsDetailEditDonation;
+
+  /// No description provided for @recurringDonationsDetailEditComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit functionality coming soon'**
+  String get recurringDonationsDetailEditComingSoon;
+
+  /// No description provided for @recurringDonationsDetailPauseDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause donation'**
+  String get recurringDonationsDetailPauseDonation;
+
+  /// No description provided for @recurringDonationsDetailPauseComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause functionality coming soon'**
+  String get recurringDonationsDetailPauseComingSoon;
+
+  /// No description provided for @recurringDonationsDetailCancelDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel donation'**
+  String get recurringDonationsDetailCancelDonation;
+
+  /// No description provided for @recurringDonationsCreateStep2AmountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter amount'**
+  String get recurringDonationsCreateStep2AmountHint;
+
+  /// No description provided for @recurringDonationsCreateFrequencyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select one'**
+  String get recurringDonationsCreateFrequencyHint;
+
+  /// No description provided for @recurringDonationsCreateDurationNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the number'**
+  String get recurringDonationsCreateDurationNumberHint;
+
+  /// No description provided for @recurringDonationsCreateDurationSnackbarTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll donate {number} times, ending on {date}'**
+  String recurringDonationsCreateDurationSnackbarTimes(
+    Object date,
+    Object number,
+  );
+
+  /// No description provided for @recurringDonationsCreateDurationSnackbarOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll donate 1 time, ending on {date}'**
+  String recurringDonationsCreateDurationSnackbarOnce(Object date);
+
+  /// No description provided for @recurringDonationsCreateDurationSnackbarMultiple.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll donate {count} times, ending on {date}'**
+  String recurringDonationsCreateDurationSnackbarMultiple(
+    Object count,
+    Object date,
+  );
+
+  /// No description provided for @recurringDonationsSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks for your support'**
+  String get recurringDonationsSuccessTitle;
+
+  /// No description provided for @recurringDonationsSuccessSubtitleNextXMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'For the next {months} months, you\'ll be helping {organization} make an impact'**
+  String recurringDonationsSuccessSubtitleNextXMonths(
+    Object months,
+    Object organization,
+  );
+
+  /// No description provided for @recurringDonationsSuccessSubtitleUntilDecide.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll be helping {organization} make an impact until you decide to stop.'**
+  String recurringDonationsSuccessSubtitleUntilDecide(Object organization);
+
+  /// No description provided for @recurringDonationsSuccessSubtitleUntilDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Until {date}, you\'ll be helping {organization} make an impact'**
+  String recurringDonationsSuccessSubtitleUntilDate(
+    Object date,
+    Object organization,
+  );
+
+  /// No description provided for @recurringDonationsSuccessSubtitleDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll be helping {organization} make an impact'**
+  String recurringDonationsSuccessSubtitleDefault(Object organization);
 }
 
 class _AppLocalizationsDelegate

@@ -114,18 +114,18 @@ class _RecurringDonationDetailPageState
                     children: [
                       _buildOrganizationHeader(uiModel),
                       const SizedBox(height: 24),
-                      if (uiModel.hasProgress) _buildProgressSection(uiModel),
+                      if (uiModel.hasProgress) _buildProgressSection(uiModel, context),
                       const SizedBox(height: 24),
-                      _buildSummaryCards(uiModel, currency),
+                      _buildSummaryCards(uiModel, currency, context),
                       const SizedBox(height: 24),
-                      _buildHistorySection(uiModel, currency),
+                      _buildHistorySection(uiModel, currency, context),
                       const SizedBox(height: 32),
                     ],
                   ),
                 ),
               ),
               // Manage button always at bottom
-              _buildManageButton(),
+              _buildManageButton(context),
             ],
           );
         },
@@ -155,7 +155,7 @@ class _RecurringDonationDetailPageState
     );
   }
 
-  Widget _buildProgressSection(RecurringDonationDetailUIModel uiModel) {
+  Widget _buildProgressSection(RecurringDonationDetailUIModel uiModel, BuildContext context) {
     if (uiModel.progress == null) return const SizedBox.shrink();
 
     return FunProgressbar(
@@ -164,13 +164,14 @@ class _RecurringDonationDetailPageState
       backgroundColor: FamilyAppTheme.neutralVariant95,
       textColor: FamilyAppTheme.primary20,
       progressColor: FamilyAppTheme.primary90,
-      suffix: 'donations',
+      suffix: context.l10n.recurringDonationsDetailProgressSuffix,
     );
   }
 
   Widget _buildSummaryCards(
     RecurringDonationDetailUIModel uiModel,
     String currency,
+    BuildContext context,
   ) {
     return Row(
       children: [
@@ -178,15 +179,15 @@ class _RecurringDonationDetailPageState
           child: _buildSummaryCard(
             icon: FontAwesomeIcons.moneyBillWave,
             value: '$currency${uiModel.totalDonated.toStringAsFixed(0)}',
-            label: 'Donated',
+            label: context.l10n.recurringDonationsDetailSummaryDonated,
           ),
         ),
         const SizedBox(width: 16),
         Expanded(
           child: _buildSummaryCard(
             icon: FontAwesomeIcons.solidCalendar,
-            value: _getTimeDisplay(uiModel),
-            label: _getHelpingLabel(uiModel),
+            value: _getTimeDisplay(uiModel, context),
+            label: _getHelpingLabel(uiModel, context),
             endDateTag: uiModel.endDate,
           ),
         ),
@@ -231,7 +232,7 @@ class _RecurringDonationDetailPageState
                 borderRadius: BorderRadius.circular(12),
               ),
               child: LabelSmallText(
-                'Ends ${_formatDate(endDateTag)}',
+                context.l10n.recurringDonationsDetailEndsTag(_formatDate(endDateTag)),
                 color: FamilyAppTheme.highlight30,
                 textAlign: TextAlign.center,
               ),
@@ -244,18 +245,19 @@ class _RecurringDonationDetailPageState
   Widget _buildHistorySection(
     RecurringDonationDetailUIModel uiModel,
     String currency,
+    BuildContext context,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const TitleMediumText('History'),
+        TitleMediumText(context.l10n.recurringDonationsDetailHistoryTitle),
         const SizedBox(height: 16),
-        ...uiModel.history.map((item) => _buildHistoryItem(item, currency)),
+        ...uiModel.history.map((item) => _buildHistoryItem(item, currency, context)),
       ],
     );
   }
 
-  Widget _buildHistoryItem(DonationHistoryItem item, String currency) {
+  Widget _buildHistoryItem(DonationHistoryItem item, String currency, BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: const BoxDecoration(
@@ -307,7 +309,7 @@ class _RecurringDonationDetailPageState
               borderRadius: BorderRadius.circular(12),
             ),
             child: LabelSmallText(
-              _getStatusText(item.status),
+              _getStatusText(item.status, context),
               color: _getStatusTextColor(item.status),
             ),
           ),
@@ -316,10 +318,10 @@ class _RecurringDonationDetailPageState
     );
   }
 
-  Widget _buildManageButton() {
+  Widget _buildManageButton(BuildContext context) {
     return FunButton.secondary(
       onTap: () => _cubit.onManageDonationPressed(),
-      text: 'Manage donation',
+      text: context.l10n.recurringDonationsDetailManageButton,
       analyticsEvent: AnalyticsEvent(
         AmplitudeEvents.recurringDonationsClicked,
       ),
@@ -359,32 +361,32 @@ class _RecurringDonationDetailPageState
     }
   }
 
-  String _getStatusText(DonationStatus status) {
+  String _getStatusText(DonationStatus status, BuildContext context) {
     switch (status) {
       case DonationStatus.upcoming:
-        return 'Upcoming';
+        return context.l10n.recurringDonationsDetailStatusUpcoming;
       case DonationStatus.completed:
-        return 'Completed';
+        return context.l10n.recurringDonationsDetailStatusCompleted;
       case DonationStatus.pending:
-        return 'Pending';
+        return context.l10n.recurringDonationsDetailStatusPending;
     }
   }
 
-  String _getHelpingLabel(RecurringDonationDetailUIModel uiModel) {
+  String _getHelpingLabel(RecurringDonationDetailUIModel uiModel, BuildContext context) {
     // Check if the recurring donation has ended (either cancelled, finished, or past end date)
     if (uiModel.endDate != null && uiModel.endDate!.isBefore(DateTime.now())) {
-      return 'Helped';
+      return context.l10n.recurringDonationsDetailSummaryHelped;
     }
-    return 'Helping';
+    return context.l10n.recurringDonationsDetailSummaryHelping;
   }
 
-  String _getTimeDisplay(RecurringDonationDetailUIModel uiModel) {
+  String _getTimeDisplay(RecurringDonationDetailUIModel uiModel, BuildContext context) {
     if (uiModel.endDate != null && uiModel.endDate!.isBefore(DateTime.now())) {
       // For completed recurring donations, show total days helped
       final startDate = DateTime.parse(widget.recurringDonation.startDate);
       final endDate = uiModel.endDate!;
       final daysHelped = endDate.difference(startDate).inDays;
-      return '$daysHelped days';
+      return context.l10n.recurringDonationsDetailTimeDisplayDays(daysHelped.toString());
     } else {
       // For active recurring donations, show remaining time
       return uiModel.remainingTime;
@@ -392,38 +394,7 @@ class _RecurringDonationDetailPageState
   }
 
   String _formatDate(DateTime date) {
-    return '${date.day} ${_getShortMonthName(date.month)} ${date.year}';
-  }
-
-  String _getShortMonthName(int month) {
-    switch (month) {
-      case 1:
-        return 'Jan';
-      case 2:
-        return 'Feb';
-      case 3:
-        return 'Mar';
-      case 4:
-        return 'Apr';
-      case 5:
-        return 'May';
-      case 6:
-        return 'Jun';
-      case 7:
-        return 'Jul';
-      case 8:
-        return 'Aug';
-      case 9:
-        return 'Sep';
-      case 10:
-        return 'Oct';
-      case 11:
-        return 'Nov';
-      case 12:
-        return 'Dec';
-      default:
-        return '';
-    }
+    return '${date.day} ${date.month} ${date.year}';
   }
 
   void _showManageOptions(BuildContext context) {
@@ -436,37 +407,37 @@ class _RecurringDonationDetailPageState
           children: [
             ListTile(
               leading: const Icon(Icons.edit),
-              title: const Text('Edit donation'),
+              title: Text(context.l10n.recurringDonationsDetailEditDonation),
               onTap: () {
                 Navigator.of(context).pop();
                 // TODO: Navigate to edit page when implemented
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Edit functionality coming soon'),
-                    duration: Duration(seconds: 2),
+                  SnackBar(
+                    content: Text(context.l10n.recurringDonationsDetailEditComingSoon),
+                    duration: const Duration(seconds: 2),
                   ),
                 );
               },
             ),
             ListTile(
               leading: const Icon(Icons.pause),
-              title: const Text('Pause donation'),
+              title: Text(context.l10n.recurringDonationsDetailPauseDonation),
               onTap: () {
                 Navigator.of(context).pop();
                 // TODO: Implement pause functionality when available
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Pause functionality coming soon'),
-                    duration: Duration(seconds: 2),
+                  SnackBar(
+                    content: Text(context.l10n.recurringDonationsDetailPauseComingSoon),
+                    duration: const Duration(seconds: 2),
                   ),
                 );
               },
             ),
             ListTile(
               leading: const Icon(Icons.cancel, color: Colors.red),
-              title: const Text(
-                'Cancel donation',
-                style: TextStyle(color: Colors.red),
+              title: Text(
+                context.l10n.recurringDonationsDetailCancelDonation,
+                style: const TextStyle(color: Colors.red),
               ),
               onTap: () {
                 // Show cancel confirmation dialog

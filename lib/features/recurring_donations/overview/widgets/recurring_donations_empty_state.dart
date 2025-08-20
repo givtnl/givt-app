@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class RecurringDonationsEmptyState extends StatelessWidget {
   const RecurringDonationsEmptyState({
@@ -16,10 +17,10 @@ class RecurringDonationsEmptyState extends StatelessWidget {
           children: [
             _buildIllustration(),
             const SizedBox(height: 16),
-            const TitleMediumText('Easy giving, full control'),
+            TitleMediumText(context.l10n.recurringDonationsEmptyStateTitle),
             const SizedBox(height: 12),
-            const BodyMediumText(
-              'Set up a recurring donation you can adjust or cancel anytime.',
+            BodyMediumText(
+              context.l10n.recurringDonationsEmptyStateDescription,
               textAlign: TextAlign.center,
             ),
           ],

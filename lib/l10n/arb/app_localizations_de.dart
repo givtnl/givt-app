@@ -2181,4 +2181,136 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get recurringDonationsStep4ConfirmMyDonation => 'Confirm my donation';
+
+  @override
+  String get recurringDonationsEmptyStateTitle =>
+      'Einfaches Spenden, volle Kontrolle';
+
+  @override
+  String get recurringDonationsEmptyStateDescription =>
+      'Richten Sie eine wiederkehrende Spende ein, die Sie jederzeit anpassen oder stornieren können.';
+
+  @override
+  String get recurringDonationsOverviewTabCurrent => 'Aktuell';
+
+  @override
+  String get recurringDonationsOverviewTabPast => 'Vergangen';
+
+  @override
+  String get recurringDonationsOverviewAddButton =>
+      'Wiederkehrende Spende hinzufügen';
+
+  @override
+  String get recurringDonationsDetailProgressSuffix => 'Spenden';
+
+  @override
+  String get recurringDonationsDetailSummaryDonated => 'Gespendet';
+
+  @override
+  String get recurringDonationsDetailSummaryHelping => 'Helfen';
+
+  @override
+  String get recurringDonationsDetailSummaryHelped => 'Geholfen';
+
+  @override
+  String recurringDonationsDetailEndsTag(Object date) {
+    return 'Endet $date';
+  }
+
+  @override
+  String get recurringDonationsDetailHistoryTitle => 'Verlauf';
+
+  @override
+  String get recurringDonationsDetailStatusUpcoming => 'Anstehend';
+
+  @override
+  String get recurringDonationsDetailStatusCompleted => 'Abgeschlossen';
+
+  @override
+  String get recurringDonationsDetailStatusPending => 'Ausstehend';
+
+  @override
+  String recurringDonationsDetailTimeDisplayDays(Object days) {
+    return '$days Tage';
+  }
+
+  @override
+  String get recurringDonationsDetailManageButton => 'Spende verwalten';
+
+  @override
+  String get recurringDonationsDetailEditDonation => 'Spende bearbeiten';
+
+  @override
+  String get recurringDonationsDetailEditComingSoon =>
+      'Bearbeitungsfunktion kommt bald';
+
+  @override
+  String get recurringDonationsDetailPauseDonation => 'Spende pausieren';
+
+  @override
+  String get recurringDonationsDetailPauseComingSoon =>
+      'Pausierungsfunktion kommt bald';
+
+  @override
+  String get recurringDonationsDetailCancelDonation => 'Spende stornieren';
+
+  @override
+  String get recurringDonationsCreateStep2AmountHint => 'Betrag eingeben';
+
+  @override
+  String get recurringDonationsCreateFrequencyHint => 'Einen auswählen';
+
+  @override
+  String get recurringDonationsCreateDurationNumberHint => 'Anzahl eingeben';
+
+  @override
+  String recurringDonationsCreateDurationSnackbarTimes(
+    Object date,
+    Object number,
+  ) {
+    return 'Sie spenden $number mal, endend am $date';
+  }
+
+  @override
+  String recurringDonationsCreateDurationSnackbarOnce(Object date) {
+    return 'Sie spenden 1 mal, endend am $date';
+  }
+
+  @override
+  String recurringDonationsCreateDurationSnackbarMultiple(
+    Object count,
+    Object date,
+  ) {
+    return 'Sie spenden $count mal, endend am $date';
+  }
+
+  @override
+  String get recurringDonationsSuccessTitle =>
+      'Vielen Dank für Ihre Unterstützung';
+
+  @override
+  String recurringDonationsSuccessSubtitleNextXMonths(
+    Object months,
+    Object organization,
+  ) {
+    return 'Für die nächsten $months Monate helfen Sie $organization dabei, etwas zu bewirken';
+  }
+
+  @override
+  String recurringDonationsSuccessSubtitleUntilDecide(Object organization) {
+    return 'Sie helfen $organization dabei, etwas zu bewirken, bis Sie sich entscheiden aufzuhören.';
+  }
+
+  @override
+  String recurringDonationsSuccessSubtitleUntilDate(
+    Object date,
+    Object organization,
+  ) {
+    return 'Bis $date helfen Sie $organization dabei, etwas zu bewirken';
+  }
+
+  @override
+  String recurringDonationsSuccessSubtitleDefault(Object organization) {
+    return 'Sie helfen $organization dabei, etwas zu bewirken';
+  }
 }

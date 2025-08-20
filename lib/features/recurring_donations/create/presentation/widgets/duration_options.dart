@@ -98,6 +98,7 @@ class DurationOptions extends StatelessWidget {
           numberOfDonations,
         );
         final message = _buildSnackbarMessage(
+          context,
           frequency,
           uiModel.startDate!,
           calculatedEndDate,
@@ -113,11 +114,12 @@ class DurationOptions extends StatelessWidget {
         );
       case RecurringDonationStringKeys.onSpecificDate:
         final endDate = uiModel.endDate ?? DateTime.now();
-        final message = _buildSnackbarMessage(
-          frequency,
-          uiModel.startDate!,
-          endDate,
-        );
+                  final message = _buildSnackbarMessage(
+            context,
+            frequency,
+            uiModel.startDate!,
+            endDate,
+          );
         FunSnackbar.show(
           context,
           message: message,
@@ -134,7 +136,7 @@ class DurationOptions extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: OutlinedTextFormField(
-        hintText: 'Enter the number',
+        hintText: context.l10n.recurringDonationsCreateDurationNumberHint,
         initialValue: uiModel.numberOfDonations,
         keyboardType: TextInputType.number,
         inputFormatters: [
@@ -159,15 +161,15 @@ class DurationOptions extends StatelessWidget {
           final day = endDate.day;
           final month = _monthName(endDate.month);
           final year = endDate.year;
-          FunSnackbar.show(
-            context,
-            message: "You'll donate $n times, ending on $day $month $year",
-            icon: const Icon(
-              Icons.repeat,
-              color: Color(0xFF234B5E),
-              size: 32,
-            ),
-          );
+                      FunSnackbar.show(
+              context,
+              message: "You'll donate $n times, ending on $day $month $year",
+              icon: const Icon(
+                Icons.repeat,
+                color: Color(0xFF234B5E),
+                size: 32,
+              ),
+            );
         },
       ),
     );
@@ -181,6 +183,7 @@ class DurationOptions extends StatelessWidget {
         onDateSelected: (date) {
           onDateChanged(date);
           final message = _buildSnackbarMessage(
+            context,
             frequency,
             uiModel.startDate!,
             date,
@@ -214,6 +217,7 @@ class DurationOptions extends StatelessWidget {
 }
 
 String _buildSnackbarMessage(
+  BuildContext context,
   RecurringDonationFrequency? frequency,
   DateTime startDate,
   DateTime endDate,

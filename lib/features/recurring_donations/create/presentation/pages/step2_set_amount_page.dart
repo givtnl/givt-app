@@ -100,7 +100,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               ),
               const SizedBox(height: 8),
               OutlinedTextFormField(
-                hintText: 'Enter amount',
+                hintText: context.l10n.recurringDonationsCreateStep2AmountHint,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 onChanged: (value) {

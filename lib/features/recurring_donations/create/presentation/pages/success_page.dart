@@ -65,13 +65,13 @@ class _SuccessPageState extends State<SuccessPage> {
               ),
             ),
             const SizedBox(height: 32),
-            const TitleLargeText(
-              'Thanks for your support',
+            TitleLargeText(
+              context.l10n.recurringDonationsSuccessTitle,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             BodyMediumText(
-              _buildSubtitle(),
+              _buildSubtitle(context),
               textAlign: TextAlign.center,
             ),
             const Spacer(),
@@ -97,7 +97,7 @@ class _SuccessPageState extends State<SuccessPage> {
     );
   }
 
-  String _buildSubtitle() {
+  String _buildSubtitle(BuildContext context) {
     if (widget.model.selectedEndOption ==
             RecurringDonationStringKeys.afterNumberOfDonations &&
         widget.model.numberOfDonations.isNotEmpty) {

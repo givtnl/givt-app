@@ -30,7 +30,7 @@ class FrequencyDropdown extends StatelessWidget {
     return FunInputDropdown<RecurringDonationFrequency>(
       value: value,
       items: frequencyOptions,
-      hint: const Text('Select one'),
+      hint: Text(locals.recurringDonationsCreateFrequencyHint),
       onChanged: onChanged,
       itemBuilder: (context, option) => Padding(
         padding: const EdgeInsets.only(left: 12),

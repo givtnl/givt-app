@@ -104,7 +104,7 @@ class _RecurringDonationsOverviewPageState
             children: [
               FunPrimaryTabs(
                 margin: EdgeInsets.zero,
-                options: ['Current', 'Past'],
+                options: [locals.recurringDonationsOverviewTabCurrent, locals.recurringDonationsOverviewTabPast],
                 selectedIndex: _selectedTabIndex,
                 onPressed: _onTabChanged,
                 analyticsEvent: AnalyticsEvent(
@@ -123,7 +123,7 @@ class _RecurringDonationsOverviewPageState
       ),
       floatingActionButton: FunButton(
         onTap: () => _cubit.onAddRecurringDonationPressed(),
-        text: 'Add recurring donation',
+        text: locals.recurringDonationsOverviewAddButton,
         leftIcon: Icons.add,
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.recurringDonationsAddClicked,
