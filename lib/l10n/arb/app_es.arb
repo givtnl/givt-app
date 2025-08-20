@@ -1010,7 +1010,7 @@
   "donationOverviewPlatformContributionTitle": "¡Gracias por tu contribución!",
   "donationOverviewPlatformContributionText": "Gracias a esta contribución, no hay costes de plataforma para el receptor.",
   "platformFeePlaceholder": "Select contribution",
-  "platformFeeRequired": "Field required",
+  "platformFeeRequired": "Required field",
   "recurringDonationsStep1Title": "Select organisation",
   "recurringDonationsStep1Description": "Who do you want to give to?",
   "recurringDonationsStep1ListTitle": "Select from list",
