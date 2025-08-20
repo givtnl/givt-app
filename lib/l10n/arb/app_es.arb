@@ -1003,9 +1003,9 @@
   "recurringDonationsAmountTitle": "Donation amount",
   "donationSubtotal": "Subtotal",
   "donationTotal": "Total",
-  "platformFeeTitle": "Tarifa de plataforma (opcional)",
-  "platformFeeText": "Con tu contribución a la plataforma, la organización no paga ninguna tarifa.",
-  "platformFeeNoContribution": "Sin contribución",
+  "platformFeeTitle": "Help us lower the costs for organisations",
+  "platformFeeText": "Givt aims for 0% service fee. With a small donation to Givt, you help achieve that.",
+  "platformFeeNoContribution": "Not this time",
   "donationOverviewPlatformContribution": "Contribución de plataforma",
   "donationOverviewPlatformContributionTitle": "¡Gracias por tu contribución!",
   "donationOverviewPlatformContributionText": "Gracias a esta contribución, no hay costes de plataforma para el receptor.",
@@ -1075,5 +1075,7 @@
   "recurringDonationsListFrequencyQuarterly": "Quarterly",
   "recurringDonationsListFrequencySemiAnnually": "Semi-annually",
   "recurringDonationsListFrequencyAnnually": "Annually",
-  "recurringDonationsListFrequencyRecurring": "Recurring"
+  "recurringDonationsListFrequencyRecurring": "Recurring",
+  "platformFeeCommonOption": "Most popular",
+  "platformFeeGenerousOption": "Extra generous"
 }
