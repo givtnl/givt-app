@@ -2071,7 +2071,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Because of the voluntary platform contribution you\'ve chosen, we can lower the costs of receiving donations.';
 
   @override
-  String get platformFeePlaceholder => 'Select contribution';
+  String get platformFeePlaceholder => 'Select amount';
 
   @override
   String get platformFeeRequired => 'Required field';
@@ -4391,7 +4391,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
       'Because of this contribution there are no platform costs for the receiver.';
 
   @override
-  String get platformFeePlaceholder => 'Select contribution';
+  String get platformFeePlaceholder => 'Select amount';
 
   @override
   String get platformFeeRequired => 'Field required';

@@ -2040,13 +2040,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsStep2Description =>
-      'Hoevaak en hoeveel wil je geven?';
+      'Hoe vaak en hoeveel wil je geven?';
 
   @override
-  String get recurringDonationsFrequencyTitle => 'Donatie Frequentie';
+  String get recurringDonationsFrequencyTitle => 'Hoe vaak wil je geven';
 
   @override
-  String get recurringDonationsAmountTitle => 'Donatie bedrag';
+  String get recurringDonationsAmountTitle => 'Welk bedrag wil je geven';
 
   @override
   String get donationSubtotal => 'Subtotaal';
@@ -2078,7 +2078,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Dankzij jouw gekozen vrijwillige platformbijdrage kunnen we het ontvangen van donaties goedkoper maken.';
 
   @override
-  String get platformFeePlaceholder => 'Selecteer bijdrage';
+  String get platformFeePlaceholder => 'Selecteer bedrag';
 
   @override
   String get platformFeeRequired => 'Verplicht veld';
@@ -2091,7 +2091,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Aan welke organisatie wil je geven?';
 
   @override
-  String get recurringDonationsStep1ListTitle => 'Kies van lijst';
+  String get recurringDonationsStep1ListTitle => 'Kies uit de lijst';
 
   @override
   String get recurringDonationsStep1ListSubtitle =>

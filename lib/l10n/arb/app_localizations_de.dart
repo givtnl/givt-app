@@ -2089,7 +2089,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dank Ihres freiwilligen Beitrags zur Plattform können wir den Spendenempfang günstiger gestalten.';
 
   @override
-  String get platformFeePlaceholder => 'Beitrag auswählen';
+  String get platformFeePlaceholder => 'Betrag auswählen';
 
   @override
   String get platformFeeRequired => 'Pflichtfeld';

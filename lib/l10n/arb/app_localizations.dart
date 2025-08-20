@@ -3768,7 +3768,7 @@ abstract class AppLocalizations {
   /// No description provided for @platformFeePlaceholder.
   ///
   /// In en, this message translates to:
-  /// **'Select contribution'**
+  /// **'Select amount'**
   String get platformFeePlaceholder;
 
   /// No description provided for @platformFeeRequired.
