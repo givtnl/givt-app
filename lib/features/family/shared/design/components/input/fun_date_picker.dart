@@ -38,7 +38,7 @@ class FunDatePicker extends StatelessWidget {
           initialValue: displayDate,
           readOnly: true,
           suffixIcon: const IconButton(
-            icon: Icon(Icons.calendar_today_outlined),
+            icon: Icon(Icons.calendar_today),
             onPressed: null,
           ),
         ),

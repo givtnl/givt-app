@@ -4,6 +4,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_radio.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';
@@ -41,7 +42,7 @@ class DurationOptions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        LabelMediumText(context.l10n.recurringDonationsEndsTitle),
+        LabelMediumText.secondary40(context.l10n.recurringDonationsEndsTitle),
         const SizedBox(height: 8),
         ..._optionKeys.map((optionKey) {
           final isSelected = selectedOption == optionKey;
@@ -60,6 +61,12 @@ class DurationOptions extends StatelessWidget {
               if (optionKey == RecurringDonationStringKeys.onSpecificDate &&
                   isSelected)
                 _buildDatePicker(context),
+              const SizedBox(height: 4),
+              Container(
+                height: 1,
+                color: FamilyAppTheme.neutralVariant95,
+              ),
+              const SizedBox(height: 4),
             ],
           );
         }),
@@ -114,12 +121,12 @@ class DurationOptions extends StatelessWidget {
         );
       case RecurringDonationStringKeys.onSpecificDate:
         final endDate = uiModel.endDate ?? DateTime.now();
-                  final message = _buildSnackbarMessage(
-            context,
-            frequency,
-            uiModel.startDate!,
-            endDate,
-          );
+        final message = _buildSnackbarMessage(
+          context,
+          frequency,
+          uiModel.startDate!,
+          endDate,
+        );
         FunSnackbar.show(
           context,
           message: message,
@@ -158,18 +165,34 @@ class DurationOptions extends StatelessWidget {
           } else {
             endDate = DateTime.now();
           }
-          final day = endDate.day;
-          final month = _monthName(endDate.month);
-          final year = endDate.year;
-                      FunSnackbar.show(
+          final formattedDate = DateFormat('dd MMMM yyyy').format(endDate);
+
+          if (n == '1') {
+            FunSnackbar.show(
               context,
-              message: "You'll donate $n times, ending on $day $month $year",
+              message: context.l10n
+                  .recurringDonationsCreateDurationSnackbarOnce(formattedDate),
               icon: const Icon(
                 Icons.repeat,
                 color: Color(0xFF234B5E),
                 size: 32,
               ),
             );
+          } else {
+            FunSnackbar.show(
+              context,
+              message: context.l10n
+                  .recurringDonationsCreateDurationSnackbarTimes(
+                    formattedDate,
+                    n,
+                  ),
+              icon: const Icon(
+                Icons.repeat,
+                color: Color(0xFF234B5E),
+                size: 32,
+              ),
+            );
+          }
         },
       ),
     );
@@ -255,11 +278,18 @@ String _buildSnackbarMessage(
       amountOfDonations = 0;
   }
 
+  final formattedDate = DateFormat('dd MMMM yyyy').format(endDate);
+
   if (amountOfDonations == 1) {
-    return "You'll donate 1 time, ending on ${DateFormat('dd MMM yyyy').format(endDate)}";
+    return context.l10n.recurringDonationsCreateDurationSnackbarOnce(
+      formattedDate,
+    );
   }
 
-  return "You'll donate $amountOfDonations times, ending on ${DateFormat('dd MMM yyyy').format(endDate)}";
+  return context.l10n.recurringDonationsCreateDurationSnackbarMultiple(
+    amountOfDonations,
+    formattedDate,
+  );
 }
 
 DateTime _calculateEndDateFromNumberOfDonations(
@@ -305,7 +335,7 @@ String _monthName(int month) {
   // Use localized month names from the current locale
   final now = DateTime.now();
   final date = DateTime(now.year, month, 1);
-  return DateFormat('MMM').format(date);
+  return DateFormat('MMMM').format(date);
 }
 
 String _getDayWithOrdinal(DateTime date) {

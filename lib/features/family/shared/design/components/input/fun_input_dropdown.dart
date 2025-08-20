@@ -46,7 +46,7 @@ class _FunInputDropdownState<T> extends State<FunInputDropdown<T>> {
         scrollbarTheme: ScrollbarThemeData(
           thickness: WidgetStateProperty.all<double>(0),
         ),
-        maxHeight: 250,
+        maxHeight: 300,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step2_set_amount_cubit.dart';
@@ -17,7 +20,7 @@ import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class Step2SetAmountPage extends StatefulWidget {
   const Step2SetAmountPage({super.key});
@@ -27,8 +30,9 @@ class Step2SetAmountPage extends StatefulWidget {
 }
 
 class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
-  final Step2SetAmountCubit _cubit =
-      Step2SetAmountCubit(getIt<RecurringDonationNewFlowRepository>());
+  final Step2SetAmountCubit _cubit = Step2SetAmountCubit(
+    getIt<RecurringDonationNewFlowRepository>(),
+  );
 
   @override
   void didChangeDependencies() {
@@ -52,7 +56,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
         return FunScaffold(
           appBar: FunTopAppBar.white(
             title: context.l10n.recurringDonationsStep2Title,
-            leading: const BackButton(),
+            leading: const GivtBackButtonFlat(),
             actions: [
               IconButton(
                 icon: const Icon(Icons.close),
@@ -71,7 +75,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               const FunStepper(currentStep: 1, stepCount: 4),
               const SizedBox(height: 32),
               TitleMediumText(
-                context.l10n.recurringDonationsAmountTitle,
+                context.l10n.recurringDonationsStep2Description,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
@@ -86,7 +90,8 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                   _cubit.selectFrequency(value);
 
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep2SetAmountFrequencySelected,
+                    eventName: AmplitudeEvents
+                        .recurringStep2SetAmountFrequencySelected,
                     eventProperties: {
                       'Frequency': value.name,
                     },
@@ -103,11 +108,15 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                 hintText: context.l10n.recurringDonationsCreateStep2AmountHint,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                prefixText: Util.getCurrencySymbol(
+                  countryCode: context.read<AuthCubit>().state.user.country,
+                ),
                 onChanged: (value) {
                   _cubit.enterAmount(value);
 
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep2SetAmountAmountEntered,
+                    eventName:
+                        AmplitudeEvents.recurringStep2SetAmountAmountEntered,
                     eventProperties: {
                       'Amount': value,
                     },

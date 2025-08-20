@@ -27,6 +27,7 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
 
   void createRecurringDonation() async {
     if (_isLoading) return;
+    emitLoading();
 
     _isLoading = true;
     _emitData(isLoading: true);

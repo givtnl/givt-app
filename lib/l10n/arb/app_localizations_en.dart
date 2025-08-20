@@ -2074,7 +2074,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get platformFeePlaceholder => 'Select contribution';
 
   @override
-  String get platformFeeRequired => 'Field required';
+  String get platformFeeRequired => 'Required field';
 
   @override
   String get recurringDonationsStep1Title => 'Select organisation';

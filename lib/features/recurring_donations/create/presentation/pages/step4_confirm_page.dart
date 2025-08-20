@@ -4,6 +4,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step4_confirm_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
@@ -82,7 +83,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
         return FunScaffold(
           appBar: FunTopAppBar.white(
             title: context.l10n.recurringDonationsStep4Title,
-            leading: const BackButton(),
+            leading: const GivtBackButtonFlat(),
             actions: [
               IconButton(
                 icon: const Icon(Icons.close),

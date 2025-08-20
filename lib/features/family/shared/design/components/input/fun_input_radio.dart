@@ -27,10 +27,8 @@ class FunInputRadio extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: TextStyle(
-                  color: isSelected
-                      ? FamilyAppTheme.primary40
-                      : FamilyAppTheme.primary20,
+                style: const TextStyle(
+                  color: FamilyAppTheme.primary20,
                 ),
               ),
             ),
@@ -54,8 +52,9 @@ class _CustomRadio extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color:
-              isSelected ? FamilyAppTheme.primary40 : FamilyAppTheme.primary20,
+          color: isSelected
+              ? FamilyAppTheme.primary40
+              : FamilyAppTheme.primary20,
           width: 2,
         ),
         color: Colors.transparent,
@@ -74,4 +73,4 @@ class _CustomRadio extends StatelessWidget {
           : null,
     );
   }
-} 
+}

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
+/// This is a class that is used to display a snackbar as (temporary) overlay.
 class FunSnackbar {
   static OverlayEntry? _currentSnackbar;
   static Timer? _timer;
@@ -19,8 +20,8 @@ class FunSnackbar {
 
     final entry = OverlayEntry(
       builder: (context) => Positioned(
-        left: 16,
-        right: 16,
+        left: 24,
+        right: 24,
         bottom: 32 + MediaQuery.of(context).viewInsets.bottom + 80,
         child: _FunSnackbarContent(
           message: message,
@@ -41,6 +42,23 @@ class FunSnackbar {
   }
 }
 
+/// This is a widget that is used to display a snackbar as static widget.
+class FunSnackbarWidget extends StatelessWidget {
+  const FunSnackbarWidget({
+    required this.message,
+    this.icon,
+    super.key,
+  });
+
+  final String message;
+  final Widget? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return _FunSnackbarContent(message: message, icon: icon);
+  }
+}
+
 class _FunSnackbarContent extends StatelessWidget {
   const _FunSnackbarContent({
     required this.message,
@@ -58,52 +76,36 @@ class _FunSnackbarContent extends StatelessWidget {
       onDismissed: (_) => FunSnackbar._removeCurrent(),
       child: Material(
         color: Colors.transparent,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          decoration: BoxDecoration(
-            color: FamilyAppTheme.primary95,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (icon != null) ...[
-                icon!,
-                const SizedBox(width: 12),
-              ],
-              Expanded(
-                child: TitleMediumText(
-                  message,
-                  color: FamilyAppTheme.primary30,
+        child: Theme(
+          data: const FamilyAppTheme().toThemeData(),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            decoration: BoxDecoration(
+              color: FamilyAppTheme.secondary95,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.08),
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
                 ),
-              ),
-            ],
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (icon != null) ...[
+                  icon!,
+                  const SizedBox(width: 12),
+                ],
+                Expanded(
+                  child: LabelMediumText.secondary30(message),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
-  }
-}
-
-class FunSnackbarWidget extends StatelessWidget {
-  const FunSnackbarWidget({
-    super.key,
-    required this.message,
-    this.icon,
-  });
-
-  final String message;
-  final Widget? icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return _FunSnackbarContent(message: message, icon: icon);
   }
 }

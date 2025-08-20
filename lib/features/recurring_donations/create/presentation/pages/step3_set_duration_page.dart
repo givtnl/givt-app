@@ -3,7 +3,9 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step3_set_duration_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step4_confirm_page.dart';
@@ -49,7 +51,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
         return FunScaffold(
           appBar: FunTopAppBar.white(
             title: context.l10n.recurringDonationsStep3Title,
-            leading: const BackButton(),
+            leading: const GivtBackButtonFlat(),
             actions: [
               IconButton(
                 icon: const Icon(Icons.close),
@@ -62,66 +64,84 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
               ),
             ],
           ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const FunStepper(currentStep: 2, stepCount: 4),
-              const SizedBox(height: 32),
-              TitleMediumText(
-                context.l10n.recurringDonationsStep3Description,
-                textAlign: TextAlign.center,
+          body: CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  const FunStepper(currentStep: 2, stepCount: 4),
+                  const SizedBox(height: 32),
+                  TitleMediumText(
+                    context.l10n.recurringDonationsStep3Description,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+                  LabelMediumText.secondary40(
+                    context.l10n.recurringDonationsStartingTitle,
+                  ),
+                  const SizedBox(height: 8),
+                  FunDatePicker(
+                    selectedDate: uiModel.startDate,
+                    onDateSelected: (date) {
+                      _cubit.updateStartDate(date);
+                      AnalyticsHelper.logEvent(
+                        eventName:
+                            AmplitudeEvents.recurringStep3SetDurationStartDate,
+                        eventProperties: {'date': date.toIso8601String()},
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  DurationOptions(
+                    selectedOption: uiModel.selectedOption,
+                    onOptionSelected: (option) {
+                      _cubit.updateSelectedOption(option);
+                      AnalyticsHelper.logEvent(
+                        eventName:
+                            AmplitudeEvents.recurringStep3SetDurationOption,
+                        eventProperties: {'option': option},
+                      );
+                    },
+                    uiModel: uiModel,
+                    frequency:
+                        uiModel.frequencyData['frequency']
+                            as RecurringDonationFrequency?,
+                    onNumberChanged: (number) {
+                      _cubit.updateNumberOfDonations(number);
+                      AnalyticsHelper.logEvent(
+                        eventName:
+                            AmplitudeEvents.recurringStep3SetDurationNumber,
+                        eventProperties: {'number': number},
+                      );
+                    },
+                    onDateChanged: (date) {
+                      _cubit.updateEndDate(date);
+                      AnalyticsHelper.logEvent(
+                        eventName:
+                            AmplitudeEvents.recurringStep3SetDurationEndDate,
+                        eventProperties: {'date': date.toIso8601String()},
+                      );
+                    },
+                  ),
+                ]),
               ),
-              const SizedBox(height: 32),
-              LabelMediumText(context.l10n.recurringDonationsStartingTitle),
-              const SizedBox(height: 8),
-              FunDatePicker(
-                selectedDate: uiModel.startDate,
-                onDateSelected: (date) {
-                  _cubit.updateStartDate(date);
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep3SetDurationStartDate,
-                    eventProperties: {'date': date.toIso8601String()},
-                  );
-                },
-              ),
-              const SizedBox(height: 24),
-              DurationOptions(
-                selectedOption: uiModel.selectedOption,
-                onOptionSelected: (option) {
-                  _cubit.updateSelectedOption(option);
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep3SetDurationOption,
-                    eventProperties: {'option': option},
-                  );
-                },
-                uiModel: uiModel,
-                frequency: uiModel.frequencyData['frequency'] as RecurringDonationFrequency?,
-                onNumberChanged: (number) {
-                  _cubit.updateNumberOfDonations(number);
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep3SetDurationNumber,
-                    eventProperties: {'number': number},
-                  );
-                },
-                onDateChanged: (date) {
-                  _cubit.updateEndDate(date);
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep3SetDurationEndDate,
-                    eventProperties: {'date': date.toIso8601String()},
-                  );
-                },
-              ),
-              const Spacer(),
-              FunButton(
-                text: context.l10n.buttonContinue,
-                isDisabled: !uiModel.isContinueEnabled,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.recurringStep3SetDurationContinue,
-                  parameters: uiModel.analyticsParams,
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FunButton(
+                      text: context.l10n.buttonContinue,
+                      isDisabled: !uiModel.isContinueEnabled,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.recurringStep3SetDurationContinue,
+                        parameters: uiModel.analyticsParams,
+                      ),
+                      onTap: uiModel.isContinueEnabled
+                          ? _cubit.continueToNextStep
+                          : null,
+                    ),
+                  ],
                 ),
-                onTap: uiModel.isContinueEnabled
-                    ? _cubit.continueToNextStep
-                    : null,
               ),
             ],
           ),

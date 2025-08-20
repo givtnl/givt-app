@@ -3774,7 +3774,7 @@ abstract class AppLocalizations {
   /// No description provided for @platformFeeRequired.
   ///
   /// In en, this message translates to:
-  /// **'Field required'**
+  /// **'Required field'**
   String get platformFeeRequired;
 
   /// No description provided for @recurringDonationsStep1Title.
