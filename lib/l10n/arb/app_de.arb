@@ -1040,7 +1040,7 @@
   "recurringDonationsEmptyStateDescription": "Richten Sie eine wiederkehrende Spende ein, die Sie jederzeit anpassen oder stornieren können.",
   "recurringDonationsOverviewTabCurrent": "Aktuell",
   "recurringDonationsOverviewTabPast": "Vergangen",
-  "recurringDonationsOverviewAddButton": "Wiederkehrende Spende hinzufügen",
+  "recurringDonationsOverviewAddButton": "Wiederkehrende Spende",
   "recurringDonationsDetailProgressSuffix": "Spenden",
   "recurringDonationsDetailSummaryDonated": "Gespendet",
   "recurringDonationsDetailSummaryHelping": "Helfen",
@@ -1067,5 +1067,13 @@
   "recurringDonationsSuccessSubtitleNextXMonths": "Für die nächsten {months} Monate helfen Sie {organization} dabei, etwas zu bewirken",
   "recurringDonationsSuccessSubtitleUntilDecide": "Sie helfen {organization} dabei, etwas zu bewirken, bis Sie sich entscheiden aufzuhören.",
   "recurringDonationsSuccessSubtitleUntilDate": "Bis {date} helfen Sie {organization} dabei, etwas zu bewirken",
-  "recurringDonationsSuccessSubtitleDefault": "Sie helfen {organization} dabei, etwas zu bewirken"
+  "recurringDonationsSuccessSubtitleDefault": "Sie helfen {organization} dabei, etwas zu bewirken",
+  "recurringDonationsListStatusEnded": "Beendet",
+  "recurringDonationsListStatusNextUp": "Nächste",
+  "recurringDonationsListFrequencyWeekly": "Wöchentlich",
+  "recurringDonationsListFrequencyMonthly": "Monatlich",
+  "recurringDonationsListFrequencyQuarterly": "Vierteljährlich",
+  "recurringDonationsListFrequencySemiAnnually": "Halbjährlich",
+  "recurringDonationsListFrequencyAnnually": "Jährlich",
+  "recurringDonationsListFrequencyRecurring": "Wiederkehrend"
 }
