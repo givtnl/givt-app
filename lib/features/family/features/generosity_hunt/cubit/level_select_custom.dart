@@ -5,6 +5,5 @@ sealed class LevelSelectCustom {
 }
 
 class NavigateToLevelIntroduction extends LevelSelectCustom {
-  final int level;
-  const NavigateToLevelIntroduction(this.level);
-} 
+  const NavigateToLevelIntroduction();
+}

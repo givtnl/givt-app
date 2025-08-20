@@ -45,10 +45,11 @@ class _GenerosityHuntLevelsPageState extends State<GenerosityHuntLevelsPage> {
         child: BaseStateConsumer(
           cubit: cubit,
           onCustom: (context, custom) {
-            if (custom is NavigateToLevelIntroduction) {
-              Navigator.of(context).push(
-                const GenerosityHuntLevelIntroductionPage().toRoute(context),
-              );
+            switch (custom) {
+              case NavigateToLevelIntroduction():
+                Navigator.of(context).push(
+                  const GenerosityHuntLevelIntroductionPage().toRoute(context),
+                );
             }
           },
           onInitial: (context) => const Center(

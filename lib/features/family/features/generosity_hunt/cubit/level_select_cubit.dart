@@ -39,32 +39,33 @@ class LevelSelectCubit
     if (_isLoadingLevel) return;
 
     _isLoadingLevel = true;
-    emitLoading();
-    
+    // emitLoading();
+
     try {
       _repository.setLevel(level);
 
       // Check if there's already a game for the current level
       final userState = _repository.userState;
-      final hasExistingGame = userState != null &&
+      final hasExistingGame =
+          userState != null &&
           userState.gameGuid.isNotEmpty &&
           userState.currentLevel == level;
 
       if (hasExistingGame) {
         // Use the existing game from UserState
         _repository.setGameId(userState.gameGuid);
-        emitCustom(NavigateToLevelIntroduction(level));
-        _isLoadingLevel = false;
+        emitCustom(const NavigateToLevelIntroduction());
       } else {
         await _repository.createGame(_currentProfileId!);
-        emitCustom(NavigateToLevelIntroduction(level));
-        _isLoadingLevel = false;
+        emitCustom(const NavigateToLevelIntroduction());
       }
     } catch (e) {
       // Re-emit data state on error to restore the UI
       emitData(_createUIModel());
-      _isLoadingLevel = false;
       rethrow;
+    }
+    finally {
+      _isLoadingLevel = false;
     }
   }
 
