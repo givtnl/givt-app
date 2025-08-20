@@ -2066,14 +2066,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get donationTotal => 'Insgesamt';
 
   @override
-  String get platformFeeTitle => 'Plattformbeitrag (optional)';
+  String get platformFeeTitle =>
+      'Hilf uns, die Kosten für Organisationen zu senken';
 
   @override
   String get platformFeeText =>
-      'Mit Ihrem Plattformbeitrag zahlt die Organisation keine Plattformgebühren.';
+      'Givt strebt 0% Servicefee an. Mit einer kleinen Spende an Givt hilfst du, das zu erreichen.';
 
   @override
-  String get platformFeeNoContribution => 'Kein Beitrag';
+  String get platformFeeNoContribution => 'Diesmal nicht';
 
   @override
   String get donationOverviewPlatformContribution =>
@@ -2336,4 +2337,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get recurringDonationsListFrequencyRecurring => 'Wiederkehrend';
+
+  @override
+  String get platformFeeCommonOption => 'Am beliebtesten';
+
+  @override
+  String get platformFeeGenerousOption => 'Am beliebtesten';
 }

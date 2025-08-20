@@ -3732,19 +3732,19 @@ abstract class AppLocalizations {
   /// No description provided for @platformFeeTitle.
   ///
   /// In en, this message translates to:
-  /// **'Platform contribution (optional)'**
+  /// **'Help us lower the costs for organisations'**
   String get platformFeeTitle;
 
   /// No description provided for @platformFeeText.
   ///
   /// In en, this message translates to:
-  /// **'With your platform contribution there are no platform costs for the receiver.'**
+  /// **'Givt aims for 0% service fee. With a small donation to Givt, you help achieve that.'**
   String get platformFeeText;
 
   /// No description provided for @platformFeeNoContribution.
   ///
   /// In en, this message translates to:
-  /// **'No contribution'**
+  /// **'Not this time'**
   String get platformFeeNoContribution;
 
   /// No description provided for @donationOverviewPlatformContribution.
@@ -4178,6 +4178,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recurring'**
   String get recurringDonationsListFrequencyRecurring;
+
+  /// No description provided for @platformFeeCommonOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Most popular'**
+  String get platformFeeCommonOption;
+
+  /// No description provided for @platformFeeGenerousOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra generous'**
+  String get platformFeeGenerousOption;
 }
 
 class _AppLocalizationsDelegate

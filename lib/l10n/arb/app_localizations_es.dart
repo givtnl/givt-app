@@ -2049,14 +2049,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get donationTotal => 'Total';
 
   @override
-  String get platformFeeTitle => 'Tarifa de plataforma (opcional)';
+  String get platformFeeTitle => 'Help us lower the costs for organisations';
 
   @override
   String get platformFeeText =>
-      'Con tu contribución a la plataforma, la organización no paga ninguna tarifa.';
+      'Givt aims for 0% service fee. With a small donation to Givt, you help achieve that.';
 
   @override
-  String get platformFeeNoContribution => 'Sin contribución';
+  String get platformFeeNoContribution => 'Not this time';
 
   @override
   String get donationOverviewPlatformContribution =>
@@ -2317,6 +2317,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get recurringDonationsListFrequencyRecurring => 'Recurring';
+
+  @override
+  String get platformFeeCommonOption => 'Most popular';
+
+  @override
+  String get platformFeeGenerousOption => 'Extra generous';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4386,14 +4392,14 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get donationTotal => 'Total';
 
   @override
-  String get platformFeeTitle => 'Platform contribution (optional)';
+  String get platformFeeTitle => 'Help us lower the costs for organisations';
 
   @override
   String get platformFeeText =>
-      'With your platform contribution there are no platform costs for the receiver.';
+      'Givt aims for 0% service fee. With a small donation to Givt, you help achieve that.';
 
   @override
-  String get platformFeeNoContribution => 'No contribution';
+  String get platformFeeNoContribution => 'Not this time';
 
   @override
   String get donationOverviewPlatformContribution =>
@@ -4654,4 +4660,10 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get recurringDonationsListFrequencyRecurring => 'Recurring';
+
+  @override
+  String get platformFeeCommonOption => 'Most popular';
+
+  @override
+  String get platformFeeGenerousOption => 'Extra generous';
 }
