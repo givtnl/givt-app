@@ -2197,8 +2197,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get recurringDonationsOverviewTabPast => 'Vergangen';
 
   @override
-  String get recurringDonationsOverviewAddButton =>
-      'Wiederkehrende Spende hinzufügen';
+  String get recurringDonationsOverviewAddButton => 'Wiederkehrende Spende';
 
   @override
   String get recurringDonationsDetailProgressSuffix => 'Spenden';
@@ -2313,4 +2312,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String recurringDonationsSuccessSubtitleDefault(Object organization) {
     return 'Sie helfen $organization dabei, etwas zu bewirken';
   }
+
+  @override
+  String get recurringDonationsListStatusEnded => 'Beendet';
+
+  @override
+  String get recurringDonationsListStatusNextUp => 'Nächste';
+
+  @override
+  String get recurringDonationsListFrequencyWeekly => 'Wöchentlich';
+
+  @override
+  String get recurringDonationsListFrequencyMonthly => 'Monatlich';
+
+  @override
+  String get recurringDonationsListFrequencyQuarterly => 'Vierteljährlich';
+
+  @override
+  String get recurringDonationsListFrequencySemiAnnually => 'Halbjährlich';
+
+  @override
+  String get recurringDonationsListFrequencyAnnually => 'Jährlich';
+
+  @override
+  String get recurringDonationsListFrequencyRecurring => 'Wiederkehrend';
 }

@@ -2293,6 +2293,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String recurringDonationsSuccessSubtitleDefault(Object organization) {
     return 'You\'ll be helping $organization make an impact';
   }
+
+  @override
+  String get recurringDonationsListStatusEnded => 'Ended';
+
+  @override
+  String get recurringDonationsListStatusNextUp => 'Next up';
+
+  @override
+  String get recurringDonationsListFrequencyWeekly => 'Weekly';
+
+  @override
+  String get recurringDonationsListFrequencyMonthly => 'Monthly';
+
+  @override
+  String get recurringDonationsListFrequencyQuarterly => 'Quarterly';
+
+  @override
+  String get recurringDonationsListFrequencySemiAnnually => 'Semi-annually';
+
+  @override
+  String get recurringDonationsListFrequencyAnnually => 'Annually';
+
+  @override
+  String get recurringDonationsListFrequencyRecurring => 'Recurring';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4606,4 +4630,28 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String recurringDonationsSuccessSubtitleDefault(Object organization) {
     return 'You\'ll be helping $organization make an impact';
   }
+
+  @override
+  String get recurringDonationsListStatusEnded => 'Ended';
+
+  @override
+  String get recurringDonationsListStatusNextUp => 'Next up';
+
+  @override
+  String get recurringDonationsListFrequencyWeekly => 'Weekly';
+
+  @override
+  String get recurringDonationsListFrequencyMonthly => 'Monthly';
+
+  @override
+  String get recurringDonationsListFrequencyQuarterly => 'Quarterly';
+
+  @override
+  String get recurringDonationsListFrequencySemiAnnually => 'Semi-annually';
+
+  @override
+  String get recurringDonationsListFrequencyAnnually => 'Annually';
+
+  @override
+  String get recurringDonationsListFrequencyRecurring => 'Recurring';
 }

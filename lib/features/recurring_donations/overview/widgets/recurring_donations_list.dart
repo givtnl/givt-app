@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
@@ -11,6 +12,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class RecurringDonationsList extends StatelessWidget {
   const RecurringDonationsList({
@@ -48,7 +50,7 @@ class RecurringDonationsList extends StatelessWidget {
     return FunMissionCard(
       uiModel: FunMissionCardUIModel(
         title: donationWithProgress.donation.collectGroup.orgName,
-        description: _buildDescription(donationWithProgress, currency),
+        description: _buildDescription(donationWithProgress, currency, context),
         progress: progress,
       ),
       onTap: () => _onDonationTap(context, donationWithProgress),
@@ -67,15 +69,15 @@ class RecurringDonationsList extends StatelessWidget {
     );
   }
 
-  String _buildDescription(RecurringDonationWithProgress donationWithProgress, String currency) {
+  String _buildDescription(RecurringDonationWithProgress donationWithProgress, String currency, BuildContext context) {
     final amount = donationWithProgress.donation.amountPerTurn.toString();
-    final frequency = _getFrequencyText(donationWithProgress.donation.frequency);
+    final frequency = _getFrequencyText(donationWithProgress.donation.frequency, context);
     
     // Check if this is a past donation (not active or completed)
     final isPastDonation = donationWithProgress.donation.currentState != RecurringDonationState.active || 
                            donationWithProgress.isCompleted;
     
-    final statusText = isPastDonation ? 'Ended' : 'Next up';
+    final statusText = isPastDonation ? context.l10n.recurringDonationsListStatusEnded : context.l10n.recurringDonationsListStatusNextUp;
     
     // Use end date for past donations, next date for current donations
     final dateToShow = isPastDonation 
@@ -85,44 +87,27 @@ class RecurringDonationsList extends StatelessWidget {
     return '$frequency $currency$amount · $statusText ${_formatDate(dateToShow)}';
   }
 
-  String _getFrequencyText(int frequency) {
+  String _getFrequencyText(int frequency, BuildContext context) {
     switch (frequency) {
       case 0:
-        return 'Weekly';
+        return context.l10n.recurringDonationsListFrequencyWeekly;
       case 1:
-        return 'Monthly';
+        return context.l10n.recurringDonationsListFrequencyMonthly;
       case 2:
-        return 'Quarterly';
+        return context.l10n.recurringDonationsListFrequencyQuarterly;
       case 3:
-        return 'Semi-annually';
+        return context.l10n.recurringDonationsListFrequencySemiAnnually;
       case 4:
-        return 'Annually';
+        return context.l10n.recurringDonationsListFrequencyAnnually;
       default:
-        return 'Recurring';
+        return context.l10n.recurringDonationsListFrequencyRecurring;
     }
   }
 
   String _formatDate(DateTime date) {
-    final months = [
-      'january',
-      'february',
-      'march',
-      'april',
-      'may',
-      'june',
-      'july',
-      'august',
-      'september',
-      'october',
-      'november',
-      'december',
-    ];
-
-    final day = date.day;
-    final month = months[date.month - 1];
-    final year = date.year;
-
-    return '$day $month $year';
+    // Use localized date formatting
+    final formatter = DateFormat.yMMMd();
+    return formatter.format(date);
   }
 
   GoalCardProgressUImodel? _getProgressModel(RecurringDonationWithProgress donationWithProgress) {

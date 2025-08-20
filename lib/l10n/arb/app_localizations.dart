@@ -4130,6 +4130,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You\'ll be helping {organization} make an impact'**
   String recurringDonationsSuccessSubtitleDefault(Object organization);
+
+  /// No description provided for @recurringDonationsListStatusEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get recurringDonationsListStatusEnded;
+
+  /// No description provided for @recurringDonationsListStatusNextUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Next up'**
+  String get recurringDonationsListStatusNextUp;
+
+  /// No description provided for @recurringDonationsListFrequencyWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get recurringDonationsListFrequencyWeekly;
+
+  /// No description provided for @recurringDonationsListFrequencyMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get recurringDonationsListFrequencyMonthly;
+
+  /// No description provided for @recurringDonationsListFrequencyQuarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly'**
+  String get recurringDonationsListFrequencyQuarterly;
+
+  /// No description provided for @recurringDonationsListFrequencySemiAnnually.
+  ///
+  /// In en, this message translates to:
+  /// **'Semi-annually'**
+  String get recurringDonationsListFrequencySemiAnnually;
+
+  /// No description provided for @recurringDonationsListFrequencyAnnually.
+  ///
+  /// In en, this message translates to:
+  /// **'Annually'**
+  String get recurringDonationsListFrequencyAnnually;
+
+  /// No description provided for @recurringDonationsListFrequencyRecurring.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring'**
+  String get recurringDonationsListFrequencyRecurring;
 }
 
 class _AppLocalizationsDelegate
