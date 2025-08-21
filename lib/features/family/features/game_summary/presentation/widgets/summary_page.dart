@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/shared/design/components/actions/fun_bu
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
@@ -69,9 +68,7 @@ class _SummaryPageState extends State<SummaryPage> {
           isDisabled: widget.uiModel.audioLink != null && !_hasClickedAudio,
           text: context.l10n.buttonDone,
           onTap: () => context.pop(),
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.afterGameSummaryDoneClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.afterGameSummaryDoneClicked.toEvent(),
         ),
       ],
     );

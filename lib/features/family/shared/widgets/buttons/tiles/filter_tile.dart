@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/quick_tile.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 class FilterTile extends StatelessWidget {
   const FilterTile({
@@ -33,8 +32,7 @@ class FilterTile extends StatelessWidget {
           titleBig: type == CollectGroupType.charities
               ? 'Non-profit'
               : type.name[0].toUpperCase() + type.name.substring(1),
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.parentGiveFilterTileClicked,
+          analyticsEvent: AmplitudeEvents.parentGiveFilterTileClicked.toEvent(
             parameters: {
               'type': type.name,
               'isSelected': isSelected,

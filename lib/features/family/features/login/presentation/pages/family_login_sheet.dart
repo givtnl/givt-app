@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/util.dart';
@@ -189,9 +188,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
         isDisabled: !isEnabled,
         onTap: isEnabled ? () => onLogin(context) : null,
         text: context.l10n.login,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.loginClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.loginClicked.toEvent(),
       ),
     );
   }

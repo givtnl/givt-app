@@ -10,7 +10,6 @@ import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/input_checkbox.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -86,9 +85,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
       ),
       primaryButton: FunButton(
         text: 'Confirm',
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.topupConfirmButtonClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.topupConfirmButtonClicked.toEvent(),
         onTap: () async {
           await context.read<TopupCubit>().addMoney(topupAmount, recurring);
         },

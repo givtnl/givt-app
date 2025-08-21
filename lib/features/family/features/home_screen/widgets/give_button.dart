@@ -5,7 +5,6 @@ import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.da
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 
 class GiveButton extends StatelessWidget {
@@ -16,9 +15,7 @@ class GiveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionContainer(
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.familyHomeScreenGiveButtonClicked,
-      ),
+      analyticsEvent: AmplitudeEvents.familyHomeScreenGiveButtonClicked.toEvent(),
       onTap: onPressed,
       borderColor: FamilyAppTheme.secondary80,
       baseBorderSize: 4,

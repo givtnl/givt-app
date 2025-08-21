@@ -27,9 +27,7 @@ class FunMissionCard extends StatelessWidget {
           description: '',
         ),
         isLoading: true,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.loading,
-        ),
+        analyticsEvent: AmplitudeEvents.loading.toEvent(),
       );
 
   final FunMissionCardUIModel uiModel;

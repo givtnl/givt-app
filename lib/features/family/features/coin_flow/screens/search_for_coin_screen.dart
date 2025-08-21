@@ -11,7 +11,6 @@ import 'package:givt_app/features/family/features/coin_flow/widgets/coin_search_
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -63,9 +62,7 @@ class SearchForCoinScreen extends StatelessWidget {
 
                             context.pushNamed(pageName);
                           },
-                          analyticsEvent: AnalyticsEvent(
-                            AmplitudeEvents.assignCoinPressed,
-                          ),
+                          analyticsEvent: AmplitudeEvents.assignCoinPressed.toEvent(),
                         )
                       : null,
             );

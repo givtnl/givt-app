@@ -16,7 +16,6 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -124,9 +123,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
           onTap: () => cubit.rolesClicked(selectedProfiles),
           isDisabled: selectedProfiles.length < 2,
           text: 'See the rules',
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.reflectAndShareSeeTheRulesClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.reflectAndShareSeeTheRulesClicked.toEvent(),
         ),
       ),
     );

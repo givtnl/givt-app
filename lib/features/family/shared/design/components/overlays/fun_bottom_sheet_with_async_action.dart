@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/shared/design/components/overlays/model
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class FunBottomSheetWithAsyncAction extends StatefulWidget {
@@ -85,8 +84,7 @@ class _FunBottomSheetWithAsyncActionState
                     primaryButton: FunButton(
                       text: context.l10n.buttonDone,
                       onTap: () => context.pop(),
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.bottomsheet,
+                      analyticsEvent: AmplitudeEvents.bottomsheet.toEvent(
                         parameters: {
                           'bottomsheet_name': widget.analyticsName,
                           'action': 'successStateDoneClicked',
@@ -108,8 +106,7 @@ class _FunBottomSheetWithAsyncActionState
                 primaryButton: FunButton(
                   text: 'Try again',
                   onTap: () => widget.cubit.onClickTryAgainAfterError(),
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.bottomsheet,
+                  analyticsEvent: AmplitudeEvents.bottomsheet.toEvent(
                     parameters: {
                       'bottomsheet_name': widget.analyticsName,
                       'action': 'errorStateTryAgainClicked',
@@ -119,8 +116,7 @@ class _FunBottomSheetWithAsyncActionState
                 secondaryButton: FunButton.secondary(
                   text: 'Close',
                   onTap: () => context.pop(),
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.bottomsheet,
+                  analyticsEvent: AmplitudeEvents.bottomsheet.toEvent(
                     parameters: {
                       'bottomsheet_name': widget.analyticsName,
                       'action': 'errorStateCloseClicked',

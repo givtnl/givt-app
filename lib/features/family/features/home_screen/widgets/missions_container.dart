@@ -6,7 +6,6 @@ import 'package:givt_app/features/family/shared/design/components/content/fun_mi
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class MissionsContainer extends StatelessWidget {
@@ -42,8 +41,7 @@ class MissionsContainer extends StatelessWidget {
         headerIcon: FunAvatar.captain(),
       ),
       onTap: () => context.pushNamed(FamilyPages.missions.name),
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.funMissionCardClicked,
+      analyticsEvent: AmplitudeEvents.funMissionCardClicked.toEvent(
         parameters: {
           'missionsToBeCompleted': missionAmount,
         },
@@ -59,8 +57,7 @@ class MissionsContainer extends StatelessWidget {
         headerIcon: FunAvatar.captain(),
       ),
       onTap: () => context.pushNamed(FamilyPages.missions.name),
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.funMissionCardClicked,
+      analyticsEvent: AmplitudeEvents.funMissionCardClicked.toEvent(
         parameters: {
           'missionsToBeCompleted': '0',
         },

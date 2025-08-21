@@ -16,7 +16,6 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -88,9 +87,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
           textColor: ColorCombo.secondary.textColor,
           iconPath: 'assets/family/images/give_tile.svg',
           titleBig: 'Give',
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.parentGiveTileClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.parentGiveTileClicked.toEvent(),
         ),
       );
 
@@ -100,9 +97,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
       child: GenerosityHuntButton(
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.parentGenerosityHuntButtonClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.parentGenerosityHuntButtonClicked.toEvent(),
         onPressed: () {
           // Set the current profile as active and navigate to the game
           context.read<ProfilesCubit>().setActiveProfile(
@@ -148,9 +143,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                 FunButton.secondary(
                   onTap: () => _onEditAvatarClicked(context, false),
                   text: 'Edit avatar',
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.editProfilePictureClicked,
-                  ),
+                  analyticsEvent: AmplitudeEvents.editProfilePictureClicked.toEvent(),
                   size: FunButtonSize.small,
                   leftIcon: FontAwesomeIcons.userPen,
                   funButtonBadge: FunButtonBadge(

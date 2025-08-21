@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
@@ -38,8 +37,7 @@ class ImpactGroupReceiveInviteSheet extends StatelessWidget {
                   .acceptGroupInvite(groupId: invitedImpactGroup.id);
               context.pop();
             },
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.inviteToImpactGroupAccepted,
+            analyticsEvent: AmplitudeEvents.inviteToImpactGroupAccepted.toEvent(
               parameters: {
                 'group_name': invitedImpactGroup.name,
               },

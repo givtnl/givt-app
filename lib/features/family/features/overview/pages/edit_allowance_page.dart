@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -110,9 +109,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                     onTap: () {
                       Navigator.of(context).pop(_allowance);
                     },
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.editRGAConfirmClicked,
-                    ),
+                    analyticsEvent: AmplitudeEvents.editRGAConfirmClicked.toEvent(),
                   ),
                   const SizedBox(height: 8),
                   Visibility(

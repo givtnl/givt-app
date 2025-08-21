@@ -76,14 +76,12 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   List<AnalyticsEvent> _getAnalyticsEvents(bool showMemoriesTab) {
     final events = <AnalyticsEvent>[
-      AnalyticsEvent(
-        AmplitudeEvents.navigationBarPressed,
+      AmplitudeEvents.navigationBarPressed.toEvent(
         parameters: {
           'destination': 'Home',
         },
       ),
-      AnalyticsEvent(
-        AmplitudeEvents.navigationBarPressed,
+      AmplitudeEvents.navigationBarPressed.toEvent(
         parameters: {
           'destination': 'Family',
         },
@@ -92,8 +90,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     
     if (showMemoriesTab) {
       events.add(
-        AnalyticsEvent(
-          AmplitudeEvents.navigationBarPressed,
+        AmplitudeEvents.navigationBarPressed.toEvent(
           parameters: {
             'destination': 'Memories',
           },
@@ -102,8 +99,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     }
     
     events.add(
-      AnalyticsEvent(
-        AmplitudeEvents.navigationBarPressed,
+      AmplitudeEvents.navigationBarPressed.toEvent(
         parameters: {
           'destination': 'League',
         },
