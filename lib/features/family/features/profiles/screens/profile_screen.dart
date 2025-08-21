@@ -14,7 +14,6 @@ import 'package:givt_app/features/family/features/profiles/widgets/wallet_widget
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -118,28 +117,33 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       titleBig: 'Give',
                                       iconPath:
                                           'assets/family/images/give_tile.svg',
-                                      backgroundColor: Theme.of(context)
-                                          .colorScheme
-                                          .onSecondary,
-                                      borderColor: Theme.of(context)
-                                          .colorScheme
-                                          .onInverseSurface,
-                                      textColor: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      analyticsEvent: AnalyticsEvent(
-                                        AmplitudeEvents.iWantToGivePressed,
-                                        parameters: {
-                                          AnalyticsHelper.walletAmountKey: state
-                                              .activeProfile.wallet.balance,
-                                        },
-                                      ),
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.onSecondary,
+                                      borderColor: Theme.of(
+                                        context,
+                                      ).colorScheme.onInverseSurface,
+                                      textColor: Theme.of(
+                                        context,
+                                      ).colorScheme.secondary,
+                                      analyticsEvent: AmplitudeEvents
+                                          .iWantToGivePressed
+                                          .toEvent(
+                                            parameters: {
+                                              AnalyticsHelper.walletAmountKey:
+                                                  state
+                                                      .activeProfile
+                                                      .wallet
+                                                      .balance,
+                                            },
+                                          ),
                                       onTap: () => showModalBottomSheet<void>(
                                         context: context,
                                         isScrollControlled: true,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
                                         ),
                                         backgroundColor: Colors.white,
                                         builder: (context) => GiveBottomSheet(
@@ -155,16 +159,15 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       iconPath:
                                           'assets/family/images/find_tile.svg',
                                       backgroundColor: FamilyAppTheme.primary98,
-                                      borderColor: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer,
-                                      textColor: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer,
-                                      analyticsEvent: AnalyticsEvent(
-                                        AmplitudeEvents
-                                            .helpMeFindCharityPressed,
-                                      ),
+                                      borderColor: Theme.of(
+                                        context,
+                                      ).colorScheme.primaryContainer,
+                                      textColor: Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimaryContainer,
+                                      analyticsEvent: AmplitudeEvents
+                                          .helpMeFindCharityPressed
+                                          .toEvent(),
                                       onTap: () {
                                         context
                                             .read<FlowsCubit>()
@@ -185,14 +188,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                             Padding(
                               padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
                               child: GenerosityHuntButton(
-                                analyticsEvent: AnalyticsEvent(
-                                  AmplitudeEvents.profileGenerosityHuntButtonClicked,
-                                ),
+                                analyticsEvent: AmplitudeEvents
+                                    .profileGenerosityHuntButtonClicked
+                                    .toEvent(),
                                 onPressed: () {
                                   // Set the current profile as active and navigate to the game
-                                  context.read<ProfilesCubit>().setActiveProfile(
-                                    state.activeProfile.id,
-                                  );
+                                  context
+                                      .read<ProfilesCubit>()
+                                      .setActiveProfile(
+                                        state.activeProfile.id,
+                                      );
                                   context.goNamed(FamilyPages.newGame.name);
                                 },
                               ),

@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/shared/design/components/overlays/bloc/
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -97,7 +96,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
               ),
               const SizedBox(height: 24),
               const BodySmallText(
-                "Givt is a product of Givt Inc.\n\nWe are located on 12 N Cheyanne Ave, #305 Tulsa, OK. For questions or complaints you can reach us via +1 918-615-9611 or support@givt.app",
+                'Givt is a product of Givt Inc.\n\nWe are located on 12 N Cheyanne Ave, #305 Tulsa, OK. For questions or complaints you can reach us via +1 918-615-9611 or support@givt.app',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),

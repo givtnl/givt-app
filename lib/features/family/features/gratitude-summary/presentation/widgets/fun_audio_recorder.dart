@@ -58,7 +58,7 @@ class _FunAudioRecorderState extends State<FunAudioRecorder>
         final devs = await _audioRecorder.listInputDevices();
         debugPrint(devs.toString());
 
-        const config = RecordConfig(encoder: encoder, numChannels: 1);
+        const config = RecordConfig(numChannels: 1);
 
         // Record to file
         await recordFile(_audioRecorder, config);

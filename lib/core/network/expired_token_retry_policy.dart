@@ -1,8 +1,11 @@
 import 'dart:developer';
+import 'dart:io' show SocketException;
 
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:http/http.dart';
+import 'package:http_interceptor/http/intercepted_client.dart' show InterceptedClient;
+import 'package:http_interceptor/http_interceptor.dart' show InterceptedClient;
 import 'package:http_interceptor/models/retry_policy.dart';
 
 /// This is the retry policy that will be used by the [InterceptedClient]

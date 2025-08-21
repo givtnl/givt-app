@@ -499,8 +499,8 @@ class NotificationService implements INotificationService {
 
     if (pathName.isNotNullAndNotEmpty()) {
       final validValues = [
-        ...FamilyPages.values.map((e) => e.name).toList(),
-        ...Pages.values.map((e) => e.name).toList(),
+        ...FamilyPages.values.map((e) => e.name),
+        ...Pages.values.map((e) => e.name),
       ];
       if (validValues.contains(pathName)) {
         AppRouter.router.goNamed(pathName, queryParameters: param);

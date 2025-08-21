@@ -18,7 +18,7 @@ class GratitudeSelectionScreen extends StatefulWidget {
 }
 
 class _GratitudeSelectionScreenState extends State<GratitudeSelectionScreen> {
-  final cubit = getIt<GratitudeSelectionCubit>();
+  final GratitudeSelectionCubit cubit = getIt<GratitudeSelectionCubit>();
 
   @override
   void didChangeDependencies() {

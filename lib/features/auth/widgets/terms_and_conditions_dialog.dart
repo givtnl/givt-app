@@ -26,7 +26,7 @@ class TermsAndConditionsDialog extends StatefulWidget {
 }
 
 class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
-  final _cubit = getIt<EmailSignupCubit>();
+  final EmailSignupCubit _cubit = getIt<EmailSignupCubit>();
   late String countryIso;
 
   @override

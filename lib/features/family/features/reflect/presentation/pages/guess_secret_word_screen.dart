@@ -13,7 +13,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/l
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -86,11 +85,11 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 2.5,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                    ),
+                          crossAxisCount: 2,
+                          childAspectRatio: 2.5,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                        ),
                     itemCount: uiModel.guessOptions.length,
                     itemBuilder: (context, index) {
                       final guessOption = uiModel.guessOptions[index];
@@ -107,30 +106,31 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                           isPressedDown:
                               guessOption.state == GuessOptionState.wrong,
                           titleBig: guessOption.text,
-                          textColor: guessOption.state ==
-                                  GuessOptionState.initial
+                          textColor:
+                              guessOption.state == GuessOptionState.initial
                               ? FamilyAppTheme.tertiary40
                               : guessOption.state == GuessOptionState.correct
-                                  ? Colors.green
-                                  : Colors.red,
-                          analyticsEvent: AnalyticsEvent(
-                            AmplitudeEvents.reflectAndShareGuessOptionClicked,
-                            parameters: {
-                              'option': guessOption.text,
-                            },
-                          ),
-                          borderColor: guessOption.state ==
-                                  GuessOptionState.initial
+                              ? Colors.green
+                              : Colors.red,
+                          analyticsEvent: AmplitudeEvents
+                              .reflectAndShareGuessOptionClicked
+                              .toEvent(
+                                parameters: {
+                                  'option': guessOption.text,
+                                },
+                              ),
+                          borderColor:
+                              guessOption.state == GuessOptionState.initial
                               ? FamilyAppTheme.tertiary80
                               : guessOption.state == GuessOptionState.correct
-                                  ? FamilyAppTheme.primary80
-                                  : FamilyAppTheme.error80,
-                          backgroundColor: guessOption.state ==
-                                  GuessOptionState.initial
+                              ? FamilyAppTheme.primary80
+                              : FamilyAppTheme.error80,
+                          backgroundColor:
+                              guessOption.state == GuessOptionState.initial
                               ? FamilyAppTheme.tertiary98
                               : guessOption.state == GuessOptionState.correct
-                                  ? FamilyAppTheme.primary98
-                                  : FamilyAppTheme.error98,
+                              ? FamilyAppTheme.primary98
+                              : FamilyAppTheme.error98,
                           iconPath: '',
                           hasIcon: false,
                         ),
@@ -149,9 +149,9 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                     );
                   },
                   text: 'Shuffle roles',
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.reflectAndShareResultShuffleRolesClicked,
-                  ),
+                  analyticsEvent: AmplitudeEvents
+                      .reflectAndShareResultShuffleRolesClicked
+                      .toEvent(),
                 ),
               ],
             ],

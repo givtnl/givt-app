@@ -44,7 +44,7 @@ class EditAvatarScreen extends StatefulWidget {
 
 class _EditAvatarScreenState extends State<EditAvatarScreen>
     with TickerProviderStateMixin {
-  final _cubit = getIt<EditAvatarCubit>();
+  final EditAvatarCubit _cubit = getIt<EditAvatarCubit>();
   final TooltipController _tooltipController = TooltipController();
   late TabController _tabController;
   List<Color> bodyColors = [

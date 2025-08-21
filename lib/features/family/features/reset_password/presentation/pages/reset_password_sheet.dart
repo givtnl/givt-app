@@ -39,7 +39,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
 
-  final _cubit = getIt<ResetPasswordCubit>();
+  final ResetPasswordCubit _cubit = getIt<ResetPasswordCubit>();
 
   @override
   void didChangeDependencies() {

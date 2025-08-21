@@ -23,9 +23,6 @@ class SummaryConversationItem extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(12),
       child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.all(6),
@@ -46,7 +43,6 @@ class SummaryConversationItem extends StatelessWidget {
           const SizedBox(width: 8),
           Flexible(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LabelLargeText(

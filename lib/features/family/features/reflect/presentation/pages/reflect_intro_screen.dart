@@ -10,7 +10,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/sta
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -59,9 +58,7 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
         FunButton(
           onTap: _cubit.onStartClicked,
           text: "Let's go",
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.reflectAndShareLetsGoClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.reflectAndShareLetsGoClicked.toEvent(),
         ),
       ],
     );

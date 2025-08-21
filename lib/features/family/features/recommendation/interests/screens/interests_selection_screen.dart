@@ -10,7 +10,6 @@ import 'package:givt_app/features/family/features/recommendation/widgets/charity
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class InterestsSelectionScreen extends StatelessWidget {
@@ -58,9 +57,11 @@ class InterestsSelectionScreen extends StatelessWidget {
                       columnSizes: [1.fr, 1.fr],
                       // set all the row sizes to auto (self-sizing height)
                       rowSizes: [
-                        for (int i = 0;
-                            i < (state.interests.length / 2).ceil();
-                            i++)
+                        for (
+                          int i = 0;
+                          i < (state.interests.length / 2).ceil();
+                          i++
+                        )
                           auto,
                       ],
                       columnGap: 16,
@@ -69,12 +70,13 @@ class InterestsSelectionScreen extends StatelessWidget {
                         for (int i = 0; i < state.interests.length; i++)
                           InterestCard(
                             interest: state.interests[i],
-                            isSelected: state.selectedInterests
-                                .contains(state.interests[i]),
+                            isSelected: state.selectedInterests.contains(
+                              state.interests[i],
+                            ),
                             onPressed: () {
-                              context
-                                  .read<InterestsCubit>()
-                                  .selectInterest(state.interests[i]);
+                              context.read<InterestsCubit>().selectInterest(
+                                state.interests[i],
+                              );
                             },
                           ),
                       ],
@@ -93,9 +95,11 @@ class InterestsSelectionScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: FunButton(
                 isDisabled:
-                    state.selectedInterests.length != InterestsState.maxInterests,
+                    state.selectedInterests.length !=
+                    InterestsState.maxInterests,
                 text: 'Next',
-                onTap: state.selectedInterests.length ==
+                onTap:
+                    state.selectedInterests.length ==
                         InterestsState.maxInterests
                     ? () {
                         context.pushNamed(
@@ -105,8 +109,7 @@ class InterestsSelectionScreen extends StatelessWidget {
                         context.read<InterestsCubit>().clearSelectedInterests();
                       }
                     : null,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.interestSelected,
+                analyticsEvent: AmplitudeEvents.interestSelected.toEvent(
                   parameters: {
                     'interests': state.selectedInterests
                         .map((e) => e.displayText)

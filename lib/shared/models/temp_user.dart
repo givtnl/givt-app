@@ -38,7 +38,6 @@ class TempUser extends Equatable {
         timeZoneId: '',
         accountNumber: '',
         sortCode: '',
-        profilePicture: '',
       );
 
   factory TempUser.prefilled({
@@ -158,7 +157,7 @@ class TempUser extends Equatable {
         amountLimit: amountLimit ?? this.amountLimit,
         appLanguage: appLanguage ?? this.appLanguage,
         timeZoneId: timeZoneId ?? this.timeZoneId,
-        profilePicture: avatar ?? this.profilePicture,
+        profilePicture: avatar ?? profilePicture,
       );
 
   Map<String, dynamic> toJson() {

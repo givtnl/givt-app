@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:lottie/lottie.dart';
 
@@ -131,13 +130,13 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
         curve: Curves.easeInCubic,
       ),
     );
-    _inbetweenSecondAndThirdTextOpacity =
-        Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _inbetweenSecondAndThirdTextController,
-        curve: Curves.easeInCubic,
-      ),
-    );
+    _inbetweenSecondAndThirdTextOpacity = Tween<double>(begin: 0, end: 1)
+        .animate(
+          CurvedAnimation(
+            parent: _inbetweenSecondAndThirdTextController,
+            curve: Curves.easeInCubic,
+          ),
+        );
     _thirdTextOpacity = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
         parent: _thirdTextController,
@@ -240,15 +239,16 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
       ),
     );
 
-    _backgroundColor = ColorTween(
-      begin: FamilyAppTheme.secondary95,
-      end: FamilyAppTheme.secondary10,
-    ).animate(
-      CurvedAnimation(
-        parent: _nightShiftController,
-        curve: Curves.easeIn,
-      ),
-    );
+    _backgroundColor =
+        ColorTween(
+          begin: FamilyAppTheme.secondary95,
+          end: FamilyAppTheme.secondary10,
+        ).animate(
+          CurvedAnimation(
+            parent: _nightShiftController,
+            curve: Curves.easeIn,
+          ),
+        );
 
     Future.delayed(const Duration(milliseconds: 500), () {
       _firstTextController.forward();
@@ -260,7 +260,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
 
   @override
   void dispose() {
-    for (var controller in _controllers) {
+    for (final controller in _controllers) {
       controller.dispose();
     }
     super.dispose();
@@ -423,8 +423,8 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                 AnimatedBuilder(
                   animation:
                       _currentState == AnimationState.lastBenefitIsOnScreen
-                          ? _cityDownTransition
-                          : _sunTransition,
+                      ? _cityDownTransition
+                      : _sunTransition,
                   builder: (context, child) => cityAtBottom(
                     MediaQuery.of(context).size.width,
                     MediaQuery.of(context).size.height,
@@ -439,12 +439,13 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                   AnimatedBuilder(
                     animation: _nightShiftController,
                     builder: (context, child) => Opacity(
-                        opacity: _cityNightOpacity.value,
-                        child: sun(
-                          MediaQuery.of(context).size.width,
-                          MediaQuery.of(context).size.height,
-                          isNight: true,
-                        )),
+                      opacity: _cityNightOpacity.value,
+                      child: sun(
+                        MediaQuery.of(context).size.width,
+                        MediaQuery.of(context).size.height,
+                        isNight: true,
+                      ),
+                    ),
                   ),
                 if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
                     _currentState == AnimationState.lastBenefitIsOnScreen)
@@ -453,13 +454,14 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                     builder: (context, child) => Opacity(
                       opacity: _newMoonOpacity.value.clamp(0, 1),
                       child: AnimatedBuilder(
-                          animation: _moonTranitionToRight,
-                          builder: (context, child) => newMoon(
-                                MediaQuery.of(context).size.width,
-                                MediaQuery.of(context).size.height,
-                                positionTop: _newMoonPositionTop.value,
-                                positionRight: _newMoonPositionRight.value,
-                              )),
+                        animation: _moonTranitionToRight,
+                        builder: (context, child) => newMoon(
+                          MediaQuery.of(context).size.width,
+                          MediaQuery.of(context).size.height,
+                          positionTop: _newMoonPositionTop.value,
+                          positionRight: _newMoonPositionRight.value,
+                        ),
+                      ),
                     ),
                   ),
                 if (_currentState == AnimationState.newMoonWidgetIsOnScreen ||
@@ -471,7 +473,8 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                         opacity: _flareOpacity.value,
                         child: Lottie.asset(
                           'assets/family/lotties/super_flare.json',
-                          animate: _currentState ==
+                          animate:
+                              _currentState ==
                               AnimationState.lastBenefitIsOnScreen,
                           repeat: false,
                           fit: BoxFit.fitWidth,
@@ -491,24 +494,30 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                           onTap: () {
                             Navigator.of(context).push(
                               PageRouteBuilder<dynamic>(
-                                pageBuilder: (context, animation,
-                                        secondaryAnimation) =>
-                                    SetupBedtimeScreen(arguments: arguments!),
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
-                                  return FadeTransition(
-                                    opacity: animation,
-                                    child: child,
-                                  );
-                                },
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        SetupBedtimeScreen(
+                                          arguments: arguments!,
+                                        ),
+                                transitionsBuilder:
+                                    (
+                                      context,
+                                      animation,
+                                      secondaryAnimation,
+                                      child,
+                                    ) {
+                                      return FadeTransition(
+                                        opacity: animation,
+                                        child: child,
+                                      );
+                                    },
                               ),
                             );
                           },
                           text: context.l10n.buttonContinue,
-                          analyticsEvent: AnalyticsEvent(
-                            AmplitudeEvents
-                                .introBedtimeAnimationContinuePressed,
-                          ),
+                          analyticsEvent: AmplitudeEvents
+                              .introBedtimeAnimationContinuePressed
+                              .toEvent(),
                         ),
                       ),
                     ),
@@ -542,10 +551,11 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
               children: [
                 const Spacer(),
                 Center(
-                    child: Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: LabelLargeText('Tap to continue', color: color),
-                )),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 24),
+                    child: LabelLargeText('Tap to continue', color: color),
+                  ),
+                ),
               ],
             ),
           ),
@@ -555,47 +565,58 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
   }
 
   Widget cityAtBottom(
-      double width, double height, double position, double opacity) {
-    return Stack(children: [
-      Positioned(
-        bottom: -height * position,
-        child: AnimatedBuilder(
-          animation: _nightShiftController,
-          builder: (context, child) => Opacity(
-            opacity: 1 - _cityNightOpacity.value,
-            child: SizedBox(
-              height: height * 0.25,
-              width: width,
-              child: SvgPicture.asset(
-                'assets/family/images/city_day.svg',
-                fit: BoxFit.fitHeight,
+    double width,
+    double height,
+    double position,
+    double opacity,
+  ) {
+    return Stack(
+      children: [
+        Positioned(
+          bottom: -height * position,
+          child: AnimatedBuilder(
+            animation: _nightShiftController,
+            builder: (context, child) => Opacity(
+              opacity: 1 - _cityNightOpacity.value,
+              child: SizedBox(
+                height: height * 0.25,
+                width: width,
+                child: SvgPicture.asset(
+                  'assets/family/images/city_day.svg',
+                  fit: BoxFit.fitHeight,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      Positioned(
-        bottom: -height * position,
-        child: AnimatedBuilder(
-          animation: _nightShiftController,
-          builder: (context, child) => Opacity(
-            opacity: _cityNightOpacity.value,
-            child: SizedBox(
-              height: height * 0.25,
-              width: width,
-              child: SvgPicture.asset(
-                'assets/family/images/city_purple.svg',
-                fit: BoxFit.fitHeight,
+        Positioned(
+          bottom: -height * position,
+          child: AnimatedBuilder(
+            animation: _nightShiftController,
+            builder: (context, child) => Opacity(
+              opacity: _cityNightOpacity.value,
+              child: SizedBox(
+                height: height * 0.25,
+                width: width,
+                child: SvgPicture.asset(
+                  'assets/family/images/city_purple.svg',
+                  fit: BoxFit.fitHeight,
+                ),
               ),
             ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 
-  Widget sun(double width, double height,
-      {double scale = 0.5, double position = 0.2, bool isNight = false}) {
+  Widget sun(
+    double width,
+    double height, {
+    double scale = 0.5,
+    double position = 0.2,
+    bool isNight = false,
+  }) {
     const smallestCircleModifier = 80;
     const middleCircleModifier = 40;
 
@@ -677,7 +698,8 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
           ),
           Positioned(
             top: middleCircleModifier * 0.5,
-            left: width / 2 * positionRight -
+            left:
+                width / 2 * positionRight -
                 (width * positionRight - middleCircleModifier * 2) * 0.5 / 2,
             child: Container(
               width: (width - middleCircleModifier * 2) * 0.5,
@@ -690,7 +712,8 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
           ),
           Positioned(
             top: smallestCircleModifier * 0.5,
-            left: (width * positionRight -
+            left:
+                (width * positionRight -
                     (width * positionRight - smallestCircleModifier * 2) *
                         0.5) /
                 2,

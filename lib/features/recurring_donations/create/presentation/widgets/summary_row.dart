@@ -7,11 +7,7 @@ import 'package:givt_app/utils/analytics_helper.dart';
 
 class SummaryRow extends StatelessWidget {
   const SummaryRow({
-    super.key,
-    required this.icon,
-    required this.label,
-    required this.value,
-    required this.onEdit,
+    required this.icon, required this.label, required this.value, required this.onEdit, super.key,
     this.analyticsEvent,
   });
 

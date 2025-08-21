@@ -14,7 +14,6 @@ import 'package:givt_app/features/recurring_donations/create/presentation/pages/
 import 'package:givt_app/features/recurring_donations/create/presentation/widgets/fun_modal_close_flow.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/widgets/summary_row.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';

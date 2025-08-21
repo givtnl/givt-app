@@ -12,7 +12,6 @@ import 'package:givt_app/features/family/shared/design/components/navigation/fun
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,7 +24,7 @@ class BoxOriginQuestionScreen extends StatefulWidget {
 }
 
 class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
-  final _cubit = getIt<BoxOriginCubit>();
+  final BoxOriginCubit _cubit = getIt<BoxOriginCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
       ),
       body: Column(
         children: [
-          Align(
+          const Align(
             alignment: Alignment.topCenter,
             child: TitleMediumText(
               'What church do you go to?', // Where did you get your box?
@@ -58,13 +57,13 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
                 onTap: () async {
                   await Navigator.push(
                     context,
-                    BoxOriginSelectionPage(setBoxOrigin: _cubit.setBoxOrigin)
-                        .toRoute(context),
+                    BoxOriginSelectionPage(
+                      setBoxOrigin: _cubit.setBoxOrigin,
+                    ).toRoute(context),
                   );
                 },
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.continueChooseChurchClicked,
-                ),
+                analyticsEvent: AmplitudeEvents.continueChooseChurchClicked
+                    .toEvent(),
               ),
               const SizedBox(height: 8),
               FunTextButton(
@@ -73,9 +72,7 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
                   _cubit.onSkipClicked();
                   context.goNamed(FamilyPages.profileSelection.name);
                 },
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.dontHaveABoxClicked,
-                ),
+                analyticsEvent: AmplitudeEvents.dontHaveABoxClicked.toEvent(),
               ),
             ],
           ),

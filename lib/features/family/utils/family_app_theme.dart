@@ -115,8 +115,8 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
 
   //functionally used on screen
   static const disabledCameraGrey = Color(0xFFD8D8D8);
-  static const defaultTextColor = FamilyAppTheme.primary20;
-  static final historyAllowanceColor =
+  static const Color defaultTextColor = FamilyAppTheme.primary20;
+  static final Color historyAllowanceColor =
       const Color(0xFF89BCEF).withAlpha((255 * 0.1).toInt());
   static const downloadAppBackground = Color.fromARGB(255, 46, 41, 87);
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 class CityCard extends StatelessWidget {
   const CityCard({
@@ -29,8 +28,7 @@ class CityCard extends StatelessWidget {
       borderColor: Areas.primary.borderColor,
       backgroundColor: Areas.primary.backgroundColor,
       textColor: Areas.primary.textColor,
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.citySelected,
+      analyticsEvent: AmplitudeEvents.citySelected.toEvent(
         parameters: {
           'city': cityName,
           'state': stateName,

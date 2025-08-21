@@ -4,6 +4,8 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:http/http.dart';
+import 'package:http_interceptor/http/intercepted_client.dart' show InterceptedClient;
+import 'package:http_interceptor/http_interceptor.dart' show InterceptedClient;
 import 'package:http_interceptor/models/retry_policy.dart';
 
 /// This is the retry policy that will be used by the [InterceptedClient]

@@ -13,7 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class SummaryPage extends StatefulWidget {
-  const SummaryPage({super.key, required this.uiModel});
+  const SummaryPage({required this.uiModel, super.key});
   final SummaryUIModel uiModel;
   @override
   State<SummaryPage> createState() => _SummaryPageState();

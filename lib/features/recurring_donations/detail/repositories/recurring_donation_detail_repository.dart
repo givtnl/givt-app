@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_donation_detail_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
-import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_overview_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
@@ -33,7 +32,7 @@ class RecurringDonationDetailRepositoryImpl
   RecurringDonationDetailUIModel _detail = const RecurringDonationDetailUIModel(
     organizationName: '',
     organizationIcon: '',
-    totalDonated: 0.0,
+    totalDonated: 0,
     remainingTime: '',
     endDate: null,
     progress: null,
@@ -136,7 +135,6 @@ class RecurringDonationDetailRepositoryImpl
         progress: null, // We'll calculate this after _detail is initialized
         history: history,
         isLoading: false,
-        error: null,
       );
 
       // Now calculate progress (after _detail is initialized)
@@ -250,14 +248,13 @@ class RecurringDonationDetailRepositoryImpl
   double _calculateTotalDonated(List<DonationHistoryItem> history) {
     return history
         .where((h) => h.status == DonationStatus.completed)
-        .fold(0.0, (sum, item) => sum + item.amount);
+        .fold(0, (sum, item) => sum + item.amount);
   }
 
   String _calculateRemainingTime() {
     if (_recurringDonation!.endsAfterTurns == 999) return 'Unlimited';
 
     final endDate = _recurringDonation!.endDate;
-    if (endDate == null) return 'Unknown';
 
     final now = DateTime.now();
     final difference = endDate.difference(now);
@@ -284,10 +281,8 @@ class RecurringDonationDetailRepositoryImpl
     }
 
     // For active donations, check if the end date is in the future
-    if (_recurringDonation!.endDate != null) {
-      return _recurringDonation!.endDate!.isAfter(DateTime.now());
-    }
-
+    return _recurringDonation!.endDate.isAfter(DateTime.now());
+  
     // If no end date and state is active, it's active
     return true;
   }

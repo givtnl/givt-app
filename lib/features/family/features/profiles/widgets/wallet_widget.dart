@@ -15,7 +15,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class WalletWidget extends StatefulWidget {
@@ -93,9 +92,8 @@ class _WalletWidgetState extends State<WalletWidget> {
                       );
                     },
                     text: 'Edit avatar',
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.editProfilePictureClicked,
-                    ),
+                    analyticsEvent: AmplitudeEvents.editProfilePictureClicked
+                        .toEvent(),
                     size: FunButtonSize.small,
                     leftIcon: FontAwesomeIcons.userPen,
                     funButtonBadge: FunButtonBadge(
@@ -122,9 +120,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                           duration: const Duration(seconds: 3),
                           separator: '.',
                           prefix: r' $',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge
+                          style: Theme.of(context).textTheme.titleLarge
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
                               ),

@@ -27,7 +27,6 @@ import 'package:givt_app/features/family/features/unlocked_badge/repository/mode
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
-import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
@@ -54,7 +53,7 @@ class FamilyHomeScreen extends StatefulWidget {
 class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   OverlayEntry? overlayEntry;
   bool overlayVisible = false;
-  final _cubit = getIt<FamilyHomeScreenCubit>();
+  final FamilyHomeScreenCubit _cubit = getIt<FamilyHomeScreenCubit>();
   final CarouselSliderController _carouselSliderController =
       CarouselSliderController();
 

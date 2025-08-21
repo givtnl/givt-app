@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.da
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/fun_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class AvatarSelectionBottomsheet extends StatelessWidget {

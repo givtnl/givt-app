@@ -31,9 +31,6 @@ class LevelUIModel {
       subtitle: json['subtitle'] as String? ?? '',
       description: json['description'] as String? ?? '',
       assignment: json['assignment'] as String? ?? '',
-      imageAsset: 'assets/family/images/barcode_hunt/level_default_image.svg',
-      isUnlocked: false, // Will be set after fetching user state
-      isCompleted: false, // Will be set after fetching user state
     );
   }
 

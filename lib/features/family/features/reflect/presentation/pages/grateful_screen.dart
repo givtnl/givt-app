@@ -34,7 +34,6 @@ import 'package:givt_app/features/family/shared/widgets/loading/full_screen_load
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -48,9 +47,9 @@ class GratefulScreen extends StatefulWidget {
 }
 
 class _GratefulScreenState extends State<GratefulScreen> {
-  final _cubit = getIt<GratefulCubit>();
-  final _give = getIt<GiveCubit>();
-  final _medium = getIt<MediumCubit>();
+  final GratefulCubit _cubit = getIt<GratefulCubit>();
+  final GiveCubit _give = getIt<GiveCubit>();
+  final MediumCubit _medium = getIt<MediumCubit>();
   final ScrollController _scrollController = ScrollController();
   int _currentIndex = 0;
 
@@ -130,9 +129,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                                 uiModel.recommendationsUIModel.tabIndex,
                             onPressed: _cubit.onSelectionChanged,
                             options: _cubit.tabsOptions,
-                            analyticsEvent: AnalyticsEvent(
-                              AmplitudeEvents.recommendationTypeSelectorClicked,
-                            ),
+                            analyticsEvent: AmplitudeEvents.recommendationTypeSelectorClicked.toEvent(),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -159,8 +156,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                           uiModel.recommendationsUIModel.isShowingActsOfService
                               ? "I'm going to do this"
                               : 'Give',
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.newActOfGenerosityClicked,
+                      analyticsEvent: AmplitudeEvents.newActOfGenerosityClicked.toEvent(
                         parameters: {
                           uiModel.recommendationsUIModel.isShowingActsOfService
                                   ? 'act_of_service'
@@ -176,12 +172,9 @@ class _GratefulScreenState extends State<GratefulScreen> {
                   ),
                 const SizedBox(height: 4),
                 FunTextButton(
-                  onTap: () {
-                    _cubit.onSkip();
-                  },
+                  onTap: _cubit.onSkip,
                   text: 'Skip this time',
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.skipGenerosActPressed,
+                  analyticsEvent: AmplitudeEvents.skipGenerosActPressed.toEvent(
                     parameters: {
                       AnalyticsHelper.firstNameKey:
                           uiModel.recommendationsUIModel.name,

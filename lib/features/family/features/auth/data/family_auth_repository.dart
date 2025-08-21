@@ -203,7 +203,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   Future<UserExt> _fetchAndStoreUserExtension(String guid) async {
     try {
-      UserExt userExt = await fetchUserExtension(guid);
+      final userExt = await fetchUserExtension(guid);
       await _storeUserExt(userExt);
       await _setUserPropsForExternalServices(userExt);
       _updateAuthenticatedUserStream(userExt);
@@ -217,6 +217,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     }
   }
 
+  @override
   Future<UserExt> fetchUserExtension(String guid) async {
     final response = await _apiService.getUserExtension(guid);
     final userExt = UserExt.fromJson(response);

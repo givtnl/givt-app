@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 class FoundNfcAnimation extends StatelessWidget {
   const FoundNfcAnimation({super.key});
@@ -36,9 +35,7 @@ class FoundNfcAnimation extends StatelessWidget {
               isDisabled: true,
               onTap: null,
               text: '',
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.debugButtonClicked,
-              ),
+              analyticsEvent: AmplitudeEvents.debugButtonClicked.toEvent(),
             ),
           ),
         ],

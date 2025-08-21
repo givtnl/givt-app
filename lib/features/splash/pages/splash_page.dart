@@ -24,7 +24,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  final _cubit = getIt<SplashCubit>();
+  final SplashCubit _cubit = getIt<SplashCubit>();
 
   bool _showNoInternetMessage = false;
   bool _showCurrentlyExperiencingIssues = false;

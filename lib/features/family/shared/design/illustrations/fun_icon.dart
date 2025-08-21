@@ -169,7 +169,7 @@ class FunIcon extends StatelessWidget {
         iconColor: iconColor,
       );
 
-  factory FunIcon.xmarkPlain() => FunIcon(
+  factory FunIcon.xmarkPlain() => const FunIcon(
         iconData: FontAwesomeIcons.xmark,
         circleColor: Colors.transparent,
       );

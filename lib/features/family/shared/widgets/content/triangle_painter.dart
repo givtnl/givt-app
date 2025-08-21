@@ -19,7 +19,7 @@ class TrianglePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
+    final paint = Paint()
       ..color = strokeColor
       ..strokeWidth = strokeWidth
       ..style = paintingStyle;

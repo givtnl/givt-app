@@ -63,11 +63,11 @@ class _ChooseAmountState extends State<ChooseAmount> {
   @override
   void initState() {
     super.initState();
-    String initialAmountText = '0';
+    var initialAmountText = '0';
 
     if (widget.initialAmount != null) {
       // Format the initial amount to either be a whole number or have exactly 2 digits after comma
-      double amount = widget.initialAmount!;
+      final amount = widget.initialAmount!;
       if (amount == amount.roundToDouble()) {
         // It's a whole number, don't add decimal part
         initialAmountText = amount.toInt().toString();

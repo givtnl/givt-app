@@ -68,7 +68,7 @@ class DiscoverSuggestionCard extends StatelessWidget {
                     ),
                     child: Image.asset(
                       icon,
-                      width: size.width * (0.1),
+                      width: size.width * 0.1,
                     ),
                   ),
                   const SizedBox(height: 8),

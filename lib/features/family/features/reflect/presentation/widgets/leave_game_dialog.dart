@@ -3,7 +3,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 class LeaveGameDialog extends StatelessWidget {
   const LeaveGameDialog({super.key, this.onConfirmLeaveGame});
@@ -24,18 +23,16 @@ class LeaveGameDialog extends StatelessWidget {
             onConfirmLeaveGame?.call();
           },
           text: 'Leave game',
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.reflectAndShareConfirmExitClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.reflectAndShareConfirmExitClicked
+              .toEvent(),
         ),
         FunButton(
           onTap: () {
             Navigator.of(context).pop();
           },
           text: 'Keep playing',
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.reflectAndShareKeepPlayingClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.reflectAndShareKeepPlayingClicked
+              .toEvent(),
         ),
       ],
     );

@@ -196,8 +196,8 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
     );
   }
 
-  final mainColor = FamilyAppTheme.stageColorPulse;
-  final pulseColor = FamilyAppTheme.stageColorPodium;
+  final Color mainColor = FamilyAppTheme.stageColorPulse;
+  final Color pulseColor = FamilyAppTheme.stageColorPodium;
 
   Widget _dragWidget(BuildContext context, List<Object?> candidateDate) {
     return Stack(

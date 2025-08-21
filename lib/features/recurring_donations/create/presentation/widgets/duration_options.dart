@@ -334,7 +334,7 @@ String _monthName(int month) {
 
   // Use localized month names from the current locale
   final now = DateTime.now();
-  final date = DateTime(now.year, month, 1);
+  final date = DateTime(now.year, month);
   return DateFormat('MMMM').format(date);
 }
 

@@ -11,7 +11,6 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step1_select_organization_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 

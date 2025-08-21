@@ -68,16 +68,16 @@ class GenerosityHuntIntroPage extends StatelessWidget {
 }
 
 class _StepRow extends StatelessWidget {
-  final String number;
-  final Color color;
-  final String text;
-  final Color textColor;
   const _StepRow({
     required this.number,
     required this.color,
     required this.text,
     required this.textColor,
   });
+  final String number;
+  final Color color;
+  final String text;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {

@@ -17,6 +17,36 @@ class FunAvatar extends FunIcon {
     this.innerCircleSize,
   });
 
+  factory FunAvatar.defaultHero({double size = 120}) {
+    return FunAvatar.hero('Hero1.svg', size: size);
+  }
+
+  factory FunAvatar.hero(String heroName, {double size = 120}) {
+    return FunAvatar(
+      semanticsIdentifier: heroName,
+      customCircleColor: FamilyAppTheme.info95,
+      customAvatar: ClipOval(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: size / 15,
+          ), // Add 8px padding above the SVG
+          child: SvgPicture.asset(
+            'assets/family/images/avatar/default/$heroName',
+            fit: BoxFit.cover,
+            alignment: Alignment.topCenter,
+            errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
+              'assets/family/images/avatar/default/Hero1.svg',
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+            ),
+          ),
+        ),
+      ),
+      circleSize: size,
+      innerCircleSize: size,
+    );
+  }
+
   factory FunAvatar.captain({bool isLarge = false, bool lookRight = false}) {
     return FunAvatar(
       semanticsIdentifier: 'captain',
@@ -139,39 +169,11 @@ class FunAvatar extends FunIcon {
     );
   }
 
-  factory FunAvatar.defaultHero({double size = 120}) {
-    return FunAvatar.hero('Hero1.svg', size: size);
-  }
-
-  factory FunAvatar.hero(String heroName, {double size = 120}) {
-    return FunAvatar(
-      semanticsIdentifier: heroName,
-      customCircleColor: FamilyAppTheme.info95,
-      customAvatar: ClipOval(
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: size / 15,
-          ), // Add 8px padding above the SVG
-          child: SvgPicture.asset(
-            'assets/family/images/avatar/default/$heroName',
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-            errorBuilder: (context, error, stackTrace) => SvgPicture.asset(
-              'assets/family/images/avatar/default/Hero1.svg',
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-            ),
-          ),
-        ),
-      ),
-      circleSize: size,
-      innerCircleSize: size,
-    );
-  }
-
+  @override
   final String semanticsIdentifier;
   final Color customCircleColor;
   final Widget customAvatar;
+  @override
   final double circleSize;
   final double? innerCircleSize;
 

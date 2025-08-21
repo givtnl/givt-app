@@ -162,7 +162,6 @@ class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
                         );
                       default:
                         Navigator.of(context).pop();
-                        break;
                     }
                   },
                   child: Text(

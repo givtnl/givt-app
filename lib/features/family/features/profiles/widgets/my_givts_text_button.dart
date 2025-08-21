@@ -6,7 +6,6 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 class MyGivtsButton extends StatefulWidget {
   const MyGivtsButton({required this.userId, super.key});
@@ -30,8 +29,7 @@ class _MyGivtsButtonState extends State<MyGivtsButton> {
         Navigator.of(context).push(const HistoryScreen().toRoute(context));
       },
       text: 'My Givts',
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.seeDonationHistoryPressed,
+      analyticsEvent: AmplitudeEvents.seeDonationHistoryPressed.toEvent(
         parameters: {'userId': widget.userId},
       ),
     );

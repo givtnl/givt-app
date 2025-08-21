@@ -12,7 +12,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -33,7 +32,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
   final MobileScannerController _cameraController = MobileScannerController(
     returnImage: true,
   );
-  bool _barcodeFound = false;
+  final bool _barcodeFound = false;
 
   // Spinning state
   bool _isSpinning = false;
@@ -174,18 +173,16 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                           Navigator.pop(context);
                         },
                         text: 'Continue',
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.continueClicked,
-                        ),
+                        analyticsEvent: AmplitudeEvents.continueClicked
+                            .toEvent(),
                       ),
 
                     if (state.itemScanned && !state.levelFinished)
                       FunButton(
                         onTap: cubit.restartScan,
                         text: "Let's go",
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.continueClicked,
-                        ),
+                        analyticsEvent: AmplitudeEvents.continueClicked
+                            .toEvent(),
                       ),
                   ],
                 ),
@@ -297,9 +294,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
           Navigator.pop(context);
         },
         text: 'Try again',
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.generosityHuntScanTryAgainClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.generosityHuntScanTryAgainClicked
+            .toEvent(),
       ),
     ).show(
       context,
@@ -322,9 +318,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
           Navigator.pop(context);
         },
         text: 'Try again',
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.generosityHuntScanTryAgainClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.generosityHuntScanTryAgainClicked
+            .toEvent(),
       ),
     ).show(
       context,
@@ -347,9 +342,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
           Navigator.pop(context);
         },
         text: 'Try again',
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.generosityHuntScanTryAgainClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.generosityHuntScanTryAgainClicked
+            .toEvent(),
       ),
     ).show(
       context,
@@ -392,9 +386,8 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
           Navigator.pop(context);
         },
         text: 'Claim',
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.generosityHuntScanClaimClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.generosityHuntScanClaimClicked
+            .toEvent(),
       ),
     ).show(context);
   }

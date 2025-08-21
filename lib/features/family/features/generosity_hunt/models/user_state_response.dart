@@ -1,5 +1,4 @@
 class UserStateResponse {
-  final UserStateItem? item;
 
   const UserStateResponse({required this.item});
 
@@ -10,12 +9,10 @@ class UserStateResponse {
           : null,
     );
   }
+  final UserStateItem? item;
 }
 
 class UserStateItem {
-  final String gameGuid;
-  final int currentLevel;
-  final bool isCompleted;
 
   const UserStateItem({
     required this.gameGuid,
@@ -30,4 +27,7 @@ class UserStateItem {
       isCompleted: json['isCompleted'] as bool? ?? false,
     );
   }
+  final String gameGuid;
+  final int currentLevel;
+  final bool isCompleted;
 } 

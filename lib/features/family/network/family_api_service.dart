@@ -185,7 +185,7 @@ class FamilyAPIService {
       body: jsonEncode(body),
     );
 
-    debugPrint('Recommended AOS response: ${response}, body: ${response.body}');
+    debugPrint('Recommended AOS response: $response, body: ${response.body}');
 
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
@@ -661,7 +661,7 @@ class FamilyAPIService {
     if (response.statusCode == 404) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
-        body: {'error': 'Barcode not found'},
+        body: const {'error': 'Barcode not found'},
       );
     }
 

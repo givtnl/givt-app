@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class BedtimeSliderWidget extends StatefulWidget {
-  BedtimeSliderWidget({
+  const BedtimeSliderWidget({
     this.initialAmount,
     this.onAmountChanged,
     super.key,

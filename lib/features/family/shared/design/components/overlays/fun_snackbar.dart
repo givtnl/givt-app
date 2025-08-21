@@ -16,7 +16,6 @@ class FunSnackbar {
   }) {
     _removeCurrent();
     final overlay = Overlay.of(context);
-    if (overlay == null) return;
 
     final entry = OverlayEntry(
       builder: (context) => Positioned(

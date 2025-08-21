@@ -64,9 +64,9 @@ class NavigationBarHomeScreen extends StatefulWidget {
 
 class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final TooltipController _tooltipController = TooltipController();
-  final _cubit = getIt<NavigationBarHomeCubit>();
-  final _connectionCubit = getIt<InternetConnectionCubit>();
-  final _missionRepo = getIt<MissionRepository>();
+  final NavigationBarHomeCubit _cubit = getIt<NavigationBarHomeCubit>();
+  final InternetConnectionCubit _connectionCubit = getIt<InternetConnectionCubit>();
+  final MissionRepository _missionRepo = getIt<MissionRepository>();
 
   late final AppLifecycleListener _listener;
   late final StreamSubscription<Mission> _missionAchievedListener;

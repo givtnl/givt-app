@@ -3,10 +3,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class FunInputRadio extends StatelessWidget {
   const FunInputRadio({
-    super.key,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
+    required this.label, required this.isSelected, required this.onTap, super.key,
     this.padding = const EdgeInsets.symmetric(vertical: 8),
   });
 

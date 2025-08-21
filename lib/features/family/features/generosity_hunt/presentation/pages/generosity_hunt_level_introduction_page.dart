@@ -98,7 +98,7 @@ class _GenerosityHuntLevelIntroductionPageState
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
-          body: Center(
+          body: const Center(
             child: Text('Introduction for Level {state.selectedLevel}'),
           ),
         );

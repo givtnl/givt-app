@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
@@ -8,11 +7,11 @@ import 'package:givt_app/features/family/shared/design/components/content/models
 import 'package:givt_app/features/recurring_donations/detail/pages/recurring_donation_detail_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 import 'package:givt_app/utils/util.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:intl/intl.dart';
 
 class RecurringDonationsList extends StatelessWidget {
   const RecurringDonationsList({

@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
-import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 
 part 'impact_groups_state.dart';

@@ -12,7 +12,6 @@ import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bot
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class GiveBottomSheet extends StatelessWidget {
@@ -45,13 +44,13 @@ class GiveBottomSheet extends StatelessWidget {
                         titleBig: 'Family Goal',
                         subtitle: state.familyGoal.orgName,
                         iconPath: 'assets/family/images/goal_tile.svg',
-                        borderColor:
-                            Theme.of(context).colorScheme.primaryContainer,
+                        borderColor: Theme.of(
+                          context,
+                        ).colorScheme.primaryContainer,
                         backgroundColor: FamilyAppTheme.primary98,
                         textColor: Theme.of(context).colorScheme.inversePrimary,
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.choseGiveToFamilyGoal,
-                        ),
+                        analyticsEvent: AmplitudeEvents.choseGiveToFamilyGoal
+                            .toEvent(),
                         onTap: () {
                           if (profile.wallet.balance == 0) {
                             showEmptyWalletBottomSheet(context, () {
@@ -83,9 +82,8 @@ class GiveBottomSheet extends StatelessWidget {
                         backgroundColor: FamilyAppTheme.highlight98,
                         borderColor: FamilyAppTheme.highlight80,
                         textColor: FamilyAppTheme.highlight40,
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.choseGiveWithCoin,
-                        ),
+                        analyticsEvent: AmplitudeEvents.choseGiveWithCoin
+                            .toEvent(),
                         onTap: () {
                           if (profile.wallet.balance == 0) {
                             showEmptyWalletBottomSheet(context, () {
@@ -103,13 +101,13 @@ class GiveBottomSheet extends StatelessWidget {
                     child: FunTile(
                       titleBig: 'QR Code',
                       iconPath: 'assets/family/images/give_with_qr.svg',
-                      borderColor:
-                          Theme.of(context).colorScheme.tertiaryContainer,
+                      borderColor: Theme.of(
+                        context,
+                      ).colorScheme.tertiaryContainer,
                       backgroundColor: Theme.of(context).colorScheme.onTertiary,
                       textColor: Theme.of(context).colorScheme.tertiary,
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.choseGiveWithQRCode,
-                      ),
+                      analyticsEvent: AmplitudeEvents.choseGiveWithQRCode
+                          .toEvent(),
                       onTap: () {
                         if (profile.wallet.balance == 0) {
                           showEmptyWalletBottomSheet(context, () {
@@ -130,9 +128,7 @@ class GiveBottomSheet extends StatelessWidget {
                   context.pop();
                 },
                 text: 'Cancel',
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.cancelGive,
-                ),
+                analyticsEvent: AmplitudeEvents.cancelGive.toEvent(),
               ),
             ],
           ),
@@ -144,11 +140,12 @@ class GiveBottomSheet extends StatelessWidget {
   void _familyGoalTapped(BuildContext context, ImpactGroupsState state) {
     context.pop();
     context.read<FlowsCubit>().startFamilyGoalFlow();
-    final generatedMediumId =
-        base64.encode(state.familyGoal.mediumId.codeUnits);
-    context
-        .read<CollectGroupDetailsCubit>()
-        .getOrganisationDetails(generatedMediumId);
+    final generatedMediumId = base64.encode(
+      state.familyGoal.mediumId.codeUnits,
+    );
+    context.read<CollectGroupDetailsCubit>().getOrganisationDetails(
+      generatedMediumId,
+    );
     final group = state.getGoalGroup(state.familyGoal);
     context.pushNamed(
       FamilyPages.chooseAmountSliderGoal.name,

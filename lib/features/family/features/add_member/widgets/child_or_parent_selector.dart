@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_primary_tabs.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 class ChildOrParentSelector extends StatelessWidget {
   const ChildOrParentSelector({
@@ -21,9 +20,7 @@ class ChildOrParentSelector extends StatelessWidget {
       selectedIndex: selectedIndex,
       onPressed: onPressed,
       options: options,
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.addMemberTypeSelectorClicked,
-      ),
+      analyticsEvent: AmplitudeEvents.addMemberTypeSelectorClicked.toEvent(),
     );
   }
 }

@@ -39,7 +39,7 @@ class _GenerosityHuntCountdownContainerState
     
     // Start date: August 3, 2025, 00:00 Tulsa timezone (UTC-6)
     // Tulsa is in Central Time (UTC-6), so August 3, 2025 00:00 Tulsa = August 3, 2025 06:00 UTC
-    final startDate = DateTime.utc(2025, 8, 3, 6, 0); // 00:00 Tulsa time = 06:00 UTC
+    final startDate = DateTime.utc(2025, 8, 3, 6); // 00:00 Tulsa time = 06:00 UTC
     
     // End date is 30 days later
     final endDate = startDate.add(const Duration(days: 30));

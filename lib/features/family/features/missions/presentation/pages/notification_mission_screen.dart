@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -22,7 +21,7 @@ class NotificationMissionScreen extends StatefulWidget {
 
 class _NotificationMissionScreenState extends State<NotificationMissionScreen>
     with WidgetsBindingObserver {
-  final cubit = getIt<NotificationMissionsCubit>();
+  final NotificationMissionsCubit cubit = getIt<NotificationMissionsCubit>();
   @override
   void initState() {
     super.initState();
@@ -46,7 +45,7 @@ class _NotificationMissionScreenState extends State<NotificationMissionScreen>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                  'Failed to update notification permission: ${e.toString()}'),
+                  'Failed to update notification permission: $e'),
             ),
           );
         }

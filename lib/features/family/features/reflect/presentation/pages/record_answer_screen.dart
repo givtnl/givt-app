@@ -17,7 +17,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/content/fun_bubble.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -40,14 +39,15 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   int _remainingSeconds;
   InterviewCubit cubit = getIt<InterviewCubit>();
   final RecordCubit _recordCubit = getIt<RecordCubit>();
-  final ReflectAndShareRepository _repository = getIt<ReflectAndShareRepository>();
+  final ReflectAndShareRepository _repository =
+      getIt<ReflectAndShareRepository>();
   AppConfig config = getIt<AppConfig>();
 
   @override
   void initState() {
     super.initState();
     WakelockPlus.enable();
-    if(_repository.isAITurnedOn()) {
+    if (_repository.isAITurnedOn()) {
       _recordCubit.start();
     }
   }
@@ -169,9 +169,9 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                         unawaited(cubit.advanceToNext(audioPath: audioPath));
                       },
                       text: widget.uiModel.buttonText,
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.reflectAndShareNextJournalistClicked,
-                      ),
+                      analyticsEvent: AmplitudeEvents
+                          .reflectAndShareNextJournalistClicked
+                          .toEvent(),
                     ),
                   ),
                   const SizedBox(height: 24),

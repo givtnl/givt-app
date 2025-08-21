@@ -273,7 +273,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
               parameters: {
                 'child': child.firstName,
                 'bedtime':
-                    '${bedtimeSliderValue.floor().toInt().toString().padLeft(2, '0')}:${((bedtimeSliderValue - bedtimeSliderValue.floor()) * 60).toInt().toString().padLeft(2, '0')}',
+                    '${bedtimeSliderValue.floor().toString().padLeft(2, '0')}:${((bedtimeSliderValue - bedtimeSliderValue.floor()) * 60).toInt().toString().padLeft(2, '0')}',
                 'windDown': windDownValue,
               },
             ),

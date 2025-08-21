@@ -59,7 +59,7 @@ class Mission extends Equatable {
       title: title ?? this.title,
       description: description ?? this.description,
       progress: progress ?? this.progress,
-      path: namedPath ?? this.path,
+      path: namedPath ?? path,
       showAchievedTooltip: showAchievedTooltip ?? this.showAchievedTooltip,
     );
   }

@@ -21,12 +21,12 @@ import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
-import 'package:givt_app/features/recurring_donations/detail/injection.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step1_select_organization_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step2_set_amount_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step3_set_duration_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step4_confirm_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
+import 'package:givt_app/features/recurring_donations/detail/injection.dart';
 import 'package:givt_app/features/recurring_donations/overview/injection.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
@@ -35,7 +35,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final getIt = GetIt.instance;
+final GetIt getIt = GetIt.instance;
 
 Future<void> init() async {
   await _initCoreDependencies();

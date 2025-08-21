@@ -7,9 +7,7 @@ import 'package:givt_app/l10n/l10n.dart';
 
 class FrequencyDropdown extends StatelessWidget {
   const FrequencyDropdown({
-    super.key,
-    required this.value,
-    required this.onChanged,
+    required this.value, required this.onChanged, super.key,
   });
 
   final RecurringDonationFrequency? value;

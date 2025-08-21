@@ -6,8 +6,8 @@ class FunDatePicker extends StatelessWidget {
   const FunDatePicker({
     required this.selectedDate,
     required this.onDateSelected,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final DateTime? selectedDate;
   final ValueChanged<DateTime> onDateSelected;

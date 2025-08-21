@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
@@ -36,7 +35,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
   late TextEditingController passwordController;
   bool obscureText = true;
 
-  final _cubit = getIt<FamilyLoginCubit>();
+  final FamilyLoginCubit _cubit = getIt<FamilyLoginCubit>();
 
   @override
   void didChangeDependencies() {
