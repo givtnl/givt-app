@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
@@ -16,12 +17,14 @@ class OrganisationListFamilyContent extends StatefulWidget {
     required this.bloc,
     required this.onTapListItem,
     required this.removedCollectGroupTypes,
+    this.showFavorites = false,
     super.key,
   });
 
   final OrganisationBloc bloc;
   final void Function(CollectGroup) onTapListItem;
   final List<CollectGroupType> removedCollectGroupTypes;
+  final bool showFavorites;
 
   @override
   State<OrganisationListFamilyContent> createState() =>
@@ -88,22 +91,55 @@ class _OrganisationListFamilyContentState
                   shrinkWrap: true,
                   itemCount: state.filteredOrganisations.length,
                   itemBuilder: (context, index) {
-                    if (widget.removedCollectGroupTypes
-                        .contains(state.filteredOrganisations[index].type)) {
+                    final organisation = state.filteredOrganisations[index];
+                    if (widget.removedCollectGroupTypes.contains(
+                      organisation.type,
+                    )) {
                       return const SizedBox.shrink();
                     }
+                    final isFavorited = state.favoritedOrganisations.contains(
+                      organisation.nameSpace,
+                    );
+
                     return _buildListTile(
-                      type: state.filteredOrganisations[index].type,
-                      title: state.filteredOrganisations[index].orgName,
-                      isSelected: selectedCollectgroup ==
-                          state.filteredOrganisations[index],
+                      type: organisation.type,
+                      title: organisation.orgName,
+                      isSelected: selectedCollectgroup == organisation,
+                      isFavorited: isFavorited,
                       onTap: () {
-                        widget
-                            .onTapListItem(state.filteredOrganisations[index]);
+                        widget.onTapListItem(organisation);
                         setState(() {
-                          selectedCollectgroup =
-                              state.filteredOrganisations[index];
+                          selectedCollectgroup = organisation;
                         });
+                      },
+                      onFavoritePressed: () {
+                        if (isFavorited) {
+                          widget.bloc.add(
+                            RemoveOrganisationFromFavorites(
+                              organisation.nameSpace,
+                            ),
+                          );
+                          AnalyticsHelper.logEvent(
+                            eventName:
+                                AmplitudeEvents.organisationFavoriteToggled,
+                            eventProperties: {
+                              'organisation_name': organisation.orgName,
+                              'is_favorited': false,
+                            },
+                          );
+                        } else {
+                          widget.bloc.add(
+                            AddOrganisationToFavorites(organisation.nameSpace),
+                          );
+                          AnalyticsHelper.logEvent(
+                            eventName:
+                                AmplitudeEvents.organisationFavoriteToggled,
+                            eventProperties: {
+                              'organisation_name': organisation.orgName,
+                              'is_favorited': true,
+                            },
+                          );
+                        }
                       },
                     );
                   },
@@ -124,18 +160,30 @@ class _OrganisationListFamilyContentState
     required String title,
     required CollectGroupType type,
     required bool isSelected,
-  }) =>
-      ListTile(
+    required bool isFavorited,
+    required VoidCallback onFavoritePressed,
+  }) => ListTile(
         key: UniqueKey(),
+        contentPadding: EdgeInsets.zero,
         onTap: () => onTap.call(),
         splashColor: FamilyAppTheme.highlight99,
         selected: isSelected,
-        selectedTileColor:
-            CollectGroupType.getColorComboByType(type).backgroundColor,
+        selectedTileColor: CollectGroupType.getColorComboByType(
+          type,
+        ).backgroundColor,
         leading: Icon(
           CollectGroupType.getIconByTypeUS(type),
           color: FamilyAppTheme.primary20,
         ),
         title: LabelMediumText(title, color: AppTheme.primary20),
+        trailing: widget.showFavorites
+            ? IconButton(
+                icon: Icon(
+                  isFavorited ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorited ? Colors.red : Colors.grey,
+                ),
+                onPressed: onFavoritePressed,
+              )
+            : null,
       );
 }

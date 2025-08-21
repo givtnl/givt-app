@@ -38,13 +38,20 @@ class _SelectOrganisationListPageState
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     final user = context.read<AuthCubit>().state.user;
-    bloc.add(
-      OrganisationFetch(
-        Country.fromCode(user.country),
-        type: CollectGroupType.none.index,
-      ),
-    );
+    bloc
+      ..add(
+        OrganisationFetch(
+          Country.fromCode(user.country),
+          type: CollectGroupType.none.index,
+        ),
+      )
+      ..add(const FavoritesRefresh());
   }
 
   @override
@@ -70,6 +77,7 @@ class _SelectOrganisationListPageState
                 });
               },
               removedCollectGroupTypes: const [],
+              showFavorites: true,
             ),
           ),
           FunButton(

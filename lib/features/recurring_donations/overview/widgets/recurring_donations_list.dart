@@ -56,7 +56,7 @@ class RecurringDonationsList extends StatelessWidget {
       onTap: () => _onDonationTap(context, donationWithProgress),
       useFunProgressbar: true,
       analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.recurringDonationsClicked,
+        AmplitudeEvents.recurringDonationCardClicked,
         parameters: {
           'donation_id': donationWithProgress.donation.id,
           'organisation': donationWithProgress.donation.collectGroup.orgName,

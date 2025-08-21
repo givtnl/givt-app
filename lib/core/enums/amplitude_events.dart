@@ -103,7 +103,11 @@ enum AmplitudeEvents {
   editGivingGoalClicked('edit_giving_goal_clicked'),
   givingGoalSaved('giving_goal_saved'),
   removeGivingGoalClicked('remove_giving_goal_clicked'),
-  recurringDonationsClicked('recurring_donations_clicked'),
+  // Recurring donations navigation and actions
+  recurringDonationsNavigationClicked('recurring_donations_navigation_clicked'),
+  recurringDonationCardClicked('recurring_donation_card_clicked'),
+  recurringDonationEditClicked('recurring_donation_edit_clicked'),
+  recurringDonationManageClicked('recurring_donation_manage_clicked'),
   recurringDonationsTabsChanged('recurring_donations_tabs_changed'),
   recurringDonationsAddClicked('recurring_donations_add_clicked'),
   recurringDonationsAddRecurringDonation('recurring_donations_add_recurring_donation'),

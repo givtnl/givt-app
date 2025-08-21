@@ -278,13 +278,18 @@ class RecurringDonationDetailRepositoryImpl
     // Check if the recurring donation is still active (not in the past)
     if (_recurringDonation == null) return false;
 
-    // Check if the end date is in the future
+    // First check the current state - cancelled and finished donations are never active
+    if (_recurringDonation!.currentState != RecurringDonationState.active) {
+      return false;
+    }
+
+    // For active donations, check if the end date is in the future
     if (_recurringDonation!.endDate != null) {
       return _recurringDonation!.endDate!.isAfter(DateTime.now());
     }
 
-    // If no end date, check the current state
-    return _recurringDonation!.currentState == RecurringDonationState.active;
+    // If no end date and state is active, it's active
+    return true;
   }
 
   DonationHistoryItem _createUpcomingDonation() {

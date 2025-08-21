@@ -120,7 +120,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                         unawaited(
                           AnalyticsHelper.logEvent(
                             eventName:
-                                AmplitudeEvents.recurringDonationsClicked,
+                                AmplitudeEvents.recurringDonationsNavigationClicked,
                           ),
                         );
                       },
