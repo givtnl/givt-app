@@ -25,7 +25,6 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -162,9 +161,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
                   options: EditAvatarScreen.options,
                   selectedIndex:
                       data.mode == EditAvatarScreen.options[0] ? 0 : 1,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.avatarTabChanged,
-                  ),
+                  analyticsEvent: AmplitudeEvents.avatarTabChanged.toEvent(),
                   onPressed: (index) {
                     _cubit.setMode(index);
                     if (index == 1) {
@@ -479,7 +476,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
             _cubit.saveAvatar();
             context.pop();
           },
-          analyticsEvent: AnalyticsEvent(AmplitudeEvents.saveAvatarYesClicked),
+          analyticsEvent: AmplitudeEvents.saveAvatarYesClicked.toEvent(),
         ),
         FunTextButton(
           textColor: FamilyAppTheme.error30,
@@ -488,7 +485,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
             context.pop();
           },
           text: 'No, discard',
-          analyticsEvent: AnalyticsEvent(AmplitudeEvents.saveAvatarNoClicked),
+          analyticsEvent: AmplitudeEvents.saveAvatarNoClicked.toEvent(),
         ),
       ],
     ).show(context);

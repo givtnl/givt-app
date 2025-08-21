@@ -143,9 +143,7 @@ class _FunCounterState extends State<FunCounter> {
           onTapCancel: _stopTimer,
           onTap: (_currentAmount <= minAmount) ? null : _decrementCounter,
           isMuted: true,
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.funCounterDecrementClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.funCounterDecrementClicked.toEvent(),
           child: FaIcon(
             semanticLabel: 'minus',
             FontAwesomeIcons.minus,
@@ -173,9 +171,7 @@ class _FunCounterState extends State<FunCounter> {
           onTapCancel: _stopTimer,
           onTap: (_currentAmount > 998) ? null : _incrementCounter,
           isMuted: true,
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.funCounterIncrementClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.funCounterIncrementClicked.toEvent(),
           child: FaIcon(
             semanticLabel: 'plus',
             FontAwesomeIcons.plus,

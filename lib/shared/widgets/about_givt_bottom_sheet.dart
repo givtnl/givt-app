@@ -158,8 +158,7 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                         }
                       : null,
                   text: locals.send,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.onInfoRowClicked,
+                  analyticsEvent: AmplitudeEvents.onInfoRowClicked.toEvent(
                     parameters: {'action': 'send_feedback'},
                   ),
                 ),

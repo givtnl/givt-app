@@ -163,9 +163,10 @@ class _ChangeAmountPresetsBottomSheetState
         onTap: () {
           _updateAmountPresetsStatus(context);
         },
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.onInfoRowClicked,
-          parameters: {'action': 'save_presets_status'},
+        analyticsEvent: AmplitudeEvents.onInfoRowClicked.toEvent(
+          parameters: {
+            'action': 'save_presets_status',
+          },
         ),
       ),
     );
@@ -292,8 +293,7 @@ class _ChangeAmountPresetsBottomSheetState
       primaryButton: FunButton(
         text: locals.save,
         onTap: () => _saveAmountPresets(context),
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.amountPresetsSaveClicked,
+        analyticsEvent: AmplitudeEvents.amountPresetsSaveClicked.toEvent(
           parameters: {
             'preset_1': _firstPreset.text,
             'preset_2': _secondPreset.text,

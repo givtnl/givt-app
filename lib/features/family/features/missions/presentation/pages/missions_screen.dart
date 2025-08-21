@@ -65,9 +65,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   onPressed: (index) => setState(
                     () => _selectedIndex = index,
                   ),
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.missionTabsChanged,
-                  ),
+                  analyticsEvent: AmplitudeEvents.missionTabsChanged.toEvent(),
                 ),
                 const SizedBox(height: 24),
                 if (_missions(uiModel).isEmpty)
@@ -135,8 +133,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                                     );
                                   }
                                 },
-                          analyticsEvent: AnalyticsEvent(
-                            AmplitudeEvents.funMissionCardClicked,
+                          analyticsEvent: AmplitudeEvents.funMissionCardClicked.toEvent(
                             parameters: {
                               'mission': mission.title,
                             },

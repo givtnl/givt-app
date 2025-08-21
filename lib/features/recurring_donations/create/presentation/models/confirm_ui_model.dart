@@ -12,7 +12,6 @@ class ConfirmUIModel extends Equatable {
     this.numberOfDonations = '',
     this.selectedEndOption = '',
     this.isLoading = false,
-    this.error,
   });
 
   final String organizationName;
@@ -23,7 +22,6 @@ class ConfirmUIModel extends Equatable {
   final String numberOfDonations;
   final String selectedEndOption;
   final bool isLoading;
-  final String? error;
 
   Map<String, dynamic> get analyticsParams => {
         'organization': organizationName,
@@ -112,7 +110,6 @@ class ConfirmUIModel extends Equatable {
     String? numberOfDonations,
     String? selectedEndOption,
     bool? isLoading,
-    String? error,
   }) {
     return ConfirmUIModel(
       organizationName: organizationName ?? this.organizationName,
@@ -123,7 +120,6 @@ class ConfirmUIModel extends Equatable {
       numberOfDonations: numberOfDonations ?? this.numberOfDonations,
       selectedEndOption: selectedEndOption ?? this.selectedEndOption,
       isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
     );
   }
 
@@ -137,6 +133,5 @@ class ConfirmUIModel extends Equatable {
         numberOfDonations,
         selectedEndOption,
         isLoading,
-        error,
       ];
 } 

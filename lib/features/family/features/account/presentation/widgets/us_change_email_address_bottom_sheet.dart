@@ -61,8 +61,7 @@ class _ChangeEmailAddressBottomSheetState
               }
             : null,
         text: locals.save,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.editEmailSaveClicked,
+        analyticsEvent: AmplitudeEvents.editEmailSaveClicked.toEvent(
           parameters: {
             'old_email': widget.email,
             'new_email': emailController.text,

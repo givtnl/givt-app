@@ -305,8 +305,7 @@ class _ChangeMaxAmountBottomSheetViewState
             }
           : null,
       text: locals.save,
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.maxAmountSaveClicked,
+      analyticsEvent: AmplitudeEvents.maxAmountSaveClicked.toEvent(
         parameters: {'new_max_amount': amountController.text},
       ),
     );

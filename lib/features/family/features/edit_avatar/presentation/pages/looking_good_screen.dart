@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/shared/design/components/actions/action
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:screenshot/screenshot.dart';
@@ -63,8 +62,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
               },
               leftIcon: FontAwesomeIcons.arrowUpFromBracket,
               text: 'Share',
-              analyticsEvent:
-                  AnalyticsEvent(AmplitudeEvents.shareAvatarClicked),
+              analyticsEvent: AmplitudeEvents.shareAvatarClicked.toEvent(),
             ),
             const SizedBox(height: 16),
             FunButton.secondary(
@@ -78,7 +76,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
                 }
               },
               text: context.l10n.buttonDone,
-              analyticsEvent: AnalyticsEvent(AmplitudeEvents.continueClicked),
+              analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
             ),
           ],
         ),

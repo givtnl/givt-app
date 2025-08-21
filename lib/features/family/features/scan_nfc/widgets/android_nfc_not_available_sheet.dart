@@ -62,7 +62,7 @@ class NfcNotAvailableSheet extends StatelessWidget {
           child: FunButton.secondary(
             onTap: () => cancelScanning(context),
             text: 'Cancel',
-            analyticsEvent: AnalyticsEvent(AmplitudeEvents.cancelClicked),
+            analyticsEvent: AmplitudeEvents.cancelClicked.toEvent(),
           ),
         ),
       ],

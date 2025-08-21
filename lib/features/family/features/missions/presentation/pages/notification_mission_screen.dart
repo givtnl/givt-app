@@ -81,8 +81,7 @@ class _NotificationMissionScreenState extends State<NotificationMissionScreen>
                     }
                   },
                   text: uiModel.notifEnabled ? context.l10n.buttonDone : 'Go to Settings',
-                  analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.notificationsGoToSettingsClicked)),
+                  analyticsEvent: AmplitudeEvents.notificationsGoToSettingsClicked.toEvent()),
             ],
           ),
         ));

@@ -74,9 +74,7 @@ class CommonSuccessPage extends StatelessWidget {
                   child: FunButton(
                     text: buttonText,
                     onTap: onClickButton ?? () => Navigator.of(context).pop(),
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.readyClicked,
-                    ),
+                    analyticsEvent: AmplitudeEvents.readyClicked.toEvent(),
                   ),
                 ),
               ],

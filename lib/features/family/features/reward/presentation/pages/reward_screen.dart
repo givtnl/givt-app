@@ -87,8 +87,7 @@ class _RewardScreenState extends State<RewardScreen> {
               );
             },
             text: 'Claim reward',
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.claimRewardClicked,
+            analyticsEvent: AmplitudeEvents.claimRewardClicked.toEvent(
               parameters: {
                 'reward': widget.uiModel.rewardText,
                 'rewardImage': widget.uiModel.rewardImage,

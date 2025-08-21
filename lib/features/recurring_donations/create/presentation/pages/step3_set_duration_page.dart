@@ -132,8 +132,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                     FunButton(
                       text: context.l10n.buttonContinue,
                       isDisabled: !uiModel.isContinueEnabled,
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.recurringStep3SetDurationContinue,
+                      analyticsEvent: AmplitudeEvents.recurringStep3SetDurationContinue.toEvent(
                         parameters: uiModel.analyticsParams,
                       ),
                       onTap: uiModel.isContinueEnabled

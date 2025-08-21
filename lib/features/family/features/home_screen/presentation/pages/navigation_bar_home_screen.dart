@@ -325,14 +325,14 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             _cubit.onShowTutorialClicked();
           },
           text: "Let's go!",
-          analyticsEvent: AnalyticsEvent(AmplitudeEvents.tutorialStartClicked),
+          analyticsEvent: AmplitudeEvents.tutorialStartClicked.toEvent(),
         ),
         FunButton.secondary(
           onTap: () {
             context.pop();
           },
           text: context.l10n.buttonSkip,
-          analyticsEvent: AnalyticsEvent(AmplitudeEvents.tutorialSkipClicked),
+          analyticsEvent: AmplitudeEvents.tutorialSkipClicked.toEvent(),
         ),
       ],
     ).show(context);

@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -79,8 +78,7 @@ class _GenerosityHuntLevelIntroductionPageState
                 const Spacer(),
                 FunButton(
                   text: 'Start level',
-                  analyticsEvent:
-                      AnalyticsEvent(AmplitudeEvents.generosityHuntLevelStart),
+                  analyticsEvent: AmplitudeEvents.generosityHuntLevelStart.toEvent(),
                   onTap: () {
                     Navigator.of(context).pushReplacement(
                       const BarcodeLevelScanPage().toRoute(context),

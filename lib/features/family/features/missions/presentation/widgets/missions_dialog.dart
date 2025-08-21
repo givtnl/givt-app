@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> showMissionNotAvailableDialog(BuildContext context) async {
@@ -21,7 +22,7 @@ Future<void> showMissionNotAvailableDialog(BuildContext context) async {
           await launchStoreUrl();
           Navigator.of(context).pop();
         },
-        analyticsEvent: AnalyticsEvent(AmplitudeEvents.updateNowClicked),
+        analyticsEvent: AmplitudeEvents.updateNowClicked.toEvent(),
       ),
     ],
   ).show(context);

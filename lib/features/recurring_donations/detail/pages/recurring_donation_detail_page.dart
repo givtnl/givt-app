@@ -217,9 +217,7 @@ class _RecurringDonationDetailPageState
           iconData: icon,
           assetSize: 32,
           iconPath: '',
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.recurringDonationEditClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.recurringDonationEditClicked.toEvent(),
           isPressedDown: true,
           titleBig: value,
           subtitle: label,
@@ -335,9 +333,7 @@ class _RecurringDonationDetailPageState
     return FunButton.secondary(
       onTap: () => _cubit.onManageDonationPressed(),
       text: context.l10n.recurringDonationsDetailManageButton,
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.recurringDonationManageClicked,
-      ),
+      analyticsEvent: AmplitudeEvents.recurringDonationManageClicked.toEvent(),
     );
   }
 

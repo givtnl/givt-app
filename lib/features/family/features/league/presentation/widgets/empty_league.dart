@@ -41,8 +41,7 @@ class EmptyLeague extends StatelessWidget {
                 FamilyPages.reflectIntro.name,
               ),
               text: buttonText,
-              analyticsEvent:
-                  AnalyticsEvent(AmplitudeEvents.leaguePlayGameClicked),
+              analyticsEvent: AmplitudeEvents.leaguePlayGameClicked.toEvent(),
             ),
             const SizedBox(height: 36),
           ],

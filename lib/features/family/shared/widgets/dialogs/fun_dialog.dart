@@ -6,7 +6,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
@@ -96,8 +95,7 @@ class FunDialog extends StatelessWidget {
                     onClickPrimary?.call();
                   },
                   text: uiModel.primaryButtonText!,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.funDialogAction,
+                  analyticsEvent: AmplitudeEvents.funDialogAction.toEvent(
                     parameters: {
                       'action': 'primary',
                       'text': uiModel.primaryButtonText,
@@ -114,8 +112,7 @@ class FunDialog extends StatelessWidget {
                     onClickSecondary?.call();
                   },
                   text: uiModel.secondaryButtonText!,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.funDialogAction,
+                  analyticsEvent: AmplitudeEvents.funDialogAction.toEvent(
                     parameters: {
                       'action': 'secondary',
                       'text': uiModel.secondaryButtonText,

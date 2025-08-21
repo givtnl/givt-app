@@ -60,8 +60,7 @@ class AvatarSelectionBottomsheet extends StatelessWidget {
           FunButton(
             text: context.l10n.save,
             onTap: () => context.pop(),
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.avatarSaved,
+            analyticsEvent: AmplitudeEvents.avatarSaved.toEvent(
               parameters: {
                 'filename': cubit.state.getAvatarByKey(id).fileName,
               },

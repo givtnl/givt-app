@@ -57,6 +57,11 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
             Navigator.of(context).pushReplacement(
               SuccessPage(model: _cubit.getCurrent()).toRoute(context),
             );
+          case ConfirmAction.showErrorBottomSheet:
+            _showErrorBottomSheet(context);
+          case ConfirmAction.navigateToRecurringDonationsHome:
+            // Navigate back to recurring donations home screen
+            Navigator.of(context).popUntil((route) => route.isFirst);
         }
 
         for (var i = 0; i < amountOfPops; i++) {
@@ -110,36 +115,24 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 icon: FontAwesomeIcons.building,
                 label: context.l10n.recurringDonationsStep4YoullDonateTo,
                 value: model.organizationName,
-                onEdit: () {
-                  AnalyticsHelper.logEvent(
-                    eventName:
-                        AmplitudeEvents.recurringStep4ConfirmEditOrganisation,
-                  );
-                  _cubit.navigateToOrganization();
-                },
+                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmEditOrganisation.toEvent(),
+                onEdit: _cubit.navigateToOrganization,
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.moneyBillWave,
                 label: context.l10n.recurringDonationsStep4Amount,
                 value: model.amount.isNotEmpty ? '€${model.amount}' : '',
-                onEdit: () {
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep4ConfirmEditAmount,
-                  );
-                  _cubit.navigateToAmount();
-                },
+                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmEditAmount.toEvent(),
+                onEdit: _cubit.navigateToAmount,
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.calendar,
                 label: context.l10n.recurringDonationsStep4Frequency,
                 value: _getFrequencyDisplayText(model.frequency, context),
-                onEdit: () {
-                  AnalyticsHelper.logEvent(
-                    eventName:
-                        AmplitudeEvents.recurringStep4ConfirmEditFrequency,
-                  );
-                  _cubit.navigateToFrequency();
-                },
+                analyticsEvent: AmplitudeEvents
+                    .recurringStep4ConfirmEditFrequency
+                    .toEvent(),
+                onEdit: _cubit.navigateToFrequency,
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.play,
@@ -147,44 +140,63 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 value: model.startDate != null
                     ? _formatDate(model.startDate!)
                     : '',
-                onEdit: () {
-                  AnalyticsHelper.logEvent(
-                    eventName:
-                        AmplitudeEvents.recurringStep4ConfirmEditStartDate,
-                  );
-                  _cubit.navigateToStartDate();
-                },
+                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmEditStartDate.toEvent(),
+                onEdit: _cubit.navigateToStartDate,
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.stop,
                 label: context.l10n.recurringDonationsStep4Ends,
                 value: endsText,
-                onEdit: () {
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep4ConfirmEditEndDate,
-                  );
-                  _cubit.navigateToEndDate();
-                },
+                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmEditEndDate.toEvent(),
+                onEdit: _cubit.navigateToEndDate,
               ),
               const Spacer(),
               FunButton(
                 text: context.l10n.recurringDonationsStep4ConfirmMyDonation,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.recurringStep4ConfirmDonation,
+                isLoading: model.isLoading,
+                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmDonation.toEvent(
                   parameters: model.analyticsParams,
                 ),
-                onTap: () {
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep4ConfirmDonation,
-                  );
-                  _cubit.createRecurringDonation();
-                },
+                onTap: model.isLoading ? null : _cubit.createRecurringDonation,
               ),
             ],
           ),
         );
       },
     );
+  }
+
+  void _showErrorBottomSheet(BuildContext context) {
+    FunBottomSheet(
+      title: 'Unable to Create Recurring Donation',
+      content: Column(
+        children: [
+          const BodyMediumText(
+            'We encountered an issue while creating your recurring donation. '
+            'You can either modify your details and try again, or cancel and '
+            'return to the main screen.',
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          FunButton(
+            text: 'Change Details',
+            analyticsEvent: AmplitudeEvents.recurringStep4ErrorChangeDetails.toEvent(),
+            onTap: () {
+              Navigator.of(context).pop(); // Close bottom sheet
+            },
+          ),
+          const SizedBox(height: 16),
+          FunButton.secondary(
+            text: 'Cancel',
+            analyticsEvent: AmplitudeEvents.recurringStep4ConfirmClose.toEvent(),
+            onTap: () {
+              Navigator.of(context).pop(); // Close bottom sheet
+              _cubit.emitCustom(ConfirmAction.navigateToRecurringDonationsHome);
+            },
+          ),
+        ],
+      ),
+    ).show(context);
   }
 
   String _formatDate(DateTime date) {

@@ -127,8 +127,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               FunButton(
                 text: context.l10n.buttonContinue,
                 isDisabled: !uiModel.isContinueEnabled,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.recurringStep2SetAmountContinueClicked,
+                analyticsEvent: AmplitudeEvents.recurringStep2SetAmountContinueClicked.toEvent(
                   parameters: {
                     AnalyticsHelper.amountKey: uiModel.amount,
                     'frequency': uiModel.selectedFrequency?.name ?? '',

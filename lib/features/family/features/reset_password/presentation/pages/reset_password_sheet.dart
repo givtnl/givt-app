@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
@@ -108,9 +107,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
               _cubit.resetPassword(emailController.text);
             },
             text: context.l10n.changePassword,
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.changePasswordClicked,
-            ),
+            analyticsEvent: AmplitudeEvents.changePasswordClicked.toEvent(),
           ),
         );
       },
@@ -137,9 +134,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
           ),
           primaryButton: FunButton(
             text: context.l10n.buttonDone,
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.okClicked,
-            ),
+            analyticsEvent: AmplitudeEvents.okClicked.toEvent(),
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -167,7 +162,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
           ),
           primaryButton: FunButton(
             text: 'Ok',
-            analyticsEvent: AnalyticsEvent(AmplitudeEvents.okClicked),
+            analyticsEvent: AmplitudeEvents.okClicked.toEvent(),
             onTap: () {
               Navigator.of(context).pop();
             },

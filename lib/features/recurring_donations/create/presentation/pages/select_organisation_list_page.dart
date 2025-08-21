@@ -87,9 +87,7 @@ class _SelectOrganisationListPageState
               widget.onCollectGroupSelected(selectedCollectgroup);
             },
             text: context.l10n.selectReceiverButton,
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.debugButtonClicked,
-            ),
+            analyticsEvent: AmplitudeEvents.debugButtonClicked.toEvent(),
           ),
         ],
       ),

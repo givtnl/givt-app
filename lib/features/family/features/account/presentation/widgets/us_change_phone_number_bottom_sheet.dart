@@ -93,8 +93,7 @@ class _USChangePhoneNumberBottomSheetState
               }
             : null,
         text: locals.save,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.editPhoneNumberSaveClicked,
+        analyticsEvent: AmplitudeEvents.editPhoneNumberSaveClicked.toEvent(
           parameters: {
             'country': selectedCountry.countryCode,
             'new_phone': selectedCountry.prefix + phone.text,

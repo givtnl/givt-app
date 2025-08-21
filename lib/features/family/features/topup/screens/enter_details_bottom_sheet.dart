@@ -29,7 +29,7 @@ class EnterDetailsBottomSheet extends StatelessWidget {
       ),
       primaryButton: FunButton(
         text: 'Enter payment details',
-        analyticsEvent: AnalyticsEvent(AmplitudeEvents.enterCardDetailsClicked),
+        analyticsEvent: AmplitudeEvents.enterCardDetailsClicked.toEvent(),
         onTap: () {
           CreditCardDetails.show(
             context,

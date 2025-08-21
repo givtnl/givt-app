@@ -124,17 +124,13 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
               leftIcon: widget.primaryBtnLeftIcon,
               leadingImage: widget.primaryBtnLeadingImage,
               isLoading: _isLoading,
-              analyticsEvent: AnalyticsEvent(
-                widget.amplitudeEvent,
-              ),
+              analyticsEvent: widget.amplitudeEvent.toEvent(),
             ),
             const SizedBox(height: 16),
             FunButton.secondary(
               text: widget.secondaryBtnText!,
               onTap: widget.onClickSecondaryBtn ?? () => context.pop(),
-              analyticsEvent: AnalyticsEvent(
-                widget.amplitudeEvent,
-              ),
+              analyticsEvent: widget.amplitudeEvent.toEvent(),
             ),
           ],
         ),

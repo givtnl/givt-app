@@ -270,9 +270,7 @@ class _LoginPageState extends State<LoginPage> {
         onTap: isEnabled && !isLoading ? () => onLogin(context) : null,
         text: locals.login,
         isLoading: isLoading,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.loginClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.loginClicked.toEvent(),
       ),
     );
   }

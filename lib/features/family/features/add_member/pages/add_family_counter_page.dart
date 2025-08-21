@@ -6,7 +6,6 @@ import 'package:givt_app/features/family/features/add_member/widgets/member_coun
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class AddFamilyCounterPage extends StatefulWidget {
@@ -69,8 +68,7 @@ class _AddFamilyCounterPageState extends State<AddFamilyCounterPage> {
               );
             },
             text: context.l10n.buttonContinue,
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.addMemberContinueClicked,
+            analyticsEvent: AmplitudeEvents.addMemberContinueClicked.toEvent(
               parameters: {'nrOfAddedMembers': _amount - 1},
             ),
           ),

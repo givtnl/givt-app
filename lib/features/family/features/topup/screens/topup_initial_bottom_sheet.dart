@@ -67,8 +67,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
               semanticsLabel: 'recurringCheckbox',
               label: 'Turn this into a monthly recurring amount',
               value: recurring,
-              analyticsEvent:
-                  AnalyticsEvent(AmplitudeEvents.topupRecurringCheckboxChanged),
+              analyticsEvent: AmplitudeEvents.topupRecurringCheckboxChanged.toEvent(),
               onChanged: (value) {
                 setState(() {
                   recurring = value ?? false;

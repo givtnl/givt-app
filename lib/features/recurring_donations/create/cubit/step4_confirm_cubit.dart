@@ -13,6 +13,8 @@ enum ConfirmAction {
   navigateToStartDate,
   navigateToEndDate,
   navigateToSuccess,
+  showErrorBottomSheet,
+  navigateToRecurringDonationsHome,
 }
 
 class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
@@ -25,12 +27,11 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
     _emitData();
   }
 
-  void createRecurringDonation() async {
+  Future<void> createRecurringDonation() async {
     if (_isLoading) return;
-    emitLoading();
-
+    
     _isLoading = true;
-    _emitData(isLoading: true);
+    emitLoading();
 
     try {
       final current = getCurrent();
@@ -64,21 +65,16 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
 
       if (success) {
         _isLoading = false;
-        _emitData(isLoading: false);
         emitCustom(ConfirmAction.navigateToSuccess);
       } else {
         _isLoading = false;
-        _emitData(
-          isLoading: false,
-          error: 'Failed to create recurring donation',
-        );
+        _emitData();
+        emitCustom(ConfirmAction.showErrorBottomSheet);
       }
-    } catch (e) {
+    } on Exception catch (_) {
       _isLoading = false;
-      _emitData(
-        isLoading: false,
-        error: 'An error occurred while creating the recurring donation',
-      );
+      _emitData();
+      emitCustom(ConfirmAction.showErrorBottomSheet);
     }
   }
 
@@ -171,14 +167,10 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
     throw Exception('Invalid end option: $selectedEndOption');
   }
 
-  void _emitData({
-    bool? isLoading,
-    String? error,
-  }) {
+  void _emitData() {
     emitData(
       getCurrent().copyWith(
-        isLoading: isLoading ?? false,
-        error: error,
+        isLoading: _isLoading,
       ),
     );
   }

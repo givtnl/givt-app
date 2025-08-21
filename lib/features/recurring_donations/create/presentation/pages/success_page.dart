@@ -77,8 +77,7 @@ class _SuccessPageState extends State<SuccessPage> {
             const Spacer(),
             FunButton(
               text: context.l10n.buttonDone,
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.recurringStep4ConfirmDonation,
+              analyticsEvent: AmplitudeEvents.recurringStep4ConfirmDonation.toEvent(
                 parameters: widget.model.analyticsParams,
               ),
               onTap: () {

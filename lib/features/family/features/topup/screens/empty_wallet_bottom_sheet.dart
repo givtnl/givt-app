@@ -35,7 +35,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
       primaryButton: FunButton(
         text: 'Top up',
         leftIcon: FontAwesomeIcons.plus,
-        analyticsEvent: AnalyticsEvent(AmplitudeEvents.topupStartButtonClicked),
+        analyticsEvent: AmplitudeEvents.topupStartButtonClicked.toEvent(),
         onTap: () async {
           final user = context.read<ProfilesCubit>().state;
           context.read<TopupCubit>().init(user.activeProfile.id);
@@ -63,8 +63,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
         onTap: () {
           context.pop();
         },
-        analyticsEvent:
-            AnalyticsEvent(AmplitudeEvents.topupGoBackButtonClicked),
+        analyticsEvent: AmplitudeEvents.topupGoBackButtonClicked.toEvent(),
       ),
       closeAction: () {
         context.pop();

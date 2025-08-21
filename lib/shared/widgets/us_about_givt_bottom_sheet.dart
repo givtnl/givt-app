@@ -82,9 +82,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
               }
             : null,
         text: locals.send,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.aboutGivtSendFeedbackClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.aboutGivtSendFeedbackClicked.toEvent(),
       ),
       content: Form(
         key: _formKey,

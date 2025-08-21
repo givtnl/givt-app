@@ -32,8 +32,7 @@ class TopupErrorBottomSheet extends StatelessWidget {
       ),
       primaryButton: FunButton(
         text: 'Ok',
-        analyticsEvent:
-            AnalyticsEvent(AmplitudeEvents.topupErrorOkButtonClicked),
+        analyticsEvent: AmplitudeEvents.topupErrorOkButtonClicked.toEvent(),
         onTap: () {
           final user = context.read<ProfilesCubit>().state;
           context.read<TopupCubit>().init(user.activeProfile.id);

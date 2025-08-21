@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 
 class LockedButtonWidget extends StatelessWidget {
@@ -15,7 +14,7 @@ class LockedButtonWidget extends StatelessWidget {
     return ActionContainer(
       borderColor: FamilyAppTheme.neutralVariant80,
       onTap: onPressed,
-      analyticsEvent: AnalyticsEvent(AmplitudeEvents.lockedButtonClicked),
+      analyticsEvent: AmplitudeEvents.lockedButtonClicked.toEvent(),
       child: const ColoredBox(
         color: FamilyAppTheme.neutral98,
         child: Center(

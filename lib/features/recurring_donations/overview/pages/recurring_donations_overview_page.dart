@@ -107,9 +107,7 @@ class _RecurringDonationsOverviewPageState
                 options: [locals.recurringDonationsOverviewTabCurrent, locals.recurringDonationsOverviewTabPast],
                 selectedIndex: _selectedTabIndex,
                 onPressed: _onTabChanged,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.recurringDonationsTabsChanged,
-                ),
+                analyticsEvent: AmplitudeEvents.recurringDonationsTabsChanged.toEvent(),
               ),
               const SizedBox(height: 32),
               Expanded(
@@ -125,9 +123,7 @@ class _RecurringDonationsOverviewPageState
         onTap: () => _cubit.onAddRecurringDonationPressed(),
         text: locals.recurringDonationsOverviewAddButton,
         leftIcon: Icons.add,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.recurringDonationsAddClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.recurringDonationsAddClicked.toEvent(),
       ),
     );
   }

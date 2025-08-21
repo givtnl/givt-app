@@ -1,3 +1,5 @@
+import 'package:givt_app/shared/models/analytics_event.dart';
+
 enum AmplitudeEvents {
   letsGo('lets_go'),
   loading('loading'),
@@ -67,7 +69,8 @@ enum AmplitudeEvents {
   gratitudeGoalLaterDoneClicked('gratitude_goal_later_done_clicked'),
   gratitudeGoalTapToContinueClicked('gratitude_goal_tap_to_continue_clicked'),
   gratitudeGoalCommitToThisGoalClicked(
-      'gratitude_goal_commit_to_this_goal_clicked'),
+    'gratitude_goal_commit_to_this_goal_clicked',
+  ),
   gratitudeGoalCloseClicked('gratitude_goal_close_clicked'),
 
   // Topup flow
@@ -110,7 +113,9 @@ enum AmplitudeEvents {
   recurringDonationManageClicked('recurring_donation_manage_clicked'),
   recurringDonationsTabsChanged('recurring_donations_tabs_changed'),
   recurringDonationsAddClicked('recurring_donations_add_clicked'),
-  recurringDonationsAddRecurringDonation('recurring_donations_add_recurring_donation'),
+  recurringDonationsAddRecurringDonation(
+    'recurring_donations_add_recurring_donation',
+  ),
   editAvatarPictureClicked('edit_avatar_picture_clicked'),
   familyGoalCreateClicked('family_goal_create_clicked'),
   familyGoalCauseSet('family_goal_cause_set'),
@@ -307,7 +312,8 @@ enum AmplitudeEvents {
   ),
   reflectAndShareGuessOptionClicked('reflect_and_share_guess_option_clicked'),
   reflectAndShareGuessTotalAttemptsUntilCorrect(
-      'reflect_and_share_guess_total_attempts_until_correct'),
+    'reflect_and_share_guess_total_attempts_until_correct',
+  ),
   reflectAndShareQuitClicked(
     'reflect_and_share_quit_clicked',
   ),
@@ -337,7 +343,8 @@ enum AmplitudeEvents {
     'family_reflect_summary_questions_asked_clicked',
   ),
   parentReflectionFlowOrganisationClicked(
-      'parent_reflection_flow_organisation_clicked'),
+    'parent_reflection_flow_organisation_clicked',
+  ),
   familyReflectSummaryGenerousDeedsClicked(
     'family_reflect_summary_generous_deeds_clicked',
   ),
@@ -347,7 +354,7 @@ enum AmplitudeEvents {
   newActOfGenerosityClicked('new_act_of_generosity_clicked'),
   recommendationTypeSelectorClicked('recommendation_type_selector_clicked'),
   skipGenerosActPressed('skip_generous_act_pressed'),
-//beditime
+  //beditime
   childBedtimeSet('bedtime_set_clicked'),
   redirectedFromGratitudeGameToBedtimeSelection(
     'redirected_from_gratitude_game_to_bedtime_selection',
@@ -454,7 +461,9 @@ enum AmplitudeEvents {
   memorySummaryClicked('memory_summary_clicked'),
 
   // Donation overview (EU)
-  donationOverviewPlatformContributionClicked('donation_overview_platform_contribution_clicked'),
+  donationOverviewPlatformContributionClicked(
+    'donation_overview_platform_contribution_clicked',
+  ),
   donationOverviewRefundInfoRequested('refund_info_viewed'),
 
   // Generosity Hunt
@@ -463,14 +472,20 @@ enum AmplitudeEvents {
   generosityHuntLevelTileClicked('generosity_hunt_level_tile_clicked'),
   generosityHuntLevelStart('generosity_hunt_level_start'),
   generosityHuntBarcodeScanned('generosity_hunt_barcode_scanned'),
-  
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
 
   // Recurring Donations New Flow - Step 2 Set Amount
-  recurringStep2SetAmountFrequencySelected('recurring_step2_set_amount_frequency_selected'),
-  recurringStep2SetAmountAmountEntered('recurring_step2_set_amount_amount_entered'),
-  recurringStep2SetAmountContinueClicked('recurring_step2_set_amount_continue_clicked'),
+  recurringStep2SetAmountFrequencySelected(
+    'recurring_step2_set_amount_frequency_selected',
+  ),
+  recurringStep2SetAmountAmountEntered(
+    'recurring_step2_set_amount_amount_entered',
+  ),
+  recurringStep2SetAmountContinueClicked(
+    'recurring_step2_set_amount_continue_clicked',
+  ),
 
   recurringStep3SetDurationStartDate('recurring_step3_set_duration_start_date'),
   recurringStep3SetDurationOption('recurring_step3_set_duration_option'),
@@ -480,17 +495,24 @@ enum AmplitudeEvents {
 
   // Recurring Donation New Flow - Step 4 Confirm
   recurringStep4ConfirmClose('recurring_step4_confirm_close'),
-  recurringStep4ConfirmEditOrganisation('recurring_step4_confirm_edit_organisation'),
+  recurringStep4ConfirmEditOrganisation(
+    'recurring_step4_confirm_edit_organisation',
+  ),
   recurringStep4ConfirmEditAmount('recurring_step4_confirm_edit_amount'),
   recurringStep4ConfirmEditFrequency('recurring_step4_confirm_edit_frequency'),
   recurringStep4ConfirmEditStartDate('recurring_step4_confirm_edit_start_date'),
   recurringStep4ConfirmEditEndDate('recurring_step4_confirm_edit_end_date'),
   recurringStep4ConfirmDonation('recurring_step4_confirm_donation'),
+  recurringStep4ErrorChangeDetails('recurring_step4_error_change_details'),
 
-  familyHomeScreenNewGameButtonClicked('family_home_screen_new_game_button_clicked'),
-  ;
+  familyHomeScreenNewGameButtonClicked(
+    'family_home_screen_new_game_button_clicked',
+  );
 
   const AmplitudeEvents(this.value);
+
+  AnalyticsEvent toEvent({Map<String, dynamic>? parameters}) =>
+      AnalyticsEvent(this, parameters: parameters ?? {});
 
   final String value;
 }

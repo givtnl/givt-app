@@ -15,9 +15,9 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/profile_type.dart';
@@ -263,7 +263,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     return FunButton(
       onTap: () => onDone(isChildSelected: isChildSelected),
       text: context.l10n.buttonDone,
-      analyticsEvent: AnalyticsEvent(AmplitudeEvents.addMemberDoneClicked),
+      analyticsEvent: AmplitudeEvents.addMemberDoneClicked.toEvent(),
     );
   }
 
@@ -288,7 +288,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
         }
       },
       text: context.l10n.setupFamilyAddNextMember,
-      analyticsEvent: AnalyticsEvent(AmplitudeEvents.addMemberClicked),
+      analyticsEvent: AmplitudeEvents.addMemberClicked.toEvent(),
     );
   }
 }

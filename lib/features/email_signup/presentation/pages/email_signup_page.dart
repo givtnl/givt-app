@@ -296,8 +296,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                     }
                                   : null,
                               text: locals.buttonContinue,
-                              analyticsEvent: AnalyticsEvent(
-                                AmplitudeEvents.emailSignupContinueClicked,
+                              analyticsEvent: AmplitudeEvents.emailSignupContinueClicked.toEvent(
                                 parameters: {
                                   'email': state.email,
                                   'country': state.country?.name,
