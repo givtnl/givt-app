@@ -1080,5 +1080,6 @@
   "platformFeeGenerousOption": "Am beliebtesten",
   "recurringDonationsCreationErrorTitle": "Wir konnten deine Spende nicht einrichten",
   "recurringDonationsCreationErrorDescription": "Etwas ist schiefgelaufen.\\nBitte überprüfe deine Daten und versuche es erneut.",
-  "recurringDonationsCreationErrorChangeAndRetry": "Ändern"
+  "recurringDonationsCreationErrorChangeAndRetry": "Ändern",
+  "recurringDonationsCancelled": "Abgebrochen"
 }
