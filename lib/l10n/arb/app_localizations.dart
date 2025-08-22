@@ -4208,6 +4208,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change and Retry'**
   String get recurringDonationsCreationErrorChangeAndRetry;
+
+  /// No description provided for @recurringDonationsCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get recurringDonationsCancelled;
 }
 
 class _AppLocalizationsDelegate

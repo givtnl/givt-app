@@ -2335,6 +2335,9 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get recurringDonationsCreationErrorChangeAndRetry =>
       'Change and Retry';
+
+  @override
+  String get recurringDonationsCancelled => 'Cancelled';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4690,4 +4693,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get recurringDonationsCreationErrorChangeAndRetry =>
       'Change and Retry';
+
+  @override
+  String get recurringDonationsCancelled => 'Cancelled';
 }

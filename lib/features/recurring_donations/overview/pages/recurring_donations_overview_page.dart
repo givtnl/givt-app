@@ -102,10 +102,14 @@ class _RecurringDonationsOverviewPageState
             children: [
               FunPrimaryTabs(
                 margin: EdgeInsets.zero,
-                options: [locals.recurringDonationsOverviewTabCurrent, locals.recurringDonationsOverviewTabPast],
+                options: [
+                  locals.recurringDonationsOverviewTabCurrent,
+                  locals.recurringDonationsOverviewTabPast,
+                ],
                 selectedIndex: _selectedTabIndex,
                 onPressed: _onTabChanged,
-                analyticsEvent: AmplitudeEvents.recurringDonationsTabsChanged.toEvent(),
+                analyticsEvent: AmplitudeEvents.recurringDonationsTabsChanged
+                    .toEvent(),
               ),
               const SizedBox(height: 32),
               Expanded(

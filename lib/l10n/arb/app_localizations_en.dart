@@ -2335,6 +2335,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get recurringDonationsCreationErrorChangeAndRetry =>
       'Change and Retry';
+
+  @override
+  String get recurringDonationsCancelled => 'Cancelled';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4667,4 +4670,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String get recurringDonationsCreationErrorChangeAndRetry =>
       'Change and Retry';
+
+  @override
+  String get recurringDonationsCancelled => 'Canceled';
 }

@@ -2344,4 +2344,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsCreationErrorChangeAndRetry => 'Wijzigen';
+
+  @override
+  String get recurringDonationsCancelled => 'Geannuleerd';
 }

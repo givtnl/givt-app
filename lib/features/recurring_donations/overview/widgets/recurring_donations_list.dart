@@ -71,6 +71,11 @@ class RecurringDonationsList extends StatelessWidget {
     final amount = donationWithProgress.donation.amountPerTurn.toString();
     final frequency = _getFrequencyText(donationWithProgress.donation.frequency, context);
     
+    // Check if this is a cancelled donation
+    if (donationWithProgress.donation.currentState == RecurringDonationState.cancelled) {
+      return '$frequency $currency$amount · ${context.l10n.recurringDonationsCancelled}';
+    }
+    
     // Check if this is a past donation (not active or completed)
     final isPastDonation = donationWithProgress.donation.currentState != RecurringDonationState.active || 
                            donationWithProgress.isCompleted;
