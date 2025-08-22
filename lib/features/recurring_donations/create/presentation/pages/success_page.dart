@@ -74,9 +74,10 @@ class _SuccessPageState extends State<SuccessPage> {
             const Spacer(),
             FunButton(
               text: context.l10n.buttonDone,
-              analyticsEvent: AmplitudeEvents.recurringStep4ConfirmDonation.toEvent(
-                parameters: widget.model.analyticsParams,
-              ),
+              analyticsEvent: AmplitudeEvents.recurringStep4ConfirmDonation
+                  .toEvent(
+                    parameters: widget.model.analyticsParams,
+                  ),
               onTap: () {
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.recurringStep4ConfirmDonation,
@@ -97,18 +98,28 @@ class _SuccessPageState extends State<SuccessPage> {
     if (widget.model.selectedEndOption ==
             RecurringDonationStringKeys.afterNumberOfDonations &&
         widget.model.numberOfDonations.isNotEmpty) {
-      return "For the next ${widget.model.numberOfDonations} months, you'll be helping ${widget.model.organizationName} make an impact";
+      return context.l10n.recurringDonationsSuccessSubtitleNextXMonths(
+        widget.model.numberOfDonations,
+        widget.model.organizationName,
+      );
     }
     if (widget.model.selectedEndOption ==
         RecurringDonationStringKeys.whenIDecide) {
-      return "You'll be helping ${widget.model.organizationName} make an impact until you decide to stop.";
+      return context.l10n.recurringDonationsSuccessSubtitleUntilDecide(
+        widget.model.organizationName,
+      );
     }
     if (widget.model.selectedEndOption ==
             RecurringDonationStringKeys.onSpecificDate &&
         widget.model.endDate != null) {
-      return "Until ${_formatDate(widget.model.endDate!)}, you'll be helping ${widget.model.organizationName} make an impact";
+      return context.l10n.recurringDonationsSuccessSubtitleUntilDate(
+        _formatDate(widget.model.endDate!),
+        widget.model.organizationName,
+      );
     }
-    return "You'll be helping ${widget.model.organizationName} make an impact";
+    return context.l10n.recurringDonationsSuccessSubtitleDefault(
+      widget.model.organizationName,
+    );
   }
 
   String _formatDate(DateTime date) {
