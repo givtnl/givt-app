@@ -33,6 +33,11 @@ class FunSnackbar {
     _timer = Timer(duration, _removeCurrent);
   }
 
+  /// Removes the current snackbar if one is displayed
+  static void removeCurrent() {
+    _removeCurrent();
+  }
+
   static void _removeCurrent() {
     _timer?.cancel();
     _timer = null;

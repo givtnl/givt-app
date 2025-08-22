@@ -23,10 +23,12 @@ class Step3SetDurationCubit
 
     final frequency = repository.frequency;
     var frequencyData = <String, dynamic>{};
-    if (frequency != null) {
-      final now = repository.startDate ?? DateTime.now();
-      final day = now.day;
-      final month = _monthName(now.month);
+    
+    // Only calculate frequency data if both frequency and start date are available
+    if (frequency != null && repository.startDate != null) {
+      final startDate = repository.startDate!;
+      final day = startDate.day;
+      final month = _monthName(startDate.month);
       frequencyData = {
         'frequency': frequency,
         'day': day,
@@ -35,30 +37,34 @@ class Step3SetDurationCubit
       };
     }
 
-    if (repository.startDate == null) {
-      final now = DateTime.now();
-      repository.startDate = now;
-      _emitData(
-        startDate: now,
-        selectedOption: repository.selectedEndOption,
-        numberOfDonations: repository.numberOfDonations ?? '',
-        endDate: repository.endDate,
-        frequencyData: frequencyData,
-      );
-    } else {
-      _emitData(
-        startDate: repository.startDate,
-        selectedOption: repository.selectedEndOption,
-        numberOfDonations: repository.numberOfDonations ?? '',
-        endDate: repository.endDate,
-        frequencyData: frequencyData,
-      );
-    }
+    // Don't automatically set start date - let user select it
+    _emitData(
+      startDate: repository.startDate,
+      selectedOption: repository.selectedEndOption,
+      numberOfDonations: repository.numberOfDonations ?? '',
+      endDate: repository.endDate,
+      frequencyData: frequencyData,
+    );
   }
 
   void updateStartDate(DateTime date) {
     repository.startDate = date;
-    _emitData(startDate: date);
+    
+    // Recalculate frequency data when start date is updated
+    var frequencyData = <String, dynamic>{};
+    final frequency = repository.frequency;
+    if (frequency != null) {
+      final day = date.day;
+      final month = _monthName(date.month);
+      frequencyData = {
+        'frequency': frequency,
+        'day': day,
+        'month': month,
+        'messageKey': _getFrequencyMessage(frequency, day, month),
+      };
+    }
+    
+    _emitData(startDate: date, frequencyData: frequencyData);
   }
 
   void updateEndDate(DateTime date) {
@@ -123,6 +129,9 @@ class Step3SetDurationCubit
     String numberOfDonations,
     DateTime? endDate,
   ) {
+    // First check if a start date is selected
+    if (repository.startDate == null) return false;
+    
     if (selectedOption == null) return false;
 
     switch (selectedOption) {

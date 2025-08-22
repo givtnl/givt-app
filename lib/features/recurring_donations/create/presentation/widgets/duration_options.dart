@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_radio.dart';
@@ -13,7 +16,7 @@ import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:intl/intl.dart';
 import 'package:moment_dart/moment_dart.dart';
 
-class DurationOptions extends StatelessWidget {
+class DurationOptions extends StatefulWidget {
   const DurationOptions({
     required this.selectedOption,
     required this.onOptionSelected,
@@ -38,14 +41,72 @@ class DurationOptions extends StatelessWidget {
   final RecurringDonationFrequency? frequency;
 
   @override
+  State<DurationOptions> createState() => _DurationOptionsState();
+}
+
+class _DurationOptionsState extends State<DurationOptions> {
+  Timer? _snackbarTimer;
+  late KeyboardVisibilityController _keyboardVisibilityController;
+  bool _isKeyboardVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _keyboardVisibilityController = KeyboardVisibilityController();
+    
+    // Listen to keyboard visibility changes
+    _keyboardVisibilityController.onChange.listen((bool visible) {
+      setState(() {
+        _isKeyboardVisible = visible;
+      });
+      
+      // If keyboard just became visible, close any existing snackbars
+      if (visible) {
+        FunSnackbar.removeCurrent();
+        _snackbarTimer?.cancel();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _snackbarTimer?.cancel();
+    super.dispose();
+  }
+
+  void _showSnackbarWithKeyboardCheck(
+    BuildContext context,
+    String message,
+    Widget icon, {
+    Duration delay = const Duration(milliseconds: 300),
+  }) {
+    // Cancel any existing timer
+    _snackbarTimer?.cancel();
+    
+    // Don't show snackbar if keyboard is visible
+    if (_isKeyboardVisible) {
+      return;
+    }
+
+    _snackbarTimer = Timer(delay, () {
+      if (!context.mounted) return;
+      
+      // Check keyboard visibility again before showing
+      if (_isKeyboardVisible) return;
+      
+      FunSnackbar.show(context, message: message, icon: icon);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         LabelMediumText.secondary40(context.l10n.recurringDonationsEndsTitle),
         const SizedBox(height: 8),
-        ..._optionKeys.map((optionKey) {
-          final isSelected = selectedOption == optionKey;
+        ...DurationOptions._optionKeys.map((optionKey) {
+          final isSelected = widget.selectedOption == optionKey;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -79,64 +140,71 @@ class DurationOptions extends StatelessWidget {
     String optionKey,
     bool isSelected,
   ) {
-    onOptionSelected(optionKey);
-    if (frequency == null) return;
+    widget.onOptionSelected(optionKey);
+    
+    // Only show snackbar if frequency is available and start date is selected
+    if (widget.frequency == null || widget.uiModel.startDate == null) return;
 
-    switch (optionKey) {
-      case RecurringDonationStringKeys.whenIDecide:
-        final day = _getDayWithOrdinal(uiModel.startDate ?? DateTime.now());
-        FunSnackbar.show(
-          context,
-          message: context.l10n.recurringDonationsEndDateHintEveryMonth(
-            day,
-            day,
-          ),
-          icon: const Icon(
-            Icons.calendar_today,
-            color: Color(0xFF234B5E),
-            size: 32,
-          ),
-        );
-      case RecurringDonationStringKeys.afterNumberOfDonations:
-        final numberOfDonations = int.tryParse(uiModel.numberOfDonations) ?? 1;
-        final calculatedEndDate = _calculateEndDateFromNumberOfDonations(
-          uiModel.startDate!,
-          frequency!,
-          numberOfDonations,
-        );
-        final message = _buildSnackbarMessage(
-          context,
-          frequency,
-          uiModel.startDate!,
-          calculatedEndDate,
-        );
-        FunSnackbar.show(
-          context,
-          message: message,
-          icon: const Icon(
-            Icons.calendar_today,
-            color: Color(0xFF234B5E),
-            size: 32,
-          ),
-        );
-      case RecurringDonationStringKeys.onSpecificDate:
-        final endDate = uiModel.endDate ?? DateTime.now();
-        final message = _buildSnackbarMessage(
-          context,
-          frequency,
-          uiModel.startDate!,
-          endDate,
-        );
-        FunSnackbar.show(
-          context,
-          message: message,
-          icon: const Icon(
-            Icons.calendar_today,
-            color: Color(0xFF234B5E),
-            size: 32,
-          ),
-        );
-    }
+    // Add a small delay to ensure keyboard is closed and UI is stable
+    Timer(const Duration(milliseconds: 300), () {
+      if (!context.mounted) return;
+      
+      switch (optionKey) {
+        case RecurringDonationStringKeys.whenIDecide:
+          final day = _getDayWithOrdinal(widget.uiModel.startDate!);
+          _showSnackbarWithKeyboardCheck(
+            context,
+            context.l10n.recurringDonationsEndDateHintEveryMonth(
+              day,
+              day,
+            ),
+            const Icon(
+              Icons.calendar_today,
+              color: Color(0xFF234B5E),
+              size: 32,
+            ),
+          );
+        case RecurringDonationStringKeys.afterNumberOfDonations:
+          final numberOfDonations = int.tryParse(widget.uiModel.numberOfDonations) ?? 1;
+          final calculatedEndDate = _calculateEndDateFromNumberOfDonations(
+            widget.uiModel.startDate!,
+            widget.frequency!,
+            numberOfDonations,
+          );
+          final message = _buildSnackbarMessage(
+            context,
+            widget.frequency,
+            widget.uiModel.startDate!,
+            calculatedEndDate,
+          );
+          _showSnackbarWithKeyboardCheck(
+            context,
+            message,
+            const Icon(
+              Icons.calendar_today,
+              color: Color(0xFF234B5E),
+              size: 32,
+            ),
+          );
+        case RecurringDonationStringKeys.onSpecificDate:
+          final endDate = widget.uiModel.endDate ?? DateTime.now();
+          final message = _buildSnackbarMessage(
+            context,
+            widget.frequency,
+            widget.uiModel.startDate!,
+            endDate,
+          );
+          _showSnackbarWithKeyboardCheck(
+            context,
+            message,
+            const Icon(
+              Icons.calendar_today,
+              color: Color(0xFF234B5E),
+              size: 32,
+            ),
+          );
+      }
+    });
   }
 
   Widget _buildNumberInput(BuildContext context) {
@@ -144,55 +212,64 @@ class DurationOptions extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8, bottom: 8),
       child: OutlinedTextFormField(
         hintText: context.l10n.recurringDonationsCreateDurationNumberHint,
-        initialValue: uiModel.numberOfDonations,
+        initialValue: widget.uiModel.numberOfDonations,
         keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
           LengthLimitingTextInputFormatter(3),
         ],
         onChanged: (number) {
-          onNumberChanged(number);
+          widget.onNumberChanged(number);
+          
+          // Only show snackbar if start date is selected and frequency is available
+          if (widget.uiModel.startDate == null || widget.frequency == null) return;
+          
           final n = number.isNotEmpty ? number : 'X';
           DateTime endDate;
-          if (frequency != null && number.isNotEmpty) {
+          if (number.isNotEmpty) {
             final numberOfDonations = int.tryParse(number) ?? 1;
             endDate = _calculateEndDateFromNumberOfDonations(
-              uiModel.startDate!,
-              frequency!,
+              widget.uiModel.startDate!,
+              widget.frequency!,
               numberOfDonations,
             );
-            onDateChanged(endDate);
+            widget.onDateChanged(endDate);
           } else {
             endDate = DateTime.now();
           }
           final formattedDate = DateFormat('dd MMMM yyyy').format(endDate);
 
-          if (n == '1') {
-            FunSnackbar.show(
-              context,
-              message: context.l10n
-                  .recurringDonationsCreateDurationSnackbarOnce(formattedDate),
-              icon: const Icon(
-                Icons.repeat,
-                color: Color(0xFF234B5E),
-                size: 32,
-              ),
-            );
-          } else {
-            FunSnackbar.show(
-              context,
-              message: context.l10n
-                  .recurringDonationsCreateDurationSnackbarTimes(
-                    formattedDate,
-                    n,
-                  ),
-              icon: const Icon(
-                Icons.repeat,
-                color: Color(0xFF234B5E),
-                size: 32,
-              ),
-            );
-          }
+          // Add a delay to ensure keyboard is closed before showing snackbar
+          Timer(const Duration(milliseconds: 500), () {
+            if (!context.mounted) return;
+            
+            if (n == '1') {
+              _showSnackbarWithKeyboardCheck(
+                context,
+                context.l10n
+                    .recurringDonationsCreateDurationSnackbarOnce(formattedDate),
+                const Icon(
+                  Icons.repeat,
+                  color: Color(0xFF234B5E),
+                  size: 32,
+                ),
+              );
+            } else {
+              _showSnackbarWithKeyboardCheck(
+                context,
+                context.l10n
+                    .recurringDonationsCreateDurationSnackbarTimes(
+                      formattedDate,
+                      n,
+                    ),
+                const Icon(
+                  Icons.repeat,
+                  color: Color(0xFF234B5E),
+                  size: 32,
+                ),
+              );
+            }
+          });
         },
       ),
     );
@@ -202,24 +279,34 @@ class DurationOptions extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: FunDatePicker(
-        selectedDate: uiModel.endDate,
+        selectedDate: widget.uiModel.endDate,
         onDateSelected: (date) {
-          onDateChanged(date);
+          widget.onDateChanged(date);
+          
+          // Only show snackbar if start date is selected and frequency is available
+          if (widget.uiModel.startDate == null || widget.frequency == null) return;
+          
           final message = _buildSnackbarMessage(
             context,
-            frequency,
-            uiModel.startDate!,
+            widget.frequency,
+            widget.uiModel.startDate!,
             date,
           );
-          FunSnackbar.show(
-            context,
-            message: message,
-            icon: const Icon(
-              Icons.calendar_today,
-              color: Color(0xFF234B5E),
-              size: 32,
-            ),
-          );
+          
+          // Add a small delay to ensure UI is stable
+          Timer(const Duration(milliseconds: 200), () {
+            if (!context.mounted) return;
+            
+            _showSnackbarWithKeyboardCheck(
+              context,
+              message,
+              const Icon(
+                Icons.calendar_today,
+                color: Color(0xFF234B5E),
+                size: 32,
+              ),
+            );
+          });
         },
       ),
     );
@@ -327,15 +414,6 @@ DateTime _calculateEndDateFromNumberOfDonations(
         startDate.day,
       );
   }
-}
-
-String _monthName(int month) {
-  if (month < 1 || month > 12) return '';
-
-  // Use localized month names from the current locale
-  final now = DateTime.now();
-  final date = DateTime(now.year, month);
-  return DateFormat('MMMM').format(date);
 }
 
 String _getDayWithOrdinal(DateTime date) {
