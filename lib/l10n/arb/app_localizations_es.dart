@@ -2323,6 +2323,18 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get platformFeeGenerousOption => 'Extra generous';
+
+  @override
+  String get recurringDonationsCreationErrorTitle =>
+      'We couldn\'t set up your donation';
+
+  @override
+  String get recurringDonationsCreationErrorDescription =>
+      'Something went wrong.\\nPlease check your details and try again.';
+
+  @override
+  String get recurringDonationsCreationErrorChangeAndRetry =>
+      'Change and Retry';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4666,4 +4678,16 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get platformFeeGenerousOption => 'Extra generous';
+
+  @override
+  String get recurringDonationsCreationErrorTitle =>
+      'We couldn\'t set up your donation';
+
+  @override
+  String get recurringDonationsCreationErrorDescription =>
+      'Something went wrong.\\nPlease check your details and try again.';
+
+  @override
+  String get recurringDonationsCreationErrorChangeAndRetry =>
+      'Change and Retry';
 }

@@ -2323,6 +2323,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get platformFeeGenerousOption => 'Extra generous';
+
+  @override
+  String get recurringDonationsCreationErrorTitle =>
+      'We couldn\'t set up your donation';
+
+  @override
+  String get recurringDonationsCreationErrorDescription =>
+      'Something went wrong.\\nPlease check your details and try again.';
+
+  @override
+  String get recurringDonationsCreationErrorChangeAndRetry =>
+      'Change and Retry';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4643,4 +4655,16 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get platformFeeGenerousOption => 'Extra generous';
+
+  @override
+  String get recurringDonationsCreationErrorTitle =>
+      'We couldn\'t set up your donation';
+
+  @override
+  String get recurringDonationsCreationErrorDescription =>
+      'Something went wrong.\\nPlease check your details and try again.';
+
+  @override
+  String get recurringDonationsCreationErrorChangeAndRetry =>
+      'Change and Retry';
 }

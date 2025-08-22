@@ -3,7 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step4_confirm_cubit.dart';
@@ -114,14 +117,17 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 icon: FontAwesomeIcons.building,
                 label: context.l10n.recurringDonationsStep4YoullDonateTo,
                 value: model.organizationName,
-                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmEditOrganisation.toEvent(),
+                analyticsEvent: AmplitudeEvents
+                    .recurringStep4ConfirmEditOrganisation
+                    .toEvent(),
                 onEdit: _cubit.navigateToOrganization,
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.moneyBillWave,
                 label: context.l10n.recurringDonationsStep4Amount,
                 value: model.amount.isNotEmpty ? '€${model.amount}' : '',
-                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmEditAmount.toEvent(),
+                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmEditAmount
+                    .toEvent(),
                 onEdit: _cubit.navigateToAmount,
               ),
               SummaryRow(
@@ -139,23 +145,27 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 value: model.startDate != null
                     ? _formatDate(model.startDate!)
                     : '',
-                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmEditStartDate.toEvent(),
+                analyticsEvent: AmplitudeEvents
+                    .recurringStep4ConfirmEditStartDate
+                    .toEvent(),
                 onEdit: _cubit.navigateToStartDate,
               ),
               SummaryRow(
                 icon: FontAwesomeIcons.stop,
                 label: context.l10n.recurringDonationsStep4Ends,
                 value: endsText,
-                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmEditEndDate.toEvent(),
+                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmEditEndDate
+                    .toEvent(),
                 onEdit: _cubit.navigateToEndDate,
               ),
               const Spacer(),
               FunButton(
                 text: context.l10n.recurringDonationsStep4ConfirmMyDonation,
                 isLoading: model.isLoading,
-                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmDonation.toEvent(
-                  parameters: model.analyticsParams,
-                ),
+                analyticsEvent: AmplitudeEvents.recurringStep4ConfirmDonation
+                    .toEvent(
+                      parameters: model.analyticsParams,
+                    ),
                 onTap: model.isLoading ? null : _cubit.createRecurringDonation,
               ),
             ],
@@ -167,27 +177,28 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
 
   void _showErrorBottomSheet(BuildContext context) {
     FunBottomSheet(
-      title: 'Unable to Create Recurring Donation',
+      title: context.l10n.recurringDonationsCreationErrorTitle,
+      icon: FunIconGivy.sad(),
       content: Column(
         children: [
-          const BodyMediumText(
-            'We encountered an issue while creating your recurring donation. '
-            'You can either modify your details and try again, or cancel and '
-            'return to the main screen.',
+          BodyMediumText(
+            context.l10n.recurringDonationsCreationErrorDescription,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
           FunButton(
-            text: 'Change Details',
-            analyticsEvent: AmplitudeEvents.recurringStep4ErrorChangeDetails.toEvent(),
+            text: context.l10n.recurringDonationsCreationErrorChangeAndRetry,
+            analyticsEvent: AmplitudeEvents.recurringStep4ErrorChangeDetails
+                .toEvent(),
             onTap: () {
               Navigator.of(context).pop(); // Close bottom sheet
             },
           ),
           const SizedBox(height: 16),
-          FunButton.secondary(
-            text: 'Cancel',
-            analyticsEvent: AmplitudeEvents.recurringStep4ConfirmClose.toEvent(),
+          FunTextButton(
+            text: context.l10n.cancel,
+            analyticsEvent: AmplitudeEvents.recurringStep4ConfirmClose
+                .toEvent(),
             onTap: () {
               Navigator.of(context).pop(); // Close bottom sheet
               _cubit.emitCustom(ConfirmAction.navigateToRecurringDonationsHome);

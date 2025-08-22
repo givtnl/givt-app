@@ -4190,6 +4190,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Extra generous'**
   String get platformFeeGenerousOption;
+
+  /// No description provided for @recurringDonationsCreationErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t set up your donation'**
+  String get recurringDonationsCreationErrorTitle;
+
+  /// No description provided for @recurringDonationsCreationErrorDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong.\\nPlease check your details and try again.'**
+  String get recurringDonationsCreationErrorDescription;
+
+  /// No description provided for @recurringDonationsCreationErrorChangeAndRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Change and Retry'**
+  String get recurringDonationsCreationErrorChangeAndRetry;
 }
 
 class _AppLocalizationsDelegate
