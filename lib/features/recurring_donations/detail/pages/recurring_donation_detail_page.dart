@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
@@ -148,7 +149,9 @@ class _RecurringDonationDetailPageState
           const SizedBox(height: 8),
           // Organization name
           TitleMediumText(
-            uiModel.organizationName,
+            uiModel.organizationName.isNotEmpty 
+                ? uiModel.organizationName 
+                : 'Loading...',
             textAlign: TextAlign.center,
           ),
         ],
@@ -160,7 +163,10 @@ class _RecurringDonationDetailPageState
     RecurringDonationDetailUIModel uiModel,
     BuildContext context,
   ) {
-    if (uiModel.progress == null) return const SizedBox.shrink();
+    if (uiModel.progress == null) {
+      // Don't show anything for unlimited donations
+      return const SizedBox.shrink();
+    }
 
     return FunProgressbar(
       currentProgress: uiModel.progress!.completed,
@@ -216,7 +222,8 @@ class _RecurringDonationDetailPageState
           iconData: icon,
           assetSize: 32,
           iconPath: '',
-          analyticsEvent: AmplitudeEvents.recurringDonationEditClicked.toEvent(),
+          analyticsEvent: AmplitudeEvents.recurringDonationEditClicked
+              .toEvent(),
           isPressedDown: true,
           titleBig: value,
           subtitle: label,
@@ -343,7 +350,7 @@ class _RecurringDonationDetailPageState
       case DonationStatus.completed:
         return FamilyAppTheme.primary95;
       case DonationStatus.pending:
-        return FamilyAppTheme.highlight50;
+        return FamilyAppTheme.neutralVariant95;
     }
   }
 
@@ -384,28 +391,45 @@ class _RecurringDonationDetailPageState
     RecurringDonationDetailUIModel uiModel,
     BuildContext context,
   ) {
-    // Check if the recurring donation has ended (either cancelled, finished, or past end date)
-    if (uiModel.endDate != null && uiModel.endDate!.isBefore(DateTime.now())) {
-      return context.l10n.recurringDonationsDetailSummaryHelped;
-    }
-    return context.l10n.recurringDonationsDetailSummaryHelping;
+    // Always show "Helped" since we're showing total days from start until now
+    return context.l10n.recurringDonationsDetailSummaryHelped;
   }
 
   String _getTimeDisplay(
     RecurringDonationDetailUIModel uiModel,
     BuildContext context,
   ) {
+    final startDate = DateTime.parse(widget.recurringDonation.startDate);
+    
+    // Check if the recurring donation has ended (cancelled, completed, or past end date)
     if (uiModel.endDate != null && uiModel.endDate!.isBefore(DateTime.now())) {
-      // For completed recurring donations, show total days helped
-      final startDate = DateTime.parse(widget.recurringDonation.startDate);
-      final endDate = uiModel.endDate!;
-      final daysHelped = endDate.difference(startDate).inDays;
+      // For cancelled/completed donations, show days between start and last transaction
+      final completedTransactions = uiModel.history
+          .where((h) => h.status == DonationStatus.completed)
+          .toList();
+      
+      if (completedTransactions.isNotEmpty) {
+        // Find the last completed transaction
+        final lastTransaction = completedTransactions
+            .reduce((a, b) => a.date.isAfter(b.date) ? a : b);
+        final daysHelped = lastTransaction.date.difference(startDate).inDays;
+        return context.l10n.recurringDonationsDetailTimeDisplayDays(
+          daysHelped.toString(),
+        );
+      } else {
+        // Fallback: no completed transactions, show days from start to end date
+        final daysHelped = uiModel.endDate!.difference(startDate).inDays;
+        return context.l10n.recurringDonationsDetailTimeDisplayDays(
+          daysHelped.toString(),
+        );
+      }
+    } else {
+      // For active donations, show days from start until now
+      final now = DateTime.now();
+      final daysHelped = now.difference(startDate).inDays;
       return context.l10n.recurringDonationsDetailTimeDisplayDays(
         daysHelped.toString(),
       );
-    } else {
-      // For active recurring donations, show remaining time
-      return uiModel.remainingTime;
     }
   }
 
