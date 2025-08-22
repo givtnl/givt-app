@@ -1080,5 +1080,6 @@
   "platformFeeGenerousOption": "Extra generous",
   "recurringDonationsCreationErrorTitle": "We couldn't set up your donation",
   "recurringDonationsCreationErrorDescription": "Something went wrong.\\nPlease check your details and try again.",
-  "recurringDonationsCreationErrorChangeAndRetry": "Change and Retry"
+  "recurringDonationsCreationErrorChangeAndRetry": "Change and Retry",
+  "recurringDonationsCancelled": "Cancelled"
 }
