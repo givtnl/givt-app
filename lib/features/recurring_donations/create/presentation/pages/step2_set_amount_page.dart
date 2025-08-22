@@ -32,11 +32,27 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
   final Step2SetAmountCubit _cubit = Step2SetAmountCubit(
     getIt<RecurringDonationNewFlowRepository>(),
   );
+  
+  // Add controller for amount field to enable pre-filling
+  late final TextEditingController _amountController;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize controller - cubit will handle pre-filling through state
+    _amountController = TextEditingController();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _cubit.init();
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
   }
 
   @override
@@ -52,6 +68,11 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
         }
       },
       onData: (context, uiModel) {
+        // Update controller with current amount from cubit state
+        if (uiModel.amount != _amountController.text) {
+          _amountController.text = uiModel.amount;
+        }
+        
         return FunScaffold(
           appBar: FunTopAppBar.white(
             title: context.l10n.recurringDonationsStep2Title,
@@ -104,6 +125,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               ),
               const SizedBox(height: 8),
               OutlinedTextFormField(
+                controller: _amountController,
                 hintText: context.l10n.recurringDonationsCreateStep2AmountHint,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],

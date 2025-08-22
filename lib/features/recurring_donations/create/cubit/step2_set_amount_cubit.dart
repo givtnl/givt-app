@@ -46,8 +46,8 @@ class Step2SetAmountCubit
 
     emitData(
       SetAmountUIModel(
-        selectedFrequency: selectedFrequency ?? currentData?.selectedFrequency,
-        amount: amount ?? currentData?.amount ?? '',
+        selectedFrequency: selectedFrequency ?? currentData?.selectedFrequency ?? _repository.frequency,
+        amount: amount ?? currentData?.amount ?? _repository.amount ?? '',
       ),
     );
   }
