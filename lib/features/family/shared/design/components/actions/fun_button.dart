@@ -192,6 +192,7 @@ class FunButton extends StatelessWidget {
     }
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: size.isSmall ? MainAxisSize.min : MainAxisSize.max,
       children: [
         if (leadingImage != null) leadingImage!,
         if (leftIcon != null)
