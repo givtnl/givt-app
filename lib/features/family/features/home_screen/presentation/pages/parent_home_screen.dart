@@ -140,15 +140,17 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                   child: FunAvatar.fromProfile(profile, size: 100),
                 ),
                 const SizedBox(height: 12),
-                FunButton.secondary(
-                  onTap: () => _onEditAvatarClicked(context, false),
-                  text: 'Edit avatar',
-                  analyticsEvent: AmplitudeEvents.editProfilePictureClicked.toEvent(),
-                  size: FunButtonSize.small,
-                  leftIcon: FontAwesomeIcons.userPen,
-                  funButtonBadge: FunButtonBadge(
-                    featureId: Features.profileEditAvatarButton,
-                    profileId: profile.id,
+                Center(
+                  child: FunButton.secondary(
+                    onTap: () => _onEditAvatarClicked(context, false),
+                    text: 'Edit avatar',
+                    analyticsEvent: AmplitudeEvents.editProfilePictureClicked.toEvent(),
+                    size: FunButtonSize.small,
+                    leftIcon: FontAwesomeIcons.userPen,
+                    funButtonBadge: FunButtonBadge(
+                      featureId: Features.profileEditAvatarButton,
+                      profileId: profile.id,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),

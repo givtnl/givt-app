@@ -83,22 +83,24 @@ class _WalletWidgetState extends State<WalletWidget> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  FunButton.secondary(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        EditAvatarScreen(userGuid: widget.kidid).toRoute(
-                          context,
-                        ),
-                      );
-                    },
-                    text: 'Edit avatar',
-                    analyticsEvent: AmplitudeEvents.editProfilePictureClicked
-                        .toEvent(),
-                    size: FunButtonSize.small,
-                    leftIcon: FontAwesomeIcons.userPen,
-                    funButtonBadge: FunButtonBadge(
-                      featureId: Features.profileEditAvatarButton,
-                      profileId: widget.kidid,
+                  Center(
+                    child: FunButton.secondary(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          EditAvatarScreen(userGuid: widget.kidid).toRoute(
+                            context,
+                          ),
+                        );
+                      },
+                      text: 'Edit avatar',
+                      analyticsEvent: AmplitudeEvents.editProfilePictureClicked
+                          .toEvent(),
+                      size: FunButtonSize.small,
+                      leftIcon: FontAwesomeIcons.userPen,
+                      funButtonBadge: FunButtonBadge(
+                        featureId: Features.profileEditAvatarButton,
+                        profileId: widget.kidid,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
