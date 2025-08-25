@@ -1090,5 +1090,6 @@
   "donationOverviewStatusProcessedFull": "Processed",
   "donationOverviewStatusCancelledFull": "Canceled by user",
   "donationOverviewStatusInProcessFull": "In Process",
-  "donationOverviewStatusRefusedFull": "Refused by bank"
+  "donationOverviewStatusRefusedFull": "Refused by bank",
+  "donationOverviewContactMessage": "Hi, I need help with the following donation:\\n\\nStatus: {status}\\nTransaction ID: #{transactionId}"
 }
