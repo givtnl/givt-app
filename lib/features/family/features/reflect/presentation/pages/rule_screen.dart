@@ -17,7 +17,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/r
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/rule_card.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class RuleScreen extends StatefulWidget {

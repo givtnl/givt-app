@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/features/league/presentation/widgets/le
 import 'package:givt_app/features/family/features/league/presentation/widgets/models/league_overview_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 

@@ -465,6 +465,11 @@ enum AmplitudeEvents {
     'donation_overview_platform_contribution_clicked',
   ),
   donationOverviewRefundInfoRequested('refund_info_viewed'),
+  
+  // Donation detail page
+  donationDetailRefundClicked('donation_detail_refund_clicked'),
+  donationDetailCancelClicked('donation_detail_cancel_clicked'),
+  donationDetailRetryClicked('donation_detail_retry_clicked'),
 
   // Generosity Hunt
   generosityHuntScanTryAgainClicked('generosity_hunt_scan_try_again_clicked'),

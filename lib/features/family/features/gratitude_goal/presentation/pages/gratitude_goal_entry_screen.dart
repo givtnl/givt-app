@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_recognize_this_screen.dart';
 import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeGoalEntryScreen extends StatefulWidget {

@@ -2338,6 +2338,33 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get recurringDonationsCancelled => 'Cancelled';
+
+  @override
+  String get donationOverviewDateAt => 'at';
+
+  @override
+  String get donationOverviewStatusProcessed => 'Processed';
+
+  @override
+  String get donationOverviewStatusCancelled => 'Cancelled';
+
+  @override
+  String get donationOverviewStatusInProcess => 'In Process';
+
+  @override
+  String get donationOverviewStatusRefused => 'Refused';
+
+  @override
+  String get donationOverviewStatusProcessedFull => 'Processed';
+
+  @override
+  String get donationOverviewStatusCancelledFull => 'Cancelled by user';
+
+  @override
+  String get donationOverviewStatusInProcessFull => 'In Process';
+
+  @override
+  String get donationOverviewStatusRefusedFull => 'Refused by bank';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4417,8 +4444,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get platformFeeNoContribution => 'Not this time';
 
   @override
-  String get donationOverviewPlatformContribution =>
-      'Voluntary Platform Contribution';
+  String get donationOverviewPlatformContribution => 'Platform Contribution';
 
   @override
   String get donationOverviewPlatformContributionTitle =>
@@ -4696,4 +4722,31 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get recurringDonationsCancelled => 'Cancelled';
+
+  @override
+  String get donationOverviewDateAt => 'at';
+
+  @override
+  String get donationOverviewStatusProcessed => 'Processed';
+
+  @override
+  String get donationOverviewStatusCancelled => 'Cancelled';
+
+  @override
+  String get donationOverviewStatusInProcess => 'In Process';
+
+  @override
+  String get donationOverviewStatusRefused => 'Refused';
+
+  @override
+  String get donationOverviewStatusProcessedFull => 'Processed';
+
+  @override
+  String get donationOverviewStatusCancelledFull => 'Cancelled by user';
+
+  @override
+  String get donationOverviewStatusInProcessFull => 'In Process';
+
+  @override
+  String get donationOverviewStatusRefusedFull => 'Refused by bank';
 }

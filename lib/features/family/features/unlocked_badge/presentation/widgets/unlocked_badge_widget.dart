@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/cubit/unlocked_badge_cubit.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/presentation/models/unlocked_badge_uimodel.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
 class UnlockedBadgeWidget extends StatefulWidget {

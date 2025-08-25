@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/data/record_utils.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_recorder.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 
 class RecordSummaryMessageBottomsheet extends StatefulWidget {
   const RecordSummaryMessageBottomsheet({super.key});

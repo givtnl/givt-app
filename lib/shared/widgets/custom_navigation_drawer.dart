@@ -102,7 +102,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                       context,
                       checkAuthRequest: CheckAuthRequest(
                         navigate: (context) async => context.goNamed(
-                          Pages.overview.name,
+                          Pages.donationOverview.name,
                         ),
                       ),
                     );

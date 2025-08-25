@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/features/creditcard_setup/pages/credit_
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class EnterDetailsBottomSheet extends StatelessWidget {

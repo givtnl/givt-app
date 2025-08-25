@@ -2077,8 +2077,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get platformFeeNoContribution => 'Diesmal nicht';
 
   @override
-  String get donationOverviewPlatformContribution =>
-      'Freiwilliger Plattformbeitrag';
+  String get donationOverviewPlatformContribution => 'Plattformbeitrag';
 
   @override
   String get donationOverviewPlatformContributionTitle =>
@@ -2357,4 +2356,31 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get recurringDonationsCancelled => 'Abgebrochen';
+
+  @override
+  String get donationOverviewDateAt => 'um';
+
+  @override
+  String get donationOverviewStatusProcessed => 'Verarbeitet';
+
+  @override
+  String get donationOverviewStatusCancelled => 'Abgebrochen';
+
+  @override
+  String get donationOverviewStatusInProcess => 'In Bearbeitung';
+
+  @override
+  String get donationOverviewStatusRefused => 'Abgelehnt';
+
+  @override
+  String get donationOverviewStatusProcessedFull => 'Verarbeitet';
+
+  @override
+  String get donationOverviewStatusCancelledFull => 'Vom Benutzer abgebrochen';
+
+  @override
+  String get donationOverviewStatusInProcessFull => 'In Bearbeitung';
+
+  @override
+  String get donationOverviewStatusRefusedFull => 'Von der Bank abgelehnt';
 }

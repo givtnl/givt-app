@@ -4,7 +4,7 @@ import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/presentation/widgets/unlocked_badge_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart'
     show LabelMediumText;
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -113,6 +113,33 @@ class FunButton extends StatelessWidget {
       textColor: AppTheme.error30,
       analyticsEvent: analyticsEvent,
       funButtonBadge: funButtonBadge,
+    );
+  }
+
+  factory FunButton.destructiveSecondary({
+    required void Function()? onTap,
+    required String text,
+    required AnalyticsEvent analyticsEvent,
+    bool isDisabled = false,
+    bool isLoading = false,
+    IconData? leftIcon,
+    Widget? leadingImage,
+    FunButtonBadge? funButtonBadge,
+  }) {
+    return FunButton(
+      onTap: onTap,
+      text: text,
+      isDisabled: isDisabled,
+      isLoading: isLoading,
+      leftIcon: leftIcon,
+      leadingImage: leadingImage,
+      backgroundColor: FamilyAppTheme.neutral100,
+      disabledBackgroundColor: FamilyAppTheme.neutral100,
+      borderColor: FamilyAppTheme.error70,
+      textColor: FamilyAppTheme.error50,
+      analyticsEvent: analyticsEvent,
+      funButtonBadge: funButtonBadge,
+      fullBorder: true,
     );
   }
 
