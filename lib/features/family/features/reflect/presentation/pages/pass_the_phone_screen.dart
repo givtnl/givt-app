@@ -16,7 +16,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/r
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class PassThePhone extends StatefulWidget {
@@ -200,9 +199,7 @@ class _PassThePhoneState extends State<PassThePhone> {
                   isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
                   onTap: () => widget.onTap.call(context),
                   text: widget.customBtnText ?? context.l10n.buttonContinue,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.reflectAndSharePassThePhoneClicked,
-                  ),
+                  analyticsEvent: AmplitudeEvents.reflectAndSharePassThePhoneClicked.toEvent(),
                 ),
               ),
             ],

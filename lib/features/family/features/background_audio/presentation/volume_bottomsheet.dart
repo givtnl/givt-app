@@ -3,7 +3,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/animated_speaker.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 class VolumeBottomsheet extends StatelessWidget {
   const VolumeBottomsheet({super.key, this.onReady});
@@ -30,9 +29,7 @@ class VolumeBottomsheet extends StatelessWidget {
           Navigator.of(context).pop();
           onReady?.call();
         },
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.volumeBottomSheetReadyClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.volumeBottomSheetReadyClicked.toEvent(),
       ),
     );
   }

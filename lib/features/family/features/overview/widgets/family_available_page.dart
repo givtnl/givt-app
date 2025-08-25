@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/family_goal/pages/family_goal_tracker.dart';
 import 'package:givt_app/features/family/features/family_history/family_history.dart';
 import 'package:givt_app/features/family/features/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/features/overview/widgets/profiles_overview_widget.dart';
-import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 
 class FamilyAvailablePage extends StatefulWidget {
   const FamilyAvailablePage({

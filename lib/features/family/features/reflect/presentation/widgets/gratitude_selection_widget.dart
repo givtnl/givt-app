@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/l
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeSelectionWidget extends StatelessWidget {
@@ -87,19 +86,21 @@ class GratitudeSelectionWidget extends StatelessWidget {
                                   uimodel.tagList[i].colorCombo.backgroundColor,
                               textColor:
                                   uimodel.tagList[i].colorCombo.textColor,
-                              analyticsEvent: AnalyticsEvent(
-                                AmplitudeEvents.gratefulTileSelected,
-                                parameters: {
-                                  'gratefulFor':
-                                      uimodel.selectedTag?.displayText,
-                                },
-                              ),
+                              analyticsEvent: AmplitudeEvents
+                                  .gratefulTileSelected
+                                  .toEvent(
+                                    parameters: {
+                                      'gratefulFor':
+                                          uimodel.selectedTag?.displayText,
+                                    },
+                                  ),
                             ),
                         ],
                       ),
                       const SizedBox(height: 16),
                       const SizedBox(
-                          height: 56 + 24), // Placeholder for the button
+                        height: 56 + 24,
+                      ), // Placeholder for the button
                     ],
                   ),
                 ),
@@ -116,8 +117,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
                   isDisabled: uimodel.selectedTag == null,
                   onTap: onNext,
                   text: 'Last Question',
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.gratefulTileSubmitted,
+                  analyticsEvent: AmplitudeEvents.gratefulTileSubmitted.toEvent(
                     parameters: {
                       'superhero': uimodel.superheroName,
                       'gratefulFor': uimodel.selectedTag?.displayText,

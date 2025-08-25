@@ -4,7 +4,6 @@ import 'package:givt_app/features/family/shared/design/components/content/fun_mi
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 
 class LevelTile extends StatefulWidget {
@@ -55,8 +54,7 @@ class _LevelTileState extends State<LevelTile> {
         disabled: !widget.unlocked,
       ),
       onTap: _shouldAllowTap() ? _handleTap : null,
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.generosityHuntLevelTileClicked,
+      analyticsEvent: AmplitudeEvents.generosityHuntLevelTileClicked.toEvent(
         parameters: {
           'level': widget.level,
         },

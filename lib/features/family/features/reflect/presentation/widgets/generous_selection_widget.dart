@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/l
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GenerousSelectionWidget extends StatelessWidget {
@@ -75,8 +74,7 @@ class GenerousSelectionWidget extends StatelessWidget {
                   backgroundColor:
                       uimodel.tagList[i].colorCombo.backgroundColor,
                   textColor: uimodel.tagList[i].colorCombo.textColor,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.generousTileSelected,
+                  analyticsEvent: AmplitudeEvents.generousTileSelected.toEvent(
                     parameters: {
                       'generousPower': uimodel.selectedTag?.title,
                     },
@@ -91,8 +89,7 @@ class GenerousSelectionWidget extends StatelessWidget {
               isDisabled: uimodel.selectedTag == null,
               onTap: onNext,
               text: 'Next',
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.generousTileSubmitted,
+              analyticsEvent: AmplitudeEvents.generousTileSubmitted.toEvent(
                 parameters: {
                   'superhero': uimodel.superheroName,
                   'haveBeenGenerous': uimodel.selectedTag?.displayText,

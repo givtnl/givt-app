@@ -13,7 +13,6 @@ import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_s
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
@@ -112,8 +111,8 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
                   : 'Drop your coin in\nthe giving box.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: FamilyAppTheme.defaultTextColor,
-                  ),
+                color: FamilyAppTheme.defaultTextColor,
+              ),
             ),
           ],
         ),
@@ -129,9 +128,7 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
           context.goNamed(FamilyPages.wallet.name);
           context.read<FlowsCubit>().resetFlow();
         },
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.returnToHomePressed,
-        ),
+        analyticsEvent: AmplitudeEvents.returnToHomePressed.toEvent(),
       );
     }
     if (isOnlyChild) {

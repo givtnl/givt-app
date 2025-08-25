@@ -107,7 +107,7 @@ class Organisation extends Equatable {
         shortDescription: shortDescription ?? this.shortDescription,
         longDescription: longDescription ?? this.longDescription,
         tags: tags ?? this.tags,
-        experiencePoints: xp ?? this.experiencePoints,
+        experiencePoints: xp ?? experiencePoints,
       );
 
   Map<String, dynamic> toJson() {

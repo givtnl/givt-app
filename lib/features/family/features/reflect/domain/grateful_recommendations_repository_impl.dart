@@ -58,8 +58,8 @@ class GratefulRecommendationsRepositoryImpl
     List<Organisation> organisations,
   ) {
     organisations.sort((a, b) {
-      final aHasChurchTag = a.tags.any((tag) => tag.key == "LOCALPARTNER");
-      final bHasChurchTag = b.tags.any((tag) => tag.key == "LOCALPARTNER");
+      final aHasChurchTag = a.tags.any((tag) => tag.key == 'LOCALPARTNER');
+      final bHasChurchTag = b.tags.any((tag) => tag.key == 'LOCALPARTNER');
       if (aHasChurchTag && !bHasChurchTag) {
         return -1;
       } else if (!aHasChurchTag && bHasChurchTag) {
@@ -146,13 +146,13 @@ class GratefulRecommendationsRepositoryImpl
   ) async {
     organisation.type == RecommendationTypes.organisation
         ? await _familyApiService.savePledge({
-            "userId": profile.userId,
-            "collectGroupId": organisation.guid,
+            'userId': profile.userId,
+            'collectGroupId': organisation.guid,
             if (gameGuid != null) 'GameId': gameGuid,
           })
         : await _familyApiService.savePledge({
-            "userId": profile.userId,
-            "actOfServiceId": organisation.guid,
+            'userId': profile.userId,
+            'actOfServiceId': organisation.guid,
             if (gameGuid != null) 'GameId': gameGuid,
           });
   }

@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
-import 'package:flutter/material.dart';
 
 void main() {
   test('Adds widget tooltip to playable widget list', () {
@@ -49,7 +49,7 @@ void main() {
     // because condition is met
     controller.widgetsPlayStream.listen(expectAsync1((value) {
       expect(value, equals(model1));
-    }, count: 1));
+    }));
 
     controller.addPlayableWidget(model1);
     controller.addPlayableWidget(model2);
@@ -78,7 +78,7 @@ void main() {
     // because condition is met
     controller.widgetsPlayStream.listen(expectAsync1((value) {
       expect(value, equals(model2));
-    }, count: 1));
+    }));
 
     controller.addPlayableWidget(model1);
     controller.addPlayableWidget(model2);

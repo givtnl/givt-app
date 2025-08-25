@@ -1,7 +1,6 @@
 part of 'interests_cubit.dart';
 
 class InterestsState extends Equatable {
-  static const int maxInterests = 3;
 
   const InterestsState({
     required this.location,
@@ -9,6 +8,7 @@ class InterestsState extends Equatable {
     required this.selectedInterests,
     required this.interests,
   });
+  static const int maxInterests = 3;
 
   final Tag location;
   final String cityName;

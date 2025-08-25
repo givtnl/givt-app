@@ -170,7 +170,7 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
   }
 
   Widget _buildSlider() {
-    bool canSetValue = false;
+    var canSetValue = false;
     final duration = _duration;
     final position = _position;
 

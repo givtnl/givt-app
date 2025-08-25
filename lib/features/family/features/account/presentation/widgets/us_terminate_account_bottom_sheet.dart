@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class USTerminateAccountBottomSheet extends StatefulWidget {
@@ -49,16 +48,12 @@ class _USTerminateAccountBottomSheetState
         },
         text: locals.unregisterPrimaryBtnText,
         isDisabled: !isCheckboxChecked,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.terminateAccountStarted,
-        ),
+        analyticsEvent: AmplitudeEvents.terminateAccountStarted.toEvent(),
       ),
       secondaryButton: FunButton.secondary(
         onTap: () => Navigator.of(context).pop(),
         text: locals.cancel,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.terminateAccountCancelled,
-        ),
+        analyticsEvent: AmplitudeEvents.terminateAccountCancelled.toEvent(),
       ),
       content: Column(
         children: [

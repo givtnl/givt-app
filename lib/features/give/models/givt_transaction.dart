@@ -2,14 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 
 class GivtTransaction extends Equatable {
-  GivtTransaction.fromTransaction(Transaction transaction)
-      : guid = transaction.userId,
-        amount = transaction.amount,
-        beaconId = transaction.mediumId,
-        timestamp = transaction.timestamp,
-        collectId = '1',
-        goalId = transaction.goalId,
-        mediumId = transaction.mediumId;
 
   const GivtTransaction({
     required this.guid,
@@ -19,6 +11,14 @@ class GivtTransaction extends Equatable {
     required this.collectId,
     this.goalId,
   }) : mediumId = beaconId;
+  GivtTransaction.fromTransaction(Transaction transaction)
+      : guid = transaction.userId,
+        amount = transaction.amount,
+        beaconId = transaction.mediumId,
+        timestamp = transaction.timestamp,
+        collectId = '1',
+        goalId = transaction.goalId,
+        mediumId = transaction.mediumId;
 
   factory GivtTransaction.fromJson(Map<String, dynamic> json) {
     return GivtTransaction(

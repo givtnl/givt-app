@@ -12,7 +12,6 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeGoalSetAGoalScreen extends StatefulWidget {
@@ -154,8 +153,7 @@ class _GratitudeGoalSetAGoalScreenState
                             behavior: widget.behavior,
                           ).toRoute(context),
                         ),
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.continueClicked,
+                        analyticsEvent: AmplitudeEvents.continueClicked.toEvent(
                           parameters: {
                             'page': 'Set a goal',
                           },

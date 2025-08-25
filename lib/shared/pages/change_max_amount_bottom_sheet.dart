@@ -11,7 +11,6 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
@@ -305,8 +304,7 @@ class _ChangeMaxAmountBottomSheetViewState
             }
           : null,
       text: locals.save,
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.maxAmountSaveClicked,
+      analyticsEvent: AmplitudeEvents.maxAmountSaveClicked.toEvent(
         parameters: {'new_max_amount': amountController.text},
       ),
     );

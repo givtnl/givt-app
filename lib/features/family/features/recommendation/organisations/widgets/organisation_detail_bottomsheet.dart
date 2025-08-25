@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bot
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_close_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -113,8 +112,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                     context
                         .pushNamed(FamilyPages.familyChooseAmountSlider.name);
                   },
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.newActOfGenerosityClicked,
+              analyticsEvent: AmplitudeEvents.newActOfGenerosityClicked.toEvent(
                 parameters: {
                   isActOfService ? 'act_of_service' : 'donation':
                       organisation.name,

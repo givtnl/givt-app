@@ -125,7 +125,6 @@ class GenerosityHuntRepository extends ChangeNotifier {
       subtitle: model.subtitle,
       description: model.description,
       assignment: model.assignment,
-      imageAsset: 'assets/family/images/barcode_hunt/level_default_image.svg',
     );
   }
 }

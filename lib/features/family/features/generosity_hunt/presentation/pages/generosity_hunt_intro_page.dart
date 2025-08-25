@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/features/generosity_hunt/presentation/p
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GenerosityHuntIntroPage extends StatelessWidget {
@@ -57,7 +57,7 @@ class GenerosityHuntIntroPage extends StatelessWidget {
           const Spacer(),
           FunButton(
             text: "Let's go",
-            analyticsEvent: AnalyticsEvent(AmplitudeEvents.letsGo),
+            analyticsEvent: AmplitudeEvents.letsGo.toEvent(),
             onTap: () => Navigator.of(context)
                 .push(const GenerosityHuntLevelsPage().toRoute(context)),
           ),
@@ -68,16 +68,16 @@ class GenerosityHuntIntroPage extends StatelessWidget {
 }
 
 class _StepRow extends StatelessWidget {
-  final String number;
-  final Color color;
-  final String text;
-  final Color textColor;
   const _StepRow({
     required this.number,
     required this.color,
     required this.text,
     required this.textColor,
   });
+  final String number;
+  final Color color;
+  final String text;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {

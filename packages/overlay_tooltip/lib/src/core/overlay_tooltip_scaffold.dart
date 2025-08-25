@@ -2,12 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:overlay_tooltip/src/constants/enums.dart';
+import 'package:overlay_tooltip/src/constants/extensions.dart';
 import 'package:overlay_tooltip/src/impl.dart';
 import 'package:overlay_tooltip/src/model/tooltip_widget_model.dart';
 
-import '../constants/extensions.dart';
-
 abstract class OverlayTooltipScaffoldImpl extends StatefulWidget {
+
+  OverlayTooltipScaffoldImpl({
+    required this.controller, required this.builder, required this.overlayColor, required this.startWhen, required this.tooltipAnimationDuration, required this.tooltipAnimationCurve, Key? key,
+    this.preferredOverlay,
+  }) : super(key: key) {
+    if (startWhen != null) controller.setStartWhen(startWhen!);
+  }
   final TooltipController controller;
   final Future<bool> Function(int instantiatedWidgetLength)? startWhen;
   final Widget Function(BuildContext context) builder;
@@ -15,19 +21,6 @@ abstract class OverlayTooltipScaffoldImpl extends StatefulWidget {
   final Duration tooltipAnimationDuration;
   final Curve tooltipAnimationCurve;
   final Widget? preferredOverlay;
-
-  OverlayTooltipScaffoldImpl({
-    Key? key,
-    required this.controller,
-    required this.builder,
-    required this.overlayColor,
-    required this.startWhen,
-    required this.tooltipAnimationDuration,
-    required this.tooltipAnimationCurve,
-    this.preferredOverlay,
-  }) : super(key: key) {
-    if (startWhen != null) controller.setStartWhen(startWhen!);
-  }
 
   @override
   State<OverlayTooltipScaffoldImpl> createState() =>
@@ -100,12 +93,12 @@ class OverlayTooltipScaffoldImplState
 }
 
 class _TooltipLayout extends StatelessWidget {
-  final OverlayTooltipModel model;
-  final TooltipController controller;
 
   const _TooltipLayout(
-      {Key? key, required this.model, required this.controller})
+      {required this.model, required this.controller, Key? key})
       : super(key: key);
+  final OverlayTooltipModel model;
+  final TooltipController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +141,8 @@ class _TooltipLayout extends StatelessWidget {
               child: ColoredBox(
                 color: Colors.transparent,
                 child: AbsorbPointer(
-                    child: model.child, absorbing: model.absorbPointer),
+                    absorbing: model.absorbPointer,
+                    child: model.child),
               ),
             ),
           ),
@@ -160,9 +154,9 @@ class _TooltipLayout extends StatelessWidget {
 
   Widget _buildToolTip(
       Offset topLeft, Offset bottomRight, BoxConstraints size) {
-    bool isTop = model.vertPosition == TooltipVerticalPosition.TOP;
+    final isTop = model.vertPosition == TooltipVerticalPosition.TOP;
 
-    bool alignLeft = topLeft.dx <= (size.maxWidth - bottomRight.dx);
+    final alignLeft = topLeft.dx <= (size.maxWidth - bottomRight.dx);
 
     final calculatedLeft = alignLeft ? topLeft.dx : null;
     final calculatedRight = alignLeft ? null : size.maxWidth - bottomRight.dx;

@@ -25,7 +25,7 @@ class QrCodeScanPage extends StatefulWidget {
 
 class _QrCodeScanPageState extends State<QrCodeScanPage> {
   final _controller = MobileScannerController();
-  final _cubit = getIt<CameraCubit>();
+  final CameraCubit _cubit = getIt<CameraCubit>();
 
   @override
   void didChangeDependencies() {

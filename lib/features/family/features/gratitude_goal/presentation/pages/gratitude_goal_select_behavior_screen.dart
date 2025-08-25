@@ -11,7 +11,6 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeGoalSelectBehaviorScreen extends StatefulWidget {
@@ -97,8 +96,7 @@ class _GratitudeGoalSelectBehaviorScreenState
                               padding: const EdgeInsets.symmetric(
                                 vertical: 12,
                               ),
-                              analyticsEvent: AnalyticsEvent(
-                                AmplitudeEvents.gratitudeGoalBehaviorClicked,
+                              analyticsEvent: AmplitudeEvents.gratitudeGoalBehaviorClicked.toEvent(
                                 parameters: {
                                   'behavior': _behaviors[index].behavior,
                                 },
@@ -126,8 +124,7 @@ class _GratitudeGoalSelectBehaviorScreenState
                           ).toRoute(context),
                         );
                       },
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.continueClicked,
+                      analyticsEvent: AmplitudeEvents.continueClicked.toEvent(
                         parameters: {
                           'page': 'Select gratitude behavior screen',
                         },
@@ -140,9 +137,7 @@ class _GratitudeGoalSelectBehaviorScreenState
                         onTap: () => Navigator.of(context).push(
                           const GratitudeGoalLaterScreen().toRoute(context),
                         ),
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.gratitudeGoalMaybeLaterClicked,
-                        ),
+                        analyticsEvent: AmplitudeEvents.gratitudeGoalMaybeLaterClicked.toEvent(),
                       ),
                     const SizedBox(height: 40),
                   ],

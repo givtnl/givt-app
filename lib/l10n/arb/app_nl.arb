@@ -1077,5 +1077,9 @@
   "recurringDonationsListFrequencyAnnually": "Jaarlijks",
   "recurringDonationsListFrequencyRecurring": "Terugkerend",
   "platformFeeCommonOption": "Meest gekozen",
-  "platformFeeGenerousOption": "Extra gul"
+  "platformFeeGenerousOption": "Extra gul",
+  "recurringDonationsCreationErrorTitle": "Het is niet gelukt je donatie in te stellen",
+  "recurringDonationsCreationErrorDescription": "Er is iets misgegaan.\\nControleer alsjeblieft je gegevens en probeer het opnieuw.",
+  "recurringDonationsCreationErrorChangeAndRetry": "Wijzigen",
+  "recurringDonationsCancelled": "Geannuleerd"
 }

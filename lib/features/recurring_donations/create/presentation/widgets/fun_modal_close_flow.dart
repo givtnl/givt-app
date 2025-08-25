@@ -3,7 +3,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class FunModalCloseFlow extends StatelessWidget {
@@ -26,18 +25,14 @@ class FunModalCloseFlow extends StatelessWidget {
             Navigator.of(context).popUntil((route) => route.isFirst);
           },
           text: context.l10n.closeModalYesExit,
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.cancelClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.cancelClicked.toEvent(),
         ),
         FunButton.secondary(
           onTap: () {
             Navigator.of(context).pop();
           },
           text: context.l10n.closeModalNoBack,
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.backClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.backClicked.toEvent(),
         ),
       ],
       closeAction: () {

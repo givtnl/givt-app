@@ -12,6 +12,7 @@ class RecurringDonationDetailUIModel {
     required this.history,
     required this.isLoading,
     this.error,
+    this.monthsHelped,
   });
 
   final String organizationName;
@@ -23,6 +24,7 @@ class RecurringDonationDetailUIModel {
   final List<DonationHistoryItem> history;
   final bool isLoading;
   final String? error;
+  final int? monthsHelped;
 
   bool get hasError => error != null;
   bool get hasEndDate => endDate != null;
@@ -40,7 +42,8 @@ class RecurringDonationDetailUIModel {
         other.progress == progress &&
         other.history == history &&
         other.isLoading == isLoading &&
-        other.error == error;
+        other.error == error &&
+        other.monthsHelped == monthsHelped;
   }
 
   @override
@@ -53,7 +56,8 @@ class RecurringDonationDetailUIModel {
         progress.hashCode ^
         history.hashCode ^
         isLoading.hashCode ^
-        error.hashCode;
+        error.hashCode ^
+        monthsHelped.hashCode;
   }
 
   RecurringDonationDetailUIModel copyWith({
@@ -66,6 +70,7 @@ class RecurringDonationDetailUIModel {
     List<DonationHistoryItem>? history,
     bool? isLoading,
     String? error,
+    int? monthsHelped,
   }) {
     return RecurringDonationDetailUIModel(
       organizationName: organizationName ?? this.organizationName,
@@ -77,6 +82,7 @@ class RecurringDonationDetailUIModel {
       history: history ?? this.history,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
+      monthsHelped: monthsHelped ?? this.monthsHelped,
     );
   }
 }

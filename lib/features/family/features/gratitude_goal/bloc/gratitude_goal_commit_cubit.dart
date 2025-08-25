@@ -66,7 +66,7 @@ class GratitudeGoalCommitCubit
       } else {
         _emitError();
       }
-    } catch (e, s) {
+    } catch (e) {
       _emitError();
     }
   }

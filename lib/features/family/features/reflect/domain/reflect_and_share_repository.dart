@@ -302,7 +302,7 @@ class ReflectAndShareRepository {
   Future<List<Profile>> getPlayerProfiles() async {
     final allProfiles = await _profilesRepository.getProfiles();
     final allPlayers = getPlayers();
-    final profileMap = {for (var profil in allProfiles) profil.id: profil};
+    final profileMap = {for (final profil in allProfiles) profil.id: profil};
     final playerProfiles = allPlayers
         .map((player) => profileMap[player.userId])
         .whereType<Profile>()
@@ -731,7 +731,7 @@ class ReflectAndShareRepository {
       _gameConfig?.useDefaultInterviewIcon ?? true;
 
   String getAskForInterviewTitle() =>
-      _gameConfig?.askForInterviewTitle ?? 'Earn \$50 for helping us!';
+      _gameConfig?.askForInterviewTitle ?? r'Earn $50 for helping us!';
 
   String getAskForInterviewMessage() =>
       _gameConfig?.askForInterviewMessage ??

@@ -158,24 +158,19 @@ class RecurringDonation extends Equatable {
     final frequency = _evaluateFrequencyFromCronExpression();
     
     // Calculate the date of the next turn based on start date and completed turns
-    DateTime nextDate = start;
+    var nextDate = start;
     
     switch (frequency) {
       case 0: // Weekly
         nextDate = start.add(Duration(days: 7 * (completedTurns + 1)));
-        break;
       case 1: // Monthly
         nextDate = start.copyWith(month: start.month + completedTurns + 1);
-        break;
       case 2: // Quarterly
         nextDate = start.copyWith(month: start.month + (3 * (completedTurns + 1)));
-        break;
       case 3: // Semi-annually
         nextDate = start.copyWith(month: start.month + (6 * (completedTurns + 1)));
-        break;
       case 4: // Annually
         nextDate = start.copyWith(year: start.year + completedTurns + 1);
-        break;
     }
     
     return nextDate;
@@ -192,29 +187,24 @@ class RecurringDonation extends Equatable {
     }
 
     final frequency = _evaluateFrequencyFromCronExpression();
-    int completedTurns = 0;
+    var completedTurns = 0;
 
     switch (frequency) {
       case 0: // Weekly
         final difference = now.difference(start).inDays;
         completedTurns = (difference / 7).floor();
-        break;
       case 1: // Monthly
         final difference = now.difference(start).inDays;
         completedTurns = (difference / 30.44).floor(); // Average days per month
-        break;
       case 2: // Quarterly
         final difference = now.difference(start).inDays;
         completedTurns = (difference / 91.25).floor(); // Average days per quarter
-        break;
       case 3: // Semi-annually
         final difference = now.difference(start).inDays;
         completedTurns = (difference / 182.5).floor(); // Average days per 6 months
-        break;
       case 4: // Annually
         final difference = now.difference(start).inDays;
         completedTurns = (difference / 365.25).floor(); // Average days per year
-        break;
       default:
         completedTurns = 0;
     }
@@ -240,7 +230,7 @@ class RecurringDonation extends Equatable {
   /// Calculates the progress percentage (0.0 to 1.0)
   double getProgressPercentage([DateTime? currentDate]) {
     if (endsAfterTurns <= 0 || endsAfterTurns == 999) {
-      return 0.0; // No progress for unlimited donations
+      return 0; // No progress for unlimited donations
     }
     
     final completed = getCompletedTurns(currentDate);

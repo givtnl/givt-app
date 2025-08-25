@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../model/tooltip_widget_model.dart';
+import 'package:overlay_tooltip/src/model/tooltip_widget_model.dart';
 
 abstract class TooltipControllerImpl {
-  List<OverlayTooltipModel> _playableWidgets = [];
-  StreamController<OverlayTooltipModel?> _widgetsPlayController =
+  final List<OverlayTooltipModel> _playableWidgets = [];
+  final StreamController<OverlayTooltipModel?> _widgetsPlayController =
       StreamController.broadcast();
 
   bool isPlayActive = false;

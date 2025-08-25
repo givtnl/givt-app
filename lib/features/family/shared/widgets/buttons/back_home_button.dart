@@ -5,7 +5,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class BackHomeButton extends StatelessWidget {
@@ -22,9 +21,7 @@ class BackHomeButton extends StatelessWidget {
         context.goNamed(FamilyPages.wallet.name);
         context.read<FlowsCubit>().resetFlow();
       },
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.returnToHomePressed,
-      ),
+      analyticsEvent: AmplitudeEvents.returnToHomePressed.toEvent(),
     );
   }
 }

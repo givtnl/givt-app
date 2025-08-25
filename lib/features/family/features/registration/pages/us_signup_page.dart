@@ -21,7 +21,6 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -55,7 +54,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   bool _obscureText = true;
   Country _selectedCountry = Country.us;
 
-  final _cubit = getIt<UsSignupCubit>();
+  final UsSignupCubit _cubit = getIt<UsSignupCubit>();
 
   @override
   void didChangeDependencies() {
@@ -217,9 +216,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           isDisabled: !_isEnabled,
           onTap: _isEnabled ? () => _register(user) : null,
           text: context.l10n.buttonContinue,
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.registrationContinueAfterPersonalInfoClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.registrationContinueAfterPersonalInfoClicked.toEvent(),
         ),
       ],
     );

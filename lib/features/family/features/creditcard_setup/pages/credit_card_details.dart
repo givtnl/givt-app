@@ -6,8 +6,8 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -20,8 +20,7 @@ import 'package:go_router/go_router.dart';
 /// It's used in the family app, when bank details are needed
 class CreditCardDetails extends StatefulWidget {
   const CreditCardDetails({
-    this.shrink = false,
-    required this.onSuccess,
+    required this.onSuccess, this.shrink = false,
     super.key,
   });
 

@@ -5,19 +5,17 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step3_set_duration_cubit.dart';
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step4_confirm_page.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/widgets/duration_options.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/widgets/fun_modal_close_flow.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 
 class Step3SetDurationPage extends StatefulWidget {
   const Step3SetDurationPage({super.key});
@@ -132,8 +130,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                     FunButton(
                       text: context.l10n.buttonContinue,
                       isDisabled: !uiModel.isContinueEnabled,
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.recurringStep3SetDurationContinue,
+                      analyticsEvent: AmplitudeEvents.recurringStep3SetDurationContinue.toEvent(
                         parameters: uiModel.analyticsParams,
                       ),
                       onTap: uiModel.isContinueEnabled

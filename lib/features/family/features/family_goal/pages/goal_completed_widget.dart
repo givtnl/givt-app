@@ -6,7 +6,6 @@ import 'package:givt_app/features/family/shared/design/components/content/fun_mi
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 class GoalCompletedWidget extends StatelessWidget {
   const GoalCompletedWidget({
@@ -24,10 +23,10 @@ class GoalCompletedWidget extends StatelessWidget {
         headerIcon: FunIcon.xmarkPlain(),
         actionIcon: FontAwesomeIcons.xmark,
       ),
-      onTap: () => impactGroupsCubit
-          .dismissGoal(impactGroupsCubit.state.familyGroup.goal.id),
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.goalCompletedCardClicked,
+      onTap: () => impactGroupsCubit.dismissGoal(
+        impactGroupsCubit.state.familyGroup.goal.id,
+      ),
+      analyticsEvent: AmplitudeEvents.goalCompletedCardClicked.toEvent(
         parameters: {
           'organisation':
               impactGroupsCubit.state.familyGroup.organisation.organisationName,

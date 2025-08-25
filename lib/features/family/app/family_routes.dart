@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
-import 'package:givt_app/features/family/features/generosity_hunt/presentation/pages/generosity_hunt_intro_page.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/pages/intro_bedtime_screen.dart';
 import 'package:givt_app/features/family/features/box_origin/presentation/box_origin_question_screen.dart';
 import 'package:givt_app/features/family/features/child_details/cubit/child_details_cubit.dart';
@@ -24,6 +23,7 @@ import 'package:givt_app/features/family/features/family_goal/pages/create_famil
 import 'package:givt_app/features/family/features/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summaries_screen.dart';
+import 'package:givt_app/features/family/features/generosity_hunt/presentation/pages/generosity_hunt_intro_page.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';

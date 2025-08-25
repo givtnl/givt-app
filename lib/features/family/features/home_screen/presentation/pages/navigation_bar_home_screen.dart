@@ -64,9 +64,9 @@ class NavigationBarHomeScreen extends StatefulWidget {
 
 class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final TooltipController _tooltipController = TooltipController();
-  final _cubit = getIt<NavigationBarHomeCubit>();
-  final _connectionCubit = getIt<InternetConnectionCubit>();
-  final _missionRepo = getIt<MissionRepository>();
+  final NavigationBarHomeCubit _cubit = getIt<NavigationBarHomeCubit>();
+  final InternetConnectionCubit _connectionCubit = getIt<InternetConnectionCubit>();
+  final MissionRepository _missionRepo = getIt<MissionRepository>();
 
   late final AppLifecycleListener _listener;
   late final StreamSubscription<Mission> _missionAchievedListener;
@@ -76,14 +76,12 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   List<AnalyticsEvent> _getAnalyticsEvents(bool showMemoriesTab) {
     final events = <AnalyticsEvent>[
-      AnalyticsEvent(
-        AmplitudeEvents.navigationBarPressed,
+      AmplitudeEvents.navigationBarPressed.toEvent(
         parameters: {
           'destination': 'Home',
         },
       ),
-      AnalyticsEvent(
-        AmplitudeEvents.navigationBarPressed,
+      AmplitudeEvents.navigationBarPressed.toEvent(
         parameters: {
           'destination': 'Family',
         },
@@ -92,8 +90,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     
     if (showMemoriesTab) {
       events.add(
-        AnalyticsEvent(
-          AmplitudeEvents.navigationBarPressed,
+        AmplitudeEvents.navigationBarPressed.toEvent(
           parameters: {
             'destination': 'Memories',
           },
@@ -102,8 +99,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     }
     
     events.add(
-      AnalyticsEvent(
-        AmplitudeEvents.navigationBarPressed,
+      AmplitudeEvents.navigationBarPressed.toEvent(
         parameters: {
           'destination': 'League',
         },
@@ -325,14 +321,14 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             _cubit.onShowTutorialClicked();
           },
           text: "Let's go!",
-          analyticsEvent: AnalyticsEvent(AmplitudeEvents.tutorialStartClicked),
+          analyticsEvent: AmplitudeEvents.tutorialStartClicked.toEvent(),
         ),
         FunButton.secondary(
           onTap: () {
             context.pop();
           },
           text: context.l10n.buttonSkip,
-          analyticsEvent: AnalyticsEvent(AmplitudeEvents.tutorialSkipClicked),
+          analyticsEvent: AmplitudeEvents.tutorialSkipClicked.toEvent(),
         ),
       ],
     ).show(context);

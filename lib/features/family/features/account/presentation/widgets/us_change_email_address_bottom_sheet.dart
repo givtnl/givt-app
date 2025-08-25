@@ -5,7 +5,6 @@ import 'package:givt_app/features/family/features/auth/data/family_auth_reposito
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/util.dart';
 
@@ -61,8 +60,7 @@ class _ChangeEmailAddressBottomSheetState
               }
             : null,
         text: locals.save,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.editEmailSaveClicked,
+        analyticsEvent: AmplitudeEvents.editEmailSaveClicked.toEvent(
           parameters: {
             'old_email': widget.email,
             'new_email': emailController.text,

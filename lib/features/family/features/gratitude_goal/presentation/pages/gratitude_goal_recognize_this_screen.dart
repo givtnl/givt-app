@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
@@ -70,9 +69,7 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
                     context,
                     isRecognized: true,
                   ),
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.gratitudeGoalYesOfCourseClicked,
-                  ),
+                  analyticsEvent: AmplitudeEvents.gratitudeGoalYesOfCourseClicked.toEvent(),
                 ),
                 const SizedBox(
                   height: 20,
@@ -84,9 +81,7 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
                     context,
                     isRecognized: false,
                   ),
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.gratitudeGoalNoNotReallyClicked,
-                  ),
+                  analyticsEvent: AmplitudeEvents.gratitudeGoalNoNotReallyClicked.toEvent(),
                 ),
                 const SizedBox(height: 32),
               ],

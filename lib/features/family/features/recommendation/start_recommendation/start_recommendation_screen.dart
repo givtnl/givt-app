@@ -4,7 +4,6 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class StartRecommendationScreen extends StatelessWidget {
@@ -47,11 +46,11 @@ class StartRecommendationScreen extends StatelessWidget {
             ),
             FunButton(
               text: 'Start',
-              onTap: () => context
-                  .pushReplacementNamed(FamilyPages.locationSelection.name),
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.recommendationStartButtonClicked,
+              onTap: () => context.pushReplacementNamed(
+                FamilyPages.locationSelection.name,
               ),
+              analyticsEvent: AmplitudeEvents.recommendationStartButtonClicked
+                  .toEvent(),
             ),
           ],
         ),

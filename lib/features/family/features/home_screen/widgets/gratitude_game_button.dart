@@ -4,7 +4,6 @@ import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.da
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 
 class GratitudeGameButton extends StatelessWidget {
@@ -16,9 +15,7 @@ class GratitudeGameButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return ActionContainer(
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.familyHomeScreenGratitudeGameButtonClicked,
-      ),
+      analyticsEvent: AmplitudeEvents.familyHomeScreenGratitudeGameButtonClicked.toEvent(),
       onTap: onPressed,
       borderColor: FamilyAppTheme.highlight80,
       baseBorderSize: 4,

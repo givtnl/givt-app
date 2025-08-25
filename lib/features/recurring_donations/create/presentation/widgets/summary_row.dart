@@ -2,20 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 class SummaryRow extends StatelessWidget {
   const SummaryRow({
-    super.key,
-    required this.icon,
-    required this.label,
-    required this.value,
-    required this.onEdit,
+    required this.icon, required this.label, required this.value, required this.onEdit, super.key,
+    this.analyticsEvent,
   });
 
   final IconData icon;
   final String label;
   final String value;
   final VoidCallback onEdit;
+  final AnalyticsEvent? analyticsEvent;
+
+  void _handleEdit() {
+    if (analyticsEvent != null) {
+      AnalyticsHelper.logEvent(
+        eventName: analyticsEvent!.name,
+        eventProperties: analyticsEvent!.parameters,
+      );
+    }
+    onEdit();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +51,7 @@ class SummaryRow extends StatelessWidget {
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.penToSquare,
                 color: FamilyAppTheme.primary40),
-            onPressed: onEdit,
+            onPressed: _handleEdit,
           ),
         ],
       ),

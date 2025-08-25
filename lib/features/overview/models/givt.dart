@@ -19,41 +19,6 @@ class Givt extends Equatable {
     this.platformFeeAmount,
   });
 
-  const Givt.empty()
-      : id = 0,
-        amount = 0,
-        taxYear = 0,
-        collectGroupId = '',
-        organisationName = '',
-        organisationTaxDeductible = false,
-        collectId = 0,
-        isGiftAidEnabled = false,
-        status = 0,
-        timeStamp = null,
-        mediumId = '',
-        donationType = 0,
-        platformFeeTransactionId = null,
-        platformFeeAmount = null;
-
-  Map<String, dynamic> toJson() {
-    return {
-      'Id': id,
-      'Amount': amount,
-      'CollectGroupId': collectGroupId,
-      'OrgName': organisationName,
-      'OrganisationTaxDeductible': organisationTaxDeductible,
-      'CollectId': collectId,
-      'GiftAidEnabled': isGiftAidEnabled,
-      'Status': status,
-      'Timestamp': timeStamp?.toIso8601String(),
-      'MediumId': mediumId,
-      'TaxYear': taxYear,
-      'DonationType': donationType,
-      'PlatformFeeTransactionId': platformFeeTransactionId,
-      'PlatformFeeAmount': platformFeeAmount,
-    };
-  }
-
   factory Givt.fromJson(Map<String, dynamic> json) {
     var taxYear = 0;
     final timestamp = DateTime.parse(json['Timestamp'] as String);
@@ -88,6 +53,41 @@ class Givt extends Equatable {
       platformFeeTransactionId: json['PlatformFeeTransactionId'] as int?,
       platformFeeAmount: json['PlatformFeeAmount'] as double?,
     );
+  }
+
+  const Givt.empty()
+      : id = 0,
+        amount = 0,
+        taxYear = 0,
+        collectGroupId = '',
+        organisationName = '',
+        organisationTaxDeductible = false,
+        collectId = 0,
+        isGiftAidEnabled = false,
+        status = 0,
+        timeStamp = null,
+        mediumId = '',
+        donationType = 0,
+        platformFeeTransactionId = null,
+        platformFeeAmount = null;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Id': id,
+      'Amount': amount,
+      'CollectGroupId': collectGroupId,
+      'OrgName': organisationName,
+      'OrganisationTaxDeductible': organisationTaxDeductible,
+      'CollectId': collectId,
+      'GiftAidEnabled': isGiftAidEnabled,
+      'Status': status,
+      'Timestamp': timeStamp?.toIso8601String(),
+      'MediumId': mediumId,
+      'TaxYear': taxYear,
+      'DonationType': donationType,
+      'PlatformFeeTransactionId': platformFeeTransactionId,
+      'PlatformFeeAmount': platformFeeAmount,
+    };
   }
 
   static List<Givt> fromJsonList(List<dynamic> jsonList) => jsonList

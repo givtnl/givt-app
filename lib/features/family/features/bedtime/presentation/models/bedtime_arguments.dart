@@ -3,9 +3,8 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
 class BedtimeArguments {
   BedtimeArguments({
-    this.previousBedtime = BedtimeConfig.defaultBedtimeHour,
+    required this.profiles, this.previousBedtime = BedtimeConfig.defaultBedtimeHour,
     this.previousWinddownMinutes = BedtimeConfig.defaultWindDownMinutes,
-    required this.profiles,
     this.bedtimes = const [],
     this.index = 0,
     this.fromTutorial = false,

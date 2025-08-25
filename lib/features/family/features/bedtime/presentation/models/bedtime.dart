@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Bedtime extends Equatable {
-  Bedtime({
+  const Bedtime({
     required this.id,
     required this.bedtimeInUtc,
     required this.winddownMinutes,

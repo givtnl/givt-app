@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -158,8 +157,7 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                         }
                       : null,
                   text: locals.send,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.onInfoRowClicked,
+                  analyticsEvent: AmplitudeEvents.onInfoRowClicked.toEvent(
                     parameters: {'action': 'send_feedback'},
                   ),
                 ),

@@ -122,7 +122,7 @@ class _OverviewPageState extends State<OverviewPage> {
         state.givtGroups.where((element) => element.givts.isEmpty).toList();
 
     // Helper to calculate total platform fee for a month section
-    double _getMonthPlatformFee(DateTime? monthTimeStamp) {
+    double getMonthPlatformFee(DateTime? monthTimeStamp) {
       if (monthTimeStamp == null) return 0;
       return state.givtGroups
           .where((g) =>
@@ -130,7 +130,7 @@ class _OverviewPageState extends State<OverviewPage> {
               g.timeStamp != null &&
               g.timeStamp!.year == monthTimeStamp.year &&
               g.timeStamp!.month == monthTimeStamp.month)
-          .fold(0.0, (sum, g) => sum + g.platformFeeAmount);
+          .fold(0, (sum, g) => sum + g.platformFeeAmount);
     }
 
     return OverlayTooltipScaffold(
@@ -163,7 +163,7 @@ class _OverviewPageState extends State<OverviewPage> {
           itemCount: _getSectionCount(state),
           itemBuilder: (_, int index) {
             final monthPlatformFee =
-                _getMonthPlatformFee(monthSections[index].timeStamp);
+                getMonthPlatformFee(monthSections[index].timeStamp);
             return StickyHeader(
               key: Key(monthSections[index].timeStamp!.toString()),
               header: Column(

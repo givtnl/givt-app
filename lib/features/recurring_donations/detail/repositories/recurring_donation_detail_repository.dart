@@ -4,17 +4,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_donation_detail_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
-import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_overview_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
 mixin RecurringDonationDetailRepository {
-  Stream<RecurringDonationDetailUIModel> onDetailChanged();
-  RecurringDonationDetailUIModel getDetail();
   bool isLoading();
   String? getError();
   Future<void> loadRecurringDonationDetail();
   void setRecurringDonation(RecurringDonation donation);
+  
+  // Methods to get raw data for the cubit
+  String getOrganizationName();
+  double getTotalDonated();
+  String getRemainingTime();
+  DateTime? getEndDate();
+  List<DonationHistoryItem> getHistory();
+  int getMonthsHelped();
+  DonationProgress? getProgress();
 }
 
 class RecurringDonationDetailRepositoryImpl
@@ -26,38 +32,11 @@ class RecurringDonationDetailRepositoryImpl
 
   final APIService apiService;
   final CollectGroupRepository collectGroupRepository;
-  final StreamController<RecurringDonationDetailUIModel> _detailController =
-      StreamController<RecurringDonationDetailUIModel>.broadcast();
 
   RecurringDonation? _recurringDonation;
-  RecurringDonationDetailUIModel _detail = const RecurringDonationDetailUIModel(
-    organizationName: '',
-    organizationIcon: '',
-    totalDonated: 0.0,
-    remainingTime: '',
-    endDate: null,
-    progress: null,
-    history: [],
-    isLoading: false,
-  );
+  List<DonationHistoryItem> _history = [];
   bool _isLoading = false;
   String? _error;
-
-  @override
-  Stream<RecurringDonationDetailUIModel> onDetailChanged() {
-    return _detailController.stream;
-  }
-
-  void _emitDetail(RecurringDonationDetailUIModel detail) {
-    if (!_detailController.isClosed) {
-      _detailController.add(detail);
-    }
-  }
-
-  @override
-  RecurringDonationDetailUIModel getDetail() {
-    return _detail;
-  }
 
   @override
   bool isLoading() {
@@ -78,14 +57,11 @@ class RecurringDonationDetailRepositoryImpl
   Future<void> loadRecurringDonationDetail() async {
     if (_recurringDonation == null) {
       _error = 'No recurring donation set';
-      _emitDetail(_detail);
       return;
     }
 
     _isLoading = true;
     _error = null;
-    _detail = _detail.copyWith(isLoading: true);
-    _emitDetail(_detail);
 
     try {
       // Fetch collect groups and merge them with the recurring donation
@@ -119,29 +95,6 @@ class RecurringDonationDetailRepositoryImpl
       // Now determine the correct status for each item based on recurring donation context
       final history = _determineHistoryStatuses(rawHistory);
 
-      // Calculate basic details first (without progress, as we need _detail to be initialized)
-      final totalDonated = _calculateTotalDonated(history);
-      final remainingTime = _calculateRemainingTime();
-      final endDate = _recurringDonation!.endsAfterTurns != 999
-          ? _recurringDonation!.endDate
-          : null;
-
-      // Create the detail model with the parsed history first
-      _detail = RecurringDonationDetailUIModel(
-        organizationName: _recurringDonation!.collectGroup.orgName,
-        organizationIcon: 'assets/images/church_icon.png', // Default icon
-        totalDonated: totalDonated,
-        remainingTime: remainingTime,
-        endDate: endDate,
-        progress: null, // We'll calculate this after _detail is initialized
-        history: history,
-        isLoading: false,
-        error: null,
-      );
-
-      // Now calculate progress (after _detail is initialized)
-      final progress = _calculateProgress();
-
       // Only add upcoming donation if the recurring donation is still active
       var finalHistory = history;
       if (_isRecurringDonationActive()) {
@@ -149,19 +102,13 @@ class RecurringDonationDetailRepositoryImpl
         finalHistory = [upcomingDonation, ...history];
       }
 
-      // Update the detail with the complete history including progress
-      _detail = _detail.copyWith(
-        history: finalHistory,
-        progress: progress,
-      );
-
+      // Store the history
+      _history = finalHistory;
       _error = null;
     } catch (error) {
       _error = error.toString();
-      _detail = _detail.copyWith(error: error.toString());
     } finally {
       _isLoading = false;
-      _emitDetail(_detail);
     }
   }
 
@@ -237,7 +184,7 @@ class RecurringDonationDetailRepositoryImpl
 
     final total = _recurringDonation!.endsAfterTurns;
     // Count only completed donations (excluding upcoming ones)
-    final completed = _detail.history
+    final completed = _history
         .where((h) => h.status == DonationStatus.completed)
         .length;
 
@@ -247,17 +194,38 @@ class RecurringDonationDetailRepositoryImpl
     );
   }
 
+  /// Calculates the number of months helped based on actual completed donations
+  int _calculateMonthsHelped(List<DonationHistoryItem> history) {
+    final completedDonations = history
+        .where((h) => h.status == DonationStatus.completed)
+        .toList();
+    
+    if (completedDonations.isEmpty) return 0;
+    
+    // Sort by date to get the first and last completed donations
+    completedDonations.sort((a, b) => a.date.compareTo(b.date));
+    
+    final firstDonation = completedDonations.first;
+    final lastDonation = completedDonations.last;
+    
+    // Calculate months between first and last completed donation
+    final difference = lastDonation.date.difference(firstDonation.date);
+    final months = (difference.inDays / 30.44).floor(); // Average days per month
+    
+    // Add 1 to include the month of the first donation
+    return months + 1;
+  }
+
   double _calculateTotalDonated(List<DonationHistoryItem> history) {
     return history
         .where((h) => h.status == DonationStatus.completed)
-        .fold(0.0, (sum, item) => sum + item.amount);
+        .fold(0, ( sum, item) => sum + item.amount);
   }
 
   String _calculateRemainingTime() {
     if (_recurringDonation!.endsAfterTurns == 999) return 'Unlimited';
 
     final endDate = _recurringDonation!.endDate;
-    if (endDate == null) return 'Unknown';
 
     final now = DateTime.now();
     final difference = endDate.difference(now);
@@ -278,13 +246,16 @@ class RecurringDonationDetailRepositoryImpl
     // Check if the recurring donation is still active (not in the past)
     if (_recurringDonation == null) return false;
 
-    // Check if the end date is in the future
-    if (_recurringDonation!.endDate != null) {
-      return _recurringDonation!.endDate!.isAfter(DateTime.now());
+    // First check the current state - cancelled and finished donations are never active
+    if (_recurringDonation!.currentState != RecurringDonationState.active) {
+      return false;
     }
 
-    // If no end date, check the current state
-    return _recurringDonation!.currentState == RecurringDonationState.active;
+    // For active donations, check if the end date is in the future
+    return _recurringDonation!.endDate.isAfter(DateTime.now());
+  
+    // If no end date and state is active, it's active
+    return true;
   }
 
   DonationHistoryItem _createUpcomingDonation() {
@@ -292,7 +263,7 @@ class RecurringDonationDetailRepositoryImpl
     DateTime nextDonationDate;
 
     // Get completed donations from the current history (excluding upcoming ones)
-    final completedDonations = _detail.history
+    final completedDonations = _history
         .where((h) => h.status == DonationStatus.completed)
         .toList();
 
@@ -327,7 +298,59 @@ class RecurringDonationDetailRepositoryImpl
     );
   }
 
+  @override
+  String getOrganizationName() {
+    return _recurringDonation?.collectGroup.orgName ?? '';
+  }
+
+  @override
+  double getTotalDonated() {
+    return _calculateTotalDonated(_history);
+  }
+
+  @override
+  String getRemainingTime() {
+    return _calculateRemainingTime();
+  }
+
+  @override
+  DateTime? getEndDate() {
+    if (_recurringDonation == null) return null;
+    return _recurringDonation!.endsAfterTurns != 999
+        ? _recurringDonation!.endDate
+        : null;
+  }
+
+  @override
+  List<DonationHistoryItem> getHistory() {
+    return _history;
+  }
+
+  @override
+  int getMonthsHelped() {
+    return _calculateMonthsHelped(_history);
+  }
+
+  @override
+  DonationProgress? getProgress() {
+    if (_recurringDonation == null || _recurringDonation!.endsAfterTurns == 999) {
+      return null;
+    }
+
+    final total = _recurringDonation!.endsAfterTurns;
+    // Count only completed donations (excluding upcoming ones)
+    final completed = _history
+        .where((h) => h.status == DonationStatus.completed)
+        .length;
+
+    return DonationProgress(
+      completed: completed,
+      total: total,
+    );
+  }
+
+  @override
   void dispose() {
-    _detailController.close();
+    // No-op as there's no StreamController to close
   }
 }

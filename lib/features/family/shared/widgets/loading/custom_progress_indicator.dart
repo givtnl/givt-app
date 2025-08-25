@@ -9,7 +9,7 @@ class CustomCircularProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      key: ValueKey('Splash-Loader'),
+      key: const ValueKey('Splash-Loader'),
       child: Container(
         padding: const EdgeInsets.all(35),
         decoration: BoxDecoration(

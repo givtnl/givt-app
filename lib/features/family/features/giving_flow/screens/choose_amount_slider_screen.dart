@@ -23,7 +23,6 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -117,8 +116,7 @@ class ChooseAmountSliderScreen extends StatelessWidget {
                                 .read<CreateTransactionCubit>()
                                 .createTransaction(transaction: transaction);
                           },
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.giveToThisGoalPressed,
+                    analyticsEvent: AmplitudeEvents.giveToThisGoalPressed.toEvent(
                       parameters: {
                         AnalyticsHelper.goalKey: collectgroup.name,
                         AnalyticsHelper.amountKey: state.amount,

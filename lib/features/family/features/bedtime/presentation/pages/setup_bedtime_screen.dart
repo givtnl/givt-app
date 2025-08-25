@@ -16,7 +16,6 @@ import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widge
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -71,9 +70,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
             secondaryButtonText: 'Go Home',
             onTapSecondaryButton: () =>
                 context.goNamed(FamilyPages.profileSelection.name),
-            secondaryButtonAnalyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.returnToHomePressed,
-            ),
+            secondaryButtonAnalyticsEvent: AmplitudeEvents.returnToHomePressed.toEvent(),
           ),
         ),
         onLoading: (context) {
@@ -268,12 +265,11 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
             ),
             isLoading: isLoading,
             text: isLast ? context.l10n.buttonDone : context.l10n.buttonContinue,
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.childBedtimeSet,
+            analyticsEvent: AmplitudeEvents.childBedtimeSet.toEvent(
               parameters: {
                 'child': child.firstName,
                 'bedtime':
-                    '${bedtimeSliderValue.floor().toInt().toString().padLeft(2, '0')}:${((bedtimeSliderValue - bedtimeSliderValue.floor()) * 60).toInt().toString().padLeft(2, '0')}',
+                    '${bedtimeSliderValue.floor().toString().padLeft(2, '0')}:${((bedtimeSliderValue - bedtimeSliderValue.floor()) * 60).toInt().toString().padLeft(2, '0')}',
                 'windDown': windDownValue,
               },
             ),

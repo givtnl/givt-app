@@ -171,10 +171,10 @@ class FunTooltip extends StatelessWidget {
                                                       () => controller.next(),
                                                   analyticsEvent:
                                                       analyticsEventButtonOverride ??
-                                                          AnalyticsEvent(
-                                                            analyticsEvent ??
-                                                                AmplitudeEvents
-                                                                    .tutorialNextClicked,
+                                                          (analyticsEvent ??
+                                                              AmplitudeEvents
+                                                                  .tutorialNextClicked)
+                                                              .toEvent(
                                                             parameters: {
                                                               'tutorialLabelBottomLeft':
                                                                   labelBottomLeft,

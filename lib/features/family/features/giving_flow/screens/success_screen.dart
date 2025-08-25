@@ -13,7 +13,6 @@ import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_s
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:lottie/lottie.dart';
 
 class SuccessScreen extends StatefulWidget {
@@ -126,9 +125,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
               ? FunButton(
                   onTap: widget.onCustomSuccess,
                   text: context.l10n.buttonContinue,
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.continueClicked,
-                  ),
+                  analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
                 )
               : profilesState.isOnlyChild
                   ? const BackHomeButton()

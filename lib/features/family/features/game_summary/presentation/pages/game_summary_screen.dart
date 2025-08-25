@@ -7,7 +7,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GameSummaryScreen extends StatelessWidget {
-  const GameSummaryScreen({super.key, required this.uiModel});
+  const GameSummaryScreen({required this.uiModel, super.key});
   final SummaryUIModel uiModel;
   @override
   Widget build(BuildContext context) {

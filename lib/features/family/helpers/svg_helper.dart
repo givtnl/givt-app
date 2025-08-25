@@ -52,7 +52,7 @@ String modifySvgContent(
   bool useSecondLongestPath = false,
 }) {
   // Parse the SVG content to find paths
-  final pathRegex = RegExp(r'<path[^>]*>', multiLine: true);
+  final pathRegex = RegExp('<path[^>]*>', multiLine: true);
   final paths = pathRegex.allMatches(rawSvgContent);
 
   String? longestPath;
@@ -66,7 +66,7 @@ String modifySvgContent(
     final path = match.group(0);
     if (path != null) {
       // Check the length of the 'd' attribute
-      final dAttributeRegex = RegExp(r'd="([^"]+)"');
+      final dAttributeRegex = RegExp('d="([^"]+)"');
       final dMatch = dAttributeRegex.firstMatch(path);
       if (dMatch != null) {
         final dValue = dMatch.group(1);
@@ -80,7 +80,7 @@ String modifySvgContent(
             longestPath = path;
 
             // Extract the fill color of the longest path
-            final fillRegex = RegExp(r'fill="([^"]+)"');
+            final fillRegex = RegExp('fill="([^"]+)"');
             final fillMatch = fillRegex.firstMatch(path);
             final secondFillMatch =
                 fillRegex.firstMatch(secondLongestPath ?? '');
@@ -97,7 +97,7 @@ String modifySvgContent(
             secondLongestPath = path;
 
             // Extract the fill color of the second longest path
-            final fillRegex = RegExp(r'fill="([^"]+)"');
+            final fillRegex = RegExp('fill="([^"]+)"');
             final fillMatch = fillRegex.firstMatch(path);
             secondLongestFillColor = fillMatch?.group(1);
           }

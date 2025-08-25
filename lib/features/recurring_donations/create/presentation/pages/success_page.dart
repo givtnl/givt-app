@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
@@ -9,11 +8,9 @@ import 'package:givt_app/features/recurring_donations/create/presentation/consta
 import 'package:givt_app/features/recurring_donations/create/presentation/models/confirm_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class SuccessPage extends StatefulWidget {
@@ -77,10 +74,10 @@ class _SuccessPageState extends State<SuccessPage> {
             const Spacer(),
             FunButton(
               text: context.l10n.buttonDone,
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.recurringStep4ConfirmDonation,
-                parameters: widget.model.analyticsParams,
-              ),
+              analyticsEvent: AmplitudeEvents.recurringStep4ConfirmDonation
+                  .toEvent(
+                    parameters: widget.model.analyticsParams,
+                  ),
               onTap: () {
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.recurringStep4ConfirmDonation,
@@ -101,18 +98,28 @@ class _SuccessPageState extends State<SuccessPage> {
     if (widget.model.selectedEndOption ==
             RecurringDonationStringKeys.afterNumberOfDonations &&
         widget.model.numberOfDonations.isNotEmpty) {
-      return "For the next ${widget.model.numberOfDonations} months, you'll be helping ${widget.model.organizationName} make an impact";
+      return context.l10n.recurringDonationsSuccessSubtitleNextXMonths(
+        widget.model.numberOfDonations,
+        widget.model.organizationName,
+      );
     }
     if (widget.model.selectedEndOption ==
         RecurringDonationStringKeys.whenIDecide) {
-      return "You'll be helping ${widget.model.organizationName} make an impact until you decide to stop.";
+      return context.l10n.recurringDonationsSuccessSubtitleUntilDecide(
+        widget.model.organizationName,
+      );
     }
     if (widget.model.selectedEndOption ==
             RecurringDonationStringKeys.onSpecificDate &&
         widget.model.endDate != null) {
-      return "Until ${_formatDate(widget.model.endDate!)}, you'll be helping ${widget.model.organizationName} make an impact";
+      return context.l10n.recurringDonationsSuccessSubtitleUntilDate(
+        _formatDate(widget.model.endDate!),
+        widget.model.organizationName,
+      );
     }
-    return "You'll be helping ${widget.model.organizationName} make an impact";
+    return context.l10n.recurringDonationsSuccessSubtitleDefault(
+      widget.model.organizationName,
+    );
   }
 
   String _formatDate(DateTime date) {

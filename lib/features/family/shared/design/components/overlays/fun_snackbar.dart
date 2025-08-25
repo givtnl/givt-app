@@ -16,7 +16,6 @@ class FunSnackbar {
   }) {
     _removeCurrent();
     final overlay = Overlay.of(context);
-    if (overlay == null) return;
 
     final entry = OverlayEntry(
       builder: (context) => Positioned(
@@ -32,6 +31,11 @@ class FunSnackbar {
     overlay.insert(entry);
     _currentSnackbar = entry;
     _timer = Timer(duration, _removeCurrent);
+  }
+
+  /// Removes the current snackbar if one is displayed
+  static void removeCurrent() {
+    _removeCurrent();
   }
 
   static void _removeCurrent() {

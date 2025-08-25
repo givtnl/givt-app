@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/shared/design/components/actions/action
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 
 class LeagueOverview extends StatelessWidget {
@@ -76,9 +75,7 @@ class LeagueOverview extends StatelessWidget {
                 isLoading: isBtnLoading,
                 isPressedDown: isPressedDown,
                 text: context.l10n.buttonContinue,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.continueClicked,
-                ),
+                analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
               ),
             ),
           )

@@ -131,7 +131,6 @@ class _PresetFormFieldState extends State<PresetFormField> {
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(
         color: FamilyAppTheme.neutral95,
-        width: 1,
       ),
     );
   }

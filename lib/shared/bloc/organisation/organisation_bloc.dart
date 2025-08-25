@@ -71,9 +71,13 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     // Always sort the selected group to the top
     organisations.sort((CollectGroup a, CollectGroup b) {
       if (a == state.selectedCollectGroup &&
-          a.orgName == lastDonatedOrganisation.organisationName) return -1;
+          a.orgName == lastDonatedOrganisation.organisationName) {
+        return -1;
+      }
       if (b == state.selectedCollectGroup &&
-          b.orgName == lastDonatedOrganisation.organisationName) return 1;
+          b.orgName == lastDonatedOrganisation.organisationName) {
+        return 1;
+      }
 
       // Then sort favorites to the top
       final aIsFavorited = state.favoritedOrganisations.contains(a.nameSpace);

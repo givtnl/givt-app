@@ -1,10 +1,8 @@
 import 'package:givt_app/core/logging/logging_service.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_overview_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 part 'recurring_donations_overview_state.dart';
 

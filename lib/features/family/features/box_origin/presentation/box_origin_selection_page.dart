@@ -11,7 +11,6 @@ import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
@@ -28,7 +27,7 @@ class BoxOriginSelectionPage extends StatefulWidget {
 }
 
 class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
-  final bloc = getIt<OrganisationBloc>();
+  final OrganisationBloc bloc = getIt<OrganisationBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,23 +44,24 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
       ],
       buttonText: 'Confirm',
       onTapFunButton: () => _onTapConfirm(context),
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.boxOriginConfirmClicked,
-      ),
+      analyticsEvent: AmplitudeEvents.boxOriginConfirmClicked.toEvent(),
     );
   }
 
   Future<void> _onTapConfirm(BuildContext context) async {
     final selectedNamespace = getIt<MediumCubit>().state.mediumId;
-    final selectedOrg = bloc.state.filteredOrganisations
-        .firstWhere((element) => element.nameSpace == selectedNamespace);
-    unawaited(AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.boxOriginSelected,
-      eventProperties: {
-        'namespace': selectedNamespace,
-        'orgname': selectedOrg.orgName,
-      },
-    ));
+    final selectedOrg = bloc.state.filteredOrganisations.firstWhere(
+      (element) => element.nameSpace == selectedNamespace,
+    );
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.boxOriginSelected,
+        eventProperties: {
+          'namespace': selectedNamespace,
+          'orgname': selectedOrg.orgName,
+        },
+      ),
+    );
 
     final success = await widget.setBoxOrigin(selectedNamespace);
 

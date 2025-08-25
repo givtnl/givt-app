@@ -12,7 +12,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/l
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -144,9 +143,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                 }
               },
               text: 'Next',
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.reflectAndShareReadyClicked,
-              ),
+              analyticsEvent: AmplitudeEvents.reflectAndShareReadyClicked.toEvent(),
             ),
           ],
         ),

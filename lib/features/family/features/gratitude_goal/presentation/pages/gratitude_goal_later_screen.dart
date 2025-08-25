@@ -6,7 +6,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
@@ -46,9 +45,7 @@ class _GratitudeGoalLaterScreenState extends State<GratitudeGoalLaterScreen> {
             child: FunButton(
               onTap: () => context.goNamed(FamilyPages.profileSelection.name),
               text: context.l10n.buttonDone,
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.gratitudeGoalLaterDoneClicked,
-              ),
+              analyticsEvent: AmplitudeEvents.gratitudeGoalLaterDoneClicked.toEvent(),
             ),
           ),
         ],

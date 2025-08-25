@@ -707,7 +707,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       await prefs.setString(previousDonationKey, namespace);
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
-        'Error in auto-favorites: ${e.toString()}',
+        'Error in auto-favorites: $e',
         methodName: stackTrace.toString(),
       );
     }

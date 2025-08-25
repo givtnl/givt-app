@@ -28,7 +28,7 @@ class LeaveGameButton extends StatefulWidget {
 }
 
 class _LeaveGameButtonState extends State<LeaveGameButton> {
-  final _cubit = getIt<LeaveGameCubit>();
+  final LeaveGameCubit _cubit = getIt<LeaveGameCubit>();
 
   @override
   Widget build(BuildContext context) {

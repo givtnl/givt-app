@@ -7,7 +7,7 @@ class Income extends HistoryItem {
     required super.type,
   });
 
-  Income.empty()
+  const Income.empty()
       : this(
           amount: 0,
           date: '',

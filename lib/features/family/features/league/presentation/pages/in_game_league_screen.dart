@@ -28,7 +28,7 @@ class InGameLeagueScreen extends StatefulWidget {
 
 class _InGameLeagueScreenState extends State<InGameLeagueScreen> {
   final InGameLeagueCubit _leagueCubit = getIt<InGameLeagueCubit>();
-  bool _isBtnPressedDown = false;
+  final bool _isBtnPressedDown = false;
   bool _isBtnLoading = false;
 
   @override

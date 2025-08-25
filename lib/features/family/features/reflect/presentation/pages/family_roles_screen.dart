@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/g
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -21,7 +20,7 @@ class FamilyRolesScreen extends StatefulWidget {
 }
 
 class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
-  final _cubit = getIt<FamilyRolesCubit>();
+  final FamilyRolesCubit _cubit = getIt<FamilyRolesCubit>();
 
   @override
   void didChangeDependencies() {
@@ -45,8 +44,10 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
         cubit: _cubit,
         onCustom: (context, superhero) {
           Navigator.of(context).pushReplacement(
-            PassThePhone.toSuperhero(superhero, skipRules: true)
-                .toRoute(context),
+            PassThePhone.toSuperhero(
+              superhero,
+              skipRules: true,
+            ).toRoute(context),
           );
         },
         onLoading: (context) =>
@@ -69,9 +70,9 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                   FunButton(
                     onTap: _cubit.onClickStart,
                     text: 'Start',
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.assignedFamilyRolesStartClicked,
-                    ),
+                    analyticsEvent: AmplitudeEvents
+                        .assignedFamilyRolesStartClicked
+                        .toEvent(),
                   ),
                 ],
               ),

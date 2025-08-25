@@ -12,7 +12,6 @@ import 'package:givt_app/features/family/features/recommendation/widgets/charity
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
@@ -41,8 +40,8 @@ class LocationSelectionScreen extends StatelessWidget {
                   state is TagsStateFetching
                       ? 'Give me a moment to think'
                       : isCitySelection
-                          ? 'Which City?'
-                          : 'Where do you want to help?',
+                      ? 'Which City?'
+                      : 'Where do you want to help?',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -77,9 +76,11 @@ class LocationSelectionScreen extends StatelessWidget {
                           columnSizes: [1.fr, 1.fr],
                           // set all the row sizes to auto (self-sizing height)
                           rowSizes: [
-                            for (int i = 0;
-                                i < (state.locations.length / 2).ceil();
-                                i++)
+                            for (
+                              int i = 0;
+                              i < (state.locations.length / 2).ceil();
+                              i++
+                            )
                               auto,
                           ],
                           columnGap: 16,
@@ -91,9 +92,9 @@ class LocationSelectionScreen extends StatelessWidget {
                                   isSelected:
                                       location == state.selectedLocation,
                                   onPressed: () {
-                                    context
-                                        .read<TagsCubit>()
-                                        .selectLocation(location: location);
+                                    context.read<TagsCubit>().selectLocation(
+                                      location: location,
+                                    );
                                   },
                                 ),
                               )
@@ -113,34 +114,35 @@ class LocationSelectionScreen extends StatelessWidget {
               ),
             ],
           ),
-          floatingActionButton: 
-          (state is TagsStateFetched &&
-                    state.selectedLocation != const Tag.empty()
-                ? isCitySelection && state.selectedCity.isEmpty
-                : true) == true ? null :
-          FunButton(
-            text: 'Next',
-            onTap: state is TagsStateFetched &&
-                    state.selectedLocation != const Tag.empty()
-                ? () {
-                    if (state.selectedLocation.key == 'STATE' &&
-                        state.status == LocationSelectionStatus.general) {
-                      context.read<TagsCubit>().goToCitySelection();
-                      return;
-                    }
-                    svgManager.preloadSvgAssets(
-                      state.interests.map((e) => e.pictureUrl).toList(),
-                    );
-                    context.pushNamed(
-                      FamilyPages.interestsSelection.name,
-                      extra: state,
-                    );
-                  }
-                : null,
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.locationNextClicked,
-            ),
-          ),
+          floatingActionButton:
+              (state is TagsStateFetched &&
+                          state.selectedLocation != const Tag.empty()
+                      ? isCitySelection && state.selectedCity.isEmpty
+                      : true) ==
+                  true
+              ? null
+              : FunButton(
+                  text: 'Next',
+                  onTap:
+                      state is TagsStateFetched &&
+                          state.selectedLocation != const Tag.empty()
+                      ? () {
+                          if (state.selectedLocation.key == 'STATE' &&
+                              state.status == LocationSelectionStatus.general) {
+                            context.read<TagsCubit>().goToCitySelection();
+                            return;
+                          }
+                          svgManager.preloadSvgAssets(
+                            state.interests.map((e) => e.pictureUrl).toList(),
+                          );
+                          context.pushNamed(
+                            FamilyPages.interestsSelection.name,
+                            extra: state,
+                          );
+                        }
+                      : null,
+                  analyticsEvent: AmplitudeEvents.locationNextClicked.toEvent(),
+                ),
         );
       },
     );

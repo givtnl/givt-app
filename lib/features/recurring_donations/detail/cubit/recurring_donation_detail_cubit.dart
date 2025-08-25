@@ -15,39 +15,26 @@ class RecurringDonationDetailCubit extends CommonCubit<RecurringDonationDetailUI
   ) : super(const BaseState.loading());
 
   final RecurringDonationDetailRepository _recurringDonationDetailRepository;
-  StreamSubscription<RecurringDonationDetailUIModel>? _detailSubscription;
 
   @override
   void init() {
-    _setupStreams();
     _loadRecurringDonationDetail();
-  }
-
-  void _setupStreams() {
-    _detailSubscription = _recurringDonationDetailRepository.onDetailChanged().listen(
-      _onDetailChanged,
-      onError: (error) {
-        LoggingInfo.instance.error(
-          'Error in recurring donation detail stream: $error',
-          methodName: 'RecurringDonationDetailCubit._setupStreams',
-        );
-      },
-    );
-  }
-
-  void _onDetailChanged(RecurringDonationDetailUIModel detail) {
-    emitData(detail);
   }
 
   Future<void> _loadRecurringDonationDetail() async {
     try {
       emitLoading();
       await _recurringDonationDetailRepository.loadRecurringDonationDetail();
+      
+      // After loading, emit the data
+      final uiModel = _createUIModel();
+      emitData(uiModel);
     } catch (error) {
       LoggingInfo.instance.error(
         'Failed to load recurring donation detail: $error',
         methodName: 'RecurringDonationDetailCubit._loadRecurringDonationDetail',
       );
+      emitError(error.toString());
     }
   }
 
@@ -57,12 +44,22 @@ class RecurringDonationDetailCubit extends CommonCubit<RecurringDonationDetailUI
 
   @override
   RecurringDonationDetailUIModel _createUIModel() {
-    return _recurringDonationDetailRepository.getDetail();
+    return RecurringDonationDetailUIModel(
+      organizationName: _recurringDonationDetailRepository.getOrganizationName(),
+      organizationIcon: 'assets/images/church_icon.png', // Default icon
+      totalDonated: _recurringDonationDetailRepository.getTotalDonated(),
+      remainingTime: _recurringDonationDetailRepository.getRemainingTime(),
+      endDate: _recurringDonationDetailRepository.getEndDate(),
+      progress: _recurringDonationDetailRepository.getProgress(),
+      history: _recurringDonationDetailRepository.getHistory(),
+      isLoading: _recurringDonationDetailRepository.isLoading(),
+      monthsHelped: _recurringDonationDetailRepository.getMonthsHelped(),
+      error: _recurringDonationDetailRepository.getError(),
+    );
   }
 
   @override
   Future<void> close() {
-    _detailSubscription?.cancel();
     return super.close();
   }
 }

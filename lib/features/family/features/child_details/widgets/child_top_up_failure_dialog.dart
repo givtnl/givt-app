@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,8 +28,8 @@ class TopUpFailureDialog extends StatelessWidget {
               'Oops, something went wrong',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -41,9 +40,7 @@ class TopUpFailureDialog extends StatelessWidget {
             FunButton(
               text: 'OK',
               onTap: () => context.pop(),
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.okClicked,
-              ),
+              analyticsEvent: AmplitudeEvents.okClicked.toEvent(),
             ),
           ],
         ),

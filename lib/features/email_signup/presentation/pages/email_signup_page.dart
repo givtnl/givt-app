@@ -27,7 +27,6 @@ import 'package:givt_app/features/permit_biometric/models/permit_biometric_reque
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
@@ -55,8 +54,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
-  final _cubit = getIt<EmailSignupCubit>();
-  final _connectionCubit = getIt<InternetConnectionCubit>();
+  final EmailSignupCubit _cubit = getIt<EmailSignupCubit>();
+  final InternetConnectionCubit _connectionCubit = getIt<InternetConnectionCubit>();
 
   @override
   void didChangeDependencies() {
@@ -296,8 +295,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                     }
                                   : null,
                               text: locals.buttonContinue,
-                              analyticsEvent: AnalyticsEvent(
-                                AmplitudeEvents.emailSignupContinueClicked,
+                              analyticsEvent: AmplitudeEvents.emailSignupContinueClicked.toEvent(
                                 parameters: {
                                   'email': state.email,
                                   'country': state.country?.name,

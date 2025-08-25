@@ -3,7 +3,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class CommonSuccessPage extends StatelessWidget {
@@ -74,9 +73,7 @@ class CommonSuccessPage extends StatelessWidget {
                   child: FunButton(
                     text: buttonText,
                     onTap: onClickButton ?? () => Navigator.of(context).pop(),
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.readyClicked,
-                    ),
+                    analyticsEvent: AmplitudeEvents.readyClicked.toEvent(),
                   ),
                 ),
               ],

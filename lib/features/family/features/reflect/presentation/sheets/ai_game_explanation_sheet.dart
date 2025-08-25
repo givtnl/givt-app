@@ -6,7 +6,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_small_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 class AiGameExplanationSheet extends StatelessWidget {
   const AiGameExplanationSheet({
@@ -73,16 +72,12 @@ class AiGameExplanationSheet extends StatelessWidget {
       primaryButton: FunButton(
         onTap: () => enableClicked?.call(),
         text: 'Enable Captain Ai',
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.enableCaptainAiClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.enableCaptainAiClicked.toEvent(),
       ),
       secondaryButton: FunTextButton.medium(
         onTap: () => maybeLaterClicked?.call(),
         text: 'Maybe later',
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.maybeLaterCaptainAiClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.maybeLaterCaptainAiClicked.toEvent(),
       ),
     );
   }

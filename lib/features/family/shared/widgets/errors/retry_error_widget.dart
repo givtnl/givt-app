@@ -65,9 +65,7 @@ class RetryErrorWidget extends StatelessWidget {
                     text: primaryButtonText,
                     leftIcon: Icons.refresh_rounded,
                     analyticsEvent: primaryButtonAnalyticsEvent ??
-                        AnalyticsEvent(
-                          AmplitudeEvents.retryClicked,
-                        ),
+                        AmplitudeEvents.retryClicked.toEvent(),
                   ),
                 ),
               ],

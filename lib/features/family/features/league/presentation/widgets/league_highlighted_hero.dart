@@ -17,7 +17,7 @@ class LeagueHighlightedHero extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double size = isLarge ? 120 : 80;
+    final size = isLarge ? 120.0 : 80.0;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

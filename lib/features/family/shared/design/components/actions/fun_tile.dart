@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -186,7 +185,7 @@ class FunTile extends StatelessWidget {
             color: newBackgroundColor,
             width: double.infinity,
             constraints: const BoxConstraints(
-              minHeight: 0,
+              
             ),
             child: SingleChildScrollView(
               child: Column(

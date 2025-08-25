@@ -28,7 +28,7 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
   late CustomInAppBrowser _customInAppBrowser;
   bool browserIsOpened = false;
   bool browserClosing = false;
-  final give = getIt<GiveCubit>();
+  final GiveCubit give = getIt<GiveCubit>();
 
   @override
   void initState() {

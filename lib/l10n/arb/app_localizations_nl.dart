@@ -2333,4 +2333,18 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get platformFeeGenerousOption => 'Extra gul';
+
+  @override
+  String get recurringDonationsCreationErrorTitle =>
+      'Het is niet gelukt je donatie in te stellen';
+
+  @override
+  String get recurringDonationsCreationErrorDescription =>
+      'Er is iets misgegaan.\\nControleer alsjeblieft je gegevens en probeer het opnieuw.';
+
+  @override
+  String get recurringDonationsCreationErrorChangeAndRetry => 'Wijzigen';
+
+  @override
+  String get recurringDonationsCancelled => 'Geannuleerd';
 }

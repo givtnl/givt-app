@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
-import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/stage_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/dialogs/microphone_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/stage_screen_custom.dart';
@@ -12,7 +11,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -161,15 +159,16 @@ class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
                         FunButton(
                           onTap: () => widget.onClickButton(context),
                           text: widget.buttonText,
-                          analyticsEvent: AnalyticsEvent(
-                            AmplitudeEvents.supersShowItsShowtimeClicked,
-                            parameters: {
-                              'fromInitialExplanationScreen':
-                                  widget.fromInitialExplanationScreen,
-                              'isAITurnedOn': uiModel.isAITurnedOn,
-                              'buttonText': widget.buttonText,
-                            },
-                          ),
+                          analyticsEvent: AmplitudeEvents
+                              .supersShowItsShowtimeClicked
+                              .toEvent(
+                                parameters: {
+                                  'fromInitialExplanationScreen':
+                                      widget.fromInitialExplanationScreen,
+                                  'isAITurnedOn': uiModel.isAITurnedOn,
+                                  'buttonText': widget.buttonText,
+                                },
+                              ),
                         ),
                       ],
                     ),

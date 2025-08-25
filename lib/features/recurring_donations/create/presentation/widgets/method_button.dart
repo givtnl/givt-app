@@ -3,8 +3,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 
 class MethodButton extends StatelessWidget {
@@ -24,9 +22,7 @@ class MethodButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionContainer(
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.debugButtonClicked,
-      ),
+      analyticsEvent: AmplitudeEvents.debugButtonClicked.toEvent(),
       onTap: onPressed,
       borderColor: FamilyAppTheme.neutralVariant80,
       baseBorderSize: 4,

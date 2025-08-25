@@ -19,7 +19,7 @@ class GenerousSelectionScreen extends StatefulWidget {
 }
 
 class _GenerousSelectionScreenState extends State<GenerousSelectionScreen> {
-  final cubit = getIt<GenerousSelectionCubit>();
+  final GenerousSelectionCubit cubit = getIt<GenerousSelectionCubit>();
 
   @override
   void didChangeDependencies() {

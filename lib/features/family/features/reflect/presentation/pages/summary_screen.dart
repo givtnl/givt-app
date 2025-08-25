@@ -16,7 +16,6 @@ import 'package:givt_app/features/family/shared/design/components/content/models
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -29,7 +28,7 @@ class SummaryScreen extends StatefulWidget {
 }
 
 class _SummaryScreenState extends State<SummaryScreen> {
-  final _cubit = getIt<SummaryCubit>();
+  final SummaryCubit _cubit = getIt<SummaryCubit>();
   bool pressDown = false;
   bool _isDoneBtnLoading = false;
 
@@ -65,63 +64,68 @@ class _SummaryScreenState extends State<SummaryScreen> {
             return LayoutBuilder(
               builder:
                   (BuildContext context, BoxConstraints viewportConstraints) {
-                return SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: viewportConstraints.maxHeight,
-                    ),
-                    child: IntrinsicHeight(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 24),
-                          FunTag.purple(
-                            text: DateTime.now().formattedFullMonth,
-                          ),
-                          const SizedBox(height: 16),
-                          const TitleLargeText('Great job Family!'),
-                          const Spacer(),
-                          if (details.players.isNotEmpty)
-                            AvatarBar(
-                              circleSize: 54,
-                              uiModel: AvatarBarUIModel(
-                                avatarUIModels: [
-                                  for (var i = 0;
-                                      i < details.players.length;
-                                      i++)
-                                    AvatarUIModel(
-                                      avatar: details.players[i].avatar,
-                                      customAvatarUIModel: details
-                                          .players[i].customAvatar
-                                          ?.toUIModel(),
-                                      text: details.players[i].firstName,
-                                    ),
-                                ],
+                    return SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: viewportConstraints.maxHeight,
+                        ),
+                        child: IntrinsicHeight(
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 24),
+                              FunTag.purple(
+                                text: DateTime.now().formattedFullMonth,
                               ),
-                              onAvatarTapped: (i) {},
-                            ),
+                              const SizedBox(height: 16),
+                              const TitleLargeText('Great job Family!'),
+                              const Spacer(),
+                              if (details.players.isNotEmpty)
+                                AvatarBar(
+                                  circleSize: 54,
+                                  uiModel: AvatarBarUIModel(
+                                    avatarUIModels: [
+                                      for (
+                                        var i = 0;
+                                        i < details.players.length;
+                                        i++
+                                      )
+                                        AvatarUIModel(
+                                          avatar: details.players[i].avatar,
+                                          customAvatarUIModel: details
+                                              .players[i]
+                                              .customAvatar
+                                              ?.toUIModel(),
+                                          text: details.players[i].firstName,
+                                        ),
+                                    ],
+                                  ),
+                                  onAvatarTapped: (i) {},
+                                ),
 
-                          // stats button
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 24,
-                              right: 24,
-                              bottom: 24,
-                            ),
-                            child: getTileStats(details),
+                              // stats button
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 24,
+                                  right: 24,
+                                  bottom: 24,
+                                ),
+                                child: getTileStats(details),
+                              ),
+                              const Spacer(),
+                              // Bottom button
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                ),
+                                child: getFunButton(details),
+                              ),
+                              const SizedBox(height: 40),
+                            ],
                           ),
-                          const Spacer(),
-                          // Bottom button
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: getFunButton(details),
-                          ),
-                          const SizedBox(height: 40),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                );
-              },
+                    );
+                  },
             );
           },
         ),
@@ -146,10 +150,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       iconData: FontAwesomeIcons.solidClock,
                       assetSize: 32,
                       isPressedDown: true,
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents
-                            .familyReflectSummaryMinutesPlayedClicked,
-                      ),
+                      analyticsEvent: AmplitudeEvents
+                          .familyReflectSummaryMinutesPlayedClicked
+                          .toEvent(),
                     ),
                   ),
                   if (details.xpEarnedForTime != null)
@@ -173,10 +176,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       iconData: FontAwesomeIcons.solidHeart,
                       assetSize: 32,
                       isPressedDown: true,
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents
-                            .familyReflectSummaryGenerousDeedsClicked,
-                      ),
+                      analyticsEvent: AmplitudeEvents
+                          .familyReflectSummaryGenerousDeedsClicked
+                          .toEvent(),
                     ),
                   ),
                   if (details.xpEarnedForDeeds != null)
@@ -198,9 +200,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
               iconData: FontAwesomeIcons.bolt,
               assetSize: 32,
               isPressedDown: true,
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.familyReflectSummaryXpClicked,
-              ),
+              analyticsEvent: AmplitudeEvents.familyReflectSummaryXpClicked
+                  .toEvent(),
             ),
           ),
         ),
@@ -209,9 +210,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   }
 
   FunButton getFunButton(SummaryDetails details) {
-    final analyticEvent = AnalyticsEvent(
-      AmplitudeEvents.familyReflectSummaryClaimXp,
-    );
+    final analyticEvent = AmplitudeEvents.familyReflectSummaryClaimXp.toEvent();
 
     return FunButton(
       isLoading: _isDoneBtnLoading,

@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
@@ -16,7 +17,6 @@ import 'package:givt_app/features/recurring_donations/detail/repositories/recurr
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/util.dart';
@@ -114,7 +114,7 @@ class _RecurringDonationDetailPageState
                     children: [
                       _buildOrganizationHeader(uiModel),
                       const SizedBox(height: 24),
-                      if (uiModel.hasProgress) _buildProgressSection(uiModel, context),
+                      _buildProgressSection(uiModel, context),
                       const SizedBox(height: 24),
                       _buildSummaryCards(uiModel, currency, context),
                       const SizedBox(height: 24),
@@ -124,8 +124,10 @@ class _RecurringDonationDetailPageState
                   ),
                 ),
               ),
-              // Manage button always at bottom
-              _buildManageButton(context),
+              // Manage button only for active recurring donations
+              if (widget.recurringDonation.currentState ==
+                  RecurringDonationState.active)
+                _buildManageButton(context),
             ],
           );
         },
@@ -147,7 +149,9 @@ class _RecurringDonationDetailPageState
           const SizedBox(height: 8),
           // Organization name
           TitleMediumText(
-            uiModel.organizationName,
+            uiModel.organizationName.isNotEmpty 
+                ? uiModel.organizationName 
+                : 'Loading...',
             textAlign: TextAlign.center,
           ),
         ],
@@ -155,8 +159,14 @@ class _RecurringDonationDetailPageState
     );
   }
 
-  Widget _buildProgressSection(RecurringDonationDetailUIModel uiModel, BuildContext context) {
-    if (uiModel.progress == null) return const SizedBox.shrink();
+  Widget _buildProgressSection(
+    RecurringDonationDetailUIModel uiModel,
+    BuildContext context,
+  ) {
+    if (uiModel.progress == null) {
+      // Don't show anything for unlimited donations
+      return const SizedBox.shrink();
+    }
 
     return FunProgressbar(
       currentProgress: uiModel.progress!.completed,
@@ -178,7 +188,7 @@ class _RecurringDonationDetailPageState
         Expanded(
           child: _buildSummaryCard(
             icon: FontAwesomeIcons.moneyBillWave,
-            value: '$currency${uiModel.totalDonated.toStringAsFixed(0)}',
+            value: '$currency${uiModel.totalDonated.toStringAsFixed(2)}',
             label: context.l10n.recurringDonationsDetailSummaryDonated,
           ),
         ),
@@ -212,9 +222,8 @@ class _RecurringDonationDetailPageState
           iconData: icon,
           assetSize: 32,
           iconPath: '',
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.recurringDonationsClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.recurringDonationEditClicked
+              .toEvent(),
           isPressedDown: true,
           titleBig: value,
           subtitle: label,
@@ -232,7 +241,9 @@ class _RecurringDonationDetailPageState
                 borderRadius: BorderRadius.circular(12),
               ),
               child: LabelSmallText(
-                context.l10n.recurringDonationsDetailEndsTag(_formatDate(endDateTag)),
+                context.l10n.recurringDonationsDetailEndsTag(
+                  _formatDate(endDateTag),
+                ),
                 color: FamilyAppTheme.highlight30,
                 textAlign: TextAlign.center,
               ),
@@ -252,12 +263,18 @@ class _RecurringDonationDetailPageState
       children: [
         TitleMediumText(context.l10n.recurringDonationsDetailHistoryTitle),
         const SizedBox(height: 16),
-        ...uiModel.history.map((item) => _buildHistoryItem(item, currency, context)),
+        ...uiModel.history.map(
+          (item) => _buildHistoryItem(item, currency, context),
+        ),
       ],
     );
   }
 
-  Widget _buildHistoryItem(DonationHistoryItem item, String currency, BuildContext context) {
+  Widget _buildHistoryItem(
+    DonationHistoryItem item,
+    String currency,
+    BuildContext context,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: const BoxDecoration(
@@ -290,7 +307,7 @@ class _RecurringDonationDetailPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LabelMediumText(
-                  '$currency${item.amount.toStringAsFixed(0)}',
+                  '$currency${item.amount.toStringAsFixed(2)}',
                   color: FamilyAppTheme.primary40,
                 ),
                 LabelSmallText(
@@ -322,9 +339,7 @@ class _RecurringDonationDetailPageState
     return FunButton.secondary(
       onTap: () => _cubit.onManageDonationPressed(),
       text: context.l10n.recurringDonationsDetailManageButton,
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.recurringDonationsClicked,
-      ),
+      analyticsEvent: AmplitudeEvents.recurringDonationManageClicked.toEvent(),
     );
   }
 
@@ -335,7 +350,7 @@ class _RecurringDonationDetailPageState
       case DonationStatus.completed:
         return FamilyAppTheme.primary95;
       case DonationStatus.pending:
-        return FamilyAppTheme.highlight50;
+        return FamilyAppTheme.neutralVariant95;
     }
   }
 
@@ -372,24 +387,49 @@ class _RecurringDonationDetailPageState
     }
   }
 
-  String _getHelpingLabel(RecurringDonationDetailUIModel uiModel, BuildContext context) {
-    // Check if the recurring donation has ended (either cancelled, finished, or past end date)
-    if (uiModel.endDate != null && uiModel.endDate!.isBefore(DateTime.now())) {
-      return context.l10n.recurringDonationsDetailSummaryHelped;
-    }
-    return context.l10n.recurringDonationsDetailSummaryHelping;
+  String _getHelpingLabel(
+    RecurringDonationDetailUIModel uiModel,
+    BuildContext context,
+  ) {
+    // Always show "Helped" since we're showing total days from start until now
+    return context.l10n.recurringDonationsDetailSummaryHelped;
   }
 
-  String _getTimeDisplay(RecurringDonationDetailUIModel uiModel, BuildContext context) {
+  String _getTimeDisplay(
+    RecurringDonationDetailUIModel uiModel,
+    BuildContext context,
+  ) {
+    final startDate = DateTime.parse(widget.recurringDonation.startDate);
+    
+    // Check if the recurring donation has ended (cancelled, completed, or past end date)
     if (uiModel.endDate != null && uiModel.endDate!.isBefore(DateTime.now())) {
-      // For completed recurring donations, show total days helped
-      final startDate = DateTime.parse(widget.recurringDonation.startDate);
-      final endDate = uiModel.endDate!;
-      final daysHelped = endDate.difference(startDate).inDays;
-      return context.l10n.recurringDonationsDetailTimeDisplayDays(daysHelped.toString());
+      // For cancelled/completed donations, show days between start and last transaction
+      final completedTransactions = uiModel.history
+          .where((h) => h.status == DonationStatus.completed)
+          .toList();
+      
+      if (completedTransactions.isNotEmpty) {
+        // Find the last completed transaction
+        final lastTransaction = completedTransactions
+            .reduce((a, b) => a.date.isAfter(b.date) ? a : b);
+        final daysHelped = lastTransaction.date.difference(startDate).inDays;
+        return context.l10n.recurringDonationsDetailTimeDisplayDays(
+          daysHelped.toString(),
+        );
+      } else {
+        // Fallback: no completed transactions, show days from start to end date
+        final daysHelped = uiModel.endDate!.difference(startDate).inDays;
+        return context.l10n.recurringDonationsDetailTimeDisplayDays(
+          daysHelped.toString(),
+        );
+      }
     } else {
-      // For active recurring donations, show remaining time
-      return uiModel.remainingTime;
+      // For active donations, show days from start until now
+      final now = DateTime.now();
+      final daysHelped = now.difference(startDate).inDays;
+      return context.l10n.recurringDonationsDetailTimeDisplayDays(
+        daysHelped.toString(),
+      );
     }
   }
 
@@ -413,7 +453,9 @@ class _RecurringDonationDetailPageState
                 // TODO: Navigate to edit page when implemented
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(context.l10n.recurringDonationsDetailEditComingSoon),
+                    content: Text(
+                      context.l10n.recurringDonationsDetailEditComingSoon,
+                    ),
                     duration: const Duration(seconds: 2),
                   ),
                 );
@@ -427,7 +469,9 @@ class _RecurringDonationDetailPageState
                 // TODO: Implement pause functionality when available
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(context.l10n.recurringDonationsDetailPauseComingSoon),
+                    content: Text(
+                      context.l10n.recurringDonationsDetailPauseComingSoon,
+                    ),
                     duration: const Duration(seconds: 2),
                   ),
                 );

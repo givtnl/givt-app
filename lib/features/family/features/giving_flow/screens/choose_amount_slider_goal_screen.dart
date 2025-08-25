@@ -10,13 +10,12 @@ import 'package:givt_app/features/family/features/giving_flow/create_transaction
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/family_goal_widget.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/slider_widget.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -144,8 +143,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                             .read<CreateTransactionCubit>()
                             .createTransaction(transaction: transaction);
                       },
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.donateToThisFamilyGoalPressed,
+                analyticsEvent: AmplitudeEvents.donateToThisFamilyGoalPressed.toEvent(
                   parameters: {
                     AnalyticsHelper.goalKey: organisation.name,
                     AnalyticsHelper.amountKey: state.amount,

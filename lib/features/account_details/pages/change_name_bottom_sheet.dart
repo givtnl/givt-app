@@ -65,7 +65,6 @@ class _ChangeNameBottomSheetState extends State<ChangeNameBottomSheet> {
                     return null;
                   },
                   hintText: locals.firstName,
-                  textInputAction: TextInputAction.next,
                   textCapitalization: TextCapitalization.sentences,
                 ),
                 const SizedBox(height: 15),

@@ -6,8 +6,8 @@ class FunDatePicker extends StatelessWidget {
   const FunDatePicker({
     required this.selectedDate,
     required this.onDateSelected,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final DateTime? selectedDate;
   final ValueChanged<DateTime> onDateSelected;
@@ -20,7 +20,7 @@ class FunDatePicker extends StatelessWidget {
 
     return GestureDetector(
       onTap: () async {
-        final now = DateTime.now();
+        final now = DateTime.now().add(const Duration(days: 1));
         final picked = await showDatePicker(
           context: context,
           initialDate: selectedDate ?? now,

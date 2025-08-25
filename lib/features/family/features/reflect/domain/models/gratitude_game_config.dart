@@ -6,7 +6,7 @@ class GratitudeGameConfig {
     this.storeReviewGameCount = 2,
     this.interviewGameCount = 1,
     this.useDefaultInterviewIcon = true,
-    this.askForInterviewTitle = 'Earn \$50 for helping us!',
+    this.askForInterviewTitle = r'Earn $50 for helping us!',
     this.askForInterviewMessage =
         'We’d love to hear your feedback about Givt on a quick call.',
   });
@@ -20,7 +20,7 @@ class GratitudeGameConfig {
     final useDefaultInterviewIcon =
         json['use_default_interview_icon'] as bool? ?? true;
     final askForInterviewTitle = json['ask_for_interview_title'] as String? ??
-        'Earn \$50 for helping us!';
+        r'Earn $50 for helping us!';
     final askForInterviewMessage =
         json['ask_for_interview_message'] as String? ??
             'We’d love to hear your feedback about Givt on a quick call.';

@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/features/gratitude_goal/presentation/pa
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
@@ -75,9 +74,7 @@ class _GratitudeGoalExplanationScreenState
             GratitudeGoalSetAGoalScreen(behavior: widget.behavior)
                 .toRoute(context),
           ),
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.gratitudeGoalLetsDoItClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.gratitudeGoalLetsDoItClicked.toEvent(),
         ),
         const SizedBox(height: 40),
       ],

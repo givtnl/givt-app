@@ -18,7 +18,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/r
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class RuleScreen extends StatefulWidget {
@@ -207,9 +206,7 @@ class _RuleScreenState extends State<RuleScreen> {
                 isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
                 onTap: () => widget.onTap(context),
                 text: widget.buttonText,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.reflectAndShareRulesNextClicked,
-                ),
+                analyticsEvent: AmplitudeEvents.reflectAndShareRulesNextClicked.toEvent(),
               ),
             ),
           ),

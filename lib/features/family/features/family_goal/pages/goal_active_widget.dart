@@ -5,7 +5,6 @@ import 'package:givt_app/features/family/shared/design/components/content/fun_mi
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 
 class GoalActiveWidget extends StatelessWidget {
@@ -30,10 +29,9 @@ class GoalActiveWidget extends StatelessWidget {
               totalAmount: currentGoal.totalAmount,
             ),
           ),
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.goalActiveCardClicked,
+          analyticsEvent: AmplitudeEvents.goalActiveCardClicked.toEvent(
             parameters: {
-              'organisation': state.familyGroup.organisation,
+              'organisation': state.familyGroup.organisation.toString(),
             },
           ),
         );

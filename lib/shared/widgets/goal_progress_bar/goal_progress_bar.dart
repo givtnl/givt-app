@@ -25,7 +25,7 @@ class GoalProgressBar extends StatelessWidget {
   final bool showGoalLabel;
   final bool showCurrentLabel;
 
-  static const _defaultColors = [
+  static const List<Color> _defaultColors = [
     AppTheme.highlight90,
     AppTheme.progressGradient1,
     AppTheme.progressGradient2,

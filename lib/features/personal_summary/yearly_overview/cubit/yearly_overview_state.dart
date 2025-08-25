@@ -57,13 +57,13 @@ final class YearlyOverviewState extends Equatable {
   double get totalWithinGivtPreviousYear {
     return monthlyByOrganisationPreviousYear
         .map((e) => e.amount)
-        .fold(0.0, (previousValue, element) => previousValue + element);
+        .fold(0, (previousValue, element) => previousValue + element);
   }
 
   double get totalOutsideGivtPreviousYear {
     return externalDonationsPreviousYear
         .map((e) => e.amount)
-        .fold(0.0, (previousValue, element) => previousValue + element);
+        .fold(0, (previousValue, element) => previousValue + element);
   }
 
   double get totalPreviousYear {

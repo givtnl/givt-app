@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart'
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -87,8 +86,7 @@ class _RewardScreenState extends State<RewardScreen> {
               );
             },
             text: 'Claim reward',
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.claimRewardClicked,
+            analyticsEvent: AmplitudeEvents.claimRewardClicked.toEvent(
               parameters: {
                 'reward': widget.uiModel.rewardText,
                 'rewardImage': widget.uiModel.rewardImage,

@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/features/gratitude_goal/presentation/pa
 import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeGoalEntryScreen extends StatefulWidget {
@@ -60,9 +59,7 @@ class _GratitudeGoalEntryScreenState extends State<GratitudeGoalEntryScreen> {
             onTap: () => Navigator.of(context).push(
               const GratitudeGoalRecognizeThisScreen().toRoute(context),
             ),
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.gratitudeGoalStartClicked,
-            ),
+            analyticsEvent: AmplitudeEvents.gratitudeGoalStartClicked.toEvent(),
           ),
         ],
       ),

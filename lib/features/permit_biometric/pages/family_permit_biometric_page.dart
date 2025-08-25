@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -76,10 +75,10 @@ class FamilyPermitBiometricPage extends StatelessWidget {
                 onTap: () {
                   context.read<PermitBiometricCubit>().enableBiometric();
                 },
-                analyticsEvent: AnalyticsEvent(
-                  state.permitBiometricRequest.isRegistration
-                      ? AmplitudeEvents.activateBiometricWhenRegistered
-                      : AmplitudeEvents.activateBiometricWhenLoggedIn,
+                analyticsEvent: (state.permitBiometricRequest.isRegistration
+                    ? AmplitudeEvents.activateBiometricWhenRegistered
+                    : AmplitudeEvents.activateBiometricWhenLoggedIn)
+                    .toEvent(
                   parameters: {
                     'biometric_type': state.biometricType.name,
                   },
@@ -91,10 +90,10 @@ class FamilyPermitBiometricPage extends StatelessWidget {
                 onTap: () {
                   context.read<PermitBiometricCubit>().denyBiometric();
                 },
-                analyticsEvent: AnalyticsEvent(
-                  state.permitBiometricRequest.isRegistration
-                      ? AmplitudeEvents.skipBiometricWhenRegistered
-                      : AmplitudeEvents.skipBiometricWhenLoggedIn,
+                analyticsEvent: (state.permitBiometricRequest.isRegistration
+                    ? AmplitudeEvents.skipBiometricWhenRegistered
+                    : AmplitudeEvents.skipBiometricWhenLoggedIn)
+                    .toEvent(
                   parameters: {
                     'biometric_type': state.biometricType.name,
                   },

@@ -10,11 +10,9 @@ import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_d
 import 'package:givt_app/features/recurring_donations/overview/widgets/recurring_donations_empty_state.dart';
 import 'package:givt_app/features/recurring_donations/overview/widgets/recurring_donations_list.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:go_router/go_router.dart';
 
 class RecurringDonationsOverviewPage extends StatefulWidget {
   const RecurringDonationsOverviewPage({super.key});
@@ -104,12 +102,14 @@ class _RecurringDonationsOverviewPageState
             children: [
               FunPrimaryTabs(
                 margin: EdgeInsets.zero,
-                options: [locals.recurringDonationsOverviewTabCurrent, locals.recurringDonationsOverviewTabPast],
+                options: [
+                  locals.recurringDonationsOverviewTabCurrent,
+                  locals.recurringDonationsOverviewTabPast,
+                ],
                 selectedIndex: _selectedTabIndex,
                 onPressed: _onTabChanged,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.recurringDonationsTabsChanged,
-                ),
+                analyticsEvent: AmplitudeEvents.recurringDonationsTabsChanged
+                    .toEvent(),
               ),
               const SizedBox(height: 32),
               Expanded(
@@ -125,9 +125,7 @@ class _RecurringDonationsOverviewPageState
         onTap: () => _cubit.onAddRecurringDonationPressed(),
         text: locals.recurringDonationsOverviewAddButton,
         leftIcon: Icons.add,
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.recurringDonationsAddClicked,
-        ),
+        analyticsEvent: AmplitudeEvents.recurringDonationsAddClicked.toEvent(),
       ),
     );
   }

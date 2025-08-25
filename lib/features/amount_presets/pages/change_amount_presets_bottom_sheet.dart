@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -163,9 +162,10 @@ class _ChangeAmountPresetsBottomSheetState
         onTap: () {
           _updateAmountPresetsStatus(context);
         },
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.onInfoRowClicked,
-          parameters: {'action': 'save_presets_status'},
+        analyticsEvent: AmplitudeEvents.onInfoRowClicked.toEvent(
+          parameters: {
+            'action': 'save_presets_status',
+          },
         ),
       ),
     );
@@ -292,8 +292,7 @@ class _ChangeAmountPresetsBottomSheetState
       primaryButton: FunButton(
         text: locals.save,
         onTap: () => _saveAmountPresets(context),
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.amountPresetsSaveClicked,
+        analyticsEvent: AmplitudeEvents.amountPresetsSaveClicked.toEvent(
           parameters: {
             'preset_1': _firstPreset.text,
             'preset_2': _secondPreset.text,

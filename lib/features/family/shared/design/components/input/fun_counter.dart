@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_icon_border_button.dart';
 
 class FunCounter extends StatefulWidget {
@@ -143,9 +142,7 @@ class _FunCounterState extends State<FunCounter> {
           onTapCancel: _stopTimer,
           onTap: (_currentAmount <= minAmount) ? null : _decrementCounter,
           isMuted: true,
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.funCounterDecrementClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.funCounterDecrementClicked.toEvent(),
           child: FaIcon(
             semanticLabel: 'minus',
             FontAwesomeIcons.minus,
@@ -173,9 +170,7 @@ class _FunCounterState extends State<FunCounter> {
           onTapCancel: _stopTimer,
           onTap: (_currentAmount > 998) ? null : _incrementCounter,
           isMuted: true,
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.funCounterIncrementClicked,
-          ),
+          analyticsEvent: AmplitudeEvents.funCounterIncrementClicked.toEvent(),
           child: FaIcon(
             semanticLabel: 'plus',
             FontAwesomeIcons.plus,

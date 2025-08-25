@@ -74,9 +74,9 @@ class UnlockedColorWidget extends StatelessWidget {
   Widget _buildEasterEggBanner() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: FamilyAppTheme.tertiary80,
-        borderRadius: const BorderRadius.only(
+        borderRadius: BorderRadius.only(
           topRight: Radius.circular(8),
           bottomLeft: Radius.circular(8),
         ),

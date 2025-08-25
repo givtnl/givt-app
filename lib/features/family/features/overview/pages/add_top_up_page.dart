@@ -6,7 +6,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -86,9 +85,7 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                     onTap: () {
                       Navigator.of(context).pop(_amount);
                     },
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.topUpConfirmClicked,
-                    ),
+                    analyticsEvent: AmplitudeEvents.topUpConfirmClicked.toEvent(),
                   ),
                 ],
               ),

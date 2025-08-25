@@ -15,7 +15,6 @@ import 'package:givt_app/features/recurring_donations/create/presentation/widget
 import 'package:givt_app/features/recurring_donations/create/presentation/widgets/fun_modal_close_flow.dart';
 import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -33,11 +32,27 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
   final Step2SetAmountCubit _cubit = Step2SetAmountCubit(
     getIt<RecurringDonationNewFlowRepository>(),
   );
+  
+  // Add controller for amount field to enable pre-filling
+  late final TextEditingController _amountController;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize controller - cubit will handle pre-filling through state
+    _amountController = TextEditingController();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _cubit.init();
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,6 +68,11 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
         }
       },
       onData: (context, uiModel) {
+        // Update controller with current amount from cubit state
+        if (uiModel.amount != _amountController.text) {
+          _amountController.text = uiModel.amount;
+        }
+        
         return FunScaffold(
           appBar: FunTopAppBar.white(
             title: context.l10n.recurringDonationsStep2Title,
@@ -105,6 +125,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               ),
               const SizedBox(height: 8),
               OutlinedTextFormField(
+                controller: _amountController,
                 hintText: context.l10n.recurringDonationsCreateStep2AmountHint,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -127,8 +148,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               FunButton(
                 text: context.l10n.buttonContinue,
                 isDisabled: !uiModel.isContinueEnabled,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.recurringStep2SetAmountContinueClicked,
+                analyticsEvent: AmplitudeEvents.recurringStep2SetAmountContinueClicked.toEvent(
                   parameters: {
                     AnalyticsHelper.amountKey: uiModel.amount,
                     'frequency': uiModel.selectedFrequency?.name ?? '',

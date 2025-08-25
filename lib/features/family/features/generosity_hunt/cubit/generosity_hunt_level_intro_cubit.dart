@@ -7,10 +7,10 @@ part 'generosity_hunt_level_intro_uimodel.dart';
 
 class GenerosityHuntLevelIntroCubit
     extends CommonCubit<GenerosityHuntLevelIntroUIModel, void> {
-  final GenerosityHuntRepository _repository;
 
   GenerosityHuntLevelIntroCubit(this._repository)
       : super(const BaseState.loading());
+  final GenerosityHuntRepository _repository;
 
   void init() {
     emitData(_createUIModel());

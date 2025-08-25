@@ -15,7 +15,6 @@ import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_too
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -65,9 +64,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   onPressed: (index) => setState(
                     () => _selectedIndex = index,
                   ),
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.missionTabsChanged,
-                  ),
+                  analyticsEvent: AmplitudeEvents.missionTabsChanged.toEvent(),
                 ),
                 const SizedBox(height: 24),
                 if (_missions(uiModel).isEmpty)
@@ -135,8 +132,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                                     );
                                   }
                                 },
-                          analyticsEvent: AnalyticsEvent(
-                            AmplitudeEvents.funMissionCardClicked,
+                          analyticsEvent: AmplitudeEvents.funMissionCardClicked.toEvent(
                             parameters: {
                               'mission': mission.title,
                             },

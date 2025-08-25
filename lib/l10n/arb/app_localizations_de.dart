@@ -2343,4 +2343,18 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get platformFeeGenerousOption => 'Am beliebtesten';
+
+  @override
+  String get recurringDonationsCreationErrorTitle =>
+      'Wir konnten deine Spende nicht einrichten';
+
+  @override
+  String get recurringDonationsCreationErrorDescription =>
+      'Etwas ist schiefgelaufen.\\nBitte überprüfe deine Daten und versuche es erneut.';
+
+  @override
+  String get recurringDonationsCreationErrorChangeAndRetry => 'Ändern';
+
+  @override
+  String get recurringDonationsCancelled => 'Abgebrochen';
 }

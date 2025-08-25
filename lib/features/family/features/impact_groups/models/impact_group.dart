@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/group_organiser.dart';
+import 'package:givt_app/features/give/models/organisation.dart';
 
 class ImpactGroup extends Equatable {
   const ImpactGroup({

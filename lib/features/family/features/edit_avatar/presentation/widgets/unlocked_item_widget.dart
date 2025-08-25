@@ -5,7 +5,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_item_uimodel.dart';
 import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 
 class UnlockedItemWidget extends StatelessWidget {
@@ -34,11 +33,10 @@ class UnlockedItemWidget extends StatelessWidget {
           ? FamilyAppTheme.primary80
           : FamilyAppTheme.neutralVariant80,
       onTap: () => onPressed(uiModel.index, uiModel.type),
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.unlockedAvatarItemClicked,
+      analyticsEvent: AmplitudeEvents.unlockedAvatarItemClicked.toEvent(
         parameters: {
           'type': uiModel.type,
-          'index': uiModel.index,
+          'index': uiModel.index.toString(),
         },
       ),
       child: Stack(
@@ -51,20 +49,26 @@ class UnlockedItemWidget extends StatelessWidget {
               child: recolor != null
                   ? FutureBuilder(
                       future: replacePlaceholders
-                          ? recolorPlaceholdersSvgFromAsset(path, color: recolor!)
+                          ? recolorPlaceholdersSvgFromAsset(
+                              path,
+                              color: recolor!,
+                            )
                           : recolorSvgFromAsset(
                               path,
                               color: recolor!,
                               useSecondLongestPath: useSecondLongestPath,
                             ),
                       builder:
-                          (BuildContext context, AsyncSnapshot<String> snapshot) {
-                        return snapshot.data != null
-                            ? SvgPicture.string(
-                                snapshot.data!,
-                              )
-                            : _regularSvg(path);
-                      },
+                          (
+                            BuildContext context,
+                            AsyncSnapshot<String> snapshot,
+                          ) {
+                            return snapshot.data != null
+                                ? SvgPicture.string(
+                                    snapshot.data!,
+                                  )
+                                : _regularSvg(path);
+                          },
                     )
                   : _regularSvg(path),
             ),
@@ -83,9 +87,9 @@ class UnlockedItemWidget extends StatelessWidget {
   Widget _buildEasterEggBanner() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: FamilyAppTheme.tertiary80,
-        borderRadius: const BorderRadius.only(
+        borderRadius: BorderRadius.only(
           topRight: Radius.circular(8),
           bottomLeft: Radius.circular(8),
         ),

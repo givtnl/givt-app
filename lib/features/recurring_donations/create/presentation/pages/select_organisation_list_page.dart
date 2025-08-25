@@ -11,7 +11,6 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step1_select_organization_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -38,13 +37,20 @@ class _SelectOrganisationListPageState
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     final user = context.read<AuthCubit>().state.user;
-    bloc.add(
-      OrganisationFetch(
-        Country.fromCode(user.country),
-        type: CollectGroupType.none.index,
-      ),
-    );
+    bloc
+      ..add(
+        OrganisationFetch(
+          Country.fromCode(user.country),
+          type: CollectGroupType.none.index,
+        ),
+      )
+      ..add(const FavoritesRefresh());
   }
 
   @override
@@ -70,6 +76,7 @@ class _SelectOrganisationListPageState
                 });
               },
               removedCollectGroupTypes: const [],
+              showFavorites: true,
             ),
           ),
           FunButton(
@@ -79,9 +86,7 @@ class _SelectOrganisationListPageState
               widget.onCollectGroupSelected(selectedCollectgroup);
             },
             text: context.l10n.selectReceiverButton,
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.debugButtonClicked,
-            ),
+            analyticsEvent: AmplitudeEvents.debugButtonClicked.toEvent(),
           ),
         ],
       ),
