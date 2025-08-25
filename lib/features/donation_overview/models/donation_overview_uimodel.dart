@@ -123,6 +123,7 @@ class DonationOverviewUIModel extends Equatable {
             amount: groupAmount,
             isGiftAidEnabled: firstDonation.isGiftAidEnabled,
             organisationTaxDeductible: firstDonation.organisationTaxDeductible,
+            isOnlineGiving: firstDonation.donationType == 7
           ),
         );
       }

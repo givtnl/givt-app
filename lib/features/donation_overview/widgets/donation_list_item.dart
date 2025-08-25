@@ -74,8 +74,26 @@ class DonationListItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Organization name - dark green text
-                      LabelMediumText(donationGroup.organisationName),
+                      Row(
+                        children: [
+                          if (donationGroup.isGiftAidEnabled) ...[
+                            Image.asset(
+                              'assets/images/gift_aid_yellow.png',
+                              height: 20,
+                            ),
+                            const SizedBox(width: 4),
+                          ],
+                          if (donationGroup.isOnlineGiving) ...[
+                            Image.asset(
+                              'assets/images/ideal.png',
+                              height: 20,
+                            ),
+                            const SizedBox(width: 4),
+                          ],
+                          // Organization name - dark green text
+                          LabelMediumText(donationGroup.organisationName),
+                        ],
+                      ),
                       const SizedBox(height: 4),
                       Row(
                         children: [
