@@ -245,9 +245,13 @@ class DonationDetailPage extends StatelessWidget {
     String transactionId,
     String status,
   ) {
-    final message =
-        'Hi, I need help with the following donation:\n\nStatus: $status\nTransaction ID: #$transactionId';
-    AboutGivtBottomSheet.show(context, initialMessage: message);
+    AboutGivtBottomSheet.show(
+      context,
+      initialMessage: context.l10n.donationOverviewContactMessage(
+        status,
+        transactionId,
+      ).replaceAll(r'\n', '\n'),
+    );
   }
 
   Future<void> _handleRefund(
@@ -284,24 +288,26 @@ class DonationDetailPage extends StatelessWidget {
         cancelText: context.l10n.no,
       ),
     );
-    
+
     if (confirmed ?? false) {
       await AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.onConfirmCancelDonation,
         eventProperties: donationGroup.toJson(),
       );
-      
+
       try {
         // Extract transaction IDs from the donation group
-        final transactionIds = donationGroup.donations.map((d) => d.id).toList();
+        final transactionIds = donationGroup.donations
+            .map((d) => d.id)
+            .toList();
         // Delete the donations using the repository
         final repository = getIt<DonationOverviewRepository>();
         final success = await repository.deleteDonation(transactionIds);
-        
+
         if (success) {
           // Navigate back to previous page
           context.pop();
-          
+
           // Reload donations in the overview page
           // The overview page will automatically refresh due to the repository stream
         } else {

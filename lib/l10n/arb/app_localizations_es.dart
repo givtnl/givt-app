@@ -2365,6 +2365,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get donationOverviewStatusRefusedFull => 'Refused by bank';
+
+  @override
+  String donationOverviewContactMessage(Object status, Object transactionId) {
+    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
+  }
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4749,4 +4754,9 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get donationOverviewStatusRefusedFull => 'Refused by bank';
+
+  @override
+  String donationOverviewContactMessage(Object status, Object transactionId) {
+    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
+  }
 }

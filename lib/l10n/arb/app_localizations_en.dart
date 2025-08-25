@@ -2364,6 +2364,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get donationOverviewStatusRefusedFull => 'Refused by bank';
+
+  @override
+  String donationOverviewContactMessage(Object status, Object transactionId) {
+    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
+  }
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4726,4 +4731,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get donationOverviewStatusRefusedFull => 'Refused by bank';
+
+  @override
+  String donationOverviewContactMessage(Object status, Object transactionId) {
+    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
+  }
 }
