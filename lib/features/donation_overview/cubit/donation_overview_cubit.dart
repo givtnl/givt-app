@@ -68,48 +68,51 @@ class DonationOverviewCubit
     try {
       await _donationOverviewRepository.deleteDonation(ids);
       await _loadDonations();
-      emitCustom(const DonationOverviewCustom.showSuccessMessage(
-        'Donation(s) deleted successfully',
-      ));
+      emitCustom(
+        const DonationOverviewCustom.showSuccessMessage(
+          'Donation(s) deleted successfully',
+        ),
+      );
     } catch (e) {
-      emitCustom(DonationOverviewCustom.showErrorMessage(
-        e.toString(),
-      ));
+      emitCustom(
+        DonationOverviewCustom.showErrorMessage(
+          e.toString(),
+        ),
+      );
     }
   }
 
   Future<void> downloadYearlyOverview({required String year}) async {
     try {
       final fromDate = DateTime.parse('$year-01-01').toIso8601String();
-      final tillDate = DateTime.parse('${int.parse(year) + 1}-01-01')
-          .toIso8601String();
+      final tillDate = DateTime.parse(
+        '${int.parse(year) + 1}-01-01',
+      ).toIso8601String();
 
       final success = await _donationOverviewRepository.downloadYearlyOverview(
         body: {'fromDate': fromDate, 'tillDate': tillDate},
       );
 
       if (success) {
-        emitCustom(const DonationOverviewCustom.showSuccessMessage(
-          'Yearly overview sent to your email',
-        ));
+        emitCustom(
+          const DonationOverviewCustom.showSuccessMessage(
+            'Yearly overview sent to your email',
+          ),
+        );
       } else {
-        emitCustom(const DonationOverviewCustom.showErrorMessage(
-          'Failed to download yearly overview',
-        ));
+        emitCustom(
+          const DonationOverviewCustom.showErrorMessage(
+            'Failed to download yearly overview',
+          ),
+        );
       }
     } catch (e) {
-      emitCustom(DonationOverviewCustom.showErrorMessage(
-        e.toString(),
-      ));
+      emitCustom(
+        DonationOverviewCustom.showErrorMessage(
+          e.toString(),
+        ),
+      );
     }
-  }
-
-  void showDeleteConfirmation(List<int> ids) {
-    emitCustom(DonationOverviewCustom.showDeleteConfirmation(ids));
-  }
-
-  void showDonationDetails(int donationId) {
-    emitCustom(DonationOverviewCustom.showDonationDetails(donationId));
   }
 
   void refreshDonations() {

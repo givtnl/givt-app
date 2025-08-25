@@ -24,16 +24,12 @@ import 'package:overlay_tooltip/overlay_tooltip.dart';
 class DonationListItem extends StatelessWidget {
   const DonationListItem({
     required this.donationGroup,
-    required this.onDelete,
-    required this.onTap,
     required this.tooltipController,
     this.analyticsEvent,
     super.key,
   });
 
   final DonationGroup donationGroup;
-  final VoidCallback onDelete;
-  final VoidCallback onTap;
   final AnalyticsEvent? analyticsEvent;
   final TooltipController? tooltipController;
 

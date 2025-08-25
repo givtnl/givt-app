@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/cubit/donation_overview_cubit.dart';
 import 'package:givt_app/features/donation_overview/models/donation_overview_custom.dart';
@@ -21,7 +20,6 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/util.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
@@ -130,14 +128,6 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
                             children: [
                               DonationListItem(
                                 donationGroup: donationGroup,
-                                onDelete: () => _cubit.showDeleteConfirmation(
-                                  donationGroup.donations
-                                      .map((d) => d.id)
-                                      .toList(),
-                                ),
-                                onTap: () => _cubit.showDonationDetails(
-                                  donationGroup.donations.first.id,
-                                ),
                                 analyticsEvent: AnalyticsEvent(
                                   AmplitudeEvents.seeDonationHistoryPressed,
                                 ),
@@ -167,28 +157,25 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
     MonthlyGroup monthGroup,
     String country,
   ) {
-    final currencySymbol = Util.getCurrencySymbol(countryCode: country);
+    final locals = context.l10n;
+    final user = context.read<AuthCubit>().state.user;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: FamilyAppTheme.primary95, // Light green for monthly header
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TitleSmallText(
-            monthGroup.displayName,
-            color: FamilyAppTheme.primary20,
-          ),
-          TitleSmallText(
-            '$currencySymbol ${Util.formatNumberComma(
-              monthGroup.totalAmount,
-              Country.fromCode(country),
-            )}',
-            color: FamilyAppTheme.primary20,
+    return Column(
+      children: [
+        // Gift Aid header if available for this month
+        if (user.isGiftAidEnabled) ...[
+          GiftAidHeader(
+            monthGroup: monthGroup,
+            country: country,
+            locals: locals,
           ),
         ],
-      ),
+        // Regular monthly header
+        MonthlyHeader(
+          monthGroup: monthGroup,
+          country: country,
+        ),
+      ],
     );
   }
 
@@ -272,14 +259,6 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
 
   void _handleCustom(BuildContext context, DonationOverviewCustom custom) {
     switch (custom) {
-      case final ShowDeleteConfirmation event:
-        _showDeleteConfirmation(context, event.ids);
-      case final ShowDonationDetails event:
-        // TODO: Navigate to donation details page
-        break;
-      case final DonationDeleted event:
-        // TODO: Handle donation deleted
-        break;
       case final DonationDeleteFailed event:
         _showErrorMessage(context, event.error);
       case final ShowSuccessMessage event:
@@ -287,47 +266,6 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
       case final ShowErrorMessage event:
         _showErrorMessage(context, event.error);
     }
-  }
-
-  void _showDeleteConfirmation(BuildContext context, List<int> ids) {
-    final isGroup = ids.length > 1;
-    final message = isGroup
-        ? 'Are you sure you want to delete this donation group (${ids.length} donations)?'
-        : 'Are you sure you want to delete this donation?';
-
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const TitleMediumText('Delete Donation'),
-        content: BodyMediumText(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _cubit.deleteDonation(ids);
-            },
-            style: TextButton.styleFrom(
-              foregroundColor: FamilyAppTheme.error50,
-            ),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showDonationDetails(BuildContext context, int donationId) {
-    // TODO: Implement donation details view
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Donation details for ID: $donationId'),
-        duration: const Duration(seconds: 2),
-      ),
-    );
   }
 
   void _showSuccessMessage(BuildContext context, String message) {
