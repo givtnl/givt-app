@@ -37,6 +37,7 @@ enum Pages {
     name: 'REGISTRATION-SUCCESS',
   ),
   overview(path: 'overview', name: 'OVERVIEW'),
+  donationOverview(path: 'donation-overview', name: 'DONATION-OVERVIEW'),
   personalInfoEdit(path: 'personal-info-edit', name: 'PERSONAL-INFO-EDIT'),
   unregister(path: 'unregister', name: 'UNREGISTER'),
   personalSummary(path: 'personal-summary', name: 'PERSONAL-SUMMARY'),
@@ -49,6 +50,10 @@ enum Pages {
   editCreditCardDetails(
     path: 'edit-credit-card-details',
     name: 'EDIT-CREDIT-CARD-DETAILS',
+  ),
+  donationDetail(
+    path: 'donation-detail',
+    name: 'DONATION-DETAIL',
   ),
   permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
   ;

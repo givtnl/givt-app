@@ -3750,7 +3750,7 @@ abstract class AppLocalizations {
   /// No description provided for @donationOverviewPlatformContribution.
   ///
   /// In en, this message translates to:
-  /// **'Voluntary Platform Contribution'**
+  /// **'Platform Contribution'**
   String get donationOverviewPlatformContribution;
 
   /// No description provided for @donationOverviewPlatformContributionTitle.
@@ -4214,6 +4214,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancelled'**
   String get recurringDonationsCancelled;
+
+  /// No description provided for @donationOverviewDateAt.
+  ///
+  /// In en, this message translates to:
+  /// **'at'**
+  String get donationOverviewDateAt;
+
+  /// No description provided for @donationOverviewStatusProcessed.
+  ///
+  /// In en, this message translates to:
+  /// **'Processed'**
+  String get donationOverviewStatusProcessed;
+
+  /// No description provided for @donationOverviewStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get donationOverviewStatusCancelled;
+
+  /// No description provided for @donationOverviewStatusInProcess.
+  ///
+  /// In en, this message translates to:
+  /// **'In Process'**
+  String get donationOverviewStatusInProcess;
+
+  /// No description provided for @donationOverviewStatusRefused.
+  ///
+  /// In en, this message translates to:
+  /// **'Refused'**
+  String get donationOverviewStatusRefused;
+
+  /// No description provided for @donationOverviewStatusProcessedFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Processed'**
+  String get donationOverviewStatusProcessedFull;
+
+  /// No description provided for @donationOverviewStatusCancelledFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled by user'**
+  String get donationOverviewStatusCancelledFull;
+
+  /// No description provided for @donationOverviewStatusInProcessFull.
+  ///
+  /// In en, this message translates to:
+  /// **'In Process'**
+  String get donationOverviewStatusInProcessFull;
+
+  /// No description provided for @donationOverviewStatusRefusedFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Refused by bank'**
+  String get donationOverviewStatusRefusedFull;
+
+  /// No description provided for @donationOverviewContactMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi, I need help with the following donation:\\n\\nStatus: {status}\\nTransaction ID: #{transactionId}'**
+  String donationOverviewContactMessage(Object status, Object transactionId);
 }
 
 class _AppLocalizationsDelegate

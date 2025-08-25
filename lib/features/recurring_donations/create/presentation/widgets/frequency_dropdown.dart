@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_dropdown.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';

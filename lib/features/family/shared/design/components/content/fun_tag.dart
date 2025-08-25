@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 
 // Which side of the tag should be flat (non-circular)
