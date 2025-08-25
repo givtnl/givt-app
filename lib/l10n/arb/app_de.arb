@@ -1090,5 +1090,6 @@
   "donationOverviewStatusProcessedFull": "Verarbeitet",
   "donationOverviewStatusCancelledFull": "Vom Benutzer abgebrochen",
   "donationOverviewStatusInProcessFull": "In Bearbeitung",
-  "donationOverviewStatusRefusedFull": "Von der Bank abgelehnt"
+  "donationOverviewStatusRefusedFull": "Von der Bank abgelehnt",
+  "donationOverviewContactMessage": "Hoi, ik heb hulp nodig met de volgende gift:\\n\\nStatus: {status}\\nTransaction ID: #{transactionId}"
 }
