@@ -311,6 +311,8 @@ class DonationListItem extends StatelessWidget {
 
   String _getStatusText(BuildContext context, DonationStatusType type) {
     switch (type) {
+      case DonationStatusType.created:
+        return context.l10n.donationOverviewStatusInProcess;
       case DonationStatusType.inProcess:
         return context.l10n.donationOverviewStatusInProcess;
       case DonationStatusType.completed:

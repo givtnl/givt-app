@@ -18,26 +18,37 @@ class DonationOverviewCubit
   final DonationOverviewRepository _donationOverviewRepository;
   StreamSubscription<List<dynamic>>? _donationsSubscription;
 
-  void init() {
+  Future<void> init() async {
+    // First load donations to get initial data
+    await _loadDonations();
+
+    // Then set up streams to listen for changes
     _setupStreams();
-    _loadDonations();
   }
 
   void _setupStreams() {
-    _donationOverviewRepository.onDonationsChanged().listen(
-      _onDonationsChanged,
-      onError: (error) {
-        LoggingInfo.instance.error(
-          'Error in donations stream: $error',
-          methodName: 'DonationOverviewCubit._setupStreams',
+    _donationsSubscription = _donationOverviewRepository
+        .onDonationsChanged()
+        .listen(
+          _onDonationsChanged,
+          onError: (error) {
+            LoggingInfo.instance.error(
+              'Error in donations stream: $error',
+              methodName: 'DonationOverviewCubit._setupStreams',
+            );
+          },
         );
-      },
-    );
   }
 
   void _onDonationsChanged(List<dynamic> donations) {
+    // Check if cubit is closed before emitting states
+    if (isClosed) return;
+
     if (_donationOverviewRepository.isLoading()) {
       emitLoading();
+    } else if (_donationOverviewRepository.getError() != null) {
+      // Handle error state
+      // emitError(_donationOverviewRepository.getError());
     } else {
       _emitData();
     }
@@ -46,11 +57,18 @@ class DonationOverviewCubit
   Future<void> _loadDonations() async {
     try {
       await _donationOverviewRepository.loadDonations();
+      _emitData();
     } catch (error) {
       LoggingInfo.instance.error(
         'Failed to load donations: $error',
         methodName: 'DonationOverviewCubit._loadDonations',
       );
+
+      // Check if cubit is closed before emitting states
+      if (isClosed) return;
+
+      // Emit error state
+      emitError(error.toString());
     }
   }
 
@@ -59,6 +77,9 @@ class DonationOverviewCubit
   }
 
   void _emitData() {
+    // Check if cubit is closed before emitting states
+    if (isClosed) return;
+
     final donations = _donationOverviewRepository.getDonations();
     final uiModel = DonationOverviewUIModel.fromDonations(donations);
     emitData(uiModel);
@@ -68,12 +89,19 @@ class DonationOverviewCubit
     try {
       await _donationOverviewRepository.deleteDonation(ids);
       await _loadDonations();
+
+      // Check if cubit is closed before emitting states
+      if (isClosed) return;
+
       emitCustom(
         const DonationOverviewCustom.showSuccessMessage(
           'Donation(s) deleted successfully',
         ),
       );
     } catch (e) {
+      // Check if cubit is closed before emitting states
+      if (isClosed) return;
+
       emitCustom(
         DonationOverviewCustom.showErrorMessage(
           e.toString(),
@@ -93,6 +121,9 @@ class DonationOverviewCubit
         body: {'fromDate': fromDate, 'tillDate': tillDate},
       );
 
+      // Check if cubit is closed before emitting states
+      if (isClosed) return;
+
       if (success) {
         emitCustom(
           const DonationOverviewCustom.showSuccessMessage(
@@ -107,6 +138,9 @@ class DonationOverviewCubit
         );
       }
     } catch (e) {
+      // Check if cubit is closed before emitting states
+      if (isClosed) return;
+
       emitCustom(
         DonationOverviewCustom.showErrorMessage(
           e.toString(),

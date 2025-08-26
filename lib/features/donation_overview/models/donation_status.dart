@@ -5,6 +5,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 enum DonationStatusType {
   completed,
+  created,
   inProcess,
   refused,
   cancelled,
@@ -28,12 +29,21 @@ class DonationStatus extends Equatable {
   final bool isAccessibleForColorblind;
 
   static const Map<DonationStatusType, DonationStatus> statuses = {
+
     DonationStatusType.completed: DonationStatus(
       type: DonationStatusType.completed,
       icon: FontAwesomeIcons.check,
       iconColor: FamilyAppTheme.primary30,
       backgroundColor: FamilyAppTheme.primary95,
       textColor: FamilyAppTheme.primary50,
+      isAccessibleForColorblind: true,
+    ),
+    DonationStatusType.created: DonationStatus(
+      type: DonationStatusType.created,
+      icon: FontAwesomeIcons.hourglassHalf,
+      iconColor: FamilyAppTheme.secondary40,
+      backgroundColor: FamilyAppTheme.secondary95,
+      textColor: FamilyAppTheme.secondary40,
       isAccessibleForColorblind: true,
     ),
     DonationStatusType.inProcess: DonationStatus(
@@ -65,7 +75,7 @@ class DonationStatus extends Equatable {
   static DonationStatus fromLegacyStatus(int legacyStatus) {
     switch (legacyStatus) {
       case 1:
-        return statuses[DonationStatusType.inProcess]!;
+        return statuses[DonationStatusType.created]!;
       case 2:
         return statuses[DonationStatusType.inProcess]!;
       case 3:

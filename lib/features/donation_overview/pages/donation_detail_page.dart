@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -221,7 +222,7 @@ class DonationDetailPage extends StatelessWidget {
           ),
         );
 
-      case DonationStatusType.inProcess:
+      case DonationStatusType.created:
         return FunButton.destructiveSecondary(
           onTap: () => _handleCancel(context, donationGroup),
           text: context.l10n.cancel,
@@ -231,6 +232,9 @@ class DonationDetailPage extends StatelessWidget {
             }
           ),
         );
+
+      case DonationStatusType.inProcess:
+        return const SizedBox.shrink();
 
       case DonationStatusType.refused:
         return FunButton(
@@ -306,10 +310,10 @@ class DonationDetailPage extends StatelessWidget {
     );
 
     if (confirmed ?? false) {
-      await AnalyticsHelper.logEvent(
+      unawaited(AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.onConfirmCancelDonation,
         eventProperties: donationGroup.toJson(),
-      );
+      ));
 
       try {
         // Extract transaction IDs from the donation group
@@ -366,6 +370,8 @@ class DonationDetailPage extends StatelessWidget {
 
   String _getStatusText(BuildContext context, DonationStatusType type) {
     switch (type) {
+      case DonationStatusType.created:
+        return context.l10n.donationOverviewStatusInProcessFull;
       case DonationStatusType.inProcess:
         return context.l10n.donationOverviewStatusInProcessFull;
       case DonationStatusType.completed:
