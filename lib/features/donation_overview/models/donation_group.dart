@@ -9,6 +9,7 @@ class DonationGroup extends Equatable {
     required this.amount,
     this.isGiftAidEnabled = false,
     this.isOnlineGiving = false,
+    this.isRecurringDonation = false,
     this.organisationTaxDeductible = false,
   });
 
@@ -18,6 +19,7 @@ class DonationGroup extends Equatable {
   final double amount;
   final bool isGiftAidEnabled;
   final bool isOnlineGiving;
+  final bool isRecurringDonation;
   final bool organisationTaxDeductible;
 
   double get platformFeeAmount {

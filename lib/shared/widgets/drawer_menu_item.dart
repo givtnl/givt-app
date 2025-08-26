@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class DrawerMenuItem extends StatelessWidget {
@@ -7,6 +9,7 @@ class DrawerMenuItem extends StatelessWidget {
     required this.title,
     required this.icon,
     required this.onTap,
+    required this.analyticsEvent,
     this.isVisible = false,
     this.showBadge = false,
     this.showUnderline = false,
@@ -23,6 +26,7 @@ class DrawerMenuItem extends StatelessWidget {
   final IconData icon;
   final Widget? imageIcon;
   final VoidCallback onTap;
+  final AmplitudeEvents analyticsEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +72,14 @@ class DrawerMenuItem extends StatelessWidget {
                         ),
                       ],
                     ),
-                    onTap: onTap,
+                    onTap: () {
+                      unawaited(
+                        AnalyticsHelper.logEvent(
+                          eventName: analyticsEvent,
+                        ),
+                      );
+                      onTap();
+                    },
                   )
                 : ListTile(
                     leading: imageIcon ??
@@ -92,7 +103,14 @@ class DrawerMenuItem extends StatelessWidget {
                             isAccent ? FontWeight.w900 : FontWeight.normal,
                       ),
                     ),
-                    onTap: onTap,
+                    onTap: () {
+                      unawaited(
+                        AnalyticsHelper.logEvent(
+                          eventName: analyticsEvent,
+                        ),
+                      );
+                      onTap();
+                    },
                   ),
           ),
         ],

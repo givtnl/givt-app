@@ -2369,6 +2369,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String donationOverviewContactMessage(Object status, Object transactionId) {
     return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
   }
+
+  @override
+  String get date => 'Date';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4736,4 +4739,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String donationOverviewContactMessage(Object status, Object transactionId) {
     return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
   }
+
+  @override
+  String get date => 'Date';
 }

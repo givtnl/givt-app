@@ -130,6 +130,9 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
                                 donationGroup: donationGroup,
                                 analyticsEvent: AnalyticsEvent(
                                   AmplitudeEvents.seeDonationHistoryPressed,
+                                  parameters: {
+                                    'donation': donationGroup.toJson()
+                                  },
                                 ),
                                 tooltipController: _tooltipController,
                               ),

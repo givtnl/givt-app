@@ -512,7 +512,21 @@ enum AmplitudeEvents {
 
   familyHomeScreenNewGameButtonClicked(
     'family_home_screen_new_game_button_clicked',
-  );
+  ),
+
+  // Menu Navigation Events
+  menuNavigationFinalizeRegistrationClicked('menu_navigation_finalize_registration_clicked'),
+  menuNavigationSummaryClicked('menu_navigation_summary_clicked'),
+  menuNavigationBudgetClicked('menu_navigation_budget_clicked'),
+  menuNavigationHistoryClicked('menu_navigation_history_clicked'),
+  menuNavigationRecurringDonationClicked('menu_navigation_recurring_donation_clicked'),
+  menuNavigationGiveLimitClicked('menu_navigation_give_limit_clicked'),
+  menuNavigationPersonalInfoClicked('menu_navigation_personal_info_clicked'),
+  menuNavigationAmountPresetsClicked('menu_navigation_amount_presets_clicked'),
+  menuNavigationBiometricClicked('menu_navigation_biometric_clicked'),
+  menuNavigationLogoutClicked('menu_navigation_logout_clicked'),
+  menuNavigationUnregisterClicked('menu_navigation_unregister_clicked'),
+  menuNavigationAboutGivtClicked('menu_navigation_about_givt_clicked');
 
   const AmplitudeEvents(this.value);
 

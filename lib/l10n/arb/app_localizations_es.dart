@@ -2370,6 +2370,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String donationOverviewContactMessage(Object status, Object transactionId) {
     return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
   }
+
+  @override
+  String get date => 'Date';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4759,4 +4762,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String donationOverviewContactMessage(Object status, Object transactionId) {
     return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
   }
+
+  @override
+  String get date => 'Date';
 }

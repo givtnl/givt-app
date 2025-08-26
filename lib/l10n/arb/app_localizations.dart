@@ -4274,6 +4274,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hi, I need help with the following donation:\\n\\nStatus: {status}\\nTransaction ID: #{transactionId}'**
   String donationOverviewContactMessage(Object status, Object transactionId);
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
 }
 
 class _AppLocalizationsDelegate

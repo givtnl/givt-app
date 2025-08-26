@@ -134,7 +134,7 @@ class DonationDetailPage extends StatelessWidget {
               // Date
               if (donationGroup.timeStamp != null)
                 _buildDetailRow(
-                  label: 'Date',
+                  label: context.l10n.date,
                   value:
                       '${DateFormat.yMMMMd(
                         Platform.localeName,
@@ -214,28 +214,44 @@ class DonationDetailPage extends StatelessWidget {
         return FunButton.secondary(
           onTap: () => _handleRefund(context, donationGroup, country),
           text: context.l10n.requestRefund,
-          analyticsEvent: AmplitudeEvents.donationDetailRefundClicked.toEvent(),
+          analyticsEvent: AmplitudeEvents.donationDetailRefundClicked.toEvent(
+            parameters: {
+              'donation': donationGroup.toJson()
+            }
+          ),
         );
 
       case DonationStatusType.inProcess:
         return FunButton.destructiveSecondary(
           onTap: () => _handleCancel(context, donationGroup),
           text: context.l10n.cancel,
-          analyticsEvent: AmplitudeEvents.donationDetailCancelClicked.toEvent(),
+          analyticsEvent: AmplitudeEvents.donationDetailCancelClicked.toEvent(
+            parameters: {
+              'donation': donationGroup.toJson()
+            }
+          ),
         );
 
       case DonationStatusType.refused:
         return FunButton(
           onTap: () => _handleRetry(context, donationGroup),
           text: context.l10n.tryAgain,
-          analyticsEvent: AmplitudeEvents.donationDetailRetryClicked.toEvent(),
+          analyticsEvent: AmplitudeEvents.donationDetailRetryClicked.toEvent(
+            parameters: {
+              'donation': donationGroup.toJson()
+            }
+          ),
         );
 
       case DonationStatusType.cancelled:
         return FunButton(
           onTap: () => _handleRetry(context, donationGroup),
           text: context.l10n.tryAgain,
-          analyticsEvent: AmplitudeEvents.donationDetailRetryClicked.toEvent(),
+          analyticsEvent: AmplitudeEvents.donationDetailRetryClicked.toEvent(
+            parameters: {
+              'donation': donationGroup.toJson()
+            }
+          ),
         );
     }
   }

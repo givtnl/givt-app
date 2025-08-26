@@ -90,6 +90,14 @@ class DonationListItem extends StatelessWidget {
                             ),
                             const SizedBox(width: 4),
                           ],
+                          if(donationGroup.isRecurringDonation) ...[
+                            const FaIcon(
+                              FontAwesomeIcons.repeat,
+                              size: 12,
+                              color: FamilyAppTheme.primary20,
+                            ),
+                            const SizedBox(width: 4),
+                          ],
                           // Organization name - dark green text
                           LabelMediumText(donationGroup.organisationName),
                         ],
@@ -145,10 +153,7 @@ class DonationListItem extends StatelessWidget {
                                           eventName: AmplitudeEvents
                                               .donationOverviewPlatformContributionClicked,
                                           eventProperties: {
-                                            'donation_id': donationGroup
-                                                .donations
-                                                .first
-                                                .id,
+                                            'donation': donationGroup.toJson()
                                           },
                                         );
                                         tooltipController!.start(
