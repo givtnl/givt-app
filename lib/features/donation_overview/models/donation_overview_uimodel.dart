@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_group.dart';
+import 'package:givt_app/features/donation_overview/models/donation_status.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:intl/intl.dart';
 
@@ -54,7 +55,15 @@ class DonationOverviewUIModel extends Equatable {
     // Calculate GiftAid amount (25% of amount for GiftAid enabled donations)
     final giftAidAmount = donations
         .where((d) => d.isGiftAidEnabled)
-        .fold<double>(0.0, (sum, d) => sum + (d.amount * 0.25));
+        .fold<double>(
+          0.0,
+          (sum, d) =>
+              d.status.type == DonationStatusType.completed ||
+                  d.status.type == DonationStatusType.created ||
+                  d.status.type == DonationStatusType.inProcess
+              ? sum + (d.amount * 0.25)
+              : sum,
+        );
 
     // Group donations by month
     final monthlyGroups = <MonthlyGroup>[];
@@ -73,9 +82,15 @@ class DonationOverviewUIModel extends Equatable {
       final parts = key.split('-');
       final year = int.parse(parts[0]);
       final month = int.parse(parts[1]);
+
       final monthAmount = monthDonations.fold<double>(
         0.0,
-        (sum, d) => sum + d.amount,
+        (sum, d) =>
+            d.status.type == DonationStatusType.completed ||
+                d.status.type == DonationStatusType.created ||
+                d.status.type == DonationStatusType.inProcess
+            ? sum + d.amount
+            : sum,
       );
 
       monthlyGroups.add(
