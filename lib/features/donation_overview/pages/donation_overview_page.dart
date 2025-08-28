@@ -35,7 +35,6 @@ class DonationOverviewPage extends StatefulWidget {
 class _DonationOverviewPageState extends State<DonationOverviewPage> {
   late final DonationOverviewCubit _cubit;
   late final String country;
-  final TooltipController _tooltipController = TooltipController();
 
   @override
   void initState() {
@@ -71,86 +70,81 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
       return _buildEmptyScaffold(context);
     }
 
-    return OverlayTooltipScaffold(
-      controller: _tooltipController,
-      overlayColor: Colors.transparent,
-      builder: (context) => FunScaffold(
-        minimumPadding: EdgeInsets.zero,
-        safeAreaBottom: false,
-        appBar: FunTopAppBar.white(
-          title: locals.historyTitle,
-          leading: const GivtBackButtonFlat(),
-          actions: [
-            IconButton(
-              icon: const FaIcon(FontAwesomeIcons.arrowDownLong),
-              onPressed: () {
-                DownloadYearOverviewSheet.show(context, uiModel, _cubit);
+    return FunScaffold(
+      minimumPadding: EdgeInsets.zero,
+      safeAreaBottom: false,
+      appBar: FunTopAppBar.white(
+        title: locals.historyTitle,
+        leading: const GivtBackButtonFlat(),
+        actions: [
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.arrowDownLong),
+            onPressed: () {
+              DownloadYearOverviewSheet.show(context, uiModel, _cubit);
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Donations list with monthly grouping
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                _cubit.refreshDonations();
+                unawaited(
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.retryClicked,
+                  ),
+                );
               },
-            ),
-          ],
-        ),
-        body: Column(
-          children: [
-            // Donations list with monthly grouping
-            Expanded(
-              child: RefreshIndicator(
-                onRefresh: () async {
-                  _cubit.refreshDonations();
-                  unawaited(
-                    AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.retryClicked,
+              child: ListView.builder(
+                itemCount: uiModel.monthlyGroups.length,
+                itemBuilder: (context, index) {
+                  final monthGroup = uiModel.monthlyGroups[index];
+
+                  // Get donation groups for this month
+                  final monthDonationGroups = uiModel.donationGroups.where((
+                    group,
+                  ) {
+                    if (group.timeStamp == null) return false;
+                    return group.timeStamp!.year == monthGroup.year &&
+                        group.timeStamp!.month == monthGroup.month;
+                  }).toList();
+
+                  return StickyHeader(
+                    header: _buildMonthHeader(
+                      context,
+                      monthGroup,
+                      user.country,
+                    ),
+                    content: Column(
+                      children: monthDonationGroups.map((donationGroup) {
+                        return Column(
+                          children: [
+                            DonationListItem(
+                              donationGroup: donationGroup,
+                              analyticsEvent: AnalyticsEvent(
+                                AmplitudeEvents.seeDonationHistoryPressed,
+                                parameters: {
+                                  'donation': donationGroup.toJson(),
+                                },
+                              ),
+                            ),
+                            const Divider(
+                              height: 0,
+                              color: FamilyAppTheme.neutralVariant95,
+                            ),
+                          ],
+                        );
+                      }).toList(),
                     ),
                   );
                 },
-                child: ListView.builder(
-                  itemCount: uiModel.monthlyGroups.length,
-                  itemBuilder: (context, index) {
-                    final monthGroup = uiModel.monthlyGroups[index];
-
-                    // Get donation groups for this month
-                    final monthDonationGroups = uiModel.donationGroups.where((
-                      group,
-                    ) {
-                      if (group.timeStamp == null) return false;
-                      return group.timeStamp!.year == monthGroup.year &&
-                          group.timeStamp!.month == monthGroup.month;
-                    }).toList();
-
-                    return StickyHeader(
-                      header: _buildMonthHeader(
-                        context,
-                        monthGroup,
-                        user.country,
-                      ),
-                      content: Column(
-                        children: monthDonationGroups.map((donationGroup) {
-                          return Column(
-                            children: [
-                              DonationListItem(
-                                donationGroup: donationGroup,
-                                analyticsEvent: AnalyticsEvent(
-                                  AmplitudeEvents.seeDonationHistoryPressed,
-                                  parameters: {
-                                    'donation': donationGroup.toJson()
-                                  },
-                                ),
-                                tooltipController: _tooltipController,
-                              ),
-                              const Divider(
-                                height: 0,
-                                color: FamilyAppTheme.neutralVariant95,
-                              ),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  },
-                ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

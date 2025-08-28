@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/models/donation_group.dart';
@@ -11,7 +10,6 @@ import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
 import 'package:givt_app/features/donation_overview/pages/donation_detail_page.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -19,19 +17,16 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
-import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class DonationListItem extends StatelessWidget {
   const DonationListItem({
     required this.donationGroup,
-    required this.tooltipController,
     this.analyticsEvent,
     super.key,
   });
 
   final DonationGroup donationGroup;
   final AnalyticsEvent? analyticsEvent;
-  final TooltipController? tooltipController;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +85,7 @@ class DonationListItem extends StatelessWidget {
                             ),
                             const SizedBox(width: 4),
                           ],
-                          if(donationGroup.isRecurringDonation) ...[
+                          if (donationGroup.isRecurringDonation) ...[
                             const FaIcon(
                               FontAwesomeIcons.repeat,
                               size: 12,
@@ -125,75 +120,14 @@ class DonationListItem extends StatelessWidget {
                                   ),
                                 ),
 
-                                // Platform contribution if exists - grey text with info icon
+                                // Platform contribution if exists
                                 if (donationGroup.platformFeeAmount > 0)
-                                  FunTooltip(
-                                    tooltipIndex:
-                                        donationGroup.donations.first.id,
-                                    title: context
+                                  BodySmallText(
+                                    context
                                         .l10n
-                                        .donationOverviewPlatformContributionTitle,
-                                    description: context
-                                        .l10n
-                                        .donationOverviewPlatformContributionText,
-                                    labelBottomLeft: '',
-                                    showImage: false,
-                                    showButton: false,
-                                    dropShadow: true,
-                                    enableTapToDismiss: true,
-                                    onButtonTap: () =>
-                                        tooltipController!.dismiss(),
-                                    onHighlightedWidgetTap: () =>
-                                        tooltipController!.dismiss(),
-                                    tooltipVerticalPosition:
-                                        TooltipVerticalPosition.TOP,
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        await AnalyticsHelper.logEvent(
-                                          eventName: AmplitudeEvents
-                                              .donationOverviewPlatformContributionClicked,
-                                          eventProperties: {
-                                            'donation': donationGroup.toJson()
-                                          },
-                                        );
-                                        tooltipController!.start(
-                                          donationGroup.donations.first.id,
-                                        );
-
-                                        // auto close after 5000 ms
-                                        Future.delayed(
-                                          const Duration(
-                                            milliseconds: 5000,
-                                          ),
-                                          () {
-                                            tooltipController!.pause();
-                                          },
-                                        );
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Theme(
-                                            data: const FamilyAppTheme()
-                                                .toThemeData(),
-                                            child: BodySmallText(
-                                              context
-                                                  .l10n
-                                                  .donationOverviewPlatformContribution,
-                                              color: FamilyAppTheme
-                                                  .neutralVariant40,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 4),
-                                          const Icon(
-                                            Icons.info_outline,
-                                            size: 16,
-                                            color: FamilyAppTheme
-                                                .neutralVariant40, // Grey icon
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                        .donationOverviewPlatformContribution,
+                                    color: FamilyAppTheme.neutralVariant40,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
 
                                 // Date - grey text

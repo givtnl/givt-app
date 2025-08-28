@@ -14,9 +14,11 @@ import 'package:givt_app/features/donation_overview/models/donation_status.dart'
 import 'package:givt_app/features/donation_overview/repositories/donation_overview_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -24,14 +26,34 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 
-class DonationDetailPage extends StatelessWidget {
+class DonationDetailPage extends StatefulWidget {
   const DonationDetailPage({
     required this.donationGroup,
     super.key,
   });
 
   final DonationGroup donationGroup;
+
+  @override
+  State<DonationDetailPage> createState() => _DonationDetailPageState();
+}
+
+class _DonationDetailPageState extends State<DonationDetailPage> {
+  late final TooltipController _tooltipController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tooltipController = TooltipController();
+  }
+
+  @override
+  void dispose() {
+    _tooltipController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,129 +63,130 @@ class DonationDetailPage extends StatelessWidget {
     final currencySymbol = Util.getCurrencySymbol(countryCode: country);
 
     // Get the first donation for status and other details
-    final firstDonation = donationGroup.donations.first;
+    final firstDonation = widget.donationGroup.donations.first;
     final status = firstDonation.status;
 
     // Sort donations by collect ID (1, 2, 3)
-    final sortedDonations = List<DonationItem>.from(donationGroup.donations)
-      ..sort((a, b) {
-        final aId = a.collectId ?? 1;
-        final bId = b.collectId ?? 1;
-        return aId.compareTo(bId);
-      });
+    final sortedDonations =
+        List<DonationItem>.from(widget.donationGroup.donations)..sort((a, b) {
+          final aId = a.collectId ?? 1;
+          final bId = b.collectId ?? 1;
+          return aId.compareTo(bId);
+        });
 
-    return FunScaffold(
-      appBar: FunTopAppBar.white(
-        leading: GivtBackButtonFlat(
-          onPressed: () async {
-            context.pop();
-          },
+    return OverlayTooltipScaffold(
+      controller: _tooltipController,
+      overlayColor: Colors.transparent,
+      builder: (context) => FunScaffold(
+        appBar: FunTopAppBar.white(
+          leading: GivtBackButtonFlat(
+            onPressed: () async {
+              context.pop();
+            },
+          ),
+          actions: [
+            IconButton(
+              onPressed: () => _showContactForm(
+                context,
+                firstDonation.id.toString(),
+                _getStatusText(context, status.type),
+              ),
+              icon: const FaIcon(FontAwesomeIcons.circleQuestion),
+            ),
+          ],
         ),
-        actions: [
-          IconButton(
-            onPressed: () => _showContactForm(
-              context,
-              firstDonation.id.toString(),
+        body: Column(
+          children: [
+            // Status indicator
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: status.backgroundColor,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: FaIcon(
+                  status.icon,
+                  color: status.iconColor,
+                  size: 40,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Organization name
+            TitleMediumText(
+              widget.donationGroup.organisationName,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+
+            // Status text
+            BodySmallText(
               _getStatusText(context, status.type),
+              textAlign: TextAlign.center,
             ),
-            icon: const FaIcon(FontAwesomeIcons.circleQuestion),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Status indicator
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: status.backgroundColor,
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: FaIcon(
-                status.icon,
-                color: status.iconColor,
-                size: 40,
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
+            const SizedBox(height: 32),
 
-          // Organization name
-          TitleMediumText(
-            donationGroup.organisationName,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
+            // Transaction details
+            Column(
+              children: [
+                // Collection amounts
+                ...sortedDonations.map((donation) {
+                  return _buildDetailRow(
+                    label: '${context.l10n.collect} ${donation.collectId ?? 1}',
+                    value:
+                        '$currencySymbol ${Util.formatNumberComma(
+                          donation.amount,
+                          Country.fromCode(country),
+                        )}',
+                    showDivider: true,
+                  );
+                }),
 
-          // Status text
-          BodySmallText(
-            _getStatusText(context, status.type),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 32),
+                // Platform fee if exists
+                if (widget.donationGroup.platformFeeAmount > 0)
+                  _buildPlatformFeeRow(
+                    context,
+                    locals,
+                    currencySymbol,
+                    country,
+                  ),
 
-          // Transaction details
-          Column(
-            children: [
-              // Collection amounts
-              ...sortedDonations.map((donation) {
-                return _buildDetailRow(
-                  label: '${context.l10n.collect} ${donation.collectId ?? 1}',
-                  value:
-                      '$currencySymbol ${Util.formatNumberComma(
-                        donation.amount,
-                        Country.fromCode(country),
-                      )}',
-                  showDivider: true,
-                );
-              }),
+                // Date
+                if (widget.donationGroup.timeStamp != null)
+                  _buildDetailRow(
+                    label: context.l10n.date,
+                    value:
+                        '${DateFormat.yMMMMd(
+                          Platform.localeName,
+                        ).format(widget.donationGroup.timeStamp!)} ${context.l10n.donationOverviewDateAt} ${DateFormat.Hm(
+                          Platform.localeName,
+                        ).format(widget.donationGroup.timeStamp!)}',
+                    showDivider: true,
+                  ),
 
-              // Platform fee if exists
-              if (donationGroup.platformFeeAmount > 0)
+                // Transaction ID
                 _buildDetailRow(
-                  label: locals.donationOverviewPlatformContribution,
-                  value:
-                      '$currencySymbol ${Util.formatNumberComma(
-                        donationGroup.platformFeeAmount,
-                        Country.fromCode(country),
-                      )}',
-                  showDivider: true,
+                  label: 'Transaction ID',
+                  value: '#${firstDonation.id}',
+                  showDivider: false,
                 ),
+              ],
+            ),
 
-              // Date
-              if (donationGroup.timeStamp != null)
-                _buildDetailRow(
-                  label: context.l10n.date,
-                  value:
-                      '${DateFormat.yMMMMd(
-                        Platform.localeName,
-                      ).format(donationGroup.timeStamp!)} ${context.l10n.donationOverviewDateAt} ${DateFormat.Hm(
-                        Platform.localeName,
-                      ).format(donationGroup.timeStamp!)}',
-                  showDivider: true,
-                ),
+            const Spacer(),
 
-              // Transaction ID
-              _buildDetailRow(
-                label: 'Transaction ID',
-                value: '#${firstDonation.id}',
-                showDivider: false,
-              ),
-            ],
-          ),
-
-          const Spacer(),
-
-          // Action button based on status
-          _buildActionButton(
-            context,
-            status,
-            donationGroup,
-            Country.fromCode(country),
-          ),
-        ],
+            // Action button based on status
+            _buildActionButton(
+              context,
+              status,
+              widget.donationGroup,
+              Country.fromCode(country),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -204,6 +227,92 @@ class DonationDetailPage extends StatelessWidget {
     );
   }
 
+  Widget _buildPlatformFeeRow(
+    BuildContext context,
+    AppLocalizations locals,
+    String currencySymbol,
+    String country,
+  ) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              FunTooltip(
+                tooltipIndex: widget.donationGroup.donations.first.id,
+                title: context.l10n.donationOverviewPlatformContributionTitle,
+                description:
+                    context.l10n.donationOverviewPlatformContributionText,
+                labelBottomLeft: '',
+                showImage: false,
+                showButton: false,
+                dropShadow: true,
+                enableTapToDismiss: true,
+                onButtonTap: () => _tooltipController.dismiss(),
+                onHighlightedWidgetTap: () => _tooltipController.dismiss(),
+                tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
+                child: GestureDetector(
+                  onTap: () async {
+                    await AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents
+                          .donationOverviewPlatformContributionClicked,
+                      eventProperties: {
+                        'donation': widget.donationGroup.toJson(),
+                      },
+                    );
+                    _tooltipController.start(
+                      widget.donationGroup.donations.first.id,
+                    );
+
+                    // auto close after 5000 ms
+                    Future.delayed(
+                      const Duration(milliseconds: 5000),
+                      () {
+                        _tooltipController.pause();
+                      },
+                    );
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      BodySmallText.primary30(
+                        locals.donationOverviewPlatformContribution,
+                      ),
+                      const SizedBox(width: 4),
+                      const Icon(
+                        Icons.info_outline,
+                        size: 16,
+                        color: FamilyAppTheme.neutralVariant40,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: LabelMediumText.primary40(
+                  '$currencySymbol ${Util.formatNumberComma(
+                    widget.donationGroup.platformFeeAmount,
+                    Country.fromCode(country),
+                  )}',
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Divider(
+          height: 1,
+          color: FamilyAppTheme.neutralVariant95,
+          indent: 16,
+          endIndent: 16,
+        ),
+      ],
+    );
+  }
+
   Widget _buildActionButton(
     BuildContext context,
     DonationStatus status,
@@ -216,9 +325,7 @@ class DonationDetailPage extends StatelessWidget {
           onTap: () => _handleRefund(context, donationGroup, country),
           text: context.l10n.requestRefund,
           analyticsEvent: AmplitudeEvents.donationDetailRefundClicked.toEvent(
-            parameters: {
-              'donation': donationGroup.toJson()
-            }
+            parameters: {'donation': donationGroup.toJson()},
           ),
         );
 
@@ -227,9 +334,7 @@ class DonationDetailPage extends StatelessWidget {
           onTap: () => _handleCancel(context, donationGroup),
           text: context.l10n.cancel,
           analyticsEvent: AmplitudeEvents.donationDetailCancelClicked.toEvent(
-            parameters: {
-              'donation': donationGroup.toJson()
-            }
+            parameters: {'donation': donationGroup.toJson()},
           ),
         );
 
@@ -241,9 +346,7 @@ class DonationDetailPage extends StatelessWidget {
           onTap: () => _handleRetry(context, donationGroup),
           text: context.l10n.tryAgain,
           analyticsEvent: AmplitudeEvents.donationDetailRetryClicked.toEvent(
-            parameters: {
-              'donation': donationGroup.toJson()
-            }
+            parameters: {'donation': donationGroup.toJson()},
           ),
         );
 
@@ -252,9 +355,7 @@ class DonationDetailPage extends StatelessWidget {
           onTap: () => _handleRetry(context, donationGroup),
           text: context.l10n.tryAgain,
           analyticsEvent: AmplitudeEvents.donationDetailRetryClicked.toEvent(
-            parameters: {
-              'donation': donationGroup.toJson()
-            }
+            parameters: {'donation': donationGroup.toJson()},
           ),
         );
     }
@@ -267,10 +368,12 @@ class DonationDetailPage extends StatelessWidget {
   ) {
     AboutGivtBottomSheet.show(
       context,
-      initialMessage: context.l10n.donationOverviewContactMessage(
-        status,
-        transactionId,
-      ).replaceAll(r'\n', '\n'),
+      initialMessage: context.l10n
+          .donationOverviewContactMessage(
+            status,
+            transactionId,
+          )
+          .replaceAll(r'\n', '\n'),
     );
   }
 
@@ -310,10 +413,12 @@ class DonationDetailPage extends StatelessWidget {
     );
 
     if (confirmed ?? false) {
-      unawaited(AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.onConfirmCancelDonation,
-        eventProperties: donationGroup.toJson(),
-      ));
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.onConfirmCancelDonation,
+          eventProperties: donationGroup.toJson(),
+        ),
+      );
 
       try {
         // Extract transaction IDs from the donation group
