@@ -11,11 +11,12 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-typedef ChooseAmountNextCallback = void Function(
-  double firstCollection,
-  double secondCollection,
-  double thirdCollection,
-);
+typedef ChooseAmountNextCallback =
+    void Function(
+      double firstCollection,
+      double secondCollection,
+      double thirdCollection,
+    );
 
 class ChooseAmount extends StatefulWidget {
   const ChooseAmount({
@@ -24,6 +25,7 @@ class ChooseAmount extends StatefulWidget {
     required this.onAmountChanged,
     required this.country,
     required this.hasGiven,
+    required this.retry,
     required this.arePresetsEnabled,
     required this.presets,
     this.showAddCollectionButton = true,
@@ -34,6 +36,7 @@ class ChooseAmount extends StatefulWidget {
   final int amountLimit;
   final Country country;
   final bool hasGiven;
+  final bool retry;
   final bool arePresetsEnabled;
   final bool showAddCollectionButton;
   final List<Preset> presets;
@@ -56,7 +59,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
 
   int selectedField = 0;
   bool reset = false;
-
+  bool retryReset = false;
   String _comma = ',';
   final String _zero = '0';
 
@@ -103,8 +106,14 @@ class _ChooseAmountState extends State<ChooseAmount> {
 
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
-    if (widget.hasGiven && !reset) {
-      reset = true;
+    // Only reset controllers if hasGiven is true AND there's no initialAmount to preserve
+    if ((widget.hasGiven && !reset) || (widget.retry && !retryReset)) {
+      if (widget.retry) {
+        retryReset = true;
+      }
+      if (widget.hasGiven) {
+        reset = true;
+      }
       _resetControllers();
     }
 
@@ -132,14 +141,18 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         key: Key(locals.firstCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon:
-                            _buildCurrencyIcon(widget.country, 0),
+                        prefixCurrencyIcon: _buildCurrencyIcon(
+                          widget.country,
+                          0,
+                        ),
                         suffixText: locals.firstCollect,
                         controller: controllers[0],
                         isVisible: collectionFields[0],
-                        isRemoveIconVisible: collectionFields[1] == true ||
+                        isRemoveIconVisible:
+                            collectionFields[1] == true ||
                             collectionFields[2] == true,
-                        isSuffixTextVisible: collectionFields[1] == true ||
+                        isSuffixTextVisible:
+                            collectionFields[1] == true ||
                             collectionFields[2] == true,
                         onRemoveIconPressed: () => setState(
                           () {
@@ -153,6 +166,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           focusNodes[0].requestFocus();
                           setState(() {
                             reset = false;
+                            // retryReset = false;
                           });
                         },
                         textColor: selectedField == 0
@@ -164,12 +178,15 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         key: Key(locals.secondCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon:
-                            _buildCurrencyIcon(widget.country, 1),
+                        prefixCurrencyIcon: _buildCurrencyIcon(
+                          widget.country,
+                          1,
+                        ),
                         controller: controllers[1],
                         isVisible: collectionFields[1],
                         suffixText: locals.secondCollect,
-                        isRemoveIconVisible: collectionFields[0] == true ||
+                        isRemoveIconVisible:
+                            collectionFields[0] == true ||
                             collectionFields[2] == true,
                         onRemoveIconPressed: () => setState(() {
                           controllers[1].text = '0';
@@ -181,6 +198,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           focusNodes[1].requestFocus();
                           setState(() {
                             reset = false;
+                            // retryReset = false;
                           });
                         },
                         textColor: selectedField == 1
@@ -192,12 +210,15 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         key: Key(locals.thirdCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon:
-                            _buildCurrencyIcon(widget.country, 2),
+                        prefixCurrencyIcon: _buildCurrencyIcon(
+                          widget.country,
+                          2,
+                        ),
                         suffixText: locals.thirdCollect,
                         controller: controllers[2],
                         isVisible: collectionFields[2],
-                        isRemoveIconVisible: collectionFields[0] == true ||
+                        isRemoveIconVisible:
+                            collectionFields[0] == true ||
                             collectionFields[1] == true,
                         onRemoveIconPressed: () => setState(() {
                           controllers[2].text = '0';
@@ -209,6 +230,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           focusNodes[2].requestFocus();
                           setState(() {
                             reset = false;
+                            // retryReset = false;
                           });
                         },
                         textColor: selectedField == 2
@@ -216,7 +238,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
                             : AppTheme.givtDarkerGray,
                       ),
                       Visibility(
-                        visible: !collectionFields.every(
+                        visible:
+                            !collectionFields.every(
                               (element) => element == true,
                             ) &&
                             widget.showAddCollectionButton,
@@ -224,8 +247,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           label: locals.addCollect,
                           onPressed: () {
                             setState(() {
-                              collectionFields[
-                                  collectionFields.indexOf(false)] = true;
+                              collectionFields[collectionFields.indexOf(
+                                    false,
+                                  )] =
+                                  true;
                               _changeFocus();
                             });
                           },
@@ -242,8 +267,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         final areAmountsValid = await _checkAmounts(
                           context,
                           upperLimit: widget.amountLimit,
-                          lowerLimit:
-                              Util.getLowerLimitByCountry(widget.country),
+                          lowerLimit: Util.getLowerLimitByCountry(
+                            widget.country,
+                          ),
                           currency: currencySymbol,
                         );
 
@@ -292,7 +318,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
 
   void _resetControllers() {
     for (var index = 0; index < controllers.length; index++) {
-      controllers[index].text = '0';
+      controllers[index].text = widget.initialAmount != null && index == 0
+          ? widget.initialAmount!.toStringAsFixed(2).replaceAll('.', _comma)
+          : '0';
       focusNodes[index].unfocus();
       collectionFields[index] = index == 0;
     }
@@ -303,13 +331,13 @@ class _ChooseAmountState extends State<ChooseAmount> {
   }
 
   Icon _buildCurrencyIcon(Country country, int fieldIndex) => Icon(
-        Util.getCurrencyIconData(
-          country: country,
-        ),
-        color: selectedField == fieldIndex
-            ? AppTheme.givtLightPurple
-            : AppTheme.givtDarkerGray,
-      );
+    Util.getCurrencyIconData(
+      country: country,
+    ),
+    color: selectedField == fieldIndex
+        ? AppTheme.givtLightPurple
+        : AppTheme.givtDarkerGray,
+  );
 
   Future<bool> _checkAmounts(
     BuildContext context, {
@@ -327,11 +355,12 @@ class _ChooseAmountState extends State<ChooseAmount> {
           context: context,
           builder: (_) => WarningDialog(
             title: context.l10n.amountTooLow,
-            content:
-                context.l10n.givtNotEnough('$currency ${Util.formatNumberComma(
-              lowerLimit,
-              widget.country,
-            )}'),
+            content: context.l10n.givtNotEnough(
+              '$currency ${Util.formatNumberComma(
+                lowerLimit,
+                widget.country,
+              )}',
+            ),
             onConfirm: () => context.pop(),
           ),
         );
@@ -401,9 +430,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
       });
       return;
     }
-    controllers[selectedField].text = controllers[selectedField]
-        .text
-        .substring(0, controllers[selectedField].text.length - 1);
+    controllers[selectedField].text = controllers[selectedField].text.substring(
+      0,
+      controllers[selectedField].text.length - 1,
+    );
     setState(() {
       _formKey.currentState!.validate();
     });

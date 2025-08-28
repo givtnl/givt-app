@@ -35,6 +35,7 @@ class HomePage extends StatefulWidget {
     required this.afterGivingRedirection,
     required this.navigateTo,
     required this.given,
+    required this.retry,
     super.key,
   });
 
@@ -43,6 +44,7 @@ class HomePage extends StatefulWidget {
   final String navigateTo;
   final String afterGivingRedirection;
   final bool given;
+  final bool retry;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -220,6 +222,7 @@ class _HomePageState extends State<HomePage> {
           child: _HomePageView(
             initialAmount: widget.initialAmount,
             given: widget.given,
+            retry: widget.retry,
             code: widget.code,
             afterGivingRedirection: widget.afterGivingRedirection,
             onPageChanged: (index) => setState(
@@ -339,12 +342,14 @@ class _HomePageView extends StatefulWidget {
     required this.initialAmount,
     required this.onPageChanged,
     required this.given,
+    required this.retry,
     required this.afterGivingRedirection,
     required this.code,
   });
 
   final double? initialAmount;
   final bool given;
+  final bool retry;
   final String code;
   final String afterGivingRedirection;
   final void Function(int) onPageChanged;
@@ -380,6 +385,7 @@ class _HomePageViewState extends State<_HomePageView> {
                 country: Country.fromCode(auth.user.country),
                 amountLimit: auth.user.amountLimit,
                 hasGiven: widget.given,
+                retry: widget.retry,
                 arePresetsEnabled: auth.presets.isEnabled,
                 presets: auth.presets.presets,
                 onAmountChanged:

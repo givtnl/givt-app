@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/app/routes/pages.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
@@ -468,11 +470,26 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
   }
 
   void _handleRetry(BuildContext context, DonationGroup donationGroup) {
-    // TODO: Implement retry functionality
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Retry functionality will be implemented later'),
+    // Get the first donation for amount and organization details
+    final firstDonation = donationGroup.donations.first;
+
+    // Log analytics event for retry
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.donationDetailRetryClicked,
+        eventProperties: donationGroup.toJson(),
       ),
+    );
+
+    // Navigate back to homescreen with prefilled amount and organization
+    // Encode mediumId to base64 as expected by the app router
+    context.goNamed(
+      Pages.home.name,
+      queryParameters: {
+        'amount': firstDonation.amount.toString(),
+        'code': base64Encode(utf8.encode(firstDonation.mediumId)),
+        'retry': 'true',
+      },
     );
   }
 

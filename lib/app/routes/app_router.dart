@@ -483,6 +483,7 @@ class AppRouter {
                   routerState.uri.queryParameters['afterGivingRedirection'] ??
                       '',
               given: routerState.uri.queryParameters.containsKey('given'),
+              retry: routerState.uri.queryParameters.containsKey('retry'),
               navigateTo: routerState.uri.queryParameters['page'] ?? '',
             ),
           ),
