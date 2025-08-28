@@ -274,19 +274,22 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                       },
                     );
                   },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      BodySmallText.primary30(
-                        locals.donationOverviewPlatformContribution,
-                      ),
-                      const SizedBox(width: 4),
-                      const Icon(
-                        Icons.info_outline,
-                        size: 16,
-                        color: FamilyAppTheme.neutralVariant40,
-                      ),
-                    ],
+                  child: Theme(
+                    data: const FamilyAppTheme().toThemeData(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        BodySmallText.primary30(
+                          locals.donationOverviewPlatformContribution,
+                        ),
+                        const SizedBox(width: 4),
+                        const Icon(
+                          Icons.info_outline,
+                          size: 16,
+                          color: FamilyAppTheme.neutralVariant40,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
