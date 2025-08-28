@@ -71,30 +71,35 @@ class DonationListItem extends StatelessWidget {
                     children: [
                       Row(
                         children: [
+                          // Organization name - dark green text
+                          Expanded(
+                            child: LabelMediumText(
+                              donationGroup.organisationName,
+                            ),
+                          ),
+
                           if (donationGroup.isGiftAidEnabled) ...[
+                            const SizedBox(width: 4),
                             Image.asset(
                               'assets/images/gift_aid_yellow.png',
                               height: 20,
                             ),
-                            const SizedBox(width: 4),
                           ],
                           if (donationGroup.isOnlineGiving) ...[
+                            const SizedBox(width: 4),
                             Image.asset(
                               'assets/images/ideal.png',
                               height: 20,
                             ),
-                            const SizedBox(width: 4),
                           ],
                           if (donationGroup.isRecurringDonation) ...[
+                            const SizedBox(width: 4),
                             const FaIcon(
                               FontAwesomeIcons.repeat,
                               size: 12,
                               color: FamilyAppTheme.primary20,
                             ),
-                            const SizedBox(width: 4),
                           ],
-                          // Organization name - dark green text
-                          LabelMediumText(donationGroup.organisationName),
                         ],
                       ),
                       const SizedBox(height: 4),

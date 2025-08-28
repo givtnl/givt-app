@@ -20,7 +20,6 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:overlay_tooltip/overlay_tooltip.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class DonationOverviewPage extends StatefulWidget {
