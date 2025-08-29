@@ -16,7 +16,6 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
-import 'package:intl/intl.dart';
 
 class DonationListItem extends StatelessWidget {
   const DonationListItem({
@@ -138,11 +137,10 @@ class DonationListItem extends StatelessWidget {
                                 // Date - grey text
                                 if (donationGroup.timeStamp != null)
                                   LabelSmallText(
-                                    '${DateFormat.MMMd(
+                                    Util.formatDateAtTimeLocal(
+                                      donationGroup.timeStamp!,
                                       Platform.localeName,
-                                    ).format(donationGroup.timeStamp!)} ${context.l10n.donationOverviewDateAt} ${DateFormat.Hm(
-                                      Platform.localeName,
-                                    ).format(donationGroup.timeStamp!)}',
+                                    ),
                                     color: FamilyAppTheme
                                         .neutralVariant50, // Grey text
                                   ),

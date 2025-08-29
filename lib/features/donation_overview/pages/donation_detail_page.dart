@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -18,16 +19,13 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:givt_app/app/routes/pages.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class DonationDetailPage extends StatefulWidget {
@@ -160,12 +158,10 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                 if (widget.donationGroup.timeStamp != null)
                   _buildDetailRow(
                     label: context.l10n.date,
-                    value:
-                        '${DateFormat.yMMMMd(
-                          Platform.localeName,
-                        ).format(widget.donationGroup.timeStamp!)} ${context.l10n.donationOverviewDateAt} ${DateFormat.Hm(
-                          Platform.localeName,
-                        ).format(widget.donationGroup.timeStamp!)}',
+                    value: Util.formatFullDateLocal(
+                      widget.donationGroup.timeStamp!,
+                      Platform.localeName,
+                    ),
                     showDivider: true,
                   ),
 
