@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/features/gratitude_goal/domain/models/b
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_set_a_goal_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 

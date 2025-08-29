@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class MemberCounter extends StatefulWidget {

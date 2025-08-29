@@ -31,7 +31,7 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';

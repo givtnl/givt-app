@@ -4,7 +4,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step3_set_duration_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';

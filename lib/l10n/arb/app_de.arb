@@ -1006,7 +1006,7 @@
   "platformFeeTitle": "Hilf uns, die Kosten für Organisationen zu senken",
   "platformFeeText": "Givt strebt 0% Servicefee an. Mit einer kleinen Spende an Givt hilfst du, das zu erreichen.",
   "platformFeeNoContribution": "Diesmal nicht",
-  "donationOverviewPlatformContribution": "Freiwilliger Plattformbeitrag",
+  "donationOverviewPlatformContribution": "Plattformbeitrag",
   "donationOverviewPlatformContributionTitle": "Vielen Dank für Ihre Großzügigkeit!",
   "donationOverviewPlatformContributionText": "Dank Ihres freiwilligen Beitrags zur Plattform können wir den Spendenempfang günstiger gestalten.",
   "platformFeePlaceholder": "Betrag auswählen",
@@ -1081,5 +1081,16 @@
   "recurringDonationsCreationErrorTitle": "Wir konnten deine Spende nicht einrichten",
   "recurringDonationsCreationErrorDescription": "Etwas ist schiefgelaufen.\\nBitte überprüfe deine Daten und versuche es erneut.",
   "recurringDonationsCreationErrorChangeAndRetry": "Ändern",
-  "recurringDonationsCancelled": "Abgebrochen"
+  "recurringDonationsCancelled": "Abgebrochen",
+  "donationOverviewDateAt": "um",
+  "donationOverviewStatusProcessed": "Verarbeitet",
+  "donationOverviewStatusCancelled": "Abgebrochen",
+  "donationOverviewStatusInProcess": "In Bearbeitung",
+  "donationOverviewStatusRefused": "Abgelehnt",
+  "donationOverviewStatusProcessedFull": "Verarbeitet",
+  "donationOverviewStatusCancelledFull": "Vom Benutzer abgebrochen",
+  "donationOverviewStatusInProcessFull": "In Bearbeitung",
+  "donationOverviewStatusRefusedFull": "Von der Bank abgelehnt",
+  "donationOverviewContactMessage": "Hoi, ik heb hulp nodig met de volgende gift:\\n\\nStatus: {status}\\nTransaction ID: #{transactionId}",
+  "date": "Datum"
 }

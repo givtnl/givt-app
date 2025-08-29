@@ -27,6 +27,7 @@ class OutlinedTextFormField extends StatelessWidget {
     this.focusNode,
     this.validator,
     this.onTapOutside,
+    this.smallFont = false,
     super.key,
   });
 
@@ -51,6 +52,7 @@ class OutlinedTextFormField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextCapitalization textCapitalization;
   final void Function(PointerDownEvent)? onTapOutside;
+  final bool smallFont;
 
   @override
   Widget build(BuildContext context) {
@@ -59,23 +61,32 @@ class OutlinedTextFormField extends StatelessWidget {
       controller: controller,
       initialValue: controller == null ? initialValue : null,
       onChanged: onChanged,
-      style:
-          const FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
-                color: FamilyAppTheme.primary20,
-              ),
+      style: smallFont
+          ? const FamilyAppTheme().toThemeData().textTheme.bodySmall?.copyWith(
+              color: FamilyAppTheme.primary20,
+            )
+          : const FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
+              color: FamilyAppTheme.primary20,
+            ),
       decoration: InputDecoration(
-          hintText: hintText,
-          border: enabledInputBorder,
-          enabledBorder: enabledInputBorder,
-          focusedBorder: selectedInputBorder,
-          errorBorder: errorInputBorder,
-          suffixIcon: suffixIcon,
-          prefix: prefixText != null ? Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: LabelLargeText(prefixText!, color: FamilyAppTheme.primary20),
-          ) : null,
-          errorStyle: errorStyle,
-          errorMaxLines: errorMaxLines),
+        hintText: hintText,
+        border: enabledInputBorder,
+        enabledBorder: enabledInputBorder,
+        focusedBorder: selectedInputBorder,
+        errorBorder: errorInputBorder,
+        suffixIcon: suffixIcon,
+        prefix: prefixText != null
+            ? Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: LabelLargeText(
+                  prefixText!,
+                  color: FamilyAppTheme.primary20,
+                ),
+              )
+            : null,
+        errorStyle: errorStyle,
+        errorMaxLines: errorMaxLines,
+      ),
       inputFormatters: inputFormatters,
       keyboardType: keyboardType,
       autofillHints: autofillHints,

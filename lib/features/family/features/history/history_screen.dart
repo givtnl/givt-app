@@ -14,7 +14,7 @@ import 'package:givt_app/features/family/shared/widgets/content/donation_item_wi
 import 'package:givt_app/features/family/shared/widgets/content/income_item_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 

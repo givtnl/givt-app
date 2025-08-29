@@ -1006,7 +1006,7 @@
   "platformFeeTitle": "Help us lower the costs for organisations",
   "platformFeeText": "Givt aims for 0% service fee. With a small donation to Givt, you help achieve that.",
   "platformFeeNoContribution": "Not this time",
-  "donationOverviewPlatformContribution": "Voluntary Platform Contribution",
+  "donationOverviewPlatformContribution": "Platform Contribution",
   "donationOverviewPlatformContributionTitle": "Thanks for your generosity!",
   "donationOverviewPlatformContributionText": "Because of the voluntary platform contribution you've chosen, we can lower the costs of receiving donations.",
   "platformFeePlaceholder": "Select amount",
@@ -1081,5 +1081,16 @@
   "recurringDonationsCreationErrorTitle": "We couldn't set up your donation",
   "recurringDonationsCreationErrorDescription": "Something went wrong.\\nPlease check your details and try again.",
   "recurringDonationsCreationErrorChangeAndRetry": "Change and Retry",
-  "recurringDonationsCancelled": "Cancelled"
+  "recurringDonationsCancelled": "Cancelled",
+  "donationOverviewDateAt": "at",
+  "donationOverviewStatusProcessed": "Processed",
+  "donationOverviewStatusCancelled": "Cancelled",
+  "donationOverviewStatusInProcess": "In Process",
+  "donationOverviewStatusRefused": "Refused",
+  "donationOverviewStatusProcessedFull": "Processed",
+  "donationOverviewStatusCancelledFull": "Cancelled by user",
+  "donationOverviewStatusInProcessFull": "In Process",
+  "donationOverviewStatusRefusedFull": "Refused by bank",
+  "donationOverviewContactMessage": "Hi, I need help with the following donation:\\n\\nStatus: {status}\\nTransaction ID: #{transactionId}",
+  "date": "Date"
 }

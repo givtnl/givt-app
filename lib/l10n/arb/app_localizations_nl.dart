@@ -2066,8 +2066,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get platformFeeNoContribution => 'Niet nu';
 
   @override
-  String get donationOverviewPlatformContribution =>
-      'Vrijwillige Platformbijdrage';
+  String get donationOverviewPlatformContribution => 'Platformbijdrage';
 
   @override
   String get donationOverviewPlatformContributionTitle =>
@@ -2347,4 +2346,40 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsCancelled => 'Geannuleerd';
+
+  @override
+  String get donationOverviewDateAt => 'om';
+
+  @override
+  String get donationOverviewStatusProcessed => 'Verwerkt';
+
+  @override
+  String get donationOverviewStatusCancelled => 'Geannuleerd';
+
+  @override
+  String get donationOverviewStatusInProcess => 'In behandeling';
+
+  @override
+  String get donationOverviewStatusRefused => 'Geweigerd';
+
+  @override
+  String get donationOverviewStatusProcessedFull => 'Verwerkt';
+
+  @override
+  String get donationOverviewStatusCancelledFull =>
+      'Geannuleerd door gebruiker';
+
+  @override
+  String get donationOverviewStatusInProcessFull => 'In behandeling';
+
+  @override
+  String get donationOverviewStatusRefusedFull => 'Geweigerd door de bank';
+
+  @override
+  String donationOverviewContactMessage(Object status, Object transactionId) {
+    return 'Hoi, ik heb hulp nodig met de volgende gift:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
+  }
+
+  @override
+  String get date => 'Datum';
 }

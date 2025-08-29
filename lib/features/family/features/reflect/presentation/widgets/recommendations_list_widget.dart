@@ -4,7 +4,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/w
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/components/content/pager_dot_indicator.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:go_router/go_router.dart';
 
 class RecommendationsListWidget extends StatefulWidget {

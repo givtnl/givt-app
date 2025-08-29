@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/shared/design/components/actions/fun_bu
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:lottie/lottie.dart';

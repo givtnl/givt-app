@@ -29,11 +29,15 @@ class LabelMediumText extends StatelessWidget {
   factory LabelMediumText.primary40(
     String text, {
     List<FontFeature>? fontFeatures,
+    TextOverflow? overflow,
+    TextAlign? textAlign,
   }) =>
       LabelMediumText(
         text,
         color: FamilyAppTheme.primary40,
         fontFeatures: fontFeatures,
+        overflow: overflow,
+        textAlign: textAlign,
       );
 
   factory LabelMediumText.secondary20(String text) =>

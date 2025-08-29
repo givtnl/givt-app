@@ -4,7 +4,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -127,10 +127,11 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                     key: messageKey,
                     focusNode: messageFocusNode,
                     controller: messageController,
-                    minLines: 3,
-                    maxLines: 3,
+                    minLines: 5,
+                    maxLines: 5,
                     keyboardType: TextInputType.multiline,
                     onChanged: (_) => setState(() {}),
+                    smallFont: true,
                   ),
                 ],
               ),

@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/features/reflect/data/gratitude_categor
 import 'package:givt_app/features/family/features/reflect/presentation/models/gratitude_selection_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 

@@ -2059,8 +2059,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get platformFeeNoContribution => 'Not this time';
 
   @override
-  String get donationOverviewPlatformContribution =>
-      'Voluntary Platform Contribution';
+  String get donationOverviewPlatformContribution => 'Platform Contribution';
 
   @override
   String get donationOverviewPlatformContributionTitle =>
@@ -2338,6 +2337,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recurringDonationsCancelled => 'Cancelled';
+
+  @override
+  String get donationOverviewDateAt => 'at';
+
+  @override
+  String get donationOverviewStatusProcessed => 'Processed';
+
+  @override
+  String get donationOverviewStatusCancelled => 'Cancelled';
+
+  @override
+  String get donationOverviewStatusInProcess => 'In Process';
+
+  @override
+  String get donationOverviewStatusRefused => 'Refused';
+
+  @override
+  String get donationOverviewStatusProcessedFull => 'Processed';
+
+  @override
+  String get donationOverviewStatusCancelledFull => 'Cancelled by user';
+
+  @override
+  String get donationOverviewStatusInProcessFull => 'In Process';
+
+  @override
+  String get donationOverviewStatusRefusedFull => 'Refused by bank';
+
+  @override
+  String donationOverviewContactMessage(Object status, Object transactionId) {
+    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
+  }
+
+  @override
+  String get date => 'Date';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4673,4 +4707,39 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get recurringDonationsCancelled => 'Canceled';
+
+  @override
+  String get donationOverviewDateAt => 'at';
+
+  @override
+  String get donationOverviewStatusProcessed => 'Processed';
+
+  @override
+  String get donationOverviewStatusCancelled => 'Canceled';
+
+  @override
+  String get donationOverviewStatusInProcess => 'In Process';
+
+  @override
+  String get donationOverviewStatusRefused => 'Refused';
+
+  @override
+  String get donationOverviewStatusProcessedFull => 'Processed';
+
+  @override
+  String get donationOverviewStatusCancelledFull => 'Canceled by user';
+
+  @override
+  String get donationOverviewStatusInProcessFull => 'In Process';
+
+  @override
+  String get donationOverviewStatusRefusedFull => 'Refused by bank';
+
+  @override
+  String donationOverviewContactMessage(Object status, Object transactionId) {
+    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
+  }
+
+  @override
+  String get date => 'Date';
 }

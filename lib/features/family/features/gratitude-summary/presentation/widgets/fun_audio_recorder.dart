@@ -5,7 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/data/record_utils.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:record/record.dart';

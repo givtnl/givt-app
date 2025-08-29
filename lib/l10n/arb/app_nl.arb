@@ -1006,7 +1006,7 @@
   "platformFeeTitle": "Help ons de kosten voor organisaties te verlagen",
   "platformFeeText": "Givt streeft naar 0% servicefee. Met een kleine donatie aan Givt help je dat te bereiken.",
   "platformFeeNoContribution": "Niet nu",
-  "donationOverviewPlatformContribution": "Vrijwillige Platformbijdrage",
+  "donationOverviewPlatformContribution": "Platformbijdrage",
   "donationOverviewPlatformContributionTitle": "Bedankt voor je vrijgevigheid!",
   "donationOverviewPlatformContributionText": "Dankzij jouw gekozen vrijwillige platformbijdrage kunnen we het ontvangen van donaties goedkoper maken.",
   "platformFeePlaceholder": "Selecteer bedrag",
@@ -1081,5 +1081,16 @@
   "recurringDonationsCreationErrorTitle": "Het is niet gelukt je donatie in te stellen",
   "recurringDonationsCreationErrorDescription": "Er is iets misgegaan.\\nControleer alsjeblieft je gegevens en probeer het opnieuw.",
   "recurringDonationsCreationErrorChangeAndRetry": "Wijzigen",
-  "recurringDonationsCancelled": "Geannuleerd"
+  "recurringDonationsCancelled": "Geannuleerd",
+  "donationOverviewDateAt": "om",
+  "donationOverviewStatusProcessed": "Verwerkt",
+  "donationOverviewStatusCancelled": "Geannuleerd",
+  "donationOverviewStatusInProcess": "In behandeling",
+  "donationOverviewStatusRefused": "Geweigerd",
+  "donationOverviewStatusProcessedFull": "Verwerkt",
+  "donationOverviewStatusCancelledFull": "Geannuleerd door gebruiker",
+  "donationOverviewStatusInProcessFull": "In behandeling",
+  "donationOverviewStatusRefusedFull": "Geweigerd door de bank",
+  "donationOverviewContactMessage": "Hoi, ik heb hulp nodig met de volgende gift:\\n\\nStatus: {status}\\nTransaction ID: #{transactionId}",
+  "date": "Datum"
 }

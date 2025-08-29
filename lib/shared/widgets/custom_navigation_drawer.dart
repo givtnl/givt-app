@@ -46,6 +46,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   showBadge: true,
                   title: locals.finalizeRegistration,
                   icon: Icons.edit,
+                  analyticsEvent: AmplitudeEvents.menuNavigationFinalizeRegistrationClicked,
                   onTap: () {
                     if (auth.user.needRegistration) {
                       context
@@ -76,6 +77,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     'assets/images/givy_budget_menu.png',
                     fit: BoxFit.contain,
                   ),
+                  analyticsEvent: AmplitudeEvents.menuNavigationBudgetClicked,
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
@@ -94,6 +96,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: !auth.user.needRegistration,
                   title: locals.historyTitle,
                   icon: FontAwesomeIcons.listUl,
+                  analyticsEvent: AmplitudeEvents.menuNavigationHistoryClicked,
                   onTap: () async {
                     context.read<RemoteDataSourceSyncBloc>().add(
                           const RemoteDataSourceSyncRequested(),
@@ -102,7 +105,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                       context,
                       checkAuthRequest: CheckAuthRequest(
                         navigate: (context) async => context.goNamed(
-                          Pages.overview.name,
+                          Pages.donationOverview.name,
                         ),
                       ),
                     );
@@ -112,6 +115,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: !auth.user.needRegistration,
                   title: locals.menuItemRecurringDonation,
                   icon: Icons.autorenew,
+                  analyticsEvent: AmplitudeEvents.menuNavigationRecurringDonationClicked,
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
@@ -135,37 +139,43 @@ class CustomNavigationDrawer extends StatelessWidget {
                       auth.user.country,
                     ),
                   ),
-                  onTap: () async => AuthUtils.checkToken(
-                    context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context) => showModalBottomSheet<void>(
-                        context: context,
-                        isScrollControlled: true,
-                        useSafeArea: true,
-                        builder: (_) => ChangeMaxAmountBottomSheet(
-                          maxAmount: auth.user.amountLimit,
-                          icon: Util.getCurrencyIconData(
-                            country: Country.fromCode(
-                              auth.user.country,
+                  analyticsEvent: AmplitudeEvents.menuNavigationGiveLimitClicked,
+                  onTap: () async {
+                    return AuthUtils.checkToken(
+                      context,
+                      checkAuthRequest: CheckAuthRequest(
+                        navigate: (context) => showModalBottomSheet<void>(
+                          context: context,
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          builder: (_) => ChangeMaxAmountBottomSheet(
+                            maxAmount: auth.user.amountLimit,
+                            icon: Util.getCurrencyIconData(
+                              country: Country.fromCode(
+                                auth.user.country,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
                 DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
                   title: locals.personalInfo,
                   icon: Icons.mode_edit_outline,
-                  onTap: () async => AuthUtils.checkToken(
-                    context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context) async => context.goNamed(
-                        Pages.personalInfoEdit.name,
+                  analyticsEvent: AmplitudeEvents.menuNavigationPersonalInfoClicked,
+                  onTap: () async {
+                    return AuthUtils.checkToken(
+                      context,
+                      checkAuthRequest: CheckAuthRequest(
+                        navigate: (context) async => context.goNamed(
+                          Pages.personalInfoEdit.name,
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
                 DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
@@ -178,12 +188,15 @@ class CustomNavigationDrawer extends StatelessWidget {
                       color: AppTheme.givtBlue,
                     ),
                   ),
-                  onTap: () => showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                    builder: (_) => const ChangeAmountPresetsBottomSheet(),
-                  ),
+                  analyticsEvent: AmplitudeEvents.menuNavigationAmountPresetsClicked,
+                  onTap: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (_) => const ChangeAmountPresetsBottomSheet(),
+                    );
+                  },
                 ),
                 FutureBuilder(
                   initialData: false,
@@ -226,19 +239,22 @@ class CustomNavigationDrawer extends StatelessWidget {
                               ),
                             )
                           : null,
-                      onTap: () async => AuthUtils.checkToken(
-                        context,
-                        checkAuthRequest: CheckAuthRequest(
-                          navigate: (context) => showModalBottomSheet<void>(
-                            context: context,
-                            isScrollControlled: true,
-                            useSafeArea: true,
-                            builder: (_) => FingerprintBottomSheet(
-                              isFingerprint: isFingerprintAvailable,
+                      analyticsEvent: AmplitudeEvents.menuNavigationBiometricClicked,
+                      onTap: () async {
+                        return AuthUtils.checkToken(
+                          context,
+                          checkAuthRequest: CheckAuthRequest(
+                            navigate: (context) => showModalBottomSheet<void>(
+                              context: context,
+                              isScrollControlled: true,
+                              useSafeArea: true,
+                              builder: (_) => FingerprintBottomSheet(
+                                isFingerprint: isFingerprintAvailable,
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     );
                   },
                 ),
@@ -247,6 +263,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: true,
                   title: locals.logOut,
                   icon: Icons.logout_sharp,
+                  analyticsEvent: AmplitudeEvents.menuNavigationLogoutClicked,
                   onTap: () async {
                     if (!getIt<NetworkInfo>().isConnected) {
                       if (!context.mounted) {
@@ -271,6 +288,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: true,
                   title: locals.unregister,
                   icon: FontAwesomeIcons.userXmark,
+                  analyticsEvent: AmplitudeEvents.menuNavigationUnregisterClicked,
                   onTap: () async {
                     if (auth.user.tempUser) {
                       context.goNamed(
@@ -293,6 +311,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: true,
                   title: locals.titleAboutGivt,
                   icon: Icons.info,
+                  analyticsEvent: AmplitudeEvents.menuNavigationAboutGivtClicked,
                   onTap: () => showModalBottomSheet<void>(
                     context: context,
                     isScrollControlled: true,

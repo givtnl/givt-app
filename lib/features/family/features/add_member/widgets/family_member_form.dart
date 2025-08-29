@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/features/add_member/pages/family_member
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';

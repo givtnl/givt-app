@@ -23,7 +23,7 @@ import 'package:givt_app/features/family/shared/design/components/overlays/bloc/
 import 'package:givt_app/features/family/shared/design/components/overlays/fun_bottom_sheet_with_async_action.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
