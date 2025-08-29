@@ -144,4 +144,32 @@ AgMBAAE=
   /// Allow only numbers and one comma or dot
   /// Like 123, 123.45, 12,05, 12,5
   static RegExp numberInputFieldRegExp() => RegExp(r'^\d+([,.]\d{0,2})?');
+
+  /// Convert UTC date to local time and format as date only (e.g., "Jan 15")
+  static String formatDateLocal(DateTime? utcDate, String locale) {
+    if (utcDate == null) return '';
+    final localDate = utcDate.toLocal();
+    return DateFormat.MMMd(locale).format(localDate);
+  }
+
+  /// Convert UTC date to local time and format as time only (e.g., "14:30")
+  static String formatTimeLocal(DateTime? utcDate, String locale) {
+    if (utcDate == null) return '';
+    final localDate = utcDate.toLocal();
+    return DateFormat.Hm(locale).format(localDate);
+  }
+
+  /// Convert UTC date to local time and format as full date and time (e.g., "January 15, 2024 at 14:30")
+  static String formatFullDateLocal(DateTime? utcDate, String locale) {
+    if (utcDate == null) return '';
+    final localDate = utcDate.toLocal();
+    return '${DateFormat.yMMMMd(locale).format(localDate)} at ${DateFormat.Hm(locale).format(localDate)}';
+  }
+
+  /// Convert UTC date to local time and format as date with "at" separator (e.g., "Jan 15 at 14:30")
+  static String formatDateAtTimeLocal(DateTime? utcDate, String locale) {
+    if (utcDate == null) return '';
+    final localDate = utcDate.toLocal();
+    return '${DateFormat.MMMd(locale).format(localDate)} at ${DateFormat.Hm(locale).format(localDate)}';
+  }
 }
