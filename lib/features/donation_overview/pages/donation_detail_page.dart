@@ -144,7 +144,6 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                     showDivider: true,
                   );
                 }),
-
                 // Platform fee if exists
                 if (widget.donationGroup.platformFeeAmount > 0)
                   _buildPlatformFeeRow(
@@ -153,6 +152,16 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                     currencySymbol,
                     country,
                   ),
+
+                // Gift Aid row if applicable
+                if (_shouldShowGiftAid())
+                  _buildGiftAidRow(
+                    context,
+                    locals,
+                    currencySymbol,
+                    country,
+                  ),
+
 
                 // Date
                 if (widget.donationGroup.timeStamp != null)
@@ -221,6 +230,81 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
             indent: 16,
             endIndent: 16,
           ),
+      ],
+    );
+  }
+
+  bool _shouldShowGiftAid() {
+    // Show Gift Aid if any donation in the group has Gift Aid enabled
+    // and the donation status allows for Gift Aid calculation
+    return widget.donationGroup.donations.any((donation) =>
+        donation.isGiftAidEnabled &&
+        donation.taxYear != 0 &&
+        (donation.status.type == DonationStatusType.completed ||
+            donation.status.type == DonationStatusType.created ||
+            donation.status.type == DonationStatusType.inProcess));
+  }
+
+  double _calculateGiftAidAmount() {
+    // Calculate full amount for Gift Aid enabled donations
+    // Following the same business rules as in donation overview
+    return widget.donationGroup.donations
+        .where((d) =>
+            d.isGiftAidEnabled &&
+            d.taxYear != 0 &&
+            (d.status.type == DonationStatusType.completed ||
+                d.status.type == DonationStatusType.created ||
+                d.status.type == DonationStatusType.inProcess))
+        .fold<double>(0.0, (sum, d) => sum + d.amount);
+  }
+
+  Widget _buildGiftAidRow(
+    BuildContext context,
+    AppLocalizations locals,
+    String currencySymbol,
+    String country,
+  ) {
+    final giftAidAmount = _calculateGiftAidAmount();
+    
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BodySmallText.primary30(
+                    'Giftaided',
+                  ),
+                  const SizedBox(width: 4),
+                  Image.asset(
+                    'assets/images/gift_aid_yellow.png',
+                    height: 16,
+                  ),
+                ],
+              ),
+              Expanded(
+                child: LabelMediumText.primary40(
+                  '$currencySymbol ${Util.formatNumberComma(
+                    giftAidAmount,
+                    Country.fromCode(country),
+                  )}',
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Divider(
+          height: 1,
+          color: FamilyAppTheme.neutralVariant95,
+          indent: 16,
+          endIndent: 16,
+        ),
       ],
     );
   }
