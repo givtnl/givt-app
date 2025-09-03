@@ -1092,5 +1092,6 @@
   "donationOverviewStatusInProcessFull": "In Bearbeitung",
   "donationOverviewStatusRefusedFull": "Von der Bank abgelehnt",
   "donationOverviewContactMessage": "Hoi, ik heb hulp nodig met de volgende gift:\\n\\nStatus: {status}\\nTransaction ID: #{transactionId}",
-  "date": "Datum"
+  "date": "Datum",
+  "platformFeeGoodOption": "Good choice"
 }
