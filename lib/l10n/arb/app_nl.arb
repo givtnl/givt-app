@@ -1093,5 +1093,6 @@
   "donationOverviewStatusRefusedFull": "Geweigerd door de bank",
   "donationOverviewContactMessage": "Hoi, ik heb hulp nodig met de volgende donatie:\\n\\nStatus: {status}\\nTransaction ID: #{transactionId}",
   "date": "Datum",
-  "platformFeeGoodOption": "Altijd goed"
+  "platformFeeGoodOption": "Altijd goed",
+  "platformFeeRemember": "Onthoud mijn keuze voor volgende donaties aan deze organisatie."
 }
