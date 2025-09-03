@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_overview_uimodel.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -10,12 +11,14 @@ import 'package:givt_app/utils/util.dart';
 class GiftAidHeader extends StatelessWidget {
   const GiftAidHeader({
     required this.monthGroup,
+    required this.allDonations,
     required this.country,
     required this.locals,
     super.key,
   });
 
   final MonthlyGroup monthGroup;
+  final List<DonationItem> allDonations;
   final String country;
   final AppLocalizations locals;
 
@@ -23,15 +26,28 @@ class GiftAidHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final currencySymbol = Util.getCurrencySymbol(countryCode: country);
 
-    // Calculate gift aid amount for this month
-    final giftAidAmount = monthGroup.donations
+    // Calculate gift aid amount for the entire tax year
+    // Get the tax year from the month group donations
+    final currentTaxYear = monthGroup.donations
+        .where((d) => d.taxYear != 0)
+        .map((d) => d.taxYear)
+        .firstOrNull;
+    
+    if (currentTaxYear == null) {
+      return const SizedBox.shrink();
+    }
+
+    // Get all donations for this tax year from all donations
+    final taxYearDonations = allDonations
+        .where((d) => d.taxYear == currentTaxYear);
+    
+    final giftAidAmount = taxYearDonations
         .where(
           (d) =>
               d.isGiftAidEnabled &&
-              d.taxYear != 0 &&
               d.status.type == DonationStatusType.completed,
         )
-        .fold<double>(0, (sum, d) => sum + (d.amount * 0.25));
+        .fold<double>(0, (sum, d) => sum + d.amount);
 
     // Only show if there's gift aid amount
     if (giftAidAmount <= 0) {
@@ -48,7 +64,7 @@ class GiftAidHeader extends StatelessWidget {
           Expanded(
             child: TitleSmallText(
               locals.giftOverviewGiftAidBanner(
-                "'${monthGroup.year.toString().substring(2)}",
+                "'${currentTaxYear.toString().substring(2)}",
               ),
               color: Colors.white,
             ),
