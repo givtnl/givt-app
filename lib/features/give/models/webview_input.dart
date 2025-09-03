@@ -31,6 +31,7 @@ class WebViewInput extends Equatable {
     this.subtotalText = '',
     this.totalText = '',
     this.platformFeeNoContributionText = '',
+    this.platformFeeGoodOptionText = '',
     this.platformFeeCommonOptionText = '',
     this.platformFeeGenerousOptionText = '',
     this.platformFeeText = '',
@@ -70,6 +71,7 @@ class WebViewInput extends Equatable {
         subtotalText: json['subtotalText'] as String,
         totalText: json['totalText'] as String,
         platformFeeNoContributionText: json['platformFeeNoContributionText'] as String,
+        platformFeeGoodOptionText: json['platformFeeGoodOptionText'] as String,
         platformFeeCommonOptionText: json['platformFeeCommonOptionText'] as String,
         platformFeeGenerousOptionText: json['platformFeeGenerousOptionText'] as String,
         platformFeeText: json['platformFeeText'] as String,
@@ -106,6 +108,7 @@ class WebViewInput extends Equatable {
   final String subtotalText;
   final String totalText;
   final String platformFeeNoContributionText;
+  final String platformFeeGoodOptionText;
   final String platformFeeCommonOptionText;
   final String platformFeeGenerousOptionText;
   final String platformFeeText;
@@ -144,6 +147,7 @@ class WebViewInput extends Equatable {
         'subtotalText': subtotalText,
         'totalText': totalText,
         'platformFeeNoContributionText': platformFeeNoContributionText,
+        'platformFeeGoodOptionText': platformFeeGoodOptionText,
         'platformFeeCommonOptionText': platformFeeCommonOptionText,
         'platformFeeGenerousOptionText': platformFeeGenerousOptionText,
         'platformFeeText': platformFeeText,
@@ -183,6 +187,7 @@ class WebViewInput extends Equatable {
     String? subtotalText,
     String? totalText,
     String? platformFeeNoContributionText,
+    String? platformFeeGoodOptionText,
     String? platformFeeCommonOptionText,
     String? platformFeeGenerousOptionText,
     String? platformFeeText,
@@ -224,6 +229,7 @@ class WebViewInput extends Equatable {
       subtotalText: subtotalText ?? this.subtotalText,
       totalText: totalText ?? this.totalText,
       platformFeeNoContributionText: platformFeeNoContributionText ?? this.platformFeeNoContributionText,
+      platformFeeGoodOptionText: platformFeeGoodOptionText ?? this.platformFeeGoodOptionText,
       platformFeeCommonOptionText: platformFeeCommonOptionText ?? this.platformFeeCommonOptionText,
       platformFeeGenerousOptionText: platformFeeGenerousOptionText ?? this.platformFeeGenerousOptionText,
       platformFeeText: platformFeeText ?? this.platformFeeText,
@@ -265,6 +271,7 @@ class WebViewInput extends Equatable {
         subtotalText,
         totalText,
         platformFeeNoContributionText,
+        platformFeeGoodOptionText,
         platformFeeCommonOptionText,
         platformFeeGenerousOptionText,
         platformFeeText,

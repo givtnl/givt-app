@@ -4280,6 +4280,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date'**
   String get date;
+
+  /// No description provided for @platformFeeGoodOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Good choice'**
+  String get platformFeeGoodOption;
 }
 
 class _AppLocalizationsDelegate
