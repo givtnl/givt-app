@@ -38,6 +38,7 @@ class WebViewInput extends Equatable {
     this.platformFeeTitle = '',
     this.platformFeePlaceholder = '',
     this.platformFeeRequired = '',
+    this.platformFeeRemember = '',
     this.transactionIds = const [],
   });
 
@@ -76,6 +77,7 @@ class WebViewInput extends Equatable {
         platformFeeGenerousOptionText: json['platformFeeGenerousOptionText'] as String,
         platformFeeText: json['platformFeeText'] as String,
         platformFeeTitle: json['platformFeeTitle'] as String,
+        platformFeeRemember: json['platformFeeRemember'] as String,
         transactionIds: json['transactionIds'] as List<int>,
       );
 
@@ -115,6 +117,7 @@ class WebViewInput extends Equatable {
   final String platformFeeTitle;
   final String platformFeePlaceholder;
   final String platformFeeRequired;
+  final String platformFeeRemember;
   final List<int> transactionIds;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -154,6 +157,7 @@ class WebViewInput extends Equatable {
         'platformFeeTitle': platformFeeTitle,
         'platformFeePlaceholder': platformFeePlaceholder,
         'platformFeeRequired': platformFeeRequired,
+        'platformFeeRemember': platformFeeRemember,
         'transactionIds': transactionIds,
       };
 
@@ -194,6 +198,7 @@ class WebViewInput extends Equatable {
     String? platformFeeTitle,
     String? platformFeePlaceholder,
     String? platformFeeRequired,
+    String? platformFeeRemember,
     List<int>? transactionIds,
   }) {
     return WebViewInput(
@@ -236,6 +241,7 @@ class WebViewInput extends Equatable {
       platformFeeTitle: platformFeeTitle ?? this.platformFeeTitle,
       platformFeePlaceholder: platformFeePlaceholder ?? this.platformFeePlaceholder,
       platformFeeRequired: platformFeeRequired ?? this.platformFeeRequired,
+      platformFeeRemember: platformFeeRemember ?? this.platformFeeRemember,
       transactionIds: transactionIds ?? this.transactionIds,
     );
   }
@@ -278,6 +284,7 @@ class WebViewInput extends Equatable {
         platformFeeTitle,
         platformFeePlaceholder,
         platformFeeRequired,
+        platformFeeRemember,
         transactionIds,
       ];
 }

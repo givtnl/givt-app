@@ -2393,5 +2393,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get date => 'Datum';
 
   @override
-  String get platformFeeGoodOption => 'Good choice';
+  String get platformFeeGoodOption => 'Einfach gut';
+
+  @override
+  String get platformFeeRemember =>
+      'Merke dir meine Auswahl für zukünftige Spenden an diese Organisation.';
 }

@@ -4286,6 +4286,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Good choice'**
   String get platformFeeGoodOption;
+
+  /// No description provided for @platformFeeRemember.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember my choice for future donations to this organisation.'**
+  String get platformFeeRemember;
 }
 
 class _AppLocalizationsDelegate
