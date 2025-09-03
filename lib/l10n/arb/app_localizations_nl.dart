@@ -2377,9 +2377,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String donationOverviewContactMessage(Object status, Object transactionId) {
-    return 'Hoi, ik heb hulp nodig met de volgende gift:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
+    return 'Hoi, ik heb hulp nodig met de volgende donatie:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
   }
 
   @override
   String get date => 'Datum';
+
+  @override
+  String get platformFeeGoodOption => 'Altijd goed';
 }

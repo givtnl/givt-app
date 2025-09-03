@@ -2391,4 +2391,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get date => 'Datum';
+
+  @override
+  String get platformFeeGoodOption => 'Good choice';
 }
