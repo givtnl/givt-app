@@ -1092,5 +1092,7 @@
   "donationOverviewStatusInProcessFull": "In Process",
   "donationOverviewStatusRefusedFull": "Refused by bank",
   "donationOverviewContactMessage": "Hi, I need help with the following donation:\\n\\nStatus: {status}\\nTransaction ID: #{transactionId}",
-  "date": "Date"
+  "date": "Date",
+  "platformFeeGoodOption": "Good choice",
+  "platformFeeRemember": "Remember my choice for future donations to this organisation."
 }

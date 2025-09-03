@@ -2372,6 +2372,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get date => 'Date';
+
+  @override
+  String get platformFeeGoodOption => 'Good choice';
+
+  @override
+  String get platformFeeRemember =>
+      'Remember my choice for future donations to this organisation.';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4742,4 +4749,11 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get date => 'Date';
+
+  @override
+  String get platformFeeGoodOption => 'Good choice';
+
+  @override
+  String get platformFeeRemember =>
+      'Remember my choice for future donations to this organisation.';
 }
