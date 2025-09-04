@@ -93,12 +93,33 @@ class DonationOverviewUIModel extends Equatable {
             : sum,
       );
 
+      // Calculate platform fees for this month (avoiding duplicates)
+      final seenPlatformFeeIds = <int>{};
+      final monthPlatformFees = monthDonations.fold<double>(
+        0.0,
+        (sum, d) {
+          if (d.status.type == DonationStatusType.completed ||
+              d.status.type == DonationStatusType.created ||
+              d.status.type == DonationStatusType.inProcess) {
+            final id = d.platformFeeTransactionId;
+            final fee = d.platformFeeAmount;
+            if (id != null && fee != null && !seenPlatformFeeIds.contains(id)) {
+              seenPlatformFeeIds.add(id);
+              return sum + fee;
+            }
+          }
+          return sum;
+        },
+      );
+
+      final totalMonthAmount = monthAmount + monthPlatformFees;
+
       monthlyGroups.add(
         MonthlyGroup(
           year: year,
           month: month,
           donations: monthDonations,
-          totalAmount: monthAmount,
+          totalAmount: totalMonthAmount,
         ),
       );
     });
@@ -219,6 +240,7 @@ class MonthlyGroup extends Equatable {
   final int month;
   final List<DonationItem> donations;
   final double totalAmount;
+
 
   String get monthName {
     final date = DateTime(year, month);
