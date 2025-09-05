@@ -412,13 +412,15 @@ class _RecurringDonationDetailPageState
         // Find the last completed transaction
         final lastTransaction = completedTransactions
             .reduce((a, b) => a.date.isAfter(b.date) ? a : b);
-        final daysHelped = lastTransaction.date.difference(startDate).inDays;
+        // Ensure days helped is never negative - if last transaction is before start date, show 0
+        final daysHelped = lastTransaction.date.difference(startDate).inDays.clamp(0, double.infinity).toInt();
         return context.l10n.recurringDonationsDetailTimeDisplayDays(
           daysHelped.toString(),
         );
       } else {
         // Fallback: no completed transactions, show days from start to end date
-        final daysHelped = uiModel.endDate!.difference(startDate).inDays;
+        // Ensure days helped is never negative - if end date is before start date, show 0
+        final daysHelped = uiModel.endDate!.difference(startDate).inDays.clamp(0, double.infinity).toInt();
         return context.l10n.recurringDonationsDetailTimeDisplayDays(
           daysHelped.toString(),
         );
@@ -426,7 +428,8 @@ class _RecurringDonationDetailPageState
     } else {
       // For active donations, show days from start until now
       final now = DateTime.now();
-      final daysHelped = now.difference(startDate).inDays;
+      // Ensure days helped is never negative - if start date is in the future, show 0
+      final daysHelped = now.difference(startDate).inDays.clamp(0, double.infinity).toInt();
       return context.l10n.recurringDonationsDetailTimeDisplayDays(
         daysHelped.toString(),
       );
