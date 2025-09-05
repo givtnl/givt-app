@@ -158,19 +158,36 @@ class RecurringDonation extends Equatable {
     final frequency = _evaluateFrequencyFromCronExpression();
     
     // Calculate the date of the next turn based on start date and completed turns
+    // The first donation (completedTurns = 0) should happen on the start date itself
     var nextDate = start;
     
     switch (frequency) {
       case 0: // Weekly
-        nextDate = start.add(Duration(days: 7 * (completedTurns + 1)));
+        nextDate = start.add(Duration(days: 7 * completedTurns));
       case 1: // Monthly
-        nextDate = start.copyWith(month: start.month + completedTurns + 1);
+        nextDate = start.copyWith(month: start.month + completedTurns);
       case 2: // Quarterly
-        nextDate = start.copyWith(month: start.month + (3 * (completedTurns + 1)));
+        nextDate = start.copyWith(month: start.month + (3 * completedTurns));
       case 3: // Semi-annually
-        nextDate = start.copyWith(month: start.month + (6 * (completedTurns + 1)));
+        nextDate = start.copyWith(month: start.month + (6 * completedTurns));
       case 4: // Annually
-        nextDate = start.copyWith(year: start.year + completedTurns + 1);
+        nextDate = start.copyWith(year: start.year + completedTurns);
+    }
+    
+    // If the calculated date is not after now, we need the next occurrence
+    if (!nextDate.isAfter(now)) {
+      switch (frequency) {
+        case 0: // Weekly
+          nextDate = start.add(Duration(days: 7 * (completedTurns + 1)));
+        case 1: // Monthly
+          nextDate = start.copyWith(month: start.month + completedTurns + 1);
+        case 2: // Quarterly
+          nextDate = start.copyWith(month: start.month + (3 * (completedTurns + 1)));
+        case 3: // Semi-annually
+          nextDate = start.copyWith(month: start.month + (6 * (completedTurns + 1)));
+        case 4: // Annually
+          nextDate = start.copyWith(year: start.year + completedTurns + 1);
+      }
     }
     
     return nextDate;
