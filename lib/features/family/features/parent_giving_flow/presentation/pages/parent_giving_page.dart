@@ -108,6 +108,17 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
       yesSuccess: context.l10n.yesSuccess,
       close: context.l10n.close,
       collect: context.l10n.collect,
+      subtotalText: context.l10n.donationSubtotal,
+      totalText: context.l10n.donationTotal,
+      platformFeeNoContributionText: context.l10n.platformFeeNoContribution,
+      platformFeeGoodOptionText: context.l10n.platformFeeGoodOption,
+      platformFeeCommonOptionText: context.l10n.platformFeeCommonOption,
+      platformFeeGenerousOptionText: context.l10n.platformFeeGenerousOption,
+      platformFeeText: context.l10n.platformFeeText,
+      platformFeeTitle: context.l10n.platformFeeTitle,
+      platformFeePlaceholder: context.l10n.platformFeePlaceholder,
+      platformFeeRequired: context.l10n.platformFeeRequired,
+      platformFeeRemember: context.l10n.platformFeeRemember,
       experiencePoints: state.experiencePoints,
     ).toJson();
   }
@@ -134,7 +145,7 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
               url: WebUri.uri(
                 Uri.https(
                   getIt<RequestHelper>().apiURL,
-                  'confirm-G4F.html',
+                  'confirm.html',
                   {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
                 ),
               ),
