@@ -40,6 +40,8 @@ import 'package:givt_app/features/family/features/missions/domain/repositories/m
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/family/features/qr_code_management/cubit/qr_code_management_cubit.dart';
+import 'package:givt_app/features/family/features/qr_code_management/repositories/qr_code_management_repository.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/repositories/organisations_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
@@ -111,6 +113,9 @@ void initCubits() {
     )
     ..registerLazySingleton<CameraCubit>(
       CameraCubit.new,
+    )
+    ..registerFactory<QrCodeManagementCubit>(
+      () => QrCodeManagementCubit(getIt()),
     )
     ..registerLazySingleton<MediumCubit>(MediumCubit.new)
     ..registerLazySingleton(
@@ -246,6 +251,9 @@ void initRepositories() {
     )
     ..registerSingleton<TutorialRepository>(
       TutorialRepository(),
+    )
+    ..registerLazySingleton<QrCodeManagementRepository>(
+      () => QrCodeManagementRepositoryImpl(),
     )
     ..registerSingleton<ParentSummaryRepository>(
       ParentSummaryRepository(

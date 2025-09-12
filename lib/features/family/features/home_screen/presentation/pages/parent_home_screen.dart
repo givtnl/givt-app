@@ -46,6 +46,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
               children: [
                 _parentHeaderWidget(activeProfile, context),
                 _giveTile(context),
+                _qrCodeManagementTile(context),
                 _generosityHuntButton(context, state),
               ],
             ),
@@ -88,6 +89,27 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
           iconPath: 'assets/family/images/give_tile.svg',
           titleBig: 'Give',
           analyticsEvent: AmplitudeEvents.parentGiveTileClicked.toEvent(),
+        ),
+      );
+
+  Widget _qrCodeManagementTile(BuildContext context) => Padding(
+        padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+        child: FunTile(
+          onTap: () {
+            context.pushNamed(FamilyPages.qrCodeManagement.name);
+
+            // Track analytics event
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.qrCodeCreateButtonPressed,
+            );
+          },
+          borderColor: ColorCombo.primary.borderColor,
+          backgroundColor: ColorCombo.primary.backgroundColor,
+          textColor: ColorCombo.primary.textColor,
+          iconData: FontAwesomeIcons.qrcode,
+          titleBig: 'QR Codes',
+          subtitle: 'Manage your QR codes',
+          analyticsEvent: AmplitudeEvents.qrCodeCreateButtonPressed.toEvent(),
         ),
       );
 

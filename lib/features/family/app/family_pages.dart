@@ -80,6 +80,9 @@ enum FamilyPages {
   gameSummaries(path: 'game-summaries', name: 'GAME-SUMMARIES'),
   parentSummary(path: 'parent-summary', name: 'PARENT-SUMMARY'),
   newGame(path: 'new-game', name: 'NEW-GAME'),
+
+  //QR Code Management
+  qrCodeManagement(path: 'qr-code-management', name: 'QR-CODE-MANAGEMENT'),
   ;
 
   final String path;

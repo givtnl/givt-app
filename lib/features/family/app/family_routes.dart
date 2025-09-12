@@ -48,6 +48,8 @@ import 'package:givt_app/features/family/features/parent_giving_flow/presentatio
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/qr_code_management/cubit/qr_code_management_cubit.dart';
+import 'package:givt_app/features/family/features/qr_code_management/presentation/pages/qr_code_management_screen.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/presentation/camera_screen.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/cubit/interests_cubit.dart';
@@ -574,6 +576,14 @@ class FamilyAppRoutes {
           path: FamilyPages.newGame.path,
           name: FamilyPages.newGame.name,
           builder: (context, state) => const GenerosityHuntIntroPage(),
+        ),
+        GoRoute(
+          path: FamilyPages.qrCodeManagement.path,
+          name: FamilyPages.qrCodeManagement.name,
+          builder: (context, state) => BlocProvider(
+            create: (_) => getIt<QrCodeManagementCubit>(),
+            child: const QrCodeManagementScreen(),
+          ),
         ),
       ],
     ),
