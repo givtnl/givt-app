@@ -149,9 +149,13 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
                 toolbarTopBackgroundColor: Colors.white,
                 toolbarTopTintColor: Colors.white,
                 toolbarBottomBackgroundColor: Colors.white,
+                allowGoBackWithBackButton: false,
+                shouldCloseOnBackButtonPressed: false,
+                closeOnCannotGoBack: false,
               ),
               webViewSettings: InAppWebViewSettings(
                 underPageBackgroundColor: Colors.white,
+                allowsBackForwardNavigationGestures: false,
               ),
             ),
           );

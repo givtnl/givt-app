@@ -86,9 +86,10 @@ class DonationListItem extends StatelessWidget {
                           ],
                           if (donationGroup.isOnlineGiving) ...[
                             const SizedBox(width: 4),
-                            Image.asset(
-                              'assets/images/ideal.png',
-                              height: 20,
+                            const FaIcon(
+                              FontAwesomeIcons.globe,
+                              size: 16,
+                              color: FamilyAppTheme.primary20,
                             ),
                           ],
                           if (donationGroup.isRecurringDonation) ...[

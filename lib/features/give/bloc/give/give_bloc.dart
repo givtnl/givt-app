@@ -60,11 +60,26 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   final GivtRepository _givtRepository;
   final BeaconRepository _beaconRepository;
   final CollectGroupRepository _collectGroupRepository;
+  
+  // Flag to track if the BT scan page is still active
+  bool _isBTScanPageActive = true;
 
   @override
   void onTransition(Transition<GiveEvent, GiveState> transition) {
     log(transition.toString());
     super.onTransition(transition);
+  }
+  
+  /// Called when the BT scan page is being disposed
+  void onBTScanPageDisposed() {
+    _isBTScanPageActive = false;
+    LoggingInfo.instance.info('BT scan page disposed - beacon processing disabled');
+  }
+  
+  /// Called when the BT scan page is being initialized
+  void onBTScanPageInitialized() {
+    _isBTScanPageActive = true;
+    LoggingInfo.instance.info('BT scan page initialized - beacon processing enabled');
   }
 
   FutureOr<void> _qrCodeScanned(
@@ -219,6 +234,23 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     if (state.status == GiveStatus.processingBeaconData) {
       return;
     }
+    
+    // Add safety check: if the BT scan page is no longer active, don't process beacons
+    // This prevents background processing when user has navigated away
+    if (!_isBTScanPageActive) {
+      LoggingInfo.instance.info('Ignoring beacon scan - BT scan page no longer active');
+      return;
+    }
+    
+    // Add safety check: if we're already in a final state, don't process new beacons
+    // This prevents background processing when user has navigated away
+    if (state.status == GiveStatus.readyToGive || 
+        state.status == GiveStatus.success || 
+        state.status == GiveStatus.processed) {
+      LoggingInfo.instance.info('Ignoring beacon scan - already in final state: ${state.status}');
+      return;
+    }
+    
     emit(state.copyWith(status: GiveStatus.processingBeaconData));
     try {
       final startIndex = event.beaconData.indexOf('61f7ed');

@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.14.2
+version: 4.14.3
 publish_to: none
 
 environment:
@@ -27,7 +27,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.0.0
-  flutter_blue_plus: ^1.35.3
+  flutter_blue_plus: ^1.35.5
   flutter_inappwebview: ^6.1.5
   flutter_layout_grid: ^2.0.7
   flutter_local_notifications: ^18.0.1

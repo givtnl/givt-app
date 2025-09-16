@@ -28,6 +28,7 @@ class GivingPage extends StatefulWidget {
 class _GivingPageState extends State<GivingPage> {
   late CustomInAppBrowser _customInAppBrowser;
   bool browserIsOpened = false;
+  bool showBackButton = false;
 
   @override
   void initState() {
@@ -46,6 +47,15 @@ class _GivingPageState extends State<GivingPage> {
         await _closeBrowser();
       },
     );
+    
+    // Show the back button after 1 second delay
+    Timer(const Duration(seconds: 1), () {
+      if (mounted) {
+        setState(() {
+          showBackButton = true;
+        });
+      }
+    });
   }
 
   Future<void> _closeBrowser() async {
@@ -163,9 +173,13 @@ class _GivingPageState extends State<GivingPage> {
                 toolbarTopBackgroundColor: Colors.white,
                 toolbarTopTintColor: Colors.white,
                 toolbarBottomBackgroundColor: Colors.white,
+                allowGoBackWithBackButton: false,
+                shouldCloseOnBackButtonPressed: false,
+                closeOnCannotGoBack: false,
               ),
               webViewSettings: InAppWebViewSettings(
                 underPageBackgroundColor: Colors.white,
+                allowsBackForwardNavigationGestures: false,
               )
             ),
           );
@@ -174,17 +188,19 @@ class _GivingPageState extends State<GivingPage> {
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: ElevatedButton(
-                child: const Text('Go Back Home'),
-                onPressed: () {
-                  context.goNamed(
-                    Pages.home.name,
-                    queryParameters: {
-                      'given': 'true',
-                    },
-                  );
-                },
-              ),
+              child: showBackButton
+                  ? ElevatedButton(
+                      child: const Text('Go Back Home'),
+                      onPressed: () {
+                        context.goNamed(
+                          Pages.home.name,
+                          queryParameters: {
+                            'given': 'true',
+                          },
+                        );
+                      },
+                    )
+                  : const SizedBox.shrink(),
             ),
           );
         },
@@ -205,4 +221,9 @@ class CustomInAppBrowser extends InAppBrowser {
 
   @override
   Future<void> onLoadStart(Uri? url) async => onLoad(url);
+
+  @override
+  Future<void> onCloseWindow() async {
+    LoggingInfo.instance.info('User has pressed the back button');
+  }
 }
