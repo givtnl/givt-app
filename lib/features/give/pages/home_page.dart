@@ -15,6 +15,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/eu/cubit/eu_profiles_cubit.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
@@ -67,7 +68,28 @@ class _HomePageState extends State<HomePage> {
           NotificationService.instance.navigateFirebaseNotification(message);
         }
       });
+
+      // Check for multiple profiles and redirect to profile selection if needed
+      _checkForProfileSelection();
     });
+  }
+
+  Future<void> _checkForProfileSelection() async {
+    try {
+      final profilesCubit = getIt<EuProfilesCubit>();
+      await profilesCubit.fetchProfiles();
+      
+      if (mounted) {
+        final state = profilesCubit.state;
+        if (state is EuProfilesUpdatedState && state.profiles.length > 1) {
+          // Multiple profiles available, show profile selection
+          context.goNamed(Pages.euProfileSelection.name);
+        }
+      }
+    } catch (e) {
+      // If there's an error, continue with normal flow
+      LoggingInfo.instance.error('Error checking profiles: $e');
+    }
   }
 
   @override
@@ -129,6 +151,23 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
+          // Profile switching button
+          BlocBuilder<EuProfilesCubit, EuProfilesState>(
+            bloc: getIt<EuProfilesCubit>(),
+            builder: (context, state) {
+              if (state is EuProfilesUpdatedState && state.profiles.length > 1) {
+                return IconButton(
+                  onPressed: () => context.goNamed(Pages.euProfileSelection.name),
+                  icon: const Icon(
+                    Icons.person_outline,
+                    semanticLabel: 'switchProfile',
+                    size: 26,
+                  ),
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
           IconButton(
             onPressed: () => showModalBottomSheet<void>(
               context: context,

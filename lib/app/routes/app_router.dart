@@ -11,6 +11,8 @@ import 'package:givt_app/features/account_details/pages/personal_info_edit_page.
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/donation_overview.dart';
 import 'package:givt_app/features/email_signup/presentation/pages/email_signup_page.dart';
+import 'package:givt_app/features/eu/cubit/eu_profiles_cubit.dart';
+import 'package:givt_app/features/eu/presentation/pages/eu_profile_selection_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -112,6 +114,14 @@ class AppRouter {
         path: Pages.home.path,
         name: Pages.home.name,
         routes: [
+          GoRoute(
+            path: Pages.euProfileSelection.path,
+            name: Pages.euProfileSelection.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => getIt<EuProfilesCubit>(),
+              child: const EuProfileSelectionPage(),
+            ),
+          ),
           GoRoute(
             path: Pages.permitBiometric.path,
             name: Pages.permitBiometric.name,
@@ -576,6 +586,17 @@ class AppRouter {
             ? '${FamilyPages.profileSelection.path}?$query'
             : '${FamilyPages.profileSelection.path}${state.uri}';
       } else {
+        // For EU users, check if they have multiple profiles
+        // If so, redirect to profile selection
+        try {
+          final profilesCubit = getIt<EuProfilesCubit>();
+          final profiles = await profilesCubit.fetchProfiles();
+          if (profiles.length > 1) {
+            return '${Pages.euProfileSelection.path}?$query';
+          }
+        } catch (e) {
+          // If there's an error, continue with normal flow
+        }
         return '${Pages.home.path}?$query';
       }
     }

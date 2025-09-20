@@ -10,6 +10,7 @@ import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/donation_overview/injection.dart';
 import 'package:givt_app/features/email_signup/cubit/email_signup_cubit.dart';
+import 'package:givt_app/features/eu/injection/eu_injection.dart';
 import 'package:givt_app/features/family/features/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/family/features/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
@@ -50,6 +51,7 @@ Future<void> init() async {
   registerRecurringDonationsOverviewDependencies();
   registerRecurringDonationDetailDependencies();
   registerDonationOverviewDependencies();
+  registerEuDependencies();
 }
 
 Future<void> initAPIService() async {
