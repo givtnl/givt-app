@@ -88,7 +88,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
             IconButton(
               onPressed: () => _showContactForm(
                 context,
-                firstDonation.id.toString(),
+                _formatTransactionIds(sortedDonations),
                 _getStatusText(context, status.type),
               ),
               icon: const FaIcon(FontAwesomeIcons.circleQuestion),
@@ -174,12 +174,20 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                     showDivider: true,
                   ),
 
-                // Transaction ID
-                _buildDetailRow(
-                  label: 'Transaction ID',
-                  value: '#${firstDonation.id}',
-                  showDivider: false,
-                ),
+                // Transaction IDs
+                ...sortedDonations.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final donation = entry.value;
+                  final isLast = index == sortedDonations.length - 1;
+                  
+                  return _buildDetailRow(
+                    label: sortedDonations.length > 1 
+                        ? 'Transaction ID ${index + 1}'
+                        : 'Transaction ID',
+                    value: '#${donation.id}',
+                    showDivider: !isLast,
+                  );
+                }).toList(),
               ],
             ),
 
@@ -446,9 +454,17 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
     }
   }
 
+  String _formatTransactionIds(List<DonationItem> donations) {
+    if (donations.length == 1) {
+      return donations.first.id.toString();
+    }
+    
+    return donations.map((d) => '#${d.id}').join(', ');
+  }
+
   void _showContactForm(
     BuildContext context,
-    String transactionId,
+    String transactionIds,
     String status,
   ) {
     AboutGivtBottomSheet.show(
@@ -456,7 +472,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
       initialMessage: context.l10n
           .donationOverviewContactMessage(
             status,
-            transactionId,
+            transactionIds,
           )
           .replaceAll(r'\n', '\n'),
     );
