@@ -10,6 +10,7 @@ class AddMemberUtil {
     BuildContext context, {
     bool showTopUp = false,
     bool existingFamily = false,
+    bool adultOnly = false,
   }) async {
     await Navigator.push(
       context,
@@ -17,6 +18,7 @@ class AddMemberUtil {
         initialAmount: 1,
         showTopUp: showTopUp,
         existingFamily: existingFamily,
+        adultOnly: adultOnly,
       ).toRoute(context),
     );
   }

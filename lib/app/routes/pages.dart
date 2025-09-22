@@ -56,6 +56,9 @@ enum Pages {
     name: 'DONATION-DETAIL',
   ),
   permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
+  euProfileSelection(path: 'eu-profile-selection', name: 'EU-PROFILE-SELECTION'),
+  euFamilyManagement(path: 'eu-family-management', name: 'EU-FAMILY-MANAGEMENT'),
+  createFamilyInvite(path: 'create-family-invite', name: 'CREATE-FAMILY-INVITE'),
   ;
 
   const Pages({

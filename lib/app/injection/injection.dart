@@ -9,6 +9,7 @@ import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/donation_overview/injection.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/email_signup/cubit/email_signup_cubit.dart';
 import 'package:givt_app/features/family/features/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/family/features/add_member/repository/add_member_repository.dart';
@@ -29,6 +30,9 @@ import 'package:givt_app/features/recurring_donations/create/cubit/step4_confirm
 import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/injection.dart';
 import 'package:givt_app/features/recurring_donations/overview/injection.dart';
+import 'package:givt_app/features/eu_profile_selection/injection.dart';
+import 'package:givt_app/features/manage_family/injection.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
@@ -50,12 +54,19 @@ Future<void> init() async {
   registerRecurringDonationsOverviewDependencies();
   registerRecurringDonationDetailDependencies();
   registerDonationOverviewDependencies();
+  registerEuProfileSelectionDependencies();
+  registerEuFamilyManagementDependencies();
 }
 
 Future<void> initAPIService() async {
   getIt.allowReassignment = true;
   getIt.registerLazySingleton<APIService>(
     () => APIService(
+      getIt<RequestHelper>(),
+    ),
+  );
+  getIt.registerLazySingleton<FamilyAPIService>(
+    () => FamilyAPIService(
       getIt<RequestHelper>(),
     ),
   );
@@ -123,6 +134,9 @@ void initRepositories() {
         getIt(),
         getIt(),
       ),
+    )
+    ..registerLazySingleton<AuthCubit>(
+      () => AuthCubit(getIt()),
     )
     ..registerLazySingleton<ImagePicker>(ImagePicker.new)
     ..registerLazySingleton<MediaPickerService>(

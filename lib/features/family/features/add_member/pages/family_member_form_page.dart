@@ -31,6 +31,7 @@ class FamilyMemberFormPage extends StatefulWidget {
     required this.membersToCombine,
     required this.existingFamily,
     this.showTopUp = false,
+    this.adultOnly = false,
     super.key,
   });
 
@@ -39,6 +40,7 @@ class FamilyMemberFormPage extends StatefulWidget {
   final List<Member> membersToCombine;
   final bool showTopUp;
   final bool existingFamily;
+  final bool adultOnly;
 
   @override
   State<FamilyMemberFormPage> createState() => _FamilyMemberFormPageState();
@@ -56,6 +58,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   @override
   void initState() {
     _amount = widget.showTopUp ? 5 : 0;
+    selectedIndex = widget.adultOnly ? 1 : 0;
     avatars = getIt<AvatarsCubit>();
 
     super.initState();
@@ -110,8 +113,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
 
     Navigator.push(
       context,
-      AddMemberLoadingPage(skipHeardAboutGivt: widget.existingFamily)
-          .toRoute(context),
+      AddMemberLoadingPage(
+        skipHeardAboutGivt: widget.existingFamily,
+      ).toRoute(context),
     );
   }
 
@@ -143,7 +147,8 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                ChildOrParentSelector(
+                if (!widget.adultOnly)
+                  ChildOrParentSelector(
                     selectedIndex: selectedIndex,
                     options: [
                       context.l10n.childKey,
@@ -154,7 +159,8 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                         selectedIndex = index;
                         FocusScope.of(context).unfocus();
                       });
-                    }),
+                    },
+                  ),
                 const SizedBox(height: 16),
                 RandomAvatar(
                   id: widget.index.toString(),
@@ -195,7 +201,8 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                   _primaryButton(selectedIndex == tabsOptions.indexOf('Child'))
                 else
                   _secondaryButton(
-                      selectedIndex == tabsOptions.indexOf('Child')),
+                    selectedIndex == tabsOptions.indexOf('Child'),
+                  ),
               ],
             ),
           ),
@@ -220,8 +227,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
           child: Column(
             children: [
               Semantics(
-                identifier:
-                    state.getAvatarByKey(widget.index.toString()).fileName,
+                identifier: state
+                    .getAvatarByKey(widget.index.toString())
+                    .fileName,
                 label: state.getAvatarByKey(widget.index.toString()).fileName,
                 child: Container(
                   decoration: BoxDecoration(

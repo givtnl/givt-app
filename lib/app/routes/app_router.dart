@@ -38,6 +38,11 @@ import 'package:givt_app/features/registration/pages/pages.dart';
 import 'package:givt_app/features/splash/pages/splash_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
+import 'package:givt_app/features/eu_profile_selection/pages/eu_profile_selection_page.dart';
+import 'package:givt_app/features/eu_profile_selection/cubit/eu_profile_selection_cubit.dart';
+import 'package:givt_app/features/manage_family/pages/manage_family_page.dart';
+import 'package:givt_app/features/manage_family/pages/create_invite_page.dart';
+import 'package:givt_app/features/manage_family/cubit/manage_family_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/redirect_to_browser_page.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
@@ -465,6 +470,41 @@ class AppRouter {
               child: const UnregisterPage(),
             ),
           ),
+          GoRoute(
+            path: Pages.euProfileSelection.path,
+            name: Pages.euProfileSelection.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => EuProfileSelectionCubit(getIt()),
+              child: EuProfileSelectionPage(
+                initialAmount: state.uri.queryParameters['amount'] != null
+                    ? double.tryParse(state.uri.queryParameters['amount']!)
+                    : null,
+                code: state.uri.queryParameters['code'],
+                afterGivingRedirection: state.uri.queryParameters['afterGivingRedirection'],
+                navigateTo: state.uri.queryParameters['page'],
+                given: state.uri.queryParameters.containsKey('given'),
+                retry: state.uri.queryParameters.containsKey('retry'),
+              ),
+            ),
+          ),
+          GoRoute(
+            path: Pages.euFamilyManagement.path,
+            name: Pages.euFamilyManagement.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => ManageFamilyCubit(getIt()),
+              child: const ManageFamilyPage(),
+            ),
+            routes: [
+              GoRoute(
+                path: Pages.createFamilyInvite.path,
+                name: Pages.createFamilyInvite.name,
+                builder: (context, state) => BlocProvider(
+                  create: (_) => ManageFamilyCubit(getIt()),
+                  child: const CreateInvitePage(),
+                ),
+              ),
+            ],
+          ),
         ],
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
           listener: (context, state) =>
@@ -576,7 +616,10 @@ class AppRouter {
             ? '${FamilyPages.profileSelection.path}?$query'
             : '${FamilyPages.profileSelection.path}${state.uri}';
       } else {
-        return '${Pages.home.path}?$query';
+        // For EU users, always show profile selection on app startup
+        // The profile selection screen will handle whether to show selection or auto-proceed
+        print('DEBUG: External link redirect - EU user, going to profile selection');
+        return '${Pages.euProfileSelection.path}?$query';
       }
     }
 
@@ -607,15 +650,27 @@ class AppRouter {
         return;
       }
 
-      //needs to be after isUsUser check
-      if (routerState.name == Pages.home.name) {
-        return;
+      // For EU users, always redirect to profile selection on fresh app start
+      // This allows users to see/switch profiles even if one is already active
+      // Only skip profile selection when navigating from menu items within the app
+      
+      // Check if this is a fresh start or external link (no specific page navigation)
+      final isFreshStart = routerState.name == null || 
+                          routerState.name == Pages.splash.name ||
+                          routerState.name == Pages.loading.name;
+      
+      print('DEBUG: EU Profile Selection Check:');
+      print('  - routerState.name: ${routerState.name}');
+      print('  - isFreshStart: $isFreshStart');
+      print('  - shouldRedirect: ${routerState.name != Pages.euProfileSelection.name && isFreshStart}');
+      
+      if (routerState.name != Pages.euProfileSelection.name && isFreshStart) {
+        print('DEBUG: Redirecting to profile selection (fresh start)');
+        context.goNamed(
+          Pages.euProfileSelection.name,
+          queryParameters: routerState.uri.queryParameters,
+        );
       }
-
-      context.goNamed(
-        Pages.home.name,
-        queryParameters: routerState.uri.queryParameters,
-      );
     }
 
     if (state.status == AuthStatus.unauthenticated ||

@@ -132,6 +132,25 @@ class CustomNavigationDrawer extends StatelessWidget {
                   ),
                 ),
                 DrawerMenuItem(
+                  isVisible: !auth.user.needRegistration && !auth.user.isUsUser,
+                  title: 'Manage Family',
+                  icon: Icons.people,
+                  analyticsEvent: AmplitudeEvents.okClicked,
+                  onTap: () async => AuthUtils.checkToken(
+                    context,
+                    checkAuthRequest: CheckAuthRequest(
+                      navigate: (context) async {
+                        context.goNamed(Pages.euFamilyManagement.name);
+                        unawaited(
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents.okClicked,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
                   title: locals.giveLimit,
                   icon: Util.getCurrencyIconData(

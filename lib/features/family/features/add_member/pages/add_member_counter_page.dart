@@ -14,12 +14,14 @@ class AddMemberCounterPage extends StatefulWidget {
     this.initialAmount,
     this.showTopUp = false,
     this.existingFamily = false,
+    this.adultOnly = false,
     super.key,
   });
 
   final int? initialAmount;
   final bool showTopUp;
   final bool existingFamily;
+  final bool adultOnly;
 
   @override
   State<AddMemberCounterPage> createState() => _AddMemberCounterPageState();
@@ -72,6 +74,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
                   membersToCombine: const [],
                   showTopUp: widget.showTopUp,
                   existingFamily: widget.existingFamily,
+                  adultOnly: widget.adultOnly,
                 ).toRoute(context),
               );
             },
