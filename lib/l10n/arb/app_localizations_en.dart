@@ -2367,7 +2367,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String donationOverviewContactMessage(Object status, Object transactionId) {
-    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
+    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID:#$transactionId';
   }
 
   @override
@@ -4744,7 +4744,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String donationOverviewContactMessage(Object status, Object transactionId) {
-    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: #$transactionId';
+    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: $transactionId';
   }
 
   @override

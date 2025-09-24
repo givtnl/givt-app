@@ -88,7 +88,8 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
             IconButton(
               onPressed: () => _showContactForm(
                 context,
-                firstDonation.id.toString(),
+                _formatTransactionIds(sortedDonations),
+                _formatPlatformFeeIds(),
                 _getStatusText(context, status.type),
               ),
               icon: const FaIcon(FontAwesomeIcons.circleQuestion),
@@ -174,10 +175,10 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                     showDivider: true,
                   ),
 
-                // Transaction ID
+                // Transaction IDs
                 _buildDetailRow(
                   label: 'Transaction ID',
-                  value: '#${firstDonation.id}',
+                  value: _formatAllIds(),
                   showDivider: false,
                 ),
               ],
@@ -446,17 +447,65 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
     }
   }
 
+  String _formatTransactionIds(List<DonationItem> donations) {
+    if (donations.length == 1) {
+      return donations.first.id.toString();
+    }
+    
+    return donations.map((d) => '#${d.id}').join(', ');
+  }
+
+  List<int> _getPlatformFeeIds() {
+    final seenIds = <int>{};
+    final platformFeeIds = <int>[];
+    
+    for (final donation in widget.donationGroup.donations) {
+      final id = donation.platformFeeTransactionId;
+      if (id != null && !seenIds.contains(id)) {
+        platformFeeIds.add(id);
+        seenIds.add(id);
+      }
+    }
+    
+    return platformFeeIds;
+  }
+
+  String _formatPlatformFeeIds() {
+    final platformFeeIds = _getPlatformFeeIds();
+    if (platformFeeIds.isEmpty) {
+      return '';
+    }
+    
+    return platformFeeIds.map((id) => '#$id').join(', ');
+  }
+
+  String _formatAllIds() {
+    final transactionIds = widget.donationGroup.donations.map((d) => '#${d.id}').join(', ');
+    final platformFeeIds = _formatPlatformFeeIds();
+    
+    if (platformFeeIds.isEmpty) {
+      return transactionIds;
+    }
+    
+    return '$transactionIds, $platformFeeIds';
+  }
+
   void _showContactForm(
     BuildContext context,
-    String transactionId,
+    String transactionIds,
+    String platformFeeIds,
     String status,
   ) {
+    final allIds = platformFeeIds.isNotEmpty 
+        ? '$transactionIds, $platformFeeIds'
+        : transactionIds;
+    
     AboutGivtBottomSheet.show(
       context,
       initialMessage: context.l10n
           .donationOverviewContactMessage(
             status,
-            transactionId,
+            allIds,
           )
           .replaceAll(r'\n', '\n'),
     );
