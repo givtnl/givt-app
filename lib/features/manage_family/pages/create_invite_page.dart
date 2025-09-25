@@ -109,9 +109,9 @@ class _CreateInvitePageState extends State<CreateInvitePage> {
 
     try {
       final cubit = getIt<ManageFamilyCubit>();
-      await cubit.sendInvite(
+      await cubit.createFamilyInvite(
         _emailController.text.trim(),
-        _messageController.text.trim(),
+        message: _messageController.text.trim(),
       );
 
       if (mounted) {

@@ -2,21 +2,30 @@ import 'dart:async';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/manage_family/models/family_invite.dart';
 import 'package:givt_app/features/manage_family/models/family_member.dart';
+import 'package:givt_app/features/manage_family/models/group_invite.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
+import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 
 abstract class ManageFamilyRepository {
   Future<List<FamilyMember>> getFamilyMembers();
   Future<List<FamilyInvite>> getFamilyInvites();
+  Future<List<GroupInvite>> getGroupInvites();
   Future<void> createFamilyInvite(String email, {String? message});
   Future<void> cancelFamilyInvite(String inviteId);
+  Future<void> acceptGroupInvite(String groupId);
+  Future<void> declineGroupInvite(String groupId);
   Future<void> removeFamilyMember(String memberId);
   Future<void> updateMemberRole(String memberId, FamilyMemberRole role);
   Stream<List<FamilyMember>> onMembersChanged();
   Stream<List<FamilyInvite>> onInvitesChanged();
+  Stream<List<GroupInvite>> onGroupInvitesChanged();
 }
 
-class EuFamilyManagementRepositoryImpl implements ManageFamilyRepository {
-  EuFamilyManagementRepositoryImpl(this._apiService, this._familyApiService);
+class FamilyManagementRepositoryImpl implements ManageFamilyRepository {
+  FamilyManagementRepositoryImpl(
+    this._apiService,
+    this._familyApiService,
+  );
 
   final APIService _apiService;
   final FamilyAPIService _familyApiService;
@@ -25,6 +34,11 @@ class EuFamilyManagementRepositoryImpl implements ManageFamilyRepository {
       StreamController<List<FamilyMember>>.broadcast();
   final StreamController<List<FamilyInvite>> _invitesStreamController =
       StreamController<List<FamilyInvite>>.broadcast();
+  final StreamController<List<GroupInvite>> _groupInvitesStreamController =
+      StreamController<List<GroupInvite>>.broadcast();
+
+  // Impact groups data management
+  List<ImpactGroup>? _impactGroups;
 
   @override
   Future<List<FamilyMember>> getFamilyMembers() async {
@@ -77,42 +91,14 @@ class EuFamilyManagementRepositoryImpl implements ManageFamilyRepository {
         members.add(member);
       }
 
-      // If no members found, add a test member for debugging
-      if (members.isEmpty) {
-        print('DEBUG: No members found, adding test member');
-        const testMember = FamilyMember(
-          id: 'test-1',
-          firstName: 'Test',
-          lastName: 'User',
-          email: 'test@example.com',
-          avatar: null,
-          isActive: true,
-          role: FamilyMemberRole.member,
-          inviteStatus: FamilyMemberInviteStatus.accepted,
-        );
-        members.add(testMember);
-      }
-
       print('DEBUG: total members: ${members.length}');
       _membersStreamController.add(members);
       return members;
     } catch (e) {
       print('DEBUG: error fetching members: $e');
-      // Add a test member even on error for debugging
-      const testMember = FamilyMember(
-        id: 'test-error',
-        firstName: 'Error',
-        lastName: 'User',
-        email: 'error@example.com',
-        avatar: null,
-        isActive: true,
-        role: FamilyMemberRole.member,
-        inviteStatus: FamilyMemberInviteStatus.accepted,
-      );
-      final members = [testMember];
-      _membersStreamController.add(members);
-      return members;
     }
+
+    return [];
   }
 
   @override
@@ -125,6 +111,24 @@ class EuFamilyManagementRepositoryImpl implements ManageFamilyRepository {
       return invites;
     } catch (e) {
       _invitesStreamController.addError(e);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<GroupInvite>> getGroupInvites() async {
+    try {
+      // Get all impact groups and filter for invited ones
+      final impactGroups = await _getImpactGroups();
+      final invitedGroups = impactGroups
+          .where((group) => group.status == ImpactGroupStatus.invited)
+          .map((group) => GroupInvite.fromImpactGroup(group))
+          .toList();
+      
+      _groupInvitesStreamController.add(invitedGroups);
+      return invitedGroups;
+    } catch (e) {
+      _groupInvitesStreamController.addError(e);
       rethrow;
     }
   }
@@ -168,6 +172,32 @@ class EuFamilyManagementRepositoryImpl implements ManageFamilyRepository {
   }
 
   @override
+  Future<void> acceptGroupInvite(String groupId) async {
+    try {
+      await _apiService.acceptGroupInvite(groupId);
+      // Refresh impact groups after accepting one
+      await _fetchImpactGroups();
+      // Refresh group invites
+      await getGroupInvites();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> declineGroupInvite(String groupId) async {
+    try {
+      await _apiService.declineGroupInvite(groupId);
+      // Refresh impact groups after declining one
+      await _fetchImpactGroups();
+      // Refresh group invites
+      await getGroupInvites();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<void> removeFamilyMember(String memberId) async {
     try {
       // This would typically call an API endpoint like /givtservice/v1/family/members/$memberId
@@ -199,8 +229,31 @@ class EuFamilyManagementRepositoryImpl implements ManageFamilyRepository {
     return _invitesStreamController.stream;
   }
 
+  @override
+  Stream<List<GroupInvite>> onGroupInvitesChanged() {
+    return _groupInvitesStreamController.stream;
+  }
+
+  // Private methods for impact groups management
+  Future<List<ImpactGroup>> _getImpactGroups({bool fetchWhenEmpty = false}) async {
+    if (fetchWhenEmpty && true == _impactGroups?.isEmpty) {
+      _impactGroups = await _fetchImpactGroups();
+    }
+    return _impactGroups ??= await _fetchImpactGroups();
+  }
+
+  Future<List<ImpactGroup>> _fetchImpactGroups() async {
+    final result = await _apiService.fetchImpactGroups();
+    final list = result
+        .map((e) => ImpactGroup.fromMap(e as Map<String, dynamic>))
+        .toList();
+    _impactGroups = list;
+    return list;
+  }
+
   void dispose() {
     _membersStreamController.close();
     _invitesStreamController.close();
+    _groupInvitesStreamController.close();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:givt_app/features/manage_family/models/family_invite.dart';
 import 'package:givt_app/features/manage_family/models/family_member.dart';
+import 'package:givt_app/features/manage_family/models/group_invite.dart';
 import 'package:givt_app/features/manage_family/models/manage_family_custom.dart';
 import 'package:givt_app/features/manage_family/models/manage_family_uimodel.dart';
 import 'package:givt_app/features/manage_family/repository/manage_family_repository.dart';
@@ -15,7 +16,8 @@ class ManageFamilyCubit
   final ManageFamilyRepository _repository;
 
   List<FamilyMember>? _members;
-  List<FamilyInvite>? _invites;
+  List<FamilyInvite>? _familyInvites;
+  List<GroupInvite>? _groupInvites;
 
   Future<void> init() async {
     // Listen to data changes
@@ -25,9 +27,15 @@ class ManageFamilyCubit
       emitData(_createUIModel());
     });
 
-    _repository.onInvitesChanged().listen((invites) {
-      print('DEBUG: Invites changed: ${invites.length} invites');
-      _invites = invites;
+    _repository.onInvitesChanged().listen((familyInvites) {
+      print('DEBUG: Family invites changed: ${familyInvites.length} invites');
+      _familyInvites = familyInvites;
+      emitData(_createUIModel());
+    });
+
+    _repository.onGroupInvitesChanged().listen((groupInvites) {
+      print('DEBUG: Group invites changed: ${groupInvites.length} invites');
+      _groupInvites = groupInvites;
       emitData(_createUIModel());
     });
 
@@ -40,33 +48,34 @@ class ManageFamilyCubit
     await Future.wait([
       _repository.getFamilyMembers(),
       _repository.getFamilyInvites(),
+      _repository.getGroupInvites(),
     ]);
   }
 
-  Future<void> createFamilyInvite(String email, {String? message}) async {
+  Future<void> acceptGroupInvite(String groupId) async {
     await inTryCatchFinally(
       inTry: () async {
-        await _repository.createFamilyInvite(email, message: message);
-        emitSnackbarMessage('Invite sent to $email');
+        await _repository.acceptGroupInvite(groupId);
+        emitSnackbarMessage('Group invite accepted');
       },
       inCatch: (e, s) async {
         emitSnackbarMessage(
-          'Failed to send invite: ${e.toString()}',
+          'Failed to accept invite: ${e.toString()}',
           isError: true,
         );
       },
     );
   }
 
-  Future<void> cancelFamilyInvite(String inviteId) async {
+  Future<void> declineGroupInvite(String groupId) async {
     await inTryCatchFinally(
       inTry: () async {
-        await _repository.cancelFamilyInvite(inviteId);
-        emitSnackbarMessage('Invite cancelled');
+        await _repository.declineGroupInvite(groupId);
+        emitSnackbarMessage('Group invite declined');
       },
       inCatch: (e, s) async {
         emitSnackbarMessage(
-          'Failed to cancel invite: ${e.toString()}',
+          'Failed to decline invite: ${e.toString()}',
           isError: true,
         );
       },
@@ -103,21 +112,42 @@ class ManageFamilyCubit
     );
   }
 
-  void navigateToCreateInvite() {
-    emitCustom(const NavigateToCreateInvite());
-  }
-
-  Future<void> sendInvite(String email, String message) async {
+  Future<void> createFamilyInvite(String email, {String? message}) async {
     await inTryCatchFinally(
       inTry: () async {
         await _repository.createFamilyInvite(email, message: message);
-        emitCustom(const RefreshFamilyData());
+        emitSnackbarMessage('Invite sent to $email');
+      },
+      inCatch: (e, s) async {
+        emitSnackbarMessage(
+          'Failed to send invite: ${e.toString()}',
+          isError: true,
+        );
       },
     );
   }
 
-  void showInviteDialog(String inviteId) {
-    emitCustom(ShowInviteDialog(inviteId));
+  Future<void> cancelFamilyInvite(String inviteId) async {
+    await inTryCatchFinally(
+      inTry: () async {
+        await _repository.cancelFamilyInvite(inviteId);
+        emitSnackbarMessage('Invite cancelled');
+      },
+      inCatch: (e, s) async {
+        emitSnackbarMessage(
+          'Failed to cancel invite: ${e.toString()}',
+          isError: true,
+        );
+      },
+    );
+  }
+
+  void navigateToCreateInvite() {
+    emitCustom(const NavigateToCreateInvite());
+  }
+
+  void showGroupInviteDialog(String groupId) {
+    emitCustom(ShowGroupInviteDialog(groupId));
   }
 
   void showMemberOptionsDialog(String memberId) {
@@ -130,11 +160,12 @@ class ManageFamilyCubit
 
   ManageFamilyUIModel _createUIModel() {
     print(
-      'DEBUG: Creating UI model with ${_members?.length} members and ${_invites?.length} invites',
+      'DEBUG: Creating UI model with ${_members?.length} members, ${_familyInvites?.length} family invites, and ${_groupInvites?.length} group invites',
     );
     return ManageFamilyUIModel(
       members: _members ?? [],
-      invites: _invites ?? [],
+      familyInvites: _familyInvites ?? [],
+      groupInvites: _groupInvites ?? [],
       isLoading: false,
       errorMessage: null,
     );

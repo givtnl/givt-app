@@ -135,10 +135,9 @@ enum AmplitudeEvents {
   activateBiometricWhenRegistered('activate_biometric_when_registered'),
   skipBiometricWhenLoggedIn('skip_biometric_when_logged_in'),
   activateBiometricWhenLoggedIn('activate_biometric_when_logged_in'),
-  invitedToImpactGroupBottomSheetShown(
-    'invited_to_impact_group_bottom_sheet_shown',
-  ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
+  groupInviteAccepted('group_invite_accepted'),
+  groupInviteDeclined('group_invite_declined'),
   organisationCardClicked('organisation_card_clicked'),
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
   sliderAmountChanged('slider_amount_changed'),

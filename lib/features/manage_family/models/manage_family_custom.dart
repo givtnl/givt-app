@@ -11,13 +11,13 @@ class NavigateToCreateInvite extends ManageFamilyCustom {
   const NavigateToCreateInvite();
 }
 
-class ShowInviteDialog extends ManageFamilyCustom {
-  const ShowInviteDialog(this.inviteId);
+class ShowGroupInviteDialog extends ManageFamilyCustom {
+  const ShowGroupInviteDialog(this.groupId);
 
-  final String inviteId;
+  final String groupId;
 
   @override
-  List<Object?> get props => [inviteId];
+  List<Object?> get props => [groupId];
 }
 
 class ShowMemberOptionsDialog extends ManageFamilyCustom {

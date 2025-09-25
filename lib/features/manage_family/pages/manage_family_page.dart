@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -10,13 +9,12 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/manage_family/cubit/manage_family_cubit.dart';
 import 'package:givt_app/features/manage_family/models/manage_family_custom.dart';
 import 'package:givt_app/features/manage_family/models/manage_family_uimodel.dart';
-import 'package:givt_app/features/manage_family/widgets/family_invites_section.dart';
+import 'package:givt_app/features/manage_family/widgets/group_invites_section.dart';
 import 'package:givt_app/features/manage_family/widgets/family_members_section.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/add_member_util.dart';
-import 'package:go_router/go_router.dart';
 
 class ManageFamilyPage extends StatefulWidget {
   const ManageFamilyPage({super.key});
@@ -91,11 +89,12 @@ class _ManageFamilyPageState extends State<ManageFamilyPage> {
                 _cubit.showMemberOptionsDialog(memberId),
           ),
           const SizedBox(height: 32),
-          // Family Invites Section
-          FamilyInvitesSection(
-            invites: uiModel.invites,
-            onInviteTap: (inviteId) => _cubit.showInviteDialog(inviteId),
-            onCancelInvite: (inviteId) => _cubit.cancelFamilyInvite(inviteId),
+          // Group Invites Section
+          GroupInvitesSection(
+            invites: uiModel.groupInvites,
+            onInviteTap: (groupId) => _cubit.showGroupInviteDialog(groupId),
+            onAcceptInvite: (groupId) => _cubit.acceptGroupInvite(groupId),
+            onDeclineInvite: (groupId) => _cubit.declineGroupInvite(groupId),
           ),
           const SizedBox(height: 100), // Space for floating action button
         ],
@@ -111,8 +110,8 @@ class _ManageFamilyPageState extends State<ManageFamilyPage> {
       case NavigateToCreateInvite():
         // context.pushNamed(Pages.createFamilyInvite.name);
         AddMemberUtil.addMemberPushPages(context, existingFamily: true, adultOnly: true);
-      case ShowInviteDialog(inviteId: final inviteId):
-        _showInviteDetailsDialog(inviteId);
+      case ShowGroupInviteDialog(groupId: final groupId):
+        _showGroupInviteDetailsDialog(groupId);
       case ShowMemberOptionsDialog(memberId: final memberId):
         _showMemberOptionsDialog(memberId);
       case RefreshFamilyData():
@@ -120,33 +119,8 @@ class _ManageFamilyPageState extends State<ManageFamilyPage> {
     }
   }
 
-  void _showMemberDetailsDialog(String memberId) {
-    // For now, just show a placeholder dialog
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: FamilyAppTheme.neutral100,
-        surfaceTintColor: Colors.transparent,
-        title: const TitleMediumText(
-          'Member Details',
-          color: FamilyAppTheme.primary20,
-        ),
-        content: const BodyMediumText(
-          'Member details will be implemented in a future update.',
-          color: FamilyAppTheme.neutral50,
-        ),
-        actions: [
-          FunButton(
-            onTap: () => Navigator.of(context).pop(),
-            text: 'OK',
-            analyticsEvent: AnalyticsEvent(AmplitudeEvents.okClicked),
-          ),
-        ],
-      ),
-    );
-  }
 
-  void _showInviteDetailsDialog(String inviteId) {
+  void _showGroupInviteDetailsDialog(String groupId) {
     // For now, just show a placeholder dialog
     showDialog<void>(
       context: context,
@@ -154,11 +128,11 @@ class _ManageFamilyPageState extends State<ManageFamilyPage> {
         backgroundColor: FamilyAppTheme.neutral100,
         surfaceTintColor: Colors.transparent,
         title: const TitleMediumText(
-          'Invite Details',
+          'Group Invite Details',
           color: FamilyAppTheme.primary20,
         ),
         content: const BodyMediumText(
-          'Invite details will be implemented in a future update.',
+          'Group invite details will be implemented in a future update.',
           color: FamilyAppTheme.neutral50,
         ),
         actions: [

@@ -1,11 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/manage_family/models/family_invite.dart';
 import 'package:givt_app/features/manage_family/models/family_member.dart';
+import 'package:givt_app/features/manage_family/models/group_invite.dart';
 
 class ManageFamilyUIModel extends Equatable {
   const ManageFamilyUIModel({
     required this.members,
-    required this.invites,
+    required this.familyInvites,
+    required this.groupInvites,
     required this.isLoading,
     required this.errorMessage,
   });
@@ -13,7 +15,8 @@ class ManageFamilyUIModel extends Equatable {
   factory ManageFamilyUIModel.initial() {
     return const ManageFamilyUIModel(
       members: [],
-      invites: [],
+      familyInvites: [],
+      groupInvites: [],
       isLoading: false,
       errorMessage: null,
     );
@@ -22,7 +25,8 @@ class ManageFamilyUIModel extends Equatable {
   factory ManageFamilyUIModel.loading() {
     return const ManageFamilyUIModel(
       members: [],
-      invites: [],
+      familyInvites: [],
+      groupInvites: [],
       isLoading: true,
       errorMessage: null,
     );
@@ -31,7 +35,8 @@ class ManageFamilyUIModel extends Equatable {
   factory ManageFamilyUIModel.error(String errorMessage) {
     return ManageFamilyUIModel(
       members: const [],
-      invites: const [],
+      familyInvites: const [],
+      groupInvites: const [],
       isLoading: false,
       errorMessage: errorMessage,
     );
@@ -39,32 +44,36 @@ class ManageFamilyUIModel extends Equatable {
 
   ManageFamilyUIModel copyWith({
     List<FamilyMember>? members,
-    List<FamilyInvite>? invites,
+    List<FamilyInvite>? familyInvites,
+    List<GroupInvite>? groupInvites,
     bool? isLoading,
     String? errorMessage,
   }) {
     return ManageFamilyUIModel(
       members: members ?? this.members,
-      invites: invites ?? this.invites,
+      familyInvites: familyInvites ?? this.familyInvites,
+      groupInvites: groupInvites ?? this.groupInvites,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   bool get hasMembers => members.isNotEmpty;
-  bool get hasInvites => invites.isNotEmpty;
-  bool get hasPendingInvites => invites.any((invite) => invite.status == FamilyInviteStatus.pending);
+  bool get hasFamilyInvites => familyInvites.isNotEmpty;
+  bool get hasGroupInvites => groupInvites.isNotEmpty;
   bool get hasError => errorMessage != null;
 
   final List<FamilyMember> members;
-  final List<FamilyInvite> invites;
+  final List<FamilyInvite> familyInvites;
+  final List<GroupInvite> groupInvites;
   final bool isLoading;
   final String? errorMessage;
 
   @override
   List<Object?> get props => [
         members,
-        invites,
+        familyInvites,
+        groupInvites,
         isLoading,
         errorMessage,
       ];

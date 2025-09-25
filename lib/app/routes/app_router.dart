@@ -618,8 +618,10 @@ class AppRouter {
       } else {
         // For EU users, always show profile selection on app startup
         // The profile selection screen will handle whether to show selection or auto-proceed
-        print('DEBUG: External link redirect - EU user, going to profile selection');
-        return '${Pages.euProfileSelection.path}?$query';
+        // print('DEBUG: External link redirect - EU user, going to profile selection');
+        // return '${Pages.euProfileSelection.path}?$query';
+
+        return '${Pages.home.path}?$query';
       }
     }
 
@@ -650,27 +652,37 @@ class AppRouter {
         return;
       }
 
-      // For EU users, always redirect to profile selection on fresh app start
-      // This allows users to see/switch profiles even if one is already active
-      // Only skip profile selection when navigating from menu items within the app
-      
-      // Check if this is a fresh start or external link (no specific page navigation)
-      final isFreshStart = routerState.name == null || 
-                          routerState.name == Pages.splash.name ||
-                          routerState.name == Pages.loading.name;
-      
-      print('DEBUG: EU Profile Selection Check:');
-      print('  - routerState.name: ${routerState.name}');
-      print('  - isFreshStart: $isFreshStart');
-      print('  - shouldRedirect: ${routerState.name != Pages.euProfileSelection.name && isFreshStart}');
-      
-      if (routerState.name != Pages.euProfileSelection.name && isFreshStart) {
-        print('DEBUG: Redirecting to profile selection (fresh start)');
-        context.goNamed(
-          Pages.euProfileSelection.name,
-          queryParameters: routerState.uri.queryParameters,
-        );
+      //needs to be after isUsUser check
+      if (routerState.name == Pages.home.name) {
+        return;
       }
+
+      context.goNamed(
+        Pages.home.name,
+        queryParameters: routerState.uri.queryParameters,
+      );
+      
+      // // For EU users, always redirect to profile selection on fresh app start
+      // // This allows users to see/switch profiles even if one is already active
+      // // Only skip profile selection when navigating from menu items within the app
+      
+      // // Check if this is a fresh start or external link (no specific page navigation)
+      // final isFreshStart = routerState.name == null || 
+      //                     routerState.name == Pages.splash.name ||
+      //                     routerState.name == Pages.loading.name;
+      
+      // print('DEBUG: EU Profile Selection Check:');
+      // print('  - routerState.name: ${routerState.name}');
+      // print('  - isFreshStart: $isFreshStart');
+      // print('  - shouldRedirect: ${routerState.name != Pages.euProfileSelection.name && isFreshStart}');
+      
+      // if (routerState.name != Pages.euProfileSelection.name && isFreshStart) {
+      //   print('DEBUG: Redirecting to profile selection (fresh start)');
+      //   context.goNamed(
+      //     Pages.euProfileSelection.name,
+      //     queryParameters: routerState.uri.queryParameters,
+      //   );
+      // }
     }
 
     if (state.status == AuthStatus.unauthenticated ||
