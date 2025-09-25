@@ -58,74 +58,77 @@ class _AppState extends State<App> {
     /// Setup firebase messaging for background notifications
     final notificationService = getIt<NotificationService>();
     notificationService.init().then(
-          (_) => FirebaseMessaging.onMessage.listen(
-            (RemoteMessage message) async {
-              if (message.data.isEmpty) {
-                return;
-              }
-              await NotificationService.instance.silentNotification(
-                message.data,
-              );
-            },
-          ),
-        );
+      (_) => FirebaseMessaging.onMessage.listen(
+        (RemoteMessage message) async {
+          if (message.data.isEmpty) {
+            return;
+          }
+          await NotificationService.instance.silentNotification(
+            message.data,
+          );
+        },
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => getIt<AuthCubit>()..checkAuth(isAppStartupCheck: true),
-            lazy: false,
-          ),
-          BlocProvider(
-            create: (_) => getIt<FamilyAuthCubit>()..checkAuthOnAppStartup(),
-            lazy: false,
-          ),
-          BlocProvider(
-            create: (_) => InfraCubit(
-              getIt(),
-              getIt(),
-            ),
-            lazy: false,
-          ),
-          BlocProvider(
-            create: (context) => ImpactGroupsCubit(
-              getIt(),
-              getIt(),
-            ),
-            lazy: false,
-          ),
-          BlocProvider<ProfilesCubit>(
-            create: (BuildContext context) =>
-                ProfilesCubit(getIt(), getIt(), getIt()),
-          ),
-          BlocProvider(
-            create: (context) => TopupCubit(getIt()),
-          ),
-          BlocProvider<CollectGroupDetailsCubit>(
-            create: (BuildContext context) => CollectGroupDetailsCubit(getIt()),
-          ),
-          BlocProvider<FlowsCubit>(
-            create: (BuildContext context) => FlowsCubit(),
-          ),
-          BlocProvider<FamilyImpactGroupsCubit.ImpactGroupsCubit>(
-            create: (BuildContext context) =>
-                FamilyImpactGroupsCubit.ImpactGroupsCubit(getIt()),
-          ),
-          BlocProvider(
-            create: (context) => ScanNfcCubit(),
-          ),
-          BlocProvider(
-            create: (context) => RegistrationBloc(
-              authCubit: context.read<AuthCubit>(),
-              authRepositoy: getIt(),
-            ),
-          ),
-        ],
-        child: AppThemeSwitcherWidget(
-          key: themeKey,
-          builder: (
+    providers: [
+      BlocProvider(
+        create: (_) => AuthCubit(
+          getIt(),
+        )..checkAuth(isAppStartupCheck: true),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => getIt<FamilyAuthCubit>()..checkAuthOnAppStartup(),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (_) => InfraCubit(
+          getIt(),
+          getIt(),
+        ),
+        lazy: false,
+      ),
+      BlocProvider(
+        create: (context) => ImpactGroupsCubit(
+          getIt(),
+          getIt(),
+        ),
+        lazy: false,
+      ),
+      BlocProvider<ProfilesCubit>(
+        create: (BuildContext context) =>
+            ProfilesCubit(getIt(), getIt(), getIt()),
+      ),
+      BlocProvider(
+        create: (context) => TopupCubit(getIt()),
+      ),
+      BlocProvider<CollectGroupDetailsCubit>(
+        create: (BuildContext context) => CollectGroupDetailsCubit(getIt()),
+      ),
+      BlocProvider<FlowsCubit>(
+        create: (BuildContext context) => FlowsCubit(),
+      ),
+      BlocProvider<FamilyImpactGroupsCubit.ImpactGroupsCubit>(
+        create: (BuildContext context) =>
+            FamilyImpactGroupsCubit.ImpactGroupsCubit(getIt()),
+      ),
+      BlocProvider(
+        create: (context) => ScanNfcCubit(),
+      ),
+      BlocProvider(
+        create: (context) => RegistrationBloc(
+          authCubit: context.read<AuthCubit>(),
+          authRepositoy: getIt(),
+        ),
+      ),
+    ],
+    child: AppThemeSwitcherWidget(
+      key: themeKey,
+      builder:
+          (
             BuildContext context,
             ThemeData themeData, {
             required bool isFamilyApp,
@@ -135,13 +138,14 @@ class _AppState extends State<App> {
             }
             return _AppView(themeData: themeData);
           },
-        ),
-      );
+    ),
+  );
 
   Future<void> initializeStripe() async {
     Stripe.publishableKey = const String.fromEnvironment('STRIPE_PK');
-    Stripe.merchantIdentifier =
-        const String.fromEnvironment('STRIPE_MERCHANT_ID');
+    Stripe.merchantIdentifier = const String.fromEnvironment(
+      'STRIPE_MERCHANT_ID',
+    );
   }
 }
 
@@ -161,8 +165,10 @@ class _AppView extends StatelessWidget {
       routerDelegate: AppRouter.router.routerDelegate,
       builder: (context, child) {
         final mediaQueryData = MediaQuery.of(context);
-        final scale = mediaQueryData.textScaler
-            .clamp(minScaleFactor: 1, maxScaleFactor: 1.2);
+        final scale = mediaQueryData.textScaler.clamp(
+          minScaleFactor: 1,
+          maxScaleFactor: 1.2,
+        );
 
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaler: scale),

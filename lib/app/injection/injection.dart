@@ -135,9 +135,6 @@ void initRepositories() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<AuthCubit>(
-      () => AuthCubit(getIt()),
-    )
     ..registerLazySingleton<ImagePicker>(ImagePicker.new)
     ..registerLazySingleton<MediaPickerService>(
       () => MediaPickerService(getIt()),
