@@ -8,6 +8,7 @@ class ManageFamilyUIModel extends Equatable {
     required this.members,
     required this.familyInvites,
     required this.groupInvites,
+    required this.familyGroupName,
     required this.isLoading,
     required this.errorMessage,
   });
@@ -17,6 +18,7 @@ class ManageFamilyUIModel extends Equatable {
       members: [],
       familyInvites: [],
       groupInvites: [],
+      familyGroupName: null,
       isLoading: false,
       errorMessage: null,
     );
@@ -27,6 +29,7 @@ class ManageFamilyUIModel extends Equatable {
       members: [],
       familyInvites: [],
       groupInvites: [],
+      familyGroupName: null,
       isLoading: true,
       errorMessage: null,
     );
@@ -37,6 +40,7 @@ class ManageFamilyUIModel extends Equatable {
       members: const [],
       familyInvites: const [],
       groupInvites: const [],
+      familyGroupName: null,
       isLoading: false,
       errorMessage: errorMessage,
     );
@@ -46,6 +50,7 @@ class ManageFamilyUIModel extends Equatable {
     List<FamilyMember>? members,
     List<FamilyInvite>? familyInvites,
     List<GroupInvite>? groupInvites,
+    String? familyGroupName,
     bool? isLoading,
     String? errorMessage,
   }) {
@@ -53,6 +58,7 @@ class ManageFamilyUIModel extends Equatable {
       members: members ?? this.members,
       familyInvites: familyInvites ?? this.familyInvites,
       groupInvites: groupInvites ?? this.groupInvites,
+      familyGroupName: familyGroupName ?? this.familyGroupName,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
     );
@@ -66,6 +72,7 @@ class ManageFamilyUIModel extends Equatable {
   final List<FamilyMember> members;
   final List<FamilyInvite> familyInvites;
   final List<GroupInvite> groupInvites;
+  final String? familyGroupName;
   final bool isLoading;
   final String? errorMessage;
 
@@ -74,6 +81,7 @@ class ManageFamilyUIModel extends Equatable {
         members,
         familyInvites,
         groupInvites,
+        familyGroupName,
         isLoading,
         errorMessage,
       ];

@@ -18,6 +18,7 @@ class ManageFamilyCubit
   List<FamilyMember>? _members;
   List<FamilyInvite>? _familyInvites;
   List<GroupInvite>? _groupInvites;
+  String? _familyGroupName;
 
   Future<void> init() async {
     // Listen to data changes
@@ -49,7 +50,17 @@ class ManageFamilyCubit
       _repository.getFamilyMembers(),
       _repository.getFamilyInvites(),
       _repository.getGroupInvites(),
+      _loadFamilyGroupName(),
     ]);
+  }
+
+  Future<void> _loadFamilyGroupName() async {
+    try {
+      _familyGroupName = await _repository.getFamilyGroupName();
+      emitData(_createUIModel());
+    } catch (e) {
+      print('DEBUG: Error loading family group name: $e');
+    }
   }
 
   Future<void> acceptGroupInvite(String groupId) async {
@@ -166,6 +177,7 @@ class ManageFamilyCubit
       members: _members ?? [],
       familyInvites: _familyInvites ?? [],
       groupInvites: _groupInvites ?? [],
+      familyGroupName: _familyGroupName,
       isLoading: false,
       errorMessage: null,
     );

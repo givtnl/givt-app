@@ -29,11 +29,6 @@ class GroupInvitesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleMediumText(
-          'Group Invites',
-          color: FamilyAppTheme.primary20,
-        ),
-        const SizedBox(height: 16),
         ...invites.map((invite) => _buildInviteCard(invite)),
       ],
     );
@@ -41,99 +36,43 @@ class GroupInvitesSection extends StatelessWidget {
 
   Widget _buildInviteCard(GroupInvite invite) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: FunCard(
-        content: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          BodySmallText(
+            'Invited by ${invite.invitedBy}',
+            color: FamilyAppTheme.neutral50,
+          ),
+          Container(
+            height: 8,
+          ),
+          Row(
             children: [
-              Row(
-                children: [
-                  // Group image placeholder
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: FamilyAppTheme.primary10,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: invite.group.image.isNotEmpty
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              invite.group.image,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  _buildDefaultIcon(),
-                            ),
-                          )
-                        : _buildDefaultIcon(),
+              Expanded(
+                child: FunButton.destructiveSecondary(
+                  onTap: () => onDeclineInvite(invite.group.id),
+                  text: 'Decline',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.groupInviteDeclined,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TitleSmallText(
-                          invite.group.name,
-                          color: FamilyAppTheme.primary20,
-                        ),
-                        const SizedBox(height: 4),
-                        BodySmallText(
-                          'Invited by ${invite.invitedBy}',
-                          color: FamilyAppTheme.neutral50,
-                        ),
-                        if (invite.group.description.isNotEmpty) ...[
-                          const SizedBox(height: 4),
-                          BodySmallText(
-                            invite.group.description,
-                            color: FamilyAppTheme.neutral50,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: FunButton(
-                      onTap: () => onDeclineInvite(invite.group.id),
-                      text: 'Decline',
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.groupInviteDeclined,
-                      ),
-                    ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: FunButton(
+                  onTap: () => onAcceptInvite(invite.group.id),
+                  text: 'Accept',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.groupInviteAccepted,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: FunButton(
-                      onTap: () => onAcceptInvite(invite.group.id),
-                      text: 'Accept',
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.groupInviteAccepted,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
-        ),
+          const SizedBox(height: 12),
+        ],
       ),
-    );
-  }
-
-  Widget _buildDefaultIcon() {
-    return Icon(
-      Icons.group,
-      color: FamilyAppTheme.primary20,
-      size: 24,
     );
   }
 }

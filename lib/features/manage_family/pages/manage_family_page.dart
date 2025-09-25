@@ -82,19 +82,29 @@ class _ManageFamilyPageState extends State<ManageFamilyPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Family Members Section
-          FamilyMembersSection(
-            members: uiModel.members,
-            onMemberOptions: (memberId) =>
-                _cubit.showMemberOptionsDialog(memberId),
-          ),
-          const SizedBox(height: 32),
-          // Group Invites Section
+          // Family Group Name Header
+          if (uiModel.familyGroupName != null) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: TitleLargeText(
+                uiModel.familyGroupName!,
+                color: FamilyAppTheme.primary20,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+          // Group Invites Section (moved above family members)
           GroupInvitesSection(
             invites: uiModel.groupInvites,
             onInviteTap: (groupId) => _cubit.showGroupInviteDialog(groupId),
             onAcceptInvite: (groupId) => _cubit.acceptGroupInvite(groupId),
             onDeclineInvite: (groupId) => _cubit.declineGroupInvite(groupId),
+          ),
+          // Family Members Section
+          FamilyMembersSection(
+            members: uiModel.members,
+            onMemberOptions: (memberId) =>
+                _cubit.showMemberOptionsDialog(memberId),
           ),
           const SizedBox(height: 100), // Space for floating action button
         ],

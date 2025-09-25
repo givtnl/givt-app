@@ -58,24 +58,21 @@ class FamilyMembersSection extends StatelessWidget {
   }
 
   Widget _buildMemberCard(FamilyMember member) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: FamilyAppTheme.neutralVariant95, // Light grey border
-            ),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: FamilyAppTheme.neutralVariant95, // Light grey border
           ),
         ),
-        child: Row(
-          children: [
-            FunAvatar.family(),
-            const SizedBox(width: 16),
-            Text(member.fullName),
-          ],
-        ),
+      ),
+      child: Row(
+        children: [
+          FunAvatar.family(),
+          const SizedBox(width: 16),
+          Text(member.fullName),
+        ],
       ),
     );
   }

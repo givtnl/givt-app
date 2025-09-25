@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:collection/collection.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/manage_family/models/family_invite.dart';
 import 'package:givt_app/features/manage_family/models/family_member.dart';
@@ -10,6 +11,7 @@ abstract class ManageFamilyRepository {
   Future<List<FamilyMember>> getFamilyMembers();
   Future<List<FamilyInvite>> getFamilyInvites();
   Future<List<GroupInvite>> getGroupInvites();
+  Future<String?> getFamilyGroupName();
   Future<void> createFamilyInvite(String email, {String? message});
   Future<void> cancelFamilyInvite(String inviteId);
   Future<void> acceptGroupInvite(String groupId);
@@ -232,6 +234,18 @@ class FamilyManagementRepositoryImpl implements ManageFamilyRepository {
   @override
   Stream<List<GroupInvite>> onGroupInvitesChanged() {
     return _groupInvitesStreamController.stream;
+  }
+
+  @override
+  Future<String?> getFamilyGroupName() async {
+    try {
+      final impactGroups = await _getImpactGroups();
+      return impactGroups
+          .firstWhereOrNull((element) => element.isFamilyGroup)
+          ?.name;
+    } catch (e) {
+      return null;
+    }
   }
 
   // Private methods for impact groups management
