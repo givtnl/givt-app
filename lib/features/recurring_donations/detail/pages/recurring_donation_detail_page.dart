@@ -19,6 +19,7 @@ import 'package:givt_app/features/recurring_donations/overview/pages/recurring_d
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -449,6 +450,9 @@ class _RecurringDonationDetailPageState
               leading: const Icon(Icons.edit),
               title: Text(context.l10n.recurringDonationsDetailEditDonation),
               onTap: () {
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.recurringDonationEditActionClicked,
+                );
                 Navigator.of(context).pop();
                 // TODO: Navigate to edit page when implemented
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -465,6 +469,9 @@ class _RecurringDonationDetailPageState
               leading: const Icon(Icons.pause),
               title: Text(context.l10n.recurringDonationsDetailPauseDonation),
               onTap: () {
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.recurringDonationPauseActionClicked,
+                );
                 Navigator.of(context).pop();
                 // TODO: Implement pause functionality when available
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -484,6 +491,9 @@ class _RecurringDonationDetailPageState
                 style: const TextStyle(color: Colors.red),
               ),
               onTap: () {
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.recurringDonationCancelActionClicked,
+                );
                 // Show cancel confirmation dialog
                 showDialog<bool>(
                   context: context,
