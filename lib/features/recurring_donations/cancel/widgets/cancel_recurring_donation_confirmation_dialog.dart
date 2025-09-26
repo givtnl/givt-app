@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/recurring_donations/cancel/cubit/cancel_recurring_donation_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class CancelRecurringDonationConfirmationDialog extends StatelessWidget {
@@ -46,12 +48,20 @@ class CancelRecurringDonationConfirmationDialog extends StatelessWidget {
               content: locals.cancelRecurringDonationAlertMessage,
               confirmText: locals.yes,
               onConfirm: () {
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.recurringDonationCancelConfirmed,
+                );
                 context
                     .read<CancelRecurringDonationCubit>()
                     .cancelRecurringDonations(recurringDonation);
               },
               cancelText: locals.no,
-              onCancel: () => context.pop(false),
+              onCancel: () {
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.recurringDonationCancelCancelled,
+                );
+                context.pop(false);
+              },
             );
           } else {
             return Container();
