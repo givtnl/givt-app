@@ -13,6 +13,8 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -32,322 +34,321 @@ class CustomNavigationDrawer extends StatelessWidget {
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
 
-    return Drawer(
-      child: auth.status == AuthStatus.loading
-          ? const Center(
-              child: CircularProgressIndicator.adaptive(),
-            )
-          : ListView(
-              children: [
-                _buildGivtLogo(size),
-                DrawerMenuItem(
-                  isVisible:
-                      auth.user.needRegistration || !auth.user.mandateSigned,
-                  showBadge: true,
-                  title: locals.finalizeRegistration,
-                  icon: Icons.edit,
-                  analyticsEvent: AmplitudeEvents.menuNavigationFinalizeRegistrationClicked,
-                  onTap: () {
-                    if (auth.user.needRegistration) {
-                      context
-                        ..goNamed(
-                          Pages.registration.name,
-                          queryParameters: {
-                            'email': auth.user.email,
-                          },
-                        )
-                        ..pop();
-                      return;
-                    }
-                    context.goNamed(
-                      Pages.sepaMandateExplanation.name,
-                    );
-                  },
-                ),
-                const SummaryMenuItem(),
-                Divider(
-                  thickness: size.height * 0.02,
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  isAccent: true,
-                  icon: Icons.wallet,
-                  title: locals.budgetMenuView,
-                  imageIcon: Image.asset(
-                    'assets/images/givy_budget_menu.png',
-                    fit: BoxFit.contain,
+    return Theme(
+      data: const FamilyAppTheme().toThemeData(),
+      child: Drawer(
+        backgroundColor: FamilyAppTheme.neutral100,
+        child: auth.status == AuthStatus.loading
+            ? const Center(
+                child: CustomCircularProgressIndicator(),
+              )
+            : ListView(
+                children: [
+                  _buildGivtLogo(size),
+                  const SizedBox(
+                    height: 16,
                   ),
-                  analyticsEvent: AmplitudeEvents.menuNavigationBudgetClicked,
-                  onTap: () async => AuthUtils.checkToken(
-                    context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context) async {
-                        context.goNamed(Pages.personalSummary.name);
-                        unawaited(
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.personalSummaryClicked,
-                          ),
-                        );
-                      },
+                  DrawerMenuItem(
+                    isVisible:
+                        auth.user.needRegistration || !auth.user.mandateSigned,
+                    showBadge: true,
+                    title: locals.finalizeRegistration,
+                    icon: Icons.edit,
+                    analyticsEvent: AmplitudeEvents
+                        .menuNavigationFinalizeRegistrationClicked,
+                    onTap: () {
+                      if (auth.user.needRegistration) {
+                        context
+                          ..goNamed(
+                            Pages.registration.name,
+                            queryParameters: {
+                              'email': auth.user.email,
+                            },
+                          )
+                          ..pop();
+                        return;
+                      }
+                      context.goNamed(
+                        Pages.sepaMandateExplanation.name,
+                      );
+                    },
+                  ),
+                  DrawerMenuItem(
+                    isVisible: !auth.user.needRegistration,
+                    isAccent: true,
+                    icon: Icons.wallet,
+                    title: locals.budgetMenuView,
+                    imageIcon: Image.asset(
+                      'assets/images/givy_budget_menu.png',
+                      fit: BoxFit.contain,
                     ),
-                  ),
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.historyTitle,
-                  icon: FontAwesomeIcons.listUl,
-                  analyticsEvent: AmplitudeEvents.menuNavigationHistoryClicked,
-                  onTap: () async {
-                    context.read<RemoteDataSourceSyncBloc>().add(
-                          const RemoteDataSourceSyncRequested(),
-                        );
-                    await AuthUtils.checkToken(
+                    analyticsEvent: AmplitudeEvents.menuNavigationBudgetClicked,
+                    onTap: () async => AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
-                        navigate: (context) async => context.goNamed(
-                          Pages.donationOverview.name,
-                        ),
+                        navigate: (context) async {
+                          context.goNamed(Pages.personalSummary.name);
+                          unawaited(
+                            AnalyticsHelper.logEvent(
+                              eventName: AmplitudeEvents.personalSummaryClicked,
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.menuItemRecurringDonation,
-                  icon: Icons.autorenew,
-                  analyticsEvent: AmplitudeEvents.menuNavigationRecurringDonationClicked,
-                  onTap: () async => AuthUtils.checkToken(
-                    context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context) async {
-                        context.goNamed(Pages.recurringDonations.name);
-                        unawaited(
-                          AnalyticsHelper.logEvent(
-                            eventName:
-                                AmplitudeEvents.recurringDonationsNavigationClicked,
+                    ),
+                  ),
+                  DrawerMenuItem(
+                    isVisible: !auth.user.needRegistration,
+                    title: locals.historyTitle,
+                    icon: FontAwesomeIcons.listUl,
+                    analyticsEvent:
+                        AmplitudeEvents.menuNavigationHistoryClicked,
+                    onTap: () async {
+                      context.read<RemoteDataSourceSyncBloc>().add(
+                        const RemoteDataSourceSyncRequested(),
+                      );
+                      await AuthUtils.checkToken(
+                        context,
+                        checkAuthRequest: CheckAuthRequest(
+                          navigate: (context) async => context.goNamed(
+                            Pages.donationOverview.name,
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.giveLimit,
-                  icon: Util.getCurrencyIconData(
-                    country: Country.fromCode(
-                      auth.user.country,
-                    ),
-                  ),
-                  analyticsEvent: AmplitudeEvents.menuNavigationGiveLimitClicked,
-                  onTap: () async {
-                    return AuthUtils.checkToken(
+                  DrawerMenuItem(
+                    isVisible: !auth.user.needRegistration,
+                    title: locals.menuItemRecurringDonation,
+                    icon: Icons.autorenew,
+                    analyticsEvent:
+                        AmplitudeEvents.menuNavigationRecurringDonationClicked,
+                    onTap: () async => AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
-                        navigate: (context) => showModalBottomSheet<void>(
+                        navigate: (context) async {
+                          context.goNamed(Pages.recurringDonations.name);
+                          unawaited(
+                            AnalyticsHelper.logEvent(
+                              eventName: AmplitudeEvents
+                                  .recurringDonationsNavigationClicked,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  DrawerMenuItem(
+                    isVisible: !auth.user.needRegistration,
+                    title: locals.giveLimit,
+                    icon: Util.getCurrencyIconData(
+                      country: Country.fromCode(
+                        auth.user.country,
+                      ),
+                    ),
+                    analyticsEvent:
+                        AmplitudeEvents.menuNavigationGiveLimitClicked,
+                    onTap: () async {
+                      return AuthUtils.checkToken(
+                        context,
+                        checkAuthRequest: CheckAuthRequest(
+                          navigate: (context) => showModalBottomSheet<void>(
+                            context: context,
+                            isScrollControlled: true,
+                            useSafeArea: true,
+                            builder: (_) => ChangeMaxAmountBottomSheet(
+                              maxAmount: auth.user.amountLimit,
+                              icon: Util.getCurrencyIconData(
+                                country: Country.fromCode(
+                                  auth.user.country,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  DrawerMenuItem(
+                    isVisible: !auth.user.needRegistration,
+                    title: locals.personalInfo,
+                    icon: Icons.mode_edit_outline,
+                    analyticsEvent:
+                        AmplitudeEvents.menuNavigationPersonalInfoClicked,
+                    onTap: () async {
+                      return AuthUtils.checkToken(
+                        context,
+                        checkAuthRequest: CheckAuthRequest(
+                          navigate: (context) async => context.goNamed(
+                            Pages.personalInfoEdit.name,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  DrawerMenuItem(
+                    isVisible: !auth.user.needRegistration,
+                    title: locals.amountPresetsTitle,
+                    icon: Icons.tune,
+                    imageIcon: Transform.rotate(
+                      angle: 1.57,
+                      child: const Icon(
+                        Icons.tune,
+                        color: FamilyAppTheme.primary20,
+                      ),
+                    ),
+                    analyticsEvent:
+                        AmplitudeEvents.menuNavigationAmountPresetsClicked,
+                    onTap: () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        isScrollControlled: true,
+                        useSafeArea: true,
+                        builder: (_) => const ChangeAmountPresetsBottomSheet(),
+                      );
+                    },
+                  ),
+                  FutureBuilder(
+                    initialData: false,
+                    future: Future.wait<bool>([
+                      LocalAuthInfo.instance.checkFingerprint(),
+                      LocalAuthInfo.instance.checkFaceId(),
+                    ]),
+                    builder: (_, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return const SizedBox.shrink();
+                      }
+                      if (!snapshot.hasData) {
+                        return const SizedBox.shrink();
+                      }
+                      if (snapshot.data == null) {
+                        return const SizedBox.shrink();
+                      }
+
+                      final data = snapshot.data! as List<bool>;
+                      final isFingerprintAvailable = data[0];
+                      final isFaceIdAvailable = data[1];
+
+                      return DrawerMenuItem(
+                        isVisible:
+                            (isFingerprintAvailable || isFaceIdAvailable) &&
+                            !auth.user.tempUser,
+                        title: isFingerprintAvailable
+                            ? Platform.isAndroid
+                                  ? locals.fingerprintTitle
+                                  : locals.touchId
+                            : locals.faceId,
+                        icon: Icons.fingerprint,
+                        imageIcon: Platform.isIOS && isFaceIdAvailable
+                            ? SvgPicture.asset(
+                                'assets/images/face_id.svg',
+                                width: 24,
+                                colorFilter: const ColorFilter.mode(
+                                  AppTheme.givtBlue,
+                                  BlendMode.srcIn,
+                                ),
+                              )
+                            : null,
+                        analyticsEvent:
+                            AmplitudeEvents.menuNavigationBiometricClicked,
+                        onTap: () async {
+                          return AuthUtils.checkToken(
+                            context,
+                            checkAuthRequest: CheckAuthRequest(
+                              navigate: (context) => showModalBottomSheet<void>(
+                                context: context,
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                builder: (_) => FingerprintBottomSheet(
+                                  isFingerprint: isFingerprintAvailable,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  _buildEmptySpace(),
+                  DrawerMenuItem(
+                    isVisible: true,
+                    title: locals.logOut,
+                    icon: Icons.logout_sharp,
+                    analyticsEvent: AmplitudeEvents.menuNavigationLogoutClicked,
+                    onTap: () async {
+                      if (!getIt<NetworkInfo>().isConnected) {
+                        if (!context.mounted) {
+                          return;
+                        }
+                        await showDialog<void>(
                           context: context,
-                          isScrollControlled: true,
-                          useSafeArea: true,
-                          builder: (_) => ChangeMaxAmountBottomSheet(
-                            maxAmount: auth.user.amountLimit,
-                            icon: Util.getCurrencyIconData(
-                              country: Country.fromCode(
-                                auth.user.country,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.personalInfo,
-                  icon: Icons.mode_edit_outline,
-                  analyticsEvent: AmplitudeEvents.menuNavigationPersonalInfoClicked,
-                  onTap: () async {
-                    return AuthUtils.checkToken(
-                      context,
-                      checkAuthRequest: CheckAuthRequest(
-                        navigate: (context) async => context.goNamed(
-                          Pages.personalInfoEdit.name,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.amountPresetsTitle,
-                  icon: Icons.tune,
-                  imageIcon: Transform.rotate(
-                    angle: 1.57,
-                    child: const Icon(
-                      Icons.tune,
-                      color: AppTheme.givtBlue,
-                    ),
-                  ),
-                  analyticsEvent: AmplitudeEvents.menuNavigationAmountPresetsClicked,
-                  onTap: () {
-                    showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (_) => const ChangeAmountPresetsBottomSheet(),
-                    );
-                  },
-                ),
-                FutureBuilder(
-                  initialData: false,
-                  future: Future.wait<bool>([
-                    LocalAuthInfo.instance.checkFingerprint(),
-                    LocalAuthInfo.instance.checkFaceId(),
-                  ]),
-                  builder: (_, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return const SizedBox.shrink();
-                    }
-                    if (!snapshot.hasData) {
-                      return const SizedBox.shrink();
-                    }
-                    if (snapshot.data == null) {
-                      return const SizedBox.shrink();
-                    }
-
-                    final data = snapshot.data! as List<bool>;
-                    final isFingerprintAvailable = data[0];
-                    final isFaceIdAvailable = data[1];
-
-                    return DrawerMenuItem(
-                      isVisible:
-                          (isFingerprintAvailable || isFaceIdAvailable) &&
-                              !auth.user.tempUser,
-                      title: isFingerprintAvailable
-                          ? Platform.isAndroid
-                              ? locals.fingerprintTitle
-                              : locals.touchId
-                          : locals.faceId,
-                      icon: Icons.fingerprint,
-                      imageIcon: Platform.isIOS && isFaceIdAvailable
-                          ? SvgPicture.asset(
-                              'assets/images/face_id.svg',
-                              width: 24,
-                              colorFilter: const ColorFilter.mode(
-                                AppTheme.givtBlue,
-                                BlendMode.srcIn,
-                              ),
-                            )
-                          : null,
-                      analyticsEvent: AmplitudeEvents.menuNavigationBiometricClicked,
-                      onTap: () async {
-                        return AuthUtils.checkToken(
-                          context,
-                          checkAuthRequest: CheckAuthRequest(
-                            navigate: (context) => showModalBottomSheet<void>(
-                              context: context,
-                              isScrollControlled: true,
-                              useSafeArea: true,
-                              builder: (_) => FingerprintBottomSheet(
-                                isFingerprint: isFingerprintAvailable,
-                              ),
-                            ),
+                          builder: (_) => WarningDialog(
+                            title: locals.noInternetConnectionTitle,
+                            content: locals.noInternet,
                           ),
                         );
-                      },
-                    );
-                  },
-                ),
-                _buildEmptySpace(),
-                DrawerMenuItem(
-                  isVisible: true,
-                  title: locals.logOut,
-                  icon: Icons.logout_sharp,
-                  analyticsEvent: AmplitudeEvents.menuNavigationLogoutClicked,
-                  onTap: () async {
-                    if (!getIt<NetworkInfo>().isConnected) {
+                        return;
+                      }
                       if (!context.mounted) {
                         return;
                       }
-                      await showDialog<void>(
-                        context: context,
-                        builder: (_) => WarningDialog(
-                          title: locals.noInternetConnectionTitle,
-                          content: locals.noInternet,
-                        ),
-                      );
-                      return;
-                    }
-                    if (!context.mounted) {
-                      return;
-                    }
-                    return context.read<AuthCubit>().logout();
-                  },
-                ),
-                DrawerMenuItem(
-                  isVisible: true,
-                  title: locals.unregister,
-                  icon: FontAwesomeIcons.userXmark,
-                  analyticsEvent: AmplitudeEvents.menuNavigationUnregisterClicked,
-                  onTap: () async {
-                    if (auth.user.tempUser) {
-                      context.goNamed(
-                        Pages.unregister.name,
-                      );
-                      return;
-                    }
-                    await AuthUtils.checkToken(
-                      context,
-                      checkAuthRequest: CheckAuthRequest(
-                        navigate: (context) async => context.goNamed(
-                          Pages.unregister.name,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                _buildEmptySpace(),
-                DrawerMenuItem(
-                  isVisible: true,
-                  title: locals.titleAboutGivt,
-                  icon: Icons.info,
-                  analyticsEvent: AmplitudeEvents.menuNavigationAboutGivtClicked,
-                  onTap: () => showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                    builder: (_) => const AboutGivtBottomSheet(),
+                      return context.read<AuthCubit>().logout();
+                    },
                   ),
-                ),
-              ],
-            ),
+                  DrawerMenuItem(
+                    isVisible: true,
+                    title: locals.unregister,
+                    icon: FontAwesomeIcons.userXmark,
+                    analyticsEvent:
+                        AmplitudeEvents.menuNavigationUnregisterClicked,
+                    onTap: () async {
+                      if (auth.user.tempUser) {
+                        context.goNamed(
+                          Pages.unregister.name,
+                        );
+                        return;
+                      }
+                      await AuthUtils.checkToken(
+                        context,
+                        checkAuthRequest: CheckAuthRequest(
+                          navigate: (context) async => context.goNamed(
+                            Pages.unregister.name,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  _buildEmptySpace(),
+                  DrawerMenuItem(
+                    isVisible: true,
+                    title: locals.titleAboutGivt,
+                    icon: Icons.info,
+                    analyticsEvent:
+                        AmplitudeEvents.menuNavigationAboutGivtClicked,
+                    onTap: () => showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (_) => const AboutGivtBottomSheet(),
+                    ),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 
   Widget _buildEmptySpace() => Container(
-        height: 20,
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 240, 240, 240),
-          border: Border(
-            top: BorderSide(
-              color: Color.fromARGB(255, 173, 173, 173),
-              width: 0.5,
-            ),
-            bottom: BorderSide(
-              color: Color.fromARGB(255, 173, 173, 173),
-              width: 0.5,
-            ),
-          ),
-        ),
-      );
+    height: 12,
+    decoration: const BoxDecoration(
+      color: FamilyAppTheme.neutral95,
+    ),
+  );
 
-  Widget _buildGivtLogo(Size size) => Container(
-        margin: EdgeInsets.only(
-          bottom: size.height * 0.02,
-        ),
-        height: size.height * 0.03,
-        child: Image.asset(
-          'assets/images/logo.png',
-        ),
-      );
+  Widget _buildGivtLogo(Size size) => SizedBox(
+    height: 24,
+    child: Image.asset(
+      'assets/images/logo.png',
+    ),
+  );
 }
