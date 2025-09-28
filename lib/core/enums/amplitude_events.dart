@@ -116,6 +116,12 @@ enum AmplitudeEvents {
   recurringDonationsAddRecurringDonation(
     'recurring_donations_add_recurring_donation',
   ),
+  // Recurring donation management actions
+  recurringDonationEditActionClicked('recurring_donation_edit_action_clicked'),
+  recurringDonationPauseActionClicked('recurring_donation_pause_action_clicked'),
+  recurringDonationCancelActionClicked('recurring_donation_cancel_action_clicked'),
+  recurringDonationCancelConfirmed('recurring_donation_cancel_confirmed'),
+  recurringDonationCancelCancelled('recurring_donation_cancel_cancelled'),
   editAvatarPictureClicked('edit_avatar_picture_clicked'),
   familyGoalCreateClicked('family_goal_create_clicked'),
   familyGoalCauseSet('family_goal_cause_set'),

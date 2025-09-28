@@ -22,7 +22,7 @@ class MonthlyHeader extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: FamilyAppTheme.primary95, // Light green for monthly header
+      color: FamilyAppTheme.primary80, // Light green for monthly header
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
