@@ -6,16 +6,20 @@ import 'package:givt_app/features/donation_overview/models/donation_overview_uim
 import 'package:givt_app/features/donation_overview/repositories/donation_overview_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/shared/repositories/family_group_repository.dart';
 
 /// Cubit responsible for managing donation overview state.
-/// Uses [DonationOverviewRepository] for fetching donation data.
+/// Uses [DonationOverviewRepository] for fetching donation data and
+/// [FamilyGroupRepository] for family member information.
 class DonationOverviewCubit
     extends CommonCubit<DonationOverviewUIModel, DonationOverviewCustom> {
   DonationOverviewCubit(
     this._donationOverviewRepository,
+    this._familyGroupRepository,
   ) : super(const BaseState.loading());
 
   final DonationOverviewRepository _donationOverviewRepository;
+  final FamilyGroupRepository _familyGroupRepository;
   StreamSubscription<List<dynamic>>? _donationsSubscription;
 
   Future<void> init() async {
@@ -31,7 +35,7 @@ class DonationOverviewCubit
         .onDonationsChanged()
         .listen(
           _onDonationsChanged,
-          onError: (error) {
+          onError: (Object error) {
             LoggingInfo.instance.error(
               'Error in donations stream: $error',
               methodName: 'DonationOverviewCubit._setupStreams',
@@ -76,12 +80,15 @@ class DonationOverviewCubit
     await _loadDonations();
   }
 
-  void _emitData() {
+  void _emitData() async {
     // Check if cubit is closed before emitting states
     if (isClosed) return;
 
     final donations = _donationOverviewRepository.getDonations();
-    final uiModel = DonationOverviewUIModel.fromDonations(donations);
+    final uiModel = await DonationOverviewUIModel.fromDonations(
+      donations,
+      _familyGroupRepository,
+    );
     emitData(uiModel);
   }
 

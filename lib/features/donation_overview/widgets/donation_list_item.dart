@@ -30,6 +30,7 @@ class DonationListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final country = context.read<AuthCubit>().state.user.country;
+    final currentUser = context.read<AuthCubit>().state.user;
     final currencySymbol = Util.getCurrencySymbol(
       countryCode: country,
     );
@@ -188,6 +189,19 @@ class DonationListItem extends StatelessWidget {
                 ),
               ],
             ),
+            // Show "Made by" information if donation was made by someone else
+            if (donationGroup.madeByUserId != null &&
+                donationGroup.madeByUserId != currentUser.guid &&
+                donationGroup.madeByFirstName != null) ...[
+              const SizedBox(height: 8),
+              Container(
+                alignment: Alignment.centerRight,
+                child: LabelSmallText(
+                  'Made by ${donationGroup.madeByFirstName}',
+                  color: FamilyAppTheme.neutralVariant50,
+                ),
+              ),
+            ],
           ],
         ),
       ),

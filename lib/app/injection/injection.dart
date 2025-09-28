@@ -35,6 +35,7 @@ import 'package:givt_app/features/manage_family/injection.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
+import 'package:givt_app/shared/repositories/family_group_repository.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -250,6 +251,12 @@ void initRepositories() {
       () => RecurringDonationNewFlowRepository(
         getIt<CollectGroupRepository>(),
         getIt<APIService>(),
+      ),
+    )
+    ..registerLazySingleton<FamilyGroupRepository>(
+      () => FamilyGroupRepositoryImpl(
+        getIt<APIService>(),
+        getIt<FamilyAPIService>(),
       ),
     );
 }

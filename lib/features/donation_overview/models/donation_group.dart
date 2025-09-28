@@ -11,6 +11,8 @@ class DonationGroup extends Equatable {
     this.isOnlineGiving = false,
     this.isRecurringDonation = false,
     this.organisationTaxDeductible = false,
+    this.madeByUserId,
+    this.madeByFirstName,
   });
 
   final DateTime? timeStamp;
@@ -21,6 +23,8 @@ class DonationGroup extends Equatable {
   final bool isOnlineGiving;
   final bool isRecurringDonation;
   final bool organisationTaxDeductible;
+  final String? madeByUserId;
+  final String? madeByFirstName;
 
   double get platformFeeAmount {
     final seenIds = <int>{};
@@ -43,6 +47,8 @@ class DonationGroup extends Equatable {
     double? amount,
     bool? isGiftAidEnabled,
     bool? organisationTaxDeductible,
+    String? madeByUserId,
+    String? madeByFirstName,
   }) {
     return DonationGroup(
       timeStamp: timeStamp ?? this.timeStamp,
@@ -51,6 +57,8 @@ class DonationGroup extends Equatable {
       amount: amount ?? this.amount,
       isGiftAidEnabled: isGiftAidEnabled ?? this.isGiftAidEnabled,
       organisationTaxDeductible: organisationTaxDeductible ?? this.organisationTaxDeductible,
+      madeByUserId: madeByUserId ?? this.madeByUserId,
+      madeByFirstName: madeByFirstName ?? this.madeByFirstName,
     );
   }
 
@@ -68,7 +76,10 @@ class DonationGroup extends Equatable {
         donations,
         amount,
         isGiftAidEnabled,
+        isOnlineGiving,
+        isRecurringDonation,
         organisationTaxDeductible,
-        platformFeeAmount,
+        madeByUserId,
+        madeByFirstName,
       ];
 }

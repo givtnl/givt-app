@@ -11,6 +11,7 @@ import 'package:givt_app/features/account_details/pages/personal_info_edit_page.
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/donation_overview.dart';
 import 'package:givt_app/features/email_signup/presentation/pages/email_signup_page.dart';
+import 'package:givt_app/shared/repositories/family_group_repository.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -456,7 +457,10 @@ class AppRouter {
             path: Pages.donationOverview.path,
             name: Pages.donationOverview.name,
             builder: (context, state) => BlocProvider(
-              create: (_) => DonationOverviewCubit(getIt()),
+              create: (_) => DonationOverviewCubit(
+                getIt<DonationOverviewRepository>(),
+                getIt<FamilyGroupRepository>(),
+              ),
               child: const DonationOverviewPage(),
             ),
           ),

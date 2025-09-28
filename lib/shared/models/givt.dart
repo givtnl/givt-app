@@ -17,11 +17,12 @@ class Givt extends Equatable {
     this.donationType = 0,
     this.platformFeeTransactionId,
     this.platformFeeAmount,
+    this.userId,
   });
 
   factory Givt.fromJson(Map<String, dynamic> json) {
     var taxYear = 0;
-    final timestamp = DateTime.parse(json['Timestamp'] as String);
+    final timestamp = DateTime.parse(json['timestamp'] as String);
     final month = int.parse(
       DateFormat('M').format(timestamp),
     );
@@ -35,23 +36,24 @@ class Givt extends Equatable {
       taxYear = int.parse(DateFormat('yyyy').format(timestamp)) - 1;
     }
     return Givt(
-      id: json['Id'] as int,
-      amount: json['Amount'] as double,
-      collectGroupId: json['CollectGroupId'] as String,
-      organisationName: json['OrgName'] as String,
-      organisationTaxDeductible: json.containsKey('OrganisationTaxDeductible')
-          ? json['OrganisationTaxDeductible'] as bool
+      id: json['id'] as int,
+      amount: json['amount'] as double,
+      collectGroupId: json['collectGroupId'] as String,
+      organisationName: json['orgName'] as String? ?? '',
+      organisationTaxDeductible: json.containsKey('organisationTaxDeductible')
+          ? json['organisationTaxDeductible'] as bool
           : false,
-      collectId: int.parse(json['CollectId'] as String),
-      isGiftAidEnabled: json['GiftAidEnabled'] as bool,
-      status: json['Status'] as int,
+      collectId: int.parse(json['collectId'] as String),
+      isGiftAidEnabled: json['giftAidEnabled'] as bool,
+      status: json['status'] as int,
       timeStamp: timestamp,
-      mediumId: json['MediumId'] as String,
+      mediumId: json['mediumId'] as String? ?? '',
       taxYear: taxYear,
       donationType:
-          json.containsKey('DonationType') ? json['DonationType'] as int : 0,
-      platformFeeTransactionId: json['PlatformFeeTransactionId'] as int?,
-      platformFeeAmount: json['PlatformFeeAmount'] as double?,
+          json.containsKey('donationType') ? json['donationType'] as int : 0,
+      platformFeeTransactionId: json['platformFeeTransactionId'] as int?,
+      platformFeeAmount: json['platformFeeAmount'] as double?,
+      userId: json['userId'] as String?,
     );
   }
 
@@ -69,7 +71,8 @@ class Givt extends Equatable {
         mediumId = '',
         donationType = 0,
         platformFeeTransactionId = null,
-        platformFeeAmount = null;
+        platformFeeAmount = null,
+        userId = null;
 
   Map<String, dynamic> toJson() {
     return {
@@ -87,6 +90,7 @@ class Givt extends Equatable {
       'DonationType': donationType,
       'PlatformFeeTransactionId': platformFeeTransactionId,
       'PlatformFeeAmount': platformFeeAmount,
+      'UserId': userId,
     };
   }
 
@@ -112,6 +116,7 @@ class Givt extends Equatable {
   final int donationType;
   final int? platformFeeTransactionId;
   final double? platformFeeAmount;
+  final String? userId;
 
   Givt copyWith({
     int? id,
@@ -128,6 +133,7 @@ class Givt extends Equatable {
     int? donationType,
     int? platformFeeTransactionId,
     double? platformFeeAmount,
+    String? userId,
   }) =>
       Givt(
         id: id ?? this.id,
@@ -146,6 +152,7 @@ class Givt extends Equatable {
         platformFeeTransactionId:
             platformFeeTransactionId ?? this.platformFeeTransactionId,
         platformFeeAmount: platformFeeAmount ?? this.platformFeeAmount,
+        userId: userId ?? this.userId,
       );
 
   @override
@@ -163,5 +170,6 @@ class Givt extends Equatable {
         donationType,
         platformFeeTransactionId,
         platformFeeAmount,
+        userId,
       ];
 }

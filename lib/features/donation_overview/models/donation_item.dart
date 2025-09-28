@@ -18,6 +18,7 @@ class DonationItem extends Equatable {
     this.platformFeeAmount,
     this.collectGroupId,
     this.collectId,
+    this.userId,
   });
 
   factory DonationItem.fromGivt(Givt givt) {
@@ -36,6 +37,7 @@ class DonationItem extends Equatable {
       platformFeeAmount: givt.platformFeeAmount,
       collectGroupId: givt.collectGroupId,
       collectId: givt.collectId,
+      userId: givt.userId,
     );
   }
 
@@ -53,6 +55,7 @@ class DonationItem extends Equatable {
   final double? platformFeeAmount;
   final String? collectGroupId;
   final int? collectId;
+  final String? userId;
 
   DonationItem copyWith({
     int? id,
@@ -69,6 +72,7 @@ class DonationItem extends Equatable {
     double? platformFeeAmount,
     String? collectGroupId,
     int? collectId,
+    String? userId,
   }) {
     return DonationItem(
       id: id ?? this.id,
@@ -85,6 +89,7 @@ class DonationItem extends Equatable {
       platformFeeAmount: platformFeeAmount ?? this.platformFeeAmount,
       collectGroupId: collectGroupId ?? this.collectGroupId,
       collectId: collectId ?? this.collectId,
+      userId: userId ?? this.userId,
     );
   }
 
@@ -105,6 +110,7 @@ class DonationItem extends Equatable {
         'platformFeeAmount': platformFeeAmount,
         'collectGroupId': collectGroupId,
         'collectId': collectId,
+        'userId': userId,
     };
   }
 
@@ -124,5 +130,6 @@ class DonationItem extends Equatable {
         platformFeeAmount,
         collectGroupId,
         collectId,
+        userId,
       ];
 }

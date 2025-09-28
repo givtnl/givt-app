@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'package:collection/collection.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/manage_family/models/family_invite.dart';
 import 'package:givt_app/features/manage_family/models/family_member.dart';
 import 'package:givt_app/features/manage_family/models/group_invite.dart';
-import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/shared/repositories/family_group_repository.dart';
 
 abstract class ManageFamilyRepository {
   Future<List<FamilyMember>> getFamilyMembers();
@@ -17,7 +16,7 @@ abstract class ManageFamilyRepository {
   Future<void> acceptGroupInvite(String groupId);
   Future<void> declineGroupInvite(String groupId);
   Future<void> removeFamilyMember(String memberId);
-  Future<void> updateMemberRole(String memberId, FamilyMemberRole role);
+  Future<void> updateMemberType(String memberId, FamilyMemberType type);
   Stream<List<FamilyMember>> onMembersChanged();
   Stream<List<FamilyInvite>> onInvitesChanged();
   Stream<List<GroupInvite>> onGroupInvitesChanged();
@@ -26,11 +25,11 @@ abstract class ManageFamilyRepository {
 class FamilyManagementRepositoryImpl implements ManageFamilyRepository {
   FamilyManagementRepositoryImpl(
     this._apiService,
-    this._familyApiService,
+    this._familyGroupRepository,
   );
 
   final APIService _apiService;
-  final FamilyAPIService _familyApiService;
+  final FamilyGroupRepository _familyGroupRepository;
 
   final StreamController<List<FamilyMember>> _membersStreamController =
       StreamController<List<FamilyMember>>.broadcast();
@@ -45,62 +44,14 @@ class FamilyManagementRepositoryImpl implements ManageFamilyRepository {
   @override
   Future<List<FamilyMember>> getFamilyMembers() async {
     try {
-      // Use the same API endpoint as the family side
-      final response = await _familyApiService.fetchAllProfiles();
-
-      print('DEBUG: fetchAllProfiles response length: ${response.length}');
-
-      final members = <FamilyMember>[];
-      for (final profileMap in response) {
-        final profileData = profileMap as Map<String, dynamic>;
-
-        print('DEBUG: profileData keys: ${profileData.keys.toList()}');
-        print(
-          'DEBUG: firstName: ${profileData['firstName']}, lastName: ${profileData['lastName']}',
-        );
-
-        // Try different possible avatar field names
-        String? avatarUrl;
-
-        if (profileData['picture'] != null) {
-          final picture = profileData['picture'] as Map<String, dynamic>;
-          avatarUrl = picture['pictureURL'] as String?;
-        }
-
-        if (avatarUrl == null || avatarUrl.isEmpty) {
-          avatarUrl = profileData['avatar'] as String?;
-        }
-
-        if (avatarUrl == null || avatarUrl.isEmpty) {
-          avatarUrl = profileData['pictureURL'] as String?;
-        }
-
-        final member = FamilyMember(
-          id: profileData['id'] as String? ?? '',
-          firstName: profileData['firstName'] as String? ?? '',
-          lastName: profileData['lastName'] as String? ?? '',
-          email: profileData['email'] as String? ?? '',
-          avatar: avatarUrl,
-          isActive: profileData['isActive'] as bool? ?? false,
-          role: FamilyMemberRole.fromString(
-            profileData['role'] as String? ?? 'member',
-          ),
-          inviteStatus: FamilyMemberInviteStatus
-              .accepted, // All fetched members are accepted
-        );
-
-        print('DEBUG: created member: ${member.fullName} (${member.email})');
-        members.add(member);
-      }
-
-      print('DEBUG: total members: ${members.length}');
+      // Use the shared family group repository
+      final members = await _familyGroupRepository.getFamilyMembers();
       _membersStreamController.add(members);
       return members;
     } catch (e) {
-      print('DEBUG: error fetching members: $e');
+      _membersStreamController.addError(e);
+      rethrow;
     }
-
-    return [];
   }
 
   @override
@@ -211,7 +162,7 @@ class FamilyManagementRepositoryImpl implements ManageFamilyRepository {
   }
 
   @override
-  Future<void> updateMemberRole(String memberId, FamilyMemberRole role) async {
+  Future<void> updateMemberType(String memberId, FamilyMemberType type) async {
     try {
       // This would typically call an API endpoint like /givtservice/v1/family/members/$memberId/role
       // For now, just refresh the members
@@ -239,10 +190,8 @@ class FamilyManagementRepositoryImpl implements ManageFamilyRepository {
   @override
   Future<String?> getFamilyGroupName() async {
     try {
-      final impactGroups = await _getImpactGroups();
-      return impactGroups
-          .firstWhereOrNull((element) => element.isFamilyGroup)
-          ?.name;
+      // Use the shared family group repository
+      return await _familyGroupRepository.getFamilyGroupName();
     } catch (e) {
       return null;
     }

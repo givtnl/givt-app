@@ -5,6 +5,8 @@ import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_group.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
+import 'package:givt_app/shared/repositories/family_group_repository.dart';
+import 'package:givt_app/features/manage_family/models/family_member.dart';
 import 'package:intl/intl.dart';
 
 class DonationOverviewUIModel extends Equatable {
@@ -41,7 +43,10 @@ class DonationOverviewUIModel extends Equatable {
     );
   }
 
-  factory DonationOverviewUIModel.fromDonations(List<DonationItem> donations) {
+  static Future<DonationOverviewUIModel> fromDonations(
+    List<DonationItem> donations,
+    FamilyGroupRepository familyGroupRepository,
+  ) async {
     if (donations.isEmpty) {
       return const DonationOverviewUIModel(
         donations: [],
@@ -142,6 +147,14 @@ class DonationOverviewUIModel extends Equatable {
       }
     }
 
+    // Get family members once for all donation groups
+    List<FamilyMember> familyMembers = [];
+    try {
+      familyMembers = await familyGroupRepository.getFamilyMembers();
+    } catch (e) {
+      // If we can't get family members, leave firstName as null for all donations
+    }
+
     // Convert to DonationGroup objects
     groupMap.forEach((key, groupDonations) {
       if (groupDonations.isNotEmpty) {
@@ -150,6 +163,19 @@ class DonationOverviewUIModel extends Equatable {
           0.0,
           (sum, d) => sum + d.amount,
         );
+
+        // Get user information for the donation
+        String? madeByUserId;
+        String? madeByFirstName;
+        
+        if (firstDonation.userId != null) {
+          madeByUserId = firstDonation.userId;
+          // Find the family member by ID
+          final member = familyMembers.where(
+            (FamilyMember m) => m.id == firstDonation.userId,
+          ).firstOrNull;
+          madeByFirstName = member?.firstName;
+        }
 
         donationGroups.add(
           DonationGroup(
@@ -161,6 +187,8 @@ class DonationOverviewUIModel extends Equatable {
             organisationTaxDeductible: firstDonation.organisationTaxDeductible,
             isOnlineGiving: firstDonation.donationType == 7,
             isRecurringDonation: firstDonation.donationType == 1,
+            madeByUserId: madeByUserId,
+            madeByFirstName: madeByFirstName,
           ),
         );
       }

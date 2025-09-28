@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:givt_app/features/donation_overview/models/models.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
+import 'package:givt_app/shared/repositories/family_group_repository.dart';
 
 mixin DonationOverviewRepository {
   Stream<List<DonationItem>> onDonationsChanged();
@@ -14,9 +15,13 @@ mixin DonationOverviewRepository {
 }
 
 class DonationOverviewRepositoryImpl with DonationOverviewRepository {
-  DonationOverviewRepositoryImpl(this._givtRepository);
+  DonationOverviewRepositoryImpl(
+    this._givtRepository,
+    this._familyGroupRepository,
+  );
 
   final GivtRepository _givtRepository;
+  final FamilyGroupRepository _familyGroupRepository;
   final StreamController<List<DonationItem>> _donationsController =
       StreamController<List<DonationItem>>.broadcast();
 

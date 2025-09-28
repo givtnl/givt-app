@@ -333,8 +333,8 @@ class APIService {
     return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
-  Future<List<dynamic>> fetchGivts({Map<String, dynamic>? params}) async {
-    final url = Uri.https(_apiURL, '/api/v2/givts', params);
+  Future<List<dynamic>> fetchGivts() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/transaction/family');
 
     final response = await client.get(url);
 
@@ -344,7 +344,7 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
-    return jsonDecode(response.body) as List<dynamic>;
+    return jsonDecode(response.body)['items'] as List<dynamic>;
   }
 
   Future<bool> deleteGivts({List<dynamic>? body}) async {

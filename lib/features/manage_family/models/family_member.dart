@@ -5,23 +5,24 @@ class FamilyMember extends Equatable {
     required this.id,
     required this.firstName,
     required this.lastName,
-    required this.email,
+    required this.type,
     this.avatar,
-    this.isActive = false,
-    this.role = FamilyMemberRole.member,
-    this.inviteStatus = FamilyMemberInviteStatus.none,
   });
 
   factory FamilyMember.fromJson(Map<String, dynamic> json) {
+    // Extract avatar from picture.pictureURL structure
+    String? avatar;
+    if (json['picture'] != null) {
+      final picture = json['picture'] as Map<String, dynamic>;
+      avatar = picture['pictureURL'] as String?;
+    }
+
     return FamilyMember(
       id: json['id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
-      email: json['email'] as String,
-      avatar: json['avatar'] as String?,
-      isActive: json['isActive'] as bool? ?? false,
-      role: FamilyMemberRole.fromString(json['role'] as String? ?? 'member'),
-      inviteStatus: FamilyMemberInviteStatus.fromString(json['inviteStatus'] as String? ?? 'none'),
+      type: FamilyMemberType.fromString(json['type'] as String? ?? 'parent'),
+      avatar: avatar,
     );
   }
 
@@ -30,11 +31,8 @@ class FamilyMember extends Equatable {
       'id': id,
       'firstName': firstName,
       'lastName': lastName,
-      'email': email,
-      'avatar': avatar,
-      'isActive': isActive,
-      'role': role.value,
-      'inviteStatus': inviteStatus.value,
+      'type': type.value,
+      'picture': avatar != null ? {'pictureURL': avatar} : null,
     };
   }
 
@@ -42,21 +40,15 @@ class FamilyMember extends Equatable {
     String? id,
     String? firstName,
     String? lastName,
-    String? email,
+    FamilyMemberType? type,
     String? avatar,
-    bool? isActive,
-    FamilyMemberRole? role,
-    FamilyMemberInviteStatus? inviteStatus,
   }) {
     return FamilyMember(
       id: id ?? this.id,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
-      email: email ?? this.email,
+      type: type ?? this.type,
       avatar: avatar ?? this.avatar,
-      isActive: isActive ?? this.isActive,
-      role: role ?? this.role,
-      inviteStatus: inviteStatus ?? this.inviteStatus,
     );
   }
 
@@ -65,55 +57,31 @@ class FamilyMember extends Equatable {
   final String id;
   final String firstName;
   final String lastName;
-  final String email;
+  final FamilyMemberType type;
   final String? avatar;
-  final bool isActive;
-  final FamilyMemberRole role;
-  final FamilyMemberInviteStatus inviteStatus;
 
   @override
   List<Object?> get props => [
         id,
         firstName,
         lastName,
-        email,
+        type,
         avatar,
-        isActive,
-        role,
-        inviteStatus,
       ];
 }
 
-enum FamilyMemberRole {
-  admin('Admin'),
-  member('Member');
+enum FamilyMemberType {
+  parent('parent'),
+  child('child');
 
-  const FamilyMemberRole(this.value);
-
-  final String value;
-
-  static FamilyMemberRole fromString(String value) {
-    return FamilyMemberRole.values.firstWhere(
-      (element) => element.value.toLowerCase() == value.toLowerCase(),
-      orElse: () => FamilyMemberRole.member,
-    );
-  }
-}
-
-enum FamilyMemberInviteStatus {
-  none('None'),
-  pending('Pending'),
-  accepted('Accepted'),
-  declined('Declined');
-
-  const FamilyMemberInviteStatus(this.value);
+  const FamilyMemberType(this.value);
 
   final String value;
 
-  static FamilyMemberInviteStatus fromString(String value) {
-    return FamilyMemberInviteStatus.values.firstWhere(
+  static FamilyMemberType fromString(String value) {
+    return FamilyMemberType.values.firstWhere(
       (element) => element.value.toLowerCase() == value.toLowerCase(),
-      orElse: () => FamilyMemberInviteStatus.none,
+      orElse: () => FamilyMemberType.parent,
     );
   }
 }

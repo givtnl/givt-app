@@ -108,15 +108,15 @@ class ManageFamilyCubit
     );
   }
 
-  Future<void> updateMemberRole(String memberId, FamilyMemberRole role) async {
+  Future<void> updateMemberType(String memberId, FamilyMemberType type) async {
     await inTryCatchFinally(
       inTry: () async {
-        await _repository.updateMemberRole(memberId, role);
-        emitSnackbarMessage('Member role updated');
+        await _repository.updateMemberType(memberId, type);
+        emitSnackbarMessage('Member type updated');
       },
       inCatch: (e, s) async {
         emitSnackbarMessage(
-          'Failed to update role: ${e.toString()}',
+          'Failed to update type: ${e.toString()}',
           isError: true,
         );
       },
