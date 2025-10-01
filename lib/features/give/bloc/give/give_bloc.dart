@@ -242,15 +242,6 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       return;
     }
     
-    // Add safety check: if we're already in a final state, don't process new beacons
-    // This prevents background processing when user has navigated away
-    if (state.status == GiveStatus.readyToGive || 
-        state.status == GiveStatus.success || 
-        state.status == GiveStatus.processed) {
-      LoggingInfo.instance.info('Ignoring beacon scan - already in final state: ${state.status}');
-      return;
-    }
-    
     emit(state.copyWith(status: GiveStatus.processingBeaconData));
     try {
       final startIndex = event.beaconData.indexOf('61f7ed');
