@@ -1068,4 +1068,34 @@ class APIService {
 
     return response.statusCode == 200;
   }
+
+  Future<bool> resetPasswordWithCode(
+    String code,
+    String email,
+    String newPassword,
+  ) async {
+    final url = Uri.https(_apiURL, '/api/Users/ResetPassword');
+    final response = await client.post(
+      url,
+      body: jsonEncode({
+        'userID': email,
+        'passwordToken': code,
+        'newPassword': newPassword,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return response.statusCode == 200;
+  }
 }

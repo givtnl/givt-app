@@ -38,6 +38,8 @@ import 'package:givt_app/features/registration/pages/pages.dart';
 import 'package:givt_app/features/splash/pages/splash_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
+import 'package:givt_app/features/family/features/password_reset/cubit/password_reset_cubit.dart';
+import 'package:givt_app/features/family/features/password_reset/presentation/pages/password_reset_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/redirect_to_browser_page.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
@@ -498,6 +500,36 @@ class AppRouter {
               _checkAndRedirectAuth(state, context, routerState),
           child: const EmailSignupPage(),
         ),
+      ),
+      GoRoute(
+        path: '/changepassword',
+        name: 'changepassword',
+        builder: (context, state) {
+          final code = state.uri.queryParameters['code'] ?? '';
+          final email = state.uri.queryParameters['email'] ?? '';
+          final app = state.uri.queryParameters['app']?.toLowerCase() == 'true';
+          
+          if (code.isEmpty || email.isEmpty) {
+            return const Scaffold(
+              body: Center(
+                child: Text('Invalid parameters. Code and email are required.'),
+              ),
+            );
+          }
+          
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => PasswordResetCubit(getIt()),
+              ),
+            ],
+            child: PasswordResetPage(
+              code: code,
+              email: email,
+              isApp: app,
+            ),
+          );
+        },
       ),
       // Family features
       ...FamilyAppRoutes.routes,

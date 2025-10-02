@@ -1094,5 +1094,19 @@
   "donationOverviewContactMessage": "Hi, I need help with the following donation:\\n\\nStatus: {status}\\nTransaction ID:#{transactionId}",
   "date": "Date",
   "platformFeeGoodOption": "Good choice",
-  "platformFeeRemember": "Remember my choice for future donations to this organisation."
+  "platformFeeRemember": "Remember my choice for future donations to this organisation.",
+  "passwordResetTitle": "Restablecer tu contraseña",
+  "passwordResetDescription": "Ingresa tu nueva contraseña a continuación. Asegúrate de que tenga al menos 8 caracteres.",
+  "newPassword": "Nueva contraseña",
+  "confirmNewPassword": "Confirmar nueva contraseña",
+  "passwordRequired": "La contraseña es obligatoria",
+  "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+  "confirmPasswordRequired": "Por favor confirma tu contraseña",
+  "passwordsDoNotMatch": "Las contraseñas no coinciden",
+  "passwordResetSuccess": "¡Contraseña cambiada exitosamente!",
+  "passwordResetSuccessDescription": "Tu contraseña ha sido actualizada. Ahora puedes iniciar sesión con tu nueva contraseña.",
+  "passwordResetError": "Error al restablecer la contraseña",
+  "passwordResetErrorDescription": "Hubo un error al restablecer tu contraseña. Por favor intenta de nuevo.",
+  "goToDashboard": "Ir al Panel",
+  "tryAgain": "Intentar de nuevo"
 }

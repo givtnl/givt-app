@@ -1094,5 +1094,19 @@
   "donationOverviewContactMessage": "Hi, I need help with the following donation:\\n\\nStatus: {status}\\nTransaction ID:#{transactionId}",
   "date": "Date",
   "platformFeeGoodOption": "Good choice",
-  "platformFeeRemember": "Remember my choice for future donations to this organisation."
+  "platformFeeRemember": "Remember my choice for future donations to this organisation.",
+  "passwordResetTitle": "Reset your password",
+  "passwordResetDescription": "Enter your new password below. Make sure it's at least 8 characters long.",
+  "newPassword": "New password",
+  "confirmNewPassword": "Confirm new password",
+  "passwordRequired": "Password is required",
+  "passwordTooShort": "Password must be at least 8 characters long",
+  "confirmPasswordRequired": "Please confirm your password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "passwordResetSuccess": "Password changed successfully!",
+  "passwordResetSuccessDescription": "Your password has been updated. You can now log in with your new password.",
+  "passwordResetError": "Password reset failed",
+  "passwordResetErrorDescription": "There was an error resetting your password. Please try again.",
+  "goToDashboard": "Go to Dashboard",
+  "tryAgain": "Try Again"
 }

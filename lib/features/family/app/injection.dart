@@ -61,6 +61,8 @@ import 'package:givt_app/features/family/features/registration/cubit/us_signup_c
 import 'package:givt_app/features/family/features/remote_config/domain/remote_config_repository.dart';
 import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/repositories/reset_password_repository.dart';
+import 'package:givt_app/features/family/features/password_reset/cubit/password_reset_cubit.dart';
+import 'package:givt_app/features/family/features/password_reset/repositories/password_reset_repository.dart';
 import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/cubit/unlocked_badge_cubit.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
@@ -174,6 +176,11 @@ void initCubits() {
     )
     ..registerLazySingleton<ResetPasswordCubit>(
       () => ResetPasswordCubit(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<PasswordResetCubit>(
+      () => PasswordResetCubit(
         getIt(),
       ),
     )
@@ -334,6 +341,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<ResetPasswordRepository>(
       () => ResetPasswordRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<PasswordResetRepository>(
+      () => PasswordResetRepositoryImpl(
         getIt(),
       ),
     )

@@ -1094,5 +1094,19 @@
   "donationOverviewContactMessage": "Hoi, ik heb hulp nodig met de volgende donatie:\\n\\nStatus: {status}\\nTransaction ID: {transactionId}",
   "date": "Datum",
   "platformFeeGoodOption": "Altijd goed",
-  "platformFeeRemember": "Onthoud mijn keuze voor volgende donaties aan deze organisatie."
+  "platformFeeRemember": "Onthoud mijn keuze voor volgende donaties aan deze organisatie.",
+  "passwordResetTitle": "Wachtwoord opnieuw instellen",
+  "passwordResetDescription": "Voer hieronder je nieuwe wachtwoord in. Zorg ervoor dat het minimaal 8 tekens lang is.",
+  "newPassword": "Nieuw wachtwoord",
+  "confirmNewPassword": "Bevestig nieuw wachtwoord",
+  "passwordRequired": "Wachtwoord is verplicht",
+  "passwordTooShort": "Wachtwoord moet minimaal 8 tekens lang zijn",
+  "confirmPasswordRequired": "Bevestig je wachtwoord",
+  "passwordsDoNotMatch": "Wachtwoorden komen niet overeen",
+  "passwordResetSuccess": "Wachtwoord succesvol gewijzigd!",
+  "passwordResetSuccessDescription": "Je wachtwoord is bijgewerkt. Je kunt nu inloggen met je nieuwe wachtwoord.",
+  "passwordResetError": "Wachtwoord opnieuw instellen mislukt",
+  "passwordResetErrorDescription": "Er is een fout opgetreden bij het opnieuw instellen van je wachtwoord. Probeer het opnieuw.",
+  "goToDashboard": "Ga naar Dashboard",
+  "tryAgain": "Probeer opnieuw"
 }
