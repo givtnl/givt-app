@@ -11,6 +11,7 @@ import 'package:givt_app/features/account_details/pages/personal_info_edit_page.
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/donation_overview.dart';
 import 'package:givt_app/features/email_signup/presentation/pages/email_signup_page.dart';
+import 'package:givt_app/features/family/features/reset_password/presentation/pages/change_password_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -498,6 +499,26 @@ class AppRouter {
               _checkAndRedirectAuth(state, context, routerState),
           child: const EmailSignupPage(),
         ),
+      ),
+      GoRoute(
+        path: '/changepassword',
+        name: 'changepassword',
+        builder: (context, state) {
+          final code = state.uri.queryParameters['code'] ?? '';
+          final email = state.uri.queryParameters['email'] ?? '';
+          final app = state.uri.queryParameters['app'] == 'true';
+          
+          if (code.isEmpty || email.isEmpty) {
+            // Redirect to welcome page if required parameters are missing
+            return const EmailSignupPage();
+          }
+          
+          return ChangePasswordPage(
+            code: code,
+            email: email,
+            isApp: app,
+          );
+        },
       ),
       // Family features
       ...FamilyAppRoutes.routes,

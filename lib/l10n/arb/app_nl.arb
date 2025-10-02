@@ -193,6 +193,41 @@
     "description": "Titeltekst op de vergeet wachtwoord pagina",
     "type": "text"
   },
+  "newPassword": "Nieuw wachtwoord",
+  "@newPassword": {
+    "description": "Label voor nieuw wachtwoord invoerveld",
+    "type": "text"
+  },
+  "confirmNewPassword": "Bevestig nieuw wachtwoord",
+  "@confirmNewPassword": {
+    "description": "Label voor bevestig nieuw wachtwoord invoerveld",
+    "type": "text"
+  },
+  "passwordChangedSuccessfully": "Je wachtwoord is succesvol gewijzigd!",
+  "@passwordChangedSuccessfully": {
+    "description": "Succesbericht wanneer wachtwoord is gewijzigd",
+    "type": "text"
+  },
+  "goToDashboard": "Ga naar Dashboard",
+  "@goToDashboard": {
+    "description": "Knop tekst om naar dashboard te gaan",
+    "type": "text"
+  },
+  "passwordResetTitle": "Wachtwoord Resetten",
+  "@passwordResetTitle": {
+    "description": "Titel voor wachtwoord reset pagina",
+    "type": "text"
+  },
+  "passwordResetDescription": "Voer hieronder je nieuwe wachtwoord in om het wachtwoord reset proces te voltooien.",
+  "@passwordResetDescription": {
+    "description": "Beschrijving tekst voor wachtwoord reset pagina",
+    "type": "text"
+  },
+  "passwordsDoNotMatch": "Wachtwoorden komen niet overeen",
+  "@passwordsDoNotMatch": {
+    "description": "Foutmelding wanneer wachtwoorden niet overeenkomen",
+    "type": "text"
+  },
   "give": "Geven",
   "@give": {
     "description": "\"Geven\" op de Geef pagina waar je je bedrag kiest",

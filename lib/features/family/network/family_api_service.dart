@@ -473,6 +473,30 @@ class FamilyAPIService {
     return response.statusCode == 200;
   }
 
+  Future<bool> changePassword({
+    required String userID,
+    required String passwordToken,
+    required String newPassword,
+  }) async {
+    final url = Uri.https(_apiURL, '/api/Users/ResetPassword');
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'userID': userID,
+        'passwordToken': passwordToken,
+        'newPassword': newPassword,
+      }),
+    );
+
+    if (response.statusCode >= 400) {
+      throw Exception(response.statusCode);
+    }
+    return response.statusCode == 200;
+  }
+
   Future<Map<String, dynamic>> updateGame(
       String gameGuid, Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/game/$gameGuid');

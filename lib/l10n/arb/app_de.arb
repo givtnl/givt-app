@@ -193,6 +193,41 @@
     "description": "Titeltekst op de vergeet wachtwoord pagina",
     "type": "text"
   },
+  "newPassword": "Neues Passwort",
+  "@newPassword": {
+    "description": "Label für neues Passwort Eingabefeld",
+    "type": "text"
+  },
+  "confirmNewPassword": "Neues Passwort bestätigen",
+  "@confirmNewPassword": {
+    "description": "Label für neues Passwort bestätigen Eingabefeld",
+    "type": "text"
+  },
+  "passwordChangedSuccessfully": "Dein Passwort wurde erfolgreich geändert!",
+  "@passwordChangedSuccessfully": {
+    "description": "Erfolgsmeldung wenn Passwort geändert wurde",
+    "type": "text"
+  },
+  "goToDashboard": "Zum Dashboard gehen",
+  "@goToDashboard": {
+    "description": "Button Text um zum Dashboard zu gehen",
+    "type": "text"
+  },
+  "passwordResetTitle": "Passwort Zurücksetzen",
+  "@passwordResetTitle": {
+    "description": "Titel für Passwort Reset Seite",
+    "type": "text"
+  },
+  "passwordResetDescription": "Gib unten dein neues Passwort ein, um den Passwort-Reset-Prozess abzuschließen.",
+  "@passwordResetDescription": {
+    "description": "Beschreibungstext für Passwort Reset Seite",
+    "type": "text"
+  },
+  "passwordsDoNotMatch": "Passwörter stimmen nicht überein",
+  "@passwordsDoNotMatch": {
+    "description": "Fehlermeldung wenn Passwörter nicht übereinstimmen",
+    "type": "text"
+  },
   "give": "Spende",
   "@give": {
     "description": "\"Geven\" op de Geef pagina waar je je bedrag kiest",

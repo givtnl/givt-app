@@ -193,6 +193,41 @@
     "description": "Titeltekst op de vergeet wachtwoord pagina",
     "type": "text"
   },
+  "newPassword": "Nueva contraseña",
+  "@newPassword": {
+    "description": "Etiqueta para campo de nueva contraseña",
+    "type": "text"
+  },
+  "confirmNewPassword": "Confirmar nueva contraseña",
+  "@confirmNewPassword": {
+    "description": "Etiqueta para campo de confirmar nueva contraseña",
+    "type": "text"
+  },
+  "passwordChangedSuccessfully": "¡Tu contraseña ha sido cambiada exitosamente!",
+  "@passwordChangedSuccessfully": {
+    "description": "Mensaje de éxito cuando la contraseña es cambiada",
+    "type": "text"
+  },
+  "goToDashboard": "Ir al Dashboard",
+  "@goToDashboard": {
+    "description": "Texto del botón para ir al dashboard",
+    "type": "text"
+  },
+  "passwordResetTitle": "Restablecer Contraseña",
+  "@passwordResetTitle": {
+    "description": "Título para página de restablecimiento de contraseña",
+    "type": "text"
+  },
+  "passwordResetDescription": "Ingresa tu nueva contraseña a continuación para completar el proceso de restablecimiento de contraseña.",
+  "@passwordResetDescription": {
+    "description": "Texto de descripción para página de restablecimiento de contraseña",
+    "type": "text"
+  },
+  "passwordsDoNotMatch": "Las contraseñas no coinciden",
+  "@passwordsDoNotMatch": {
+    "description": "Mensaje de error cuando las contraseñas no coinciden",
+    "type": "text"
+  },
   "give": "Donar",
   "@give": {
     "description": "\"Geven\" op de Geef pagina waar je je bedrag kiest",

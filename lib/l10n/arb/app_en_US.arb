@@ -193,6 +193,41 @@
     "description": "Titeltekst op de vergeet wachtwoord pagina",
     "type": "text"
   },
+  "newPassword": "New password",
+  "@newPassword": {
+    "description": "Label for new password input field",
+    "type": "text"
+  },
+  "confirmNewPassword": "Confirm new password",
+  "@confirmNewPassword": {
+    "description": "Label for confirm new password input field",
+    "type": "text"
+  },
+  "passwordChangedSuccessfully": "Your password has been changed successfully!",
+  "@passwordChangedSuccessfully": {
+    "description": "Success message when password is changed",
+    "type": "text"
+  },
+  "goToDashboard": "Go to Dashboard",
+  "@goToDashboard": {
+    "description": "Button text to go to dashboard",
+    "type": "text"
+  },
+  "passwordResetTitle": "Reset Password",
+  "@passwordResetTitle": {
+    "description": "Title for password reset page",
+    "type": "text"
+  },
+  "passwordResetDescription": "Enter your new password below to complete the password reset process.",
+  "@passwordResetDescription": {
+    "description": "Description text for password reset page",
+    "type": "text"
+  },
+  "passwordsDoNotMatch": "Passwords do not match",
+  "@passwordsDoNotMatch": {
+    "description": "Error message when passwords don't match",
+    "type": "text"
+  },
   "give": "Give",
   "@give": {
     "description": "\"Geven\" op de Geef pagina waar je je bedrag kiest",
