@@ -1095,5 +1095,6 @@
   "date": "Datum",
   "platformFeeGoodOption": "Altijd goed",
   "platformFeeRemember": "Onthoud mijn keuze voor volgende donaties aan deze organisatie.",
-  "platformFeeCustomOption": "Kies zelf"
+  "platformFeeCustomOption": "Kies zelf",
+  "platformFeeCustomPlaceholder": "Vul bedrag in"
 }
