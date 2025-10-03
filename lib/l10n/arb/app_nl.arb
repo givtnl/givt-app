@@ -1094,5 +1094,21 @@
   "donationOverviewContactMessage": "Hoi, ik heb hulp nodig met de volgende donatie:\\n\\nStatus: {status}\\nTransaction ID: {transactionId}",
   "date": "Datum",
   "platformFeeGoodOption": "Altijd goed",
-  "platformFeeRemember": "Onthoud mijn keuze voor volgende donaties aan deze organisatie."
+  "platformFeeRemember": "Onthoud mijn keuze voor volgende donaties aan deze organisatie.",
+  "platformFeeCustomOption": "Kies zelf",
+  "platformFeeCustomPlaceholder": "Vul bedrag in",
+  "platformContributionTitle": "Platformbijdrage",
+  "platformContributionHelpLowerCosts": "Help ons de kosten voor de organisaties te verlagen",
+  "platformContributionAims": "Give streeft naar 0% servicekosten met jouw hulp. Ze verschijnen hier zodra je ze hebt ingesteld.",
+  "platformContributionManage": "Beheer je platformbijdrage voor elke organisatie",
+  "platformContributionOrgPresbyterian": "Presbyterian Church",
+  "platformContributionExtraGenerous": "Extra vrijgevig",
+  "platformContributionOrgRedCross": "Rode Kruis",
+  "platformContributionMostPopular": "Meest populair",
+  "platformContributionOrgTheParkChurch": "The Park Church",
+  "platformContributionSaveChangesButton": "Wijzigingen opslaan",
+  "platformContributionSaveChangesModalTitle": "Wijzigingen opslaan?",
+  "platformContributionSaveChangesModalBody": "Wil je je wijzigingen opslaan voordat je vertrekt?",
+  "platformContributionSaveChangesModalYesButton": "Ja, opslaan",
+  "platformContributionSaveChangesModalNoButton": "Nee, negeren"
 }

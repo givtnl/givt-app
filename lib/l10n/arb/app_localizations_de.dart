@@ -2398,4 +2398,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get platformFeeRemember =>
       'Merke dir meine Auswahl für zukünftige Spenden an diese Organisation.';
+
+  @override
+  String get platformFeeCustomOption => 'Selbst wählen';
+
+  @override
+  String get platformFeeCustomPlaceholder => 'Betrag eingeben';
 }

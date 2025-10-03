@@ -1094,5 +1094,21 @@
   "donationOverviewContactMessage": "Hi, I need help with the following donation:\\n\\nStatus: {status}\\nTransaction ID:#{transactionId}",
   "date": "Date",
   "platformFeeGoodOption": "Good choice",
-  "platformFeeRemember": "Remember my choice for future donations to this organisation."
+  "platformFeeRemember": "Remember my choice for future donations to this organisation.",
+  "platformFeeCustomOption": "Custom amount",
+  "platformFeeCustomPlaceholder": "Enter custom amount",
+  "platformContributionTitle": "Platform Contribution",
+  "platformContributionHelpLowerCosts": "Help us lower costs for the organizations",
+  "platformContributionAims": "Give aims for 0% service fee with your help. They'll show here once you set them.",
+  "platformContributionManage": "Manage your platform contribution for each organization",
+  "platformContributionOrgPresbyterian": "Presbyterian Church",
+  "platformContributionExtraGenerous": "Extra generous",
+  "platformContributionOrgRedCross": "Red Cross",
+  "platformContributionMostPopular": "Most popular",
+  "platformContributionOrgTheParkChurch": "The Park Church",
+  "platformContributionSaveChangesButton": "Save changes",
+  "platformContributionSaveChangesModalTitle": "Save changes?",
+  "platformContributionSaveChangesModalBody": "Do you want to save your changes before leaving?",
+  "platformContributionSaveChangesModalYesButton": "Yes, save",
+  "platformContributionSaveChangesModalNoButton": "No, discard"
 }
