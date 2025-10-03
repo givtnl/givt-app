@@ -1094,5 +1094,6 @@
   "donationOverviewContactMessage": "Hoi, ik heb hulp nodig met de volgende gift:\\n\\nStatus: {status}\\nTransaction ID: {transactionId}",
   "date": "Datum",
   "platformFeeGoodOption": "Einfach gut",
-  "platformFeeRemember": "Merke dir meine Auswahl für zukünftige Spenden an diese Organisation."
+  "platformFeeRemember": "Merke dir meine Auswahl für zukünftige Spenden an diese Organisation.",
+  "platformFeeCustomOption": "Selbst wählen"
 }
