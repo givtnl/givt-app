@@ -4292,6 +4292,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remember my choice for future donations to this organisation.'**
   String get platformFeeRemember;
+
+  /// No description provided for @platformFeeCustomOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom amount'**
+  String get platformFeeCustomOption;
+
+  /// No description provided for @platformFeeCustomPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter custom amount'**
+  String get platformFeeCustomPlaceholder;
 }
 
 class _AppLocalizationsDelegate

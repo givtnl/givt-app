@@ -2389,4 +2389,10 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get platformFeeRemember =>
       'Onthoud mijn keuze voor volgende donaties aan deze organisatie.';
+
+  @override
+  String get platformFeeCustomOption => 'Kies zelf';
+
+  @override
+  String get platformFeeCustomPlaceholder => 'Vul bedrag in';
 }

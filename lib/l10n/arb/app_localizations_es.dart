@@ -2380,6 +2380,12 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get platformFeeRemember =>
       'Remember my choice for future donations to this organisation.';
+
+  @override
+  String get platformFeeCustomOption => 'Custom amount';
+
+  @override
+  String get platformFeeCustomPlaceholder => 'Enter custom amount';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4779,4 +4785,10 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get platformFeeRemember =>
       'Remember my choice for future donations to this organisation.';
+
+  @override
+  String get platformFeeCustomOption => 'Custom amount';
+
+  @override
+  String get platformFeeCustomPlaceholder => 'Enter custom amount';
 }

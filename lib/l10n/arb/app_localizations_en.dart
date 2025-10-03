@@ -2379,6 +2379,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get platformFeeRemember =>
       'Remember my choice for future donations to this organisation.';
+
+  @override
+  String get platformFeeCustomOption => 'Custom amount';
+
+  @override
+  String get platformFeeCustomPlaceholder => 'Enter custom amount';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4756,4 +4762,10 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String get platformFeeRemember =>
       'Remember my choice for future donations to this organisation.';
+
+  @override
+  String get platformFeeCustomOption => 'Custom amount';
+
+  @override
+  String get platformFeeCustomPlaceholder => 'Enter custom amount';
 }
