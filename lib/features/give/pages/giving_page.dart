@@ -126,6 +126,8 @@ class _GivingPageState extends State<GivingPage> {
       platformFeeGoodOptionText: context.l10n.platformFeeGoodOption,
       platformFeeCommonOptionText: context.l10n.platformFeeCommonOption,
       platformFeeGenerousOptionText: context.l10n.platformFeeGenerousOption,
+      platformFeeCustomOptionText: context.l10n.platformFeeCustomOption,
+      platformFeeCustomPlaceholder: context.l10n.platformFeeCustomPlaceholder,
       platformFeeText: context.l10n.platformFeeText,
       platformFeeTitle: context.l10n.platformFeeTitle,
       platformFeePlaceholder: context.l10n.platformFeePlaceholder,

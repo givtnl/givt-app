@@ -34,6 +34,8 @@ class WebViewInput extends Equatable {
     this.platformFeeGoodOptionText = '',
     this.platformFeeCommonOptionText = '',
     this.platformFeeGenerousOptionText = '',
+    this.platformFeeCustomOptionText = '',
+    this.platformFeeCustomPlaceholder = '',
     this.platformFeeText = '',
     this.platformFeeTitle = '',
     this.platformFeePlaceholder = '',
@@ -75,6 +77,8 @@ class WebViewInput extends Equatable {
         platformFeeGoodOptionText: json['platformFeeGoodOptionText'] as String,
         platformFeeCommonOptionText: json['platformFeeCommonOptionText'] as String,
         platformFeeGenerousOptionText: json['platformFeeGenerousOptionText'] as String,
+        platformFeeCustomOptionText: json['platformFeeCustomOptionText'] as String,
+        platformFeeCustomPlaceholder: json['platformFeeCustomPlaceholder'] as String,
         platformFeeText: json['platformFeeText'] as String,
         platformFeeTitle: json['platformFeeTitle'] as String,
         platformFeeRemember: json['platformFeeRemember'] as String,
@@ -113,6 +117,8 @@ class WebViewInput extends Equatable {
   final String platformFeeGoodOptionText;
   final String platformFeeCommonOptionText;
   final String platformFeeGenerousOptionText;
+  final String platformFeeCustomOptionText;
+  final String platformFeeCustomPlaceholder;
   final String platformFeeText;
   final String platformFeeTitle;
   final String platformFeePlaceholder;
@@ -153,6 +159,8 @@ class WebViewInput extends Equatable {
         'platformFeeGoodOptionText': platformFeeGoodOptionText,
         'platformFeeCommonOptionText': platformFeeCommonOptionText,
         'platformFeeGenerousOptionText': platformFeeGenerousOptionText,
+        'platformFeeCustomOptionText': platformFeeCustomOptionText,
+        'platformFeeCustomPlaceholder': platformFeeCustomPlaceholder,
         'platformFeeText': platformFeeText,
         'platformFeeTitle': platformFeeTitle,
         'platformFeePlaceholder': platformFeePlaceholder,
@@ -194,6 +202,8 @@ class WebViewInput extends Equatable {
     String? platformFeeGoodOptionText,
     String? platformFeeCommonOptionText,
     String? platformFeeGenerousOptionText,
+    String? platformFeeCustomOptionText,
+    String? platformFeeCustomPlaceholder,
     String? platformFeeText,
     String? platformFeeTitle,
     String? platformFeePlaceholder,
@@ -237,6 +247,8 @@ class WebViewInput extends Equatable {
       platformFeeGoodOptionText: platformFeeGoodOptionText ?? this.platformFeeGoodOptionText,
       platformFeeCommonOptionText: platformFeeCommonOptionText ?? this.platformFeeCommonOptionText,
       platformFeeGenerousOptionText: platformFeeGenerousOptionText ?? this.platformFeeGenerousOptionText,
+      platformFeeCustomOptionText: platformFeeCustomOptionText ?? this.platformFeeCustomOptionText,
+      platformFeeCustomPlaceholder: platformFeeCustomPlaceholder ?? this.platformFeeCustomPlaceholder,
       platformFeeText: platformFeeText ?? this.platformFeeText,
       platformFeeTitle: platformFeeTitle ?? this.platformFeeTitle,
       platformFeePlaceholder: platformFeePlaceholder ?? this.platformFeePlaceholder,
@@ -280,6 +292,8 @@ class WebViewInput extends Equatable {
         platformFeeGoodOptionText,
         platformFeeCommonOptionText,
         platformFeeGenerousOptionText,
+        platformFeeCustomOptionText,
+        platformFeeCustomPlaceholder,
         platformFeeText,
         platformFeeTitle,
         platformFeePlaceholder,
