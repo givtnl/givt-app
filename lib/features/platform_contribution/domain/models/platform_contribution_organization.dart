@@ -1,39 +1,40 @@
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 
 /// Represents a platform contribution organization
 class PlatformContributionOrganization extends Equatable {
   const PlatformContributionOrganization({
     required this.id,
     required this.name,
-    required this.iconPath,
+    required this.type,
     required this.isEnabled,
     required this.contributionLevel,
   });
 
   final String id;
   final String name;
-  final String iconPath;
+  final CollectGroupType type;
   final bool isEnabled;
   final PlatformContributionLevel contributionLevel;
 
   PlatformContributionOrganization copyWith({
     String? id,
     String? name,
-    String? iconPath,
+    CollectGroupType? type,
     bool? isEnabled,
     PlatformContributionLevel? contributionLevel,
   }) {
     return PlatformContributionOrganization(
       id: id ?? this.id,
       name: name ?? this.name,
-      iconPath: iconPath ?? this.iconPath,
+      type: type ?? this.type,
       isEnabled: isEnabled ?? this.isEnabled,
       contributionLevel: contributionLevel ?? this.contributionLevel,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, iconPath, isEnabled, contributionLevel];
+  List<Object?> get props => [id, name, type, isEnabled, contributionLevel];
 }
 
 /// Represents the contribution level for an organization

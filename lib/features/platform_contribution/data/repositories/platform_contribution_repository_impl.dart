@@ -1,4 +1,6 @@
 import 'dart:async';
+
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_organization.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_settings.dart';
 import 'package:givt_app/features/platform_contribution/domain/repositories/platform_contribution_repository.dart';
@@ -20,21 +22,21 @@ class PlatformContributionRepositoryImpl implements PlatformContributionReposito
           const PlatformContributionOrganization(
             id: 'presbyterian_church',
             name: 'Presbyterian Church',
-            iconPath: 'assets/images/home_with_heart.svg',
+            type: CollectGroupType.church,
             isEnabled: true,
             contributionLevel: PlatformContributionLevel.extraGenerous,
           ),
           const PlatformContributionOrganization(
             id: 'red_cross',
             name: 'Red Cross',
-            iconPath: 'assets/images/coins.svg',
+            type: CollectGroupType.charities,
             isEnabled: false,
             contributionLevel: PlatformContributionLevel.mostPopular,
           ),
           const PlatformContributionOrganization(
             id: 'the_park_church',
             name: 'The Park Church',
-            iconPath: 'assets/images/home_with_heart.svg',
+            type: CollectGroupType.church,
             isEnabled: true,
             contributionLevel: PlatformContributionLevel.mostPopular,
           ),

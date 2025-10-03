@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_organization.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_settings.dart';
 import 'package:givt_app/features/platform_contribution/presentation/cubit/platform_contribution_cubit.dart';
@@ -144,7 +145,7 @@ class _PlatformContributionScreenState
     final locals = context.l10n;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
       decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -157,28 +158,18 @@ class _PlatformContributionScreenState
         children: [
           Row(
             children: [
-              // Organization icon
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: FamilyAppTheme.primary95,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Center(
-                  child: Image.asset(
-                    organization.iconPath,
-                    width: 24,
-                    height: 24,
-                  ),
-                ),
+              Icon(
+                CollectGroupType.getIconByType(organization.type),
+                size: 20,
+                color: FamilyAppTheme.primary30,
               ),
               const SizedBox(width: 12),
               // Organization name
               Expanded(
                 child: TitleMediumText(
                   organization.name,
-                  color: FamilyAppTheme.primary20,
+                  color: FamilyAppTheme.primary30,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               // Toggle switch
@@ -262,8 +253,12 @@ class _PlatformContributionScreenState
 
   Future<void> _handleBackPressed(BuildContext context) async {
     final state = _cubit.state;
-    
-    if (state is DataState<PlatformContributionSettings, PlatformContributionCustom> && 
+
+    if (state
+            is DataState<
+              PlatformContributionSettings,
+              PlatformContributionCustom
+            > &&
         state.data.hasChanges) {
       _cubit.showSaveChangesDialog();
     } else {
@@ -299,7 +294,8 @@ class _PlatformContributionScreenState
             Navigator.of(context).pop(); // Close modal
             Navigator.of(context).pop(); // Go back
           },
-          analyticsEvent: AmplitudeEvents.platformContributionSaveConfirmClicked.toEvent(),
+          analyticsEvent: AmplitudeEvents.platformContributionSaveConfirmClicked
+              .toEvent(),
         ),
         FunButton.secondary(
           text: locals.platformContributionSaveChangesModalNoButton,
@@ -308,7 +304,9 @@ class _PlatformContributionScreenState
             Navigator.of(context).pop(); // Close modal
             Navigator.of(context).pop(); // Go back
           },
-          analyticsEvent: AmplitudeEvents.platformContributionDiscardConfirmClicked.toEvent(),
+          analyticsEvent: AmplitudeEvents
+              .platformContributionDiscardConfirmClicked
+              .toEvent(),
         ),
       ],
     ).show(context);
