@@ -1095,5 +1095,6 @@
   "date": "Date",
   "platformFeeGoodOption": "Good choice",
   "platformFeeRemember": "Remember my choice for future donations to this organisation.",
-  "platformFeeCustomOption": "Custom amount"
+  "platformFeeCustomOption": "Custom amount",
+  "platformFeeCustomPlaceholder": "Enter custom amount"
 }
