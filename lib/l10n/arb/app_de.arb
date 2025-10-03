@@ -1096,5 +1096,19 @@
   "platformFeeGoodOption": "Einfach gut",
   "platformFeeRemember": "Merke dir meine Auswahl für zukünftige Spenden an diese Organisation.",
   "platformFeeCustomOption": "Selbst wählen",
-  "platformFeeCustomPlaceholder": "Betrag eingeben"
+  "platformFeeCustomPlaceholder": "Betrag eingeben",
+  "platformContributionTitle": "Plattformbeitrag",
+  "platformContributionHelpLowerCosts": "Helfen Sie uns, die Kosten für die Organisationen zu senken",
+  "platformContributionAims": "Give strebt mit Ihrer Hilfe eine Servicegebühr von 0% an. Sie werden hier angezeigt, sobald Sie sie festgelegt haben.",
+  "platformContributionManage": "Verwalten Sie Ihren Plattformbeitrag für jede Organisation",
+  "platformContributionOrgPresbyterian": "Presbyterian Church",
+  "platformContributionExtraGenerous": "Extra großzügig",
+  "platformContributionOrgRedCross": "Rotes Kreuz",
+  "platformContributionMostPopular": "Am beliebtesten",
+  "platformContributionOrgTheParkChurch": "The Park Church",
+  "platformContributionSaveChangesButton": "Änderungen speichern",
+  "platformContributionSaveChangesModalTitle": "Änderungen speichern?",
+  "platformContributionSaveChangesModalBody": "Möchten Sie Ihre Änderungen speichern, bevor Sie gehen?",
+  "platformContributionSaveChangesModalYesButton": "Ja, speichern",
+  "platformContributionSaveChangesModalNoButton": "Nein, verwerfen"
 }
