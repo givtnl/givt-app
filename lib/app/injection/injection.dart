@@ -21,6 +21,7 @@ import 'package:givt_app/features/family/features/parental_approval/repositories
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
+import 'package:givt_app/features/platform_contribution/injection/injection.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step1_select_organization_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step2_set_amount_cubit.dart';
@@ -50,6 +51,7 @@ Future<void> init() async {
   registerRecurringDonationsOverviewDependencies();
   registerRecurringDonationDetailDependencies();
   registerDonationOverviewDependencies();
+  registerPlatformContributionDependencies();
 }
 
 Future<void> initAPIService() async {

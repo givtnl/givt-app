@@ -2385,6 +2385,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get platformFeeCustomPlaceholder => 'Enter custom amount';
+
+  @override
+  String get platformContributionTitle => 'Platform Contribution';
+
+  @override
+  String get platformContributionHelpLowerCosts =>
+      'Help us lower costs for the organizations';
+
+  @override
+  String get platformContributionAims =>
+      'Give aims for 0% service fee with your help. They\'ll show here once you set them.';
+
+  @override
+  String get platformContributionManage =>
+      'Manage your platform contribution for each organization';
+
+  @override
+  String get platformContributionOrgPresbyterian => 'Presbyterian Church';
+
+  @override
+  String get platformContributionExtraGenerous => 'Extra generous';
+
+  @override
+  String get platformContributionOrgRedCross => 'Red Cross';
+
+  @override
+  String get platformContributionMostPopular => 'Most popular';
+
+  @override
+  String get platformContributionOrgTheParkChurch => 'The Park Church';
+
+  @override
+  String get platformContributionSaveChangesButton => 'Save changes';
+
+  @override
+  String get platformContributionSaveChangesModalTitle => 'Save changes?';
+
+  @override
+  String get platformContributionSaveChangesModalBody =>
+      'Do you want to save your changes before leaving?';
+
+  @override
+  String get platformContributionSaveChangesModalYesButton => 'Yes, save';
+
+  @override
+  String get platformContributionSaveChangesModalNoButton => 'No, discard';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4768,4 +4814,50 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get platformFeeCustomPlaceholder => 'Enter custom amount';
+
+  @override
+  String get platformContributionTitle => 'Platform Contribution';
+
+  @override
+  String get platformContributionHelpLowerCosts =>
+      'Help us lower costs for the organizations';
+
+  @override
+  String get platformContributionAims =>
+      'Give aims for 0% service fee with your help. They\'ll show here once you set them.';
+
+  @override
+  String get platformContributionManage =>
+      'Manage your platform contribution for each organization';
+
+  @override
+  String get platformContributionOrgPresbyterian => 'Presbyterian Church';
+
+  @override
+  String get platformContributionExtraGenerous => 'Extra generous';
+
+  @override
+  String get platformContributionOrgRedCross => 'Red Cross';
+
+  @override
+  String get platformContributionMostPopular => 'Most popular';
+
+  @override
+  String get platformContributionOrgTheParkChurch => 'The Park Church';
+
+  @override
+  String get platformContributionSaveChangesButton => 'Save changes';
+
+  @override
+  String get platformContributionSaveChangesModalTitle => 'Save changes?';
+
+  @override
+  String get platformContributionSaveChangesModalBody =>
+      'Do you want to save your changes before leaving?';
+
+  @override
+  String get platformContributionSaveChangesModalYesButton => 'Yes, save';
+
+  @override
+  String get platformContributionSaveChangesModalNoButton => 'No, discard';
 }

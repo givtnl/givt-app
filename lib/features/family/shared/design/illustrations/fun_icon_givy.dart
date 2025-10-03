@@ -53,6 +53,21 @@ class FunIconGivy extends StatelessWidget {
     iconSize: circleSize / 112 * 140,
   );
 
+
+  factory FunIconGivy.happy({
+    Color circleColor = FamilyAppTheme.primary95,
+    double circleSize = 112,
+  }) => FunIconGivy(
+    icon: SvgPicture.asset(
+      'assets/images/givy_happy.svg',
+      width: circleSize / 112 * 140,
+    ),
+    circleColor: circleColor,
+    circleSize: circleSize,
+    iconSize: circleSize / 112 * 140,
+  );
+
+
   final IconData? iconData;
   final Widget? icon;
   final double circleSize;
