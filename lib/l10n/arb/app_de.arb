@@ -1095,5 +1095,6 @@
   "date": "Datum",
   "platformFeeGoodOption": "Einfach gut",
   "platformFeeRemember": "Merke dir meine Auswahl für zukünftige Spenden an diese Organisation.",
-  "platformFeeCustomOption": "Selbst wählen"
+  "platformFeeCustomOption": "Selbst wählen",
+  "platformFeeCustomPlaceholder": "Betrag eingeben"
 }
