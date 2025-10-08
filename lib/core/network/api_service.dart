@@ -736,6 +736,76 @@ class APIService {
     return response.statusCode == 200;
   }
 
+  // Platform Fee Preferences
+
+  Future<List<dynamic>> getPlatformFeePreferences() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/platformfee/preferences');
+    final response = await client.get(url);
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final items = decodedBody['items'];
+    if (items is List<dynamic>) {
+      return items;
+    }
+    return [];
+  }
+
+  Future<Map<String, dynamic>> createPlatformFeePreference(
+    Map<String, dynamic> body,
+  ) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/platformfee/preferences');
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return response.body.isNotEmpty
+        ? jsonDecode(response.body) as Map<String, dynamic>
+        : <String, dynamic>{};
+  }
+
+  Future<void> updatePlatformFeePreference(
+    String preferenceId,
+    Map<String, dynamic> body,
+  ) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/platformfee/preferences/$preferenceId',
+    );
+    final response = await client.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+  }
+
   Future<List<dynamic>> fetchMonthlySummary(
     String guid,
     Map<String, String> params,

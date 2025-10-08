@@ -1,6 +1,6 @@
 import 'dart:async';
-import '../models/platform_contribution_organization.dart';
-import '../models/platform_contribution_settings.dart';
+import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_organization.dart';
+import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_settings.dart';
 
 /// Repository interface for platform contribution data
 abstract class PlatformContributionRepository {

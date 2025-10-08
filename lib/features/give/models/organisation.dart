@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class Organisation extends Equatable {
   const Organisation({
-    this.campaignId,
+    this.collectGroupId,
     this.organisationName,
     this.country,
     this.organisationLogoLink,
@@ -18,7 +18,7 @@ class Organisation extends Equatable {
   });
 
   const Organisation.empty()
-      : campaignId = '',
+      : collectGroupId = '',
         organisationName = '',
         country = '',
         organisationLogoLink = '',
@@ -33,7 +33,7 @@ class Organisation extends Equatable {
         mediumId = '';
 
   factory Organisation.fromJson(Map<String, dynamic> json) => Organisation(
-        campaignId: json['campaignId'] as String?,
+        collectGroupId: json['campaignId'] as String?,
         organisationName: json.containsKey('orgName')
             ? json['orgName'] as String?
             : json['organisationName'] as String?,
@@ -58,7 +58,7 @@ class Organisation extends Equatable {
         mediumId: json['collectGroupId'] as String?,
       );
 
-  final String? campaignId;
+  final String? collectGroupId;
   final String? organisationName;
   final String? country;
   final String? organisationLogoLink;
@@ -73,7 +73,7 @@ class Organisation extends Equatable {
   final String? mediumId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'campaignId': campaignId,
+        'campaignId': collectGroupId,
         'organisationName': organisationName,
         'country': country,
         'organisationLogoLink': organisationLogoLink,
@@ -104,7 +104,7 @@ class Organisation extends Equatable {
     String? mediumId,
   }) {
     return Organisation(
-      campaignId: campaignId ?? this.campaignId,
+      collectGroupId: campaignId ?? this.collectGroupId,
       organisationName: organisationName ?? this.organisationName,
       country: country ?? this.country,
       organisationLogoLink: organisationLogoLink ?? this.organisationLogoLink,
@@ -122,7 +122,7 @@ class Organisation extends Equatable {
 
   @override
   List<Object?> get props => [
-        campaignId,
+        collectGroupId,
         organisationName,
         country,
         organisationLogoLink,

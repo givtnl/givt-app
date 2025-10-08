@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_dropdown.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
@@ -10,10 +11,9 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/features/platform_contribution/cubit/platform_contribution_cubit.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_organization.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_settings.dart';
-import 'package:givt_app/features/platform_contribution/presentation/cubit/platform_contribution_cubit.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -64,16 +64,14 @@ class _PlatformContributionScreenState
     BuildContext context,
     PlatformContributionSettings settings,
   ) {
-    // Check if there are any organizations with contributions enabled
-    final hasContributions = settings.organizations.any(
-      (PlatformContributionOrganization org) => org.isEnabled,
-    );
+    // Check if there are any organizations at all
+    final hasOrganizations = settings.organizations.isNotEmpty;
 
-    if (hasContributions) {
+    if (hasOrganizations) {
       // Show data state - list of organizations with their settings
       return _buildDataState(context, settings);
     } else {
-      // Show empty state - no contributions set up yet
+      // Show empty state - no organizations available
       return _buildEmptyState(context);
     }
   }
@@ -116,7 +114,7 @@ class _PlatformContributionScreenState
           color: FamilyAppTheme.neutralVariant40,
         ),
         const SizedBox(height: 8),
-        // Organizations list with direct editing
+        // Organizations list with direct editing - show ALL organizations
         Expanded(
           child: ListView.builder(
             itemCount: settings.organizations.length,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_dropdown.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -45,14 +44,11 @@ class PlatformContributionOrganizationItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Center(
-                  child: SvgPicture.asset(
-                    organization.iconPath,
+                  child: Image.asset(
+                    organization.type.icon,
                     width: 24,
                     height: 24,
-                    colorFilter: const ColorFilter.mode(
-                      FamilyAppTheme.primary40,
-                      BlendMode.srcIn,
-                    ),
+                    color: FamilyAppTheme.primary40,
                   ),
                 ),
               ),

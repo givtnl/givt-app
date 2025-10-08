@@ -9,6 +9,7 @@ class PlatformContributionOrganization extends Equatable {
     required this.type,
     required this.isEnabled,
     required this.contributionLevel,
+    this.preferenceId,
   });
 
   final String id;
@@ -16,6 +17,7 @@ class PlatformContributionOrganization extends Equatable {
   final CollectGroupType type;
   final bool isEnabled;
   final PlatformContributionLevel contributionLevel;
+  final String? preferenceId; // server id for this preference, if exists
 
   PlatformContributionOrganization copyWith({
     String? id,
@@ -23,6 +25,7 @@ class PlatformContributionOrganization extends Equatable {
     CollectGroupType? type,
     bool? isEnabled,
     PlatformContributionLevel? contributionLevel,
+    String? preferenceId,
   }) {
     return PlatformContributionOrganization(
       id: id ?? this.id,
@@ -30,11 +33,12 @@ class PlatformContributionOrganization extends Equatable {
       type: type ?? this.type,
       isEnabled: isEnabled ?? this.isEnabled,
       contributionLevel: contributionLevel ?? this.contributionLevel,
+      preferenceId: preferenceId ?? this.preferenceId,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, type, isEnabled, contributionLevel];
+  List<Object?> get props => [id, name, type, isEnabled, contributionLevel, preferenceId];
 }
 
 /// Represents the contribution level for an organization
