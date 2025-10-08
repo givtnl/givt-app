@@ -109,6 +109,7 @@ class _GivingPageState extends State<GivingPage> {
       apiUrl: Uri.https(getIt<RequestHelper>().apiURL).toString(),
       guid: user.guid,
       organisation: orgName,
+      collectGroupId: giveBlocState.organisation.collectGroupId,
       givtObj: GivtTransaction.toJsonList(giveBlocState.givtTransactions),
       confirmBtn: context.l10n.next,
       cancel: context.l10n.cancel,

@@ -2395,4 +2395,51 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get platformFeeCustomPlaceholder => 'Vul bedrag in';
+
+  @override
+  String get platformContributionTitle => 'Platformbijdrage';
+
+  @override
+  String get platformContributionHelpLowerCosts =>
+      'Help ons de kosten voor de organisaties te verlagen';
+
+  @override
+  String get platformContributionAims =>
+      'Give streeft naar 0% servicekosten met jouw hulp. Ze verschijnen hier zodra je ze hebt ingesteld.';
+
+  @override
+  String get platformContributionManage =>
+      'Beheer je platformbijdrage voor elke organisatie';
+
+  @override
+  String get platformContributionOrgPresbyterian => 'Presbyterian Church';
+
+  @override
+  String get platformContributionExtraGenerous => 'Extra vrijgevig';
+
+  @override
+  String get platformContributionOrgRedCross => 'Rode Kruis';
+
+  @override
+  String get platformContributionMostPopular => 'Meest populair';
+
+  @override
+  String get platformContributionOrgTheParkChurch => 'The Park Church';
+
+  @override
+  String get platformContributionSaveChangesButton => 'Wijzigingen opslaan';
+
+  @override
+  String get platformContributionSaveChangesModalTitle =>
+      'Wijzigingen opslaan?';
+
+  @override
+  String get platformContributionSaveChangesModalBody =>
+      'Wil je je wijzigingen opslaan voordat je vertrekt?';
+
+  @override
+  String get platformContributionSaveChangesModalYesButton => 'Ja, opslaan';
+
+  @override
+  String get platformContributionSaveChangesModalNoButton => 'Nee, negeren';
 }

@@ -9,6 +9,7 @@ class WebViewInput extends Equatable {
     this.close = '',
     this.guid = '',
     this.collect = '',
+    this.collectGroupId = '',
     this.confirmBtn = '',
     this.currency = '',
     this.isProduction = false,
@@ -52,6 +53,7 @@ class WebViewInput extends Equatable {
         close: json['Close'] as String,
         guid: json['GUID'] as String,
         collect: json['Collect'] as String,
+        collectGroupId: json['CollectGroupId'] as String,
         confirmBtn: json['ConfirmBtn'] as String,
         currency: json['currency'] as String,
         isProduction: json['isProduction'] as bool,
@@ -92,6 +94,7 @@ class WebViewInput extends Equatable {
   final String close;
   final String guid;
   final String collect;
+  final String? collectGroupId;
   final String confirmBtn;
   final String currency;
   final bool isProduction;
@@ -134,6 +137,7 @@ class WebViewInput extends Equatable {
         'Close': close,
         'GUID': guid,
         'Collect': collect,
+        'CollectGroupId': collectGroupId,
         'ConfirmBtn': confirmBtn,
         'currency': currency,
         'isProduction': isProduction,
@@ -177,6 +181,7 @@ class WebViewInput extends Equatable {
     String? close,
     String? guid,
     String? collect,
+    String? collectGroupId,
     String? confirmBtn,
     String? currency,
     bool? isProduction,
@@ -220,6 +225,7 @@ class WebViewInput extends Equatable {
       close: close ?? this.close,
       guid: guid ?? this.guid,
       collect: collect ?? this.collect,
+      collectGroupId: collectGroupId ?? this.collectGroupId,
       confirmBtn: confirmBtn ?? this.confirmBtn,
       currency: currency ?? this.currency,
       isProduction: isProduction ?? this.isProduction,
@@ -267,6 +273,7 @@ class WebViewInput extends Equatable {
         close,
         guid,
         collect,
+        collectGroupId,
         confirmBtn,
         currency,
         isProduction,
