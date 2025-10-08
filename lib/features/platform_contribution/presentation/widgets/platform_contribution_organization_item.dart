@@ -3,6 +3,7 @@ import 'package:givt_app/features/family/shared/design/components/input/fun_inpu
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_organization.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 /// Widget for displaying and managing a single organization's platform contribution
 class PlatformContributionOrganizationItem extends StatelessWidget {
@@ -16,6 +17,16 @@ class PlatformContributionOrganizationItem extends StatelessWidget {
   final PlatformContributionOrganization organization;
   final ValueChanged<bool> onToggleChanged;
   final ValueChanged<PlatformContributionLevel> onContributionLevelChanged;
+
+  String _getDisplayName(BuildContext context, PlatformContributionLevel level) {
+    final l10n = context.l10n;
+    switch (level) {
+      case PlatformContributionLevel.mostPopular:
+        return l10n.platformFeeCommonOption;
+      case PlatformContributionLevel.extraGenerous:
+        return l10n.platformFeeGenerousOption;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,14 +92,14 @@ class PlatformContributionOrganizationItem extends StatelessWidget {
               itemBuilder: (context, level) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: BodyMediumText(
-                  level.displayName,
+                  _getDisplayName(context, level),
                   color: FamilyAppTheme.primary20,
                 ),
               ),
               selectedItemBuilder: (context, level) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: BodyMediumText(
-                  level.displayName,
+                  _getDisplayName(context, level),
                   color: FamilyAppTheme.primary40,
                 ),
               ),

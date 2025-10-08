@@ -46,14 +46,3 @@ enum PlatformContributionLevel {
   mostPopular,
   extraGenerous,
 }
-
-extension PlatformContributionLevelExtension on PlatformContributionLevel {
-  String get displayName {
-    switch (this) {
-      case PlatformContributionLevel.mostPopular:
-        return 'Most popular';
-      case PlatformContributionLevel.extraGenerous:
-        return 'Extra generous';
-    }
-  }
-}
