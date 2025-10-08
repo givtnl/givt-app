@@ -239,12 +239,6 @@ class _PlatformContributionScreenState
           error ?? 'An error occurred',
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 24),
-        FunButton(
-          text: 'Retry',
-          onTap: _cubit.init,
-          analyticsEvent: AmplitudeEvents.retryClicked.toEvent(),
-        ),
       ],
     );
   }
