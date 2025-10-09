@@ -61,7 +61,7 @@ class RecurringDonationsList extends StatelessWidget {
           'amount': donationWithProgress.donation.amountPerTurn.toString(),
           'completed_turns': donationWithProgress.completedTurns.toString(),
           'total_turns': donationWithProgress.donation.endsAfterTurns.toString(),
-          'frequency': donationWithProgress.donation.frequency.toString(),
+          'frequency': donationWithProgress.donation.frequency.name,
         },
       ),
     );
@@ -87,22 +87,24 @@ class RecurringDonationsList extends StatelessWidget {
         ? donationWithProgress.donation.endDate 
         : donationWithProgress.nextDonationDate;
 
-    return '$frequency $currency$amount · $statusText ${_formatDate(dateToShow)}';
+    final dateText = dateToShow != null ? _formatDate(dateToShow as DateTime) : '';
+    return '$frequency $currency$amount · $statusText $dateText';
   }
 
-  String _getFrequencyText(int frequency, BuildContext context) {
+  String _getFrequencyText(Frequency frequency, BuildContext context) {
     switch (frequency) {
-      case 0:
+      case Frequency.weekly:
         return context.l10n.recurringDonationsListFrequencyWeekly;
-      case 1:
+      case Frequency.monthly:
         return context.l10n.recurringDonationsListFrequencyMonthly;
-      case 2:
+      case Frequency.quarterly:
         return context.l10n.recurringDonationsListFrequencyQuarterly;
-      case 3:
+      case Frequency.halfYearly:
         return context.l10n.recurringDonationsListFrequencySemiAnnually;
-      case 4:
+      case Frequency.yearly:
         return context.l10n.recurringDonationsListFrequencyAnnually;
-      default:
+      case Frequency.daily:
+      case Frequency.none:
         return context.l10n.recurringDonationsListFrequencyRecurring;
     }
   }

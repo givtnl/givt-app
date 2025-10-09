@@ -1,5 +1,5 @@
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation.dart';
-import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
+import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/confirm_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
@@ -50,13 +50,13 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
       );
 
       final recurringDonation = RecurringDonation(
-        userId: _repository.guid ?? '',
-        frequency: _convertFrequencyToInt(frequency),
+        amount: double.parse(current.amount),
+        frequency: frequency,
         startDate: current.startDate ?? DateTime.now(),
-        amountPerTurn: double.parse(current.amount),
-        namespace: _repository.selectedOrganization!.nameSpace,
-        endsAfterTurns: turns,
-        country: _repository.country ?? '',
+        endDate: current.selectedEndOption == RecurringDonationStringKeys.onSpecificDate 
+            ? current.endDate 
+            : null,
+        maxRecurrencies: turns == 999 ? null : turns,
       );
 
       final success = await _repository.createRecurringDonation(
@@ -112,27 +112,12 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
     return model;
   }
 
-  int _convertFrequencyToInt(RecurringDonationFrequency frequency) {
-    switch (frequency) {
-      case RecurringDonationFrequency.week:
-        return 0;
-      case RecurringDonationFrequency.month:
-        return 1;
-      case RecurringDonationFrequency.quarter:
-        return 2;
-      case RecurringDonationFrequency.halfYear:
-        return 3;
-      case RecurringDonationFrequency.year:
-        return 4;
-    }
-  }
-
   int _calculateTurns(
     String selectedEndOption,
     String numberOfDonations,
     DateTime? startDate,
     DateTime? endDate,
-    RecurringDonationFrequency frequency,
+    overview.Frequency frequency,
   ) {
     if (selectedEndOption == RecurringDonationStringKeys.whenIDecide) {
       return 999; // 999 means no end date
@@ -147,16 +132,20 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
 
       while (tempDate.isBefore(endDate)) {
         switch (frequency) {
-          case RecurringDonationFrequency.week:
-            tempDate = tempDate.copyWith(day: tempDate.day + 7);
-          case RecurringDonationFrequency.month:
+          case overview.Frequency.weekly:
+            tempDate = tempDate.add(const Duration(days: 7));
+          case overview.Frequency.monthly:
             tempDate = tempDate.copyWith(month: tempDate.month + 1);
-          case RecurringDonationFrequency.quarter:
+          case overview.Frequency.quarterly:
             tempDate = tempDate.copyWith(month: tempDate.month + 3);
-          case RecurringDonationFrequency.halfYear:
+          case overview.Frequency.halfYearly:
             tempDate = tempDate.copyWith(month: tempDate.month + 6);
-          case RecurringDonationFrequency.year:
+          case overview.Frequency.yearly:
             tempDate = tempDate.copyWith(year: tempDate.year + 1);
+          case overview.Frequency.daily:
+            tempDate = tempDate.add(const Duration(days: 1));
+          case overview.Frequency.none:
+            break;
         }
         counter++;
       }

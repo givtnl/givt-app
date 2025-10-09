@@ -1,4 +1,4 @@
-import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
+import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_amount_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -21,7 +21,7 @@ class Step2SetAmountCubit
     );
   }
 
-  void selectFrequency(RecurringDonationFrequency frequency) {
+  void selectFrequency(overview.Frequency frequency) {
     _repository.frequency = frequency;
     _emitData(selectedFrequency: frequency);
   }
@@ -37,7 +37,7 @@ class Step2SetAmountCubit
     }
   }
 
-  void _emitData({RecurringDonationFrequency? selectedFrequency, String? amount}) {
+  void _emitData({overview.Frequency? selectedFrequency, String? amount}) {
     SetAmountUIModel? currentData;
     if (state is DataState<SetAmountUIModel, SetAmountAction>) {
       currentData =

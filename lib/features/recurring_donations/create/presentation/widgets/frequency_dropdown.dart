@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_dropdown.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
+import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
@@ -10,22 +10,22 @@ class FrequencyDropdown extends StatelessWidget {
     required this.value, required this.onChanged, super.key,
   });
 
-  final RecurringDonationFrequency? value;
-  final ValueChanged<RecurringDonationFrequency> onChanged;
+  final overview.Frequency? value;
+  final ValueChanged<overview.Frequency> onChanged;
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
     
     final frequencyOptions = [
-      RecurringDonationFrequency.week,
-      RecurringDonationFrequency.month,
-      RecurringDonationFrequency.quarter,
-      RecurringDonationFrequency.halfYear,
-      RecurringDonationFrequency.year,
+      overview.Frequency.weekly,
+      overview.Frequency.monthly,
+      overview.Frequency.quarterly,
+      overview.Frequency.halfYearly,
+      overview.Frequency.yearly,
     ];
 
-    return FunInputDropdown<RecurringDonationFrequency>(
+    return FunInputDropdown<overview.Frequency>(
       value: value,
       items: frequencyOptions,
       hint: Text(locals.recurringDonationsCreateFrequencyHint),
@@ -37,18 +37,21 @@ class FrequencyDropdown extends StatelessWidget {
     );
   }
 
-  String _getFrequencyDisplayText(RecurringDonationFrequency frequency, AppLocalizations locals) {
+  String _getFrequencyDisplayText(overview.Frequency frequency, AppLocalizations locals) {
     switch (frequency) {
-      case RecurringDonationFrequency.week:
+      case overview.Frequency.weekly:
         return locals.recurringDonationsFrequenciesWeekly;
-      case RecurringDonationFrequency.month:
+      case overview.Frequency.monthly:
         return locals.recurringDonationsFrequenciesMonthly;
-      case RecurringDonationFrequency.quarter:
+      case overview.Frequency.quarterly:
         return locals.recurringDonationsFrequenciesQuarterly;
-      case RecurringDonationFrequency.halfYear:
+      case overview.Frequency.halfYearly:
         return locals.recurringDonationsFrequenciesHalfYearly;
-      case RecurringDonationFrequency.year:
+      case overview.Frequency.yearly:
         return locals.recurringDonationsFrequenciesYearly;
+      case overview.Frequency.daily:
+      case overview.Frequency.none:
+        return '';
     }
   }
 } 

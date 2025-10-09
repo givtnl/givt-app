@@ -58,7 +58,7 @@ class RecurringDonationsOverviewRepositoryImpl
 
     try {
       final response = await apiService.fetchRecurringDonations(
-        params: {'userId': 'current'},
+        status: 'All',
       );
 
       final result = <RecurringDonation>[];
@@ -72,11 +72,11 @@ class RecurringDonationsOverviewRepositoryImpl
       for (var i = 0; i < result.length; i++) {
         final recurringDonation = result[i];
         final collectGroup = collectGroups.firstWhere(
-          (element) => element.nameSpace == recurringDonation.namespace,
+          (element) => element.nameSpace == recurringDonation.collectGroupName,
           orElse: () {
             // Log if collect group not found
             debugPrint(
-              'Collection with namespace ${recurringDonation.namespace} not found',
+              'Collection with name ${recurringDonation.collectGroupName} not found',
             );
             return const CollectGroup.empty();
           },
