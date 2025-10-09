@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:jiffy/jiffy.dart';
 
 enum RecurringDonationState {
@@ -61,7 +60,6 @@ enum Frequency {
         return 'None';
     }
   }
-
 }
 
 class RecurringDonationTransaction {
@@ -105,7 +103,6 @@ class RecurringDonation extends Equatable {
     required this.creationDateTime,
     required this.collectGroupName,
     this.transactions = const [],
-    this.collectGroup = const CollectGroup.empty(),
   });
 
   factory RecurringDonation.fromJson(Map<String, dynamic> json) =>
@@ -120,8 +117,13 @@ class RecurringDonation extends Equatable {
         currentState: RecurringDonationState.fromJson(json),
         creationDateTime: json['creationDateTime'] as String,
         collectGroupName: json['collectGroupName'] as String,
-        transactions: (json['transactions'] as List<dynamic>?)
-                ?.map((e) => RecurringDonationTransaction.fromJson(e as Map<String, dynamic>))
+        transactions:
+            (json['transactions'] as List<dynamic>?)
+                ?.map(
+                  (e) => RecurringDonationTransaction.fromJson(
+                    e as Map<String, dynamic>,
+                  ),
+                )
                 .toList() ??
             [],
       );
@@ -137,7 +139,6 @@ class RecurringDonation extends Equatable {
   final String creationDateTime;
   final String collectGroupName;
   final List<RecurringDonationTransaction> transactions;
-  final CollectGroup collectGroup;
 
   // Legacy properties for backward compatibility
   num get amountPerTurn => amount;
@@ -156,7 +157,6 @@ class RecurringDonation extends Equatable {
     String? creationDateTime,
     String? collectGroupName,
     List<RecurringDonationTransaction>? transactions,
-    CollectGroup? collectGroup,
     // Legacy parameters for backward compatibility
     num? amountPerTurn,
     String? cronExpression,
@@ -168,14 +168,14 @@ class RecurringDonation extends Equatable {
       userId: userId ?? this.userId,
       amount: amount ?? amountPerTurn?.toDouble() ?? this.amount,
       frequency: frequency ?? this.frequency,
-      maxRecurrencies: maxRecurrencies ?? endsAfterTurns ?? this.maxRecurrencies,
+      maxRecurrencies:
+          maxRecurrencies ?? endsAfterTurns ?? this.maxRecurrencies,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       currentState: currentState ?? this.currentState,
       creationDateTime: creationDateTime ?? this.creationDateTime,
       collectGroupName: collectGroupName ?? namespace ?? this.collectGroupName,
       transactions: transactions ?? this.transactions,
-      collectGroup: collectGroup ?? this.collectGroup,
     );
   }
 
@@ -194,15 +194,17 @@ class RecurringDonation extends Equatable {
     if (maxRecurrencies <= 0 || maxRecurrencies == 999) {
       return null; // Unlimited or no end date
     }
-    
+
     var startDateDateTime = DateTime.parse(startDate);
     final multiplier = maxRecurrencies - 1;
-    
+
     switch (frequency) {
       case Frequency.daily:
         startDateDateTime = startDateDateTime.add(Duration(days: multiplier));
       case Frequency.weekly:
-        startDateDateTime = startDateDateTime.add(Duration(days: 7 * multiplier));
+        startDateDateTime = startDateDateTime.add(
+          Duration(days: 7 * multiplier),
+        );
       case Frequency.monthly:
         startDateDateTime = startDateDateTime.copyWith(
           month: startDateDateTime.month + multiplier,
@@ -254,17 +256,17 @@ class RecurringDonation extends Equatable {
   DateTime getNextDonationDateFromStart([DateTime? currentDate]) {
     final now = currentDate ?? DateTime.now();
     final start = DateTime.parse(startDate);
-    
+
     // If current date is before start date, next donation is the start date
     if (now.isBefore(start)) {
       return start;
     }
 
     final completedTurns = getCompletedTurns(currentDate);
-    
+
     // Calculate the date of the next turn based on start date and completed turns
     var nextDate = start;
-    
+
     switch (frequency) {
       case Frequency.daily:
         nextDate = start.add(Duration(days: completedTurns + 1));
@@ -273,15 +275,19 @@ class RecurringDonation extends Equatable {
       case Frequency.monthly:
         nextDate = start.copyWith(month: start.month + completedTurns + 1);
       case Frequency.quarterly:
-        nextDate = start.copyWith(month: start.month + (3 * (completedTurns + 1)));
+        nextDate = start.copyWith(
+          month: start.month + (3 * (completedTurns + 1)),
+        );
       case Frequency.halfYearly:
-        nextDate = start.copyWith(month: start.month + (6 * (completedTurns + 1)));
+        nextDate = start.copyWith(
+          month: start.month + (6 * (completedTurns + 1)),
+        );
       case Frequency.yearly:
         nextDate = start.copyWith(year: start.year + completedTurns + 1);
       case Frequency.none:
         nextDate = start;
     }
-    
+
     return nextDate;
   }
 
@@ -289,7 +295,7 @@ class RecurringDonation extends Equatable {
   int getCompletedTurns([DateTime? currentDate]) {
     final now = currentDate ?? DateTime.now();
     final start = DateTime.parse(startDate);
-    
+
     // If current date is before start date, no turns completed
     if (now.isBefore(start)) {
       return 0;
@@ -309,10 +315,12 @@ class RecurringDonation extends Equatable {
         completedTurns = (difference / 30.44).floor(); // Average days per month
       case Frequency.quarterly:
         final difference = now.difference(start).inDays;
-        completedTurns = (difference / 91.25).floor(); // Average days per quarter
+        completedTurns = (difference / 91.25)
+            .floor(); // Average days per quarter
       case Frequency.halfYearly:
         final difference = now.difference(start).inDays;
-        completedTurns = (difference / 182.5).floor(); // Average days per 6 months
+        completedTurns = (difference / 182.5)
+            .floor(); // Average days per 6 months
       case Frequency.yearly:
         final difference = now.difference(start).inDays;
         completedTurns = (difference / 365.25).floor(); // Average days per year
@@ -333,7 +341,7 @@ class RecurringDonation extends Equatable {
     if (maxRecurrencies <= 0 || maxRecurrencies == 999) {
       return -1; // Unlimited or invalid
     }
-    
+
     final completed = getCompletedTurns(currentDate);
     return (maxRecurrencies - completed).clamp(0, maxRecurrencies);
   }
@@ -343,7 +351,7 @@ class RecurringDonation extends Equatable {
     if (maxRecurrencies <= 0 || maxRecurrencies == 999) {
       return 0; // No progress for unlimited donations
     }
-    
+
     final completed = getCompletedTurns(currentDate);
     return (completed / maxRecurrencies).clamp(0.0, 1.0);
   }
@@ -353,7 +361,7 @@ class RecurringDonation extends Equatable {
     if (maxRecurrencies <= 0 || maxRecurrencies == 999) {
       return false; // Unlimited donations are never completed
     }
-    
+
     return getCompletedTurns() >= maxRecurrencies;
   }
 
@@ -362,7 +370,7 @@ class RecurringDonation extends Equatable {
     final completed = getCompletedTurns(currentDate);
     final remaining = getRemainingTurns(currentDate);
     final progress = getProgressPercentage(currentDate);
-    
+
     return {
       'id': id,
       'current_state': currentState.name,
@@ -379,17 +387,16 @@ class RecurringDonation extends Equatable {
 
   @override
   List<Object> get props => [
-        id,
-        userId,
-        amount,
-        frequency,
-        maxRecurrencies,
-        startDate,
-        endDate ?? '',
-        currentState,
-        creationDateTime,
-        collectGroupName,
-        transactions,
-        collectGroup,
-      ];
+    id,
+    userId,
+    amount,
+    frequency,
+    maxRecurrencies,
+    startDate,
+    endDate ?? '',
+    currentState,
+    creationDateTime,
+    collectGroupName,
+    transactions,
+  ];
 }

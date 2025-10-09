@@ -12,7 +12,7 @@ mixin RecurringDonationDetailRepository {
   String? getError();
   Future<void> loadRecurringDonationDetail();
   void setRecurringDonation(RecurringDonation donation);
-  
+
   // Methods to get raw data for the cubit
   String getOrganizationName();
   double getTotalDonated();
@@ -65,22 +65,22 @@ class RecurringDonationDetailRepositoryImpl
 
     try {
       // Fetch collect groups and merge them with the recurring donation
-      final collectGroups = await collectGroupRepository.getCollectGroupList();
-      final collectGroup = collectGroups.firstWhere(
-        (element) => element.nameSpace == _recurringDonation!.collectGroupName,
-        orElse: () {
-          debugPrint(
-            'Collection with name ${_recurringDonation!.collectGroupName} not found',
-          );
-          return const CollectGroup.empty();
-        },
-      );
+      // final collectGroups = await collectGroupRepository.getCollectGroupList();
+      // final collectGroup = collectGroups.firstWhere(
+      //   (element) => element.nameSpace == _recurringDonation!.collectGroupName,
+      //   orElse: () {
+      //     debugPrint(
+      //       'Collection with name ${_recurringDonation!.collectGroupName} not found',
+      //     );
+      //     return const CollectGroup.empty();
+      //   },
+      // );
 
       // Update the recurring donation with collect group information
-      final recurringDonationWithCollectGroup = _recurringDonation!.copyWith(
-        collectGroup: collectGroup,
-      );
-      _recurringDonation = recurringDonationWithCollectGroup;
+      // final recurringDonationWithCollectGroup = _recurringDonation!.copyWith(
+      //   collectGroup: collectGroup,
+      // );
+      // _recurringDonation = recurringDonationWithCollectGroup;
 
       // Fetch donation instances from API
       final instancesResponse = await apiService.fetchRecurringDonationById(
@@ -118,7 +118,7 @@ class RecurringDonationDetailRepositoryImpl
     // The new API returns transactions directly in the item
     final item = response['item'] as Map<String, dynamic>?;
     if (item == null) return [];
-    
+
     final transactions = item['transactions'] as List<dynamic>? ?? [];
     final rawHistory = <Map<String, dynamic>>[];
 
@@ -183,25 +183,25 @@ class RecurringDonationDetailRepositoryImpl
     }
   }
 
-
   /// Calculates the number of months helped based on actual completed donations
   int _calculateMonthsHelped(List<DonationHistoryItem> history) {
     final completedDonations = history
         .where((h) => h.status == DonationStatus.completed)
         .toList();
-    
+
     if (completedDonations.isEmpty) return 0;
-    
+
     // Sort by date to get the first and last completed donations
     completedDonations.sort((a, b) => a.date.compareTo(b.date));
-    
+
     final firstDonation = completedDonations.first;
     final lastDonation = completedDonations.last;
-    
+
     // Calculate months between first and last completed donation
     final difference = lastDonation.date.difference(firstDonation.date);
-    final months = (difference.inDays / 30.44).floor(); // Average days per month
-    
+    final months = (difference.inDays / 30.44)
+        .floor(); // Average days per month
+
     // Add 1 to include the month of the first donation
     return months + 1;
   }
@@ -209,7 +209,7 @@ class RecurringDonationDetailRepositoryImpl
   double _calculateTotalDonated(List<DonationHistoryItem> history) {
     return history
         .where((h) => h.status == DonationStatus.completed)
-        .fold(0, ( sum, item) => sum + item.amount);
+        .fold(0, (sum, item) => sum + item.amount);
   }
 
   String _calculateRemainingTime() {
@@ -247,7 +247,7 @@ class RecurringDonationDetailRepositoryImpl
     if (endDate != null) {
       return endDate.isAfter(DateTime.now());
     }
-  
+
     // If no end date and state is active, it's active
     return true;
   }
@@ -294,7 +294,7 @@ class RecurringDonationDetailRepositoryImpl
 
   @override
   String getOrganizationName() {
-    return _recurringDonation?.collectGroup.orgName ?? '';
+    return _recurringDonation?.collectGroupName ?? '';
   }
 
   @override
@@ -327,7 +327,8 @@ class RecurringDonationDetailRepositoryImpl
 
   @override
   DonationProgress? getProgress() {
-    if (_recurringDonation == null || _recurringDonation!.maxRecurrencies == 999) {
+    if (_recurringDonation == null ||
+        _recurringDonation!.maxRecurrencies == 999) {
       return null;
     }
 

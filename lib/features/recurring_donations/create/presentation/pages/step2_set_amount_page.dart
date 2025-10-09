@@ -13,7 +13,7 @@ import 'package:givt_app/features/recurring_donations/create/presentation/models
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step3_set_duration_page.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/widgets/frequency_dropdown.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/widgets/fun_modal_close_flow.dart';
-import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
+import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_repository.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
@@ -30,7 +30,7 @@ class Step2SetAmountPage extends StatefulWidget {
 
 class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
   final Step2SetAmountCubit _cubit = Step2SetAmountCubit(
-    getIt<RecurringDonationNewFlowRepository>(),
+    getIt<RecurringDonationRepository>(),
   );
   
   // Add controller for amount field to enable pre-filling

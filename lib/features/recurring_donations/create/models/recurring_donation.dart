@@ -6,6 +6,7 @@ class RecurringDonation extends Equatable {
     required this.amount,
     required this.frequency,
     required this.startDate,
+    required this.namespace,
     this.endDate,
     this.maxRecurrencies,
   });
@@ -13,6 +14,7 @@ class RecurringDonation extends Equatable {
   final double amount;
   final overview.Frequency frequency;
   final DateTime startDate;
+  final String namespace;
   final DateTime? endDate;
   final int? maxRecurrencies;
 
@@ -20,15 +22,16 @@ class RecurringDonation extends Equatable {
     final json = {
       'amount': amount,
       'frequency': frequency.apiValue,
-      'startDate': startDate.toIso8601String().split('T')[0], // Format as YYYY-MM-DD
+      'startDate': startDate.toIso8601String(),
+      'namespace': namespace,
     };
 
     if (endDate != null) {
-      json['endDate'] = endDate!.toIso8601String().split('T')[0];
+      json['endDate'] = endDate!.toIso8601String();
     }
 
     if (maxRecurrencies != null && maxRecurrencies! > 0) {
-      json['maxRecurrencies'] = maxRecurrencies!;
+      json['numberOfTurns'] = maxRecurrencies!;
     }
 
     return json;
@@ -39,6 +42,7 @@ class RecurringDonation extends Equatable {
         amount,
         frequency,
         startDate,
+        namespace,
         endDate ?? DateTime.now(),
         maxRecurrencies ?? 0,
       ];

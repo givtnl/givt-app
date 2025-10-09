@@ -17,7 +17,10 @@ class RecurringDonationsEmptyState extends StatelessWidget {
           children: [
             _buildIllustration(),
             const SizedBox(height: 16),
-            TitleMediumText(context.l10n.recurringDonationsEmptyStateTitle),
+            TitleMediumText(
+              context.l10n.recurringDonationsEmptyStateTitle,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 12),
             BodyMediumText(
               context.l10n.recurringDonationsEmptyStateDescription,

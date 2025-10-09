@@ -4,8 +4,8 @@ import 'package:givt_app/features/recurring_donations/overview/models/recurring_
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
-class RecurringDonationNewFlowRepository {
-  RecurringDonationNewFlowRepository(
+class RecurringDonationRepository {
+  RecurringDonationRepository(
     this._collectGroupRepository,
     this._apiService,
   );

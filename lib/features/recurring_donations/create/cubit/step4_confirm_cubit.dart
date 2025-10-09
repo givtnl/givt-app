@@ -2,7 +2,7 @@ import 'package:givt_app/features/recurring_donations/create/models/recurring_do
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/confirm_ui_model.dart';
-import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
+import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
@@ -20,7 +20,7 @@ enum ConfirmAction {
 class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
   Step4ConfirmCubit(this._repository) : super(const BaseState.loading());
 
-  final RecurringDonationNewFlowRepository _repository;
+  final RecurringDonationRepository _repository;
   bool _isLoading = false;
 
   void init() {
@@ -53,6 +53,7 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
         amount: double.parse(current.amount),
         frequency: frequency,
         startDate: current.startDate ?? DateTime.now(),
+        namespace: _repository.selectedOrganization?.nameSpace ?? '',
         endDate: current.selectedEndOption == RecurringDonationStringKeys.onSpecificDate 
             ? current.endDate 
             : null,
