@@ -530,7 +530,7 @@ class APIService {
   Future<List<dynamic>> fetchRecurringDonations({
     required String status,
   }) async {
-    final url = Uri.https(_apiURL, '/Givtservice/v1/RecurringDonation/status/$status');
+    final url = Uri.https(_apiURL, '/givtservice/v1/recurringdonation/status/$status');
 
     final response =
         await client.get(url, headers: {'Content-Type': 'application/json'});
@@ -550,7 +550,7 @@ class APIService {
   }) async {
     final url = Uri.https(
       _apiURL,
-      '/Givtservice/v1/RecurringDonation/$recurringDonationId',
+      '/givtservice/v1/recurringdonation/$recurringDonationId',
     );
 
     final response =
@@ -567,7 +567,7 @@ class APIService {
     String donationId,
   ) async {
     final url =
-        Uri.https(_apiURL, '/Givtservice/v1/RecurringDonation/$donationId');
+        Uri.https(_apiURL, '/givtservice/v1/recurringdonation/$donationId');
 
     final response = await client.get(
       url,
@@ -585,7 +585,7 @@ class APIService {
   }
 
   Future<bool> createRecurringDonation(Map<String, dynamic> body) async {
-    final url = Uri.https(_apiURL, '/Givtservice/v1/RecurringDonation');
+    final url = Uri.https(_apiURL, '/givtservice/v1/recurringdonation');
 
     final response = await client.post(
       url,
