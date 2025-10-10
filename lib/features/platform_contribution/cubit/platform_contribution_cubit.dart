@@ -96,30 +96,6 @@ class PlatformContributionCubit extends CommonCubit<PlatformContributionSettings
   /// Save all changes
   Future<void> saveChanges() async {
     try {
-      // Get current state to track what's being saved
-      final currentState = state;
-      if (currentState is DataState<PlatformContributionSettings, PlatformContributionCustom>) {
-        final settings = currentState.data;
-        
-        // Build analytics properties
-        final changedOrganizations = settings.organizations
-            .where((org) => org.isEnabled)
-            .map((org) => {
-              'name': org.name,
-              'level': org.contributionLevel.name,
-            })
-            .toList();
-        
-        // Log analytics event
-        await AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.platformContributionSaveChangesClicked,
-          eventProperties: {
-            'changed_organizations': changedOrganizations,
-            'total_enabled': settings.organizations.where((org) => org.isEnabled).length,
-          },
-        );
-      }
-      
       emitLoading();
       await _repository.saveChanges();
     } catch (e) {

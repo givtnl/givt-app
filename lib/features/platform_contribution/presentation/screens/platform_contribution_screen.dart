@@ -129,6 +129,19 @@ class _PlatformContributionScreenState
           text: locals.platformContributionSaveChangesButton,
           onTap: settings.hasChanges ? _cubit.saveChanges : null,
           isDisabled: !settings.hasChanges,
+          analyticsEvent: AmplitudeEvents.platformContributionSaveChangesClicked.toEvent(
+            parameters: {
+              'total_enabled': settings.organizations.where((org) => org.isEnabled).length,
+              'changed_organizations': settings.organizations
+                  .where((org) => org.isEnabled)
+                  .map((org) => {
+                    'name': org.name,
+                    'level': org.contributionLevel.name,
+                    'type': org.type.name,
+                  })
+                  .toList(),
+            },
+          ),
         ),
       ],
     );
