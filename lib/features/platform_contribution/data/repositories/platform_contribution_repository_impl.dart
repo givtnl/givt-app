@@ -160,22 +160,21 @@ class PlatformContributionRepositoryImpl
 
   PlatformContributionLevel _mapApiFeeTypeToDomain(String? type) {
     switch ((type ?? '').toLowerCase()) {
-      case 'mostpopular':
       case 'common':
-        return PlatformContributionLevel.mostPopular;
-      case 'extragenerous':
-        return PlatformContributionLevel.extraGenerous;
+        return PlatformContributionLevel.common;
+      case 'generous':
+        return PlatformContributionLevel.generous;
       default:
-        return PlatformContributionLevel.mostPopular;
+        return PlatformContributionLevel.common;
     }
   }
 
   String _mapDomainLevelToApi(PlatformContributionLevel level) {
     switch (level) {
-      case PlatformContributionLevel.mostPopular:
-        return 'MostPopular';
-      case PlatformContributionLevel.extraGenerous:
-        return 'ExtraGenerous';
+      case PlatformContributionLevel.common:
+        return 'common';
+      case PlatformContributionLevel.generous:
+        return 'generous';
     }
   }
 

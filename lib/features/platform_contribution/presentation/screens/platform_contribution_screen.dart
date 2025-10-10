@@ -212,9 +212,9 @@ class _PlatformContributionScreenState
     PlatformContributionLevel level,
   ) {
     switch (level) {
-      case PlatformContributionLevel.mostPopular:
+      case PlatformContributionLevel.common:
         return locals.platformContributionMostPopular;
-      case PlatformContributionLevel.extraGenerous:
+      case PlatformContributionLevel.generous:
         return locals.platformContributionExtraGenerous;
     }
   }

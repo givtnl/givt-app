@@ -43,6 +43,6 @@ class PlatformContributionOrganization extends Equatable {
 
 /// Represents the contribution level for an organization
 enum PlatformContributionLevel {
-  mostPopular,
-  extraGenerous,
+  common,
+  generous,
 }

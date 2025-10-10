@@ -21,9 +21,9 @@ class PlatformContributionOrganizationItem extends StatelessWidget {
   String _getDisplayName(BuildContext context, PlatformContributionLevel level) {
     final l10n = context.l10n;
     switch (level) {
-      case PlatformContributionLevel.mostPopular:
+      case PlatformContributionLevel.common:
         return l10n.platformFeeCommonOption;
-      case PlatformContributionLevel.extraGenerous:
+      case PlatformContributionLevel.generous:
         return l10n.platformFeeGenerousOption;
     }
   }
