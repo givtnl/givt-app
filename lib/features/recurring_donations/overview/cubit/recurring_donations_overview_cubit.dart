@@ -52,14 +52,13 @@ class RecurringDonationsOverviewCubit
   void _trackDonationsStatus(List<RecurringDonation> donations) {
     if (donations.isEmpty) return;
     
-    final activeDonations = donations.where((d) => d.currentState == RecurringDonationState.active).length;
-    final completedDonations = donations.where((d) => d.isCompleted).length;
+    // All donations fetched with /active are considered active
+    final activeDonations = donations.length;
     final unlimitedDonations = donations.where((d) => d.endsAfterTurns == 999).length;
     
     LoggingInfo.instance.info(
       'Recurring donations loaded: total: ${donations.length}, '
-      'active: $activeDonations, completed: $completedDonations, '
-      'unlimited: $unlimitedDonations',
+      'active: $activeDonations, unlimited: $unlimitedDonations',
       methodName: 'RecurringDonationsOverviewCubit._trackDonationsStatus',
     );
   }
@@ -121,7 +120,12 @@ class RecurringDonationsOverviewCubit
     final completedTurns = donation.currentTurn;
     final remainingTurns = donation.getRemainingTurns();
     final progressPercentage = donation.getProgressPercentage();
-    final isCompleted = donation.isCompleted;
+    
+    // For inactive tab, determine status based on currentState
+    final isCompleted = _selectedTabIndex == 1 
+        ? (donation.currentState == RecurringDonationState.finished || 
+           donation.currentState == RecurringDonationState.active)
+        : donation.isCompleted;
     final nextDonationDate = donation.nextDonationDate;
 
     // Track progress calculation for analytics

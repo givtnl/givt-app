@@ -125,10 +125,8 @@ class _RecurringDonationDetailPageState
                   ),
                 ),
               ),
-              // Manage button only for active recurring donations
-              if (widget.recurringDonation.currentState ==
-                  RecurringDonationState.active)
-                _buildManageButton(context),
+              // Manage button - all donations from /active endpoint are considered active
+              _buildManageButton(context),
             ],
           );
         },
