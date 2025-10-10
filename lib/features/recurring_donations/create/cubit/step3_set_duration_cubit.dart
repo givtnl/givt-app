@@ -1,7 +1,7 @@
-import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
+import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';
-import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
+import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
@@ -13,7 +13,7 @@ class Step3SetDurationCubit
     extends CommonCubit<SetDurationUIModel, SetDurationAction> {
   Step3SetDurationCubit(this.repository) : super(const BaseState.loading());
 
-  final RecurringDonationNewFlowRepository repository;
+  final RecurringDonationRepository repository;
 
   void init() {
     emitLoading();
@@ -147,18 +147,21 @@ class Step3SetDurationCubit
     }
   }
 
-  String _getFrequencyMessage(RecurringDonationFrequency frequency, int day, String month) {
+  String _getFrequencyMessage(overview.Frequency frequency, int day, String month) {
     switch (frequency) {
-      case RecurringDonationFrequency.week:
+      case overview.Frequency.weekly:
         return 'recurringDonationsEndDateHintEveryWeek';
-      case RecurringDonationFrequency.month:
+      case overview.Frequency.monthly:
         return 'recurringDonationsEndDateHintEveryMonth';
-      case RecurringDonationFrequency.quarter:
+      case overview.Frequency.quarterly:
         return 'recurringDonationsEndDateHintEveryXMonth';
-      case RecurringDonationFrequency.halfYear:
+      case overview.Frequency.halfYearly:
         return 'recurringDonationsEndDateHintEveryXMonth';
-      case RecurringDonationFrequency.year:
+      case overview.Frequency.yearly:
         return 'recurringDonationsEndDateHintEveryYear';
+      case overview.Frequency.daily:
+      case overview.Frequency.none:
+        return '';
     }
   }
 

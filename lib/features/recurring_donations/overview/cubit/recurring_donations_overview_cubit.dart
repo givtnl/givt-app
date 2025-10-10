@@ -110,11 +110,11 @@ class RecurringDonationsOverviewCubit
 
   /// Creates a RecurringDonationWithProgress from a RecurringDonation
   RecurringDonationWithProgress _createDonationWithProgress(RecurringDonation donation) {
-    final completedTurns = donation.getCompletedTurns();
+    final completedTurns = donation.currentTurn;
     final remainingTurns = donation.getRemainingTurns();
     final progressPercentage = donation.getProgressPercentage();
     final isCompleted = donation.isCompleted;
-    final nextDonationDate = donation.getNextDonationDateFromStart();
+    final nextDonationDate = donation.nextDonationDate;
 
     // Track progress calculation for analytics
     _trackProgressCalculation(donation, completedTurns, remainingTurns, progressPercentage);

@@ -5,12 +5,11 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step4_confirm_cubit.dart';
-import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
+import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/confirm_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/success_page.dart';
@@ -214,22 +213,25 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
   }
 
   String _getFrequencyDisplayText(
-    RecurringDonationFrequency? frequency,
+    overview.Frequency? frequency,
     BuildContext context,
   ) {
     if (frequency == null) return '';
 
     switch (frequency) {
-      case RecurringDonationFrequency.week:
+      case overview.Frequency.weekly:
         return context.l10n.recurringDonationsFrequenciesWeekly;
-      case RecurringDonationFrequency.month:
+      case overview.Frequency.monthly:
         return context.l10n.recurringDonationsFrequenciesMonthly;
-      case RecurringDonationFrequency.quarter:
+      case overview.Frequency.quarterly:
         return context.l10n.recurringDonationsFrequenciesQuarterly;
-      case RecurringDonationFrequency.halfYear:
+      case overview.Frequency.halfYearly:
         return context.l10n.recurringDonationsFrequenciesHalfYearly;
-      case RecurringDonationFrequency.year:
+      case overview.Frequency.yearly:
         return context.l10n.recurringDonationsFrequenciesYearly;
+      case overview.Frequency.daily:
+      case overview.Frequency.none:
+        return '';
     }
   }
 }

@@ -43,7 +43,7 @@ class CancelRecurringDonationConfirmationDialog extends StatelessWidget {
           } else if (state is CancelRecurringDonationConfirmationState) {
             return ConfirmationDialog(
               title: locals.cancelRecurringDonationAlertTitle(
-                recurringDonation.collectGroup.orgName,
+                recurringDonation.collectGroupName,
               ),
               content: locals.cancelRecurringDonationAlertMessage,
               confirmText: locals.yes,

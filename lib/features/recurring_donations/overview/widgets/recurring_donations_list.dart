@@ -41,14 +41,17 @@ class RecurringDonationsList extends StatelessWidget {
     );
   }
 
-  Widget _buildDonationCard(BuildContext context, RecurringDonationWithProgress donationWithProgress) {
+  Widget _buildDonationCard(
+    BuildContext context,
+    RecurringDonationWithProgress donationWithProgress,
+  ) {
     final auth = context.read<AuthCubit>().state;
     final currency = Util.getCurrencySymbol(countryCode: auth.user.country);
     final progress = _getProgressModel(donationWithProgress);
 
     return FunMissionCard(
       uiModel: FunMissionCardUIModel(
-        title: donationWithProgress.donation.collectGroup.orgName,
+        title: donationWithProgress.donation.collectGroupName,
         description: _buildDescription(donationWithProgress, currency, context),
         progress: progress,
       ),
@@ -57,52 +60,69 @@ class RecurringDonationsList extends StatelessWidget {
       analyticsEvent: AmplitudeEvents.recurringDonationCardClicked.toEvent(
         parameters: {
           'donation_id': donationWithProgress.donation.id,
-          'organisation': donationWithProgress.donation.collectGroup.orgName,
+          'organisation': donationWithProgress.donation.collectGroupName,
           'amount': donationWithProgress.donation.amountPerTurn.toString(),
           'completed_turns': donationWithProgress.completedTurns.toString(),
-          'total_turns': donationWithProgress.donation.endsAfterTurns.toString(),
-          'frequency': donationWithProgress.donation.frequency.toString(),
+          'total_turns': donationWithProgress.donation.endsAfterTurns
+              .toString(),
+          'frequency': donationWithProgress.donation.frequency.name,
         },
       ),
     );
   }
 
-  String _buildDescription(RecurringDonationWithProgress donationWithProgress, String currency, BuildContext context) {
+  String _buildDescription(
+    RecurringDonationWithProgress donationWithProgress,
+    String currency,
+    BuildContext context,
+  ) {
     final amount = donationWithProgress.donation.amountPerTurn.toString();
-    final frequency = _getFrequencyText(donationWithProgress.donation.frequency, context);
-    
+    final frequency = _getFrequencyText(
+      donationWithProgress.donation.frequency,
+      context,
+    );
+
     // Check if this is a cancelled donation
-    if (donationWithProgress.donation.currentState == RecurringDonationState.cancelled) {
+    if (donationWithProgress.donation.currentState ==
+        RecurringDonationState.cancelled) {
       return '$frequency $currency$amount · ${context.l10n.recurringDonationsCancelled}';
     }
-    
+
     // Check if this is a past donation (not active or completed)
-    final isPastDonation = donationWithProgress.donation.currentState != RecurringDonationState.active || 
-                           donationWithProgress.isCompleted;
-    
-    final statusText = isPastDonation ? context.l10n.recurringDonationsListStatusEnded : context.l10n.recurringDonationsListStatusNextUp;
-    
+    final isPastDonation =
+        donationWithProgress.donation.currentState !=
+            RecurringDonationState.active ||
+        donationWithProgress.isCompleted;
+
+    final statusText = isPastDonation
+        ? context.l10n.recurringDonationsListStatusEnded
+        : context.l10n.recurringDonationsListStatusNextUp;
+
     // Use end date for past donations, next date for current donations
-    final dateToShow = isPastDonation 
-        ? donationWithProgress.donation.endDate 
+    final dateToShow = isPastDonation
+        ? donationWithProgress.donation.endDate
         : donationWithProgress.nextDonationDate;
 
-    return '$frequency $currency$amount · $statusText ${_formatDate(dateToShow)}';
+    final dateText = dateToShow != null
+        ? _formatDate(dateToShow as DateTime)
+        : '';
+    return '$frequency $currency$amount · $statusText $dateText';
   }
 
-  String _getFrequencyText(int frequency, BuildContext context) {
+  String _getFrequencyText(Frequency frequency, BuildContext context) {
     switch (frequency) {
-      case 0:
+      case Frequency.weekly:
         return context.l10n.recurringDonationsListFrequencyWeekly;
-      case 1:
+      case Frequency.monthly:
         return context.l10n.recurringDonationsListFrequencyMonthly;
-      case 2:
+      case Frequency.quarterly:
         return context.l10n.recurringDonationsListFrequencyQuarterly;
-      case 3:
+      case Frequency.halfYearly:
         return context.l10n.recurringDonationsListFrequencySemiAnnually;
-      case 4:
+      case Frequency.yearly:
         return context.l10n.recurringDonationsListFrequencyAnnually;
-      default:
+      case Frequency.daily:
+      case Frequency.none:
         return context.l10n.recurringDonationsListFrequencyRecurring;
     }
   }
@@ -113,9 +133,12 @@ class RecurringDonationsList extends StatelessWidget {
     return formatter.format(date);
   }
 
-  GoalCardProgressUImodel? _getProgressModel(RecurringDonationWithProgress donationWithProgress) {
+  GoalCardProgressUImodel? _getProgressModel(
+    RecurringDonationWithProgress donationWithProgress,
+  ) {
     // Don't show progress bar for unlimited donations (endsAfterTurns = 999)
-    if (donationWithProgress.donation.endsAfterTurns > 0 && donationWithProgress.donation.endsAfterTurns != 999) {
+    if (donationWithProgress.donation.endsAfterTurns > 0 &&
+        donationWithProgress.donation.endsAfterTurns != 999) {
       // Use pre-calculated progress information from the cubit
       final totalTurns = donationWithProgress.donation.endsAfterTurns;
       final completedTurns = donationWithProgress.completedTurns;
@@ -129,7 +152,10 @@ class RecurringDonationsList extends StatelessWidget {
     return null;
   }
 
-  void _onDonationTap(BuildContext context, RecurringDonationWithProgress donationWithProgress) {
+  void _onDonationTap(
+    BuildContext context,
+    RecurringDonationWithProgress donationWithProgress,
+  ) {
     // Navigate to the detail page
     Navigator.of(context).push(
       RecurringDonationDetailPage(

@@ -414,22 +414,28 @@ class _RecurringDonationDetailPageState
         final lastTransaction = completedTransactions
             .reduce((a, b) => a.date.isAfter(b.date) ? a : b);
         final daysHelped = lastTransaction.date.difference(startDate).inDays;
+        // Ensure non-negative value
+        final safeDaysHelped = daysHelped < 0 ? 0 : daysHelped;
         return context.l10n.recurringDonationsDetailTimeDisplayDays(
-          daysHelped.toString(),
+          safeDaysHelped.toString(),
         );
       } else {
         // Fallback: no completed transactions, show days from start to end date
         final daysHelped = uiModel.endDate!.difference(startDate).inDays;
+        // Ensure non-negative value
+        final safeDaysHelped = daysHelped < 0 ? 0 : daysHelped;
         return context.l10n.recurringDonationsDetailTimeDisplayDays(
-          daysHelped.toString(),
+          safeDaysHelped.toString(),
         );
       }
     } else {
       // For active donations, show days from start until now
       final now = DateTime.now();
       final daysHelped = now.difference(startDate).inDays;
+      // Ensure non-negative value
+      final safeDaysHelped = daysHelped < 0 ? 0 : daysHelped;
       return context.l10n.recurringDonationsDetailTimeDisplayDays(
-        daysHelped.toString(),
+        safeDaysHelped.toString(),
       );
     }
   }
