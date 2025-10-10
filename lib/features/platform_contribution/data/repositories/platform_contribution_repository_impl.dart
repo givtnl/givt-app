@@ -52,7 +52,8 @@ class PlatformContributionRepositoryImpl
           );
         })
         .cast<PlatformContributionOrganization>()
-        .toList();
+        .toList()
+      ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
     _originalSettings = PlatformContributionSettings(
       organizations: organizations,
@@ -79,7 +80,8 @@ class PlatformContributionRepositoryImpl
         );
       }
       return org;
-    }).toList();
+    }).toList()
+      ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
     _currentSettings = _currentSettings.copyWith(
       organizations: updatedOrganizations,
