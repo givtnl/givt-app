@@ -8,7 +8,7 @@ class RecurringDonation extends Equatable {
     required this.startDate,
     required this.namespace,
     this.endDate,
-    this.maxRecurrencies,
+    this.numberOfTurns,
   });
 
   final double amount;
@@ -16,7 +16,7 @@ class RecurringDonation extends Equatable {
   final DateTime startDate;
   final String namespace;
   final DateTime? endDate;
-  final int? maxRecurrencies;
+  final int? numberOfTurns;
 
   Map<String, dynamic> toJson() {
     final json = {
@@ -30,8 +30,8 @@ class RecurringDonation extends Equatable {
       json['endDate'] = endDate!.toIso8601String();
     }
 
-    if (maxRecurrencies != null && maxRecurrencies! > 0) {
-      json['numberOfTurns'] = maxRecurrencies!;
+    if (numberOfTurns != null && numberOfTurns! > 0) {
+      json['numberOfTurns'] = numberOfTurns!;
     }
 
     return json;
@@ -44,6 +44,6 @@ class RecurringDonation extends Equatable {
         startDate,
         namespace,
         endDate ?? DateTime.now(),
-        maxRecurrencies ?? 0,
+        numberOfTurns ?? 0,
       ];
 }

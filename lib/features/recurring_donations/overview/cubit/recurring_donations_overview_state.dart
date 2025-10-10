@@ -16,7 +16,7 @@ class RecurringDonationWithProgress {
   final int remainingTurns;
   final double progressPercentage;
   final bool isCompleted;
-  final DateTime nextDonationDate;
+  final DateTime? nextDonationDate;
 
   @override
   bool operator ==(Object other) {

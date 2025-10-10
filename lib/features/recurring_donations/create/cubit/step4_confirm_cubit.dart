@@ -57,7 +57,7 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
         endDate: current.selectedEndOption == RecurringDonationStringKeys.onSpecificDate 
             ? current.endDate 
             : null,
-        maxRecurrencies: turns == 999 ? null : turns,
+        numberOfTurns: turns == 999 ? null : turns,
       );
 
       final success = await _repository.createRecurringDonation(

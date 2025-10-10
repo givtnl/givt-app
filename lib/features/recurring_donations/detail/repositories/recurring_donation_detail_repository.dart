@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_donation_detail_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
-import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
 mixin RecurringDonationDetailRepository {
@@ -213,7 +211,7 @@ class RecurringDonationDetailRepositoryImpl
   }
 
   String _calculateRemainingTime() {
-    if (_recurringDonation!.maxRecurrencies == 999) return 'Unlimited';
+    if (_recurringDonation!.numberOfTurns == 999) return 'Unlimited';
 
     final endDate = _recurringDonation!.calculatedEndDate;
     if (endDate == null) return 'Unlimited';
@@ -253,35 +251,40 @@ class RecurringDonationDetailRepositoryImpl
   }
 
   DonationHistoryItem _createUpcomingDonation() {
-    // Calculate the next donation date
+    // Use API-provided next donation date if available, otherwise fall back to calculation
     DateTime nextDonationDate;
 
-    // Get completed donations from the current history (excluding upcoming ones)
-    final completedDonations = _history
-        .where((h) => h.status == DonationStatus.completed)
-        .toList();
+    final apiNextDate = _recurringDonation!.nextDonationDate;
+    if (apiNextDate != null) {
+      nextDonationDate = apiNextDate;
+    } else {
+      // Fallback to calculation if API data is not available
+      final completedDonations = _history
+          .where((h) => h.status == DonationStatus.completed)
+          .toList();
 
-    if (completedDonations.isNotEmpty) {
-      // If we have completed donations, calculate next date from the most recent one
-      try {
-        final lastDonation = completedDonations.reduce(
-          (a, b) => a.date.isAfter(b.date) ? a : b,
-        );
-        nextDonationDate = _recurringDonation!.getNextDonationDate(
-          lastDonation.date,
-        );
-      } catch (e) {
-        // Fallback to start date if there's an issue with the reduce operation
-        print('Error calculating next date from completed donations: $e');
+      if (completedDonations.isNotEmpty) {
+        // If we have completed donations, calculate next date from the most recent one
+        try {
+          final lastDonation = completedDonations.reduce(
+            (a, b) => a.date.isAfter(b.date) ? a : b,
+          );
+          nextDonationDate = _recurringDonation!.getNextDonationDate(
+            lastDonation.date,
+          );
+        } catch (e) {
+          // Fallback to start date if there's an issue with the reduce operation
+          print('Error calculating next date from completed donations: $e');
+          nextDonationDate = _recurringDonation!.getNextDonationDate(
+            DateTime.parse(_recurringDonation!.startDate),
+          );
+        }
+      } else {
+        // If no completed donations, calculate from start date
         nextDonationDate = _recurringDonation!.getNextDonationDate(
           DateTime.parse(_recurringDonation!.startDate),
         );
       }
-    } else {
-      // If no completed donations, calculate from start date
-      nextDonationDate = _recurringDonation!.getNextDonationDate(
-        DateTime.parse(_recurringDonation!.startDate),
-      );
     }
 
     return DonationHistoryItem(
@@ -310,7 +313,7 @@ class RecurringDonationDetailRepositoryImpl
   @override
   DateTime? getEndDate() {
     if (_recurringDonation == null) return null;
-    return _recurringDonation!.maxRecurrencies != 999
+    return _recurringDonation!.numberOfTurns != 999
         ? _recurringDonation!.calculatedEndDate
         : null;
   }
@@ -328,15 +331,13 @@ class RecurringDonationDetailRepositoryImpl
   @override
   DonationProgress? getProgress() {
     if (_recurringDonation == null ||
-        _recurringDonation!.maxRecurrencies == 999) {
+        _recurringDonation!.numberOfTurns == 999) {
       return null;
     }
 
-    final total = _recurringDonation!.maxRecurrencies;
-    // Count only completed donations (excluding upcoming ones)
-    final completed = _history
-        .where((h) => h.status == DonationStatus.completed)
-        .length;
+    final total = _recurringDonation!.numberOfTurns;
+    // Use API-provided current turn instead of counting history items
+    final completed = _recurringDonation!.currentTurn;
 
     return DonationProgress(
       completed: completed,
