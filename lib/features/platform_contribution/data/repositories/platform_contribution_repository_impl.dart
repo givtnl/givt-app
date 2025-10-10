@@ -52,8 +52,9 @@ class PlatformContributionRepositoryImpl
           );
         })
         .cast<PlatformContributionOrganization>()
-        .toList()
-      ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        .toList();
+
+    _sortOrganizationsAlphabetically(organizations);
 
     _originalSettings = PlatformContributionSettings(
       organizations: organizations,
@@ -80,8 +81,9 @@ class PlatformContributionRepositoryImpl
         );
       }
       return org;
-    }).toList()
-      ..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+    }).toList();
+
+    _sortOrganizationsAlphabetically(updatedOrganizations);
 
     _currentSettings = _currentSettings.copyWith(
       organizations: updatedOrganizations,
@@ -178,6 +180,15 @@ class PlatformContributionRepositoryImpl
       case PlatformContributionLevel.generous:
         return 'generous';
     }
+  }
+
+  /// Sorts organizations alphabetically by name (case-insensitive)
+  void _sortOrganizationsAlphabetically(
+    List<PlatformContributionOrganization> organizations,
+  ) {
+    organizations.sort(
+      (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+    );
   }
 
   void dispose() {
