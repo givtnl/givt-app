@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_organization.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_settings.dart';
 import 'package:givt_app/features/platform_contribution/domain/repositories/platform_contribution_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 /// Cubit for managing platform contribution state
 class PlatformContributionCubit extends CommonCubit<PlatformContributionSettings, PlatformContributionCustom> {
@@ -44,8 +46,18 @@ class PlatformContributionCubit extends CommonCubit<PlatformContributionSettings
   Future<void> updateOrganizationToggle({
     required String organizationId,
     required bool isEnabled,
+    required String organizationName,
   }) async {
     try {
+      // Log analytics event
+      await AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.platformContributionToggleChanged,
+        eventProperties: {
+          AnalyticsHelper.organizationNameKey: organizationName,
+          AnalyticsHelper.toggleStatusKey: isEnabled ? 'enabled' : 'disabled',
+        },
+      );
+      
       await _repository.updateOrganizationSettings(
         organizationId: organizationId,
         isEnabled: isEnabled,
@@ -59,8 +71,18 @@ class PlatformContributionCubit extends CommonCubit<PlatformContributionSettings
   Future<void> updateOrganizationContributionLevel({
     required String organizationId,
     required PlatformContributionLevel contributionLevel,
+    required String organizationName,
   }) async {
     try {
+      // Log analytics event
+      await AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.platformContributionLevelChanged,
+        eventProperties: {
+          AnalyticsHelper.organizationNameKey: organizationName,
+          AnalyticsHelper.contributionLevelKey: contributionLevel.name,
+        },
+      );
+      
       await _repository.updateOrganizationSettings(
         organizationId: organizationId,
         isEnabled: true,
@@ -74,6 +96,30 @@ class PlatformContributionCubit extends CommonCubit<PlatformContributionSettings
   /// Save all changes
   Future<void> saveChanges() async {
     try {
+      // Get current state to track what's being saved
+      final currentState = state;
+      if (currentState is DataState<PlatformContributionSettings, PlatformContributionCustom>) {
+        final settings = currentState.data;
+        
+        // Build analytics properties
+        final changedOrganizations = settings.organizations
+            .where((org) => org.isEnabled)
+            .map((org) => {
+              'name': org.name,
+              'level': org.contributionLevel.name,
+            })
+            .toList();
+        
+        // Log analytics event
+        await AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.platformContributionSaveChangesClicked,
+          eventProperties: {
+            'changed_organizations': changedOrganizations,
+            'total_enabled': settings.organizations.where((org) => org.isEnabled).length,
+          },
+        );
+      }
+      
       emitLoading();
       await _repository.saveChanges();
     } catch (e) {

@@ -129,8 +129,6 @@ class _PlatformContributionScreenState
           text: locals.platformContributionSaveChangesButton,
           onTap: settings.hasChanges ? _cubit.saveChanges : null,
           isDisabled: !settings.hasChanges,
-          analyticsEvent: AmplitudeEvents.platformContributionSaveChangesClicked
-              .toEvent(),
         ),
       ],
     );
@@ -177,6 +175,7 @@ class _PlatformContributionScreenState
                   _cubit.updateOrganizationToggle(
                     organizationId: organization.id,
                     isEnabled: isEnabled,
+                    organizationName: organization.name,
                   );
                 },
               ),
@@ -198,6 +197,7 @@ class _PlatformContributionScreenState
                 _cubit.updateOrganizationContributionLevel(
                   organizationId: organization.id,
                   contributionLevel: value,
+                  organizationName: organization.name,
                 );
               },
             ),
