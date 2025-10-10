@@ -8,7 +8,7 @@ mixin RecurringDonationsOverviewRepository {
   List<RecurringDonation> getRecurringDonations();
   bool isLoading();
   String? getError();
-  Future<void> loadRecurringDonations();
+  Future<void> loadRecurringDonations({String status = 'active'});
 }
 
 class RecurringDonationsOverviewRepositoryImpl
@@ -46,14 +46,14 @@ class RecurringDonationsOverviewRepositoryImpl
   }
 
   @override
-  Future<void> loadRecurringDonations() async {
+  Future<void> loadRecurringDonations({String status = 'active'}) async {
     _isLoading = true;
     _error = null;
     _donationsController.add(_donations);
 
     try {
       final response = await apiService.fetchRecurringDonations(
-        status: 'All',
+        status: status,
       );
 
       final result = <RecurringDonation>[];

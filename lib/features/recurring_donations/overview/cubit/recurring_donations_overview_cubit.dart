@@ -19,6 +19,7 @@ class RecurringDonationsOverviewCubit
   ) : super(const BaseState.loading());
 
   final RecurringDonationsOverviewRepository _recurringDonationsOverviewRepository;
+  int _selectedTabIndex = 0;
 
   void init() {
     _setupStreams();
@@ -28,7 +29,7 @@ class RecurringDonationsOverviewCubit
   void _setupStreams() {
     _recurringDonationsOverviewRepository.onRecurringDonationsChanged().listen(
       _onRecurringDonationsChanged,
-      onError: (error) {
+      onError: (Object error) {
         LoggingInfo.instance.error(
           'Error in recurring donations stream: $error',
           methodName: 'RecurringDonationsOverviewCubit._setupStreams',
@@ -65,7 +66,8 @@ class RecurringDonationsOverviewCubit
 
   Future<void> _loadRecurringDonations() async {
     try {
-      await _recurringDonationsOverviewRepository.loadRecurringDonations();
+      final status = _selectedTabIndex == 0 ? 'active' : 'inactive';
+      await _recurringDonationsOverviewRepository.loadRecurringDonations(status: status);
     } catch (error) {
       LoggingInfo.instance.error(
         'Failed to load recurring donations: $error',
@@ -75,7 +77,8 @@ class RecurringDonationsOverviewCubit
   }
 
   void onTabChanged(int index) {
-    emitData(_createUIModel());
+    _selectedTabIndex = index;
+    _loadRecurringDonations();
   }
 
   void onAddRecurringDonationPressed() {
@@ -90,22 +93,27 @@ class RecurringDonationsOverviewCubit
     final error = _recurringDonationsOverviewRepository.getError();
 
     // Calculate progress information for each donation
-    final currentDonationsWithProgress = donations
-        .where((d) => d.currentState == RecurringDonationState.active)
+    final donationsWithProgress = donations
         .map(_createDonationWithProgress)
         .toList();
 
-    final pastDonationsWithProgress = donations
-        .where((d) => d.currentState != RecurringDonationState.active)
-        .map(_createDonationWithProgress)
-        .toList();
-
-    return RecurringDonationsOverviewUIModel(
-      currentDonations: currentDonationsWithProgress,
-      pastDonations: pastDonationsWithProgress,
-      isLoading: isLoading,
-      error: error,
-    );
+    // For active tab, show all donations as current
+    // For inactive tab, show all donations as past
+    if (_selectedTabIndex == 0) {
+      return RecurringDonationsOverviewUIModel(
+        currentDonations: donationsWithProgress,
+        pastDonations: const [],
+        isLoading: isLoading,
+        error: error,
+      );
+    } else {
+      return RecurringDonationsOverviewUIModel(
+        currentDonations: const [],
+        pastDonations: donationsWithProgress,
+        isLoading: isLoading,
+        error: error,
+      );
+    }
   }
 
   /// Creates a RecurringDonationWithProgress from a RecurringDonation

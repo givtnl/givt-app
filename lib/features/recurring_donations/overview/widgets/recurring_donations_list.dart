@@ -101,10 +101,10 @@ class RecurringDonationsList extends StatelessWidget {
     // Use end date for past donations, next date for current donations
     final dateToShow = isPastDonation
         ? donationWithProgress.donation.endDate
-        : donationWithProgress.nextDonationDate;
+        : donationWithProgress.nextDonationDate?.toString();
 
     final dateText = dateToShow != null
-        ? _formatDate(dateToShow as DateTime)
+        ? _formatDate(DateTime.parse(dateToShow))
         : '';
     return '$frequency $currency$amount · $statusText $dateText';
   }
