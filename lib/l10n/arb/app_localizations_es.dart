@@ -2330,7 +2330,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get recurringDonationsCreationErrorDescription =>
-      'Something went wrong.\\nPlease check your details and try again.';
+      'Something went wrong.\nPlease check your details and try again.';
 
   @override
   String get recurringDonationsCreationErrorChangeAndRetry =>
@@ -2406,13 +2406,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get platformContributionOrgPresbyterian => 'Presbyterian Church';
 
   @override
-  String get platformContributionExtraGenerous => 'Extra generous';
+  String get platformContributionGenerous => 'Extra generous';
 
   @override
   String get platformContributionOrgRedCross => 'Red Cross';
 
   @override
-  String get platformContributionMostPopular => 'Most popular';
+  String get platformContributionCommon => 'Most popular';
 
   @override
   String get platformContributionOrgTheParkChurch => 'The Park Church';
@@ -4781,7 +4781,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get recurringDonationsCreationErrorDescription =>
-      'Something went wrong.\\nPlease check your details and try again.';
+      'Something went wrong.\nPlease check your details and try again.';
 
   @override
   String get recurringDonationsCreationErrorChangeAndRetry =>
@@ -4857,13 +4857,13 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get platformContributionOrgPresbyterian => 'Presbyterian Church';
 
   @override
-  String get platformContributionExtraGenerous => 'Extra generous';
+  String get platformContributionGenerous => 'Extra generous';
 
   @override
   String get platformContributionOrgRedCross => 'Red Cross';
 
   @override
-  String get platformContributionMostPopular => 'Most popular';
+  String get platformContributionCommon => 'Most popular';
 
   @override
   String get platformContributionOrgTheParkChurch => 'The Park Church';

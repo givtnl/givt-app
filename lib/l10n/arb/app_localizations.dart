@@ -4200,7 +4200,7 @@ abstract class AppLocalizations {
   /// No description provided for @recurringDonationsCreationErrorDescription.
   ///
   /// In en, this message translates to:
-  /// **'Something went wrong.\\nPlease check your details and try again.'**
+  /// **'Something went wrong.\nPlease check your details and try again.'**
   String get recurringDonationsCreationErrorDescription;
 
   /// No description provided for @recurringDonationsCreationErrorChangeAndRetry.
@@ -4335,11 +4335,11 @@ abstract class AppLocalizations {
   /// **'Presbyterian Church'**
   String get platformContributionOrgPresbyterian;
 
-  /// No description provided for @platformContributionExtraGenerous.
+  /// No description provided for @platformContributionGenerous.
   ///
   /// In en, this message translates to:
   /// **'Extra generous'**
-  String get platformContributionExtraGenerous;
+  String get platformContributionGenerous;
 
   /// No description provided for @platformContributionOrgRedCross.
   ///
@@ -4347,11 +4347,11 @@ abstract class AppLocalizations {
   /// **'Red Cross'**
   String get platformContributionOrgRedCross;
 
-  /// No description provided for @platformContributionMostPopular.
+  /// No description provided for @platformContributionCommon.
   ///
   /// In en, this message translates to:
   /// **'Most popular'**
-  String get platformContributionMostPopular;
+  String get platformContributionCommon;
 
   /// No description provided for @platformContributionOrgTheParkChurch.
   ///

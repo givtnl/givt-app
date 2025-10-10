@@ -2339,7 +2339,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsCreationErrorDescription =>
-      'Er is iets misgegaan.\\nControleer alsjeblieft je gegevens en probeer het opnieuw.';
+      'Er is iets misgegaan.\nControleer alsjeblieft je gegevens en probeer het opnieuw.';
 
   @override
   String get recurringDonationsCreationErrorChangeAndRetry => 'Wijzigen';
@@ -2415,13 +2415,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get platformContributionOrgPresbyterian => 'Presbyterian Church';
 
   @override
-  String get platformContributionExtraGenerous => 'Extra vrijgevig';
+  String get platformContributionGenerous => 'Extra gul';
 
   @override
   String get platformContributionOrgRedCross => 'Rode Kruis';
 
   @override
-  String get platformContributionMostPopular => 'Meest populair';
+  String get platformContributionCommon => 'Meest gekozen';
 
   @override
   String get platformContributionOrgTheParkChurch => 'The Park Church';

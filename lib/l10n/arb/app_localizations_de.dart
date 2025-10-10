@@ -2349,7 +2349,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get recurringDonationsCreationErrorDescription =>
-      'Etwas ist schiefgelaufen.\\nBitte überprüfe deine Daten und versuche es erneut.';
+      'Etwas ist schiefgelaufen.\nBitte überprüfe deine Daten und versuche es erneut.';
 
   @override
   String get recurringDonationsCreationErrorChangeAndRetry => 'Ändern';
@@ -2424,13 +2424,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get platformContributionOrgPresbyterian => 'Presbyterian Church';
 
   @override
-  String get platformContributionExtraGenerous => 'Extra großzügig';
+  String get platformContributionGenerous => 'Extra großzügig';
 
   @override
   String get platformContributionOrgRedCross => 'Rotes Kreuz';
 
   @override
-  String get platformContributionMostPopular => 'Am beliebtesten';
+  String get platformContributionCommon => 'Am beliebtesten';
 
   @override
   String get platformContributionOrgTheParkChurch => 'The Park Church';
