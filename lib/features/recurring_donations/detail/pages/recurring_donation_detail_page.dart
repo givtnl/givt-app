@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
@@ -22,6 +22,7 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class RecurringDonationDetailPage extends StatefulWidget {
   const RecurringDonationDetailPage({
@@ -182,12 +183,15 @@ class _RecurringDonationDetailPageState
     String currency,
     BuildContext context,
   ) {
+    final auth = context.read<AuthCubit>().state;
+    final country = Country.fromCode(auth.user.country);
+    
     return Row(
       children: [
         Expanded(
           child: _buildSummaryCard(
             icon: FontAwesomeIcons.moneyBillWave,
-            value: '$currency${uiModel.totalDonated.toStringAsFixed(2)}',
+            value: '$currency${Util.formatNumberComma(uiModel.totalDonated, country)}',
             label: context.l10n.recurringDonationsDetailSummaryDonated,
           ),
         ),
@@ -241,7 +245,7 @@ class _RecurringDonationDetailPageState
               ),
               child: LabelSmallText(
                 context.l10n.recurringDonationsDetailEndsTag(
-                  _formatDate(endDateTag),
+                  _formatDate(endDateTag, context),
                 ),
                 color: FamilyAppTheme.highlight30,
                 textAlign: TextAlign.center,
@@ -274,6 +278,9 @@ class _RecurringDonationDetailPageState
     String currency,
     BuildContext context,
   ) {
+    final auth = context.read<AuthCubit>().state;
+    final country = Country.fromCode(auth.user.country);
+    
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: const BoxDecoration(
@@ -306,11 +313,11 @@ class _RecurringDonationDetailPageState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 LabelMediumText(
-                  '$currency${item.amount.toStringAsFixed(2)}',
+                  '$currency${Util.formatNumberComma(item.amount, country)}',
                   color: FamilyAppTheme.primary40,
                 ),
                 LabelSmallText(
-                  _formatDate(item.date),
+                  _formatDate(item.date, context),
                   color: FamilyAppTheme.neutralVariant50,
                   fontWeight: FontWeight.w500,
                 ),
@@ -346,9 +353,9 @@ class _RecurringDonationDetailPageState
     switch (status) {
       case DonationStatus.upcoming:
         return FamilyAppTheme.secondary95;
-      case DonationStatus.completed:
+      case DonationStatus.processed:
         return FamilyAppTheme.primary95;
-      case DonationStatus.pending:
+      case DonationStatus.inprocess:
         return FamilyAppTheme.neutralVariant95;
     }
   }
@@ -357,9 +364,9 @@ class _RecurringDonationDetailPageState
     switch (status) {
       case DonationStatus.upcoming:
         return FamilyAppTheme.secondary40;
-      case DonationStatus.completed:
+      case DonationStatus.processed:
         return FamilyAppTheme.primary30;
-      case DonationStatus.pending:
+      case DonationStatus.inprocess:
         return FamilyAppTheme.highlight30;
     }
   }
@@ -368,9 +375,9 @@ class _RecurringDonationDetailPageState
     switch (status) {
       case DonationStatus.upcoming:
         return Icons.more_horiz;
-      case DonationStatus.completed:
+      case DonationStatus.processed:
         return Icons.check;
-      case DonationStatus.pending:
+      case DonationStatus.inprocess:
         return Icons.schedule;
     }
   }
@@ -379,9 +386,9 @@ class _RecurringDonationDetailPageState
     switch (status) {
       case DonationStatus.upcoming:
         return context.l10n.recurringDonationsDetailStatusUpcoming;
-      case DonationStatus.completed:
+      case DonationStatus.processed:
         return context.l10n.recurringDonationsDetailStatusCompleted;
-      case DonationStatus.pending:
+      case DonationStatus.inprocess:
         return context.l10n.recurringDonationsDetailStatusPending;
     }
   }
@@ -404,7 +411,7 @@ class _RecurringDonationDetailPageState
     if (uiModel.endDate != null && uiModel.endDate!.isBefore(DateTime.now())) {
       // For cancelled/completed donations, show days between start and last transaction
       final completedTransactions = uiModel.history
-          .where((h) => h.status == DonationStatus.completed)
+          .where((h) => h.status == DonationStatus.processed)
           .toList();
       
       if (completedTransactions.isNotEmpty) {
@@ -438,12 +445,13 @@ class _RecurringDonationDetailPageState
     }
   }
 
-  String _formatDate(DateTime date) {
-    return '${date.day} ${date.month} ${date.year}';
+  String _formatDate(DateTime date, BuildContext context) {
+    final locale = Util.getLanguageTageFromLocale(context);
+    return DateFormat.yMMMd(locale).format(date);
   }
 
   void _showManageOptions(BuildContext context) {
-    showModalBottomSheet(
+    showModalBottomSheet<bool>(
       context: context,
       builder: (context) => Container(
         padding: const EdgeInsets.all(16),

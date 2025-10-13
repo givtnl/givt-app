@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
@@ -76,7 +77,9 @@ class RecurringDonationsList extends StatelessWidget {
     String currency,
     BuildContext context,
   ) {
-    final amount = donationWithProgress.donation.amountPerTurn.toString();
+    final auth = context.read<AuthCubit>().state;
+    final country = Country.fromCode(auth.user.country);
+    final amount = Util.formatNumberComma(donationWithProgress.donation.amountPerTurn.toDouble(), country);
     final frequency = _getFrequencyText(
       donationWithProgress.donation.frequency,
       context,
@@ -100,7 +103,7 @@ class RecurringDonationsList extends StatelessWidget {
         : donationWithProgress.nextDonationDate?.toString();
 
     final dateText = dateToShow != null
-        ? _formatDate(DateTime.parse(dateToShow))
+        ? _formatDate(DateTime.parse(dateToShow), context)
         : '';
     return '$frequency $currency$amount · $statusText $dateText';
   }
@@ -123,10 +126,10 @@ class RecurringDonationsList extends StatelessWidget {
     }
   }
 
-  String _formatDate(DateTime date) {
+  String _formatDate(DateTime date, BuildContext context) {
     // Use localized date formatting
-    final formatter = DateFormat.yMMMd();
-    return formatter.format(date);
+    final locale = Util.getLanguageTageFromLocale(context);
+    return DateFormat.yMMMd(locale).format(date);
   }
 
   GoalCardProgressUImodel? _getProgressModel(

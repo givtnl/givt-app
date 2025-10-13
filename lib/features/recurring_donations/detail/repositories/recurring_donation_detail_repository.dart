@@ -62,24 +62,6 @@ class RecurringDonationDetailRepositoryImpl
     _error = null;
 
     try {
-      // Fetch collect groups and merge them with the recurring donation
-      // final collectGroups = await collectGroupRepository.getCollectGroupList();
-      // final collectGroup = collectGroups.firstWhere(
-      //   (element) => element.nameSpace == _recurringDonation!.collectGroupName,
-      //   orElse: () {
-      //     debugPrint(
-      //       'Collection with name ${_recurringDonation!.collectGroupName} not found',
-      //     );
-      //     return const CollectGroup.empty();
-      //   },
-      // );
-
-      // Update the recurring donation with collect group information
-      // final recurringDonationWithCollectGroup = _recurringDonation!.copyWith(
-      //   collectGroup: collectGroup,
-      // );
-      // _recurringDonation = recurringDonationWithCollectGroup;
-
       // Fetch donation instances from API
       final instancesResponse = await apiService.fetchRecurringDonationById(
         _recurringDonation!.id,
@@ -161,12 +143,10 @@ class RecurringDonationDetailRepositoryImpl
 
   DonationStatus _determineStatusFromString(String statusString) {
     switch (statusString.toLowerCase()) {
-      case 'completed':
-        return DonationStatus.completed;
-      case 'pending':
-        return DonationStatus.pending;
+      case 'processed':
+        return DonationStatus.processed;
       default:
-        return DonationStatus.pending;
+        return DonationStatus.inprocess;
     }
   }
 
@@ -174,9 +154,9 @@ class RecurringDonationDetailRepositoryImpl
     switch (status) {
       case DonationStatus.upcoming:
         return 'assets/images/upcoming_icon.png';
-      case DonationStatus.completed:
+      case DonationStatus.processed:
         return 'assets/images/completed_icon.png';
-      case DonationStatus.pending:
+      case DonationStatus.inprocess:
         return 'assets/images/pending_icon.png';
     }
   }
@@ -184,7 +164,7 @@ class RecurringDonationDetailRepositoryImpl
   /// Calculates the number of months helped based on actual completed donations
   int _calculateMonthsHelped(List<DonationHistoryItem> history) {
     final completedDonations = history
-        .where((h) => h.status == DonationStatus.completed)
+        .where((h) => h.status == DonationStatus.processed)
         .toList();
 
     if (completedDonations.isEmpty) return 0;
@@ -206,7 +186,7 @@ class RecurringDonationDetailRepositoryImpl
 
   double _calculateTotalDonated(List<DonationHistoryItem> history) {
     return history
-        .where((h) => h.status == DonationStatus.completed)
+        .where((h) => h.status == DonationStatus.processed)
         .fold(0, (sum, item) => sum + item.amount);
   }
 
@@ -255,7 +235,7 @@ class RecurringDonationDetailRepositoryImpl
     } else {
       // Fallback to calculation if API data is not available
       final completedDonations = _history
-          .where((h) => h.status == DonationStatus.completed)
+          .where((h) => h.status == DonationStatus.processed)
           .toList();
 
       if (completedDonations.isNotEmpty) {
