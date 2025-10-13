@@ -126,7 +126,11 @@ class RecurringDonationsOverviewCubit
         ? (donation.currentState == RecurringDonationState.finished || 
            donation.currentState == RecurringDonationState.active)
         : donation.isCompleted;
-    final nextDonationDate = donation.nextDonationDate;
+    
+    // Only show next donation date for active donations
+    final nextDonationDate = donation.currentState == RecurringDonationState.active 
+        ? donation.nextDonationDate 
+        : null;
 
     // Track progress calculation for analytics
     _trackProgressCalculation(donation, completedTurns, remainingTurns, progressPercentage);

@@ -212,17 +212,22 @@ class RecurringDonationDetailRepositoryImpl
   }
 
   bool _isRecurringDonationActive() {
-    // All donations fetched with /active are considered active
     if (_recurringDonation == null) return false;
 
-    // For active donations, check if the end date is in the future
+    // Check if the donation is cancelled or finished
+    if (_recurringDonation!.currentState == RecurringDonationState.cancelled ||
+        _recurringDonation!.currentState == RecurringDonationState.finished) {
+      return false;
+    }
+
+    // For active donations, also check if the end date is in the future
     final endDate = _recurringDonation!.calculatedEndDate;
     if (endDate != null) {
       return endDate.isAfter(DateTime.now());
     }
 
-    // If no end date, assume it's active
-    return true;
+    // If no end date and state is active, assume it's active
+    return _recurringDonation!.currentState == RecurringDonationState.active;
   }
 
   DonationHistoryItem _createUpcomingDonation() {
