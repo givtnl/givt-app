@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
+import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 
 class ConfirmUIModel extends Equatable {
@@ -16,7 +16,7 @@ class ConfirmUIModel extends Equatable {
 
   final String organizationName;
   final String amount;
-  final RecurringDonationFrequency? frequency;
+  final overview.Frequency? frequency;
   final DateTime? startDate;
   final DateTime? endDate;
   final String numberOfDonations;
@@ -62,18 +62,22 @@ class ConfirmUIModel extends Equatable {
 
   /// Returns frequency in days for analytics
   int? _getFrequencyInDays() {
-    switch (frequency) {
-      case RecurringDonationFrequency.week:
+    if (frequency == null) return null;
+    
+    switch (frequency!) {
+      case overview.Frequency.daily:
+        return 1;
+      case overview.Frequency.weekly:
         return 7;
-      case RecurringDonationFrequency.month:
+      case overview.Frequency.monthly:
         return 30;
-      case RecurringDonationFrequency.quarter:
+      case overview.Frequency.quarterly:
         return 90;
-      case RecurringDonationFrequency.halfYear:
+      case overview.Frequency.halfYearly:
         return 180;
-      case RecurringDonationFrequency.year:
+      case overview.Frequency.yearly:
         return 365;
-      default:
+      case overview.Frequency.none:
         return null;
     }
   }
@@ -104,7 +108,7 @@ class ConfirmUIModel extends Equatable {
   ConfirmUIModel copyWith({
     String? organizationName,
     String? amount,
-    RecurringDonationFrequency? frequency,
+    overview.Frequency? frequency,
     DateTime? startDate,
     DateTime? endDate,
     String? numberOfDonations,

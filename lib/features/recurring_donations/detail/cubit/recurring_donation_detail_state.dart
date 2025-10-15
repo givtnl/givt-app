@@ -142,8 +142,8 @@ class DonationHistoryItem {
 /// Status of a donation instance
 enum DonationStatus {
   upcoming,
-  completed,
-  pending,
+  processed,
+  inprocess,
 }
 
 /// Custom states for the recurring donation detail screen

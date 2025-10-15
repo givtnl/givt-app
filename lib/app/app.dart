@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -25,7 +24,6 @@ import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:moment_dart/moment_dart.dart';
 
 class App extends StatefulWidget {
   const App({
@@ -165,8 +163,9 @@ class _AppView extends StatelessWidget {
       routerDelegate: AppRouter.router.routerDelegate,
       builder: (context, child) {
         final mediaQueryData = MediaQuery.of(context);
-        final scale = mediaQueryData.textScaler
-            .clamp(minScaleFactor: 1, maxScaleFactor: 1.2);
+        final currentScale = mediaQueryData.textScaler.scale(1.0);
+        final clampedScale = currentScale.clamp(1.0, 1.2);
+        final scale = TextScaler.linear(clampedScale);
 
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaler: scale),

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
+import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
 
 class SetAmountUIModel extends Equatable {
   const SetAmountUIModel({
@@ -9,7 +9,7 @@ class SetAmountUIModel extends Equatable {
     this.error,
   });
 
-  final RecurringDonationFrequency? selectedFrequency;
+  final overview.Frequency? selectedFrequency;
   final String amount;
   final bool isLoading;
   final String? error;
@@ -21,7 +21,7 @@ class SetAmountUIModel extends Equatable {
       double.parse(amount) > 0;
 
   SetAmountUIModel copyWith({
-    RecurringDonationFrequency? selectedFrequency,
+    overview.Frequency? selectedFrequency,
     String? amount,
     bool? isLoading,
     String? error,

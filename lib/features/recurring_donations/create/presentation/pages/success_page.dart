@@ -98,8 +98,7 @@ class _SuccessPageState extends State<SuccessPage> {
     if (widget.model.selectedEndOption ==
             RecurringDonationStringKeys.afterNumberOfDonations &&
         widget.model.numberOfDonations.isNotEmpty) {
-      return context.l10n.recurringDonationsSuccessSubtitleNextXMonths(
-        widget.model.numberOfDonations,
+      return context.l10n.recurringDonationsSuccessSubtitleDefault(
         widget.model.organizationName,
       );
     }

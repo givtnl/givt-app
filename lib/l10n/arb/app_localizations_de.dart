@@ -2349,7 +2349,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get recurringDonationsCreationErrorDescription =>
-      'Etwas ist schiefgelaufen.\\nBitte überprüfe deine Daten und versuche es erneut.';
+      'Etwas ist schiefgelaufen.\nBitte überprüfe deine Daten und versuche es erneut.';
 
   @override
   String get recurringDonationsCreationErrorChangeAndRetry => 'Ändern';
@@ -2404,4 +2404,51 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get platformFeeCustomPlaceholder => 'Betrag eingeben';
+
+  @override
+  String get platformContributionTitle => 'Plattformbeitrag';
+
+  @override
+  String get platformContributionHelpLowerCosts =>
+      'Helfen Sie uns, die Kosten für die Organisationen zu senken';
+
+  @override
+  String get platformContributionAims =>
+      'Give strebt mit Ihrer Hilfe eine Servicegebühr von 0% an. Sie werden hier angezeigt, sobald Sie sie festgelegt haben.';
+
+  @override
+  String get platformContributionManage =>
+      'Verwalten Sie Ihren Plattformbeitrag für jede Organisation';
+
+  @override
+  String get platformContributionOrgPresbyterian => 'Presbyterian Church';
+
+  @override
+  String get platformContributionGenerous => 'Extra großzügig';
+
+  @override
+  String get platformContributionOrgRedCross => 'Rotes Kreuz';
+
+  @override
+  String get platformContributionCommon => 'Am beliebtesten';
+
+  @override
+  String get platformContributionOrgTheParkChurch => 'The Park Church';
+
+  @override
+  String get platformContributionSaveChangesButton => 'Änderungen speichern';
+
+  @override
+  String get platformContributionSaveChangesModalTitle =>
+      'Änderungen speichern?';
+
+  @override
+  String get platformContributionSaveChangesModalBody =>
+      'Möchten Sie Ihre Änderungen speichern, bevor Sie gehen?';
+
+  @override
+  String get platformContributionSaveChangesModalYesButton => 'Ja, speichern';
+
+  @override
+  String get platformContributionSaveChangesModalNoButton => 'Nein, verwerfen';
 }

@@ -529,10 +529,18 @@ enum AmplitudeEvents {
   menuNavigationGiveLimitClicked('menu_navigation_give_limit_clicked'),
   menuNavigationPersonalInfoClicked('menu_navigation_personal_info_clicked'),
   menuNavigationAmountPresetsClicked('menu_navigation_amount_presets_clicked'),
+  menuNavigationPlatformContributionClicked('menu_navigation_platform_contribution_clicked'),
   menuNavigationBiometricClicked('menu_navigation_biometric_clicked'),
   menuNavigationLogoutClicked('menu_navigation_logout_clicked'),
   menuNavigationUnregisterClicked('menu_navigation_unregister_clicked'),
-  menuNavigationAboutGivtClicked('menu_navigation_about_givt_clicked');
+  menuNavigationAboutGivtClicked('menu_navigation_about_givt_clicked'),
+  platformContributionNavigationClicked('platform_contribution_navigation_clicked'),
+  platformContributionManageClicked('platform_contribution_manage_clicked'),
+  platformContributionToggleChanged('platform_contribution_toggle_changed'),
+  platformContributionLevelChanged('platform_contribution_level_changed'),
+  platformContributionSaveChangesClicked('platform_contribution_save_changes_clicked'),
+  platformContributionSaveConfirmClicked('platform_contribution_save_confirm_clicked'),
+  platformContributionDiscardConfirmClicked('platform_contribution_discard_confirm_clicked');
 
   const AmplitudeEvents(this.value);
 

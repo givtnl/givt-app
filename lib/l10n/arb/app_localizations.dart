@@ -4200,7 +4200,7 @@ abstract class AppLocalizations {
   /// No description provided for @recurringDonationsCreationErrorDescription.
   ///
   /// In en, this message translates to:
-  /// **'Something went wrong.\\nPlease check your details and try again.'**
+  /// **'Something went wrong.\nPlease check your details and try again.'**
   String get recurringDonationsCreationErrorDescription;
 
   /// No description provided for @recurringDonationsCreationErrorChangeAndRetry.
@@ -4304,6 +4304,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter custom amount'**
   String get platformFeeCustomPlaceholder;
+
+  /// No description provided for @platformContributionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Platform Contribution'**
+  String get platformContributionTitle;
+
+  /// No description provided for @platformContributionHelpLowerCosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us lower costs for the organizations'**
+  String get platformContributionHelpLowerCosts;
+
+  /// No description provided for @platformContributionAims.
+  ///
+  /// In en, this message translates to:
+  /// **'Give aims for 0% service fee with your help. They\'ll show here once you set them.'**
+  String get platformContributionAims;
+
+  /// No description provided for @platformContributionManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your platform contribution for each organization'**
+  String get platformContributionManage;
+
+  /// No description provided for @platformContributionOrgPresbyterian.
+  ///
+  /// In en, this message translates to:
+  /// **'Presbyterian Church'**
+  String get platformContributionOrgPresbyterian;
+
+  /// No description provided for @platformContributionGenerous.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra generous'**
+  String get platformContributionGenerous;
+
+  /// No description provided for @platformContributionOrgRedCross.
+  ///
+  /// In en, this message translates to:
+  /// **'Red Cross'**
+  String get platformContributionOrgRedCross;
+
+  /// No description provided for @platformContributionCommon.
+  ///
+  /// In en, this message translates to:
+  /// **'Most popular'**
+  String get platformContributionCommon;
+
+  /// No description provided for @platformContributionOrgTheParkChurch.
+  ///
+  /// In en, this message translates to:
+  /// **'The Park Church'**
+  String get platformContributionOrgTheParkChurch;
+
+  /// No description provided for @platformContributionSaveChangesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get platformContributionSaveChangesButton;
+
+  /// No description provided for @platformContributionSaveChangesModalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes?'**
+  String get platformContributionSaveChangesModalTitle;
+
+  /// No description provided for @platformContributionSaveChangesModalBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you want to save your changes before leaving?'**
+  String get platformContributionSaveChangesModalBody;
+
+  /// No description provided for @platformContributionSaveChangesModalYesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, save'**
+  String get platformContributionSaveChangesModalYesButton;
+
+  /// No description provided for @platformContributionSaveChangesModalNoButton.
+  ///
+  /// In en, this message translates to:
+  /// **'No, discard'**
+  String get platformContributionSaveChangesModalNoButton;
 }
 
 class _AppLocalizationsDelegate

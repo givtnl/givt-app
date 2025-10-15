@@ -56,6 +56,7 @@ enum Pages {
     name: 'DONATION-DETAIL',
   ),
   permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
+  platformContribution(path: 'platform-contribution', name: 'PLATFORM-CONTRIBUTION'),
   ;
 
   const Pages({

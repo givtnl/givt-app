@@ -21,12 +21,13 @@ import 'package:givt_app/features/family/features/parental_approval/repositories
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
+import 'package:givt_app/features/platform_contribution/injection/injection.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step1_select_organization_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step2_set_amount_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step3_set_duration_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step4_confirm_cubit.dart';
-import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_new_flow_repository.dart';
+import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/injection.dart';
 import 'package:givt_app/features/recurring_donations/overview/injection.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -50,6 +51,7 @@ Future<void> init() async {
   registerRecurringDonationsOverviewDependencies();
   registerRecurringDonationDetailDependencies();
   registerDonationOverviewDependencies();
+  registerPlatformContributionDependencies();
 }
 
 Future<void> initAPIService() async {
@@ -223,20 +225,20 @@ void initRepositories() {
     )
     ..registerFactory<Step1SelectOrganizationCubit>(
       () => Step1SelectOrganizationCubit(
-        getIt<RecurringDonationNewFlowRepository>(),
+        getIt<RecurringDonationRepository>(),
       ),
     )
     ..registerFactory<Step2SetAmountCubit>(
-      () => Step2SetAmountCubit(getIt<RecurringDonationNewFlowRepository>()),
+      () => Step2SetAmountCubit(getIt<RecurringDonationRepository>()),
     )
     ..registerFactory<Step3SetDurationCubit>(
-      () => Step3SetDurationCubit(getIt<RecurringDonationNewFlowRepository>()),
+      () => Step3SetDurationCubit(getIt<RecurringDonationRepository>()),
     )
     ..registerFactory<Step4ConfirmCubit>(
-      () => Step4ConfirmCubit(getIt<RecurringDonationNewFlowRepository>()),
+      () => Step4ConfirmCubit(getIt<RecurringDonationRepository>()),
     )
-    ..registerLazySingleton<RecurringDonationNewFlowRepository>(
-      () => RecurringDonationNewFlowRepository(
+    ..registerLazySingleton<RecurringDonationRepository>(
+      () => RecurringDonationRepository(
         getIt<CollectGroupRepository>(),
         getIt<APIService>(),
       ),

@@ -21,6 +21,9 @@ class AnalyticsHelper {
   static const String dateEUKey = 'start_date_eu_format';
   static const String familyNameKey = 'family_name';
   static const String isFamilyAppKey = 'is_family_app';
+  static const String organizationNameKey = 'organization_name';
+  static const String toggleStatusKey = 'toggle_status';
+  static const String contributionLevelKey = 'contribution_level';
 
   static Amplitude? _amplitude;
 

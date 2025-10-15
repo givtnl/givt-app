@@ -31,6 +31,7 @@ import 'package:givt_app/features/personal_summary/overview/bloc/personal_summar
 import 'package:givt_app/features/personal_summary/overview/pages/personal_summary_page.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/pages/yearly_overview_page.dart';
+import 'package:givt_app/features/platform_contribution/presentation/screens/platform_contribution_screen.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -130,13 +131,14 @@ class AppRouter {
             path: Pages.personalSummary.path,
             name: Pages.personalSummary.name,
             builder: (context, state) => BlocProvider(
-              create: (_) => PersonalSummaryBloc(
-                loggedInUserExt: context.read<AuthCubit>().state.user,
-                givingGoalRepository: getIt(),
-                givtRepo: getIt(),
-              )..add(
-                  const PersonalSummaryInit(),
-                ),
+              create: (_) =>
+                  PersonalSummaryBloc(
+                    loggedInUserExt: context.read<AuthCubit>().state.user,
+                    givingGoalRepository: getIt(),
+                    givtRepo: getIt(),
+                  )..add(
+                    const PersonalSummaryInit(),
+                  ),
               child: const PersonalSummary(),
             ),
             routes: [
@@ -173,12 +175,13 @@ class AppRouter {
                         value: summaryBloc,
                       ),
                       BlocProvider(
-                        create: (context) => YearlyOverviewCubit(
-                          getIt(),
-                        )..init(
-                            year: state.uri.queryParameters['year']!,
-                            guid: guid,
-                          ),
+                        create: (context) =>
+                            YearlyOverviewCubit(
+                              getIt(),
+                            )..init(
+                              year: state.uri.queryParameters['year']!,
+                              guid: guid,
+                            ),
                       ),
                     ],
                     child: const YearlyOverviewPage(),
@@ -298,19 +301,22 @@ class AppRouter {
               create: (_) {
                 final extra = state.extra! as Map<String, dynamic>;
                 final auth = context.read<AuthCubit>().state;
-                final bloc = GiveBloc(
-                  getIt(),
-                  getIt(),
-                  getIt(),
-                  getIt(),
-                )..add(
-                    GiveAmountChanged(
-                      firstCollectionAmount: extra['firstCollection'] as double,
-                      secondCollectionAmount:
-                          extra['secondCollection'] as double,
-                      thirdCollectionAmount: extra['thirdCollection'] as double,
-                    ),
-                  );
+                final bloc =
+                    GiveBloc(
+                      getIt(),
+                      getIt(),
+                      getIt(),
+                      getIt(),
+                    )..add(
+                      GiveAmountChanged(
+                        firstCollectionAmount:
+                            extra['firstCollection'] as double,
+                        secondCollectionAmount:
+                            extra['secondCollection'] as double,
+                        thirdCollectionAmount:
+                            extra['thirdCollection'] as double,
+                      ),
+                    );
                 if ((extra['code'] as String).isNotEmpty) {
                   bloc.add(
                     GiveQRCodeScannedOutOfApp(
@@ -367,16 +373,17 @@ class AppRouter {
                         value: state.extra! as GiveBloc,
                       ),
                       BlocProvider(
-                        create: (_) => OrganisationBloc(
-                          getIt(),
-                          getIt(),
-                          getIt(),
-                        )..add(
-                            OrganisationFetch(
-                              Country.fromCode(user.country),
-                              type: CollectGroupType.none.index,
+                        create: (_) =>
+                            OrganisationBloc(
+                              getIt(),
+                              getIt(),
+                              getIt(),
+                            )..add(
+                              OrganisationFetch(
+                                Country.fromCode(user.country),
+                                type: CollectGroupType.none.index,
+                              ),
                             ),
-                          ),
                       ),
                     ],
                     child: const OrganizationListPage(),
@@ -412,33 +419,35 @@ class AppRouter {
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
-                    create: (_) => GiveBloc(
-                      getIt(),
-                      getIt(),
-                      getIt(),
-                      getIt(),
-                    )..add(
-                        const GiveCheckLastDonation(),
-                      ),
+                    create: (_) =>
+                        GiveBloc(
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                        )..add(
+                          const GiveCheckLastDonation(),
+                        ),
                   ),
                   BlocProvider(
-                    create: (_) => OrganisationBloc(
-                      getIt(),
-                      getIt(),
-                      getIt(),
-                    )..add(
-                        OrganisationFetch(
-                          Country.fromCode(user.country),
+                    create: (_) =>
+                        OrganisationBloc(
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                        )..add(
+                          OrganisationFetch(
+                            Country.fromCode(user.country),
 
-                          /// Disable last donated organisation
-                          /// in the discover flow as it's
-                          /// not present in the native app
-                          showLastDonated: false,
-                          type: state.extra != null && state.extra is int
-                              ? state.extra! as int
-                              : CollectGroupType.none.index,
+                            /// Disable last donated organisation
+                            /// in the discover flow as it's
+                            /// not present in the native app
+                            showLastDonated: false,
+                            type: state.extra != null && state.extra is int
+                                ? state.extra! as int
+                                : CollectGroupType.none.index,
+                          ),
                         ),
-                      ),
                   ),
                 ],
                 child: const OrganizationListPage(
@@ -450,10 +459,7 @@ class AppRouter {
           GoRoute(
             path: Pages.donationOverview.path,
             name: Pages.donationOverview.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => DonationOverviewCubit(getIt()),
-              child: const DonationOverviewPage(),
-            ),
+            builder: (context, state) => const DonationOverviewPage(),
           ),
           GoRoute(
             path: Pages.unregister.path,
@@ -464,6 +470,11 @@ class AppRouter {
               ),
               child: const UnregisterPage(),
             ),
+          ),
+          GoRoute(
+            path: Pages.platformContribution.path,
+            name: Pages.platformContribution.name,
+            builder: (_, state) => const PlatformContributionScreen(),
           ),
         ],
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
@@ -481,7 +492,7 @@ class AppRouter {
               code: routerState.uri.queryParameters['code'] ?? '',
               afterGivingRedirection:
                   routerState.uri.queryParameters['afterGivingRedirection'] ??
-                      '',
+                  '',
               given: routerState.uri.queryParameters.containsKey('given'),
               retry: routerState.uri.queryParameters.containsKey('retry'),
               navigateTo: routerState.uri.queryParameters['page'] ?? '',

@@ -528,9 +528,9 @@ class APIService {
   }
 
   Future<List<dynamic>> fetchRecurringDonations({
-    required Map<String, dynamic> params,
+    required String status,
   }) async {
-    final url = Uri.https(_apiURLAWS, '/recurringdonations');
+    final url = Uri.https(_apiURL, '/givtservice/v1/recurringdonation/status/$status');
 
     final response =
         await client.get(url, headers: {'Content-Type': 'application/json'});
@@ -542,19 +542,19 @@ class APIService {
       );
     }
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    return decodedBody['results'] as List<dynamic>;
+    return decodedBody['items'] as List<dynamic>;
   }
 
   Future<void> cancelRecurringDonation({
     required String recurringDonationId,
   }) async {
     final url = Uri.https(
-      _apiURLAWS,
-      'recurringdonations/${recurringDonationId.toLowerCase()}/cancel',
+      _apiURL,
+      '/givtservice/v1/recurringdonation/$recurringDonationId',
     );
 
     final response =
-        await client.patch(url, headers: {'Content-Type': 'application/json'});
+        await client.delete(url, headers: {'Content-Type': 'application/json'});
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
@@ -563,17 +563,16 @@ class APIService {
     }
   }
 
-  Future<Map<String, dynamic>> fetchRecurringInstances(
+  Future<Map<String, dynamic>> fetchRecurringDonationById(
     String donationId,
   ) async {
     final url =
-        Uri.https(_apiURLAWS, 'recurringdonations/$donationId/donations');
+        Uri.https(_apiURL, '/givtservice/v1/recurringdonation/$donationId');
 
     final response = await client.get(
       url,
       headers: {
         'Content-Type': 'application/json',
-        'x-json-casing': 'PascalKeeze',
       },
     );
     if (response.statusCode >= 400) {
@@ -586,7 +585,7 @@ class APIService {
   }
 
   Future<bool> createRecurringDonation(Map<String, dynamic> body) async {
-    final url = Uri.https(_apiURLAWS, '/recurringdonations');
+    final url = Uri.https(_apiURL, '/givtservice/v1/recurringdonation');
 
     final response = await client.post(
       url,
@@ -601,7 +600,7 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
-    return response.statusCode == 201;
+    return response.statusCode == 200;
   }
 
   Future<List<dynamic>> fetchExternalDonations({
@@ -734,6 +733,76 @@ class APIService {
     }
 
     return response.statusCode == 200;
+  }
+
+  // Platform Fee Preferences
+
+  Future<List<dynamic>> getPlatformFeePreferences() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/platformfee/preferences');
+    final response = await client.get(url);
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final items = decodedBody['items'];
+    if (items is List<dynamic>) {
+      return items;
+    }
+    return [];
+  }
+
+  Future<Map<String, dynamic>> createPlatformFeePreference(
+    Map<String, dynamic> body,
+  ) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/platformfee/preferences');
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return response.body.isNotEmpty
+        ? jsonDecode(response.body) as Map<String, dynamic>
+        : <String, dynamic>{};
+  }
+
+  Future<void> updatePlatformFeePreference(
+    String preferenceId,
+    Map<String, dynamic> body,
+  ) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/platformfee/preferences/$preferenceId',
+    );
+    final response = await client.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(body),
+    );
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
   }
 
   Future<List<dynamic>> fetchMonthlySummary(
