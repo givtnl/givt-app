@@ -19,6 +19,7 @@ mixin RecurringDonationDetailRepository {
   List<DonationHistoryItem> getHistory();
   int getMonthsHelped();
   DonationProgress? getProgress();
+  bool isActive();
 }
 
 class RecurringDonationDetailRepositoryImpl
@@ -323,6 +324,11 @@ class RecurringDonationDetailRepositoryImpl
       completed: completed,
       total: total,
     );
+  }
+
+  @override
+  bool isActive() {
+    return _isRecurringDonationActive();
   }
 
   void dispose() {
