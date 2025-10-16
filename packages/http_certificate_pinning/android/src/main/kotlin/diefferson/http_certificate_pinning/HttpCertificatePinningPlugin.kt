@@ -36,7 +36,7 @@ public class HttpCertificatePinningPlugin : FlutterPlugin, MethodCallHandler {
   }
   
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-      channel = MethodChannel(flutterPluginBinding.binaryMessenger, "cpu_reader")
+      channel = MethodChannel(flutterPluginBinding.binaryMessenger, "http_certificate_pinning")
       channel.setMethodCallHandler(this)
   }
 
