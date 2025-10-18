@@ -1099,7 +1099,7 @@
   "platformFeeCustomPlaceholder": "Enter custom amount",
   "platformContributionTitle": "Platform Contribution",
   "platformContributionHelpLowerCosts": "Help lower costs for organisations",
-  "platformContributionAims": "Give aims for 0% service fee with your help. They'll show here once you set them.",
+  "platformContributionAims": "Your platform contribution helps reduce fees so more of each donation reaches the organisation. Once you set your contribution, it will appear here. ",
   "platformContributionManage": "Manage your platform contribution for each organization",
   "platformContributionOrgPresbyterian": "Presbyterian Church",
   "platformContributionGenerous": "Extra generous",
