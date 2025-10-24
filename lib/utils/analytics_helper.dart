@@ -1,6 +1,10 @@
 import 'dart:developer';
 
 import 'package:amplitude_flutter/amplitude.dart';
+import 'package:amplitude_flutter/configuration.dart';
+import 'package:amplitude_flutter/default_tracking.dart';
+import 'package:amplitude_flutter/events/base_event.dart';
+import 'package:amplitude_flutter/events/identify.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/shared/models/models.dart';
 
@@ -28,9 +32,11 @@ class AnalyticsHelper {
   static Amplitude? _amplitude;
 
   static Future<void> init(String key) async {
-    _amplitude = Amplitude.getInstance();
-    await _amplitude!.init(key);
-    await _amplitude!.trackingSessionEvents(true);
+    final configuration = Configuration(
+      apiKey: key,
+    );
+    _amplitude = Amplitude(configuration);
+    await _amplitude!.isBuilt;
   }
 
   static Future<void> logChatScriptEvent({
@@ -53,15 +59,19 @@ class AnalyticsHelper {
     String eventName,
     Map<String, dynamic>? eventProperties,
   ) async {
-    await _amplitude?.logEvent(
-      eventName,
-      eventProperties: eventProperties,
-    );
+    final event = BaseEvent(eventName);
+    if (eventProperties != null) {
+      event.eventProperties = eventProperties;
+    }
+    await _amplitude?.track(event);
 
     log('$eventName pressed with event properties: $eventProperties');
   }
 
-  static void clearUserProperties() => _amplitude?.clearUserProperties();
+  static Future<void> clearUserProperties() async {
+    final identify = Identify()..clearAll();
+    await _amplitude?.identify(identify);
+  }
 
   static Future<void> setUserProperties({
     required String userId,
@@ -70,7 +80,11 @@ class AnalyticsHelper {
     log('Amplitude, userId: $userId, setting user properties: $userProperties');
     await _amplitude?.setUserId(userId);
     if (userProperties != null) {
-      await _amplitude?.setUserProperties(userProperties);
+      final identify = Identify();
+      userProperties.forEach((key, value) {
+        identify.set(key, value);
+      });
+      await _amplitude?.identify(identify);
     }
   }
 

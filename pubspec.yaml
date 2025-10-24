@@ -7,7 +7,7 @@ environment:
   sdk: ">=3.8.0 <4.0.0"
 
 dependencies:
-  amplitude_flutter: ^3.16.7
+  amplitude_flutter: ^4.3.9
   animated_toggle_switch: ^0.8.4
   app_settings: ^5.2.0
   badges: ^3.1.2
@@ -17,13 +17,13 @@ dependencies:
   countup: ^0.1.4
   currency_text_input_formatter: ^2.2.8
   dart_jsonwebtoken: ^2.17.0
-  device_info_plus: ^11.3.0
+  device_info_plus: ^12.2.0
   diacritic: ^0.1.6
   dotted_border: ^2.1.0
   equatable: ^2.0.7
-  firebase_core: ^3.12.1
-  firebase_crashlytics: ^4.3.4
-  firebase_messaging: ^15.2.4
+  firebase_core: ^4.2.0
+  firebase_crashlytics: ^5.0.3
+  firebase_messaging: ^16.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^9.0.0
@@ -65,7 +65,7 @@ dependencies:
   nfc_manager_ndef: ^1.1.0
   overlay_tooltip:
     path: ./packages/overlay_tooltip
-  package_info_plus: ^8.2.1
+  package_info_plus: ^9.0.0
   path: ^1.9.0
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
@@ -84,7 +84,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   record: ^5.2.0
   audioplayers: ^6.1.2
-  firebase_remote_config: ^5.4.0
+  firebase_remote_config: ^6.1.0
   rxdart: ^0.28.0
   facebook_app_events: ^0.20.1
   volume_controller: ^3.2.0
