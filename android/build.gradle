@@ -9,18 +9,14 @@ allprojects {
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
+    afterEvaluate { project ->
+        project.android {
+            compileSdkVersion 36
+        } 
+    }
 }
-
 subprojects {
     project.evaluationDependsOn(':app')
-}
-
-subprojects {
-    afterEvaluate {
-        extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
-            compileSdkVersion(36)  
-        }
-    }
 }
 
 tasks.register("clean", Delete) {
