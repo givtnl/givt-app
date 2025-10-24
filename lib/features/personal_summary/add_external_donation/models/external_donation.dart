@@ -9,17 +9,30 @@ class ExternalDonation extends Equatable {
     required this.cronExpression,
     required this.creationDate,
     required this.taxDeductible,
+    this.active = true,
   });
 
-  factory ExternalDonation.fromJson(Map<String, dynamic> json) =>
-      ExternalDonation(
-        id: json['id'] as String,
-        amount: json['amount'] as double,
-        description: json['description'] as String,
-        cronExpression: json['cronExpression'] as String,
-        creationDate: json['creationDate'] as String,
-        taxDeductible: json['taxDeductable'] as bool,
-      );
+  factory ExternalDonation.fromJson(Map<String, dynamic> json) {
+    // Handle both old format (cronExpression) and new format (frequency)
+    String cronExpression = '';
+    if (json.containsKey('cronExpression')) {
+      cronExpression = json['cronExpression'] as String;
+    } else if (json.containsKey('frequency')) {
+      // Convert frequency string to cronExpression for backward compatibility
+      final frequencyStr = json['frequency'] as String;
+      cronExpression = _frequencyToCronExpression(frequencyStr);
+    }
+
+    return ExternalDonation(
+      id: json['id'] as String,
+      amount: (json['amount'] as num).toDouble(),
+      description: json['description'] as String,
+      cronExpression: cronExpression,
+      creationDate: json['creationDate'] as String,
+      taxDeductible: json['taxDeductable'] as bool,
+      active: json['active'] as bool? ?? true,
+    );
+  }
 
   const ExternalDonation.empty()
       : id = '',
@@ -27,7 +40,8 @@ class ExternalDonation extends Equatable {
         description = '',
         cronExpression = '',
         creationDate = '',
-        taxDeductible = false;
+        taxDeductible = false,
+        active = true;
 
   final String id;
   final double amount;
@@ -35,6 +49,7 @@ class ExternalDonation extends Equatable {
   final String cronExpression;
   final String creationDate;
   final bool taxDeductible;
+  final bool active;
 
   ExternalDonationFrequency get frequency {
     if (cronExpression.isEmpty) {
@@ -58,14 +73,16 @@ class ExternalDonation extends Equatable {
     }
   }
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'amount': amount,
-        'description': description,
-        'cronExpression': cronExpression,
-        'creationDate': creationDate,
-        'taxDeductable': taxDeductible,
-      };
+  Map<String, dynamic> toJson() {
+    // Convert to new API format with frequency string
+    final frequencyStr = _cronExpressionToFrequency(cronExpression);
+    return <String, dynamic>{
+      'amount': amount,
+      'description': description,
+      'frequency': frequencyStr,
+      'taxDeductable': taxDeductible,
+    };
+  }
 
   static List<ExternalDonation> fromJsonList(List<dynamic> json) {
     final externalDonations = <ExternalDonation>[];
@@ -86,6 +103,7 @@ class ExternalDonation extends Equatable {
     String? cronExpression,
     String? creationDate,
     bool? taxDeductible,
+    bool? active,
     ExternalDonationFrequency? frequency,
   }) {
     if (frequency != null &&
@@ -102,6 +120,7 @@ class ExternalDonation extends Equatable {
       cronExpression: cronExpression ?? this.cronExpression,
       creationDate: creationDate ?? this.creationDate,
       taxDeductible: taxDeductible ?? this.taxDeductible,
+      active: active ?? this.active,
     );
   }
 
@@ -121,7 +140,45 @@ class ExternalDonation extends Equatable {
     }
   }
 
-  int _getQuarterlyCronFirstPart(int month) {
+  static String _cronExpressionToFrequency(String cronExpression) {
+    if (cronExpression.isEmpty) {
+      return 'OneTime';
+    }
+    var cronExp = cronExpression.split(' ')[3];
+    if (cronExp.contains('/')) {
+      cronExp = cronExp.split('/')[1];
+    }
+    switch (cronExp) {
+      case '1':
+        return 'Monthly';
+      case '3':
+        return 'Quarterly';
+      case '6':
+        return 'HalfYearly';
+      case '12':
+        return 'Yearly';
+      default:
+        return 'OneTime';
+    }
+  }
+
+  static String _frequencyToCronExpression(String frequency) {
+    final startDate = DateTime.now();
+    switch (frequency) {
+      case 'Monthly':
+        return '0 0 ${startDate.day} * *';
+      case 'Quarterly':
+        return '0 0 ${startDate.day} ${_getQuarterlyCronFirstPart(startDate.month)}/3 *';
+      case 'HalfYearly':
+        return '0 0 ${startDate.day} ${_getHalfYearlyCronFirstPart(startDate.month)}/6 *';
+      case 'Yearly':
+        return '0 0 ${startDate.day} ${startDate.month} *';
+      default: // OneTime
+        return '';
+    }
+  }
+
+  static int _getQuarterlyCronFirstPart(int month) {
     switch (month) {
       case 0:
       case 3:
@@ -143,7 +200,7 @@ class ExternalDonation extends Equatable {
     }
   }
 
-  int _getHalfYearlyCronFirstPart(int month) {
+  static int _getHalfYearlyCronFirstPart(int month) {
     if (month < 7) {
       return month + 1;
     } else {
@@ -152,6 +209,13 @@ class ExternalDonation extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [id, amount, description, cronExpression, creationDate, taxDeductible];
+  List<Object?> get props => [
+        id,
+        amount,
+        description,
+        cronExpression,
+        creationDate,
+        taxDeductible,
+        active,
+      ];
 }

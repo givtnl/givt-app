@@ -222,8 +222,8 @@ class GivtRepositoryImpl with GivtRepository {
     required String tillDate,
   }) async {
     final params = {
-      'fromDate': fromDate,
-      'tillDate': tillDate,
+      'startDate': fromDate,
+      'endDate': tillDate,
     };
     final decodedJson = await apiClient.fetchExternalDonations(params: params);
     return ExternalDonation.fromJsonList(
@@ -239,8 +239,8 @@ class GivtRepositoryImpl with GivtRepository {
     required String groupType,
   }) async {
     final params = {
-      'fromDate': fromDate,
-      'tillDate': tillDate,
+      'startDate': fromDate,
+      'endDate': tillDate,
       'orderType': orderType,
       'groupType': groupType,
     };
