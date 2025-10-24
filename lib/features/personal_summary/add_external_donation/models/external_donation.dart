@@ -90,7 +90,7 @@ class ExternalDonation extends Equatable {
   }) {
     String? newFrequencyString = frequencyString;
     if (frequency != null && frequency != this.frequency) {
-      newFrequencyString = _frequencyEnumToString(frequency);
+      newFrequencyString = frequencyEnumToString(frequency);
     }
     
     return ExternalDonation(
@@ -104,7 +104,7 @@ class ExternalDonation extends Equatable {
     );
   }
 
-  static String _frequencyEnumToString(ExternalDonationFrequency frequency) {
+  static String frequencyEnumToString(ExternalDonationFrequency frequency) {
     switch (frequency) {
       case ExternalDonationFrequency.monthly:
         return 'Monthly';

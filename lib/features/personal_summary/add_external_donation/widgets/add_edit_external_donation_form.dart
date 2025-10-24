@@ -61,13 +61,9 @@ class _AddEditExternalDonationFormState
       id: '',
       amount: double.parse(amountController.text.replaceAll(',', '.')),
       description: descriptionController.text,
-      cronExpression: '',
+      frequencyString: ExternalDonation.frequencyEnumToString(frequency),
       creationDate: DateTime.now().toIso8601String(),
       taxDeductible: taxDeductable,
-    );
-
-    externalDonation = externalDonation.copyWith(
-      frequency: frequency,
     );
 
     widget.onSave(externalDonation);
