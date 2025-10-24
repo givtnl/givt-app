@@ -62,6 +62,7 @@ class ExternalDonation extends Equatable {
       'description': description,
       'frequency': frequencyString,
       'taxDeductable': taxDeductible,
+      'active': active,
     };
   }
 
