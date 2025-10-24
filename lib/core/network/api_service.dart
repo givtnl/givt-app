@@ -606,9 +606,15 @@ class APIService {
   Future<List<dynamic>> fetchExternalDonations({
     required Map<String, dynamic> params,
   }) async {
-    final url = Uri.https(_apiURLAWS, '/external-donations', params);
+    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/search');
 
-    final response = await client.get(url);
+    final response = await client.post(
+      url,
+      body: jsonEncode(params),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
 
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
@@ -619,15 +625,21 @@ class APIService {
       );
     }
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    return decodedBody['result'] as List<dynamic>;
+    return decodedBody['items'] as List<dynamic>;
   }
 
   Future<List<dynamic>> fetchExternalDonationsSummary({
     required Map<String, dynamic> params,
   }) async {
-    final url = Uri.https(_apiURLAWS, '/external-donations/summary', params);
+    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/search');
 
-    final response = await client.get(url);
+    final response = await client.post(
+      url,
+      body: jsonEncode(params),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
 
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
@@ -637,11 +649,12 @@ class APIService {
             : null,
       );
     }
-    return jsonDecode(response.body) as List<dynamic>;
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['items'] as List<dynamic>;
   }
 
   Future<bool> deleteExternalDonation(String id) async {
-    final url = Uri.https(_apiURLAWS, '/external-donations/$id');
+    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/$id');
 
     final response = await client.delete(
       url,
@@ -658,11 +671,12 @@ class APIService {
             : null,
       );
     }
-    return response.statusCode == 200 || response.statusCode == 204;
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['item'] as bool;
   }
 
   Future<bool> addExternalDonation(Map<String, dynamic> body) async {
-    final url = Uri.https(_apiURLAWS, '/external-donations');
+    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations');
 
     final response = await client.post(
       url,
@@ -680,16 +694,16 @@ class APIService {
             : null,
       );
     }
-    return response.statusCode == 201;
+    return response.statusCode == 200 || response.statusCode == 201;
   }
 
   Future<bool> updateExternalDonation(
     String id,
     Map<String, dynamic> body,
   ) async {
-    final url = Uri.https(_apiURLAWS, '/external-donations/$id');
+    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/$id');
 
-    final response = await client.patch(
+    final response = await client.put(
       url,
       body: jsonEncode(body),
       headers: {
@@ -705,8 +719,8 @@ class APIService {
             : null,
       );
     }
-
-    return response.statusCode == 204;
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['item'] as bool;
   }
 
   Future<bool> updateNotificationId({
