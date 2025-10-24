@@ -2401,11 +2401,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get platformContributionHelpLowerCosts =>
-      'Help ons de kosten voor de organisaties te verlagen';
+      'Help de kosten voor organisaties te verlagen';
 
   @override
   String get platformContributionAims =>
-      'Give streeft naar 0% servicekosten met jouw hulp. Ze verschijnen hier zodra je ze hebt ingesteld.';
+      'Jouw platformbijdrage helpt de kosten te verminderen, zodat er meer van elke gift bij de organisatie terechtkomt. Zodra je een bijdrage hebt ingesteld, wordt die hier weergegeven.';
 
   @override
   String get platformContributionManage =>

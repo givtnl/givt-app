@@ -2391,11 +2391,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get platformContributionHelpLowerCosts =>
-      'Help us lower costs for the organizations';
+      'Help lower costs for organisations';
 
   @override
   String get platformContributionAims =>
-      'Give aims for 0% service fee with your help. They\'ll show here once you set them.';
+      'Your platform contribution helps reduce fees so more of each donation reaches the organisation. Once you set your contribution, it will appear here. ';
 
   @override
   String get platformContributionManage =>
@@ -4820,11 +4820,11 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get platformContributionHelpLowerCosts =>
-      'Help us lower costs for the organizations';
+      'Help lower costs for organisations';
 
   @override
   String get platformContributionAims =>
-      'Give aims for 0% service fee with your help. They\'ll show here once you set them.';
+      'Your platform contribution helps reduce fees so more of each donation reaches the organisation. Once you set your contribution, it will appear here. ';
 
   @override
   String get platformContributionManage =>

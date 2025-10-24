@@ -10,7 +10,10 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:nfc_manager/ndef_record.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:nfc_manager/nfc_manager_ios.dart';
+import 'package:nfc_manager_ndef/nfc_manager_ndef.dart';
 
 part 'scan_nfc_state.dart';
 
@@ -95,10 +98,13 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
     try {
       unawaited(
         NfcManager.instance.startSession(
-          alertMessage: 'Place your coin on the back of your phone near the camera',
-          onError: (error) async {
+          pollingOptions: {
+            NfcPollingOption.iso14443,
+          },
+          alertMessageIos: 'Place your coin on the back of your phone near the camera',
+          onSessionErrorIos: (error) async {
             log('onError - coin read error: ${error.message}');
-            if (error.type != NfcErrorType.systemIsBusy) {
+            if (error.code != NfcReaderErrorCodeIos.readerSessionInvalidationErrorSystemIsBusy) {
               cancelScanning();
             }
           },
@@ -108,7 +114,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
             if (ndef != null && ndef.cachedMessage != null) {
               if (ndef.cachedMessage!.records.isNotEmpty &&
                   ndef.cachedMessage!.records.first.typeNameFormat ==
-                      NdefTypeNameFormat.nfcWellknown) {
+                      TypeNameFormat.wellKnown) {
                 var mediumId = '';
                 var readData = '';
                 final wellKnownRecord = ndef.cachedMessage!.records.first;
@@ -132,7 +138,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
                 // on Android we intentionally keep session open
                 // until user triggers stop scanning on another screen
                 if (Platform.isIOS) {
-                  await NfcManager.instance.stopSession(alertMessage: ' ',);
+                  await NfcManager.instance.stopSession(alertMessageIos: ' ',);
                 }
 
                 if (mediumId.isEmpty) {

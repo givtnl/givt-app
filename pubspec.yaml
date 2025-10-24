@@ -61,7 +61,8 @@ dependencies:
   material_color_utilities: ^0.11.0
   mobile_scanner: ^6.0.7
   moment_dart: ^5.2.3
-  nfc_manager: ^3.5.0
+  nfc_manager: ^4.1.1
+  nfc_manager_ndef: ^1.1.0
   overlay_tooltip:
     path: ./packages/overlay_tooltip
   package_info_plus: ^8.2.1

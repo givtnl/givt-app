@@ -4314,13 +4314,13 @@ abstract class AppLocalizations {
   /// No description provided for @platformContributionHelpLowerCosts.
   ///
   /// In en, this message translates to:
-  /// **'Help us lower costs for the organizations'**
+  /// **'Help lower costs for organisations'**
   String get platformContributionHelpLowerCosts;
 
   /// No description provided for @platformContributionAims.
   ///
   /// In en, this message translates to:
-  /// **'Give aims for 0% service fee with your help. They\'ll show here once you set them.'**
+  /// **'Your platform contribution helps reduce fees so more of each donation reaches the organisation. Once you set your contribution, it will appear here. '**
   String get platformContributionAims;
 
   /// No description provided for @platformContributionManage.
