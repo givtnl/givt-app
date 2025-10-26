@@ -27,6 +27,7 @@ class GiveCubit extends Cubit<GiveState> {
     required String mediumId,
     bool isGratitude = false,
     int? experiencePoints,
+    String? searchText,
   }) async {
     emit(GiveLoading());
     final transaction = Transaction(
@@ -35,6 +36,7 @@ class GiveCubit extends Cubit<GiveState> {
       mediumId: base64Encode(utf8.encode(mediumId)),
       isActOfService: isGratitude,
       gameGuid: isGratitude ? _reflectAndShareRepository.getGameId() : null,
+      searchText: searchText,
     );
     try {
       await _createTransactionRepository.createTransaction(

@@ -8,6 +8,7 @@ class Transaction {
     this.goalId,
     this.isActOfService = false,
     this.gameGuid,
+    this.searchText,
   }) : timestamp =
             DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now().toUtc());
 
@@ -17,6 +18,7 @@ class Transaction {
   final String? goalId;
   final bool isActOfService;
   final String? gameGuid;
+  final String? searchText;
   final String timestamp;
 
   Map<String, dynamic> toJson() {
@@ -28,6 +30,7 @@ class Transaction {
       'timestamp': timestamp,
       'isActOfService': isActOfService,
       if (gameGuid != null) 'GameId': gameGuid,
+      if (searchText != null && searchText!.isNotEmpty) 'searchText': searchText,
     };
   }
 }
