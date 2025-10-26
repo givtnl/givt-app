@@ -23,6 +23,8 @@ class InfraCubit extends Cubit<InfraState> {
     required String email,
     required String message,
     required String appLanguage,
+    String? subject,
+    String? searchText,
   }) async {
     try {
       await contactSupport(
@@ -30,6 +32,8 @@ class InfraCubit extends Cubit<InfraState> {
         email: email,
         message: message,
         appLanguage: appLanguage,
+        subject: subject,
+        searchText: searchText,
       );
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
@@ -45,6 +49,8 @@ class InfraCubit extends Cubit<InfraState> {
     required String email,
     required String message,
     required String appLanguage,
+    String? subject,
+    String? searchText,
   }) async {
     emit(const InfraLoading());
     message = message.replaceAll('\n', '<br>');
@@ -82,6 +88,8 @@ class InfraCubit extends Cubit<InfraState> {
     await infraRepository.contactSupport(
       guid: guid,
       message: '$message <br /><br />$footer',
+      subject: subject,
+      searchText: searchText,
     );
     emit(const InfraSuccess());
   }

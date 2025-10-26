@@ -14,7 +14,6 @@ import 'package:givt_app/features/family/features/parent_giving_flow/presentatio
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_amount_page.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
-import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -106,16 +105,11 @@ class GiveFromListPage extends StatelessWidget {
 
   Future<void> _createTransaction(
       BuildContext context, int result, CollectGroup collectGroup) async {
-    // Get the search text from OrganisationBloc
-    final organisationBloc = getIt<OrganisationBloc>();
-    final searchText = organisationBloc.state.previousSearchQuery;
-    
     await getIt<GiveCubit>().createTransaction(
       userId: context.read<FamilyAuthCubit>().user!.guid,
       amount: result,
       orgName: collectGroup.orgName,
       mediumId: collectGroup.nameSpace,
-      searchText: searchText.isNotEmpty ? searchText : null,
     );
   }
 }
