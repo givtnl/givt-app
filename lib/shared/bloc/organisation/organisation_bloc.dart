@@ -270,11 +270,17 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         return;
       }
 
+      // Check if query starts with "stichting " and create alternative query
+      final alternativeQuery = _getAlternativeQueryWithoutStichting(query);
+
       // First try exact substring matching
       final exactMatches = typeFilteredOrgs
           .where(
-            (org) =>
-                _removeDiacritics(org.orgName.toLowerCase()).contains(query),
+            (org) {
+              final orgName = _removeDiacritics(org.orgName.toLowerCase());
+              return orgName.contains(query) ||
+                  (alternativeQuery != null && orgName.contains(alternativeQuery));
+            },
           )
           .toList();
 
@@ -297,14 +303,34 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           )
           .toList();
 
-      // Extract fuzzy matched results
+      // Extract fuzzy matched results for original query
       final fuzzyResults = extractAllSorted(
         query: query,
         choices: orgNames,
       ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
 
-      // Map fuzzy results back to organization objects
-      final fuzzyMatches = fuzzyResults.map((result) {
+      // If we have an alternative query, also try fuzzy matching with it
+      final alternativeFuzzyResults = alternativeQuery != null
+          ? extractAllSorted(
+              query: alternativeQuery,
+              choices: orgNames,
+            ).where((result) => result.score >= _fuzzyScoreThreshold).toList()
+          : <ExtractedResult>[];
+
+      // Combine and deduplicate results
+      final combinedResults = <String, ExtractedResult>{};
+      for (final result in [...fuzzyResults, ...alternativeFuzzyResults]) {
+        final existing = combinedResults[result.choice];
+        if (existing == null || result.score > existing.score) {
+          combinedResults[result.choice] = result;
+        }
+      }
+
+      // Sort by score and map back to organization objects
+      final sortedResults = combinedResults.values.toList()
+        ..sort((a, b) => b.score.compareTo(a.score));
+
+      final fuzzyMatches = sortedResults.map((result) {
         final index = orgNames.indexOf(result.choice);
         return typeFilteredOrgs[index];
       }).toList();
@@ -323,6 +349,17 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       );
       emit(state.copyWith(status: OrganisationStatus.error));
     }
+  }
+
+  /// Returns a query without "stichting " prefix if the query starts with it.
+  /// Returns null if the query doesn't start with "stichting ".
+  String? _getAlternativeQueryWithoutStichting(String query) {
+    const stichtingPrefix = 'stichting ';
+    if (query.startsWith(stichtingPrefix)) {
+      final withoutStichting = query.substring(stichtingPrefix.length).trim();
+      return withoutStichting.isNotEmpty ? withoutStichting : null;
+    }
+    return null;
   }
 
   FutureOr<void> _onTypeChanged(
@@ -348,12 +385,16 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     // If there's an active search query, apply both filters
     if (state.previousSearchQuery.isNotEmpty) {
       final query = _removeDiacritics(state.previousSearchQuery.toLowerCase());
+      final alternativeQuery = _getAlternativeQueryWithoutStichting(query);
 
       // First try exact matching
       var filteredOrgs = orgs
           .where(
-            (org) =>
-                _removeDiacritics(org.orgName.toLowerCase()).contains(query),
+            (org) {
+              final orgName = _removeDiacritics(org.orgName.toLowerCase());
+              return orgName.contains(query) ||
+                  (alternativeQuery != null && orgName.contains(alternativeQuery));
+            },
           )
           .toList();
 
@@ -370,7 +411,27 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           choices: orgNames,
         ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
 
-        filteredOrgs = fuzzyResults.map((result) {
+        final alternativeFuzzyResults = alternativeQuery != null
+            ? extractAllSorted(
+                query: alternativeQuery,
+                choices: orgNames,
+              ).where((result) => result.score >= _fuzzyScoreThreshold).toList()
+            : <ExtractedResult>[];
+
+        // Combine and deduplicate results
+        final combinedResults = <String, ExtractedResult>{};
+        for (final result in [...fuzzyResults, ...alternativeFuzzyResults]) {
+          final existing = combinedResults[result.choice];
+          if (existing == null || result.score > existing.score) {
+            combinedResults[result.choice] = result;
+          }
+        }
+
+        // Sort by score and map back to organization objects
+        final sortedResults = combinedResults.values.toList()
+          ..sort((a, b) => b.score.compareTo(a.score));
+
+        filteredOrgs = sortedResults.map((result) {
           final index = orgNames.indexOf(result.choice);
           return orgs[index];
         }).toList();
