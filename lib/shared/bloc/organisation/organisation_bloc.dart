@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
+import 'package:fuzzywuzzy/model/extracted_result.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -66,8 +67,9 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   }
 
   List<CollectGroup> _applySorting(
-    List<CollectGroup> organisations,
-  ) {
+    List<CollectGroup> organisations, {
+    String? searchQuery,
+  }) {
     // Always sort the selected group to the top
     organisations.sort((CollectGroup a, CollectGroup b) {
       if (a == state.selectedCollectGroup &&
@@ -77,6 +79,19 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       if (b == state.selectedCollectGroup &&
           b.orgName == lastDonatedOrganisation.organisationName) {
         return 1;
+      }
+
+      // Then sort by search query match if there's an active search
+      if (searchQuery != null && searchQuery.isNotEmpty) {
+        final query = _removeDiacritics(searchQuery.toLowerCase());
+        final aName = _removeDiacritics(a.orgName.toLowerCase());
+        final bName = _removeDiacritics(b.orgName.toLowerCase());
+        
+        final aMatchesQuery = aName.contains(query);
+        final bMatchesQuery = bName.contains(query);
+        
+        if (aMatchesQuery && !bMatchesQuery) return -1;
+        if (!aMatchesQuery && bMatchesQuery) return 1;
       }
 
       // Then sort favorites to the top
@@ -279,7 +294,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
-          filteredOrganisations: _applySorting(filteredOrgs),
+          filteredOrganisations: _applySorting(filteredOrgs, searchQuery: query),
           previousSearchQuery: event.query,
         ),
       );
@@ -320,12 +335,13 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   }
 
   /// Returns organizations that contain the query or alternative query as a substring.
+  /// Results are sorted with organizations matching the original query first.
   List<CollectGroup> _getExactMatches({
     required String query,
     required String? alternativeQuery,
     required List<CollectGroup> organisations,
   }) {
-    return organisations
+    final results = organisations
         .where(
           (org) {
             final orgName = _removeDiacritics(org.orgName.toLowerCase());
@@ -334,6 +350,21 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           },
         )
         .toList();
+    
+    // Sort results: organizations matching the original query first
+    results.sort((a, b) {
+      final aName = _removeDiacritics(a.orgName.toLowerCase());
+      final bName = _removeDiacritics(b.orgName.toLowerCase());
+      
+      final aMatchesOriginal = aName.contains(query);
+      final bMatchesOriginal = bName.contains(query);
+      
+      if (aMatchesOriginal && !bMatchesOriginal) return -1;
+      if (!aMatchesOriginal && bMatchesOriginal) return 1;
+      return 0;
+    });
+    
+    return results;
   }
 
   /// Returns organizations that match the query or alternative query using fuzzy matching.
@@ -348,43 +379,64 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         .toList();
 
     // Extract fuzzy matched results for original query
-    final fuzzyResults = extractAllSorted(
+    final fuzzyResults = extractAllSorted<String>(
       query: query,
       choices: orgNames,
     ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
 
     // If we have an alternative query, also try fuzzy matching with it
     final alternativeFuzzyResults = alternativeQuery != null
-        ? extractAllSorted(
+        ? extractAllSorted<String>(
             query: alternativeQuery,
             choices: orgNames,
           ).where((result) => result.score >= _fuzzyScoreThreshold).toList()
-        : <ExtractedResult>[];
+        : <ExtractedResult<String>>[];
 
-    // Combine and deduplicate results, keeping the best score for each organization
-    final combinedResults = <String, ExtractedResult>{};
-    for (final result in [...fuzzyResults, ...alternativeFuzzyResults]) {
-      final existing = combinedResults[result.choice];
-      if (existing == null || result.score > existing.score) {
-        combinedResults[result.choice] = result;
+    // Combine and deduplicate results by index, keeping the best score for each organization
+    // Prioritize original query results over alternative query results when scores are equal
+    final combinedResults = <int, ({ExtractedResult<String> result, bool isOriginal})>{};
+    
+    // Process original query results first (they get priority)
+    for (final result in fuzzyResults) {
+      final existing = combinedResults[result.index];
+      if (existing == null || result.score > existing.result.score) {
+        combinedResults[result.index] = (result: result, isOriginal: true);
+      }
+    }
+    
+    // Then process alternative query results, only updating if score is better
+    for (final result in alternativeFuzzyResults) {
+      final existing = combinedResults[result.index];
+      if (existing == null || result.score > existing.result.score) {
+        combinedResults[result.index] = (result: result, isOriginal: false);
       }
     }
 
     // Sort by score and map back to organization objects
     final sortedResults = combinedResults.values.toList()
-      ..sort((a, b) => b.score.compareTo(a.score));
+      ..sort((a, b) {
+        // First sort by score (descending)
+        final scoreComparison = b.result.score.compareTo(a.result.score);
+        if (scoreComparison != 0) return scoreComparison;
+        
+        // If scores are equal, prioritize original query results
+        if (a.isOriginal && !b.isOriginal) return -1;
+        if (!a.isOriginal && b.isOriginal) return 1;
+        return 0;
+      });
 
-    return sortedResults.map((result) {
-      final index = orgNames.indexOf(result.choice);
-      return organisations[index];
+    return sortedResults.map((entry) {
+      return organisations[entry.result.index];
     }).toList();
   }
 
   /// Returns a query without "stichting " prefix if the query starts with it.
   /// Returns null if the query doesn't start with "stichting ".
+  /// Works case-insensitively (e.g., "Stichting" or "STICHTING" also work).
   String? _getAlternativeQueryWithoutStichting(String query) {
     const stichtingPrefix = 'stichting ';
-    if (query.startsWith(stichtingPrefix)) {
+    final queryLower = query.toLowerCase();
+    if (queryLower.startsWith(stichtingPrefix)) {
       final withoutStichting = query.substring(stichtingPrefix.length).trim();
       return withoutStichting.isNotEmpty ? withoutStichting : null;
     }
