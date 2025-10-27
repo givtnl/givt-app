@@ -24,7 +24,7 @@ class InfraCubit extends Cubit<InfraState> {
     required String message,
     required String appLanguage,
     String? subject,
-    String? searchText,
+    Map<String, String>? metadata,
   }) async {
     try {
       await contactSupport(
@@ -33,7 +33,7 @@ class InfraCubit extends Cubit<InfraState> {
         message: message,
         appLanguage: appLanguage,
         subject: subject,
-        searchText: searchText,
+        metadata: metadata,
       );
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
@@ -50,11 +50,10 @@ class InfraCubit extends Cubit<InfraState> {
     required String message,
     required String appLanguage,
     String? subject,
-    String? searchText,
+    Map<String, String>? metadata,
   }) async {
     emit(const InfraLoading());
     message = message.replaceAll('\n', '<br>');
-    final applang = 'App Language : $appLanguage';
     final info = appConfig.packageInfo;
 
     late String os;
@@ -82,14 +81,30 @@ class InfraCubit extends Cubit<InfraState> {
     }
 
     final appversion = 'App version : ${info.version}.${info.buildNumber}';
-    final footer =
-        '$email<br />$appversion<br />$os<br />$device<br />$applang';
+    
+    // Build metadata section for the message
+    final metadataBuilder = StringBuffer();
+    metadataBuilder.write('GUID : $guid<br />');
+    metadataBuilder.write('Email : $email<br />');
+    metadataBuilder.write('$appversion<br />');
+    metadataBuilder.write('$os<br />');
+    metadataBuilder.write('$device<br />');
+    metadataBuilder.write('App Language : $appLanguage');
+    
+    // Add any additional metadata passed in
+    if (metadata != null && metadata.isNotEmpty) {
+      metadataBuilder.write('<br /><br />--- Additional Context ---');
+      metadata.forEach((key, value) {
+        metadataBuilder.write('<br />$key: $value');
+      });
+    }
+    
+    final fullMessage = '$message<br /><br />$metadataBuilder';
 
     await infraRepository.contactSupport(
       guid: guid,
-      message: '$message <br /><br />$footer',
+      message: fullMessage,
       subject: subject,
-      searchText: searchText,
     );
     emit(const InfraSuccess());
   }

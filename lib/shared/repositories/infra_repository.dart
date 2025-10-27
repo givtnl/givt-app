@@ -6,7 +6,6 @@ mixin InfraRepository {
     required String guid,
     required String message,
     String? subject,
-    String? searchText,
   });
 
   Future<AppUpdate?> checkAppUpdate({
@@ -25,13 +24,11 @@ class InfraRepositoryImpl with InfraRepository {
     required String guid,
     required String message,
     String? subject,
-    String? searchText,
   }) async {
-    final body = {
+    final body = <String, String>{
       'guid': guid,
       'subject': subject ?? 'Feedback app',
       'message': message,
-      if (searchText != null && searchText.isNotEmpty) 'searchText': searchText,
     };
     return apiClient.contactSupport(body);
   }

@@ -15,12 +15,18 @@ import 'package:go_router/go_router.dart';
 class AboutGivtBottomSheet extends StatefulWidget {
   const AboutGivtBottomSheet({
     this.initialMessage = '',
+    this.metadata,
     super.key,
   });
 
   final String initialMessage;
+  final Map<String, String>? metadata;
 
-  static void show(BuildContext context, {String initialMessage = ''}) {
+  static void show(
+    BuildContext context, {
+    String initialMessage = '',
+    Map<String, String>? metadata,
+  }) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -29,7 +35,10 @@ class AboutGivtBottomSheet extends StatefulWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       backgroundColor: Colors.white,
-      builder: (_) => AboutGivtBottomSheet(initialMessage: initialMessage),
+      builder: (_) => AboutGivtBottomSheet(
+        initialMessage: initialMessage,
+        metadata: metadata,
+      ),
     );
   }
 
@@ -154,6 +163,7 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                                 appLanguage: locals.localeName,
                                 email: user.email,
                                 guid: user.guid,
+                                metadata: widget.metadata,
                               );
                         }
                       : null,

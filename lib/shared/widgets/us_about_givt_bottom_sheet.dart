@@ -76,6 +76,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
                         appLanguage: locals.localeName,
                         email: user!.email,
                         guid: user.guid,
+                        metadata: null,
                       ),
                 );
               }
