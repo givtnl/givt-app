@@ -509,10 +509,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
     AboutGivtBottomSheet.show(
       context,
       initialMessage: context.l10n
-          .donationOverviewContactMessage(
-            status,
-            allIds,
-          )
+          .donationOverviewContactMessage
           .replaceAll(r'\n', '\n'),
       metadata: metadata,
     );

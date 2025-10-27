@@ -2366,9 +2366,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get donationOverviewStatusRefusedFull => 'Refused by bank';
 
   @override
-  String donationOverviewContactMessage(Object status, Object transactionId) {
-    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID:#$transactionId';
-  }
+  String get donationOverviewContactMessage =>
+      'Hi, I have the following question about my donation:';
 
   @override
   String get date => 'Date';
@@ -4795,9 +4794,8 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get donationOverviewStatusRefusedFull => 'Refused by bank';
 
   @override
-  String donationOverviewContactMessage(Object status, Object transactionId) {
-    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: $transactionId';
-  }
+  String get donationOverviewContactMessage =>
+      'Hi, I have the following question about my donation:';
 
   @override
   String get date => 'Date';

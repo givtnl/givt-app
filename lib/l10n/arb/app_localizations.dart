@@ -4272,8 +4272,8 @@ abstract class AppLocalizations {
   /// No description provided for @donationOverviewContactMessage.
   ///
   /// In en, this message translates to:
-  /// **'Hi, I need help with the following donation:\\n\\nStatus: {status}\\nTransaction ID:#{transactionId}'**
-  String donationOverviewContactMessage(Object status, Object transactionId);
+  /// **'Hi, I have the following question about my donation:'**
+  String get donationOverviewContactMessage;
 
   /// No description provided for @date.
   ///
