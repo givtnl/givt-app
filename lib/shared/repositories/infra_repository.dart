@@ -5,6 +5,7 @@ mixin InfraRepository {
   Future<bool> contactSupport({
     required String guid,
     required String message,
+    String? subject,
   });
 
   Future<AppUpdate?> checkAppUpdate({
@@ -22,14 +23,15 @@ class InfraRepositoryImpl with InfraRepository {
   Future<bool> contactSupport({
     required String guid,
     required String message,
-  }) async =>
-      apiClient.contactSupport(
-        {
-          'guid': guid,
-          'subject': 'Feedback app',
-          'message': message,
-        },
-      );
+    String? subject,
+  }) async {
+    final body = <String, String>{
+      'guid': guid,
+      'subject': subject ?? 'Feedback app',
+      'message': message,
+    };
+    return apiClient.contactSupport(body);
+  }
 
   @override
   Future<AppUpdate?> checkAppUpdate({

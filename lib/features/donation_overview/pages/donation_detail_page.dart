@@ -500,14 +500,18 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
         ? '$transactionIds, $platformFeeIds'
         : transactionIds;
     
+    // Build metadata with transaction info
+    final metadata = {
+      'transaction id(s)': allIds,
+      'status': status,
+    };
+    
     AboutGivtBottomSheet.show(
       context,
       initialMessage: context.l10n
-          .donationOverviewContactMessage(
-            status,
-            allIds,
-          )
+          .donationOverviewContactMessage
           .replaceAll(r'\n', '\n'),
+      metadata: metadata,
     );
   }
 

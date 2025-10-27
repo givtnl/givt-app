@@ -2376,9 +2376,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String get donationOverviewStatusRefusedFull => 'Geweigerd door de bank';
 
   @override
-  String donationOverviewContactMessage(Object status, Object transactionId) {
-    return 'Hoi, ik heb hulp nodig met de volgende donatie:\\n\\nStatus: $status\\nTransaction ID: $transactionId';
-  }
+  String get donationOverviewContactMessage =>
+      'Hoi, ik heb de volgende vraag over mijn donatie:';
 
   @override
   String get date => 'Datum';

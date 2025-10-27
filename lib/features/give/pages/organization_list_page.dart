@@ -151,15 +151,23 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                         if (index == state.filteredOrganisations.length) {
                           return ListTile(
                             key: UniqueKey(),
-                            onTap: () => showModalBottomSheet<void>(
-                              context: context,
-                              isScrollControlled: true,
-                              useSafeArea: true,
-                              builder: (_) => AboutGivtBottomSheet(
-                                initialMessage: locals
-                                    .reportMissingOrganisationPrefilledText,
-                              ),
-                            ),
+                            onTap: () {
+                              // Build metadata with search text if available
+                              final metadata = state.previousSearchQuery.isNotEmpty
+                                  ? {'searchText': state.previousSearchQuery}
+                                  : null;
+                              
+                              showModalBottomSheet<void>(
+                                context: context,
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                builder: (_) => AboutGivtBottomSheet(
+                                  initialMessage: locals
+                                      .reportMissingOrganisationPrefilledText,
+                                  metadata: metadata,
+                                ),
+                              );
+                            },
 
                             /// To keep the symetry of the list
                             leading: const Icon(
