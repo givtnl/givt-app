@@ -82,7 +82,7 @@ dependencies:
   wakelock_plus: ^1.2.10
   collection: ^1.19.0
   dropdown_button2: ^2.3.9
-  record: ^5.2.0
+  record: ^6.1.2
   audioplayers: ^6.1.2
   firebase_remote_config: ^6.1.0
   rxdart: ^0.28.0
