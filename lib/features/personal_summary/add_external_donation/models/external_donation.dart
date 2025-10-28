@@ -28,7 +28,7 @@ class ExternalDonation extends Equatable {
       : id = '',
         amount = 0,
         description = '',
-        frequencyString = 'OneTime',
+        frequencyString = 'Once',
         creationDate = '',
         taxDeductible = false,
         active = true;
@@ -43,6 +43,10 @@ class ExternalDonation extends Equatable {
 
   ExternalDonationFrequency get frequency {
     switch (frequencyString) {
+      case 'Once':
+        return ExternalDonationFrequency.once;
+      case 'Weekly':
+        return ExternalDonationFrequency.weekly;
       case 'Monthly':
         return ExternalDonationFrequency.monthly;
       case 'Quarterly':
@@ -114,8 +118,10 @@ class ExternalDonation extends Equatable {
         return 'HalfYearly';
       case ExternalDonationFrequency.yearly:
         return 'Yearly';
+      case ExternalDonationFrequency.weekly:
+        return 'Weekly';
       case ExternalDonationFrequency.once:
-        return 'OneTime';
+        return 'Once';
     }
   }
 
