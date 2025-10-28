@@ -341,18 +341,37 @@ class PersonalSummaryBloc
   ) async {
     emit(state.copyWith(status: PersonalSummaryStatus.loading));
     try {
-      final givingGoal = await givingGoalRepository.addGivingGoal(
-        body: GivingGoal(
-          amount: event.amount,
-          frequency: event.frequency,
-        ).toJson(),
-      );
-      emit(
-        state.copyWith(
-          status: PersonalSummaryStatus.success,
-          givingGoal: givingGoal,
-        ),
-      );
+      final currentGoal = state.givingGoal;
+      final goalJson = GivingGoal(
+        amount: event.amount,
+        frequency: event.frequency,
+      ).toJson();
+
+      // Check if there's an existing goal with an ID
+      if (currentGoal.id != null) {
+        final updatedGoal = await givingGoalRepository.updateGivingGoal(
+          id: currentGoal.id!,
+          body: goalJson,
+        );
+        emit(
+          state.copyWith(
+            status: PersonalSummaryStatus.success,
+            givingGoal: updatedGoal,
+          ),
+        );
+      } else {
+        await givingGoalRepository.addGivingGoal(
+          body: goalJson,
+        );
+        // Re-fetch the goal to get the ID
+        final givingGoal = await _fetchGivingGoal();
+        emit(
+          state.copyWith(
+            status: PersonalSummaryStatus.success,
+            givingGoal: givingGoal,
+          ),
+        );
+      }
     } on GivtServerFailure catch (e, stackTrace) {
       LoggingInfo.instance.error(
         e.toString(),

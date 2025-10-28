@@ -866,6 +866,7 @@ class APIService {
     // Map backend model to app model
     return {
       'result': {
+        'id': item['id'] as String?,
         'amount': amount,
         'frequency': frequency,
       },
@@ -907,6 +908,43 @@ class APIService {
 
     // Accept 200 or 201 as success to preserve behavior across backends
     return response.statusCode == 200 || response.statusCode == 201;
+  }
+
+  Future<bool> updateGivingGoal({
+    required String id,
+    required Map<String, dynamic> body,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/givinggoal/$id',
+    );
+
+    // Map app model to backend model
+    final frequency = (body['frequency'] as String?) ?? 'Monthly';
+    final amount = body['amount'];
+    final requestBody = {
+      'amount': amount,
+      'frequency': frequency,
+    };
+
+    final response = await client.put(
+      url,
+      body: jsonEncode(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return response.statusCode == 200 || response.statusCode == 204;
   }
 
   Future<bool> removeGivingGoal() {

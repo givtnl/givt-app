@@ -9,26 +9,30 @@ class GivingGoal extends Equatable {
   const GivingGoal({
     required this.amount,
     required this.frequency,
+    this.id,
   });
 
   const GivingGoal.empty()
       : amount = 0,
-        frequency = GivingGoalFrequency.monthly;
+        frequency = GivingGoalFrequency.monthly,
+        id = null;
 
   factory GivingGoal.fromJson(Map<String, dynamic> json) {
     final raw = json['frequency'];
     final freqStr = raw is String ? raw.toLowerCase() : 'monthly';
-    final freq = freqStr == 'annually'
+    final freq = freqStr.toLowerCase() == 'annually'
         ? GivingGoalFrequency.annually
         : GivingGoalFrequency.monthly;
     return GivingGoal(
       amount: json['amount'] as int,
       frequency: freq,
+      id: json['id'] as String?,
     );
   }
 
   final int amount;
   final GivingGoalFrequency frequency;
+  final String? id;
 
   double get monthlyGivingGoal {
     if (isMonthly) {
@@ -50,10 +54,12 @@ class GivingGoal extends Equatable {
   GivingGoal copyWith({
     int? amount,
     GivingGoalFrequency? frequency,
+    String? id,
   }) {
     return GivingGoal(
       amount: amount ?? this.amount,
       frequency: frequency ?? this.frequency,
+      id: id ?? this.id,
     );
   }
 
@@ -66,10 +72,10 @@ class GivingGoal extends Equatable {
   }
 
   @override
-  List<Object?> get props => [amount, frequency];
+  List<Object?> get props => [amount, frequency, id];
 
   @override
   String toString() {
-    return 'GivingGoal{amount: $amount, frequency: $frequency}';
+    return 'GivingGoal{id: $id, amount: $amount, frequency: $frequency}';
   }
 }
