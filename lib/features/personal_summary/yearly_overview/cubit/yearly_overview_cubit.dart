@@ -117,7 +117,8 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
       final tillDate = DateTime.parse('${int.parse(state.year) + 1}-01-01')
           .toIso8601String();
       final isSuccess = await _givtRepository.downloadYearlyOverview(
-        body: {'fromDate': fromDate, 'tillDate': tillDate},
+        fromDate: fromDate,
+        toDate: tillDate,
       );
       if (!isSuccess) {
         emit(state.copyWith(status: YearlyOverviewStatus.error));

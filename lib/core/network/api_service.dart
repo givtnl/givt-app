@@ -157,28 +157,28 @@ class APIService {
     final url = Uri.https(_apiURL, '/api/v2/users/$guid/givts');
     return client
         .post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      encoding: Encoding.getByName('utf-8'),
-      body: jsonEncode(body),
-    )
+          url,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          encoding: Encoding.getByName('utf-8'),
+          body: jsonEncode(body),
+        )
         .then((response) {
-      if (response.statusCode >= 400) {
-        throw GivtServerFailure(
-          statusCode: response.statusCode,
-          body: jsonDecode(response.body) as Map<String, dynamic>,
-        );
-      }
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        final body = jsonDecode(response.body) as Map<String, dynamic>;
-        final ids = body['TransactionIds'] as List<dynamic>;
-        return ids.map((e) => e as int).toList();
-      }
+          if (response.statusCode >= 400) {
+            throw GivtServerFailure(
+              statusCode: response.statusCode,
+              body: jsonDecode(response.body) as Map<String, dynamic>,
+            );
+          }
+          if (response.statusCode >= 200 && response.statusCode < 300) {
+            final body = jsonDecode(response.body) as Map<String, dynamic>;
+            final ids = body['TransactionIds'] as List<dynamic>;
+            return ids.map((e) => e as int).toList();
+          }
 
-      return [];
-    });
+          return [];
+        });
   }
 
   Future<bool> putBeaconBatteryStatus({
@@ -193,18 +193,18 @@ class APIService {
     );
     return client
         .put(
-      url,
-      body: jsonEncode(body),
-    )
+          url,
+          body: jsonEncode(body),
+        )
         .then((response) {
-      if (response.statusCode >= 400) {
-        throw GivtServerFailure(
-          statusCode: response.statusCode,
-          body: jsonDecode(response.body) as Map<String, dynamic>,
-        );
-      }
-      return response.statusCode == 200;
-    });
+          if (response.statusCode >= 400) {
+            throw GivtServerFailure(
+              statusCode: response.statusCode,
+              body: jsonDecode(response.body) as Map<String, dynamic>,
+            );
+          }
+          return response.statusCode == 200;
+        });
   }
 
   Future<String> signSepaMandate(
@@ -409,23 +409,19 @@ class APIService {
     return response.statusCode == 200;
   }
 
-  Future<bool> downloadYearlyOverview(Map<String, dynamic> body) async {
-    final url = Uri.https(_apiURLAWS, '/donations/download');
-    final response = await client.post(
-      url,
-      body: jsonEncode(body),
-      headers: {
-        'Content-Type': 'application/json',
-        'x-json-casing': 'PascalKeeze',
-      },
+  Future<bool> downloadYearlyOverview(String fromDate, String toDate) async {
+    final url = Uri.https(
+      _apiURL,
+      '/api/v2/Users/donationssummary/from/$fromDate/to/$toDate',
     );
+    final response = await client.get(url);
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
-    return response.statusCode == 202;
+    return response.statusCode == 200;
   }
 
   Future<bool> addMember(Map<String, dynamic> body) async {
@@ -478,8 +474,10 @@ class APIService {
   }
 
   Future<bool> editChildAllowance(String childGUID, int allowance) async {
-    final url =
-        Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/allowance');
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/profiles/$childGUID/allowance',
+    );
 
     final response = await client.put(
       url,
@@ -530,10 +528,15 @@ class APIService {
   Future<List<dynamic>> fetchRecurringDonations({
     required String status,
   }) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/recurringdonation/status/$status');
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/recurringdonation/status/$status',
+    );
 
-    final response =
-        await client.get(url, headers: {'Content-Type': 'application/json'});
+    final response = await client.get(
+      url,
+      headers: {'Content-Type': 'application/json'},
+    );
 
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
@@ -553,8 +556,10 @@ class APIService {
       '/givtservice/v1/recurringdonation/$recurringDonationId',
     );
 
-    final response =
-        await client.delete(url, headers: {'Content-Type': 'application/json'});
+    final response = await client.delete(
+      url,
+      headers: {'Content-Type': 'application/json'},
+    );
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
@@ -566,8 +571,10 @@ class APIService {
   Future<Map<String, dynamic>> fetchRecurringDonationById(
     String donationId,
   ) async {
-    final url =
-        Uri.https(_apiURL, '/givtservice/v1/recurringdonation/$donationId');
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/recurringdonation/$donationId',
+    );
 
     final response = await client.get(
       url,
@@ -888,23 +895,25 @@ class APIService {
   Future<bool> removeGivingGoal() {
     final url = Uri.https(_apiURLAWS, '/giving-goal');
 
-    return client.delete(
-      url,
-      body: '',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    ).then((response) {
-      if (response.statusCode >= 400) {
-        throw GivtServerFailure(
-          statusCode: response.statusCode,
-          body: response.body.isNotEmpty
-              ? jsonDecode(response.body) as Map<String, dynamic>
-              : null,
-        );
-      }
-      return response.statusCode == 200;
-    });
+    return client
+        .delete(
+          url,
+          body: '',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        )
+        .then((response) {
+          if (response.statusCode >= 400) {
+            throw GivtServerFailure(
+              statusCode: response.statusCode,
+              body: response.body.isNotEmpty
+                  ? jsonDecode(response.body) as Map<String, dynamic>
+                  : null,
+            );
+          }
+          return response.statusCode == 200;
+        });
   }
 
   Future<List<dynamic>> fetchHistory(Map<String, dynamic> body) async {
@@ -1005,8 +1014,10 @@ class APIService {
   Future<bool> cancelAllowance(
     String childGUID,
   ) async {
-    final url =
-        Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/allowance');
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/profiles/$childGUID/allowance',
+    );
 
     final response = await client.delete(
       url,
@@ -1077,8 +1088,10 @@ class APIService {
     required String orgId,
     required String groupId,
   }) async {
-    final url =
-        Uri.https(_apiURL, '/givtservice/v1/groups/$groupId/box-origin');
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/groups/$groupId/box-origin',
+    );
 
     final response = await client.put(
       url,
@@ -1127,8 +1140,10 @@ class APIService {
     String bedtime,
     int winddownMinutes,
   ) async {
-    final url =
-        Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/bedtime');
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/profiles/$childGUID/bedtime',
+    );
     final response = await client.put(
       url,
       body: jsonEncode({

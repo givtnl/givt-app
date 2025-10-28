@@ -31,7 +31,7 @@ class DonationOverviewCubit
         .onDonationsChanged()
         .listen(
           _onDonationsChanged,
-          onError: (error) {
+          onError: (Object error, StackTrace stackTrace) {
             LoggingInfo.instance.error(
               'Error in donations stream: $error',
               methodName: 'DonationOverviewCubit._setupStreams',
@@ -118,7 +118,8 @@ class DonationOverviewCubit
       ).toIso8601String();
 
       final success = await _donationOverviewRepository.downloadYearlyOverview(
-        body: {'fromDate': fromDate, 'tillDate': tillDate},
+        fromDate: fromDate,
+        toDate: tillDate,
       );
 
       // Check if cubit is closed before emitting states
