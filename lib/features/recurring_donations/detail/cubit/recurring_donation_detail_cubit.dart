@@ -16,7 +16,6 @@ class RecurringDonationDetailCubit extends CommonCubit<RecurringDonationDetailUI
 
   final RecurringDonationDetailRepository _recurringDonationDetailRepository;
 
-  @override
   void init() {
     _loadRecurringDonationDetail();
   }
@@ -42,7 +41,6 @@ class RecurringDonationDetailCubit extends CommonCubit<RecurringDonationDetailUI
     emitCustom(const RecurringDonationDetailCustom.manageDonation());
   }
 
-  @override
   RecurringDonationDetailUIModel _createUIModel() {
     return RecurringDonationDetailUIModel(
       organizationName: _recurringDonationDetailRepository.getOrganizationName(),
@@ -53,6 +51,7 @@ class RecurringDonationDetailCubit extends CommonCubit<RecurringDonationDetailUI
       progress: _recurringDonationDetailRepository.getProgress(),
       history: _recurringDonationDetailRepository.getHistory(),
       isLoading: _recurringDonationDetailRepository.isLoading(),
+      isActive: _recurringDonationDetailRepository.isRecurringDonationActive(),
       monthsHelped: _recurringDonationDetailRepository.getMonthsHelped(),
       error: _recurringDonationDetailRepository.getError(),
     );

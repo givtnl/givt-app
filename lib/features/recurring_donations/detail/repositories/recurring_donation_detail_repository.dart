@@ -19,6 +19,7 @@ mixin RecurringDonationDetailRepository {
   List<DonationHistoryItem> getHistory();
   int getMonthsHelped();
   DonationProgress? getProgress();
+  bool isRecurringDonationActive();
 }
 
 class RecurringDonationDetailRepositoryImpl
@@ -77,7 +78,7 @@ class RecurringDonationDetailRepositoryImpl
 
       // Only add upcoming donation if the recurring donation is still active
       var finalHistory = history;
-      if (_isRecurringDonationActive()) {
+      if (isRecurringDonationActive()) {
         final upcomingDonation = _createUpcomingDonation();
         finalHistory = [upcomingDonation, ...history];
       }
@@ -211,7 +212,7 @@ class RecurringDonationDetailRepositoryImpl
     }
   }
 
-  bool _isRecurringDonationActive() {
+  bool isRecurringDonationActive() {
     if (_recurringDonation == null) return false;
 
     // Check if the donation is cancelled or finished

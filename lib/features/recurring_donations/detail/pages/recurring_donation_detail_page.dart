@@ -126,8 +126,8 @@ class _RecurringDonationDetailPageState
                   ),
                 ),
               ),
-              // Manage button - all donations from /active endpoint are considered active
-              _buildManageButton(context),
+              // Only show manage button if the donation is still active
+              if (uiModel.isActive) _buildManageButton(context),
             ],
           );
         },
