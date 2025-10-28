@@ -35,8 +35,6 @@ jobs:
             echo "AMPLITUDE_KEY=f4fa9ab88de04c56a346aaa36c172a9a" >> $GITHUB_ENV
             echo "API_URL_US=backend.givt.app" >> $GITHUB_ENV
             echo "API_URL_EU=backend.givtapp.net" >> $GITHUB_ENV
-            echo "API_URL_AWS_US=api.production.givt.app" >> $GITHUB_ENV
-            echo "API_URL_AWS_EU=api.production.givtapp.net" >> $GITHUB_ENV
             echo "STRIPE_PK=pk_live_51NGl2uLM5mQffuXIGIt8OSH7HWeo2lqPLyvMJSi3ypUDH7ITn84S4A8sGoFvXpP4DCtoUQFlNdWm5jraqR8Ce0sE00Nb4wDuBW" >> $GITHUB_ENV
           else
             echo "Running on a different branch, deploying to test."
@@ -46,8 +44,6 @@ jobs:
             echo "AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e" >> $GITHUB_ENV
             echo "API_URL_US=dev-backend.givt.app" >> $GITHUB_ENV
             echo "API_URL_EU=dev-backend.givtapp.net" >> $GITHUB_ENV
-            echo "API_URL_AWS_US=api.development.givtapp.net" >> $GITHUB_ENV
-            echo "API_URL_AWS_EU=api.development.givtapp.net" >> $GITHUB_ENV
             echo "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1" >> $GITHUB_ENV
           fi
 
@@ -95,8 +91,6 @@ jobs:
           PACKAGE_NAME: ${{ env.PACKAGE_NAME }}
           API_URL_US: ${{env.API_URL_US}}
           API_URL_EU: ${{env.API_URL_EU}}
-          API_URL_AWS_US: ${{env.API_URL_AWS_US}}
-          API_URL_AWS_EU: ${{env.API_URL_AWS_EU}}
           AMPLITUDE_KEY: ${{env.AMPLITUDE_KEY}}
           FLAVOR: ${{ env.FLAVOR }}
           TRACK: ${{ env.TRACK }}

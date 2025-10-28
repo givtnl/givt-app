@@ -30,37 +30,43 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
 
       final currentYear = int.parse(year);
       final fromDate = DateTime.parse('$year-01-01').toIso8601String();
-      final toDate =
-          DateTime.parse('${currentYear + 1}-01-01').toIso8601String();
+      final toDate = DateTime.parse(
+        '${currentYear + 1}-01-01',
+      ).toIso8601String();
 
       final previousYear = currentYear - 1;
-      final fromPreviousDate =
-          DateTime.parse('$previousYear-01-01').toIso8601String();
-      final toPreviousDate =
-          DateTime.parse('$previousYear-12-31').toIso8601String();
+      final fromPreviousDate = DateTime.parse(
+        '$previousYear-01-01',
+      ).toIso8601String();
+      final toPreviousDate = DateTime.parse(
+        '$previousYear-12-31',
+      ).toIso8601String();
 
-      final externalDonationsListPreviousYear =
-          await _givtRepository.fetchExternalDonations(
-        fromDate: fromPreviousDate,
-        tillDate: toPreviousDate,
-      );
-      final externalDonationsPreviousYear =
-          _groupByDestination(externalDonationsListPreviousYear);
-
-      final monthlyByOrganisationPreviousYear =
-          await _givtRepository.fetchSummary(
-        guid: guid,
-        fromDate: fromPreviousDate,
-        tillDate: toPreviousDate,
-        orderType: SummaryOrderType.key.type,
-        groupType: SummaryGroupType.perDestination.type,
+      final externalDonationsListPreviousYear = await _givtRepository
+          .fetchExternalDonationSummary(
+            fromDate: fromPreviousDate,
+            tillDate: toPreviousDate,
+          );
+        
+      final externalDonationsPreviousYear = _groupByDestination(
+        externalDonationsListPreviousYear,
       );
 
-      final externalDonationsList =
-          await _givtRepository.fetchExternalDonations(
-        fromDate: fromDate,
-        tillDate: toDate,
-      );
+      final monthlyByOrganisationPreviousYear = await _givtRepository
+          .fetchSummary(
+            guid: guid,
+            fromDate: fromPreviousDate,
+            tillDate: toPreviousDate,
+            orderType: SummaryOrderType.key.type,
+            groupType: SummaryGroupType.perDestination.type,
+          );
+
+      final externalDonationsList = await _givtRepository
+          .fetchExternalDonationSummary(
+            fromDate: fromDate,
+            tillDate: toDate,
+          );
+
       final externaDonations = _groupByDestination(externalDonationsList);
 
       final monthlyByOrganisation = await _givtRepository.fetchSummary(
@@ -79,8 +85,7 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
         groupType: SummaryGroupType.perMonth.type,
       );
 
-      final externaDonationsPerMonth =
-          _groupByMonth(externalDonationsList);
+      final externaDonationsPerMonth = _groupByMonth(externalDonationsList);
 
       emit(
         state.copyWith(
@@ -111,8 +116,9 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
     emit(state.copyWith(status: YearlyOverviewStatus.loading));
     try {
       final fromDate = DateTime.parse('${state.year}-01-01').toIso8601String();
-      final tillDate = DateTime.parse('${int.parse(state.year) + 1}-01-01')
-          .toIso8601String();
+      final tillDate = DateTime.parse(
+        '${int.parse(state.year) + 1}-01-01',
+      ).toIso8601String();
       final isSuccess = await _givtRepository.downloadYearlyOverview(
         fromDate: fromDate,
         toDate: tillDate,

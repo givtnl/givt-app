@@ -16,8 +16,6 @@ class APIService {
 
   String get _apiURL => _requestHelper.apiURL;
 
-  String get _apiURLAWS => _requestHelper.apiURLAWS;
-
   Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/oauth2/token');
     final response = await client.post(
@@ -610,14 +608,11 @@ class APIService {
     return response.statusCode == 200;
   }
 
-  Future<List<dynamic>> fetchExternalDonations({
-    required Map<String, dynamic> params,
-  }) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/search');
+  Future<List<dynamic>> fetchExternalDonations() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations');
 
-    final response = await client.post(
+    final response = await client.get(
       url,
-      body: jsonEncode(params),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -635,7 +630,7 @@ class APIService {
     return decodedBody['items'] as List<dynamic>;
   }
 
-  Future<List<dynamic>> fetchExternalDonationsSummary({
+  Future<List<dynamic>> fetchExternalDonationsSearch({
     required Map<String, dynamic> params,
   }) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/search');

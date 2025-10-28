@@ -97,15 +97,12 @@ class EmailSignupCubit
 
   void updateApi() {
     var baseUrl = const String.fromEnvironment('API_URL_EU');
-    var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
 
     if (_currentCountry!.isUS) {
       baseUrl = const String.fromEnvironment('API_URL_US');
-      baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
     }
 
     log('Using API URL: $baseUrl');
-    get_it.getIt<RequestHelper>().updateApiUrl(baseUrl, baseUrlAWS);
     get_it.getIt<RequestHelper>().country = _currentCountry!.countryCode;
   }
 

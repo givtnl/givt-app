@@ -23,16 +23,11 @@ mixin GivtRepository {
 
   Future<List<Givt>> fetchGivts();
 
-  Future<List<ExternalDonation>> fetchExternalDonations({
-    required String fromDate,
-    required String tillDate,
-  });
+  Future<List<ExternalDonation>> fetchExternalDonations();
 
-  Future<List<SummaryItem>> fetchExternalDonationSummary({
+  Future<List<ExternalDonation>> fetchExternalDonationSummary({
     required String fromDate,
     required String tillDate,
-    required String orderType,
-    required String groupType,
   });
 
   Future<bool> deleteExternalDonation(String id);
@@ -221,37 +216,26 @@ class GivtRepositoryImpl with GivtRepository {
   }
 
   @override
-  Future<List<ExternalDonation>> fetchExternalDonations({
-    required String fromDate,
-    required String tillDate,
-  }) async {
-    final params = {
-      'startDate': fromDate,
-      'endDate': tillDate,
-    };
-    final decodedJson = await apiClient.fetchExternalDonations(params: params);
+  Future<List<ExternalDonation>> fetchExternalDonations() async {
+    final decodedJson = await apiClient.fetchExternalDonations();
     return ExternalDonation.fromJsonList(
       decodedJson,
     );
   }
 
   @override
-  Future<List<SummaryItem>> fetchExternalDonationSummary({
+  Future<List<ExternalDonation>> fetchExternalDonationSummary({
     required String fromDate,
     required String tillDate,
-    required String orderType,
-    required String groupType,
   }) async {
     final params = {
       'startDate': fromDate,
       'endDate': tillDate,
-      'orderType': orderType,
-      'groupType': groupType,
     };
-    final decodedJson = await apiClient.fetchExternalDonationsSummary(
+    final decodedJson = await apiClient.fetchExternalDonationsSearch(
       params: params,
     );
-    return SummaryItem.fromJsonList(
+    return ExternalDonation.fromJsonList(
       decodedJson,
     );
   }

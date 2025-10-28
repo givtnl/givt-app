@@ -11,10 +11,10 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
     required String dateTime,
     required this.givtRepository,
   }) : super(
-          AddExternalDonationState(
-            dateTime: dateTime,
-          ),
-        );
+         AddExternalDonationState(
+           dateTime: dateTime,
+         ),
+       );
 
   final GivtRepository givtRepository;
 
@@ -27,15 +27,18 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
       final firstDayOfMonth = DateTime(currentDate.year, currentDate.month);
       final untilDate = DateTime(currentDate.year, currentDate.month + 1);
 
-      final externalDonations = await givtRepository.fetchExternalDonations(
-        fromDate: firstDayOfMonth.toIso8601String(),
-        tillDate: untilDate.toIso8601String(),
-      );
+      final externalDonations = await givtRepository
+          .fetchExternalDonationSummary(
+            fromDate: firstDayOfMonth.toIso8601String(),
+            tillDate: untilDate.toIso8601String(),
+          );
+          
       externalDonations.sort((first, second) {
         final firstDate = DateTime.parse(first.creationDate);
         final secondDate = DateTime.parse(second.creationDate);
         return secondDate.compareTo(firstDate);
       });
+
       emit(
         state.copyWith(
           status: AddExternalDonationStatus.success,
@@ -140,8 +143,8 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
             ..removeWhere((element) => element.id == toBeRemoved.id),
           currentExternalDonation:
               state.currentExternalDonation.id == toBeRemoved.id
-                  ? const ExternalDonation.empty()
-                  : state.currentExternalDonation,
+              ? const ExternalDonation.empty()
+              : state.currentExternalDonation,
         ),
       );
     } catch (e, stackTrace) {
