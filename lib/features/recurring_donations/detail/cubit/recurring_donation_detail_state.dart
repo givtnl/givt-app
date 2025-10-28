@@ -11,6 +11,7 @@ class RecurringDonationDetailUIModel {
     required this.progress,
     required this.history,
     required this.isLoading,
+    required this.isActive,
     this.error,
     this.monthsHelped,
   });
@@ -23,6 +24,7 @@ class RecurringDonationDetailUIModel {
   final DonationProgress? progress;
   final List<DonationHistoryItem> history;
   final bool isLoading;
+  final bool isActive;
   final String? error;
   final int? monthsHelped;
 
@@ -42,6 +44,7 @@ class RecurringDonationDetailUIModel {
         other.progress == progress &&
         other.history == history &&
         other.isLoading == isLoading &&
+        other.isActive == isActive &&
         other.error == error &&
         other.monthsHelped == monthsHelped;
   }
@@ -56,6 +59,7 @@ class RecurringDonationDetailUIModel {
         progress.hashCode ^
         history.hashCode ^
         isLoading.hashCode ^
+        isActive.hashCode ^
         error.hashCode ^
         monthsHelped.hashCode;
   }
@@ -69,6 +73,7 @@ class RecurringDonationDetailUIModel {
     DonationProgress? progress,
     List<DonationHistoryItem>? history,
     bool? isLoading,
+    bool? isActive,
     String? error,
     int? monthsHelped,
   }) {
@@ -81,6 +86,7 @@ class RecurringDonationDetailUIModel {
       progress: progress ?? this.progress,
       history: history ?? this.history,
       isLoading: isLoading ?? this.isLoading,
+      isActive: isActive ?? this.isActive,
       error: error ?? this.error,
       monthsHelped: monthsHelped ?? this.monthsHelped,
     );
