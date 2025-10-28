@@ -1,6 +1,6 @@
 enum ExternalDonationFrequency {
   once,
-  weekly,
+  // weekly,
   monthly,
   quarterly,
   halfYearly,

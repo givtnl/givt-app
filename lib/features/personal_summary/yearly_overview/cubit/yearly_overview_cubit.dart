@@ -4,10 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/overview/models/summary_group_type.dart';
 import 'package:givt_app/features/personal_summary/overview/models/summary_order_type.dart';
 import 'package:givt_app/shared/models/models.dart';
+import 'package:givt_app/shared/models/summary_item.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
+import 'package:intl/intl.dart';
 
 part 'yearly_overview_state.dart';
 
@@ -36,13 +39,13 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
       final toPreviousDate =
           DateTime.parse('$previousYear-12-31').toIso8601String();
 
-      final externalDonationsPreviousYear =
-          await _givtRepository.fetchExternalDonationSummary(
+      final externalDonationsListPreviousYear =
+          await _givtRepository.fetchExternalDonations(
         fromDate: fromPreviousDate,
         tillDate: toPreviousDate,
-        orderType: SummaryOrderType.key.type,
-        groupType: SummaryGroupType.perDestination.type,
       );
+      final externalDonationsPreviousYear =
+          _groupByDestination(externalDonationsListPreviousYear);
 
       final monthlyByOrganisationPreviousYear =
           await _givtRepository.fetchSummary(
@@ -53,13 +56,12 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
         groupType: SummaryGroupType.perDestination.type,
       );
 
-      final externaDonations =
-          await _givtRepository.fetchExternalDonationSummary(
+      final externalDonationsList =
+          await _givtRepository.fetchExternalDonations(
         fromDate: fromDate,
         tillDate: toDate,
-        orderType: SummaryOrderType.key.type,
-        groupType: SummaryGroupType.perDestination.type,
       );
+      final externaDonations = _groupByDestination(externalDonationsList);
 
       final monthlyByOrganisation = await _givtRepository.fetchSummary(
         guid: guid,
@@ -78,12 +80,7 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
       );
 
       final externaDonationsPerMonth =
-          await _givtRepository.fetchExternalDonationSummary(
-        fromDate: fromDate,
-        tillDate: toDate,
-        orderType: SummaryOrderType.key.type,
-        groupType: SummaryGroupType.perMonth.type,
-      );
+          _groupByMonth(externalDonationsList);
 
       emit(
         state.copyWith(
@@ -134,5 +131,58 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
     } on SocketException {
       emit(state.copyWith(status: YearlyOverviewStatus.noInternet));
     }
+  }
+
+  /// Groups external donations by destination (description)
+  List<SummaryItem> _groupByDestination(
+    List<ExternalDonation> donations,
+  ) {
+    final grouped = <String, Map<String, double>>{};
+
+    for (final donation in donations) {
+      final key = donation.description;
+      if (!grouped.containsKey(key)) {
+        grouped[key] = {'amount': 0, 'count': 0};
+      }
+      grouped[key]!['amount'] = grouped[key]!['amount']! + donation.amount;
+      grouped[key]!['count'] = grouped[key]!['count']! + 1;
+    }
+
+    return grouped.entries.map((entry) {
+      return SummaryItem(
+        key: entry.key,
+        amount: entry.value['amount']!,
+        count: entry.value['count']!,
+        taxDeductable: false,
+      );
+    }).toList();
+  }
+
+  /// Groups external donations by month
+  List<SummaryItem> _groupByMonth(
+    List<ExternalDonation> donations,
+  ) {
+    final grouped = <String, Map<String, double>>{};
+    final dateFormat = DateFormat('yyyy-MM');
+
+    for (final donation in donations) {
+      final date = DateTime.parse(donation.creationDate);
+      final key = dateFormat.format(date);
+
+      if (!grouped.containsKey(key)) {
+        grouped[key] = {'amount': 0, 'count': 0};
+      }
+      grouped[key]!['amount'] = grouped[key]!['amount']! + donation.amount;
+      grouped[key]!['count'] = grouped[key]!['count']! + 1;
+    }
+
+    return grouped.entries.map((entry) {
+      return SummaryItem(
+        key: entry.key,
+        amount: entry.value['amount']!,
+        count: entry.value['count']!,
+        taxDeductable: false,
+      );
+    }).toList();
   }
 }

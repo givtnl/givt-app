@@ -336,7 +336,7 @@ class PersonalSummaryBloc
       final givingGoal = await givingGoalRepository.addGivingGoal(
         body: GivingGoal(
           amount: event.amount,
-          periodicity: event.periodicity,
+          frequency: event.frequency,
         ).toJson(),
       );
       emit(

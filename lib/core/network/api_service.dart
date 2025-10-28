@@ -843,7 +843,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> fetchGivingGoal() async {
-    final url = Uri.https(_apiURLAWS, '/giving-goal');
+    final url = Uri.https(_apiURL, '/givtservice/v1/GivingGoal');
 
     final response = await client.get(
       url,
@@ -861,20 +861,41 @@ class APIService {
       );
     }
 
-    return jsonDecode(response.body) as Map<String, dynamic>;
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final item = decodedBody['item'] as Map<String, dynamic>;
+    final amountNum = item['amount'];
+    final amount = amountNum is num
+        ? amountNum.toInt()
+        : int.parse('$amountNum');
+    final frequency = (item['frequency'] as String?) ?? 'Monthly';
+    // Map backend model to app model
+    return {
+      'result': {
+        'amount': amount,
+        'frequency': frequency,
+      },
+    };
   }
 
   Future<bool> addGivingGoal({
     required Map<String, dynamic> body,
   }) async {
     final url = Uri.https(
-      _apiURLAWS,
-      '/giving-goal',
+      _apiURL,
+      '/givtservice/v1/GivingGoal',
     );
+
+    // Map app model to backend model
+    final frequency = (body['frequency'] as String?) ?? 'Monthly';
+    final amount = body['amount'];
+    final requestBody = {
+      'amount': amount,
+      'frequency': frequency,
+    };
 
     final response = await client.post(
       url,
-      body: jsonEncode(body),
+      body: jsonEncode(requestBody),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -889,21 +910,48 @@ class APIService {
       );
     }
 
-    return response.statusCode == 201;
+    // Accept 200 or 201 as success to preserve behavior across backends
+    return response.statusCode == 200 || response.statusCode == 201;
   }
 
   Future<bool> removeGivingGoal() {
-    final url = Uri.https(_apiURLAWS, '/giving-goal');
+    // Fetch current giving goal to obtain id, then delete using new endpoint
+    final getUrl = Uri.https(_apiURL, '/givtservice/v1/GivingGoal');
 
     return client
-        .delete(
-          url,
-          body: '',
+        .get(
+          getUrl,
           headers: {
             'Content-Type': 'application/json',
           },
         )
-        .then((response) {
+        .then((getResponse) async {
+          if (getResponse.statusCode == 404) {
+            // No goal set – treat as successful removal to preserve UX
+            return true;
+          }
+          if (getResponse.statusCode >= 400) {
+            throw GivtServerFailure(
+              statusCode: getResponse.statusCode,
+              body: getResponse.body.isNotEmpty
+                  ? jsonDecode(getResponse.body) as Map<String, dynamic>
+                  : null,
+            );
+          }
+          final decoded = jsonDecode(getResponse.body) as Map<String, dynamic>;
+          final item = decoded['item'] as Map<String, dynamic>;
+          final id = item['id'] as String;
+
+          final deleteUrl = Uri.https(
+            _apiURL,
+            '/givtservice/v1/GivingGoal/$id',
+          );
+          final response = await client.delete(
+            deleteUrl,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          );
           if (response.statusCode >= 400) {
             throw GivtServerFailure(
               statusCode: response.statusCode,
@@ -911,6 +959,14 @@ class APIService {
                   ? jsonDecode(response.body) as Map<String, dynamic>
                   : null,
             );
+          }
+          // Prefer boolean from backend if provided
+          if (response.body.isNotEmpty) {
+            final body = jsonDecode(response.body) as Map<String, dynamic>;
+            final result = body['item'];
+            if (result is bool) {
+              return result;
+            }
           }
           return response.statusCode == 200;
         });

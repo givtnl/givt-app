@@ -45,8 +45,8 @@ class ExternalDonation extends Equatable {
     switch (frequencyString) {
       case 'Once':
         return ExternalDonationFrequency.once;
-      case 'Weekly':
-        return ExternalDonationFrequency.weekly;
+      // case 'Weekly':
+      //   return ExternalDonationFrequency.weekly;
       case 'Monthly':
         return ExternalDonationFrequency.monthly;
       case 'Quarterly':
@@ -118,8 +118,8 @@ class ExternalDonation extends Equatable {
         return 'HalfYearly';
       case ExternalDonationFrequency.yearly:
         return 'Yearly';
-      case ExternalDonationFrequency.weekly:
-        return 'Weekly';
+      // case ExternalDonationFrequency.weekly:
+      //   return 'Weekly';
       case ExternalDonationFrequency.once:
         return 'Once';
     }

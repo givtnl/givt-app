@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/widgets/widgets.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
+import 'package:givt_app/features/personal_summary/overview/models/giving_goal.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
@@ -24,7 +25,7 @@ class SetupGivingGoalBottomSheet extends StatefulWidget {
 class _SetupGivingGoalBottomSheetState
     extends State<SetupGivingGoalBottomSheet> {
   late TextEditingController amountController;
-  late int frequency;
+  late GivingGoalFrequency frequency;
 
   @override
   void initState() {
@@ -33,7 +34,7 @@ class _SetupGivingGoalBottomSheetState
     amountController = TextEditingController(
       text: givingGoal.amount.toString(),
     );
-    frequency = givingGoal.periodicity;
+    frequency = givingGoal.frequency;
     super.initState();
   }
 
@@ -167,13 +168,13 @@ class _SetupGivingGoalBottomSheetState
   }) {
     final locals = context.l10n;
     final frequencies = [
-      locals.budgetSummaryMonth,
-      locals.budgetSummaryYear,
+      GivingGoalFrequency.monthly,
+      GivingGoalFrequency.annually,
     ];
-    return DropdownButtonFormField<int>(
+    return DropdownButtonFormField<GivingGoalFrequency>(
       hint: Text(locals.budgetExternalGiftsTime),
       value: frequency,
-      onChanged: (int? newValue) {
+      onChanged: (GivingGoalFrequency? newValue) {
         if (newValue == null) {
           return;
         }
@@ -181,13 +182,15 @@ class _SetupGivingGoalBottomSheetState
           frequency = newValue;
         });
       },
-      items: [0, 1]
-          .map<DropdownMenuItem<int>>(
-            (int value) => DropdownMenuItem<int>(
+      items: frequencies
+          .map<DropdownMenuItem<GivingGoalFrequency>>(
+            (GivingGoalFrequency value) => DropdownMenuItem<GivingGoalFrequency>(
               value: value,
               alignment: Alignment.centerLeft,
               child: Text(
-                frequencies[value],
+                value == GivingGoalFrequency.monthly
+                    ? locals.budgetSummaryMonth
+                    : locals.budgetSummaryYear,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
@@ -204,7 +207,7 @@ class _SetupGivingGoalBottomSheetState
     context.read<PersonalSummaryBloc>().add(
           PersonalSummaryGoalAdd(
             amount: int.parse(amountController.text),
-            periodicity: frequency,
+            frequency: frequency,
           ),
         );
 
@@ -212,7 +215,7 @@ class _SetupGivingGoalBottomSheetState
       eventName: AmplitudeEvents.givingGoalSaved,
       eventProperties: {
         'amount': amountController.text,
-        'periodicity': frequency,
+        'frequency': frequency,
       },
     );
   }

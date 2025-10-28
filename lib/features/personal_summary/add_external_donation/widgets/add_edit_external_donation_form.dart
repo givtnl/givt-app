@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/cubit/add_external_donation_cubit.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/models.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -69,16 +70,27 @@ class _AddEditExternalDonationFormState
     widget.onSave(externalDonation);
   }
 
+  String _getFrequencyLabel(
+    AppLocalizations locals,
+    ExternalDonationFrequency frequency,
+  ) {
+    switch (frequency) {
+      case ExternalDonationFrequency.once:
+        return locals.budgetExternalGiftsFrequencyOnce;
+      case ExternalDonationFrequency.monthly:
+        return locals.budgetExternalGiftsFrequencyMonthly;
+      case ExternalDonationFrequency.quarterly:
+        return locals.budgetExternalGiftsFrequencyQuarterly;
+      case ExternalDonationFrequency.halfYearly:
+        return locals.budgetExternalGiftsFrequencyHalfYearly;
+      case ExternalDonationFrequency.yearly:
+        return locals.budgetExternalGiftsFrequencyYearly;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final frequencies = [
-      locals.budgetExternalGiftsFrequencyOnce,
-      locals.budgetExternalGiftsFrequencyMonthly,
-      locals.budgetExternalGiftsFrequencyQuarterly,
-      locals.budgetExternalGiftsFrequencyHalfYearly,
-      locals.budgetExternalGiftsFrequencyYearly,
-    ];
     final country =
         Country.fromCode(context.read<AuthCubit>().state.user.country);
 
@@ -160,7 +172,7 @@ class _AddEditExternalDonationFormState
                             value: value,
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              frequencies[value.index],
+                              _getFrequencyLabel(locals, value),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
