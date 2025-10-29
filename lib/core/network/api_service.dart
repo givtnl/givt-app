@@ -633,7 +633,7 @@ class APIService {
   Future<List<dynamic>> fetchExternalDonationsSearch({
     required Map<String, dynamic> params,
   }) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/search');
+    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/transactions/search');
 
     final response = await client.post(
       url,

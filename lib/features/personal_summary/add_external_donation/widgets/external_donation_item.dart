@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class ExternalDonationItem extends StatelessWidget {
   const ExternalDonationItem({
     required this.title,
     required this.amount,
+    required this.frequency,
     required this.onEdit,
     required this.onDelete,
     super.key,
@@ -16,12 +20,14 @@ class ExternalDonationItem extends StatelessWidget {
 
   final String title;
   final double amount;
+  final ExternalDonationFrequency frequency;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
     final countryCode = context.read<AuthCubit>().state.user.country;
+    final locals = context.l10n;
     return Card(
       elevation: 5,
       child: Row(
@@ -31,6 +37,10 @@ class ExternalDonationItem extends StatelessWidget {
               title: Text(
                 title,
                 style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              subtitle: Text(
+                _getFrequencyLabel(locals, frequency),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               trailing: Text(
                 '${Util.getCurrencySymbol(countryCode: countryCode)} ${Util.formatNumberComma(amount, Country.fromCode(countryCode))}',
@@ -83,5 +93,23 @@ class ExternalDonationItem extends StatelessWidget {
         color: Colors.white,
       ),
     );
+  }
+
+  String _getFrequencyLabel(
+    AppLocalizations locals,
+    ExternalDonationFrequency frequency,
+  ) {
+    switch (frequency) {
+      case ExternalDonationFrequency.once:
+        return locals.budgetExternalGiftsFrequencyOnce;
+      case ExternalDonationFrequency.monthly:
+        return locals.budgetExternalGiftsFrequencyMonthly;
+      case ExternalDonationFrequency.quarterly:
+        return locals.budgetExternalGiftsFrequencyQuarterly;
+      case ExternalDonationFrequency.halfYearly:
+        return locals.budgetExternalGiftsFrequencyHalfYearly;
+      case ExternalDonationFrequency.yearly:
+        return locals.budgetExternalGiftsFrequencyYearly;
+    }
   }
 }

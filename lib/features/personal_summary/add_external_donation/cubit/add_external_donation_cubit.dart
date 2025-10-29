@@ -21,18 +21,8 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
   Future<void> init() async {
     emit(state.copyWith(status: AddExternalDonationStatus.loading));
     try {
-      final currentDate = DateTime.parse(state.dateTime);
+      final externalDonations = await givtRepository.fetchExternalDonations();
 
-      /// DateTime used for querying external donations
-      final firstDayOfMonth = DateTime(currentDate.year, currentDate.month);
-      final untilDate = DateTime(currentDate.year, currentDate.month + 1);
-
-      final externalDonations = await givtRepository
-          .fetchExternalDonationSummary(
-            fromDate: firstDayOfMonth.toIso8601String(),
-            tillDate: untilDate.toIso8601String(),
-          );
-          
       externalDonations.sort((first, second) {
         final firstDate = DateTime.parse(first.creationDate);
         final secondDate = DateTime.parse(second.creationDate);
