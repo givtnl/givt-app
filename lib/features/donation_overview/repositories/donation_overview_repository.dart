@@ -10,7 +10,10 @@ mixin DonationOverviewRepository {
   String? getError();
   Future<void> loadDonations();
   Future<bool> deleteDonation(List<int> ids);
-  Future<bool> downloadYearlyOverview({required Map<String, dynamic> body});
+  Future<bool> downloadYearlyOverview({
+    required String fromDate,
+    required String toDate,
+  });
 }
 
 class DonationOverviewRepositoryImpl with DonationOverviewRepository {
@@ -89,9 +92,15 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
   }
 
   @override
-  Future<bool> downloadYearlyOverview({required Map<String, dynamic> body}) async {
+  Future<bool> downloadYearlyOverview({
+    required String fromDate,
+    required String toDate,
+  }) async {
     try {
-      final result = await _givtRepository.downloadYearlyOverview(body: body);
+      final result = await _givtRepository.downloadYearlyOverview(
+        fromDate: fromDate,
+        toDate: toDate,
+      );
       return result;
     } catch (e) {
       _error = e.toString();

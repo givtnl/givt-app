@@ -1,63 +1,81 @@
 import 'package:equatable/equatable.dart';
 
+enum GivingGoalFrequency {
+  monthly,
+  annually,
+}
+
 class GivingGoal extends Equatable {
   const GivingGoal({
     required this.amount,
-    required this.periodicity,
+    required this.frequency,
+    this.id,
   });
 
   const GivingGoal.empty()
       : amount = 0,
-        periodicity = 0;
+        frequency = GivingGoalFrequency.monthly,
+        id = null;
 
   factory GivingGoal.fromJson(Map<String, dynamic> json) {
+    final raw = json['frequency'];
+    final freqStr = raw is String ? raw.toLowerCase() : 'monthly';
+    final freq = freqStr.toLowerCase() == 'annually'
+        ? GivingGoalFrequency.annually
+        : GivingGoalFrequency.monthly;
     return GivingGoal(
       amount: json['amount'] as int,
-      periodicity: json['periodicity'] as int,
+      frequency: freq,
+      id: json['id'] as String?,
     );
   }
 
   final int amount;
-  final int periodicity;
+  final GivingGoalFrequency frequency;
+  final String? id;
 
   double get monthlyGivingGoal {
-    if (periodicity == 0) {
+    if (isMonthly) {
       return amount.toDouble();
     }
     return amount.toDouble() / 12;
   }
 
   double get yearlyGivingGoal {
-    if (periodicity == 1) {
+    if (isAnnually) {
       return amount.toDouble();
     }
     return amount.toDouble() * 12;
   }
 
-  bool get isMonthly => periodicity == 0;
+  bool get isMonthly => frequency == GivingGoalFrequency.monthly;
+  bool get isAnnually => frequency == GivingGoalFrequency.annually;
 
   GivingGoal copyWith({
     int? amount,
-    int? periodicity,
+    GivingGoalFrequency? frequency,
+    String? id,
   }) {
     return GivingGoal(
       amount: amount ?? this.amount,
-      periodicity: periodicity ?? this.periodicity,
+      frequency: frequency ?? this.frequency,
+      id: id ?? this.id,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,
-      'periodicity': periodicity,
+      'frequency':
+          frequency == GivingGoalFrequency.annually ? 'Annually' : 'Monthly',
     };
   }
 
   @override
-  List<Object?> get props => [amount, periodicity];
+  List<Object?> get props => [amount, frequency, id];
 
   @override
   String toString() {
-    return 'GivingGoal{amount: $amount, periodicity: $periodicity}';
+    return 'GivingGoal{id: $id, amount: $amount, frequency: $frequency}';
   }
 }

@@ -6,66 +6,69 @@ class ExternalDonation extends Equatable {
     required this.id,
     required this.amount,
     required this.description,
-    required this.cronExpression,
+    required this.frequencyString,
     required this.creationDate,
     required this.taxDeductible,
+    this.active = true,
   });
 
-  factory ExternalDonation.fromJson(Map<String, dynamic> json) =>
-      ExternalDonation(
-        id: json['id'] as String,
-        amount: json['amount'] as double,
-        description: json['description'] as String,
-        cronExpression: json['cronExpression'] as String,
-        creationDate: json['creationDate'] as String,
-        taxDeductible: json['taxDeductable'] as bool,
-      );
+  factory ExternalDonation.fromJson(Map<String, dynamic> json) {
+    return ExternalDonation(
+      id: json['id'] as String,
+      amount: (json['amount'] as num).toDouble(),
+      description: json['description'] as String,
+      frequencyString: json['frequency'] as String,
+      creationDate: json['creationDate'] as String,
+      taxDeductible: json['taxDeductable'] as bool,
+      active: json['active'] as bool? ?? true,
+    );
+  }
 
   const ExternalDonation.empty()
       : id = '',
         amount = 0,
         description = '',
-        cronExpression = '',
+        frequencyString = 'Once',
         creationDate = '',
-        taxDeductible = false;
+        taxDeductible = false,
+        active = true;
 
   final String id;
   final double amount;
   final String description;
-  final String cronExpression;
+  final String frequencyString;
   final String creationDate;
   final bool taxDeductible;
+  final bool active;
 
   ExternalDonationFrequency get frequency {
-    if (cronExpression.isEmpty) {
-      return ExternalDonationFrequency.once;
-    }
-    var cronExp = cronExpression.split(' ')[3];
-    if (cronExp.contains('/')) {
-      cronExp = cronExp.split('/')[1];
-    }
-    switch (cronExp) {
-      case '1':
+    switch (frequencyString) {
+      case 'Once':
+        return ExternalDonationFrequency.once;
+      // case 'Weekly':
+      //   return ExternalDonationFrequency.weekly;
+      case 'Monthly':
         return ExternalDonationFrequency.monthly;
-      case '3':
+      case 'Quarterly':
         return ExternalDonationFrequency.quarterly;
-      case '6':
+      case 'HalfYearly':
         return ExternalDonationFrequency.halfYearly;
-      case '12':
+      case 'Yearly':
         return ExternalDonationFrequency.yearly;
       default:
         return ExternalDonationFrequency.once;
     }
   }
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'amount': amount,
-        'description': description,
-        'cronExpression': cronExpression,
-        'creationDate': creationDate,
-        'taxDeductable': taxDeductible,
-      };
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'amount': amount,
+      'description': description,
+      'frequency': frequencyString,
+      'taxDeductable': taxDeductible,
+      'active': active,
+    };
+  }
 
   static List<ExternalDonation> fromJsonList(List<dynamic> json) {
     final externalDonations = <ExternalDonation>[];
@@ -83,75 +86,53 @@ class ExternalDonation extends Equatable {
     String? id,
     double? amount,
     String? description,
-    String? cronExpression,
+    String? frequencyString,
     String? creationDate,
     bool? taxDeductible,
+    bool? active,
     ExternalDonationFrequency? frequency,
   }) {
-    if (frequency != null &&
-        frequency != this.frequency &&
-        cronExpression == null) {
-      cronExpression = _createCronExpressionByFrequency(
-        ExternalDonationFrequency.values.indexOf(frequency),
-      );
+    String? newFrequencyString = frequencyString;
+    if (frequency != null && frequency != this.frequency) {
+      newFrequencyString = frequencyEnumToString(frequency);
     }
+    
     return ExternalDonation(
       id: id ?? this.id,
       amount: amount ?? this.amount,
       description: description ?? this.description,
-      cronExpression: cronExpression ?? this.cronExpression,
+      frequencyString: newFrequencyString ?? this.frequencyString,
       creationDate: creationDate ?? this.creationDate,
       taxDeductible: taxDeductible ?? this.taxDeductible,
+      active: active ?? this.active,
     );
   }
 
-  String _createCronExpressionByFrequency(int frequencyIndex) {
-    final startDate = DateTime.now();
-    switch (frequencyIndex) {
-      case 1: //Monthly
-        return '0 0 ${startDate.day} * *';
-      case 2: // 3 monthly
-        return '0 0 ${startDate.day} ${_getQuarterlyCronFirstPart(startDate.month)}/3 *';
-      case 3: // 6 monthly
-        return '0 0 ${startDate.day} ${_getHalfYearlyCronFirstPart(startDate.month)}/6 *';
-      case 4: // yearly
-        return '0 0 ${startDate.day} ${startDate.month} *';
-      default: // Once
-        return '';
-    }
-  }
-
-  int _getQuarterlyCronFirstPart(int month) {
-    switch (month) {
-      case 0:
-      case 3:
-      case 6:
-      case 9:
-        return 1;
-      case 1:
-      case 4:
-      case 7:
-      case 10:
-        return 2;
-      case 2:
-      case 5:
-      case 8:
-      case 11:
-        return 3;
-      default:
-        return 0;
-    }
-  }
-
-  int _getHalfYearlyCronFirstPart(int month) {
-    if (month < 7) {
-      return month + 1;
-    } else {
-      return month - 5;
+  static String frequencyEnumToString(ExternalDonationFrequency frequency) {
+    switch (frequency) {
+      case ExternalDonationFrequency.monthly:
+        return 'Monthly';
+      case ExternalDonationFrequency.quarterly:
+        return 'Quarterly';
+      case ExternalDonationFrequency.halfYearly:
+        return 'HalfYearly';
+      case ExternalDonationFrequency.yearly:
+        return 'Yearly';
+      // case ExternalDonationFrequency.weekly:
+      //   return 'Weekly';
+      case ExternalDonationFrequency.once:
+        return 'Once';
     }
   }
 
   @override
-  List<Object?> get props =>
-      [id, amount, description, cronExpression, creationDate, taxDeductible];
+  List<Object?> get props => [
+        id,
+        amount,
+        description,
+        frequencyString,
+        creationDate,
+        taxDeductible,
+        active,
+      ];
 }

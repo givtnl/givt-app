@@ -24,12 +24,14 @@ class PersonalSummaryBloc
     required this.givingGoalRepository,
     required UserExt loggedInUserExt,
   }) : super(
-          PersonalSummaryState(
-            loggedInUserExt: loggedInUserExt,
-            dateTime: DateTime(DateTime.now().year, DateTime.now().month)
-                .toIso8601String(),
-          ),
-        ) {
+         PersonalSummaryState(
+           loggedInUserExt: loggedInUserExt,
+           dateTime: DateTime(
+             DateTime.now().year,
+             DateTime.now().month,
+           ).toIso8601String(),
+         ),
+       ) {
     on<PersonalSummaryInit>(_onPersonalSummaryInit);
     on<PersonalSummaryMonthChange>(_onPersonalSummaryMonthChange);
     on<PersonalSummaryGoalRemove>(_onPersonalSummaryGoalRemove);
@@ -108,16 +110,20 @@ class PersonalSummaryBloc
       if (current.month == 12) {
         current = DateTime(current.year + 1, 1, 31);
       } else {
-        current = DateTime(current.year, current.month + 2)
-            .subtract(const Duration(days: 1));
+        current = DateTime(
+          current.year,
+          current.month + 2,
+        ).subtract(const Duration(days: 1));
       }
     }
     if (event.increase == false) {
       if (current.month == 1) {
         current = DateTime(current.year - 1, 12, 31);
       } else {
-        current = DateTime(current.year, current.month)
-            .subtract(const Duration(days: 1));
+        current = DateTime(
+          current.year,
+          current.month,
+        ).subtract(const Duration(days: 1));
       }
     }
 
@@ -129,10 +135,11 @@ class PersonalSummaryBloc
         tillDate: untilDate.toIso8601String(),
       );
 
-      final externalDonations = await givtRepo.fetchExternalDonations(
+      final externalDonations = await givtRepo.fetchExternalDonationSummary(
         fromDate: fromDate.toIso8601String(),
         tillDate: untilDate.toIso8601String(),
       );
+
       emit(
         state.copyWith(
           status: PersonalSummaryStatus.success,
@@ -215,7 +222,8 @@ class PersonalSummaryBloc
         (x) => x.creationDate.contains(element.key),
       );
       element = element.copyWith(
-        amount: element.amount +
+        amount:
+            element.amount +
             donation.fold(
               element.amount,
               (previousValue, element) => previousValue + element.amount,
@@ -265,7 +273,7 @@ class PersonalSummaryBloc
     required String fromDate,
     required String tillDate,
   }) async {
-    final externalDonations = await givtRepo.fetchExternalDonations(
+    final externalDonations = await givtRepo.fetchExternalDonationSummary(
       fromDate: fromDate,
       tillDate: tillDate,
     );
@@ -333,18 +341,37 @@ class PersonalSummaryBloc
   ) async {
     emit(state.copyWith(status: PersonalSummaryStatus.loading));
     try {
-      final givingGoal = await givingGoalRepository.addGivingGoal(
-        body: GivingGoal(
-          amount: event.amount,
-          periodicity: event.periodicity,
-        ).toJson(),
-      );
-      emit(
-        state.copyWith(
-          status: PersonalSummaryStatus.success,
-          givingGoal: givingGoal,
-        ),
-      );
+      final currentGoal = state.givingGoal;
+      final goalJson = GivingGoal(
+        amount: event.amount,
+        frequency: event.frequency,
+      ).toJson();
+
+      // Check if there's an existing goal with an ID
+      if (currentGoal.id != null) {
+        final updatedGoal = await givingGoalRepository.updateGivingGoal(
+          id: currentGoal.id!,
+          body: goalJson,
+        );
+        emit(
+          state.copyWith(
+            status: PersonalSummaryStatus.success,
+            givingGoal: updatedGoal,
+          ),
+        );
+      } else {
+        await givingGoalRepository.addGivingGoal(
+          body: goalJson,
+        );
+        // Re-fetch the goal to get the ID
+        final givingGoal = await _fetchGivingGoal();
+        emit(
+          state.copyWith(
+            status: PersonalSummaryStatus.success,
+            givingGoal: givingGoal,
+          ),
+        );
+      }
     } on GivtServerFailure catch (e, stackTrace) {
       LoggingInfo.instance.error(
         e.toString(),

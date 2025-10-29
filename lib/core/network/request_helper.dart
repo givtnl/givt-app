@@ -30,9 +30,7 @@ class RequestHelper {
     this._networkInfo,
     this._sharedPreferences, {
     required String apiURL,
-    required String apiURLAWS,
-  })  : _apiURL = apiURL,
-        _apiURLAWS = apiURLAWS;
+  })  : _apiURL = apiURL;
 
   final NetworkInfo _networkInfo;
   final SharedPreferences _sharedPreferences;
@@ -45,29 +43,21 @@ class RequestHelper {
 
   late String euBaseUrl;
   late String usBaseUrl;
-  late String euBaseUrlAWS;
-  late String usBaseUrlAWS;
   late String country;
 
   Client get client => country == Country.us.countryCode ? usClient : euClient;
 
   String _apiURL;
-  String _apiURLAWS;
 
   String get apiURL => _apiURL;
 
-  String get apiURLAWS => _apiURLAWS;
-
-  void updateApiUrl(String url, String awsurl) {
+  void updateApiUrl(String url) {
     _apiURL = url;
-    _apiURLAWS = awsurl;
   }
 
   Future<void> init() async {
     euBaseUrl = const String.fromEnvironment('API_URL_EU');
-    euBaseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
     usBaseUrl = const String.fromEnvironment('API_URL_US');
-    usBaseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
     await _createClients();
     country = await _checkCountry();
   }
@@ -76,8 +66,8 @@ class RequestHelper {
     await _checkForAndroidTrustedCertificate();
 
     try {
-      final euFuture = _getAllowedFingerprints(euBaseUrl, euBaseUrlAWS);
-      final usFuture = _getAllowedFingerprints(usBaseUrl, usBaseUrlAWS);
+      final euFuture = _getAllowedFingerprints(euBaseUrl);
+      final usFuture = _getAllowedFingerprints(usBaseUrl);
       final allowedEUFingerprints = await euFuture;
       final allowedUSFingerprints = await usFuture;
       _secureEuClient = _getSecureClient(allowedEUFingerprints);
@@ -173,10 +163,9 @@ Error while setting up secure http clients (while having an internet connection)
 
   Future<List<String>> _getAllowedFingerprints(
     String apiUrl,
-    String apiUrlAws,
   ) async {
     try {
-      final response = await _requestCerts(apiUrl, apiUrlAws);
+      final response = await _requestCerts(apiUrl);
 
       final publicKey =
           await rootBundle.loadString('assets/ca/certificatekey.txt');
@@ -184,16 +173,11 @@ Error while setting up secure http clients (while having an internet connection)
 
       final allowedFingerprints = [
         jwtVerified.payload[apiUrl].toString(),
-        jwtVerified.payload[apiUrlAws].toString(),
       ];
 
       await _sharedPreferences.setString(
         response.apiURL,
         allowedFingerprints[0],
-      );
-      await _sharedPreferences.setString(
-        response.apiURLAWS,
-        allowedFingerprints[1],
       );
 
       return allowedFingerprints;
@@ -204,7 +188,6 @@ Error while setting up secure http clients (while having an internet connection)
 
   Future<CertificateResponse> _requestCerts(
     String apiUrl,
-    String apiUrlAws,
   ) async {
     final url = _getCertsUrl(apiUrl);
     final response = await http.get(url);
@@ -220,7 +203,6 @@ Error while setting up secure http clients (while having an internet connection)
     return CertificateResponse(
       token: response.body.trim().replaceAll('"', ''),
       apiURL: apiUrl,
-      apiURLAWS: apiUrlAws,
     );
   }
 

@@ -8,8 +8,8 @@ import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
-import 'package:givt_app/shared/models/givt.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
+import 'package:givt_app/shared/models/givt.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,23 +23,21 @@ mixin GivtRepository {
 
   Future<List<Givt>> fetchGivts();
 
-  Future<List<ExternalDonation>> fetchExternalDonations({
-    required String fromDate,
-    required String tillDate,
-  });
+  Future<List<ExternalDonation>> fetchExternalDonations();
 
-  Future<List<SummaryItem>> fetchExternalDonationSummary({
+  Future<List<ExternalDonation>> fetchExternalDonationSummary({
     required String fromDate,
     required String tillDate,
-    required String orderType,
-    required String groupType,
   });
 
   Future<bool> deleteExternalDonation(String id);
 
   Future<bool> deleteGivt(List<dynamic> ids);
 
-  Future<bool> downloadYearlyOverview({required Map<String, dynamic> body});
+  Future<bool> downloadYearlyOverview({
+    required String fromDate,
+    required String toDate,
+  });
 
   Future<bool> addExternalDonation({
     required Map<String, dynamic> body,
@@ -180,9 +178,10 @@ class GivtRepositoryImpl with GivtRepository {
 
   @override
   Future<bool> downloadYearlyOverview({
-    required Map<String, dynamic> body,
+    required String fromDate,
+    required String toDate,
   }) async {
-    return apiClient.downloadYearlyOverview(body);
+    return apiClient.downloadYearlyOverview(fromDate, toDate);
   }
 
   @override
@@ -217,37 +216,26 @@ class GivtRepositoryImpl with GivtRepository {
   }
 
   @override
-  Future<List<ExternalDonation>> fetchExternalDonations({
-    required String fromDate,
-    required String tillDate,
-  }) async {
-    final params = {
-      'fromDate': fromDate,
-      'tillDate': tillDate,
-    };
-    final decodedJson = await apiClient.fetchExternalDonations(params: params);
+  Future<List<ExternalDonation>> fetchExternalDonations() async {
+    final decodedJson = await apiClient.fetchExternalDonations();
     return ExternalDonation.fromJsonList(
       decodedJson,
     );
   }
 
   @override
-  Future<List<SummaryItem>> fetchExternalDonationSummary({
+  Future<List<ExternalDonation>> fetchExternalDonationSummary({
     required String fromDate,
     required String tillDate,
-    required String orderType,
-    required String groupType,
   }) async {
     final params = {
-      'fromDate': fromDate,
-      'tillDate': tillDate,
-      'orderType': orderType,
-      'groupType': groupType,
+      'startDate': fromDate,
+      'endDate': tillDate,
     };
-    final decodedJson = await apiClient.fetchExternalDonationsSummary(
+    final decodedJson = await apiClient.fetchExternalDonationsSearch(
       params: params,
     );
-    return SummaryItem.fromJsonList(
+    return ExternalDonation.fromJsonList(
       decodedJson,
     );
   }

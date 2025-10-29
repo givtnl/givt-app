@@ -2366,9 +2366,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get donationOverviewStatusRefusedFull => 'Refused by bank';
 
   @override
-  String donationOverviewContactMessage(Object status, Object transactionId) {
-    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID:#$transactionId';
-  }
+  String get donationOverviewContactMessage =>
+      'Hi, I have the following question about my donation:';
 
   @override
   String get date => 'Date';
@@ -2391,11 +2390,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get platformContributionHelpLowerCosts =>
-      'Help us lower costs for the organizations';
+      'Help lower costs for organisations';
 
   @override
   String get platformContributionAims =>
-      'Give aims for 0% service fee with your help. They\'ll show here once you set them.';
+      'Your platform contribution helps reduce fees so more of each donation reaches the organisation. Once you set your contribution, it will appear here. ';
 
   @override
   String get platformContributionManage =>
@@ -4795,9 +4794,8 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get donationOverviewStatusRefusedFull => 'Refused by bank';
 
   @override
-  String donationOverviewContactMessage(Object status, Object transactionId) {
-    return 'Hi, I need help with the following donation:\\n\\nStatus: $status\\nTransaction ID: $transactionId';
-  }
+  String get donationOverviewContactMessage =>
+      'Hi, I have the following question about my donation:';
 
   @override
   String get date => 'Date';
@@ -4820,11 +4818,11 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get platformContributionHelpLowerCosts =>
-      'Help us lower costs for the organizations';
+      'Help lower costs for organisations';
 
   @override
   String get platformContributionAims =>
-      'Give aims for 0% service fee with your help. They\'ll show here once you set them.';
+      'Your platform contribution helps reduce fees so more of each donation reaches the organisation. Once you set your contribution, it will appear here. ';
 
   @override
   String get platformContributionManage =>

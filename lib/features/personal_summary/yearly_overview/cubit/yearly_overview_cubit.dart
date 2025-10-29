@@ -4,10 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/overview/models/summary_group_type.dart';
 import 'package:givt_app/features/personal_summary/overview/models/summary_order_type.dart';
 import 'package:givt_app/shared/models/models.dart';
+import 'package:givt_app/shared/models/summary_item.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
+import 'package:intl/intl.dart';
 
 part 'yearly_overview_state.dart';
 
@@ -27,39 +30,44 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
 
       final currentYear = int.parse(year);
       final fromDate = DateTime.parse('$year-01-01').toIso8601String();
-      final toDate =
-          DateTime.parse('${currentYear + 1}-01-01').toIso8601String();
+      final toDate = DateTime.parse(
+        '${currentYear + 1}-01-01',
+      ).toIso8601String();
 
       final previousYear = currentYear - 1;
-      final fromPreviousDate =
-          DateTime.parse('$previousYear-01-01').toIso8601String();
-      final toPreviousDate =
-          DateTime.parse('$previousYear-12-31').toIso8601String();
+      final fromPreviousDate = DateTime.parse(
+        '$previousYear-01-01',
+      ).toIso8601String();
+      final toPreviousDate = DateTime.parse(
+        '$previousYear-12-31',
+      ).toIso8601String();
 
-      final externalDonationsPreviousYear =
-          await _givtRepository.fetchExternalDonationSummary(
-        fromDate: fromPreviousDate,
-        tillDate: toPreviousDate,
-        orderType: SummaryOrderType.key.type,
-        groupType: SummaryGroupType.perDestination.type,
+      final externalDonationsListPreviousYear = await _givtRepository
+          .fetchExternalDonationSummary(
+            fromDate: fromPreviousDate,
+            tillDate: toPreviousDate,
+          );
+        
+      final externalDonationsPreviousYear = _groupByDestination(
+        externalDonationsListPreviousYear,
       );
 
-      final monthlyByOrganisationPreviousYear =
-          await _givtRepository.fetchSummary(
-        guid: guid,
-        fromDate: fromPreviousDate,
-        tillDate: toPreviousDate,
-        orderType: SummaryOrderType.key.type,
-        groupType: SummaryGroupType.perDestination.type,
-      );
+      final monthlyByOrganisationPreviousYear = await _givtRepository
+          .fetchSummary(
+            guid: guid,
+            fromDate: fromPreviousDate,
+            tillDate: toPreviousDate,
+            orderType: SummaryOrderType.key.type,
+            groupType: SummaryGroupType.perDestination.type,
+          );
 
-      final externaDonations =
-          await _givtRepository.fetchExternalDonationSummary(
-        fromDate: fromDate,
-        tillDate: toDate,
-        orderType: SummaryOrderType.key.type,
-        groupType: SummaryGroupType.perDestination.type,
-      );
+      final externalDonationsList = await _givtRepository
+          .fetchExternalDonationSummary(
+            fromDate: fromDate,
+            tillDate: toDate,
+          );
+
+      final externaDonations = _groupByDestination(externalDonationsList);
 
       final monthlyByOrganisation = await _givtRepository.fetchSummary(
         guid: guid,
@@ -77,13 +85,7 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
         groupType: SummaryGroupType.perMonth.type,
       );
 
-      final externaDonationsPerMonth =
-          await _givtRepository.fetchExternalDonationSummary(
-        fromDate: fromDate,
-        tillDate: toDate,
-        orderType: SummaryOrderType.key.type,
-        groupType: SummaryGroupType.perMonth.type,
-      );
+      final externaDonationsPerMonth = _groupByMonth(externalDonationsList);
 
       emit(
         state.copyWith(
@@ -114,10 +116,12 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
     emit(state.copyWith(status: YearlyOverviewStatus.loading));
     try {
       final fromDate = DateTime.parse('${state.year}-01-01').toIso8601String();
-      final tillDate = DateTime.parse('${int.parse(state.year) + 1}-01-01')
-          .toIso8601String();
+      final tillDate = DateTime.parse(
+        '${int.parse(state.year) + 1}-01-01',
+      ).toIso8601String();
       final isSuccess = await _givtRepository.downloadYearlyOverview(
-        body: {'fromDate': fromDate, 'tillDate': tillDate},
+        fromDate: fromDate,
+        toDate: tillDate,
       );
       if (!isSuccess) {
         emit(state.copyWith(status: YearlyOverviewStatus.error));
@@ -133,5 +137,58 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
     } on SocketException {
       emit(state.copyWith(status: YearlyOverviewStatus.noInternet));
     }
+  }
+
+  /// Groups external donations by destination (description)
+  List<SummaryItem> _groupByDestination(
+    List<ExternalDonation> donations,
+  ) {
+    final grouped = <String, Map<String, double>>{};
+
+    for (final donation in donations) {
+      final key = donation.description;
+      if (!grouped.containsKey(key)) {
+        grouped[key] = {'amount': 0, 'count': 0};
+      }
+      grouped[key]!['amount'] = grouped[key]!['amount']! + donation.amount;
+      grouped[key]!['count'] = grouped[key]!['count']! + 1;
+    }
+
+    return grouped.entries.map((entry) {
+      return SummaryItem(
+        key: entry.key,
+        amount: entry.value['amount']!,
+        count: entry.value['count']!,
+        taxDeductable: false,
+      );
+    }).toList();
+  }
+
+  /// Groups external donations by month
+  List<SummaryItem> _groupByMonth(
+    List<ExternalDonation> donations,
+  ) {
+    final grouped = <String, Map<String, double>>{};
+    final dateFormat = DateFormat('yyyy-MM');
+
+    for (final donation in donations) {
+      final date = DateTime.parse(donation.creationDate);
+      final key = dateFormat.format(date);
+
+      if (!grouped.containsKey(key)) {
+        grouped[key] = {'amount': 0, 'count': 0};
+      }
+      grouped[key]!['amount'] = grouped[key]!['amount']! + donation.amount;
+      grouped[key]!['count'] = grouped[key]!['count']! + 1;
+    }
+
+    return grouped.entries.map((entry) {
+      return SummaryItem(
+        key: entry.key,
+        amount: entry.value['amount']!,
+        count: entry.value['count']!,
+        taxDeductable: false,
+      );
+    }).toList();
   }
 }

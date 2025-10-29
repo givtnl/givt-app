@@ -76,6 +76,7 @@ class AddExternalDonationPage extends StatelessWidget {
                 return ExternalDonationItem(
                   title: externalDonation.description,
                   amount: externalDonation.amount,
+                  frequency: externalDonation.frequency,
                   onEdit: () => context
                       .read<AddExternalDonationCubit>()
                       .updateCurrentExternalDonation(

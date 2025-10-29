@@ -65,18 +65,15 @@ Future<void> initAPIService() async {
 
 Future<RequestHelper> _initRequestHelper() async {
   var baseUrl = const String.fromEnvironment('API_URL_EU');
-  var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
   final country = await _checkCountry();
   if (country == Country.us.countryCode) {
     baseUrl = const String.fromEnvironment('API_URL_US');
-    baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
   }
   log('Using API URL: $baseUrl');
   final requestHelper = RequestHelper(
     getIt(),
     getIt(),
     apiURL: baseUrl,
-    apiURLAWS: baseUrlAWS,
   );
   await requestHelper.init();
   getIt.registerSingleton<RequestHelper>(requestHelper);

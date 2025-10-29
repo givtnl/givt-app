@@ -2385,9 +2385,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get donationOverviewStatusRefusedFull => 'Von der Bank abgelehnt';
 
   @override
-  String donationOverviewContactMessage(Object status, Object transactionId) {
-    return 'Hoi, ik heb hulp nodig met de volgende gift:\\n\\nStatus: $status\\nTransaction ID: $transactionId';
-  }
+  String get donationOverviewContactMessage =>
+      'Hallo, ich habe folgende Frage zu meiner Spende:';
 
   @override
   String get date => 'Datum';
@@ -2414,7 +2413,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get platformContributionAims =>
-      'Give strebt mit Ihrer Hilfe eine Servicegebühr von 0% an. Sie werden hier angezeigt, sobald Sie sie festgelegt haben.';
+      'Ihr Plattformbeitrag hilft, die Gebühren zu senken, sodass mehr von jeder Spende die Organisation erreicht. Sobald Sie Ihren Beitrag festgelegt haben, wird er hier angezeigt.';
 
   @override
   String get platformContributionManage =>

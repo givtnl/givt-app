@@ -24,13 +24,13 @@ class PersonalSummaryMonthChange extends PersonalSummaryEvent {
 class PersonalSummaryGoalChange extends PersonalSummaryEvent {
   const PersonalSummaryGoalChange({
     required this.amount,
-    required this.periodicity,
+    required this.frequency,
   });
   final int amount;
-  final int periodicity;
+  final GivingGoalFrequency frequency;
 
   @override
-  List<Object> get props => [amount, periodicity];
+  List<Object> get props => [amount, frequency];
 }
 
 class PersonalSummaryGoalRemove extends PersonalSummaryEvent {
@@ -40,11 +40,11 @@ class PersonalSummaryGoalRemove extends PersonalSummaryEvent {
 class PersonalSummaryGoalAdd extends PersonalSummaryEvent {
   const PersonalSummaryGoalAdd({
     required this.amount,
-    required this.periodicity,
+    required this.frequency,
   });
   final int amount;
-  final int periodicity;
+  final GivingGoalFrequency frequency;
 
   @override
-  List<Object> get props => [amount, periodicity];
+  List<Object> get props => [amount, frequency];
 }

@@ -57,7 +57,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final size = MediaQuery.sizeOf(context);
+
     const messageKey = GlobalObjectKey('messageKey');
     final user = _familyAuthCubit.user;
     return FunBottomSheet(
@@ -76,6 +76,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
                         appLanguage: locals.localeName,
                         email: user!.email,
                         guid: user.guid,
+                        metadata: null,
                       ),
                 );
               }
