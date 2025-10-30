@@ -43,6 +43,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     on<AddOrganisationToFavorites>(_onAddOrganisationToFavorites);
     on<RemoveOrganisationFromFavorites>(_onRemoveOrganisationFromFavorites);
     on<FavoritesRefresh>(_onFavoritesRefresh);
+
+    on<OrganisationAllocationFilterChanged>(_onAllocationFilterChanged);
+    on<OrganisationDateFilterChanged>(_onDateFilterChanged);
+    on<OrganisationNonAllocatedFilterToggled>(_onNonAllocatedFilterToggled);
   }
 
   final CollectGroupRepository _collectGroupRepository;
@@ -262,42 +266,13 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
-      final query = _removeDiacritics(event.query.toLowerCase());
-
-      // Filter organizations by type first if there's a selected type
-      final typeFilteredOrgs = state.organisations
-          .where(
-            (org) =>
-                state.selectedType == CollectGroupType.none.index ||
-                org.type.index == state.selectedType,
-          )
-          .toList();
-
-      // If query is empty, just apply the type filter
-      if (query.isEmpty) {
-        emit(
-          state.copyWith(
-            status: OrganisationStatus.filtered,
-            filteredOrganisations: _applySorting(typeFilteredOrgs),
-            previousSearchQuery: event.query,
-          ),
-        );
-        return;
-      }
-
-      // Apply search filter with "Stichting" handling
-      final filteredOrgs = _filterOrganisationsByQuery(
-        query: query,
-        organisations: typeFilteredOrgs,
-      );
-
       emit(
         state.copyWith(
-          status: OrganisationStatus.filtered,
-          filteredOrganisations: _applySorting(filteredOrgs, searchQuery: query),
           previousSearchQuery: event.query,
         ),
       );
+      
+      _applyAllFilters(emit);
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -455,29 +430,13 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   }
 
   void _handleTypeChange(int newSelectedType, Emitter<OrganisationState> emit) {
-    // Get all organizations or just those of the selected type
-    var orgs = state.organisations;
-    if (newSelectedType != CollectGroupType.none.index) {
-      orgs = state.organisations
-          .where((org) => org.type.index == newSelectedType)
-          .toList();
-    }
-
-    // If there's an active search query, apply both filters
-    if (state.previousSearchQuery.isNotEmpty) {
-      final query = _removeDiacritics(state.previousSearchQuery.toLowerCase());
-      orgs = _filterOrganisationsByQuery(
-        query: query,
-        organisations: orgs,
-      );
-    }
-
     emit(
       state.copyWith(
         selectedType: newSelectedType,
-        filteredOrganisations: _applySorting(orgs),
       ),
     );
+    
+    _applyAllFilters(emit);
   }
 
   FutureOr<void> _onSelectionChanged(
@@ -558,4 +517,132 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   }
 
   String _removeDiacritics(String string) => removeDiacritics(string);
+
+  FutureOr<void> _onAllocationFilterChanged(
+    OrganisationAllocationFilterChanged event,
+    Emitter<OrganisationState> emit,
+  ) {
+    emit(state.copyWith(status: OrganisationStatus.loading));
+    
+    // Toggle allocation filter - if the same allocation is selected, clear it
+    final newAllocation = state.selectedAllocation == event.allocationName
+        ? null
+        : event.allocationName;
+    
+    emit(
+      state.copyWith(
+        selectedAllocation: newAllocation,
+        showOnlyNonAllocated: false, // Clear non-allocated filter when selecting an allocation
+      ),
+    );
+    
+    _applyAllFilters(emit);
+  }
+
+  FutureOr<void> _onDateFilterChanged(
+    OrganisationDateFilterChanged event,
+    Emitter<OrganisationState> emit,
+  ) {
+    emit(state.copyWith(status: OrganisationStatus.loading));
+    
+    emit(
+      state.copyWith(
+        filterStartDate: event.startDate,
+        filterEndDate: event.endDate,
+      ),
+    );
+    
+    _applyAllFilters(emit);
+  }
+
+  FutureOr<void> _onNonAllocatedFilterToggled(
+    OrganisationNonAllocatedFilterToggled event,
+    Emitter<OrganisationState> emit,
+  ) {
+    emit(state.copyWith(status: OrganisationStatus.loading));
+    
+    emit(
+      state.copyWith(
+        showOnlyNonAllocated: !state.showOnlyNonAllocated,
+        selectedAllocation: null, // Clear allocation filter when toggling non-allocated
+      ),
+    );
+    
+    _applyAllFilters(emit);
+  }
+
+  void _applyAllFilters(Emitter<OrganisationState> emit) {
+    var filteredOrgs = state.organisations;
+
+    // Apply type filter
+    if (state.selectedType != CollectGroupType.none.index) {
+      filteredOrgs = filteredOrgs
+          .where((org) => org.type.index == state.selectedType)
+          .toList();
+    }
+
+    // Apply search query filter
+    if (state.previousSearchQuery.isNotEmpty) {
+      final query = _removeDiacritics(state.previousSearchQuery.toLowerCase());
+      filteredOrgs = _filterOrganisationsByQuery(
+        query: query,
+        organisations: filteredOrgs,
+      );
+    }
+
+    // Apply allocation filters
+    if (state.showOnlyNonAllocated) {
+      // Show only organizations without allocations
+      filteredOrgs = filteredOrgs
+          .where((org) => org.multiUseAllocations.isEmpty)
+          .toList();
+    } else if (state.selectedAllocation != null) {
+      // Show only organizations with the selected allocation
+      filteredOrgs = filteredOrgs
+          .where(
+            (org) => org.multiUseAllocations.any(
+              (allocation) => allocation.name == state.selectedAllocation,
+            ),
+          )
+          .toList();
+    }
+
+    // Apply date filter
+    if (state.filterStartDate != null || state.filterEndDate != null) {
+      filteredOrgs = filteredOrgs.where((org) {
+        if (org.multiUseAllocations.isEmpty) {
+          return false; // Exclude orgs without allocations when date filtering
+        }
+
+        return org.multiUseAllocations.any((allocation) {
+          try {
+            final allocStart = DateTime.parse(allocation.dtBeginCron);
+            final allocEnd = DateTime.parse(allocation.dtEndCron);
+
+            if (state.filterStartDate != null &&
+                allocEnd.isBefore(state.filterStartDate!)) {
+              return false;
+            }
+
+            if (state.filterEndDate != null &&
+                allocStart.isAfter(state.filterEndDate!)) {
+              return false;
+            }
+
+            return true;
+          } catch (e) {
+            // If date parsing fails, exclude the organization
+            return false;
+          }
+        });
+      }).toList();
+    }
+
+    emit(
+      state.copyWith(
+        status: OrganisationStatus.filtered,
+        filteredOrganisations: _applySorting(filteredOrgs),
+      ),
+    );
+  }
 }

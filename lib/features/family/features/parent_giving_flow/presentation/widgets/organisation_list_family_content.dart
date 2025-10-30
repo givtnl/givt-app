@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/presentation/widgets/organisation_allocation_filters.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
@@ -73,7 +74,13 @@ class _OrganisationListFamilyContentState
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+              child: OrganisationAllocationFilters(
+                bloc: widget.bloc,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: FamilySearchField(
                 autocorrect: false,
                 controller: controller,
@@ -81,6 +88,7 @@ class _OrganisationListFamilyContentState
                     widget.bloc.add(OrganisationFilterQueryChanged(value)),
               ),
             ),
+            const SizedBox(height: 16),
             if (state.status == OrganisationStatus.filtered)
               Expanded(
                 child: ListView.separated(

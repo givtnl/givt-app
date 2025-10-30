@@ -17,6 +17,10 @@ class OrganisationState extends Equatable {
     this.previousSearchQuery = '',
     this.favoritedOrganisations = const [],
     this.sortByFavorites = false,
+    this.selectedAllocation,
+    this.filterStartDate,
+    this.filterEndDate,
+    this.showOnlyNonAllocated = false,
   });
 
   final List<CollectGroup> organisations;
@@ -27,6 +31,10 @@ class OrganisationState extends Equatable {
   final OrganisationStatus status;
   final List<String> favoritedOrganisations;
   final bool sortByFavorites;
+  final String? selectedAllocation;
+  final DateTime? filterStartDate;
+  final DateTime? filterEndDate;
+  final bool showOnlyNonAllocated;
 
   OrganisationState copyWith({
     List<CollectGroup>? organisations,
@@ -37,6 +45,10 @@ class OrganisationState extends Equatable {
     String? previousSearchQuery,
     List<String>? favoritedOrganisations,
     bool? sortByFavorites,
+    String? selectedAllocation,
+    DateTime? filterStartDate,
+    DateTime? filterEndDate,
+    bool? showOnlyNonAllocated,
   }) {
     return OrganisationState(
       organisations: organisations ?? this.organisations,
@@ -49,11 +61,15 @@ class OrganisationState extends Equatable {
       favoritedOrganisations:
           favoritedOrganisations ?? this.favoritedOrganisations,
       sortByFavorites: sortByFavorites ?? this.sortByFavorites,
+      selectedAllocation: selectedAllocation ?? this.selectedAllocation,
+      filterStartDate: filterStartDate ?? this.filterStartDate,
+      filterEndDate: filterEndDate ?? this.filterEndDate,
+      showOnlyNonAllocated: showOnlyNonAllocated ?? this.showOnlyNonAllocated,
     );
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         organisations,
         selectedType,
         filteredOrganisations,
@@ -62,5 +78,9 @@ class OrganisationState extends Equatable {
         previousSearchQuery,
         favoritedOrganisations,
         sortByFavorites,
+        selectedAllocation,
+        filterStartDate,
+        filterEndDate,
+        showOnlyNonAllocated,
       ];
 }

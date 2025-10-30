@@ -82,3 +82,32 @@ class RemoveOrganisationFromFavorites extends OrganisationEvent {
   @override
   List<Object> get props => [nameSpace];
 }
+
+class OrganisationAllocationFilterChanged extends OrganisationEvent {
+  const OrganisationAllocationFilterChanged(this.allocationName);
+
+  final String? allocationName;
+
+  @override
+  List<Object?> get props => [allocationName];
+}
+
+class OrganisationDateFilterChanged extends OrganisationEvent {
+  const OrganisationDateFilterChanged({
+    this.startDate,
+    this.endDate,
+  });
+
+  final DateTime? startDate;
+  final DateTime? endDate;
+
+  @override
+  List<Object?> get props => [startDate, endDate];
+}
+
+class OrganisationNonAllocatedFilterToggled extends OrganisationEvent {
+  const OrganisationNonAllocatedFilterToggled();
+
+  @override
+  List<Object> get props => [];
+}

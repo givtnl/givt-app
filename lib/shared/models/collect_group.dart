@@ -54,6 +54,14 @@ class CollectGroup extends Equatable {
       }
     }
 
+    if (json['MultiUseAllocations'] != null) {
+      for (final allocation in json['MultiUseAllocations'] as List<dynamic>) {
+        multiUseAllocations.add(
+          MultiUseAllocation.fromJson(allocation as Map<String, dynamic>),
+        );
+      }
+    }
+
     return CollectGroup(
       nameSpace: json['NS'] as String,
       orgName: json['N'] as String,

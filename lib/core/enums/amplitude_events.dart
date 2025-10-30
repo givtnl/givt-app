@@ -299,6 +299,9 @@ enum AmplitudeEvents {
   parentGiveClicked('parent_give_clicked'),
   parentGiveFilterTileClicked('parent_give_filter_tile_clicked'),
   parentGaveSuccessfully('parent_gave_successfully'),
+  parentGiveAllocationFilterChanged('parent_give_allocation_filter_changed'),
+  parentGiveNonAllocatedFilterToggled('parent_give_non_allocated_filter_toggled'),
+  parentGiveDateFilterChanged('parent_give_date_filter_changed'),
 
   // Reflect and Share
   reflectAndShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),
