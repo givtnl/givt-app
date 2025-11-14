@@ -307,18 +307,21 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     }
   }
 
-  /// Filters a list of organizations by query, with support for "Stichting" prefix handling.
-  /// Returns organizations that match either the full query or the query without "stichting " prefix.
+  /// Filters a list of organizations by query, with support for alternative query variations.
+  /// Returns organizations that match either the full query or any alternative query variations.
+  /// Supports:
+  /// - "Stichting" prefix removal
+  /// - "st." / "St." ↔ "sint" / "Sint" conversion
   List<CollectGroup> _filterOrganisationsByQuery({
     required String query,
     required List<CollectGroup> organisations,
   }) {
-    final alternativeQuery = _getAlternativeQueryWithoutStichting(query);
+    final alternativeQueries = _getAlternativeQueries(query);
 
     // First try exact substring matching
     final exactMatches = _getExactMatches(
       query: query,
-      alternativeQuery: alternativeQuery,
+      alternativeQueries: alternativeQueries,
       organisations: organisations,
     );
 
@@ -329,24 +332,27 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     // If no exact matches, use fuzzy matching
     return _getFuzzyMatches(
       query: query,
-      alternativeQuery: alternativeQuery,
+      alternativeQueries: alternativeQueries,
       organisations: organisations,
     );
   }
 
-  /// Returns organizations that contain the query or alternative query as a substring.
+  /// Returns organizations that contain the query or any alternative query as a substring.
   /// Results are sorted with organizations matching the original query first.
   List<CollectGroup> _getExactMatches({
     required String query,
-    required String? alternativeQuery,
+    required List<String> alternativeQueries,
     required List<CollectGroup> organisations,
   }) {
     final results = organisations
         .where(
           (org) {
             final orgName = _removeDiacritics(org.orgName.toLowerCase());
-            return orgName.contains(query) ||
-                (alternativeQuery != null && orgName.contains(alternativeQuery));
+            if (orgName.contains(query)) return true;
+            for (final altQuery in alternativeQueries) {
+              if (orgName.contains(altQuery)) return true;
+            }
+            return false;
           },
         )
         .toList();
@@ -367,11 +373,11 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     return results;
   }
 
-  /// Returns organizations that match the query or alternative query using fuzzy matching.
+  /// Returns organizations that match the query or any alternative query using fuzzy matching.
   /// Results are combined, deduplicated, and sorted by match score.
   List<CollectGroup> _getFuzzyMatches({
     required String query,
-    required String? alternativeQuery,
+    required List<String> alternativeQueries,
     required List<CollectGroup> organisations,
   }) {
     final orgNames = organisations
@@ -383,14 +389,6 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       query: query,
       choices: orgNames,
     ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
-
-    // If we have an alternative query, also try fuzzy matching with it
-    final alternativeFuzzyResults = alternativeQuery != null
-        ? extractAllSorted<String>(
-            query: alternativeQuery,
-            choices: orgNames,
-          ).where((result) => result.score >= _fuzzyScoreThreshold).toList()
-        : <ExtractedResult<String>>[];
 
     // Combine and deduplicate results by index, keeping the best score for each organization
     // Prioritize original query results over alternative query results when scores are equal
@@ -405,10 +403,17 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     }
     
     // Then process alternative query results, only updating if score is better
-    for (final result in alternativeFuzzyResults) {
-      final existing = combinedResults[result.index];
-      if (existing == null || result.score > existing.result.score) {
-        combinedResults[result.index] = (result: result, isOriginal: false);
+    for (final altQuery in alternativeQueries) {
+      final alternativeFuzzyResults = extractAllSorted<String>(
+        query: altQuery,
+        choices: orgNames,
+      ).where((result) => result.score >= _fuzzyScoreThreshold).toList();
+      
+      for (final result in alternativeFuzzyResults) {
+        final existing = combinedResults[result.index];
+        if (existing == null || result.score > existing.result.score) {
+          combinedResults[result.index] = (result: result, isOriginal: false);
+        }
       }
     }
 
@@ -430,17 +435,92 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     }).toList();
   }
 
-  /// Returns a query without "stichting " prefix if the query starts with it.
-  /// Returns null if the query doesn't start with "stichting ".
-  /// Works case-insensitively (e.g., "Stichting" or "STICHTING" also work).
-  String? _getAlternativeQueryWithoutStichting(String query) {
-    const stichtingPrefix = 'stichting ';
+  /// Returns a list of alternative query variations based on common abbreviations.
+  /// Supports:
+  /// - "stichting " prefix removal
+  /// - "st." / "St." ↔ "sint" / "Sint" conversion (handles both directions)
+  /// - "st " ↔ "sint " conversion
+  List<String> _getAlternativeQueries(String query) {
+    final alternatives = <String>[];
     final queryLower = query.toLowerCase();
+    
+    // Handle "stichting " prefix removal
+    const stichtingPrefix = 'stichting ';
     if (queryLower.startsWith(stichtingPrefix)) {
       final withoutStichting = query.substring(stichtingPrefix.length).trim();
-      return withoutStichting.isNotEmpty ? withoutStichting : null;
+      if (withoutStichting.isNotEmpty) {
+        alternatives.add(withoutStichting);
+        // Recursively get alternatives for the query without stichting
+        alternatives.addAll(_getAlternativeQueries(withoutStichting));
+      }
     }
-    return null;
+    
+    // Handle "st." ↔ "sint" conversion
+    // Check if query contains "st." (case insensitive)
+    final stDotRegex = RegExp(r'\bst\.', caseSensitive: false);
+    if (stDotRegex.hasMatch(query)) {
+      // Replace "st." with "sint " (always add space for consistency)
+      final withSint = query.replaceAllMapped(
+        RegExp(r'\bst\.', caseSensitive: false),
+        (match) {
+          // Preserve case: "St." → "Sint ", "st." → "sint "
+          final matched = match.group(0)!;
+          if (matched == 'St.') {
+            return 'Sint ';
+          } else if (matched == 'ST.') {
+            return 'SINT ';
+          } else {
+            return 'sint ';
+          }
+        },
+      );
+      alternatives.add(withSint);
+    }
+    
+    // Check if query contains "sint" (with optional space) - convert to "st."
+    final sintRegex = RegExp(r'\bsint\s?', caseSensitive: false);
+    if (sintRegex.hasMatch(query)) {
+      // Replace "sint " or "sint" with "st. " (with space)
+      final withStDot = query.replaceAllMapped(
+        RegExp(r'\bsint\s?', caseSensitive: false),
+        (match) {
+          // Preserve case: "Sint " → "St. ", "sint " → "st. "
+          final matched = match.group(0)!;
+          if (matched.toLowerCase().startsWith('sint')) {
+            if (matched == 'Sint' || matched == 'Sint ') {
+              return 'St. ';
+            } else if (matched == 'SINT' || matched == 'SINT ') {
+              return 'ST. ';
+            } else {
+              return 'st. ';
+            }
+          }
+          return matched;
+        },
+      );
+      alternatives.add(withStDot);
+    }
+    
+    // Handle "st " (space) → "sint " conversion
+    final stSpaceRegex = RegExp(r'\bst\s+', caseSensitive: false);
+    if (stSpaceRegex.hasMatch(query) && !queryLower.contains('sint')) {
+      final withSint = query.replaceAllMapped(
+        RegExp(r'\bst\s+', caseSensitive: false),
+        (match) {
+          final matched = match.group(0)!;
+          if (matched == 'St ') {
+            return 'Sint ';
+          } else if (matched == 'ST ') {
+            return 'SINT ';
+          } else {
+            return 'sint ';
+          }
+        },
+      );
+      alternatives.add(withSint);
+    }
+    
+    return alternatives;
   }
 
   FutureOr<void> _onTypeChanged(
