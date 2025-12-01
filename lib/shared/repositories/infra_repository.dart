@@ -27,7 +27,7 @@ class InfraRepositoryImpl with InfraRepository {
   }) async {
     final body = <String, String>{
       'guid': guid,
-      'subject': subject ?? 'Feedback app',
+      'subject': subject ?? 'App Feedback',
       'message': message,
     };
     return apiClient.contactSupport(body);
