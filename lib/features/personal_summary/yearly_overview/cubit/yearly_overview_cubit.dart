@@ -47,10 +47,6 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
             fromDate: fromPreviousDate,
             tillDate: toPreviousDate,
           );
-        
-      final externalDonationsPreviousYear = _groupByDestination(
-        externalDonationsListPreviousYear,
-      );
 
       final monthlyByOrganisationPreviousYear = await _givtRepository
           .fetchSummary(
@@ -66,8 +62,6 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
             fromDate: fromDate,
             tillDate: toDate,
           );
-
-      final externaDonations = _groupByDestination(externalDonationsList);
 
       final monthlyByOrganisation = await _givtRepository.fetchSummary(
         guid: guid,
@@ -90,9 +84,27 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
       emit(
         state.copyWith(
           status: YearlyOverviewStatus.loaded,
-          externalDonations: externaDonations,
+          externalDonations: externalDonationsList
+              .map(
+                (e) => SummaryItem(
+                  key: e.description,
+                  amount: e.amount,
+                  count: 1,
+                  taxDeductable: e.taxDeductible,
+                ),
+              )
+              .toList(),
           monthlyByOrganisation: monthlyByOrganisation,
-          externalDonationsPreviousYear: externalDonationsPreviousYear,
+          externalDonationsPreviousYear: externalDonationsListPreviousYear
+              .map(
+                (e) => SummaryItem(
+                  key: e.description,
+                  amount: e.amount,
+                  count: 1,
+                  taxDeductable: e.taxDeductible,
+                ),
+              )
+              .toList(),
           monthlyByOrganisationPreviousYear: monthlyByOrganisationPreviousYear,
           externalDonationsPerMonth: externaDonationsPerMonth,
           monthlyByOrganisationPerMonth: donationsPerMonth,
@@ -137,31 +149,6 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
     } on SocketException {
       emit(state.copyWith(status: YearlyOverviewStatus.noInternet));
     }
-  }
-
-  /// Groups external donations by destination (description)
-  List<SummaryItem> _groupByDestination(
-    List<ExternalDonation> donations,
-  ) {
-    final grouped = <String, Map<String, double>>{};
-
-    for (final donation in donations) {
-      final key = donation.description;
-      if (!grouped.containsKey(key)) {
-        grouped[key] = {'amount': 0, 'count': 0};
-      }
-      grouped[key]!['amount'] = grouped[key]!['amount']! + donation.amount;
-      grouped[key]!['count'] = grouped[key]!['count']! + 1;
-    }
-
-    return grouped.entries.map((entry) {
-      return SummaryItem(
-        key: entry.key,
-        amount: entry.value['amount']!,
-        count: entry.value['count']!,
-        taxDeductable: false,
-      );
-    }).toList();
   }
 
   /// Groups external donations by month

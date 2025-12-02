@@ -4,7 +4,8 @@ import 'package:jiffy/jiffy.dart';
 enum RecurringDonationState {
   cancelled,
   active,
-  finished;
+  finished,
+  stopped;
 
   static RecurringDonationState fromJson(Map<String, dynamic> json) {
     return RecurringDonationState.values[(json['currentState'] as int)];
