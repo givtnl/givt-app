@@ -248,8 +248,8 @@ class _HomePageState extends State<HomePage> {
     return showDialog<void>(
       context: context,
       barrierDismissible: !isMandatory,
-      builder: (_) => WillPopScope(
-        onWillPop: () async => !isMandatory,
+      builder: (_) => PopScope(
+        canPop: !isMandatory,
         child: CupertinoAlertDialog(
           title: Text(
             context.l10n.importantReminder,
