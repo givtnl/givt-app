@@ -4,11 +4,13 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -140,6 +142,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       await authCubit.refreshUser();
       await authCubit.refreshSession();
       final user = authCubit.state.user;
+      
+      // Reset mandate popup dismissal tracker when mandate is signed
+      final mandatePopupDismissalTracker =
+          MandatePopupDismissalTracker(getIt());
+      await mandatePopupDismissalTracker.reset();
+      
       if (user.sortCode.isNotEmpty && user.accountNumber.isNotEmpty) {
         emit(
           state.copyWith(
