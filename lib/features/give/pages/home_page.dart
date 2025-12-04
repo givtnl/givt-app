@@ -15,6 +15,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
@@ -54,6 +55,8 @@ class _HomePageState extends State<HomePage> {
   int pageIndex = 0;
   final _key = GlobalKey<ScaffoldState>();
   final AppConfig _appConfig = getIt();
+  final MandatePopupDismissalTracker _mandatePopupDismissalTracker =
+      MandatePopupDismissalTracker(getIt());
 
   @override
   void initState() {
@@ -240,54 +243,69 @@ class _HomePageState extends State<HomePage> {
     BuildContext context,
   ) {
     final user = context.read<AuthCubit>().state.user;
+    final isMandatory =
+        _mandatePopupDismissalTracker.shouldForceCompletion;
     return showDialog<void>(
       context: context,
-      builder: (_) => CupertinoAlertDialog(
-        title: Text(
-          context.l10n.importantReminder,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+      barrierDismissible: !isMandatory,
+      builder: (_) => WillPopScope(
+        onWillPop: () async => !isMandatory,
+        child: CupertinoAlertDialog(
+          title: Text(
+            context.l10n.importantReminder,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          content: Text(
+            context.l10n.finalizeRegistrationPopupText,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          actions: [
+            if (!isMandatory)
+              TextButton(
+                onPressed: () async {
+                  await _mandatePopupDismissalTracker.incrementDismissals();
+                  if (!mounted) {
+                    return;
+                  }
+                  context.pop();
+                },
+                child: Text(
+                  context.l10n.askMeLater,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(fontSize: 17),
+                ),
               ),
-        ),
-        content: Text(
-          context.l10n.finalizeRegistrationPopupText,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => context.pop(),
-            child: Text(
-              context.l10n.askMeLater,
-              style:
-                  Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 17),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              if (user.needRegistration) {
+            TextButton(
+              onPressed: () {
+                if (user.needRegistration) {
+                  context
+                    ..goNamed(
+                      Pages.registration.name,
+                      queryParameters: {
+                        'email': user.email,
+                      },
+                    )
+                    ..pop();
+                  return;
+                }
                 context
-                  ..goNamed(
-                    Pages.registration.name,
-                    queryParameters: {
-                      'email': user.email,
-                    },
-                  )
+                  ..goNamed(Pages.sepaMandateExplanation.name)
                   ..pop();
-                return;
-              }
-              context
-                ..goNamed(Pages.sepaMandateExplanation.name)
-                ..pop();
-            },
-            child: Text(
-              context.l10n.finalizeRegistration,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 17),
+              },
+              child: Text(
+                context.l10n.finalizeRegistration,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(fontWeight: FontWeight.bold, fontSize: 17),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

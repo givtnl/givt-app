@@ -26,4 +26,5 @@ class NativeSharedPreferencesKeys {
   static const String needsRegistration = 'NeedsRegistration';
   static const String personalInfoRegistered = 'PersonalInfoRegistered';
   static const String mandateSigned = 'MandateSigned';
+  static const String mandatePopupDismissals = 'MandatePopupDismissals';
 }
