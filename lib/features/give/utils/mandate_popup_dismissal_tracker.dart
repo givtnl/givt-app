@@ -19,4 +19,11 @@ class MandatePopupDismissalTracker {
       dismissals + 1,
     );
   }
+
+  Future<void> reset() async {
+    await _prefs.setInt(
+      NativeSharedPreferencesKeys.mandatePopupDismissals,
+      0,
+    );
+  }
 }
