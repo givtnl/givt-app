@@ -55,7 +55,7 @@ class Util {
     if (trimmed.isEmpty || country.isUS) {
       return trimmed;
     }
-    if (trimmed.startsWith('0')) {
+    if (trimmed.startsWith('0') && trimmed.length > 1) {
       return trimmed.substring(1);
     }
     return trimmed;
