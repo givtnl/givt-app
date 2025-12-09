@@ -61,6 +61,16 @@ class Util {
     return trimmed;
   }
 
+  /// Formats a phone number with the country prefix in international format.
+  ///
+  /// Normalizes the phone number (removing whitespace and leading zeros for
+  /// non-US countries) before prepending the country prefix.
+  ///
+  /// Example:
+  /// ```dart
+  /// formatPhoneNumberWithPrefix(country: Country.gb, phoneNumber: '07123456789')
+  /// // returns: '+447123456789'
+  /// ```
   static String formatPhoneNumberWithPrefix({
     required Country country,
     required String phoneNumber,
