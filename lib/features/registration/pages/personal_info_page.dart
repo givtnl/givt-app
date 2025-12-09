@@ -33,6 +33,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   final sortCode = TextEditingController();
   final ibanNumber = TextEditingController();
   Country _selectedCountry = Country.sortedCountries().first;
+  Country _selectedPhoneCountry = Country.sortedCountries().first;
   bool isLoading = false;
 
   @override
@@ -40,6 +41,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     super.initState();
     final user = context.read<AuthCubit>().state.user;
     _selectedCountry = Country.fromCode(user.country);
+    _selectedPhoneCountry = _selectedCountry;
   }
 
   @override
@@ -322,8 +324,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   )
                   .toList(),
               onChanged: (Country? newValue) {
+                if (newValue == null) {
+                  return;
+                }
                 setState(() {
-                  _selectedCountry = newValue!;
+                  _selectedCountry = newValue;
+                  _selectedPhoneCountry = newValue;
                 });
               },
             ),
@@ -331,19 +337,20 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           const SizedBox(height: 10),
           MobileNumberFormField(
             phone: _phone,
-            selectedCountryPrefix: _selectedCountry.prefix,
-            hintText: _selectedCountry != Country.us
+            selectedCountryPrefix: _selectedPhoneCountry.prefix,
+            hintText: _selectedPhoneCountry != Country.us
                 ? locals.phoneNumber
                 : locals.mobileNumberUsDigits,
             onPhoneChanged: (String value) => setState(() {}),
             onPrefixChanged: (String selected) {
               setState(() {
-                _selectedCountry = Country.sortedCountries().firstWhere(
-                  (Country country) => country.countryCode == selected,
+                _selectedPhoneCountry = Country.fromPrefix(
+                  selected,
+                  fallback: _selectedPhoneCountry,
                 );
               });
             },
-            formatter: (_selectedCountry == Country.us)
+            formatter: (_selectedPhoneCountry == Country.us)
                 ? [
                     FilteringTextInputFormatter.digitsOnly,
                     LengthLimitingTextInputFormatter(10),
@@ -355,22 +362,23 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               }
 
               if (Country.unitedKingdomCodes()
-                  .contains(_selectedCountry.countryCode)) {
+                  .contains(_selectedPhoneCountry.countryCode)) {
                 if (!Util.ukPhoneNumberRegEx
-                    .hasMatch('${_selectedCountry.prefix}$value')) {
+                    .hasMatch('${_selectedPhoneCountry.prefix}$value')) {
                   return '';
                 }
                 return null;
               }
-              if (Country.us != _selectedCountry &&
+              if (Country.us != _selectedPhoneCountry &&
                   !Country.unitedKingdomCodes()
-                      .contains(_selectedCountry.countryCode)) {
-                final prefix = _selectedCountry.prefix.replaceAll('+', '');
+                      .contains(_selectedPhoneCountry.countryCode)) {
+                final prefix =
+                    _selectedPhoneCountry.prefix.replaceAll('+', '');
                 if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
                   return '';
                 }
               }
-              if (Country.us == _selectedCountry) {
+              if (Country.us == _selectedPhoneCountry) {
                 if (!Util.usPhoneNumberRegEx
                     .hasMatch(Util.formatPhoneNrUs(value))) {
                   return '';
@@ -401,7 +409,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             city: _city.text,
             postalCode: _postalCode.text,
             country: _selectedCountry.countryCode,
-            phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
+            phoneNumber: '${_selectedPhoneCountry.prefix}${_phone.text}',
             iban: ibanNumber.text,
             sortCode: sortCode.text,
             accountNumber: bankAccount.text,
