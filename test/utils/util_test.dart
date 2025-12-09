@@ -15,6 +15,8 @@ void main() {
     test('inserts missing space for valid postcode', () {
       expect(Util.formatUkPostCode('SW1A1AA'), equals('SW1A 1AA'));
       expect(Util.formatUkPostCode('m11aa'), equals('M1 1AA'));
+      expect(Util.formatUkPostCode('DN551PT'), equals('DN55 1PT'));
+      expect(Util.formatUkPostCode('Cr26Xh'), equals('CR2 6XH'));
     });
 
     test('normalizes multiple spaces and casing', () {
