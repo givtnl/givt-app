@@ -33,6 +33,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   final sortCode = TextEditingController();
   final ibanNumber = TextEditingController();
   Country _selectedCountry = Country.sortedCountries().first;
+  Country _selectedPhoneCountry = Country.sortedCountries().first;
   bool isLoading = false;
 
   @override
@@ -40,6 +41,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     super.initState();
     final user = context.read<AuthCubit>().state.user;
     _selectedCountry = Country.fromCode(user.country);
+    _selectedPhoneCountry = _selectedCountry;
   }
 
   @override
@@ -327,8 +329,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   )
                   .toList(),
               onChanged: (Country? newValue) {
+                if (newValue == null) {
+                  return;
+                }
                 setState(() {
-                  _selectedCountry = newValue!;
+                  _selectedCountry = newValue;
+                  _selectedPhoneCountry = newValue;
                 });
               },
             ),
@@ -336,19 +342,20 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           const SizedBox(height: 10),
           MobileNumberFormField(
             phone: _phone,
-            selectedCountryPrefix: _selectedCountry.prefix,
-            hintText: _selectedCountry != Country.us
+            selectedCountryPrefix: _selectedPhoneCountry.prefix,
+            hintText: _selectedPhoneCountry != Country.us
                 ? locals.phoneNumber
                 : locals.mobileNumberUsDigits,
             onPhoneChanged: (String value) => setState(() {}),
             onPrefixChanged: (String selected) {
               setState(() {
-                _selectedCountry = Country.sortedCountries().firstWhere(
-                  (Country country) => country.countryCode == selected,
+                _selectedPhoneCountry = Country.fromPrefix(
+                  selected,
+                  fallback: _selectedPhoneCountry,
                 );
               });
             },
-            formatter: (_selectedCountry == Country.us)
+            formatter: (_selectedPhoneCountry == Country.us)
                 ? [
                     FilteringTextInputFormatter.digitsOnly,
                     LengthLimitingTextInputFormatter(10),
@@ -362,16 +369,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               }
 
               if (Country.unitedKingdomCodes()
-                  .contains(_selectedCountry.countryCode)) {
+                  .contains(_selectedPhoneCountry.countryCode)) {
                 final normalizedValue = Util.normalizePhoneNumber(
-                  country: _selectedCountry,
+                  country: _selectedPhoneCountry,
                   phoneNumber: cleanedValue,
                 );
                 if (normalizedValue.isEmpty) {
                   return '';
                 }
                 final withPrefix =
-                    '${_selectedCountry.prefix}$normalizedValue';
+                    '${_selectedPhoneCountry.prefix}$normalizedValue';
                 final matchesLocal =
                     Util.ukPhoneNumberRegEx.hasMatch(cleanedValue);
                 final matchesInternational =
@@ -382,7 +389,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 return null;
               }
 
-              if (Country.us == _selectedCountry) {
+              if (Country.us == _selectedPhoneCountry) {
                 if (!Util.usPhoneNumberRegEx
                     .hasMatch(Util.formatPhoneNrUs(cleanedValue))) {
                   return '';
@@ -390,9 +397,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 return null;
               }
 
-              final prefix = _selectedCountry.prefix.replaceAll('+', '');
+              final prefix = _selectedPhoneCountry.prefix.replaceAll('+', '');
               final normalizedValue = Util.normalizePhoneNumber(
-                country: _selectedCountry,
+                country: _selectedPhoneCountry,
                 phoneNumber: cleanedValue,
               );
               if (normalizedValue.isEmpty) {
@@ -428,7 +435,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             postalCode: _postalCode.text,
             country: _selectedCountry.countryCode,
             phoneNumber: Util.formatPhoneNumberWithPrefix(
-              country: _selectedCountry,
+              country: _selectedPhoneCountry,
               phoneNumber: _phone.text,
             ),
             iban: ibanNumber.text,

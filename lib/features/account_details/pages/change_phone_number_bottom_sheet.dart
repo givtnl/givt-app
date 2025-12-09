@@ -67,8 +67,9 @@ class _ChangePhoneNumberBottomSheetState
 
   void onPrefixChanged(String selected) {
     setState(() {
-      selectedCountry = Country.sortedCountries().firstWhere(
-        (Country country) => country.countryCode == selected,
+      selectedCountry = Country.fromPrefix(
+        selected,
+        fallback: selectedCountry,
       );
     });
   }
