@@ -47,6 +47,11 @@ class Util {
         r'\(?\+\(?31|32|49|33|39|352|30|34|358|43|357|372|371|370|356|386|421|353\)?[()]?([-()]?\d[-()]?){9,10}',
       );
 
+  /// Normalizes a phone number by removing whitespace and optionally stripping
+  /// a leading zero for non-US countries (which is a trunk prefix in European
+  /// phone numbering systems).
+  ///
+  /// Returns the normalized phone number without the country prefix.
   static String normalizePhoneNumber({
     required Country country,
     required String phoneNumber,
@@ -81,6 +86,7 @@ class Util {
     );
     return '${country.prefix}$normalized';
   }
+  
   static final certificatesPublicKey = RSAPublicKey('''
 -----BEGIN PUBLIC KEY-----
 MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBZ7fQsGvR+889VBFQZvb+L
