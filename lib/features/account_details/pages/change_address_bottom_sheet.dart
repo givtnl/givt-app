@@ -82,8 +82,12 @@ class _ChangeAddressBottomSheetState extends State<ChangeAddressBottomSheet> {
                       return null;
                     }
 
-                    if (!Util.ukPostCodeRegEx.hasMatch(value)) {
+                    final formattedPostCode = Util.formatUkPostCode(value);
+                    if (formattedPostCode == null) {
                       return '';
+                    }
+                    if (formattedPostCode != postalCode.text) {
+                      postalCode.text = formattedPostCode;
                     }
                     return null;
                   },
