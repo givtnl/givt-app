@@ -37,16 +37,27 @@ class _ChangePhoneNumberBottomSheetState
   }
 
   String? validator(String? value) {
-    if (value == null || value.isEmpty) {
+    final cleanedValue = value?.replaceAll(RegExp(r'\s+'), '') ?? '';
+    if (cleanedValue.isEmpty) {
+      return '';
+    }
+    final normalizedValue = Util.normalizePhoneNumber(
+      country: selectedCountry,
+      phoneNumber: cleanedValue,
+    );
+    if (normalizedValue.isEmpty) {
       return '';
     }
     if (!Util.phoneNumberRegExWithPrefix()
-        .hasMatch('${selectedCountry.prefix}$value')) {
+        .hasMatch('${selectedCountry.prefix}$normalizedValue')) {
       return '';
     }
 
     if (Country.unitedKingdomCodes().contains(selectedCountry.countryCode)) {
-      if (!Util.ukPhoneNumberRegEx.hasMatch(value)) {
+      final matchesLocal = Util.ukPhoneNumberRegEx.hasMatch(cleanedValue);
+      final matchesInternational = Util.ukPhoneNumberRegEx
+          .hasMatch('${selectedCountry.prefix}$normalizedValue');
+      if (!matchesLocal && !matchesInternational) {
         return '';
       }
     }
@@ -115,7 +126,10 @@ class _ChangePhoneNumberBottomSheetState
                             context.read<PersonalInfoEditBloc>().add(
                                   PersonalInfoEditPhoneNumber(
                                     phoneNumber:
-                                        selectedCountry.prefix + phone.text,
+                                        Util.formatPhoneNumberWithPrefix(
+                                      country: selectedCountry,
+                                      phoneNumber: phone.text,
+                                    ),
                                   ),
                                 );
                           }
