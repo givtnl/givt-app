@@ -355,31 +355,52 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   ]
                 : null,
             validator: (String? value) {
-              if (value == null || value.isEmpty) {
+              final cleanedValue =
+                  value?.replaceAll(RegExp(r'\s+'), '') ?? '';
+              if (cleanedValue.isEmpty) {
                 return '';
               }
 
               if (Country.unitedKingdomCodes()
                   .contains(_selectedCountry.countryCode)) {
-                if (!Util.ukPhoneNumberRegEx
-                    .hasMatch('${_selectedCountry.prefix}$value')) {
+                final normalizedValue = Util.normalizePhoneNumber(
+                  country: _selectedCountry,
+                  phoneNumber: cleanedValue,
+                );
+                if (normalizedValue.isEmpty) {
+                  return '';
+                }
+                final withPrefix =
+                    '${_selectedCountry.prefix}$normalizedValue';
+                final matchesLocal =
+                    Util.ukPhoneNumberRegEx.hasMatch(cleanedValue);
+                final matchesInternational =
+                    Util.ukPhoneNumberRegEx.hasMatch(withPrefix);
+                if (!matchesLocal && !matchesInternational) {
                   return '';
                 }
                 return null;
               }
-              if (Country.us != _selectedCountry &&
-                  !Country.unitedKingdomCodes()
-                      .contains(_selectedCountry.countryCode)) {
-                final prefix = _selectedCountry.prefix.replaceAll('+', '');
-                if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
-                  return '';
-                }
-              }
+
               if (Country.us == _selectedCountry) {
                 if (!Util.usPhoneNumberRegEx
-                    .hasMatch(Util.formatPhoneNrUs(value))) {
+                    .hasMatch(Util.formatPhoneNrUs(cleanedValue))) {
                   return '';
                 }
+                return null;
+              }
+
+              final prefix = _selectedCountry.prefix.replaceAll('+', '');
+              final normalizedValue = Util.normalizePhoneNumber(
+                country: _selectedCountry,
+                phoneNumber: cleanedValue,
+              );
+              if (normalizedValue.isEmpty) {
+                return '';
+              }
+              if (!Util.phoneNumberRegEx(prefix)
+                  .hasMatch('+$prefix$normalizedValue')) {
+                return '';
               }
 
               return null;
@@ -406,7 +427,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             city: _city.text,
             postalCode: _postalCode.text,
             country: _selectedCountry.countryCode,
-            phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
+            phoneNumber: Util.formatPhoneNumberWithPrefix(
+              country: _selectedCountry,
+              phoneNumber: _phone.text,
+            ),
             iban: ibanNumber.text,
             sortCode: sortCode.text,
             accountNumber: bankAccount.text,

@@ -52,6 +52,47 @@ class Util {
   static RegExp phoneNumberRegExWithPrefix() => RegExp(
         r'\(?\+\(?31|32|49|33|39|352|30|34|358|43|357|372|371|370|356|386|421|353\)?[()]?([-()]?\d[-()]?){9,10}',
       );
+
+  /// Normalizes a phone number by removing whitespace and optionally stripping
+  /// a leading zero for non-US countries (which is a trunk prefix in European
+  /// phone numbering systems).
+  ///
+  /// Returns the normalized phone number without the country prefix.
+  static String normalizePhoneNumber({
+    required Country country,
+    required String phoneNumber,
+  }) {
+    final trimmed = phoneNumber.replaceAll(RegExp(r'\s+'), '');
+    if (trimmed.isEmpty || country.isUS) {
+      return trimmed;
+    }
+    if (trimmed.startsWith('0') && trimmed.length > 1) {
+      return trimmed.substring(1);
+    }
+    return trimmed;
+  }
+
+  /// Formats a phone number with the country prefix in international format.
+  ///
+  /// Normalizes the phone number (removing whitespace and leading zeros for
+  /// non-US countries) before prepending the country prefix.
+  ///
+  /// Example:
+  /// ```dart
+  /// formatPhoneNumberWithPrefix(country: Country.gb, phoneNumber: '07123456789')
+  /// // returns: '+447123456789'
+  /// ```
+  static String formatPhoneNumberWithPrefix({
+    required Country country,
+    required String phoneNumber,
+  }) {
+    final normalized = normalizePhoneNumber(
+      country: country,
+      phoneNumber: phoneNumber,
+    );
+    return '${country.prefix}$normalized';
+  }
+  
   static final certificatesPublicKey = RSAPublicKey('''
 -----BEGIN PUBLIC KEY-----
 MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBZ7fQsGvR+889VBFQZvb+L
