@@ -46,6 +46,31 @@ class Util {
   static RegExp phoneNumberRegExWithPrefix() => RegExp(
         r'\(?\+\(?31|32|49|33|39|352|30|34|358|43|357|372|371|370|356|386|421|353\)?[()]?([-()]?\d[-()]?){9,10}',
       );
+
+  static String normalizePhoneNumber({
+    required Country country,
+    required String phoneNumber,
+  }) {
+    final trimmed = phoneNumber.replaceAll(RegExp(r'\s+'), '');
+    if (trimmed.isEmpty || country.isUS) {
+      return trimmed;
+    }
+    if (trimmed.startsWith('0')) {
+      return trimmed.substring(1);
+    }
+    return trimmed;
+  }
+
+  static String formatPhoneNumberWithPrefix({
+    required Country country,
+    required String phoneNumber,
+  }) {
+    final normalized = normalizePhoneNumber(
+      country: country,
+      phoneNumber: phoneNumber,
+    );
+    return '${country.prefix}$normalized';
+  }
   static final certificatesPublicKey = RSAPublicKey('''
 -----BEGIN PUBLIC KEY-----
 MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBZ7fQsGvR+889VBFQZvb+L
