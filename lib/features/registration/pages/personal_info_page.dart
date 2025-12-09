@@ -139,6 +139,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   _buildTextFormField(
                     hintText: locals.postalCode,
                     controller: _postalCode,
+                    toUpperCase: isUk,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '';
@@ -147,8 +148,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         return null;
                       }
 
-                      if (!Util.ukPostCodeRegEx.hasMatch(value)) {
+                      final formattedPostCode = Util.formatUkPostCode(value);
+                      if (formattedPostCode == null) {
                         return '';
+                      }
+                      if (formattedPostCode != _postalCode.text) {
+                        _postalCode.text = formattedPostCode;
                       }
                       return null;
                     },

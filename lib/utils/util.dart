@@ -5,6 +5,9 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class Util {
+  static const _ukPostCodeOutwardPattern =
+      '(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z]))))';
+  static const _ukPostCodeInwardPattern = '[0-9][A-Z]{2}';
   static const String testimonialsSummaryKey = 'testimonialsSummaryKey';
 
   // Default user info
@@ -27,7 +30,10 @@ class Util {
   static const String previousDonationOrgKey = 'previousDonationOrg';
 
   static final ukPostCodeRegEx = RegExp(
-    r'^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$',
+    '^$_ukPostCodeOutwardPattern $_ukPostCodeInwardPattern\$',
+  );
+  static final _ukPostCodeCompactRegEx = RegExp(
+    '^$_ukPostCodeOutwardPattern$_ukPostCodeInwardPattern\$',
   );
   static final ukPhoneNumberRegEx = RegExp(
     r'^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$',
@@ -91,6 +97,22 @@ AgMBAAE=
     final numericOnly = input.replaceAll(RegExp(r'[^\d]'), '');
     if (numericOnly.length != 10) return '';
     return '${numericOnly.substring(0, 3)}-${numericOnly.substring(3, 6)}-${numericOnly.substring(6)}';
+  }
+
+  /// Formats a UK postcode by ensuring a single space before the inward code.
+  /// Returns `null` when [value] is not a valid UK postcode.
+  static String? formatUkPostCode(String? value) {
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+    final sanitized = value.toUpperCase().replaceAll(RegExp(r'\s+'), '');
+    if (!_ukPostCodeCompactRegEx.hasMatch(sanitized)) {
+      return null;
+    }
+
+    final outward = sanitized.substring(0, sanitized.length - 3);
+    final inward = sanitized.substring(sanitized.length - 3);
+    return '$outward $inward';
   }
 
   static String getCurrencySymbol({required String countryCode}) {
