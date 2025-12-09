@@ -13,7 +13,7 @@ void main() {
       expect(normalized, '612345678');
     });
 
-    test('keeps leading digits for US numbers', () {
+    test('preserves leading zero for US numbers', () {
       final normalized = Util.normalizePhoneNumber(
         country: Country.us,
         phoneNumber: '0123456789',
