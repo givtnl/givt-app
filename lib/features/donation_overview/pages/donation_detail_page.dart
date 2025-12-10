@@ -141,7 +141,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
             ),
             const SizedBox(height: 24),
 
-            // Processing time snackbar (for inProcess/created status)
+            // Processing time snackbar (for inProcess status)
             if (_shouldShowProcessingTimeSnackbar(status.type)) ...[
               FunSnackbarWidget(
                 title: context.l10n.donationOverviewProcessingTimeTitle,
