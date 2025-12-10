@@ -1110,5 +1110,9 @@
   "platformContributionSaveChangesModalTitle": "Wijzigingen opslaan?",
   "platformContributionSaveChangesModalBody": "Wil je je wijzigingen opslaan voordat je vertrekt?",
   "platformContributionSaveChangesModalYesButton": "Ja, opslaan",
-  "platformContributionSaveChangesModalNoButton": "Nee, negeren"
+  "platformContributionSaveChangesModalNoButton": "Nee, negeren",
+  "homeScreenConfirmOrgTitle": "Steun {org}",
+  "homeScreenConfirmOrgDescription": "Is dit de organisatie waaraan je wilt geven?",
+  "homeScreenConfirmOrgYes": "Ja, bevestigen",
+  "homeScreenChosenOrg": "Geweldig! Je geeft aan {org}"
 }
