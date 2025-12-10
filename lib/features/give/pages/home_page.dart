@@ -10,13 +10,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/config/app_config.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
+import 'package:givt_app/features/give/pages/home_page_view.dart';
+import 'package:givt_app/features/give/pages/home_page_with_qr_code.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
-import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
@@ -25,7 +26,6 @@ import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -97,8 +97,9 @@ class _HomePageState extends State<HomePage> {
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {
       LoggingInfo.instance.info('Navigating to ${widget.navigateTo}');
-      final routeName = Pages.values
-          .firstWhere((element) => element.path == widget.navigateTo);
+      final routeName = Pages.values.firstWhere(
+        (element) => element.path == widget.navigateTo,
+      );
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.goNamed(routeName.name);
       });
@@ -111,9 +112,10 @@ class _HomePageState extends State<HomePage> {
         key: const ValueKey('EU-Home-AppBar'),
         title: switch (pageIndex) {
           0 => Text(locals.amount),
-          1 => !auth.user.isUsUser
-              ? Text(locals.discoverHomeDiscoverTitle)
-              : Text(locals.chooseGroup),
+          1 =>
+            !auth.user.isUsUser
+                ? Text(locals.discoverHomeDiscoverTitle)
+                : Text(locals.chooseGroup),
           2 => Text(locals.discoverHomeDiscoverTitle),
           _ => Text(locals.give),
         },
@@ -180,62 +182,102 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: const CustomNavigationDrawer(),
-      body: MultiBlocListener(
-        listeners: [
-          BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
-            listener: (context, state) {
-              // Debug information
-              if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                var syncString = 'Synced successfully';
-                if (widget.code.isNotEmpty) {
-                  syncString += ' with mediumId/code ${widget.code}';
-                }
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      syncString,
+      body: widget.code.isNotEmpty
+          ? BlocProvider(
+              create: (_) {
+                final bloc = GiveBloc(
+                  getIt(),
+                  getIt(),
+                  getIt(),
+                  getIt(),
+                );
+                // Trigger QR code scan when code is present
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  bloc.add(
+                    GiveQRCodeScannedOutOfApp(
+                      widget.code,
+                      widget.afterGivingRedirection,
+                      auth.user.guid,
+                      amount: widget.initialAmount?.toString() ?? '',
                     ),
-                  ),
-                );
-              }
-
-              // Needs registration dialog
-              if (state is RemoteDataSourceSyncSuccess) {
-                if (!auth.user.needRegistration || auth.user.mandateSigned) {
-                  return;
-                }
-
-                // TODO: Not show over biometrics
-                _buildNeedsRegistrationDialog(context);
-              }
-            },
-          ),
-          BlocListener<InfraCubit, InfraState>(
-            listener: (context, state) {
-              if (state is InfraUpdateAvailable) {
-                _displayUpdateDialog(
-                  context,
-                  state.appUpdate,
-                );
-              }
-            },
-          ),
-        ],
-        child: SafeArea(
-          child: _HomePageView(
-            initialAmount: widget.initialAmount,
-            given: widget.given,
-            retry: widget.retry,
-            code: widget.code,
-            afterGivingRedirection: widget.afterGivingRedirection,
-            onPageChanged: (index) => setState(
-              () {
-                pageIndex = index;
+                  );
+                });
+                return bloc;
               },
+              child: HomePageWithQRCode(
+                initialAmount: widget.initialAmount,
+                given: widget.given,
+                retry: widget.retry,
+                code: widget.code,
+                afterGivingRedirection: widget.afterGivingRedirection,
+                onPageChanged: (index) => setState(
+                  () {
+                    pageIndex = index;
+                  },
+                ),
+                auth: auth,
+              ),
+            )
+          : MultiBlocListener(
+              listeners: [
+                BlocListener<
+                  RemoteDataSourceSyncBloc,
+                  RemoteDataSourceSyncState
+                >(
+                  listener: (context, state) {
+                    // Debug information
+                    if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+                      var syncString = 'Synced successfully';
+                      if (widget.code.isNotEmpty) {
+                        syncString += ' with mediumId/code ${widget.code}';
+                      }
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            syncString,
+                          ),
+                        ),
+                      );
+                    }
+
+                    // Needs registration dialog
+                    if (state is RemoteDataSourceSyncSuccess) {
+                      if (!auth.user.needRegistration ||
+                          auth.user.mandateSigned) {
+                        return;
+                      }
+
+                      // TODO: Not show over biometrics
+                      _buildNeedsRegistrationDialog(context);
+                    }
+                  },
+                ),
+                BlocListener<InfraCubit, InfraState>(
+                  listener: (context, state) {
+                    if (state is InfraUpdateAvailable) {
+                      _displayUpdateDialog(
+                        context,
+                        state.appUpdate,
+                      );
+                    }
+                  },
+                ),
+              ],
+              child: SafeArea(
+                child: HomePageView(
+                  initialAmount: widget.initialAmount,
+                  given: widget.given,
+                  retry: widget.retry,
+                  code: widget.code,
+                  afterGivingRedirection: widget.afterGivingRedirection,
+                  onPageChanged: (index) => setState(
+                    () {
+                      pageIndex = index;
+                    },
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -243,8 +285,7 @@ class _HomePageState extends State<HomePage> {
     BuildContext context,
   ) {
     final user = context.read<AuthCubit>().state.user;
-    final isMandatory =
-        _mandatePopupDismissalTracker.shouldForceCompletion;
+    final isMandatory = _mandatePopupDismissalTracker.shouldForceCompletion;
     return showDialog<void>(
       context: context,
       barrierDismissible: !isMandatory,
@@ -254,8 +295,8 @@ class _HomePageState extends State<HomePage> {
           title: Text(
             context.l10n.importantReminder,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+              fontWeight: FontWeight.bold,
+            ),
           ),
           content: Text(
             context.l10n.finalizeRegistrationPopupText,
@@ -273,10 +314,9 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: Text(
                   context.l10n.askMeLater,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontSize: 17),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(fontSize: 17),
                 ),
               ),
             TextButton(
@@ -298,10 +338,10 @@ class _HomePageState extends State<HomePage> {
               },
               child: Text(
                 context.l10n.finalizeRegistration,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(fontWeight: FontWeight.bold, fontSize: 17),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                ),
               ),
             ),
           ],
@@ -351,121 +391,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _HomePageView extends StatefulWidget {
-  const _HomePageView({
-    required this.initialAmount,
-    required this.onPageChanged,
-    required this.given,
-    required this.retry,
-    required this.afterGivingRedirection,
-    required this.code,
-  });
-
-  final double? initialAmount;
-  final bool given;
-  final bool retry;
-  final String code;
-  final String afterGivingRedirection;
-  final void Function(int) onPageChanged;
-
-  @override
-  State<_HomePageView> createState() => _HomePageViewState();
-}
-
-class _HomePageViewState extends State<_HomePageView> {
-  late PageController pageController;
-  int pageIndex = 0;
-  bool isPageAnimationActive = false;
-
-  @override
-  void initState() {
-    pageController = PageController();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final auth = context.watch<AuthCubit>().state;
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: [
-        HomePageViewLayout(
-          child: PageView(
-            controller: pageController,
-            onPageChanged: onPageChanged,
-            children: [
-              ChooseAmount(
-                initialAmount: widget.initialAmount,
-                country: Country.fromCode(auth.user.country),
-                amountLimit: auth.user.amountLimit,
-                hasGiven: widget.given,
-                retry: widget.retry,
-                arePresetsEnabled: auth.presets.isEnabled,
-                presets: auth.presets.presets,
-                onAmountChanged:
-                    (firstCollection, secondCollection, thirdCollection) =>
-                        context.goNamed(
-                  Pages.selectGivingWay.name,
-                  extra: {
-                    'firstCollection': firstCollection,
-                    'secondCollection': secondCollection,
-                    'thirdCollection': thirdCollection,
-                    'code': widget.code,
-                    'afterGivingRedirection': widget.afterGivingRedirection,
-                  },
-                ),
-              ),
-              const ChooseCategory(),
-            ],
-          ),
-        ),
-        ColoredBox(
-          color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              right: 15,
-              left: 15,
-              bottom: 5,
-            ),
-            child: AnimatedSwitch(
-              pageIndex: pageIndex,
-              onChanged: onPageChanged,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void onPageChanged(int index) {
-    if (index == pageIndex || isPageAnimationActive) {
-      return;
-    }
-    setState(() {
-      pageIndex = index;
-      widget.onPageChanged(index);
-    });
-
-    setState(() {
-      isPageAnimationActive = true;
-    });
-
-    pageController
-        .animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    )
-        .then(
-      (_) {
-        setState(() {
-          isPageAnimationActive = false;
-        });
-      },
     );
   }
 }

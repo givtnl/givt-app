@@ -37,6 +37,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
     on<GiveConfirmQRCodeScannedOutOfApp>(_confirmQRCodeScannedOutOfApp);
 
+    on<GiveSubmitTransactions>(_submitTransactions);
+
     on<GiveAmountChanged>(_amountChanged);
 
     on<GiveGPSLocationChanged>(_gpsLocationChanged);
@@ -119,17 +121,19 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     required String mediumId,
     required String guid,
     String? goalId,
+    List<double>? collections,
   }) {
     final transactionList = <GivtTransaction>[];
     final formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(
       DateTime.now().toUtc(),
     );
-    for (var index = 0; index < state.collections.length; index++) {
-      if (state.collections[index] == 0.0) continue;
+    final amounts = collections ?? state.collections;
+    for (var index = 0; index < amounts.length; index++) {
+      if (amounts[index] == 0.0) continue;
       transactionList.add(
         GivtTransaction(
           guid: guid,
-          amount: state.collections[index],
+          amount: amounts[index],
           beaconId: mediumId,
           timestamp: formattedDate,
           collectId: '${index + 1}',
@@ -149,16 +153,72 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     GiveAmountChanged event,
     Emitter<GiveState> emit,
   ) async {
-    emit(state.copyWith(status: GiveStatus.loading));
     try {
-      emit(
-        state.copyWith(
-          status: GiveStatus.success,
+      // If we have an organisation (from QR code), recreate transactions with new amounts
+      // This handles both readyToGive state and cases where state might be different but org exists
+      if (state.organisation.mediumId != null &&
+          state.organisation.mediumId!.isNotEmpty) {
+        final mediumId = state.organisation.mediumId!;
+        // Get userGUID from existing transactions or from the organisation
+        String userGUID;
+        if (state.givtTransactions.isNotEmpty) {
+          userGUID = state.givtTransactions.first.guid;
+        } else {
+          // If no transactions yet, we need to get userGUID from somewhere
+          // This shouldn't normally happen, but can occur if state was reset
+          // We'll need to get it from the event or state - for now, use empty and handle in caller
+          log('Warning: No existing transactions to get userGUID from');
+          userGUID = ''; // Will be handled below
+        }
+        
+        if (userGUID.isEmpty) {
+          // If no userGUID, we can't create transactions - emit success to fall back to normal flow
+          log('Warning: Cannot create transactions without userGUID. Falling back to normal flow.');
+          emit(
+            state.copyWith(
+              status: GiveStatus.success,
+              firstCollection: event.firstCollectionAmount,
+              secondCollection: event.secondCollectionAmount,
+              thirdCollection: event.thirdCollectionAmount,
+            ),
+          );
+          return;
+        }
+        
+        // Update collections first
+        final updatedState = state.copyWith(
           firstCollection: event.firstCollectionAmount,
           secondCollection: event.secondCollectionAmount,
           thirdCollection: event.thirdCollectionAmount,
-        ),
-      );
+        );
+        
+        // Recreate transactions with new amounts using the updated collections
+        final transactionList = _createTransationList(
+          mediumId: mediumId,
+          guid: userGUID,
+          collections: [
+            event.firstCollectionAmount,
+            event.secondCollectionAmount,
+            event.thirdCollectionAmount,
+          ],
+        );
+        
+        emit(
+          updatedState.copyWith(
+            status: GiveStatus.readyToGive,
+            givtTransactions: transactionList,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: GiveStatus.success,
+            firstCollection: event.firstCollectionAmount,
+            secondCollection: event.secondCollectionAmount,
+            thirdCollection: event.thirdCollectionAmount,
+          ),
+        );
+      }
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: GiveStatus.error));
@@ -478,6 +538,14 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         mediumId: state.organisation.mediumId,
       ),
     );
+    
+    // If skipSubmission is true, just prepare the state without submitting
+    // This allows the user to change amounts before final submission
+    if (event.skipSubmission) {
+      emit(state.copyWith(status: GiveStatus.readyToGive));
+      return;
+    }
+    
     try {
       await _givtRepository.submitGivts(
         guid: state.givtTransactions.first.guid,
@@ -496,6 +564,56 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         ),
       );
       return;
+    } on GivtServerFailure catch (e, stackTrace) {
+      _handleGivtServerFailure(e, stackTrace, emit);
+    }
+  }
+
+  FutureOr<void> _submitTransactions(
+    GiveSubmitTransactions event,
+    Emitter<GiveState> emit,
+  ) async {
+    if (state.givtTransactions.isEmpty) {
+      return;
+    }
+    
+    if (state.transactionIds.isNotEmpty) {
+      // Already submitted
+      return;
+    }
+    
+    emit(state.copyWith(status: GiveStatus.loading));
+    
+    try {
+      final userGUID = state.givtTransactions.first.guid;
+      final mediumId = state.organisation.mediumId ?? '';
+      
+      final transactionIds = await _givtRepository.submitGivts(
+        guid: userGUID,
+        body: {'donations': GivtTransaction.toJsonList(state.givtTransactions)},
+      );
+      
+      if (mediumId.isNotEmpty) {
+        await _handleAutoFavorites(mediumId, userGUID);
+      }
+      
+      emit(
+        state.copyWith(
+          status: GiveStatus.readyToGive,
+          transactionIds: transactionIds,
+        ),
+      );
+    } on SocketException catch (e, stackTrace) {
+      log(e.toString());
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(
+        state.copyWith(
+          status: GiveStatus.noInternetConnection,
+        ),
+      );
     } on GivtServerFailure catch (e, stackTrace) {
       _handleGivtServerFailure(e, stackTrace, emit);
     }

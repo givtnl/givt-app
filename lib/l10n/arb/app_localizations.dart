@@ -3330,7 +3330,7 @@ abstract class AppLocalizations {
   /// No description provided for @homescreenFamilyWelcome.
   ///
   /// In en, this message translates to:
-  /// **'Welcome, super family!'**
+  /// **'Welcome to Givt4Kids'**
   String get homescreenFamilyWelcome;
 
   /// No description provided for @homescreenFamilyGenerosity.
@@ -4388,6 +4388,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No, discard'**
   String get platformContributionSaveChangesModalNoButton;
+
+  /// No description provided for @homeScreenConfirmOrgTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support {org}'**
+  String homeScreenConfirmOrgTitle(Object org);
+
+  /// No description provided for @homeScreenConfirmOrgDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Is this the organisation you\'d like to give to?'**
+  String get homeScreenConfirmOrgDescription;
+
+  /// No description provided for @homeScreenConfirmOrgYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, confirm'**
+  String get homeScreenConfirmOrgYes;
+
+  /// No description provided for @homeScreenChosenOrg.
+  ///
+  /// In en, this message translates to:
+  /// **'Amazing! You\'ll give to {org}'**
+  String homeScreenChosenOrg(Object org);
 }
 
 class _AppLocalizationsDelegate

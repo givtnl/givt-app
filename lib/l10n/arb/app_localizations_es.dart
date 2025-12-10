@@ -1827,7 +1827,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get setupFamilyAddNextMember => 'Add next member';
 
   @override
-  String get homescreenFamilyWelcome => 'Welcome, super family!';
+  String get homescreenFamilyWelcome => 'Welcome to Givt4Kids';
 
   @override
   String get homescreenFamilyGenerosity => 'Let\'s foster generosity together';
@@ -2431,6 +2431,23 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get platformContributionSaveChangesModalNoButton => 'No, discard';
+
+  @override
+  String homeScreenConfirmOrgTitle(Object org) {
+    return 'Apoya a $org';
+  }
+
+  @override
+  String get homeScreenConfirmOrgDescription =>
+      '¿Es esta la organización a la que quieres donar?';
+
+  @override
+  String get homeScreenConfirmOrgYes => 'Sí, confirmar';
+
+  @override
+  String homeScreenChosenOrg(Object org) {
+    return '¡Increíble! Vas a donar a $org';
+  }
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4881,4 +4898,21 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get platformContributionSaveChangesModalNoButton => 'No, discard';
+
+  @override
+  String homeScreenConfirmOrgTitle(Object org) {
+    return 'Support $org';
+  }
+
+  @override
+  String get homeScreenConfirmOrgDescription =>
+      'Is this the organisation you\'d like to give to?';
+
+  @override
+  String get homeScreenConfirmOrgYes => 'Yes, confirm';
+
+  @override
+  String homeScreenChosenOrg(Object org) {
+    return 'Amazing! You\'ll give to $org';
+  }
 }

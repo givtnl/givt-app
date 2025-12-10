@@ -89,22 +89,8 @@ class _SelectGivingWayPageState extends State<SelectGivingWayPage> {
                   );
                   return;
                 }
-                if (state.status == GiveStatus.readyToConfirm) {
-                  var orgName = state.organisation.organisationName!;
-                  if (state.instanceName.isNotEmpty) {
-                    orgName = '$orgName: ${state.instanceName}';
-                  }
-                  _buildGivingDialog(
-                    context,
-                    text: context.l10n.qrScannedOutOfApp(
-                      orgName,
-                    ),
-                    image: 'assets/images/select_qr_phone_scan.png',
-                    onTap: () => context.read<GiveBloc>().add(
-                          const GiveConfirmQRCodeScannedOutOfApp(),
-                        ),
-                  );
-                }
+                // QR code confirmation is now handled on the home page
+                // Removed readyToConfirm handling here
                 if (state.status == GiveStatus.readyToGive) {
                   context.goNamed(
                     Pages.give.name,

@@ -1844,7 +1844,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get setupFamilyAddNextMember => 'Add next member';
 
   @override
-  String get homescreenFamilyWelcome => 'Welcome, super family!';
+  String get homescreenFamilyWelcome => 'Welcome to Givt4Kids';
 
   @override
   String get homescreenFamilyGenerosity => 'Let\'s foster generosity together';
@@ -2450,4 +2450,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get platformContributionSaveChangesModalNoButton => 'Nein, verwerfen';
+
+  @override
+  String homeScreenConfirmOrgTitle(Object org) {
+    return 'Unterstütze $org';
+  }
+
+  @override
+  String get homeScreenConfirmOrgDescription =>
+      'Ist das die Organisation, der du geben möchtest?';
+
+  @override
+  String get homeScreenConfirmOrgYes => 'Ja, bestätigen';
+
+  @override
+  String homeScreenChosenOrg(Object org) {
+    return 'Großartig! Du gibst an $org';
+  }
 }
