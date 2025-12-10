@@ -2458,4 +2458,15 @@ class AppLocalizationsNl extends AppLocalizations {
   String homeScreenChosenOrg(Object org) {
     return 'Geweldig! Je geeft aan $org';
   }
+
+  @override
+  String get donationOverviewProcessingTimeTitle => 'Je gift is verwerkt.';
+
+  @override
+  String get donationOverviewProcessingTime3Days =>
+      'Het duurt doorgaans 2-3 werkdagen totdat dit bedrag van je rekening is afgeschreven.';
+
+  @override
+  String get donationOverviewProcessingTime10Days =>
+      'Het duurt doorgaans 4 werkdagen totdat dit bedrag van je rekening is afgeschreven. De eerste transactie duurt 10 werkdagen.';
 }
