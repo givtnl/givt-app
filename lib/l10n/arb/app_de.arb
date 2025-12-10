@@ -1110,5 +1110,9 @@
   "platformContributionSaveChangesModalTitle": "Änderungen speichern?",
   "platformContributionSaveChangesModalBody": "Möchten Sie Ihre Änderungen speichern, bevor Sie gehen?",
   "platformContributionSaveChangesModalYesButton": "Ja, speichern",
-  "platformContributionSaveChangesModalNoButton": "Nein, verwerfen"
+  "platformContributionSaveChangesModalNoButton": "Nein, verwerfen",
+  "homeScreenConfirmOrgTitle": "Unterstütze {org}",
+  "homeScreenConfirmOrgDescription": "Ist das die Organisation, der du geben möchtest?",
+  "homeScreenConfirmOrgYes": "Ja, bestätigen",
+  "homeScreenChosenOrg": "Großartig! Du gibst an {org}"
 }
