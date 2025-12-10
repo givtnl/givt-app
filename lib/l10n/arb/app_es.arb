@@ -1114,5 +1114,8 @@
   "homeScreenConfirmOrgTitle": "Apoya a {org}",
   "homeScreenConfirmOrgDescription": "¿Es esta la organización a la que quieres donar?",
   "homeScreenConfirmOrgYes": "Sí, confirmar",
-  "homeScreenChosenOrg": "¡Increíble! Vas a donar a {org}"
+  "homeScreenChosenOrg": "¡Increíble! Vas a donar a {org}",
+  "donationOverviewProcessingTimeTitle": "Tu donación está lista.",
+  "donationOverviewProcessingTime3Days": "Por lo general, toma 2-3 días hábiles hasta que este monto sea cobrado de tu cuenta.",
+  "donationOverviewProcessingTime10Days": "Por lo general, toma 4 días hábiles hasta que este monto sea cobrado de tu cuenta. La primera transacción toma 10 días hábiles."
 }
