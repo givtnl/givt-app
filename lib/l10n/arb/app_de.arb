@@ -1114,5 +1114,8 @@
   "homeScreenConfirmOrgTitle": "Unterstütze {org}",
   "homeScreenConfirmOrgDescription": "Ist das die Organisation, der du geben möchtest?",
   "homeScreenConfirmOrgYes": "Ja, bestätigen",
-  "homeScreenChosenOrg": "Großartig! Du gibst an {org}"
+  "homeScreenChosenOrg": "Großartig! Du gibst an {org}",
+  "donationOverviewProcessingTimeTitle": "Deine Spende ist eingerichtet.",
+  "donationOverviewProcessingTime3Days": "Im Allgemeinen dauert es 2-3 Werktage, bis dieser Betrag von deinem Konto abgebucht wird.",
+  "donationOverviewProcessingTime10Days": "Im Allgemeinen dauert es 4 Werktage, bis dieser Betrag von deinem Konto abgebucht wird. Die erste Transaktion dauert 10 Werktage."
 }
