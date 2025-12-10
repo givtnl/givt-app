@@ -108,16 +108,17 @@ class _FunSnackbarContent extends StatelessWidget {
                   icon!,
                   const SizedBox(width: 12),
                 ],
-                if (title != null) ...[
-                  Expanded(
-                    child: LabelMediumText.secondary30(title!),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (title != null) LabelMediumText.secondary30(title!),
+                      if (extraText != null)
+                        BodySmallText.secondary30(extraText!),
+                    ],
                   ),
-                ],
-                if (extraText != null) ...[
-                  Expanded(
-                    child: BodySmallText.secondary30(extraText!),
-                  ),
-                ],
+                ),
               ],
             ),
           ),

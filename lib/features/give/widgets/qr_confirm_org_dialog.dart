@@ -6,7 +6,6 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 
 /// Spacing constants extracted from Figma design
 class _QrConfirmDialogSpacing {
@@ -92,35 +91,31 @@ class QrConfirmOrgDialog extends StatelessWidget {
               // Primary button - "Yes, confirm"
               FunButton(
                 onTap: () {
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.qrCodeScanned,
-                    eventProperties: {
-                      'goal_name': organizationName,
-                      'confirmed': true,
-                    },
-                  );
                   Navigator.of(context).pop();
                   onConfirm();
                 },
                 text: locals.homeScreenConfirmOrgYes,
-                analyticsEvent: AmplitudeEvents.qrCodeScanned.toEvent(),
+                analyticsEvent: AmplitudeEvents.qrCodeScanned.toEvent(
+                  parameters: {
+                    'goal_name': organizationName,
+                    'confirmed': true,
+                  },
+                ),
               ),
               const SizedBox(height: _QrConfirmDialogSpacing.betweenButtons),
               // Secondary button - "Cancel"
               FunButton.secondary(
                 onTap: () {
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.qrCodeScanned,
-                    eventProperties: {
-                      'goal_name': organizationName,
-                      'confirmed': false,
-                    },
-                  );
                   Navigator.of(context).pop();
                   onCancel();
                 },
                 text: locals.cancel,
-                analyticsEvent: AmplitudeEvents.qrCodeScanned.toEvent(),
+                analyticsEvent: AmplitudeEvents.qrCodeScanned.toEvent(
+                  parameters: {
+                    'goal_name': organizationName,
+                    'confirmed': false,
+                  },
+                ),
               ),
             ],
           ),

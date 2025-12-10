@@ -522,22 +522,5 @@ class _ChooseAmountState extends State<ChooseAmount> {
         ),
       ),
     );
-
-    // return Padding(
-    //   padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-    //   child: ElevatedButton.icon(
-    //     onPressed: onPressed,
-    //     label: const Icon(Icons.arrow_forward_ios_outlined),
-    //     icon: Padding(
-    //       padding: const EdgeInsets.only(left: 16),
-    //       child: Text(label),
-    //     ),
-    //     style: ElevatedButton.styleFrom(
-    //       disabledForegroundColor: Colors.white,
-    //       disabledBackgroundColor: Colors.black12,
-    //       minimumSize: const Size(50, 40),
-    //     ),
-    //   ),
-    // );
   }
 }
