@@ -1114,5 +1114,8 @@
   "homeScreenConfirmOrgTitle": "Steun {org}",
   "homeScreenConfirmOrgDescription": "Is dit de organisatie waaraan je wilt geven?",
   "homeScreenConfirmOrgYes": "Ja, bevestigen",
-  "homeScreenChosenOrg": "Geweldig! Je geeft aan {org}"
+  "homeScreenChosenOrg": "Geweldig! Je geeft aan {org}",
+  "donationOverviewProcessingTimeTitle": "Je gift is verwerkt.",
+  "donationOverviewProcessingTime3Days": "Het duurt doorgaans 2-3 werkdagen totdat dit bedrag van je rekening is afgeschreven.",
+  "donationOverviewProcessingTime10Days": "Het duurt doorgaans 4 werkdagen totdat dit bedrag van je rekening is afgeschreven. De eerste transactie duurt 10 werkdagen."
 }

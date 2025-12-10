@@ -1114,5 +1114,8 @@
   "homeScreenConfirmOrgTitle": "Support {org}",
   "homeScreenConfirmOrgDescription": "Is this the organization you'd like to give to?",
   "homeScreenConfirmOrgYes": "Yes, confirm",
-  "homeScreenChosenOrg": "Amazing! You'll give to {org}"
+  "homeScreenChosenOrg": "Amazing! You'll give to {org}",
+  "donationOverviewProcessingTimeTitle": "Your donation is all set.",
+  "donationOverviewProcessingTime3Days": "In general, it takes 2-3 business days until this amount is collected from your account.",
+  "donationOverviewProcessingTime10Days": "In general, it takes 4 business days until this amount is collected from your account. The first transaction takes 10 business days."
 }
