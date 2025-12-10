@@ -10,7 +10,8 @@ class FunSnackbar {
 
   static void show(
     BuildContext context, {
-    required String message,
+    String? title,
+    String? extraText,
     Widget? icon,
     Duration duration = const Duration(milliseconds: 5000),
   }) {
@@ -23,7 +24,8 @@ class FunSnackbar {
         right: 24,
         bottom: 32 + MediaQuery.of(context).viewInsets.bottom + 80,
         child: _FunSnackbarContent(
-          message: message,
+          title: title,
+          extraText: extraText,
           icon: icon,
         ),
       ),
@@ -49,27 +51,31 @@ class FunSnackbar {
 /// This is a widget that is used to display a snackbar as static widget.
 class FunSnackbarWidget extends StatelessWidget {
   const FunSnackbarWidget({
-    required this.message,
+    this.title,
+    this.extraText,
     this.icon,
     super.key,
   });
 
-  final String message;
+  final String? title;
+  final String? extraText;
   final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
-    return _FunSnackbarContent(message: message, icon: icon);
+    return _FunSnackbarContent(title: title, extraText: extraText, icon: icon);
   }
 }
 
 class _FunSnackbarContent extends StatelessWidget {
   const _FunSnackbarContent({
-    required this.message,
+    this.title,
+    this.extraText,
     this.icon,
   });
 
-  final String message;
+  final String? title;
+  final String? extraText;
   final Widget? icon;
 
   @override
@@ -103,7 +109,15 @@ class _FunSnackbarContent extends StatelessWidget {
                   const SizedBox(width: 12),
                 ],
                 Expanded(
-                  child: LabelMediumText.secondary30(message),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (title != null) LabelMediumText.secondary30(title!),
+                      if (extraText != null)
+                        BodySmallText.secondary30(extraText!),
+                    ],
+                  ),
                 ),
               ],
             ),

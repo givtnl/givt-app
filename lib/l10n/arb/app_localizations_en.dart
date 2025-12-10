@@ -1827,7 +1827,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setupFamilyAddNextMember => 'Add next member';
 
   @override
-  String get homescreenFamilyWelcome => 'Welcome, super family!';
+  String get homescreenFamilyWelcome => 'Welcome to Givt4Kids';
 
   @override
   String get homescreenFamilyGenerosity => 'Let\'s foster generosity together';
@@ -2430,6 +2430,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get platformContributionSaveChangesModalNoButton => 'No, discard';
+
+  @override
+  String homeScreenConfirmOrgTitle(Object org) {
+    return 'Support $org';
+  }
+
+  @override
+  String get homeScreenConfirmOrgDescription =>
+      'Is this the organisation you\'d like to give to?';
+
+  @override
+  String get homeScreenConfirmOrgYes => 'Yes, confirm';
+
+  @override
+  String homeScreenChosenOrg(Object org) {
+    return 'Amazing! You\'ll give to $org';
+  }
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4255,7 +4272,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get setupFamilyAddNextMember => 'Add next member';
 
   @override
-  String get homescreenFamilyWelcome => 'Welcome, super family!';
+  String get homescreenFamilyWelcome => 'Welcome to Givt4Kids';
 
   @override
   String get homescreenFamilyGenerosity => 'Let\'s foster generosity together';
@@ -4858,4 +4875,21 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get platformContributionSaveChangesModalNoButton => 'No, discard';
+
+  @override
+  String homeScreenConfirmOrgTitle(Object org) {
+    return 'Support $org';
+  }
+
+  @override
+  String get homeScreenConfirmOrgDescription =>
+      'Is this the organization you\'d like to give to?';
+
+  @override
+  String get homeScreenConfirmOrgYes => 'Yes, confirm';
+
+  @override
+  String homeScreenChosenOrg(Object org) {
+    return 'Amazing! You\'ll give to $org';
+  }
 }
