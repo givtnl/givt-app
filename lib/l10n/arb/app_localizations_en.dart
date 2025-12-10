@@ -2447,6 +2447,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String homeScreenChosenOrg(Object org) {
     return 'Amazing! You\'ll give to $org';
   }
+
+  @override
+  String get donationOverviewProcessingTimeTitle => 'Your donation is all set.';
+
+  @override
+  String get donationOverviewProcessingTime3Days =>
+      'In general, it takes 2-3 working days until this amount is collected from your account.';
+
+  @override
+  String get donationOverviewProcessingTime10Days =>
+      'In general, it takes 4 working days until this amount is collected from your account. The first transaction takes 10 working days.';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4892,4 +4903,15 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String homeScreenChosenOrg(Object org) {
     return 'Amazing! You\'ll give to $org';
   }
+
+  @override
+  String get donationOverviewProcessingTimeTitle => 'Your donation is all set.';
+
+  @override
+  String get donationOverviewProcessingTime3Days =>
+      'In general, it takes 2-3 business days until this amount is collected from your account.';
+
+  @override
+  String get donationOverviewProcessingTime10Days =>
+      'In general, it takes 4 business days until this amount is collected from your account. The first transaction takes 10 business days.';
 }

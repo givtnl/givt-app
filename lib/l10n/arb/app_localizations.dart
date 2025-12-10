@@ -4412,6 +4412,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Amazing! You\'ll give to {org}'**
   String homeScreenChosenOrg(Object org);
+
+  /// No description provided for @donationOverviewProcessingTimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation is all set.'**
+  String get donationOverviewProcessingTimeTitle;
+
+  /// No description provided for @donationOverviewProcessingTime3Days.
+  ///
+  /// In en, this message translates to:
+  /// **'In general, it takes 2-3 working days until this amount is collected from your account.'**
+  String get donationOverviewProcessingTime3Days;
+
+  /// No description provided for @donationOverviewProcessingTime10Days.
+  ///
+  /// In en, this message translates to:
+  /// **'In general, it takes 4 working days until this amount is collected from your account. The first transaction takes 10 working days.'**
+  String get donationOverviewProcessingTime10Days;
 }
 
 class _AppLocalizationsDelegate

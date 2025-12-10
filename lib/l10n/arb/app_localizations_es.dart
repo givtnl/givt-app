@@ -2448,6 +2448,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String homeScreenChosenOrg(Object org) {
     return '¡Increíble! Vas a donar a $org';
   }
+
+  @override
+  String get donationOverviewProcessingTimeTitle => 'Tu donación está lista.';
+
+  @override
+  String get donationOverviewProcessingTime3Days =>
+      'Por lo general, toma 2-3 días hábiles hasta que este monto sea cobrado de tu cuenta.';
+
+  @override
+  String get donationOverviewProcessingTime10Days =>
+      'Por lo general, toma 4 días hábiles hasta que este monto sea cobrado de tu cuenta. La primera transacción toma 10 días hábiles.';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4915,4 +4926,15 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String homeScreenChosenOrg(Object org) {
     return 'Amazing! You\'ll give to $org';
   }
+
+  @override
+  String get donationOverviewProcessingTimeTitle => 'Your donation is all set.';
+
+  @override
+  String get donationOverviewProcessingTime3Days =>
+      'In general, it takes 2-3 working days until this amount is collected from your account.';
+
+  @override
+  String get donationOverviewProcessingTime10Days =>
+      'In general, it takes 4 working days until this amount is collected from your account. The first transaction takes 10 working days.';
 }

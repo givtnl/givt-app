@@ -2467,4 +2467,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String homeScreenChosenOrg(Object org) {
     return 'Großartig! Du gibst an $org';
   }
+
+  @override
+  String get donationOverviewProcessingTimeTitle =>
+      'Deine Spende ist eingerichtet.';
+
+  @override
+  String get donationOverviewProcessingTime3Days =>
+      'Im Allgemeinen dauert es 2-3 Werktage, bis dieser Betrag von deinem Konto abgebucht wird.';
+
+  @override
+  String get donationOverviewProcessingTime10Days =>
+      'Im Allgemeinen dauert es 4 Werktage, bis dieser Betrag von deinem Konto abgebucht wird. Die erste Transaktion dauert 10 Werktage.';
 }
