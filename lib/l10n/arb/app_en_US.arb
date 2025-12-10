@@ -1110,5 +1110,9 @@
   "platformContributionSaveChangesModalTitle": "Save changes?",
   "platformContributionSaveChangesModalBody": "Do you want to save your changes before leaving?",
   "platformContributionSaveChangesModalYesButton": "Yes, save",
-  "platformContributionSaveChangesModalNoButton": "No, discard"
+  "platformContributionSaveChangesModalNoButton": "No, discard",
+  "homeScreenConfirmOrgTitle": "Support {org}",
+  "homeScreenConfirmOrgDescription": "Is this the organization you'd like to give to?",
+  "homeScreenConfirmOrgYes": "Yes, confirm",
+  "homeScreenChosenOrg": "Amazing! You'll give to {org}"
 }
