@@ -33,6 +33,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   final sortCode = TextEditingController();
   final ibanNumber = TextEditingController();
   Country _selectedCountry = Country.sortedCountries().first;
+  Country _selectedPhoneCountry = Country.sortedCountries().first;
   bool isLoading = false;
 
   @override
@@ -40,6 +41,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     super.initState();
     final user = context.read<AuthCubit>().state.user;
     _selectedCountry = Country.fromCode(user.country);
+    _selectedPhoneCountry = _selectedCountry;
   }
 
   @override
@@ -139,6 +141,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   _buildTextFormField(
                     hintText: locals.postalCode,
                     controller: _postalCode,
+                    toUpperCase: isUk,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '';
@@ -147,8 +150,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         return null;
                       }
 
-                      if (!Util.ukPostCodeRegEx.hasMatch(value)) {
+                      final formattedPostCode = Util.formatUkPostCode(value);
+                      if (formattedPostCode == null) {
                         return '';
+                      }
+                      if (formattedPostCode != _postalCode.text) {
+                        _postalCode.text = formattedPostCode;
                       }
                       return null;
                     },
@@ -322,8 +329,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   )
                   .toList(),
               onChanged: (Country? newValue) {
+                if (newValue == null) {
+                  return;
+                }
                 setState(() {
-                  _selectedCountry = newValue!;
+                  _selectedCountry = newValue;
+                  _selectedPhoneCountry = newValue;
                 });
               },
             ),
@@ -331,50 +342,72 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           const SizedBox(height: 10),
           MobileNumberFormField(
             phone: _phone,
-            selectedCountryPrefix: _selectedCountry.prefix,
-            hintText: _selectedCountry != Country.us
+            selectedCountryPrefix: _selectedPhoneCountry.prefix,
+            hintText: _selectedPhoneCountry != Country.us
                 ? locals.phoneNumber
                 : locals.mobileNumberUsDigits,
             onPhoneChanged: (String value) => setState(() {}),
             onPrefixChanged: (String selected) {
               setState(() {
-                _selectedCountry = Country.sortedCountries().firstWhere(
-                  (Country country) => country.countryCode == selected,
+                _selectedPhoneCountry = Country.fromPrefix(
+                  selected,
+                  fallback: _selectedPhoneCountry,
                 );
               });
             },
-            formatter: (_selectedCountry == Country.us)
+            formatter: (_selectedPhoneCountry == Country.us)
                 ? [
                     FilteringTextInputFormatter.digitsOnly,
                     LengthLimitingTextInputFormatter(10),
                   ]
                 : null,
             validator: (String? value) {
-              if (value == null || value.isEmpty) {
+              final cleanedValue =
+                  value?.replaceAll(RegExp(r'\s+'), '') ?? '';
+              if (cleanedValue.isEmpty) {
                 return '';
               }
 
               if (Country.unitedKingdomCodes()
-                  .contains(_selectedCountry.countryCode)) {
-                if (!Util.ukPhoneNumberRegEx
-                    .hasMatch('${_selectedCountry.prefix}$value')) {
+                  .contains(_selectedPhoneCountry.countryCode)) {
+                final normalizedValue = Util.normalizePhoneNumber(
+                  country: _selectedPhoneCountry,
+                  phoneNumber: cleanedValue,
+                );
+                if (normalizedValue.isEmpty) {
+                  return '';
+                }
+                final withPrefix =
+                    '${_selectedPhoneCountry.prefix}$normalizedValue';
+                final matchesLocal =
+                    Util.ukPhoneNumberRegEx.hasMatch(cleanedValue);
+                final matchesInternational =
+                    Util.ukPhoneNumberRegEx.hasMatch(withPrefix);
+                if (!matchesLocal && !matchesInternational) {
                   return '';
                 }
                 return null;
               }
-              if (Country.us != _selectedCountry &&
-                  !Country.unitedKingdomCodes()
-                      .contains(_selectedCountry.countryCode)) {
-                final prefix = _selectedCountry.prefix.replaceAll('+', '');
-                if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
-                  return '';
-                }
-              }
-              if (Country.us == _selectedCountry) {
+
+              if (Country.us == _selectedPhoneCountry) {
                 if (!Util.usPhoneNumberRegEx
-                    .hasMatch(Util.formatPhoneNrUs(value))) {
+                    .hasMatch(Util.formatPhoneNrUs(cleanedValue))) {
                   return '';
                 }
+                return null;
+              }
+
+              final prefix = _selectedPhoneCountry.prefix.replaceAll('+', '');
+              final normalizedValue = Util.normalizePhoneNumber(
+                country: _selectedPhoneCountry,
+                phoneNumber: cleanedValue,
+              );
+              if (normalizedValue.isEmpty) {
+                return '';
+              }
+              if (!Util.phoneNumberRegEx(prefix)
+                  .hasMatch('+$prefix$normalizedValue')) {
+                return '';
               }
 
               return null;
@@ -401,7 +434,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             city: _city.text,
             postalCode: _postalCode.text,
             country: _selectedCountry.countryCode,
-            phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
+            phoneNumber: Util.formatPhoneNumberWithPrefix(
+              country: _selectedPhoneCountry,
+              phoneNumber: _phone.text,
+            ),
             iban: ibanNumber.text,
             sortCode: sortCode.text,
             accountNumber: bankAccount.text,

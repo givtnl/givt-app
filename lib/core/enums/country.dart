@@ -81,6 +81,16 @@ enum Country {
     ];
   }
 
+  static Country fromPrefix(
+    String prefix, {
+    Country? fallback,
+  }) {
+    return Country.values.firstWhere(
+      (country) => country.prefix == prefix,
+      orElse: () => fallback ?? Country.nl,
+    );
+  }
+
   static Country fromCode(String code) {
     return Country.values.firstWhere(
       (country) => country.countryCode.toUpperCase() == code.toUpperCase(),

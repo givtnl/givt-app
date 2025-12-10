@@ -283,8 +283,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             }),
             onPrefixChanged: (String selected) {
               setState(() {
-                _selectedCountry = Country.sortedCountries().firstWhere(
-                  (Country country) => country.countryCode == selected,
+                _selectedCountry = Country.fromPrefix(
+                  selected,
+                  fallback: _selectedCountry,
                 );
               });
             },
