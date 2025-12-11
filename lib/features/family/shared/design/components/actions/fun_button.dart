@@ -198,7 +198,7 @@ class FunButton extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: isDisabled
-                ? FamilyAppTheme.neutralVariant60
+                ? disabledBackgroundColor
                 : backgroundColor,
           ),
           child: Container(

@@ -511,7 +511,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 4, 8, 8),
       child: FunButton(
-        onTap: isEnabled ? onPressed : null,
+        onTap: onPressed,
         isDisabled: !isEnabled,
         text: label,
         size: FunButtonSize.small,
