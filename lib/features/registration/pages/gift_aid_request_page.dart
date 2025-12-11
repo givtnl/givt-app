@@ -14,27 +14,31 @@ class GiftAidRequestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegistrationBloc, RegistrationState>(
-      listenWhen: (previous, current) => previous != current,
-      listener: (context, state) {
-        if (state.status == RegistrationStatus.giftAidChanged) {
-          context.pushNamed(
-            Pages.permitBiometric.name,
-            extra: PermitBiometricRequest.registration(
-              redirect: (context) =>
-                  context.goNamed(Pages.registrationSuccess.name),
-            ),
-          );
-        }
-      },
-      child: Scaffold(
-        body: GiftAidPage(
-          onGiftAidChanged: (useGiftAid) =>
-              context.read<RegistrationBloc>().add(
-                    RegistrationGiftAidChanged(
-                      isGiftAidEnabled: useGiftAid,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: BlocListener<RegistrationBloc, RegistrationState>(
+        listenWhen: (previous, current) => previous != current,
+        listener: (context, state) {
+          if (state.status == RegistrationStatus.giftAidChanged) {
+            context.pushNamed(
+              Pages.permitBiometric.name,
+              extra: PermitBiometricRequest.registration(
+                redirect: (context) =>
+                    context.goNamed(Pages.registrationSuccess.name),
+              ),
+            );
+          }
+        },
+        child: Scaffold(
+          body: GiftAidPage(
+            showBackButton: false,
+            onGiftAidChanged: (useGiftAid) =>
+                context.read<RegistrationBloc>().add(
+                      RegistrationGiftAidChanged(
+                        isGiftAidEnabled: useGiftAid,
+                      ),
                     ),
-                  ),
+          ),
         ),
       ),
     );
