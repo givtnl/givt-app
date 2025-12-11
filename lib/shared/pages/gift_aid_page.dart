@@ -9,10 +9,12 @@ import 'package:givt_app/utils/app_theme.dart';
 class GiftAidPage extends StatefulWidget {
   const GiftAidPage({
     required this.onGiftAidChanged,
+    this.showBackButton = true,
     super.key,
   });
 
   final void Function(bool) onGiftAidChanged;
+  final bool showBackButton;
 
   @override
   State<GiftAidPage> createState() => _GiftAidPageState();
@@ -63,6 +65,7 @@ class _GiftAidPageState extends State<GiftAidPage> {
         ),
         child: Text(locals.save),
       ),
+      showBackButton: widget.showBackButton,
       child: SingleChildScrollView(
         child: Column(
           children: [
