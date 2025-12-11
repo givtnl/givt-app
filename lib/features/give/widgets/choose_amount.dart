@@ -274,6 +274,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
               ],
               _buildNextButton(
                 label: locals.next,
+                isEnabled: isEnabled,
                 onPressed: isEnabled
                     ? () async {
                         final areAmountsValid = await _checkAmounts(
@@ -505,11 +506,13 @@ class _ChooseAmountState extends State<ChooseAmount> {
   Widget _buildNextButton({
     required String label,
     VoidCallback? onPressed,
+    bool isEnabled = true,
   }) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 4, 8, 8),
       child: FunButton(
         onTap: onPressed,
+        isDisabled: !isEnabled,
         text: label,
         size: FunButtonSize.small,
         analyticsEvent: AnalyticsEvent(
