@@ -222,17 +222,17 @@ AgMBAAE=
     return DateFormat.Hm(locale).format(localDate);
   }
 
-  /// Convert UTC date to local time and format as full date and time (e.g., "January 15, 2024 at 14:30")
+  /// Convert UTC date to local time and format as full date and time (e.g., "January 15, 2024 14:30")
   static String formatFullDateLocal(DateTime? utcDate, String locale) {
     if (utcDate == null) return '';
     final localDate = utcDate.toLocal();
-    return '${DateFormat.yMMMMd(locale).format(localDate)} at ${DateFormat.Hm(locale).format(localDate)}';
+    return '${DateFormat.yMMMMd(locale).format(localDate)} ${DateFormat.Hm(locale).format(localDate)}';
   }
 
-  /// Convert UTC date to local time and format as date with "at" separator (e.g., "Jan 15 at 14:30")
+  /// Convert UTC date to local time and format as date/time (e.g., "Jan 15 14:30")
   static String formatDateAtTimeLocal(DateTime? utcDate, String locale) {
     if (utcDate == null) return '';
     final localDate = utcDate.toLocal();
-    return '${DateFormat.MMMd(locale).format(localDate)} at ${DateFormat.Hm(locale).format(localDate)}';
+    return '${DateFormat.MMMd(locale).format(localDate)} ${DateFormat.Hm(locale).format(localDate)}';
   }
 }
