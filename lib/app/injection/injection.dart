@@ -30,6 +30,7 @@ import 'package:givt_app/features/recurring_donations/create/cubit/step4_confirm
 import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/injection.dart';
 import 'package:givt_app/features/recurring_donations/overview/injection.dart';
+import 'package:givt_app/features/review_donations/injection.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
@@ -52,6 +53,7 @@ Future<void> init() async {
   registerRecurringDonationDetailDependencies();
   registerDonationOverviewDependencies();
   registerPlatformContributionDependencies();
+  registerReviewDonationsDependencies();
 }
 
 Future<void> initAPIService() async {

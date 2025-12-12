@@ -4430,6 +4430,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'In general, it takes 4 working days until this amount is collected from your account. The first transaction takes 10 working days.'**
   String get donationOverviewProcessingTime10Days;
+
+  /// No description provided for @reviewDonationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review your donations'**
+  String get reviewDonationsTitle;
+
+  /// No description provided for @reviewDonationsDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Now that your mandate is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 pm today.'**
+  String get reviewDonationsDescription;
+
+  /// No description provided for @reviewDonationsProcessedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donations are being processed'**
+  String get reviewDonationsProcessedTitle;
+
+  /// No description provided for @reviewDonationsProcessedDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'We’ll collect {amount} in one transaction within {days} business days. Check the status in donation history.'**
+  String reviewDonationsProcessedDescription(Object amount, Object days);
 }
 
 class _AppLocalizationsDelegate

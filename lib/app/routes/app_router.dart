@@ -36,6 +36,8 @@ import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_d
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/pages.dart';
+import 'package:givt_app/features/review_donations/pages/donations_processed_success_page.dart';
+import 'package:givt_app/features/review_donations/pages/review_donations_page.dart';
 import 'package:givt_app/features/splash/pages/splash_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
@@ -240,6 +242,16 @@ class AppRouter {
             path: Pages.registrationSuccess.path,
             name: Pages.registrationSuccess.name,
             builder: (_, state) => const RegistrationCompletedPage(),
+          ),
+          GoRoute(
+            path: Pages.reviewDonations.path,
+            name: Pages.reviewDonations.name,
+            builder: (context, state) => const ReviewDonationsPage(),
+          ),
+          GoRoute(
+            path: Pages.donationsProcessedSuccess.path,
+            name: Pages.donationsProcessedSuccess.name,
+            builder: (context, state) => const DonationsProcessedSuccessPage(),
           ),
           GoRoute(
             path: Pages.sepaMandateExplanation.path,

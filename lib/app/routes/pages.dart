@@ -57,6 +57,14 @@ enum Pages {
   ),
   permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
   platformContribution(path: 'platform-contribution', name: 'PLATFORM-CONTRIBUTION'),
+  reviewDonations(
+    path: 'review-donations',
+    name: 'REVIEW-DONATIONS',
+  ),
+  donationsProcessedSuccess(
+    path: 'donations-processed-success',
+    name: 'DONATIONS-PROCESSED-SUCCESS',
+  ),
   ;
 
   const Pages({
