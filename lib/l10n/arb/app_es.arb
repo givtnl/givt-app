@@ -1117,5 +1117,9 @@
   "homeScreenChosenOrg": "¡Increíble! Vas a donar a {org}",
   "donationOverviewProcessingTimeTitle": "Tu donación está lista.",
   "donationOverviewProcessingTime3Days": "Por lo general, toma 2-3 días hábiles hasta que este monto sea cobrado de tu cuenta.",
-  "donationOverviewProcessingTime10Days": "Por lo general, toma 4 días hábiles hasta que este monto sea cobrado de tu cuenta. La primera transacción toma 10 días hábiles."
+  "donationOverviewProcessingTime10Days": "Por lo general, toma 4 días hábiles hasta que este monto sea cobrado de tu cuenta. La primera transacción toma 10 días hábiles.",
+  "reviewDonationsTitle": "Revisa tus donaciones",
+  "reviewDonationsDescription": "Ahora que tu autorización está activa, procesaremos las siguientes donaciones. Puedes modificarlas en tu historial de donaciones hasta las 8:00 PM de hoy.",
+  "reviewDonationsProcessedTitle": "Tus donaciones se están procesando",
+  "reviewDonationsProcessedDescription": "Cobraremos {amount} en una sola transacción dentro de {days} días hábiles. Revisa el estado en el historial de donaciones."
 }
