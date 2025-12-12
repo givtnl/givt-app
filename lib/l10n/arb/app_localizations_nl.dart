@@ -2469,4 +2469,19 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get donationOverviewProcessingTime10Days =>
       'Het duurt doorgaans 4 werkdagen totdat dit bedrag van je rekening is afgeschreven. De eerste transactie duurt 10 werkdagen.';
+
+  @override
+  String get reviewDonationsTitle => 'Controleer je giften';
+
+  @override
+  String get reviewDonationsDescription =>
+      'Nu je machtiging actief is, verwerken we onderstaande giften. Je kunt ze vandaag tot 20:00 uur aanpassen in je giftenoverzicht.';
+
+  @override
+  String get reviewDonationsProcessedTitle => 'Je giften worden verwerkt';
+
+  @override
+  String reviewDonationsProcessedDescription(Object amount, Object days) {
+    return 'We schrijven $amount in één keer af binnen $days werkdagen. Bekijk de status in je giftenoverzicht.';
+  }
 }

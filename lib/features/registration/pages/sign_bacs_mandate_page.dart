@@ -4,6 +4,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/review_donations/utils/navigation_helper.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -38,7 +39,7 @@ class SignBacsMandatePage extends StatelessWidget {
           listener: (context, state) {
             if (state.status ==
                 RegistrationStatus.bacsDirectDebitMandateSigned) {
-              context.goNamed(Pages.giftAid.name);
+              navigateAfterMandateSigning(context, user.country);
             }
             if (state.status == RegistrationStatus.bacsDetailsWrong) {
               showDialog<void>(

@@ -2458,6 +2458,22 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get donationOverviewProcessingTime10Days =>
       'In general, it takes 4 working days until this amount is collected from your account. The first transaction takes 10 working days.';
+
+  @override
+  String get reviewDonationsTitle => 'Review your donations';
+
+  @override
+  String get reviewDonationsDescription =>
+      'Now that your mandate is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 pm today.';
+
+  @override
+  String get reviewDonationsProcessedTitle =>
+      'Your donations are being processed';
+
+  @override
+  String reviewDonationsProcessedDescription(Object amount, Object days) {
+    return 'We’ll collect $amount in one transaction within $days business days. Check the status in donation history.';
+  }
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4914,4 +4930,20 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String get donationOverviewProcessingTime10Days =>
       'In general, it takes 4 business days until this amount is collected from your account. The first transaction takes 10 business days.';
+
+  @override
+  String get reviewDonationsTitle => 'Review your donations';
+
+  @override
+  String get reviewDonationsDescription =>
+      'Now that your authorization is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 PM today.';
+
+  @override
+  String get reviewDonationsProcessedTitle =>
+      'Your donations are being processed';
+
+  @override
+  String reviewDonationsProcessedDescription(Object amount, Object days) {
+    return 'We’ll collect $amount in one transaction within $days business days. Check the status in donation history.';
+  }
 }

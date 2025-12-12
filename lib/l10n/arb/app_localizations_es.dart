@@ -2459,6 +2459,22 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get donationOverviewProcessingTime10Days =>
       'Por lo general, toma 4 días hábiles hasta que este monto sea cobrado de tu cuenta. La primera transacción toma 10 días hábiles.';
+
+  @override
+  String get reviewDonationsTitle => 'Revisa tus donaciones';
+
+  @override
+  String get reviewDonationsDescription =>
+      'Ahora que tu autorización está activa, procesaremos las siguientes donaciones. Puedes modificarlas en tu historial de donaciones hasta las 8:00 PM de hoy.';
+
+  @override
+  String get reviewDonationsProcessedTitle =>
+      'Tus donaciones se están procesando';
+
+  @override
+  String reviewDonationsProcessedDescription(Object amount, Object days) {
+    return 'Cobraremos $amount en una sola transacción dentro de $days días hábiles. Revisa el estado en el historial de donaciones.';
+  }
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4937,4 +4953,20 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get donationOverviewProcessingTime10Days =>
       'In general, it takes 4 working days until this amount is collected from your account. The first transaction takes 10 working days.';
+
+  @override
+  String get reviewDonationsTitle => 'Review your donations';
+
+  @override
+  String get reviewDonationsDescription =>
+      'Now that your mandate is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 pm today.';
+
+  @override
+  String get reviewDonationsProcessedTitle =>
+      'Your donations are being processed';
+
+  @override
+  String reviewDonationsProcessedDescription(Object amount, Object days) {
+    return 'We’ll collect $amount in one transaction within $days business days. Check the status in donation history.';
+  }
 }

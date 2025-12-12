@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 class RegistrationCompletedPage extends StatelessWidget {
@@ -11,18 +16,15 @@ class RegistrationCompletedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final size = MediaQuery.sizeOf(context);
 
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: SizedBox(
-        width: size.width * 0.8,
-        child: FloatingActionButton.extended(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          onPressed: () => context.goNamed(Pages.home.name),
-          label: Text(locals.buttonContinue),
+    return FunScaffold(
+      minimumPadding: EdgeInsets.zero,
+      withSafeArea: false,
+      floatingActionButton: FunButton(
+        onTap: () => context.goNamed(Pages.home.name),
+        text: locals.buttonContinue,
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.continueClicked,
         ),
       ),
       body: Stack(
@@ -33,17 +35,14 @@ class RegistrationCompletedPage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 50,
-              ),
-              child: Text(
+          SafeArea(
+            minimum: const EdgeInsets.only(top: 64),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: TitleLargeText(
                 locals.registrationSuccess,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Colors.white,
-                    ),
+                color: Colors.white,
+                textAlign: TextAlign.center,
               ),
             ),
           ),
