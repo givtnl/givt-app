@@ -126,7 +126,7 @@ class _ReviewDonationsPageState extends State<ReviewDonationsPage> {
                     ),
                   )
                 : ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 100),
+                    padding: const EdgeInsets.only(bottom: 16),
                     itemCount: donationGroups.length,
                     itemBuilder: (context, index) {
                       final donationGroup = donationGroups[index];
