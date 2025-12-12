@@ -1117,5 +1117,9 @@
   "homeScreenChosenOrg": "Geweldig! Je geeft aan {org}",
   "donationOverviewProcessingTimeTitle": "Je gift is verwerkt.",
   "donationOverviewProcessingTime3Days": "Het duurt doorgaans 2-3 werkdagen totdat dit bedrag van je rekening is afgeschreven.",
-  "donationOverviewProcessingTime10Days": "Het duurt doorgaans 4 werkdagen totdat dit bedrag van je rekening is afgeschreven. De eerste transactie duurt 10 werkdagen."
+  "donationOverviewProcessingTime10Days": "Het duurt doorgaans 4 werkdagen totdat dit bedrag van je rekening is afgeschreven. De eerste transactie duurt 10 werkdagen.",
+  "reviewDonationsTitle": "Controleer je giften",
+  "reviewDonationsDescription": "Nu je machtiging actief is, verwerken we onderstaande giften. Je kunt ze vandaag tot 20:00 uur aanpassen in je giftenoverzicht.",
+  "reviewDonationsProcessedTitle": "Je giften worden verwerkt",
+  "reviewDonationsProcessedDescription": "We schrijven {amount} in één keer af binnen {days} werkdagen. Bekijk de status in je giftenoverzicht."
 }

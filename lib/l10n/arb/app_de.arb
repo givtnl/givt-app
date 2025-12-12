@@ -1117,5 +1117,9 @@
   "homeScreenChosenOrg": "Großartig! Du gibst an {org}",
   "donationOverviewProcessingTimeTitle": "Deine Spende ist eingerichtet.",
   "donationOverviewProcessingTime3Days": "Im Allgemeinen dauert es 2-3 Werktage, bis dieser Betrag von deinem Konto abgebucht wird.",
-  "donationOverviewProcessingTime10Days": "Im Allgemeinen dauert es 4 Werktage, bis dieser Betrag von deinem Konto abgebucht wird. Die erste Transaktion dauert 10 Werktage."
+  "donationOverviewProcessingTime10Days": "Im Allgemeinen dauert es 4 Werktage, bis dieser Betrag von deinem Konto abgebucht wird. Die erste Transaktion dauert 10 Werktage.",
+  "reviewDonationsTitle": "Überprüfe deine Spenden",
+  "reviewDonationsDescription": "Da dein Mandat jetzt aktiv ist, verarbeiten wir die untenstehenden Spenden. Du kannst sie bis heute 20:00 Uhr in deiner Spendenhistorie anpassen.",
+  "reviewDonationsProcessedTitle": "Deine Spenden werden verarbeitet",
+  "reviewDonationsProcessedDescription": "Wir buchen {amount} in einer Summe innerhalb von {days} Werktagen ab. Überprüfe den Status in der Spendenhistorie."
 }
