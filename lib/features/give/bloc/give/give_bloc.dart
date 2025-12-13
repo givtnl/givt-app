@@ -185,6 +185,11 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           return;
         }
         
+        // Capture organisation and other important state before updating
+        final currentOrganisation = state.organisation;
+        final currentInstanceName = state.instanceName;
+        final currentAfterGivingRedirection = state.afterGivingRedirection;
+        
         // Update collections first
         final updatedState = state.copyWith(
           firstCollection: event.firstCollectionAmount,
@@ -207,7 +212,16 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           updatedState.copyWith(
             status: GiveStatus.readyToGive,
             givtTransactions: transactionList,
+            organisation: currentOrganisation, // Explicitly preserve organisation
+            instanceName: currentInstanceName, // Preserve instance name
+            afterGivingRedirection: currentAfterGivingRedirection, // Preserve redirect
           ),
+        );
+        
+        LoggingInfo.instance.info(
+          'Amount changed in QR flow - orgName: ${currentOrganisation.organisationName}, '
+          'mediumId: ${currentOrganisation.mediumId}, '
+          'transactions: ${transactionList.length}',
         );
       } else {
         emit(
@@ -510,12 +524,22 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         mediumId: mediumId,
         guid: event.userGUID,
       );
+      
+      // Preserve instanceName that was set by _checkQRCode
+      final currentInstanceName = state.instanceName;
+
+      LoggingInfo.instance.info(
+        'QR Code scanned - orgName: ${organisation.organisationName}, '
+        'mediumId: ${organisation.mediumId}, '
+        'instanceName: $currentInstanceName',
+      );
 
       emit(
         state.copyWith(
           status: GiveStatus.readyToConfirm,
           organisation: organisation,
           givtTransactions: transactionList,
+          instanceName: currentInstanceName, // Preserve instanceName
           afterGivingRedirection: event.afterGivingRedirection,
         ),
       );
@@ -532,17 +556,51 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     GiveConfirmQRCodeScannedOutOfApp event,
     Emitter<GiveState> emit,
   ) async {
-    emit(state.copyWith(status: GiveStatus.loading));
-    await _campaignRepository.saveLastDonation(
-      state.organisation.copyWith(
-        mediumId: state.organisation.mediumId,
-      ),
+    // Capture organisation and other important state BEFORE any emits
+    final currentOrganisation = state.organisation;
+    final currentTransactions = state.givtTransactions;
+    final currentInstanceName = state.instanceName;
+    final currentAfterGivingRedirection = state.afterGivingRedirection;
+    
+    LoggingInfo.instance.info(
+      'Confirming QR code - orgName: ${currentOrganisation.organisationName}, '
+      'mediumId: ${currentOrganisation.mediumId}, '
+      'hasTransactions: ${currentTransactions.isNotEmpty}',
     );
     
+    emit(state.copyWith(
+      status: GiveStatus.loading,
+      organisation: currentOrganisation, // Explicitly preserve organisation
+    ));
+    
+    await _campaignRepository.saveLastDonation(
+      currentOrganisation.copyWith(
+        mediumId: currentOrganisation.mediumId,
+      ),
+    );
+
     // If skipSubmission is true, just prepare the state without submitting
     // This allows the user to change amounts before final submission
+    // Preserve transactions and organisation so they can be updated when amounts change
     if (event.skipSubmission) {
-      emit(state.copyWith(status: GiveStatus.readyToGive));
+      final newState = state.copyWith(
+        status: GiveStatus.readyToGive,
+        organisation: currentOrganisation, // Use captured organisation
+        givtTransactions: currentTransactions, // Preserve transactions
+        instanceName: currentInstanceName, // Preserve instance name
+        afterGivingRedirection: currentAfterGivingRedirection, // Preserve redirect
+      );
+      
+      emit(newState);
+      
+      LoggingInfo.instance.info(
+        'QR confirmed with skipSubmission - '
+        'captured orgName: ${currentOrganisation.organisationName}, '
+        'captured mediumId: ${currentOrganisation.mediumId}, '
+        'emitted orgName: ${newState.organisation.organisationName}, '
+        'emitted mediumId: ${newState.organisation.mediumId}, '
+        'status: readyToGive',
+      );
       return;
     }
     
@@ -582,15 +640,30 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       return;
     }
     
-    emit(state.copyWith(status: GiveStatus.loading));
+    // Capture organisation and transactions before any emits
+    final currentOrganisation = state.organisation;
+    final currentTransactions = state.givtTransactions;
+    final currentInstanceName = state.instanceName;
+    final currentAfterGivingRedirection = state.afterGivingRedirection;
+    
+    LoggingInfo.instance.info(
+      'Submitting transactions - orgName: ${currentOrganisation.organisationName}, '
+      'mediumId: ${currentOrganisation.mediumId}, '
+      'transactions: ${currentTransactions.length}',
+    );
+    
+    emit(state.copyWith(
+      status: GiveStatus.loading,
+      organisation: currentOrganisation, // Preserve organisation
+    ));
     
     try {
-      final userGUID = state.givtTransactions.first.guid;
-      final mediumId = state.organisation.mediumId ?? '';
+      final userGUID = currentTransactions.first.guid;
+      final mediumId = currentOrganisation.mediumId ?? '';
       
       final transactionIds = await _givtRepository.submitGivts(
         guid: userGUID,
-        body: {'donations': GivtTransaction.toJsonList(state.givtTransactions)},
+        body: {'donations': GivtTransaction.toJsonList(currentTransactions)},
       );
       
       if (mediumId.isNotEmpty) {
@@ -601,7 +674,16 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         state.copyWith(
           status: GiveStatus.readyToGive,
           transactionIds: transactionIds,
+          organisation: currentOrganisation, // Explicitly preserve organisation
+          givtTransactions: currentTransactions, // Preserve transactions
+          instanceName: currentInstanceName, // Preserve instance name
+          afterGivingRedirection: currentAfterGivingRedirection, // Preserve redirect
         ),
+      );
+      
+      LoggingInfo.instance.info(
+        'Transactions submitted - transactionIds: ${transactionIds.length}, '
+        'orgName: ${currentOrganisation.organisationName}',
       );
     } on SocketException catch (e, stackTrace) {
       log(e.toString());

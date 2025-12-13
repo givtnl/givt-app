@@ -12,10 +12,25 @@ class HomePageQRFlowHandler {
     final hasOrganisation =
         state.organisation.mediumId != null &&
         state.organisation.mediumId!.isNotEmpty;
-    return (state.status == GiveStatus.readyToGive ||
-            (hasOrganisation && code.isNotEmpty)) &&
-        giveBloc != null &&
-        code.isNotEmpty;
+    final isReadyToGive = state.status == GiveStatus.readyToGive;
+    final hasOrgAndCode = hasOrganisation && code.isNotEmpty;
+    final hasBloc = giveBloc != null;
+    final hasCode = code.isNotEmpty;
+    
+    final result = (isReadyToGive || hasOrgAndCode) && hasBloc && hasCode;
+    
+    LoggingInfo.instance.info(
+      'isQRFlow check - '
+      'isReadyToGive: $isReadyToGive, '
+      'hasOrganisation: $hasOrganisation, '
+      'hasOrgAndCode: $hasOrgAndCode, '
+      'hasBloc: $hasBloc, '
+      'hasCode: $hasCode, '
+      'result: $result, '
+      'orgName: ${state.organisation.organisationName}',
+    );
+    
+    return result;
   }
 
   /// Helper to show loading dialog with fullscreen white background
@@ -117,34 +132,60 @@ class HomePageQRFlowHandler {
       );
 
       // Wait for state to update with new transactions
+      // Give it more time and more attempts since state might take longer to update
       final updatedState = await waitForState(
         bloc,
         (state) =>
             state.status == GiveStatus.readyToGive &&
             state.collections[0] == firstCollection &&
             state.collections[1] == secondCollection &&
-            state.collections[2] == thirdCollection,
+            state.collections[2] == thirdCollection &&
+            state.givtTransactions.isNotEmpty, // Ensure transactions exist
+        maxAttempts: 20, // Increase attempts
+        delay: const Duration(milliseconds: 150), // Slightly longer delay
         mounted: mounted,
       );
 
-      if (!mounted() || updatedState == null) {
+      // Use updatedState if available, otherwise use current state
+      final stateToUse = updatedState ?? bloc.state;
+      
+      if (!mounted()) {
         dismissLoadingDialog(context);
-        if (mounted()) {
-          navigateToSelectGivingWay(
-            context,
-            firstCollection,
-            secondCollection,
-            thirdCollection,
-            code,
-            afterGivingRedirection,
-          );
-        }
         return;
       }
 
+      if (updatedState == null) {
+        LoggingInfo.instance.warning(
+          'QR flow: State did not update in time. '
+          'Status: ${stateToUse.status}, '
+          'Has transactions: ${stateToUse.givtTransactions.isNotEmpty}',
+        );
+        // If we have transactions and organisation, proceed anyway
+        if (stateToUse.givtTransactions.isNotEmpty &&
+            stateToUse.organisation.mediumId != null &&
+            stateToUse.organisation.mediumId!.isNotEmpty) {
+          // We have transactions and organisation, proceed with submission
+          LoggingInfo.instance.info('QR flow: Proceeding with existing transactions');
+        } else {
+          // Fall back to normal flow
+          dismissLoadingDialog(context);
+          if (mounted()) {
+            navigateToSelectGivingWay(
+              context,
+              firstCollection,
+              secondCollection,
+              thirdCollection,
+              code,
+              afterGivingRedirection,
+            );
+          }
+          return;
+        }
+      }
+
       // Submit transactions if they haven't been submitted yet
-      if (updatedState.transactionIds.isEmpty &&
-          updatedState.givtTransactions.isNotEmpty) {
+      if (stateToUse.transactionIds.isEmpty &&
+          stateToUse.givtTransactions.isNotEmpty) {
         LoggingInfo.instance.info('QR flow: Submitting transactions');
         bloc.add(const GiveSubmitTransactions());
 
@@ -188,23 +229,49 @@ class HomePageQRFlowHandler {
       LoggingInfo.instance.info(
         'QR flow: Final state - status: ${finalState.status}, '
         'transactionIds: ${finalState.transactionIds.length}, '
-        'transactions: ${finalState.givtTransactions.length}',
+        'transactions: ${finalState.givtTransactions.length}, '
+        'hasOrg: ${finalState.organisation.mediumId?.isNotEmpty ?? false}',
       );
 
       dismissLoadingDialog(context);
 
       if (!mounted()) return;
 
-      if (finalState.transactionIds.isNotEmpty) {
+      // Navigate to giving page if we have transactionIds OR if we have transactions and organisation
+      // (transactions will be submitted on the giving page if needed)
+      final hasTransactionIds = finalState.transactionIds.isNotEmpty;
+      final hasTransactions = finalState.givtTransactions.isNotEmpty;
+      final hasOrg = finalState.organisation.mediumId != null &&
+          finalState.organisation.mediumId!.isNotEmpty;
+      final isReadyToGive = finalState.status == GiveStatus.readyToGive;
+      
+      final shouldNavigateToGivingPage = hasTransactionIds ||
+          (hasTransactions && hasOrg && isReadyToGive);
+      
+      LoggingInfo.instance.info(
+        'QR flow: Navigation check - '
+        'hasTransactionIds: $hasTransactionIds, '
+        'hasTransactions: $hasTransactions, '
+        'hasOrg: $hasOrg, '
+        'isReadyToGive: $isReadyToGive, '
+        'shouldNavigate: $shouldNavigateToGivingPage, '
+        'orgName: ${finalState.organisation.organisationName}',
+      );
+      
+      if (shouldNavigateToGivingPage) {
+        LoggingInfo.instance.info('QR flow: Navigating to giving page');
         context.goNamed(
           Pages.give.name,
           extra: bloc,
         );
       } else {
         LoggingInfo.instance.error(
-          'QR flow: No transactionIds after submission. '
+          'QR flow: Cannot navigate to giving page. '
           'Status: ${finalState.status}, '
-          'Transactions: ${finalState.givtTransactions.length}',
+          'transactionIds: ${finalState.transactionIds.length}, '
+          'Transactions: ${finalState.givtTransactions.length}, '
+          'hasOrg: $hasOrg, '
+          'orgName: ${finalState.organisation.organisationName}',
         );
         navigateToSelectGivingWay(
           context,

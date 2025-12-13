@@ -16,12 +16,13 @@ class _QrConfirmDialogSpacing {
   static const EdgeInsets contentPadding = EdgeInsets.fromLTRB(24, 20, 24, 24);
 }
 
-class QrConfirmOrgDialog extends StatelessWidget {
+class QrConfirmOrgDialog extends StatefulWidget {
   const QrConfirmOrgDialog({
     required this.organizationName,
     required this.onConfirm,
     required this.onCancel,
     this.icon,
+    this.instanceName,
     super.key,
   });
 
@@ -29,6 +30,7 @@ class QrConfirmOrgDialog extends StatelessWidget {
   final VoidCallback onConfirm;
   final VoidCallback onCancel;
   final IconData? icon;
+  final String? instanceName;
 
   static Future<void> show(
     BuildContext context, {
@@ -36,6 +38,7 @@ class QrConfirmOrgDialog extends StatelessWidget {
     required VoidCallback onConfirm,
     required VoidCallback onCancel,
     IconData? icon,
+    String? instanceName,
   }) async {
     await showDialog<void>(
       context: context,
@@ -45,8 +48,26 @@ class QrConfirmOrgDialog extends StatelessWidget {
         icon: icon,
         onConfirm: onConfirm,
         onCancel: onCancel,
+        instanceName: instanceName,
       ),
     );
+  }
+
+  @override
+  State<QrConfirmOrgDialog> createState() => _QrConfirmOrgDialogState();
+}
+
+class _QrConfirmOrgDialogState extends State<QrConfirmOrgDialog> {
+  bool _buttonPressed = false;
+
+  /// Formats the organization name with instance name if available
+  String get _formattedOrganizationName {
+    if (widget.instanceName != null && 
+        widget.instanceName!.isNotEmpty && 
+        widget.instanceName != widget.organizationName) {
+      return '${widget.organizationName}: ${widget.instanceName}';
+    }
+    return widget.organizationName;
   }
 
   @override
@@ -54,74 +75,87 @@ class QrConfirmOrgDialog extends StatelessWidget {
     final locals = context.l10n;
     final theme = const FamilyAppTheme().toThemeData();
 
-    return Theme(
-      data: theme,
-      child: Dialog(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Padding(
-          padding: _QrConfirmDialogSpacing.contentPadding,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Organization icon - dark green icon on light green circle
-              FunIcon(
-                iconData: icon ?? FontAwesomeIcons.church,
-                circleColor: FamilyAppTheme.primary95,
-                iconColor: FamilyAppTheme.primary30,
-                iconSize: 40,
-                circleSize: 80,
-              ),
-              const SizedBox(height: _QrConfirmDialogSpacing.iconToTitle),
-              // Title - using TitleMediumText as per FUN design system
-              TitleMediumText(
-                locals.homeScreenConfirmOrgTitle(organizationName),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: _QrConfirmDialogSpacing.titleToDescription),
-              // Description - using BodyMediumText as per FUN design system
-              BodyMediumText(
-                locals.homeScreenConfirmOrgDescription,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: _QrConfirmDialogSpacing.descriptionToButton),
-              // Primary button - "Yes, confirm"
-              FunButton(
-                onTap: () {
-                  Navigator.of(context).pop();
-                  onConfirm();
-                },
-                text: locals.homeScreenConfirmOrgYes,
-                analyticsEvent: AmplitudeEvents.qrCodeScanned.toEvent(
-                  parameters: {
-                    'goal_name': organizationName,
-                    'confirmed': true,
-                  },
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {
+        if (didPop && !_buttonPressed) {
+          // Only call onCancel if dialog was dismissed via barrier/back button
+          // (not via button press)
+          widget.onCancel();
+        }
+      },
+      child: Theme(
+        data: theme,
+        child: Dialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: _QrConfirmDialogSpacing.contentPadding,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Organization icon - dark green icon on light green circle
+                FunIcon(
+                  iconData: widget.icon ?? FontAwesomeIcons.church,
+                  circleColor: FamilyAppTheme.primary95,
+                  iconColor: FamilyAppTheme.primary30,
+                  iconSize: 40,
+                  circleSize: 80,
                 ),
-              ),
-              const SizedBox(height: _QrConfirmDialogSpacing.betweenButtons),
-              // Secondary button - "Cancel"
-              FunButton.secondary(
-                onTap: () {
-                  Navigator.of(context).pop();
-                  onCancel();
-                },
-                text: locals.cancel,
-                analyticsEvent: AmplitudeEvents.qrCodeScanned.toEvent(
-                  parameters: {
-                    'goal_name': organizationName,
-                    'confirmed': false,
-                  },
+                const SizedBox(height: _QrConfirmDialogSpacing.iconToTitle),
+                // Title - using TitleMediumText as per FUN design system
+                TitleMediumText(
+                  locals.homeScreenConfirmOrgTitle(_formattedOrganizationName),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-            ],
+                const SizedBox(height: _QrConfirmDialogSpacing.titleToDescription),
+                // Description - using BodyMediumText as per FUN design system
+                BodyMediumText(
+                  locals.homeScreenConfirmOrgDescription,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: _QrConfirmDialogSpacing.descriptionToButton),
+                // Primary button - "Yes, confirm"
+                FunButton(
+                  onTap: () {
+                    _buttonPressed = true;
+                    Navigator.of(context).pop();
+                    widget.onConfirm();
+                  },
+                  text: locals.homeScreenConfirmOrgYes,
+                  analyticsEvent: AmplitudeEvents.qrCodeScanned.toEvent(
+                    parameters: {
+                      'goal_name': _formattedOrganizationName,
+                      'confirmed': true,
+                    },
+                  ),
+                ),
+                const SizedBox(height: _QrConfirmDialogSpacing.betweenButtons),
+                // Secondary button - "Cancel"
+                FunButton.secondary(
+                  onTap: () {
+                    _buttonPressed = true;
+                    Navigator.of(context).pop();
+                    widget.onCancel();
+                  },
+                  text: locals.cancel,
+                  analyticsEvent: AmplitudeEvents.qrCodeScanned.toEvent(
+                    parameters: {
+                      'goal_name': _formattedOrganizationName,
+                      'confirmed': false,
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
 

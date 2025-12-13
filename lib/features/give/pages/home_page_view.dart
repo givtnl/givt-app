@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/home_page_qr_flow_handler.dart';
@@ -74,11 +75,22 @@ class _HomePageViewState extends State<HomePageView> {
                       final currentState =
                           widget.giveBloc?.state ?? const GiveState();
 
-                      if (HomePageQRFlowHandler.isQRFlow(
+                      final isQR = HomePageQRFlowHandler.isQRFlow(
                         currentState,
                         widget.code,
                         widget.giveBloc,
-                      )) {
+                      );
+                      
+                      LoggingInfo.instance.info(
+                        'HomePageView: onAmountChanged - '
+                        'isQRFlow: $isQR, '
+                        'status: ${currentState.status}, '
+                        'hasOrg: ${currentState.organisation.mediumId?.isNotEmpty ?? false}, '
+                        'orgName: ${currentState.organisation.organisationName}, '
+                        'code: ${widget.code.isNotEmpty}',
+                      );
+
+                      if (isQR) {
                         await HomePageQRFlowHandler.handleQRFlow(
                           context,
                           widget.giveBloc!,
@@ -90,6 +102,9 @@ class _HomePageViewState extends State<HomePageView> {
                           () => mounted,
                         );
                       } else {
+                        LoggingInfo.instance.info(
+                          'HomePageView: Not QR flow, navigating to select giving way',
+                        );
                         HomePageQRFlowHandler.navigateToSelectGivingWay(
                           context,
                           firstCollection,

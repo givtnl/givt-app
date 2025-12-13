@@ -51,16 +51,21 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   int pageIndex = 0;
   final _key = GlobalKey<ScaffoldState>();
   final AppConfig _appConfig = getIt();
   final MandatePopupDismissalTracker _mandatePopupDismissalTracker =
       MandatePopupDismissalTracker(getIt());
 
+  String? _lastProcessedCode;
+  bool _isAppInBackground = false;
+  int _scanCounter = 0; // Counter to force new bloc creation when rescanning same code
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this); // Add lifecycle observer
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
 
@@ -74,7 +79,65 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+      _isAppInBackground = true;
+      LoggingInfo.instance.info('HomePage: App went to background');
+    } else if (state == AppLifecycleState.resumed && _isAppInBackground) {
+      _isAppInBackground = false;
+      LoggingInfo.instance.info('HomePage: App resumed from background');
+      
+      // If we have a QR code when resuming from background, we should trigger a new scan
+      // This handles both cases: same code rescanned, or new code scanned
+      if (widget.code.isNotEmpty) {
+        LoggingInfo.instance.info(
+          'HomePage: QR code detected after resume (code: ${widget.code}, last: $_lastProcessedCode), incrementing counter',
+        );
+        // Wait a bit for the widget to update with new code from route
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (mounted) {
+            setState(() {
+              _lastProcessedCode = null;
+              _scanCounter++; // Increment counter to force new BlocProvider
+            });
+            LoggingInfo.instance.info(
+              'HomePage: Counter incremented to $_scanCounter for code ${widget.code}',
+            );
+          }
+        });
+      }
+    }
+  }
+
+  @override
+  void didUpdateWidget(HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    
+    // Only increment counter if code actually changed AND we're not coming from background
+    // (background case is handled by didChangeAppLifecycleState)
+    if (widget.code.isNotEmpty && 
+        widget.code != oldWidget.code &&
+        !_isAppInBackground) {
+      LoggingInfo.instance.info(
+        'HomePage: QR code changed from "${oldWidget.code}" to "${widget.code}", triggering new scan',
+      );
+      _lastProcessedCode = widget.code;
+      _scanCounter++; // Increment counter to force new BlocProvider
+      
+      // We need to trigger the scan on the next frame
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // The BlocProvider in the body will handle creating a new GiveBloc
+        // and triggering the scan, so we just need to trigger a rebuild
+        setState(() {});
+      });
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this); // Remove lifecycle observer
     super.dispose();
   }
 
@@ -184,6 +247,7 @@ class _HomePageState extends State<HomePage> {
       drawer: const CustomNavigationDrawer(),
       body: widget.code.isNotEmpty
           ? BlocProvider(
+              key: ValueKey('qr-bloc-${widget.code}-$_scanCounter'), // Use counter for unique key
               create: (_) {
                 final bloc = GiveBloc(
                   getIt(),
@@ -193,6 +257,12 @@ class _HomePageState extends State<HomePage> {
                 );
                 // Trigger QR code scan when code is present
                 WidgetsBinding.instance.addPostFrameCallback((_) {
+                  LoggingInfo.instance.info(
+                    'HomePage: Creating new BlocProvider for code ${widget.code} (counter: $_scanCounter)',
+                  );
+                  // Mark this code as processed
+                  _lastProcessedCode = widget.code;
+                  
                   bloc.add(
                     GiveQRCodeScannedOutOfApp(
                       widget.code,
@@ -204,7 +274,20 @@ class _HomePageState extends State<HomePage> {
                 });
                 return bloc;
               },
-              child: HomePageWithQRCode(
+              child: BlocListener<GiveBloc, GiveState>(
+                listener: (context, state) {
+                  // Reset last processed code when state goes back to initial
+                  // This allows scanning the same QR code again after canceling
+                  if (state.status == GiveStatus.initial) {
+                    // Don't increment counter here - we only want to increment
+                    // when app resumes from background with same code
+                    _lastProcessedCode = null;
+                    LoggingInfo.instance.info(
+                      'HomePage: GiveBloc reset to initial, clearing last processed code',
+                    );
+                  }
+                },
+                child: HomePageWithQRCode(
                 initialAmount: widget.initialAmount,
                 given: widget.given,
                 retry: widget.retry,
@@ -216,6 +299,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 auth: auth,
+              ),
               ),
             )
           : MultiBlocListener(

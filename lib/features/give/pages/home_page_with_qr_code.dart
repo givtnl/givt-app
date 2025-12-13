@@ -42,44 +42,123 @@ class HomePageWithQRCode extends StatefulWidget {
 
 class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
   bool _qrConfirmed = false;
+  bool _isShowingDialog = false;
+  String? _confirmedOrgName; // Store organisation name when confirmed
+  String? _confirmedInstanceName; // Store instance name when confirmed
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
         BlocListener<GiveBloc, GiveState>(
+          listenWhen: (previous, current) {
+            // Listen to status changes and readyToGive status
+            return previous.status != current.status ||
+                previous.organisation != current.organisation;
+          },
           listener: (context, state) {
+            // Reset flags when state goes back to initial (e.g., after cancel)
+            if (state.status == GiveStatus.initial) {
+              setState(() {
+                _qrConfirmed = false;
+                _isShowingDialog = false;
+                _confirmedOrgName = null;
+                _confirmedInstanceName = null;
+              });
+              return;
+            }
+            
             // Show confirmation dialog when QR code is ready to confirm
-            if (state.status == GiveStatus.readyToConfirm && !_qrConfirmed) {
+            if (state.status == GiveStatus.readyToConfirm && 
+                !_qrConfirmed && 
+                !_isShowingDialog) {
               final orgName = state.organisation.organisationName ?? '';
+              
+              LoggingInfo.instance.info(
+                'BlocListener triggered - status: ${state.status}, '
+                'orgName: $orgName, '
+                'mediumId: ${state.organisation.mediumId}, '
+                '_qrConfirmed: $_qrConfirmed, '
+                '_isShowingDialog: $_isShowingDialog',
+              );
+              
               if (orgName.isNotEmpty) {
+                // Prevent multiple dialogs from being shown
+                _isShowingDialog = true;
+                
                 // Get the icon for the organisation type asynchronously
                 final mediumId = state.organisation.mediumId ?? '';
-                _getOrganisationIcon(mediumId).then((iconData) {
-                  if (mounted && state.status == GiveStatus.readyToConfirm) {
-                    QrConfirmOrgDialog.show(
-                      context,
-                      organizationName: orgName,
-                      icon: iconData,
-                      onConfirm: () {
-                        setState(() {
-                          _qrConfirmed = true;
-                        });
-                        // Skip submission - we'll submit when user clicks Next
-                        context.read<GiveBloc>().add(
-                          const GiveConfirmQRCodeScannedOutOfApp(
-                            skipSubmission: true,
-                          ),
+                final giveBloc = context.read<GiveBloc>();
+                
+                // Show dialog with timeout to prevent hanging
+                _getOrganisationIcon(mediumId)
+                    .timeout(
+                      const Duration(seconds: 3),
+                      onTimeout: () {
+                        LoggingInfo.instance.warning(
+                          'Icon fetch timed out, using default icon',
                         );
+                        return FontAwesomeIcons.church;
                       },
-                      onCancel: () {
-                        // Just close the dialog, user stays on home page
-                        // Reset the QR code state
-                        context.read<GiveBloc>().add(const GiveReset());
-                      },
-                    );
-                  }
-                });
+                    )
+                    .then((iconData) {
+                      if (!mounted) {
+                        _isShowingDialog = false;
+                        return;
+                      }
+                      
+                      // Get current state from bloc to ensure it's still readyToConfirm
+                      final currentState = giveBloc.state;
+                      if (currentState.status == GiveStatus.readyToConfirm && 
+                          !_qrConfirmed) {
+                        // Use addPostFrameCallback to ensure dialog is shown after build completes
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          if (!mounted) {
+                            _isShowingDialog = false;
+                            return;
+                          }
+                          
+                          final instanceName = giveBloc.state.instanceName;
+                          _showQrConfirmDialog(
+                            context,
+                            orgName: orgName,
+                            iconData: iconData,
+                            giveBloc: giveBloc,
+                            instanceName: instanceName,
+                          );
+                        });
+                      } else {
+                        _isShowingDialog = false;
+                      }
+                    })
+                    .catchError((Object error) {
+                      LoggingInfo.instance.error(
+                        'Error getting organisation icon: $error',
+                      );
+                      // Still show dialog with default icon even if fetch fails
+                      if (mounted) {
+                        final currentState = giveBloc.state;
+                        if (currentState.status == GiveStatus.readyToConfirm && 
+                            !_qrConfirmed) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (!mounted) {
+                              _isShowingDialog = false;
+                              return;
+                            }
+                            final instanceName = giveBloc.state.instanceName;
+                            _showQrConfirmDialog(
+                              context,
+                              orgName: orgName,
+                              iconData: FontAwesomeIcons.church,
+                              giveBloc: giveBloc,
+                              instanceName: instanceName,
+                            );
+                          });
+                        } else {
+                          _isShowingDialog = false;
+                        }
+                      }
+                    });
               }
             }
 
@@ -130,29 +209,61 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
                     screenWidth >=
                     360; // Hide on very small screens like iPhone SE
 
-                if (state.status == GiveStatus.readyToGive &&
-                    _qrConfirmed &&
-                    isNotSmallScreen) {
-                  final orgName = state.organisation.organisationName ?? '';
-                  if (orgName.isNotEmpty) {
-                    // Get the icon for the organisation type asynchronously
-                    final mediumId = state.organisation.mediumId ?? '';
-                    qrConfirmWidget = FutureBuilder<IconData>(
-                      future: _getOrganisationIcon(mediumId),
-                      builder: (context, snapshot) {
-                        final iconData =
-                            snapshot.data ?? FontAwesomeIcons.church;
-                        return FunSnackbarWidget(
-                          extraText: context.l10n.homeScreenChosenOrg(orgName),
-                          icon: FaIcon(
-                            iconData,
-                            color: FamilyAppTheme.secondary30,
-                            size: 20,
-                          ),
-                        );
-                      },
-                    );
-                  }
+                // Show snackbar when QR is confirmed and we have an organisation
+                // Use stored organisation name if state doesn't have it (fallback)
+                // Check for both null and empty string
+                final stateOrgName = state.organisation.organisationName;
+                final orgName = (stateOrgName != null && stateOrgName.isNotEmpty)
+                    ? stateOrgName
+                    : (_confirmedOrgName ?? '');
+                final stateInstanceName = state.instanceName;
+                final instanceName = stateInstanceName.isNotEmpty 
+                    ? stateInstanceName 
+                    : (_confirmedInstanceName ?? '');
+                
+                final shouldShowSnackbar = _qrConfirmed &&
+                    isNotSmallScreen &&
+                    orgName.isNotEmpty;
+
+                // Debug logging
+                if (_qrConfirmed) {
+                  LoggingInfo.instance.info(
+                    'QR confirmed - shouldShowSnackbar: $shouldShowSnackbar, '
+                    'isNotSmallScreen: $isNotSmallScreen, '
+                    'orgName from state: ${state.organisation.organisationName}, '
+                    'orgName stored: $_confirmedOrgName, '
+                    'orgName final: $orgName, '
+                    'status: ${state.status}',
+                  );
+                }
+
+                if (shouldShowSnackbar) {
+                  // Format organization name with instance name if available
+                  final formattedOrgName = instanceName.isNotEmpty && 
+                          instanceName != orgName
+                      ? '$orgName: $instanceName'
+                      : orgName;
+                  
+                  // Get the icon for the organisation type asynchronously
+                  // Use mediumId from state, or try to get it from the confirmed state
+                  final mediumId = state.organisation.mediumId?.isNotEmpty == true
+                      ? state.organisation.mediumId!
+                      : '';
+                  qrConfirmWidget = FutureBuilder<IconData>(
+                    future: _getOrganisationIcon(mediumId),
+                    builder: (context, snapshot) {
+                      final iconData =
+                          snapshot.data ?? FontAwesomeIcons.church;
+                      return FunSnackbarWidget(
+                        extraText: context.l10n.homeScreenChosenOrg(formattedOrgName),
+                        icon: FaIcon(
+                          iconData,
+                          color: FamilyAppTheme.secondary30,
+                          size: 20,
+                        ),
+                      );
+                    },
+                  );
                 }
 
                 return HomePageView(
@@ -170,6 +281,53 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
           );
         },
       ),
+    );
+  }
+
+  /// Shows the QR confirmation dialog
+  void _showQrConfirmDialog(
+    BuildContext context, {
+    required String orgName,
+    required IconData iconData,
+    required GiveBloc giveBloc,
+    String? instanceName,
+  }) {
+    QrConfirmOrgDialog.show(
+      context,
+      organizationName: orgName,
+      icon: iconData,
+      instanceName: instanceName,
+      onConfirm: () {
+        // Store organisation name before state might change
+        final currentState = giveBloc.state;
+        
+        LoggingInfo.instance.info(
+          'About to confirm QR - orgName: ${currentState.organisation.organisationName}, '
+          'mediumId: ${currentState.organisation.mediumId}, '
+          'status: ${currentState.status}',
+        );
+        
+        setState(() {
+          _qrConfirmed = true;
+          _isShowingDialog = false;
+          _confirmedOrgName = currentState.organisation.organisationName;
+          _confirmedInstanceName = currentState.instanceName;
+        });
+        // Skip submission - we'll submit when user clicks Next
+        giveBloc.add(
+          const GiveConfirmQRCodeScannedOutOfApp(
+            skipSubmission: true,
+          ),
+        );
+      },
+      onCancel: () {
+        setState(() {
+          _isShowingDialog = false;
+        });
+        // Just close the dialog, user stays on home page
+        // Reset the QR code state
+        giveBloc.add(const GiveReset());
+      },
     );
   }
 
