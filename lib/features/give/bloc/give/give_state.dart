@@ -26,6 +26,7 @@ class GiveState extends Equatable {
     this.instanceName = '',
     this.afterGivingRedirection = '',
     this.transactionIds = const [],
+    this.userGUID = '',
   });
 
   final GiveStatus status;
@@ -37,6 +38,7 @@ class GiveState extends Equatable {
   final String instanceName;
   final String afterGivingRedirection;
   final List<int> transactionIds;
+  final String userGUID;
 
   GiveState copyWith({
     GiveStatus? status,
@@ -51,6 +53,7 @@ class GiveState extends Equatable {
     String? afterGivingRedirection,
     List<GivtTransaction>? givtTransactions,
     List<int>? transactionIds,
+    String? userGUID,
   }) {
     return GiveState(
       status: status ?? this.status,
@@ -67,6 +70,7 @@ class GiveState extends Equatable {
       ],
       givtTransactions: givtTransactions ?? this.givtTransactions,
       transactionIds: transactionIds ?? this.transactionIds,
+      userGUID: userGUID ?? this.userGUID,
     );
   }
 
@@ -81,5 +85,6 @@ class GiveState extends Equatable {
         instanceName,
         afterGivingRedirection,
         transactionIds,
+        userGUID,
       ];
 }

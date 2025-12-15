@@ -159,21 +159,19 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       if (state.organisation.mediumId != null &&
           state.organisation.mediumId!.isNotEmpty) {
         final mediumId = state.organisation.mediumId!;
-        // Get userGUID from existing transactions or from the organisation
-        String userGUID;
-        if (state.givtTransactions.isNotEmpty) {
-          userGUID = state.givtTransactions.first.guid;
-        } else {
-          // If no transactions yet, we need to get userGUID from somewhere
-          // This shouldn't normally happen, but can occur if state was reset
-          // We'll need to get it from the event or state - for now, use empty and handle in caller
-          log('Warning: No existing transactions to get userGUID from');
-          userGUID = ''; // Will be handled below
-        }
+        // Get userGUID from state (stored during QR scan)
+        final userGUID = state.userGUID;
         
+        LoggingInfo.instance.info(
+          'Amount changed - retrieved userGUID from state: $userGUID',
+        );
+
         if (userGUID.isEmpty) {
           // If no userGUID, we can't create transactions - emit success to fall back to normal flow
-          log('Warning: Cannot create transactions without userGUID. Falling back to normal flow.');
+          LoggingInfo.instance.warning(
+            'Cannot create transactions without userGUID. Falling back to normal flow. '
+            'status: ${state.status}',
+          );
           emit(
             state.copyWith(
               status: GiveStatus.success,
@@ -221,9 +219,16 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         LoggingInfo.instance.info(
           'Amount changed in QR flow - orgName: ${currentOrganisation.organisationName}, '
           'mediumId: ${currentOrganisation.mediumId}, '
-          'transactions: ${transactionList.length}',
+          'transactions: ${transactionList.length}, '
+          'newStatus: readyToGive',
         );
       } else {
+        LoggingInfo.instance.info(
+          'Amount changed in NORMAL flow - mediumId: ${state.organisation.mediumId}, '
+          'hasOrg: ${state.organisation.mediumId?.isNotEmpty ?? false}, '
+          'status: ${state.status}, '
+          'newStatus: success',
+        );
         emit(
           state.copyWith(
             status: GiveStatus.success,
@@ -531,7 +536,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       LoggingInfo.instance.info(
         'QR Code scanned - orgName: ${organisation.organisationName}, '
         'mediumId: ${organisation.mediumId}, '
-        'instanceName: $currentInstanceName',
+        'instanceName: $currentInstanceName, '
+        'transactionsCreated: ${transactionList.length}, '
+        'userGUID: ${event.userGUID}',
       );
 
       emit(
@@ -541,6 +548,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           givtTransactions: transactionList,
           instanceName: currentInstanceName, // Preserve instanceName
           afterGivingRedirection: event.afterGivingRedirection,
+          userGUID: event.userGUID, // Store userGUID for later use in amount changes
         ),
       );
     } catch (e, stackTrace) {
@@ -589,16 +597,20 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         givtTransactions: currentTransactions, // Preserve transactions
         instanceName: currentInstanceName, // Preserve instance name
         afterGivingRedirection: currentAfterGivingRedirection, // Preserve redirect
+        // userGUID is already in state, no need to set it again
       );
-      
+
       emit(newState);
-      
+
       LoggingInfo.instance.info(
         'QR confirmed with skipSubmission - '
         'captured orgName: ${currentOrganisation.organisationName}, '
         'captured mediumId: ${currentOrganisation.mediumId}, '
         'emitted orgName: ${newState.organisation.organisationName}, '
         'emitted mediumId: ${newState.organisation.mediumId}, '
+        'hasTransactions: ${currentTransactions.isNotEmpty}, '
+        'transactionCount: ${currentTransactions.length}, '
+        'userGUID: ${newState.userGUID}, '
         'status: readyToGive',
       );
       return;

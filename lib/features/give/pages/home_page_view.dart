@@ -87,7 +87,11 @@ class _HomePageViewState extends State<HomePageView> {
                         'status: ${currentState.status}, '
                         'hasOrg: ${currentState.organisation.mediumId?.isNotEmpty ?? false}, '
                         'orgName: ${currentState.organisation.organisationName}, '
-                        'code: ${widget.code.isNotEmpty}',
+                        'mediumId: ${currentState.organisation.mediumId}, '
+                        'code: ${widget.code.isNotEmpty}, '
+                        'codeValue: ${widget.code}, '
+                        'hasTransactions: ${currentState.givtTransactions.isNotEmpty}, '
+                        'transactionCount: ${currentState.givtTransactions.length}',
                       );
 
                       if (isQR) {
