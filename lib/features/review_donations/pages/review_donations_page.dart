@@ -80,6 +80,7 @@ class _ReviewDonationsPageState extends State<ReviewDonationsPage> {
     final businessDays = _getBusinessDays(user.country);
 
     return FunScaffold(
+      canPop: false,
       minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
       appBar: FunTopAppBar.white(
         title: locals.reviewDonationsTitle,

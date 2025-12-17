@@ -93,6 +93,22 @@ class _ChooseAmountState extends State<ChooseAmount> {
   }
 
   @override
+  void didUpdateWidget(ChooseAmount oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialAmount != oldWidget.initialAmount &&
+        widget.initialAmount != null) {
+      final amount = widget.initialAmount!;
+      var initialAmountText = '';
+      if (amount == amount.roundToDouble()) {
+        initialAmountText = amount.toInt().toString();
+      } else {
+        initialAmountText = amount.toStringAsFixed(2).replaceAll('.', _comma);
+      }
+      controllers[0].text = initialAmountText;
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     for (var index = 0; index < controllers.length; index++) {
@@ -268,7 +284,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
               // QR confirmation widget above Next button
               if (widget.qrConfirmWidget != null) ...[
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 8,
+                  ),
                   child: widget.qrConfirmWidget,
                 ),
               ],

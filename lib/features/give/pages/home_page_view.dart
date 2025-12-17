@@ -62,7 +62,9 @@ class _HomePageViewState extends State<HomePageView> {
             onPageChanged: onPageChanged,
             children: [
               ChooseAmount(
-                initialAmount: widget.initialAmount,
+                initialAmount: (widget.giveBloc?.state.collections[0] ?? 0) > 0
+                    ? widget.giveBloc!.state.collections[0]
+                    : (widget.code.isEmpty ? widget.initialAmount : null),
                 country: Country.fromCode(auth.user.country),
                 amountLimit: auth.user.amountLimit,
                 hasGiven: widget.given,
@@ -70,55 +72,54 @@ class _HomePageViewState extends State<HomePageView> {
                 arePresetsEnabled: auth.presets.isEnabled,
                 presets: auth.presets.presets,
                 qrConfirmWidget: widget.qrConfirmWidget,
-                onAmountChanged:
-                    (firstCollection, secondCollection, thirdCollection) async {
-                      final currentState =
-                          widget.giveBloc?.state ?? const GiveState();
+                onAmountChanged: (firstCollection, secondCollection, thirdCollection) async {
+                  final currentState =
+                      widget.giveBloc?.state ?? const GiveState();
 
-                      final isQR = HomePageQRFlowHandler.isQRFlow(
-                        currentState,
-                        widget.code,
-                        widget.giveBloc,
-                      );
-                      
-                      LoggingInfo.instance.info(
-                        'HomePageView: onAmountChanged - '
-                        'isQRFlow: $isQR, '
-                        'status: ${currentState.status}, '
-                        'hasOrg: ${currentState.organisation.mediumId?.isNotEmpty ?? false}, '
-                        'orgName: ${currentState.organisation.organisationName}, '
-                        'mediumId: ${currentState.organisation.mediumId}, '
-                        'code: ${widget.code.isNotEmpty}, '
-                        'codeValue: ${widget.code}, '
-                        'hasTransactions: ${currentState.givtTransactions.isNotEmpty}, '
-                        'transactionCount: ${currentState.givtTransactions.length}',
-                      );
+                  final isQR = HomePageQRFlowHandler.isQRFlow(
+                    currentState,
+                    widget.code,
+                    widget.giveBloc,
+                  );
 
-                      if (isQR) {
-                        await HomePageQRFlowHandler.handleQRFlow(
-                          context,
-                          widget.giveBloc!,
-                          firstCollection,
-                          secondCollection,
-                          thirdCollection,
-                          widget.code,
-                          widget.afterGivingRedirection,
-                          () => mounted,
-                        );
-                      } else {
-                        LoggingInfo.instance.info(
-                          'HomePageView: Not QR flow, navigating to select giving way',
-                        );
-                        HomePageQRFlowHandler.navigateToSelectGivingWay(
-                          context,
-                          firstCollection,
-                          secondCollection,
-                          thirdCollection,
-                          widget.code,
-                          widget.afterGivingRedirection,
-                        );
-                      }
-                    },
+                  LoggingInfo.instance.info(
+                    'HomePageView: onAmountChanged - '
+                    'isQRFlow: $isQR, '
+                    'status: ${currentState.status}, '
+                    'hasOrg: ${currentState.organisation.mediumId?.isNotEmpty ?? false}, '
+                    'orgName: ${currentState.organisation.organisationName}, '
+                    'mediumId: ${currentState.organisation.mediumId}, '
+                    'code: ${widget.code.isNotEmpty}, '
+                    'codeValue: ${widget.code}, '
+                    'hasTransactions: ${currentState.givtTransactions.isNotEmpty}, '
+                    'transactionCount: ${currentState.givtTransactions.length}',
+                  );
+
+                  if (isQR) {
+                    await HomePageQRFlowHandler.handleQRFlow(
+                      context,
+                      widget.giveBloc!,
+                      firstCollection,
+                      secondCollection,
+                      thirdCollection,
+                      widget.code,
+                      widget.afterGivingRedirection,
+                      () => mounted,
+                    );
+                  } else {
+                    LoggingInfo.instance.info(
+                      'HomePageView: Not QR flow, navigating to select giving way',
+                    );
+                    HomePageQRFlowHandler.navigateToSelectGivingWay(
+                      context,
+                      firstCollection,
+                      secondCollection,
+                      thirdCollection,
+                      widget.code,
+                      widget.afterGivingRedirection,
+                    );
+                  }
+                },
               ),
               const ChooseCategory(),
             ],

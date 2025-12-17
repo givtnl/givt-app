@@ -43,6 +43,7 @@ class DonationsProcessedSuccessPage extends StatelessWidget {
     );
 
     return FunScaffold(
+      canPop: false,
       body: Column(
         children: [
           Expanded(
