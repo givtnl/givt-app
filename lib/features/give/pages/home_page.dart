@@ -255,8 +255,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       body: widget.code.isNotEmpty
           ? BlocProvider(
               key: ValueKey(
-                'qr-bloc-${widget.code}-$_scanCounter',
-              ), // Use counter for unique key
+                'qr-bloc-${widget.code}-$_scanCounter-${auth.status}',
+              ), // Use counter and status for unique key
               create: (_) {
                 final bloc = GiveBloc(
                   getIt(),
@@ -264,23 +264,29 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   getIt(),
                   getIt(),
                 );
-                // Trigger QR code scan when code is present
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  LoggingInfo.instance.info(
-                    'HomePage: Creating new BlocProvider for code ${widget.code} (counter: $_scanCounter)',
-                  );
-                  // Mark this code as processed
-                  _lastProcessedCode = widget.code;
+                // Trigger QR code scan when code is present and user is authenticated
+                if (auth.status == AuthStatus.authenticated) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    LoggingInfo.instance.info(
+                      'HomePage: Creating new BlocProvider for code ${widget.code} (counter: $_scanCounter, status: ${auth.status})',
+                    );
+                    // Mark this code as processed
+                    _lastProcessedCode = widget.code;
 
-                  bloc.add(
-                    GiveQRCodeScannedOutOfApp(
-                      widget.code,
-                      widget.afterGivingRedirection,
-                      auth.user.guid,
-                      amount: widget.initialAmount?.toString() ?? '',
-                    ),
+                    bloc.add(
+                      GiveQRCodeScannedOutOfApp(
+                        widget.code,
+                        widget.afterGivingRedirection,
+                        auth.user.guid,
+                        amount: widget.initialAmount?.toString() ?? '',
+                      ),
+                    );
+                  });
+                } else {
+                  LoggingInfo.instance.info(
+                    'HomePage: BlocProvider created but waiting for authentication (status: ${auth.status})',
                   );
-                });
+                }
                 return bloc;
               },
               child: BlocListener<GiveBloc, GiveState>(
