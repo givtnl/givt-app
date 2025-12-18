@@ -116,7 +116,16 @@ class GiveQRCodeScannedOutOfApp extends GiveEvent {
 }
 
 class GiveConfirmQRCodeScannedOutOfApp extends GiveEvent {
-  const GiveConfirmQRCodeScannedOutOfApp();
+  const GiveConfirmQRCodeScannedOutOfApp({this.skipSubmission = false});
+
+  final bool skipSubmission;
+
+  @override
+  List<Object> get props => [skipSubmission];
+}
+
+class GiveSubmitTransactions extends GiveEvent {
+  const GiveSubmitTransactions();
 
   @override
   List<Object> get props => [];

@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/models/preset.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -29,6 +32,7 @@ class ChooseAmount extends StatefulWidget {
     required this.arePresetsEnabled,
     required this.presets,
     this.showAddCollectionButton = true,
+    this.qrConfirmWidget,
     super.key,
   });
 
@@ -41,6 +45,7 @@ class ChooseAmount extends StatefulWidget {
   final bool showAddCollectionButton;
   final List<Preset> presets;
   final ChooseAmountNextCallback onAmountChanged;
+  final Widget? qrConfirmWidget;
 
   @override
   State<ChooseAmount> createState() => _ChooseAmountState();
@@ -85,6 +90,22 @@ class _ChooseAmountState extends State<ChooseAmount> {
       TextEditingController(text: '0'),
       TextEditingController(text: '0'),
     ];
+  }
+
+  @override
+  void didUpdateWidget(ChooseAmount oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialAmount != oldWidget.initialAmount &&
+        widget.initialAmount != null) {
+      final amount = widget.initialAmount!;
+      var initialAmountText = '';
+      if (amount == amount.roundToDouble()) {
+        initialAmountText = amount.toInt().toString();
+      } else {
+        initialAmountText = amount.toStringAsFixed(2).replaceAll('.', _comma);
+      }
+      controllers[0].text = initialAmountText;
+    }
   }
 
   @override
@@ -260,8 +281,19 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   ),
                 ),
               ),
+              // QR confirmation widget above Next button
+              if (widget.qrConfirmWidget != null) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 8,
+                  ),
+                  child: widget.qrConfirmWidget,
+                ),
+              ],
               _buildNextButton(
                 label: locals.next,
+                isEnabled: isEnabled,
                 onPressed: isEnabled
                     ? () async {
                         final areAmountsValid = await _checkAmounts(
@@ -490,23 +522,25 @@ class _ChooseAmountState extends State<ChooseAmount> {
     });
   }
 
-  Padding _buildNextButton({
+  Widget _buildNextButton({
     required String label,
     VoidCallback? onPressed,
+    bool isEnabled = true,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      child: ElevatedButton.icon(
-        onPressed: onPressed,
-        label: const Icon(Icons.arrow_forward_ios_outlined),
-        icon: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Text(label),
-        ),
-        style: ElevatedButton.styleFrom(
-          disabledForegroundColor: Colors.white,
-          disabledBackgroundColor: Colors.black12,
-          minimumSize: const Size(50, 40),
+      padding: const EdgeInsets.fromLTRB(0, 4, 8, 8),
+      child: FunButton(
+        onTap: onPressed,
+        isDisabled: !isEnabled,
+        text: label,
+        size: FunButtonSize.small,
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.continueClicked,
+          parameters: {
+            'Collection 1': controllers[0].text,
+            'Collection 2': controllers[1].text,
+            'Collection 3': controllers[2].text,
+          },
         ),
       ),
     );

@@ -8,6 +8,7 @@ class BottomSheetLayout extends StatelessWidget {
     this.bottomSheet,
     this.backgroundColor,
     this.backButtonColor,
+    this.showBackButton = true,
     super.key,
   });
 
@@ -17,6 +18,7 @@ class BottomSheetLayout extends StatelessWidget {
   final VoidCallback? onBackPressed;
   final Color? backgroundColor;
   final Color? backButtonColor;
+  final bool showBackButton;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +31,13 @@ class BottomSheetLayout extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: title,
-            leading: BackButton(
-              onPressed: onBackPressed,
-              color: backButtonColor,
-            ),
+            automaticallyImplyLeading: showBackButton,
+            leading: showBackButton
+                ? BackButton(
+                    onPressed: onBackPressed,
+                    color: backButtonColor,
+                  )
+                : null,
             backgroundColor: backgroundColor ?? Colors.transparent,
           ),
           bottomSheet: bottomSheet,

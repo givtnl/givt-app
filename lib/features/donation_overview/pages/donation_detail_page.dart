@@ -15,6 +15,7 @@ import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
 import 'package:givt_app/features/donation_overview/repositories/donation_overview_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/fun_snackbar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -47,6 +48,16 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
   void initState() {
     super.initState();
     _tooltipController = TooltipController();
+  }
+
+  bool _shouldShowProcessingTimeSnackbar(DonationStatusType statusType) {
+    return statusType == DonationStatusType.inProcess;
+  }
+
+  String _getProcessingTimeText(BuildContext context, Country country) {
+    return country.isBACS
+        ? context.l10n.donationOverviewProcessingTime10Days
+        : context.l10n.donationOverviewProcessingTime3Days;
   }
 
   @override
@@ -128,7 +139,21 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
               _getStatusText(context, status.type),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
+
+            // Processing time snackbar (for inProcess status)
+            if (_shouldShowProcessingTimeSnackbar(status.type)) ...[
+              FunSnackbarWidget(
+                title: context.l10n.donationOverviewProcessingTimeTitle,
+                extraText: _getProcessingTimeText(
+                  context,
+                  Country.fromCode(country),
+                ),
+                icon: const CircleCheckIcon(),
+                variant: FunSnackbarVariant.success,
+              ),
+              const SizedBox(height: 8),
+            ],
 
             // Transaction details
             Column(
@@ -162,7 +187,6 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                     currencySymbol,
                     country,
                   ),
-
 
                 // Date
                 if (widget.donationGroup.timeStamp != null)
@@ -238,24 +262,28 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
   bool _shouldShowGiftAid() {
     // Show Gift Aid if any donation in the group has Gift Aid enabled
     // and the donation status allows for Gift Aid calculation
-    return widget.donationGroup.donations.any((donation) =>
-        donation.isGiftAidEnabled &&
-        donation.taxYear != 0 &&
-        (donation.status.type == DonationStatusType.completed ||
-            donation.status.type == DonationStatusType.created ||
-            donation.status.type == DonationStatusType.inProcess));
+    return widget.donationGroup.donations.any(
+      (donation) =>
+          donation.isGiftAidEnabled &&
+          donation.taxYear != 0 &&
+          (donation.status.type == DonationStatusType.completed ||
+              donation.status.type == DonationStatusType.created ||
+              donation.status.type == DonationStatusType.inProcess),
+    );
   }
 
   double _calculateGiftAidAmount() {
     // Calculate full amount for Gift Aid enabled donations
     // Following the same business rules as in donation overview
     return widget.donationGroup.donations
-        .where((d) =>
-            d.isGiftAidEnabled &&
-            d.taxYear != 0 &&
-            (d.status.type == DonationStatusType.completed ||
-                d.status.type == DonationStatusType.created ||
-                d.status.type == DonationStatusType.inProcess))
+        .where(
+          (d) =>
+              d.isGiftAidEnabled &&
+              d.taxYear != 0 &&
+              (d.status.type == DonationStatusType.completed ||
+                  d.status.type == DonationStatusType.created ||
+                  d.status.type == DonationStatusType.inProcess),
+        )
         .fold<double>(0.0, (sum, d) => sum + d.amount);
   }
 
@@ -266,7 +294,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
     String country,
   ) {
     final giftAidAmount = _calculateGiftAidAmount();
-    
+
     return Column(
       children: [
         Padding(
@@ -451,14 +479,14 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
     if (donations.length == 1) {
       return donations.first.id.toString();
     }
-    
+
     return donations.map((d) => '#${d.id}').join(', ');
   }
 
   List<int> _getPlatformFeeIds() {
     final seenIds = <int>{};
     final platformFeeIds = <int>[];
-    
+
     for (final donation in widget.donationGroup.donations) {
       final id = donation.platformFeeTransactionId;
       if (id != null && !seenIds.contains(id)) {
@@ -466,7 +494,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
         seenIds.add(id);
       }
     }
-    
+
     return platformFeeIds;
   }
 
@@ -475,18 +503,20 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
     if (platformFeeIds.isEmpty) {
       return '';
     }
-    
+
     return platformFeeIds.map((id) => '#$id').join(', ');
   }
 
   String _formatAllIds() {
-    final transactionIds = widget.donationGroup.donations.map((d) => '#${d.id}').join(', ');
+    final transactionIds = widget.donationGroup.donations
+        .map((d) => '#${d.id}')
+        .join(', ');
     final platformFeeIds = _formatPlatformFeeIds();
-    
+
     if (platformFeeIds.isEmpty) {
       return transactionIds;
     }
-    
+
     return '$transactionIds, $platformFeeIds';
   }
 
@@ -496,21 +526,22 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
     String platformFeeIds,
     String status,
   ) {
-    final allIds = platformFeeIds.isNotEmpty 
+    final allIds = platformFeeIds.isNotEmpty
         ? '$transactionIds, $platformFeeIds'
         : transactionIds;
-    
+
     // Build metadata with transaction info
     final metadata = {
       'transaction id(s)': allIds,
       'status': status,
     };
-    
+
     AboutGivtBottomSheet.show(
       context,
-      initialMessage: context.l10n
-          .donationOverviewContactMessage
-          .replaceAll(r'\n', '\n'),
+      initialMessage: context.l10n.donationOverviewContactMessage.replaceAll(
+        r'\n',
+        '\n',
+      ),
       metadata: metadata,
     );
   }

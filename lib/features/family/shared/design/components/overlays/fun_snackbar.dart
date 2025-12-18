@@ -1,7 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+
+/// Variant types for the snackbar
+enum FunSnackbarVariant {
+  /// Info variant with secondary colors
+  info,
+  /// Success variant with primary colors
+  success,
+}
 
 /// This is a class that is used to display a snackbar as (temporary) overlay.
 class FunSnackbar {
@@ -10,8 +19,10 @@ class FunSnackbar {
 
   static void show(
     BuildContext context, {
-    required String message,
+    String? title,
+    String? extraText,
     Widget? icon,
+    FunSnackbarVariant variant = FunSnackbarVariant.info,
     Duration duration = const Duration(milliseconds: 5000),
   }) {
     _removeCurrent();
@@ -23,8 +34,10 @@ class FunSnackbar {
         right: 24,
         bottom: 32 + MediaQuery.of(context).viewInsets.bottom + 80,
         child: _FunSnackbarContent(
-          message: message,
+          title: title,
+          extraText: extraText,
           icon: icon,
+          variant: variant,
         ),
       ),
     );
@@ -49,28 +62,59 @@ class FunSnackbar {
 /// This is a widget that is used to display a snackbar as static widget.
 class FunSnackbarWidget extends StatelessWidget {
   const FunSnackbarWidget({
-    required this.message,
+    this.title,
+    this.extraText,
     this.icon,
+    this.variant = FunSnackbarVariant.info,
     super.key,
   });
 
-  final String message;
+  final String? title;
+  final String? extraText;
   final Widget? icon;
+  final FunSnackbarVariant variant;
 
   @override
   Widget build(BuildContext context) {
-    return _FunSnackbarContent(message: message, icon: icon);
+    return _FunSnackbarContent(
+      title: title,
+      extraText: extraText,
+      icon: icon,
+      variant: variant,
+    );
   }
 }
 
 class _FunSnackbarContent extends StatelessWidget {
   const _FunSnackbarContent({
-    required this.message,
+    this.title,
+    this.extraText,
     this.icon,
+    this.variant = FunSnackbarVariant.info,
   });
 
-  final String message;
+  final String? title;
+  final String? extraText;
   final Widget? icon;
+  final FunSnackbarVariant variant;
+
+  Color get _backgroundColor {
+    switch (variant) {
+      case FunSnackbarVariant.info:
+        return FamilyAppTheme.secondary95;
+      case FunSnackbarVariant.success:
+        return FamilyAppTheme.primary95;
+    }
+  }
+
+  Color get _textColor {
+    switch (variant) {
+      case FunSnackbarVariant.info:
+        return FamilyAppTheme.secondary30;
+      case FunSnackbarVariant.success:
+        return FamilyAppTheme.primary30;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +129,7 @@ class _FunSnackbarContent extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             decoration: BoxDecoration(
-              color: FamilyAppTheme.secondary95,
+              color: _backgroundColor,
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
@@ -103,11 +147,55 @@ class _FunSnackbarContent extends StatelessWidget {
                   const SizedBox(width: 12),
                 ],
                 Expanded(
-                  child: LabelMediumText.secondary30(message),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (title != null)
+                        LabelMediumText(
+                          title!,
+                          color: _textColor,
+                        ),
+                      if (extraText != null)
+                        BodySmallText(
+                          extraText!,
+                          color: _textColor,
+                        ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Helper widget to create a circle-check icon for success snackbars
+class CircleCheckIcon extends StatelessWidget {
+  const CircleCheckIcon({
+    super.key,
+    this.size = 24,
+  });
+
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: FamilyAppTheme.primary50,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: FaIcon(
+          FontAwesomeIcons.check,
+          size: size * 0.5,
+          color: Colors.white,
         ),
       ),
     );

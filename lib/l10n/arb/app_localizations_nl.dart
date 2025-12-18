@@ -1833,7 +1833,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get setupFamilyAddNextMember => 'Add next member';
 
   @override
-  String get homescreenFamilyWelcome => 'Welcome, super family!';
+  String get homescreenFamilyWelcome => 'Welcome to Givt4Kids';
 
   @override
   String get homescreenFamilyGenerosity => 'Let\'s foster generosity together';
@@ -2441,4 +2441,47 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get platformContributionSaveChangesModalNoButton => 'Nee, negeren';
+
+  @override
+  String homeScreenConfirmOrgTitle(Object org) {
+    return 'Steun $org';
+  }
+
+  @override
+  String get homeScreenConfirmOrgDescription =>
+      'Is dit de organisatie waaraan je wilt geven?';
+
+  @override
+  String get homeScreenConfirmOrgYes => 'Ja, bevestigen';
+
+  @override
+  String homeScreenChosenOrg(Object org) {
+    return 'Geweldig! Je geeft aan $org';
+  }
+
+  @override
+  String get donationOverviewProcessingTimeTitle => 'Je gift is verwerkt.';
+
+  @override
+  String get donationOverviewProcessingTime3Days =>
+      'Het duurt doorgaans 2-3 werkdagen totdat dit bedrag van je rekening is afgeschreven.';
+
+  @override
+  String get donationOverviewProcessingTime10Days =>
+      'Het duurt doorgaans 4 werkdagen totdat dit bedrag van je rekening is afgeschreven. De eerste transactie duurt 10 werkdagen.';
+
+  @override
+  String get reviewDonationsTitle => 'Controleer je giften';
+
+  @override
+  String get reviewDonationsDescription =>
+      'Nu je machtiging actief is, verwerken we onderstaande giften. Je kunt ze vandaag tot 20:00 uur aanpassen in je giftenoverzicht.';
+
+  @override
+  String get reviewDonationsProcessedTitle => 'Je giften worden verwerkt';
+
+  @override
+  String reviewDonationsProcessedDescription(Object amount, Object days) {
+    return 'We schrijven $amount in één keer af binnen $days werkdagen. Bekijk de status in je giftenoverzicht.';
+  }
 }

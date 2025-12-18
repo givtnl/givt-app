@@ -94,7 +94,7 @@ class _DurationOptionsState extends State<DurationOptions> {
       // Check keyboard visibility again before showing
       if (_isKeyboardVisible) return;
       
-      FunSnackbar.show(context, message: message, icon: icon);
+      FunSnackbar.show(context, title: message, icon: icon);
     });
   }
 

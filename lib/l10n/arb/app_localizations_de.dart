@@ -1844,7 +1844,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get setupFamilyAddNextMember => 'Add next member';
 
   @override
-  String get homescreenFamilyWelcome => 'Welcome, super family!';
+  String get homescreenFamilyWelcome => 'Welcome to Givt4Kids';
 
   @override
   String get homescreenFamilyGenerosity => 'Let\'s foster generosity together';
@@ -2450,4 +2450,49 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get platformContributionSaveChangesModalNoButton => 'Nein, verwerfen';
+
+  @override
+  String homeScreenConfirmOrgTitle(Object org) {
+    return 'Unterstütze $org';
+  }
+
+  @override
+  String get homeScreenConfirmOrgDescription =>
+      'Ist das die Organisation, der du geben möchtest?';
+
+  @override
+  String get homeScreenConfirmOrgYes => 'Ja, bestätigen';
+
+  @override
+  String homeScreenChosenOrg(Object org) {
+    return 'Großartig! Du gibst an $org';
+  }
+
+  @override
+  String get donationOverviewProcessingTimeTitle =>
+      'Deine Spende ist eingerichtet.';
+
+  @override
+  String get donationOverviewProcessingTime3Days =>
+      'Im Allgemeinen dauert es 2-3 Werktage, bis dieser Betrag von deinem Konto abgebucht wird.';
+
+  @override
+  String get donationOverviewProcessingTime10Days =>
+      'Im Allgemeinen dauert es 4 Werktage, bis dieser Betrag von deinem Konto abgebucht wird. Die erste Transaktion dauert 10 Werktage.';
+
+  @override
+  String get reviewDonationsTitle => 'Überprüfe deine Spenden';
+
+  @override
+  String get reviewDonationsDescription =>
+      'Da dein Mandat jetzt aktiv ist, verarbeiten wir die untenstehenden Spenden. Du kannst sie bis heute 20:00 Uhr in deiner Spendenhistorie anpassen.';
+
+  @override
+  String get reviewDonationsProcessedTitle =>
+      'Deine Spenden werden verarbeitet';
+
+  @override
+  String reviewDonationsProcessedDescription(Object amount, Object days) {
+    return 'Wir buchen $amount in einer Summe innerhalb von $days Werktagen ab. Überprüfe den Status in der Spendenhistorie.';
+  }
 }

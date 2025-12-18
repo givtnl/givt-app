@@ -10,13 +10,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/config/app_config.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
+import 'package:givt_app/features/give/pages/home_page_view.dart';
+import 'package:givt_app/features/give/pages/home_page_with_qr_code.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
-import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
@@ -25,7 +26,6 @@ import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -51,16 +51,22 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   int pageIndex = 0;
   final _key = GlobalKey<ScaffoldState>();
   final AppConfig _appConfig = getIt();
   final MandatePopupDismissalTracker _mandatePopupDismissalTracker =
       MandatePopupDismissalTracker(getIt());
 
+  String? _lastProcessedCode;
+  bool _isAppInBackground = false;
+  int _scanCounter =
+      0; // Counter to force new bloc creation when rescanning same code
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this); // Add lifecycle observer
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
 
@@ -74,7 +80,71 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      _isAppInBackground = true;
+      LoggingInfo.instance.info('HomePage: App went to background');
+    } else if (state == AppLifecycleState.resumed && _isAppInBackground) {
+      _isAppInBackground = false;
+      LoggingInfo.instance.info('HomePage: App resumed from background');
+
+      // If we have a QR code when resuming from background, we should trigger a new scan
+      // ONLY if it's a different code or if we previously cleared _lastProcessedCode
+      // This prevents double modals when resuming with the same code already showing a modal
+      if (widget.code.isNotEmpty && widget.code != _lastProcessedCode) {
+        LoggingInfo.instance.info(
+          'HomePage: New QR code detected after resume (code: ${widget.code}, last: $_lastProcessedCode), incrementing counter',
+        );
+        // Wait a bit for the widget to update with new code from route
+        Future.delayed(const Duration(milliseconds: 100), () {
+          if (mounted) {
+            setState(() {
+              _lastProcessedCode = null;
+              _scanCounter++; // Increment counter to force new BlocProvider
+            });
+            LoggingInfo.instance.info(
+              'HomePage: Counter incremented to $_scanCounter for code ${widget.code}',
+            );
+          }
+        });
+      } else if (widget.code.isNotEmpty) {
+        LoggingInfo.instance.info(
+          'HomePage: App resumed with same code ${widget.code}, NOT incrementing counter to avoid double modal',
+        );
+      }
+    }
+  }
+
+  @override
+  void didUpdateWidget(HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Only increment counter if code actually changed AND we're not coming from background
+    // (background case is handled by didChangeAppLifecycleState)
+    if (widget.code.isNotEmpty &&
+        widget.code != oldWidget.code &&
+        !_isAppInBackground) {
+      LoggingInfo.instance.info(
+        'HomePage: QR code changed from "${oldWidget.code}" to "${widget.code}", triggering new scan',
+      );
+      _lastProcessedCode = widget.code;
+      _scanCounter++; // Increment counter to force new BlocProvider
+
+      // We need to trigger the scan on the next frame
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // The BlocProvider in the body will handle creating a new GiveBloc
+        // and triggering the scan, so we just need to trigger a rebuild
+        setState(() {});
+      });
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this); // Remove lifecycle observer
     super.dispose();
   }
 
@@ -97,8 +167,9 @@ class _HomePageState extends State<HomePage> {
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {
       LoggingInfo.instance.info('Navigating to ${widget.navigateTo}');
-      final routeName = Pages.values
-          .firstWhere((element) => element.path == widget.navigateTo);
+      final routeName = Pages.values.firstWhere(
+        (element) => element.path == widget.navigateTo,
+      );
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.goNamed(routeName.name);
       });
@@ -111,9 +182,10 @@ class _HomePageState extends State<HomePage> {
         key: const ValueKey('EU-Home-AppBar'),
         title: switch (pageIndex) {
           0 => Text(locals.amount),
-          1 => !auth.user.isUsUser
-              ? Text(locals.discoverHomeDiscoverTitle)
-              : Text(locals.chooseGroup),
+          1 =>
+            !auth.user.isUsUser
+                ? Text(locals.discoverHomeDiscoverTitle)
+                : Text(locals.chooseGroup),
           2 => Text(locals.discoverHomeDiscoverTitle),
           _ => Text(locals.give),
         },
@@ -180,62 +252,131 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: const CustomNavigationDrawer(),
-      body: MultiBlocListener(
-        listeners: [
-          BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
-            listener: (context, state) {
-              // Debug information
-              if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                var syncString = 'Synced successfully';
-                if (widget.code.isNotEmpty) {
-                  syncString += ' with mediumId/code ${widget.code}';
-                }
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      syncString,
-                    ),
-                  ),
+      body: widget.code.isNotEmpty
+          ? BlocProvider(
+              key: ValueKey(
+                'qr-bloc-${widget.code}-$_scanCounter-${auth.status}',
+              ), // Use counter and status for unique key
+              create: (_) {
+                final bloc = GiveBloc(
+                  getIt(),
+                  getIt(),
+                  getIt(),
+                  getIt(),
                 );
-              }
+                // Trigger QR code scan when code is present and user is authenticated
+                if (auth.status == AuthStatus.authenticated) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    LoggingInfo.instance.info(
+                      'HomePage: Creating new BlocProvider for code ${widget.code} (counter: $_scanCounter, status: ${auth.status})',
+                    );
+                    // Mark this code as processed
+                    _lastProcessedCode = widget.code;
 
-              // Needs registration dialog
-              if (state is RemoteDataSourceSyncSuccess) {
-                if (!auth.user.needRegistration || auth.user.mandateSigned) {
-                  return;
+                    bloc.add(
+                      GiveQRCodeScannedOutOfApp(
+                        widget.code,
+                        widget.afterGivingRedirection,
+                        auth.user.guid,
+                        amount: widget.initialAmount?.toString() ?? '',
+                      ),
+                    );
+                  });
+                } else {
+                  LoggingInfo.instance.info(
+                    'HomePage: BlocProvider created but waiting for authentication (status: ${auth.status})',
+                  );
                 }
-
-                // TODO: Not show over biometrics
-                _buildNeedsRegistrationDialog(context);
-              }
-            },
-          ),
-          BlocListener<InfraCubit, InfraState>(
-            listener: (context, state) {
-              if (state is InfraUpdateAvailable) {
-                _displayUpdateDialog(
-                  context,
-                  state.appUpdate,
-                );
-              }
-            },
-          ),
-        ],
-        child: SafeArea(
-          child: _HomePageView(
-            initialAmount: widget.initialAmount,
-            given: widget.given,
-            retry: widget.retry,
-            code: widget.code,
-            afterGivingRedirection: widget.afterGivingRedirection,
-            onPageChanged: (index) => setState(
-              () {
-                pageIndex = index;
+                return bloc;
               },
+              child: BlocListener<GiveBloc, GiveState>(
+                listener: (context, state) {
+                  // Reset last processed code when state goes back to initial
+                  // This allows scanning the same QR code again after canceling
+                  if (state.status == GiveStatus.initial) {
+                    // Don't increment counter here - we only want to increment
+                    // when app resumes from background with same code
+                    _lastProcessedCode = null;
+                    LoggingInfo.instance.info(
+                      'HomePage: GiveBloc reset to initial, clearing last processed code',
+                    );
+                  }
+                },
+                child: HomePageWithQRCode(
+                  initialAmount: widget.initialAmount,
+                  given: widget.given,
+                  retry: widget.retry,
+                  code: widget.code,
+                  afterGivingRedirection: widget.afterGivingRedirection,
+                  onPageChanged: (index) => setState(
+                    () {
+                      pageIndex = index;
+                    },
+                  ),
+                  auth: auth,
+                ),
+              ),
+            )
+          : MultiBlocListener(
+              listeners: [
+                BlocListener<
+                  RemoteDataSourceSyncBloc,
+                  RemoteDataSourceSyncState
+                >(
+                  listener: (context, state) {
+                    // Debug information
+                    if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+                      var syncString = 'Synced successfully';
+                      if (widget.code.isNotEmpty) {
+                        syncString += ' with mediumId/code ${widget.code}';
+                      }
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            syncString,
+                          ),
+                        ),
+                      );
+                    }
+
+                    // Needs registration dialog
+                    if (state is RemoteDataSourceSyncSuccess) {
+                      if (!auth.user.needRegistration ||
+                          auth.user.mandateSigned) {
+                        return;
+                      }
+
+                      // TODO: Not show over biometrics
+                      _buildNeedsRegistrationDialog(context);
+                    }
+                  },
+                ),
+                BlocListener<InfraCubit, InfraState>(
+                  listener: (context, state) {
+                    if (state is InfraUpdateAvailable) {
+                      _displayUpdateDialog(
+                        context,
+                        state.appUpdate,
+                      );
+                    }
+                  },
+                ),
+              ],
+              child: SafeArea(
+                child: HomePageView(
+                  initialAmount: widget.initialAmount,
+                  given: widget.given,
+                  retry: widget.retry,
+                  code: widget.code,
+                  afterGivingRedirection: widget.afterGivingRedirection,
+                  onPageChanged: (index) => setState(
+                    () {
+                      pageIndex = index;
+                    },
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
@@ -243,8 +384,7 @@ class _HomePageState extends State<HomePage> {
     BuildContext context,
   ) {
     final user = context.read<AuthCubit>().state.user;
-    final isMandatory =
-        _mandatePopupDismissalTracker.shouldForceCompletion;
+    final isMandatory = _mandatePopupDismissalTracker.shouldForceCompletion;
     return showDialog<void>(
       context: context,
       barrierDismissible: !isMandatory,
@@ -254,8 +394,8 @@ class _HomePageState extends State<HomePage> {
           title: Text(
             context.l10n.importantReminder,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+              fontWeight: FontWeight.bold,
+            ),
           ),
           content: Text(
             context.l10n.finalizeRegistrationPopupText,
@@ -273,10 +413,9 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: Text(
                   context.l10n.askMeLater,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontSize: 17),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(fontSize: 17),
                 ),
               ),
             TextButton(
@@ -298,10 +437,10 @@ class _HomePageState extends State<HomePage> {
               },
               child: Text(
                 context.l10n.finalizeRegistration,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(fontWeight: FontWeight.bold, fontSize: 17),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                ),
               ),
             ),
           ],
@@ -351,121 +490,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _HomePageView extends StatefulWidget {
-  const _HomePageView({
-    required this.initialAmount,
-    required this.onPageChanged,
-    required this.given,
-    required this.retry,
-    required this.afterGivingRedirection,
-    required this.code,
-  });
-
-  final double? initialAmount;
-  final bool given;
-  final bool retry;
-  final String code;
-  final String afterGivingRedirection;
-  final void Function(int) onPageChanged;
-
-  @override
-  State<_HomePageView> createState() => _HomePageViewState();
-}
-
-class _HomePageViewState extends State<_HomePageView> {
-  late PageController pageController;
-  int pageIndex = 0;
-  bool isPageAnimationActive = false;
-
-  @override
-  void initState() {
-    pageController = PageController();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final auth = context.watch<AuthCubit>().state;
-    return Stack(
-      alignment: Alignment.topCenter,
-      children: [
-        HomePageViewLayout(
-          child: PageView(
-            controller: pageController,
-            onPageChanged: onPageChanged,
-            children: [
-              ChooseAmount(
-                initialAmount: widget.initialAmount,
-                country: Country.fromCode(auth.user.country),
-                amountLimit: auth.user.amountLimit,
-                hasGiven: widget.given,
-                retry: widget.retry,
-                arePresetsEnabled: auth.presets.isEnabled,
-                presets: auth.presets.presets,
-                onAmountChanged:
-                    (firstCollection, secondCollection, thirdCollection) =>
-                        context.goNamed(
-                  Pages.selectGivingWay.name,
-                  extra: {
-                    'firstCollection': firstCollection,
-                    'secondCollection': secondCollection,
-                    'thirdCollection': thirdCollection,
-                    'code': widget.code,
-                    'afterGivingRedirection': widget.afterGivingRedirection,
-                  },
-                ),
-              ),
-              const ChooseCategory(),
-            ],
-          ),
-        ),
-        ColoredBox(
-          color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              right: 15,
-              left: 15,
-              bottom: 5,
-            ),
-            child: AnimatedSwitch(
-              pageIndex: pageIndex,
-              onChanged: onPageChanged,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void onPageChanged(int index) {
-    if (index == pageIndex || isPageAnimationActive) {
-      return;
-    }
-    setState(() {
-      pageIndex = index;
-      widget.onPageChanged(index);
-    });
-
-    setState(() {
-      isPageAnimationActive = true;
-    });
-
-    pageController
-        .animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    )
-        .then(
-      (_) {
-        setState(() {
-          isPageAnimationActive = false;
-        });
-      },
     );
   }
 }

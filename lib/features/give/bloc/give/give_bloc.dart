@@ -37,6 +37,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
     on<GiveConfirmQRCodeScannedOutOfApp>(_confirmQRCodeScannedOutOfApp);
 
+    on<GiveSubmitTransactions>(_submitTransactions);
+
     on<GiveAmountChanged>(_amountChanged);
 
     on<GiveGPSLocationChanged>(_gpsLocationChanged);
@@ -60,7 +62,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   final GivtRepository _givtRepository;
   final BeaconRepository _beaconRepository;
   final CollectGroupRepository _collectGroupRepository;
-  
+
   // Flag to track if the BT scan page is still active
   bool _isBTScanPageActive = true;
 
@@ -69,17 +71,21 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     log(transition.toString());
     super.onTransition(transition);
   }
-  
+
   /// Called when the BT scan page is being disposed
   void onBTScanPageDisposed() {
     _isBTScanPageActive = false;
-    LoggingInfo.instance.info('BT scan page disposed - beacon processing disabled');
+    LoggingInfo.instance.info(
+      'BT scan page disposed - beacon processing disabled',
+    );
   }
-  
+
   /// Called when the BT scan page is being initialized
   void onBTScanPageInitialized() {
     _isBTScanPageActive = true;
-    LoggingInfo.instance.info('BT scan page initialized - beacon processing enabled');
+    LoggingInfo.instance.info(
+      'BT scan page initialized - beacon processing enabled',
+    );
   }
 
   FutureOr<void> _qrCodeScanned(
@@ -119,17 +125,19 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     required String mediumId,
     required String guid,
     String? goalId,
+    List<double>? collections,
   }) {
     final transactionList = <GivtTransaction>[];
     final formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(
       DateTime.now().toUtc(),
     );
-    for (var index = 0; index < state.collections.length; index++) {
-      if (state.collections[index] == 0.0) continue;
+    final amounts = collections ?? state.collections;
+    for (var index = 0; index < amounts.length; index++) {
+      if (amounts[index] == 0.0) continue;
       transactionList.add(
         GivtTransaction(
           guid: guid,
-          amount: state.collections[index],
+          amount: amounts[index],
           beaconId: mediumId,
           timestamp: formattedDate,
           collectId: '${index + 1}',
@@ -149,16 +157,93 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     GiveAmountChanged event,
     Emitter<GiveState> emit,
   ) async {
-    emit(state.copyWith(status: GiveStatus.loading));
     try {
-      emit(
-        state.copyWith(
-          status: GiveStatus.success,
+      // If we have an organisation (from QR code), recreate transactions with new amounts
+      // This handles both readyToGive state and cases where state might be different but org exists
+      if (state.organisation.mediumId != null &&
+          state.organisation.mediumId!.isNotEmpty) {
+        final mediumId = state.organisation.mediumId!;
+        // Get userGUID from state (stored during QR scan)
+        final userGUID = state.userGUID;
+
+        LoggingInfo.instance.info(
+          'Amount changed - retrieved userGUID from state: $userGUID',
+        );
+
+        if (userGUID.isEmpty) {
+          // If no userGUID, we can't create transactions - emit success to fall back to normal flow
+          LoggingInfo.instance.warning(
+            'Cannot create transactions without userGUID. Falling back to normal flow. '
+            'status: ${state.status}',
+          );
+          emit(
+            state.copyWith(
+              status: GiveStatus.success,
+              firstCollection: event.firstCollectionAmount,
+              secondCollection: event.secondCollectionAmount,
+              thirdCollection: event.thirdCollectionAmount,
+            ),
+          );
+          return;
+        }
+
+        // Capture organisation and other important state before updating
+        final currentOrganisation = state.organisation;
+        final currentInstanceName = state.instanceName;
+        final currentAfterGivingRedirection = state.afterGivingRedirection;
+
+        // Update collections first
+        final updatedState = state.copyWith(
           firstCollection: event.firstCollectionAmount,
           secondCollection: event.secondCollectionAmount,
           thirdCollection: event.thirdCollectionAmount,
-        ),
-      );
+        );
+
+        // Recreate transactions with new amounts using the updated collections
+        final transactionList = _createTransationList(
+          mediumId: mediumId,
+          guid: userGUID,
+          collections: [
+            event.firstCollectionAmount,
+            event.secondCollectionAmount,
+            event.thirdCollectionAmount,
+          ],
+        );
+
+        emit(
+          updatedState.copyWith(
+            status: GiveStatus.readyToGive,
+            givtTransactions: transactionList,
+            organisation:
+                currentOrganisation, // Explicitly preserve organisation
+            instanceName: currentInstanceName, // Preserve instance name
+            afterGivingRedirection:
+                currentAfterGivingRedirection, // Preserve redirect
+          ),
+        );
+
+        LoggingInfo.instance.info(
+          'Amount changed in QR flow - orgName: ${currentOrganisation.organisationName}, '
+          'mediumId: ${currentOrganisation.mediumId}, '
+          'transactions: ${transactionList.length}, '
+          'newStatus: readyToGive',
+        );
+      } else {
+        LoggingInfo.instance.info(
+          'Amount changed in NORMAL flow - mediumId: ${state.organisation.mediumId}, '
+          'hasOrg: ${state.organisation.mediumId?.isNotEmpty ?? false}, '
+          'status: ${state.status}, '
+          'newStatus: success',
+        );
+        emit(
+          state.copyWith(
+            status: GiveStatus.success,
+            firstCollection: event.firstCollectionAmount,
+            secondCollection: event.secondCollectionAmount,
+            thirdCollection: event.thirdCollectionAmount,
+          ),
+        );
+      }
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: GiveStatus.error));
@@ -193,8 +278,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   ) async {
     emit(state.copyWith(status: GiveStatus.loading));
     try {
-      final lastDonatedOrganisation =
-          await _campaignRepository.getLastOrganisationDonated();
+      final lastDonatedOrganisation = await _campaignRepository
+          .getLastOrganisationDonated();
       emit(
         state.copyWith(
           organisation: lastDonatedOrganisation,
@@ -234,20 +319,24 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     if (state.status == GiveStatus.processingBeaconData) {
       return;
     }
-    
+
     // Add safety check: if the BT scan page is no longer active, don't process beacons
     // This prevents background processing when user has navigated away
     if (!_isBTScanPageActive) {
-      LoggingInfo.instance.info('Ignoring beacon scan - BT scan page no longer active');
+      LoggingInfo.instance.info(
+        'Ignoring beacon scan - BT scan page no longer active',
+      );
       return;
     }
-    
+
     emit(state.copyWith(status: GiveStatus.processingBeaconData));
     try {
       final startIndex = event.beaconData.indexOf('61f7ed');
       final namespace = event.beaconData.substring(startIndex, startIndex + 20);
-      final instance =
-          event.beaconData.substring(startIndex + 20, startIndex + 32);
+      final instance = event.beaconData.substring(
+        startIndex + 20,
+        startIndex + 32,
+      );
       final beaconId = '$namespace.$instance';
       final msg = 'Beacon detected $beaconId | RSSI: ${event.rssi}';
 
@@ -406,8 +495,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   ) async {
     emit(state.copyWith(status: GiveStatus.loading));
     try {
-      LoggingInfo.instance
-          .info('QR Code scanned out of app ${event.encodedMediumId}');
+      LoggingInfo.instance.info(
+        'QR Code scanned out of app ${event.encodedMediumId}',
+      );
       final mediumId = utf8.decode(base64.decode(event.encodedMediumId));
 
       await _checkQRCode(mediumId: mediumId, emit: emit);
@@ -421,24 +511,29 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       double? firstCollectionAmount;
       if (event.amount.isNotEmpty) {
         try {
-          final parsedAmount =
-              double.tryParse(event.amount.replaceAll(',', '.'));
+          final parsedAmount = double.tryParse(
+            event.amount.replaceAll(',', '.'),
+          );
           if (parsedAmount != null && parsedAmount > 0) {
             firstCollectionAmount = parsedAmount;
-            LoggingInfo.instance
-                .info('Using amount from QR code: $firstCollectionAmount');
+            LoggingInfo.instance.info(
+              'Using amount from QR code: $firstCollectionAmount',
+            );
           }
         } catch (e) {
-          LoggingInfo.instance
-              .warning('Failed to parse amount from QR code: ${event.amount}');
+          LoggingInfo.instance.warning(
+            'Failed to parse amount from QR code: ${event.amount}',
+          );
         }
       }
 
       // Update state with the scanned amount if available
+      // Using tempAmount instead of firstCollection to hide it until confirmation
       if (firstCollectionAmount != null) {
         emit(
           state.copyWith(
-            firstCollection: firstCollectionAmount,
+            tempAmount: firstCollectionAmount,
+            firstCollection: 0,
             secondCollection: 0,
             thirdCollection: 0,
           ),
@@ -449,6 +544,22 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       final transactionList = _createTransationList(
         mediumId: mediumId,
         guid: event.userGUID,
+        collections: [
+          0,
+          0,
+          0,
+        ],
+      );
+
+      // Preserve instanceName that was set by _checkQRCode
+      final currentInstanceName = state.instanceName;
+
+      LoggingInfo.instance.info(
+        'QR Code scanned - orgName: ${organisation.organisationName}, '
+        'mediumId: ${organisation.mediumId}, '
+        'instanceName: $currentInstanceName, '
+        'transactionsCreated: ${transactionList.length}, '
+        'userGUID: ${event.userGUID}',
       );
 
       emit(
@@ -456,7 +567,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           status: GiveStatus.readyToConfirm,
           organisation: organisation,
           givtTransactions: transactionList,
+          instanceName: currentInstanceName, // Preserve instanceName
           afterGivingRedirection: event.afterGivingRedirection,
+          userGUID:
+              event.userGUID, // Store userGUID for later use in amount changes
         ),
       );
     } catch (e, stackTrace) {
@@ -472,12 +586,84 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     GiveConfirmQRCodeScannedOutOfApp event,
     Emitter<GiveState> emit,
   ) async {
-    emit(state.copyWith(status: GiveStatus.loading));
-    await _campaignRepository.saveLastDonation(
-      state.organisation.copyWith(
-        mediumId: state.organisation.mediumId,
+    // Capture organisation and other important state BEFORE any emits
+    final currentOrganisation = state.organisation;
+    final currentTransactions = state.givtTransactions;
+    final currentInstanceName = state.instanceName;
+    final currentAfterGivingRedirection = state.afterGivingRedirection;
+
+    LoggingInfo.instance.info(
+      'Confirming QR code - orgName: ${currentOrganisation.organisationName}, '
+      'mediumId: ${currentOrganisation.mediumId}, '
+      'hasTransactions: ${currentTransactions.isNotEmpty}',
+    );
+
+    emit(
+      state.copyWith(
+        status: GiveStatus.loading,
+        organisation: currentOrganisation, // Explicitly preserve organisation
       ),
     );
+
+    final confirmedAmount = state.tempAmount;
+    final userGUID = state.userGUID;
+
+    await _campaignRepository.saveLastDonation(
+      currentOrganisation.copyWith(
+        mediumId: currentOrganisation.mediumId,
+      ),
+    );
+
+    // If skipSubmission is true, just prepare the state without submitting
+    // This allows the user to change amounts before final submission
+    // Preserve transactions and organisation so they can be updated when amounts change
+    if (event.skipSubmission) {
+      // If we have a tempAmount, apply it to firstCollection and recreate transactions
+      var finalTransactions = currentTransactions;
+      var firstCollection = state.collections[0];
+
+      if (confirmedAmount != null && confirmedAmount > 0) {
+        firstCollection = confirmedAmount;
+        finalTransactions = _createTransationList(
+          mediumId: currentOrganisation.mediumId ?? '',
+          guid: userGUID,
+          collections: [
+            confirmedAmount,
+            state.collections[1],
+            state.collections[2],
+          ],
+        );
+        LoggingInfo.instance.info(
+          'Applying tempAmount $confirmedAmount to firstCollection on confirmation',
+        );
+      }
+
+      final newState = state.copyWith(
+        status: GiveStatus.readyToGive,
+        organisation: currentOrganisation,
+        givtTransactions: finalTransactions,
+        firstCollection: firstCollection,
+        instanceName: currentInstanceName,
+        afterGivingRedirection: currentAfterGivingRedirection,
+        tempAmount: 0, // Reset tempAmount after using it
+      );
+
+      emit(newState);
+
+      LoggingInfo.instance.info(
+        'QR confirmed with skipSubmission - '
+        'captured orgName: ${currentOrganisation.organisationName}, '
+        'captured mediumId: ${currentOrganisation.mediumId}, '
+        'emitted orgName: ${newState.organisation.organisationName}, '
+        'emitted mediumId: ${newState.organisation.mediumId}, '
+        'hasTransactions: ${currentTransactions.isNotEmpty}, '
+        'transactionCount: ${currentTransactions.length}, '
+        'userGUID: ${newState.userGUID}, '
+        'status: readyToGive',
+      );
+      return;
+    }
+
     try {
       await _givtRepository.submitGivts(
         guid: state.givtTransactions.first.guid,
@@ -496,6 +682,83 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         ),
       );
       return;
+    } on GivtServerFailure catch (e, stackTrace) {
+      _handleGivtServerFailure(e, stackTrace, emit);
+    }
+  }
+
+  FutureOr<void> _submitTransactions(
+    GiveSubmitTransactions event,
+    Emitter<GiveState> emit,
+  ) async {
+    if (state.givtTransactions.isEmpty) {
+      return;
+    }
+
+    if (state.transactionIds.isNotEmpty) {
+      // Already submitted
+      return;
+    }
+
+    // Capture organisation and transactions before any emits
+    final currentOrganisation = state.organisation;
+    final currentTransactions = state.givtTransactions;
+    final currentInstanceName = state.instanceName;
+    final currentAfterGivingRedirection = state.afterGivingRedirection;
+
+    LoggingInfo.instance.info(
+      'Submitting transactions - orgName: ${currentOrganisation.organisationName}, '
+      'mediumId: ${currentOrganisation.mediumId}, '
+      'transactions: ${currentTransactions.length}',
+    );
+
+    emit(
+      state.copyWith(
+        status: GiveStatus.loading,
+        organisation: currentOrganisation, // Preserve organisation
+      ),
+    );
+
+    try {
+      final userGUID = currentTransactions.first.guid;
+      final mediumId = currentOrganisation.mediumId ?? '';
+
+      final transactionIds = await _givtRepository.submitGivts(
+        guid: userGUID,
+        body: {'donations': GivtTransaction.toJsonList(currentTransactions)},
+      );
+
+      if (mediumId.isNotEmpty) {
+        await _handleAutoFavorites(mediumId, userGUID);
+      }
+
+      emit(
+        state.copyWith(
+          status: GiveStatus.readyToGive,
+          transactionIds: transactionIds,
+          organisation: currentOrganisation, // Explicitly preserve organisation
+          givtTransactions: currentTransactions, // Preserve transactions
+          instanceName: currentInstanceName, // Preserve instance name
+          afterGivingRedirection:
+              currentAfterGivingRedirection, // Preserve redirect
+        ),
+      );
+
+      LoggingInfo.instance.info(
+        'Transactions submitted - transactionIds: ${transactionIds.length}, '
+        'orgName: ${currentOrganisation.organisationName}',
+      );
+    } on SocketException catch (e, stackTrace) {
+      log(e.toString());
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(
+        state.copyWith(
+          status: GiveStatus.noInternetConnection,
+        ),
+      );
     } on GivtServerFailure catch (e, stackTrace) {
       _handleGivtServerFailure(e, stackTrace, emit);
     }
@@ -611,8 +874,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   /// Search for the beacon that belongs to the given [mediumId]
   /// and return the instanceName that belongs to the beacon
   Future<QrCode> _getCollectGroupInstanceName(String mediumId) async {
-    final collectGroupList =
-        await _collectGroupRepository.getCollectGroupList();
+    final collectGroupList = await _collectGroupRepository
+        .getCollectGroupList();
     if (!mediumId.contains('.')) {
       return const QrCode.empty();
     }
@@ -706,8 +969,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           await prefs.setStringList(favoritesKey, favoritedOrganisations);
 
           // Get organization name for analytics
-          final collectGroupList =
-              await _collectGroupRepository.getCollectGroupList();
+          final collectGroupList = await _collectGroupRepository
+              .getCollectGroupList();
           final orgName = collectGroupList
               .firstWhere(
                 (org) => org.nameSpace == namespace,

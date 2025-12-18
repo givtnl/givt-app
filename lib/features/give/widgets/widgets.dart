@@ -10,3 +10,4 @@ export 'filter_suggestion_card.dart';
 export 'home_page_view_layout.dart';
 export 'numeric_keyboard.dart';
 export 'qr_code_target.dart';
+export 'qr_confirm_org_dialog.dart';

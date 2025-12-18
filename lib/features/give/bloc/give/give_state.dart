@@ -26,6 +26,8 @@ class GiveState extends Equatable {
     this.instanceName = '',
     this.afterGivingRedirection = '',
     this.transactionIds = const [],
+    this.userGUID = '',
+    this.tempAmount,
   });
 
   final GiveStatus status;
@@ -37,6 +39,8 @@ class GiveState extends Equatable {
   final String instanceName;
   final String afterGivingRedirection;
   final List<int> transactionIds;
+  final String userGUID;
+  final double? tempAmount;
 
   GiveState copyWith({
     GiveStatus? status,
@@ -51,6 +55,8 @@ class GiveState extends Equatable {
     String? afterGivingRedirection,
     List<GivtTransaction>? givtTransactions,
     List<int>? transactionIds,
+    String? userGUID,
+    double? tempAmount,
   }) {
     return GiveState(
       status: status ?? this.status,
@@ -67,19 +73,23 @@ class GiveState extends Equatable {
       ],
       givtTransactions: givtTransactions ?? this.givtTransactions,
       transactionIds: transactionIds ?? this.transactionIds,
+      userGUID: userGUID ?? this.userGUID,
+      tempAmount: tempAmount ?? this.tempAmount,
     );
   }
 
   @override
   List<Object> get props => [
-        status,
-        organisation,
-        nearestBeacon,
-        nearestLocation,
-        collections,
-        givtTransactions,
-        instanceName,
-        afterGivingRedirection,
-        transactionIds,
-      ];
+    status,
+    organisation,
+    nearestBeacon,
+    nearestLocation,
+    collections,
+    givtTransactions,
+    instanceName,
+    afterGivingRedirection,
+    transactionIds,
+    userGUID,
+    tempAmount ?? 0.0,
+  ];
 }

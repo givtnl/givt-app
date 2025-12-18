@@ -9,6 +9,7 @@ import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/personal_info_page.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
@@ -52,10 +53,10 @@ void main() {
             BlocProvider<AuthCubit>.value(value: authCubit),
             BlocProvider<RegistrationBloc>.value(value: registrationBloc),
           ],
-          child: MaterialApp(
+          child: const MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            home: const PersonalInfoPage(),
+            home: PersonalInfoPage(),
           ),
         ),
       );
