@@ -5,23 +5,48 @@ import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_don
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
+/// Repository for managing the details of a specific recurring donation.
 mixin RecurringDonationDetailRepository {
+  /// Returns whether the repository is currently loading data.
   bool isLoading();
+
+  /// Returns the last error message, if any.
   String? getError();
+
+  /// Loads the details and history for the current recurring donation.
   Future<void> loadRecurringDonationDetail();
+
+  /// Sets the recurring donation to fetch details for.
   void setRecurringDonation(RecurringDonation donation);
 
   // Methods to get raw data for the cubit
+
+  /// Returns the name of the organization for the recurring donation.
   String getOrganizationName();
+
+  /// Returns the total amount donated so far.
   double getTotalDonated();
+
+  /// Returns a human-readable string for the remaining time.
   String getRemainingTime();
+
+  /// Returns the end date of the recurring donation, if applicable.
   DateTime? getEndDate();
+
+  /// Returns the history of donations for this recurring donation.
   List<DonationHistoryItem> getHistory();
+
+  /// Returns the number of months the user has helped this organization.
   int getMonthsHelped();
+
+  /// Returns the progress of the recurring donation (completed vs total turns).
   DonationProgress? getProgress();
+
+  /// Returns whether the recurring donation is currently active.
   bool isRecurringDonationActive();
 }
 
+/// Implementation of [RecurringDonationDetailRepository] that uses [APIService].
 class RecurringDonationDetailRepositoryImpl
     with RecurringDonationDetailRepository {
   RecurringDonationDetailRepositoryImpl(
@@ -68,13 +93,13 @@ class RecurringDonationDetailRepositoryImpl
         _recurringDonation!.id,
       );
 
-      // Parse the response and create history items (without status determination yet)
-      final rawHistory = _parseRawHistoryFromResponse(
+      // Extract transactions from the API response
+      final rawHistory = _extractTransactionsFromResponse(
         instancesResponse,
       );
 
-      // Now determine the correct status for each item based on recurring donation context
-      final history = _determineHistoryStatuses(rawHistory);
+      // Map the raw transaction data to history items
+      final history = _mapToDonationHistoryItems(rawHistory);
 
       // Only add upcoming donation if the recurring donation is still active
       var finalHistory = history;
@@ -93,10 +118,11 @@ class RecurringDonationDetailRepositoryImpl
     }
   }
 
-  List<Map<String, dynamic>> _parseRawHistoryFromResponse(
+  /// Extracts the list of transactions from the API response.
+  List<Map<String, dynamic>> _extractTransactionsFromResponse(
     Map<String, dynamic> response,
   ) {
-    // The new API returns transactions directly in the item
+    // The API returns transactions directly in the item object
     final item = response['item'] as Map<String, dynamic>?;
     if (item == null) return [];
 
@@ -111,7 +137,9 @@ class RecurringDonationDetailRepositoryImpl
     return rawHistory;
   }
 
-  List<DonationHistoryItem> _determineHistoryStatuses(
+  /// Maps raw transaction data from the API to [DonationHistoryItem] objects.
+  /// This includes parsing the amount, status, icon, and confirmation date.
+  List<DonationHistoryItem> _mapToDonationHistoryItems(
     List<Map<String, dynamic>> rawHistory,
   ) {
     final history = <DonationHistoryItem>[];
@@ -119,12 +147,14 @@ class RecurringDonationDetailRepositoryImpl
     for (final item in rawHistory) {
       final amount = (item['amount'] as num?)?.toDouble() ?? 0.0;
       final statusString = item['status'] as String? ?? 'Pending';
-      final status = _determineStatusFromString(statusString);
-      final icon = _getIconForStatus(status);
+      final status = _mapStatusToEnum(statusString);
+      final icon = _getStatusIcon(status);
 
-      // For transactions, we don't have a specific date, so we'll use the current date
-      // In a real implementation, you might want to track transaction dates separately
-      final date = DateTime.now();
+      // Use the confirmed_date from the transaction, falling back to now if missing
+      final dateString = item['confirmedDate'] as String?;
+      final date = dateString != null
+          ? DateTime.parse(dateString).toLocal()
+          : DateTime.now();
 
       history.add(
         DonationHistoryItem(
@@ -142,7 +172,8 @@ class RecurringDonationDetailRepositoryImpl
     return history;
   }
 
-  DonationStatus _determineStatusFromString(String statusString) {
+  /// Maps a status string from the API to the [DonationStatus] enum.
+  DonationStatus _mapStatusToEnum(String statusString) {
     switch (statusString.toLowerCase()) {
       case 'processed':
         return DonationStatus.processed;
@@ -151,7 +182,8 @@ class RecurringDonationDetailRepositoryImpl
     }
   }
 
-  String _getIconForStatus(DonationStatus status) {
+  /// Returns the asset path for the icon corresponding to a [DonationStatus].
+  String _getStatusIcon(DonationStatus status) {
     switch (status) {
       case DonationStatus.upcoming:
         return 'assets/images/upcoming_icon.png';
@@ -162,7 +194,7 @@ class RecurringDonationDetailRepositoryImpl
     }
   }
 
-  /// Calculates the number of months helped based on actual completed donations
+  /// Calculates the number of months helped based on actual completed donations.
   int _calculateMonthsHelped(List<DonationHistoryItem> history) {
     final completedDonations = history
         .where((h) => h.status == DonationStatus.processed)
@@ -185,12 +217,15 @@ class RecurringDonationDetailRepositoryImpl
     return months + 1;
   }
 
+  /// Calculates the total amount donated across all processed donations.
   double _calculateTotalDonated(List<DonationHistoryItem> history) {
     return history
         .where((h) => h.status == DonationStatus.processed)
         .fold(0, (sum, item) => sum + item.amount);
   }
 
+  /// Calculates a human-readable string representing the remaining time
+  /// until the recurring donation ends.
   String _calculateRemainingTime() {
     if (_recurringDonation!.numberOfTurns == 999) return 'Unlimited';
 
@@ -212,6 +247,8 @@ class RecurringDonationDetailRepositoryImpl
     }
   }
 
+  /// Determines if the recurring donation is currently active based on its
+  /// state and end date.
   bool isRecurringDonationActive() {
     if (_recurringDonation == null) return false;
 
@@ -231,6 +268,7 @@ class RecurringDonationDetailRepositoryImpl
     return _recurringDonation!.currentState == RecurringDonationState.active;
   }
 
+  /// Creates a [DonationHistoryItem] for the next upcoming donation.
   DonationHistoryItem _createUpcomingDonation() {
     // Use API-provided next donation date if available, otherwise fall back to calculation
     DateTime nextDonationDate;
@@ -326,6 +364,7 @@ class RecurringDonationDetailRepositoryImpl
     );
   }
 
+  /// Disposes of any resources used by the repository.
   void dispose() {
     // No-op as there's no StreamController to close
   }
