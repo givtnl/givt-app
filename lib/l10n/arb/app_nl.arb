@@ -5,13 +5,9 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "Om te kunnen geven met Givt moet je een machtiging (Better World Payments eMandate) afgeven.",
-  "@slimPayInformation": {
-    "description": "Alleen wanneer je zelf een bedrag geeft \n met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.",
-    "type": "text"
-  },
+  "slimPayInformation": "Om het geven zo makkelijk mogelijk te maken, vragen we je een SEPA-machtiging te tekenen. Dit hoef je maar één keer te doen.",
   "buttonContinue": "Doorgaan",
-  "slimPayInfoDetail": "Givt werkt samen met Better World Payments voor het verwerken van transacties. Better World Payments is gespecialiseerd in het verwerken van machtigingen en automatische incasso’s voor digitale platforms. Dit doet Better World Payments voor Givt tegen de laagste kosten in de markt en met hoge snelheid.\n \nBetter World Payments is voor Givt de ideale partner omdat zij het geven zonder contant geld eenvoudig en veilig maakt. \n \nHet geïncasseerde geld wordt verzameld op een rekening bij Better World Payments. Givt zorgt ervoor dat het geld verdeeld wordt.",
+  "slimPayInfoDetail": "Givt werkt samen met Better World Payments voor het verwerken van transacties. Better World Payments is gespecialiseerd in het verwerken van machtigingen en automatische incasso’s voor digitale platforms. Dit doet Better World Payments voor Givt tegen de laagste kosten in de markt en met hoge snelheid.\n\nBetter World Payments is voor Givt de ideale partner omdat zij het geven zonder contant geld eenvoudig en veilig maakt. \n\nHet geïncasseerde geld wordt verzameld op een rekening bij Better World Payments. Givt zorgt ervoor dat het geld verdeeld wordt.",
   "slimPayInfoDetailTitle": "Wat is Better World Payments?",
   "unregisterButton": "Mijn account opzeggen",
   "unregisterUnderstood": "Ik begrijp het",
@@ -463,11 +459,7 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "Er wordt alleen geïncasseerd, wanneer je zelf een bedrag geeft met Givt.\n \n\nOmdat we met een machtiging werken, is het eventueel mogelijk om achteraf een gift te herroepen.",
-  "@slimPayInformationPart2": {
-    "description": "SlimPay informatie onder het Givy icoon",
-    "type": "text"
-  },
+  "slimPayInformationPart2": "We incasseren alleen wanneer je ervoor kiest om te geven. Omdat we met machtigingen werken, heb je ook de optie om een gift later te herroepen als dat nodig is.",
   "unregister": "Account opzeggen",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1121,5 +1113,6 @@
   "reviewDonationsTitle": "Controleer je giften",
   "reviewDonationsDescription": "Nu je machtiging actief is, verwerken we onderstaande giften. Je kunt ze vandaag tot 20:00 uur aanpassen in je giftenoverzicht.",
   "reviewDonationsProcessedTitle": "Je giften worden verwerkt",
-  "reviewDonationsProcessedDescription": "We schrijven {amount} in één keer af binnen {days} werkdagen. Bekijk de status in je giftenoverzicht."
+  "reviewDonationsProcessedDescription": "We schrijven {amount} in één keer af binnen {days} werkdagen. Bekijk de status in je giftenoverzicht.",
+  "signMandateTitle": "Machtiging tekenen"
 }
