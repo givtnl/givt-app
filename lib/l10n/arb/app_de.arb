@@ -5,13 +5,9 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "Wir möchten, dass du Givt so einfach wie möglich nutzen kannst.",
-  "@slimPayInformation": {
-    "description": "Alleen wanneer je zelf een bedrag geeft \n met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.",
-    "type": "text"
-  },
+  "slimPayInformation": "Um das Geben so einfach wie möglich zu machen, bitten wir dich, ein SEPA-Mandat zu unterschreiben. Das musst du nur einmal tun.",
   "buttonContinue": "Continue",
-  "slimPayInfoDetail": "Givt arbeitet bei der Ausführung der Transaktionen mit Better World Payments zusammen. Better World Payments ist spezialisiert auf die Abwicklung von Mandaten und automatischen Geldüberweisungen auf digitalen Plattformen. Better World Payments führt diese Aufträge für Givt zu den niedrigsten Preisen auf diesem Markt und mit hoher Geschwindigkeit aus.\n\n Better World Payments ist ein idealer Partner für Givt, weil sie das bargeldlose Spenden sehr einfach und sicher machen. \n \n Das Geld wird auf einem Better World Payments-Konto gesammelt. \n Givt wird sicherstellen, dass das Geld korrekt ausgegeben wird.",
+  "slimPayInfoDetail": "Givt arbeitet bei der Ausführung der Transaktionen mit Better World Payments zusammen. Better World Payments ist spezialisiert auf die Abwicklung von Mandaten und automatischen Geldüberweisungen auf digitalen Plattformen. Better World Payments führt diese Aufträge für Givt zu den niedrigsten Preisen auf diesem Markt und mit hoher Geschwindigkeit aus.\n\nBetter World Payments ist ein idealer Partner für Givt, weil sie das bargeldlose Spenden sehr einfach und sicher machen. \n\nDas Geld wird auf einem Better World Payments-Konto gesammelt. \nGivt wird sicherstellen, dass das Geld korrekt ausgegeben wird.",
   "slimPayInfoDetailTitle": "Was ist Better World Payments?`",
   "unregisterButton": "Meinen Account schließen",
   "unregisterUnderstood": "Ich verstehe",
@@ -463,11 +459,7 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "Deshalb bitten wir dich diesmal, ein SEPA eMandate zu unterzeichnen.\n \n\n Da wir mit Mandaten arbeiten, hast du die Möglichkeit, deine Spende ggf. zu widerrufen, wenn du dies wünschst.",
-  "@slimPayInformationPart2": {
-    "description": "SlimPay informatie onder het Givy icoon",
-    "type": "text"
-  },
+  "slimPayInformationPart2": "Wir buchen nur ab, wenn du dich entscheidest zu geben. Da wir mit Mandaten arbeiten, hast du die Möglichkeit, eine Spende später zu widerrufen, falls nötig.",
   "unregister": "Account löschen",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1121,5 +1113,6 @@
   "reviewDonationsTitle": "Überprüfe deine Spenden",
   "reviewDonationsDescription": "Da dein Mandat jetzt aktiv ist, verarbeiten wir die untenstehenden Spenden. Du kannst sie bis heute 20:00 Uhr in deiner Spendenhistorie anpassen.",
   "reviewDonationsProcessedTitle": "Deine Spenden werden verarbeitet",
-  "reviewDonationsProcessedDescription": "Wir buchen {amount} in einer Summe innerhalb von {days} Werktagen ab. Überprüfe den Status in der Spendenhistorie."
+  "reviewDonationsProcessedDescription": "Wir buchen {amount} in einer Summe innerhalb von {days} Werktagen ab. Überprüfe den Status in der Spendenhistorie.",
+  "signMandateTitle": "Mandat unterschreiben"
 }
