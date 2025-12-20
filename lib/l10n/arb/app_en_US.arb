@@ -5,13 +5,9 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "We want your Givt experience to be as smooth as possible.",
-  "@slimPayInformation": {
-    "description": "Alleen wanneer je zelf een bedrag geeft \n met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.",
-    "type": "text"
-  },
+  "slimPayInformation": "To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.",
   "buttonContinue": "Continue",
-  "slimPayInfoDetail": "Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n \n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n \n\nThe money will be collected in a Better World Payments account. \n Givt will ensure that the money is distributed correctly.",
+  "slimPayInfoDetail": "Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.",
   "slimPayInfoDetailTitle": "What is Better World Payments?",
   "unregisterButton": "Terminate my account",
   "unregisterUnderstood": "I understand",
@@ -463,11 +459,7 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "That's why we ask you this one time to sign a SEPA eMandate.\n \n\n Since we're working with mandates, you have the option to revoke your donation if you should wish to do so.",
-  "@slimPayInformationPart2": {
-    "description": "SlimPay informatie onder het Givy icoon",
-    "type": "text"
-  },
+  "slimPayInformationPart2": "We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.",
   "unregister": "Terminate account",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1121,5 +1113,6 @@
   "reviewDonationsTitle": "Review your donations",
   "reviewDonationsDescription": "Now that your authorization is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 PM today.",
   "reviewDonationsProcessedTitle": "Your donations are being processed",
-  "reviewDonationsProcessedDescription": "We’ll collect {amount} in one transaction within {days} business days. Check the status in donation history."
+  "reviewDonationsProcessedDescription": "We’ll collect {amount} in one transaction within {days} business days. Check the status in donation history.",
+  "signMandateTitle": "Sign mandate"
 }
