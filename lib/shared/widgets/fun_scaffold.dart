@@ -51,7 +51,7 @@ class FunScaffold extends StatelessWidget {
               child: floatingActionButton,
             ),
             floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
+                FloatingActionButtonLocation.centerDocked,
           ),
         ),
       ),

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
 class BacsExplanationPage extends StatefulWidget {
@@ -20,97 +23,79 @@ class BacsExplanationPage extends StatefulWidget {
 
 class _BacsExplanationPageState extends State<BacsExplanationPage> {
   bool _acceptedTerms = false;
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final locals = context.l10n;
-    return Scaffold(
-      appBar: RegistrationAppBar(
-        title: Text(
-          locals.bacsSetupTitle,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium!
-              .copyWith(fontSize: 15, fontWeight: FontWeight.bold),
-        ),
+    return FunScaffold(
+      appBar: FunTopAppBar.white(
+        title: locals.signMandateTitle,
         actions: [
           IconButton(
-            onPressed: () => showModalBottomSheet<void>(
-              context: context,
-              showDragHandle: true,
-              isScrollControlled: true,
-              useSafeArea: true,
-              backgroundColor: AppTheme.givtPurple,
-              builder: (context) => Container(
-                height: MediaQuery.of(context).size.height * 0.3,
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      locals.bacsHelpTitle,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      locals.bacsHelpBody,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+            onPressed: () => FunBottomSheet(
+              title: locals.bacsHelpTitle,
+              content: BodyMediumText(
+                locals.bacsHelpBody,
+                textAlign: TextAlign.center,
               ),
-            ),
+              closeAction: () => context.pop(),
+            ).show(context),
             icon: const Icon(
               Icons.question_mark_outlined,
             ),
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 30,
-          left: 20,
-          right: 20,
-          top: 20,
-        ),
+      floatingActionButton: FunButton(
+        onTap: _acceptedTerms
+            ? () => context.goNamed(
+                Pages.signBacsMandate.name,
+                extra: context.read<RegistrationBloc>(),
+              )
+            : null,
+        onDisabledTap: () {
+          // Scroll to bottom when disabled to show checkbox
+          if (_scrollController.hasClients) {
+            _scrollController.animateTo(
+              _scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          }
+        },
+        isDisabled: !_acceptedTerms,
+        text: locals.buttonContinue,
+        analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+      ),
+      body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            TitleMediumText(locals.bacsSetupTitle, textAlign: TextAlign.center),
             const SizedBox(
               height: 20,
             ),
-            Text(
-              locals.bacsSetupBody,
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    fontSize: 15,
-                  ),
+            BodyMediumText(
               textAlign: TextAlign.center,
+              locals.bacsSetupBody,
             ),
-            const Spacer(),
+            const SizedBox(height: 40),
             _buildAcceptPolicy(locals),
-            SizedBox(
-              width: size.width,
-              child: ElevatedButton(
-                onPressed: _acceptedTerms
-                    ? () => context.goNamed(
-                          Pages.signBacsMandate.name,
-                          extra: context.read<RegistrationBloc>(),
-                        )
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  disabledBackgroundColor: Colors.grey,
-                ),
-                child: Text(locals.buttonContinue),
-              ),
-            ),
+            const SizedBox(height: 80), 
           ],
         ),
       ),
@@ -121,13 +106,14 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
     return GestureDetector(
       onTap: () => showModalBottomSheet<void>(
         context: context,
-        showDragHandle: true,
         isScrollControlled: true,
         useSafeArea: true,
-        backgroundColor: AppTheme.givtPurple,
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         builder: (BuildContext context) => TermsAndConditionsDialog(
           content: locals.bacsAdvanceNotice,
-          isDarkBackground: true,
         ),
       ),
       child: Row(
@@ -141,19 +127,30 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
               });
             },
           ),
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: locals.bacsUnderstoodNotice,
-                  style: const TextStyle(fontSize: 12),
-                ),
-                const WidgetSpan(
-                  child: Icon(Icons.info_rounded, size: 16),
-                ),
-              ],
+          Expanded(
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: locals.bacsUnderstoodNotice,
+                    style: const FamilyAppTheme()
+                        .toThemeData()
+                        .textTheme
+                        .bodySmall,
+                  ),
+                  const WidgetSpan(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Icon(
+                        Icons.info_rounded,
+                        size: 16,
+                        color: FamilyAppTheme.primary40,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            textAlign: TextAlign.start,
           ),
         ],
       ),

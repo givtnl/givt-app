@@ -540,7 +540,13 @@ enum AmplitudeEvents {
   platformContributionLevelChanged('platform_contribution_level_changed'),
   platformContributionSaveChangesClicked('platform_contribution_save_changes_clicked'),
   platformContributionSaveConfirmClicked('platform_contribution_save_confirm_clicked'),
-  platformContributionDiscardConfirmClicked('platform_contribution_discard_confirm_clicked');
+  platformContributionDiscardConfirmClicked('platform_contribution_discard_confirm_clicked'),
+  finalizeRegistrationModalFinalizeClicked(
+    'finalize_registration_modal_finalize_clicked',
+  ),
+  finalizeRegistrationModalAskLaterClicked(
+    'finalize_registration_modal_ask_later_clicked',
+  );
 
   const AmplitudeEvents(this.value);
 

@@ -116,11 +116,10 @@ abstract class AppLocalizations {
   /// **'This amount is higher than your chosen maximum amount. Please adjust the maximum donation amount or choose a lower amount.'**
   String get amountLimitExceeded;
 
-  /// Alleen wanneer je zelf een bedrag geeft
-  ///  met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.
+  /// No description provided for @slimPayInformation.
   ///
   /// In en, this message translates to:
-  /// **'We want your Givt experience to be as smooth as possible.'**
+  /// **'To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.'**
   String get slimPayInformation;
 
   /// No description provided for @buttonContinue.
@@ -132,7 +131,7 @@ abstract class AppLocalizations {
   /// No description provided for @slimPayInfoDetail.
   ///
   /// In en, this message translates to:
-  /// **'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n \n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n \n\nThe money will be collected in a Better World Payments account. \n Givt will ensure that the money is distributed correctly.'**
+  /// **'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.'**
   String get slimPayInfoDetail;
 
   /// No description provided for @slimPayInfoDetailTitle.
@@ -612,7 +611,7 @@ abstract class AppLocalizations {
   /// No description provided for @bacsSetupBody.
   ///
   /// In en, this message translates to:
-  /// **'You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n \n\n By continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n \n\n The details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.'**
+  /// **'You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n\nBy continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n\nThe details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.'**
   String get bacsSetupBody;
 
   /// No description provided for @bacsUnderstoodNotice.
@@ -630,7 +629,7 @@ abstract class AppLocalizations {
   /// No description provided for @bacsVerifyBody.
   ///
   /// In en, this message translates to:
-  /// **'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \n\n The company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.'**
+  /// **'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.'**
   String get bacsVerifyBody;
 
   /// No description provided for @bacsReadDdGuarantee.
@@ -1350,10 +1349,10 @@ abstract class AppLocalizations {
   /// **'Sorry, but the minimum amount we can work with is {value0}.'**
   String givtNotEnough(Object value0);
 
-  /// SlimPay informatie onder het Givy icoon
+  /// No description provided for @slimPayInformationPart2.
   ///
   /// In en, this message translates to:
-  /// **'That\'s why we ask you this one time to sign a SEPA eMandate.\n \n\n Since we\'re working with mandates, you have the option to revoke your donation if you should wish to do so.'**
+  /// **'We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.'**
   String get slimPayInformationPart2;
 
   /// Title van de pagina "Account opzeggen"
@@ -4454,6 +4453,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We’ll collect {amount} in one transaction within {days} business days. Check the status in donation history.'**
   String reviewDonationsProcessedDescription(Object amount, Object days);
+
+  /// No description provided for @signMandateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign mandate'**
+  String get signMandateTitle;
 }
 
 class _AppLocalizationsDelegate

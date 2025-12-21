@@ -5,13 +5,9 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "Om te kunnen geven met Givt moet je een machtiging (Better World Payments eMandate) afgeven.",
-  "@slimPayInformation": {
-    "description": "Alleen wanneer je zelf een bedrag geeft \n met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.",
-    "type": "text"
-  },
+  "slimPayInformation": "Om het geven zo makkelijk mogelijk te maken, vragen we je een SEPA-machtiging te tekenen. Dit hoef je maar één keer te doen.",
   "buttonContinue": "Doorgaan",
-  "slimPayInfoDetail": "Givt werkt samen met Better World Payments voor het verwerken van transacties. Better World Payments is gespecialiseerd in het verwerken van machtigingen en automatische incasso’s voor digitale platforms. Dit doet Better World Payments voor Givt tegen de laagste kosten in de markt en met hoge snelheid.\n \nBetter World Payments is voor Givt de ideale partner omdat zij het geven zonder contant geld eenvoudig en veilig maakt. \n \nHet geïncasseerde geld wordt verzameld op een rekening bij Better World Payments. Givt zorgt ervoor dat het geld verdeeld wordt.",
+  "slimPayInfoDetail": "Givt werkt samen met Better World Payments voor het verwerken van transacties. Better World Payments is gespecialiseerd in het verwerken van machtigingen en automatische incasso’s voor digitale platforms. Dit doet Better World Payments voor Givt tegen de laagste kosten in de markt en met hoge snelheid.\n\nBetter World Payments is voor Givt de ideale partner omdat zij het geven zonder contant geld eenvoudig en veilig maakt. \n\nHet geïncasseerde geld wordt verzameld op een rekening bij Better World Payments. Givt zorgt ervoor dat het geld verdeeld wordt.",
   "slimPayInfoDetailTitle": "Wat is Better World Payments?",
   "unregisterButton": "Mijn account opzeggen",
   "unregisterUnderstood": "Ik begrijp het",
@@ -91,10 +87,10 @@
   "sortCodePlaceholder": "Sort code",
   "bankAccountNumberPlaceholder": "Bank account number",
   "bacsSetupTitle": "Instellen van incasso-instructie",
-  "bacsSetupBody": "Je tekent een machtiging voor incidentele afschrijvingen. We incasseren alleen bedragen die je geeft met de Givt-app.\n \n\n Door verder te gaan, gaat u ermee akkoord dat u de accounthouder bent en dat u de enige persoon bent die inningen voor dit account kan autoriseren.\n \n\n De details van uw incasso-instructie machtiging worden u binnen 3 werkdagen of uiterlijk 10 werkdagen vóór de eerste collecte per e-mail toegestuurd.",
+  "bacsSetupBody": "Je tekent een machtiging voor incidentele afschrijvingen. We incasseren alleen bedragen die je geeft met de Givt-app.\n\nDoor verder te gaan, gaat u ermee akkoord dat u de accounthouder bent en dat u de enige persoon bent die inningen voor dit account kan autoriseren.\n\nDe details van uw incasso-instructie machtiging worden u binnen 3 werkdagen of uiterlijk 10 werkdagen vóór de eerste collecte per e-mail toegestuurd.",
   "bacsUnderstoodNotice": "Ik heb de voorinlichting gelezen en goedgekeurd",
   "bacsVerifyTitle": "Controleer je gegevens",
-  "bacsVerifyBody": "Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.\n \n\n De bedrijfsnaam die op je transactie zal te zien zijn is 'Givt Ltd.'.",
+  "bacsVerifyBody": "Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.\n\nDe bedrijfsnaam die op je transactie zal te zien zijn is 'Givt Ltd.'.",
   "bacsReadDdGuarantee": "Lees de incasso garantie",
   "bacsDdGuarantee": "- The Guarantee is offered by all banks and building societies that accept instructions to pay Direct Debits.\n - If there are any changes to the way this ad hoc Direct Debit Instruction is used, the organisation will notify you (normally 10 working days) in advance of your account being debited or as otherwise agreed. \n - If an error is made in the payment of your Direct Debit, by the organisation, or your bank or building society, you are entitled to a full and immediate refund of the amount paid from your bank or building society.\n - If you receive a refund you are not entitled to, you must pay it back when the organisation asks you to.\n - You can cancel a Direct Debit at any time by simply contacting your bank or building society. Written confirmation may be required. Please also notify the organisation.",
   "bacsAdvanceNotice": "You are signing an ad hoc, non-recurring Direct Debit Instruction mandate. Only on your specific request will debits be executed by the organisation. All the normal Direct Debit safeguards and guarantees apply. No changes in the use of this Direct Debit Instruction can be made without notifying you at least five (5) working days in advance of your account being debited.\n In the event of any error, you are entitled to an immediate refund from your bank or building society. \n You have the right to cancel a Direct Debit Instruction at any time by writing to your bank or building society, with a copy to us.",
@@ -463,11 +459,7 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "Er wordt alleen geïncasseerd, wanneer je zelf een bedrag geeft met Givt.\n \n\nOmdat we met een machtiging werken, is het eventueel mogelijk om achteraf een gift te herroepen.",
-  "@slimPayInformationPart2": {
-    "description": "SlimPay informatie onder het Givy icoon",
-    "type": "text"
-  },
+  "slimPayInformationPart2": "We incasseren alleen wanneer je ervoor kiest om te geven. Omdat we met machtigingen werken, heb je ook de optie om een gift later te herroepen als dat nodig is.",
   "unregister": "Account opzeggen",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1121,5 +1113,6 @@
   "reviewDonationsTitle": "Controleer je giften",
   "reviewDonationsDescription": "Nu je machtiging actief is, verwerken we onderstaande giften. Je kunt ze vandaag tot 20:00 uur aanpassen in je giftenoverzicht.",
   "reviewDonationsProcessedTitle": "Je giften worden verwerkt",
-  "reviewDonationsProcessedDescription": "We schrijven {amount} in één keer af binnen {days} werkdagen. Bekijk de status in je giftenoverzicht."
+  "reviewDonationsProcessedDescription": "We schrijven {amount} in één keer af binnen {days} werkdagen. Bekijk de status in je giftenoverzicht.",
+  "signMandateTitle": "Machtiging tekenen"
 }
