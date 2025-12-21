@@ -87,7 +87,7 @@
   "sortCodePlaceholder": "Sort code",
   "bankAccountNumberPlaceholder": "Bank account number",
   "bacsSetupTitle": "Instellen van incasso-instructie",
-  "bacsSetupBody": "Je tekent een machtiging voor incidentele afschrijvingen. We incasseren alleen bedragen die je geeft met de Givt-app.\n \n\n Door verder te gaan, gaat u ermee akkoord dat u de accounthouder bent en dat u de enige persoon bent die inningen voor dit account kan autoriseren.\n \n\n De details van uw incasso-instructie machtiging worden u binnen 3 werkdagen of uiterlijk 10 werkdagen vóór de eerste collecte per e-mail toegestuurd.",
+  "bacsSetupBody": "Je tekent een machtiging voor incidentele afschrijvingen. We incasseren alleen bedragen die je geeft met de Givt-app.\n\nDoor verder te gaan, gaat u ermee akkoord dat u de accounthouder bent en dat u de enige persoon bent die inningen voor dit account kan autoriseren.\n\nDe details van uw incasso-instructie machtiging worden u binnen 3 werkdagen of uiterlijk 10 werkdagen vóór de eerste collecte per e-mail toegestuurd.",
   "bacsUnderstoodNotice": "Ik heb de voorinlichting gelezen en goedgekeurd",
   "bacsVerifyTitle": "Controleer je gegevens",
   "bacsVerifyBody": "Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.\n \n\n De bedrijfsnaam die op je transactie zal te zien zijn is 'Givt Ltd.'.",
