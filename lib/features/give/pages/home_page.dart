@@ -71,6 +71,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       context.read<InfraCubit>().checkForUpdate();
 
       FirebaseMessaging.instance.getInitialMessage().then((message) {
+        if (!mounted) return;
+
         final auth = context.read<AuthCubit>().state;
         if (message != null && auth.status == AuthStatus.authenticated) {
           NotificationService.instance.navigateFirebaseNotification(message);
@@ -182,11 +184,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         key: const ValueKey('EU-Home-AppBar'),
         title: switch (pageIndex) {
           0 => Text(locals.amount),
-          1 =>
-            !auth.user.isUsUser
-                ? Text(locals.discoverHomeDiscoverTitle)
-                : Text(locals.chooseGroup),
-          2 => Text(locals.discoverHomeDiscoverTitle),
+          1 => Text(locals.chooseGroup),
           _ => Text(locals.give),
         },
         leading: badges.Badge(
@@ -314,6 +312,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     },
                   ),
                   auth: auth,
+                  mandatePopupDismissalTracker: _mandatePopupDismissalTracker,
                 ),
               ),
             )
@@ -347,7 +346,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       }
 
                       // TODO: Not show over biometrics
-                      _buildNeedsRegistrationDialog(context);
+                      NeedsRegistrationDialog.show(
+                        context,
+                        mandatePopupDismissalTracker:
+                            _mandatePopupDismissalTracker,
+                      );
                     }
                   },
                 ),
@@ -377,75 +380,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 ),
               ),
             ),
-    );
-  }
-
-  Future<void> _buildNeedsRegistrationDialog(
-    BuildContext context,
-  ) {
-    final user = context.read<AuthCubit>().state.user;
-    final isMandatory = _mandatePopupDismissalTracker.shouldForceCompletion;
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: !isMandatory,
-      builder: (_) => PopScope(
-        canPop: !isMandatory,
-        child: CupertinoAlertDialog(
-          title: Text(
-            context.l10n.importantReminder,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: Text(
-            context.l10n.finalizeRegistrationPopupText,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          actions: [
-            if (!isMandatory)
-              TextButton(
-                onPressed: () async {
-                  await _mandatePopupDismissalTracker.incrementDismissals();
-                  if (!mounted) {
-                    return;
-                  }
-                  context.pop();
-                },
-                child: Text(
-                  context.l10n.askMeLater,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyLarge?.copyWith(fontSize: 17),
-                ),
-              ),
-            TextButton(
-              onPressed: () {
-                if (user.needRegistration) {
-                  context
-                    ..goNamed(
-                      Pages.registration.name,
-                      queryParameters: {
-                        'email': user.email,
-                      },
-                    )
-                    ..pop();
-                  return;
-                }
-                context
-                  ..goNamed(Pages.sepaMandateExplanation.name)
-                  ..pop();
-              },
-              child: Text(
-                context.l10n.finalizeRegistration,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

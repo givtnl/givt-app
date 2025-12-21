@@ -191,9 +191,34 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   }
 
   bool get _isEnabled {
-    if (_formKey.currentState == null) return false;
-    if (_acceptPolicy == true && _formKey.currentState!.validate()) return true;
-    return false;
+    final firstName = _firstNameController.text;
+    final lastName = _lastNameController.text;
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    final phone = _phoneNumberController.text;
+
+    if (firstName.isEmpty || !Util.nameFieldsRegEx.hasMatch(firstName)) {
+      return false;
+    }
+    if (lastName.isEmpty || !Util.nameFieldsRegEx.hasMatch(lastName)) {
+      return false;
+    }
+    if (email.isEmpty || !Util.emailRegEx.hasMatch(email)) {
+      return false;
+    }
+    if (password.isEmpty ||
+        password.length < 7 ||
+        !password.contains(RegExp('[0-9]')) ||
+        !password.contains(RegExp('[A-Z]'))) {
+      return false;
+    }
+
+    if (phone.isEmpty ||
+        !Util.usPhoneNumberRegEx.hasMatch(Util.formatPhoneNrUs(phone))) {
+      return false;
+    }
+
+    return _acceptPolicy;
   }
 
   Widget _buildBottomWidgetGroup(
@@ -216,7 +241,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           isDisabled: !_isEnabled,
           onTap: _isEnabled ? () => _register(user) : null,
           text: context.l10n.buttonContinue,
-          analyticsEvent: AmplitudeEvents.registrationContinueAfterPersonalInfoClicked.toEvent(),
+          analyticsEvent: AmplitudeEvents
+              .registrationContinueAfterPersonalInfoClicked
+              .toEvent(),
         ),
       ],
     );
@@ -239,9 +266,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               }
               return null;
             },
-            onChanged: (value) => setState(() {
-              _formKey.currentState!.validate();
-            }),
+            onChanged: (value) => setState(() {}),
             hintText: context.l10n.registrationParentFirstName,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
@@ -253,9 +278,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           const SizedBox(height: 16),
           OutlinedTextFormField(
             controller: _lastNameController,
-            onChanged: (value) => setState(() {
-              _formKey.currentState!.validate();
-            }),
+            onChanged: (value) => setState(() {}),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return '';
@@ -278,9 +301,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             phone: _phoneNumberController,
             selectedCountryPrefix: _selectedCountry.prefix,
             hintText: context.l10n.phoneNumber,
-            onPhoneChanged: (String value) => setState(() {
-              _formKey.currentState!.validate();
-            }),
+            onPhoneChanged: (String value) => setState(() {}),
             onPrefixChanged: (String selected) {
               setState(() {
                 _selectedCountry = Country.fromPrefix(
@@ -313,9 +334,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             controller: _emailController,
             enabled: widget.email.isEmpty,
             readOnly: widget.email.isNotEmpty,
-            onChanged: (value) => setState(() {
-              _formKey.currentState!.validate();
-            }),
+            onChanged: (value) => setState(() {}),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return context.l10n.invalidEmail;
@@ -334,9 +353,8 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           const SizedBox(height: 16),
           OutlinedTextFormField(
             controller: _passwordController,
-            onChanged: (value) => setState(() {
-              _formKey.currentState!.validate();
-            }),
+            scrollPadding: const EdgeInsets.only(bottom: 150),
+            onChanged: (value) => setState(() {}),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return '';

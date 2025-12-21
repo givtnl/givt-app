@@ -17,14 +17,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get slimPayInformation =>
-      'We want your Givt experience to be as smooth as possible.';
+      'To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.';
 
   @override
   String get buttonContinue => 'Continue';
 
   @override
   String get slimPayInfoDetail =>
-      'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n \n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n \n\nThe money will be collected in a Better World Payments account. \n Givt will ensure that the money is distributed correctly.';
+      'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.';
 
   @override
   String get slimPayInfoDetailTitle => 'What is Better World Payments?';
@@ -301,7 +301,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get bacsSetupBody =>
-      'You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n \n\n By continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n \n\n The details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.';
+      'You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n\nBy continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n\nThe details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.';
 
   @override
   String get bacsUnderstoodNotice =>
@@ -312,7 +312,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get bacsVerifyBody =>
-      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \n\n The company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
+      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
 
   @override
   String get bacsReadDdGuarantee => 'Read Direct Debit Guarantee';
@@ -719,7 +719,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get slimPayInformationPart2 =>
-      'That\'s why we ask you this one time to sign a SEPA eMandate.\n \n\n Since we\'re working with mandates, you have the option to revoke your donation if you should wish to do so.';
+      'We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.';
 
   @override
   String get unregister => 'Terminate account';
@@ -2475,6 +2475,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String reviewDonationsProcessedDescription(Object amount, Object days) {
     return 'Cobraremos $amount en una sola transacción dentro de $days días hábiles. Revisa el estado en el historial de donaciones.';
   }
+
+  @override
+  String get signMandateTitle => 'Firmar mandato';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -2490,14 +2493,14 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get slimPayInformation =>
-      'Queremos que su experiencia con Givt sea lo más agradable posible.';
+      'Para que dar sea lo más sencillo posible, te pedimos que firmes un mandato SEPA. Solo necesitas hacer esto una vez.';
 
   @override
   String get buttonContinue => 'Continuar';
 
   @override
   String get slimPayInfoDetail =>
-      'Givt trabaja junto con Better World Payments para ejecutar las transacciones. Better World Payments se especializa en la gestión de mandatos y transferencias automáticas de dinero en plataformas digitales. Better World Payments ejecuta estas solicitudes para Givt a las tarifas más bajas del mercado y a gran velocidad.\n \n\nBetter World Payments es un socio ideal para Givt porque facilita mucho la donación sin efectivo de forma segura. \n \n\n El dinero se recogerá en una cuenta de Better World Payments. \n Givt se asegurará de que el dinero se distribuya correctamente.';
+      'Givt trabaja junto con Better World Payments para ejecutar las transacciones. Better World Payments se especializa en la gestión de mandatos y transferencias automáticas de dinero en plataformas digitales. Better World Payments ejecuta estas solicitudes para Givt a las tarifas más bajas del mercado y a gran velocidad.\n\nBetter World Payments es un socio ideal para Givt porque facilita mucho la donación sin efectivo de forma segura. \n\nEl dinero se recogerá en una cuenta de Better World Payments. \nGivt se asegurará de que el dinero se distribuya correctamente.';
 
   @override
   String get slimPayInfoDetailTitle => '¿Qué es Better World Payments?';
@@ -2779,7 +2782,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get bacsSetupBody =>
-      'Está firmando una domiciliación bancaria incidental, sólo debitaremos de su cuenta cuando utilice la aplicación Givt para hacer una donación.\n \n\n Al continuar, usted acepta que es el titular de la cuenta y es la única persona requerida para autorizar los débitos de esta cuenta.\n \n\n Los detalles de su mandato de instrucción de domiciliación bancaria se le enviarán por correo electrónico en un plazo de 3 días hábiles o, a más tardar, 10 días hábiles antes del primer cobro.';
+      'Está firmando una domiciliación bancaria incidental, sólo debitaremos de su cuenta cuando utilice la aplicación Givt para hacer una donación.\n\nAl continuar, usted acepta que es el titular de la cuenta y es la única persona requerida para autorizar los débitos de esta cuenta.\n\nLos detalles de su mandato de instrucción de domiciliación bancaria se le enviarán por correo electrónico en un plazo de 3 días hábiles o, a más tardar, 10 días hábiles antes del primer cobro.';
 
   @override
   String get bacsUnderstoodNotice => 'He leído y entendido el aviso previo';
@@ -2789,7 +2792,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get bacsVerifyBody =>
-      'Si alguno de los datos anteriores es incorrecto, por favor, anula el registro y cambia tu \'Información personal\'\n \n\n El nombre de la empresa que aparecerá en su extracto bancario contra la domiciliación bancaria será Givt Ltd.';
+      'Si alguno de los datos anteriores es incorrecto, por favor, anula el registro y cambia tu \'Información personal\'\n\nEl nombre de la empresa que aparecerá en su extracto bancario contra la domiciliación bancaria será Givt Ltd.';
 
   @override
   String get bacsReadDdGuarantee =>
@@ -3198,7 +3201,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get slimPayInformationPart2 =>
-      'Por eso le pedimos que firme por única vez un mandato electrónico SEPA.\n \n\n Como trabajamos con mandatos, tiene la opción de revocar su donación si así lo desea.';
+      'Solo retiraremos fondos cuando tú elijas dar. Al usar mandatos, también tienes la opción de revocar una donación más tarde si es necesario.';
 
   @override
   String get unregister => 'Cancelar cuenta';
@@ -4969,4 +4972,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String reviewDonationsProcessedDescription(Object amount, Object days) {
     return 'We’ll collect $amount in one transaction within $days business days. Check the status in donation history.';
   }
+
+  @override
+  String get signMandateTitle => 'Sign mandate';
 }

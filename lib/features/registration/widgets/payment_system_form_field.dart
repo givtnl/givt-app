@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:iban/iban.dart';
@@ -16,6 +16,9 @@ class PaymentSystemTab extends StatefulWidget {
     required this.onPaymentChanged,
     required this.onFieldChanged,
     required this.isUK,
+    this.bankAccountFocus,
+    this.ibanNumberFocus,
+    this.sortCodeFocus,
     super.key,
   });
 
@@ -25,6 +28,9 @@ class PaymentSystemTab extends StatefulWidget {
   final OnPaymentChanged onPaymentChanged;
   final OnFieldChanged onFieldChanged;
   final bool isUK;
+  final FocusNode? bankAccountFocus;
+  final FocusNode? ibanNumberFocus;
+  final FocusNode? sortCodeFocus;
 
   @override
   State<PaymentSystemTab> createState() => _PaymentSystemTabState();
@@ -37,43 +43,35 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
     return Column(
       children: [
         if (!widget.isUK)
-          const Tab(
-            height: 30,
-            icon: Icon(
-              Icons.euro,
-              color: AppTheme.givtBlue,
-              size: 20,
-            ),
+          const Icon(
+            Icons.euro,
+            color: AppTheme.givtBlue,
+            size: 20,
           ),
         if (widget.isUK)
-          const Tab(
-            height: 30,
-            icon: Icon(
-              Icons.currency_pound_rounded,
-              color: AppTheme.givtBlue,
-              size: 20,
-            ),
+          const Icon(
+            Icons.currency_pound_rounded,
+            color: AppTheme.givtBlue,
+            size: 20,
           ),
+        const SizedBox(height: 16),
         Visibility(
           visible: !widget.isUK,
-          child: Column(
-            children: [
-              _buildTextFormField(
-                hintText: locals.ibanPlaceHolder,
-                controller: widget.ibanNumber,
-                keyboardType: TextInputType.text,
-                onChanged: (value) => widget.onFieldChanged(value),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '';
-                  }
-                  if (!isValid(value)) {
-                    return '';
-                  }
-                  return null;
-                },
-              ),
-            ],
+          child: _buildTextFormField(
+            hintText: locals.ibanPlaceHolder,
+            controller: widget.ibanNumber,
+            focusNode: widget.ibanNumberFocus,
+            keyboardType: TextInputType.text,
+            onChanged: (value) => widget.onFieldChanged(value),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
+              if (!isValid(value)) {
+                return '';
+              }
+              return null;
+            },
           ),
         ),
         Visibility(
@@ -83,6 +81,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
               _buildTextFormField(
                 hintText: locals.sortCodePlaceholder,
                 controller: widget.sortCode,
+                focusNode: widget.sortCodeFocus,
                 onChanged: (value) => widget.onFieldChanged(value),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -94,9 +93,11 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
               _buildTextFormField(
                 hintText: locals.bankAccountNumberPlaceholder,
                 controller: widget.bankAccount,
+                focusNode: widget.bankAccountFocus,
                 onChanged: (value) => widget.onFieldChanged(value),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -120,15 +121,18 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
     required TextEditingController controller,
     required String? Function(String?) validator,
     required void Function(String) onChanged,
+    FocusNode? focusNode,
     TextInputType? keyboardType = TextInputType.number,
   }) {
-    return CustomTextFormField(
+    return OutlinedTextFormField(
       controller: controller,
+      focusNode: focusNode,
       hintText: hintText,
       validator: validator,
       onChanged: onChanged,
       keyboardType: keyboardType,
       textCapitalization: TextCapitalization.words,
+      scrollPadding: const EdgeInsets.only(bottom: 150),
     );
   }
 }

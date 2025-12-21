@@ -29,11 +29,14 @@ class FunModal extends StatefulWidget {
   @override
   State<FunModal> createState() => _FunModalState();
 
-  Future<void> show(BuildContext context) {
+  Future<void> show(BuildContext context, {bool isDismissible = false}) {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false,
-      builder: (context) => this,
+      barrierDismissible: isDismissible,
+      builder: (context) => PopScope(
+        canPop: isDismissible,
+        child: this,
+      ),
     );
   }
 }

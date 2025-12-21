@@ -17,14 +17,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get slimPayInformation =>
-      'We want your Givt experience to be as smooth as possible.';
+      'To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.';
 
   @override
   String get buttonContinue => 'Continue';
 
   @override
   String get slimPayInfoDetail =>
-      'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n \n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n \n\nThe money will be collected in a Better World Payments account. \n Givt will ensure that the money is distributed correctly.';
+      'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.';
 
   @override
   String get slimPayInfoDetailTitle => 'What is Better World Payments?';
@@ -301,7 +301,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bacsSetupBody =>
-      'You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n \n\n By continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n \n\n The details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.';
+      'You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n\nBy continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n\nThe details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.';
 
   @override
   String get bacsUnderstoodNotice =>
@@ -312,7 +312,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bacsVerifyBody =>
-      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \n\n The company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
+      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
 
   @override
   String get bacsReadDdGuarantee => 'Read Direct Debit Guarantee';
@@ -719,7 +719,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get slimPayInformationPart2 =>
-      'That\'s why we ask you this one time to sign a SEPA eMandate.\n \n\n Since we\'re working with mandates, you have the option to revoke your donation if you should wish to do so.';
+      'We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.';
 
   @override
   String get unregister => 'Terminate account';
@@ -2474,6 +2474,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String reviewDonationsProcessedDescription(Object amount, Object days) {
     return 'We’ll collect $amount in one transaction within $days business days. Check the status in donation history.';
   }
+
+  @override
+  String get signMandateTitle => 'Sign mandate';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -2489,14 +2492,14 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get slimPayInformation =>
-      'We want your Givt experience to be as smooth as possible.';
+      'To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.';
 
   @override
   String get buttonContinue => 'Continue';
 
   @override
   String get slimPayInfoDetail =>
-      'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n \n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n \n\nThe money will be collected in a Better World Payments account. \n Givt will ensure that the money is distributed correctly.';
+      'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.';
 
   @override
   String get slimPayInfoDetailTitle => 'What is Better World Payments?';
@@ -2773,7 +2776,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get bacsSetupBody =>
-      'You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n \n\n By continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n \n\n The details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.';
+      'You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n\nBy continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n\nThe details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.';
 
   @override
   String get bacsUnderstoodNotice =>
@@ -2784,7 +2787,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get bacsVerifyBody =>
-      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \n\n The company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
+      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
 
   @override
   String get bacsReadDdGuarantee => 'Read Direct Debit Guarantee';
@@ -3191,7 +3194,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get slimPayInformationPart2 =>
-      'That\'s why we ask you this one time to sign a SEPA eMandate.\n \n\n Since we\'re working with mandates, you have the option to revoke your donation if you should wish to do so.';
+      'We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.';
 
   @override
   String get unregister => 'Terminate account';
@@ -4946,4 +4949,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String reviewDonationsProcessedDescription(Object amount, Object days) {
     return 'We’ll collect $amount in one transaction within $days business days. Check the status in donation history.';
   }
+
+  @override
+  String get signMandateTitle => 'Sign mandate';
 }

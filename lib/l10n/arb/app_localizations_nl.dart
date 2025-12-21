@@ -17,14 +17,14 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get slimPayInformation =>
-      'Om te kunnen geven met Givt moet je een machtiging (Better World Payments eMandate) afgeven.';
+      'Om het geven zo makkelijk mogelijk te maken, vragen we je een SEPA-machtiging te tekenen. Dit hoef je maar één keer te doen.';
 
   @override
   String get buttonContinue => 'Doorgaan';
 
   @override
   String get slimPayInfoDetail =>
-      'Givt werkt samen met Better World Payments voor het verwerken van transacties. Better World Payments is gespecialiseerd in het verwerken van machtigingen en automatische incasso’s voor digitale platforms. Dit doet Better World Payments voor Givt tegen de laagste kosten in de markt en met hoge snelheid.\n \nBetter World Payments is voor Givt de ideale partner omdat zij het geven zonder contant geld eenvoudig en veilig maakt. \n \nHet geïncasseerde geld wordt verzameld op een rekening bij Better World Payments. Givt zorgt ervoor dat het geld verdeeld wordt.';
+      'Givt werkt samen met Better World Payments voor het verwerken van transacties. Better World Payments is gespecialiseerd in het verwerken van machtigingen en automatische incasso’s voor digitale platforms. Dit doet Better World Payments voor Givt tegen de laagste kosten in de markt en met hoge snelheid.\n\nBetter World Payments is voor Givt de ideale partner omdat zij het geven zonder contant geld eenvoudig en veilig maakt. \n\nHet geïncasseerde geld wordt verzameld op een rekening bij Better World Payments. Givt zorgt ervoor dat het geld verdeeld wordt.';
 
   @override
   String get slimPayInfoDetailTitle => 'Wat is Better World Payments?';
@@ -304,7 +304,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get bacsSetupBody =>
-      'Je tekent een machtiging voor incidentele afschrijvingen. We incasseren alleen bedragen die je geeft met de Givt-app.\n \n\n Door verder te gaan, gaat u ermee akkoord dat u de accounthouder bent en dat u de enige persoon bent die inningen voor dit account kan autoriseren.\n \n\n De details van uw incasso-instructie machtiging worden u binnen 3 werkdagen of uiterlijk 10 werkdagen vóór de eerste collecte per e-mail toegestuurd.';
+      'Je tekent een machtiging voor incidentele afschrijvingen. We incasseren alleen bedragen die je geeft met de Givt-app.\n\nDoor verder te gaan, gaat u ermee akkoord dat u de accounthouder bent en dat u de enige persoon bent die inningen voor dit account kan autoriseren.\n\nDe details van uw incasso-instructie machtiging worden u binnen 3 werkdagen of uiterlijk 10 werkdagen vóór de eerste collecte per e-mail toegestuurd.';
 
   @override
   String get bacsUnderstoodNotice =>
@@ -315,7 +315,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get bacsVerifyBody =>
-      'Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.\n \n\n De bedrijfsnaam die op je transactie zal te zien zijn is \'Givt Ltd.\'.';
+      'Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.\n\nDe bedrijfsnaam die op je transactie zal te zien zijn is \'Givt Ltd.\'.';
 
   @override
   String get bacsReadDdGuarantee => 'Lees de incasso garantie';
@@ -723,7 +723,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get slimPayInformationPart2 =>
-      'Er wordt alleen geïncasseerd, wanneer je zelf een bedrag geeft met Givt.\n \n\nOmdat we met een machtiging werken, is het eventueel mogelijk om achteraf een gift te herroepen.';
+      'We incasseren alleen wanneer je ervoor kiest om te geven. Omdat we met machtigingen werken, heb je ook de optie om een gift later te herroepen als dat nodig is.';
 
   @override
   String get unregister => 'Account opzeggen';
@@ -2484,4 +2484,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String reviewDonationsProcessedDescription(Object amount, Object days) {
     return 'We schrijven $amount in één keer af binnen $days werkdagen. Bekijk de status in je giftenoverzicht.';
   }
+
+  @override
+  String get signMandateTitle => 'Machtiging tekenen';
 }

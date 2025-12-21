@@ -6,15 +6,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
-import 'package:givt_app/features/registration/widgets/widgets.dart';
+import 'package:givt_app/features/registration/widgets/accept_policy_row.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/dialogs/fun_faq_bottom_sheet.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/utils/color_schemes.g.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -54,9 +56,17 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final locals = AppLocalizations.of(context);
-    final size = MediaQuery.sizeOf(context);
 
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
@@ -83,17 +93,12 @@ class _SignUpPageState extends State<SignUpPage> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: RegistrationAppBar(
+        return FunScaffold(
+          appBar: FunTopAppBar.white(
+            title: locals.personalInfo,
             actions: [
               IconButton(
-                onPressed: () => showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  backgroundColor: AppTheme.givtBlue,
-                  builder: (_) => const FAQBottomSheet(),
-                ),
+                onPressed: () => const FunFAQBottomSheet().show(context),
                 icon: const Icon(
                   Icons.question_mark_outlined,
                   size: 26,
@@ -101,24 +106,41 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(16),
-            child: isLoading
-                ? _buildLoadingState()
-                : CustomScrollView(
-                    slivers: <Widget>[
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Column(
-                          children: [
-                            _buildSignUpForm(locals, size),
-                            const Spacer(),
-                            _buildBottomWidgetGroup(locals, size),
-                          ],
-                        ),
-                      ),
-                    ],
+          floatingActionButton: FunButton(
+            onTap: _isEnabled ? _register : null,
+            isDisabled: !_isEnabled,
+            isLoading: isLoading,
+            text: locals.next,
+            analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+          ),
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
                   ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      children: [
+                        _buildSignUpForm(locals),
+                        const Spacer(),
+                        const SizedBox(height: 16),
+                        AcceptPolicyRow(
+                          onTap: (value) {
+                            setState(() {
+                              _acceptPolicy = value!;
+                            });
+                          },
+                          checkBoxValue: _acceptPolicy,
+                        ),
+                        const SizedBox(height: 80),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
         );
       },
@@ -135,6 +157,7 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         isLoading = false;
       });
+      return;
     }
     unawaited(
       AnalyticsHelper.logEvent(
@@ -146,13 +169,13 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
     context.read<RegistrationBloc>().add(
-          RegistrationPasswordSubmitted(
-            email: _emailController.text,
-            password: _passwordController.text,
-            firstName: _firstNameController.text,
-            lastName: _lastNameController.text,
-          ),
-        );
+      RegistrationPasswordSubmitted(
+        email: _emailController.text,
+        password: _passwordController.text,
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+      ),
+    );
     setState(() {
       isLoading = false;
     });
@@ -160,61 +183,40 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool get _isEnabled {
     if (isLoading) return false;
-    if (_formKey.currentState == null) return false;
-    if (_acceptPolicy == true && _formKey.currentState!.validate()) return true;
-    return false;
+    if (_acceptPolicy != true) return false;
+
+    final firstName = _firstNameController.text;
+    final lastName = _lastNameController.text;
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    if (firstName.isEmpty || !Util.nameFieldsRegEx.hasMatch(firstName)) {
+      return false;
+    }
+    if (lastName.isEmpty || !Util.nameFieldsRegEx.hasMatch(lastName)) {
+      return false;
+    }
+    if (email.isEmpty || !Util.emailRegEx.hasMatch(email)) {
+      return false;
+    }
+    if (password.isEmpty ||
+        password.length < 7 ||
+        !password.contains(RegExp('[0-9]')) ||
+        !password.contains(RegExp('[A-Z]'))) {
+      return false;
+    }
+
+    return true;
   }
 
-  Widget _buildLoadingState() {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomWidgetGroup(
-    AppLocalizations locals,
-    Size size,
-  ) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 30),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AcceptPolicyRow(
-            onTap: (value) {
-              setState(() {
-                _acceptPolicy = value!;
-              });
-            },
-            checkBoxValue: _acceptPolicy,
-          ),
-          ElevatedButton(
-            onPressed: _isEnabled ? _register : null,
-            style: ElevatedButton.styleFrom(
-              disabledBackgroundColor: Colors.grey,
-            ),
-            child: Text(
-              locals.next,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSignUpForm(AppLocalizations locals, Size size) {
+  Widget _buildSignUpForm(AppLocalizations locals) {
     return Form(
       key: _formKey,
       child: AutofillGroup(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextFormField(
+            OutlinedTextFormField(
               controller: _firstNameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -225,28 +227,19 @@ class _SignUpPageState extends State<SignUpPage> {
                 }
                 return null;
               },
-              textInputAction: TextInputAction.next,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
+              onChanged: (value) => setState(() {}),
               autofillHints: const [AutofillHints.givenName],
-              style:
-                  Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).firstName,
-                errorStyle: const TextStyle(
-                  height: 0,
-                ),
-              ),
+              hintText: locals.firstName,
               keyboardType: TextInputType.name,
               textCapitalization: TextCapitalization.words,
+              errorStyle: const TextStyle(
+                height: 0.01,
+              ),
             ),
             const SizedBox(height: 16),
-            TextFormField(
+            OutlinedTextFormField(
               controller: _lastNameController,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
+              onChanged: (value) => setState(() {}),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return '';
@@ -256,27 +249,20 @@ class _SignUpPageState extends State<SignUpPage> {
                 }
                 return null;
               },
-              textInputAction: TextInputAction.next,
               autofillHints: const [AutofillHints.familyName],
-              style:
-                  Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).surname,
-                errorStyle: const TextStyle(
-                  height: 0,
-                ),
-              ),
+              hintText: locals.surname,
               keyboardType: TextInputType.name,
               textCapitalization: TextCapitalization.words,
+              errorStyle: const TextStyle(
+                height: 0.01,
+              ),
             ),
             const SizedBox(height: 16),
-            TextFormField(
+            OutlinedTextFormField(
               enabled: widget.email.isEmpty,
               readOnly: widget.email.isNotEmpty,
               controller: _emailController,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
+              onChanged: (value) => setState(() {}),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return context.l10n.invalidEmail;
@@ -286,31 +272,18 @@ class _SignUpPageState extends State<SignUpPage> {
                 }
                 return null;
               },
-              textInputAction: TextInputAction.next,
               autofillHints: const [
                 AutofillHints.email,
                 AutofillHints.username,
               ],
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontSize: 16,
-                    color: widget.email.isNotEmpty
-                        ? Colors.grey
-                        : lightColorScheme.primary,
-                  ),
-              decoration: InputDecoration(
-                hintText: context.l10n.email,
-                errorStyle: const TextStyle(
-                  height: 0,
-                ),
-              ),
+              hintText: context.l10n.email,
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 16),
-            TextFormField(
+            OutlinedTextFormField(
               controller: _passwordController,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
+              scrollPadding: const EdgeInsets.only(bottom: 150),
+              onChanged: (value) => setState(() {}),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return '';
@@ -331,29 +304,25 @@ class _SignUpPageState extends State<SignUpPage> {
                 AutofillHints.newPassword,
               ],
               obscureText: _obscureText,
-              textInputAction: TextInputAction.next,
-              style:
-                  Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).password,
-                errorStyle: const TextStyle(
-                  height: 0,
+              hintText: locals.password,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
               ),
               keyboardType: TextInputType.visiblePassword,
+              errorStyle: const TextStyle(
+                height: 0.01,
+              ),
             ),
             const SizedBox(height: 16),
-            Text(
+            BodySmallText(
               locals.passwordRule,
               textAlign: TextAlign.left,
             ),

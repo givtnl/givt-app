@@ -17,14 +17,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get slimPayInformation =>
-      'Wir möchten, dass du Givt so einfach wie möglich nutzen kannst.';
+      'Um das Geben so einfach wie möglich zu machen, bitten wir dich, ein SEPA-Mandat zu unterschreiben. Das musst du nur einmal tun.';
 
   @override
   String get buttonContinue => 'Continue';
 
   @override
   String get slimPayInfoDetail =>
-      'Givt arbeitet bei der Ausführung der Transaktionen mit Better World Payments zusammen. Better World Payments ist spezialisiert auf die Abwicklung von Mandaten und automatischen Geldüberweisungen auf digitalen Plattformen. Better World Payments führt diese Aufträge für Givt zu den niedrigsten Preisen auf diesem Markt und mit hoher Geschwindigkeit aus.\n\n Better World Payments ist ein idealer Partner für Givt, weil sie das bargeldlose Spenden sehr einfach und sicher machen. \n \n Das Geld wird auf einem Better World Payments-Konto gesammelt. \n Givt wird sicherstellen, dass das Geld korrekt ausgegeben wird.';
+      'Givt arbeitet bei der Ausführung der Transaktionen mit Better World Payments zusammen. Better World Payments ist spezialisiert auf die Abwicklung von Mandaten und automatischen Geldüberweisungen auf digitalen Plattformen. Better World Payments führt diese Aufträge für Givt zu den niedrigsten Preisen auf diesem Markt und mit hoher Geschwindigkeit aus.\n\nBetter World Payments ist ein idealer Partner für Givt, weil sie das bargeldlose Spenden sehr einfach und sicher machen. \n\nDas Geld wird auf einem Better World Payments-Konto gesammelt. \nGivt wird sicherstellen, dass das Geld korrekt ausgegeben wird.';
 
   @override
   String get slimPayInfoDetailTitle => 'Was ist Better World Payments?`';
@@ -305,7 +305,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get bacsSetupBody =>
-      'Du unterzeichnest eine pauschale Einzugsermächtigung, wir belasten jedoch dein Konto nur, falls du die Givt App zu spenden benutzt.\n \n\n Indem du fortfährst, erklärst du, dass du der Kontoinhaber bist und die einzige Person, die zur Ermächtigung von Belastungen von diesem Konto berechtigt ist.\n \n\n Die Details der Einzugsermächtigung werden dir innerhalb von 3 Werktagen oder spätestens 10 Werktage vor der ersten Einziehung per E-Mail zugesandt.';
+      'Du unterzeichnest eine pauschale Einzugsermächtigung, wir belasten jedoch dein Konto nur, falls du die Givt App zu spenden benutzt.\n\nIndem du fortfährst, erklärst du, dass du der Kontoinhaber bist und die einzige Person, die zur Ermächtigung von Belastungen von diesem Konto berechtigt ist.\n\nDie Details der Einzugsermächtigung werden dir innerhalb von 3 Werktagen oder spätestens 10 Werktage vor der ersten Einziehung per E-Mail zugesandt.';
 
   @override
   String get bacsUnderstoodNotice =>
@@ -316,7 +316,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get bacsVerifyBody =>
-      'Wenn einer der oben genannten Punkte nicht korrekt ist, brich die Registrierung ab und ändere deine \"persönlichen Daten\".\n \n\n Der Firmenname, der auf Ihrem Kontoauszug auf der Lastschrift erscheint, lautet Givt B.V.';
+      'Wenn einer der oben genannten Punkte nicht korrekt ist, brich die Registrierung ab und ändere deine \"persönlichen Daten\".\n\nDer Firmenname, der auf Ihrem Kontoauszug auf der Lastschrift erscheint, lautet Givt B.V.';
 
   @override
   String get bacsReadDdGuarantee => 'Lastschriftgarantie lesen';
@@ -727,7 +727,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get slimPayInformationPart2 =>
-      'Deshalb bitten wir dich diesmal, ein SEPA eMandate zu unterzeichnen.\n \n\n Da wir mit Mandaten arbeiten, hast du die Möglichkeit, deine Spende ggf. zu widerrufen, wenn du dies wünschst.';
+      'Wir buchen nur ab, wenn du dich entscheidest zu geben. Da wir mit Mandaten arbeiten, hast du die Möglichkeit, eine Spende später zu widerrufen, falls nötig.';
 
   @override
   String get unregister => 'Account löschen';
@@ -2495,4 +2495,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String reviewDonationsProcessedDescription(Object amount, Object days) {
     return 'Wir buchen $amount in einer Summe innerhalb von $days Werktagen ab. Überprüfe den Status in der Spendenhistorie.';
   }
+
+  @override
+  String get signMandateTitle => 'Mandat unterschreiben';
 }
