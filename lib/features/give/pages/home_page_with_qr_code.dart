@@ -181,7 +181,7 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
           listener: (context, state) {
             // Needs registration dialog
             if (state is RemoteDataSourceSyncSuccess) {
-              if (!widget.auth.user.needRegistration ||
+              if (!widget.auth.user.needRegistration &&
                   widget.auth.user.mandateSigned) {
                 return;
               }

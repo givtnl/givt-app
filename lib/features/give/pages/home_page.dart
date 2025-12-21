@@ -340,7 +340,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
                     // Needs registration dialog
                     if (state is RemoteDataSourceSyncSuccess) {
-                      if (!auth.user.needRegistration ||
+                      if (!auth.user.needRegistration &&
                           auth.user.mandateSigned) {
                         return;
                       }
