@@ -87,7 +87,7 @@
   "sortCodePlaceholder": "Código de clasificación",
   "bankAccountNumberPlaceholder": "Número de cuenta bancaria",
   "bacsSetupTitle": "Configurando la instrucción de domiciliación bancaria",
-  "bacsSetupBody": "Está firmando una domiciliación bancaria incidental, sólo debitaremos de su cuenta cuando utilice la aplicación Givt para hacer una donación.\n \n\n Al continuar, usted acepta que es el titular de la cuenta y es la única persona requerida para autorizar los débitos de esta cuenta.\n \n\n Los detalles de su mandato de instrucción de domiciliación bancaria se le enviarán por correo electrónico en un plazo de 3 días hábiles o, a más tardar, 10 días hábiles antes del primer cobro.",
+  "bacsSetupBody": "Está firmando una domiciliación bancaria incidental, sólo debitaremos de su cuenta cuando utilice la aplicación Givt para hacer una donación.\n\nAl continuar, usted acepta que es el titular de la cuenta y es la única persona requerida para autorizar los débitos de esta cuenta.\n\nLos detalles de su mandato de instrucción de domiciliación bancaria se le enviarán por correo electrónico en un plazo de 3 días hábiles o, a más tardar, 10 días hábiles antes del primer cobro.",
   "bacsUnderstoodNotice": "He leído y entendido el aviso previo",
   "bacsVerifyTitle": "Verifica tus datos",
   "bacsVerifyBody": "Si alguno de los datos anteriores es incorrecto, por favor, anula el registro y cambia tu 'Información personal'\n \n\n El nombre de la empresa que aparecerá en su extracto bancario contra la domiciliación bancaria será Givt Ltd.",

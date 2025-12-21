@@ -87,7 +87,7 @@
   "sortCodePlaceholder": "Sort code",
   "bankAccountNumberPlaceholder": "Bank account number",
   "bacsSetupTitle": "Setting up Direct Debit Instruction",
-  "bacsSetupBody": "You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n \n\n By continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n \n\n The details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.",
+  "bacsSetupBody": "You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n\nBy continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n\nThe details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.",
   "bacsUnderstoodNotice": "I have read and understood the advance notice",
   "bacsVerifyTitle": "Verify your details",
   "bacsVerifyBody": "If any of the above is incorrect, please abort the registration and change your 'Personal information'\n \n\n The company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.",
