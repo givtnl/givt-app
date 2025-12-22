@@ -139,7 +139,7 @@ class FunBottomSheet extends StatelessWidget {
     if (primaryButton == null) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 16),
       child: primaryButton,
     );
   }

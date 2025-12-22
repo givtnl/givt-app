@@ -5,13 +5,9 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "Queremos que su experiencia con Givt sea lo más agradable posible.",
-  "@slimPayInformation": {
-    "description": "Alleen wanneer je zelf een bedrag geeft \n met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.",
-    "type": "text"
-  },
+  "slimPayInformation": "Para que dar sea lo más sencillo posible, te pedimos que firmes un mandato SEPA. Solo necesitas hacer esto una vez.",
   "buttonContinue": "Continuar",
-  "slimPayInfoDetail": "Givt trabaja junto con Better World Payments para ejecutar las transacciones. Better World Payments se especializa en la gestión de mandatos y transferencias automáticas de dinero en plataformas digitales. Better World Payments ejecuta estas solicitudes para Givt a las tarifas más bajas del mercado y a gran velocidad.\n \n\nBetter World Payments es un socio ideal para Givt porque facilita mucho la donación sin efectivo de forma segura. \n \n\n El dinero se recogerá en una cuenta de Better World Payments. \n Givt se asegurará de que el dinero se distribuya correctamente.",
+  "slimPayInfoDetail": "Givt trabaja junto con Better World Payments para ejecutar las transacciones. Better World Payments se especializa en la gestión de mandatos y transferencias automáticas de dinero en plataformas digitales. Better World Payments ejecuta estas solicitudes para Givt a las tarifas más bajas del mercado y a gran velocidad.\n\nBetter World Payments es un socio ideal para Givt porque facilita mucho la donación sin efectivo de forma segura. \n\nEl dinero se recogerá en una cuenta de Better World Payments. \nGivt se asegurará de que el dinero se distribuya correctamente.",
   "slimPayInfoDetailTitle": "¿Qué es Better World Payments?",
   "unregisterButton": "Eliminar mi cuenta",
   "unregisterUnderstood": "Entendido",
@@ -91,10 +87,10 @@
   "sortCodePlaceholder": "Código de clasificación",
   "bankAccountNumberPlaceholder": "Número de cuenta bancaria",
   "bacsSetupTitle": "Configurando la instrucción de domiciliación bancaria",
-  "bacsSetupBody": "Está firmando una domiciliación bancaria incidental, sólo debitaremos de su cuenta cuando utilice la aplicación Givt para hacer una donación.\n \n\n Al continuar, usted acepta que es el titular de la cuenta y es la única persona requerida para autorizar los débitos de esta cuenta.\n \n\n Los detalles de su mandato de instrucción de domiciliación bancaria se le enviarán por correo electrónico en un plazo de 3 días hábiles o, a más tardar, 10 días hábiles antes del primer cobro.",
+  "bacsSetupBody": "Está firmando una domiciliación bancaria incidental, sólo debitaremos de su cuenta cuando utilice la aplicación Givt para hacer una donación.\n\nAl continuar, usted acepta que es el titular de la cuenta y es la única persona requerida para autorizar los débitos de esta cuenta.\n\nLos detalles de su mandato de instrucción de domiciliación bancaria se le enviarán por correo electrónico en un plazo de 3 días hábiles o, a más tardar, 10 días hábiles antes del primer cobro.",
   "bacsUnderstoodNotice": "He leído y entendido el aviso previo",
   "bacsVerifyTitle": "Verifica tus datos",
-  "bacsVerifyBody": "Si alguno de los datos anteriores es incorrecto, por favor, anula el registro y cambia tu 'Información personal'\n \n\n El nombre de la empresa que aparecerá en su extracto bancario contra la domiciliación bancaria será Givt Ltd.",
+  "bacsVerifyBody": "Si alguno de los datos anteriores es incorrecto, por favor, anula el registro y cambia tu 'Información personal'\n\nEl nombre de la empresa que aparecerá en su extracto bancario contra la domiciliación bancaria será Givt Ltd.",
   "bacsReadDdGuarantee": "Leer la garantía de domiciliación bancaria",
   "bacsDdGuarantee": "- La garantía es ofrecida por todos los bancos y cajas de ahorros que aceptan instrucciones para pagar las domiciliaciones bancarias.\n - Si hay algún cambio en la forma en que se utiliza esta instrucción incidental de domiciliación bancaria, la organización le notificará (normalmente 10 días hábiles) antes de que se cargue en su cuenta o según lo acordado. \n - Si se produce un error en el pago de su domiciliación bancaria, por parte de la organización, o de su banco o caja de ahorros, tiene derecho a un reembolso completo e inmediato del importe pagado por su banco o caja de ahorros.\n - Si recibe un reembolso al que no tiene derecho, debe devolverlo cuando la organización se lo solicite.\n - Puede cancelar una domiciliación bancaria en cualquier momento poniéndose en contacto con su banco o caja de ahorros. Es posible que se requiera una confirmación por escrito. Por favor, notifique también a la organización.",
   "bacsAdvanceNotice": "Está firmando un mandato de instrucción de domiciliación bancaria incidental y no recurrente. Sólo a petición suya se ejecutarán débitos por parte de la organización. Se aplican todas las salvaguardias y garantías normales de la domiciliación bancaria. No se pueden realizar cambios en el uso de esta instrucción de domiciliación bancaria sin notificarle con al menos cinco (5) días hábiles de antelación al cargo en su cuenta.\n En caso de error, tiene derecho a un reembolso inmediato de su banco o caja de ahorros. \n Tiene derecho a cancelar una instrucción de domiciliación bancaria en cualquier momento escribiendo a su banco o caja de ahorros, con una copia a nosotros.",
@@ -463,11 +459,7 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "Por eso le pedimos que firme por única vez un mandato electrónico SEPA.\n \n\n Como trabajamos con mandatos, tiene la opción de revocar su donación si así lo desea.",
-  "@slimPayInformationPart2": {
-    "description": "SlimPay informatie onder het Givy icoon",
-    "type": "text"
-  },
+  "slimPayInformationPart2": "Solo retiraremos fondos cuando tú elijas dar. Al usar mandatos, también tienes la opción de revocar una donación más tarde si es necesario.",
   "unregister": "Cancelar cuenta",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1121,5 +1113,6 @@
   "reviewDonationsTitle": "Review your donations",
   "reviewDonationsDescription": "Now that your mandate is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 pm today.",
   "reviewDonationsProcessedTitle": "Your donations are being processed",
-  "reviewDonationsProcessedDescription": "We’ll collect {amount} in one transaction within {days} business days. Check the status in donation history."
+  "reviewDonationsProcessedDescription": "We’ll collect {amount} in one transaction within {days} business days. Check the status in donation history.",
+  "signMandateTitle": "Sign mandate"
 }

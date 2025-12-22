@@ -267,7 +267,7 @@ class _ChangeAmountPresetsBottomSheetState
               amountLimit: amountLimit,
               lowerLimit: lowerLimit,
               currency: currency,
-              onChanged: (_) => _formKey.currentState!.validate(),
+              onChanged: (_) => setState(() {}),
             ),
             const SizedBox(height: 20),
             PresetFormField(
@@ -275,7 +275,7 @@ class _ChangeAmountPresetsBottomSheetState
               amountLimit: amountLimit,
               lowerLimit: lowerLimit,
               currency: currency,
-              onChanged: (_) => _formKey.currentState!.validate(),
+              onChanged: (_) => setState(() {}),
             ),
             const SizedBox(height: 20),
             PresetFormField(
@@ -283,7 +283,7 @@ class _ChangeAmountPresetsBottomSheetState
               amountLimit: amountLimit,
               lowerLimit: lowerLimit,
               currency: currency,
-              onChanged: (_) => _formKey.currentState!.validate(),
+              onChanged: (_) => setState(() {}),
             ),
             const SizedBox(height: 24),
           ],

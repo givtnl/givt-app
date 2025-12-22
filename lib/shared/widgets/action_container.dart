@@ -25,9 +25,11 @@ class ActionContainer extends StatefulWidget {
     super.key,
     this.onLongPress,
     this.onLongPressUp,
+    this.onDisabledTap,
   });
 
   final VoidCallback? onTap;
+  final VoidCallback? onDisabledTap;
   final VoidCallback? onTapCancel;
   final VoidCallback? onTapUp;
   final VoidCallback? onTapDown;
@@ -78,7 +80,20 @@ class _ActionContainerState extends State<ActionContainer> {
     borderColor =
         widget.isDisabled ? AppTheme.givtGraycece : widget.borderColor;
     return widget.isDisabled
-        ? _buildContainer(widget.child)
+        ? widget.onDisabledTap != null
+            ? GestureDetector(
+                onTap: () {
+                  unawaited(
+                    AnalyticsHelper.logEvent(
+                      eventName: widget.analyticsEvent.name,
+                      eventProperties: widget.analyticsEvent.parameters,
+                    ),
+                  );
+                  widget.onDisabledTap?.call();
+                },
+                child: _buildContainer(widget.child),
+              )
+            : _buildContainer(widget.child)
         : GestureDetector(
             onLongPress: widget.onLongPress == null
                 ? null

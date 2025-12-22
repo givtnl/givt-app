@@ -35,6 +35,7 @@ class FunButton extends StatelessWidget {
     this.onLongPressUp,
     this.size = FunButtonSize.large,
     this.funButtonBadge,
+    this.onDisabledTap,
   });
 
   factory FunButton.secondary({
@@ -164,6 +165,7 @@ class FunButton extends StatelessWidget {
   final FunButtonSize size;
   final AnalyticsEvent analyticsEvent;
   final FunButtonBadge? funButtonBadge;
+  final VoidCallback? onDisabledTap;
 
   @override
   Widget build(BuildContext context) {
@@ -189,6 +191,7 @@ class FunButton extends StatelessWidget {
         isPressedDown: isPressedDown,
         borderSize: fullBorder ? 2 : 0.01,
         baseBorderSize: 4,
+        onDisabledTap: onDisabledTap,
         child: Container(
           height: (size.isLarge ? 58 : 44) - (fullBorder ? 2 : 0),
           width: size.isLarge ? double.infinity : null,

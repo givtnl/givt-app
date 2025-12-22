@@ -9,10 +9,12 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/home_page_view.dart';
+import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 
@@ -25,6 +27,7 @@ class HomePageWithQRCode extends StatefulWidget {
     required this.afterGivingRedirection,
     required this.onPageChanged,
     required this.auth,
+    required this.mandatePopupDismissalTracker,
     super.key,
   });
 
@@ -35,6 +38,7 @@ class HomePageWithQRCode extends StatefulWidget {
   final String afterGivingRedirection;
   final void Function(int) onPageChanged;
   final AuthState auth;
+  final MandatePopupDismissalTracker mandatePopupDismissalTracker;
 
   @override
   State<HomePageWithQRCode> createState() => _HomePageWithQRCodeState();
@@ -177,12 +181,16 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
           listener: (context, state) {
             // Needs registration dialog
             if (state is RemoteDataSourceSyncSuccess) {
-              if (!widget.auth.user.needRegistration ||
+              if (!widget.auth.user.needRegistration &&
                   widget.auth.user.mandateSigned) {
                 return;
               }
               // TODO: Not show over biometrics
-              // Registration dialog would be shown here if needed
+              NeedsRegistrationDialog.show(
+                context,
+                mandatePopupDismissalTracker:
+                    widget.mandatePopupDismissalTracker,
+              );
             }
           },
         ),

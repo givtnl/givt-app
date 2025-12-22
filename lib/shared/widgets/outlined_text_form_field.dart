@@ -28,6 +28,7 @@ class OutlinedTextFormField extends StatelessWidget {
     this.validator,
     this.onTapOutside,
     this.smallFont = false,
+    this.scrollPadding = const EdgeInsets.all(20),
     super.key,
   });
 
@@ -53,6 +54,7 @@ class OutlinedTextFormField extends StatelessWidget {
   final TextCapitalization textCapitalization;
   final void Function(PointerDownEvent)? onTapOutside;
   final bool smallFont;
+  final EdgeInsets scrollPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +63,7 @@ class OutlinedTextFormField extends StatelessWidget {
       controller: controller,
       initialValue: controller == null ? initialValue : null,
       onChanged: onChanged,
+      scrollPadding: scrollPadding,
       style: smallFont
           ? const FamilyAppTheme().toThemeData().textTheme.bodySmall?.copyWith(
               color: FamilyAppTheme.primary20,

@@ -5,13 +5,9 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "We want your Givt experience to be as smooth as possible.",
-  "@slimPayInformation": {
-    "description": "Alleen wanneer je zelf een bedrag geeft \n met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.",
-    "type": "text"
-  },
+  "slimPayInformation": "To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.",
   "buttonContinue": "Continue",
-  "slimPayInfoDetail": "Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n \n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n \n\nThe money will be collected in a Better World Payments account. \n Givt will ensure that the money is distributed correctly.",
+  "slimPayInfoDetail": "Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.",
   "slimPayInfoDetailTitle": "What is Better World Payments?",
   "unregisterButton": "Terminate my account",
   "unregisterUnderstood": "I understand",
@@ -91,10 +87,10 @@
   "sortCodePlaceholder": "Sort code",
   "bankAccountNumberPlaceholder": "Bank account number",
   "bacsSetupTitle": "Setting up Direct Debit Instruction",
-  "bacsSetupBody": "You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n \n\n By continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n \n\n The details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.",
+  "bacsSetupBody": "You are signing an incidental direct debit, we will only debit from your account when you use the Givt app to make a donation.\n\nBy continuing, you agree that you are the account holder and are the only person required to authorise debits from this account.\n\nThe details of your Direct Debit Instruction mandate will be sent to you by e-mail within 3 working days or no later than 10 working days before the first collection.",
   "bacsUnderstoodNotice": "I have read and understood the advance notice",
   "bacsVerifyTitle": "Verify your details",
-  "bacsVerifyBody": "If any of the above is incorrect, please abort the registration and change your 'Personal information'\n \n\n The company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.",
+  "bacsVerifyBody": "If any of the above is incorrect, please abort the registration and change your 'Personal information'\n \nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.",
   "bacsReadDdGuarantee": "Read Direct Debit Guarantee",
   "bacsDdGuarantee": "- The Guarantee is offered by all banks and building societies that accept instructions to pay Direct Debits.\n - If there are any changes to the way this incidental Direct Debit Instruction is used, the organisation will notify you (normally 10 working days) in advance of your account being debited or as otherwise agreed. \n - If an error is made in the payment of your Direct Debit, by the organisation, or your bank or building society, you are entitled to a full and immediate refund of the amount paid from your bank or building society.\n - If you receive a refund you are not entitled to, you must pay it back when the organisation asks you to.\n - You can cancel a Direct Debit at any time by simply contacting your bank or building society. Written confirmation may be required. Please also notify the organisation.",
   "bacsAdvanceNotice": "You are signing an incidental, non-recurring Direct Debit Instruction mandate. Only on your specific request will debits be executed by the organisation. All the normal Direct Debit safeguards and guarantees apply. No changes in the use of this Direct Debit Instruction can be made without notifying you at least five (5) working days in advance of your account being debited.\n In the event of any error, you are entitled to an immediate refund from your bank or building society. \n You have the right to cancel a Direct Debit Instruction at any time by writing to your bank or building society, with a copy to us.",
@@ -463,11 +459,7 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "That's why we ask you this one time to sign a SEPA eMandate.\n \n\n Since we're working with mandates, you have the option to revoke your donation if you should wish to do so.",
-  "@slimPayInformationPart2": {
-    "description": "SlimPay informatie onder het Givy icoon",
-    "type": "text"
-  },
+  "slimPayInformationPart2": "We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.",
   "unregister": "Terminate account",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1121,5 +1113,6 @@
   "reviewDonationsTitle": "Revisa tus donaciones",
   "reviewDonationsDescription": "Ahora que tu autorización está activa, procesaremos las siguientes donaciones. Puedes modificarlas en tu historial de donaciones hasta las 8:00 PM de hoy.",
   "reviewDonationsProcessedTitle": "Tus donaciones se están procesando",
-  "reviewDonationsProcessedDescription": "Cobraremos {amount} en una sola transacción dentro de {days} días hábiles. Revisa el estado en el historial de donaciones."
+  "reviewDonationsProcessedDescription": "Cobraremos {amount} en una sola transacción dentro de {days} días hábiles. Revisa el estado en el historial de donaciones.",
+  "signMandateTitle": "Firmar mandato"
 }

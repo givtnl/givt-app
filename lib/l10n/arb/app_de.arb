@@ -5,13 +5,9 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "Wir möchten, dass du Givt so einfach wie möglich nutzen kannst.",
-  "@slimPayInformation": {
-    "description": "Alleen wanneer je zelf een bedrag geeft \n met Givt, wordt er geïncasseerd. Deze oorspronkelijke tekst even aangepast om te checken of de tekst er dan beter uit ziet op het scherm.",
-    "type": "text"
-  },
+  "slimPayInformation": "Um das Geben so einfach wie möglich zu machen, bitten wir dich, ein SEPA-Mandat zu unterschreiben. Das musst du nur einmal tun.",
   "buttonContinue": "Continue",
-  "slimPayInfoDetail": "Givt arbeitet bei der Ausführung der Transaktionen mit Better World Payments zusammen. Better World Payments ist spezialisiert auf die Abwicklung von Mandaten und automatischen Geldüberweisungen auf digitalen Plattformen. Better World Payments führt diese Aufträge für Givt zu den niedrigsten Preisen auf diesem Markt und mit hoher Geschwindigkeit aus.\n\n Better World Payments ist ein idealer Partner für Givt, weil sie das bargeldlose Spenden sehr einfach und sicher machen. \n \n Das Geld wird auf einem Better World Payments-Konto gesammelt. \n Givt wird sicherstellen, dass das Geld korrekt ausgegeben wird.",
+  "slimPayInfoDetail": "Givt arbeitet bei der Ausführung der Transaktionen mit Better World Payments zusammen. Better World Payments ist spezialisiert auf die Abwicklung von Mandaten und automatischen Geldüberweisungen auf digitalen Plattformen. Better World Payments führt diese Aufträge für Givt zu den niedrigsten Preisen auf diesem Markt und mit hoher Geschwindigkeit aus.\n\nBetter World Payments ist ein idealer Partner für Givt, weil sie das bargeldlose Spenden sehr einfach und sicher machen. \n\nDas Geld wird auf einem Better World Payments-Konto gesammelt. \nGivt wird sicherstellen, dass das Geld korrekt ausgegeben wird.",
   "slimPayInfoDetailTitle": "Was ist Better World Payments?`",
   "unregisterButton": "Meinen Account schließen",
   "unregisterUnderstood": "Ich verstehe",
@@ -91,10 +87,10 @@
   "sortCodePlaceholder": "Bankleitzahl",
   "bankAccountNumberPlaceholder": "Kontonummer",
   "bacsSetupTitle": "Einzugsermächtigung erteilen",
-  "bacsSetupBody": "Du unterzeichnest eine pauschale Einzugsermächtigung, wir belasten jedoch dein Konto nur, falls du die Givt App zu spenden benutzt.\n \n\n Indem du fortfährst, erklärst du, dass du der Kontoinhaber bist und die einzige Person, die zur Ermächtigung von Belastungen von diesem Konto berechtigt ist.\n \n\n Die Details der Einzugsermächtigung werden dir innerhalb von 3 Werktagen oder spätestens 10 Werktage vor der ersten Einziehung per E-Mail zugesandt.",
+  "bacsSetupBody": "Du unterzeichnest eine pauschale Einzugsermächtigung, wir belasten jedoch dein Konto nur, falls du die Givt App zu spenden benutzt.\n\nIndem du fortfährst, erklärst du, dass du der Kontoinhaber bist und die einzige Person, die zur Ermächtigung von Belastungen von diesem Konto berechtigt ist.\n\nDie Details der Einzugsermächtigung werden dir innerhalb von 3 Werktagen oder spätestens 10 Werktage vor der ersten Einziehung per E-Mail zugesandt.",
   "bacsUnderstoodNotice": "Ich habe die Hinweise zur Vorankündigung gelesen und verstanden.",
   "bacsVerifyTitle": "Überprüfe deine Daten",
-  "bacsVerifyBody": "Wenn einer der oben genannten Punkte nicht korrekt ist, brich die Registrierung ab und ändere deine \"persönlichen Daten\".\n \n\n Der Firmenname, der auf Ihrem Kontoauszug auf der Lastschrift erscheint, lautet Givt B.V.",
+  "bacsVerifyBody": "Wenn einer der oben genannten Punkte nicht korrekt ist, brich die Registrierung ab und ändere deine \"persönlichen Daten\".\n\nDer Firmenname, der auf Ihrem Kontoauszug auf der Lastschrift erscheint, lautet Givt B.V.",
   "bacsReadDdGuarantee": "Lastschriftgarantie lesen",
   "bacsDdGuarantee": "- Die Garantie wird von allen Banken und Bausparkassen angeboten, die Weisungen zur Zahlung von Lastschriften akzeptieren.\n - Bei Änderungen in der Art und Weise, wie diese beiläufige Lastschriftanweisung verwendet wird, wird Sie das Unternehmen ( in der Regel innerhalb von 10 Werktagen) benachrichtigen, bevor dein Konto belastet wird. \n - Wenn bei der Zahlung deiner Lastschrift durch das Unternehmen oder deiner Bank oder Bausparkasse ein Fehler auftritt, haben Sie Anspruch auf eine vollständige und sofortige Rückerstattung des von der Bank oder Bausparkasse eingezogenen Betrages.\n - Falls du eine Rückerstattung erhältst, auf die du keinen Anspruch hast, bist du verpflichtet diese zurückzahlen, falls die Organisation dazu auffordert.\n - Eine Einzugsermächtigung kannst du jederzeit widerrufen, indem du dich einfach an deine Bank oder Bausparkasse wendest. Eine schriftliche Bestätigung kann erforderlich sein. Bitte benachrichtige dann auch die betreffende Organisation.",
   "bacsAdvanceNotice": "Sie unterschreiben eine fallweise, nicht wiederkehrende Weisung zum Lastschriftverfahren. Nur auf Ihren speziellen Wunsch hin werden Abbuchungen von der Organisation durchgeführt. Es gelten alle üblichen Sicherheitsvorkehrungen und Garantien für Lastschriften. Es können keine Änderungen an der Nutzung dieser Einzugsermächtigung vorgenommen werden, ohne Sie mindestens fünf (5) Werktage vor der Belastung Ihres Kontos zu informieren.\n Im Falle eines Fehlers haben Sie Anspruch auf eine sofortige Rückerstattung durch Ihre Bank oder Bausparkasse. \n Sie haben das Recht, eine Einzugsermächtigung jederzeit schriftlich an Ihre Bank oder Bausparkasse mit einer Kopie an uns zu widerrufen.",
@@ -463,11 +459,7 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "Deshalb bitten wir dich diesmal, ein SEPA eMandate zu unterzeichnen.\n \n\n Da wir mit Mandaten arbeiten, hast du die Möglichkeit, deine Spende ggf. zu widerrufen, wenn du dies wünschst.",
-  "@slimPayInformationPart2": {
-    "description": "SlimPay informatie onder het Givy icoon",
-    "type": "text"
-  },
+  "slimPayInformationPart2": "Wir buchen nur ab, wenn du dich entscheidest zu geben. Da wir mit Mandaten arbeiten, hast du die Möglichkeit, eine Spende später zu widerrufen, falls nötig.",
   "unregister": "Account löschen",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1121,5 +1113,6 @@
   "reviewDonationsTitle": "Überprüfe deine Spenden",
   "reviewDonationsDescription": "Da dein Mandat jetzt aktiv ist, verarbeiten wir die untenstehenden Spenden. Du kannst sie bis heute 20:00 Uhr in deiner Spendenhistorie anpassen.",
   "reviewDonationsProcessedTitle": "Deine Spenden werden verarbeitet",
-  "reviewDonationsProcessedDescription": "Wir buchen {amount} in einer Summe innerhalb von {days} Werktagen ab. Überprüfe den Status in der Spendenhistorie."
+  "reviewDonationsProcessedDescription": "Wir buchen {amount} in einer Summe innerhalb von {days} Werktagen ab. Überprüfe den Status in der Spendenhistorie.",
+  "signMandateTitle": "Mandat unterschreiben"
 }
