@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
@@ -121,7 +121,7 @@ class _OrganisationListFamilyContentState
                           );
                           AnalyticsHelper.logEvent(
                             eventName:
-                                AmplitudeEvents.organisationFavoriteToggled,
+                                AnalyticsEventName.organisationFavoriteToggled,
                             eventProperties: {
                               'organisation_name': organisation.orgName,
                               'is_favorited': false,
@@ -133,7 +133,7 @@ class _OrganisationListFamilyContentState
                           );
                           AnalyticsHelper.logEvent(
                             eventName:
-                                AmplitudeEvents.organisationFavoriteToggled,
+                                AnalyticsEventName.organisationFavoriteToggled,
                             eventProperties: {
                               'organisation_name': organisation.orgName,
                               'is_favorited': true,

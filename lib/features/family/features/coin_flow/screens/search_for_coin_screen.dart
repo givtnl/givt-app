@@ -62,7 +62,7 @@ class SearchForCoinScreen extends StatelessWidget {
 
                             context.pushNamed(pageName);
                           },
-                          analyticsEvent: AmplitudeEvents.assignCoinPressed.toEvent(),
+                          analyticsEvent: AnalyticsEventName.assignCoinPressed.toEvent(),
                         )
                       : null,
             );

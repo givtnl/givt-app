@@ -187,7 +187,7 @@ class SignBacsMandatePage extends StatelessWidget {
                 ),
               ),
               text: locals.bacsReadDdGuarantee,
-              analyticsEvent: AmplitudeEvents.infoGivingAllowanceClicked
+              analyticsEvent: AnalyticsEventName.infoGivingAllowanceClicked
                   .toEvent(),
             ),
             const SizedBox(height: 16),
@@ -202,7 +202,7 @@ class SignBacsMandatePage extends StatelessWidget {
                     ),
               isLoading: registrationState.status == RegistrationStatus.loading,
               text: locals.buttonContinue,
-              analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+              analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
             ),
           ],
         ),

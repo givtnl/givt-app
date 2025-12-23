@@ -73,7 +73,7 @@ class _CameraScreenState extends State<CameraScreen> {
             if (orgState is OrganisationDetailsSetState) {
               log('Organisation is set: ${orgState.collectgroup.name}');
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.qrCodeScanned,
+                eventName: AnalyticsEventName.qrCodeScanned,
                 eventProperties: {
                   'goal_name': orgState.collectgroup.name,
                 },

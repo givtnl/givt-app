@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/child_details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/family/features/edit_child_name/cubit/edit_child_cubit.dart';
@@ -135,7 +135,7 @@ class _EditChildPageState extends State<EditChildPage> {
           floatingActionButton: FunButton(
             onTap: state is! EditChildUploadingState ? _editChild : null,
             text: context.l10n.save,
-            analyticsEvent: AmplitudeEvents.childEditSaveClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName.childEditSaveClicked.toEvent(),
           ),
         );
       },

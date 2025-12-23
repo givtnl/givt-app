@@ -111,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
             isDisabled: !_isEnabled,
             isLoading: isLoading,
             text: locals.next,
-            analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
           ),
           body: LayoutBuilder(
             builder: (context, constraints) {
@@ -161,7 +161,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
+        eventName: AnalyticsEventName.registrationFilledInPersonalInfoSheetFilled,
         eventProperties: {
           'id': context.read<AuthCubit>().state.user.guid,
           'profile_country': _selectedCountry.countryCode,

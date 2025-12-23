@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/bloc/gratitude_goal_commit_cubit.dart';
@@ -110,7 +110,7 @@ class _GratitudeGoalCommitScreenState extends State<GratitudeGoalCommitScreen> {
                             _isButtonLoading = true;
                           });
                         },
-                        analyticsEvent: AmplitudeEvents
+                        analyticsEvent: AnalyticsEventName
                             .gratitudeGoalCommitToThisGoalClicked.toEvent(
                           parameters: {
                             'weeksToFormHabit':

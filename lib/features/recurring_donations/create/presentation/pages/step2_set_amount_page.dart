@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -82,7 +82,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                 icon: const Icon(Icons.close),
                 onPressed: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.cancelClicked,
+                    eventName: AnalyticsEventName.cancelClicked,
                   );
                   const FunModalCloseFlow().show(context);
                 },
@@ -110,7 +110,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                   _cubit.selectFrequency(value);
 
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents
+                    eventName: AnalyticsEventName
                         .recurringStep2SetAmountFrequencySelected,
                     eventProperties: {
                       'Frequency': value.name,
@@ -137,7 +137,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
 
                   AnalyticsHelper.logEvent(
                     eventName:
-                        AmplitudeEvents.recurringStep2SetAmountAmountEntered,
+                        AnalyticsEventName.recurringStep2SetAmountAmountEntered,
                     eventProperties: {
                       'Amount': value,
                     },
@@ -148,7 +148,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               FunButton(
                 text: context.l10n.buttonContinue,
                 isDisabled: !uiModel.isContinueEnabled,
-                analyticsEvent: AmplitudeEvents.recurringStep2SetAmountContinueClicked.toEvent(
+                analyticsEvent: AnalyticsEventName.recurringStep2SetAmountContinueClicked.toEvent(
                   parameters: {
                     AnalyticsHelper.amountKey: uiModel.amount,
                     'frequency': uiModel.selectedFrequency?.name ?? '',

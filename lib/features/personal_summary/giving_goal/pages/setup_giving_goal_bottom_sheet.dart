@@ -59,7 +59,7 @@ class _SetupGivingGoalBottomSheetState
                     .add(const PersonalSummaryGoalRemove());
 
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.removeGivingGoalClicked,
+                  eventName: AnalyticsEventName.removeGivingGoalClicked,
                 );
               },
               child: Text(
@@ -212,7 +212,7 @@ class _SetupGivingGoalBottomSheetState
         );
 
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.givingGoalSaved,
+      eventName: AnalyticsEventName.givingGoalSaved,
       eventProperties: {
         'amount': amountController.text,
         'frequency': frequency,

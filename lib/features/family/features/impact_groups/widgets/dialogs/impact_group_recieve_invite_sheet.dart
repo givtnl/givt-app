@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -37,7 +37,7 @@ class ImpactGroupReceiveInviteSheet extends StatelessWidget {
                   .acceptGroupInvite(groupId: invitedImpactGroup.id);
               context.pop();
             },
-            analyticsEvent: AmplitudeEvents.inviteToImpactGroupAccepted.toEvent(
+            analyticsEvent: AnalyticsEventName.inviteToImpactGroupAccepted.toEvent(
               parameters: {
                 'group_name': invitedImpactGroup.name,
               },

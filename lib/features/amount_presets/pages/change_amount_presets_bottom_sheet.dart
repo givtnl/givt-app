@@ -162,7 +162,7 @@ class _ChangeAmountPresetsBottomSheetState
         onTap: () {
           _updateAmountPresetsStatus(context);
         },
-        analyticsEvent: AmplitudeEvents.onInfoRowClicked.toEvent(
+        analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
           parameters: {
             'action': 'save_presets_status',
           },
@@ -189,7 +189,7 @@ class _ChangeAmountPresetsBottomSheetState
             activeColor: AppTheme.givtLightGreen,
             onChanged: (value) {
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.amountPresetsToggleClicked,
+                eventName: AnalyticsEventName.amountPresetsToggleClicked,
                 eventProperties: {
                   'is_enabled': value,
                 },
@@ -292,7 +292,7 @@ class _ChangeAmountPresetsBottomSheetState
       primaryButton: FunButton(
         text: locals.save,
         onTap: () => _saveAmountPresets(context),
-        analyticsEvent: AmplitudeEvents.amountPresetsSaveClicked.toEvent(
+        analyticsEvent: AnalyticsEventName.amountPresetsSaveClicked.toEvent(
           parameters: {
             'preset_1': _firstPreset.text,
             'preset_2': _secondPreset.text,

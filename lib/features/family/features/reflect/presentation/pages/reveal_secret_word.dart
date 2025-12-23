@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
@@ -143,7 +143,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                 }
               },
               text: 'Next',
-              analyticsEvent: AmplitudeEvents.reflectAndShareReadyClicked.toEvent(),
+              analyticsEvent: AnalyticsEventName.reflectAndShareReadyClicked.toEvent(),
             ),
           ],
         ),
@@ -164,7 +164,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                 });
 
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.reflectAndShareChangeWordClicked,
+                  eventName: AnalyticsEventName.reflectAndShareChangeWordClicked,
                 );
               }
             : null,

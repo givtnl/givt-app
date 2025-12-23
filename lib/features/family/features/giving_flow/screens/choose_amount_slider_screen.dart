@@ -116,7 +116,7 @@ class ChooseAmountSliderScreen extends StatelessWidget {
                                 .read<CreateTransactionCubit>()
                                 .createTransaction(transaction: transaction);
                           },
-                    analyticsEvent: AmplitudeEvents.giveToThisGoalPressed.toEvent(
+                    analyticsEvent: AnalyticsEventName.giveToThisGoalPressed.toEvent(
                       parameters: {
                         AnalyticsHelper.goalKey: collectgroup.name,
                         AnalyticsHelper.amountKey: state.amount,

@@ -32,7 +32,7 @@ jobs:
             echo "PACKAGE_NAME=net.givtapp.droid2" >> $GITHUB_ENV
             echo "FLAVOR=production" >> $GITHUB_ENV
             echo "TRACK=production" >> $GITHUB_ENV
-            echo "AMPLITUDE_KEY=f4fa9ab88de04c56a346aaa36c172a9a" >> $GITHUB_ENV
+            echo "POSTHOG_API_KEY=phc_k8OV4LqiYh91kKdbuzHddYy2KK5yWvA6qI9dsrsQEyS" >> $GITHUB_ENV
             echo "API_URL_US=backend.givt.app" >> $GITHUB_ENV
             echo "API_URL_EU=backend.givtapp.net" >> $GITHUB_ENV
             echo "STRIPE_PK=pk_live_51NGl2uLM5mQffuXIGIt8OSH7HWeo2lqPLyvMJSi3ypUDH7ITn84S4A8sGoFvXpP4DCtoUQFlNdWm5jraqR8Ce0sE00Nb4wDuBW" >> $GITHUB_ENV
@@ -41,7 +41,7 @@ jobs:
             echo "PACKAGE_NAME=net.givtapp.droid2.test" >> $GITHUB_ENV
             echo "FLAVOR=development" >> $GITHUB_ENV
             echo "TRACK=internal" >> $GITHUB_ENV
-            echo "AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e" >> $GITHUB_ENV
+            echo "POSTHOG_API_KEY=phc_TIgcrA7CHgdVMP6wEai43xjKXrdM2s3FBYBrL9atrcN" >> $GITHUB_ENV
             echo "API_URL_US=dev-backend.givt.app" >> $GITHUB_ENV
             echo "API_URL_EU=dev-backend.givtapp.net" >> $GITHUB_ENV
             echo "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1" >> $GITHUB_ENV
@@ -91,7 +91,7 @@ jobs:
           PACKAGE_NAME: ${{ env.PACKAGE_NAME }}
           API_URL_US: ${{env.API_URL_US}}
           API_URL_EU: ${{env.API_URL_EU}}
-          AMPLITUDE_KEY: ${{env.AMPLITUDE_KEY}}
+          POSTHOG_API_KEY: ${{env.POSTHOG_API_KEY}}
           FLAVOR: ${{ env.FLAVOR }}
           TRACK: ${{ env.TRACK }}
           STRIPE_PK: ${{ env.STRIPE_PK }}

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/pages/edit_avatar_screen.dart';
@@ -61,7 +61,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
     );
     if (trackEvent) {
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.editAvatarPictureClicked,
+        eventName: AnalyticsEventName.editAvatarPictureClicked,
       );
     }
   }
@@ -79,7 +79,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
 
             // Track analytics event
             AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.parentGiveTileClicked,
+              eventName: AnalyticsEventName.parentGiveTileClicked,
             );
           },
           borderColor: ColorCombo.secondary.borderColor,
@@ -87,7 +87,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
           textColor: ColorCombo.secondary.textColor,
           iconPath: 'assets/family/images/give_tile.svg',
           titleBig: 'Give',
-          analyticsEvent: AmplitudeEvents.parentGiveTileClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.parentGiveTileClicked.toEvent(),
         ),
       );
 
@@ -97,7 +97,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
       child: GenerosityHuntButton(
-        analyticsEvent: AmplitudeEvents.parentGenerosityHuntButtonClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.parentGenerosityHuntButtonClicked.toEvent(),
         onPressed: () {
           // Set the current profile as active and navigate to the game
           context.read<ProfilesCubit>().setActiveProfile(
@@ -143,7 +143,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                 FunButton.secondary(
                   onTap: () => _onEditAvatarClicked(context, false),
                   text: 'Edit avatar',
-                  analyticsEvent: AmplitudeEvents.editProfilePictureClicked.toEvent(),
+                  analyticsEvent: AnalyticsEventName.editProfilePictureClicked.toEvent(),
                   size: FunButtonSize.small,
                   leftIcon: FontAwesomeIcons.userPen,
                   funButtonBadge: FunButtonBadge(

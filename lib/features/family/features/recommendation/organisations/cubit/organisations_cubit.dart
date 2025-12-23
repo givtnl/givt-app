@@ -32,7 +32,7 @@ class OrganisationsCubit extends Cubit<OrganisationsState> {
 
     try {
       await AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.showCharitiesPressed,
+        eventName: AnalyticsEventName.showCharitiesPressed,
         eventProperties: {
           AnalyticsHelper.interestKey:
               '${interests.map((e) => e.displayText).toList()}',

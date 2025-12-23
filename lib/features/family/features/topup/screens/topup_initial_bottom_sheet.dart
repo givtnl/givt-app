@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
@@ -66,7 +66,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
               semanticsLabel: 'recurringCheckbox',
               label: 'Turn this into a monthly recurring amount',
               value: recurring,
-              analyticsEvent: AmplitudeEvents.topupRecurringCheckboxChanged.toEvent(),
+              analyticsEvent: AnalyticsEventName.topupRecurringCheckboxChanged.toEvent(),
               onChanged: (value) {
                 setState(() {
                   recurring = value ?? false;
@@ -85,7 +85,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
       ),
       primaryButton: FunButton(
         text: 'Confirm',
-        analyticsEvent: AmplitudeEvents.topupConfirmButtonClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.topupConfirmButtonClicked.toEvent(),
         onTap: () async {
           await context.read<TopupCubit>().addMoney(topupAmount, recurring);
         },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
@@ -36,7 +36,7 @@ class ChildCancelRGAFailedDialog extends StatelessWidget {
             FunButton(
               onTap: () => context.pop(),
               text: 'OK',
-              analyticsEvent: AmplitudeEvents.okClicked.toEvent(),
+              analyticsEvent: AnalyticsEventName.okClicked.toEvent(),
             ),
           ],
         ),

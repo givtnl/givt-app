@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -48,7 +48,7 @@ class _LeaveGameButtonState extends State<LeaveGameButton> {
                 unawaited(
                   AnalyticsHelper.logEvent(
                     eventName:
-                        AmplitudeEvents.reflectAndShareLeaveGameButtonClicked,
+                        AnalyticsEventName.reflectAndShareLeaveGameButtonClicked,
                   ),
                 );
               },

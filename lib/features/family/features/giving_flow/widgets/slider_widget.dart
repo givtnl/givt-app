@@ -44,7 +44,7 @@ class SliderWidget extends StatelessWidget {
             },
             onChangeEnd: (value) {
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.amountPressed,
+                eventName: AnalyticsEventName.amountPressed,
                 eventProperties: {
                   AnalyticsHelper.amountKey: value.roundToDouble(),
                 },

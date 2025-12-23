@@ -5,7 +5,7 @@ import 'package:audioplayers/audioplayers.dart' as ap;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -196,7 +196,7 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
 
   Future<void> play() async {
     await AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.audioRecordingPlayed,
+      eventName: AnalyticsEventName.audioRecordingPlayed,
     );
 
     widget.onPlayExtension?.call();
@@ -205,7 +205,7 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
 
   Future<void> pause() async {
     await AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.audioRecordingPlayPaused,
+      eventName: AnalyticsEventName.audioRecordingPlayPaused,
     );
 
     await _audioPlayer.pause();
@@ -214,7 +214,7 @@ class FunAudioPlayerState extends State<FunAudioPlayer> {
 
   Future<void> stop() async {
     await AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.audioRecordingPlayStopped,
+      eventName: AnalyticsEventName.audioRecordingPlayStopped,
     );
 
     await _audioPlayer.stop();

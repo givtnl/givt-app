@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
@@ -26,7 +26,7 @@ class GoalCompletedWidget extends StatelessWidget {
       onTap: () => impactGroupsCubit.dismissGoal(
         impactGroupsCubit.state.familyGroup.goal.id,
       ),
-      analyticsEvent: AmplitudeEvents.goalCompletedCardClicked.toEvent(
+      analyticsEvent: AnalyticsEventName.goalCompletedCardClicked.toEvent(
         parameters: {
           'organisation':
               impactGroupsCubit.state.familyGroup.organisation.organisationName,

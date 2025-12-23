@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -108,7 +108,7 @@ class _RecurringDonationsOverviewPageState
                 ],
                 selectedIndex: _selectedTabIndex,
                 onPressed: _onTabChanged,
-                analyticsEvent: AmplitudeEvents.recurringDonationsTabsChanged
+                analyticsEvent: AnalyticsEventName.recurringDonationsTabsChanged
                     .toEvent(),
               ),
               const SizedBox(height: 32),
@@ -125,7 +125,7 @@ class _RecurringDonationsOverviewPageState
         onTap: () => _cubit.onAddRecurringDonationPressed(),
         text: locals.recurringDonationsOverviewAddButton,
         leftIcon: Icons.add,
-        analyticsEvent: AmplitudeEvents.recurringDonationsAddClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.recurringDonationsAddClicked.toEvent(),
       ),
     );
   }

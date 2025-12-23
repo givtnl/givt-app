@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/add_member/models/member.dart';
@@ -37,7 +37,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
       emit(state.copyWith(status: AddMemberStateStatus.success));
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.memberCreatedSuccesfully,
+          eventName: AnalyticsEventName.memberCreatedSuccesfully,
           eventProperties: {
             'nrOfMembers': members.length,
             'memberNames': memberNames,
@@ -52,7 +52,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
           error.type == FailureType.TOPUP_NOT_SUCCESSFUL) {
         unawaited(
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.topupFailed,
+            eventName: AnalyticsEventName.topupFailed,
           ),
         );
         emit(
@@ -64,7 +64,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
       } else {
         unawaited(
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.failedToCreateMember,
+            eventName: AnalyticsEventName.failedToCreateMember,
           ),
         );
         emit(

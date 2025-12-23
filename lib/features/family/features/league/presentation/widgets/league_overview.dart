@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/league_entry_list.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/league_highlighted_heroes.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/models/league_overview_uimodel.dart';
@@ -75,7 +75,7 @@ class LeagueOverview extends StatelessWidget {
                 isLoading: isBtnLoading,
                 isPressedDown: isPressedDown,
                 text: context.l10n.buttonContinue,
-                analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+                analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
               ),
             ),
           )

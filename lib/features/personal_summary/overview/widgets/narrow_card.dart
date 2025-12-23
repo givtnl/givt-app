@@ -87,7 +87,7 @@ class NarrowCard extends StatelessWidget {
         );
 
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.setGivingGoalClicked,
+          eventName: AnalyticsEventName.setGivingGoalClicked,
         );
       },
       child: Column(

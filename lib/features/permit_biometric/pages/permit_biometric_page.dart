@@ -93,8 +93,8 @@ class PermitBiometricPage extends StatelessWidget {
                       onPressed: () {
                         AnalyticsHelper.logEvent(
                           eventName: state.permitBiometricRequest.isRegistration
-                              ? AmplitudeEvents.skipBiometricWhenRegistered
-                              : AmplitudeEvents.skipBiometricWhenLoggedIn,
+                              ? AnalyticsEventName.skipBiometricWhenRegistered
+                              : AnalyticsEventName.skipBiometricWhenLoggedIn,
                           eventProperties: {
                             'biometric_type': state.biometricType.name,
                           },
@@ -109,8 +109,8 @@ class PermitBiometricPage extends StatelessWidget {
                       onPressed: () {
                         AnalyticsHelper.logEvent(
                           eventName: state.permitBiometricRequest.isRegistration
-                              ? AmplitudeEvents.activateBiometricWhenRegistered
-                              : AmplitudeEvents.activateBiometricWhenLoggedIn,
+                              ? AnalyticsEventName.activateBiometricWhenRegistered
+                              : AnalyticsEventName.activateBiometricWhenLoggedIn,
                           eventProperties: {
                             'biometric_type': state.biometricType.name,
                           },

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/domain/models/behavior_options.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_explanation_screen.dart';
@@ -96,7 +96,7 @@ class _GratitudeGoalSelectBehaviorScreenState
                               padding: const EdgeInsets.symmetric(
                                 vertical: 12,
                               ),
-                              analyticsEvent: AmplitudeEvents.gratitudeGoalBehaviorClicked.toEvent(
+                              analyticsEvent: AnalyticsEventName.gratitudeGoalBehaviorClicked.toEvent(
                                 parameters: {
                                   'behavior': _behaviors[index].behavior,
                                 },
@@ -124,7 +124,7 @@ class _GratitudeGoalSelectBehaviorScreenState
                           ).toRoute(context),
                         );
                       },
-                      analyticsEvent: AmplitudeEvents.continueClicked.toEvent(
+                      analyticsEvent: AnalyticsEventName.continueClicked.toEvent(
                         parameters: {
                           'page': 'Select gratitude behavior screen',
                         },
@@ -137,7 +137,7 @@ class _GratitudeGoalSelectBehaviorScreenState
                         onTap: () => Navigator.of(context).push(
                           const GratitudeGoalLaterScreen().toRoute(context),
                         ),
-                        analyticsEvent: AmplitudeEvents.gratitudeGoalMaybeLaterClicked.toEvent(),
+                        analyticsEvent: AnalyticsEventName.gratitudeGoalMaybeLaterClicked.toEvent(),
                       ),
                     const SizedBox(height: 40),
                   ],

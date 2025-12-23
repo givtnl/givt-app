@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
@@ -72,12 +72,12 @@ class AiGameExplanationSheet extends StatelessWidget {
       primaryButton: FunButton(
         onTap: () => enableClicked?.call(),
         text: 'Enable Captain Ai',
-        analyticsEvent: AmplitudeEvents.enableCaptainAiClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.enableCaptainAiClicked.toEvent(),
       ),
       secondaryButton: FunTextButton.medium(
         onTap: () => maybeLaterClicked?.call(),
         text: 'Maybe later',
-        analyticsEvent: AmplitudeEvents.maybeLaterCaptainAiClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.maybeLaterCaptainAiClicked.toEvent(),
       ),
     );
   }

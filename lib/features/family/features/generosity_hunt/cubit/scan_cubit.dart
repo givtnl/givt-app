@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/app/generosity_hunt_repository.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/level_select_cubit.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -91,7 +91,7 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
 
           unawaited(
             AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.generosityHuntBarcodeScanned,
+              eventName: AnalyticsEventName.generosityHuntBarcodeScanned,
               eventProperties: {
                 'barcode': barcode.rawValue,
                 'recognized': true,
@@ -128,7 +128,7 @@ class ScanCubit extends CommonCubit<ScanUIModel, ScanCustom> {
     // Log that the barcode was not recognized
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.generosityHuntBarcodeScanned,
+        eventName: AnalyticsEventName.generosityHuntBarcodeScanned,
         eventProperties: {
           'barcode': barcode.rawValue,
           'recognized': false,

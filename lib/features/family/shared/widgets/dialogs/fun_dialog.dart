@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -95,7 +95,7 @@ class FunDialog extends StatelessWidget {
                     onClickPrimary?.call();
                   },
                   text: uiModel.primaryButtonText!,
-                  analyticsEvent: AmplitudeEvents.funDialogAction.toEvent(
+                  analyticsEvent: AnalyticsEventName.funDialogAction.toEvent(
                     parameters: {
                       'action': 'primary',
                       'text': uiModel.primaryButtonText,
@@ -112,7 +112,7 @@ class FunDialog extends StatelessWidget {
                     onClickSecondary?.call();
                   },
                   text: uiModel.secondaryButtonText!,
-                  analyticsEvent: AmplitudeEvents.funDialogAction.toEvent(
+                  analyticsEvent: AnalyticsEventName.funDialogAction.toEvent(
                     parameters: {
                       'action': 'secondary',
                       'text': uiModel.secondaryButtonText,
@@ -133,7 +133,7 @@ class FunDialog extends StatelessWidget {
               onPressed: () {
                 SystemSound.play(SystemSoundType.click);
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.funDialogAction,
+                  eventName: AnalyticsEventName.funDialogAction,
                   eventProperties: {
                     'action': 'close',
                   },

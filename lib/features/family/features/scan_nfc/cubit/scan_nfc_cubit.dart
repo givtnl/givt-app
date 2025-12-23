@@ -43,7 +43,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
   Future<void> readTag({Duration prescanningDelay = Duration.zero}) async {
     // Prescanning delay is to improve the UI animation (not be jarring)
     await Future<void>.delayed(prescanningDelay);
-    AnalyticsHelper.logEvent(eventName: AmplitudeEvents.startScanningCoin);
+    AnalyticsHelper.logEvent(eventName: AnalyticsEventName.startScanningCoin);
 
     emit(
       state.copyWith(
@@ -182,6 +182,6 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
       ),
     );
     NfcManager.instance.stopSession();
-    AnalyticsHelper.logEvent(eventName: AmplitudeEvents.coinScannedError);
+    AnalyticsHelper.logEvent(eventName: AnalyticsEventName.coinScannedError);
   }
 }

@@ -7,7 +7,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/give/models/models.dart';
@@ -980,7 +980,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
           // Log the auto-favorite action
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.favoriteAutoAdded,
+            eventName: AnalyticsEventName.favoriteAutoAdded,
             eventProperties: {
               'organisation_name': orgName,
               'organisation_namespace': namespace,

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -62,7 +62,7 @@ class GiveFromListPage extends StatelessWidget {
   ) async {
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.parentGivingFlowOrganisationClicked,
+        eventName: AnalyticsEventName.parentGivingFlowOrganisationClicked,
         eventProperties: {
           'organisation': collectGroup.orgName,
         },
@@ -80,7 +80,7 @@ class GiveFromListPage extends StatelessWidget {
     if (result != null && result is int && context.mounted) {
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.parentGiveWithAmountClicked,
+          eventName: AnalyticsEventName.parentGiveWithAmountClicked,
           eventProperties: {
             'amount': result,
             'organisation': collectGroup.orgName,

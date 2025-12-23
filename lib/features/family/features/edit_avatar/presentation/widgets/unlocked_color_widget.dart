@@ -32,7 +32,7 @@ class UnlockedColorWidget extends StatelessWidget {
             onTap: () {
               onPressed.call(uiModel.index, uiModel.type, color: color);
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.unlockedAvatarItemClicked,
+                eventName: AnalyticsEventName.unlockedAvatarItemClicked,
                 eventProperties: {
                   'type': uiModel.type,
                   'index': uiModel.index,

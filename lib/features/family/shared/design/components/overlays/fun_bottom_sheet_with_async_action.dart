@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/models/fun_bottom_sheet_with_async_action_state.dart';
@@ -84,7 +84,7 @@ class _FunBottomSheetWithAsyncActionState
                     primaryButton: FunButton(
                       text: context.l10n.buttonDone,
                       onTap: () => context.pop(),
-                      analyticsEvent: AmplitudeEvents.bottomsheet.toEvent(
+                      analyticsEvent: AnalyticsEventName.bottomsheet.toEvent(
                         parameters: {
                           'bottomsheet_name': widget.analyticsName,
                           'action': 'successStateDoneClicked',
@@ -106,7 +106,7 @@ class _FunBottomSheetWithAsyncActionState
                 primaryButton: FunButton(
                   text: 'Try again',
                   onTap: () => widget.cubit.onClickTryAgainAfterError(),
-                  analyticsEvent: AmplitudeEvents.bottomsheet.toEvent(
+                  analyticsEvent: AnalyticsEventName.bottomsheet.toEvent(
                     parameters: {
                       'bottomsheet_name': widget.analyticsName,
                       'action': 'errorStateTryAgainClicked',
@@ -116,7 +116,7 @@ class _FunBottomSheetWithAsyncActionState
                 secondaryButton: FunButton.secondary(
                   text: 'Close',
                   onTap: () => context.pop(),
-                  analyticsEvent: AmplitudeEvents.bottomsheet.toEvent(
+                  analyticsEvent: AnalyticsEventName.bottomsheet.toEvent(
                     parameters: {
                       'bottomsheet_name': widget.analyticsName,
                       'action': 'errorStateCloseClicked',

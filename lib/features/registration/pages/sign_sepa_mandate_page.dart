@@ -42,7 +42,7 @@ class SignSepaMandatePage extends StatelessWidget {
                 ),
         isLoading: registrationState.status == RegistrationStatus.loading,
         text: locals.signMandate,
-        analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
       ),
       body: BlocListener<RegistrationBloc, RegistrationState>(
         listenWhen: (previous, current) => previous.status != current.status,

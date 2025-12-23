@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class DrawerMenuItem extends StatelessWidget {
@@ -26,7 +26,7 @@ class DrawerMenuItem extends StatelessWidget {
   final IconData icon;
   final Widget? imageIcon;
   final VoidCallback onTap;
-  final AmplitudeEvents analyticsEvent;
+  final AnalyticsEventName analyticsEvent;
 
   @override
   Widget build(BuildContext context) {

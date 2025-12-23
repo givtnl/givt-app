@@ -4,7 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
@@ -150,7 +150,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                                       );
                                       AnalyticsHelper.logEvent(
                                         eventName:
-                                            AmplitudeEvents.homeSettingsClicked,
+                                            AnalyticsEventName.homeSettingsClicked,
                                       );
                                     },
                                     child: FunIcon.gear(),
@@ -334,7 +334,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
 
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.profilePressed,
+        eventName: AnalyticsEventName.profilePressed,
         eventProperties: {
           'profile_id': profile.id,
           'profile_name': profile.firstName,
@@ -411,7 +411,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
         onHighlightedWidgetTap: () {
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.tutorialNextClicked,
+            eventName: AnalyticsEventName.tutorialNextClicked,
             eventProperties: {
               'tutorialLabelBottomLeft': '4/6',
               'tutorialTitle': context.l10n.tutorialFirstMissionTitle,

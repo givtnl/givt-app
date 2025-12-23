@@ -15,7 +15,7 @@ class GratitudeGameButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return ActionContainer(
-      analyticsEvent: AmplitudeEvents.familyHomeScreenGratitudeGameButtonClicked.toEvent(),
+      analyticsEvent: AnalyticsEventName.familyHomeScreenGratitudeGameButtonClicked.toEvent(),
       onTap: onPressed,
       borderColor: FamilyAppTheme.highlight80,
       baseBorderSize: 4,

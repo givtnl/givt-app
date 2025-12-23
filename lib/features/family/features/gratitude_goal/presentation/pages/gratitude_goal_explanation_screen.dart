@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/domain/models/behavior_options.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_set_a_goal_screen.dart';
@@ -74,7 +74,7 @@ class _GratitudeGoalExplanationScreenState
             GratitudeGoalSetAGoalScreen(behavior: widget.behavior)
                 .toRoute(context),
           ),
-          analyticsEvent: AmplitudeEvents.gratitudeGoalLetsDoItClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.gratitudeGoalLetsDoItClicked.toEvent(),
         ),
         const SizedBox(height: 40),
       ],
@@ -88,7 +88,7 @@ class _GratitudeGoalExplanationScreenState
           _tapAmount++;
         });
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.gratitudeGoalTapToContinueClicked,
+          eventName: AnalyticsEventName.gratitudeGoalTapToContinueClicked,
           eventProperties: {
             'screen_index': _index,
             'amount_tapped': _tapAmount,

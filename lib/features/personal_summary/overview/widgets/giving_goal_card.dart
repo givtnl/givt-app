@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/personal_summary/giving_goal/pages/setup_giving_goal_bottom_sheet.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -59,7 +59,7 @@ class GivingGoalCard extends StatelessWidget {
                 );
 
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.editGivingGoalClicked,
+                  eventName: AnalyticsEventName.editGivingGoalClicked,
                 );
               },
               child: Text(

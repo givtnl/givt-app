@@ -1,7 +1,7 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -51,7 +51,7 @@ class NfcNotAvailableSheet extends StatelessWidget {
               AppSettings.openAppSettings(type: AppSettingsType.nfc);
             },
             text: 'Go to Settings',
-            analyticsEvent: AmplitudeEvents.nfcGoToSettingsClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName.nfcGoToSettingsClicked.toEvent(),
           ),
         ),
         Padding(
@@ -59,7 +59,7 @@ class NfcNotAvailableSheet extends StatelessWidget {
           child: FunButton.secondary(
             onTap: () => cancelScanning(context),
             text: 'Cancel',
-            analyticsEvent: AmplitudeEvents.cancelClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName.cancelClicked.toEvent(),
           ),
         ),
       ],

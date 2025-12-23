@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/missions/bloc/notif_mission_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -80,7 +80,7 @@ class _NotificationMissionScreenState extends State<NotificationMissionScreen>
                     }
                   },
                   text: uiModel.notifEnabled ? context.l10n.buttonDone : 'Go to Settings',
-                  analyticsEvent: AmplitudeEvents.notificationsGoToSettingsClicked.toEvent()),
+                  analyticsEvent: AnalyticsEventName.notificationsGoToSettingsClicked.toEvent()),
             ],
           ),
         ));

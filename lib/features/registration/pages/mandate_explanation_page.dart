@@ -54,7 +54,7 @@ class _SepaMandateExplanationPageView extends StatelessWidget {
           extra: context.read<RegistrationBloc>(),
         ),
         text: locals.next,
-        analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
       ),
       body: Column(
         children: [

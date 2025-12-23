@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -86,7 +86,7 @@ class _SelectOrganisationListPageState
               widget.onCollectGroupSelected(selectedCollectgroup);
             },
             text: context.l10n.selectReceiverButton,
-            analyticsEvent: AmplitudeEvents.debugButtonClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName.debugButtonClicked.toEvent(),
           ),
         ],
       ),

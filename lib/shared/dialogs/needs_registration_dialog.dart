@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
@@ -33,7 +33,7 @@ class NeedsRegistrationDialog {
         FunButton(
           text: context.l10n.finalizeRegistration,
           analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.finalizeRegistrationModalFinalizeClicked,
+            AnalyticsEventName.finalizeRegistrationModalFinalizeClicked,
           ),
           onTap: () {
             if (user.needRegistration) {
@@ -56,7 +56,7 @@ class NeedsRegistrationDialog {
           FunButton.secondary(
             text: context.l10n.askMeLater,
             analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.finalizeRegistrationModalAskLaterClicked,
+              AnalyticsEventName.finalizeRegistrationModalAskLaterClicked,
             ),
             onTap: () async {
               await mandatePopupDismissalTracker.incrementDismissals();

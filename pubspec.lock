@@ -17,14 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  amplitude_flutter:
-    dependency: "direct main"
-    description:
-      name: amplitude_flutter
-      sha256: "9c07360f23bd82f889c1b61573c7015f1b4cdf2a3bc032bd7f005cb07ba2f763"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.3.9"
   animated_toggle_switch:
     dependency: "direct main"
     description:
@@ -1578,6 +1570,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.3"
+  posthog_flutter:
+    dependency: "direct main"
+    description:
+      name: posthog_flutter
+      sha256: "97051effd7cb4dcd16d4770f1031d792da8f4477c63937a0d7ddae20c22f95df"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.10.0"
   process:
     dependency: transitive
     description:

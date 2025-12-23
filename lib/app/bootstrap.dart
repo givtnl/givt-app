@@ -13,6 +13,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/family/app/injection.dart'
     as get_it_injection_family;
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,6 +31,13 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
     log('onError(${bloc.runtimeType}, $error, $stackTrace)');
+    unawaited(
+      AnalyticsHelper.logError(
+        error,
+        stackTrace: stackTrace,
+        isFatal: false,
+      ),
+    );
     super.onError(bloc, error, stackTrace);
   }
 }
@@ -93,11 +101,25 @@ Future<void> bootstrap(
 
   FlutterError.onError = (details) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+    unawaited(
+      AnalyticsHelper.logError(
+        details.exception,
+        stackTrace: details.stack,
+        isFatal: true,
+      ),
+    );
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
 
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    unawaited(
+      AnalyticsHelper.logError(
+        error,
+        stackTrace: stack,
+        isFatal: true,
+      ),
+    );
     return true;
   };
 

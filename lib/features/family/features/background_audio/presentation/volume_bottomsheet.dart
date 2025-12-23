@@ -29,7 +29,7 @@ class VolumeBottomsheet extends StatelessWidget {
           Navigator.of(context).pop();
           onReady?.call();
         },
-        analyticsEvent: AmplitudeEvents.volumeBottomSheetReadyClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.volumeBottomSheetReadyClicked.toEvent(),
       ),
     );
   }

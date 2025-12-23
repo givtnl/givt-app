@@ -71,7 +71,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                           );
                           AnalyticsHelper.logEvent(
                             eventName:
-                                AmplitudeEvents.editProfilePictureClicked,
+                                AnalyticsEventName.editProfilePictureClicked,
                           );
                         },
                         customBorder: const CircleBorder(),
@@ -92,7 +92,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                       );
                     },
                     text: 'Edit avatar',
-                    analyticsEvent: AmplitudeEvents.editProfilePictureClicked
+                    analyticsEvent: AnalyticsEventName.editProfilePictureClicked
                         .toEvent(),
                     size: FunButtonSize.small,
                     leftIcon: FontAwesomeIcons.userPen,

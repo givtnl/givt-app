@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/widgets/content/givt_banner.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -127,7 +127,7 @@ class _MissionCompletedBannerDialogState
       buttonIcon: const FaIcon(
         FontAwesomeIcons.check,
       ),
-      analyticsEvent: AmplitudeEvents.tutorialDoneClicked,
+      analyticsEvent: AnalyticsEventName.tutorialDoneClicked,
       onButtonTap: () {
         _tooltipController.dismiss();
         _controller.stop();

@@ -62,8 +62,8 @@ class ParentalApprovalCubit extends Cubit<ParentalApprovalState> {
 
       await AnalyticsHelper.logEvent(
         eventName: decision == DonationState.approved
-            ? AmplitudeEvents.pendingDonationApproved
-            : AmplitudeEvents.pendingDonationDeclined,
+            ? AnalyticsEventName.pendingDonationApproved
+            : AnalyticsEventName.pendingDonationDeclined,
         eventProperties: {
           'child_name': donation.name,
           'charity_name': donation.organizationName,

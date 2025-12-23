@@ -62,7 +62,7 @@ class ParentalApprovalDialogContent extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.pendingDonationCloseClicked,
+                      eventName: AnalyticsEventName.pendingDonationCloseClicked,
                     );
                     context.pop();
                   },

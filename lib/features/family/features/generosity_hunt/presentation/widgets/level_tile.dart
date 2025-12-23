@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
@@ -54,7 +54,7 @@ class _LevelTileState extends State<LevelTile> {
         disabled: !widget.unlocked,
       ),
       onTap: _shouldAllowTap() ? _handleTap : null,
-      analyticsEvent: AmplitudeEvents.generosityHuntLevelTileClicked.toEvent(
+      analyticsEvent: AnalyticsEventName.generosityHuntLevelTileClicked.toEvent(
         parameters: {
           'level': widget.level,
         },

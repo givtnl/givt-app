@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/cubit/interests_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interest_card.dart';
@@ -109,7 +109,7 @@ class InterestsSelectionScreen extends StatelessWidget {
                         context.read<InterestsCubit>().clearSelectedInterests();
                       }
                     : null,
-                analyticsEvent: AmplitudeEvents.interestSelected.toEvent(
+                analyticsEvent: AnalyticsEventName.interestSelected.toEvent(
                   parameters: {
                     'interests': state.selectedInterests
                         .map((e) => e.displayText)

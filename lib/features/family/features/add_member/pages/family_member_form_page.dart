@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/family/features/add_member/models/member.dart';
@@ -263,7 +263,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     return FunButton(
       onTap: () => onDone(isChildSelected: isChildSelected),
       text: context.l10n.buttonDone,
-      analyticsEvent: AmplitudeEvents.addMemberDoneClicked.toEvent(),
+      analyticsEvent: AnalyticsEventName.addMemberDoneClicked.toEvent(),
     );
   }
 
@@ -288,7 +288,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
         }
       },
       text: context.l10n.setupFamilyAddNextMember,
-      analyticsEvent: AmplitudeEvents.addMemberClicked.toEvent(),
+      analyticsEvent: AnalyticsEventName.addMemberClicked.toEvent(),
     );
   }
 }

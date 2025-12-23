@@ -1,8 +1,8 @@
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 
 class AnalyticsEvent {
   AnalyticsEvent(this.name, {this.parameters = const <String, dynamic>{}});
 
-  final AmplitudeEvents name;
+  final AnalyticsEventName name;
   final Map<String, dynamic> parameters;
 }

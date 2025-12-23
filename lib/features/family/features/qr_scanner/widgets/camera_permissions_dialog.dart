@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/permissions_dialog.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/permissions_dialog_ui_model.dart';
@@ -29,7 +29,7 @@ class CameraPermissionsDialog extends StatelessWidget {
         isSettings: isSettings,
         onNextTap: () {
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.nextPermissionsDialogClicked,
+            eventName: AnalyticsEventName.nextPermissionsDialogClicked,
             eventProperties: {
               'permission': 'camera',
             },

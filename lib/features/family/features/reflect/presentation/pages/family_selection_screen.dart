@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/volume_bottomsheet.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
@@ -123,7 +123,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
           onTap: () => cubit.rolesClicked(selectedProfiles),
           isDisabled: selectedProfiles.length < 2,
           text: 'See the rules',
-          analyticsEvent: AmplitudeEvents.reflectAndShareSeeTheRulesClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.reflectAndShareSeeTheRulesClicked.toEvent(),
         ),
       ),
     );
@@ -172,7 +172,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
           }
 
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.reflectAndShareMemberAdded,
+            eventName: AnalyticsEventName.reflectAndShareMemberAdded,
             eventProperties: {
               'name': details.data.firstName,
             },

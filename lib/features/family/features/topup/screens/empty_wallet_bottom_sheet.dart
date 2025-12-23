@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
@@ -34,7 +34,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
       primaryButton: FunButton(
         text: 'Top up',
         leftIcon: FontAwesomeIcons.plus,
-        analyticsEvent: AmplitudeEvents.topupStartButtonClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.topupStartButtonClicked.toEvent(),
         onTap: () async {
           final user = context.read<ProfilesCubit>().state;
           context.read<TopupCubit>().init(user.activeProfile.id);
@@ -62,7 +62,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
         onTap: () {
           context.pop();
         },
-        analyticsEvent: AmplitudeEvents.topupGoBackButtonClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.topupGoBackButtonClicked.toEvent(),
       ),
       closeAction: () {
         context.pop();

@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/features/overview/widgets/allowance_warning_dialog.dart';
@@ -94,7 +94,7 @@ class FamilyOverviewPage extends StatelessWidget {
   ) async {
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.addMemberClicked,
+        eventName: AnalyticsEventName.addMemberClicked,
       ),
     );
 

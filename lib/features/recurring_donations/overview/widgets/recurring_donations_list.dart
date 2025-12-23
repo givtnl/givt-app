@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
@@ -58,7 +58,7 @@ class RecurringDonationsList extends StatelessWidget {
       ),
       onTap: () => _onDonationTap(context, donationWithProgress),
       useFunProgressbar: true,
-      analyticsEvent: AmplitudeEvents.recurringDonationCardClicked.toEvent(
+      analyticsEvent: AnalyticsEventName.recurringDonationCardClicked.toEvent(
         parameters: {
           'donation_id': donationWithProgress.donation.id,
           'organisation': donationWithProgress.donation.collectGroupName,

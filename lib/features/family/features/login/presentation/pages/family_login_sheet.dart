@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
 import 'package:givt_app/features/family/features/login/presentation/models/family_login_sheet_custom.dart';
@@ -188,7 +188,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
         isDisabled: !isEnabled,
         onTap: isEnabled ? () => onLogin(context) : null,
         text: context.l10n.login,
-        analyticsEvent: AmplitudeEvents.loginClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.loginClicked.toEvent(),
       ),
     );
   }

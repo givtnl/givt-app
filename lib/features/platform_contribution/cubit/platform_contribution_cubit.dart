@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_organization.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_settings.dart';
 import 'package:givt_app/features/platform_contribution/domain/repositories/platform_contribution_repository.dart';
@@ -51,7 +51,7 @@ class PlatformContributionCubit extends CommonCubit<PlatformContributionSettings
     try {
       // Log analytics event
       await AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.platformContributionToggleChanged,
+        eventName: AnalyticsEventName.platformContributionToggleChanged,
         eventProperties: {
           AnalyticsHelper.organizationNameKey: organizationName,
           AnalyticsHelper.toggleStatusKey: isEnabled ? 'enabled' : 'disabled',
@@ -76,7 +76,7 @@ class PlatformContributionCubit extends CommonCubit<PlatformContributionSettings
     try {
       // Log analytics event
       await AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.platformContributionLevelChanged,
+        eventName: AnalyticsEventName.platformContributionLevelChanged,
         eventProperties: {
           AnalyticsHelper.organizationNameKey: organizationName,
           AnalyticsHelper.contributionLevelKey: contributionLevel.name,

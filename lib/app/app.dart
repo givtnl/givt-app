@@ -51,7 +51,9 @@ class _AppState extends State<App> {
       DeviceOrientation.portraitUp,
     ]);
 
-    AnalyticsHelper.init(const String.fromEnvironment('AMPLITUDE_KEY'));
+    AnalyticsHelper.init(
+      const String.fromEnvironment('POSTHOG_API_KEY'),
+    );
 
     initializeStripe();
 

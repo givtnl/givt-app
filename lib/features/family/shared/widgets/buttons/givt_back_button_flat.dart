@@ -36,7 +36,7 @@ class GivtBackButtonFlat extends StatelessWidget {
         onPressed: onPressed ??
             () async {
               unawaited(AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.backButtonPressed,
+                eventName: AnalyticsEventName.backButtonPressed,
               ));
 
               unawaited(SystemSound.play(SystemSoundType.click));

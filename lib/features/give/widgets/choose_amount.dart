@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/models/preset.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
@@ -535,7 +535,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
         text: label,
         size: FunButtonSize.small,
         analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.continueClicked,
+          AnalyticsEventName.continueClicked,
           parameters: {
             'Collection 1': controllers[0].text,
             'Collection 2': controllers[1].text,

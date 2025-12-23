@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/mission_stats.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
@@ -41,7 +41,7 @@ class MissionsContainer extends StatelessWidget {
         headerIcon: FunAvatar.captain(),
       ),
       onTap: () => context.pushNamed(FamilyPages.missions.name),
-      analyticsEvent: AmplitudeEvents.funMissionCardClicked.toEvent(
+      analyticsEvent: AnalyticsEventName.funMissionCardClicked.toEvent(
         parameters: {
           'missionsToBeCompleted': missionAmount,
         },
@@ -57,7 +57,7 @@ class MissionsContainer extends StatelessWidget {
         headerIcon: FunAvatar.captain(),
       ),
       onTap: () => context.pushNamed(FamilyPages.missions.name),
-      analyticsEvent: AmplitudeEvents.funMissionCardClicked.toEvent(
+      analyticsEvent: AnalyticsEventName.funMissionCardClicked.toEvent(
         parameters: {
           'missionsToBeCompleted': '0',
         },

@@ -33,7 +33,7 @@ class UnlockedItemWidget extends StatelessWidget {
           ? FamilyAppTheme.primary80
           : FamilyAppTheme.neutralVariant80,
       onTap: () => onPressed(uiModel.index, uiModel.type),
-      analyticsEvent: AmplitudeEvents.unlockedAvatarItemClicked.toEvent(
+      analyticsEvent: AnalyticsEventName.unlockedAvatarItemClicked.toEvent(
         parameters: {
           'type': uiModel.type,
           'index': uiModel.index.toString(),

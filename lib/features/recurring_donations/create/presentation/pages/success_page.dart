@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
@@ -74,13 +74,13 @@ class _SuccessPageState extends State<SuccessPage> {
             const Spacer(),
             FunButton(
               text: context.l10n.buttonDone,
-              analyticsEvent: AmplitudeEvents.recurringStep4ConfirmDonation
+              analyticsEvent: AnalyticsEventName.recurringStep4ConfirmDonation
                   .toEvent(
                     parameters: widget.model.analyticsParams,
                   ),
               onTap: () {
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.recurringStep4ConfirmDonation,
+                  eventName: AnalyticsEventName.recurringStep4ConfirmDonation,
                 );
                 // Navigate to recurring donations overview and clear the entire navigation stack
                 Navigator.of(context).push(

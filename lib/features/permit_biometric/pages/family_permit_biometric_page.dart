@@ -76,8 +76,8 @@ class FamilyPermitBiometricPage extends StatelessWidget {
                   context.read<PermitBiometricCubit>().enableBiometric();
                 },
                 analyticsEvent: (state.permitBiometricRequest.isRegistration
-                    ? AmplitudeEvents.activateBiometricWhenRegistered
-                    : AmplitudeEvents.activateBiometricWhenLoggedIn)
+                    ? AnalyticsEventName.activateBiometricWhenRegistered
+                    : AnalyticsEventName.activateBiometricWhenLoggedIn)
                     .toEvent(
                   parameters: {
                     'biometric_type': state.biometricType.name,
@@ -91,8 +91,8 @@ class FamilyPermitBiometricPage extends StatelessWidget {
                   context.read<PermitBiometricCubit>().denyBiometric();
                 },
                 analyticsEvent: (state.permitBiometricRequest.isRegistration
-                    ? AmplitudeEvents.skipBiometricWhenRegistered
-                    : AmplitudeEvents.skipBiometricWhenLoggedIn)
+                    ? AnalyticsEventName.skipBiometricWhenRegistered
+                    : AnalyticsEventName.skipBiometricWhenLoggedIn)
                     .toEvent(
                   parameters: {
                     'biometric_type': state.biometricType.name,

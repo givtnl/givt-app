@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/child_details/cubit/child_details_cubit.dart';
@@ -121,7 +121,7 @@ class ChildDetailsPage extends StatelessWidget {
                       onPressed: () {
                         AnalyticsHelper.logEvent(
                           eventName:
-                              AmplitudeEvents.childDetailsEditAppBarClicked,
+                              AnalyticsEventName.childDetailsEditAppBarClicked,
                           eventProperties: {
                             'child_name': state.profileDetails.firstName,
                             'giving_allowance': state
@@ -163,7 +163,7 @@ class ChildDetailsPage extends StatelessWidget {
                             onPressed: () {
                               AnalyticsHelper.logEvent(
                                 eventName:
-                                    AmplitudeEvents.childDetailsEditCardClicked,
+                                    AnalyticsEventName.childDetailsEditCardClicked,
                                 eventProperties: {
                                   'child_name': state.profileDetails.firstName,
                                   'giving_allowance': state.profileDetails
@@ -202,7 +202,7 @@ class ChildDetailsPage extends StatelessWidget {
                             onPressed: () {
                               AnalyticsHelper.logEvent(
                                 eventName:
-                                    AmplitudeEvents.childTopUpCardClicked,
+                                    AnalyticsEventName.childTopUpCardClicked,
                                 eventProperties: {
                                   'child_name': state.profileDetails.firstName,
                                 },

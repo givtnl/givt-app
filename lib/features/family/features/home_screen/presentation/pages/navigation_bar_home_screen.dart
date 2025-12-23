@@ -76,12 +76,12 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   List<AnalyticsEvent> _getAnalyticsEvents(bool showMemoriesTab) {
     final events = <AnalyticsEvent>[
-      AmplitudeEvents.navigationBarPressed.toEvent(
+      AnalyticsEventName.navigationBarPressed.toEvent(
         parameters: {
           'destination': 'Home',
         },
       ),
-      AmplitudeEvents.navigationBarPressed.toEvent(
+      AnalyticsEventName.navigationBarPressed.toEvent(
         parameters: {
           'destination': 'Family',
         },
@@ -90,7 +90,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     
     if (showMemoriesTab) {
       events.add(
-        AmplitudeEvents.navigationBarPressed.toEvent(
+        AnalyticsEventName.navigationBarPressed.toEvent(
           parameters: {
             'destination': 'Memories',
           },
@@ -99,7 +99,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     }
     
     events.add(
-      AmplitudeEvents.navigationBarPressed.toEvent(
+      AnalyticsEventName.navigationBarPressed.toEvent(
         parameters: {
           'destination': 'League',
         },
@@ -321,14 +321,14 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             _cubit.onShowTutorialClicked();
           },
           text: "Let's go!",
-          analyticsEvent: AmplitudeEvents.tutorialStartClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.tutorialStartClicked.toEvent(),
         ),
         FunButton.secondary(
           onTap: () {
             context.pop();
           },
           text: context.l10n.buttonSkip,
-          analyticsEvent: AmplitudeEvents.tutorialSkipClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.tutorialSkipClicked.toEvent(),
         ),
       ],
     ).show(context);

@@ -7,7 +7,6 @@ environment:
   sdk: ">=3.8.0 <4.0.0"
 
 dependencies:
-  amplitude_flutter: ^4.3.9
   animated_toggle_switch: ^0.8.4
   app_settings: ^5.2.0
   badges: ^3.1.2
@@ -92,6 +91,7 @@ dependencies:
     path: ./packages/waveform
   backoff: ^1.0.1
   flutter_confetti: ^0.5.1
+  posthog_flutter: ^5.10.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -107,7 +107,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
               _cubit.resetPassword(emailController.text);
             },
             text: context.l10n.changePassword,
-            analyticsEvent: AmplitudeEvents.changePasswordClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName.changePasswordClicked.toEvent(),
           ),
         );
       },
@@ -134,7 +134,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
           ),
           primaryButton: FunButton(
             text: context.l10n.buttonDone,
-            analyticsEvent: AmplitudeEvents.okClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName.okClicked.toEvent(),
             onTap: () {
               Navigator.of(context).pop();
             },
@@ -162,7 +162,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
           ),
           primaryButton: FunButton(
             text: 'Ok',
-            analyticsEvent: AmplitudeEvents.okClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName.okClicked.toEvent(),
             onTap: () {
               Navigator.of(context).pop();
             },

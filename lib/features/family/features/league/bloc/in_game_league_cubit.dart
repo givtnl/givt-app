@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/league/domain/league_repository.dart';
 import 'package:givt_app/features/family/features/league/domain/models/league_item.dart';
 import 'package:givt_app/features/family/features/league/presentation/pages/models/in_game_league_screen_uimodel.dart';
@@ -111,7 +111,7 @@ class InGameLeagueCubit
     if (rewardText == null) {
       if (shouldAskForAppReview) {
         await AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.inAppReviewTriggered,
+          eventName: AnalyticsEventName.inAppReviewTriggered,
         );
 
         await InAppReview.instance.requestReview();
@@ -119,7 +119,7 @@ class InGameLeagueCubit
 
       if (shouldAskForInterview) {
         await AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.askForInterviewTriggered,
+          eventName: AnalyticsEventName.askForInterviewTriggered,
         );
 
         emitCustom(

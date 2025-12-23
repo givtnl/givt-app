@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -126,7 +126,7 @@ class _QrConfirmOrgDialogState extends State<QrConfirmOrgDialog> {
                     widget.onConfirm();
                   },
                   text: locals.homeScreenConfirmOrgYes,
-                  analyticsEvent: AmplitudeEvents.qrCodeScanned.toEvent(
+                  analyticsEvent: AnalyticsEventName.qrCodeScanned.toEvent(
                     parameters: {
                       'goal_name': _formattedOrganizationName,
                       'confirmed': true,
@@ -142,7 +142,7 @@ class _QrConfirmOrgDialogState extends State<QrConfirmOrgDialog> {
                     widget.onCancel();
                   },
                   text: locals.cancel,
-                  analyticsEvent: AmplitudeEvents.qrCodeScanned.toEvent(
+                  analyticsEvent: AnalyticsEventName.qrCodeScanned.toEvent(
                     parameters: {
                       'goal_name': _formattedOrganizationName,
                       'confirmed': false,

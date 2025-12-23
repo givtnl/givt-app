@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -45,7 +45,7 @@ class _GratitudeGoalLaterScreenState extends State<GratitudeGoalLaterScreen> {
             child: FunButton(
               onTap: () => context.goNamed(FamilyPages.profileSelection.name),
               text: context.l10n.buttonDone,
-              analyticsEvent: AmplitudeEvents.gratitudeGoalLaterDoneClicked.toEvent(),
+              analyticsEvent: AnalyticsEventName.gratitudeGoalLaterDoneClicked.toEvent(),
             ),
           ),
         ],

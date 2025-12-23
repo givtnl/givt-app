@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -56,7 +56,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                 icon: const Icon(Icons.close),
                 onPressed: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.cancelClicked,
+                    eventName: AnalyticsEventName.cancelClicked,
                   );
                   const FunModalCloseFlow().show(context);
                 },
@@ -84,7 +84,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                       _cubit.updateStartDate(date);
                       AnalyticsHelper.logEvent(
                         eventName:
-                            AmplitudeEvents.recurringStep3SetDurationStartDate,
+                            AnalyticsEventName.recurringStep3SetDurationStartDate,
                         eventProperties: {'date': date.toIso8601String()},
                       );
                     },
@@ -96,7 +96,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                       _cubit.updateSelectedOption(option);
                       AnalyticsHelper.logEvent(
                         eventName:
-                            AmplitudeEvents.recurringStep3SetDurationOption,
+                            AnalyticsEventName.recurringStep3SetDurationOption,
                         eventProperties: {'option': option},
                       );
                     },
@@ -108,7 +108,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                       _cubit.updateNumberOfDonations(number);
                       AnalyticsHelper.logEvent(
                         eventName:
-                            AmplitudeEvents.recurringStep3SetDurationNumber,
+                            AnalyticsEventName.recurringStep3SetDurationNumber,
                         eventProperties: {'number': number},
                       );
                     },
@@ -116,7 +116,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                       _cubit.updateEndDate(date);
                       AnalyticsHelper.logEvent(
                         eventName:
-                            AmplitudeEvents.recurringStep3SetDurationEndDate,
+                            AnalyticsEventName.recurringStep3SetDurationEndDate,
                         eventProperties: {'date': date.toIso8601String()},
                       );
                     },
@@ -131,7 +131,7 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                     FunButton(
                       text: context.l10n.buttonContinue,
                       isDisabled: !uiModel.isContinueEnabled,
-                      analyticsEvent: AmplitudeEvents
+                      analyticsEvent: AnalyticsEventName
                           .recurringStep3SetDurationContinue
                           .toEvent(
                             parameters: uiModel.analyticsParams,

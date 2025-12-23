@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/pages/credit_card_details.dart';
@@ -128,7 +128,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                           },
                     text: 'Give',
                     isDisabled: !hasOverwrittenPlaceholderValue,
-                    analyticsEvent: AmplitudeEvents.parentGiveClicked.toEvent(),
+                    analyticsEvent: AnalyticsEventName.parentGiveClicked.toEvent(),
                   ),
                 ),
               ),

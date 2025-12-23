@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/parent_summary_uimodel.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/fun_audio_player.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/summary_conversation_list.dart';
@@ -68,7 +68,7 @@ class _SummaryPageState extends State<SummaryPage> {
           isDisabled: widget.uiModel.audioLink != null && !_hasClickedAudio,
           text: context.l10n.buttonDone,
           onTap: () => context.pop(),
-          analyticsEvent: AmplitudeEvents.afterGameSummaryDoneClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.afterGameSummaryDoneClicked.toEvent(),
         ),
       ],
     );

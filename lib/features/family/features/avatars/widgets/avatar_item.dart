@@ -26,7 +26,7 @@ class AvatarItem extends StatelessWidget {
           SystemSound.play(SystemSoundType.click);
           onSelectProfilePicture?.call(filename);
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.avatarImageSelected,
+            eventName: AnalyticsEventName.avatarImageSelected,
             eventProperties: {
               AnalyticsHelper.avatarImageKey: filename,
             },

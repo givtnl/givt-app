@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_icon_border_button.dart';
@@ -142,7 +142,7 @@ class _FunCounterState extends State<FunCounter> {
           onTapCancel: _stopTimer,
           onTap: (_currentAmount <= minAmount) ? null : _decrementCounter,
           isMuted: true,
-          analyticsEvent: AmplitudeEvents.funCounterDecrementClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.funCounterDecrementClicked.toEvent(),
           child: FaIcon(
             semanticLabel: 'minus',
             FontAwesomeIcons.minus,
@@ -170,7 +170,7 @@ class _FunCounterState extends State<FunCounter> {
           onTapCancel: _stopTimer,
           onTap: (_currentAmount > 998) ? null : _incrementCounter,
           isMuted: true,
-          analyticsEvent: AmplitudeEvents.funCounterIncrementClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.funCounterIncrementClicked.toEvent(),
           child: FaIcon(
             semanticLabel: 'plus',
             FontAwesomeIcons.plus,

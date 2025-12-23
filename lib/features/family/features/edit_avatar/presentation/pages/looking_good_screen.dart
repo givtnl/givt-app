@@ -62,7 +62,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
               },
               leftIcon: FontAwesomeIcons.arrowUpFromBracket,
               text: 'Share',
-              analyticsEvent: AmplitudeEvents.shareAvatarClicked.toEvent(),
+              analyticsEvent: AnalyticsEventName.shareAvatarClicked.toEvent(),
             ),
             const SizedBox(height: 16),
             FunButton.secondary(
@@ -76,7 +76,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
                 }
               },
               text: context.l10n.buttonDone,
-              analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+              analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
             ),
           ],
         ),

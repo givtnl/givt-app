@@ -14,7 +14,7 @@ class LockedButtonWidget extends StatelessWidget {
     return ActionContainer(
       borderColor: FamilyAppTheme.neutralVariant80,
       onTap: onPressed,
-      analyticsEvent: AmplitudeEvents.lockedButtonClicked.toEvent(),
+      analyticsEvent: AnalyticsEventName.lockedButtonClicked.toEvent(),
       child: const ColoredBox(
         color: FamilyAppTheme.neutral98,
         child: Center(

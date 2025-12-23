@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/fun_background_audio_widget.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/stage_cubit.dart';
@@ -146,7 +146,7 @@ class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
                                   );
                                   AnalyticsHelper.logEvent(
                                     eventName:
-                                        AmplitudeEvents.userToggledAIFeature,
+                                        AnalyticsEventName.userToggledAIFeature,
                                     eventProperties: {
                                       'on': value,
                                     },
@@ -159,7 +159,7 @@ class _StageScreenState extends State<StageScreen> with WidgetsBindingObserver {
                         FunButton(
                           onTap: () => widget.onClickButton(context),
                           text: widget.buttonText,
-                          analyticsEvent: AmplitudeEvents
+                          analyticsEvent: AnalyticsEventName
                               .supersShowItsShowtimeClicked
                               .toEvent(
                                 parameters: {

@@ -38,7 +38,7 @@ class YearlyOverviewPage extends StatelessWidget {
             final personalSummaryState =
                 context.read<PersonalSummaryBloc>().state;
             AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.personalSummaryYearLoaded,
+              eventName: AnalyticsEventName.personalSummaryYearLoaded,
               eventProperties: {
                 'year': yearlyOverviewBlocState.year,
                 'total_given_in_year': yearlyOverviewBlocState.totalWithinGivt +
@@ -77,7 +77,7 @@ class YearlyOverviewPage extends StatelessWidget {
                       );
                       AnalyticsHelper.logEvent(
                         eventName:
-                            AmplitudeEvents.downloadAnnualOverviewClicked,
+                            AnalyticsEventName.downloadAnnualOverviewClicked,
                         eventProperties: {
                           'year': yearlyOverviewBlocState.year,
                         },

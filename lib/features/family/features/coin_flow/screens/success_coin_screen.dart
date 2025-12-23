@@ -128,7 +128,7 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
           context.goNamed(FamilyPages.wallet.name);
           context.read<FlowsCubit>().resetFlow();
         },
-        analyticsEvent: AmplitudeEvents.returnToHomePressed.toEvent(),
+        analyticsEvent: AnalyticsEventName.returnToHomePressed.toEvent(),
       );
     }
     if (isOnlyChild) {

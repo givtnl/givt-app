@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/cubit/donation_overview_cubit.dart';
 import 'package:givt_app/features/donation_overview/models/donation_item.dart';
@@ -94,7 +94,7 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
                 _cubit.refreshDonations();
                 unawaited(
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.retryClicked,
+                    eventName: AnalyticsEventName.retryClicked,
                   ),
                 );
               },
@@ -126,7 +126,7 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
                             DonationListItem(
                               donationGroup: donationGroup,
                               analyticsEvent: AnalyticsEvent(
-                                AmplitudeEvents.seeDonationHistoryPressed,
+                                AnalyticsEventName.seeDonationHistoryPressed,
                                 parameters: {
                                   'donation': donationGroup.toJson(),
                                 },
@@ -245,7 +245,7 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
                 onPressed: () {
                   _cubit.refreshDonations();
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.retryClicked,
+                    eventName: AnalyticsEventName.retryClicked,
                   );
                 },
                 child: const Text('Retry'),

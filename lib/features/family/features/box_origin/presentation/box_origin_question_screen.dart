@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -62,7 +62,7 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
                     ).toRoute(context),
                   );
                 },
-                analyticsEvent: AmplitudeEvents.continueChooseChurchClicked
+                analyticsEvent: AnalyticsEventName.continueChooseChurchClicked
                     .toEvent(),
               ),
               const SizedBox(height: 8),
@@ -72,7 +72,7 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
                   _cubit.onSkipClicked();
                   context.goNamed(FamilyPages.profileSelection.name);
                 },
-                analyticsEvent: AmplitudeEvents.dontHaveABoxClicked.toEvent(),
+                analyticsEvent: AnalyticsEventName.dontHaveABoxClicked.toEvent(),
               ),
             ],
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
@@ -29,7 +29,7 @@ class GoalActiveWidget extends StatelessWidget {
               totalAmount: currentGoal.totalAmount,
             ),
           ),
-          analyticsEvent: AmplitudeEvents.goalActiveCardClicked.toEvent(
+          analyticsEvent: AnalyticsEventName.goalActiveCardClicked.toEvent(
             parameters: {
               'organisation': state.familyGroup.organisation.toString(),
             },

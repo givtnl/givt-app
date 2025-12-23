@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
@@ -88,7 +88,7 @@ class ProfileOverviewTile extends StatelessWidget {
   void _onTap(BuildContext context, bool isGivtAccount) {
     if (profile.isAdult) {
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.adultProfileTileClicked,
+        eventName: AnalyticsEventName.adultProfileTileClicked,
         eventProperties: {
           'name': profile.firstName,
         },
@@ -102,7 +102,7 @@ class ProfileOverviewTile extends StatelessWidget {
       return;
     }
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.childProfileClicked,
+      eventName: AnalyticsEventName.childProfileClicked,
       eventProperties: {
         'name': profile.firstName,
       },

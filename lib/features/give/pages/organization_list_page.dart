@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -221,7 +221,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                               );
                               AnalyticsHelper.logEvent(
                                 eventName:
-                                    AmplitudeEvents.organisationFavoriteToggled,
+                                    AnalyticsEventName.organisationFavoriteToggled,
                                 eventProperties: {
                                   'organisation_name': organisation.orgName,
                                   'is_favorited': false,
@@ -235,7 +235,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                               );
                               AnalyticsHelper.logEvent(
                                 eventName:
-                                    AmplitudeEvents.organisationFavoriteToggled,
+                                    AnalyticsEventName.organisationFavoriteToggled,
                                 eventProperties: {
                                   'organisation_name': organisation.orgName,
                                   'is_favorited': true,

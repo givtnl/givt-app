@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:go_router/go_router.dart';
@@ -45,7 +45,7 @@ class ScanningNfcAnimation extends StatelessWidget {
               scanNfcCubit.cancelScanning();
             },
             text: 'Cancel',
-            analyticsEvent: AmplitudeEvents.cancelClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName.cancelClicked.toEvent(),
           ),
         ),
       ],

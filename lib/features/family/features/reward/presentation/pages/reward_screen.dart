@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/reward/presentation/models/reward_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -33,7 +33,7 @@ class _RewardScreenState extends State<RewardScreen> {
     super.didChangeDependencies();
     if (widget.uiModel.triggerAppReview) {
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.inAppReviewTriggered,
+        eventName: AnalyticsEventName.inAppReviewTriggered,
       );
 
       InAppReview.instance.requestReview();
@@ -86,7 +86,7 @@ class _RewardScreenState extends State<RewardScreen> {
               );
             },
             text: 'Claim reward',
-            analyticsEvent: AmplitudeEvents.claimRewardClicked.toEvent(
+            analyticsEvent: AnalyticsEventName.claimRewardClicked.toEvent(
               parameters: {
                 'reward': widget.uiModel.rewardText,
                 'rewardImage': widget.uiModel.rewardImage,

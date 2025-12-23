@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -85,7 +85,7 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                     onTap: () {
                       Navigator.of(context).pop(_amount);
                     },
-                    analyticsEvent: AmplitudeEvents.topUpConfirmClicked.toEvent(),
+                    analyticsEvent: AnalyticsEventName.topUpConfirmClicked.toEvent(),
                   ),
                 ],
               ),

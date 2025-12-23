@@ -54,7 +54,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
               color: AppTheme.givtBlue,
               onPressed: () {
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.backClicked,
+                  eventName: AnalyticsEventName.backClicked,
                 );
                 context.read<CreateFamilyGoalCubit>().showOverview();
               },
@@ -131,7 +131,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
                         ..showAmount();
 
                       AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.familyGoalCauseSet,
+                        eventName: AnalyticsEventName.familyGoalCauseSet,
                         eventProperties: {
                           'charity_name': state.selectedCollectGroup.orgName,
                         },

@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/country_dropdown.dart';
@@ -295,7 +295,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                     }
                                   : null,
                               text: locals.buttonContinue,
-                              analyticsEvent: AmplitudeEvents.emailSignupContinueClicked.toEvent(
+                              analyticsEvent: AnalyticsEventName.emailSignupContinueClicked.toEvent(
                                 parameters: {
                                   'email': state.email,
                                   'country': state.country?.name,

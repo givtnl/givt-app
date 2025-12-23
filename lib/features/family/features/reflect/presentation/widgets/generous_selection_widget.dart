@@ -74,7 +74,7 @@ class GenerousSelectionWidget extends StatelessWidget {
                   backgroundColor:
                       uimodel.tagList[i].colorCombo.backgroundColor,
                   textColor: uimodel.tagList[i].colorCombo.textColor,
-                  analyticsEvent: AmplitudeEvents.generousTileSelected.toEvent(
+                  analyticsEvent: AnalyticsEventName.generousTileSelected.toEvent(
                     parameters: {
                       'generousPower': uimodel.selectedTag?.title,
                     },
@@ -89,7 +89,7 @@ class GenerousSelectionWidget extends StatelessWidget {
               isDisabled: uimodel.selectedTag == null,
               onTap: onNext,
               text: 'Next',
-              analyticsEvent: AmplitudeEvents.generousTileSubmitted.toEvent(
+              analyticsEvent: AnalyticsEventName.generousTileSubmitted.toEvent(
                 parameters: {
                   'superhero': uimodel.superheroName,
                   'haveBeenGenerous': uimodel.selectedTag?.displayText,

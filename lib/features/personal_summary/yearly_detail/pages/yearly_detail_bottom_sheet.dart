@@ -37,7 +37,7 @@ class YearlyDetailBottomSheet extends StatelessWidget {
                   context.read<YearlyOverviewCubit>().downloadSummary();
                   AnalyticsHelper.logEvent(
                     eventName:
-                        AmplitudeEvents.annualOverviewReceiveViaMailClicked,
+                        AnalyticsEventName.annualOverviewReceiveViaMailClicked,
                   );
                 },
           child: isLoading

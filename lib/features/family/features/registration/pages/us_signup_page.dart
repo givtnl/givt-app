@@ -165,7 +165,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
 
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
+        eventName: AnalyticsEventName.registrationFilledInPersonalInfoSheetFilled,
         eventProperties: {
           'id': user.guid,
           'profile_country': _selectedCountry.countryCode,
@@ -241,7 +241,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           isDisabled: !_isEnabled,
           onTap: _isEnabled ? () => _register(user) : null,
           text: context.l10n.buttonContinue,
-          analyticsEvent: AmplitudeEvents
+          analyticsEvent: AnalyticsEventName
               .registrationContinueAfterPersonalInfoClicked
               .toEvent(),
         ),

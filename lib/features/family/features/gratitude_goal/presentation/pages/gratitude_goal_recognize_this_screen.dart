@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_select_behavior_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
@@ -69,7 +69,7 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
                     context,
                     isRecognized: true,
                   ),
-                  analyticsEvent: AmplitudeEvents.gratitudeGoalYesOfCourseClicked.toEvent(),
+                  analyticsEvent: AnalyticsEventName.gratitudeGoalYesOfCourseClicked.toEvent(),
                 ),
                 const SizedBox(
                   height: 20,
@@ -81,7 +81,7 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
                     context,
                     isRecognized: false,
                   ),
-                  analyticsEvent: AmplitudeEvents.gratitudeGoalNoNotReallyClicked.toEvent(),
+                  analyticsEvent: AnalyticsEventName.gratitudeGoalNoNotReallyClicked.toEvent(),
                 ),
                 const SizedBox(height: 32),
               ],

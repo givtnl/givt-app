@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/presentation/pages/generosity_hunt_levels_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -57,7 +57,7 @@ class GenerosityHuntIntroPage extends StatelessWidget {
           const Spacer(),
           FunButton(
             text: "Let's go",
-            analyticsEvent: AmplitudeEvents.letsGo.toEvent(),
+            analyticsEvent: AnalyticsEventName.letsGo.toEvent(),
             onTap: () => Navigator.of(context)
                 .push(const GenerosityHuntLevelsPage().toRoute(context)),
           ),

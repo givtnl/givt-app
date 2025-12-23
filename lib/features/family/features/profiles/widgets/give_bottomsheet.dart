@@ -49,7 +49,7 @@ class GiveBottomSheet extends StatelessWidget {
                         ).colorScheme.primaryContainer,
                         backgroundColor: FamilyAppTheme.primary98,
                         textColor: Theme.of(context).colorScheme.inversePrimary,
-                        analyticsEvent: AmplitudeEvents.choseGiveToFamilyGoal
+                        analyticsEvent: AnalyticsEventName.choseGiveToFamilyGoal
                             .toEvent(),
                         onTap: () {
                           if (profile.wallet.balance == 0) {
@@ -82,7 +82,7 @@ class GiveBottomSheet extends StatelessWidget {
                         backgroundColor: FamilyAppTheme.highlight98,
                         borderColor: FamilyAppTheme.highlight80,
                         textColor: FamilyAppTheme.highlight40,
-                        analyticsEvent: AmplitudeEvents.choseGiveWithCoin
+                        analyticsEvent: AnalyticsEventName.choseGiveWithCoin
                             .toEvent(),
                         onTap: () {
                           if (profile.wallet.balance == 0) {
@@ -106,7 +106,7 @@ class GiveBottomSheet extends StatelessWidget {
                       ).colorScheme.tertiaryContainer,
                       backgroundColor: Theme.of(context).colorScheme.onTertiary,
                       textColor: Theme.of(context).colorScheme.tertiary,
-                      analyticsEvent: AmplitudeEvents.choseGiveWithQRCode
+                      analyticsEvent: AnalyticsEventName.choseGiveWithQRCode
                           .toEvent(),
                       onTap: () {
                         if (profile.wallet.balance == 0) {
@@ -128,7 +128,7 @@ class GiveBottomSheet extends StatelessWidget {
                   context.pop();
                 },
                 text: 'Cancel',
-                analyticsEvent: AmplitudeEvents.cancelGive.toEvent(),
+                analyticsEvent: AnalyticsEventName.cancelGive.toEvent(),
               ),
             ],
           ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
@@ -125,7 +125,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
               ? FunButton(
                   onTap: widget.onCustomSuccess,
                   text: context.l10n.buttonContinue,
-                  analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+                  analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
                 )
               : profilesState.isOnlyChild
                   ? const BackHomeButton()

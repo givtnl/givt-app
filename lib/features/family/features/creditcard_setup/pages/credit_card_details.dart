@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
@@ -85,7 +85,7 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
                   );
                   unawaited(
                     AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.registrationStripeSheetFilled,
+                      eventName: AnalyticsEventName.registrationStripeSheetFilled,
                       eventProperties: AnalyticsHelper.getUserPropertiesFromExt(
                         user,
                       ),
@@ -97,7 +97,7 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
 
                   unawaited(
                     AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents
+                      eventName: AnalyticsEventName
                           .registrationStripeSheetIncompleteClosed,
                       eventProperties: {
                         'id': user.guid,

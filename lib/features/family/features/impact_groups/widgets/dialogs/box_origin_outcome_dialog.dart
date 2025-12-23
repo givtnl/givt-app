@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -18,7 +18,7 @@ Future<void> showBoxOriginSuccessDialog(
       FunButton(
         text: context.l10n.buttonDone,
         onTap: onTap ?? () => Navigator.of(context).pop(),
-        analyticsEvent: AmplitudeEvents.boxOriginSuccessDialogDone.toEvent(),
+        analyticsEvent: AnalyticsEventName.boxOriginSuccessDialogDone.toEvent(),
       ),
     ],
   ).show(context);
@@ -36,12 +36,12 @@ Future<void> showBoxOriginErrorDialog(
         text: 'Retry',
         onTap: onTapRetry ?? () => context.pop(),
         leftIcon: Icons.refresh_rounded,
-        analyticsEvent: AmplitudeEvents.retryClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.retryClicked.toEvent(),
       ),
       FunButton.secondary(
         onTap: onTapSkip,
         text: context.l10n.buttonSkip,
-        analyticsEvent: AmplitudeEvents.skipClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.skipClicked.toEvent(),
       ),
     ],
   ).show(context);

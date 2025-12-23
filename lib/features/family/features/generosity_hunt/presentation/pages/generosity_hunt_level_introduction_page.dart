@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/generosity_hunt_level_intro_cubit.dart';
@@ -78,7 +78,7 @@ class _GenerosityHuntLevelIntroductionPageState
                 const Spacer(),
                 FunButton(
                   text: 'Start level',
-                  analyticsEvent: AmplitudeEvents.generosityHuntLevelStart.toEvent(),
+                  analyticsEvent: AnalyticsEventName.generosityHuntLevelStart.toEvent(),
                   onTap: () {
                     Navigator.of(context).pushReplacement(
                       const BarcodeLevelScanPage().toRoute(context),

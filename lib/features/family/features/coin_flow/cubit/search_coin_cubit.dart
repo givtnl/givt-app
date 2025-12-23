@@ -27,7 +27,7 @@ class SearchCoinCubit extends Cubit<SearchCoinState> {
     );
 
     await AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.deeplinkCoinScanned,
+      eventName: AnalyticsEventName.deeplinkCoinScanned,
       eventProperties: {
         AnalyticsHelper.mediumIdKey: mediumId,
       },

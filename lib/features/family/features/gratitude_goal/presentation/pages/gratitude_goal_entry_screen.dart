@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/gratitude_goal/presentation/pages/gratitude_goal_recognize_this_screen.dart';
 import 'package:givt_app/features/family/features/tutorial/domain/tutorial_repository.dart';
@@ -59,7 +59,7 @@ class _GratitudeGoalEntryScreenState extends State<GratitudeGoalEntryScreen> {
             onTap: () => Navigator.of(context).push(
               const GratitudeGoalRecognizeThisScreen().toRoute(context),
             ),
-            analyticsEvent: AmplitudeEvents.gratitudeGoalStartClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName.gratitudeGoalStartClicked.toEvent(),
           ),
         ],
       ),

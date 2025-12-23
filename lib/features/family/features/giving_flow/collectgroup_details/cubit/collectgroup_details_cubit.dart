@@ -47,7 +47,7 @@ class CollectGroupDetailsCubit extends Cubit<CollectGroupDetailsState> {
 
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.organisationSelected,
+          eventName: AnalyticsEventName.organisationSelected,
           eventProperties: {
             'goal_name': response.name,
           },

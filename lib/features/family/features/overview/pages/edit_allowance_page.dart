@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/features/overview/widgets/cancel_allowance_dialog.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -109,7 +109,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                     onTap: () {
                       Navigator.of(context).pop(_allowance);
                     },
-                    analyticsEvent: AmplitudeEvents.editRGAConfirmClicked.toEvent(),
+                    analyticsEvent: AnalyticsEventName.editRGAConfirmClicked.toEvent(),
                   ),
                   const SizedBox(height: 8),
                   Visibility(

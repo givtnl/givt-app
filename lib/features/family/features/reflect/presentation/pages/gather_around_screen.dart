@@ -88,7 +88,7 @@ class _GatherAroundScreenState extends State<GatherAroundScreen> {
                         .push(const SummaryScreen().toRoute(context));
                   },
                   text: 'Show our summary',
-                  analyticsEvent: AmplitudeEvents.reflectAndShareShowSummaryClicked.toEvent(),
+                  analyticsEvent: AnalyticsEventName.reflectAndShareShowSummaryClicked.toEvent(),
                 ),
               ),
             ],

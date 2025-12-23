@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_dropdown.dart';
@@ -129,7 +129,7 @@ class _PlatformContributionScreenState
           text: locals.platformContributionSaveChangesButton,
           onTap: settings.hasChanges ? _cubit.saveChanges : null,
           isDisabled: !settings.hasChanges,
-          analyticsEvent: AmplitudeEvents.platformContributionSaveChangesClicked.toEvent(
+          analyticsEvent: AnalyticsEventName.platformContributionSaveChangesClicked.toEvent(
             parameters: {
               'total_enabled': settings.organizations.where((org) => org.isEnabled).length,
               'changed_organizations': settings.organizations
@@ -299,7 +299,7 @@ class _PlatformContributionScreenState
             Navigator.of(context).pop(); // Close modal
             Navigator.of(context).pop(); // Go back
           },
-          analyticsEvent: AmplitudeEvents.platformContributionSaveConfirmClicked
+          analyticsEvent: AnalyticsEventName.platformContributionSaveConfirmClicked
               .toEvent(),
         ),
         FunButton.secondary(
@@ -309,7 +309,7 @@ class _PlatformContributionScreenState
             Navigator.of(context).pop(); // Close modal
             Navigator.of(context).pop(); // Go back
           },
-          analyticsEvent: AmplitudeEvents
+          analyticsEvent: AnalyticsEventName
               .platformContributionDiscardConfirmClicked
               .toEvent(),
         ),

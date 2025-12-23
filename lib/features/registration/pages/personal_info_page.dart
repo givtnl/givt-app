@@ -96,7 +96,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   ),
                 ),
                 text: locals.readPrivacy,
-                analyticsEvent: AmplitudeEvents.infoGivingAllowanceClicked
+                analyticsEvent: AnalyticsEventName.infoGivingAllowanceClicked
                     .toEvent(),
               ),
             ).show(context),
@@ -111,7 +111,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         text: _selectedCountry == Country.us
             ? locals.enterPaymentDetails
             : locals.next,
-        analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
       ),
       body: BlocListener<RegistrationBloc, RegistrationState>(
         listener: (context, state) {

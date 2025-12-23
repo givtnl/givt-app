@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/game_summary/cubit/game_summaries_cubit.dart';
 import 'package:givt_app/features/family/features/game_summary/data/models/game_summary_item.dart';
@@ -81,7 +81,7 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
           onTapPrimaryButton: _cubit.init,
           secondaryButtonText: 'Go Home',
           onTapSecondaryButton: () => context.pop(),
-          secondaryButtonAnalyticsEvent: AmplitudeEvents.returnToHomePressed
+          secondaryButtonAnalyticsEvent: AnalyticsEventName.returnToHomePressed
               .toEvent(),
         ),
         onLoading: (context) {
@@ -137,7 +137,7 @@ class _GameSummariesScreenState extends State<GameSummariesScreen> {
       // Track when user taps on a specific memory summary
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.memorySummaryClicked,
+          eventName: AnalyticsEventName.memorySummaryClicked,
           eventProperties: {
             'memory_id': summary.id,
             'memory_date': summary.dateLocalTime.formattedFullUSDate,

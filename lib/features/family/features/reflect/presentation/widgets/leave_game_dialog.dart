@@ -23,7 +23,7 @@ class LeaveGameDialog extends StatelessWidget {
             onConfirmLeaveGame?.call();
           },
           text: 'Leave game',
-          analyticsEvent: AmplitudeEvents.reflectAndShareConfirmExitClicked
+          analyticsEvent: AnalyticsEventName.reflectAndShareConfirmExitClicked
               .toEvent(),
         ),
         FunButton(
@@ -31,7 +31,7 @@ class LeaveGameDialog extends StatelessWidget {
             Navigator.of(context).pop();
           },
           text: 'Keep playing',
-          analyticsEvent: AmplitudeEvents.reflectAndShareKeepPlayingClicked
+          analyticsEvent: AnalyticsEventName.reflectAndShareKeepPlayingClicked
               .toEvent(),
         ),
       ],
