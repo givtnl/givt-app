@@ -27,6 +27,20 @@ class AnalyticsHelper {
 
   static bool _isInitialized = false;
 
+  static String? _appName;
+  static String? _appType;
+  static String? _appVersion;
+
+  static void setAppMetadata({
+    required String appName,
+    required String appType,
+    required String appVersion,
+  }) {
+    _appName = appName;
+    _appType = appType;
+    _appVersion = appVersion;
+  }
+
   static Future<void> init(String key) async {
     if (_isInitialized) {
       return;
@@ -65,11 +79,16 @@ class AnalyticsHelper {
     String eventName,
     Map<String, dynamic>? eventProperties,
   ) async {
+    final properties = <String, Object>{
+      if (eventProperties != null)
+        ...eventProperties.map(
+          (key, value) => MapEntry(key, value as Object),
+        ),
+    };
+
     await Posthog().capture(
       eventName: eventName,
-      properties: eventProperties == null
-          ? null
-          : Map<String, Object>.from(eventProperties),
+      properties: _withCommonProperties(properties),
     );
 
     log('$eventName pressed with event properties: $eventProperties');
@@ -114,6 +133,25 @@ class AnalyticsHelper {
     };
   }
 
+  static Map<String, Object> _withCommonProperties(
+    Map<String, Object> properties,
+  ) {
+    final common = <String, Object>{
+      if (_appName != null) 'app_name': _appName!,
+      if (_appType != null) 'app_type': _appType!,
+      if (_appVersion != null) 'app_version': _appVersion!,
+    };
+
+    if (common.isEmpty) {
+      return properties;
+    }
+
+    return <String, Object>{
+      ...common,
+      ...properties,
+    };
+  }
+
   static Future<void> logError(
     Object error, {
     StackTrace? stackTrace,
@@ -131,14 +169,16 @@ class AnalyticsHelper {
           ? null
           : (stack.length > 2000 ? '${stack.substring(0, 2000)}...' : stack);
 
+      final props = <String, Object>{
+        'type': error.runtimeType.toString(),
+        'message': truncatedMessage,
+        if (truncatedStack != null) 'stack': truncatedStack,
+        'is_fatal': isFatal,
+      };
+
       await Posthog().capture(
         eventName: 'error_exception',
-        properties: <String, Object>{
-          'type': error.runtimeType.toString(),
-          'message': truncatedMessage,
-          if (truncatedStack != null) 'stack': truncatedStack,
-          'is_fatal': isFatal,
-        },
+        properties: _withCommonProperties(props),
       );
     } catch (e, s) {
       log(

@@ -24,6 +24,7 @@ import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class App extends StatefulWidget {
   const App({
@@ -51,8 +52,18 @@ class _AppState extends State<App> {
       DeviceOrientation.portraitUp,
     ]);
 
-    AnalyticsHelper.init(
-      const String.fromEnvironment('POSTHOG_API_KEY'),
+    PackageInfo.fromPlatform().then(
+      (info) {
+        AnalyticsHelper.setAppMetadata(
+          appName: 'givt-app',
+          appType: 'mobile',
+          appVersion: info.version,
+        );
+
+        AnalyticsHelper.init(
+          const String.fromEnvironment('POSTHOG_API_KEY'),
+        );
+      },
     );
 
     initializeStripe();
