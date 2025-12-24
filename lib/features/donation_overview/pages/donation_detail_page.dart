@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/models/donation_group.dart';
@@ -51,7 +52,8 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
   }
 
   bool _shouldShowProcessingTimeSnackbar(DonationStatusType statusType) {
-    return statusType == DonationStatusType.inProcess;
+    return statusType == DonationStatusType.inProcess ||
+        statusType == DonationStatusType.created;
   }
 
   String _getProcessingTimeText(BuildContext context, Country country) {
@@ -438,18 +440,20 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
         return FunButton.secondary(
           onTap: () => _handleRefund(context, donationGroup, country),
           text: context.l10n.requestRefund,
-          analyticsEvent: AmplitudeEvents.donationDetailRefundClicked.toEvent(
-            parameters: {'donation': donationGroup.toJson()},
-          ),
+          analyticsEvent: AnalyticsEventName.donationDetailRefundClicked
+              .toEvent(
+                parameters: {'donation': donationGroup.toJson()},
+              ),
         );
 
       case DonationStatusType.created:
         return FunButton.destructiveSecondary(
           onTap: () => _handleCancel(context, donationGroup),
           text: context.l10n.cancel,
-          analyticsEvent: AmplitudeEvents.donationDetailCancelClicked.toEvent(
-            parameters: {'donation': donationGroup.toJson()},
-          ),
+          analyticsEvent: AnalyticsEventName.donationDetailCancelClicked
+              .toEvent(
+                parameters: {'donation': donationGroup.toJson()},
+              ),
         );
 
       case DonationStatusType.inProcess:
