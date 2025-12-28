@@ -8,7 +8,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/models/donation_group.dart';
@@ -440,7 +439,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
         return FunButton.secondary(
           onTap: () => _handleRefund(context, donationGroup, country),
           text: context.l10n.requestRefund,
-          analyticsEvent: AnalyticsEventName.donationDetailRefundClicked
+          analyticsEvent: AmplitudeEvents.donationDetailRefundClicked
               .toEvent(
                 parameters: {'donation': donationGroup.toJson()},
               ),
@@ -450,7 +449,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
         return FunButton.destructiveSecondary(
           onTap: () => _handleCancel(context, donationGroup),
           text: context.l10n.cancel,
-          analyticsEvent: AnalyticsEventName.donationDetailCancelClicked
+          analyticsEvent: AmplitudeEvents.donationDetailCancelClicked
               .toEvent(
                 parameters: {'donation': donationGroup.toJson()},
               ),
