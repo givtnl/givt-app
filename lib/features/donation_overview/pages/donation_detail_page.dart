@@ -51,7 +51,8 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
   }
 
   bool _shouldShowProcessingTimeSnackbar(DonationStatusType statusType) {
-    return statusType == DonationStatusType.inProcess;
+    return statusType == DonationStatusType.inProcess ||
+        statusType == DonationStatusType.created;
   }
 
   String _getProcessingTimeText(BuildContext context, Country country) {
@@ -438,18 +439,20 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
         return FunButton.secondary(
           onTap: () => _handleRefund(context, donationGroup, country),
           text: context.l10n.requestRefund,
-          analyticsEvent: AmplitudeEvents.donationDetailRefundClicked.toEvent(
-            parameters: {'donation': donationGroup.toJson()},
-          ),
+          analyticsEvent: AmplitudeEvents.donationDetailRefundClicked
+              .toEvent(
+                parameters: {'donation': donationGroup.toJson()},
+              ),
         );
 
       case DonationStatusType.created:
         return FunButton.destructiveSecondary(
           onTap: () => _handleCancel(context, donationGroup),
           text: context.l10n.cancel,
-          analyticsEvent: AmplitudeEvents.donationDetailCancelClicked.toEvent(
-            parameters: {'donation': donationGroup.toJson()},
-          ),
+          analyticsEvent: AmplitudeEvents.donationDetailCancelClicked
+              .toEvent(
+                parameters: {'donation': donationGroup.toJson()},
+              ),
         );
 
       case DonationStatusType.inProcess:
