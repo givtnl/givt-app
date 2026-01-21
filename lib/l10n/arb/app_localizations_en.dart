@@ -2477,6 +2477,67 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signMandateTitle => 'Sign mandate';
+
+  @override
+  String get giftAidYourDonationsTitle => 'Gift Aid your donations';
+
+  @override
+  String get giftAidShortExplanation =>
+      'Donating with Gift Aid means charities can claim an extra 25p for every £1 you give. It will not cost you any more.';
+
+  @override
+  String get giftAidExampleTitle => 'For example';
+
+  @override
+  String get giftAidExampleText =>
+      'When you give £10.00, Gift Aid adds an extra 25% (£2.50). The charity receives a total of £12.50.';
+
+  @override
+  String get giftAidLearnMore => 'Learn more about Gift Aid';
+
+  @override
+  String get giftAidDeclarationText =>
+      'I am a UK taxpayer and understand that if I pay less Income/Capital Gains Tax than the Gift Aid claimed, I must pay the difference.';
+
+  @override
+  String get giftAidActivateButton => 'Activate for this tax year';
+
+  @override
+  String get giftAidSetUpLaterButton => 'Set it up later';
+
+  @override
+  String get giftAidActiveTitle => 'Gift Aid is now active!';
+
+  @override
+  String get giftAidActiveMessage =>
+      'Your donations this tax year will receive a 25% increase at no extra cost to you.';
+
+  @override
+  String get giftAidActiveInfo =>
+      'You can change this anytime in Personal Info.';
+
+  @override
+  String get giftAidOffTitle => 'Gift Aid is currently off';
+
+  @override
+  String get giftAidOffMessage =>
+      'We’ve saved your preference. You can turn on Gift Aid anytime in Personal Info.';
+
+  @override
+  String get giftAidAboutTitle => 'About Gift Aid';
+
+  @override
+  String get giftAidAboutWhatIs => 'What is Gift Aid?';
+
+  @override
+  String get giftAidAboutWhoCanUse => 'Who can use Gift Aid?';
+
+  @override
+  String get giftAidAboutWhyPayDifference =>
+      'Why might I need to pay the difference?';
+
+  @override
+  String get giftAidAboutDeclaration => 'Gift Aid declaration:';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -4952,4 +5013,65 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get signMandateTitle => 'Sign mandate';
+
+  @override
+  String get giftAidYourDonationsTitle => 'Gift Aid your donations';
+
+  @override
+  String get giftAidShortExplanation =>
+      'Donating with Gift Aid means charities can claim an extra 25p for every £1 you give. It will not cost you any more.';
+
+  @override
+  String get giftAidExampleTitle => 'For example';
+
+  @override
+  String get giftAidExampleText =>
+      'When you give £10.00, Gift Aid adds an extra 25% (£2.50). The charity receives a total of £12.50.';
+
+  @override
+  String get giftAidLearnMore => 'Learn more about Gift Aid';
+
+  @override
+  String get giftAidDeclarationText =>
+      'I am a UK taxpayer and understand that if I pay less Income/Capital Gains Tax than the Gift Aid claimed, I must pay the difference.';
+
+  @override
+  String get giftAidActivateButton => 'Activate for this tax year';
+
+  @override
+  String get giftAidSetUpLaterButton => 'Set it up later';
+
+  @override
+  String get giftAidActiveTitle => 'Gift Aid is now active!';
+
+  @override
+  String get giftAidActiveMessage =>
+      'Your donations this tax year will receive a 25% increase at no extra cost to you.';
+
+  @override
+  String get giftAidActiveInfo =>
+      'You can change this anytime in Personal Info.';
+
+  @override
+  String get giftAidOffTitle => 'Gift Aid is currently off';
+
+  @override
+  String get giftAidOffMessage =>
+      'We’ve saved your preference. You can turn on Gift Aid anytime in Personal Info.';
+
+  @override
+  String get giftAidAboutTitle => 'About Gift Aid';
+
+  @override
+  String get giftAidAboutWhatIs => 'What is Gift Aid?';
+
+  @override
+  String get giftAidAboutWhoCanUse => 'Who can use Gift Aid?';
+
+  @override
+  String get giftAidAboutWhyPayDifference =>
+      'Why might I need to pay the difference?';
+
+  @override
+  String get giftAidAboutDeclaration => 'Gift Aid declaration:';
 }

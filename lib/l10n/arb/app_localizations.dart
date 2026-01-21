@@ -4459,6 +4459,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign mandate'**
   String get signMandateTitle;
+
+  /// No description provided for @giftAidYourDonationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Aid your donations'**
+  String get giftAidYourDonationsTitle;
+
+  /// No description provided for @giftAidShortExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Donating with Gift Aid means charities can claim an extra 25p for every £1 you give. It will not cost you any more.'**
+  String get giftAidShortExplanation;
+
+  /// No description provided for @giftAidExampleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'For example'**
+  String get giftAidExampleTitle;
+
+  /// No description provided for @giftAidExampleText.
+  ///
+  /// In en, this message translates to:
+  /// **'When you give £10.00, Gift Aid adds an extra 25% (£2.50). The charity receives a total of £12.50.'**
+  String get giftAidExampleText;
+
+  /// No description provided for @giftAidLearnMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn more about Gift Aid'**
+  String get giftAidLearnMore;
+
+  /// No description provided for @giftAidDeclarationText.
+  ///
+  /// In en, this message translates to:
+  /// **'I am a UK taxpayer and understand that if I pay less Income/Capital Gains Tax than the Gift Aid claimed, I must pay the difference.'**
+  String get giftAidDeclarationText;
+
+  /// No description provided for @giftAidActivateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate for this tax year'**
+  String get giftAidActivateButton;
+
+  /// No description provided for @giftAidSetUpLaterButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Set it up later'**
+  String get giftAidSetUpLaterButton;
+
+  /// No description provided for @giftAidActiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Aid is now active!'**
+  String get giftAidActiveTitle;
+
+  /// No description provided for @giftAidActiveMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donations this tax year will receive a 25% increase at no extra cost to you.'**
+  String get giftAidActiveMessage;
+
+  /// No description provided for @giftAidActiveInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this anytime in Personal Info.'**
+  String get giftAidActiveInfo;
+
+  /// No description provided for @giftAidOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Aid is currently off'**
+  String get giftAidOffTitle;
+
+  /// No description provided for @giftAidOffMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We’ve saved your preference. You can turn on Gift Aid anytime in Personal Info.'**
+  String get giftAidOffMessage;
+
+  /// No description provided for @giftAidAboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About Gift Aid'**
+  String get giftAidAboutTitle;
+
+  /// No description provided for @giftAidAboutWhatIs.
+  ///
+  /// In en, this message translates to:
+  /// **'What is Gift Aid?'**
+  String get giftAidAboutWhatIs;
+
+  /// No description provided for @giftAidAboutWhoCanUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Who can use Gift Aid?'**
+  String get giftAidAboutWhoCanUse;
+
+  /// No description provided for @giftAidAboutWhyPayDifference.
+  ///
+  /// In en, this message translates to:
+  /// **'Why might I need to pay the difference?'**
+  String get giftAidAboutWhyPayDifference;
+
+  /// No description provided for @giftAidAboutDeclaration.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Aid declaration:'**
+  String get giftAidAboutDeclaration;
 }
 
 class _AppLocalizationsDelegate

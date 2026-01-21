@@ -81,22 +81,32 @@ class FunTextButton extends StatelessWidget {
                 eventProperties: analyticsEvent.parameters,
               );
             },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (isMedium)
-            LabelLargeText(
-              text,
-              color: hasDisabledState ? disabledTextColor : textColor,
+      child: isMedium
+          ? SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    LabelLargeText(
+                      text,
+                      color: hasDisabledState ? disabledTextColor : textColor,
+                    ),
+                  ],
+                ),
+              ),
             )
-          else
-            LabelMediumText(
-              text,
-              color: hasDisabledState ? disabledTextColor : textColor,
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LabelMediumText(
+                  text,
+                  color: hasDisabledState ? disabledTextColor : textColor,
+                ),
+              ],
             ),
-        ],
-      ),
     );
   }
 }
