@@ -29,28 +29,28 @@ class AboutGiftAidBottomSheet extends StatelessWidget {
       children: [
         TitleSmallText(locals.giftAidAboutWhatIs),
         const SizedBox(height: 8),
-        BodyMediumText(
+        BodySmallText(
           locals.giftAidInfoBody,
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 24),
         TitleSmallText(locals.giftAidAboutWhoCanUse),
         const SizedBox(height: 8),
-        BodyMediumText(
+        BodySmallText(
           locals.giftAidInfo,
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 24),
         TitleSmallText(locals.giftAidAboutWhyPayDifference),
         const SizedBox(height: 8),
-        BodyMediumText(
+        BodySmallText(
           locals.giftAidBodyDisclaimer,
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 24),
         TitleSmallText(locals.giftAidAboutDeclaration),
         const SizedBox(height: 8),
-        BodyMediumText(
+        BodySmallText(
           locals.giftAidDeclarationText,
           textAlign: TextAlign.left,
         ),
