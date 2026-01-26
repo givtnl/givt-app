@@ -2487,4 +2487,65 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get signMandateTitle => 'Machtiging tekenen';
+
+  @override
+  String get giftAidYourDonationsTitle => 'Gift Aid op je giften';
+
+  @override
+  String get giftAidShortExplanation =>
+      'Met Gift Aid kan een goed doel 25p extra krijgen voor elke £1 die jij geeft. Het kost jou niets extra.';
+
+  @override
+  String get giftAidExampleTitle => 'Bijvoorbeeld';
+
+  @override
+  String get giftAidExampleText =>
+      'Als je £10,00 geeft, voegt Gift Aid 25% (£2,50) toe. Het goede doel ontvangt in totaal £12,50.';
+
+  @override
+  String get giftAidLearnMore => 'Lees meer over Gift Aid';
+
+  @override
+  String get giftAidDeclarationText =>
+      'Ik ben belastingplichtig in het Verenigd Koninkrijk en begrijp dat als ik minder inkomsten- en/of vermogenswinstbelasting betaal dan het bedrag aan Gift Aid dat over al mijn giften wordt geclaimd, ik zelf verantwoordelijk ben voor het betalen van het verschil.';
+
+  @override
+  String get giftAidActivateButton => 'Activeren voor dit belastingjaar';
+
+  @override
+  String get giftAidSetUpLaterButton => 'Later instellen';
+
+  @override
+  String get giftAidActiveTitle => 'Gift Aid is nu actief';
+
+  @override
+  String get giftAidActiveMessage =>
+      'Je giften in dit belastingjaar krijgen 25% extra zonder extra kosten voor jou.';
+
+  @override
+  String get giftAidActiveInfo =>
+      'Je kunt dit altijd wijzigen in Persoonlijke gegevens.';
+
+  @override
+  String get giftAidOffTitle => 'Gift Aid staat nu uit';
+
+  @override
+  String get giftAidOffMessage =>
+      'We hebben je voorkeur opgeslagen. Je kunt Gift Aid later altijd inschakelen bij Persoonlijke gegevens.';
+
+  @override
+  String get giftAidAboutTitle => 'Over Gift Aid';
+
+  @override
+  String get giftAidAboutWhatIs => 'Wat is Gift Aid?';
+
+  @override
+  String get giftAidAboutWhoCanUse => 'Wie kan Gift Aid gebruiken?';
+
+  @override
+  String get giftAidAboutWhyPayDifference =>
+      'Waarom moet ik soms het verschil betalen?';
+
+  @override
+  String get giftAidAboutDeclaration => 'Gift Aid-verklaring:';
 }

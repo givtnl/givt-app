@@ -35,6 +35,8 @@ import 'package:givt_app/features/platform_contribution/presentation/screens/pla
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/cubit/gift_aid_registration_cubit.dart';
+import 'package:givt_app/features/registration/pages/gift_aid_registration_page.dart';
 import 'package:givt_app/features/registration/pages/pages.dart';
 import 'package:givt_app/features/review_donations/pages/donations_processed_success_page.dart';
 import 'package:givt_app/features/review_donations/pages/review_donations_page.dart';
@@ -280,12 +282,11 @@ class AppRouter {
                   GoRoute(
                     path: Pages.giftAid.path,
                     name: Pages.giftAid.name,
-                    builder: (context, state) => BlocProvider(
-                      create: (context) => RegistrationBloc(
-                        authCubit: context.read<AuthCubit>(),
-                        authRepositoy: getIt(),
-                      )..add(const RegistrationInit()),
-                      child: const GiftAidRequestPage(),
+                    builder: (context, state) => GiftAidRegistrationPage(
+                      cubit: GiftAidRegistrationCubit(
+                        context.read<AuthCubit>(),
+                        getIt(),
+                      ),
                     ),
                   ),
                 ],

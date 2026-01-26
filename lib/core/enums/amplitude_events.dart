@@ -175,6 +175,24 @@ enum AmplitudeEvents {
   registrationContinueAfterPersonalInfoClicked(
     'registration_continue_after_personal_info_clicked',
   ),
+  giftAidRegistrationActivateClicked(
+    'gift_aid_registration_activate_clicked',
+  ),
+  giftAidRegistrationSetUpLaterClicked(
+    'gift_aid_registration_set_up_later_clicked',
+  ),
+  giftAidRegistrationLearnMoreClicked(
+    'gift_aid_registration_learn_more_clicked',
+  ),
+  giftAidRegistrationInfoIconClicked(
+    'gift_aid_registration_info_icon_clicked',
+  ),
+  giftAidRegistrationDoneClicked(
+    'gift_aid_registration_done_clicked',
+  ),
+  giftAidRegistrationCheckboxChanged(
+    'gift_aid_registration_checkbox_changed',
+  ),
   // Family
 
   amountPressed('amount_pressed'),

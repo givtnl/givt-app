@@ -2478,6 +2478,67 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get signMandateTitle => 'Firmar mandato';
+
+  @override
+  String get giftAidYourDonationsTitle => 'Gift Aid para tus donaciones';
+
+  @override
+  String get giftAidShortExplanation =>
+      'Con Gift Aid, las organizaciones benéficas pueden recibir 25 peniques extra por cada libra que das. No te cuesta nada más.';
+
+  @override
+  String get giftAidExampleTitle => 'Por ejemplo';
+
+  @override
+  String get giftAidExampleText =>
+      'Si das £10,00, Gift Aid añade un 25 % extra (£2,50). La organización recibe un total de £12,50.';
+
+  @override
+  String get giftAidLearnMore => 'Más información sobre Gift Aid';
+
+  @override
+  String get giftAidDeclarationText =>
+      'Soy contribuyente en el Reino Unido y entiendo que, si pago menos impuesto sobre la renta y/o sobre ganancias de capital en el año fiscal actual que la cantidad de Gift Aid que se reclama sobre todas mis donaciones, soy responsable de pagar la diferencia.';
+
+  @override
+  String get giftAidActivateButton => 'Activar para este año fiscal';
+
+  @override
+  String get giftAidSetUpLaterButton => 'Configurar más tarde';
+
+  @override
+  String get giftAidActiveTitle => 'Gift Aid está ahora activo';
+
+  @override
+  String get giftAidActiveMessage =>
+      'Tus donaciones de este año fiscal recibirán un aumento del 25 % sin coste extra para ti.';
+
+  @override
+  String get giftAidActiveInfo =>
+      'Puedes cambiar esto en cualquier momento en Información personal.';
+
+  @override
+  String get giftAidOffTitle => 'Gift Aid está desactivado';
+
+  @override
+  String get giftAidOffMessage =>
+      'Hemos guardado tu preferencia. Puedes activar Gift Aid en cualquier momento en Información personal.';
+
+  @override
+  String get giftAidAboutTitle => 'Sobre Gift Aid';
+
+  @override
+  String get giftAidAboutWhatIs => '¿Qué es Gift Aid?';
+
+  @override
+  String get giftAidAboutWhoCanUse => '¿Quién puede usar Gift Aid?';
+
+  @override
+  String get giftAidAboutWhyPayDifference =>
+      '¿Por qué podría tener que pagar la diferencia?';
+
+  @override
+  String get giftAidAboutDeclaration => 'Declaración de Gift Aid:';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -4975,4 +5036,65 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get signMandateTitle => 'Sign mandate';
+
+  @override
+  String get giftAidYourDonationsTitle => 'Gift Aid para tus donaciones';
+
+  @override
+  String get giftAidShortExplanation =>
+      'Con Gift Aid, las organizaciones benéficas pueden recibir 25 peniques extra por cada libra que das. No te cuesta nada más.';
+
+  @override
+  String get giftAidExampleTitle => 'Por ejemplo';
+
+  @override
+  String get giftAidExampleText =>
+      'Si das £10,00, Gift Aid añade un 25 % extra (£2,50). La organización recibe un total de £12,50.';
+
+  @override
+  String get giftAidLearnMore => 'Más información sobre Gift Aid';
+
+  @override
+  String get giftAidDeclarationText =>
+      'Soy contribuyente en el Reino Unido y entiendo que, si pago menos impuesto sobre la renta y/o de ganancias de capital en el año fiscal actual que la cantidad de Gift Aid reclamada sobre todas mis donaciones, soy responsable de pagar la diferencia.';
+
+  @override
+  String get giftAidActivateButton => 'Activar para este año fiscal';
+
+  @override
+  String get giftAidSetUpLaterButton => 'Configurar más tarde';
+
+  @override
+  String get giftAidActiveTitle => 'Gift Aid está ahora activo';
+
+  @override
+  String get giftAidActiveMessage =>
+      'Tus donaciones de este año fiscal recibirán un aumento del 25 % sin costo extra para ti.';
+
+  @override
+  String get giftAidActiveInfo =>
+      'Puedes cambiar esto en cualquier momento en Información personal.';
+
+  @override
+  String get giftAidOffTitle => 'Gift Aid está desactivado';
+
+  @override
+  String get giftAidOffMessage =>
+      'Hemos guardado tu preferencia. Puedes activar Gift Aid en cualquier momento en Información personal.';
+
+  @override
+  String get giftAidAboutTitle => 'Sobre Gift Aid';
+
+  @override
+  String get giftAidAboutWhatIs => '¿Qué es Gift Aid?';
+
+  @override
+  String get giftAidAboutWhoCanUse => '¿Quién puede usar Gift Aid?';
+
+  @override
+  String get giftAidAboutWhyPayDifference =>
+      '¿Por qué podría tener que pagar la diferencia?';
+
+  @override
+  String get giftAidAboutDeclaration => 'Declaración de Gift Aid:';
 }
