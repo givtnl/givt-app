@@ -514,7 +514,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
-  String get city => 'City/Town';
+  String get city => 'Town/City';
 
   @override
   String get country => 'Country';
@@ -600,7 +600,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneNumber => 'Mobile number';
 
   @override
-  String get postalCode => 'Postal Code';
+  String get postalCode => 'Postcode';
 
   @override
   String get ready => 'Done';
@@ -621,6 +621,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get streetAndHouseNumber => 'Street name and number';
+
+  @override
+  String get street => 'Street';
+
+  @override
+  String get houseNumber => 'House number';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get bankDetails => 'Bank details';
 
   @override
   String get tryAgain => 'Try again';
@@ -3157,6 +3169,18 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get streetAndHouseNumber => 'Street name and number';
+
+  @override
+  String get street => 'Street';
+
+  @override
+  String get houseNumber => 'House number';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get bankDetails => 'Bank details';
 
   @override
   String get tryAgain => 'Try again';

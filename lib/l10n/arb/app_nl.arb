@@ -279,6 +279,10 @@
     "description": "Placeholder voor Straat en huisnummer",
     "type": "text"
   },
+  "street": "Straat",
+  "houseNumber": "Huisnummer",
+  "address": "Adres",
+  "bankDetails": "Bankgegevens",
   "tryAgain": "Opnieuw proberen",
   "@tryAgain": {
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",

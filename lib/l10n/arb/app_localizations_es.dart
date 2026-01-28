@@ -623,6 +623,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get streetAndHouseNumber => 'Street name and number';
 
   @override
+  String get street => 'Street';
+
+  @override
+  String get houseNumber => 'House number';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get bankDetails => 'Bank details';
+
+  @override
   String get tryAgain => 'Try again';
 
   @override
@@ -3163,6 +3175,18 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get streetAndHouseNumber => 'Nombre de la calle y número';
+
+  @override
+  String get street => 'Calle';
+
+  @override
+  String get houseNumber => 'Número de casa';
+
+  @override
+  String get address => 'Dirección';
+
+  @override
+  String get bankDetails => 'Datos bancarios';
 
   @override
   String get tryAgain => 'Intentar de nuevo';

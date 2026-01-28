@@ -627,6 +627,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get streetAndHouseNumber => 'Straat en huisnummer';
 
   @override
+  String get street => 'Straat';
+
+  @override
+  String get houseNumber => 'Huisnummer';
+
+  @override
+  String get address => 'Adres';
+
+  @override
+  String get bankDetails => 'Bankgegevens';
+
+  @override
   String get tryAgain => 'Opnieuw proberen';
 
   @override

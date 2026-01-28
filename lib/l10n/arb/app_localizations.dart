@@ -978,7 +978,7 @@ abstract class AppLocalizations {
   /// "Stad" placeholder bij het invoeren van je stad bij de registratie
   ///
   /// In en, this message translates to:
-  /// **'City/Town'**
+  /// **'Town/City'**
   String get city;
 
   /// "Land" placeholder bij de keuze van het land bij registratie
@@ -1145,7 +1145,7 @@ abstract class AppLocalizations {
   /// Postcode placeholder
   ///
   /// In en, this message translates to:
-  /// **'Postal Code'**
+  /// **'Postcode'**
   String get postalCode;
 
   /// "Klaar'-knop bij het succesvol geven
@@ -1186,6 +1186,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Street name and number'**
   String get streetAndHouseNumber;
+
+  /// No description provided for @street.
+  ///
+  /// In en, this message translates to:
+  /// **'Street'**
+  String get street;
+
+  /// No description provided for @houseNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'House number'**
+  String get houseNumber;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// No description provided for @bankDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank details'**
+  String get bankDetails;
 
   /// "Nogmaals proberen" knop op de geef mislukt pagina
   ///

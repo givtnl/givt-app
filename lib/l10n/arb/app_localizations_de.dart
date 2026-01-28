@@ -628,6 +628,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get streetAndHouseNumber => 'Straßenname und -nummer';
 
   @override
+  String get street => 'Straße';
+
+  @override
+  String get houseNumber => 'Hausnummer';
+
+  @override
+  String get address => 'Adresse';
+
+  @override
+  String get bankDetails => 'Bankdaten';
+
+  @override
   String get tryAgain => 'Versuche es nochmal';
 
   @override

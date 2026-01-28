@@ -159,7 +159,7 @@
     "description": "Algemene \"Annuleren\" knop",
     "type": "text"
   },
-  "city": "City/Town",
+  "city": "Town/City",
   "@city": {
     "description": "\"Stad\" placeholder bij het invoeren van je stad bij de registratie",
     "type": "text"
@@ -294,7 +294,7 @@
     "description": "Telefoonnummer placeholder bij registratie",
     "type": "text"
   },
-  "postalCode": "Postal Code",
+  "postalCode": "Postcode",
   "@postalCode": {
     "description": "Postcode placeholder",
     "type": "text"
@@ -329,6 +329,10 @@
     "description": "Placeholder voor Straat en huisnummer",
     "type": "text"
   },
+  "street": "Street",
+  "houseNumber": "House number",
+  "address": "Address",
+  "bankDetails": "Bank details",
   "tryAgain": "Try again",
   "@tryAgain": {
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
