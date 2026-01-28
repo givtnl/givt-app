@@ -158,6 +158,33 @@ class _AppView extends StatelessWidget {
       theme: themeData,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      localeResolutionCallback: (locale, supportedLocales) {
+        // If no locale is requested, use Flutter's default resolution
+        if (locale == null) {
+          return null;
+        }
+
+        // Check if the requested locale is supported
+        final isSupported = supportedLocales.any(
+          (supportedLocale) =>
+              supportedLocale.languageCode == locale.languageCode &&
+              (supportedLocale.countryCode == null ||
+                  supportedLocale.countryCode == locale.countryCode),
+        );
+
+        // If the locale is supported, use Flutter's default resolution
+        if (isSupported) {
+          return null;
+        }
+
+        // If Polish is requested but not supported, fall back to English
+        if (locale.languageCode == 'pl') {
+          return const Locale('en');
+        }
+
+        // For other unsupported locales, use Flutter's default resolution
+        return null;
+      },
       routeInformationProvider: AppRouter.router.routeInformationProvider,
       routeInformationParser: AppRouter.router.routeInformationParser,
       routerDelegate: AppRouter.router.routerDelegate,
