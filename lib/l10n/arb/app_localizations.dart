@@ -1076,6 +1076,66 @@ abstract class AppLocalizations {
   /// **'The password should contain at least 7 characters including at least one capital and one digit.'**
   String get passwordRule;
 
+  /// Error message shown when a required field is left empty
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required.'**
+  String get fieldRequired;
+
+  /// Error message shown when password validation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Password does not meet the requirements'**
+  String get passwordDoesntMeetRequirements;
+
+  /// Error message shown when postcode format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid postcode'**
+  String get enterValidPostcode;
+
+  /// Error message shown when phone number format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number'**
+  String get enterValidPhoneNumber;
+
+  /// Error message shown when IBAN format is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid IBAN'**
+  String get enterValidIban;
+
+  /// Error message shown when sort code is not 6 digits
+  ///
+  /// In en, this message translates to:
+  /// **'Sort code must be 6 digits'**
+  String get sortCodeMustBe6Digits;
+
+  /// Error message shown when bank account number is not 8 digits
+  ///
+  /// In en, this message translates to:
+  /// **'Account number must be 8 digits'**
+  String get accountNumberMustBe8Digits;
+
+  /// Password requirement: minimum 7 characters
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 7 characters'**
+  String get passwordRuleMinChars;
+
+  /// Password requirement: at least one capital letter
+  ///
+  /// In en, this message translates to:
+  /// **'Include one capital'**
+  String get passwordRuleCapital;
+
+  /// Password requirement: at least one digit
+  ///
+  /// In en, this message translates to:
+  /// **'Include one digit'**
+  String get passwordRuleDigit;
+
   /// Telefoonnummer placeholder bij registratie
   ///
   /// In en, this message translates to:

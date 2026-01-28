@@ -8,3 +8,4 @@ export 'drawer_menu_item.dart';
 export 'outlined_input_borders.dart';
 export 'summary_menu_item.dart';
 export 'uppercase_text_formatter.dart';
+export 'validated_text_form_field.dart';
