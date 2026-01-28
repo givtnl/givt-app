@@ -100,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
               IconButton(
                 onPressed: () => const FunFAQBottomSheet().show(context),
                 icon: const Icon(
-                  Icons.question_mark_outlined,
+                  Icons.info_rounded,
                   size: 26,
                 ),
               ),
@@ -110,7 +110,7 @@ class _SignUpPageState extends State<SignUpPage> {
             onTap: _isEnabled ? _register : null,
             isDisabled: !_isEnabled,
             isLoading: isLoading,
-            text: locals.next,
+            text: locals.buttonContinue,
             analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
           ),
           body: LayoutBuilder(

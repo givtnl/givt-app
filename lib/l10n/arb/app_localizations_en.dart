@@ -514,7 +514,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
-  String get city => 'City/Town';
+  String get city => 'Town/City';
 
   @override
   String get country => 'Country';
@@ -566,10 +566,41 @@ class AppLocalizationsEn extends AppLocalizations {
       'The password should contain at least 7 characters including at least one capital and one digit.';
 
   @override
+  String get fieldRequired => 'This field is required.';
+
+  @override
+  String get passwordDoesntMeetRequirements =>
+      'Password does not meet the requirements';
+
+  @override
+  String get enterValidPostcode => 'Enter a valid postcode';
+
+  @override
+  String get enterValidPhoneNumber => 'Enter a valid phone number';
+
+  @override
+  String get enterValidIban => 'Enter a valid IBAN';
+
+  @override
+  String get sortCodeMustBe6Digits => 'Sort code must be 6 digits';
+
+  @override
+  String get accountNumberMustBe8Digits => 'Account number must be 8 digits';
+
+  @override
+  String get passwordRuleMinChars => 'Use at least 7 characters';
+
+  @override
+  String get passwordRuleCapital => 'Include one capital';
+
+  @override
+  String get passwordRuleDigit => 'Include one digit';
+
+  @override
   String get phoneNumber => 'Mobile number';
 
   @override
-  String get postalCode => 'Postal Code';
+  String get postalCode => 'Postcode';
 
   @override
   String get ready => 'Done';
@@ -590,6 +621,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get streetAndHouseNumber => 'Street name and number';
+
+  @override
+  String get street => 'Street';
+
+  @override
+  String get houseNumber => 'House number';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get bankDetails => 'Bank details';
 
   @override
   String get tryAgain => 'Try again';
@@ -3126,6 +3169,18 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get streetAndHouseNumber => 'Street name and number';
+
+  @override
+  String get street => 'Street';
+
+  @override
+  String get houseNumber => 'House number';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get bankDetails => 'Bank details';
 
   @override
   String get tryAgain => 'Try again';
