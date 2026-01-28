@@ -50,7 +50,7 @@ class Step4ConfirmCubit extends CommonCubit<ConfirmUIModel, ConfirmAction> {
       );
 
       final recurringDonation = RecurringDonation(
-        amount: double.parse(current.amount),
+        amount: double.parse(current.amount.replaceAll(',', '.')),
         frequency: frequency,
         startDate: current.startDate ?? DateTime.now(),
         namespace: _repository.selectedOrganization?.nameSpace ?? '',
