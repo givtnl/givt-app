@@ -14,11 +14,13 @@ class SetAmountUIModel extends Equatable {
   final bool isLoading;
   final String? error;
 
-  bool get isContinueEnabled =>
-      selectedFrequency != null &&
-      amount.isNotEmpty &&
-      double.tryParse(amount) != null &&
-      double.parse(amount) > 0;
+  bool get isContinueEnabled {
+    final normalizedAmount = amount.replaceAll(',', '.');
+    return selectedFrequency != null &&
+        amount.isNotEmpty &&
+        double.tryParse(normalizedAmount) != null &&
+        double.parse(normalizedAmount) > 0;
+  }
 
   SetAmountUIModel copyWith({
     overview.Frequency? selectedFrequency,
