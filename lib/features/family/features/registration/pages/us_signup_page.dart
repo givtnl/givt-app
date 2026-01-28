@@ -25,6 +25,7 @@ import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
+import 'package:givt_app/features/registration/widgets/password_requirements_checklist.dart';
 import 'package:givt_app/utils/add_member_util.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
@@ -357,16 +358,12 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             onChanged: (value) => setState(() {}),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return '';
+                return locals.fieldRequired;
               }
-              if (value.length < 7) {
-                return '';
-              }
-              if (value.contains(RegExp('[0-9]')) == false) {
-                return '';
-              }
-              if (value.contains(RegExp('[A-Z]')) == false) {
-                return '';
+              if (value.length < 7 ||
+                  !value.contains(RegExp('[0-9]')) ||
+                  !value.contains(RegExp('[A-Z]'))) {
+                return locals.passwordDoesntMeetRequirements;
               }
 
               return null;
@@ -395,8 +392,8 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             keyboardType: TextInputType.visiblePassword,
           ),
           const SizedBox(height: 8),
-          BodySmallText.primary40(
-            locals.passwordRule,
+          PasswordRequirementsChecklist(
+            password: _passwordController.text,
           ),
           const SizedBox(height: 8),
         ],

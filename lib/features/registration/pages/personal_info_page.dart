@@ -149,7 +149,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                             controller: _address,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return '';
+                                return locals.fieldRequired;
                               }
                               return null;
                             },
@@ -164,7 +164,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                             controller: _houseNumber,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return '';
+                                return locals.fieldRequired;
                               }
                               return null;
                             },
@@ -181,7 +181,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                             controller: _address,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return '';
+                                return locals.fieldRequired;
                               }
                               return null;
                             },
@@ -198,7 +198,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                           toUpperCase: isUk,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return '';
+                              return locals.fieldRequired;
                             }
                             if (!isUk) {
                               return null;
@@ -208,7 +208,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               value,
                             );
                             if (formattedPostCode == null) {
-                              return '';
+                              return locals.enterValidPostcode;
                             }
                             if (formattedPostCode != _postalCode.text) {
                               _postalCode.text = formattedPostCode;
@@ -224,7 +224,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                           controller: _city,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return '';
+                              return locals.fieldRequired;
                             }
                             return null;
                           },
@@ -330,7 +330,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             validator: (String? value) {
               final cleanedValue = value?.replaceAll(RegExp(r'\s+'), '') ?? '';
               if (cleanedValue.isEmpty) {
-                return '';
+                return locals.fieldRequired;
               }
 
               if (Country.unitedKingdomCodes().contains(
@@ -341,7 +341,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   phoneNumber: cleanedValue,
                 );
                 if (normalizedValue.isEmpty) {
-                  return '';
+                  return locals.enterValidPhoneNumber;
                 }
                 final withPrefix =
                     '${_selectedPhoneCountry.prefix}$normalizedValue';
@@ -352,7 +352,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   withPrefix,
                 );
                 if (!matchesLocal && !matchesInternational) {
-                  return '';
+                  return locals.enterValidPhoneNumber;
                 }
                 return null;
               }
@@ -361,7 +361,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 if (!Util.usPhoneNumberRegEx.hasMatch(
                   Util.formatPhoneNrUs(cleanedValue),
                 )) {
-                  return '';
+                  return locals.enterValidPhoneNumber;
                 }
                 return null;
               }
@@ -372,12 +372,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 phoneNumber: cleanedValue,
               );
               if (normalizedValue.isEmpty) {
-                return '';
+                return locals.enterValidPhoneNumber;
               }
               if (!Util.phoneNumberRegEx(
                 prefix,
               ).hasMatch('+$prefix$normalizedValue')) {
-                return '';
+                return locals.enterValidPhoneNumber;
               }
 
               return null;
@@ -507,9 +507,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         validator: validator,
         autofillHints: autofillHints ?? const [],
         keyboardType: keyboardType,
-        errorStyle: const TextStyle(
-          height: 0.01,
-        ),
       ),
     );
   }
