@@ -235,4 +235,43 @@ AgMBAAE=
     final localDate = utcDate.toLocal();
     return '${DateFormat.MMMd(locale).format(localDate)} ${DateFormat.Hm(locale).format(localDate)}';
   }
+
+  /// Resolves a locale to a supported locale, prioritizing language matches
+  /// and defaulting to English if no match is found.
+  ///
+  /// This method ensures that Polish phones fall back to English instead of
+  /// German when Polish translations are not available.
+  ///
+  /// Returns `null` to use Flutter's default locale resolution if the locale
+  /// is supported, or a specific locale for unsupported locales.
+  static Locale? resolveLocale(
+    Locale? locale,
+    Iterable<Locale> supportedLocales,
+  ) {
+    // If no locale is requested, use Flutter's default resolution
+    if (locale == null) {
+      return null;
+    }
+
+    // Check if the requested locale is supported
+    final isSupported = supportedLocales.any(
+      (supportedLocale) =>
+          supportedLocale.languageCode == locale.languageCode &&
+          (supportedLocale.countryCode == null ||
+              supportedLocale.countryCode == locale.countryCode),
+    );
+
+    // If the locale is supported, use Flutter's default resolution
+    if (isSupported) {
+      return null;
+    }
+
+    // If Polish is requested but not supported, fall back to English
+    if (locale.languageCode == 'pl') {
+      return const Locale('en');
+    }
+
+    // For other unsupported locales, default to English as well
+    return const Locale('en');
+  }
 }
