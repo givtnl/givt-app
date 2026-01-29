@@ -11,7 +11,8 @@ Act like the best mobile frontend developer and UX expert that exists. Implement
 1. **IMMEDIATELY** move the Linear item to "In progress" state as the very first action to ensure other agents don't pick it up.
 
 2. **Understand the requirements:**
-   - Review the Linear item to understand what feature or bug fix needs to be implemented
+   - Review the Linear item (title, description, and **comments**) to understand what feature or bug fix needs to be implemented
+   - Comments may also contain an implementation plan, acceptance criteria, or design decisions—use them to guide your work
    - Identify what you are trying to achieve
    - Ask questions to the user if you need clarification
 
