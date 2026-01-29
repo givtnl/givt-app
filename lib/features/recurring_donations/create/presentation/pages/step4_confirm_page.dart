@@ -102,81 +102,100 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
               ),
             ],
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const FunStepper(currentStep: 3, stepCount: 4),
-                const SizedBox(height: 32),
-                TitleMediumText(
-                  context.l10n.recurringDonationsStep4Description,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 32),
-                SummaryRow(
-                  icon: FontAwesomeIcons.building,
-                  label: context.l10n.recurringDonationsStep4YoullDonateTo,
-                  value: model.organizationName,
-                  analyticsEvent: AmplitudeEvents
-                      .recurringStep4ConfirmEditOrganisation
-                      .toEvent(),
-                  onEdit: _cubit.navigateToOrganization,
-                ),
-                SummaryRow(
-                  icon: FontAwesomeIcons.moneyBillWave,
-                  label: context.l10n.recurringDonationsStep4Amount,
-                  value: model.amount.isNotEmpty
-                      ? '€${model.amount}'
-                      : '',
-                  analyticsEvent: AmplitudeEvents
-                      .recurringStep4ConfirmEditAmount
-                      .toEvent(),
-                  onEdit: _cubit.navigateToAmount,
-                ),
-                SummaryRow(
-                  icon: FontAwesomeIcons.calendar,
-                  label: context.l10n.recurringDonationsStep4Frequency,
-                  value: _getFrequencyDisplayText(model.frequency, context),
-                  analyticsEvent: AmplitudeEvents
-                      .recurringStep4ConfirmEditFrequency
-                      .toEvent(),
-                  onEdit: _cubit.navigateToFrequency,
-                ),
-                SummaryRow(
-                  icon: FontAwesomeIcons.play,
-                  label: context.l10n.recurringDonationsStep4Starts,
-                  value: model.startDate != null
-                      ? _formatDate(model.startDate!)
-                      : '',
-                  analyticsEvent: AmplitudeEvents
-                      .recurringStep4ConfirmEditStartDate
-                      .toEvent(),
-                  onEdit: _cubit.navigateToStartDate,
-                ),
-                SummaryRow(
-                  icon: FontAwesomeIcons.stop,
-                  label: context.l10n.recurringDonationsStep4Ends,
-                  value: endsText,
-                  analyticsEvent: AmplitudeEvents
-                      .recurringStep4ConfirmEditEndDate
-                      .toEvent(),
-                  onEdit: _cubit.navigateToEndDate,
-                ),
-                const SizedBox(height: 32),
-                FunButton(
-                  text: context.l10n.recurringDonationsStep4ConfirmMyDonation,
-                  isLoading: model.isLoading,
-                  analyticsEvent: AmplitudeEvents.recurringStep4ConfirmDonation
-                      .toEvent(
-                        parameters: model.analyticsParams,
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const FunStepper(currentStep: 3, stepCount: 4),
+                    const SizedBox(height: 32),
+                    TitleMediumText(
+                      context.l10n.recurringDonationsStep4Description,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 32),
+                    SummaryRow(
+                      icon: FontAwesomeIcons.building,
+                      label: context.l10n.recurringDonationsStep4YoullDonateTo,
+                      value: model.organizationName,
+                      analyticsEvent: AmplitudeEvents
+                          .recurringStep4ConfirmEditOrganisation
+                          .toEvent(),
+                      onEdit: _cubit.navigateToOrganization,
+                    ),
+                    SummaryRow(
+                      icon: FontAwesomeIcons.moneyBillWave,
+                      label: context.l10n.recurringDonationsStep4Amount,
+                      value: model.amount.isNotEmpty
+                          ? '€${model.amount}'
+                          : '',
+                      analyticsEvent: AmplitudeEvents
+                          .recurringStep4ConfirmEditAmount
+                          .toEvent(),
+                      onEdit: _cubit.navigateToAmount,
+                    ),
+                    SummaryRow(
+                      icon: FontAwesomeIcons.calendar,
+                      label: context.l10n.recurringDonationsStep4Frequency,
+                      value: _getFrequencyDisplayText(
+                        model.frequency,
+                        context,
                       ),
-                  onTap: model.isLoading
-                      ? null
-                      : _cubit.createRecurringDonation,
+                      analyticsEvent: AmplitudeEvents
+                          .recurringStep4ConfirmEditFrequency
+                          .toEvent(),
+                      onEdit: _cubit.navigateToFrequency,
+                    ),
+                    SummaryRow(
+                      icon: FontAwesomeIcons.play,
+                      label: context.l10n.recurringDonationsStep4Starts,
+                      value: model.startDate != null
+                          ? _formatDate(model.startDate!)
+                          : '',
+                      analyticsEvent: AmplitudeEvents
+                          .recurringStep4ConfirmEditStartDate
+                          .toEvent(),
+                      onEdit: _cubit.navigateToStartDate,
+                    ),
+                    SummaryRow(
+                      icon: FontAwesomeIcons.stop,
+                      label: context.l10n.recurringDonationsStep4Ends,
+                      value: endsText,
+                      analyticsEvent: AmplitudeEvents
+                          .recurringStep4ConfirmEditEndDate
+                          .toEvent(),
+                      onEdit: _cubit.navigateToEndDate,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 24),
-              ],
-            ),
+              ),
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const SizedBox(height: 32),
+                    FunButton(
+                      text: context
+                          .l10n.recurringDonationsStep4ConfirmMyDonation,
+                      isLoading: model.isLoading,
+                      analyticsEvent: AmplitudeEvents
+                          .recurringStep4ConfirmDonation
+                          .toEvent(
+                            parameters: model.analyticsParams,
+                          ),
+                      onTap: model.isLoading
+                          ? null
+                          : _cubit.createRecurringDonation,
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       },
