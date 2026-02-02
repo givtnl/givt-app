@@ -239,6 +239,56 @@
     "description": "tekens, waaronder \n  Wachtwoord regel staat onder het wachtwoord veld",
     "type": "text"
   },
+  "fieldRequired": "This field is required.",
+  "@fieldRequired": {
+    "description": "Error message shown when a required field is left empty",
+    "type": "text"
+  },
+  "passwordDoesntMeetRequirements": "Password does not meet the requirements",
+  "@passwordDoesntMeetRequirements": {
+    "description": "Error message shown when password validation fails",
+    "type": "text"
+  },
+  "enterValidPostcode": "Enter a valid postcode",
+  "@enterValidPostcode": {
+    "description": "Error message shown when postcode format is invalid",
+    "type": "text"
+  },
+  "enterValidPhoneNumber": "Enter a valid phone number",
+  "@enterValidPhoneNumber": {
+    "description": "Error message shown when phone number format is invalid",
+    "type": "text"
+  },
+  "enterValidIban": "Enter a valid IBAN",
+  "@enterValidIban": {
+    "description": "Error message shown when IBAN format is invalid",
+    "type": "text"
+  },
+  "sortCodeMustBe6Digits": "Sort code must be 6 digits",
+  "@sortCodeMustBe6Digits": {
+    "description": "Error message shown when sort code is not 6 digits",
+    "type": "text"
+  },
+  "accountNumberMustBe8Digits": "Account number must be 8 digits",
+  "@accountNumberMustBe8Digits": {
+    "description": "Error message shown when bank account number is not 8 digits",
+    "type": "text"
+  },
+  "passwordRuleMinChars": "Use at least 7 characters",
+  "@passwordRuleMinChars": {
+    "description": "Password requirement: minimum 7 characters",
+    "type": "text"
+  },
+  "passwordRuleCapital": "Include one capital",
+  "@passwordRuleCapital": {
+    "description": "Password requirement: at least one capital letter",
+    "type": "text"
+  },
+  "passwordRuleDigit": "Include one digit",
+  "@passwordRuleDigit": {
+    "description": "Password requirement: at least one digit",
+    "type": "text"
+  },
   "phoneNumber": "Mobile number",
   "@phoneNumber": {
     "description": "Telefoonnummer placeholder bij registratie",

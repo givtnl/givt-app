@@ -570,35 +570,35 @@ class AppLocalizationsNl extends AppLocalizations {
       'Het wachtwoord moet uit ten minste 7 tekens bestaan, waaronder een hoofdletter en een cijfer.';
 
   @override
-  String get fieldRequired => 'This field is required.';
+  String get fieldRequired => 'Dit veld is verplicht.';
 
   @override
   String get passwordDoesntMeetRequirements =>
-      'Password does not meet the requirements';
+      'Wachtwoord voldoet niet aan de vereisten';
 
   @override
-  String get enterValidPostcode => 'Enter a valid postcode';
+  String get enterValidPostcode => 'Voer een geldige postcode in';
 
   @override
-  String get enterValidPhoneNumber => 'Enter a valid phone number';
+  String get enterValidPhoneNumber => 'Voer een geldig telefoonnummer in';
 
   @override
-  String get enterValidIban => 'Enter a valid IBAN';
+  String get enterValidIban => 'Voer een geldige IBAN in';
 
   @override
-  String get sortCodeMustBe6Digits => 'Sort code must be 6 digits';
+  String get sortCodeMustBe6Digits => 'Sort code moet 6 cijfers zijn';
 
   @override
-  String get accountNumberMustBe8Digits => 'Account number must be 8 digits';
+  String get accountNumberMustBe8Digits => 'Rekeningnummer moet 8 cijfers zijn';
 
   @override
-  String get passwordRuleMinChars => 'Use at least 7 characters';
+  String get passwordRuleMinChars => 'Gebruik minimaal 7 tekens';
 
   @override
-  String get passwordRuleCapital => 'Include one capital';
+  String get passwordRuleCapital => 'Inclusief een hoofdletter';
 
   @override
-  String get passwordRuleDigit => 'Include one digit';
+  String get passwordRuleDigit => 'Inclusief een cijfer';
 
   @override
   String get phoneNumber => 'Mobiel nummer';
