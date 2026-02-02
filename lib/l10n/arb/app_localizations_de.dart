@@ -571,35 +571,36 @@ class AppLocalizationsDe extends AppLocalizations {
       'Das Passwort sollte mindestens 7 Zeichen lang sein und mindestens aus einem Großbuchstaben und einer Ziffer bestehen.';
 
   @override
-  String get fieldRequired => 'This field is required.';
+  String get fieldRequired => 'Dieses Feld ist ein Pflichtfeld.';
 
   @override
   String get passwordDoesntMeetRequirements =>
-      'Password does not meet the requirements';
+      'Das Passwort entspricht nicht den Anforderungen';
 
   @override
-  String get enterValidPostcode => 'Enter a valid postcode';
+  String get enterValidPostcode => 'Geben Sie eine gültige Postleitzahl ein';
 
   @override
-  String get enterValidPhoneNumber => 'Enter a valid phone number';
+  String get enterValidPhoneNumber =>
+      'Geben Sie eine gültige Telefonnummer ein';
 
   @override
-  String get enterValidIban => 'Enter a valid IBAN';
+  String get enterValidIban => 'Geben Sie eine gültige IBAN ein';
 
   @override
-  String get sortCodeMustBe6Digits => 'Sort code must be 6 digits';
+  String get sortCodeMustBe6Digits => 'Sort-Code muss 6-stellig sein';
 
   @override
-  String get accountNumberMustBe8Digits => 'Account number must be 8 digits';
+  String get accountNumberMustBe8Digits => 'Kontonummer muss 8-stellig sein';
 
   @override
-  String get passwordRuleMinChars => 'Use at least 7 characters';
+  String get passwordRuleMinChars => 'Mindestens 7 Zeichen verwenden';
 
   @override
-  String get passwordRuleCapital => 'Include one capital';
+  String get passwordRuleCapital => 'Einen Großbuchstaben enthalten';
 
   @override
-  String get passwordRuleDigit => 'Include one digit';
+  String get passwordRuleDigit => 'Eine Ziffer enthalten';
 
   @override
   String get phoneNumber => 'Handynummer';

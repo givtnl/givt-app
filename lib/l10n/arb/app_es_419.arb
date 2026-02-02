@@ -239,6 +239,56 @@
     "description": "tekens, waaronder \n  Wachtwoord regel staat onder het wachtwoord veld",
     "type": "text"
   },
+  "fieldRequired": "Este campo es obligatorio.",
+  "@fieldRequired": {
+    "description": "Error message shown when a required field is left empty",
+    "type": "text"
+  },
+  "passwordDoesntMeetRequirements": "La contraseña no cumple con los requisitos",
+  "@passwordDoesntMeetRequirements": {
+    "description": "Error message shown when password validation fails",
+    "type": "text"
+  },
+  "enterValidPostcode": "Ingresa un código postal válido",
+  "@enterValidPostcode": {
+    "description": "Error message shown when postcode format is invalid",
+    "type": "text"
+  },
+  "enterValidPhoneNumber": "Ingresa un número de teléfono válido",
+  "@enterValidPhoneNumber": {
+    "description": "Error message shown when phone number format is invalid",
+    "type": "text"
+  },
+  "enterValidIban": "Ingresa un IBAN válido",
+  "@enterValidIban": {
+    "description": "Error message shown when IBAN format is invalid",
+    "type": "text"
+  },
+  "sortCodeMustBe6Digits": "El código de clasificación debe tener 6 dígitos",
+  "@sortCodeMustBe6Digits": {
+    "description": "Error message shown when sort code is not 6 digits",
+    "type": "text"
+  },
+  "accountNumberMustBe8Digits": "El número de cuenta debe tener 8 dígitos",
+  "@accountNumberMustBe8Digits": {
+    "description": "Error message shown when bank account number is not 8 digits",
+    "type": "text"
+  },
+  "passwordRuleMinChars": "Usa al menos 7 caracteres",
+  "@passwordRuleMinChars": {
+    "description": "Password requirement: minimum 7 characters",
+    "type": "text"
+  },
+  "passwordRuleCapital": "Incluye una mayúscula",
+  "@passwordRuleCapital": {
+    "description": "Password requirement: at least one capital letter",
+    "type": "text"
+  },
+  "passwordRuleDigit": "Incluye un dígito",
+  "@passwordRuleDigit": {
+    "description": "Password requirement: at least one digit",
+    "type": "text"
+  },
   "phoneNumber": "Teléfono",
   "@phoneNumber": {
     "description": "Telefoonnummer placeholder bij registratie",

@@ -3152,6 +3152,39 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
       'La contraseña debe contener al menos 7 caracteres';
 
   @override
+  String get fieldRequired => 'Este campo es obligatorio.';
+
+  @override
+  String get passwordDoesntMeetRequirements =>
+      'La contraseña no cumple con los requisitos';
+
+  @override
+  String get enterValidPostcode => 'Ingresa un código postal válido';
+
+  @override
+  String get enterValidPhoneNumber => 'Ingresa un número de teléfono válido';
+
+  @override
+  String get enterValidIban => 'Ingresa un IBAN válido';
+
+  @override
+  String get sortCodeMustBe6Digits =>
+      'El código de clasificación debe tener 6 dígitos';
+
+  @override
+  String get accountNumberMustBe8Digits =>
+      'El número de cuenta debe tener 8 dígitos';
+
+  @override
+  String get passwordRuleMinChars => 'Usa al menos 7 caracteres';
+
+  @override
+  String get passwordRuleCapital => 'Incluye una mayúscula';
+
+  @override
+  String get passwordRuleDigit => 'Incluye un dígito';
+
+  @override
   String get phoneNumber => 'Teléfono';
 
   @override
