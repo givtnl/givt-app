@@ -239,6 +239,56 @@
     "description": "tekens, waaronder \n  Wachtwoord regel staat onder het wachtwoord veld",
     "type": "text"
   },
+  "fieldRequired": "This field is required.",
+  "@fieldRequired": {
+    "description": "Error message shown when a required field is left empty",
+    "type": "text"
+  },
+  "passwordDoesntMeetRequirements": "Password does not meet the requirements",
+  "@passwordDoesntMeetRequirements": {
+    "description": "Error message shown when password validation fails",
+    "type": "text"
+  },
+  "enterValidPostcode": "Enter a valid postcode",
+  "@enterValidPostcode": {
+    "description": "Error message shown when postcode format is invalid",
+    "type": "text"
+  },
+  "enterValidPhoneNumber": "Enter a valid phone number",
+  "@enterValidPhoneNumber": {
+    "description": "Error message shown when phone number format is invalid",
+    "type": "text"
+  },
+  "enterValidIban": "Enter a valid IBAN",
+  "@enterValidIban": {
+    "description": "Error message shown when IBAN format is invalid",
+    "type": "text"
+  },
+  "sortCodeMustBe6Digits": "Sort code must be 6 digits",
+  "@sortCodeMustBe6Digits": {
+    "description": "Error message shown when sort code is not 6 digits",
+    "type": "text"
+  },
+  "accountNumberMustBe8Digits": "Account number must be 8 digits",
+  "@accountNumberMustBe8Digits": {
+    "description": "Error message shown when bank account number is not 8 digits",
+    "type": "text"
+  },
+  "passwordRuleMinChars": "Use at least 7 characters",
+  "@passwordRuleMinChars": {
+    "description": "Password requirement: minimum 7 characters",
+    "type": "text"
+  },
+  "passwordRuleCapital": "Include one capital",
+  "@passwordRuleCapital": {
+    "description": "Password requirement: at least one capital letter",
+    "type": "text"
+  },
+  "passwordRuleDigit": "Include one digit",
+  "@passwordRuleDigit": {
+    "description": "Password requirement: at least one digit",
+    "type": "text"
+  },
   "phoneNumber": "Mobile number",
   "@phoneNumber": {
     "description": "Telefoonnummer placeholder bij registratie",
@@ -279,6 +329,10 @@
     "description": "Placeholder voor Straat en huisnummer",
     "type": "text"
   },
+  "street": "Street",
+  "houseNumber": "House number",
+  "address": "Address",
+  "bankDetails": "Bank details",
   "tryAgain": "Try again",
   "@tryAgain": {
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
@@ -1114,5 +1168,23 @@
   "reviewDonationsDescription": "Now that your authorization is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 PM today.",
   "reviewDonationsProcessedTitle": "Your donations are being processed",
   "reviewDonationsProcessedDescription": "We’ll collect {amount} in one transaction within {days} business days. Check the status in donation history.",
-  "signMandateTitle": "Sign mandate"
+  "signMandateTitle": "Sign mandate",
+  "giftAidYourDonationsTitle": "Gift Aid your donations",
+  "giftAidShortExplanation": "Donating with Gift Aid means charities can claim an extra 25p for every £1 you give. It will not cost you any more.",
+  "giftAidExampleTitle": "For example",
+  "giftAidExampleText": "When you give £10.00, Gift Aid adds an extra 25% (£2.50). The charity receives a total of £12.50.",
+  "giftAidLearnMore": "Learn more about Gift Aid",
+  "giftAidDeclarationText": "I am a UK taxpayer and understand that if I pay less Income/Capital Gains Tax than the Gift Aid claimed, I must pay the difference.",
+  "giftAidActivateButton": "Activate for this tax year",
+  "giftAidSetUpLaterButton": "Set it up later",
+  "giftAidActiveTitle": "Gift Aid is now active!",
+  "giftAidActiveMessage": "Your donations this tax year will receive a 25% increase at no extra cost to you.",
+  "giftAidActiveInfo": "You can change this anytime in Personal Info.",
+  "giftAidOffTitle": "Gift Aid is currently off",
+  "giftAidOffMessage": "We’ve saved your preference. You can turn on Gift Aid anytime in Personal Info.",
+  "giftAidAboutTitle": "About Gift Aid",
+  "giftAidAboutWhatIs": "What is Gift Aid?",
+  "giftAidAboutWhoCanUse": "Who can use Gift Aid?",
+  "giftAidAboutWhyPayDifference": "Why might I need to pay the difference?",
+  "giftAidAboutDeclaration": "Gift Aid declaration:"
 }

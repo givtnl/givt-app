@@ -571,6 +571,38 @@ class AppLocalizationsDe extends AppLocalizations {
       'Das Passwort sollte mindestens 7 Zeichen lang sein und mindestens aus einem Großbuchstaben und einer Ziffer bestehen.';
 
   @override
+  String get fieldRequired => 'Dieses Feld ist ein Pflichtfeld.';
+
+  @override
+  String get passwordDoesntMeetRequirements =>
+      'Das Passwort entspricht nicht den Anforderungen';
+
+  @override
+  String get enterValidPostcode => 'Geben Sie eine gültige Postleitzahl ein';
+
+  @override
+  String get enterValidPhoneNumber =>
+      'Geben Sie eine gültige Telefonnummer ein';
+
+  @override
+  String get enterValidIban => 'Geben Sie eine gültige IBAN ein';
+
+  @override
+  String get sortCodeMustBe6Digits => 'Sort-Code muss 6-stellig sein';
+
+  @override
+  String get accountNumberMustBe8Digits => 'Kontonummer muss 8-stellig sein';
+
+  @override
+  String get passwordRuleMinChars => 'Mindestens 7 Zeichen verwenden';
+
+  @override
+  String get passwordRuleCapital => 'Einen Großbuchstaben enthalten';
+
+  @override
+  String get passwordRuleDigit => 'Eine Ziffer enthalten';
+
+  @override
   String get phoneNumber => 'Handynummer';
 
   @override
@@ -595,6 +627,18 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get streetAndHouseNumber => 'Straßenname und -nummer';
+
+  @override
+  String get street => 'Straße';
+
+  @override
+  String get houseNumber => 'Hausnummer';
+
+  @override
+  String get address => 'Adresse';
+
+  @override
+  String get bankDetails => 'Bankdaten';
 
   @override
   String get tryAgain => 'Versuche es nochmal';
@@ -2498,4 +2542,65 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get signMandateTitle => 'Mandat unterschreiben';
+
+  @override
+  String get giftAidYourDonationsTitle => 'Gift Aid für deine Spenden';
+
+  @override
+  String get giftAidShortExplanation =>
+      'Mit Gift Aid können Wohltätigkeitsorganisationen für jedes gespendete Pfund 25 Pence zusätzlich erhalten. Es kostet dich nichts extra.';
+
+  @override
+  String get giftAidExampleTitle => 'Zum Beispiel';
+
+  @override
+  String get giftAidExampleText =>
+      'Wenn du £10,00 gibst, fügt Gift Aid zusätzliche 25% (£2,50) hinzu. Die Organisation erhält insgesamt £12,50.';
+
+  @override
+  String get giftAidLearnMore => 'Mehr über Gift Aid erfahren';
+
+  @override
+  String get giftAidDeclarationText =>
+      'Ich zahle im Vereinigten Königreich Einkommensteuer und/oder Kapitalertragssteuer und verstehe, dass ich die Differenz zahlen muss, wenn ich in diesem Steuerjahr weniger Steuer zahle als der Betrag an Gift Aid, der auf all meine Spenden beansprucht wird.';
+
+  @override
+  String get giftAidActivateButton => 'Für dieses Steuerjahr aktivieren';
+
+  @override
+  String get giftAidSetUpLaterButton => 'Später einrichten';
+
+  @override
+  String get giftAidActiveTitle => 'Gift Aid ist jetzt aktiv';
+
+  @override
+  String get giftAidActiveMessage =>
+      'Deine Spenden in diesem Steuerjahr erhalten einen Zuschlag von 25 %, ohne dass es dich mehr kostet.';
+
+  @override
+  String get giftAidActiveInfo =>
+      'Du kannst dies jederzeit in Persönliche Informationen ändern.';
+
+  @override
+  String get giftAidOffTitle => 'Gift Aid ist derzeit ausgeschaltet';
+
+  @override
+  String get giftAidOffMessage =>
+      'Wir haben deine Einstellung gespeichert. Du kannst Gift Aid jederzeit unter Persönliche Daten einschalten.';
+
+  @override
+  String get giftAidAboutTitle => 'Über Gift Aid';
+
+  @override
+  String get giftAidAboutWhatIs => 'Was ist Gift Aid?';
+
+  @override
+  String get giftAidAboutWhoCanUse => 'Wer kann Gift Aid nutzen?';
+
+  @override
+  String get giftAidAboutWhyPayDifference =>
+      'Warum muss ich eventuell die Differenz zahlen?';
+
+  @override
+  String get giftAidAboutDeclaration => 'Gift-Aid-Erklärung:';
 }

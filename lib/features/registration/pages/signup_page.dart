@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/shared/design/components/actions/fun_bu
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/widgets/password_requirements_checklist.dart';
 import 'package:givt_app/features/registration/widgets/accept_policy_row.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -100,7 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
               IconButton(
                 onPressed: () => const FunFAQBottomSheet().show(context),
                 icon: const Icon(
-                  Icons.question_mark_outlined,
+                  Icons.info_rounded,
                   size: 26,
                 ),
               ),
@@ -110,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
             onTap: _isEnabled ? _register : null,
             isDisabled: !_isEnabled,
             isLoading: isLoading,
-            text: locals.next,
+            text: locals.buttonContinue,
             analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
           ),
           body: LayoutBuilder(
@@ -220,10 +221,7 @@ class _SignUpPageState extends State<SignUpPage> {
               controller: _firstNameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (!Util.nameFieldsRegEx.hasMatch(value)) {
-                  return '';
+                  return context.l10n.fieldRequired;
                 }
                 return null;
               },
@@ -232,9 +230,6 @@ class _SignUpPageState extends State<SignUpPage> {
               hintText: locals.firstName,
               keyboardType: TextInputType.name,
               textCapitalization: TextCapitalization.words,
-              errorStyle: const TextStyle(
-                height: 0.01,
-              ),
             ),
             const SizedBox(height: 16),
             OutlinedTextFormField(
@@ -242,10 +237,7 @@ class _SignUpPageState extends State<SignUpPage> {
               onChanged: (value) => setState(() {}),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (!Util.nameFieldsRegEx.hasMatch(value)) {
-                  return '';
+                  return context.l10n.fieldRequired;
                 }
                 return null;
               },
@@ -253,9 +245,6 @@ class _SignUpPageState extends State<SignUpPage> {
               hintText: locals.surname,
               keyboardType: TextInputType.name,
               textCapitalization: TextCapitalization.words,
-              errorStyle: const TextStyle(
-                height: 0.01,
-              ),
             ),
             const SizedBox(height: 16),
             OutlinedTextFormField(
@@ -286,18 +275,13 @@ class _SignUpPageState extends State<SignUpPage> {
               onChanged: (value) => setState(() {}),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return '';
+                  return locals.fieldRequired;
                 }
-                if (value.length < 7) {
-                  return '';
+                if (value.length < 7 ||
+                    !value.contains(RegExp('[0-9]')) ||
+                    !value.contains(RegExp('[A-Z]'))) {
+                  return locals.passwordDoesntMeetRequirements;
                 }
-                if (value.contains(RegExp('[0-9]')) == false) {
-                  return '';
-                }
-                if (value.contains(RegExp('[A-Z]')) == false) {
-                  return '';
-                }
-
                 return null;
               },
               autofillHints: const [
@@ -317,14 +301,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 },
               ),
               keyboardType: TextInputType.visiblePassword,
-              errorStyle: const TextStyle(
-                height: 0.01,
-              ),
             ),
             const SizedBox(height: 16),
-            BodySmallText(
-              locals.passwordRule,
-              textAlign: TextAlign.left,
+            PasswordRequirementsChecklist(
+              password: _passwordController.text,
             ),
           ],
         ),

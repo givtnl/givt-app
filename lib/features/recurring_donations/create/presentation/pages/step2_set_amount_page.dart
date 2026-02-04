@@ -127,8 +127,14 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               OutlinedTextFormField(
                 controller: _amountController,
                 hintText: context.l10n.recurringDonationsCreateStep2AmountHint,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    Util.numberInputFieldRegExp(),
+                  ),
+                ],
                 prefixText: Util.getCurrencySymbol(
                   countryCode: context.read<AuthCubit>().state.user.country,
                 ),

@@ -570,6 +570,37 @@ class AppLocalizationsNl extends AppLocalizations {
       'Het wachtwoord moet uit ten minste 7 tekens bestaan, waaronder een hoofdletter en een cijfer.';
 
   @override
+  String get fieldRequired => 'Dit veld is verplicht.';
+
+  @override
+  String get passwordDoesntMeetRequirements =>
+      'Wachtwoord voldoet niet aan de vereisten';
+
+  @override
+  String get enterValidPostcode => 'Voer een geldige postcode in';
+
+  @override
+  String get enterValidPhoneNumber => 'Voer een geldig telefoonnummer in';
+
+  @override
+  String get enterValidIban => 'Voer een geldige IBAN in';
+
+  @override
+  String get sortCodeMustBe6Digits => 'Sort code moet 6 cijfers zijn';
+
+  @override
+  String get accountNumberMustBe8Digits => 'Rekeningnummer moet 8 cijfers zijn';
+
+  @override
+  String get passwordRuleMinChars => 'Gebruik minimaal 7 tekens';
+
+  @override
+  String get passwordRuleCapital => 'Inclusief een hoofdletter';
+
+  @override
+  String get passwordRuleDigit => 'Inclusief een cijfer';
+
+  @override
   String get phoneNumber => 'Mobiel nummer';
 
   @override
@@ -594,6 +625,18 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get streetAndHouseNumber => 'Straat en huisnummer';
+
+  @override
+  String get street => 'Straat';
+
+  @override
+  String get houseNumber => 'Huisnummer';
+
+  @override
+  String get address => 'Adres';
+
+  @override
+  String get bankDetails => 'Bankgegevens';
 
   @override
   String get tryAgain => 'Opnieuw proberen';
@@ -2487,4 +2530,65 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get signMandateTitle => 'Machtiging tekenen';
+
+  @override
+  String get giftAidYourDonationsTitle => 'Gift Aid op je giften';
+
+  @override
+  String get giftAidShortExplanation =>
+      'Met Gift Aid kan een goed doel 25p extra krijgen voor elke £1 die jij geeft. Het kost jou niets extra.';
+
+  @override
+  String get giftAidExampleTitle => 'Bijvoorbeeld';
+
+  @override
+  String get giftAidExampleText =>
+      'Als je £10,00 geeft, voegt Gift Aid 25% (£2,50) toe. Het goede doel ontvangt in totaal £12,50.';
+
+  @override
+  String get giftAidLearnMore => 'Lees meer over Gift Aid';
+
+  @override
+  String get giftAidDeclarationText =>
+      'Ik ben belastingplichtig in het Verenigd Koninkrijk en begrijp dat als ik minder inkomsten- en/of vermogenswinstbelasting betaal dan het bedrag aan Gift Aid dat over al mijn giften wordt geclaimd, ik zelf verantwoordelijk ben voor het betalen van het verschil.';
+
+  @override
+  String get giftAidActivateButton => 'Activeren voor dit belastingjaar';
+
+  @override
+  String get giftAidSetUpLaterButton => 'Later instellen';
+
+  @override
+  String get giftAidActiveTitle => 'Gift Aid is nu actief';
+
+  @override
+  String get giftAidActiveMessage =>
+      'Je giften in dit belastingjaar krijgen 25% extra zonder extra kosten voor jou.';
+
+  @override
+  String get giftAidActiveInfo =>
+      'Je kunt dit altijd wijzigen in Persoonlijke gegevens.';
+
+  @override
+  String get giftAidOffTitle => 'Gift Aid staat nu uit';
+
+  @override
+  String get giftAidOffMessage =>
+      'We hebben je voorkeur opgeslagen. Je kunt Gift Aid later altijd inschakelen bij Persoonlijke gegevens.';
+
+  @override
+  String get giftAidAboutTitle => 'Over Gift Aid';
+
+  @override
+  String get giftAidAboutWhatIs => 'Wat is Gift Aid?';
+
+  @override
+  String get giftAidAboutWhoCanUse => 'Wie kan Gift Aid gebruiken?';
+
+  @override
+  String get giftAidAboutWhyPayDifference =>
+      'Waarom moet ik soms het verschil betalen?';
+
+  @override
+  String get giftAidAboutDeclaration => 'Gift Aid-verklaring:';
 }

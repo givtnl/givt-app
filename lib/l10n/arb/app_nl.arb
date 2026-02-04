@@ -239,6 +239,56 @@
     "description": "tekens, waaronder \n  Wachtwoord regel staat onder het wachtwoord veld",
     "type": "text"
   },
+  "fieldRequired": "Dit veld is verplicht.",
+  "@fieldRequired": {
+    "description": "Error message shown when a required field is left empty",
+    "type": "text"
+  },
+  "passwordDoesntMeetRequirements": "Wachtwoord voldoet niet aan de vereisten",
+  "@passwordDoesntMeetRequirements": {
+    "description": "Error message shown when password validation fails",
+    "type": "text"
+  },
+  "enterValidPostcode": "Voer een geldige postcode in",
+  "@enterValidPostcode": {
+    "description": "Error message shown when postcode format is invalid",
+    "type": "text"
+  },
+  "enterValidPhoneNumber": "Voer een geldig telefoonnummer in",
+  "@enterValidPhoneNumber": {
+    "description": "Error message shown when phone number format is invalid",
+    "type": "text"
+  },
+  "enterValidIban": "Voer een geldige IBAN in",
+  "@enterValidIban": {
+    "description": "Error message shown when IBAN format is invalid",
+    "type": "text"
+  },
+  "sortCodeMustBe6Digits": "Sort code moet 6 cijfers zijn",
+  "@sortCodeMustBe6Digits": {
+    "description": "Error message shown when sort code is not 6 digits",
+    "type": "text"
+  },
+  "accountNumberMustBe8Digits": "Rekeningnummer moet 8 cijfers zijn",
+  "@accountNumberMustBe8Digits": {
+    "description": "Error message shown when bank account number is not 8 digits",
+    "type": "text"
+  },
+  "passwordRuleMinChars": "Gebruik minimaal 7 tekens",
+  "@passwordRuleMinChars": {
+    "description": "Password requirement: minimum 7 characters",
+    "type": "text"
+  },
+  "passwordRuleCapital": "Inclusief een hoofdletter",
+  "@passwordRuleCapital": {
+    "description": "Password requirement: at least one capital letter",
+    "type": "text"
+  },
+  "passwordRuleDigit": "Inclusief een cijfer",
+  "@passwordRuleDigit": {
+    "description": "Password requirement: at least one digit",
+    "type": "text"
+  },
   "phoneNumber": "Mobiel nummer",
   "@phoneNumber": {
     "description": "Telefoonnummer placeholder bij registratie",
@@ -279,6 +329,10 @@
     "description": "Placeholder voor Straat en huisnummer",
     "type": "text"
   },
+  "street": "Straat",
+  "houseNumber": "Huisnummer",
+  "address": "Adres",
+  "bankDetails": "Bankgegevens",
   "tryAgain": "Opnieuw proberen",
   "@tryAgain": {
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
@@ -1114,5 +1168,23 @@
   "reviewDonationsDescription": "Nu je machtiging actief is, verwerken we onderstaande giften. Je kunt ze vandaag tot 20:00 uur aanpassen in je giftenoverzicht.",
   "reviewDonationsProcessedTitle": "Je giften worden verwerkt",
   "reviewDonationsProcessedDescription": "We schrijven {amount} in één keer af binnen {days} werkdagen. Bekijk de status in je giftenoverzicht.",
-  "signMandateTitle": "Machtiging tekenen"
+  "signMandateTitle": "Machtiging tekenen",
+  "giftAidYourDonationsTitle": "Gift Aid op je giften",
+  "giftAidShortExplanation": "Met Gift Aid kan een goed doel 25p extra krijgen voor elke £1 die jij geeft. Het kost jou niets extra.",
+  "giftAidExampleTitle": "Bijvoorbeeld",
+  "giftAidExampleText": "Als je £10,00 geeft, voegt Gift Aid 25% (£2,50) toe. Het goede doel ontvangt in totaal £12,50.",
+  "giftAidLearnMore": "Lees meer over Gift Aid",
+  "giftAidDeclarationText": "Ik ben belastingplichtig in het Verenigd Koninkrijk en begrijp dat als ik minder inkomsten- en/of vermogenswinstbelasting betaal dan het bedrag aan Gift Aid dat over al mijn giften wordt geclaimd, ik zelf verantwoordelijk ben voor het betalen van het verschil.",
+  "giftAidActivateButton": "Activeren voor dit belastingjaar",
+  "giftAidSetUpLaterButton": "Later instellen",
+  "giftAidActiveTitle": "Gift Aid is nu actief",
+  "giftAidActiveMessage": "Je giften in dit belastingjaar krijgen 25% extra zonder extra kosten voor jou.",
+  "giftAidActiveInfo": "Je kunt dit altijd wijzigen in Persoonlijke gegevens.",
+  "giftAidOffTitle": "Gift Aid staat nu uit",
+  "giftAidOffMessage": "We hebben je voorkeur opgeslagen. Je kunt Gift Aid later altijd inschakelen bij Persoonlijke gegevens.",
+  "giftAidAboutTitle": "Over Gift Aid",
+  "giftAidAboutWhatIs": "Wat is Gift Aid?",
+  "giftAidAboutWhoCanUse": "Wie kan Gift Aid gebruiken?",
+  "giftAidAboutWhyPayDifference": "Waarom moet ik soms het verschil betalen?",
+  "giftAidAboutDeclaration": "Gift Aid-verklaring:"
 }

@@ -239,6 +239,56 @@
     "description": "tekens, waaronder \n  Wachtwoord regel staat onder het wachtwoord veld",
     "type": "text"
   },
+  "fieldRequired": "Este campo es obligatorio.",
+  "@fieldRequired": {
+    "description": "Error message shown when a required field is left empty",
+    "type": "text"
+  },
+  "passwordDoesntMeetRequirements": "La contraseña no cumple con los requisitos",
+  "@passwordDoesntMeetRequirements": {
+    "description": "Error message shown when password validation fails",
+    "type": "text"
+  },
+  "enterValidPostcode": "Ingresa un código postal válido",
+  "@enterValidPostcode": {
+    "description": "Error message shown when postcode format is invalid",
+    "type": "text"
+  },
+  "enterValidPhoneNumber": "Ingresa un número de teléfono válido",
+  "@enterValidPhoneNumber": {
+    "description": "Error message shown when phone number format is invalid",
+    "type": "text"
+  },
+  "enterValidIban": "Ingresa un IBAN válido",
+  "@enterValidIban": {
+    "description": "Error message shown when IBAN format is invalid",
+    "type": "text"
+  },
+  "sortCodeMustBe6Digits": "El código de clasificación debe tener 6 dígitos",
+  "@sortCodeMustBe6Digits": {
+    "description": "Error message shown when sort code is not 6 digits",
+    "type": "text"
+  },
+  "accountNumberMustBe8Digits": "El número de cuenta debe tener 8 dígitos",
+  "@accountNumberMustBe8Digits": {
+    "description": "Error message shown when bank account number is not 8 digits",
+    "type": "text"
+  },
+  "passwordRuleMinChars": "Usa al menos 7 caracteres",
+  "@passwordRuleMinChars": {
+    "description": "Password requirement: minimum 7 characters",
+    "type": "text"
+  },
+  "passwordRuleCapital": "Incluye una mayúscula",
+  "@passwordRuleCapital": {
+    "description": "Password requirement: at least one capital letter",
+    "type": "text"
+  },
+  "passwordRuleDigit": "Incluye un dígito",
+  "@passwordRuleDigit": {
+    "description": "Password requirement: at least one digit",
+    "type": "text"
+  },
   "phoneNumber": "Teléfono",
   "@phoneNumber": {
     "description": "Telefoonnummer placeholder bij registratie",
@@ -279,6 +329,10 @@
     "description": "Placeholder voor Straat en huisnummer",
     "type": "text"
   },
+  "street": "Calle",
+  "houseNumber": "Número de casa",
+  "address": "Dirección",
+  "bankDetails": "Datos bancarios",
   "tryAgain": "Intentar de nuevo",
   "@tryAgain": {
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
@@ -1114,5 +1168,23 @@
   "reviewDonationsDescription": "Now that your mandate is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 pm today.",
   "reviewDonationsProcessedTitle": "Your donations are being processed",
   "reviewDonationsProcessedDescription": "We’ll collect {amount} in one transaction within {days} business days. Check the status in donation history.",
-  "signMandateTitle": "Sign mandate"
+  "signMandateTitle": "Sign mandate",
+  "giftAidYourDonationsTitle": "Gift Aid para tus donaciones",
+  "giftAidShortExplanation": "Con Gift Aid, las organizaciones benéficas pueden recibir 25 peniques extra por cada libra que das. No te cuesta nada más.",
+  "giftAidExampleTitle": "Por ejemplo",
+  "giftAidExampleText": "Si das £10,00, Gift Aid añade un 25 % extra (£2,50). La organización recibe un total de £12,50.",
+  "giftAidLearnMore": "Más información sobre Gift Aid",
+  "giftAidDeclarationText": "Soy contribuyente en el Reino Unido y entiendo que, si pago menos impuesto sobre la renta y/o de ganancias de capital en el año fiscal actual que la cantidad de Gift Aid reclamada sobre todas mis donaciones, soy responsable de pagar la diferencia.",
+  "giftAidActivateButton": "Activar para este año fiscal",
+  "giftAidSetUpLaterButton": "Configurar más tarde",
+  "giftAidActiveTitle": "Gift Aid está ahora activo",
+  "giftAidActiveMessage": "Tus donaciones de este año fiscal recibirán un aumento del 25 % sin costo extra para ti.",
+  "giftAidActiveInfo": "Puedes cambiar esto en cualquier momento en Información personal.",
+  "giftAidOffTitle": "Gift Aid está desactivado",
+  "giftAidOffMessage": "Hemos guardado tu preferencia. Puedes activar Gift Aid en cualquier momento en Información personal.",
+  "giftAidAboutTitle": "Sobre Gift Aid",
+  "giftAidAboutWhatIs": "¿Qué es Gift Aid?",
+  "giftAidAboutWhoCanUse": "¿Quién puede usar Gift Aid?",
+  "giftAidAboutWhyPayDifference": "¿Por qué podría tener que pagar la diferencia?",
+  "giftAidAboutDeclaration": "Declaración de Gift Aid:"
 }
