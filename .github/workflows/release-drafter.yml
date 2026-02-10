@@ -59,7 +59,7 @@ jobs:
       - name: Generate AI summary
         if: ${{ github.ref == 'refs/heads/main' }}
         id: generate-text
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const { OpenAI } = require('openai')
