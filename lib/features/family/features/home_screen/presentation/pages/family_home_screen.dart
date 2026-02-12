@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -122,7 +123,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                   alignment: Alignment.topCenter,
                   children: [
                     ColoredBox(
-                      color: FamilyAppTheme.primary99,
+                      color: FunTheme.of(context).primary99,
                       child: Column(
                         children: [
                           SizedBox(

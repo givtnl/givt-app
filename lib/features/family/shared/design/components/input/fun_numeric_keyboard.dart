@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 typedef KeyboardTapCallback = void Function(String text);
 
@@ -94,11 +94,11 @@ class _FunNumericKeyboardState extends State<FunNumericKeyboard> {
                     _calcButton(
                       '⌫',
                       onTap: widget.rightButtonFn,
-                      child: const Padding(
-                        padding: EdgeInsets.all(2),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
                         child: Icon(
                           FontAwesomeIcons.deleteLeft,
-                          color: FamilyAppTheme.secondary40,
+                          color: FunTheme.of(context).secondary40,
                         ),
                       ),
                     ),
@@ -128,7 +128,7 @@ class _FunNumericKeyboardState extends State<FunNumericKeyboard> {
         LabelLargeText(
           value,
           textAlign: TextAlign.center,
-          color: FamilyAppTheme.secondary40,
+          color: FunTheme.of(context).secondary40,
           textScaler: TextScaler.linear(textScaler),
         );
 

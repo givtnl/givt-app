@@ -113,7 +113,9 @@ class _FunBottomSheetWithAsyncActionState
                     },
                   ),
                 ),
-                secondaryButton: FunButton.secondary(
+                secondaryButton: FunButton(
+                  variant: FunButtonVariant.secondary,
+                  fullBorder: true,
                   text: 'Close',
                   onTap: () => context.pop(),
                   analyticsEvent: AmplitudeEvents.bottomsheet.toEvent(

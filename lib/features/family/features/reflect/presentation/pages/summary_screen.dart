@@ -73,7 +73,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           child: Column(
                             children: [
                               const SizedBox(height: 24),
-                              FunTag.purple(
+                              FunTag(
+                                variant: FunTagVariant.tertiary,
                                 text: DateTime.now().formattedFullMonth,
                               ),
                               const SizedBox(height: 16),
@@ -143,7 +144,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
-                    child: FunTile.green(
+                    child: FunTile(
+                      variant: FunTileVariant.green,
+                      iconPath: '',
                       titleBig: details.minutesPlayed == 1
                           ? '1 minute family time'
                           : '${details.minutesPlayed} minutes family time',
@@ -169,7 +172,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
-                    child: FunTile.red(
+                    child: FunTile(
+                      variant: FunTileVariant.red,
+                      iconPath: '',
                       titleBig: details.generousDeeds == 1
                           ? '1 generous deed'
                           : '${details.generousDeeds} generous deeds',
@@ -195,7 +200,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
           width: MediaQuery.of(context).size.width / 2 - 24,
           child: Padding(
             padding: const EdgeInsets.only(top: 12),
-            child: FunTile.gold(
+            child: FunTile(
+              iconPath: '',
               titleBig: '${details.totalXp} XP\ntotal',
               iconData: FontAwesomeIcons.bolt,
               assetSize: 32,

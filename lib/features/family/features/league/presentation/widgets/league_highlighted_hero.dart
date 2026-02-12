@@ -3,7 +3,7 @@ import 'package:givt_app/features/family/features/league/presentation/widgets/mo
 import 'package:givt_app/features/family/features/league/presentation/widgets/rank_widget.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class LeagueHighlightedHero extends StatelessWidget {
   const LeagueHighlightedHero({
@@ -32,7 +32,7 @@ class LeagueHighlightedHero extends StatelessWidget {
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _getColor(),
+                    color: _getColor(context),
                   ),
                   child: _getAvatar(uiModel, size),
                 ),
@@ -60,20 +60,20 @@ class LeagueHighlightedHero extends StatelessWidget {
           ),
         LabelMediumText(
           '${uiModel.xp} XP',
-          color: FamilyAppTheme.primary50,
+          color: FunTheme.of(context).primary50,
           textAlign: TextAlign.center,
         ),
       ],
     );
   }
 
-  Color? _getColor() {
+  Color? _getColor(BuildContext context) {
     if (uiModel.rank == 1) {
-      return FamilyAppTheme.highlight90;
+      return FunTheme.of(context).highlight90;
     } else if (uiModel.rank == 2) {
-      return FamilyAppTheme.neutral90;
+      return FunTheme.of(context).neutral90;
     } else if (uiModel.rank == 3) {
-      return FamilyAppTheme.info70;
+      return FunTheme.of(context).info70;
     } else {
       return Colors.transparent;
     }

@@ -48,7 +48,9 @@ class RetryErrorWidget extends StatelessWidget {
               children: [
                 if (secondaryButtonText.isNotNullAndNotEmpty())
                   Expanded(
-                    child: FunButton.secondary(
+                    child: FunButton(
+                      variant: FunButtonVariant.secondary,
+                      fullBorder: true,
                       onTap: onTapSecondaryButton,
                       text: secondaryButtonText!,
                       leftIcon: FontAwesomeIcons.arrowRightFromBracket,

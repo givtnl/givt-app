@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
@@ -166,14 +166,14 @@ class _OrganisationListFamilyContentState
         key: UniqueKey(),
         contentPadding: EdgeInsets.zero,
         onTap: () => onTap.call(),
-        splashColor: FamilyAppTheme.highlight99,
+        splashColor: FunTheme.of(context).highlight99,
         selected: isSelected,
         selectedTileColor: CollectGroupType.getColorComboByType(
           type,
         ).backgroundColor,
         leading: Icon(
           CollectGroupType.getIconByTypeUS(type),
-          color: FamilyAppTheme.primary20,
+          color: FunTheme.of(context).primary20,
         ),
         title: LabelMediumText(title, color: AppTheme.primary20),
         trailing: widget.showFavorites

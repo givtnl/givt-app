@@ -1,134 +1,140 @@
 import 'package:flutter/material.dart';
 
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/tokens/fun_givt_tokens.dart';
 
+/// Static text styles. Use default (Givt) tokens when no theme in scope.
+/// Font family and strong weight come from [FunGivtTokens] (Onest, SemiBold).
 class FunTextStyles {
-  static const displayLarge = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static String get _fontFamily => FunGivtTokens.instance.fontFamily;
+  static FontWeight get _fontWeightStrong =>
+      FunGivtTokens.instance.fontWeightStrong;
+
+  static final displayLarge = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 57,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     height: 1.2,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const displayMedium = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final displayMedium = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 45,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     height: 1.2,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const displaySmall = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final displaySmall = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 36,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     height: 1.2,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const headlineLarge = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final headlineLarge = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 32,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     height: 1.2,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
     fontFeatures: <FontFeature>[
       FontFeature.liningFigures(),
       FontFeature.tabularFigures(),
     ],
   );
 
-  static const headlineMedium = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final headlineMedium = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 28,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     height: 1.2,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const headlineSmall = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final headlineSmall = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 24,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     height: 1.2,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const titleLarge = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final titleLarge = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 26,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     height: 1.2,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const titleMedium = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final titleMedium = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 22,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     letterSpacing: 0.05,
     height: 1.2,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const titleSmall = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final titleSmall = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 18,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     letterSpacing: 0.01,
     height: 1.2,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const labelLarge = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final labelLarge = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 20,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     letterSpacing: 0.05,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const labelMedium = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final labelMedium = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 16,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     letterSpacing: 0.05,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const labelSmall = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final labelSmall = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 14,
-    fontWeight: FontWeight.w700,
+    fontWeight: _fontWeightStrong,
     letterSpacing: 0.05,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const bodyLarge = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final bodyLarge = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 22,
     fontWeight: FontWeight.w500,
     height: 1.4,
     letterSpacing: 0.05,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const bodyMedium = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final bodyMedium = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 18,
     fontWeight: FontWeight.w500,
     height: 1.4,
     letterSpacing: 0.05,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
   );
 
-  static const bodySmall = TextStyle(
-    color: FamilyAppTheme.defaultTextColor,
+  static final bodySmall = TextStyle(
+    color: FunGivtTokens.instance.defaultTextColor,
     fontSize: 15,
     height: 1.4,
     fontWeight: FontWeight.w500,
-    fontFamily: 'Rouna',
+    fontFamily: _fontFamily,
     letterSpacing: 0,
   );
 }

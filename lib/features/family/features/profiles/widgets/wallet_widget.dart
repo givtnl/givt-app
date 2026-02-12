@@ -14,7 +14,7 @@ import 'package:givt_app/features/family/features/unlocked_badge/repository/mode
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class WalletWidget extends StatefulWidget {
@@ -83,7 +83,9 @@ class _WalletWidgetState extends State<WalletWidget> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  FunButton.secondary(
+                  FunButton(
+                    variant: FunButtonVariant.secondary,
+                    fullBorder: true,
                     onTap: () {
                       Navigator.of(context).push(
                         EditAvatarScreen(userGuid: widget.kidid).toRoute(

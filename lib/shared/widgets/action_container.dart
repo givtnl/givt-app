@@ -180,23 +180,48 @@ class _ActionContainerState extends State<ActionContainer> {
   }
 
   Widget _buildContainer(Widget child) {
-    return Container(
-      margin: widget.margin,
+    return ActionContainerPressedScope(
+      isPressed: _isPressed,
       child: Container(
-        margin: _getOpositeMarginByBase(widget.base),
-        decoration: BoxDecoration(
-          color: borderColor,
-          border: _getBorderByBase(widget.base),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
+        margin: widget.margin,
+        child: Container(
+          margin: _getOpositeMarginByBase(widget.base),
+          decoration: BoxDecoration(
+            color: borderColor,
+            border: _getBorderByBase(widget.base),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
           ),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: child,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: child,
+          ),
         ),
       ),
     );
+  }
+}
+
+/// Exposes the current pressed state of an [ActionContainer] to descendants.
+/// Use [maybeOf] to read it and react (e.g. pressed background color).
+class ActionContainerPressedScope extends InheritedWidget {
+  const ActionContainerPressedScope({
+    required this.isPressed,
+    required super.child,
+    super.key,
+  });
+
+  final bool isPressed;
+
+  static ActionContainerPressedScope? maybeOf(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<ActionContainerPressedScope>();
+  }
+
+  @override
+  bool updateShouldNotify(ActionContainerPressedScope oldWidget) {
+    return isPressed != oldWidget.isPressed;
   }
 }
 

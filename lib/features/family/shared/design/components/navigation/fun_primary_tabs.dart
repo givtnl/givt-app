@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -27,17 +28,19 @@ class FunPrimaryTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = FunTheme.of(context);
     return Container(
       width: double.infinity,
       margin: margin ?? const EdgeInsets.symmetric(horizontal: 24),
       child: SegmentedButton<String>(
         style: SegmentedButton.styleFrom(
-          backgroundColor: Colors.white,
-          selectedForegroundColor: FamilyAppTheme.primary40,
-          selectedBackgroundColor: FamilyAppTheme.primary95,
-          side: const BorderSide(
-            width: 2,
-            color: FamilyAppTheme.primary40,
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          backgroundColor: theme.neutral95,
+          selectedForegroundColor: theme.secondary30,
+          selectedBackgroundColor: theme.secondary70,
+          side: BorderSide(
+            width: 0.01,
+            color: theme.primary40,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -50,7 +53,7 @@ class FunPrimaryTabs extends StatelessWidget {
               icon: icons.elementAtOrNull(index),
               label: LabelMediumText(
                 option,
-                color: FamilyAppTheme.primary40,
+                color: theme.secondary20,
               ),
             ),
           ),

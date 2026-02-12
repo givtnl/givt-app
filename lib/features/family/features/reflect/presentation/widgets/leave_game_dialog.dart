@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
@@ -18,7 +19,8 @@ class LeaveGameDialog extends StatelessWidget {
         Navigator.of(context).pop();
       },
       buttons: [
-        FunButton.destructive(
+        FunButton(
+          variant: FunButtonVariant.destructive,
           onTap: () {
             onConfirmLeaveGame?.call();
           },
@@ -41,7 +43,7 @@ class LeaveGameDialog extends StatelessWidget {
   void show(BuildContext context) {
     showDialog<void>(
       context: context,
-      barrierColor: FamilyAppTheme.primary50.withValues(alpha: 0.5),
+      barrierColor: FunTheme.of(context).primary50.withValues(alpha: 0.5),
       builder: (context) => this,
     );
   }

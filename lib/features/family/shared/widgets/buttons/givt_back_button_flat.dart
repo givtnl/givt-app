@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -31,7 +31,7 @@ class GivtBackButtonFlat extends StatelessWidget {
       child: IconButton(
         icon: FaIcon(
           FontAwesomeIcons.arrowLeft,
-          color: color ?? FamilyAppTheme.primary20,
+          color: color ?? FunTheme.of(context).primary20,
         ),
         onPressed: onPressed ??
             () async {

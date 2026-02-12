@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 
 class BodyLargeText extends StatelessWidget {
   // when color is not defined it will default to primary20

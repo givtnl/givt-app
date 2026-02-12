@@ -73,7 +73,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     );
     final isNl = _selectedCountry.isNetherlands;
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         title: locals.personalInfo,
         actions: [
           IconButton(

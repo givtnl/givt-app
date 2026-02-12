@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 /// A stepper widget that displays progress through multiple steps.
 ///
@@ -29,8 +29,8 @@ class FunStepper extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
             color: index <= currentStep
-                ? FamilyAppTheme.primary70
-                : FamilyAppTheme.neutral90,
+                ? FunTheme.of(context).primary70
+                : FunTheme.of(context).neutral90,
             borderRadius: BorderRadius.circular(3),
           ),
         );

@@ -3,7 +3,7 @@ import 'package:givt_app/features/family/features/league/presentation/widgets/mo
 import 'package:givt_app/features/family/features/league/presentation/widgets/rank_widget.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class LeagueEntryItem extends StatelessWidget {
   const LeagueEntryItem({required this.uiModel, super.key});
@@ -28,7 +28,7 @@ class LeagueEntryItem extends StatelessWidget {
           const Spacer(),
           LabelMediumText(
             '${uiModel.xp} XP',
-            color: FamilyAppTheme.primary50,
+            color: FunTheme.of(context).primary50,
           ),
           const SizedBox(width: 16),
         ],

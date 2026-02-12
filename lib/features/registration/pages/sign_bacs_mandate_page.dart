@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
@@ -28,7 +29,8 @@ class SignBacsMandatePage extends StatelessWidget {
     final registrationState = context.watch<RegistrationBloc>().state;
 
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         title: locals.signMandateTitle,
         leading: const GivtBackButtonFlat(),
       ),
@@ -173,7 +175,9 @@ class SignBacsMandatePage extends StatelessWidget {
                 },
               ),
             ),
-            FunButton.secondary(
+            FunButton(
+              variant: FunButtonVariant.secondary,
+              fullBorder: true,
               onTap: () => showModalBottomSheet<void>(
                 context: context,
                 isScrollControlled: true,

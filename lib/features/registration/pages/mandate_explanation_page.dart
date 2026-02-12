@@ -43,7 +43,8 @@ class _SepaMandateExplanationPageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         title: locals.signMandateTitle,
         leading: const GivtBackButtonFlat(),
       ),

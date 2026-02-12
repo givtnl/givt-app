@@ -6,7 +6,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -51,10 +51,10 @@ class FunMissionCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: FamilyAppTheme.highlight99,
+          color: FunTheme.of(context).highlight99,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: FamilyAppTheme.neutralVariant95,
+            color: FunTheme.of(context).neutralVariant95,
             width: 2,
           ),
         ),
@@ -76,7 +76,7 @@ class FunMissionCard extends StatelessWidget {
                         if (uiModel.headerIcon != null)
                           uiModel.disabled
                               ? uiModel.headerIcon!.copyWith(
-                                  iconColorOverride: FamilyAppTheme.neutral40,
+                                  iconColorOverride: FunTheme.of(context).neutral40,
                                 )
                               : uiModel.headerIcon!,
                         const SizedBox(height: 12),
@@ -84,15 +84,15 @@ class FunMissionCard extends StatelessWidget {
                           uiModel.title,
                           textAlign: TextAlign.center,
                           color: uiModel.disabled
-                              ? FamilyAppTheme.neutral50
+                              ? FunTheme.of(context).neutral50
                               : null,
                         ),
                         const SizedBox(height: 4),
                         BodySmallText(
                           uiModel.description,
                           color: uiModel.disabled
-                              ? FamilyAppTheme.neutral60
-                              : FamilyAppTheme.primary40,
+                              ? FunTheme.of(context).neutral60
+                              : FunTheme.of(context).primary40,
                           textAlign: TextAlign.center,
                         ),
                         if (uiModel.progress != null)
@@ -101,9 +101,9 @@ class FunMissionCard extends StatelessWidget {
                             child: useFunProgressbar ? FunProgressbar(
                               currentProgress: uiModel.progress!.amount.toInt(),
                               total: uiModel.progress!.totalAmount.toInt(),
-                              backgroundColor: FamilyAppTheme.neutralVariant95,
-                              progressColor: FamilyAppTheme.primary90,
-                              textColor: FamilyAppTheme.primary20,
+                              backgroundColor: FunTheme.of(context).neutralVariant95,
+                              progressColor: FunTheme.of(context).primary90,
+                              textColor: FunTheme.of(context).primary20,
                               suffix: uiModel.progress!.suffix,
                             ) : GoalProgressBar(
                               model: uiModel.progress!,
@@ -119,7 +119,7 @@ class FunMissionCard extends StatelessWidget {
                         semanticLabel:
                             'icon-${uiModel.actionIcon.fontFamily}-${uiModel.actionIcon.codePoint}',
                         uiModel.actionIcon,
-                        color: FamilyAppTheme.primary40.withValues(alpha: 0.75),
+                        color: FunTheme.of(context).primary40.withValues(alpha: 0.75),
                       ),
                     ),
                 ],

@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/shared/design/components/input/fun_nume
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 
 class ParentAmountPage extends StatefulWidget {
@@ -45,7 +45,8 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: FunTopAppBar.primary99(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.primary99,
         title: 'Give',
         leading: const GivtBackButtonFlat(),
       ),
@@ -87,8 +88,8 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                   '${widget.currency} $_amount',
                   textAlign: TextAlign.center,
                   color: hasOverwrittenPlaceholderValue
-                      ? FamilyAppTheme.primary40
-                      : FamilyAppTheme.neutral70,
+                      ? FunTheme.of(context).primary40
+                      : FunTheme.of(context).neutral70,
                 ),
                 SizedBox(
                   height: FunNumericKeyboard.getHeight(context) + 118 + 54,

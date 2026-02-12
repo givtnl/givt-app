@@ -43,7 +43,8 @@ class _GiftAidRegistrationPageState extends State<GiftAidRegistrationPage> {
 
         return FunScaffold(
           canPop: false,
-          appBar: FunTopAppBar.white(
+          appBar: FunTopAppBar(
+          variant: FunTopAppBarVariant.white,
             title: locals.giftAidYourDonationsTitle,
           ),
           body: Column(

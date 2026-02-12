@@ -87,7 +87,8 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
         }
 
         return FunScaffold(
-          appBar: FunTopAppBar.white(
+          appBar: FunTopAppBar(
+          variant: FunTopAppBarVariant.white,
             title: context.l10n.recurringDonationsStep4Title,
             leading: const GivtBackButtonFlat(),
             actions: [

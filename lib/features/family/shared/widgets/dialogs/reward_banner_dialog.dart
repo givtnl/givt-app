@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/widgets/content/givt_banner.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
@@ -85,7 +85,7 @@ class _MissionCompletedBannerDialogState
             startWhen: (instantiatedWidgetLength) async {
               return true == widget.showTooltip;
             },
-            overlayColor: FamilyAppTheme.primary50.withValues(alpha: 0.5),
+            overlayColor: FunTheme.of(context).primary50.withValues(alpha: 0.5),
             controller: _tooltipController,
             builder: (context) => _content(),
           )

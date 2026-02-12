@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_icon_border_button.dart';
 
 class FunCounter extends StatefulWidget {
@@ -149,9 +149,9 @@ class _FunCounterState extends State<FunCounter> {
             size: 25,
             color: (_currentAmount < 2)
                 ? widget.canAmountBeZero && _currentAmount > 0
-                    ? FamilyAppTheme.primary20
+                    ? FunTheme.of(context).primary20
                     : Colors.grey
-                : FamilyAppTheme.primary20,
+                : FunTheme.of(context).primary20,
           ),
         ),
         Container(
@@ -176,7 +176,7 @@ class _FunCounterState extends State<FunCounter> {
             FontAwesomeIcons.plus,
             size: 25,
             color:
-                (_currentAmount > 998) ? Colors.grey : FamilyAppTheme.primary20,
+                (_currentAmount > 998) ? Colors.grey : FunTheme.of(context).primary20,
           ),
         ),
       ],

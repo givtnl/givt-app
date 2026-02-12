@@ -14,7 +14,7 @@ import 'package:givt_app/features/family/shared/design/components/content/models
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -60,7 +60,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
       child: BaseStateConsumer<dynamic, Bedtime>(
         cubit: _cubit,
         onError: (context, message) => ColoredBox(
-          color: FamilyAppTheme.primary98,
+          color: FunTheme.of(context).primary98,
           child: RetryErrorWidget(
             onTapPrimaryButton: () => _cubit.onClickContinue(
               child.id,
@@ -130,10 +130,10 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
   }) {
     return FunScaffold(
       withSafeArea: false,
-      backgroundColor: FamilyAppTheme.secondary10,
+      backgroundColor: FunTheme.of(context).secondary10,
       appBar: FunTopAppBar(
-        systemNavigationBarColor: FamilyAppTheme.secondary10,
-        color: FamilyAppTheme.secondary10,
+        systemNavigationBarColor: FunTheme.of(context).secondary10,
+        color: FunTheme.of(context).secondary10,
         leading: widget.arguments.index == 0
             ? null
             : const GivtBackButtonFlat(
@@ -143,7 +143,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
         titleColor: Colors.white,
       ),
       body: ColoredBox(
-        color: FamilyAppTheme.secondary10,
+        color: FunTheme.of(context).secondary10,
         child: Stack(
           children: [
             cityAtBottom(width, height),

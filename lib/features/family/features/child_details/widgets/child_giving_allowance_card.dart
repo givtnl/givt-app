@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/child_date_utils.dart';

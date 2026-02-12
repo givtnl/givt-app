@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -66,10 +67,10 @@ class OutlinedTextFormField extends StatelessWidget {
       scrollPadding: scrollPadding,
       style: smallFont
           ? const FamilyAppTheme().toThemeData().textTheme.bodySmall?.copyWith(
-              color: FamilyAppTheme.primary20,
+              color: FunTheme.of(context).primary20,
             )
           : const FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
-              color: FamilyAppTheme.primary20,
+              color: FunTheme.of(context).primary20,
             ),
       decoration: InputDecoration(
         hintText: hintText,
@@ -83,7 +84,7 @@ class OutlinedTextFormField extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 8),
                 child: LabelLargeText(
                   prefixText!,
-                  color: FamilyAppTheme.primary20,
+                  color: FunTheme.of(context).primary20,
                 ),
               )
             : null,

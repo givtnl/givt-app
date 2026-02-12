@@ -11,7 +11,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class GiveBottomSheet extends StatelessWidget {
@@ -47,7 +47,7 @@ class GiveBottomSheet extends StatelessWidget {
                         borderColor: Theme.of(
                           context,
                         ).colorScheme.primaryContainer,
-                        backgroundColor: FamilyAppTheme.primary98,
+                        backgroundColor: FunTheme.of(context).primary98,
                         textColor: Theme.of(context).colorScheme.inversePrimary,
                         analyticsEvent: AmplitudeEvents.choseGiveToFamilyGoal
                             .toEvent(),
@@ -79,9 +79,9 @@ class GiveBottomSheet extends StatelessWidget {
                       child: FunTile(
                         titleBig: 'Coin',
                         iconPath: 'assets/family/images/give_with_coin.svg',
-                        backgroundColor: FamilyAppTheme.highlight98,
-                        borderColor: FamilyAppTheme.highlight80,
-                        textColor: FamilyAppTheme.highlight40,
+                        backgroundColor: FunTheme.of(context).highlight98,
+                        borderColor: FunTheme.of(context).highlight80,
+                        textColor: FunTheme.of(context).highlight40,
                         analyticsEvent: AmplitudeEvents.choseGiveWithCoin
                             .toEvent(),
                         onTap: () {

@@ -19,7 +19,7 @@ import 'package:givt_app/features/family/shared/design/components/overlays/fun_s
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -90,7 +90,8 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
       controller: _tooltipController,
       overlayColor: Colors.transparent,
       builder: (context) => FunScaffold(
-        appBar: FunTopAppBar.white(
+        appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
           leading: GivtBackButtonFlat(
             onPressed: () async {
               context.pop();
@@ -436,7 +437,9 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
   ) {
     switch (status.type) {
       case DonationStatusType.completed:
-        return FunButton.secondary(
+        return FunButton(
+          variant: FunButtonVariant.secondary,
+          fullBorder: true,
           onTap: () => _handleRefund(context, donationGroup, country),
           text: context.l10n.requestRefund,
           analyticsEvent: AmplitudeEvents.donationDetailRefundClicked
@@ -446,7 +449,9 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
         );
 
       case DonationStatusType.created:
-        return FunButton.destructiveSecondary(
+        return FunButton(
+          variant: FunButtonVariant.destructiveSecondary,
+          fullBorder: true,
           onTap: () => _handleCancel(context, donationGroup),
           text: context.l10n.cancel,
           analyticsEvent: AmplitudeEvents.donationDetailCancelClicked
