@@ -63,7 +63,8 @@ class _Step1SelectOrganisationPageState
       },
       onData: (context, uiModel) {
         return FunScaffold(
-          appBar: FunTopAppBar.white(
+          appBar: FunTopAppBar(
+          variant: FunTopAppBarVariant.white,
             title: context.l10n.recurringDonationsStep1Title,
             leading: const GivtBackButtonFlat(),
             actions: [

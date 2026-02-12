@@ -5,13 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sprintf/sprintf.dart';
@@ -40,20 +45,20 @@ class _BTScanPageState extends State<BTScanPage> {
   @override
   void initState() {
     super.initState();
-    
+
     // Signal to GiveBloc that BT scan page is active
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && !_isDisposed) {
         context.read<GiveBloc>().onBTScanPageInitialized();
       }
     });
-    
+
     initBluetooth();
   }
 
   Future<void> startBluetoothScan() async {
     if (_isDisposed || !mounted) return;
-    
+
     try {
       isSearching = true;
       await FlutterBluePlus.startScan(
@@ -68,7 +73,7 @@ class _BTScanPageState extends State<BTScanPage> {
 
   Future<void> stopBluetoothScan() async {
     if (_isDisposed) return;
-    
+
     try {
       isSearching = false;
       if (FlutterBluePlus.isScanningNow) {
@@ -81,7 +86,7 @@ class _BTScanPageState extends State<BTScanPage> {
 
   Future<void> initBluetooth() async {
     if (_isDisposed) return;
-    
+
     try {
       LoggingInfo.instance.info('initBluetooth');
 
@@ -95,8 +100,9 @@ class _BTScanPageState extends State<BTScanPage> {
         _onPeripheralsDetectedData,
         onError: (dynamic e) {
           if (!_isDisposed) {
-            LoggingInfo.instance
-                .error('Error while scanning for peripherals: $e');
+            LoggingInfo.instance.error(
+              'Error while scanning for peripherals: $e',
+            );
           }
         },
       );
@@ -104,7 +110,7 @@ class _BTScanPageState extends State<BTScanPage> {
       // Listen to scanning state changes
       _isScanningStream = FlutterBluePlus.isScanning.listen((event) async {
         if (_isDisposed || !mounted) return;
-        
+
         if (event == false && !FlutterBluePlus.isScanningNow && isSearching) {
           LoggingInfo.instance.info('Restart Scan');
           await startBluetoothScan();
@@ -112,10 +118,11 @@ class _BTScanPageState extends State<BTScanPage> {
       });
 
       // Listen to scan mode changes
-      _adapterStateStream = FlutterBluePlus.adapterState
-          .listen((BluetoothAdapterState state) async {
+      _adapterStateStream = FlutterBluePlus.adapterState.listen((
+        BluetoothAdapterState state,
+      ) async {
         if (_isDisposed || !mounted) return;
-        
+
         switch (state) {
           case BluetoothAdapterState.on:
             if (!FlutterBluePlus.isScanningNow) {
@@ -123,8 +130,8 @@ class _BTScanPageState extends State<BTScanPage> {
                 final status = await Permission.bluetoothConnect.status;
                 if (status.isDenied || status.isPermanentlyDenied) {
                   try {
-                    final newStatus =
-                        await Permission.bluetoothConnect.request();
+                    final newStatus = await Permission.bluetoothConnect
+                        .request();
                     if (newStatus.isGranted) {
                       await startBluetoothScan();
                       return;
@@ -143,11 +150,11 @@ class _BTScanPageState extends State<BTScanPage> {
               LoggingInfo.instance.info('Start Scan');
               await startBluetoothScan();
             }
-                      case BluetoothAdapterState.unauthorized:
-              LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
-              if (!_isDisposed && mounted) {
-                await showBluetoothDeniedDialog();
-              }
+          case BluetoothAdapterState.unauthorized:
+            LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
+            if (!_isDisposed && mounted) {
+              await showBluetoothDeniedDialog();
+            }
           case BluetoothAdapterState.unavailable:
           case BluetoothAdapterState.off:
             LoggingInfo.instance.info('Bluetooth adapter is off');
@@ -155,19 +162,19 @@ class _BTScanPageState extends State<BTScanPage> {
               LoggingInfo.instance.info('Trying to turn it on...');
               try {
                 await FlutterBluePlus.turnOn(timeout: 10);
-                              } catch (_) {
-                  // We can't turn on the bluetooth automatically, so show a dialog
-                  if (!_isDisposed && mounted) {
-                    await showTurnOnBluetoothDialog();
-                  }
-                }
-              }
-              if (Platform.isIOS) {
-                LoggingInfo.instance.info('iOS User has Bluetooth off...');
+              } catch (_) {
+                // We can't turn on the bluetooth automatically, so show a dialog
                 if (!_isDisposed && mounted) {
                   await showTurnOnBluetoothDialog();
                 }
               }
+            }
+            if (Platform.isIOS) {
+              LoggingInfo.instance.info('iOS User has Bluetooth off...');
+              if (!_isDisposed && mounted) {
+                await showTurnOnBluetoothDialog();
+              }
+            }
           // We don't want to handle other cases at the moment, so:
           // ignore: no_default_cases
           default:
@@ -175,25 +182,27 @@ class _BTScanPageState extends State<BTScanPage> {
         }
       });
 
-              Future.delayed(const Duration(seconds: 5), () {
-          if (!_isDisposed && mounted) {
-            setState(() {
-              isVisible = true;
-            });
-          }
-        });
-          } catch (e) {
-        LoggingInfo.instance
-            .error('Error in BT scan page: $e', methodName: 'initBluetooth');
+      Future.delayed(const Duration(seconds: 5), () {
         if (!_isDisposed && mounted) {
-          Navigator.of(context).pop();
+          setState(() {
+            isVisible = true;
+          });
         }
+      });
+    } catch (e) {
+      LoggingInfo.instance.error(
+        'Error in BT scan page: $e',
+        methodName: 'initBluetooth',
+      );
+      if (!_isDisposed && mounted) {
+        Navigator.of(context).pop();
       }
+    }
   }
 
   Future<void> showTurnOnBluetoothDialog() {
     if (_isDisposed || !mounted) return Future.value();
-    
+
     return showDialog<void>(
       context: context,
       builder: (_) => WarningDialog(
@@ -208,7 +217,7 @@ class _BTScanPageState extends State<BTScanPage> {
 
   Future<void> showBluetoothDeniedDialog() {
     if (_isDisposed || !mounted) return Future.value();
-    
+
     return showDialog<void>(
       context: context,
       builder: (_) => WarningDialog(
@@ -229,7 +238,7 @@ class _BTScanPageState extends State<BTScanPage> {
 
     for (final scanResult in results) {
       if (_isDisposed || !mounted || !isSearching) return;
-      
+
       if (scanResult.advertisementData.advName.isEmpty) {
         continue;
       }
@@ -240,8 +249,9 @@ class _BTScanPageState extends State<BTScanPage> {
       if (scanResult.advertisementData.serviceUuids.isEmpty) {
         continue;
       }
-      if (!scanResult.advertisementData.serviceData
-          .containsKey(scanResult.advertisementData.serviceUuids.first)) {
+      if (!scanResult.advertisementData.serviceData.containsKey(
+        scanResult.advertisementData.serviceUuids.first,
+      )) {
         continue;
       }
 
@@ -255,13 +265,17 @@ class _BTScanPageState extends State<BTScanPage> {
 
       // Check if its really a Givt beacon
       final hex = StringBuffer();
-      for (final b in scanResult.advertisementData
-          .serviceData[scanResult.advertisementData.serviceUuids.first]!) {
+      for (final b
+          in scanResult.advertisementData.serviceData[scanResult
+              .advertisementData
+              .serviceUuids
+              .first]!) {
         hex.write(sprintf('%02x', [b]));
       }
 
       final beaconData = hex.toString();
-      final contains = beaconData.contains('61f7ed01') ||
+      final contains =
+          beaconData.contains('61f7ed01') ||
           beaconData.contains('61f7ed02') ||
           beaconData.contains('61f7ed03');
 
@@ -269,40 +283,40 @@ class _BTScanPageState extends State<BTScanPage> {
         continue;
       }
 
-              // Double-check we're still searching and not disposed
-        if (_isDisposed || !mounted || !isSearching) return;
+      // Double-check we're still searching and not disposed
+      if (_isDisposed || !mounted || !isSearching) return;
 
-        // We found a valid beacon, stop scanning immediately
-        isSearching = false;
-        
-        // Stop the scan asynchronously but don't wait for it
-        FlutterBluePlus.stopScan().catchError((e) {
-          LoggingInfo.instance.error('Error stopping scan: $e');
-        });
+      // We found a valid beacon, stop scanning immediately
+      isSearching = false;
 
-        // Only process the beacon if we're still mounted and not disposed
-        if (!_isDisposed && mounted) {
-          context.read<GiveBloc>().add(
-                GiveBTBeaconScanned(
-                  userGUID: context.read<AuthCubit>().state.user.guid,
-                  macAddress: scanResult.device.remoteId.toString(),
-                  rssi: scanResult.rssi,
-                  serviceUUID: scanResult.advertisementData.serviceUuids.first,
-                  serviceData: scanResult.advertisementData.serviceData,
-                  beaconData: beaconData,
-                ),
-              );
-        }
-        
-        // Exit after processing the first valid beacon
-        return;
+      // Stop the scan asynchronously but don't wait for it
+      FlutterBluePlus.stopScan().catchError((e) {
+        LoggingInfo.instance.error('Error stopping scan: $e');
+      });
+
+      // Only process the beacon if we're still mounted and not disposed
+      if (!_isDisposed && mounted) {
+        context.read<GiveBloc>().add(
+          GiveBTBeaconScanned(
+            userGUID: context.read<AuthCubit>().state.user.guid,
+            macAddress: scanResult.device.remoteId.toString(),
+            rssi: scanResult.rssi,
+            serviceUUID: scanResult.advertisementData.serviceUuids.first,
+            serviceData: scanResult.advertisementData.serviceData,
+            beaconData: beaconData,
+          ),
+        );
+      }
+
+      // Exit after processing the first valid beacon
+      return;
     }
   }
 
   @override
   void dispose() {
     _isDisposed = true;
-    
+
     // Signal to GiveBloc that BT scan page is being disposed
     try {
       context.read<GiveBloc>().onBTScanPageDisposed();
@@ -310,15 +324,15 @@ class _BTScanPageState extends State<BTScanPage> {
       // Context might not be available during dispose
       LoggingInfo.instance.error('Could not signal disposal to GiveBloc: $e');
     }
-    
+
     // Stop scanning first
     stopBluetoothScan();
-    
+
     // Cancel all streams
     _scanResultsStream?.cancel();
     _adapterStateStream?.cancel();
     _isScanningStream?.cancel();
-    
+
     // Clear references
     _scanResultsStream = null;
     _adapterStateStream = null;
@@ -336,18 +350,18 @@ class _BTScanPageState extends State<BTScanPage> {
     /// the background color to the same color
     /// otherwise we will see a white background
     const backgroundColor = Color(0xFFFBFBFB);
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text(locals.giveWithYourPhone),
-        backgroundColor: backgroundColor,
+    return FunScaffold(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
+        leading: const GivtBackButtonFlat(),
+        title: locals.giveWithYourPhone,
       ),
       backgroundColor: backgroundColor,
       body: Center(
         child: BlocConsumer<GiveBloc, GiveState>(
           listener: (context, state) async {
             if (_isDisposed || !mounted) return;
-            
+
             if (state.status == GiveStatus.loading &&
                 !FlutterBluePlus.isScanningNow &&
                 isSearching) {
@@ -361,9 +375,8 @@ class _BTScanPageState extends State<BTScanPage> {
             return Column(
               children: [
                 SizedBox(height: size.height * 0.03),
-                Text(
+                BodyMediumText(
                   locals.makeContact,
-                  style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 50),
@@ -375,66 +388,47 @@ class _BTScanPageState extends State<BTScanPage> {
                 Expanded(child: Container()),
                 Visibility(
                   visible: isVisible,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (_isDisposed || !mounted) return;
-                        
-                        GiveLoadingDialog.showGiveLoadingDialog(context);
-                        if (orgName!.isNotEmpty) {
-                          await stopBluetoothScan();
-                          context.read<GiveBloc>().add(
-                                GiveToLastOrganisation(
-                                  context.read<AuthCubit>().state.user.guid,
-                                ),
-                              );
-                          return;
-                        }
-                        context.goNamed(
-                          Pages.giveByList.name,
-                          extra: context.read<GiveBloc>(),
+                  child: FunButton(
+                    analyticsEvent: AmplitudeEvents.giveButtonPressed.toEvent(),
+                    onTap: () async {
+                      if (_isDisposed || !mounted) return;
+
+                      GiveLoadingDialog.showGiveLoadingDialog(context);
+                      if (orgName!.isNotEmpty) {
+                        await stopBluetoothScan();
+                        context.read<GiveBloc>().add(
+                          GiveToLastOrganisation(
+                            context.read<AuthCubit>().state.user.guid,
+                          ),
                         );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.givtBlue,
-                      ),
-                      child: Text(
-                        orgName.isEmpty
-                            ? locals.giveDifferently
-                            : locals.giveToNearestBeacon(
-                                state.organisation.organisationName!,
-                              ),
-                      ),
-                    ),
+                        return;
+                      }
+                      context.goNamed(
+                        Pages.giveByList.name,
+                        extra: context.read<GiveBloc>(),
+                      );
+                    },
+                    text: orgName.isEmpty
+                        ? locals.giveDifferently
+                        : locals.giveToNearestBeacon(
+                            state.organisation.organisationName!,
+                          ),
                   ),
                 ),
                 Visibility(
                   visible: isVisible && orgName.isNotEmpty,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      bottom: 10,
-                    ),
-                    child: TextButton(
-                      onPressed: () async {
-                        if (_isDisposed || !mounted) return;
-                        
-                        await stopBluetoothScan();
-                        context.goNamed(
-                          Pages.giveByList.name,
-                          extra: context.read<GiveBloc>(),
-                        );
-                      },
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      child: Text(locals.giveDifferently),
-                    ),
+                  child: FunTextButton(
+                    analyticsEvent: AmplitudeEvents.giveButtonPressed.toEvent(),
+                    onTap: () async {
+                      if (_isDisposed || !mounted) return;
+
+                      await stopBluetoothScan();
+                      context.goNamed(
+                        Pages.giveByList.name,
+                        extra: context.read<GiveBloc>(),
+                      );
+                    },
+                    text: locals.giveDifferently,
                   ),
                 ),
               ],

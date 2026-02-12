@@ -26,7 +26,7 @@ import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_too
 import 'package:givt_app/features/family/shared/widgets/dialogs/reward_banner_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -114,7 +114,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     return OverlayTooltipScaffold(
       controller: _tooltipController,
       preferredOverlay: Container(
-        color: FamilyAppTheme.primary50.withValues(alpha: 0.5),
+        color: FunTheme.of(context).primary50.withValues(alpha: 0.5),
       ),
       builder: (context) => BlocConsumer<FamilyAuthCubit, FamilyAuthState>(
         listener: (context, state) {},
@@ -323,7 +323,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
           text: "Let's go!",
           analyticsEvent: AmplitudeEvents.tutorialStartClicked.toEvent(),
         ),
-        FunButton.secondary(
+        FunButton(
+          variant: FunButtonVariant.secondary,
+          fullBorder: true,
           onTap: () {
             context.pop();
           },

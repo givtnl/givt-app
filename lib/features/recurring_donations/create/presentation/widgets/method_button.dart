@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
@@ -24,19 +25,19 @@ class MethodButton extends StatelessWidget {
     return ActionContainer(
       analyticsEvent: AmplitudeEvents.debugButtonClicked.toEvent(),
       onTap: onPressed,
-      borderColor: FamilyAppTheme.neutralVariant80,
+      borderColor: FunTheme.of(context).neutralVariant80,
       baseBorderSize: 4,
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: FamilyAppTheme.neutral98,
+          color: FunTheme.of(context).neutral98,
         ),
         child: Container(
           // Inner container to fix the inside border
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: FamilyAppTheme.neutral98,
+            color: FunTheme.of(context).neutral98,
           ),
           padding: const EdgeInsets.all(16),
           child: Stack(
@@ -58,11 +59,11 @@ class MethodButton extends StatelessWidget {
                       children: [
                         LabelLargeText(
                           title,
-                          color: FamilyAppTheme.highlight40,
+                          color: FunTheme.of(context).highlight40,
                         ),
                         BodySmallText(
                           subtitle,
-                          color: FamilyAppTheme.highlight40,
+                          color: FunTheme.of(context).highlight40,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,

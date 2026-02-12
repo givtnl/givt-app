@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class WalletAmountRow extends StatelessWidget {
   const WalletAmountRow({
@@ -19,14 +19,14 @@ class WalletAmountRow extends StatelessWidget {
       children: [
         Text(
           '\$${activeProfile.wallet.balance.toStringAsFixed(2)}',
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: FamilyAppTheme.info20,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: FunTheme.of(context).info20,
               ),
         ),
         SizedBox(width: 6),
-        const Icon(
+        Icon(
           FontAwesomeIcons.wallet,
-          color: FamilyAppTheme.info40,
+          color: FunTheme.of(context).info40,
           size: 20,
         ),
       ],

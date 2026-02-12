@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/donation_overview/models/donation_overview_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/utils/util.dart';
 
 class MonthlyHeader extends StatelessWidget {
@@ -22,20 +22,20 @@ class MonthlyHeader extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: FamilyAppTheme.primary80, // Light green for monthly header
+      color: FunTheme.of(context).primary80, // Light green for monthly header
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TitleSmallText(
             monthGroup.displayName,
-            color: FamilyAppTheme.primary20,
+            color: FunTheme.of(context).primary20,
           ),
           TitleSmallText(
             '$currencySymbol ${Util.formatNumberComma(
               monthGroup.totalAmount,
               Country.fromCode(country),
             )}',
-            color: FamilyAppTheme.primary20,
+            color: FunTheme.of(context).primary20,
           ),
         ],
       ),

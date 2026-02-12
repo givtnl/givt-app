@@ -16,7 +16,7 @@ class HomePageViewLayout extends StatelessWidget {
         right: 8,
         left: 8,
         bottom: 8,
-        top: 15,
+        top: 20,
       ),
       child: Container(
         height: size.height,
@@ -25,7 +25,7 @@ class HomePageViewLayout extends StatelessWidget {
           border: Border.all(
             color: Colors.grey.shade200,
           ),
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(6),
         ),
         child: child,
       ),

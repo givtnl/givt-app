@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -46,7 +47,7 @@ class _GatherAroundScreenState extends State<GatherAroundScreen> {
     return FunScaffold(
       canPop: false,
       minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-      backgroundColor: FamilyAppTheme.secondary20,
+      backgroundColor: FunTheme.of(context).secondary20,
       body: Stack(
         children: [
           SvgPicture.asset(

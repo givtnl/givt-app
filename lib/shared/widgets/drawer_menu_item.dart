@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class DrawerMenuItem extends StatelessWidget {
@@ -53,7 +54,7 @@ class DrawerMenuItem extends StatelessWidget {
                         imageIcon ??
                             Icon(
                               icon,
-                              color: AppTheme.givtBlue,
+                              color: FunTheme.of(context).primary20,
                             ),
                         Expanded(
                           child: Padding(
@@ -62,7 +63,7 @@ class DrawerMenuItem extends StatelessWidget {
                               title,
                               style: const TextStyle(
                                 fontSize: 17,
-                                fontWeight: FontWeight.w900,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
@@ -85,7 +86,8 @@ class DrawerMenuItem extends StatelessWidget {
                     leading: imageIcon ??
                         Icon(
                           icon,
-                          color: AppTheme.givtBlue,
+                          color: FunTheme.of(context).primary20,
+                          size: 20,
                         ),
                     trailing: badges.Badge(
                       showBadge: showBadge,

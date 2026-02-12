@@ -56,7 +56,9 @@ class EmptyWalletBottomSheet extends StatelessWidget {
           );
         },
       ),
-      secondaryButton: FunButton.secondary(
+      secondaryButton: FunButton(
+        variant: FunButtonVariant.secondary,
+        fullBorder: true,
         text: 'Go back',
         leftIcon: FontAwesomeIcons.arrowLeft,
         onTap: () {

@@ -14,7 +14,7 @@ import 'package:givt_app/features/family/features/unlocked_badge/repository/mode
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -39,7 +39,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
             : state.activeProfile;
         return Scaffold(
           appBar: _topAppBar(activeProfile, context),
-          backgroundColor: FamilyAppTheme.secondary99,
+          backgroundColor: FunTheme.of(context).secondary99,
           body: ColoredBox(
             color: Colors.white,
             child: Column(
@@ -112,15 +112,15 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
   FunTopAppBar _topAppBar(Profile profile, BuildContext context) =>
       FunTopAppBar(
         title: profile.firstName,
-        color: FamilyAppTheme.secondary99,
-        systemNavigationBarColor: FamilyAppTheme.secondary99,
+        color: FunTheme.of(context).secondary99,
+        systemNavigationBarColor: FunTheme.of(context).secondary99,
         leading: const GivtBackButtonFlat(),
       );
 
   Widget _parentHeaderWidget(Profile profile, BuildContext context) =>
       Container(
         width: MediaQuery.sizeOf(context).width,
-        color: FamilyAppTheme.secondary99,
+        color: FunTheme.of(context).secondary99,
         child: Stack(
           children: [
             Positioned(
@@ -140,7 +140,9 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
                   child: FunAvatar.fromProfile(profile, size: 100),
                 ),
                 const SizedBox(height: 12),
-                FunButton.secondary(
+                FunButton(
+                  variant: FunButtonVariant.secondary,
+                  fullBorder: true,
                   onTap: () => _onEditAvatarClicked(context, false),
                   text: 'Edit avatar',
                   analyticsEvent: AmplitudeEvents.editProfilePictureClicked.toEvent(),

@@ -163,6 +163,26 @@ flutter:
           weight: 500
         - asset: assets/fonts/Rouna/rouna-regular-webfont.ttf
           weight: 400
+    - family: Onest
+      fonts:
+        - asset: assets/fonts/onest/onest-thin.ttf
+          weight: 100
+        - asset: assets/fonts/onest/onest-extralight.ttf
+          weight: 200
+        - asset: assets/fonts/onest/onest-light.ttf
+          weight: 300
+        - asset: assets/fonts/onest/onest-regular.ttf
+          weight: 400
+        - asset: assets/fonts/onest/onest-medium.ttf
+          weight: 500
+        - asset: assets/fonts/onest/onest-semibold.ttf
+          weight: 600
+        - asset: assets/fonts/onest/onest-bold.ttf
+          weight: 700
+        - asset: assets/fonts/onest/onest-extrabold.ttf
+          weight: 800
+        - asset: assets/fonts/onest/onest-black.ttf
+          weight: 900
   assets:
     - assets/images/
     - assets/lotties/

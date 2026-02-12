@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -37,7 +38,8 @@ class _USTerminateAccountBottomSheetState
     return FunBottomSheet(
       closeAction: () => Navigator.of(context).pop(),
       title: locals.unregisterTitle,
-      primaryButton: FunButton.destructive(
+      primaryButton: FunButton(
+        variant: FunButtonVariant.destructive,
         onTap: () {
           widget.asyncCubit.doAsyncAction(() async {
             await getIt<AuthRepository>().unregisterUser(
@@ -50,7 +52,9 @@ class _USTerminateAccountBottomSheetState
         isDisabled: !isCheckboxChecked,
         analyticsEvent: AmplitudeEvents.terminateAccountStarted.toEvent(),
       ),
-      secondaryButton: FunButton.secondary(
+      secondaryButton: FunButton(
+        variant: FunButtonVariant.secondary,
+        fullBorder: true,
         onTap: () => Navigator.of(context).pop(),
         text: locals.cancel,
         analyticsEvent: AmplitudeEvents.terminateAccountCancelled.toEvent(),
@@ -58,7 +62,7 @@ class _USTerminateAccountBottomSheetState
       content: Column(
         children: [
           FunIcon.exclamation(
-            circleColor: FamilyAppTheme.error90,
+            circleColor: FunTheme.of(context).error90,
           ),
           const SizedBox(height: 16),
           BodyMediumText(

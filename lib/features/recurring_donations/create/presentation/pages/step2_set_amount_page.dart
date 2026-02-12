@@ -7,7 +7,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step2_set_amount_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_amount_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step3_set_duration_page.dart';
@@ -74,7 +74,8 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
         }
         
         return FunScaffold(
-          appBar: FunTopAppBar.white(
+          appBar: FunTopAppBar(
+          variant: FunTopAppBarVariant.white,
             title: context.l10n.recurringDonationsStep2Title,
             leading: const GivtBackButtonFlat(),
             actions: [
@@ -101,7 +102,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               const SizedBox(height: 32),
               LabelMediumText(
                 context.l10n.recurringDonationsFrequencyTitle,
-                color: FamilyAppTheme.primary40,
+                color: FunTheme.of(context).primary40,
               ),
               const SizedBox(height: 8),
               FrequencyDropdown(
@@ -121,7 +122,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               const SizedBox(height: 24),
               LabelMediumText(
                 context.l10n.recurringDonationsAmountTitle,
-                color: FamilyAppTheme.primary40,
+                color: FunTheme.of(context).primary40,
               ),
               const SizedBox(height: 8),
               OutlinedTextFormField(

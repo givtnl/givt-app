@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/utils/app_theme.dart';
 
 typedef ThemedWidgetBuilder = Widget Function(
   BuildContext context,
@@ -21,10 +20,10 @@ class AppThemeSwitcherWidget extends StatefulWidget {
 }
 
 class AppThemeSwitcherWidgetState extends State<AppThemeSwitcherWidget> {
-  late ThemeData themeData = AppTheme.lightTheme;
+  late ThemeData themeData = FunGivtTheme().toThemeData();
   bool isFamilyApp = false;
-  final ThemeData _givtTheme = AppTheme.lightTheme;
-  final ThemeData _familyTheme = const FamilyAppTheme().toThemeData();
+  final ThemeData _givtTheme = FunGivtTheme().toThemeData();
+  final ThemeData _familyTheme = FunGivt4KidsTheme().toThemeData();
 
   @override
   void initState() {

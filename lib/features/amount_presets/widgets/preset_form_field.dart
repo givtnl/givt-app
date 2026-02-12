@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -82,9 +82,9 @@ class _PresetFormFieldState extends State<PresetFormField> {
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,
-        suffixIcon: const Icon(
+        suffixIcon: Icon(
           FontAwesomeIcons.penToSquare,
-          color: FamilyAppTheme.primary30,
+          color: FunTheme.of(context).primary30,
           size: 20,
         ),
         labelText: errorMessage,
@@ -92,45 +92,45 @@ class _PresetFormFieldState extends State<PresetFormField> {
           fontFamily: 'Raleway',
           fontSize: 14,
           color: errorMessage != null
-              ? FamilyAppTheme.error50
-              : FamilyAppTheme.primary30,
+              ? FunTheme.of(context).error50
+              : FunTheme.of(context).primary30,
         ),
         errorStyle: const TextStyle(
           height: 0,
         ),
-        focusedErrorBorder: _buildErrorBorder(),
-        errorBorder: _buildErrorBorder(),
-        focusedBorder: _buildFocusedBorder(),
-        enabledBorder: _buildEnabledBorder(),
+        focusedErrorBorder: _buildErrorBorder(context),
+        errorBorder: _buildErrorBorder(context),
+        focusedBorder: _buildFocusedBorder(context),
+        enabledBorder: _buildEnabledBorder(context),
       ),
     );
   }
 
-  OutlineInputBorder _buildErrorBorder() {
+  OutlineInputBorder _buildErrorBorder(BuildContext context) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(
-        color: FamilyAppTheme.error50,
+      borderSide: BorderSide(
+        color: FunTheme.of(context).error50,
         width: 2,
       ),
     );
   }
 
-  OutlineInputBorder _buildFocusedBorder() {
+  OutlineInputBorder _buildFocusedBorder(BuildContext context) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(
-        color: FamilyAppTheme.primary30,
+      borderSide: BorderSide(
+        color: FunTheme.of(context).primary30,
         width: 2,
       ),
     );
   }
 
-  OutlineInputBorder _buildEnabledBorder() {
+  OutlineInputBorder _buildEnabledBorder(BuildContext context) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(
-        color: FamilyAppTheme.neutral95,
+      borderSide: BorderSide(
+        color: FunTheme.of(context).neutral95,
       ),
     );
   }

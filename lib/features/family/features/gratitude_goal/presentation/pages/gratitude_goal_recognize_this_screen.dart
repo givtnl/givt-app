@@ -50,7 +50,8 @@ class GratitudeGoalRecognizeThisScreen extends StatelessWidget {
                 const SizedBox(
                   height: 12,
                 ),
-                FunTag.secondary(
+                FunTag(
+                  variant: FunTagVariant.secondary,
                   text: 'Cindy 33 , Tulsa OK',
                 ),
               ],

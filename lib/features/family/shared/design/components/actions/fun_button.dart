@@ -6,10 +6,19 @@ import 'package:givt_app/features/family/features/unlocked_badge/presentation/wi
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart'
     show LabelMediumText;
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
-import 'package:givt_app/utils/utils.dart';
+
+/// Visual variant of the button; used to resolve theme colors when not overridden.
+enum FunButtonVariant {
+  primary,
+  secondary,
+  tertiary,
+  destructive,
+  destructiveSecondary,
+}
 
 class FunButton extends StatelessWidget {
   const FunButton({
@@ -22,10 +31,12 @@ class FunButton extends StatelessWidget {
     this.isPressedDown = false,
     this.leftIcon,
     this.leadingImage,
-    this.backgroundColor = FamilyAppTheme.primary80,
-    this.disabledBackgroundColor = FamilyAppTheme.neutralVariant90,
-    this.borderColor = FamilyAppTheme.primary30,
-    this.textColor = FamilyAppTheme.primary30,
+    this.backgroundColor,
+    this.disabledBackgroundColor,
+    this.pressedBackgroundColor,
+    this.borderColor,
+    this.textColor,
+    this.disabledTextColor,
     this.fullBorder = false,
     this.isDebugOnly = false,
     this.onTapCancel,
@@ -36,113 +47,8 @@ class FunButton extends StatelessWidget {
     this.size = FunButtonSize.large,
     this.funButtonBadge,
     this.onDisabledTap,
+    this.variant = FunButtonVariant.primary,
   });
-
-  factory FunButton.secondary({
-    required void Function()? onTap,
-    required String text,
-    required AnalyticsEvent analyticsEvent,
-    bool isDisabled = false,
-    bool isLoading = false,
-    bool isPressedDown = false,
-    FunButtonSize size = FunButtonSize.large,
-    IconData? leftIcon,
-    Widget? leadingImage,
-    FunButtonBadge? funButtonBadge,
-  }) {
-    return FunButton(
-      onTap: onTap,
-      text: text,
-      isDisabled: isDisabled,
-      isLoading: isLoading,
-      isPressedDown: isPressedDown,
-      leftIcon: leftIcon,
-      leadingImage: leadingImage,
-      backgroundColor: FamilyAppTheme.neutral100,
-      disabledBackgroundColor: FamilyAppTheme.neutral100,
-      borderColor: FamilyAppTheme.primary80,
-      fullBorder: true,
-      analyticsEvent: analyticsEvent,
-      size: size,
-      funButtonBadge: funButtonBadge,
-    );
-  }
-
-  factory FunButton.tertiary({
-    required void Function()? onTap,
-    required String text,
-    required AnalyticsEvent analyticsEvent,
-    bool isDisabled = false,
-    bool isLoading = false,
-    IconData? leftIcon,
-    Widget? leadingImage,
-    FunButtonBadge? funButtonBadge,
-  }) {
-    return FunButton(
-      onTap: onTap,
-      text: text,
-      isDisabled: isDisabled,
-      isLoading: isLoading,
-      leftIcon: leftIcon,
-      leadingImage: leadingImage,
-      backgroundColor: FamilyAppTheme.neutral100,
-      borderColor: AppTheme.secondary80,
-      analyticsEvent: analyticsEvent,
-      funButtonBadge: funButtonBadge,
-    );
-  }
-
-  factory FunButton.destructive({
-    required void Function()? onTap,
-    required String text,
-    required AnalyticsEvent analyticsEvent,
-    bool isDisabled = false,
-    bool isLoading = false,
-    IconData? leftIcon,
-    Widget? leadingImage,
-    FunButtonBadge? funButtonBadge,
-  }) {
-    return FunButton(
-      onTap: onTap,
-      text: text,
-      isDisabled: isDisabled,
-      isLoading: isLoading,
-      leftIcon: leftIcon,
-      leadingImage: leadingImage,
-      backgroundColor: FamilyAppTheme.error80,
-      borderColor: AppTheme.error30,
-      textColor: AppTheme.error30,
-      analyticsEvent: analyticsEvent,
-      funButtonBadge: funButtonBadge,
-    );
-  }
-
-  factory FunButton.destructiveSecondary({
-    required void Function()? onTap,
-    required String text,
-    required AnalyticsEvent analyticsEvent,
-    bool isDisabled = false,
-    bool isLoading = false,
-    IconData? leftIcon,
-    Widget? leadingImage,
-    FunButtonBadge? funButtonBadge,
-  }) {
-    return FunButton(
-      onTap: onTap,
-      text: text,
-      isDisabled: isDisabled,
-      isLoading: isLoading,
-      leftIcon: leftIcon,
-      leadingImage: leadingImage,
-      backgroundColor: FamilyAppTheme.neutral100,
-      disabledBackgroundColor: FamilyAppTheme.neutral100,
-      borderColor: FamilyAppTheme.error70,
-      textColor: FamilyAppTheme.error50,
-      analyticsEvent: analyticsEvent,
-      funButtonBadge: funButtonBadge,
-      fullBorder: true,
-    );
-  }
 
   final void Function()? onTap;
   final VoidCallback? onTapCancel;
@@ -156,28 +62,95 @@ class FunButton extends StatelessWidget {
   final bool isLoading;
   final IconData? leftIcon;
   final Widget? leadingImage;
-  final Color backgroundColor;
-  final Color disabledBackgroundColor;
-  final Color borderColor;
+  final Color? backgroundColor;
+  final Color? disabledBackgroundColor;
+  final Color? pressedBackgroundColor;
+  final Color? borderColor;
   final Color? textColor;
+  final Color? disabledTextColor;
   final bool fullBorder;
+  final FunButtonVariant variant;
   final bool isDebugOnly;
   final FunButtonSize size;
   final AnalyticsEvent analyticsEvent;
   final FunButtonBadge? funButtonBadge;
   final VoidCallback? onDisabledTap;
 
+  /// Resolves theme colors for the current variant when not explicitly provided.
+  ({
+    Color bg,
+    Color disabledBg,
+    Color pressedBg,
+    Color border,
+    Color text,
+    Color disabledText,
+  }) _themeColors(FunAppTheme theme) {
+    return switch (variant) {
+      FunButtonVariant.primary => (
+          bg: theme.primary80,
+          disabledBg: theme.neutral90,
+          pressedBg: theme.primary70,
+          border: theme.primary30,
+          text: theme.primary30,
+          disabledText: theme.neutralVariant60,
+        ),
+      FunButtonVariant.secondary => (
+          bg: theme.neutral100,
+          disabledBg: theme.neutral100,
+          pressedBg: theme.neutral95,
+          border: theme.primary80,
+          text: theme.primary30,
+          disabledText: theme.neutralVariant60,
+        ),
+      FunButtonVariant.tertiary => (
+          bg: theme.neutral100,
+          disabledBg: theme.neutral90,
+          pressedBg: theme.neutral95,
+          border: theme.secondary80,
+          text: theme.primary30,
+          disabledText: theme.neutralVariant60,
+        ),
+      FunButtonVariant.destructive => (
+          bg: theme.error80,
+          disabledBg: theme.neutralVariant90,
+          pressedBg: theme.error70,
+          border: theme.error30,
+          text: theme.error30,
+          disabledText: theme.neutral60,
+        ),
+      FunButtonVariant.destructiveSecondary => (
+          bg: theme.neutral100,
+          disabledBg: theme.neutral100,
+          pressedBg: theme.neutral95,
+          border: theme.error70,
+          text: theme.error50,
+          disabledText: theme.neutral60,
+        ),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final appConfig = getIt.get<AppConfig>();
-    final themeData = const FamilyAppTheme().toThemeData();
+    final theme = FunTheme.of(context);
+    final themeData = theme.toThemeData();
+    final defaults = _themeColors(theme);
+
+    final resolvedBg = backgroundColor ?? defaults.bg;
+    final resolvedDisabledBg = disabledBackgroundColor ?? defaults.disabledBg;
+    final resolvedPressedBg =
+        pressedBackgroundColor ?? defaults.pressedBg;
+    final resolvedBorder = borderColor ?? defaults.border;
+    final resolvedText = textColor ?? defaults.text;
+    final resolvedDisabledText =
+        disabledTextColor ?? defaults.disabledText;
 
     if (isDebugOnly && !appConfig.isTestApp) {
       return const SizedBox.shrink();
     }
 
     return Theme(
-      data: const FamilyAppTheme().toThemeData(),
+      data: themeData,
       child: ActionContainer(
         analyticsEvent: analyticsEvent,
         onTap: onTap,
@@ -186,38 +159,53 @@ class FunButton extends StatelessWidget {
         onTapUp: onTapUp,
         onLongPress: onLongPress,
         onLongPressUp: onLongPressUp,
-        borderColor: borderColor,
+        borderColor: resolvedBorder,
         isDisabled: isDisabled,
         isPressedDown: isPressedDown,
-        borderSize: fullBorder ? 2 : 0.01,
-        baseBorderSize: 4,
+        borderSize: fullBorder ? theme.borderWidthThin : 0.01,
+        baseBorderSize: theme.shadowYSm == 0 ? 0.01 : theme.shadowYSm,
         onDisabledTap: onDisabledTap,
-        child: Container(
-          height: (size.isLarge ? 58 : 44) - (fullBorder ? 2 : 0),
-          width: size.isLarge ? double.infinity : null,
-          padding: size.isSmall
-              ? const EdgeInsets.symmetric(horizontal: 16)
-              : null,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: isDisabled
-                ? disabledBackgroundColor
-                : backgroundColor,
-          ),
-          child: Container(
-            // Inner container to fix the inside border
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: isDisabled ? disabledBackgroundColor : backgroundColor,
-            ),
-            child: getChild(context, themeData),
-          ),
+        child: Builder(
+          builder: (context) {
+            final isPressed =
+                ActionContainerPressedScope.maybeOf(context)?.isPressed ??
+                    false;
+            final effectiveBg = isDisabled
+                ? resolvedDisabledBg
+                : (isPressed ? resolvedPressedBg : resolvedBg);
+            return Container(
+              height: (size.isLarge ? 58 : 44) -
+                  (fullBorder ? theme.borderWidthThin : 0),
+              width: size.isLarge ? double.infinity : null,
+              padding: size.isSmall
+                  ? const EdgeInsets.symmetric(horizontal: 16)
+                  : null,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: effectiveBg,
+              ),
+              child: Container(
+                // Inner container to fix the inside border
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: effectiveBg,
+                ),
+                child: getChild(
+                    context, themeData, resolvedText, resolvedDisabledText),
+              ),
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget getChild(BuildContext context, ThemeData themeData) {
+  Widget getChild(
+    BuildContext context,
+    ThemeData themeData,
+    Color resolvedTextColor,
+    Color resolvedDisabledTextColor,
+  ) {
     if (isLoading) {
       return const Center(
         child: CircularProgressIndicator(
@@ -225,6 +213,8 @@ class FunButton extends StatelessWidget {
         ),
       );
     }
+    final labelColor =
+        isDisabled ? resolvedDisabledTextColor : resolvedTextColor;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: size.isSmall ? MainAxisSize.min : MainAxisSize.max,
@@ -238,7 +228,7 @@ class FunButton extends StatelessWidget {
                   'icon-${leftIcon?.fontFamily}-${leftIcon?.codePoint}',
               leftIcon,
               size: size.isLarge ? 24 : 16,
-              color: isDisabled ? FamilyAppTheme.neutralVariant60 : textColor,
+              color: labelColor,
             ),
           ),
         if (size.isLarge)
@@ -246,14 +236,14 @@ class FunButton extends StatelessWidget {
             text,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
-            color: isDisabled ? FamilyAppTheme.neutralVariant60 : textColor,
+            color: labelColor,
           ),
         if (size.isSmall)
           LabelMediumText(
             text,
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
-            color: isDisabled ? FamilyAppTheme.neutralVariant60 : textColor,
+            color: labelColor,
           ),
         if (funButtonBadge != null)
           UnlockedBadgeWidget(

@@ -17,7 +17,8 @@ class FunModalCloseFlow extends StatelessWidget {
       title: context.l10n.closeModalAreYouSure,
       subtitle: context.l10n.closeModalWontBeSaved,
       buttons: [
-        FunButton.destructive(
+        FunButton(
+          variant: FunButtonVariant.destructive,
           onTap: () {
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.cancelClicked,
@@ -27,7 +28,9 @@ class FunModalCloseFlow extends StatelessWidget {
           text: context.l10n.closeModalYesExit,
           analyticsEvent: AmplitudeEvents.cancelClicked.toEvent(),
         ),
-        FunButton.secondary(
+        FunButton(
+          variant: FunButtonVariant.secondary,
+          fullBorder: true,
           onTap: () {
             Navigator.of(context).pop();
           },

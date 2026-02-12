@@ -119,7 +119,8 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   Widget build(BuildContext context) {
     final isLast = widget.index == widget.totalCount;
     return FunScaffold(
-      appBar: FunTopAppBar.primary99(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.primary99,
         title: context.l10n.setupFamilyTitle,
         leading: const GivtBackButtonFlat(),
       ),
@@ -268,7 +269,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   }
 
   Widget _secondaryButton(bool isChildSelected) {
-    return FunButton.secondary(
+    return FunButton(
+      variant: FunButtonVariant.secondary,
+      fullBorder: true,
       onTap: () {
         final member = addMember(isChildSelected: isChildSelected);
         if (member != null) {

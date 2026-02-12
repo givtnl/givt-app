@@ -4,7 +4,7 @@ import 'package:givt_app/features/family/features/game_summary/presentation/widg
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/parent_summary_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -34,9 +34,9 @@ class _ParentSummaryScreenState extends State<ParentSummaryScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      backgroundColor: FamilyAppTheme.secondary10,
+      backgroundColor: FunTheme.of(context).secondary10,
       appBar: FunTopAppBar(
-        color: FamilyAppTheme.secondary10,
+        color: FunTheme.of(context).secondary10,
         title: 'Summary',
         titleColor: Colors.white,
         leading: context.canPop()

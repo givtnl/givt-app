@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class RankWidget extends StatelessWidget {
   const RankWidget({required this.rank, super.key});
@@ -15,7 +15,7 @@ class RankWidget extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: _getColor(),
+        color: _getColor(context),
       ),
       child: LabelLargeText(
         rank.toString(),
@@ -23,13 +23,13 @@ class RankWidget extends StatelessWidget {
     );
   }
 
-  Color? _getColor() {
+  Color? _getColor(BuildContext context) {
     if (rank == 1) {
-      return FamilyAppTheme.highlight90;
+      return FunTheme.of(context).highlight90;
     } else if (rank == 2) {
-      return FamilyAppTheme.neutral90;
+      return FunTheme.of(context).neutral90;
     } else if (rank == 3) {
-      return FamilyAppTheme.info70;
+      return FunTheme.of(context).info70;
     } else {
       return Colors.transparent;
     }

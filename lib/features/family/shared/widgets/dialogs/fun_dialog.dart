@@ -106,7 +106,9 @@ class FunDialog extends StatelessWidget {
                   uiModel.primaryButtonText != null)
                 const SizedBox(height: 8),
               if (uiModel.secondaryButtonText != null)
-                FunButton.secondary(
+                FunButton(
+                  variant: FunButtonVariant.secondary,
+                  fullBorder: true,
                   onTap: () {
                     context.pop();
                     onClickSecondary?.call();

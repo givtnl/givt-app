@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_dropdown.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_organization.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
@@ -37,7 +37,7 @@ class PlatformContributionOrganizationItem extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: FamilyAppTheme.neutralVariant95,
+          color: FunTheme.of(context).neutralVariant95,
           width: 1,
         ),
       ),
@@ -51,7 +51,7 @@ class PlatformContributionOrganizationItem extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: FamilyAppTheme.primary95,
+                  color: FunTheme.of(context).primary95,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Center(
@@ -59,7 +59,7 @@ class PlatformContributionOrganizationItem extends StatelessWidget {
                     organization.type.icon,
                     width: 24,
                     height: 24,
-                    color: FamilyAppTheme.primary40,
+                    color: FunTheme.of(context).primary40,
                   ),
                 ),
               ),
@@ -68,17 +68,17 @@ class PlatformContributionOrganizationItem extends StatelessWidget {
               Expanded(
                 child: TitleMediumText(
                   organization.name,
-                  color: FamilyAppTheme.primary20,
+                  color: FunTheme.of(context).primary20,
                 ),
               ),
               // Toggle switch
               Switch(
                 value: organization.isEnabled,
                 onChanged: onToggleChanged,
-                activeColor: FamilyAppTheme.primary40,
-                activeTrackColor: FamilyAppTheme.primary80,
-                inactiveThumbColor: FamilyAppTheme.neutralVariant60,
-                inactiveTrackColor: FamilyAppTheme.neutralVariant90,
+                activeColor: FunTheme.of(context).primary40,
+                activeTrackColor: FunTheme.of(context).primary80,
+                inactiveThumbColor: FunTheme.of(context).neutralVariant60,
+                inactiveTrackColor: FunTheme.of(context).neutralVariant90,
               ),
             ],
           ),
@@ -93,14 +93,14 @@ class PlatformContributionOrganizationItem extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: BodyMediumText(
                   _getDisplayName(context, level),
-                  color: FamilyAppTheme.primary20,
+                  color: FunTheme.of(context).primary20,
                 ),
               ),
               selectedItemBuilder: (context, level) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: BodyMediumText(
                   _getDisplayName(context, level),
-                  color: FamilyAppTheme.primary40,
+                  color: FunTheme.of(context).primary40,
                 ),
               ),
             ),

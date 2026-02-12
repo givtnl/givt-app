@@ -95,7 +95,8 @@ class _SignUpPageState extends State<SignUpPage> {
       },
       builder: (context, state) {
         return FunScaffold(
-          appBar: FunTopAppBar.white(
+          appBar: FunTopAppBar(
+          variant: FunTopAppBarVariant.white,
             title: locals.personalInfo,
             actions: [
               IconButton(

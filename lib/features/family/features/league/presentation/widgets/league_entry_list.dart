@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/league_entry_item.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/models/league_entry_uimodel.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class LeagueEntryList extends StatelessWidget {
   const LeagueEntryList({
@@ -26,7 +26,7 @@ class LeagueEntryList extends StatelessWidget {
       separatorBuilder: (BuildContext context, int index) {
         return Row(
           children: [
-            Expanded(child: Container(height: 1, color: FamilyAppTheme.neutralVariant95)),
+            Expanded(child: Container(height: 1, color: FunTheme.of(context).neutralVariant95)),
           ],
         );
       },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -55,7 +56,8 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
   Widget build(BuildContext context) {
     return FunScaffold(
       canPop: false,
-      appBar: FunTopAppBar.primary99(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.primary99,
         title: 'Secret Word',
         actions: const [
           LeaveGameButton(),
@@ -74,7 +76,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             TitleLargeText(
               text,
               textAlign: TextAlign.center,
-              color: FamilyAppTheme.primary30,
+              color: FunTheme.of(context).primary30,
             ),
             const SizedBox(height: 40),
             Stack(
@@ -104,7 +106,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                       DisplayMediumText(
                         secretWord,
                         textAlign: TextAlign.center,
-                        color: FamilyAppTheme.primary30,
+                        color: FunTheme.of(context).primary30,
                       ),
                     ],
                   ),
@@ -174,8 +176,8 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             LabelLargeText(
               'Change',
               color: _isSecretWordVisible
-                  ? FamilyAppTheme.primary30
-                  : FamilyAppTheme.neutralVariant60,
+                  ? FunTheme.of(context).primary30
+                  : FunTheme.of(context).neutralVariant60,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -183,8 +185,8 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                 FontAwesomeIcons.shuffle,
                 size: 24,
                 color: _isSecretWordVisible
-                    ? FamilyAppTheme.primary30
-                    : FamilyAppTheme.neutralVariant60,
+                    ? FunTheme.of(context).primary30
+                    : FunTheme.of(context).neutralVariant60,
               ),
             ),
           ],

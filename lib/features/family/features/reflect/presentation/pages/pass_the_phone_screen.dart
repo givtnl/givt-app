@@ -195,7 +195,9 @@ class _PassThePhoneState extends State<PassThePhone> {
               const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: FunButton.secondary(
+                child: FunButton(
+                  variant: FunButtonVariant.secondary,
+                  fullBorder: true,
                   isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
                   onTap: () => widget.onTap.call(context),
                   text: widget.customBtnText ?? context.l10n.buttonContinue,

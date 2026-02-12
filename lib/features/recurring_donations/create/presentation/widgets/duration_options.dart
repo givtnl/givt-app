@@ -7,7 +7,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_radio.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';
@@ -125,7 +125,7 @@ class _DurationOptionsState extends State<DurationOptions> {
               const SizedBox(height: 4),
               Container(
                 height: 1,
-                color: FamilyAppTheme.neutralVariant95,
+                color: FunTheme.of(context).neutralVariant95,
               ),
               const SizedBox(height: 4),
             ],

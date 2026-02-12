@@ -127,16 +127,9 @@ class _HomePageViewState extends State<HomePageView> {
         ),
         ColoredBox(
           color: Colors.transparent,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              right: 15,
-              left: 15,
-              bottom: 5,
-            ),
-            child: AnimatedSwitch(
-              pageIndex: pageIndex,
-              onChanged: onPageChanged,
-            ),
+          child: AnimatedSwitch(
+            pageIndex: pageIndex,
+            onChanged: onPageChanged,
           ),
         ),
       ],

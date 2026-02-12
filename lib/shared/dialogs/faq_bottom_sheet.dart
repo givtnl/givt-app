@@ -206,12 +206,13 @@ class FAQBottomSheet extends StatelessWidget {
         ),
       ),
       child: ExpansionTile(
-        tilePadding: const EdgeInsets.all(5),
+        tilePadding: const EdgeInsets.all(6),
         title: Text(
           question,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
+            fontSize: 18,
           ),
         ),
         collapsedIconColor: Colors.white,

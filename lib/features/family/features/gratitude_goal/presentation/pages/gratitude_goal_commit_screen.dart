@@ -79,7 +79,8 @@ class _GratitudeGoalCommitScreenState extends State<GratitudeGoalCommitScreen> {
                     ),
                     const BodyMediumText('Practice gratitude'),
                     const SizedBox(height: 4),
-                    FunTag.secondary(
+                    FunTag(
+                      variant: FunTagVariant.secondary,
                       text: '${widget.chosenOption.weeksToFormHabit} weeks',
                     ),
                     const SizedBox(height: 4),

@@ -14,6 +14,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/pages/home_page_view.dart';
 import 'package:givt_app/features/give/pages/home_page_with_qr_code.dart';
@@ -180,12 +181,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     return Scaffold(
       key: _key,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         key: const ValueKey('EU-Home-AppBar'),
         title: switch (pageIndex) {
-          0 => Text(locals.amount),
-          1 => Text(locals.chooseGroup),
-          _ => Text(locals.give),
+          0 => locals.amount,
+          1 => locals.chooseGroup,
+          _ => locals.give,
         },
         leading: badges.Badge(
           showBadge: auth.user.needRegistration || !auth.user.mandateSigned,

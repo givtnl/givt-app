@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/models/gr
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeSelectionWidget extends StatelessWidget {

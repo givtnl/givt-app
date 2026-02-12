@@ -46,7 +46,8 @@ class LeagueOverview extends StatelessWidget {
               ),
               if (dateLabel != null) const SizedBox(height: 8),
               if (dateLabel != null)
-                FunTag.tertiary(
+                FunTag(
+                  variant: FunTagVariant.tertiary,
                   text: dateLabel!,
                   iconData: FontAwesomeIcons.solidClock,
                   iconSize: 12,

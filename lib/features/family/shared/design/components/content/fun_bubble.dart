@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class FunBubble extends StatelessWidget {
   const FunBubble({required this.child, super.key});
@@ -39,7 +39,7 @@ class FunBubble extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: FamilyAppTheme.primary40.withValues(alpha: 0.3),
+            color: FunTheme.of(context).primary40.withValues(alpha: 0.3),
             blurRadius: 9.8,
             offset: const Offset(1, 1),
           ),

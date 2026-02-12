@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 
 class ContextListTile extends StatelessWidget {
   const ContextListTile({
@@ -47,54 +50,42 @@ class ContextListTile extends StatelessWidget {
   }
 
   Padding _buildLeading(Size size) => Padding(
-        padding: const EdgeInsets.all(2),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: size.width * 0.25,
-            maxHeight: size.width * 0.25,
-          ),
-          child: leading,
-        ),
-      );
+    padding: const EdgeInsets.all(2),
+    child: ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: size.width * 0.25,
+        maxHeight: size.width * 0.25,
+      ),
+      child: leading,
+    ),
+  );
 
   Widget _buildTitleSubtitle(Size size, BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 5,
+    padding: const EdgeInsets.symmetric(
+      vertical: 5,
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: size.width * 0.5,
+          child: TitleSmallText(title, textAlign: TextAlign.center),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: size.width * 0.5,
-              child: Container(
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            Visibility(
-              visible: subtitle != null,
-              child: SizedBox(
-                width: size.width * 0.5,
-                child: Text(
-                  subtitle ?? '',
-                  style: Theme.of(context).textTheme.bodySmall,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ],
+        Visibility(
+          visible: subtitle != null,
+          child: SizedBox(
+            width: size.width * 0.5,
+            child: BodySmallText(subtitle ?? '', textAlign: TextAlign.center),
+          ),
         ),
-      );
+      ],
+    ),
+  );
 
   Widget _buildTrailing(Size size) => Visibility(
-        visible: trailing != null,
-        child: Container(
-          child: trailing,
-        ),
-      );
+    visible: trailing != null,
+    child: Container(
+      child: trailing,
+    ),
+  );
 }

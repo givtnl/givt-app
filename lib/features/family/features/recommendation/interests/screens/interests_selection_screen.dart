@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/features/recommendation/interests/widge
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class InterestsSelectionScreen extends StatelessWidget {
@@ -31,7 +31,7 @@ class InterestsSelectionScreen extends StatelessWidget {
                   sliver: SliverAppBar(
                     pinned: true,
                     backgroundColor: Colors.white,
-                    surfaceTintColor: FamilyAppTheme.primary90,
+                    surfaceTintColor: FunTheme.of(context).primary90,
                     automaticallyImplyLeading: false,
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

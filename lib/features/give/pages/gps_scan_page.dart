@@ -5,12 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/navigation.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -58,11 +65,11 @@ class _GPSScanPageState extends State<GPSScanPage> {
           return;
         }
         context.read<GiveBloc>().add(
-              GiveGPSLocationChanged(
-                latitude: position.latitude,
-                longitude: position.longitude,
-              ),
-            );
+          GiveGPSLocationChanged(
+            latitude: position.latitude,
+            longitude: position.longitude,
+          ),
+        );
       },
       onDone: () {
         log('Done');
@@ -121,10 +128,11 @@ class _GPSScanPageState extends State<GPSScanPage> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text(locals.selectLocationContext),
+    return FunScaffold(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
+        leading: const GivtBackButtonFlat(),
+        title: locals.selectLocationContext,
       ),
       body: Center(
         child: BlocConsumer<GiveBloc, GiveState>(
@@ -135,9 +143,8 @@ class _GPSScanPageState extends State<GPSScanPage> {
             return Column(
               children: [
                 const SizedBox(height: 50),
-                Text(
+                BodyMediumText(
                   locals.searchingEventText,
-                  style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 50),
@@ -147,58 +154,39 @@ class _GPSScanPageState extends State<GPSScanPage> {
                 Expanded(child: Container()),
                 Visibility(
                   visible: isVisible,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        GiveLoadingDialog.showGiveLoadingDialog(context);
-                        if (orgName!.isNotEmpty) {
-                          context.read<GiveBloc>().add(
-                                GiveToLastOrganisation(
-                                  context.read<AuthCubit>().state.user.guid,
-                                ),
-                              );
-                          return;
-                        }
-                        context.goNamed(
-                          Pages.giveByList.name,
-                          extra: context.read<GiveBloc>(),
+                  child: FunButton(
+                    analyticsEvent: AmplitudeEvents.giveButtonPressed.toEvent(),
+                    onTap: () {
+                      GiveLoadingDialog.showGiveLoadingDialog(context);
+                      if (orgName!.isNotEmpty) {
+                        context.read<GiveBloc>().add(
+                          GiveToLastOrganisation(
+                            context.read<AuthCubit>().state.user.guid,
+                          ),
                         );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.givtBlue,
-                      ),
-                      child: Text(
-                        orgName.isEmpty
-                            ? locals.giveDifferently
-                            : locals.giveToNearestBeacon(
-                                state.organisation.organisationName!,
-                              ),
-                      ),
-                    ),
+                        return;
+                      }
+                      context.goNamed(
+                        Pages.giveByList.name,
+                        extra: context.read<GiveBloc>(),
+                      );
+                    },
+                    text: orgName.isEmpty
+                        ? locals.giveDifferently
+                        : locals.giveToNearestBeacon(
+                            state.organisation.organisationName!,
+                          ),
                   ),
                 ),
                 Visibility(
                   visible: isVisible && orgName.isNotEmpty,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      bottom: 10,
+                  child: FunTextButton(
+                    analyticsEvent: AmplitudeEvents.giveButtonPressed.toEvent(),
+                    onTap: () => context.goNamed(
+                      Pages.giveByList.name,
+                      extra: context.read<GiveBloc>(),
                     ),
-                    child: TextButton(
-                      onPressed: () => context.goNamed(
-                        Pages.giveByList.name,
-                        extra: context.read<GiveBloc>(),
-                      ),
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      child: Text(locals.giveDifferently),
-                    ),
+                    text: locals.giveDifferently,
                   ),
                 ),
               ],
