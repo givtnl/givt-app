@@ -26,7 +26,8 @@ class GiveLoadingDialog extends StatelessWidget {
     return BlocListener<GiveBloc, GiveState>(
       listener: (context, state) {
         if (state.status == GiveStatus.processed ||
-            state.status == GiveStatus.error) {
+            state.status == GiveStatus.error ||
+            state.status == GiveStatus.readyToGive) {
           context.pop();
         }
       },
