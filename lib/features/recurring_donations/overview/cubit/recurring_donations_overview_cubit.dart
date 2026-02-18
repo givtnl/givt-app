@@ -97,7 +97,7 @@ class RecurringDonationsOverviewCubit
         .toList();
 
     // For active tab, show all donations as current
-    // For inactive tab, show all donations as past
+    // For inactive tab, show all donations as past (sorted chronologically, newest first)
     if (_selectedTabIndex == 0) {
       return RecurringDonationsOverviewUIModel(
         currentDonations: donationsWithProgress,
@@ -106,13 +106,27 @@ class RecurringDonationsOverviewCubit
         error: error,
       );
     } else {
+      // Sort past donations by sort date descending (newest first)
+      final sortedPastDonations = List<RecurringDonationWithProgress>.from(donationsWithProgress)
+        ..sort((a, b) => _sortDateForPast(b).compareTo(_sortDateForPast(a)));
+      
       return RecurringDonationsOverviewUIModel(
         currentDonations: const [],
-        pastDonations: donationsWithProgress,
+        pastDonations: sortedPastDonations,
         isLoading: isLoading,
         error: error,
       );
     }
+  }
+
+  /// Returns the sort date for a past donation (endDate if available, otherwise creationDateTime).
+  /// This date represents when the donation effectively ended or was created.
+  DateTime _sortDateForPast(RecurringDonationWithProgress donationWithProgress) {
+    final donation = donationWithProgress.donation;
+    if (donation.endDate != null) {
+      return DateTime.parse(donation.endDate!);
+    }
+    return DateTime.parse(donation.creationDateTime);
   }
 
   /// Creates a RecurringDonationWithProgress from a RecurringDonation
