@@ -125,12 +125,9 @@ class _HomePageViewState extends State<HomePageView> {
             ],
           ),
         ),
-        ColoredBox(
-          color: Colors.transparent,
-          child: AnimatedSwitch(
-            pageIndex: pageIndex,
-            onChanged: onPageChanged,
-          ),
+        AnimatedSwitch(
+          pageIndex: pageIndex,
+          onChanged: onPageChanged,
         ),
       ],
     );

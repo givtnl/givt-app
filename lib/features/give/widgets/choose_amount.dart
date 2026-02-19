@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/models/preset.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -145,7 +146,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     return Form(
       key: _formKey,
       child: Container(
-        margin: const EdgeInsets.only(top: 25),
+        margin: const EdgeInsets.only(top: 32),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: size.height,
@@ -191,8 +192,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           });
                         },
                         textColor: selectedField == 0
-                            ? AppTheme.givtLightPurple
-                            : AppTheme.givtDarkerGray,
+                            ? FunTheme.of(context).primary30
+                            : FunTheme.of(context).neutralVariant60,
+                        isSelected: selectedField == 0,
                       ),
                       CollectionFormField(
                         focusNode: focusNodes[1],
@@ -223,8 +225,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           });
                         },
                         textColor: selectedField == 1
-                            ? AppTheme.givtLightPurple
-                            : AppTheme.givtDarkerGray,
+                            ? FunTheme.of(context).primary30
+                            : FunTheme.of(context).neutralVariant60,
+                        isSelected: selectedField == 1,
                       ),
                       CollectionFormField(
                         focusNode: focusNodes[2],
@@ -255,8 +258,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           });
                         },
                         textColor: selectedField == 2
-                            ? AppTheme.givtLightPurple
-                            : AppTheme.givtDarkerGray,
+                            ? FunTheme.of(context).primary30
+                            : FunTheme.of(context).neutralVariant60,
+                        isSelected: selectedField == 2,
                       ),
                       Visibility(
                         visible:
@@ -367,8 +371,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
       country: country,
     ),
     color: selectedField == fieldIndex
-        ? AppTheme.givtLightPurple
-        : AppTheme.givtDarkerGray,
+        ? FunTheme.of(context).primary30
+        : FunTheme.of(context).neutralVariant60,
   );
 
   Future<bool> _checkAmounts(

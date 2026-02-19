@@ -1,5 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class AddCollectionButton extends StatelessWidget {
@@ -16,32 +19,30 @@ class AddCollectionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(
-        top: 10,
+        top: 6,
       ),
       child: Center(
-        child: DottedBorder(
-          color: AppTheme.givtLightPurple,
-          strokeCap: StrokeCap.round,
-          dashPattern: const [3, 6],
-          borderPadding: const EdgeInsets.symmetric(
-            vertical: 10,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: FunTheme.of(context).secondary80,
+              width: 1,
+            ),
           ),
-          borderType: BorderType.RRect,
-          radius: const Radius.circular(6),
-          padding: const EdgeInsets.all(6),
+          padding: EdgeInsets.zero,
           child: ElevatedButton.icon(
             onPressed: onPressed,
-            icon: const Icon(Icons.add_circle_outlined),
-            label: Text(
+            icon: const FaIcon(FontAwesomeIcons.plus),
+            label: LabelMediumText(
               label,
-              style: const TextStyle(
-                fontWeight: FontWeight.normal,
-              ),
+              color: FunTheme.of(context).secondary30,
             ),
             style: ElevatedButton.styleFrom(
-              foregroundColor: AppTheme.givtLightPurple,
+              foregroundColor: FunTheme.of(context).secondary30,
               backgroundColor: Colors.transparent,
-              minimumSize: const Size(50, 40),
+              minimumSize: const Size(50, 30),
             ),
           ),
         ),
