@@ -121,6 +121,8 @@ class FunTile extends StatelessWidget {
       borderColor: newBorderColor,
       analyticsEvent: analyticsEvent,
       onTap: isDisabled ? () {} : onTap,
+      borderSize: FunTheme.of(context).borderWidthThin,
+      baseBorderSize: FunTheme.of(context).borderWidthThin + theme.shadowYSm,
       child: Stack(
         children: [
           Container(

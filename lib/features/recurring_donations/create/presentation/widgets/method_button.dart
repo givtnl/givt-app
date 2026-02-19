@@ -26,7 +26,8 @@ class MethodButton extends StatelessWidget {
       analyticsEvent: AmplitudeEvents.debugButtonClicked.toEvent(),
       onTap: onPressed,
       borderColor: FunTheme.of(context).neutralVariant80,
-      baseBorderSize: 4,
+      baseBorderSize: FunTheme.of(context).borderWidthThin,
+      borderSize: FunTheme.of(context).borderWidthThin + FunTheme.of(context).shadowYSm,
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
