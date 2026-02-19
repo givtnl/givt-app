@@ -163,7 +163,9 @@ class FunButton extends StatelessWidget {
         isDisabled: isDisabled,
         isPressedDown: isPressedDown,
         borderSize: fullBorder ? theme.borderWidthThin : 0.01,
-        baseBorderSize: theme.shadowYSm == 0 ? 0.01 : theme.shadowYSm,
+        baseBorderSize: fullBorder
+            ? theme.borderWidthThin
+            : (theme.shadowYSm == 0 ? 0.01 : theme.shadowYSm),
         onDisabledTap: onDisabledTap,
         child: Builder(
           builder: (context) {

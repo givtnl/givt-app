@@ -151,7 +151,8 @@ class _ActionContainerState extends State<ActionContainer> {
     if (!_isPressed) {
       return null;
     }
-    final opositeMargin = widget.baseBorderSize - widget.borderSize;
+    final opositeMargin =
+        (widget.baseBorderSize - widget.borderSize).clamp(0.0, double.infinity);
     var margin = EdgeInsets.zero;
     if (base.isLeft) margin += EdgeInsets.only(right: opositeMargin);
     if (base.isTop) margin += EdgeInsets.only(bottom: opositeMargin);
