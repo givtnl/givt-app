@@ -194,6 +194,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         textColor: selectedField == 0
                             ? FunTheme.of(context).primary30
                             : FunTheme.of(context).neutralVariant60,
+                        borderColor: selectedField == 0
+                            ? FunTheme.of(context).primary70
+                            : FunTheme.of(context).neutralVariant60,
                         isSelected: selectedField == 0,
                       ),
                       CollectionFormField(
@@ -227,6 +230,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         textColor: selectedField == 1
                             ? FunTheme.of(context).primary30
                             : FunTheme.of(context).neutralVariant60,
+                        borderColor: selectedField == 1
+                            ? FunTheme.of(context).primary70
+                            : FunTheme.of(context).neutralVariant60,
                         isSelected: selectedField == 1,
                       ),
                       CollectionFormField(
@@ -259,6 +265,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         },
                         textColor: selectedField == 2
                             ? FunTheme.of(context).primary30
+                            : FunTheme.of(context).neutralVariant60,
+                        borderColor: selectedField == 2
+                            ? FunTheme.of(context).primary70
                             : FunTheme.of(context).neutralVariant60,
                         isSelected: selectedField == 2,
                       ),

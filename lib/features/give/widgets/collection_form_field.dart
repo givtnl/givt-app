@@ -17,7 +17,7 @@ class CollectionFormField extends StatefulWidget {
       Icons.euro,
       color: AppTheme.givtLightPurple,
     ),
-    this.bottomBorderColor = AppTheme.givtLightGreen,
+    this.borderColor = AppTheme.givtLightGreen,
     this.textColor = AppTheme.givtDarkerGray,
     this.isRemoveIconVisible = false,
     this.isSelected = false,
@@ -31,7 +31,7 @@ class CollectionFormField extends StatefulWidget {
   final double lowerLimit;
   final String suffixText;
   final Icon prefixCurrencyIcon;
-  final Color bottomBorderColor;
+  final Color borderColor;
   final VoidCallback onRemoveIconPressed;
   final VoidCallback onFocused;
   final FocusNode focusNode;
@@ -49,21 +49,20 @@ class _CollectionFormFieldState extends State<CollectionFormField> {
   Widget build(BuildContext context) {
     const radius = 12.0;
     final theme = FunTheme.of(context);
-    final borderColor = widget.textColor;
     final thinWidth = theme.borderWidthThin;
 
     return Visibility(
       visible: widget.isVisible,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(radius),
             border: Border(
-              left: BorderSide(width: 10, color: borderColor),
-              top: BorderSide(width: thinWidth, color: borderColor),
-              right: BorderSide(width: thinWidth, color: borderColor),
-              bottom: BorderSide(width: thinWidth, color: borderColor),
+              left: BorderSide(width: 10, color: widget.borderColor),
+              top: BorderSide(width: thinWidth, color: widget.borderColor),
+              right: BorderSide(width: thinWidth, color: widget.borderColor),
+              bottom: BorderSide(width: thinWidth, color: widget.borderColor),
             ),
           ),
           clipBehavior: Clip.antiAlias,
@@ -79,7 +78,7 @@ class _CollectionFormFieldState extends State<CollectionFormField> {
                       _isTapped = true;
                     });
 
-                    Future.delayed(const Duration(milliseconds: 150), () {
+                    Future.delayed(const Duration(milliseconds: 10), () {
                       setState(() {
                         _isTapped = false;
                       });
@@ -121,7 +120,7 @@ class _CollectionFormFieldState extends State<CollectionFormField> {
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
                     suffixText: widget.isSuffixTextVisible
                         ? widget.suffixText
                         : null,
