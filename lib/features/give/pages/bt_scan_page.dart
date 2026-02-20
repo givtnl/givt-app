@@ -429,7 +429,7 @@ class _BTScanPageState extends State<BTScanPage> {
                         text: orgName.isEmpty
                             ? locals.giveDifferently
                             : locals.giveToNearestBeacon(
-                                state.organisation.organisationName!,
+                                orgName,
                               ),
                       ),
                     ),
