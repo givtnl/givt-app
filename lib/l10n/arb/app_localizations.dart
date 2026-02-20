@@ -368,6 +368,12 @@ abstract class AppLocalizations {
   /// **'Personal info'**
   String get personalInfo;
 
+  /// No description provided for @changeDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Change details'**
+  String get changeDetails;
+
   /// No description provided for @searchHere.
   ///
   /// In en, this message translates to:

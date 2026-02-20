@@ -164,6 +164,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get personalInfo => 'Personal info';
 
   @override
+  String get changeDetails => 'Cambiar datos';
+
+  @override
   String get searchHere => 'Search ...';
 
   @override
@@ -2743,6 +2746,9 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get personalInfo => 'Información personal';
+
+  @override
+  String get changeDetails => 'Cambiar datos';
 
   @override
   String get searchHere => 'Buscar ...';
