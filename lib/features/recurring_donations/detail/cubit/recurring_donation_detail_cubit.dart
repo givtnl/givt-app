@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/recurring_donations/detail/repositories/recurring_donation_detail_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -44,7 +45,8 @@ class RecurringDonationDetailCubit extends CommonCubit<RecurringDonationDetailUI
   RecurringDonationDetailUIModel _createUIModel() {
     return RecurringDonationDetailUIModel(
       organizationName: _recurringDonationDetailRepository.getOrganizationName(),
-      organizationIcon: 'assets/images/church_icon.png', // Default icon
+      organizationIcon: 'assets/images/church_icon.png', // Legacy field, kept for compatibility
+      organisationType: _recurringDonationDetailRepository.getOrganisationType(),
       totalDonated: _recurringDonationDetailRepository.getTotalDonated(),
       remainingTime: _recurringDonationDetailRepository.getRemainingTime(),
       endDate: _recurringDonationDetailRepository.getEndDate(),

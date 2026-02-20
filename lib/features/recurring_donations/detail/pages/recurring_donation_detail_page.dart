@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -141,9 +142,9 @@ class _RecurringDonationDetailPageState
       width: double.infinity,
       child: Column(
         children: [
-          // Organization icon
-          const FaIcon(
-            FontAwesomeIcons.church,
+          // Organization icon - use type-based icon instead of hardcoded church
+          FaIcon(
+            CollectGroupType.getIconByType(uiModel.organisationType),
             size: 40,
             color: FamilyAppTheme.secondary30,
           ),
