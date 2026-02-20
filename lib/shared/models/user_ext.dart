@@ -182,6 +182,38 @@ class UserExt extends Equatable {
     return json;
   }
 
+  /// Payload with only id, firstName, lastName for name-only updates.
+  Map<String, dynamic> toUpdateJsonNameOnly() => <String, dynamic>{
+        'id': guid,
+        'firstName': firstName,
+        'lastName': lastName,
+      };
+
+  /// Payload with only id and address fields for address-only updates.
+  Map<String, dynamic> toUpdateJsonAddressOnly() => <String, dynamic>{
+        'id': guid,
+        'address': address,
+        'postalCode': postalCode,
+        'city': city,
+        'country': country,
+      };
+
+  /// Payload with only id and phoneNumber for phone-only updates.
+  Map<String, dynamic> toUpdateJsonPhoneOnly() => <String, dynamic>{
+        'id': guid,
+        'phoneNumber': phoneNumber,
+      };
+
+  /// Payload with only id and bank fields for bank-details-only updates.
+  Map<String, dynamic> toUpdateJsonBankOnly() {
+    final json = <String, dynamic>{'id': guid};
+    if (iban.isNotEmpty) json['iban'] = iban;
+    if (sortCode.isNotEmpty) json['sortCode'] = sortCode;
+    if (accountNumber.isNotEmpty) json['accountNumber'] = accountNumber;
+    if (accountBrand.isNotEmpty) json['accountBrand'] = accountBrand;
+    return json;
+  }
+
   final String email;
   final String guid;
   final int amountLimit;

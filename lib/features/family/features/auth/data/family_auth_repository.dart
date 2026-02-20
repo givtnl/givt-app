@@ -375,15 +375,17 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     Map<String, dynamic> newUserExt,
   ) async {
     try {
-      final userExt = UserExt.fromJson(newUserExt);
-      final result = _apiService.updateUserExt(newUserExt);
+      final result = await _apiService.updateUserExt(newUserExt);
       await refreshUser();
-      unawaited(
-        AnalyticsHelper.setUserProperties(
-          userId: userExt.guid,
-          userProperties: AnalyticsHelper.getUserPropertiesFromExt(userExt),
-        ),
-      );
+      final currentUser = getCurrentUser();
+      if (currentUser != null) {
+        unawaited(
+          AnalyticsHelper.setUserProperties(
+            userId: currentUser.guid,
+            userProperties: AnalyticsHelper.getUserPropertiesFromExt(currentUser),
+          ),
+        );
+      }
       return result;
     } catch (e) {
       return false;
@@ -490,7 +492,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   @override
   Future<void> updateNumber(String number) async {
     final newUserExt = _userExt!.copyWith(phoneNumber: number);
-    final isSuccess = await _apiService.updateUserExt(newUserExt.toJson());
+    final isSuccess = await _apiService.updateUserExt(
+      newUserExt.toUpdateJsonPhoneOnly(),
+    );
     if (isSuccess) {
       _updateAuthenticatedUserStream(newUserExt);
       unawaited(AnalyticsHelper.setUserProperties(
