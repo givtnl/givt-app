@@ -11,6 +11,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
@@ -372,65 +373,110 @@ class _BTScanPageState extends State<BTScanPage> {
           builder: (context, state) {
             var orgName = state.organisation.organisationName;
             orgName ??= '';
-            return Column(
+            final isProcessingBeacon =
+                state.status == GiveStatus.processingBeaconData;
+            final alreadySubmitted = state.transactionIds.isNotEmpty;
+
+            return Stack(
               children: [
-                SizedBox(height: size.height * 0.03),
-                BodyMediumText(
-                  locals.makeContact,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 50),
-                Container(
-                  height: size.height * 0.3,
-                  padding: const EdgeInsets.all(10),
-                  child: Image.asset('assets/images/givt_animation.gif'),
-                ),
-                Expanded(child: Container()),
-                Visibility(
-                  visible: isVisible,
-                  child: FunButton(
-                    analyticsEvent: AmplitudeEvents.giveButtonPressed.toEvent(),
-                    onTap: () async {
-                      if (_isDisposed || !mounted) return;
+                Column(
+                  children: [
+                    SizedBox(height: size.height * 0.03),
+                    BodyMediumText(
+                      locals.makeContact,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 50),
+                    Container(
+                      height: size.height * 0.3,
+                      padding: const EdgeInsets.all(10),
+                      child: Image.asset('assets/images/givt_animation.gif'),
+                    ),
+                    Expanded(child: Container()),
+                    Visibility(
+                      visible: isVisible && !isProcessingBeacon,
+                      child: FunButton(
+                        analyticsEvent:
+                            AmplitudeEvents.giveButtonPressed.toEvent(),
+                        onTap: () async {
+                          if (_isDisposed || !mounted) return;
 
-                      GiveLoadingDialog.showGiveLoadingDialog(context);
-                      if (orgName!.isNotEmpty) {
-                        await stopBluetoothScan();
-                        context.read<GiveBloc>().add(
-                          GiveToLastOrganisation(
-                            context.read<AuthCubit>().state.user.guid,
-                          ),
-                        );
-                        return;
-                      }
-                      context.goNamed(
-                        Pages.giveByList.name,
-                        extra: context.read<GiveBloc>(),
-                      );
-                    },
-                    text: orgName.isEmpty
-                        ? locals.giveDifferently
-                        : locals.giveToNearestBeacon(
-                            state.organisation.organisationName!,
-                          ),
-                  ),
-                ),
-                Visibility(
-                  visible: isVisible && orgName.isNotEmpty,
-                  child: FunTextButton(
-                    analyticsEvent: AmplitudeEvents.giveButtonPressed.toEvent(),
-                    onTap: () async {
-                      if (_isDisposed || !mounted) return;
+                          if (alreadySubmitted) {
+                            await stopBluetoothScan();
+                            context.goNamed(
+                              Pages.give.name,
+                              extra: context.read<GiveBloc>(),
+                            );
+                            return;
+                          }
 
-                      await stopBluetoothScan();
-                      context.goNamed(
-                        Pages.giveByList.name,
-                        extra: context.read<GiveBloc>(),
-                      );
-                    },
-                    text: locals.giveDifferently,
-                  ),
+                          if (orgName!.isNotEmpty) {
+                            GiveLoadingDialog.showGiveLoadingDialog(context);
+                            await stopBluetoothScan();
+                            context.read<GiveBloc>().add(
+                              GiveToLastOrganisation(
+                                context.read<AuthCubit>().state.user.guid,
+                              ),
+                            );
+                            return;
+                          }
+
+                          context.goNamed(
+                            Pages.giveByList.name,
+                            extra: context.read<GiveBloc>(),
+                          );
+                        },
+                        text: orgName.isEmpty
+                            ? locals.giveDifferently
+                            : locals.giveToNearestBeacon(
+                                orgName,
+                              ),
+                      ),
+                    ),
+                    Visibility(
+                      visible:
+                          isVisible && orgName.isNotEmpty && !isProcessingBeacon,
+                      child: FunTextButton(
+                        analyticsEvent:
+                            AmplitudeEvents.giveButtonPressed.toEvent(),
+                        onTap: () async {
+                          if (_isDisposed || !mounted) return;
+
+                          await stopBluetoothScan();
+                          context.goNamed(
+                            Pages.giveByList.name,
+                            extra: context.read<GiveBloc>(),
+                          );
+                        },
+                        text: locals.giveDifferently,
+                      ),
+                    ),
+                  ],
                 ),
+                if (isProcessingBeacon)
+                  PopScope(
+                    canPop: false,
+                    child: Container(
+                      color: Colors.white,
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: SafeArea(
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const CustomCircularProgressIndicator(),
+                              const SizedBox(height: 16),
+                              BodyMediumText(
+                                locals.loadingTitle,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             );
           },
