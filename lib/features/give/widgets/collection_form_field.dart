@@ -43,8 +43,57 @@ class CollectionFormField extends StatefulWidget {
   State<CollectionFormField> createState() => _CollectionFormFieldState();
 }
 
+String? _validateCollectionValue(
+  String? value, {
+  required int amountLimit,
+  required double lowerLimit,
+}) {
+  if (value == null || value.isEmpty) {
+    return '';
+  }
+  final currentValue = double.parse(
+    value.replaceAll(',', '.'),
+  );
+  if (currentValue == 0) {
+    return null;
+  }
+  if (currentValue > double.parse(amountLimit.toString())) {
+    return '';
+  }
+  if (currentValue < lowerLimit) {
+    return '';
+  }
+  return null;
+}
+
 class _CollectionFormFieldState extends State<CollectionFormField> {
   bool _isTapped = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_onControllerChanged);
+  }
+
+  @override
+  void didUpdateWidget(CollectionFormField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_onControllerChanged);
+      widget.controller.addListener(_onControllerChanged);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onControllerChanged);
+    super.dispose();
+  }
+
+  void _onControllerChanged() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     const radius = 12.0;
@@ -55,20 +104,45 @@ class _CollectionFormFieldState extends State<CollectionFormField> {
       visible: widget.isVisible,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(radius),
-            border: Border(
-              left: BorderSide(width: 10, color: widget.borderColor),
-              top: BorderSide(width: thinWidth, color: widget.borderColor),
-              right: BorderSide(width: thinWidth, color: widget.borderColor),
-              bottom: BorderSide(width: thinWidth, color: widget.borderColor),
-            ),
+        child: FormField<String>(
+          initialValue: widget.controller.text,
+          validator: (value) => _validateCollectionValue(
+            value,
+            amountLimit: widget.amountLimit,
+            lowerLimit: widget.lowerLimit,
           ),
-          clipBehavior: Clip.antiAlias,
-          child: Material(
-            borderRadius: BorderRadius.circular(radius),
-            child: TextFormField(
+          builder: (state) {
+            final ctrlText = widget.controller.text;
+            final needSync = state.value != ctrlText;
+            if (needSync) {
+              final controllerRef = widget.controller;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                state.didChange(controllerRef.text);
+              });
+            }
+            final bool showError =
+                _validateCollectionValue(
+                  ctrlText,
+                  amountLimit: widget.amountLimit,
+                  lowerLimit: widget.lowerLimit,
+                ) !=
+                null;
+            final borderColor =
+                showError ? theme.error50 : widget.borderColor;
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(radius),
+                border: Border(
+                  left: BorderSide(width: 10, color: borderColor),
+                  top: BorderSide(width: thinWidth, color: borderColor),
+                  right: BorderSide(width: thinWidth, color: borderColor),
+                  bottom: BorderSide(width: thinWidth, color: borderColor),
+                ),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Material(
+                borderRadius: BorderRadius.circular(radius),
+                child: TextFormField(
                   focusNode: widget.focusNode,
                   readOnly: true,
                   autofocus: true,
@@ -83,28 +157,7 @@ class _CollectionFormFieldState extends State<CollectionFormField> {
                         _isTapped = false;
                       });
                     });
-                    widget.onFocused(); // Call the onTap callback
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '';
-                    }
-                    final currentValue = double.parse(
-                      value.replaceAll(',', '.'),
-                    );
-                    if (currentValue == 0) {
-                      return null;
-                    }
-
-                    /// Dart accepts only dot as decimal separator
-                    if (currentValue >
-                        double.parse(widget.amountLimit.toString())) {
-                      return '';
-                    }
-                    if (currentValue < widget.lowerLimit) {
-                      return '';
-                    }
-                    return null;
+                    widget.onFocused();
                   },
                   textInputAction: TextInputAction.next,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -120,6 +173,8 @@ class _CollectionFormFieldState extends State<CollectionFormField> {
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    focusedErrorBorder: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(vertical: 10),
                     suffixText: widget.isSuffixTextVisible
                         ? widget.suffixText
@@ -141,32 +196,14 @@ class _CollectionFormFieldState extends State<CollectionFormField> {
                     ),
                     prefixIcon: widget.prefixCurrencyIcon,
                     errorStyle: const TextStyle(
-                      height: 0,
-                    ),
-                    focusedErrorBorder: const UnderlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(12),
-                        bottomRight: Radius.circular(12),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.red,
-                        width: 8,
-                      ),
-                    ),
-                    errorBorder: const UnderlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(12),
-                        bottomRight: Radius.circular(12),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.red,
-                        width: 8,
-                      ),
+                      height: 0.01,
                     ),
                   ),
                 ),
               ),
-            ),
+            );
+          },
+        ),
       ),
     );
   }

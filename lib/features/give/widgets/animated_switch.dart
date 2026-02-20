@@ -26,7 +26,6 @@ class AnimatedSwitch extends StatelessWidget {
       selectedIndex: pageIndex,
       onPressed: (index) => onChanged?.call(index),
       analyticsEvent: AnalyticsEvent(AmplitudeEvents.giveHomeTabsChanged),
-      margin: const EdgeInsets.only(right: 15, left: 15, bottom: 5),
     );
   }
 }
