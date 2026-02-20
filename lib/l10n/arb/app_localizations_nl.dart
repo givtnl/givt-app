@@ -165,6 +165,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get personalInfo => 'Persoonlijke gegevens';
 
   @override
+  String get changeDetails => 'Gegevens wijzigen';
+
+  @override
   String get searchHere => 'Zoeken ...';
 
   @override

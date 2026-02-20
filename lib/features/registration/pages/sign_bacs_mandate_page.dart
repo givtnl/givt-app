@@ -25,7 +25,7 @@ class SignBacsMandatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final user = context.read<AuthCubit>().state.user;
+    final user = context.watch<AuthCubit>().state.user;
     final registrationState = context.watch<RegistrationBloc>().state;
 
     return FunScaffold(
@@ -160,6 +160,14 @@ class SignBacsMandatePage extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                            ),
+                            const SizedBox(height: 16),
+                            FunButton(
+                              variant: FunButtonVariant.secondary,
+                              fullBorder: true,
+                              onTap: () => context.pushNamed(Pages.personalInfoEdit.name),
+                              text: locals.changeDetails,
+                              analyticsEvent: AmplitudeEvents.signMandateChangeDetailsClicked.toEvent(),
                             ),
                             const SizedBox(height: 16),
                             BodyMediumText(

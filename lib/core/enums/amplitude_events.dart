@@ -548,6 +548,7 @@ enum AmplitudeEvents {
   menuNavigationRecurringDonationClicked('menu_navigation_recurring_donation_clicked'),
   menuNavigationGiveLimitClicked('menu_navigation_give_limit_clicked'),
   menuNavigationPersonalInfoClicked('menu_navigation_personal_info_clicked'),
+  signMandateChangeDetailsClicked('sign_mandate_change_details_clicked'),
   menuNavigationAmountPresetsClicked('menu_navigation_amount_presets_clicked'),
   menuNavigationPlatformContributionClicked('menu_navigation_platform_contribution_clicked'),
   menuNavigationBiometricClicked('menu_navigation_biometric_clicked'),

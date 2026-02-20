@@ -164,7 +164,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   },
                 ),
                 DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
+                  isVisible: true,
                   title: locals.personalInfo,
                   icon: Icons.mode_edit_outline,
                   analyticsEvent: AmplitudeEvents.menuNavigationPersonalInfoClicked,
