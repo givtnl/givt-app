@@ -95,126 +95,122 @@ class SignBacsMandatePage extends StatelessWidget {
             );
           }
         },
-        child: Column(
-          children: [
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: constraints.maxHeight,
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  FunCard(
+                    backgroundColor: FamilyAppTheme.neutralVariant99,
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        LabelLargeText(
+                          locals.bacsVerifyTitle,
+                        ),
+                        const SizedBox(height: 8),
+                        _buildInforRow(
+                          value: '${user.firstName} ${user.lastName}',
+                          icon: const Icon(
+                            Icons.person,
+                            color: FamilyAppTheme.primary40,
+                            size: 20,
+                          ),
+                        ),
+                        _buildInforRow(
+                          value: user.email,
+                          icon: const Icon(
+                            Icons.alternate_email,
+                            color: FamilyAppTheme.secondary40,
+                            size: 20,
+                          ),
+                        ),
+                        _buildInforRow(
+                          value:
+                              '${user.address} ${user.postalCode} ${user.city}, ${user.country}',
+                          icon: const Icon(
+                            FontAwesomeIcons.house,
+                            color: FamilyAppTheme.primary40,
+                            size: 18,
+                          ),
+                        ),
+                        _buildInforRow(
+                          value: user.sortCode,
+                          icon: const Icon(
+                            FontAwesomeIcons.buildingColumns,
+                            color: FamilyAppTheme.tertiary40,
+                            size: 18,
+                          ),
+                        ),
+                        _buildInforRow(
+                          value: user.accountNumber,
+                          icon: const Icon(
+                            FontAwesomeIcons.creditCard,
+                            color: FamilyAppTheme.tertiary40,
+                            size: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  BodyMediumText(
+                    locals.bacsVerifyBody,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Spacer(),
+                  FunButton(
+                    variant: FunButtonVariant.secondary,
+                    fullBorder: true,
+                    onTap: () => context.pushNamed(Pages.personalInfoEdit.name),
+                    text: locals.changeDetails,
+                    analyticsEvent: AmplitudeEvents.signMandateChangeDetailsClicked.toEvent(),
+                  ),
+                  const SizedBox(height: 16),
+                  FunButton(
+                    variant: FunButtonVariant.secondary,
+                    fullBorder: true,
+                    onTap: () => showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      child: IntrinsicHeight(
-                        child: Column(
-                          children: [
-                            FunCard(
-                              backgroundColor: FamilyAppTheme.neutralVariant99,
-                              content: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  LabelLargeText(
-                                    locals.bacsVerifyTitle,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  _buildInforRow(
-                                    value: '${user.firstName} ${user.lastName}',
-                                    icon: const Icon(
-                                      Icons.person,
-                                      color: FamilyAppTheme.primary40,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  _buildInforRow(
-                                    value: user.email,
-                                    icon: const Icon(
-                                      Icons.alternate_email,
-                                      color: FamilyAppTheme.secondary40,
-                                      size: 20,
-                                    ),
-                                  ),
-                                  _buildInforRow(
-                                    value:
-                                        '${user.address} ${user.postalCode} ${user.city}, ${user.country}',
-                                    icon: const Icon(
-                                      FontAwesomeIcons.house,
-                                      color: FamilyAppTheme.primary40,
-                                      size: 18,
-                                    ),
-                                  ),
-                                  _buildInforRow(
-                                    value: user.sortCode,
-                                    icon: const Icon(
-                                      FontAwesomeIcons.buildingColumns,
-                                      color: FamilyAppTheme.tertiary40,
-                                      size: 18,
-                                    ),
-                                  ),
-                                  _buildInforRow(
-                                    value: user.accountNumber,
-                                    icon: const Icon(
-                                      FontAwesomeIcons.creditCard,
-                                      color: FamilyAppTheme.tertiary40,
-                                      size: 18,
-                                    ),
-                                  ),
-                                ],
+                      builder: (BuildContext context) => TermsAndConditionsDialog(
+                        content: locals.bacsDdGuarantee,
+                      ),
+                    ),
+                    text: locals.bacsReadDdGuarantee,
+                    analyticsEvent: AmplitudeEvents.infoGivingAllowanceClicked
+                        .toEvent(),
+                  ),
+                  const SizedBox(height: 16),
+                  FunButton(
+                    onTap: registrationState.status == RegistrationStatus.loading
+                        ? null
+                        : () => context.read<RegistrationBloc>().add(
+                              RegistrationSignMandate(
+                                guid: user.guid,
+                                appLanguage: locals.localeName,
                               ),
                             ),
-                            const SizedBox(height: 16),
-                            FunButton(
-                              variant: FunButtonVariant.secondary,
-                              fullBorder: true,
-                              onTap: () => context.pushNamed(Pages.personalInfoEdit.name),
-                              text: locals.changeDetails,
-                              analyticsEvent: AmplitudeEvents.signMandateChangeDetailsClicked.toEvent(),
-                            ),
-                            const SizedBox(height: 16),
-                            BodyMediumText(
-                              locals.bacsVerifyBody,
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
+                    isLoading: registrationState.status == RegistrationStatus.loading,
+                    text: locals.buttonContinue,
+                    analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+                  ),
+                ],
               ),
-            ),
-            FunButton(
-              variant: FunButtonVariant.secondary,
-              fullBorder: true,
-              onTap: () => showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                builder: (BuildContext context) => TermsAndConditionsDialog(
-                  content: locals.bacsDdGuarantee,
-                ),
-              ),
-              text: locals.bacsReadDdGuarantee,
-              analyticsEvent: AmplitudeEvents.infoGivingAllowanceClicked
-                  .toEvent(),
-            ),
-            const SizedBox(height: 16),
-            FunButton(
-              onTap: registrationState.status == RegistrationStatus.loading
-                  ? null
-                  : () => context.read<RegistrationBloc>().add(
-                      RegistrationSignMandate(
-                        guid: user.guid,
-                        appLanguage: locals.localeName,
-                      ),
-                    ),
-              isLoading: registrationState.status == RegistrationStatus.loading,
-              text: locals.buttonContinue,
-              analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
             ),
           ],
         ),
