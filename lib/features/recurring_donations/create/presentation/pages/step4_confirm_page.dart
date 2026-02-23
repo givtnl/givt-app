@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -19,6 +21,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
 
 class Step4ConfirmPage extends StatefulWidget {
@@ -70,6 +73,10 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
         }
       },
       onData: (context, model) {
+        final auth = context.read<AuthCubit>().state;
+        final currencySymbol =
+            Util.getCurrencySymbol(countryCode: auth.user.country);
+
         var endsText = '';
         if (model.selectedEndOption ==
             RecurringDonationStringKeys.whenIDecide) {
@@ -130,7 +137,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                       icon: FontAwesomeIcons.moneyBillWave,
                       label: context.l10n.recurringDonationsStep4Amount,
                       value: model.amount.isNotEmpty
-                          ? '€${model.amount}'
+                          ? '$currencySymbol${model.amount}'
                           : '',
                       analyticsEvent: AmplitudeEvents
                           .recurringStep4ConfirmEditAmount
