@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.16.2
+version: 5.0.0
 publish_to: none
 
 environment:
@@ -8,19 +8,18 @@ environment:
 
 dependencies:
   amplitude_flutter: ^4.3.9
-  animated_toggle_switch: ^0.8.4
   app_settings: ^5.2.0
   badges: ^3.1.2
-  bloc: ^9.0.0
+  bloc: ^9.2.0
   carousel_slider: ^5.0.0
   country_flags: ^3.2.0
   countup: ^0.1.4
   currency_text_input_formatter: ^2.2.8
   dart_jsonwebtoken: ^2.17.0
-  device_info_plus: ^12.2.0
+  device_info_plus: ^12.3.0
   diacritic: ^0.1.6
   dotted_border: ^2.1.0
-  equatable: ^2.0.7
+  equatable: ^2.0.8
   firebase_core: ^4.2.0
   firebase_crashlytics: ^5.0.3
   firebase_messaging: ^16.0.3
@@ -163,6 +162,26 @@ flutter:
           weight: 500
         - asset: assets/fonts/Rouna/rouna-regular-webfont.ttf
           weight: 400
+    - family: Onest
+      fonts:
+        - asset: assets/fonts/onest/onest-thin.ttf
+          weight: 100
+        - asset: assets/fonts/onest/onest-extralight.ttf
+          weight: 200
+        - asset: assets/fonts/onest/onest-light.ttf
+          weight: 300
+        - asset: assets/fonts/onest/onest-regular.ttf
+          weight: 400
+        - asset: assets/fonts/onest/onest-medium.ttf
+          weight: 500
+        - asset: assets/fonts/onest/onest-semibold.ttf
+          weight: 600
+        - asset: assets/fonts/onest/onest-bold.ttf
+          weight: 700
+        - asset: assets/fonts/onest/onest-extrabold.ttf
+          weight: 800
+        - asset: assets/fonts/onest/onest-black.ttf
+          weight: 900
   assets:
     - assets/images/
     - assets/lotties/

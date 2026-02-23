@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -75,7 +75,7 @@ class _GratitudeGoalSetAGoalScreenState
                         Padding(
                           padding: const EdgeInsets.only(top: 25),
                           child: FunCard(
-                            backgroundColor: FamilyAppTheme.highlight99,
+                            backgroundColor: FunTheme.of(context).highlight99,
                             content: Column(
                               children: [
                                 const Row(),

@@ -3,7 +3,7 @@ import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 

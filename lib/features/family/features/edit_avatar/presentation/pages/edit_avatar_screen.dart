@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
@@ -205,7 +206,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
         height: 24,
       ),
       Container(
-        color: FamilyAppTheme.neutral80,
+        color: FunTheme.of(context).neutral80,
         height: 1,
       ),
       SizedBox(
@@ -479,7 +480,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
           analyticsEvent: AmplitudeEvents.saveAvatarYesClicked.toEvent(),
         ),
         FunTextButton(
-          textColor: FamilyAppTheme.error30,
+          textColor: FunTheme.of(context).error30,
           onTap: () {
             _cubit.navigateBack(force: true);
             context.pop();

@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/models/preset.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -144,197 +145,206 @@ class _ChooseAmountState extends State<ChooseAmount> {
 
     return Form(
       key: _formKey,
-      child: Container(
-        margin: const EdgeInsets.only(top: 25),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: size.height,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      CollectionFormField(
-                        focusNode: focusNodes[0],
-                        key: Key(locals.firstCollect),
-                        amountLimit: widget.amountLimit,
-                        lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon: _buildCurrencyIcon(
-                          widget.country,
-                          0,
-                        ),
-                        suffixText: locals.firstCollect,
-                        controller: controllers[0],
-                        isVisible: collectionFields[0],
-                        isRemoveIconVisible:
-                            collectionFields[1] == true ||
-                            collectionFields[2] == true,
-                        isSuffixTextVisible:
-                            collectionFields[1] == true ||
-                            collectionFields[2] == true,
-                        onRemoveIconPressed: () => setState(
-                          () {
-                            controllers[0].text = '0';
-                            collectionFields[0] = false;
-                            _changeFocus();
-                          },
-                        ),
-                        onFocused: () {
-                          selectedField = 0;
-                          focusNodes[0].requestFocus();
-                          setState(() {
-                            reset = false;
-                            // retryReset = false;
-                          });
-                        },
-                        textColor: selectedField == 0
-                            ? AppTheme.givtLightPurple
-                            : AppTheme.givtDarkerGray,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: size.height,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    CollectionFormField(
+                      focusNode: focusNodes[0],
+                      key: Key(locals.firstCollect),
+                      amountLimit: widget.amountLimit,
+                      lowerLimit: Util.getLowerLimitByCountry(widget.country),
+                      prefixCurrencyIcon: _buildCurrencyIcon(
+                        widget.country,
+                        0,
                       ),
-                      CollectionFormField(
-                        focusNode: focusNodes[1],
-                        key: Key(locals.secondCollect),
-                        amountLimit: widget.amountLimit,
-                        lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon: _buildCurrencyIcon(
-                          widget.country,
-                          1,
-                        ),
-                        controller: controllers[1],
-                        isVisible: collectionFields[1],
-                        suffixText: locals.secondCollect,
-                        isRemoveIconVisible:
-                            collectionFields[0] == true ||
-                            collectionFields[2] == true,
-                        onRemoveIconPressed: () => setState(() {
-                          controllers[1].text = '0';
-                          collectionFields[1] = false;
+                      suffixText: locals.firstCollect,
+                      controller: controllers[0],
+                      isVisible: collectionFields[0],
+                      isRemoveIconVisible:
+                          collectionFields[1] == true ||
+                          collectionFields[2] == true,
+                      isSuffixTextVisible:
+                          collectionFields[1] == true ||
+                          collectionFields[2] == true,
+                      onRemoveIconPressed: () => setState(
+                        () {
+                          controllers[0].text = '0';
+                          collectionFields[0] = false;
                           _changeFocus();
-                        }),
-                        onFocused: () {
-                          selectedField = 1;
-                          focusNodes[1].requestFocus();
-                          setState(() {
-                            reset = false;
-                            // retryReset = false;
-                          });
                         },
-                        textColor: selectedField == 1
-                            ? AppTheme.givtLightPurple
-                            : AppTheme.givtDarkerGray,
                       ),
-                      CollectionFormField(
-                        focusNode: focusNodes[2],
-                        key: Key(locals.thirdCollect),
-                        amountLimit: widget.amountLimit,
-                        lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon: _buildCurrencyIcon(
-                          widget.country,
-                          2,
-                        ),
-                        suffixText: locals.thirdCollect,
-                        controller: controllers[2],
-                        isVisible: collectionFields[2],
-                        isRemoveIconVisible:
-                            collectionFields[0] == true ||
-                            collectionFields[1] == true,
-                        onRemoveIconPressed: () => setState(() {
-                          controllers[2].text = '0';
-                          collectionFields[2] = false;
-                          _changeFocus();
-                        }),
-                        onFocused: () {
-                          selectedField = 2;
-                          focusNodes[2].requestFocus();
-                          setState(() {
-                            reset = false;
-                            // retryReset = false;
-                          });
-                        },
-                        textColor: selectedField == 2
-                            ? AppTheme.givtLightPurple
-                            : AppTheme.givtDarkerGray,
-                      ),
-                      Visibility(
-                        visible:
-                            !collectionFields.every(
-                              (element) => element == true,
-                            ) &&
-                            widget.showAddCollectionButton,
-                        child: AddCollectionButton(
-                          label: locals.addCollect,
-                          onPressed: () {
-                            setState(() {
-                              collectionFields[collectionFields.indexOf(
-                                    false,
-                                  )] =
-                                  true;
-                              _changeFocus();
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // QR confirmation widget above Next button
-              if (widget.qrConfirmWidget != null) ...[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4,
-                    horizontal: 8,
-                  ),
-                  child: widget.qrConfirmWidget,
-                ),
-              ],
-              _buildNextButton(
-                label: locals.next,
-                isEnabled: isEnabled,
-                onPressed: isEnabled
-                    ? () async {
-                        final areAmountsValid = await _checkAmounts(
-                          context,
-                          upperLimit: widget.amountLimit,
-                          lowerLimit: Util.getLowerLimitByCountry(
-                            widget.country,
-                          ),
-                          currency: currencySymbol,
-                        );
-
-                        if (!areAmountsValid) {
-                          return;
-                        }
-                        widget.onAmountChanged(
-                          double.parse(
-                            controllers[0].text.replaceAll(',', '.'),
-                          ),
-                          double.parse(
-                            controllers[1].text.replaceAll(',', '.'),
-                          ),
-                          double.parse(
-                            controllers[2].text.replaceAll(',', '.'),
-                          ),
-                        );
+                      onFocused: () {
+                        selectedField = 0;
+                        focusNodes[0].requestFocus();
                         setState(() {
                           reset = false;
+                          // retryReset = false;
                         });
-                      }
-                    : null,
+                      },
+                      textColor: selectedField == 0
+                          ? FunTheme.of(context).primary30
+                          : FunTheme.of(context).neutralVariant60,
+                      borderColor: selectedField == 0
+                          ? FunTheme.of(context).primary70
+                          : FunTheme.of(context).neutralVariant60,
+                      isSelected: selectedField == 0,
+                    ),
+                    CollectionFormField(
+                      focusNode: focusNodes[1],
+                      key: Key(locals.secondCollect),
+                      amountLimit: widget.amountLimit,
+                      lowerLimit: Util.getLowerLimitByCountry(widget.country),
+                      prefixCurrencyIcon: _buildCurrencyIcon(
+                        widget.country,
+                        1,
+                      ),
+                      controller: controllers[1],
+                      isVisible: collectionFields[1],
+                      suffixText: locals.secondCollect,
+                      isRemoveIconVisible:
+                          collectionFields[0] == true ||
+                          collectionFields[2] == true,
+                      onRemoveIconPressed: () => setState(() {
+                        controllers[1].text = '0';
+                        collectionFields[1] = false;
+                        _changeFocus();
+                      }),
+                      onFocused: () {
+                        selectedField = 1;
+                        focusNodes[1].requestFocus();
+                        setState(() {
+                          reset = false;
+                          // retryReset = false;
+                        });
+                      },
+                      textColor: selectedField == 1
+                          ? FunTheme.of(context).primary30
+                          : FunTheme.of(context).neutralVariant60,
+                      borderColor: selectedField == 1
+                          ? FunTheme.of(context).primary70
+                          : FunTheme.of(context).neutralVariant60,
+                      isSelected: selectedField == 1,
+                    ),
+                    CollectionFormField(
+                      focusNode: focusNodes[2],
+                      key: Key(locals.thirdCollect),
+                      amountLimit: widget.amountLimit,
+                      lowerLimit: Util.getLowerLimitByCountry(widget.country),
+                      prefixCurrencyIcon: _buildCurrencyIcon(
+                        widget.country,
+                        2,
+                      ),
+                      suffixText: locals.thirdCollect,
+                      controller: controllers[2],
+                      isVisible: collectionFields[2],
+                      isRemoveIconVisible:
+                          collectionFields[0] == true ||
+                          collectionFields[1] == true,
+                      onRemoveIconPressed: () => setState(() {
+                        controllers[2].text = '0';
+                        collectionFields[2] = false;
+                        _changeFocus();
+                      }),
+                      onFocused: () {
+                        selectedField = 2;
+                        focusNodes[2].requestFocus();
+                        setState(() {
+                          reset = false;
+                          // retryReset = false;
+                        });
+                      },
+                      textColor: selectedField == 2
+                          ? FunTheme.of(context).primary30
+                          : FunTheme.of(context).neutralVariant60,
+                      borderColor: selectedField == 2
+                          ? FunTheme.of(context).primary70
+                          : FunTheme.of(context).neutralVariant60,
+                      isSelected: selectedField == 2,
+                    ),
+                    Visibility(
+                      visible:
+                          !collectionFields.every(
+                            (element) => element == true,
+                          ) &&
+                          widget.showAddCollectionButton,
+                      child: AddCollectionButton(
+                        label: locals.addCollect,
+                        onPressed: () {
+                          setState(() {
+                            collectionFields[collectionFields.indexOf(
+                                  false,
+                                )] =
+                                true;
+                            _changeFocus();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              NumericKeyboard(
-                currencySymbol: currencySymbol,
-                presets: widget.arePresetsEnabled ? widget.presets : [],
-                onPresetTap: onPresetTapped,
-                onKeyboardTap: onNumberTapped,
-                leftButtonFn: onCommaTapped,
-                rightButtonFn: onBackspaceTapped,
+            ),
+            // QR confirmation widget above Next button
+            if (widget.qrConfirmWidget != null) ...[
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 8,
+                ),
+                child: widget.qrConfirmWidget,
               ),
             ],
-          ),
+            _buildNextButton(
+              label: locals.next,
+              isEnabled: isEnabled,
+              onPressed: isEnabled
+                  ? () async {
+                      final areAmountsValid = await _checkAmounts(
+                        context,
+                        upperLimit: widget.amountLimit,
+                        lowerLimit: Util.getLowerLimitByCountry(
+                          widget.country,
+                        ),
+                        currency: currencySymbol,
+                      );
+
+                      if (!areAmountsValid) {
+                        return;
+                      }
+                      widget.onAmountChanged(
+                        double.parse(
+                          controllers[0].text.replaceAll(',', '.'),
+                        ),
+                        double.parse(
+                          controllers[1].text.replaceAll(',', '.'),
+                        ),
+                        double.parse(
+                          controllers[2].text.replaceAll(',', '.'),
+                        ),
+                      );
+                      setState(() {
+                        reset = false;
+                      });
+                    }
+                  : null,
+            ),
+            NumericKeyboard(
+              currencySymbol: currencySymbol,
+              presets: widget.arePresetsEnabled ? widget.presets : [],
+              onPresetTap: onPresetTapped,
+              onKeyboardTap: onNumberTapped,
+              leftButtonFn: onCommaTapped,
+              rightButtonFn: onBackspaceTapped,
+            ),
+          ],
         ),
       ),
     );
@@ -367,8 +377,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
       country: country,
     ),
     color: selectedField == fieldIndex
-        ? AppTheme.givtLightPurple
-        : AppTheme.givtDarkerGray,
+        ? FunTheme.of(context).primary30
+        : FunTheme.of(context).neutralVariant60,
   );
 
   Future<bool> _checkAmounts(

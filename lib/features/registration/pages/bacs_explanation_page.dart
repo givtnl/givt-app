@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
@@ -41,7 +42,8 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         title: locals.signMandateTitle,
         actions: [
           IconButton(

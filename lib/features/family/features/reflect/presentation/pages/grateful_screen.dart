@@ -32,7 +32,7 @@ import 'package:givt_app/features/family/shared/design/components/content/avatar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -107,7 +107,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                     child: Column(
                       children: [
                         AvatarBar(
-                          backgroundColor: FamilyAppTheme.primary99,
+                          backgroundColor: FunTheme.of(context).primary99,
                           uiModel: uiModel.avatarBarUIModel,
                           onAvatarTapped: _cubit.onAvatarTapped,
                           circleSize: 50,

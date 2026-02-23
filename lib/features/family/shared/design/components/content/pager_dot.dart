@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class PagerDot extends StatelessWidget {
   const PagerDot({required this.isSelected, super.key});
@@ -15,7 +15,7 @@ class PagerDot extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: isSelected
-            ? FamilyAppTheme.primary40
+            ? FunTheme.of(context).primary40
             : Colors.black.withValues(alpha: 0.1),
       ),
     );

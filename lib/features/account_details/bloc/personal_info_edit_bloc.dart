@@ -103,7 +103,7 @@ class PersonalInfoEditBloc
         lastName: event.lastName,
       );
       await authRepository.updateUserExt(
-        stateUser.toUpdateJson(),
+        stateUser.toUpdateJsonNameOnly(),
       );
       emit(
         state.copyWith(
@@ -178,7 +178,7 @@ class PersonalInfoEditBloc
         postalCode: event.postalCode,
       );
       await authRepository.updateUserExt(
-        stateUser.toUpdateJson(),
+        stateUser.toUpdateJsonAddressOnly(),
       );
       emit(
         state.copyWith(
@@ -207,7 +207,7 @@ class PersonalInfoEditBloc
         phoneNumber: event.phoneNumber,
       );
       await authRepository.updateUserExt(
-        stateUser.toUpdateJson(),
+        stateUser.toUpdateJsonPhoneOnly(),
       );
       emit(
         state.copyWith(
@@ -242,7 +242,7 @@ class PersonalInfoEditBloc
         sortCode: event.sortCode,
       );
       await authRepository.updateUserExt(
-        stateUser.toUpdateJson(),
+        stateUser.toUpdateJsonBankOnly(),
       );
       emit(
         state.copyWith(

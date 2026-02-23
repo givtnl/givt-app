@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_gi
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/features/platform_contribution/cubit/platform_contribution_cubit.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_organization.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_settings.dart';
@@ -44,7 +44,8 @@ class _PlatformContributionScreenState
     final locals = context.l10n;
 
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         title: locals.platformContributionTitle,
         leading: GivtBackButtonFlat(
           onPressed: () async => _handleBackPressed(context),
@@ -302,7 +303,9 @@ class _PlatformContributionScreenState
           analyticsEvent: AmplitudeEvents.platformContributionSaveConfirmClicked
               .toEvent(),
         ),
-        FunButton.secondary(
+        FunButton(
+          variant: FunButtonVariant.secondary,
+          fullBorder: true,
           text: locals.platformContributionSaveChangesModalNoButton,
           onTap: () {
             _cubit.discardChanges();

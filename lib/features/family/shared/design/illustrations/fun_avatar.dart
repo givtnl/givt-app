@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/helpers/helpers.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/custom_avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 
 class FunAvatar extends FunIcon {
   const FunAvatar({

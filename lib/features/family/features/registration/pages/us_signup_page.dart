@@ -100,7 +100,8 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
       minimumPadding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
       safeAreaBottom: false,
       canPop: false,
-      appBar: FunTopAppBar.primary99(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.primary99,
         leading: GivtBackButtonFlat(
           onPressedExt: () async {
             logout(context, fromLogoutBtn: true);

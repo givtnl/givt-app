@@ -24,7 +24,7 @@ import 'package:givt_app/features/family/shared/design/components/overlays/fun_b
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -414,7 +414,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
-                  ?.copyWith(color: FamilyAppTheme.downloadAppBackground),
+                  ?.copyWith(color: FunTheme.of(context).downloadAppBackground),
               textAlign: TextAlign.center,
             ),
           ),

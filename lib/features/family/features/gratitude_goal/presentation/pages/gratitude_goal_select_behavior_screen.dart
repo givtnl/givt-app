@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/shared/design/components/actions/fun_te
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -84,14 +84,14 @@ class _GratitudeGoalSelectBehaviorScreenState
                                 });
                               },
                               backgroundColor: _pressedIndex == index
-                                  ? FamilyAppTheme.primary98
-                                  : FamilyAppTheme.highlight98,
+                                  ? FunTheme.of(context).primary98
+                                  : FunTheme.of(context).highlight98,
                               borderColor: _pressedIndex == index
-                                  ? FamilyAppTheme.primary80
-                                  : FamilyAppTheme.highlight80,
+                                  ? FunTheme.of(context).primary80
+                                  : FunTheme.of(context).highlight80,
                               textColor: _pressedIndex == index
-                                  ? FamilyAppTheme.primary30
-                                  : FamilyAppTheme.highlight40,
+                                  ? FunTheme.of(context).primary30
+                                  : FunTheme.of(context).highlight40,
                               isPressedDown: _pressedIndex == index,
                               padding: const EdgeInsets.symmetric(
                                 vertical: 12,

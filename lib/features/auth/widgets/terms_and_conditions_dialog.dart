@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/email_signup/cubit/email_signup_cubit.dart';
@@ -88,11 +89,11 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
     return FunBottomSheet(
       title: title,
       titleColor:
-          widget.isDarkBackground ? Colors.white : FamilyAppTheme.primary20,
+          widget.isDarkBackground ? Colors.white : FunTheme.of(context).primary20,
       content: BodySmallText(
         termsAndConditions,
         color:
-            widget.isDarkBackground ? Colors.white : FamilyAppTheme.primary20,
+            widget.isDarkBackground ? Colors.white : FunTheme.of(context).primary20,
       ),
       closeAction: () => context.pop(),
     );

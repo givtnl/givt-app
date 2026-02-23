@@ -10,12 +10,17 @@ import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step1_select_organisation_page.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
@@ -84,22 +89,17 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
         if (state.status == GiveStatus.readyToGive ||
             state.status == GiveStatus.success) {
           context.read<OrganisationBloc>().add(
-                const FavoritesRefresh(),
-              );
+            const FavoritesRefresh(),
+          );
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: const BackButton(),
-          title: Text(
-            _buildTitle(
-              context.watch<OrganisationBloc>().state.selectedType,
-              locals,
-            ),
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
+        appBar: FunTopAppBar(
+          variant: FunTopAppBarVariant.white,
+          leading: const GivtBackButtonFlat(),
+          title: _buildTitle(
+            context.watch<OrganisationBloc>().state.selectedType,
+            locals,
           ),
         ),
         body: BlocConsumer<OrganisationBloc, OrganisationState>(
@@ -153,10 +153,11 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                             key: UniqueKey(),
                             onTap: () {
                               // Build metadata with search text if available
-                              final metadata = state.previousSearchQuery.isNotEmpty
+                              final metadata =
+                                  state.previousSearchQuery.isNotEmpty
                                   ? {'searchText': state.previousSearchQuery}
                                   : null;
-                              
+
                               showModalBottomSheet<void>(
                                 context: context,
                                 isScrollControlled: true,
@@ -193,7 +194,8 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                         return _buildListTile(
                           type: state.filteredOrganisations[index].type,
                           title: state.filteredOrganisations[index].orgName,
-                          isSelected: state.selectedCollectGroup.nameSpace ==
+                          isSelected:
+                              state.selectedCollectGroup.nameSpace ==
                               state.filteredOrganisations[index].nameSpace,
                           isFavorited:
                               isFavorited, // Placeholder for favorite state
@@ -206,11 +208,10 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                               return;
                             }
                             context.read<OrganisationBloc>().add(
-                                  OrganisationSelectionChanged(
-                                    state
-                                        .filteredOrganisations[index].nameSpace,
-                                  ),
-                                );
+                              OrganisationSelectionChanged(
+                                state.filteredOrganisations[index].nameSpace,
+                              ),
+                            );
                           },
                           onFavoritePressed: () {
                             if (isFavorited) {
@@ -255,32 +256,35 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                   title: widget.isSelection
                       ? locals.selectReceiverButton
                       : locals.give,
-                  isLoading: context.watch<GiveBloc>().state.status ==
+                  isLoading:
+                      context.watch<GiveBloc>().state.status ==
                       GiveStatus.loading,
                   onPressed:
                       state.selectedCollectGroup.type == CollectGroupType.none
-                          ? null
-                          : () {
-                              final userGUID =
-                                  context.read<AuthCubit>().state.user.guid;
-                              if (widget.isSelection) {
-                                context.pop(
-                                  state.filteredOrganisations.firstWhere(
-                                    (element) =>
-                                        element.nameSpace ==
-                                        state.selectedCollectGroup.nameSpace,
-                                  ),
-                                );
-                                return;
-                              }
-                              context.read<GiveBloc>().add(
-                                    GiveOrganisationSelected(
-                                      nameSpace:
-                                          state.selectedCollectGroup.nameSpace,
-                                      userGUID: userGUID,
-                                    ),
-                                  );
-                            },
+                      ? null
+                      : () {
+                          final userGUID = context
+                              .read<AuthCubit>()
+                              .state
+                              .user
+                              .guid;
+                          if (widget.isSelection) {
+                            context.pop(
+                              state.filteredOrganisations.firstWhere(
+                                (element) =>
+                                    element.nameSpace ==
+                                    state.selectedCollectGroup.nameSpace,
+                              ),
+                            );
+                            return;
+                          }
+                          context.read<GiveBloc>().add(
+                            GiveOrganisationSelected(
+                              nameSpace: state.selectedCollectGroup.nameSpace,
+                              userGUID: userGUID,
+                            ),
+                          );
+                        },
                 ),
               ],
             );
@@ -325,12 +329,11 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: !isLoading
-              ? ElevatedButton(
-                  onPressed: onPressed,
-                  style: ElevatedButton.styleFrom(
-                    disabledBackgroundColor: Colors.grey,
-                  ),
-                  child: Text(title),
+              ? FunButton(
+                  onTap: onPressed,
+                  text: title,
+                  analyticsEvent: AmplitudeEvents.giveButtonPressed.toEvent(),
+                  isDisabled: onPressed == null,
                 )
               : const Center(
                   child: CircularProgressIndicator(),
@@ -347,89 +350,85 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
     required CollectGroupType type,
     required bool isFavorited,
     required VoidCallback onFavoritePressed,
-  }) =>
-      ListTile(
-        key: UniqueKey(),
-        onTap: onTap,
-        selected: isSelected,
-        selectedTileColor: CollectGroupType.getHighlightColor(type),
-        leading: Icon(
-          CollectGroupType.getIconByType(type),
-          color: AppTheme.givtBlue,
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: AppTheme.givtBlue,
-          ),
-        ),
-        trailing: IconButton(
-          icon: Icon(
-            isFavorited ? Icons.favorite : Icons.favorite_border,
-            color: isFavorited ? Colors.red : Colors.grey,
-          ),
-          onPressed: onFavoritePressed,
-        ),
-      );
+  }) => ListTile(
+    key: UniqueKey(),
+    onTap: onTap,
+    selected: isSelected,
+    selectedTileColor: CollectGroupType.getHighlightColor(type),
+    leading: Icon(
+      CollectGroupType.getIconByType(type),
+      color: FunTheme.of(context).primary20,
+    ),
+    title: LabelMediumText(
+      title,
+      color: FunTheme.of(context).primary20,
+    ),
+    trailing: IconButton(
+      icon: Icon(
+        isFavorited ? Icons.favorite : Icons.favorite_border,
+        color: isFavorited ? Colors.red : Colors.grey,
+      ),
+      onPressed: onFavoritePressed,
+    ),
+  );
 
-  Widget _buildFilterType(OrganisationBloc bloc, AppLocalizations locals) =>
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FilterSuggestionCard(
-            isFocused: bloc.state.selectedType == CollectGroupType.church.index,
-            title: locals.church,
-            icon: CollectGroupType.church.icon,
-            activeIcon: CollectGroupType.church.activeIcon,
-            color: CollectGroupType.church.color,
-            onTap: () => bloc.add(
-              OrganisationTypeChanged(
-                CollectGroupType.church.index,
-              ),
-            ),
+  Widget _buildFilterType(
+    OrganisationBloc bloc,
+    AppLocalizations locals,
+  ) => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      FilterSuggestionCard(
+        isFocused: bloc.state.selectedType == CollectGroupType.church.index,
+        title: locals.church,
+        icon: CollectGroupType.church.icon,
+        activeIcon: CollectGroupType.church.activeIcon,
+        color: CollectGroupType.church.color,
+        onTap: () => bloc.add(
+          OrganisationTypeChanged(
+            CollectGroupType.church.index,
           ),
-          FilterSuggestionCard(
-            isFocused:
-                bloc.state.selectedType == CollectGroupType.charities.index,
-            title: locals.charity,
-            icon: CollectGroupType.charities.icon,
-            activeIcon: CollectGroupType.charities.activeIcon,
-            color: CollectGroupType.charities.color,
-            onTap: () => bloc.add(
-              OrganisationTypeChanged(
-                CollectGroupType.charities.index,
-              ),
-            ),
+        ),
+      ),
+      FilterSuggestionCard(
+        isFocused: bloc.state.selectedType == CollectGroupType.charities.index,
+        title: locals.charity,
+        icon: CollectGroupType.charities.icon,
+        activeIcon: CollectGroupType.charities.activeIcon,
+        color: CollectGroupType.charities.color,
+        onTap: () => bloc.add(
+          OrganisationTypeChanged(
+            CollectGroupType.charities.index,
           ),
-          FilterSuggestionCard(
-            isFocused:
-                bloc.state.selectedType == CollectGroupType.campaign.index,
-            title: locals.campaign,
-            icon: CollectGroupType.campaign.icon,
-            activeIcon: CollectGroupType.campaign.activeIcon,
-            color: CollectGroupType.campaign.color,
-            onTap: () => bloc.add(
-              OrganisationTypeChanged(
-                CollectGroupType.campaign.index,
-              ),
-            ),
+        ),
+      ),
+      FilterSuggestionCard(
+        isFocused: bloc.state.selectedType == CollectGroupType.campaign.index,
+        title: locals.campaign,
+        icon: CollectGroupType.campaign.icon,
+        activeIcon: CollectGroupType.campaign.activeIcon,
+        color: CollectGroupType.campaign.color,
+        onTap: () => bloc.add(
+          OrganisationTypeChanged(
+            CollectGroupType.campaign.index,
           ),
-          FilterSuggestionCard(
-            visible: Platform.isIOS,
-            isFocused:
-                bloc.state.selectedType == CollectGroupType.artists.index,
-            title: locals.artist,
-            icon: CollectGroupType.artists.icon,
-            activeIcon: CollectGroupType.artists.activeIcon,
-            color: CollectGroupType.artists.color,
-            onTap: () => bloc.add(
-              OrganisationTypeChanged(
-                CollectGroupType.artists.index,
-              ),
-            ),
+        ),
+      ),
+      FilterSuggestionCard(
+        visible: Platform.isIOS,
+        isFocused: bloc.state.selectedType == CollectGroupType.artists.index,
+        title: locals.artist,
+        icon: CollectGroupType.artists.icon,
+        activeIcon: CollectGroupType.artists.activeIcon,
+        color: CollectGroupType.artists.color,
+        onTap: () => bloc.add(
+          OrganisationTypeChanged(
+            CollectGroupType.artists.index,
           ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 
   void _buildActionSheet(BuildContext context, CollectGroup recipient) {
     final locals = context.l10n;
@@ -451,9 +450,9 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                 checkAuthRequest: CheckAuthRequest(
                   navigate: (context) =>
                       _showCreateRecurringDonationBottomSheet(
-                    context,
-                    collectGroup: recipient,
-                  ),
+                        context,
+                        collectGroup: recipient,
+                      ),
                 ),
               ),
               child: Text(locals.discoverOrAmountActionSheetRecurring),

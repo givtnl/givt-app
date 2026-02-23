@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
@@ -17,19 +18,19 @@ class GiveButton extends StatelessWidget {
     return ActionContainer(
       analyticsEvent: AmplitudeEvents.familyHomeScreenGiveButtonClicked.toEvent(),
       onTap: onPressed,
-      borderColor: FamilyAppTheme.secondary80,
+      borderColor: FunTheme.of(context).secondary80,
       baseBorderSize: 4,
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: FamilyAppTheme.secondary98,
+          color: FunTheme.of(context).secondary98,
         ),
         child: Container(
           // Inner container to fix the inside border
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: FamilyAppTheme.secondary98,
+            color: FunTheme.of(context).secondary98,
           ),
           child: Stack(
             alignment: Alignment.center,
@@ -50,11 +51,11 @@ class GiveButton extends StatelessWidget {
                     children: [
                       LabelLargeText(
                         context.l10n.homeScreenGiveButtonTitle,
-                        color: FamilyAppTheme.secondary40,
+                        color: FunTheme.of(context).secondary40,
                       ),
                       BodySmallText(
                         context.l10n.homeScreenGivtButtonDescription,
-                        color: FamilyAppTheme.secondary40,
+                        color: FunTheme.of(context).secondary40,
                       ),
                     ],
                   ),

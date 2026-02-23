@@ -30,7 +30,8 @@ class _BoxOriginQuestionScreenState extends State<BoxOriginQuestionScreen> {
   Widget build(BuildContext context) {
     return FunScaffold(
       canPop: false,
-      appBar: FunTopAppBar.primary99(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.primary99,
         title: context.l10n.originQuestionTitle, // Last step
       ),
       body: Column(

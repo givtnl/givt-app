@@ -48,7 +48,8 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
       },
       onData: (context, uiModel) {
         return FunScaffold(
-          appBar: FunTopAppBar.white(
+          appBar: FunTopAppBar(
+          variant: FunTopAppBarVariant.white,
             title: context.l10n.recurringDonationsStep3Title,
             leading: const GivtBackButtonFlat(),
             actions: [

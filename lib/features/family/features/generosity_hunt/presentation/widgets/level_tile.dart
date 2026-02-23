@@ -3,7 +3,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 
 class LevelTile extends StatefulWidget {
@@ -70,7 +70,7 @@ class _LevelTileState extends State<LevelTile> {
     if (widget.completed) {
       return FunIcon.checkmark(
         circleColor: Colors.transparent,
-        iconColor: FamilyAppTheme.primary60,
+        iconColor: FunTheme.of(context).primary60,
         circleSize: 24,
         iconSize: 24,
         padding: EdgeInsets.zero,

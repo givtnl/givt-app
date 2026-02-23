@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/shared/design/components/content/models
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
@@ -60,7 +60,7 @@ class _FamilyHomeOverlayState extends State<FamilyHomeOverlay> {
           sigmaY: 4,
         ),
         child: FunScaffold(
-          backgroundColor: FamilyAppTheme.primary50.withValues(alpha: 0.5),
+          backgroundColor: FunTheme.of(context).primary50.withValues(alpha: 0.5),
           minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
           appBar: const FunTopAppBar(
             title: null,

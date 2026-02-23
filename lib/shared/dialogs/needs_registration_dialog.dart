@@ -53,7 +53,9 @@ class NeedsRegistrationDialog {
           },
         ),
         if (!isMandatory)
-          FunButton.secondary(
+          FunButton(
+            variant: FunButtonVariant.secondary,
+            fullBorder: true,
             text: context.l10n.askMeLater,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.finalizeRegistrationModalAskLaterClicked,

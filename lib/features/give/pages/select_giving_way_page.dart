@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -26,11 +29,10 @@ class _SelectGivingWayPageState extends State<SelectGivingWayPage> {
     final locals = context.l10n;
     final user = context.read<AuthCubit>().state.user;
     return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Text(
-          locals.selectContext,
-        ),
+      appBar: FunTopAppBar(
+        leading: const GivtBackButtonFlat(),
+        title: locals.selectContext,
+        variant: FunTopAppBarVariant.white,
       ),
       body: Stack(
         children: [
@@ -38,7 +40,7 @@ class _SelectGivingWayPageState extends State<SelectGivingWayPage> {
             margin: const EdgeInsets.only(top: 130),
             height: size.height,
             width: size.width,
-            color: AppTheme.givtGraycece,
+            color: FunTheme.of(context).neutralVariant80,
           ),
           Padding(
             padding: EdgeInsets.all(size.width * 0.05),
@@ -239,9 +241,10 @@ class _SelectGivingWayPageState extends State<SelectGivingWayPage> {
         leading: Image.asset(
           image,
         ),
-        trailing: const Icon(
+        trailing: Icon(
           Icons.arrow_forward_ios,
           size: 20,
+          color: FunTheme.of(context).primary20,
         ),
         title: title,
         subtitle: subtitle,

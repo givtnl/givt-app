@@ -1,71 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+
+/// Visual variant of the app bar; used to resolve background color when
+/// the color parameter is not set.
+enum FunTopAppBarVariant {
+  primary99,
+  white,
+}
 
 class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
   const FunTopAppBar({
-    required this.title,
+    this.title,
     this.actions = const [],
     this.leading,
     this.color,
+    this.variant,
     this.titleColor,
     this.systemNavigationBarColor,
     this.overridePreferredSize,
     super.key,
   });
 
-  factory FunTopAppBar.primary99({
-    required String title,
-    List<Widget> actions = const [],
-    Widget? leading,
-    Color? systemNavigationBarColor,
-  }) =>
-      FunTopAppBar(
-        title: title,
-        actions: actions,
-        leading: leading,
-        color: FamilyAppTheme.primary99,
-        systemNavigationBarColor: systemNavigationBarColor,
-      );
-
-  factory FunTopAppBar.white({
-    String? title,
-    List<Widget> actions = const [],
-    Widget? leading,
-    Color? systemNavigationBarColor,
-  }) =>
-      FunTopAppBar(
-        title: title,
-        actions: actions,
-        leading: leading,
-        color: Colors.white,
-        systemNavigationBarColor: systemNavigationBarColor,
-      );
-
   final String? title;
   final List<Widget> actions;
   final Widget? leading;
   final Color? color;
+  final FunTopAppBarVariant? variant;
   final Color? titleColor;
   final Color? systemNavigationBarColor;
   final Size? overridePreferredSize;
 
   @override
   Widget build(BuildContext context) {
+    final theme = FunTheme.of(context);
+    final resolvedBackgroundColor = color ??
+        (variant == FunTopAppBarVariant.primary99
+            ? theme.primary99
+            : variant == FunTopAppBarVariant.white
+                ? Colors.white
+                : Theme.of(context).colorScheme.onPrimary);
+    final resolvedTitleColor = titleColor ?? theme.primary20;
+
     return AppBar(
       title: title == null
           ? null
           : TitleMediumText(
               title!,
-              color: titleColor ?? FamilyAppTheme.primary30,
+              color: resolvedTitleColor,
             ),
-      backgroundColor: color ?? Theme.of(context).colorScheme.onPrimary,
-      actionsIconTheme: const IconThemeData(
-        color: FamilyAppTheme.primary30,
+      backgroundColor: resolvedBackgroundColor,
+      actionsIconTheme: IconThemeData(
+        color: resolvedTitleColor,
       ),
-      iconTheme: const IconThemeData(
-        color: FamilyAppTheme.primary30,
+      iconTheme: IconThemeData(
+        color: resolvedTitleColor,
       ),
       actions: actions,
       scrolledUnderElevation: 0,
@@ -78,5 +68,6 @@ class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => overridePreferredSize ?? const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>
+      overridePreferredSize ?? const Size.fromHeight(kToolbarHeight);
 }

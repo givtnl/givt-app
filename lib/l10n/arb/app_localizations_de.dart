@@ -165,6 +165,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get personalInfo => 'Persönliche Infos';
 
   @override
+  String get changeDetails => 'Daten ändern';
+
+  @override
   String get searchHere => 'Suche....';
 
   @override

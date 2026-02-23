@@ -4,7 +4,7 @@ import 'package:givt_app/features/family/features/unlocked_badge/presentation/wi
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 
 class AvatarWidget extends StatelessWidget {
   const AvatarWidget({

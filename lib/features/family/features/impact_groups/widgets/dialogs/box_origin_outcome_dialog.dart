@@ -38,7 +38,9 @@ Future<void> showBoxOriginErrorDialog(
         leftIcon: Icons.refresh_rounded,
         analyticsEvent: AmplitudeEvents.retryClicked.toEvent(),
       ),
-      FunButton.secondary(
+      FunButton(
+        variant: FunButtonVariant.secondary,
+        fullBorder: true,
         onTap: onTapSkip,
         text: context.l10n.buttonSkip,
         analyticsEvent: AmplitudeEvents.skipClicked.toEvent(),

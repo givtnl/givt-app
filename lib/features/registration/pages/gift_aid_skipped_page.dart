@@ -18,7 +18,8 @@ class GiftAidSkippedPage extends StatelessWidget {
 
     return FunScaffold(
       canPop: false,
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         leading: const SizedBox.shrink(),
         title: '',
       ),

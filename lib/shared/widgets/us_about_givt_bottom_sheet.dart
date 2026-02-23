@@ -92,7 +92,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
             children: [
               const SizedBox(height: 16),
               Image.asset(
-                'assets/images/logo_green.png',
+                'assets/images/logo.png',
                 width: 140,
               ),
               const SizedBox(height: 24),

@@ -11,7 +11,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';

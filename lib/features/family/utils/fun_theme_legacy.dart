@@ -164,7 +164,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   }
 
   ThemeData _base(ColorScheme colorScheme) {
-    const textTheme = TextTheme(
+    final textTheme = TextTheme(
       displayLarge: FunTextStyles.displayLarge,
       displayMedium: FunTextStyles.displayMedium,
       displaySmall: FunTextStyles.displaySmall,

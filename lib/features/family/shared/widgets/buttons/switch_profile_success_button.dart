@@ -19,7 +19,8 @@ class SwitchProfileSuccessButton extends StatelessWidget {
     final flowsCubit = context.read<FlowsCubit>();
     final profilesCubit = context.read<ProfilesCubit>();
 
-    return FunButton.tertiary(
+    return FunButton(
+      variant: FunButtonVariant.tertiary,
       text: 'Switch profile',
       leadingImage: ClipRRect(
         borderRadius: BorderRadius.circular(6),

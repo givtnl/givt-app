@@ -6,7 +6,7 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/home_page_view.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
@@ -266,7 +266,7 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
                         extraText: context.l10n.homeScreenChosenOrg(formattedOrgName),
                         icon: FaIcon(
                           iconData,
-                          color: FamilyAppTheme.secondary30,
+                          color: FunTheme.of(context).secondary30,
                           size: 20,
                         ),
                       );

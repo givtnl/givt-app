@@ -4,7 +4,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 /// Spacing constants extracted from Figma design
@@ -135,7 +135,9 @@ class _QrConfirmOrgDialogState extends State<QrConfirmOrgDialog> {
                 ),
                 const SizedBox(height: _QrConfirmDialogSpacing.betweenButtons),
                 // Secondary button - "Cancel"
-                FunButton.secondary(
+                FunButton(
+                  variant: FunButtonVariant.secondary,
+                  fullBorder: true,
                   onTap: () {
                     _buttonPressed = true;
                     Navigator.of(context).pop();

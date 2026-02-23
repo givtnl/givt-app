@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -10,7 +11,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
 import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_donation_detail_cubit.dart';
 import 'package:givt_app/features/recurring_donations/detail/repositories/recurring_donation_detail_repository.dart';
@@ -67,7 +68,8 @@ class _RecurringDonationDetailPageState
     final currency = Util.getCurrencySymbol(countryCode: auth.user.country);
 
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         leading: GivtBackButtonFlat(
           onPressed: () async => context.pop(),
         ),
@@ -140,9 +142,9 @@ class _RecurringDonationDetailPageState
       width: double.infinity,
       child: Column(
         children: [
-          // Organization icon
-          const FaIcon(
-            FontAwesomeIcons.church,
+          // Organization icon - use type-based icon instead of hardcoded church
+          FaIcon(
+            CollectGroupType.getIconByType(uiModel.organisationType),
             size: 40,
             color: FamilyAppTheme.secondary30,
           ),
@@ -297,13 +299,13 @@ class _RecurringDonationDetailPageState
             width: 32,
             height: 32,
             decoration: BoxDecoration(
-              color: _getStatusColor(item.status),
+              color: _getStatusColor(context, item.status),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(
               _getStatusIcon(item.status),
               size: 16,
-              color: _getStatusTextColor(item.status),
+              color: _getStatusTextColor(context, item.status),
             ),
           ),
           const SizedBox(width: 12),
@@ -328,12 +330,12 @@ class _RecurringDonationDetailPageState
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: _getStatusColor(item.status),
+              color: _getStatusColor(context, item.status),
               borderRadius: BorderRadius.circular(12),
             ),
             child: LabelSmallText(
               _getStatusText(item.status, context),
-              color: _getStatusTextColor(item.status),
+              color: _getStatusTextColor(context, item.status),
             ),
           ),
         ],
@@ -342,14 +344,16 @@ class _RecurringDonationDetailPageState
   }
 
   Widget _buildManageButton(BuildContext context) {
-    return FunButton.secondary(
+    return FunButton(
+      variant: FunButtonVariant.secondary,
+      fullBorder: true,
       onTap: () => _cubit.onManageDonationPressed(),
       text: context.l10n.recurringDonationsDetailManageButton,
       analyticsEvent: AmplitudeEvents.recurringDonationManageClicked.toEvent(),
     );
   }
 
-  Color _getStatusColor(DonationStatus status) {
+  Color _getStatusColor(BuildContext context, DonationStatus status) {
     switch (status) {
       case DonationStatus.upcoming:
         return FamilyAppTheme.secondary95;
@@ -360,7 +364,7 @@ class _RecurringDonationDetailPageState
     }
   }
 
-  Color _getStatusTextColor(DonationStatus status) {
+  Color _getStatusTextColor(BuildContext context, DonationStatus status) {
     switch (status) {
       case DonationStatus.upcoming:
         return FamilyAppTheme.secondary40;

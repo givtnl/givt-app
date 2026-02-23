@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -102,7 +102,7 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontFamily: 'Raleway',
-                      color: FamilyAppTheme.givtBlue,
+                      color: FunTheme.of(context).givtBlue,
                       letterSpacing: 0.25,
                     ),
               ),
@@ -126,7 +126,9 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
               analyticsEvent: widget.amplitudeEvent.toEvent(),
             ),
             const SizedBox(height: 16),
-            FunButton.secondary(
+            FunButton(
+              variant: FunButtonVariant.secondary,
+              fullBorder: true,
               text: widget.secondaryBtnText!,
               onTap: widget.onClickSecondaryBtn ?? () => context.pop(),
               analyticsEvent: widget.amplitudeEvent.toEvent(),

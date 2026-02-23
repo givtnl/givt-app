@@ -13,7 +13,7 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_goal.da
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -45,7 +45,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
   Widget build(BuildContext context) {
     final options = ['To do', context.l10n.completedKey];
     return OverlayTooltipScaffold(
-      overlayColor: FamilyAppTheme.primary50.withValues(alpha: 0.5),
+      overlayColor: FunTheme.of(context).primary50.withValues(alpha: 0.5),
       controller: _tooltipController,
       builder: (context) => FunScaffold(
         appBar: FunTopAppBar(

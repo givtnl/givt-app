@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_app_theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 
@@ -79,7 +80,7 @@ class _AnimatedSpeakerState extends State<AnimatedSpeaker>
         AnimatedOpacity(
           duration: const Duration(milliseconds: 400),
           opacity: _opacity1,
-          curve: FamilyAppTheme.gentle,
+          curve: FunAppTheme.gentle,
           child: SvgPicture.asset(
             _imagePaths[1],
             fit: BoxFit.fitHeight,
@@ -95,7 +96,7 @@ class _AnimatedSpeakerState extends State<AnimatedSpeaker>
         AnimatedOpacity(
           duration: const Duration(milliseconds: 400),
           opacity: _opacity2,
-          curve: FamilyAppTheme.gentle,
+          curve: FunAppTheme.gentle,
           child: SvgPicture.asset(
             _imagePaths[2],
             fit: BoxFit.fitHeight,

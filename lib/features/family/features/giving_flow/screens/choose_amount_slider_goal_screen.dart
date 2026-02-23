@@ -15,7 +15,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -95,7 +95,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                       TextSpan(
                         text: '\$$amountLeftWithDonation',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: FamilyAppTheme.primary20,
+                              color: FunTheme.of(context).primary20,
                               fontWeight: FontWeight.w700,
                             ),
                         children: [
@@ -103,7 +103,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                             text: ' to complete the $goalString',
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: FamilyAppTheme.primary20,
+                                      color: FunTheme.of(context).primary20,
                                     ),
                           ),
                         ],
@@ -114,7 +114,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                       TextSpan(
                         text: 'This donation will complete the\n$goalString',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: FamilyAppTheme.primary20,
+                              color: FunTheme.of(context).primary20,
                             ),
                       ),
                     ),

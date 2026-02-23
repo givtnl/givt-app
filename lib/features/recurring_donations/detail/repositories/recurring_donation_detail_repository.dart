@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_donation_detail_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
 /// Repository for managing the details of a specific recurring donation.
@@ -44,6 +46,9 @@ mixin RecurringDonationDetailRepository {
 
   /// Returns whether the recurring donation is currently active.
   bool isRecurringDonationActive();
+
+  /// Returns the organization type for the recurring donation.
+  CollectGroupType getOrganisationType();
 }
 
 /// Implementation of [RecurringDonationDetailRepository] that uses [APIService].
@@ -61,6 +66,7 @@ class RecurringDonationDetailRepositoryImpl
   List<DonationHistoryItem> _history = [];
   bool _isLoading = false;
   String? _error;
+  CollectGroupType _resolvedOrganisationType = CollectGroupType.none;
 
   @override
   bool isLoading() {
@@ -75,6 +81,8 @@ class RecurringDonationDetailRepositoryImpl
   @override
   void setRecurringDonation(RecurringDonation donation) {
     _recurringDonation = donation;
+    // Reset resolved type when setting a new donation
+    _resolvedOrganisationType = CollectGroupType.none;
   }
 
   @override
@@ -88,6 +96,9 @@ class RecurringDonationDetailRepositoryImpl
     _error = null;
 
     try {
+      // Resolve organization type from collect group list
+      await _resolveOrganisationType();
+
       // Fetch donation instances from API
       final instancesResponse = await apiService.fetchRecurringDonationById(
         _recurringDonation!.id,
@@ -362,6 +373,37 @@ class RecurringDonationDetailRepositoryImpl
       completed: completed,
       total: total,
     );
+  }
+
+  /// Resolves the organization type by matching the recurring donation's
+  /// collectGroupName to the collect group list.
+  Future<void> _resolveOrganisationType() async {
+    if (_recurringDonation == null) {
+      _resolvedOrganisationType = CollectGroupType.none;
+      return;
+    }
+
+    // Get collect groups from cache
+    var collectGroups = await collectGroupRepository.getCollectGroupList();
+
+    // If cache is empty, fetch from API
+    if (collectGroups.isEmpty) {
+      collectGroups = await collectGroupRepository.fetchCollectGroupList();
+    }
+
+    // Find matching collect group by orgName
+    final matchingGroup = collectGroups.firstWhere(
+      (group) => group.orgName == _recurringDonation!.collectGroupName,
+      orElse: () => const CollectGroup.empty(),
+    );
+
+    // Set the resolved type, or none if not found
+    _resolvedOrganisationType = matchingGroup.type;
+  }
+
+  @override
+  CollectGroupType getOrganisationType() {
+    return _resolvedOrganisationType;
   }
 
   /// Disposes of any resources used by the repository.
