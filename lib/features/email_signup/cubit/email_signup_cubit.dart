@@ -103,6 +103,7 @@ class EmailSignupCubit
     }
 
     log('Using API URL: $baseUrl');
+    get_it.getIt<RequestHelper>().updateApiUrl(baseUrl);
     get_it.getIt<RequestHelper>().country = _currentCountry!.countryCode;
   }
 
