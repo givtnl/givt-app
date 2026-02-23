@@ -201,9 +201,11 @@ class PersonalInfoEditPage extends StatelessWidget {
                 },
               ),
               _buildInfoRow(
-                icon: const Icon(
+                icon: Icon(
                   FontAwesomeIcons.creditCard,
-                  color: AppTheme.givtOrange,
+                  color: user.mandateSigned
+                      ? AppTheme.givtOrange
+                      : AppTheme.givtGraycece,
                 ),
                 value: isUkUser
                     ? locals.bacsSortcodeAccountnumber(
@@ -211,20 +213,22 @@ class PersonalInfoEditPage extends StatelessWidget {
                         user.accountNumber,
                       )
                     : user.iban,
-                onTap: () {
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
-                    eventProperties: {'row_type': 'bank_details'},
-                  );
-                  _showModalBottomSheet(
-                    context,
-                    bottomSheet: ChangeBankDetailsBottomSheet(
-                      sortCode: user.sortCode,
-                      accountNumber: user.accountNumber,
-                      iban: user.iban,
-                    ),
-                  );
-                },
+                onTap: user.mandateSigned
+                    ? () {
+                        AnalyticsHelper.logEvent(
+                          eventName: AmplitudeEvents.onInfoRowClicked,
+                          eventProperties: {'row_type': 'bank_details'},
+                        );
+                        _showModalBottomSheet(
+                          context,
+                          bottomSheet: ChangeBankDetailsBottomSheet(
+                            sortCode: user.sortCode,
+                            accountNumber: user.accountNumber,
+                            iban: user.iban,
+                          ),
+                        );
+                      }
+                    : null,
               ),
               _buildInfoRow(
                 visible: isUkUser,
