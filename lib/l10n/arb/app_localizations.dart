@@ -4076,6 +4076,12 @@ abstract class AppLocalizations {
   /// **'Ends {date}'**
   String recurringDonationsDetailEndsTag(Object date);
 
+  /// No description provided for @recurringDonationsDetailEndedTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended {date}'**
+  String recurringDonationsDetailEndedTag(Object date);
+
   /// No description provided for @recurringDonationsDetailHistoryTitle.
   ///
   /// In en, this message translates to:
