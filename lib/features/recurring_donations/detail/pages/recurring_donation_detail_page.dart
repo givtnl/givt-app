@@ -204,6 +204,7 @@ class _RecurringDonationDetailPageState
             value: _getTimeDisplay(uiModel, context),
             label: _getHelpingLabel(uiModel, context),
             endDateTag: uiModel.endDate,
+            isActive: uiModel.isActive,
           ),
         ),
       ],
@@ -215,6 +216,7 @@ class _RecurringDonationDetailPageState
     required String value,
     required String label,
     DateTime? endDateTag,
+    bool isActive = true,
   }) {
     return Stack(
       clipBehavior: Clip.none,
@@ -246,8 +248,10 @@ class _RecurringDonationDetailPageState
                 borderRadius: BorderRadius.circular(12),
               ),
               child: LabelSmallText(
-                context.l10n.recurringDonationsDetailEndsTag(
-                  _formatDate(endDateTag, context),
+                _buildEndDateLabel(
+                  context: context,
+                  isActive: isActive,
+                  endDate: endDateTag,
                 ),
                 color: FamilyAppTheme.highlight30,
                 textAlign: TextAlign.center,
@@ -256,6 +260,18 @@ class _RecurringDonationDetailPageState
           ),
       ],
     );
+  }
+
+  String _buildEndDateLabel({
+    required BuildContext context,
+    required bool isActive,
+    required DateTime endDate,
+  }) {
+    final formattedDate = _formatDate(endDate, context);
+    if (!isActive) {
+      return context.l10n.recurringDonationsDetailEndedTag(formattedDate);
+    }
+    return context.l10n.recurringDonationsDetailEndsTag(formattedDate);
   }
 
   Widget _buildHistorySection(

@@ -1093,6 +1093,7 @@
   "recurringDonationsDetailSummaryHelping": "Helping",
   "recurringDonationsDetailSummaryHelped": "Helped",
   "recurringDonationsDetailEndsTag": "Ends {date}",
+  "recurringDonationsDetailEndedTag": "Ended {date}",
   "recurringDonationsDetailHistoryTitle": "History",
   "recurringDonationsDetailStatusUpcoming": "Upcoming",
   "recurringDonationsDetailStatusCompleted": "Completed",

@@ -2264,6 +2264,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String recurringDonationsDetailEndedTag(Object date) {
+    return 'Beendet $date';
+  }
+
+  @override
   String get recurringDonationsDetailHistoryTitle => 'Verlauf';
 
   @override

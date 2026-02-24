@@ -1093,6 +1093,7 @@
   "recurringDonationsDetailSummaryHelping": "Helpen",
   "recurringDonationsDetailSummaryHelped": "Geholpen",
   "recurringDonationsDetailEndsTag": "Eindigt {date}",
+  "recurringDonationsDetailEndedTag": "Geëindigd op {date}",
   "recurringDonationsDetailHistoryTitle": "Geschiedenis",
   "recurringDonationsDetailStatusUpcoming": "Aankomend",
   "recurringDonationsDetailStatusCompleted": "Voltooid",
