@@ -51,72 +51,79 @@ class _ChangeBankDetailsBottomSheetState
               fontWeight: FontWeight.bold,
             ),
       ),
-      child: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            _buildTextFormField(
-              isVisibile: widget.iban.isNotEmpty,
-              hintText: locals.ibanPlaceHolder,
-              controller: iban,
-              keyboardType: TextInputType.text,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (!isValid(value)) {
-                  return '';
-                }
-                return null;
-              },
+      child: BlocBuilder<PersonalInfoEditBloc, PersonalInfoEditState>(
+        builder: (context, state) {
+          return Form(
+            key: formKey,
+            child: Column(
+              children: [
+                _buildTextFormField(
+                  isVisibile: widget.iban.isNotEmpty,
+                  hintText: locals.ibanPlaceHolder,
+                  controller: iban,
+                  keyboardType: TextInputType.text,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    if (!isValid(value)) {
+                      return '';
+                    }
+                    return null;
+                  },
+                ),
+                _buildTextFormField(
+                  isVisibile: widget.iban.isEmpty,
+                  hintText: locals.sortCodePlaceholder,
+                  controller: sortCode,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    if (!Util.ukSortCodeRegEx.hasMatch(value)) {
+                      return '';
+                    }
+                    return null;
+                  },
+                ),
+                _buildTextFormField(
+                  isVisibile: widget.iban.isEmpty,
+                  hintText: locals.bankAccountNumberPlaceholder,
+                  controller: accountNumber,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    if (value.length != 8) {
+                      return '';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: size.height * 0.05),
+                Expanded(child: Container()),
+                if (state.status == PersonalInfoEditStatus.loading)
+                  const Center(child: CircularProgressIndicator())
+                else
+                  ElevatedButton(
+                    onPressed: () {
+                      if (!formKey.currentState!.validate()) {
+                        return;
+                      }
+                      context.read<PersonalInfoEditBloc>().add(
+                            PersonalInfoEditBankDetails(
+                              iban: iban.text,
+                              accountNumber: accountNumber.text,
+                              sortCode: sortCode.text,
+                            ),
+                          );
+                    },
+                    child: Text(locals.save),
+                  ),
+              ],
             ),
-            _buildTextFormField(
-              isVisibile: widget.iban.isEmpty,
-              hintText: locals.sortCodePlaceholder,
-              controller: sortCode,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (!Util.ukSortCodeRegEx.hasMatch(value)) {
-                  return '';
-                }
-                return null;
-              },
-            ),
-            _buildTextFormField(
-              isVisibile: widget.iban.isEmpty,
-              hintText: locals.bankAccountNumberPlaceholder,
-              controller: accountNumber,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (value.length != 8) {
-                  return '';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: size.height * 0.05),
-            Expanded(child: Container()),
-            ElevatedButton(
-              onPressed: () {
-                if (!formKey.currentState!.validate()) {
-                  return;
-                }
-                context.read<PersonalInfoEditBloc>().add(
-                      PersonalInfoEditBankDetails(
-                        iban: iban.text,
-                        accountNumber: accountNumber.text,
-                        sortCode: sortCode.text,
-                      ),
-                    );
-              },
-              child: Text(locals.save),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
