@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/change_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_bank_details_bottom_sheet.dart';
+import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_name_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
@@ -209,7 +210,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
                 value: isUkUser
                     ? locals.bacsSortcodeAccountnumber(
-                        user.sortCode,
+                        SortCodeTextFormatter.formatForDisplay(user.sortCode),
                         user.accountNumber,
                       )
                     : user.iban,

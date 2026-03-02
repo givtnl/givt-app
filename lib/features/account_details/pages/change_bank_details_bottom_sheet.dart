@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -34,7 +35,7 @@ class _ChangeBankDetailsBottomSheetState
   void initState() {
     iban.text = widget.iban;
     accountNumber.text = widget.accountNumber;
-    sortCode.text = widget.sortCode;
+    sortCode.text = SortCodeTextFormatter.formatForDisplay(widget.sortCode);
     super.initState();
   }
 
@@ -76,12 +77,13 @@ class _ChangeBankDetailsBottomSheetState
                   isVisibile: widget.iban.isEmpty,
                   hintText: locals.sortCodePlaceholder,
                   controller: sortCode,
+                  inputFormatters: [SortCodeTextFormatter()],
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '';
+                      return locals.fieldRequired;
                     }
                     if (!Util.ukSortCodeRegEx.hasMatch(value)) {
-                      return '';
+                      return locals.sortCodeMustBe6Digits;
                     }
                     return null;
                   },
@@ -114,7 +116,9 @@ class _ChangeBankDetailsBottomSheetState
                             PersonalInfoEditBankDetails(
                               iban: iban.text,
                               accountNumber: accountNumber.text,
-                              sortCode: sortCode.text,
+                              sortCode: SortCodeTextFormatter.stripDashes(
+                                sortCode.text,
+                              ),
                             ),
                           );
                     },
@@ -134,6 +138,7 @@ class _ChangeBankDetailsBottomSheetState
     required String? Function(String?) validator,
     bool isVisibile = true,
     TextInputType? keyboardType = TextInputType.number,
+    List<TextInputFormatter>? inputFormatters,
   }) {
     return Visibility(
       visible: isVisibile,
@@ -146,6 +151,7 @@ class _ChangeBankDetailsBottomSheetState
         }),
         keyboardType: keyboardType,
         textCapitalization: TextCapitalization.words,
+        inputFormatters: inputFormatters ?? const [],
       ),
     );
   }

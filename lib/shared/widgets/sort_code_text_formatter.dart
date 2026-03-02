@@ -72,4 +72,20 @@ class SortCodeTextFormatter extends TextInputFormatter {
   static String stripDashes(String formattedSortCode) {
     return formattedSortCode.replaceAll('-', '');
   }
+
+  /// Formats a stored sort code for display (XX-XX-XX).
+  /// Accepts either digits-only or already formatted input.
+  ///
+  /// Example: "123456" or "12-34-56" -> "12-34-56"
+  static String formatForDisplay(String value) {
+    final digitsOnly = value.replaceAll(RegExp(r'[^\d]'), '');
+    final truncated =
+        digitsOnly.length > 6 ? digitsOnly.substring(0, 6) : digitsOnly;
+    if (truncated.isEmpty) return '';
+    if (truncated.length <= 2) return truncated;
+    if (truncated.length <= 4) {
+      return '${truncated.substring(0, 2)}-${truncated.substring(2)}';
+    }
+    return '${truncated.substring(0, 2)}-${truncated.substring(2, 4)}-${truncated.substring(4)}';
+  }
 }
