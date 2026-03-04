@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/cubit/interests_cubit.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class InterestsTally extends StatelessWidget {
   const InterestsTally({
@@ -31,7 +31,7 @@ class InterestsTally extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: tally >= index
-            ? FamilyAppTheme.primary70
+            ? FunTheme.of(context).primary70
             : Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       child: Text(

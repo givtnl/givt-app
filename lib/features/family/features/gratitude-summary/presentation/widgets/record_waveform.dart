@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:waveform_flutter/waveform_flutter.dart';
 
 class RecordWaveform extends StatefulWidget {
@@ -29,8 +29,8 @@ class _RecordWaveformState extends State<RecordWaveform> {
           animation: animation,
           amplitude: amplitude,
           color: widget.showRedVersion
-              ? FamilyAppTheme.error60
-              : FamilyAppTheme.primary70,
+              ? FunTheme.of(context).error60
+              : FunTheme.of(context).primary70,
         ),
         stream: _recordCubit.getAmplitudeStream(),
       ),

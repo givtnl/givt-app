@@ -65,7 +65,9 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
               analyticsEvent: AnalyticsEventName.shareAvatarClicked.toEvent(),
             ),
             const SizedBox(height: 16),
-            FunButton.secondary(
+            FunButton(
+              variant: FunButtonVariant.secondary,
+              fullBorder: true,
               onTap: () async {
                 ConfettiHelper.show(
                   context,

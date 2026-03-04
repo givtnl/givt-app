@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,11 +25,12 @@ class GivtCloseButton extends StatelessWidget {
         baseBorderSize: 4,
         isDisabled: isDisabled,
         onTap: () => context.pop(),
-        analyticsEvent: AnalyticsEventName.bottomsheetCloseButtonClicked.toEvent(),
+        analyticsEvent:
+            AnalyticsEventName.bottomsheetCloseButtonClicked.toEvent(),
         child: Container(
           width: 40,
           height: 40,
-          color: isDisabled ? FamilyAppTheme.disabledTileBorder : Colors.white,
+          color: isDisabled ? FunTheme.of(context).disabledTileBorder : Colors.white,
           child: Icon(
             FontAwesomeIcons.xmark,
             size: 20,

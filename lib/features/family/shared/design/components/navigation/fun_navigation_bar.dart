@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -51,7 +51,7 @@ class FunNavigationBar extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.white,
-        indicatorColor: FamilyAppTheme.primary95,
+        indicatorColor: FunTheme.of(context).primary95,
         surfaceTintColor: Colors.white,
         destinations: destinations,
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class GivtBanner extends StatelessWidget {
   const GivtBanner({
@@ -22,9 +22,9 @@ class GivtBanner extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: FamilyAppTheme.highlight80,
+            color: FunTheme.of(context).highlight80,
           ),
         ],
       ),
@@ -36,7 +36,7 @@ class GivtBanner extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: FamilyAppTheme.highlight95,
+          color: FunTheme.of(context).highlight95,
         ),
         child: Row(
           children: [
@@ -56,13 +56,13 @@ class GivtBanner extends StatelessWidget {
                   title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  color: FamilyAppTheme.highlight40,
+                  color: FunTheme.of(context).highlight40,
                 ),
                 TitleMediumText(
                   content,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  color: FamilyAppTheme.highlight30,
+                  color: FunTheme.of(context).highlight30,
                 )
               ],
             ),

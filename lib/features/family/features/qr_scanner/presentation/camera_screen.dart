@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_screen_frame.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -94,7 +94,7 @@ class _CameraScreenState extends State<CameraScreen> {
                       state.status == CameraStatus.scanned)
                     _buildMobileScanner(context.read<CameraCubit>())
                   else
-                    _buildDisabledCameraBox(),
+                    _buildDisabledCameraBox(context),
                   Positioned.fill(
                     child: state.status == CameraStatus.scanned
                         ? _builCenterLoader()
@@ -119,11 +119,11 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
-  Widget _buildDisabledCameraBox() {
+  Widget _buildDisabledCameraBox(BuildContext context) {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: FamilyAppTheme.disabledCameraGrey,
+      color: FunTheme.of(context).disabledCameraGrey,
     );
   }
 

@@ -10,7 +10,7 @@ import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/widgets/donation_list_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/features/review_donations/cubit/review_donations_cubit.dart';
 import 'package:givt_app/features/review_donations/models/review_donations_uimodel.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -82,7 +82,8 @@ class _ReviewDonationsPageState extends State<ReviewDonationsPage> {
     return FunScaffold(
       canPop: false,
       minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         title: locals.reviewDonationsTitle,
       ),
       body: Column(
@@ -176,7 +177,8 @@ class _ReviewDonationsPageState extends State<ReviewDonationsPage> {
 
   Widget _buildLoadingScaffold() {
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         title: context.l10n.reviewDonationsTitle,
       ),
       body: const Center(
@@ -187,7 +189,8 @@ class _ReviewDonationsPageState extends State<ReviewDonationsPage> {
 
   Widget _buildErrorScaffold(BuildContext context, String? error) {
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         title: context.l10n.reviewDonationsTitle,
       ),
       body: Center(

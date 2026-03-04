@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 
 class FilterSuggestionCard extends StatelessWidget {
   const FilterSuggestionCard({
@@ -70,11 +71,12 @@ class FilterSuggestionCard extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Text(
+                  BodySmallText(
                     title,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: isFocused ? color : Colors.white,
-                        ),
+                    color: isFocused ? color : Colors.white,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -23,26 +26,14 @@ class SignSepaMandatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final user = context.read<AuthCubit>().state.user;
+    final user = context.watch<AuthCubit>().state.user;
     final registrationState = context.watch<RegistrationBloc>().state;
 
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         title: locals.signMandateTitle,
         leading: const GivtBackButtonFlat(),
-      ),
-      floatingActionButton: FunButton(
-        onTap: registrationState.status == RegistrationStatus.loading
-            ? null
-            : () => context.read<RegistrationBloc>().add(
-                  RegistrationSignMandate(
-                    guid: user.guid,
-                    appLanguage: locals.localeName,
-                  ),
-                ),
-        isLoading: registrationState.status == RegistrationStatus.loading,
-        text: locals.signMandate,
-        analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
       ),
       body: BlocListener<RegistrationBloc, RegistrationState>(
         listenWhen: (previous, current) => previous.status != current.status,
@@ -83,78 +74,103 @@ class SignSepaMandatePage extends StatelessWidget {
             );
           }
         },
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
-                child: IntrinsicHeight(
-                  child: Column(
-                    children: [
-                      FunCard(
-                        backgroundColor: FamilyAppTheme.neutralVariant99,
-                        content: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            LabelLargeText(
-                              locals.bacsVerifyTitle,
-                            ),
-                            const SizedBox(height: 8),
-                            _buildInforRow(
-                              value: '${user.firstName} ${user.lastName}',
-                              icon: const Icon(
-                                Icons.person,
-                                color: FamilyAppTheme.primary40,
-                                size: 20,
-                              ),
-                            ),
-                            _buildInforRow(
-                              value: user.email,
-                              icon: const Icon(
-                                Icons.alternate_email,
-                                color: FamilyAppTheme.secondary40,
-                                size: 20,
-                              ),
-                            ),
-                            _buildInforRow(
-                              value:
-                                  '${user.address} ${user.postalCode} ${user.city}, ${user.country}',
-                              icon: const Icon(
-                                FontAwesomeIcons.house,
-                                color: FamilyAppTheme.primary40,
-                                size: 18,
-                              ),
-                            ),
-                            _buildInforRow(
-                              value: user.iban,
-                              icon: const Icon(
-                                FontAwesomeIcons.creditCard,
-                                color: FamilyAppTheme.tertiary40,
-                                size: 18,
-                              ),
-                            ),
-                          ],
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  FunCard(
+                    backgroundColor: FamilyAppTheme.neutralVariant99,
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        LabelLargeText(
+                          locals.bacsVerifyTitle,
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      BodyMediumText(
-                        locals.sepaVerifyBody,
-                        textAlign: TextAlign.center,
-                      ),
-                      const Spacer(),
-                      BodySmallText(
-                        locals.signMandateDisclaimer,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 100),
-                    ],
+                        const SizedBox(height: 8),
+                        _buildInforRow(
+                          value: '${user.firstName} ${user.lastName}',
+                          icon: const Icon(
+                            Icons.person,
+                            color: FamilyAppTheme.primary40,
+                            size: 20,
+                          ),
+                        ),
+                        _buildInforRow(
+                          value: user.email,
+                          icon: const Icon(
+                            Icons.alternate_email,
+                            color: FamilyAppTheme.secondary40,
+                            size: 20,
+                          ),
+                        ),
+                        _buildInforRow(
+                          value:
+                              '${user.address} ${user.postalCode} ${user.city}, ${user.country}',
+                          icon: const Icon(
+                            FontAwesomeIcons.house,
+                            color: FamilyAppTheme.primary40,
+                            size: 18,
+                          ),
+                        ),
+                        _buildInforRow(
+                          value: user.iban,
+                          icon: const Icon(
+                            FontAwesomeIcons.creditCard,
+                            color: FamilyAppTheme.tertiary40,
+                            size: 18,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  BodyMediumText(
+                    locals.sepaVerifyBody,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  BodyMediumText(
+                    locals.signMandateDisclaimer,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-            );
-          },
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Spacer(),
+                  FunButton(
+                    onTap: registrationState.status == RegistrationStatus.loading
+                        ? null
+                        : () => context.read<RegistrationBloc>().add(
+                              RegistrationSignMandate(
+                                guid: user.guid,
+                                appLanguage: locals.localeName,
+                              ),
+                            ),
+                    isLoading:
+                        registrationState.status == RegistrationStatus.loading,
+                    text: locals.signMandate,
+                    analyticsEvent:
+                        AnalyticsEventName.continueClicked.toEvent(),
+                  ),
+                  const SizedBox(height: 8),
+                  FunTextButton(
+                    onTap: () => context.pushNamed(Pages.personalInfoEdit.name),
+                    text: locals.changeDetails,
+                    analyticsEvent: AnalyticsEventName
+                        .signMandateChangeDetailsClicked
+                        .toEvent(),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

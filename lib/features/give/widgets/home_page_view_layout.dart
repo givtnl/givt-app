@@ -13,20 +13,11 @@ class HomePageViewLayout extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     return Padding(
       padding: const EdgeInsets.only(
-        right: 8,
-        left: 8,
-        bottom: 8,
-        top: 15,
+        top: 20,
       ),
-      child: Container(
+      child: SizedBox(
         height: size.height,
         width: size.width,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey.shade200,
-          ),
-          borderRadius: BorderRadius.circular(5),
-        ),
         child: child,
       ),
     );

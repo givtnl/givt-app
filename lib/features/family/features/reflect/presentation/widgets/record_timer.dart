@@ -4,7 +4,7 @@ import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/record_uimodel.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/record_waveform.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
@@ -58,8 +58,8 @@ class _RecordTimerWidgetState extends State<RecordTimerWidget> {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: widget.showRedVersion
-                ? FamilyAppTheme.error60
-                : FamilyAppTheme.primary70,
+                ? FunTheme.of(context).error60
+                : FunTheme.of(context).primary70,
             fontSize: 57,
             fontFamily: 'Rouna',
             fontWeight: FontWeight.w700,

@@ -5,6 +5,7 @@ class RecurringDonationDetailUIModel {
   const RecurringDonationDetailUIModel({
     required this.organizationName,
     required this.organizationIcon,
+    required this.organisationType,
     required this.totalDonated,
     required this.remainingTime,
     required this.endDate,
@@ -18,6 +19,7 @@ class RecurringDonationDetailUIModel {
 
   final String organizationName;
   final String organizationIcon;
+  final CollectGroupType organisationType;
   final double totalDonated;
   final String remainingTime;
   final DateTime? endDate;
@@ -38,6 +40,7 @@ class RecurringDonationDetailUIModel {
     return other is RecurringDonationDetailUIModel &&
         other.organizationName == organizationName &&
         other.organizationIcon == organizationIcon &&
+        other.organisationType == organisationType &&
         other.totalDonated == totalDonated &&
         other.remainingTime == remainingTime &&
         other.endDate == endDate &&
@@ -53,6 +56,7 @@ class RecurringDonationDetailUIModel {
   int get hashCode {
     return organizationName.hashCode ^
         organizationIcon.hashCode ^
+        organisationType.hashCode ^
         totalDonated.hashCode ^
         remainingTime.hashCode ^
         endDate.hashCode ^
@@ -67,6 +71,7 @@ class RecurringDonationDetailUIModel {
   RecurringDonationDetailUIModel copyWith({
     String? organizationName,
     String? organizationIcon,
+    CollectGroupType? organisationType,
     double? totalDonated,
     String? remainingTime,
     DateTime? endDate,
@@ -80,6 +85,7 @@ class RecurringDonationDetailUIModel {
     return RecurringDonationDetailUIModel(
       organizationName: organizationName ?? this.organizationName,
       organizationIcon: organizationIcon ?? this.organizationIcon,
+      organisationType: organisationType ?? this.organisationType,
       totalDonated: totalDonated ?? this.totalDonated,
       remainingTime: remainingTime ?? this.remainingTime,
       endDate: endDate ?? this.endDate,

@@ -16,7 +16,16 @@ InputBorder get selectedInputBorder => OutlineInputBorder(
         width: 2,
       ),
     );
+
 InputBorder get errorInputBorder => OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: const BorderSide(
+        color: AppTheme.error50,
+        width: 2,
+      ),
+    );
+
+InputBorder get focusedErrorInputBorder => OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(
         color: AppTheme.error50,

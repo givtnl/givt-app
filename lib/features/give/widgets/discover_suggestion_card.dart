@@ -37,10 +37,10 @@ class DiscoverSuggestionCard extends StatelessWidget {
           child: Card(
             color: color,
             child: Container(
-              padding: const EdgeInsets.only(left: 5, right: 5),
+              padding: const EdgeInsets.only(left: 8, right: 8),
               decoration: BoxDecoration(
                 color: color,
-                borderRadius: BorderRadius.circular(3.5),
+                borderRadius: BorderRadius.circular(6),
                 border: const Border(
                   top: BorderSide(
                     color: Colors.transparent,
@@ -63,8 +63,8 @@ class DiscoverSuggestionCard extends StatelessWidget {
                   Container(
                     height: 50,
                     padding: const EdgeInsets.symmetric(
-                      vertical: 5,
-                      horizontal: 5,
+                      vertical: 8,
+                      horizontal: 8,
                     ),
                     child: Image.asset(
                       icon,
@@ -74,10 +74,9 @@ class DiscoverSuggestionCard extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),

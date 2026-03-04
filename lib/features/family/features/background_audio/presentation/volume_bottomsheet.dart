@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/animated_speaker.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';

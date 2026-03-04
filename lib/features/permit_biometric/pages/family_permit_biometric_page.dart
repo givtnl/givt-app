@@ -32,7 +32,8 @@ class FamilyPermitBiometricPage extends StatelessWidget {
       },
       builder: (BuildContext context, PermitBiometricState state) {
         return FunScaffold(
-          appBar: FunTopAppBar.white(
+          appBar: FunTopAppBar(
+          variant: FunTopAppBarVariant.white,
           ),
           body: _buildContent(context, state),
         );

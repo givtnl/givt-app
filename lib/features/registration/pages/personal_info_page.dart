@@ -5,7 +5,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
-import 'package:givt_app/features/family/shared/design/components/input/fun_input_dropdown.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/fun_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
@@ -34,6 +33,7 @@ class PersonalInfoPage extends StatefulWidget {
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
   final _formKey = GlobalKey<FormState>();
   final _address = TextEditingController();
+  final _houseNumber = TextEditingController();
   final _city = TextEditingController();
   final _postalCode = TextEditingController();
   final _phone = TextEditingController();
@@ -56,6 +56,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   void dispose() {
     super.dispose();
     _address.dispose();
+    _houseNumber.dispose();
     _city.dispose();
     _postalCode.dispose();
     _phone.dispose();
@@ -70,8 +71,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     final isUk = Country.unitedKingdomCodes().contains(
       _selectedCountry.countryCode,
     );
+    final isNl = _selectedCountry.isNetherlands;
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         title: locals.personalInfo,
         actions: [
           IconButton(
@@ -138,20 +141,57 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   child: IntrinsicHeight(
                     child: Column(
                       children: [
-                        _buildTextFormField(
-                          hintText: locals.streetAndHouseNumber,
-                          controller: _address,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '';
-                            }
-                            return null;
-                          },
-                          autofillHints: const [
-                            AutofillHints.fullStreetAddress,
-                          ],
-                          keyboardType: TextInputType.streetAddress,
-                        ),
+                        // For NL: split into street + house number
+                        // For UK: single "Address" field
+                        // For others: "Street name and number"
+                        if (isNl) ...[
+                          _buildTextFormField(
+                            hintText: locals.street,
+                            controller: _address,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return locals.fieldRequired;
+                              }
+                              return null;
+                            },
+                            autofillHints: const [
+                              AutofillHints.streetAddressLine1,
+                            ],
+                            keyboardType: TextInputType.streetAddress,
+                          ),
+                          const SizedBox(height: 16),
+                          _buildTextFormField(
+                            hintText: locals.houseNumber,
+                            controller: _houseNumber,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return locals.fieldRequired;
+                              }
+                              return null;
+                            },
+                            autofillHints: const [
+                              AutofillHints.streetAddressLine2,
+                            ],
+                            keyboardType: TextInputType.streetAddress,
+                          ),
+                        ] else ...[
+                          _buildTextFormField(
+                            hintText: isUk
+                                ? locals.address
+                                : locals.streetAndHouseNumber,
+                            controller: _address,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return locals.fieldRequired;
+                              }
+                              return null;
+                            },
+                            autofillHints: const [
+                              AutofillHints.fullStreetAddress,
+                            ],
+                            keyboardType: TextInputType.streetAddress,
+                          ),
+                        ],
                         const SizedBox(height: 16),
                         _buildTextFormField(
                           hintText: locals.postalCode,
@@ -159,7 +199,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                           toUpperCase: isUk,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return '';
+                              return locals.fieldRequired;
                             }
                             if (!isUk) {
                               return null;
@@ -169,7 +209,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                               value,
                             );
                             if (formattedPostCode == null) {
-                              return '';
+                              return locals.enterValidPostcode;
                             }
                             if (formattedPostCode != _postalCode.text) {
                               _postalCode.text = formattedPostCode;
@@ -185,7 +225,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                           controller: _city,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return '';
+                              return locals.fieldRequired;
                             }
                             return null;
                           },
@@ -199,6 +239,14 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         ),
                         // const Spacer(),
                         const SizedBox(height: 32),
+                        // Bank details section header for UK and NL
+                        if (isUk || isNl) ...[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: LabelLargeText(locals.bankDetails),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
                         PaymentSystemTab(
                           isUK: isUk,
                           bankAccount: bankAccount,
@@ -259,26 +307,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       visible: isVisible,
       child: Column(
         children: [
-          FunInputDropdown<Country>(
-            value: _selectedCountry,
-            onChanged: (Country? newValue) {
-              if (newValue == null) {
-                return;
-              }
-              setState(() {
-                _selectedCountry = newValue;
-                _selectedPhoneCountry = newValue;
-              });
-            },
-            items: Country.sortedCountries()
-                .where((element) => element.isUS == _selectedCountry.isUS)
-                .toList(),
-            itemBuilder: (context, country) => Text(
-              Country.getCountry(country.countryCode, locals),
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
-          const SizedBox(height: 8),
           MobileNumberFormField(
             phone: _phone,
             selectedCountryPrefix: _selectedPhoneCountry.prefix,
@@ -303,7 +331,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             validator: (String? value) {
               final cleanedValue = value?.replaceAll(RegExp(r'\s+'), '') ?? '';
               if (cleanedValue.isEmpty) {
-                return '';
+                return locals.fieldRequired;
               }
 
               if (Country.unitedKingdomCodes().contains(
@@ -314,7 +342,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   phoneNumber: cleanedValue,
                 );
                 if (normalizedValue.isEmpty) {
-                  return '';
+                  return locals.enterValidPhoneNumber;
                 }
                 final withPrefix =
                     '${_selectedPhoneCountry.prefix}$normalizedValue';
@@ -325,7 +353,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   withPrefix,
                 );
                 if (!matchesLocal && !matchesInternational) {
-                  return '';
+                  return locals.enterValidPhoneNumber;
                 }
                 return null;
               }
@@ -334,7 +362,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 if (!Util.usPhoneNumberRegEx.hasMatch(
                   Util.formatPhoneNrUs(cleanedValue),
                 )) {
-                  return '';
+                  return locals.enterValidPhoneNumber;
                 }
                 return null;
               }
@@ -345,12 +373,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 phoneNumber: cleanedValue,
               );
               if (normalizedValue.isEmpty) {
-                return '';
+                return locals.enterValidPhoneNumber;
               }
               if (!Util.phoneNumberRegEx(
                 prefix,
               ).hasMatch('+$prefix$normalizedValue')) {
-                return '';
+                return locals.enterValidPhoneNumber;
               }
 
               return null;
@@ -371,9 +399,18 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     setState(() {
       isLoading = true;
     });
+
+    // For Netherlands, combine street and house number
+    final address = _selectedCountry.isNetherlands
+        ? '${_address.text} ${_houseNumber.text}'
+        : _address.text;
+
+    // Strip dashes from sort code for API submission
+    final sortCodeValue = sortCode.text.replaceAll('-', '');
+
     context.read<RegistrationBloc>().add(
       RegistrationPersonalInfoSubmitted(
-        address: _address.text,
+        address: address,
         city: _city.text,
         postalCode: _postalCode.text,
         country: _selectedCountry.countryCode,
@@ -382,7 +419,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           phoneNumber: _phone.text,
         ),
         iban: ibanNumber.text,
-        sortCode: sortCode.text,
+        sortCode: sortCodeValue,
         accountNumber: bankAccount.text,
         appLanguage: Localizations.localeOf(context).languageCode,
         countryCode: _selectedCountry.countryCode,
@@ -392,6 +429,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
   bool get isEnabled {
     if (_address.text.isEmpty) return false;
+    // For Netherlands, also check house number
+    if (_selectedCountry.isNetherlands && _houseNumber.text.isEmpty) {
+      return false;
+    }
     if (_city.text.isEmpty) return false;
     if (_postalCode.text.isEmpty) return false;
 
@@ -467,9 +508,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         validator: validator,
         autofillHints: autofillHints ?? const [],
         keyboardType: keyboardType,
-        errorStyle: const TextStyle(
-          height: 0.01,
-        ),
       ),
     );
   }

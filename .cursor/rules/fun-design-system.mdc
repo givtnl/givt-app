@@ -24,9 +24,10 @@ alwaysApply: true
   - etc.
 
 ## Theming
-- Use FUN color palette
-- Use `FamilyAppTheme` constants
-- Ensure responsive design across screen sizes
+- Use FUN color palette and ensure responsive design across screen sizes
+- **When `BuildContext` is available** (e.g. inside `build(BuildContext context)` or any method that receives `context`): use **`FunTheme.of(context).xxx`** for theme colors (e.g. `FunTheme.of(context).primary30`, `FunTheme.of(context).error50`). This respects the active theme (Givt vs Givt4Kids).
+- **Where Dart requires const** (default parameter values, factory constructor arguments, static/const fields): use **`FamilyAppTheme.xxx`** (from `fun_theme_legacy.dart`). Do not use `FunTheme.of(context)` in const expressions.
+- Import `package:givt_app/features/family/shared/design/theme/fun_theme.dart` for `FunTheme`, and `package:givt_app/features/family/utils/fun_theme_legacy.dart` when you need `FamilyAppTheme` for const defaults.
 
 ## Refactoring
 - When modifying UI, refactor to use FUN components

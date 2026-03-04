@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -25,7 +26,7 @@ class FunCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor ?? Colors.white,
         border: Border.all(
-          color: FamilyAppTheme.neutralVariant95,
+          color: FunTheme.of(context).neutralVariant95,
           width: 2,
         ),
         borderRadius: BorderRadius.circular(20),

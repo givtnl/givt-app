@@ -39,7 +39,9 @@ class ScanningNfcAnimation extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-          child: FunButton.secondary(
+          child: FunButton(
+            variant: FunButtonVariant.secondary,
+            fullBorder: true,
             onTap: () {
               context.pop();
               scanNfcCubit.cancelScanning();

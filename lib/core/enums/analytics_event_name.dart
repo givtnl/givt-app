@@ -26,6 +26,7 @@ enum AnalyticsEventName {
   readyClicked('ready_clicked'),
   retryClicked('retry_clicked'),
   skipClicked('skip_clicked'),
+  giveButtonPressed('give_button_pressed'),
   createChildProfileClicked('create_child_profile_clicked'),
   directNoticeClicked('direct_notice_clicked'),
   enterCardDetailsClicked('enter_card_details_clicked'),
@@ -120,14 +121,49 @@ enum AnalyticsEventName {
   sliderAmountChanged('slider_amount_changed'),
   chooseAmountDonateClicked('choose_amount_donate_clicked'),
   redirectCoinToNoAppFlow('redirect_coin_to_noapp_flow'),
-  continueByEmailSignUpNewUserCliked('continue_by_email_sign_up_new_user_clicked'),
-  continueByEmailSignUpTempUserClicked('continue_by_email_sign_up_temp_user_clicked'),
-  registrationFilledInPersonalInfoSheetFilled('registration_filled_in_personal_info_sheet_filled'),
-  registrationStripeSheetFilled('registration_stripe_sheet_filled'),
-  registrationStripeSheetIncompleteClosed('registration_stripe_sheet_incomplete_closed'),
-  registrationSuccesButtonClicked('registration_success_button_clicked'),
-  registrationEnterPaymentDetailsClicked('registration_enter_payment_details_clicked'),
-  registrationContinueAfterPersonalInfoClicked('registration_continue_after_personal_info_clicked'),
+  // Registration flow
+  continueByEmailSignUpNewUserCliked(
+    'continue_by_email_sign_up_new_user_clicked',
+  ),
+  continueByEmailSignUpTempUserClicked(
+    'continue_by_email_sign_up_temp_user_clicked',
+  ),
+  registrationFilledInPersonalInfoSheetFilled(
+    'registration_filled_in_personal_info_sheet_filled',
+  ),
+  registrationStripeSheetFilled(
+    'registration_stripe_sheet_filled',
+  ),
+  registrationStripeSheetIncompleteClosed(
+    'registration_stripe_sheet_incomplete_closed',
+  ),
+  registrationSuccesButtonClicked(
+    'registration_success_button_clicked',
+  ),
+  registrationEnterPaymentDetailsClicked(
+    'registration_enter_payment_details_clicked',
+  ),
+  registrationContinueAfterPersonalInfoClicked(
+    'registration_continue_after_personal_info_clicked',
+  ),
+  giftAidRegistrationActivateClicked(
+    'gift_aid_registration_activate_clicked',
+  ),
+  giftAidRegistrationSetUpLaterClicked(
+    'gift_aid_registration_set_up_later_clicked',
+  ),
+  giftAidRegistrationLearnMoreClicked(
+    'gift_aid_registration_learn_more_clicked',
+  ),
+  giftAidRegistrationInfoIconClicked(
+    'gift_aid_registration_info_icon_clicked',
+  ),
+  giftAidRegistrationDoneClicked(
+    'gift_aid_registration_done_clicked',
+  ),
+  giftAidRegistrationCheckboxChanged(
+    'gift_aid_registration_checkbox_changed',
+  ),
   amountPressed('amount_pressed'),
   backButtonPressed('back_button_pressed'),
   returnToHomePressed('return_to_home_pressed'),
@@ -136,6 +172,7 @@ enum AnalyticsEventName {
   choseGiveWithCoin('chose_give_with_coin'),
   choseGiveWithQRCode('chose_give_with_qr_code'),
   cancelGive('cancel_give'),
+  giveHomeTabsChanged('give_home_tabs_changed'),
   helpMeFindCharityPressed('help_me_find_charity_pressed'),
   askToFindCharityPressed('ask_my_parents_to_find_charity_pressed'),
   loginPressed('login_pressed'),
@@ -351,6 +388,7 @@ enum AnalyticsEventName {
   menuNavigationRecurringDonationClicked('menu_navigation_recurring_donation_clicked'),
   menuNavigationGiveLimitClicked('menu_navigation_give_limit_clicked'),
   menuNavigationPersonalInfoClicked('menu_navigation_personal_info_clicked'),
+  signMandateChangeDetailsClicked('sign_mandate_change_details_clicked'),
   menuNavigationAmountPresetsClicked('menu_navigation_amount_presets_clicked'),
   menuNavigationPlatformContributionClicked('menu_navigation_platform_contribution_clicked'),
   menuNavigationBiometricClicked('menu_navigation_biometric_clicked'),

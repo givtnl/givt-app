@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
@@ -19,7 +20,7 @@ class StatsContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: FamilyAppTheme.primary98,
+        color: FunTheme.of(context).primary98,
         borderRadius: BorderRadius.circular(12),
       ),
       width: double.infinity,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
+import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:iban/iban.dart';
@@ -42,19 +44,6 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
     final locals = context.l10n;
     return Column(
       children: [
-        if (!widget.isUK)
-          const Icon(
-            Icons.euro,
-            color: AppTheme.givtBlue,
-            size: 20,
-          ),
-        if (widget.isUK)
-          const Icon(
-            Icons.currency_pound_rounded,
-            color: AppTheme.givtBlue,
-            size: 20,
-          ),
-        const SizedBox(height: 16),
         Visibility(
           visible: !widget.isUK,
           child: _buildTextFormField(
@@ -65,10 +54,10 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
             onChanged: (value) => widget.onFieldChanged(value),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return '';
+                return locals.fieldRequired;
               }
               if (!isValid(value)) {
-                return '';
+                return locals.enterValidIban;
               }
               return null;
             },
@@ -83,12 +72,13 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
                 controller: widget.sortCode,
                 focusNode: widget.sortCodeFocus,
                 onChanged: (value) => widget.onFieldChanged(value),
+                inputFormatters: [SortCodeTextFormatter()],
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '';
+                    return locals.fieldRequired;
                   }
                   if (!Util.ukSortCodeRegEx.hasMatch(value)) {
-                    return '';
+                    return locals.sortCodeMustBe6Digits;
                   }
                   return null;
                 },
@@ -101,10 +91,10 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
                 onChanged: (value) => widget.onFieldChanged(value),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return '';
+                    return locals.fieldRequired;
                   }
                   if (value.length != 8) {
-                    return '';
+                    return locals.accountNumberMustBe8Digits;
                   }
                   return null;
                 },
@@ -123,6 +113,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
     required void Function(String) onChanged,
     FocusNode? focusNode,
     TextInputType? keyboardType = TextInputType.number,
+    List<TextInputFormatter>? inputFormatters,
   }) {
     return OutlinedTextFormField(
       controller: controller,
@@ -133,6 +124,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
       keyboardType: keyboardType,
       textCapitalization: TextCapitalization.words,
       scrollPadding: const EdgeInsets.only(bottom: 150),
+      inputFormatters: inputFormatters,
     );
   }
 }

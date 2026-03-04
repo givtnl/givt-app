@@ -38,7 +38,8 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
   Widget build(BuildContext context) {
     return FunScaffold(
       canPop: widget.existingFamily,
-      appBar: FunTopAppBar.primary99(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.primary99,
         title: context.l10n.setupFamilyTitle,
         leading: widget.existingFamily ? const GivtBackButtonFlat() : null,
       ),

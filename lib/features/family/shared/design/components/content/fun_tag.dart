@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 
 // Which side of the tag should be flat (non-circular)
 enum FlatSide { left, right, none }
 
+/// Visual variant of the tag; used to resolve text and accent colors from
+/// theme when the color parameters are not set.
+enum FunTagVariant {
+  primary,
+  secondary,
+  tertiary,
+  highlight,
+}
+
 class FunTag extends StatelessWidget {
   const FunTag({
     required this.text,
-    required this.textColor,
-    required this.accentColor,
+    this.textColor,
+    this.accentColor,
+    this.variant,
     super.key,
     this.subtitle,
     this.borderRadius,
@@ -19,7 +31,10 @@ class FunTag extends StatelessWidget {
     this.flatSide = FlatSide.none,
     this.iconSize,
     this.fontFeatures,
-  });
+  }) : assert(
+         variant != null || (textColor != null && accentColor != null),
+         'Either variant or both textColor and accentColor must be set',
+       );
 
   factory FunTag.fromArea({
     required Areas area,
@@ -73,98 +88,6 @@ class FunTag extends StatelessWidget {
     );
   }
 
-  factory FunTag.primary({
-    required String text,
-    IconData? iconData,
-    FlatSide flatSide = FlatSide.none,
-  }) {
-    return FunTag.fromColorCombo(
-      combo: ColorCombo.primary,
-      text: text,
-      iconData: iconData,
-      flatSide: flatSide,
-    );
-  }
-
-  factory FunTag.green({
-    required String text,
-    IconData? iconData,
-    FlatSide flatSide = FlatSide.none,
-  }) {
-    return FunTag.primary(
-      text: text,
-      iconData: iconData,
-      flatSide: flatSide,
-    );
-  }
-
-  factory FunTag.highlight({
-    required String text,
-    IconData? iconData,
-    FlatSide flatSide = FlatSide.none,
-  }) {
-    return FunTag.fromColorCombo(
-      combo: ColorCombo.highlight,
-      text: text,
-      iconData: iconData,
-      flatSide: flatSide,
-    );
-  }
-
-  factory FunTag.tertiary({
-    required String text,
-    IconData? iconData,
-    FlatSide flatSide = FlatSide.none,
-    double? iconSize,
-    List<FontFeature>? fontFeatures,
-  }) {
-    return FunTag.fromColorCombo(
-      combo: ColorCombo.tertiary,
-      text: text,
-      iconData: iconData,
-      flatSide: flatSide,
-      iconSize: iconSize,
-      fontFeatures: fontFeatures,
-    );
-  }
-
-  factory FunTag.purple({
-    required String text,
-    IconData? iconData,
-    FlatSide flatSide = FlatSide.none,
-  }) {
-    return FunTag.tertiary(
-      text: text,
-      iconData: iconData,
-      flatSide: flatSide,
-    );
-  }
-
-  factory FunTag.secondary({
-    required String text,
-    IconData? iconData,
-    FlatSide flatSide = FlatSide.none,
-  }) {
-    return FunTag.fromColorCombo(
-      combo: ColorCombo.secondary,
-      text: text,
-      iconData: iconData,
-      flatSide: flatSide,
-    );
-  }
-
-  factory FunTag.blue({
-    required String text,
-    IconData? iconData,
-    FlatSide flatSide = FlatSide.none,
-  }) {
-    return FunTag.secondary(
-      text: text,
-      iconData: iconData,
-      flatSide: flatSide,
-    );
-  }
-
   factory FunTag.xp(int xp) {
     return FunTag.fromArea(
       area: Areas.gold,
@@ -176,20 +99,49 @@ class FunTag extends StatelessWidget {
 
   final String text;
   final String? subtitle;
-  final Color textColor;
-  final Color accentColor;
+  final Color? textColor;
+  final Color? accentColor;
+  final FunTagVariant? variant;
   final BorderRadius? borderRadius;
   final IconData? iconData;
   final FlatSide flatSide;
   final double? iconSize;
   final List<FontFeature>? fontFeatures;
 
+  ({Color text, Color accent}) _themeColors(
+    FunAppTheme theme,
+    FunTagVariant v,
+  ) {
+    return switch (v) {
+      FunTagVariant.primary => (
+          text: theme.primary40,
+          accent: theme.primary95,
+        ),
+      FunTagVariant.secondary => (
+          text: theme.secondary40,
+          accent: theme.secondary95,
+        ),
+      FunTagVariant.tertiary => (
+          text: theme.tertiary40,
+          accent: theme.tertiary95,
+        ),
+      FunTagVariant.highlight => (
+          text: theme.highlight40,
+          accent: theme.highlight95,
+        ),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = FunTheme.of(context);
+    final resolved = variant != null
+        ? _themeColors(theme, variant!)
+        : (text: textColor!, accent: accentColor!);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 3),
       decoration: BoxDecoration(
-        color: accentColor,
+        color: resolved.accent,
         borderRadius: borderRadius ?? _getBorderRadius(),
       ),
       child: Padding(
@@ -207,18 +159,19 @@ class FunTag extends StatelessWidget {
                 if (iconData != null)
                   Icon(
                     iconData,
-                    color: textColor,
+                    color: resolved.text,
                     size: iconSize,
                   ),
                 if (iconData != null) const SizedBox(width: 4),
                 LabelSmallText(
                   text,
-                  color: textColor,
+                  color: resolved.text,
                   fontFeatures: fontFeatures,
                 ),
               ],
             ),
-            if (subtitle != null) LabelThinText(subtitle!, color: textColor),
+            if (subtitle != null)
+              LabelThinText(subtitle!, color: resolved.text),
           ],
         ),
       ),

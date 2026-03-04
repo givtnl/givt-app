@@ -30,6 +30,31 @@ jobs:
 #          VALIDATE_ALL_CODEBASE: false
 #          DISABLE_ERRORS: true
 
+  design-tokens:
+    name: Design tokens codegen
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.x'
+          cache: true
+
+      - name: Run token generator
+        run: dart run tool/gen_tokens.dart
+
+      - name: Fail if generated token files changed
+        run: |
+          git diff --exit-code -- \
+            lib/features/family/shared/design/tokens/fun_givt_tokens_generated.dart \
+            lib/features/family/shared/design/tokens/fun_givt4kids_tokens_generated.dart || (
+            echo "Generated token files are out of date. Run: dart run tool/gen_tokens.dart"
+            exit 1
+          )
+
 # Build apps
   droid:
     needs: linter

@@ -20,7 +20,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
@@ -154,9 +154,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               height: 24,
                             ),
                             Image.asset(
-                              isUS
-                                  ? 'assets/images/logo_green.png'
-                                  : 'assets/images/logo.png',
+                              'assets/images/logo.png',
                               width: 100,
                             ),
                             if (isUS)

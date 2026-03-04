@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class FunSecondaryTabs extends StatelessWidget {
   const FunSecondaryTabs({
@@ -25,10 +25,10 @@ class FunSecondaryTabs extends StatelessWidget {
             controller: controller,
             onTap: onTap,
             tabs: tabs,
-            unselectedLabelColor: FamilyAppTheme.neutral70,
-            labelColor: FamilyAppTheme.primary70,
-            dividerColor: FamilyAppTheme.neutral80,
-            indicatorColor: FamilyAppTheme.primary70,
+            unselectedLabelColor: FunTheme.of(context).neutral70,
+            labelColor: FunTheme.of(context).primary70,
+            dividerColor: FunTheme.of(context).neutral80,
+            indicatorColor: FunTheme.of(context).primary70,
           ),
           Expanded(
             child: TabBarView(

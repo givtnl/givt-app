@@ -12,7 +12,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/gra
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -108,7 +108,7 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                           titleBig: guessOption.text,
                           textColor:
                               guessOption.state == GuessOptionState.initial
-                              ? FamilyAppTheme.tertiary40
+                              ? FunTheme.of(context).tertiary40
                               : guessOption.state == GuessOptionState.correct
                               ? Colors.green
                               : Colors.red,
@@ -121,16 +121,16 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                               ),
                           borderColor:
                               guessOption.state == GuessOptionState.initial
-                              ? FamilyAppTheme.tertiary80
+                              ? FunTheme.of(context).tertiary80
                               : guessOption.state == GuessOptionState.correct
-                              ? FamilyAppTheme.primary80
-                              : FamilyAppTheme.error80,
+                              ? FunTheme.of(context).primary80
+                              : FunTheme.of(context).error80,
                           backgroundColor:
                               guessOption.state == GuessOptionState.initial
-                              ? FamilyAppTheme.tertiary98
+                              ? FunTheme.of(context).tertiary98
                               : guessOption.state == GuessOptionState.correct
-                              ? FamilyAppTheme.primary98
-                              : FamilyAppTheme.error98,
+                              ? FunTheme.of(context).primary98
+                              : FunTheme.of(context).error98,
                           iconPath: '',
                           hasIcon: false,
                         ),

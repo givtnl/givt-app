@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/utils/util.dart';
 
@@ -26,6 +27,85 @@ void main() {
     test('returns null for invalid postcode', () {
       expect(Util.formatUkPostCode('INVALID'), isNull);
       expect(Util.formatUkPostCode('SW1A 1A'), isNull);
+    });
+  });
+
+  group('Util.resolveLocale', () {
+    const supportedLocales = [
+      Locale('de'),
+      Locale('en'),
+      Locale('en', 'US'),
+      Locale('es'),
+      Locale('es', '419'),
+      Locale('nl'),
+    ];
+
+    test('returns null for null locale', () {
+      expect(
+        Util.resolveLocale(null, supportedLocales),
+        isNull,
+      );
+    });
+
+    test('returns null for supported locales', () {
+      expect(
+        Util.resolveLocale(const Locale('de'), supportedLocales),
+        isNull,
+      );
+      expect(
+        Util.resolveLocale(const Locale('en'), supportedLocales),
+        isNull,
+      );
+      expect(
+        Util.resolveLocale(const Locale('en', 'US'), supportedLocales),
+        isNull,
+      );
+      expect(
+        Util.resolveLocale(const Locale('es'), supportedLocales),
+        isNull,
+      );
+      expect(
+        Util.resolveLocale(const Locale('nl'), supportedLocales),
+        isNull,
+      );
+    });
+
+    test('returns English for Polish locale (pl)', () {
+      expect(
+        Util.resolveLocale(const Locale('pl'), supportedLocales),
+        equals(const Locale('en')),
+      );
+    });
+
+    test('returns English for other unsupported locales', () {
+      expect(
+        Util.resolveLocale(const Locale('fr'), supportedLocales),
+        equals(const Locale('en')),
+      );
+      expect(
+        Util.resolveLocale(const Locale('it'), supportedLocales),
+        equals(const Locale('en')),
+      );
+      expect(
+        Util.resolveLocale(const Locale('ja'), supportedLocales),
+        equals(const Locale('en')),
+      );
+    });
+
+    test('matches language code when country code differs (nl_BE -> nl)', () {
+      // nl_BE should match nl and return null (supported)
+      expect(
+        Util.resolveLocale(const Locale('nl', 'BE'), supportedLocales),
+        isNull,
+      );
+    });
+
+    test('matches language code when country code differs (en_GB -> en)', () {
+      // en_GB should match en and return null (supported)
+      expect(
+        Util.resolveLocale(const Locale('en', 'GB'), supportedLocales),
+        isNull,
+      );
     });
   });
 }

@@ -34,7 +34,9 @@ class ConfirmUIModel extends Equatable {
         // Technical identifiers for analytics (easier to combine results)
         'endOptionType': _getEndOptionType(),
         'frequencyType': frequency?.name ?? '',
-        'amountNumeric': amount.isNotEmpty ? double.tryParse(amount) : null,
+        'amountNumeric': amount.isNotEmpty
+            ? double.tryParse(amount.replaceAll(',', '.'))
+            : null,
         'hasEndDate': endDate != null,
         'hasNumberOfDonations': numberOfDonations.isNotEmpty,
         'startDateTimestamp': startDate?.millisecondsSinceEpoch,

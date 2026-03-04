@@ -3,7 +3,7 @@ import 'package:givt_app/features/family/features/game_summary/presentation/widg
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/parent_summary_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GameSummaryScreen extends StatelessWidget {

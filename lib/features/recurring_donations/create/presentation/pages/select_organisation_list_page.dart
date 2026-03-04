@@ -56,7 +56,8 @@ class _SelectOrganisationListPageState
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      appBar: FunTopAppBar.white(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         leading: const GivtBackButtonFlat(),
         title: context.l10n.recurringDonationsStep1Title,
       ),
