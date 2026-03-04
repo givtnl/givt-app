@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class NeedsRegistrationDialog {
@@ -16,6 +17,11 @@ class NeedsRegistrationDialog {
   }) {
     final user = context.read<AuthCubit>().state.user;
     final isMandatory = mandatePopupDismissalTracker.shouldForceCompletion;
+
+    AnalyticsHelper.logEvent(
+      eventName: AnalyticsEventName.finalizeRegistrationModalShown,
+      eventProperties: {'is_mandatory': isMandatory},
+    );
 
     return FunModal(
       title: context.l10n.importantReminder,
