@@ -2526,7 +2526,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get reviewDonationsDescription =>
-      'Nu je machtiging actief is, verwerken we onderstaande giften. Je kunt ze vandaag tot 20:00 uur aanpassen in je giftenoverzicht.';
+      'Nu je machtiging actief is, verwerken we onderstaande giften. Tik op een gift om deze te annuleren. Je kunt ze vandaag tot 20:00 uur aanpassen in je giftenoverzicht.';
 
   @override
   String get reviewDonationsProcessedTitle => 'Je giften worden verwerkt';
