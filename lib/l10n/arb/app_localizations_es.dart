@@ -2516,7 +2516,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reviewDonationsDescription =>
-      'Ahora que tu autorización está activa, procesaremos las siguientes donaciones. Puedes modificarlas en tu historial de donaciones hasta las 8:00 PM de hoy.';
+      'Ahora que tu autorización está activa, procesaremos las siguientes donaciones. Toca una donación para cancelarla. Puedes modificarlas en tu historial de donaciones hasta las 8:00 PM de hoy.';
 
   @override
   String get reviewDonationsProcessedTitle =>
@@ -5127,7 +5127,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get reviewDonationsDescription =>
-      'Now that your mandate is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 pm today.';
+      'Now that your mandate is active, we’ll process the donations below. Tap a donation to cancel it. You can adjust them in your donation history until 8:00 pm today.';
 
   @override
   String get reviewDonationsProcessedTitle =>
