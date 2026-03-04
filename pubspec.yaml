@@ -8,7 +8,6 @@ environment:
 
 dependencies:
   animated_toggle_switch: ^0.8.4
-  amplitude_flutter: ^4.3.9
   app_settings: ^5.2.0
   badges: ^3.1.2
   bloc: ^9.2.0
@@ -59,7 +58,7 @@ dependencies:
   logging: ^1.3.0
   lottie: ^3.3.1
   material_color_utilities: ^0.13.0
-  mobile_scanner: ^6.0.7
+  mobile_scanner: ^7.2.0
   moment_dart: ^5.2.3
   nfc_manager: ^4.1.1
   nfc_manager_ndef: ^1.1.0

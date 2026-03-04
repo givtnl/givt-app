@@ -17,14 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  amplitude_flutter:
-    dependency: "direct main"
-    description:
-      name: amplitude_flutter
-      sha256: c23780132dffe735cea7cd28f6c2d8ebc952584ae7ef0caa39d31acf79b2b6e2
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.3.11"
   animated_toggle_switch:
     dependency: "direct main"
     description:
@@ -1295,10 +1287,10 @@ packages:
     dependency: "direct main"
     description:
       name: mobile_scanner
-      sha256: "0b466a0a8a211b366c2e87f3345715faef9b6011c7147556ad22f37de6ba3173"
+      sha256: c92c26bf2231695b6d3477c8dcf435f51e28f87b1745966b1fe4c47a286171ce
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.11"
+    version: "7.2.0"
   mod97:
     dependency: transitive
     description:
