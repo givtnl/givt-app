@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -31,7 +31,7 @@ class TopupErrorBottomSheet extends StatelessWidget {
       ),
       primaryButton: FunButton(
         text: 'Ok',
-        analyticsEvent: AmplitudeEvents.topupErrorOkButtonClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.topupErrorOkButtonClicked.toEvent(),
         onTap: () {
           final user = context.read<ProfilesCubit>().state;
           context.read<TopupCubit>().init(user.activeProfile.id);

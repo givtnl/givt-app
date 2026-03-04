@@ -50,14 +50,14 @@ class _USTerminateAccountBottomSheetState
         },
         text: locals.unregisterPrimaryBtnText,
         isDisabled: !isCheckboxChecked,
-        analyticsEvent: AmplitudeEvents.terminateAccountStarted.toEvent(),
+        analyticsEvent: AnalyticsEventName.terminateAccountStarted.toEvent(),
       ),
       secondaryButton: FunButton(
         variant: FunButtonVariant.secondary,
         fullBorder: true,
         onTap: () => Navigator.of(context).pop(),
         text: locals.cancel,
-        analyticsEvent: AmplitudeEvents.terminateAccountCancelled.toEvent(),
+        analyticsEvent: AnalyticsEventName.terminateAccountCancelled.toEvent(),
       ),
       content: Column(
         children: [
@@ -81,7 +81,7 @@ class _USTerminateAccountBottomSheetState
                   });
 
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.terminateAccountCheckboxChecked,
+                    eventName: AnalyticsEventName.terminateAccountCheckboxChecked,
                     eventProperties: {
                       'isChecked': value ?? false,
                     },
@@ -99,7 +99,7 @@ class _USTerminateAccountBottomSheetState
 
                     AnalyticsHelper.logEvent(
                       eventName:
-                          AmplitudeEvents.terminateAccountCheckboxChecked,
+                          AnalyticsEventName.terminateAccountCheckboxChecked,
                       eventProperties: {
                         'isChecked': isCheckboxChecked,
                       },

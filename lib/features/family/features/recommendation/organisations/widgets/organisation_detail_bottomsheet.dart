@@ -112,7 +112,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                     context
                         .pushNamed(FamilyPages.familyChooseAmountSlider.name);
                   },
-              analyticsEvent: AmplitudeEvents.newActOfGenerosityClicked.toEvent(
+              analyticsEvent: AnalyticsEventName.newActOfGenerosityClicked.toEvent(
                 parameters: {
                   isActOfService ? 'act_of_service' : 'donation':
                       organisation.name,

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -268,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
         onTap: isEnabled && !isLoading ? () => onLogin(context) : null,
         text: locals.login,
         isLoading: isLoading,
-        analyticsEvent: AmplitudeEvents.loginClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.loginClicked.toEvent(),
       ),
     );
   }

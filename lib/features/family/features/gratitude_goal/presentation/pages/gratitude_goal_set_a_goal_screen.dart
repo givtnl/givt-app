@@ -153,7 +153,7 @@ class _GratitudeGoalSetAGoalScreenState
                             behavior: widget.behavior,
                           ).toRoute(context),
                         ),
-                        analyticsEvent: AmplitudeEvents.continueClicked.toEvent(
+                        analyticsEvent: AnalyticsEventName.continueClicked.toEvent(
                           parameters: {
                             'page': 'Set a goal',
                           },

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/content/triangle_painter.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -62,7 +62,7 @@ class FunTooltip extends StatelessWidget {
   final Widget? buttonIcon;
 
   // Overrides the default analytics event
-  final AmplitudeEvents? analyticsEvent;
+  final AnalyticsEventName? analyticsEvent;
 
   // Replaced the default button with a custom one
   final Widget? buttonBottomRightOverride;
@@ -172,7 +172,7 @@ class FunTooltip extends StatelessWidget {
                                                   analyticsEvent:
                                                       analyticsEventButtonOverride ??
                                                           (analyticsEvent ??
-                                                              AmplitudeEvents
+                                                              AnalyticsEventName
                                                                   .tutorialNextClicked)
                                                               .toEvent(
                                                             parameters: {

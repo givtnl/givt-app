@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
@@ -169,7 +169,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                         unawaited(cubit.advanceToNext(audioPath: audioPath));
                       },
                       text: widget.uiModel.buttonText,
-                      analyticsEvent: AmplitudeEvents
+                      analyticsEvent: AnalyticsEventName
                           .reflectAndShareNextJournalistClicked
                           .toEvent(),
                     ),

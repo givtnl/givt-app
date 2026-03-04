@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/generosity_hunt/cubit/scan_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -173,7 +173,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                           Navigator.pop(context);
                         },
                         text: 'Continue',
-                        analyticsEvent: AmplitudeEvents.continueClicked
+                        analyticsEvent: AnalyticsEventName.continueClicked
                             .toEvent(),
                       ),
 
@@ -181,7 +181,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
                       FunButton(
                         onTap: cubit.restartScan,
                         text: "Let's go",
-                        analyticsEvent: AmplitudeEvents.continueClicked
+                        analyticsEvent: AnalyticsEventName.continueClicked
                             .toEvent(),
                       ),
                   ],
@@ -294,7 +294,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
           Navigator.pop(context);
         },
         text: 'Try again',
-        analyticsEvent: AmplitudeEvents.generosityHuntScanTryAgainClicked
+        analyticsEvent: AnalyticsEventName.generosityHuntScanTryAgainClicked
             .toEvent(),
       ),
     ).show(
@@ -318,7 +318,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
           Navigator.pop(context);
         },
         text: 'Try again',
-        analyticsEvent: AmplitudeEvents.generosityHuntScanTryAgainClicked
+        analyticsEvent: AnalyticsEventName.generosityHuntScanTryAgainClicked
             .toEvent(),
       ),
     ).show(
@@ -342,7 +342,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
           Navigator.pop(context);
         },
         text: 'Try again',
-        analyticsEvent: AmplitudeEvents.generosityHuntScanTryAgainClicked
+        analyticsEvent: AnalyticsEventName.generosityHuntScanTryAgainClicked
             .toEvent(),
       ),
     ).show(
@@ -386,7 +386,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
           Navigator.pop(context);
         },
         text: 'Claim',
-        analyticsEvent: AmplitudeEvents.generosityHuntScanClaimClicked
+        analyticsEvent: AnalyticsEventName.generosityHuntScanClaimClicked
             .toEvent(),
       ),
     ).show(context);

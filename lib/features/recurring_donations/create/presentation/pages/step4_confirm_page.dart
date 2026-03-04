@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
@@ -95,7 +95,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
 
         return FunScaffold(
           appBar: FunTopAppBar(
-          variant: FunTopAppBarVariant.white,
+            variant: FunTopAppBarVariant.white,
             title: context.l10n.recurringDonationsStep4Title,
             leading: const GivtBackButtonFlat(),
             actions: [
@@ -103,7 +103,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                 icon: const Icon(Icons.close),
                 onPressed: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.recurringStep4ConfirmClose,
+                    eventName: AnalyticsEventName.recurringStep4ConfirmClose,
                   );
                   const FunModalCloseFlow().show(context);
                 },
@@ -128,7 +128,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                       icon: FontAwesomeIcons.building,
                       label: context.l10n.recurringDonationsStep4YoullDonateTo,
                       value: model.organizationName,
-                      analyticsEvent: AmplitudeEvents
+                      analyticsEvent: AnalyticsEventName
                           .recurringStep4ConfirmEditOrganisation
                           .toEvent(),
                       onEdit: _cubit.navigateToOrganization,
@@ -139,7 +139,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                       value: model.amount.isNotEmpty
                           ? '$currencySymbol${model.amount}'
                           : '',
-                      analyticsEvent: AmplitudeEvents
+                      analyticsEvent: AnalyticsEventName
                           .recurringStep4ConfirmEditAmount
                           .toEvent(),
                       onEdit: _cubit.navigateToAmount,
@@ -151,7 +151,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                         model.frequency,
                         context,
                       ),
-                      analyticsEvent: AmplitudeEvents
+                      analyticsEvent: AnalyticsEventName
                           .recurringStep4ConfirmEditFrequency
                           .toEvent(),
                       onEdit: _cubit.navigateToFrequency,
@@ -162,7 +162,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                       value: model.startDate != null
                           ? _formatDate(model.startDate!)
                           : '',
-                      analyticsEvent: AmplitudeEvents
+                      analyticsEvent: AnalyticsEventName
                           .recurringStep4ConfirmEditStartDate
                           .toEvent(),
                       onEdit: _cubit.navigateToStartDate,
@@ -171,7 +171,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                       icon: FontAwesomeIcons.stop,
                       label: context.l10n.recurringDonationsStep4Ends,
                       value: endsText,
-                      analyticsEvent: AmplitudeEvents
+                      analyticsEvent: AnalyticsEventName
                           .recurringStep4ConfirmEditEndDate
                           .toEvent(),
                       onEdit: _cubit.navigateToEndDate,
@@ -187,10 +187,10 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                   children: [
                     const SizedBox(height: 32),
                     FunButton(
-                      text: context
-                          .l10n.recurringDonationsStep4ConfirmMyDonation,
+                      text:
+                          context.l10n.recurringDonationsStep4ConfirmMyDonation,
                       isLoading: model.isLoading,
-                      analyticsEvent: AmplitudeEvents
+                      analyticsEvent: AnalyticsEventName
                           .recurringStep4ConfirmDonation
                           .toEvent(
                             parameters: model.analyticsParams,
@@ -223,7 +223,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
           const SizedBox(height: 24),
           FunButton(
             text: context.l10n.recurringDonationsCreationErrorChangeAndRetry,
-            analyticsEvent: AmplitudeEvents.recurringStep4ErrorChangeDetails
+            analyticsEvent: AnalyticsEventName.recurringStep4ErrorChangeDetails
                 .toEvent(),
             onTap: () {
               Navigator.of(context).pop(); // Close bottom sheet
@@ -232,7 +232,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
           const SizedBox(height: 16),
           FunTextButton(
             text: context.l10n.cancel,
-            analyticsEvent: AmplitudeEvents.recurringStep4ConfirmClose
+            analyticsEvent: AnalyticsEventName.recurringStep4ConfirmClose
                 .toEvent(),
             onTap: () {
               Navigator.of(context).pop(); // Close bottom sheet

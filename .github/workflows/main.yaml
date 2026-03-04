@@ -40,7 +40,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.38.x'
+          flutter-version: '3.41.x'
           cache: true
 
       - name: Run token generator
@@ -66,7 +66,7 @@ jobs:
       LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
       GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
     with:
-      flutter-version: '3.38.x'
+      flutter-version: '3.41.x'
 
   ios:
     needs: linter
@@ -79,7 +79,7 @@ jobs:
       LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
       GOOGLE_SERVICES_PLIST: ${{ secrets.GOOGLE_SERVICES_PLIST }}
     with:
-      flutter-version: '3.38.x'
+      flutter-version: '3.41.x'
   
 
   semantic-pr:

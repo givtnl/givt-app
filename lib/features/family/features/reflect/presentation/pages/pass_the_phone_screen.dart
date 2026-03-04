@@ -201,7 +201,7 @@ class _PassThePhoneState extends State<PassThePhone> {
                   isDisabled: !_hasPlayedAudio && isFirstRoundofFirstGame,
                   onTap: () => widget.onTap.call(context),
                   text: widget.customBtnText ?? context.l10n.buttonContinue,
-                  analyticsEvent: AmplitudeEvents.reflectAndSharePassThePhoneClicked.toEvent(),
+                  analyticsEvent: AnalyticsEventName.reflectAndSharePassThePhoneClicked.toEvent(),
                 ),
               ),
             ],

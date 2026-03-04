@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -229,7 +229,7 @@ class _RecurringDonationDetailPageState
           iconData: icon,
           assetSize: 32,
           iconPath: '',
-          analyticsEvent: AmplitudeEvents.recurringDonationEditClicked
+          analyticsEvent: AnalyticsEventName.recurringDonationEditClicked
               .toEvent(),
           isPressedDown: true,
           titleBig: value,
@@ -365,7 +365,7 @@ class _RecurringDonationDetailPageState
       fullBorder: true,
       onTap: () => _cubit.onManageDonationPressed(),
       text: context.l10n.recurringDonationsDetailManageButton,
-      analyticsEvent: AmplitudeEvents.recurringDonationManageClicked.toEvent(),
+      analyticsEvent: AnalyticsEventName.recurringDonationManageClicked.toEvent(),
     );
   }
 
@@ -483,7 +483,7 @@ class _RecurringDonationDetailPageState
               title: Text(context.l10n.recurringDonationsDetailEditDonation),
               onTap: () {
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.recurringDonationEditActionClicked,
+                  eventName: AnalyticsEventName.recurringDonationEditActionClicked,
                 );
                 Navigator.of(context).pop();
                 // TODO: Navigate to edit page when implemented
@@ -502,7 +502,7 @@ class _RecurringDonationDetailPageState
               title: Text(context.l10n.recurringDonationsDetailPauseDonation),
               onTap: () {
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.recurringDonationPauseActionClicked,
+                  eventName: AnalyticsEventName.recurringDonationPauseActionClicked,
                 );
                 Navigator.of(context).pop();
                 // TODO: Implement pause functionality when available
@@ -524,7 +524,7 @@ class _RecurringDonationDetailPageState
               ),
               onTap: () {
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.recurringDonationCancelActionClicked,
+                  eventName: AnalyticsEventName.recurringDonationCancelActionClicked,
                 );
                 // Show cancel confirmation dialog
                 showDialog<bool>(

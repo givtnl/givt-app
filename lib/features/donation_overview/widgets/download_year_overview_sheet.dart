@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/cubit/donation_overview_cubit.dart';
 import 'package:givt_app/features/donation_overview/models/donation_overview_uimodel.dart';
@@ -67,7 +67,7 @@ class DownloadYearOverviewSheet extends StatelessWidget {
           context.pop();
         },
         text: locals.send,
-        analyticsEvent: AmplitudeEvents.downloadAnnualOverviewClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.downloadAnnualOverviewClicked.toEvent(),
       ),
     );
   }

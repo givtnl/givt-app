@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 
@@ -25,7 +25,7 @@ class LocationCard extends StatelessWidget {
       borderColor: location.area.borderColor,
       backgroundColor: location.area.backgroundColor,
       textColor: location.area.textColor,
-      analyticsEvent: AmplitudeEvents.locationSelected.toEvent(
+      analyticsEvent: AnalyticsEventName.locationSelected.toEvent(
         parameters: {
           'location': location.displayText,
           'isSelected': isSelected,

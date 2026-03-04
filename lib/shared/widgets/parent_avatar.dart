@@ -35,7 +35,7 @@ class LoggedInParentAvatar extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.editAvatarPictureClicked,
+                        eventName: AnalyticsEventName.editAvatarPictureClicked,
                       );
 
                       Navigator.of(context).push(
@@ -62,7 +62,7 @@ class LoggedInParentAvatar extends StatelessWidget {
                     ),
                     onPressed: () {
                       AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.editAvatarIconClicked,
+                        eventName: AnalyticsEventName.editAvatarIconClicked,
                       );
 
                       Navigator.of(context).push(

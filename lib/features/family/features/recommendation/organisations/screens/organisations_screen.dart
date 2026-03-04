@@ -30,7 +30,7 @@ class OrganisationsScreen extends StatelessWidget {
           );
         } else if (state is OrganisationsFetchedState) {
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.charitiesShown,
+            eventName: AnalyticsEventName.charitiesShown,
             eventProperties: {
               AnalyticsHelper.recommendedCharitiesKey:
                   state.organisations.map((e) => e.name).toList().toString(),

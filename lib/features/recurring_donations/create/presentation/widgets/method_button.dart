@@ -23,7 +23,7 @@ class MethodButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionContainer(
-      analyticsEvent: AmplitudeEvents.debugButtonClicked.toEvent(),
+      analyticsEvent: AnalyticsEventName.debugButtonClicked.toEvent(),
       onTap: onPressed,
       borderColor: FunTheme.of(context).neutralVariant80,
       baseBorderSize: FunTheme.of(context).borderWidthThin,

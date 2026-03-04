@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
@@ -112,7 +112,7 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                               : guessOption.state == GuessOptionState.correct
                               ? Colors.green
                               : Colors.red,
-                          analyticsEvent: AmplitudeEvents
+                          analyticsEvent: AnalyticsEventName
                               .reflectAndShareGuessOptionClicked
                               .toEvent(
                                 parameters: {
@@ -149,7 +149,7 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                     );
                   },
                   text: 'Shuffle roles',
-                  analyticsEvent: AmplitudeEvents
+                  analyticsEvent: AnalyticsEventName
                       .reflectAndShareResultShuffleRolesClicked
                       .toEvent(),
                 ),

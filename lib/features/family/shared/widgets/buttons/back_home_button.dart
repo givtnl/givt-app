@@ -21,7 +21,7 @@ class BackHomeButton extends StatelessWidget {
         context.goNamed(FamilyPages.wallet.name);
         context.read<FlowsCubit>().resetFlow();
       },
-      analyticsEvent: AmplitudeEvents.returnToHomePressed.toEvent(),
+      analyticsEvent: AnalyticsEventName.returnToHomePressed.toEvent(),
     );
   }
 }

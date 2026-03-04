@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
@@ -44,7 +44,7 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
       ],
       buttonText: 'Confirm',
       onTapFunButton: () => _onTapConfirm(context),
-      analyticsEvent: AmplitudeEvents.boxOriginConfirmClicked.toEvent(),
+      analyticsEvent: AnalyticsEventName.boxOriginConfirmClicked.toEvent(),
     );
   }
 
@@ -55,7 +55,7 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
     );
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.boxOriginSelected,
+        eventName: AnalyticsEventName.boxOriginSelected,
         eventProperties: {
           'namespace': selectedNamespace,
           'orgname': selectedOrg.orgName,

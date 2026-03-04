@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/routes/pages.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/missions/bloc/missions_cubit.dart';
@@ -64,7 +64,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                   onPressed: (index) => setState(
                     () => _selectedIndex = index,
                   ),
-                  analyticsEvent: AmplitudeEvents.missionTabsChanged.toEvent(),
+                  analyticsEvent: AnalyticsEventName.missionTabsChanged.toEvent(),
                 ),
                 const SizedBox(height: 24),
                 if (_missions(uiModel).isEmpty)
@@ -95,7 +95,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                         tooltipVerticalPosition: TooltipVerticalPosition.BOTTOM,
                         onHighlightedWidgetTap: () {
                           AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.tutorialNextClicked,
+                            eventName: AnalyticsEventName.tutorialNextClicked,
                             eventProperties: {
                               'tutorialLabelBottomLeft': '5/6',
                               'tutorialTitle': title,
@@ -132,7 +132,7 @@ class _MissionsScreenState extends State<MissionsScreen> {
                                     );
                                   }
                                 },
-                          analyticsEvent: AmplitudeEvents.funMissionCardClicked.toEvent(
+                          analyticsEvent: AnalyticsEventName.funMissionCardClicked.toEvent(
                             parameters: {
                               'mission': mission.title,
                             },

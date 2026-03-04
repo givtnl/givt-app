@@ -21,12 +21,12 @@ class FunModalCloseFlow extends StatelessWidget {
           variant: FunButtonVariant.destructive,
           onTap: () {
             AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.cancelClicked,
+              eventName: AnalyticsEventName.cancelClicked,
             );
             Navigator.of(context).popUntil((route) => route.isFirst);
           },
           text: context.l10n.closeModalYesExit,
-          analyticsEvent: AmplitudeEvents.cancelClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.cancelClicked.toEvent(),
         ),
         FunButton(
           variant: FunButtonVariant.secondary,
@@ -35,7 +35,7 @@ class FunModalCloseFlow extends StatelessWidget {
             Navigator.of(context).pop();
           },
           text: context.l10n.closeModalNoBack,
-          analyticsEvent: AmplitudeEvents.backClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.backClicked.toEvent(),
         ),
       ],
       closeAction: () {

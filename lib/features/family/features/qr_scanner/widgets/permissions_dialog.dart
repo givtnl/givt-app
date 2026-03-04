@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/permissions_dialog_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -75,14 +75,14 @@ class FamilyAppPermissionDialog extends StatelessWidget {
                     onClickSettings?.call();
                   },
                   text: 'Go to Settings',
-                  analyticsEvent: AmplitudeEvents.permissionsGoToSettingsClicked
+                  analyticsEvent: AnalyticsEventName.permissionsGoToSettingsClicked
                       .toEvent(),
                 )
               else
                 FunButton(
                   onTap: model.onNextTap,
                   text: 'Next',
-                  analyticsEvent: AmplitudeEvents.permissionsNextClicked
+                  analyticsEvent: AnalyticsEventName.permissionsNextClicked
                       .toEvent(),
                 ),
             ],
@@ -96,7 +96,7 @@ class FamilyAppPermissionDialog extends StatelessWidget {
             onPressed: () {
               SystemSound.play(SystemSoundType.click);
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.closePermissionsDialog,
+                eventName: AnalyticsEventName.closePermissionsDialog,
               );
               context.pop();
               onClickClose?.call();

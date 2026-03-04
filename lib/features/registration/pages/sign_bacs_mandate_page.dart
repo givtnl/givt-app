@@ -173,7 +173,8 @@ class SignBacsMandatePage extends StatelessWidget {
                     fullBorder: true,
                     onTap: () => context.pushNamed(Pages.personalInfoEdit.name),
                     text: locals.changeDetails,
-                    analyticsEvent: AmplitudeEvents.signMandateChangeDetailsClicked.toEvent(),
+                    analyticsEvent: AnalyticsEventName.signMandateChangeDetailsClicked
+                        .toEvent(),
                   ),
                   const SizedBox(height: 16),
                   FunButton(
@@ -187,13 +188,14 @@ class SignBacsMandatePage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      builder: (BuildContext context) => TermsAndConditionsDialog(
+                      builder: (BuildContext context) =>
+                          TermsAndConditionsDialog(
                         content: locals.bacsDdGuarantee,
                       ),
                     ),
                     text: locals.bacsReadDdGuarantee,
-                    analyticsEvent: AmplitudeEvents.infoGivingAllowanceClicked
-                        .toEvent(),
+                    analyticsEvent:
+                        AnalyticsEventName.infoGivingAllowanceClicked.toEvent(),
                   ),
                   const SizedBox(height: 16),
                   FunButton(
@@ -205,9 +207,11 @@ class SignBacsMandatePage extends StatelessWidget {
                                 appLanguage: locals.localeName,
                               ),
                             ),
-                    isLoading: registrationState.status == RegistrationStatus.loading,
+                    isLoading:
+                        registrationState.status == RegistrationStatus.loading,
                     text: locals.buttonContinue,
-                    analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+                    analyticsEvent:
+                        AnalyticsEventName.continueClicked.toEvent(),
                   ),
                 ],
               ),

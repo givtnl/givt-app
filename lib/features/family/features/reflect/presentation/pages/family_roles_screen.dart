@@ -70,7 +70,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                   FunButton(
                     onTap: _cubit.onClickStart,
                     text: 'Start',
-                    analyticsEvent: AmplitudeEvents
+                    analyticsEvent: AnalyticsEventName
                         .assignedFamilyRolesStartClicked
                         .toEvent(),
                   ),

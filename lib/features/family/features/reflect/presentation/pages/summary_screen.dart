@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/league/presentation/pages/in_game_league_screen.dart';
@@ -153,7 +153,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       iconData: FontAwesomeIcons.solidClock,
                       assetSize: 32,
                       isPressedDown: true,
-                      analyticsEvent: AmplitudeEvents
+                      analyticsEvent: AnalyticsEventName
                           .familyReflectSummaryMinutesPlayedClicked
                           .toEvent(),
                     ),
@@ -181,7 +181,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       iconData: FontAwesomeIcons.solidHeart,
                       assetSize: 32,
                       isPressedDown: true,
-                      analyticsEvent: AmplitudeEvents
+                      analyticsEvent: AnalyticsEventName
                           .familyReflectSummaryGenerousDeedsClicked
                           .toEvent(),
                     ),
@@ -206,7 +206,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
               iconData: FontAwesomeIcons.bolt,
               assetSize: 32,
               isPressedDown: true,
-              analyticsEvent: AmplitudeEvents.familyReflectSummaryXpClicked
+              analyticsEvent: AnalyticsEventName.familyReflectSummaryXpClicked
                   .toEvent(),
             ),
           ),
@@ -216,7 +216,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   }
 
   FunButton getFunButton(SummaryDetails details) {
-    final analyticEvent = AmplitudeEvents.familyReflectSummaryClaimXp.toEvent();
+    final analyticEvent = AnalyticsEventName.familyReflectSummaryClaimXp.toEvent();
 
     return FunButton(
       isLoading: _isDoneBtnLoading,

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,7 +20,7 @@ Future<void> showMissionNotAvailableDialog(BuildContext context) async {
           await launchStoreUrl();
           Navigator.of(context).pop();
         },
-        analyticsEvent: AmplitudeEvents.updateNowClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.updateNowClicked.toEvent(),
       ),
     ],
   ).show(context);

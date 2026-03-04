@@ -65,7 +65,7 @@ class StatsContainer extends StatelessWidget {
 
                 AnalyticsHelper.logEvent(
                   eventName:
-                      AmplitudeEvents.familyHomeScreenStatsContainerClicked,
+                      AnalyticsEventName.familyHomeScreenStatsContainerClicked,
                 );
               },
               child: StatsChip(

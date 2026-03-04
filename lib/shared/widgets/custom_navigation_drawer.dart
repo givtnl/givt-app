@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
@@ -48,7 +48,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   showBadge: true,
                   title: locals.finalizeRegistration,
                   icon: Icons.edit,
-                  analyticsEvent: AmplitudeEvents.menuNavigationFinalizeRegistrationClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationFinalizeRegistrationClicked,
                   onTap: () {
                     if (auth.user.needRegistration) {
                       context
@@ -79,7 +79,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     'assets/images/givy_budget_menu.png',
                     fit: BoxFit.contain,
                   ),
-                  analyticsEvent: AmplitudeEvents.menuNavigationBudgetClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationBudgetClicked,
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
@@ -87,7 +87,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                         context.goNamed(Pages.personalSummary.name);
                         unawaited(
                           AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.personalSummaryClicked,
+                            eventName: AnalyticsEventName.personalSummaryClicked,
                           ),
                         );
                       },
@@ -98,7 +98,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: !auth.user.needRegistration,
                   title: locals.historyTitle,
                   icon: FontAwesomeIcons.listUl,
-                  analyticsEvent: AmplitudeEvents.menuNavigationHistoryClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationHistoryClicked,
                   onTap: () async {
                     context.read<RemoteDataSourceSyncBloc>().add(
                           const RemoteDataSourceSyncRequested(),
@@ -117,7 +117,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: !auth.user.needRegistration,
                   title: locals.menuItemRecurringDonation,
                   icon: Icons.autorenew,
-                  analyticsEvent: AmplitudeEvents.menuNavigationRecurringDonationClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationRecurringDonationClicked,
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
@@ -126,7 +126,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                         unawaited(
                           AnalyticsHelper.logEvent(
                             eventName:
-                                AmplitudeEvents.recurringDonationsNavigationClicked,
+                                AnalyticsEventName.recurringDonationsNavigationClicked,
                           ),
                         );
                       },
@@ -141,7 +141,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                       auth.user.country,
                     ),
                   ),
-                  analyticsEvent: AmplitudeEvents.menuNavigationGiveLimitClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationGiveLimitClicked,
                   onTap: () async {
                     return AuthUtils.checkToken(
                       context,
@@ -167,7 +167,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: true,
                   title: locals.personalInfo,
                   icon: Icons.mode_edit_outline,
-                  analyticsEvent: AmplitudeEvents.menuNavigationPersonalInfoClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationPersonalInfoClicked,
                   onTap: () async {
                     return AuthUtils.checkToken(
                       context,
@@ -183,7 +183,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: !auth.user.needRegistration,
                   title: locals.platformContributionTitle,
                   icon: FontAwesomeIcons.handHoldingDollar,
-                  analyticsEvent: AmplitudeEvents.menuNavigationPlatformContributionClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationPlatformContributionClicked,
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
@@ -191,7 +191,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                         context.goNamed(Pages.platformContribution.name);
                         unawaited(
                           AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.platformContributionNavigationClicked,
+                            eventName: AnalyticsEventName.platformContributionNavigationClicked,
                           ),
                         );
                       },
@@ -209,7 +209,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                       color: AppTheme.givtBlue,
                     ),
                   ),
-                  analyticsEvent: AmplitudeEvents.menuNavigationAmountPresetsClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationAmountPresetsClicked,
                   onTap: () {
                     showModalBottomSheet<void>(
                       context: context,
@@ -260,7 +260,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                               ),
                             )
                           : null,
-                      analyticsEvent: AmplitudeEvents.menuNavigationBiometricClicked,
+                      analyticsEvent: AnalyticsEventName.menuNavigationBiometricClicked,
                       onTap: () async {
                         return AuthUtils.checkToken(
                           context,
@@ -284,7 +284,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: true,
                   title: locals.logOut,
                   icon: Icons.logout_sharp,
-                  analyticsEvent: AmplitudeEvents.menuNavigationLogoutClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationLogoutClicked,
                   onTap: () async {
                     if (!getIt<NetworkInfo>().isConnected) {
                       if (!context.mounted) {
@@ -309,7 +309,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: true,
                   title: locals.unregister,
                   icon: FontAwesomeIcons.userXmark,
-                  analyticsEvent: AmplitudeEvents.menuNavigationUnregisterClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationUnregisterClicked,
                   onTap: () async {
                     if (auth.user.tempUser) {
                       context.goNamed(
@@ -332,7 +332,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: true,
                   title: locals.titleAboutGivt,
                   icon: Icons.info,
-                  analyticsEvent: AmplitudeEvents.menuNavigationAboutGivtClicked,
+                  analyticsEvent: AnalyticsEventName.menuNavigationAboutGivtClicked,
                   onTap: () => showModalBottomSheet<void>(
                     context: context,
                     isScrollControlled: true,

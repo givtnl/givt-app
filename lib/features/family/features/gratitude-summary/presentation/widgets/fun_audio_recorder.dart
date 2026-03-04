@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/data/record_utils.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
@@ -72,7 +72,7 @@ class _FunAudioRecorderState extends State<FunAudioRecorder>
         _startTimer();
 
         await AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.audioRecordingStarted,
+          eventName: AnalyticsEventName.audioRecordingStarted,
         );
       }
     } catch (e, s) {
@@ -84,7 +84,7 @@ class _FunAudioRecorderState extends State<FunAudioRecorder>
     final path = await _audioRecorder.stop();
 
     await AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.audioRecordingStopped,
+      eventName: AnalyticsEventName.audioRecordingStopped,
     );
 
     if (path != null) {

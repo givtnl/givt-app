@@ -29,7 +29,7 @@ class _MyGivtsButtonState extends State<MyGivtsButton> {
         Navigator.of(context).push(const HistoryScreen().toRoute(context));
       },
       text: 'My Givts',
-      analyticsEvent: AmplitudeEvents.seeDonationHistoryPressed.toEvent(
+      analyticsEvent: AnalyticsEventName.seeDonationHistoryPressed.toEvent(
         parameters: {'userId': widget.userId},
       ),
     );

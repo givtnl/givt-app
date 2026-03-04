@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/edit_child_name/repositories/edit_child_repository.dart';
@@ -138,7 +138,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   Future<void> cancelAllowance() async {
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.cancelRGA,
+        eventName: AnalyticsEventName.cancelRGA,
         eventProperties: {
           'child_name': _profile.firstName,
         },
@@ -164,7 +164,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
     } catch (e) {
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.failedToCancelRGA,
+          eventName: AnalyticsEventName.failedToCancelRGA,
           eventProperties: {
             'child_name': _profile.firstName,
           },
@@ -191,7 +191,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
     if (e is GivtServerFailure && e.type == FailureType.TOPUP_NOT_SUCCESSFUL) {
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.failedTopUpNoFunds,
+          eventName: AnalyticsEventName.failedTopUpNoFunds,
         ),
       );
       emit(
@@ -206,7 +206,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
 
   Future<void> _logTopUpEvent(int amount) async {
     await AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.childTopUpSubmitted,
+      eventName: AnalyticsEventName.childTopUpSubmitted,
       eventProperties: {
         'child_name': _profile.firstName,
         'top_up_amount': amount,
@@ -216,7 +216,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
 
   Future<void> _logConfirmUpdateAllowanceEvent(int allowance) async {
     await AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.childEditMonthlyAllowanceSaveClicked,
+      eventName: AnalyticsEventName.childEditMonthlyAllowanceSaveClicked,
       eventProperties: {
         'child_name': _profile.firstName,
         'new_giving_allowance': allowance,

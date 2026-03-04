@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -21,6 +21,7 @@ import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
@@ -222,7 +223,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                               );
                               AnalyticsHelper.logEvent(
                                 eventName:
-                                    AmplitudeEvents.organisationFavoriteToggled,
+                                    AnalyticsEventName.organisationFavoriteToggled,
                                 eventProperties: {
                                   'organisation_name': organisation.orgName,
                                   'is_favorited': false,
@@ -236,7 +237,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                               );
                               AnalyticsHelper.logEvent(
                                 eventName:
-                                    AmplitudeEvents.organisationFavoriteToggled,
+                                    AnalyticsEventName.organisationFavoriteToggled,
                                 eventProperties: {
                                   'organisation_name': organisation.orgName,
                                   'is_favorited': true,

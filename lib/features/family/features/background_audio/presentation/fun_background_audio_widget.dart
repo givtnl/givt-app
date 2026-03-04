@@ -1,6 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/background_audio/bloc/background_audio_cubit.dart';
 import 'package:givt_app/features/family/features/background_audio/presentation/animated_speaker.dart';
@@ -45,7 +45,7 @@ class _FunBackgroundAudioWidgetState extends State<FunBackgroundAudioWidget>
         if (event == PlayerState.playing) {
           if (mounted) {
             AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.audioWidgetPlayClicked,
+              eventName: AnalyticsEventName.audioWidgetPlayClicked,
             );
             setState(() => isPlaying = true);
             widget.onPlay?.call();
@@ -54,7 +54,7 @@ class _FunBackgroundAudioWidgetState extends State<FunBackgroundAudioWidget>
         } else {
           if (mounted) {
             AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.audioWidgetPauseOrStopClicked,
+              eventName: AnalyticsEventName.audioWidgetPauseOrStopClicked,
             );
             setState(() => isPlaying = false);
             widget.onPauseOrStop?.call();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime_arguments.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/pages/setup_bedtime_screen.dart';
@@ -274,7 +274,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
         if (_currentState == AnimationState.initial) return;
         tapCount++;
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.introBedtimeTapToContinueClicked,
+          eventName: AnalyticsEventName.introBedtimeTapToContinueClicked,
           eventProperties: {
             'tap_count': tapCount,
           },
@@ -516,7 +516,7 @@ class _IntroBedtimeScreenState extends State<IntroBedtimeScreen>
                             );
                           },
                           text: context.l10n.buttonContinue,
-                          analyticsEvent: AmplitudeEvents
+                          analyticsEvent: AnalyticsEventName
                               .introBedtimeAnimationContinuePressed
                               .toEvent(),
                         ),

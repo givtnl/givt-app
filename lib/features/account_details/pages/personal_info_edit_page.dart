@@ -121,7 +121,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 value: '${user.firstName} ${user.lastName}',
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'name'},
                   );
                   _showModalBottomSheet(
@@ -144,7 +144,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 value: user.email,
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'email'},
                   );
                   _showModalBottomSheet(
@@ -167,7 +167,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 )}',
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'address'},
                   );
                   _showModalBottomSheet(
@@ -189,7 +189,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 value: user.phoneNumber,
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'phone'},
                   );
                   _showModalBottomSheet(
@@ -217,7 +217,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 onTap: user.mandateSigned
                     ? () {
                         AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.onInfoRowClicked,
+                          eventName: AnalyticsEventName.onInfoRowClicked,
                           eventProperties: {'row_type': 'bank_details'},
                         );
                         _showModalBottomSheet(
@@ -240,7 +240,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 value: 'Gift Aid',
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'gift_aid'},
                   );
                   _showModalBottomSheet(
@@ -264,7 +264,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 value: locals.changePassword,
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'password'},
                   );
                   _showModalBottomSheet(

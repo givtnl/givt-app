@@ -98,25 +98,84 @@ class LoggingInfo implements ILoggingInfo {
         deviceId: deviceId,
       );
     }
-    const key = String.fromEnvironment('LOGIT_API_KEY');
+    final otelLogRecord = _toOpenTelemetryLogRecord(lm, level);
+
+    const key = String.fromEnvironment('POSTHOG_API_KEY');
     await http
         .post(
-      Uri.https('api.logit.io', '/v2'),
+      Uri.https('eu.i.posthog.com', '/i/v1/logs'),
       headers: {
         'Content-Type': 'application/json',
-        'ApiKey': key,
+        'Authorization': 'Bearer $key',
       },
-      body: jsonEncode(
-        lm.toJson(),
-      ),
+      body: jsonEncode(otelLogRecord),
     )
         .then((value) {
-      if (value.statusCode != 202) {
-        dev.log('Error sending log message: ${value.statusCode}');
+      if (value.statusCode < 200 || value.statusCode >= 300) {
+        dev.log('Error sending log message to PostHog: ${value.statusCode}');
       }
     }).catchError((dynamic e) {
-      dev.log('Unknown error while sending log message: $e');
+      dev.log('Unknown error while sending log message to PostHog: $e');
     });
+  }
+
+  Map<String, dynamic> _toOpenTelemetryLogRecord(
+    LogMessage lm,
+    Level level,
+  ) {
+    // Map all existing fields into OTel-style attributes.
+    final attributes = <String, dynamic>{
+      'guid': lm.guid,
+      'file': lm.file,
+      'lnr': lm.lnr,
+      'method': lm.method,
+      'model': lm.model,
+      'platform_id': lm.platformID,
+      'tag': lm.tag,
+      'version_os': lm.versionOS,
+      'app_version': lm.appVersion,
+      'lang': lm.lang,
+      'device_id': lm.deviceId,
+      'correlation_id': lm.correlationId,
+    }..removeWhere((_, value) => value == null);
+
+    return <String, dynamic>{
+      // OTel "timestamp" (UTC) – already formatted as ISO-8601.
+      // https://opentelemetry.io/docs/specs/otel/logs/data-model/
+      'timestamp': lm.deviceUTCTimestamp,
+      // Human-readable severity
+      'severityText': lm.level,
+      // Numeric severity as per OTel ranges (DEBUG/INFO/WARN/ERROR)
+      'severityNumber': _mapSeverityNumber(level),
+      // The primary message/body for this log record
+      'body': lm.message,
+      // Name for this kind of event (method name or generic fallback)
+      'eventName': lm.method ?? 'application_log',
+      // Additional structured context
+      'attributes': attributes,
+    }..removeWhere((_, value) => value == null);
+  }
+
+  int? _mapSeverityNumber(Level level) {
+    // Map Dart logging.Level to OpenTelemetry SeverityNumber ranges:
+    // DEBUG: 5-8, INFO: 9-12, WARN: 13-16, ERROR: 17-20
+    // https://opentelemetry.io/docs/specs/otel/logs/data-model/#severitynumber
+    if (level == Level.FINE ||
+        level == Level.FINER ||
+        level == Level.FINEST) {
+      return 5; // DEBUG
+    }
+    if (level == Level.INFO) {
+      return 9; // INFO
+    }
+    if (level == Level.WARNING) {
+      return 13; // WARN
+    }
+    if (level == Level.SEVERE || level == Level.SHOUT) {
+      return 17; // ERROR
+    }
+    // If we don't recognize the level, omit severityNumber.
+    return null;
   }
 
   Future<String?> _getGuid() async {

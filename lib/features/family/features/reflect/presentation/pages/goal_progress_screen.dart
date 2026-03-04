@@ -70,7 +70,7 @@ class _GoalProgressScreenState extends State<GoalProgressScreen> {
                     ).push(const InGameLeagueScreen().toRoute(context));
                   },
                   text: "We're committed",
-                  analyticsEvent: AmplitudeEvents.reflectAndShareWereCommitted
+                  analyticsEvent: AnalyticsEventName.reflectAndShareWereCommitted
                       .toEvent(),
                 ),
               ),

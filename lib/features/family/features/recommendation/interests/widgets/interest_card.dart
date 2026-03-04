@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 
@@ -25,7 +25,7 @@ class InterestCard extends StatelessWidget {
       borderColor: interest.area.borderColor,
       backgroundColor: interest.area.backgroundColor,
       textColor: interest.area.textColor,
-      analyticsEvent: AmplitudeEvents.interestSelected.toEvent(
+      analyticsEvent: AnalyticsEventName.interestSelected.toEvent(
         parameters: {
           'interest': interest.displayText,
           'isSelected': isSelected,

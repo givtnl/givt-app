@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/domain/edit_avatar_repository.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
@@ -131,7 +131,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
         _customAvatar,
       );
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.customAvatarSaved,
+        eventName: AnalyticsEventName.customAvatarSaved,
         eventProperties: _customAvatar.toJson(),
       );
     } else {
@@ -374,7 +374,7 @@ class EditAvatarCubit extends CommonCubit<EditAvatarUIModel, EditAvatarCustom> {
     }
     _unlockBadgeRepository.markFeatureAsSeen(userGuid, featureId);
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.newBadgeSeen,
+      eventName: AnalyticsEventName.newBadgeSeen,
       eventProperties: {
         'featureId': featureId,
       },

@@ -3,7 +3,7 @@ import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/edit_avatar/bloc/edit_avatar_cubit.dart';
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_custom.dart';
@@ -145,7 +145,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
               IconButton(
                 onPressed: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.saveAvatarClicked,
+                    eventName: AnalyticsEventName.saveAvatarClicked,
                   );
                   _cubit.saveAvatar();
                 },
@@ -162,7 +162,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
                   options: EditAvatarScreen.options,
                   selectedIndex:
                       data.mode == EditAvatarScreen.options[0] ? 0 : 1,
-                  analyticsEvent: AmplitudeEvents.avatarTabChanged.toEvent(),
+                  analyticsEvent: AnalyticsEventName.avatarTabChanged.toEvent(),
                   onPressed: (index) {
                     _cubit.setMode(index);
                     if (index == 1) {
@@ -477,7 +477,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
             _cubit.saveAvatar();
             context.pop();
           },
-          analyticsEvent: AmplitudeEvents.saveAvatarYesClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.saveAvatarYesClicked.toEvent(),
         ),
         FunTextButton(
           textColor: FunTheme.of(context).error30,
@@ -486,7 +486,7 @@ class _EditAvatarScreenState extends State<EditAvatarScreen>
             context.pop();
           },
           text: 'No, discard',
-          analyticsEvent: AmplitudeEvents.saveAvatarNoClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.saveAvatarNoClicked.toEvent(),
         ),
       ],
     ).show(context);

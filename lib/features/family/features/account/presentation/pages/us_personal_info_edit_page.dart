@@ -166,7 +166,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                 analyticsName: 'us_change_email_bottom_sheet',
               );
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.profileSectionClicked,
+                eventName: AnalyticsEventName.profileSectionClicked,
                 eventProperties: {'section': 'email'},
               );
             },
@@ -191,7 +191,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                 analyticsName: 'us_change_phone_number_bottom_sheet',
               );
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.profileSectionClicked,
+                eventName: AnalyticsEventName.profileSectionClicked,
                 eventProperties: {'section': 'phone_number'},
               );
             },
@@ -204,7 +204,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
             value: '${user.accountBrand.toUpperCase()} ${user.accountNumber}',
             onTap: () async {
               await AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.editPaymentDetailsClicked,
+                eventName: AnalyticsEventName.editPaymentDetailsClicked,
               );
 
               if (!context.mounted) return;
@@ -219,7 +219,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                 await context.read<FamilyAuthCubit>().refreshUser();
               } on StripeException catch (e, stackTrace) {
                 await AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.editPaymentDetailsCanceled,
+                  eventName: AnalyticsEventName.editPaymentDetailsCanceled,
                 );
 
                 /* Logged as info as stripe is giving exception
@@ -242,7 +242,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
             onTap: () {
               ResetPasswordSheet(initialEmail: user.email).show(context);
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.profileSectionClicked,
+                eventName: AnalyticsEventName.profileSectionClicked,
                 eventProperties: {'section': 'change_password'},
               );
             },
@@ -300,7 +300,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                           ),
                         );
                         AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.profileSectionClicked,
+                          eventName: AnalyticsEventName.profileSectionClicked,
                           eventProperties: {'section': 'biometric_auth'},
                         );
                       },
@@ -359,7 +359,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                 analyticsName: 'us_terminate_account_bottom_sheet',
               );
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.profileSectionClicked,
+                eventName: AnalyticsEventName.profileSectionClicked,
                 eventProperties: {'section': 'unregister'},
               );
             },
@@ -384,7 +384,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                 analyticsName: 'us_about_givt_bottom_sheet',
               );
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.profileSectionClicked,
+                eventName: AnalyticsEventName.profileSectionClicked,
                 eventProperties: {'section': 'about_givt'},
               );
             },
@@ -402,7 +402,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
             onTap: () {
               logout(context, fromLogoutBtn: true);
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.profileSectionClicked,
+                eventName: AnalyticsEventName.profileSectionClicked,
                 eventProperties: {'section': 'logout'},
               );
             },

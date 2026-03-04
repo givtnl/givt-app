@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -60,7 +60,7 @@ class _ChangeEmailAddressBottomSheetState
               }
             : null,
         text: locals.save,
-        analyticsEvent: AmplitudeEvents.editEmailSaveClicked.toEvent(
+        analyticsEvent: AnalyticsEventName.editEmailSaveClicked.toEvent(
           parameters: {
             'old_email': widget.email,
             'new_email': emailController.text,

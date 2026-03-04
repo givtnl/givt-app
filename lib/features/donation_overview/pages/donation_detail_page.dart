@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/pages.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/models/donation_group.dart';
@@ -369,7 +369,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                 child: GestureDetector(
                   onTap: () async {
                     await AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents
+                      eventName: AnalyticsEventName
                           .donationOverviewPlatformContributionClicked,
                       eventProperties: {
                         'donation': widget.donationGroup.toJson(),
@@ -442,10 +442,9 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
           fullBorder: true,
           onTap: () => _handleRefund(context, donationGroup, country),
           text: context.l10n.requestRefund,
-          analyticsEvent: AmplitudeEvents.donationDetailRefundClicked
-              .toEvent(
-                parameters: {'donation': donationGroup.toJson()},
-              ),
+          analyticsEvent: AnalyticsEventName.donationDetailRefundClicked.toEvent(
+            parameters: {'donation': donationGroup.toJson()},
+          ),
         );
 
       case DonationStatusType.created:
@@ -454,10 +453,9 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
           fullBorder: true,
           onTap: () => _handleCancel(context, donationGroup),
           text: context.l10n.cancel,
-          analyticsEvent: AmplitudeEvents.donationDetailCancelClicked
-              .toEvent(
-                parameters: {'donation': donationGroup.toJson()},
-              ),
+          analyticsEvent: AnalyticsEventName.donationDetailCancelClicked.toEvent(
+            parameters: {'donation': donationGroup.toJson()},
+          ),
         );
 
       case DonationStatusType.inProcess:
@@ -467,7 +465,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
         return FunButton(
           onTap: () => _handleRetry(context, donationGroup),
           text: context.l10n.tryAgain,
-          analyticsEvent: AmplitudeEvents.donationDetailRetryClicked.toEvent(
+          analyticsEvent: AnalyticsEventName.donationDetailRetryClicked.toEvent(
             parameters: {'donation': donationGroup.toJson()},
           ),
         );
@@ -476,7 +474,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
         return FunButton(
           onTap: () => _handleRetry(context, donationGroup),
           text: context.l10n.tryAgain,
-          analyticsEvent: AmplitudeEvents.donationDetailRetryClicked.toEvent(
+          analyticsEvent: AnalyticsEventName.donationDetailRetryClicked.toEvent(
             parameters: {'donation': donationGroup.toJson()},
           ),
         );
@@ -592,7 +590,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
     if (confirmed ?? false) {
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.onConfirmCancelDonation,
+          eventName: AnalyticsEventName.onConfirmCancelDonation,
           eventProperties: donationGroup.toJson(),
         ),
       );
@@ -635,7 +633,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
     } else {
       // Log when user clicks "No" on the confirmation dialog
       await AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.cancelDonationNoClicked,
+        eventName: AnalyticsEventName.cancelDonationNoClicked,
         eventProperties: donationGroup.toJson(),
       );
     }
@@ -648,7 +646,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
     // Log analytics event for retry
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.donationDetailRetryClicked,
+        eventName: AnalyticsEventName.donationDetailRetryClicked,
         eventProperties: donationGroup.toJson(),
       ),
     );

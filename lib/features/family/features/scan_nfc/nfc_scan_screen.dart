@@ -204,7 +204,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
       context.pushReplacementNamed(FamilyPages.familyChooseAmountSlider.name);
 
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.inAppCoinScannedSuccessfully,
+        eventName: AnalyticsEventName.inAppCoinScannedSuccessfully,
         eventProperties: {
           AnalyticsHelper.mediumIdKey: state.mediumId,
         },
@@ -225,11 +225,12 @@ class _NFCScanPageState extends State<NFCScanPage> {
       primaryBtnText: 'Try again',
       description: 'Uh-oh! We don’t think that was a Givt coin',
       primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
-      amplitudeEvent: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,
+      analyticsEventName:
+          AnalyticsEventName.notAGivtCoinNFCErrorGoBackHomeClicked,
     );
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.notAGivtCoinNFCErrorShown,
+        eventName: AnalyticsEventName.notAGivtCoinNFCErrorShown,
       ),
     );
   }
@@ -248,7 +249,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
     context.read<ScanNfcCubit>().readTag();
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.notAGivtCoinNFCErrorTryAgainClicked,
+        eventName: AnalyticsEventName.notAGivtCoinNFCErrorTryAgainClicked,
       ),
     );
   }
@@ -265,12 +266,12 @@ class _NFCScanPageState extends State<NFCScanPage> {
       secondaryBtnText: 'Go back home',
       primaryBtnText: 'Try again',
       primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
-      amplitudeEvent:
-          AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked,
+      analyticsEventName:
+          AnalyticsEventName.coinMediumIdNotRecognizedGoBackHomeClicked,
     );
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.coinMediumIdNotRecognized,
+        eventName: AnalyticsEventName.coinMediumIdNotRecognized,
       ),
     );
   }
@@ -286,7 +287,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
     }
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.coinMediumIdNotRecognizedTryAgainClicked,
+        eventName: AnalyticsEventName.coinMediumIdNotRecognizedTryAgainClicked,
       ),
     );
   }

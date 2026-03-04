@@ -74,7 +74,7 @@ class _CreateFamilyGoalAmountPageState
               color: AppTheme.givtBlue,
               onPressed: () {
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.backClicked,
+                  eventName: AnalyticsEventName.backClicked,
                 );
                 context.read<CreateFamilyGoalCubit>().showCause();
               },
@@ -197,7 +197,7 @@ class _CreateFamilyGoalAmountPageState
                                     ..showConfirmation();
                                   AnalyticsHelper.logEvent(
                                     eventName:
-                                        AmplitudeEvents.familyGoalAmountSet,
+                                        AnalyticsEventName.familyGoalAmountSet,
                                     eventProperties: {
                                       'amount': parsedAmount,
                                     },

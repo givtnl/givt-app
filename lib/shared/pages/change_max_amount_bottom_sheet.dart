@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -304,7 +304,7 @@ class _ChangeMaxAmountBottomSheetViewState
             }
           : null,
       text: locals.save,
-      analyticsEvent: AmplitudeEvents.maxAmountSaveClicked.toEvent(
+      analyticsEvent: AnalyticsEventName.maxAmountSaveClicked.toEvent(
         parameters: {'new_max_amount': amountController.text},
       ),
     );
