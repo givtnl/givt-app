@@ -26,6 +26,7 @@ class QrCodeScanPage extends StatefulWidget {
 class _QrCodeScanPageState extends State<QrCodeScanPage> {
   final _controller = MobileScannerController();
   final CameraCubit _cubit = getIt<CameraCubit>();
+  bool _isStartingScanner = false;
 
   @override
   void didChangeDependencies() {
@@ -35,8 +36,8 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -177,9 +178,21 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     return null;
   }
 
+  Future<void> _restartScannerIfMounted() async {
+    if (!mounted || _isStartingScanner) {
+      return;
+    }
+    _isStartingScanner = true;
+    try {
+      await _controller.start();
+    } finally {
+      _isStartingScanner = false;
+    }
+  }
+
   Future<void> displayErrorDialog() async {
     final locals = context.l10n;
-    await showDialog<bool>(
+    final shouldRetry = await showDialog<bool>(
       context: context,
       builder: (_) {
         return AlertDialog(
@@ -188,26 +201,28 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
           actions: [
             TextButton(
               onPressed: () {
-                return Navigator.pop(context, true);
+                return Navigator.pop(context, false);
               },
               child: Text(locals.cancel),
             ),
             TextButton(
-              onPressed: () async {
-                await _controller.start();
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(true),
               child: Text(locals.tryAgain),
             ),
           ],
         );
       },
-    ).then((bool? value) {
-      if (value == null) {
-        _controller.start();
-      } else {
-        Navigator.of(context).pop();
-      }
-    });
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (shouldRetry ?? true) {
+      await _restartScannerIfMounted();
+      return;
+    }
+
+    Navigator.of(context).pop();
   }
 }
