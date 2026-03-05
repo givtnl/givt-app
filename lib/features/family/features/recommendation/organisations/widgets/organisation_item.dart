@@ -59,7 +59,7 @@ class OrganisationItem extends StatelessWidget {
           ),
         );
       },
-      analyticsEvent: AmplitudeEvents.charityCardPressed.toEvent(
+      analyticsEvent: AnalyticsEventName.charityCardPressed.toEvent(
         parameters: {
           AnalyticsHelper.charityNameKey: organisation.name,
         },

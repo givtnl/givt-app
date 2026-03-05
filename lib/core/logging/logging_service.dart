@@ -98,25 +98,158 @@ class LoggingInfo implements ILoggingInfo {
         deviceId: deviceId,
       );
     }
-    const key = String.fromEnvironment('LOGIT_API_KEY');
+    final otelLogRecord = _toOpenTelemetryLogRecord(lm, level);
+
+    const key = String.fromEnvironment('POSTHOG_API_KEY');
     await http
         .post(
-      Uri.https('api.logit.io', '/v2'),
+      Uri.https('eu.i.posthog.com', '/i/v1/logs'),
       headers: {
         'Content-Type': 'application/json',
-        'ApiKey': key,
+        'Authorization': 'Bearer $key',
       },
-      body: jsonEncode(
-        lm.toJson(),
-      ),
+      body: jsonEncode(otelLogRecord),
     )
         .then((value) {
-      if (value.statusCode != 202) {
-        dev.log('Error sending log message: ${value.statusCode}');
+      if (value.statusCode < 200 || value.statusCode >= 300) {
+        dev.log('Error sending log message to PostHog: ${value.statusCode}');
       }
-    }).catchError((dynamic e) {
-      dev.log('Unknown error while sending log message: $e');
+    }).catchError((Object e, StackTrace stackTrace) {
+      dev.log('Unknown error while sending log message to PostHog: $e');
     });
+  }
+
+  Map<String, dynamic> _toOpenTelemetryLogRecord(
+    LogMessage lm,
+    Level level,
+  ) {
+    // OTLP/HTTP expects a LogExportRequest with a top-level "resourceLogs" field:
+    // https://opentelemetry.io/docs/specs/otel/logs/data-model/
+
+    // Use current time for OTLP nanosecond timestamp fields.
+    final now = DateTime.now().toUtc();
+    final timeUnixNano = now.microsecondsSinceEpoch * 1000;
+    final timeUnixNanoStr = timeUnixNano.toString();
+
+    // Map existing fields into log-level attributes.
+    final rawAttributes = <String, dynamic>{
+      'guid': lm.guid,
+      'posthog_distinct_id': lm.guid,
+      'file': lm.file,
+      'lnr': lm.lnr,
+      'method': lm.method,
+      'model': lm.model,
+      'platform_id': lm.platformID,
+      'tag': lm.tag,
+      'version_os': lm.versionOS,
+      'app_version': lm.appVersion,
+      'lang': lm.lang,
+      'device_id': lm.deviceId,
+      'trace_id': lm.correlationId,
+      'timestamp': lm.deviceUTCTimestamp,
+    }..removeWhere((_, value) => value == null);
+
+    // Convert to OTLP AnyValue attribute list.
+    final otlpAttributes = rawAttributes.entries
+        .map(
+          (entry) => <String, dynamic>{
+            'key': entry.key,
+            'value': <String, dynamic>{
+              'stringValue': entry.value.toString(),
+            },
+          },
+        )
+        .toList();
+
+    // Resource-level attributes (service identity, version, etc.).
+    // Derive debug vs production from the platform tag.
+    final isDebugEnv = (lm.tag ?? '').contains('.Debug');
+    final resourceAttributes = <Map<String, dynamic>>[
+      {
+        'key': 'service.name',
+        'value': <String, dynamic>{
+          'stringValue': isDebugEnv ? 'Givt.App.Debug' : 'Givt.App',
+        },
+      },
+      if (lm.appVersion != null)
+        {
+          'key': 'service.version',
+          'value': <String, dynamic>{'stringValue': lm.appVersion!},
+        },
+    ];
+
+    return <String, dynamic>{
+      'resourceLogs': [
+        {
+          'resource': {
+            'attributes': resourceAttributes,
+          },
+          'scopeLogs': [
+            {
+              'scope': {
+                'name': 'givt_app_logger',
+              },
+              'logRecords': [
+                {
+                  'timeUnixNano': timeUnixNanoStr,
+                  'observedTimeUnixNano': timeUnixNanoStr,
+                  'severityText': _mapSeverityText(level),
+                  'severityNumber': _mapSeverityNumber(level),
+                  'body': <String, dynamic>{
+                    'stringValue': lm.message ?? '',
+                  },
+                  'attributes': otlpAttributes,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+  }
+
+  String? _mapSeverityText(Level level) {
+    // Map Dart logging.Level to OpenTelemetry severity text values.
+    // We keep a coarse mapping on the primary buckets only.
+    if (level == Level.FINE ||
+        level == Level.FINER ||
+        level == Level.FINEST) {
+      return 'DEBUG';
+    }
+    if (level == Level.INFO) {
+      return 'INFO';
+    }
+    if (level == Level.WARNING) {
+      return 'WARN';
+    }
+    if (level == Level.SEVERE || level == Level.SHOUT) {
+      // Treat SEVERE/SHOUT as FATAL in OTel terms.
+      return 'FATAL';
+    }
+    // If we don't recognize the level, omit severityText.
+    return null;
+  }
+
+  int? _mapSeverityNumber(Level level) {
+    // Map Dart logging.Level to OpenTelemetry SeverityNumber ranges:
+    // DEBUG: 5-8, INFO: 9-12, WARN: 13-16, ERROR: 17-20, FATAL: 21-24
+    // https://opentelemetry.io/docs/specs/otel/logs/data-model/#severitynumber
+    if (level == Level.FINE ||
+        level == Level.FINER ||
+        level == Level.FINEST) {
+      return 5; // DEBUG
+    }
+    if (level == Level.INFO) {
+      return 9; // INFO
+    }
+    if (level == Level.WARNING) {
+      return 13; // WARN
+    }
+    if (level == Level.SEVERE || level == Level.SHOUT) {
+      return 21; // FATAL
+    }
+    // If we don't recognize the level, omit severityNumber.
+    return null;
   }
 
   Future<String?> _getGuid() async {

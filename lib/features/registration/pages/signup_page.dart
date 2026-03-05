@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/password_requirements_checklist.dart';
 import 'package:givt_app/features/registration/widgets/accept_policy_row.dart';
@@ -112,8 +112,8 @@ class _SignUpPageState extends State<SignUpPage> {
             onTap: _isEnabled ? _register : null,
             isDisabled: !_isEnabled,
             isLoading: isLoading,
-            text: locals.buttonContinue,
-            analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+            text: locals.next,
+            analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
           ),
           body: LayoutBuilder(
             builder: (context, constraints) {
@@ -163,7 +163,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
+        eventName: AnalyticsEventName.registrationFilledInPersonalInfoSheetFilled,
         eventProperties: {
           'id': context.read<AuthCubit>().state.user.guid,
           'profile_country': _selectedCountry.countryCode,

@@ -4076,6 +4076,12 @@ abstract class AppLocalizations {
   /// **'Ends {date}'**
   String recurringDonationsDetailEndsTag(Object date);
 
+  /// No description provided for @recurringDonationsDetailEndedTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended {date}'**
+  String recurringDonationsDetailEndedTag(Object date);
+
   /// No description provided for @recurringDonationsDetailHistoryTitle.
   ///
   /// In en, this message translates to:
@@ -4529,7 +4535,7 @@ abstract class AppLocalizations {
   /// No description provided for @reviewDonationsDescription.
   ///
   /// In en, this message translates to:
-  /// **'Now that your mandate is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 pm today.'**
+  /// **'Now that your mandate is active, we’ll process the donations below. Tap a donation to cancel it. You can adjust them in your donation history until 8:00 pm today.'**
   String get reviewDonationsDescription;
 
   /// No description provided for @reviewDonationsProcessedTitle.

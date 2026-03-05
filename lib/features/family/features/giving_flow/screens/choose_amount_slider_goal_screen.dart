@@ -143,7 +143,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                             .read<CreateTransactionCubit>()
                             .createTransaction(transaction: transaction);
                       },
-                analyticsEvent: AmplitudeEvents.donateToThisFamilyGoalPressed.toEvent(
+                analyticsEvent: AnalyticsEventName.donateToThisFamilyGoalPressed.toEvent(
                   parameters: {
                     AnalyticsHelper.goalKey: organisation.name,
                     AnalyticsHelper.amountKey: state.amount,

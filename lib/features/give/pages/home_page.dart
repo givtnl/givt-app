@@ -167,6 +167,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       );
 
     final auth = context.watch<AuthCubit>().state;
+    final shouldLockScreen = _mandatePopupDismissalTracker.shouldForceCompletion &&
+        auth.user.needRegistration;
 
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {
@@ -179,7 +181,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       });
     }
 
-    return Scaffold(
+    return PopScope(
+      canPop: !shouldLockScreen,
+      child: Scaffold(
       key: _key,
       resizeToAvoidBottomInset: false,
       appBar: FunTopAppBar(
@@ -383,6 +387,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 ),
               ),
             ),
+    ),
     );
   }
 

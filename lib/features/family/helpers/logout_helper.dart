@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/pages.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
@@ -22,13 +22,13 @@ void logout(
 }) {
   if (fromTerminateAccount) {
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.terminateAccountSuccess,
+      eventName: AnalyticsEventName.terminateAccountSuccess,
     );
   }
 
   if (fromLogoutBtn) {
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.logoutClicked,
+      eventName: AnalyticsEventName.logoutClicked,
     );
   }
 

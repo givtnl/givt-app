@@ -24,7 +24,7 @@ class UTMHelper {
 
     if (utmProperties.isNotEmpty) {
       await AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.utm,
+        eventName: AnalyticsEventName.utm,
         eventProperties: utmProperties,
       );
     }

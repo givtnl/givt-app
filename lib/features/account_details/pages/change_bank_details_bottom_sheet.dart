@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -34,7 +35,7 @@ class _ChangeBankDetailsBottomSheetState
   void initState() {
     iban.text = widget.iban;
     accountNumber.text = widget.accountNumber;
-    sortCode.text = widget.sortCode;
+    sortCode.text = SortCodeTextFormatter.formatForDisplay(widget.sortCode);
     super.initState();
   }
 
@@ -51,72 +52,82 @@ class _ChangeBankDetailsBottomSheetState
               fontWeight: FontWeight.bold,
             ),
       ),
-      child: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            _buildTextFormField(
-              isVisibile: widget.iban.isNotEmpty,
-              hintText: locals.ibanPlaceHolder,
-              controller: iban,
-              keyboardType: TextInputType.text,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (!isValid(value)) {
-                  return '';
-                }
-                return null;
-              },
+      child: BlocBuilder<PersonalInfoEditBloc, PersonalInfoEditState>(
+        builder: (context, state) {
+          return Form(
+            key: formKey,
+            child: Column(
+              children: [
+                _buildTextFormField(
+                  isVisibile: widget.iban.isNotEmpty,
+                  hintText: locals.ibanPlaceHolder,
+                  controller: iban,
+                  keyboardType: TextInputType.text,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    if (!isValid(value)) {
+                      return '';
+                    }
+                    return null;
+                  },
+                ),
+                _buildTextFormField(
+                  isVisibile: widget.iban.isEmpty,
+                  hintText: locals.sortCodePlaceholder,
+                  controller: sortCode,
+                  inputFormatters: [SortCodeTextFormatter()],
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return locals.fieldRequired;
+                    }
+                    if (!Util.ukSortCodeRegEx.hasMatch(value)) {
+                      return locals.sortCodeMustBe6Digits;
+                    }
+                    return null;
+                  },
+                ),
+                _buildTextFormField(
+                  isVisibile: widget.iban.isEmpty,
+                  hintText: locals.bankAccountNumberPlaceholder,
+                  controller: accountNumber,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    if (value.length != 8) {
+                      return '';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: size.height * 0.05),
+                Expanded(child: Container()),
+                if (state.status == PersonalInfoEditStatus.loading)
+                  const Center(child: CircularProgressIndicator())
+                else
+                  ElevatedButton(
+                    onPressed: () {
+                      if (!formKey.currentState!.validate()) {
+                        return;
+                      }
+                      context.read<PersonalInfoEditBloc>().add(
+                            PersonalInfoEditBankDetails(
+                              iban: iban.text,
+                              accountNumber: accountNumber.text,
+                              sortCode: SortCodeTextFormatter.stripDashes(
+                                sortCode.text,
+                              ),
+                            ),
+                          );
+                    },
+                    child: Text(locals.save),
+                  ),
+              ],
             ),
-            _buildTextFormField(
-              isVisibile: widget.iban.isEmpty,
-              hintText: locals.sortCodePlaceholder,
-              controller: sortCode,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (!Util.ukSortCodeRegEx.hasMatch(value)) {
-                  return '';
-                }
-                return null;
-              },
-            ),
-            _buildTextFormField(
-              isVisibile: widget.iban.isEmpty,
-              hintText: locals.bankAccountNumberPlaceholder,
-              controller: accountNumber,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (value.length != 8) {
-                  return '';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: size.height * 0.05),
-            Expanded(child: Container()),
-            ElevatedButton(
-              onPressed: () {
-                if (!formKey.currentState!.validate()) {
-                  return;
-                }
-                context.read<PersonalInfoEditBloc>().add(
-                      PersonalInfoEditBankDetails(
-                        iban: iban.text,
-                        accountNumber: accountNumber.text,
-                        sortCode: sortCode.text,
-                      ),
-                    );
-              },
-              child: Text(locals.save),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -127,6 +138,7 @@ class _ChangeBankDetailsBottomSheetState
     required String? Function(String?) validator,
     bool isVisibile = true,
     TextInputType? keyboardType = TextInputType.number,
+    List<TextInputFormatter>? inputFormatters,
   }) {
     return Visibility(
       visible: isVisibile,
@@ -139,6 +151,7 @@ class _ChangeBankDetailsBottomSheetState
         }),
         keyboardType: keyboardType,
         textCapitalization: TextCapitalization.words,
+        inputFormatters: inputFormatters ?? const [],
       ),
     );
   }

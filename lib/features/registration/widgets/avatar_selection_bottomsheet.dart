@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
@@ -59,7 +59,7 @@ class AvatarSelectionBottomsheet extends StatelessWidget {
           FunButton(
             text: context.l10n.save,
             onTap: () => context.pop(),
-            analyticsEvent: AmplitudeEvents.avatarSaved.toEvent(
+            analyticsEvent: AnalyticsEventName.avatarSaved.toEvent(
               parameters: {
                 'filename': cubit.state.getAvatarByKey(id).fileName,
               },

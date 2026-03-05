@@ -34,7 +34,7 @@ class CreateFamilyGoalConfirmedPage extends StatelessWidget {
                 ..pushReplacementNamed(FamilyPages.childrenOverview.name);
 
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.familyGoalLaunchedCloseClicked,
+                eventName: AnalyticsEventName.familyGoalLaunchedCloseClicked,
               );
             },
           ),

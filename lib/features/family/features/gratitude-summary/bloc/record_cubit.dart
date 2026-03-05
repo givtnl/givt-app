@@ -75,7 +75,7 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
         _emitData();
 
         await AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.audioRecordingStarted,
+          eventName: AnalyticsEventName.audioRecordingStarted,
         );
       } else {
         //TODO: Handle permission denied
@@ -101,7 +101,7 @@ class RecordCubit extends CommonCubit<RecordUIModel, dynamic>
       _emitData();
 
       await AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.audioRecordingStopped,
+        eventName: AnalyticsEventName.audioRecordingStopped,
       );
       await _audioRecorder!.dispose();
       _audioRecorder = null;

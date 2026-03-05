@@ -126,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       textColor: Theme.of(
                                         context,
                                       ).colorScheme.secondary,
-                                      analyticsEvent: AmplitudeEvents
+                                      analyticsEvent: AnalyticsEventName
                                           .iWantToGivePressed
                                           .toEvent(
                                             parameters: {
@@ -165,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       textColor: Theme.of(
                                         context,
                                       ).colorScheme.onPrimaryContainer,
-                                      analyticsEvent: AmplitudeEvents
+                                      analyticsEvent: AnalyticsEventName
                                           .helpMeFindCharityPressed
                                           .toEvent(),
                                       onTap: () {
@@ -188,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             Padding(
                               padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
                               child: GenerosityHuntButton(
-                                analyticsEvent: AmplitudeEvents
+                                analyticsEvent: AnalyticsEventName
                                     .profileGenerosityHuntButtonClicked
                                     .toEvent(),
                                 onPressed: () {

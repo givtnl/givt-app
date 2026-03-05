@@ -111,7 +111,7 @@ class GivingGoalSummaryCard extends StatelessWidget {
                   );
 
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.setGivingGoalClicked,
+                    eventName: AnalyticsEventName.setGivingGoalClicked,
                   );
                 },
                 child: Card(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/reflect_intro_cubit.dart';
@@ -58,7 +58,7 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
         FunButton(
           onTap: _cubit.onStartClicked,
           text: "Let's go",
-          analyticsEvent: AmplitudeEvents.reflectAndShareLetsGoClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.reflectAndShareLetsGoClicked.toEvent(),
         ),
       ],
     );

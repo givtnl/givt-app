@@ -17,8 +17,8 @@ import 'package:path/path.dart' as p;
 void main(List<String> args) {
   final projectRoot = _projectRoot();
   final sourceDir = Directory(p.join(projectRoot.path, 'design-tokens', 'source'));
-  final givtJson = File(p.join(sourceDir.path, 'givt.tokens.json'));
-  final givt4kidsJson = File(p.join(sourceDir.path, 'givt4kids.tokens.json'));
+  final givtJson = File(p.join(sourceDir.path, 'Givt.tokens.json'));
+  final givt4kidsJson = File(p.join(sourceDir.path, 'Givt4Kids.tokens.json'));
 
   if (!givtJson.existsSync()) {
     print('Error: ${givtJson.path} not found. Copy Givt.tokens.json from Downloads to design-tokens/source/givt.tokens.json');

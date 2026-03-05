@@ -86,7 +86,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
                                   uimodel.tagList[i].colorCombo.backgroundColor,
                               textColor:
                                   uimodel.tagList[i].colorCombo.textColor,
-                              analyticsEvent: AmplitudeEvents
+                              analyticsEvent: AnalyticsEventName
                                   .gratefulTileSelected
                                   .toEvent(
                                     parameters: {
@@ -117,7 +117,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
                   isDisabled: uimodel.selectedTag == null,
                   onTap: onNext,
                   text: 'Last Question',
-                  analyticsEvent: AmplitudeEvents.gratefulTileSubmitted.toEvent(
+                  analyticsEvent: AnalyticsEventName.gratefulTileSubmitted.toEvent(
                     parameters: {
                       'superhero': uimodel.superheroName,
                       'gratefulFor': uimodel.selectedTag?.displayText,

@@ -56,7 +56,7 @@ class _BedtimeSliderWidgetState extends State<BedtimeSliderWidget> {
             },
             onChangeEnd: (value) {
               AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.amountPressed,
+                eventName: AnalyticsEventName.amountPressed,
                 eventProperties: {
                   AnalyticsHelper.amountKey: value.roundToDouble(),
                 },

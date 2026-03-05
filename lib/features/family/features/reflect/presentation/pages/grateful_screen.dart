@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -129,7 +129,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                                 uiModel.recommendationsUIModel.tabIndex,
                             onPressed: _cubit.onSelectionChanged,
                             options: _cubit.tabsOptions,
-                            analyticsEvent: AmplitudeEvents.recommendationTypeSelectorClicked.toEvent(),
+                            analyticsEvent: AnalyticsEventName.recommendationTypeSelectorClicked.toEvent(),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -156,7 +156,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                           uiModel.recommendationsUIModel.isShowingActsOfService
                               ? "I'm going to do this"
                               : 'Give',
-                      analyticsEvent: AmplitudeEvents.newActOfGenerosityClicked.toEvent(
+                      analyticsEvent: AnalyticsEventName.newActOfGenerosityClicked.toEvent(
                         parameters: {
                           uiModel.recommendationsUIModel.isShowingActsOfService
                                   ? 'act_of_service'
@@ -174,7 +174,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                 FunTextButton(
                   onTap: _cubit.onSkip,
                   text: 'Skip this time',
-                  analyticsEvent: AmplitudeEvents.skipGenerosActPressed.toEvent(
+                  analyticsEvent: AnalyticsEventName.skipGenerosActPressed.toEvent(
                     parameters: {
                       AnalyticsHelper.firstNameKey:
                           uiModel.recommendationsUIModel.name,
@@ -297,7 +297,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     _medium.setMediumId(org.namespace);
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.parentReflectionFlowOrganisationClicked,
+        eventName: AnalyticsEventName.parentReflectionFlowOrganisationClicked,
         eventProperties: {
           'organisation': org.name,
         },
@@ -315,7 +315,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     if (result != null && result is int && context.mounted) {
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.parentGiveWithAmountClicked,
+          eventName: AnalyticsEventName.parentGiveWithAmountClicked,
           eventProperties: {
             'amount': result,
             'organisation': org.name,

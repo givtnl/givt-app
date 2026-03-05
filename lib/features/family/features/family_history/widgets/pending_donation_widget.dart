@@ -33,7 +33,7 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
     return InkWell(
       onTap: () async {
         await AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.pendingDonationClicked,
+          eventName: AnalyticsEventName.pendingDonationClicked,
           eventProperties: {
             'child_name': widget.donation.name,
             'charity_name': widget.donation.organizationName,

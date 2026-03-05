@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -82,7 +82,7 @@ class _USAboutGivtBottomSheetState extends State<USAboutGivtBottomSheet> {
               }
             : null,
         text: locals.send,
-        analyticsEvent: AmplitudeEvents.aboutGivtSendFeedbackClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.aboutGivtSendFeedbackClicked.toEvent(),
       ),
       content: Form(
         key: _formKey,

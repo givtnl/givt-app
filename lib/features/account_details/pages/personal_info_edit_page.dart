@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/change_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_bank_details_bottom_sheet.dart';
+import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_name_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
@@ -120,7 +121,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 value: '${user.firstName} ${user.lastName}',
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'name'},
                   );
                   _showModalBottomSheet(
@@ -143,7 +144,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 value: user.email,
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'email'},
                   );
                   _showModalBottomSheet(
@@ -166,7 +167,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 )}',
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'address'},
                   );
                   _showModalBottomSheet(
@@ -188,7 +189,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 value: user.phoneNumber,
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'phone'},
                   );
                   _showModalBottomSheet(
@@ -209,14 +210,14 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
                 value: isUkUser
                     ? locals.bacsSortcodeAccountnumber(
-                        user.sortCode,
+                        SortCodeTextFormatter.formatForDisplay(user.sortCode),
                         user.accountNumber,
                       )
                     : user.iban,
                 onTap: user.mandateSigned
                     ? () {
                         AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.onInfoRowClicked,
+                          eventName: AnalyticsEventName.onInfoRowClicked,
                           eventProperties: {'row_type': 'bank_details'},
                         );
                         _showModalBottomSheet(
@@ -239,7 +240,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 value: 'Gift Aid',
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'gift_aid'},
                   );
                   _showModalBottomSheet(
@@ -263,7 +264,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 value: locals.changePassword,
                 onTap: () {
                   AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.onInfoRowClicked,
+                    eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'password'},
                   );
                   _showModalBottomSheet(

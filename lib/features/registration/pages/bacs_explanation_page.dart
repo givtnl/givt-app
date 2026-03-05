@@ -80,7 +80,7 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
         },
         isDisabled: !_acceptedTerms,
         text: locals.buttonContinue,
-        analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
       ),
       body: SingleChildScrollView(
         controller: _scrollController,

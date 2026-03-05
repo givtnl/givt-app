@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -24,7 +24,7 @@ class RegistrationCompletedPage extends StatelessWidget {
         onTap: () => context.goNamed(Pages.home.name),
         text: locals.buttonContinue,
         analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.continueClicked,
+          AnalyticsEventName.continueClicked,
         ),
       ),
       body: Stack(

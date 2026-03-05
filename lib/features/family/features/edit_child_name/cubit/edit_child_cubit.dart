@@ -53,7 +53,7 @@ class EditChildCubit extends Cubit<EditChildState>
     }
 
     await AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.childEditSaveClicked,
+      eventName: AnalyticsEventName.childEditSaveClicked,
       eventProperties: {
         'child_name': name,
       },

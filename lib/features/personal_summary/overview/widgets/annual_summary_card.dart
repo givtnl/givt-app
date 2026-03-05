@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/features/personal_summary/overview/widgets/widgets.dart';
@@ -58,7 +58,7 @@ class AnnualSummaryCard extends StatelessWidget {
                     );
 
                     AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.personalSummaryYearClicked,
+                      eventName: AnalyticsEventName.personalSummaryYearClicked,
                       eventProperties: {
                         'year': item.key,
                       },

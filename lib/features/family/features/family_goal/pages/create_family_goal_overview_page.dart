@@ -32,7 +32,7 @@ class CreateFamilyGoalOverviewPage extends StatelessWidget {
           color: AppTheme.givtBlue,
           onPressed: () {
             AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.backClicked,
+              eventName: AnalyticsEventName.backClicked,
             );
 
             context.pop();
@@ -91,7 +91,7 @@ class CreateFamilyGoalOverviewPage extends StatelessWidget {
                       onPressed: () {
                         context.read<CreateFamilyGoalCubit>().showCause();
                         AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.familyGoalCreateClicked,
+                          eventName: AnalyticsEventName.familyGoalCreateClicked,
                         );
                       },
                     ),

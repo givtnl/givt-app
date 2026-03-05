@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -152,15 +153,19 @@ class SignSepaMandatePage extends StatelessWidget {
                                 appLanguage: locals.localeName,
                               ),
                             ),
-                    isLoading: registrationState.status == RegistrationStatus.loading,
+                    isLoading:
+                        registrationState.status == RegistrationStatus.loading,
                     text: locals.signMandate,
-                    analyticsEvent: AmplitudeEvents.continueClicked.toEvent(),
+                    analyticsEvent:
+                        AnalyticsEventName.continueClicked.toEvent(),
                   ),
                   const SizedBox(height: 8),
                   FunTextButton(
                     onTap: () => context.pushNamed(Pages.personalInfoEdit.name),
                     text: locals.changeDetails,
-                    analyticsEvent: AmplitudeEvents.signMandateChangeDetailsClicked.toEvent(),
+                    analyticsEvent: AnalyticsEventName
+                        .signMandateChangeDetailsClicked
+                        .toEvent(),
                   ),
                 ],
               ),

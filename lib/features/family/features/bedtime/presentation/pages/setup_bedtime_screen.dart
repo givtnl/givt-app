@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
@@ -70,7 +70,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
             secondaryButtonText: 'Go Home',
             onTapSecondaryButton: () =>
                 context.goNamed(FamilyPages.profileSelection.name),
-            secondaryButtonAnalyticsEvent: AmplitudeEvents.returnToHomePressed.toEvent(),
+            secondaryButtonAnalyticsEvent: AnalyticsEventName.returnToHomePressed.toEvent(),
           ),
         ),
         onLoading: (context) {
@@ -265,7 +265,7 @@ class _SetupBedtimeScreenState extends State<SetupBedtimeScreen> {
             ),
             isLoading: isLoading,
             text: isLast ? context.l10n.buttonDone : context.l10n.buttonContinue,
-            analyticsEvent: AmplitudeEvents.childBedtimeSet.toEvent(
+            analyticsEvent: AnalyticsEventName.childBedtimeSet.toEvent(
               parameters: {
                 'child': child.firstName,
                 'bedtime':

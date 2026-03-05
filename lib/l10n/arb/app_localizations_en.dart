@@ -2244,6 +2244,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String recurringDonationsDetailEndedTag(Object date) {
+    return 'Ended $date';
+  }
+
+  @override
   String get recurringDonationsDetailHistoryTitle => 'History';
 
   @override
@@ -2510,7 +2515,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reviewDonationsDescription =>
-      'Now that your mandate is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 pm today.';
+      'Now that your mandate is active, we’ll process the donations below. Tap a donation to cancel it. You can adjust them in your donation history until 8:00 pm today.';
 
   @override
   String get reviewDonationsProcessedTitle =>
@@ -4826,6 +4831,11 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   }
 
   @override
+  String recurringDonationsDetailEndedTag(Object date) {
+    return 'Ended $date';
+  }
+
+  @override
   String get recurringDonationsDetailHistoryTitle => 'History';
 
   @override
@@ -5092,7 +5102,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get reviewDonationsDescription =>
-      'Now that your authorization is active, we’ll process the donations below. You can adjust them in your donation history until 8:00 PM today.';
+      'Now that your authorization is active, we’ll process the donations below. Tap a donation to cancel it. You can adjust them in your donation history until 8:00 PM today.';
 
   @override
   String get reviewDonationsProcessedTitle =>

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
@@ -42,7 +42,7 @@ class GiveCubit extends Cubit<GiveState> {
       );
 
       await AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.parentGaveSuccessfully,
+        eventName: AnalyticsEventName.parentGaveSuccessfully,
         eventProperties: {
           'amount': transaction.amount,
           'organisation': orgName,

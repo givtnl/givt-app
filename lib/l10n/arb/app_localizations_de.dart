@@ -2264,6 +2264,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String recurringDonationsDetailEndedTag(Object date) {
+    return 'Beendet $date';
+  }
+
+  @override
   String get recurringDonationsDetailHistoryTitle => 'Verlauf';
 
   @override
@@ -2532,7 +2537,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get reviewDonationsDescription =>
-      'Da dein Mandat jetzt aktiv ist, verarbeiten wir die untenstehenden Spenden. Du kannst sie bis heute 20:00 Uhr in deiner Spendenhistorie anpassen.';
+      'Da dein Mandat jetzt aktiv ist, verarbeiten wir die untenstehenden Spenden. Tippe auf eine Spende, um sie zu stornieren. Du kannst sie bis heute 20:00 Uhr in deiner Spendenhistorie anpassen.';
 
   @override
   String get reviewDonationsProcessedTitle =>

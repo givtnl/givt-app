@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/pages/credit_card_details.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_bottom_sheet.dart';
@@ -28,7 +28,7 @@ class EnterDetailsBottomSheet extends StatelessWidget {
       ),
       primaryButton: FunButton(
         text: 'Enter payment details',
-        analyticsEvent: AmplitudeEvents.enterCardDetailsClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName.enterCardDetailsClicked.toEvent(),
         onTap: () {
           CreditCardDetails.show(
             context,

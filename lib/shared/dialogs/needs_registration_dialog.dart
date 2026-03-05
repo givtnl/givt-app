@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class NeedsRegistrationDialog {
@@ -16,6 +17,11 @@ class NeedsRegistrationDialog {
   }) {
     final user = context.read<AuthCubit>().state.user;
     final isMandatory = mandatePopupDismissalTracker.shouldForceCompletion;
+
+    AnalyticsHelper.logEvent(
+      eventName: AnalyticsEventName.finalizeRegistrationModalShown,
+      eventProperties: {'is_mandatory': isMandatory},
+    );
 
     return FunModal(
       title: context.l10n.importantReminder,
@@ -33,7 +39,7 @@ class NeedsRegistrationDialog {
         FunButton(
           text: context.l10n.finalizeRegistration,
           analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.finalizeRegistrationModalFinalizeClicked,
+            AnalyticsEventName.finalizeRegistrationModalFinalizeClicked,
           ),
           onTap: () {
             if (user.needRegistration) {
@@ -58,7 +64,7 @@ class NeedsRegistrationDialog {
             fullBorder: true,
             text: context.l10n.askMeLater,
             analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.finalizeRegistrationModalAskLaterClicked,
+              AnalyticsEventName.finalizeRegistrationModalAskLaterClicked,
             ),
             onTap: () async {
               await mandatePopupDismissalTracker.incrementDismissals();

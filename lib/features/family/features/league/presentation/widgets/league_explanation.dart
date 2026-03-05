@@ -48,8 +48,8 @@ class LeagueExplanation extends StatelessWidget {
                 ? context.l10n.leagueUnlockLeague
                 : context.l10n.buttonContinue,
             analyticsEvent: isInGameVersion
-                ? AmplitudeEvents.unlockLeagueClicked.toEvent()
-                : AmplitudeEvents.leagueExplanationContinueClicked.toEvent(),
+                ? AnalyticsEventName.unlockLeagueClicked.toEvent()
+                : AnalyticsEventName.leagueExplanationContinueClicked.toEvent(),
           ),
           const SizedBox(height: 40),
         ],
