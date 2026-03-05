@@ -55,7 +55,7 @@ class _AppState extends State<App> {
     PackageInfo.fromPlatform().then(
       (info) {
         AnalyticsHelper.setAppMetadata(
-          appName: 'givt-app',
+          appName: 'Givt.App',
           appType: 'mobile',
           appVersion: info.version,
         );

@@ -8,8 +8,6 @@ on:
         required: true
       MATCH_PASSWORD:
         required: true
-      LOGIT_API_KEY:
-        required: true
       GOOGLE_SERVICES_JSON:
         required: true
     inputs:
@@ -87,7 +85,6 @@ jobs:
         env:
           GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-          LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
           PACKAGE_NAME: ${{ env.PACKAGE_NAME }}
           API_URL_US: ${{env.API_URL_US}}
           API_URL_EU: ${{env.API_URL_EU}}
