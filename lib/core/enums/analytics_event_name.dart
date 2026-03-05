@@ -403,7 +403,8 @@ enum AnalyticsEventName {
   platformContributionSaveConfirmClicked('platform_contribution_save_confirm_clicked'),
   platformContributionDiscardConfirmClicked('platform_contribution_discard_confirm_clicked'),
   finalizeRegistrationModalFinalizeClicked('finalize_registration_modal_finalize_clicked'),
-  finalizeRegistrationModalAskLaterClicked('finalize_registration_modal_ask_later_clicked');
+  finalizeRegistrationModalAskLaterClicked('finalize_registration_modal_ask_later_clicked'),
+  finalizeRegistrationModalShown('finalize_registration_modal_shown');
 
   const AnalyticsEventName(this.value);
 
