@@ -46,6 +46,7 @@ class DurationOptions extends StatefulWidget {
 
 class _DurationOptionsState extends State<DurationOptions> {
   Timer? _snackbarTimer;
+  StreamSubscription<bool>? _keyboardVisibilitySubscription;
   late KeyboardVisibilityController _keyboardVisibilityController;
   bool _isKeyboardVisible = false;
 
@@ -53,14 +54,15 @@ class _DurationOptionsState extends State<DurationOptions> {
   void initState() {
     super.initState();
     _keyboardVisibilityController = KeyboardVisibilityController();
-    
+
     // Listen to keyboard visibility changes
-    _keyboardVisibilityController.onChange.listen((bool visible) {
-      setState(() {
-        _isKeyboardVisible = visible;
-      });
-      
-      // If keyboard just became visible, close any existing snackbars
+    _keyboardVisibilitySubscription =
+        _keyboardVisibilityController.onChange.listen((bool visible) {
+      if (mounted) {
+        setState(() {
+          _isKeyboardVisible = visible;
+        });
+      }
       if (visible) {
         FunSnackbar.removeCurrent();
         _snackbarTimer?.cancel();
@@ -71,6 +73,7 @@ class _DurationOptionsState extends State<DurationOptions> {
   @override
   void dispose() {
     _snackbarTimer?.cancel();
+    _keyboardVisibilitySubscription?.cancel();
     super.dispose();
   }
 
