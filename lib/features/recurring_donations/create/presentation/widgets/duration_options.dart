@@ -63,6 +63,7 @@ class _DurationOptionsState extends State<DurationOptions> {
           _isKeyboardVisible = visible;
         });
       }
+      // If keyboard just became visible, close any existing snackbars
       if (visible) {
         FunSnackbar.removeCurrent();
         _snackbarTimer?.cancel();
