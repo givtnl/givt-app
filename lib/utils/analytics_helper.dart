@@ -81,9 +81,9 @@ class AnalyticsHelper {
   ) async {
     final properties = <String, Object>{
       if (eventProperties != null)
-        ...eventProperties.map(
-          (key, value) => MapEntry(key, value as Object),
-        ),
+        ...eventProperties.entries
+            .where((e) => e.value != null)
+            .map((e) => MapEntry(e.key, e.value as Object)),
     };
 
     await Posthog().capture(
@@ -112,9 +112,9 @@ class AnalyticsHelper {
 
     final properties = <String, Object>{
       if (userProperties != null)
-        ...userProperties.map(
-          (key, value) => MapEntry(key, value as Object),
-        ),
+        ...userProperties.entries
+            .where((e) => e.value != null)
+            .map((e) => MapEntry(e.key, e.value as Object)),
       'user_id': userId,
     };
 
