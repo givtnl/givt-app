@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_overview_repository.dart';
@@ -20,6 +22,7 @@ class RecurringDonationsOverviewCubit
 
   final RecurringDonationsOverviewRepository _recurringDonationsOverviewRepository;
   int _selectedTabIndex = 0;
+  StreamSubscription<List<RecurringDonation>>? _recurringDonationsSubscription;
 
   void init() {
     _setupStreams();
@@ -27,7 +30,8 @@ class RecurringDonationsOverviewCubit
   }
 
   void _setupStreams() {
-    _recurringDonationsOverviewRepository.onRecurringDonationsChanged().listen(
+    _recurringDonationsSubscription =
+        _recurringDonationsOverviewRepository.onRecurringDonationsChanged().listen(
       _onRecurringDonationsChanged,
       onError: (Object error) {
         LoggingInfo.instance.error(
@@ -39,6 +43,8 @@ class RecurringDonationsOverviewCubit
   }
 
   void _onRecurringDonationsChanged(List<RecurringDonation> donations) {
+    if (isClosed) return;
+
     if (_recurringDonationsOverviewRepository.isLoading()) {
       emitLoading();
     } else {
@@ -175,5 +181,11 @@ class RecurringDonationsOverviewCubit
         methodName: 'RecurringDonationsOverviewCubit._trackProgressCalculation',
       );
     }
+  }
+
+  @override
+  Future<void> close() {
+    _recurringDonationsSubscription?.cancel();
+    return super.close();
   }
 }
