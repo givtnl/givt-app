@@ -6,9 +6,12 @@ class FunBottomSheetWithAsyncActionCubit
     extends Cubit<FunBottomSheetWithAsyncActionState> {
   FunBottomSheetWithAsyncActionCubit() : super(const InitialState());
 
-  Future<void> doAsyncAction(Future<void> Function() asyncAction,
-      {bool showGivtServerFailureMessage = false,
-      bool showAnyErrorMessage = false}) async {
+  Future<void> doAsyncAction(
+    Future<void> Function() asyncAction, {
+    bool showGivtServerFailureMessage = false,
+    bool showAnyErrorMessage = false,
+    String? Function(Object)? errorMessageMapper,
+  }) async {
     emit(const LoadingState());
     try {
       await asyncAction();
@@ -16,10 +19,12 @@ class FunBottomSheetWithAsyncActionCubit
     } on GivtServerFailure catch (e) {
       final errorMessage = e.body?['errorMessage'] as String?;
       error(errorMessage: showGivtServerFailureMessage ? errorMessage : null);
-    } catch (e) {
+    } on Object catch (e) {
+      final mappedMessage =
+          errorMessageMapper != null ? errorMessageMapper(e) : null;
       error(
         errorMessage: showAnyErrorMessage
-            ? e.toString().replaceAll('Exception:', '')
+            ? (mappedMessage ?? e.toString().replaceAll('Exception:', ''))
             : null,
       );
     }

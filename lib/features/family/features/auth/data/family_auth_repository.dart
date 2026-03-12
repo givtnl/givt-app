@@ -74,6 +74,12 @@ abstract class FamilyAuthRepository {
   Future<void> updateEmail(String email);
 }
 
+/// Thrown when the user tries to change their email to an address that already
+/// has an account (registered or temp user).
+class EmailAlreadyInUseException implements Exception {
+  EmailAlreadyInUseException();
+}
+
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   FamilyAuthRepositoryImpl(
     this._prefs,
@@ -514,11 +520,8 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     }
 
     final result = await _apiService.checkEmail(email);
-    if (result.contains('temp')) {
-      throw invalidEmailException();
-    }
-    if (result.contains('true')) {
-      throw invalidEmailException();
+    if (result.contains('temp') || result.contains('true')) {
+      throw EmailAlreadyInUseException();
     }
 
     final isSuccess = await _apiService.updateUser(

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart'
+    show EmailAlreadyInUseException, FamilyAuthRepository;
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -56,6 +57,10 @@ class _ChangeEmailAddressBottomSheetState
                   ),
                   showGivtServerFailureMessage: true,
                   showAnyErrorMessage: true,
+                  errorMessageMapper: (e) =>
+                      e is EmailAlreadyInUseException
+                          ? locals.emailAlreadyInUse
+                          : null,
                 );
               }
             : null,

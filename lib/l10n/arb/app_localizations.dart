@@ -908,6 +908,12 @@ abstract class AppLocalizations {
   /// **'Invalid e-mail address'**
   String get invalidEmail;
 
+  /// No description provided for @emailAlreadyInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This email address is already in use. Our support team will contact you.'**
+  String get emailAlreadyInUse;
+
   /// No description provided for @giftsOverviewSent.
   ///
   /// In en, this message translates to:

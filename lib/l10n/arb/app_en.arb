@@ -136,6 +136,7 @@
   "qrScannedOutOfApp": "Hey! Great that you want to give with a QR code! Are you sure you would like to give to {value0}?",
   "saveFailed": "Saving failed",
   "invalidEmail": "Invalid e-mail address",
+  "emailAlreadyInUse": "This email address is already in use. Our support team will contact you.",
   "giftsOverviewSent": "We've sent your donations overview to your mailbox.",
   "downloadYearOverviewByChoice": "Do you want to download an annual overview of your donations? Choose the year below and we will send the overview to",
   "mandateFailTryAgainLater": "Something went wrong while generating the mandate. Can you try again later?",

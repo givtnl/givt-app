@@ -481,6 +481,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get invalidEmail => 'Ungültige E-Mail-Adresse';
 
   @override
+  String get emailAlreadyInUse =>
+      'Diese E-Mail-Adresse wird bereits verwendet. Unser Support-Team wird sich bei dir melden.';
+
+  @override
   String get giftsOverviewSent =>
       'Wir haben die Spendenübersicht an deine Mailbox geschickt.';
 

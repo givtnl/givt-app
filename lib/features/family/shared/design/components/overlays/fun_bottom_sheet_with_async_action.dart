@@ -104,7 +104,7 @@ class _FunBottomSheetWithAsyncActionState
                     'Oops, something went wrong!\nPlease try again later.',
                 content: FunIcon.xmark(),
                 primaryButton: FunButton(
-                  text: 'Try again',
+                  text: context.l10n.tryAgain,
                   onTap: () => widget.cubit.onClickTryAgainAfterError(),
                   analyticsEvent: AnalyticsEventName.bottomsheet.toEvent(
                     parameters: {
@@ -116,7 +116,7 @@ class _FunBottomSheetWithAsyncActionState
                 secondaryButton: FunButton(
                   variant: FunButtonVariant.secondary,
                   fullBorder: true,
-                  text: 'Close',
+                  text: context.l10n.close,
                   onTap: () => context.pop(),
                   analyticsEvent: AnalyticsEventName.bottomsheet.toEvent(
                     parameters: {
