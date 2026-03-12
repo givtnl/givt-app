@@ -136,7 +136,10 @@ class PersonalInfoEditBloc
 
       final result = await authRepository.checkEmail(event.email);
       if (result.contains('temp') || result.contains('true')) {
-        emit(state.copyWith(status: PersonalInfoEditStatus.emailUsed));
+        emit(state.copyWith(
+          status: PersonalInfoEditStatus.emailUsed,
+          requestedNewEmail: event.email,
+        ));
         return;
       }
       final stateUser = state.loggedInUserExt.copyWith(email: event.email);
@@ -149,7 +152,7 @@ class PersonalInfoEditBloc
       );
       emit(
         state.copyWith(
-          status: PersonalInfoEditStatus.success,
+          status: PersonalInfoEditStatus.emailChangeSuccess,
           loggedInUserExt: stateUser,
         ),
       );
@@ -293,7 +296,11 @@ class PersonalInfoEditBloc
     PersonalInfoEditStatusReset event,
     Emitter<PersonalInfoEditState> emit,
   ) {
-    emit(state.copyWith(status: PersonalInfoEditStatus.initial));
+    emit(PersonalInfoEditState(
+      status: PersonalInfoEditStatus.initial,
+      loggedInUserExt: state.loggedInUserExt,
+      error: state.error,
+    ));
   }
 
   FutureOr<void> _onMaxAmountChanged(

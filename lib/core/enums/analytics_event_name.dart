@@ -42,6 +42,8 @@ enum AnalyticsEventName {
   aboutGivtSendFeedbackClicked('about_givt_send_feedback_clicked'),
   editPhoneNumberSaveClicked('edit_phone_number_save_clicked'),
   editEmailSaveClicked('edit_email_save_clicked'),
+  emailAlreadyInUseContactClicked('email_already_in_use_contact_clicked'),
+  emailAlreadyInUseCloseClicked('email_already_in_use_close_clicked'),
   inAppReviewTriggered('in_app_review_triggered'),
   askForInterviewTriggered('ask_for_interview_triggered'),
   organisationFavoriteToggled('organisation_favorite_toggled'),

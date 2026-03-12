@@ -482,7 +482,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get emailAlreadyInUse =>
-      'Diese E-Mail-Adresse wird bereits verwendet. Unser Support-Team wird sich bei dir melden.';
+      'Du hast bereits ein Konto mit dieser E-Mail-Adresse. Möchtest du, dass wir uns bei dir melden, um deine Konten zusammenzuführen oder das zu klären?';
+
+  @override
+  String get emailAlreadyInUseTitle => 'E-Mail-Adresse bereits vergeben';
+
+  @override
+  String get emailAlreadyInUseContactButton => 'Ja, Kontakt aufnehmen';
+
+  @override
+  String get emailAlreadyInUseCloseButton => 'Schließen';
 
   @override
   String get giftsOverviewSent =>

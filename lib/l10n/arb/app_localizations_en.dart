@@ -477,7 +477,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emailAlreadyInUse =>
-      'This email address is already in use. Our support team will contact you.';
+      'You already have an account with this email address. Would you like us to get in contact to merge your accounts or help resolve this?';
+
+  @override
+  String get emailAlreadyInUseTitle => 'Email address in use';
+
+  @override
+  String get emailAlreadyInUseContactButton => 'Yes, get in contact';
+
+  @override
+  String get emailAlreadyInUseCloseButton => 'Close';
 
   @override
   String get giftsOverviewSent =>
@@ -3068,7 +3077,16 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get emailAlreadyInUse =>
-      'This email address is already in use. Our support team will contact you.';
+      'You already have an account with this email address. Would you like us to get in contact to merge your accounts or help resolve this?';
+
+  @override
+  String get emailAlreadyInUseTitle => 'Email address in use';
+
+  @override
+  String get emailAlreadyInUseContactButton => 'Yes, get in contact';
+
+  @override
+  String get emailAlreadyInUseCloseButton => 'Close';
 
   @override
   String get giftsOverviewSent =>

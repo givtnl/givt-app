@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
@@ -44,6 +46,28 @@ class _ChangeEmailAddressBottomSheetState
     return BlocBuilder<PersonalInfoEditBloc, PersonalInfoEditState>(
       builder: (context, state) {
         final isLoading = state.status == PersonalInfoEditStatus.loading;
+        final isEmailChangeSuccess =
+            state.status == PersonalInfoEditStatus.emailChangeSuccess;
+
+        if (isEmailChangeSuccess) {
+          return FunBottomSheet(
+            closeAction: () => _onEmailChangeSuccessDone(context),
+            title: locals.success,
+            content: FunIcon.checkmark(),
+            primaryButton: FunButton(
+              text: locals.buttonDone,
+              onTap: () => _onEmailChangeSuccessDone(context),
+              analyticsEvent: AnalyticsEvent(
+                AnalyticsEventName.editEmailSaveClicked,
+                parameters: {
+                  'old_email': widget.email,
+                  'new_email': emailController.text,
+                },
+              ),
+            ),
+          );
+        }
+
         return FunBottomSheet(
           closeAction: () => Navigator.of(context).pop(),
           title: locals.changeEmail,
@@ -95,6 +119,12 @@ class _ChangeEmailAddressBottomSheetState
         );
       },
     );
+  }
+
+  void _onEmailChangeSuccessDone(BuildContext context) {
+    context.read<PersonalInfoEditBloc>().add(const PersonalInfoEditStatusReset());
+    Navigator.of(context).pop();
+    context.read<AuthCubit>().refreshUser();
   }
 
   bool get isEnabled {
