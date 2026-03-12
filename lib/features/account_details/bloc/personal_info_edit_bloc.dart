@@ -36,6 +36,8 @@ class PersonalInfoEditBloc
     on<PersonalInfoEditGiftAid>(_onGiftAidChanged);
 
     on<PersonalInfoEditChangeMaxAmount>(_onMaxAmountChanged);
+
+    on<PersonalInfoEditStatusReset>(_onStatusReset);
   }
 
   final AuthRepository authRepository;
@@ -133,12 +135,8 @@ class PersonalInfoEditBloc
       }
 
       final result = await authRepository.checkEmail(event.email);
-      if (result.contains('temp')) {
-        emit(state.copyWith(status: PersonalInfoEditStatus.invalidEmail));
-        return;
-      }
-      if (result.contains('true')) {
-        emit(state.copyWith(status: PersonalInfoEditStatus.invalidEmail));
+      if (result.contains('temp') || result.contains('true')) {
+        emit(state.copyWith(status: PersonalInfoEditStatus.emailUsed));
         return;
       }
       final stateUser = state.loggedInUserExt.copyWith(email: event.email);
@@ -170,7 +168,7 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      LoggingInfo.instance.info('Changing address to ${event..toString()}');
+      LoggingInfo.instance.info('Changing address to ${event.toString()}');
       final stateUser = state.loggedInUserExt.copyWith(
         address: event.address,
         city: event.city,
@@ -289,6 +287,13 @@ class PersonalInfoEditBloc
     } catch (e, stackTrace) {
       _handleGenericException(e, stackTrace, emit);
     }
+  }
+
+  void _onStatusReset(
+    PersonalInfoEditStatusReset event,
+    Emitter<PersonalInfoEditState> emit,
+  ) {
+    emit(state.copyWith(status: PersonalInfoEditStatus.initial));
   }
 
   FutureOr<void> _onMaxAmountChanged(

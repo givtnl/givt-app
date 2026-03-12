@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/util.dart';
 
 class ChangeEmailAddressBottomSheet extends StatefulWidget {
@@ -30,27 +33,28 @@ class _ChangeEmailAddressBottomSheetState
   }
 
   @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final locals = context.l10n;
-    return BottomSheetLayout(
-      title: Text(
-        locals.changeEmail,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-      ),
-      child: BlocBuilder<PersonalInfoEditBloc, PersonalInfoEditState>(
-        builder: (context, state) {
-          return Form(
+    return BlocBuilder<PersonalInfoEditBloc, PersonalInfoEditState>(
+      builder: (context, state) {
+        final isLoading = state.status == PersonalInfoEditStatus.loading;
+        return FunBottomSheet(
+          closeAction: () => Navigator.of(context).pop(),
+          title: locals.changeEmail,
+          content: Form(
             key: formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: size.height * 0.05),
-                CustomTextFormField(
+                const SizedBox(height: 24),
+                OutlinedTextFormField(
                   controller: emailController,
-                  onChanged: (value) => setState(() {}),
+                  onChanged: (_) => setState(() {}),
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
@@ -62,44 +66,39 @@ class _ChangeEmailAddressBottomSheetState
                   hintText: locals.email,
                   textInputAction: TextInputAction.go,
                 ),
-                const SizedBox(height: 15),
-                Expanded(child: Container()),
-                if (state.status == PersonalInfoEditStatus.loading)
-                  const Center(child: CircularProgressIndicator())
-                else
-                  ElevatedButton(
-                    onPressed: isEnabled
-                        ? () {
-                            if (!formKey.currentState!.validate()) {
-                              return;
-                            }
-                            context.read<PersonalInfoEditBloc>().add(
-                                  PersonalInfoEditEmail(
-                                    email: emailController.text,
-                                  ),
-                                );
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      disabledBackgroundColor: Colors.grey,
-                    ),
-                    child: Text(
-                      locals.save,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                  ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+          primaryButton: FunButton(
+            isDisabled: !isEnabled || isLoading,
+            onTap: isEnabled && !isLoading
+                ? () {
+                    if (!formKey.currentState!.validate()) {
+                      return;
+                    }
+                    context.read<PersonalInfoEditBloc>().add(
+                          PersonalInfoEditEmail(
+                            email: emailController.text,
+                          ),
+                        );
+                  }
+                : null,
+            text: isLoading ? locals.loadingTitle : locals.save,
+            analyticsEvent: AnalyticsEvent(
+              AnalyticsEventName.editEmailSaveClicked,
+              parameters: {
+                'old_email': widget.email,
+                'new_email': emailController.text,
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
   bool get isEnabled {
+    if (emailController.text == widget.email) return false;
     if (formKey.currentState == null) return false;
     if (formKey.currentState!.validate() == false) return false;
     return emailController.text.isNotEmpty;

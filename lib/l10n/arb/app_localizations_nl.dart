@@ -479,6 +479,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get invalidEmail => 'Ongeldig e-mailadres';
 
   @override
+  String get emailAlreadyInUse =>
+      'Dit e-mailadres is al in gebruik. Ons supportteam neemt contact met je op.';
+
+  @override
   String get giftsOverviewSent =>
       'We hebben je giftenoverzicht verstuurd naar je mailbox.';
 

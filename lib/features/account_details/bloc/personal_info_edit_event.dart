@@ -104,3 +104,7 @@ class PersonalInfoEditChangeMaxAmount extends PersonalInfoEditEvent {
   @override
   List<Object> get props => [newAmountLimit];
 }
+
+class PersonalInfoEditStatusReset extends PersonalInfoEditEvent {
+  const PersonalInfoEditStatusReset();
+}

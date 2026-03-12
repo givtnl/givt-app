@@ -136,6 +136,7 @@
   "qrScannedOutOfApp": "¡Hola! ¡Qué bien que quieras donar con un código QR! ¿Estás seguro de que deseas donar a {value0}?",
   "saveFailed": "Error al guardar",
   "invalidEmail": "Correo electrónico inválido",
+  "emailAlreadyInUse": "Este correo electrónico ya está en uso. Nuestro equipo de soporte se pondrá en contacto contigo.",
   "giftsOverviewSent": "Hemos enviado el resumen de tus donaciones a tu buzón de correo.",
   "downloadYearOverviewByChoice": "¿Deseas descargar un resumen anual de tus donaciones? Elige el año a continuación y te enviaremos el resumen a",
   "mandateFailTryAgainLater": "Algo salió mal al generar el mandato. ¿Puede intentarlo de nuevo más tarde?",

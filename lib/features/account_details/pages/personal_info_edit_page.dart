@@ -12,8 +12,9 @@ import 'package:givt_app/features/account_details/pages/change_phone_number_bott
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/pages/gift_aid_page.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -47,45 +48,30 @@ class PersonalInfoEditPage extends StatelessWidget {
       body: BlocListener<PersonalInfoEditBloc, PersonalInfoEditState>(
         listener: (context, state) {
           if (state.status == PersonalInfoEditStatus.noInternet) {
-            showDialog<void>(
-              context: context,
-              builder: (_) => WarningDialog(
-                title: locals.noInternetConnectionTitle,
-                content: locals.noInternet,
-                onConfirm: () => context.pop(),
-              ),
+            _showInfoModal(
+              context,
+              title: locals.noInternetConnectionTitle,
+              subtitle: locals.noInternet,
             );
           }
           if (state.status == PersonalInfoEditStatus.invalidEmail) {
-            showDialog<void>(
-              context: context,
-              builder: (_) => WarningDialog(
-                title: locals.invalidEmail,
-                content: locals.errorTldCheck,
-                onConfirm: () => context.pop(),
-              ),
+            _showInfoModal(
+              context,
+              title: locals.invalidEmail,
+              subtitle: locals.errorTldCheck,
             );
           }
-
           if (state.status == PersonalInfoEditStatus.emailUsed) {
-            showDialog<void>(
-              context: context,
-              builder: (_) => WarningDialog(
-                title: locals.invalidEmail,
-                content: locals.errorTldCheck,
-                onConfirm: () => context.pop(),
-              ),
+            _showInfoModal(
+              context,
+              title: locals.emailAlreadyInUse,
             );
           }
-
           if (state.status == PersonalInfoEditStatus.error) {
-            showDialog<void>(
-              context: context,
-              builder: (_) => WarningDialog(
-                title: locals.saveFailed,
-                content: locals.updatePersonalInfoError,
-                onConfirm: () => context.pop(),
-              ),
+            _showInfoModal(
+              context,
+              title: locals.saveFailed,
+              subtitle: locals.updatePersonalInfoError,
             );
           }
 
@@ -283,6 +269,31 @@ class PersonalInfoEditPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _showInfoModal(
+    BuildContext context, {
+    required String title,
+    String? subtitle,
+  }) {
+    final bloc = context.read<PersonalInfoEditBloc>();
+    final navigator = Navigator.of(context);
+    void onClose() {
+      bloc.add(const PersonalInfoEditStatusReset());
+      navigator.pop();
+    }
+    FunModal(
+      title: title,
+      subtitle: subtitle,
+      closeAction: onClose,
+      buttons: [
+        FunButton(
+          text: context.l10n.confirm,
+          analyticsEvent: AnalyticsEvent(AnalyticsEventName.okClicked),
+          onTap: onClose,
+        ),
+      ],
+    ).show(context, isDismissible: false);
   }
 
   Future<void> _showModalBottomSheet(

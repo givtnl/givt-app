@@ -476,6 +476,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get invalidEmail => 'Invalid e-mail address';
 
   @override
+  String get emailAlreadyInUse =>
+      'Este correo electrónico ya está en uso. Nuestro equipo de soporte se pondrá en contacto contigo.';
+
+  @override
   String get giftsOverviewSent =>
       'We\'ve sent your donations overview to your mailbox.';
 
@@ -3068,6 +3072,10 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get invalidEmail => 'Correo electrónico inválido';
+
+  @override
+  String get emailAlreadyInUse =>
+      'Este correo electrónico ya está en uso. Nuestro equipo de soporte se pondrá en contacto contigo.';
 
   @override
   String get giftsOverviewSent =>

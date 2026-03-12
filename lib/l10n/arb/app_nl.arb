@@ -136,6 +136,7 @@
   "qrScannedOutOfApp": "Hey! Wat leuk dat je wil geven met een QR-code! Klopt het dat je wil geven aan {value0}?",
   "saveFailed": "Opslaan mislukt",
   "invalidEmail": "Ongeldig e-mailadres",
+  "emailAlreadyInUse": "Dit e-mailadres is al in gebruik. Ons supportteam neemt contact met je op.",
   "giftsOverviewSent": "We hebben je giftenoverzicht verstuurd naar je mailbox.",
   "downloadYearOverviewByChoice": "Wil je een giftenoverzicht van een volledig jaar downloaden voor je belastingaangifte ? Kies hieronder het jaar en we versturen het overzicht naar",
   "mandateFailTryAgainLater": "Er gaat iets mis bij het aanmaken van de machtiging. Probeer je later nog eens opnieuw?",
