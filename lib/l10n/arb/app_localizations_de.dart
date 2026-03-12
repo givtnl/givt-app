@@ -481,6 +481,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get invalidEmail => 'Ungültige E-Mail-Adresse';
 
   @override
+  String get emailAlreadyInUse =>
+      'Du hast bereits ein Konto mit dieser E-Mail-Adresse. Möchtest du, dass wir uns bei dir melden, um deine Konten zusammenzuführen oder das zu klären?';
+
+  @override
+  String get emailAlreadyInUseTitle => 'E-Mail-Adresse bereits vergeben';
+
+  @override
+  String get emailAlreadyInUseContactButton => 'Ja, Kontakt aufnehmen';
+
+  @override
+  String get emailAlreadyInUseCloseButton => 'Schließen';
+
+  @override
   String get giftsOverviewSent =>
       'Wir haben die Spendenübersicht an deine Mailbox geschickt.';
 
