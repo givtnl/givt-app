@@ -1,0 +1,29 @@
+---
+description: Version bump policy for the Givt app
+alwaysApply: true
+---
+
+# Givt App Versioning Rules
+
+- **Always bump the app version when making changes**:
+  - When you implement changes that will be merged into `develop`, ensure the app version is increased if it has not already been bumped for this batch of work.
+  - The version is defined in the Flutter `pubspec.yaml` for the app; make sure that the version on `develop` is **strictly higher** than the version on `main`.
+
+- **How to choose the new version**:
+  - **Patch release (`x.y.(z+1)`)**:
+    - Use when changes are **backwards compatible** and relatively small:
+      - Bug fixes and regression fixes
+      - Minor UI tweaks or copy changes
+      - Internal refactors or performance improvements with no user-visible feature changes
+  - **Minor release (`x.(y+1).0`)**:
+    - Use when changes introduce **new user‑visible behavior**:
+      - New features or flows
+      - New screens or significant UX changes
+      - New analytics events for shipped features
+  - **Major release (`(x+1).0.0`)**:
+    - **Do not decide automatically.** Major version bumps are handled manually outside this rule and should only happen when explicitly requested.
+
+- **Branch relationship (`main` vs `develop`)**:
+  - When starting a new set of changes on `develop`, if the `develop` version **matches** `main`, choose an appropriate bump (patch or minor) and apply it on `develop`.
+  - Ensure that, before merging `develop` back into `main`, the `main` branch will move to the **same** (already bumped) version as `develop`, so there is always a clear version difference between releases.
+
