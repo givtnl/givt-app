@@ -339,7 +339,7 @@ class PersonalInfoEditPage extends StatelessWidget {
           analyticsEvent: AnalyticsEvent(
             AnalyticsEventName.emailAlreadyInUseContactClicked,
           ),
-          onTap: () => createSupportRequest(),
+          onTap: createSupportRequest,
         ),
         FunButton(
           variant: FunButtonVariant.secondary,
@@ -358,7 +358,7 @@ class PersonalInfoEditPage extends StatelessWidget {
     FunModal(
       autoClose: const Duration(milliseconds: 1500),
       icon: FunIcon.checkmark(),
-      title: context.l10n.buttonDone,
+      title: null,
       closeAction: () => Navigator.of(context).pop(),
     ).show(context);
   }
