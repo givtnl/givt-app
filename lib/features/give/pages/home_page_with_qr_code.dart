@@ -306,15 +306,16 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
       icon: iconData,
       instanceName: instanceName,
       onConfirm: () {
+        if (!mounted) return;
         // Store organisation name before state might change
         final currentState = giveBloc.state;
-        
+
         LoggingInfo.instance.info(
           'About to confirm QR - orgName: ${currentState.organisation.organisationName}, '
           'mediumId: ${currentState.organisation.mediumId}, '
           'status: ${currentState.status}',
         );
-        
+
         setState(() {
           _qrConfirmed = true;
           _isShowingDialog = false;
@@ -329,6 +330,7 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
         );
       },
       onCancel: () {
+        if (!mounted) return;
         setState(() {
           _isShowingDialog = false;
         });
