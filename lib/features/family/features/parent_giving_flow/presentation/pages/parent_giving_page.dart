@@ -12,7 +12,6 @@ import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:go_router/go_router.dart';
 import 'package:vibration/vibration.dart';
 
 class ParentGivingPage extends StatefulWidget {
@@ -70,7 +69,7 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
         context.read<ImpactGroupsCubit>().fetchImpactGroups(),
       );
 
-      context.pop(true);
+      Navigator.of(context).pop(true);
     } catch (e) {
       setState(() {
         browserClosing = false;
@@ -168,9 +167,9 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
                 visible: !browserClosing,
                 child: ElevatedButton(
                   child: const Text('Go Back Home'),
-                  onPressed: () {
-                    context.pop();
-                  },
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                 ),
               ),
             ),
