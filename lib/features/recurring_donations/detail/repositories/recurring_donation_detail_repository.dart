@@ -263,20 +263,24 @@ class RecurringDonationDetailRepositoryImpl
   bool isRecurringDonationActive() {
     if (_recurringDonation == null) return false;
 
-    // Check if the donation is cancelled or finished
-    if (_recurringDonation!.currentState == RecurringDonationState.cancelled ||
-        _recurringDonation!.currentState == RecurringDonationState.finished) {
+    final recurringDonation = _recurringDonation!;
+
+    // Only donations explicitly marked as active can be considered active
+    if (recurringDonation.currentState != RecurringDonationState.active) {
       return false;
     }
 
-    // For active donations, also check if the end date is in the future
-    final endDate = _recurringDonation!.calculatedEndDate;
+    // For active donations, also check if the end date is in the future.
+    // If an end date exists and is in the past or today, the donation is no longer active.
+    final endDate = recurringDonation.calculatedEndDate;
     if (endDate != null) {
-      return endDate.isAfter(DateTime.now());
+      final now = DateTime.now();
+      return endDate.isAfter(now);
     }
 
-    // If no end date and state is active, assume it's active
-    return _recurringDonation!.currentState == RecurringDonationState.active;
+    // If there is no end date and the state is active, treat the donation as active
+    // (typically unlimited recurring donations).
+    return true;
   }
 
   /// Creates a [DonationHistoryItem] for the next upcoming donation.
@@ -350,6 +354,14 @@ class RecurringDonationDetailRepositoryImpl
 
   @override
   List<DonationHistoryItem> getHistory() {
+    // As a safety net, never expose upcoming donations for inactive recurring donations,
+    // even if they somehow ended up in the internal history list.
+    if (!isRecurringDonationActive()) {
+      return _history
+          .where((historyItem) => historyItem.status != DonationStatus.upcoming)
+          .toList();
+    }
+
     return _history;
   }
 

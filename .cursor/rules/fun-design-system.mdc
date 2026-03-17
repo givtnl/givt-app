@@ -14,7 +14,7 @@ alwaysApply: true
 - Actions: `FunButton`, `FunTile`
 - Content: `FunCard`
 - Navigation: `FunTopAppBar`, `FunPrimaryTabs`, `FunNavigationBar`
-- Overlays: `FunBottomSheet`
+- Overlays: `FunBottomSheet`, `FunModal`
 - Inputs: `FunCounter`
 
 ## Typography
@@ -28,6 +28,10 @@ alwaysApply: true
 - **When `BuildContext` is available** (e.g. inside `build(BuildContext context)` or any method that receives `context`): use **`FunTheme.of(context).xxx`** for theme colors (e.g. `FunTheme.of(context).primary30`, `FunTheme.of(context).error50`). This respects the active theme (Givt vs Givt4Kids).
 - **Where Dart requires const** (default parameter values, factory constructor arguments, static/const fields): use **`FamilyAppTheme.xxx`** (from `fun_theme_legacy.dart`). Do not use `FunTheme.of(context)` in const expressions.
 - Import `package:givt_app/features/family/shared/design/theme/fun_theme.dart` for `FunTheme`, and `package:givt_app/features/family/utils/fun_theme_legacy.dart` when you need `FamilyAppTheme` for const defaults.
+
+## Success and confirmation
+- **Confirm = icon in modal, not on button**: For “action done” confirmation, show **`FunIcon.checkmark()`** as the modal/sheet *content* (big green circle). Use a single “Done” button or no button with **`FunModal`** `autoClose` for brief confirmations (e.g. support request sent). Do not put a checkmark on the primary action button.
+- **Success state in sheets**: When a flow succeeds inside a bottom sheet (e.g. email changed), show a success view with `content: FunIcon.checkmark()` and one “Done” button that closes the sheet (same pattern as `FunBottomSheetWithAsyncAction` success state).
 
 ## Refactoring
 - When modifying UI, refactor to use FUN components

@@ -476,6 +476,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get invalidEmail => 'Invalid e-mail address';
 
   @override
+  String get emailAlreadyInUse =>
+      'Ya tienes una cuenta con esta dirección de correo. ¿Quieres que nos pongamos en contacto para fusionar tus cuentas o ayudarte a resolverlo?';
+
+  @override
+  String get emailAlreadyInUseTitle => 'Correo electrónico en uso';
+
+  @override
+  String get emailAlreadyInUseContactButton => 'Sí, poneros en contacto';
+
+  @override
+  String get emailAlreadyInUseCloseButton => 'Cerrar';
+
+  @override
   String get giftsOverviewSent =>
       'We\'ve sent your donations overview to your mailbox.';
 
@@ -3068,6 +3081,19 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get invalidEmail => 'Correo electrónico inválido';
+
+  @override
+  String get emailAlreadyInUse =>
+      'Ya tienes una cuenta con esta dirección de correo. ¿Quieres que nos pongamos en contacto para fusionar tus cuentas o ayudarte a resolverlo?';
+
+  @override
+  String get emailAlreadyInUseTitle => 'Correo electrónico en uso';
+
+  @override
+  String get emailAlreadyInUseContactButton => 'Sí, poneros en contacto';
+
+  @override
+  String get emailAlreadyInUseCloseButton => 'Cerrar';
 
   @override
   String get giftsOverviewSent =>
