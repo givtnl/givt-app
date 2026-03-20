@@ -779,10 +779,62 @@
   "discoverSearchButton": "Buscar",
   "discoverDiscoverButton": "Ver todo",
   "discoverSegmentNow": "Donar",
-  "discoverSegmentWho": "Descubrir",
-  "discoverHomeDiscoverTitle": "Elegir categoría",
+  "discoverSegmentWho": "Para ti",
+  "discoverHomeDiscoverTitle": "Para ti",
   "discoverOrAmountActionSheetOnce": "Donación única",
   "discoverOrAmountActionSheetRecurring": "Donación recurrente",
+  "forYouOtherWaysToGive": "Otras formas de donar",
+  "forYouSearchOrganizations": "Buscar organizaciones",
+  "forYouFavoriteTag": "Favorito",
+  "forYouEmptyFavoritesTitle": "Añade tu organización favorita",
+  "forYouEmptyFavoritesBody": "Encuéntralo con un toque cada vez que abras Givt",
+  "forYouLocationBasedTitle": "Basado en la ubicación",
+  "forYouLocationBasedSubtitle": "Dona a organizaciones cerca de ti",
+  "forYouQrCodeTitle": "Código QR de Givt",
+  "forYouQrCodeSubtitle": "Úsalo cuando veas un código QR de Givt cerca",
+  "forYouCollectionDeviceTitle": "Dispositivo de recaudación",
+  "forYouCollectionDeviceSubtitle": "Dona cuando pase la placa o la bolsa",
+  "forYouGoalsCountCollections": "{count} objetivos de colecciones",
+  "@forYouGoalsCountCollections": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGoalsCountGeneral": "{count} objetivos generales",
+  "@forYouGoalsCountGeneral": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingPageTitle": "Donar ahora",
+  "forYouGivingFirstCollectionGoal": "Primer objetivo de colecta",
+  "forYouGivingFirstCollectionGoalSubtitle": "Elige cuánto quieres donar al primer objetivo.",
+  "forYouGivingGeneralGoal": "Objetivo general",
+  "forYouGivingGeneralGoalSubtitle": "También puedes añadir un importe para un objetivo general.",
+  "forYouGivingAddGeneralGoalToggle": "Añadir objetivo general",
+  "forYouGivingContinue": "Continuar",
+  "forYouGivingMoreGoals": "Donar a más objetivos",
+  "forYouGivingCompleteMyGiving": "Completar mi donación",
+  "forYouGivingCollectionTitle": "Colecta {index}",
+  "@forYouGivingCollectionTitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingCollectionSubtitle": "Colecta {index}",
+  "@forYouGivingCollectionSubtitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
   "reccurringGivtIsBeingProcessed": "Thank you for your recurring donation to {value0}!\n To see all the information, go to 'Recurring donations' in the menu.",
   "amountLimitExceededRecurringDonation": "Este importe es superior al importe máximo elegido. ¿Desea continuar o cambiar el importe?",
   "sepaVerifyBody": "If any of the above is incorrect, please abort the registration and change your 'Personal information'",
@@ -945,7 +997,7 @@
   "permitBiometricActivateWithType": "Activar {value0}",
   "youHaveBeenInvitedToImpactGroup": "You have been invited\nto the ",
   "acceptInviteKey": "Acepta la invitación",
-  "chooseGroup": "Elegir Grupo",
+  "chooseGroup": "Bienvenido {firstName}",
   "groups": "Grupos",
   "genericSuccessTitle": "¡Considéralo hecho!",
   "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?",
@@ -1022,7 +1074,7 @@
   "gameStatsActivityThisWeek": "Actividad en el juego esta semana",
   "gameStatsPlayGame": "Jugar el Juego de la Gratitud",
   "gameStatsAmountOfDeeds": "{amount} actos",
-  "homescreenOverlayDiscoverTitle": "¡Descubre tu recompensa!",
+  "homescreenOverlayDiscoverTitle": "¡Recompensa para ti!",
   "homescreenOverlayGiveTitle": "¿A quién le gustaría dar?",
   "tutorialFamilyExplanationTitle": "¡Aquí está tu súper familia!",
   "tutorialFamilyExplanationDescription": "Trabajen juntos para encontrar causas para apoyar y difundir la bondad.",

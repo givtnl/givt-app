@@ -1,0 +1,41 @@
+---
+description: Core Flutter and Dart coding best practices
+alwaysApply: true
+---
+
+# Flutter Core Best Practices
+
+Use these as default implementation standards for this repository.
+Project-specific rules remain authoritative when stricter.
+
+## Code quality
+- Prefer clear, maintainable code over clever abstractions.
+- Keep functions focused and reasonably short.
+- Use descriptive names; avoid abbreviations.
+- Add comments only when explaining non-obvious intent.
+
+## Dart correctness
+- Keep code soundly null-safe; avoid unnecessary `!`.
+- Use `async`/`await` with explicit error handling (`try/catch`) for fallible work.
+- Prefer exhaustive `switch` statements/expressions where applicable.
+- Do not silently swallow exceptions.
+
+## Flutter UI and performance
+- Compose UI from small widgets; avoid oversized `build()` methods.
+- Avoid expensive work in `build()` (network calls, heavy computation).
+- Use `const` constructors/widgets where possible.
+- Use lazy builders (`ListView.builder`, `SliverList`, `GridView.builder`) for long collections.
+
+## Architecture and state
+- Follow feature-oriented organization and separation of concerns:
+  presentation, domain, data, core.
+- Prefer constructor dependency injection and repository abstractions.
+- In this project, follow the `CommonCubit` pattern and keep one-off UI actions
+  in custom state/events.
+
+## Testing and tooling
+- Add/update tests for behavior changes when practical.
+- Keep tests deterministic with clear Arrange-Act-Assert structure.
+- After changing l10n/codegen inputs, run required generators:
+  `flutter gen-l10n` and/or
+  `dart run build_runner build --delete-conflicting-outputs`.

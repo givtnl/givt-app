@@ -1191,10 +1191,96 @@ class AppLocalizationsNl extends AppLocalizations {
   String get discoverSegmentNow => 'Geef';
 
   @override
-  String get discoverSegmentWho => 'Ontdek';
+  String get discoverSegmentWho => 'Voor jou';
 
   @override
-  String get discoverHomeDiscoverTitle => 'Kies categorie';
+  String get forYouOtherWaysToGive => 'Andere manieren om te geven';
+
+  @override
+  String get forYouSearchOrganizations => 'Zoek organisaties';
+
+  @override
+  String get forYouFavoriteTag => 'Favoriet';
+
+  @override
+  String get forYouEmptyFavoritesTitle => 'Voeg je favoriete organisatie toe';
+
+  @override
+  String get forYouEmptyFavoritesBody =>
+      'Vind het met één tik, elke keer dat je Givt opent';
+
+  @override
+  String get forYouLocationBasedTitle => 'Locatiegebonden';
+
+  @override
+  String get forYouLocationBasedSubtitle =>
+      'Geef aan organisaties bij jou in de buurt';
+
+  @override
+  String get forYouQrCodeTitle => 'Givt QR-code';
+
+  @override
+  String get forYouQrCodeSubtitle =>
+      'Gebruik het wanneer je een Givt QR-code bij jou in de buurt ziet';
+
+  @override
+  String get forYouCollectionDeviceTitle => 'Collectietoestel';
+
+  @override
+  String get forYouCollectionDeviceSubtitle =>
+      'Geef wanneer de plaat of tas langskomt';
+
+  @override
+  String forYouGoalsCountCollections(int count) {
+    return '$count verzamelingsdoelen';
+  }
+
+  @override
+  String forYouGoalsCountGeneral(int count) {
+    return '$count algemene doelen';
+  }
+
+  @override
+  String get forYouGivingPageTitle => 'Nu geven';
+
+  @override
+  String get forYouGivingFirstCollectionGoal => 'Eerste collectiedoel';
+
+  @override
+  String get forYouGivingFirstCollectionGoalSubtitle =>
+      'Kies wat je aan het eerste doel wilt geven.';
+
+  @override
+  String get forYouGivingGeneralGoal => 'Algemeen doel';
+
+  @override
+  String get forYouGivingGeneralGoalSubtitle =>
+      'Je kunt ook een bedrag voor een algemeen doel toevoegen.';
+
+  @override
+  String get forYouGivingAddGeneralGoalToggle => 'Algemeen doel toevoegen';
+
+  @override
+  String get forYouGivingContinue => 'Doorgaan';
+
+  @override
+  String get forYouGivingMoreGoals => 'Geef aan meer doelen';
+
+  @override
+  String get forYouGivingCompleteMyGiving => 'Mijn gift afronden';
+
+  @override
+  String forYouGivingCollectionTitle(int index) {
+    return 'Collecte $index';
+  }
+
+  @override
+  String forYouGivingCollectionSubtitle(int index) {
+    return 'Collecte $index';
+  }
+
+  @override
+  String get discoverHomeDiscoverTitle => 'Voor jou';
 
   @override
   String get discoverOrAmountActionSheetOnce => 'Eénmalige gift';
@@ -1751,7 +1837,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get acceptInviteKey => 'Accept the invite';
 
   @override
-  String get chooseGroup => 'Choose Group';
+  String chooseGroup(Object firstName) {
+    return 'Welkom $firstName';
+  }
 
   @override
   String get groups => 'Groups';
@@ -2009,7 +2097,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get homescreenOverlayDiscoverTitle => 'Discover your reward!';
+  String get homescreenOverlayDiscoverTitle => 'Beloning voor jou!';
 
   @override
   String get homescreenOverlayGiveTitle => 'Who would like to give?';

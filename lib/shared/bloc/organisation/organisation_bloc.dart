@@ -70,8 +70,11 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     List<CollectGroup> organisations, {
     String? searchQuery,
   }) {
+    // Never mutate incoming list (may be unmodifiable, e.g. `const []`).
+    final sortedOrganisations = organisations.toList()
+
     // Always sort the selected group to the top
-    organisations.sort((CollectGroup a, CollectGroup b) {
+    ..sort((CollectGroup a, CollectGroup b) {
       if (a == state.selectedCollectGroup &&
           a.orgName == lastDonatedOrganisation.organisationName) {
         return -1;
@@ -86,10 +89,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         final query = _removeDiacritics(searchQuery.toLowerCase());
         final aName = _removeDiacritics(a.orgName.toLowerCase());
         final bName = _removeDiacritics(b.orgName.toLowerCase());
-        
+
         final aMatchesQuery = aName.contains(query);
         final bMatchesQuery = bName.contains(query);
-        
+
         if (aMatchesQuery && !bMatchesQuery) return -1;
         if (!aMatchesQuery && bMatchesQuery) return 1;
       }
@@ -103,7 +106,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       // Finally, sort alphabetically by organization name
       return a.orgName.compareTo(b.orgName);
     });
-    return organisations;
+    return sortedOrganisations;
   }
 
   FutureOr<void> _onFavoritesRefresh(

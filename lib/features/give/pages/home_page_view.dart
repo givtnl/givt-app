@@ -66,9 +66,11 @@ class _HomePageViewState extends State<HomePageView> {
             child: PageView(
               controller: pageController,
               onPageChanged: onPageChanged,
+              allowImplicitScrolling: true,
               children: [
                 ChooseAmount(
-                  initialAmount: (widget.giveBloc?.state.collections[0] ?? 0) > 0
+                  initialAmount:
+                      (widget.giveBloc?.state.collections[0] ?? 0) > 0
                       ? widget.giveBloc!.state.collections[0]
                       : (widget.code.isEmpty ? widget.initialAmount : null),
                   country: Country.fromCode(auth.user.country),
@@ -81,13 +83,13 @@ class _HomePageViewState extends State<HomePageView> {
                   onAmountChanged: (firstCollection, secondCollection, thirdCollection) async {
                     final currentState =
                         widget.giveBloc?.state ?? const GiveState();
-            
+
                     final isQR = HomePageQRFlowHandler.isQRFlow(
                       currentState,
                       widget.code,
                       widget.giveBloc,
                     );
-            
+
                     LoggingInfo.instance.info(
                       'HomePageView: onAmountChanged - '
                       'isQRFlow: $isQR, '
@@ -100,7 +102,7 @@ class _HomePageViewState extends State<HomePageView> {
                       'hasTransactions: ${currentState.givtTransactions.isNotEmpty}, '
                       'transactionCount: ${currentState.givtTransactions.length}',
                     );
-            
+
                     if (isQR) {
                       await HomePageQRFlowHandler.handleQRFlow(
                         context,
@@ -127,7 +129,7 @@ class _HomePageViewState extends State<HomePageView> {
                     }
                   },
                 ),
-                const ChooseCategory(),
+                const ForYou(),
               ],
             ),
           ),

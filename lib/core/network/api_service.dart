@@ -633,7 +633,10 @@ class APIService {
   Future<List<dynamic>> fetchExternalDonationsSearch({
     required Map<String, dynamic> params,
   }) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/transactions/search');
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/externaldonations/transactions/search',
+    );
 
     final response = await client.post(
       url,
@@ -871,6 +874,33 @@ class APIService {
         'frequency': frequency,
       },
     };
+  }
+
+  Future<Map<String, dynamic>> fetchOrganisationGoals(
+    String CgNamespace,
+  ) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/Organisation/$CgNamespace/goals',
+    );
+
+    final response = await client.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
   Future<bool> addGivingGoal({

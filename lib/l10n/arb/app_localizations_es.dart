@@ -1187,10 +1187,95 @@ class AppLocalizationsEs extends AppLocalizations {
   String get discoverSegmentNow => 'Give';
 
   @override
-  String get discoverSegmentWho => 'Discover';
+  String get discoverSegmentWho => 'Para ti';
 
   @override
-  String get discoverHomeDiscoverTitle => 'Choose category';
+  String get forYouOtherWaysToGive => 'Otras formas de donar';
+
+  @override
+  String get forYouSearchOrganizations => 'Buscar organizaciones';
+
+  @override
+  String get forYouFavoriteTag => 'Favorito';
+
+  @override
+  String get forYouEmptyFavoritesTitle => 'Añade tu organización favorita';
+
+  @override
+  String get forYouEmptyFavoritesBody =>
+      'Encuéntralo con un toque cada vez que abras Givt';
+
+  @override
+  String get forYouLocationBasedTitle => 'Basado en la ubicación';
+
+  @override
+  String get forYouLocationBasedSubtitle => 'Dona a organizaciones cerca de ti';
+
+  @override
+  String get forYouQrCodeTitle => 'Código QR de Givt';
+
+  @override
+  String get forYouQrCodeSubtitle =>
+      'Úsalo cuando veas un código QR de Givt cerca';
+
+  @override
+  String get forYouCollectionDeviceTitle => 'Dispositivo de recaudación';
+
+  @override
+  String get forYouCollectionDeviceSubtitle =>
+      'Dona cuando pase la placa o la bolsa';
+
+  @override
+  String forYouGoalsCountCollections(int count) {
+    return '$count objetivos de colecciones';
+  }
+
+  @override
+  String forYouGoalsCountGeneral(int count) {
+    return '$count objetivos generales';
+  }
+
+  @override
+  String get forYouGivingPageTitle => 'Donar ahora';
+
+  @override
+  String get forYouGivingFirstCollectionGoal => 'Primer objetivo de colecta';
+
+  @override
+  String get forYouGivingFirstCollectionGoalSubtitle =>
+      'Elige cuánto quieres donar al primer objetivo.';
+
+  @override
+  String get forYouGivingGeneralGoal => 'Objetivo general';
+
+  @override
+  String get forYouGivingGeneralGoalSubtitle =>
+      'También puedes añadir un importe para un objetivo general.';
+
+  @override
+  String get forYouGivingAddGeneralGoalToggle => 'Añadir objetivo general';
+
+  @override
+  String get forYouGivingContinue => 'Continuar';
+
+  @override
+  String get forYouGivingMoreGoals => 'Donar a más objetivos';
+
+  @override
+  String get forYouGivingCompleteMyGiving => 'Completar mi donación';
+
+  @override
+  String forYouGivingCollectionTitle(int index) {
+    return 'Colecta $index';
+  }
+
+  @override
+  String forYouGivingCollectionSubtitle(int index) {
+    return 'Colecta $index';
+  }
+
+  @override
+  String get discoverHomeDiscoverTitle => 'Para ti';
 
   @override
   String get discoverOrAmountActionSheetOnce => 'One-off donation';
@@ -1744,7 +1829,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get acceptInviteKey => 'Accept the invite';
 
   @override
-  String get chooseGroup => 'Choose Group';
+  String chooseGroup(Object firstName) {
+    return 'Bienvenido $firstName';
+  }
 
   @override
   String get groups => 'Groups';
@@ -2003,7 +2090,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get homescreenOverlayDiscoverTitle => 'Discover your reward!';
+  String get homescreenOverlayDiscoverTitle => '¡Recompensa para ti!';
 
   @override
   String get homescreenOverlayGiveTitle => 'Who would like to give?';
@@ -3798,10 +3885,95 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get discoverSegmentNow => 'Donar';
 
   @override
-  String get discoverSegmentWho => 'Descubrir';
+  String get discoverSegmentWho => 'Para ti';
 
   @override
-  String get discoverHomeDiscoverTitle => 'Elegir categoría';
+  String get forYouOtherWaysToGive => 'Otras formas de donar';
+
+  @override
+  String get forYouSearchOrganizations => 'Buscar organizaciones';
+
+  @override
+  String get forYouFavoriteTag => 'Favorito';
+
+  @override
+  String get forYouEmptyFavoritesTitle => 'Añade tu organización favorita';
+
+  @override
+  String get forYouEmptyFavoritesBody =>
+      'Encuéntralo con un toque cada vez que abras Givt';
+
+  @override
+  String get forYouLocationBasedTitle => 'Basado en la ubicación';
+
+  @override
+  String get forYouLocationBasedSubtitle => 'Dona a organizaciones cerca de ti';
+
+  @override
+  String get forYouQrCodeTitle => 'Código QR de Givt';
+
+  @override
+  String get forYouQrCodeSubtitle =>
+      'Úsalo cuando veas un código QR de Givt cerca';
+
+  @override
+  String get forYouCollectionDeviceTitle => 'Dispositivo de recaudación';
+
+  @override
+  String get forYouCollectionDeviceSubtitle =>
+      'Dona cuando pase la placa o la bolsa';
+
+  @override
+  String forYouGoalsCountCollections(int count) {
+    return '$count objetivos de colecciones';
+  }
+
+  @override
+  String forYouGoalsCountGeneral(int count) {
+    return '$count objetivos generales';
+  }
+
+  @override
+  String get forYouGivingPageTitle => 'Donar ahora';
+
+  @override
+  String get forYouGivingFirstCollectionGoal => 'Primer objetivo de colecta';
+
+  @override
+  String get forYouGivingFirstCollectionGoalSubtitle =>
+      'Elige cuánto quieres donar al primer objetivo.';
+
+  @override
+  String get forYouGivingGeneralGoal => 'Objetivo general';
+
+  @override
+  String get forYouGivingGeneralGoalSubtitle =>
+      'También puedes añadir un importe para un objetivo general.';
+
+  @override
+  String get forYouGivingAddGeneralGoalToggle => 'Añadir objetivo general';
+
+  @override
+  String get forYouGivingContinue => 'Continuar';
+
+  @override
+  String get forYouGivingMoreGoals => 'Donar a más objetivos';
+
+  @override
+  String get forYouGivingCompleteMyGiving => 'Completar mi donación';
+
+  @override
+  String forYouGivingCollectionTitle(int index) {
+    return 'Colecta $index';
+  }
+
+  @override
+  String forYouGivingCollectionSubtitle(int index) {
+    return 'Colecta $index';
+  }
+
+  @override
+  String get discoverHomeDiscoverTitle => 'Para ti';
 
   @override
   String get discoverOrAmountActionSheetOnce => 'Donación única';
@@ -4366,7 +4538,9 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get acceptInviteKey => 'Acepta la invitación';
 
   @override
-  String get chooseGroup => 'Elegir Grupo';
+  String chooseGroup(Object firstName) {
+    return 'Bienvenido $firstName';
+  }
 
   @override
   String get groups => 'Grupos';
@@ -4628,7 +4802,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   }
 
   @override
-  String get homescreenOverlayDiscoverTitle => '¡Descubre tu recompensa!';
+  String get homescreenOverlayDiscoverTitle => '¡Recompensa para ti!';
 
   @override
   String get homescreenOverlayGiveTitle => '¿A quién le gustaría dar?';

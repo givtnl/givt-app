@@ -779,10 +779,62 @@
   "discoverSearchButton": "Zoeken",
   "discoverDiscoverButton": "Bekijk alle",
   "discoverSegmentNow": "Geef",
-  "discoverSegmentWho": "Ontdek",
-  "discoverHomeDiscoverTitle": "Kies categorie",
+  "discoverSegmentWho": "Voor jou",
+  "discoverHomeDiscoverTitle": "Voor jou",
   "discoverOrAmountActionSheetOnce": "Eénmalige gift",
   "discoverOrAmountActionSheetRecurring": "Terugkerende gift",
+  "forYouOtherWaysToGive": "Andere manieren om te geven",
+  "forYouSearchOrganizations": "Zoek organisaties",
+  "forYouFavoriteTag": "Favoriet",
+  "forYouEmptyFavoritesTitle": "Voeg je favoriete organisatie toe",
+  "forYouEmptyFavoritesBody": "Vind het met één tik, elke keer dat je Givt opent",
+  "forYouLocationBasedTitle": "Locatiegebonden",
+  "forYouLocationBasedSubtitle": "Geef aan organisaties bij jou in de buurt",
+  "forYouQrCodeTitle": "Givt QR-code",
+  "forYouQrCodeSubtitle": "Gebruik het wanneer je een Givt QR-code bij jou in de buurt ziet",
+  "forYouCollectionDeviceTitle": "Collectietoestel",
+  "forYouCollectionDeviceSubtitle": "Geef wanneer de plaat of tas langskomt",
+  "forYouGoalsCountCollections": "{count} verzamelingsdoelen",
+  "@forYouGoalsCountCollections": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGoalsCountGeneral": "{count} algemene doelen",
+  "@forYouGoalsCountGeneral": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingPageTitle": "Nu geven",
+  "forYouGivingFirstCollectionGoal": "Eerste collectiedoel",
+  "forYouGivingFirstCollectionGoalSubtitle": "Kies wat je aan het eerste doel wilt geven.",
+  "forYouGivingGeneralGoal": "Algemeen doel",
+  "forYouGivingGeneralGoalSubtitle": "Je kunt ook een bedrag voor een algemeen doel toevoegen.",
+  "forYouGivingAddGeneralGoalToggle": "Algemeen doel toevoegen",
+  "forYouGivingContinue": "Doorgaan",
+  "forYouGivingMoreGoals": "Geef aan meer doelen",
+  "forYouGivingCompleteMyGiving": "Mijn gift afronden",
+  "forYouGivingCollectionTitle": "Collecte {index}",
+  "@forYouGivingCollectionTitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingCollectionSubtitle": "Collecte {index}",
+  "@forYouGivingCollectionSubtitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
   "reccurringGivtIsBeingProcessed": "Bedankt voor je terugkerende gift aan {value0}! \n Om alle informatie hierover te zien, ga je naar 'Terugkerende giften' in het menu.",
   "amountLimitExceededRecurringDonation": "Hé gulle gever, dit bedrag is hoger dan je geeflimiet. Wil je toch doorgaan of wil je je gift aanpassen?",
   "sepaVerifyBody": "Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.",
@@ -945,7 +997,7 @@
   "permitBiometricActivateWithType": "Activeer {value0}",
   "youHaveBeenInvitedToImpactGroup": "You have been invited\nto the ",
   "acceptInviteKey": "Accept the invite",
-  "chooseGroup": "Choose Group",
+  "chooseGroup": "Welkom {firstName}",
   "groups": "Groups",
   "genericSuccessTitle": "Consider it done!",
   "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?",
@@ -1022,7 +1074,7 @@
   "gameStatsActivityThisWeek": "Game activity this week",
   "gameStatsPlayGame": "Play the Gratitude Game",
   "gameStatsAmountOfDeeds": "{amount} deeds",
-  "homescreenOverlayDiscoverTitle": "Discover your reward!",
+  "homescreenOverlayDiscoverTitle": "Beloning voor jou!",
   "homescreenOverlayGiveTitle": "Who would like to give?",
   "tutorialFamilyExplanationTitle": "Here’s your super family!",
   "tutorialFamilyExplanationDescription": "Work together to find causes to support and spread kindness.",

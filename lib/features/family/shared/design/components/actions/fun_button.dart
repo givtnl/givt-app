@@ -84,48 +84,49 @@ class FunButton extends StatelessWidget {
     Color border,
     Color text,
     Color disabledText,
-  }) _themeColors(FunAppTheme theme) {
+  })
+  _themeColors(FunAppTheme theme) {
     return switch (variant) {
       FunButtonVariant.primary => (
-          bg: theme.primary80,
-          disabledBg: theme.neutral90,
-          pressedBg: theme.primary70,
-          border: theme.primary30,
-          text: theme.primary30,
-          disabledText: theme.neutralVariant60,
-        ),
+        bg: theme.primary80,
+        disabledBg: theme.neutral90,
+        pressedBg: theme.primary70,
+        border: theme.primary80,
+        text: theme.primary30,
+        disabledText: theme.neutralVariant60,
+      ),
       FunButtonVariant.secondary => (
-          bg: theme.neutral100,
-          disabledBg: theme.neutral100,
-          pressedBg: theme.neutral95,
-          border: theme.primary80,
-          text: theme.primary30,
-          disabledText: theme.neutralVariant60,
-        ),
+        bg: theme.neutral100,
+        disabledBg: theme.neutral100,
+        pressedBg: theme.neutral95,
+        border: theme.primary80,
+        text: theme.primary30,
+        disabledText: theme.neutralVariant60,
+      ),
       FunButtonVariant.tertiary => (
-          bg: theme.neutral100,
-          disabledBg: theme.neutral90,
-          pressedBg: theme.neutral95,
-          border: theme.secondary80,
-          text: theme.primary30,
-          disabledText: theme.neutralVariant60,
-        ),
+        bg: theme.neutral100,
+        disabledBg: theme.neutral90,
+        pressedBg: theme.neutral95,
+        border: theme.secondary80,
+        text: theme.primary30,
+        disabledText: theme.neutralVariant60,
+      ),
       FunButtonVariant.destructive => (
-          bg: theme.error80,
-          disabledBg: theme.neutralVariant90,
-          pressedBg: theme.error70,
-          border: theme.error30,
-          text: theme.error30,
-          disabledText: theme.neutral60,
-        ),
+        bg: theme.error80,
+        disabledBg: theme.neutralVariant90,
+        pressedBg: theme.error70,
+        border: theme.error30,
+        text: theme.error30,
+        disabledText: theme.neutral60,
+      ),
       FunButtonVariant.destructiveSecondary => (
-          bg: theme.neutral100,
-          disabledBg: theme.neutral100,
-          pressedBg: theme.neutral95,
-          border: theme.error70,
-          text: theme.error50,
-          disabledText: theme.neutral60,
-        ),
+        bg: theme.neutral100,
+        disabledBg: theme.neutral100,
+        pressedBg: theme.neutral95,
+        border: theme.error70,
+        text: theme.error50,
+        disabledText: theme.neutral60,
+      ),
     };
   }
 
@@ -138,12 +139,10 @@ class FunButton extends StatelessWidget {
 
     final resolvedBg = backgroundColor ?? defaults.bg;
     final resolvedDisabledBg = disabledBackgroundColor ?? defaults.disabledBg;
-    final resolvedPressedBg =
-        pressedBackgroundColor ?? defaults.pressedBg;
+    final resolvedPressedBg = pressedBackgroundColor ?? defaults.pressedBg;
     final resolvedBorder = borderColor ?? defaults.border;
     final resolvedText = textColor ?? defaults.text;
-    final resolvedDisabledText =
-        disabledTextColor ?? defaults.disabledText;
+    final resolvedDisabledText = disabledTextColor ?? defaults.disabledText;
 
     if (isDebugOnly && !appConfig.isTestApp) {
       return const SizedBox.shrink();
@@ -162,21 +161,20 @@ class FunButton extends StatelessWidget {
         borderColor: resolvedBorder,
         isDisabled: isDisabled,
         isPressedDown: isPressedDown,
-        borderSize: fullBorder ? theme.borderWidthThin : 0.01,
-        baseBorderSize: fullBorder
-            ? theme.borderWidthThin
-            : (theme.shadowYSm == 0 ? 0.01 : theme.shadowYSm),
+        borderSize: theme.borderWidthThin,
+        baseBorderSize: theme.borderWidthThin,
         onDisabledTap: onDisabledTap,
         child: Builder(
           builder: (context) {
             final isPressed =
                 ActionContainerPressedScope.maybeOf(context)?.isPressed ??
-                    false;
+                false;
             final effectiveBg = isDisabled
                 ? resolvedDisabledBg
                 : (isPressed ? resolvedPressedBg : resolvedBg);
             return Container(
-              height: (size.isLarge ? 58 : 44) -
+              height:
+                  (size.isLarge ? 58 : 44) -
                   (fullBorder ? theme.borderWidthThin : 0),
               width: size.isLarge ? double.infinity : null,
               padding: size.isSmall
@@ -193,7 +191,11 @@ class FunButton extends StatelessWidget {
                   color: effectiveBg,
                 ),
                 child: getChild(
-                    context, themeData, resolvedText, resolvedDisabledText),
+                  context,
+                  themeData,
+                  resolvedText,
+                  resolvedDisabledText,
+                ),
               ),
             );
           },
@@ -215,8 +217,9 @@ class FunButton extends StatelessWidget {
         ),
       );
     }
-    final labelColor =
-        isDisabled ? resolvedDisabledTextColor : resolvedTextColor;
+    final labelColor = isDisabled
+        ? resolvedDisabledTextColor
+        : resolvedTextColor;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: size.isSmall ? MainAxisSize.min : MainAxisSize.max,

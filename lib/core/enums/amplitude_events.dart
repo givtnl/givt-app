@@ -8,6 +8,13 @@ class AmplitudeEvents {
   // Give flow
   static const giveButtonPressed = AnalyticsEventName.giveButtonPressed;
   static const giveHomeTabsChanged = AnalyticsEventName.giveHomeTabsChanged;
+  static const forYouSearchTapped = AnalyticsEventName.forYouSearchTapped;
+  static const forYouOtherWaysLocationTapped =
+      AnalyticsEventName.forYouOtherWaysLocationTapped;
+  static const forYouOtherWaysQrTapped =
+      AnalyticsEventName.forYouOtherWaysQrTapped;
+  static const forYouOtherWaysBeaconTapped =
+      AnalyticsEventName.forYouOtherWaysBeaconTapped;
 
   // Gift Aid registration
   static const giftAidRegistrationLearnMoreClicked =
@@ -21,4 +28,3 @@ class AmplitudeEvents {
   static const giftAidRegistrationSetUpLaterClicked =
       AnalyticsEventName.giftAidRegistrationSetUpLaterClicked;
 }
-

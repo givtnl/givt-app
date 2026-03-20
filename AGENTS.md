@@ -8,6 +8,32 @@ This file helps AI agents (and developers) work effectively in this codebase.
 - **Flavors**: `development` and `production`; run via `flutter run --flavor development --target lib/main_development.dart` (see README).
 - **L10n**: ARB files in `lib/l10n/arb/`; run `flutter gen-l10n` after adding or changing keys.
 
+## Flutter baseline best practices (adapted)
+
+These are aligned with Flutter's official AI rules and should be treated as
+baseline behavior in this repository:
+
+- **Code quality first**: Keep code clear, simple, and maintainable; avoid
+  clever patterns when a straightforward one exists.
+- **Null safety and async correctness**: Prefer sound null-safe code, avoid
+  unnecessary `!`, and use `async`/`await` with explicit error handling.
+- **UI composition**: Favor small, composable widgets over large build methods;
+  keep expensive work out of `build()`.
+- **Performance defaults**: Use `const` constructors where possible and builder
+  patterns (for long lists/grids) for lazy rendering.
+- **Architecture**: Keep separation of concerns (presentation/domain/data/core);
+  use repositories and constructor injection for dependencies.
+- **State management**: Prefer existing project patterns (CommonCubit) and keep
+  one-off effects in custom states/events.
+- **Tests**: Add or update tests for behavior changes where practical; prefer
+  deterministic tests with clear Arrange-Act-Assert structure.
+- **Tooling after codegen-sensitive changes**: If l10n/json/codegen inputs are
+  changed, run the corresponding generation step (for example `flutter gen-l10n`
+  or `dart run build_runner build --delete-conflicting-outputs`).
+
+Project-specific rules in `.cursor/rules/` still take precedence where they are
+stricter (FUN design system, analytics requirements, versioning policy, etc.).
+
 ## EU vs US / feature locations
 
 The app has **two main variants**; many features exist in both with different implementations:
@@ -72,6 +98,7 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
   - `.cursor/rules/fun-design-system.mdc`: FUN design system components, theming, and confirmation patterns.
   - `.cursor/rules/analytics.mdc`: Analytics event usage, naming, and integration with FUN components.
   - `.cursor/rules/versioning.mdc`: Version bump policy for the Givt app (ensure `develop` has a higher version than `main`, and choose patch vs minor appropriately).
+  - `.cursor/rules/flutter-core-best-practices.mdc`: Adapted Flutter baseline guidance for maintainability, async safety, architecture, and testing.
 
 ## Where to look
 

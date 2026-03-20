@@ -154,6 +154,11 @@ void initRepositories() {
         getIt(),
       ),
     )
+    ..registerLazySingleton<OrganisationGoalsRepository>(
+      () => OrganisationGoalsRepositoryImpl(
+        getIt(),
+      ),
+    )
     ..registerLazySingleton<BeaconRepository>(
       () => BeaconRepositoryImpl(
         getIt(),

@@ -145,7 +145,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: FunTile(
-                      variant: FunTileVariant.green,
+                      variant: FunTileVariant.two,
                       iconPath: '',
                       titleBig: details.minutesPlayed == 1
                           ? '1 minute family time'
@@ -173,7 +173,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: FunTile(
-                      variant: FunTileVariant.red,
+                      variant: FunTileVariant.five,
                       iconPath: '',
                       titleBig: details.generousDeeds == 1
                           ? '1 generous deed'

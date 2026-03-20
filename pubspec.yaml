@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 5.1.1
+version: 5.2.5
 publish_to: none
 
 environment:
@@ -185,6 +185,7 @@ flutter:
           weight: 900
   assets:
     - assets/images/
+    - assets/images/for_you/
     - assets/lotties/
     - assets/ca/
     - assets/family/images/

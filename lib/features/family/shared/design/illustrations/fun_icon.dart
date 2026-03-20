@@ -54,6 +54,21 @@ class FunIcon extends StatelessWidget {
         iconData: FontAwesomeIcons.solidHandshake,
         circleColor: circleColor,
       );
+  
+  factory FunIcon.heart({
+    Color iconColor = FamilyAppTheme.primary20,
+    EdgeInsets padding = EdgeInsets.zero,
+    double iconSize = 24,
+    double circleSize = 24,
+  }) =>
+      FunIcon(
+        padding: padding,
+        iconData: FontAwesomeIcons.solidHeart,
+        iconColor: iconColor,
+        circleColor: Colors.transparent,
+        circleSize: circleSize,
+        iconSize: iconSize,
+      );
 
   factory FunIcon.microphone(
           {Color circleColor = FamilyAppTheme.primary95,

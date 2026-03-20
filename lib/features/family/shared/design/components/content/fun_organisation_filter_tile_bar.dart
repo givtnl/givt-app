@@ -33,9 +33,6 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              SizedBox(
-                width: stratPadding,
-              ),
               ...types.map(
                 (e) => FilterTile(
                     type: e,
