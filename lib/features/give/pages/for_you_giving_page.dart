@@ -13,9 +13,12 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
+import 'package:givt_app/features/give/utils/for_you_donation_transactions.dart';
+import 'package:givt_app/features/give/widgets/for_you_more_general_goals_sheet.dart';
 import 'package:givt_app/features/give/widgets/numeric_keyboard.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
+import 'package:givt_app/shared/models/organisation_goals.dart';
 import 'package:givt_app/shared/repositories/organisation_goals_repository.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -37,13 +40,35 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   final ScrollController _scrollController = ScrollController();
   final List<TextEditingController> _controllers = [];
   final List<GlobalKey> _accordionKeys = [];
-  final List<String> _goalTitles = [];
+  List<ForYouGoalLineKind> _goalLines = [];
   int _expandedIndex = 0;
   int _selectedField = 0;
   bool _isLoadingGoals = true;
   bool _didStartGoalInitialization = false;
+  OrganisationGoalsResponse? _goalsResponse;
 
   String _decimalSeparator = ',';
+
+  Set<String> get _addedGeneralMediumIds => {
+    for (final line in _goalLines)
+      if (line case ForYouGeneralGoalLine(:final qr)) qr.mediumId,
+  };
+
+  List<OrganisationQrCode> get _sheetAvailableQrCodes {
+    final qrCodes = _goalsResponse?.qrCodes ?? const <OrganisationQrCode>[];
+    return qrCodes
+        .where(
+          (q) => q.mediumId.isNotEmpty && q.allocationName.trim().isNotEmpty,
+        )
+        .where((q) => !_addedGeneralMediumIds.contains(q.mediumId))
+        .toList();
+  }
+
+  bool get _showMoreGoalsLink =>
+      !_isLoadingGoals &&
+      _goalsResponse != null &&
+      _goalsResponse!.qrCodes.isNotEmpty &&
+      _sheetAvailableQrCodes.isNotEmpty;
 
   @override
   void initState() {
@@ -156,18 +181,14 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                     physics: const BouncingScrollPhysics(),
                     child: Column(
                       children: [
-                        ...List.generate(_goalTitles.length, (index) {
+                        ...List.generate(_goalLines.length, (index) {
                           return Padding(
                             padding: EdgeInsets.only(
-                              bottom: index == _goalTitles.length - 1 ? 8 : 10,
+                              bottom: index == _goalLines.length - 1 ? 8 : 10,
                             ),
                             child: _buildAccordion(
                               context,
-                              title: _goalTitles[index],
-                              subtitle: context.l10n
-                                  .forYouGivingCollectionSubtitle(
-                                    index + 1,
-                                  ),
+                              line: _goalLines[index],
                               index: index,
                               currencySymbol: currencySymbol,
                               accordionKey: _accordionKeys[index],
@@ -178,9 +199,8 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: FunTextButton(
+                if (_showMoreGoalsLink)
+                  FunTextButton(
                     text: context.l10n.forYouGivingMoreGoals,
                     textColor: FunTheme.of(context).primary30,
                     prefixIcon: FaIcon(
@@ -189,11 +209,10 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                       size: 16,
                     ),
                     analyticsEvent: AnalyticsEventName
-                        .forYouGivingContinueTapped
+                        .forYouGivingMoreGoalsLinkTapped
                         .toEvent(),
-                    onTap: _openNextAccordion,
+                    onTap: () => _onMoreGoalsTapped(context),
                   ),
-                ),
                 const SizedBox(height: 8),
                 NumericKeyboard(
                   currencySymbol: currencySymbol,
@@ -253,12 +272,22 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
 
   Widget _buildAccordion(
     BuildContext context, {
-    required String title,
-    required String subtitle,
+    required ForYouGoalLineKind line,
     required int index,
     required String currencySymbol,
     required GlobalKey accordionKey,
   }) {
+    final (title, subtitle) = switch (line) {
+      ForYouCollectionGoalLine(:final title, :final subtitleIndex) => (
+        title,
+        context.l10n.forYouGivingCollectionSubtitle(subtitleIndex),
+      ),
+      ForYouGeneralGoalLine(:final qr) => (
+        qr.allocationName.trim(),
+        context.l10n.forYouGivingGeneralGoal,
+      ),
+    };
+
     return Container(
       key: accordionKey,
       child: FunAccordion(
@@ -321,35 +350,64 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     );
   }
 
+  Future<void> _onMoreGoalsTapped(BuildContext context) async {
+    final available = _sheetAvailableQrCodes;
+    if (available.isEmpty) {
+      return;
+    }
+    await ForYouMoreGeneralGoalsSheet.show(
+      context: context,
+      availableGoals: available,
+      onConfirm: _appendGeneralGoals,
+    );
+  }
+
+  void _appendGeneralGoals(List<OrganisationQrCode> selected) {
+    if (selected.isEmpty || !mounted) {
+      return;
+    }
+    setState(() {
+      for (final qr in selected) {
+        _goalLines.add(ForYouGeneralGoalLine(qr));
+        _controllers.add(TextEditingController(text: '0'));
+        _accordionKeys.add(GlobalKey());
+      }
+      final firstNew = _goalLines.length - selected.length;
+      _expandedIndex = firstNew;
+      _selectedField = firstNew;
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      _scrollAccordionIntoView(_expandedIndex);
+    });
+  }
+
   void _submit(BuildContext context, String namespace) {
     final userGuid = context.read<AuthCubit>().state.user.guid;
-    final first = _controllers.isNotEmpty
-        ? _parseAmount(_controllers[0].text)
-        : 0.0;
-    final second = _controllers.length > 1
-        ? _parseAmount(_controllers[1].text)
-        : 0.0;
-    final third = _controllers.length > 2
-        ? _parseAmount(_controllers[2].text)
-        : 0.0;
-    context.read<GiveBloc>().add(
-      GiveAmountChanged(
-        firstCollectionAmount: first,
-        secondCollectionAmount: second,
-        thirdCollectionAmount: third,
-      ),
+    final amounts = _controllers.map((c) => _parseAmount(c.text)).toList();
+    final donations = buildForYouDonationTransactions(
+      userGuid: userGuid,
+      collectGroupNamespace: namespace,
+      lines: _goalLines,
+      amounts: amounts,
     );
+    if (donations.isEmpty) {
+      return;
+    }
     context.read<GiveBloc>().add(
-      GiveOrganisationSelected(
+      GiveForYouSubmitDonations(
         nameSpace: namespace,
         userGUID: userGuid,
+        donations: donations,
       ),
     );
   }
 
   void _openNextAccordion() {
     setState(() {
-      if (_expandedIndex < _goalTitles.length - 1) {
+      if (_expandedIndex < _goalLines.length - 1) {
         _expandedIndex += 1;
         _selectedField = _expandedIndex;
       }
@@ -359,9 +417,16 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
 
   void _scrollAccordionIntoView(int index) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
+      if (index < 0 || index >= _accordionKeys.length) {
+        return;
+      }
       final ctx = _accordionKeys[index].currentContext;
-      if (ctx == null) return;
+      if (ctx == null) {
+        return;
+      }
       Scrollable.ensureVisible(
         ctx,
         duration: const Duration(milliseconds: 280),
@@ -379,7 +444,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   bool get _hasAnyAmount =>
       _controllers.any((controller) => _parseAmount(controller.text) > 0);
 
-  bool get _isLastAccordion => _expandedIndex >= _goalTitles.length - 1;
+  bool get _isLastAccordion => _expandedIndex >= _goalLines.length - 1;
 
   void onBackspaceTapped() {
     final controller = _controllers[_selectedField];
@@ -426,34 +491,65 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
 
   Future<void> _initializeGoals() async {
     final organisation = widget.flowContext.selectedOrganisation;
-    final fallbackTitles = List.generate(
-      3,
-      (index) => context.l10n.forYouGivingCollectionTitle(index + 1),
-      growable: false,
-    );
     if (organisation == null) {
-      _setupGoalInputs(fallbackTitles);
+      _setupFallbackLines();
       return;
     }
 
     try {
       final repository = getIt<OrganisationGoalsRepository>();
       final response = await repository.fetchGoals(organisation.nameSpace);
-      final allocationTitles = response.allocations
-          .map((allocation) => allocation.allocationName.trim())
-          .where((title) => title.isNotEmpty)
-          .take(3)
-          .toList(growable: false);
-      _setupGoalInputs(
-        allocationTitles.isEmpty ? fallbackTitles : allocationTitles,
-      );
+      if (!mounted) {
+        return;
+      }
+      _goalsResponse = response;
+      _setupCollectionLinesFromResponse(response);
     } on Exception {
-      _setupGoalInputs(fallbackTitles);
+      if (!mounted) {
+        return;
+      }
+      _goalsResponse = const OrganisationGoalsResponse();
+      _setupFallbackLines();
     }
   }
 
-  void _setupGoalInputs(List<String> titles) {
-    if (!mounted) return;
+  void _setupCollectionLinesFromResponse(OrganisationGoalsResponse response) {
+    final allocations = response.allocations
+        .where((a) => a.allocationName.trim().isNotEmpty)
+        .take(3)
+        .toList();
+    if (allocations.isEmpty) {
+      _setupFallbackLines();
+      return;
+    }
+
+    final lines = <ForYouGoalLineKind>[
+      for (var i = 0; i < allocations.length; i++)
+        ForYouCollectionGoalLine(
+          title: allocations[i].allocationName.trim(),
+          subtitleIndex: i + 1,
+          allocation: allocations[i],
+        ),
+    ];
+    _applyLines(lines);
+  }
+
+  void _setupFallbackLines() {
+    final lines = List<ForYouGoalLineKind>.generate(
+      3,
+      (i) => ForYouCollectionGoalLine(
+        title: context.l10n.forYouGivingCollectionTitle(i + 1),
+        subtitleIndex: i + 1,
+        allocation: null,
+      ),
+    );
+    _applyLines(lines);
+  }
+
+  void _applyLines(List<ForYouGoalLineKind> lines) {
+    if (!mounted) {
+      return;
+    }
     for (final controller in _controllers) {
       controller.dispose();
     }
@@ -461,7 +557,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       ..clear()
       ..addAll(
         List.generate(
-          titles.length,
+          lines.length,
           (_) => TextEditingController(text: '0'),
           growable: false,
         ),
@@ -470,16 +566,14 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       ..clear()
       ..addAll(
         List.generate(
-          titles.length,
+          lines.length,
           (_) => GlobalKey(),
           growable: false,
         ),
       );
 
     setState(() {
-      _goalTitles
-        ..clear()
-        ..addAll(titles);
+      _goalLines = lines;
       _expandedIndex = 0;
       _selectedField = 0;
       _isLoadingGoals = false;

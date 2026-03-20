@@ -818,6 +818,18 @@
   "forYouGivingAddGeneralGoalToggle": "Algemeen doel toevoegen",
   "forYouGivingContinue": "Doorgaan",
   "forYouGivingMoreGoals": "Geef aan meer doelen",
+  "forYouMoreGeneralGoalsSheetTitle": "Andere doelen waaraan je kunt geven",
+  "forYouMoreGeneralGoalsSheetSubtitle": "Selecteer de doelen die je wilt opnemen in je gift.",
+  "forYouMoreGeneralGoalsAddPlaceholder": "Toevoegen",
+  "forYouMoreGeneralGoalsAddOne": "Nog 1 doel toevoegen",
+  "forYouMoreGeneralGoalsAddMany": "Nog {count} doelen toevoegen",
+  "@forYouMoreGeneralGoalsAddMany": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "forYouGivingCompleteMyGiving": "Mijn gift afronden",
   "forYouGivingCollectionTitle": "Collecte {index}",
   "@forYouGivingCollectionTitle": {

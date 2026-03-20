@@ -2321,6 +2321,36 @@ abstract class AppLocalizations {
   /// **'Give to more goals'**
   String get forYouGivingMoreGoals;
 
+  /// No description provided for @forYouMoreGeneralGoalsSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Other goals you can give to'**
+  String get forYouMoreGeneralGoalsSheetTitle;
+
+  /// No description provided for @forYouMoreGeneralGoalsSheetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the ones you\'d like to include in your giving.'**
+  String get forYouMoreGeneralGoalsSheetSubtitle;
+
+  /// No description provided for @forYouMoreGeneralGoalsAddPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get forYouMoreGeneralGoalsAddPlaceholder;
+
+  /// No description provided for @forYouMoreGeneralGoalsAddOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Add 1 more goal'**
+  String get forYouMoreGeneralGoalsAddOne;
+
+  /// No description provided for @forYouMoreGeneralGoalsAddMany.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {count} more goals'**
+  String forYouMoreGeneralGoalsAddMany(int count);
+
   /// No description provided for @forYouGivingCompleteMyGiving.
   ///
   /// In en, this message translates to:

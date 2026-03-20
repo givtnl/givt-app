@@ -27,7 +27,9 @@ class OrganisationGoalsRepositoryImpl with OrganisationGoalsRepository {
     final list = _extractList(response);
     final first = list.isEmpty
         ? const OrganisationGoalsResponse()
-        : OrganisationGoalsResponse.fromJson(list.first);
+        : _filterQrCodesWithoutName(
+            OrganisationGoalsResponse.fromJson(list.first),
+          );
     final summary = first.toSummary();
     _cache[collectGroupId] = summary;
     return summary;
@@ -43,7 +45,9 @@ class OrganisationGoalsRepositoryImpl with OrganisationGoalsRepository {
     final list = _extractList(response);
     final first = list.isEmpty
         ? const OrganisationGoalsResponse()
-        : OrganisationGoalsResponse.fromJson(list.first);
+        : _filterQrCodesWithoutName(
+            OrganisationGoalsResponse.fromJson(list.first),
+          );
 
     _goalsCache[collectGroupId] = first;
     _cache[collectGroupId] = first.toSummary();
@@ -73,6 +77,20 @@ class OrganisationGoalsRepositoryImpl with OrganisationGoalsRepository {
     }
 
     return const [];
+  }
+
+  /// Drops general goals (QR codes) with no display name so UI and counts stay
+  /// consistent.
+  OrganisationGoalsResponse _filterQrCodesWithoutName(
+    OrganisationGoalsResponse response,
+  ) {
+    final namedQrCodes = response.qrCodes
+        .where((q) => q.allocationName.trim().isNotEmpty)
+        .toList();
+    return OrganisationGoalsResponse(
+      allocations: response.allocations,
+      qrCodes: namedQrCodes,
+    );
   }
 
   @override

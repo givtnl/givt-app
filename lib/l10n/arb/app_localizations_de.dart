@@ -1273,6 +1273,25 @@ class AppLocalizationsDe extends AppLocalizations {
   String get forYouGivingMoreGoals => 'Für mehr Ziele spenden';
 
   @override
+  String get forYouMoreGeneralGoalsSheetTitle =>
+      'Weitere Ziele, an die du spenden kannst';
+
+  @override
+  String get forYouMoreGeneralGoalsSheetSubtitle =>
+      'Wähle die Ziele aus, die du in deine Spende einbeziehen möchtest.';
+
+  @override
+  String get forYouMoreGeneralGoalsAddPlaceholder => 'Hinzufügen';
+
+  @override
+  String get forYouMoreGeneralGoalsAddOne => '1 weiteres Ziel hinzufügen';
+
+  @override
+  String forYouMoreGeneralGoalsAddMany(int count) {
+    return '$count weitere Ziele hinzufügen';
+  }
+
+  @override
   String get forYouGivingCompleteMyGiving => 'Meine Spende abschließen';
 
   @override

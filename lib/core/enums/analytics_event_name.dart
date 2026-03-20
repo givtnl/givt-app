@@ -198,6 +198,10 @@ enum AnalyticsEventName {
   forYouFavoriteTapped('for_you_favorite_tapped'),
   forYouOrganisationSelected('for_you_organisation_selected'),
   forYouGivingContinueTapped('for_you_giving_continue_tapped'),
+  forYouGivingMoreGoalsLinkTapped('for_you_giving_more_goals_link_tapped'),
+  forYouGivingMoreGoalsConfirmTapped(
+    'for_you_giving_more_goals_confirm_tapped',
+  ),
   helpMeFindCharityPressed('help_me_find_charity_pressed'),
   askToFindCharityPressed('ask_my_parents_to_find_charity_pressed'),
   loginPressed('login_pressed'),

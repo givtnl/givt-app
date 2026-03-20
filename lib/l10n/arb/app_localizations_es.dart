@@ -1262,6 +1262,25 @@ class AppLocalizationsEs extends AppLocalizations {
   String get forYouGivingMoreGoals => 'Donar a más objetivos';
 
   @override
+  String get forYouMoreGeneralGoalsSheetTitle =>
+      'Otros objetivos a los que puedes donar';
+
+  @override
+  String get forYouMoreGeneralGoalsSheetSubtitle =>
+      'Selecciona los que quieras incluir en tu donación.';
+
+  @override
+  String get forYouMoreGeneralGoalsAddPlaceholder => 'Añadir';
+
+  @override
+  String get forYouMoreGeneralGoalsAddOne => 'Añadir 1 objetivo más';
+
+  @override
+  String forYouMoreGeneralGoalsAddMany(int count) {
+    return 'Añadir $count objetivos más';
+  }
+
+  @override
   String get forYouGivingCompleteMyGiving => 'Completar mi donación';
 
   @override
@@ -3958,6 +3977,25 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get forYouGivingMoreGoals => 'Donar a más objetivos';
+
+  @override
+  String get forYouMoreGeneralGoalsSheetTitle =>
+      'Otros objetivos a los que puedes donar';
+
+  @override
+  String get forYouMoreGeneralGoalsSheetSubtitle =>
+      'Selecciona los que quieras incluir en tu donación.';
+
+  @override
+  String get forYouMoreGeneralGoalsAddPlaceholder => 'Añadir';
+
+  @override
+  String get forYouMoreGeneralGoalsAddOne => 'Añadir 1 objetivo más';
+
+  @override
+  String forYouMoreGeneralGoalsAddMany(int count) {
+    return 'Añadir $count objetivos más';
+  }
 
   @override
   String get forYouGivingCompleteMyGiving => 'Completar mi donación';

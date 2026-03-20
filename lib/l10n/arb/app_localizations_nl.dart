@@ -1267,6 +1267,25 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forYouGivingMoreGoals => 'Geef aan meer doelen';
 
   @override
+  String get forYouMoreGeneralGoalsSheetTitle =>
+      'Andere doelen waaraan je kunt geven';
+
+  @override
+  String get forYouMoreGeneralGoalsSheetSubtitle =>
+      'Selecteer de doelen die je wilt opnemen in je gift.';
+
+  @override
+  String get forYouMoreGeneralGoalsAddPlaceholder => 'Toevoegen';
+
+  @override
+  String get forYouMoreGeneralGoalsAddOne => 'Nog 1 doel toevoegen';
+
+  @override
+  String forYouMoreGeneralGoalsAddMany(int count) {
+    return 'Nog $count doelen toevoegen';
+  }
+
+  @override
   String get forYouGivingCompleteMyGiving => 'Mijn gift afronden';
 
   @override

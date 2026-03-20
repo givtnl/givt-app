@@ -818,6 +818,18 @@
   "forYouGivingAddGeneralGoalToggle": "Allgemeines Ziel hinzufügen",
   "forYouGivingContinue": "Weiter",
   "forYouGivingMoreGoals": "Für mehr Ziele spenden",
+  "forYouMoreGeneralGoalsSheetTitle": "Weitere Ziele, an die du spenden kannst",
+  "forYouMoreGeneralGoalsSheetSubtitle": "Wähle die Ziele aus, die du in deine Spende einbeziehen möchtest.",
+  "forYouMoreGeneralGoalsAddPlaceholder": "Hinzufügen",
+  "forYouMoreGeneralGoalsAddOne": "1 weiteres Ziel hinzufügen",
+  "forYouMoreGeneralGoalsAddMany": "{count} weitere Ziele hinzufügen",
+  "@forYouMoreGeneralGoalsAddMany": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "forYouGivingCompleteMyGiving": "Meine Spende abschließen",
   "forYouGivingCollectionTitle": "Kollektenziel {index}",
   "@forYouGivingCollectionTitle": {
