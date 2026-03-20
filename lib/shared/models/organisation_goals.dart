@@ -25,7 +25,7 @@ class OrganisationGoalsResponse extends Equatable {
 
   factory OrganisationGoalsResponse.fromJson(Map<String, dynamic> json) {
     final allocationsJson = json['allocations'] as List<dynamic>? ?? [];
-    final qrCodesJson = json['qRCodes'] as List<dynamic>? ?? [];
+    final qrCodesJson = json['qrCodes'] as List<dynamic>? ?? [];
     return OrganisationGoalsResponse(
       allocations: allocationsJson
           .map(
