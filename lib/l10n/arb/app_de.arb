@@ -847,6 +847,17 @@
       }
     }
   },
+  "forYouGivingAccordionSubtitleWithAmount": "{label} - {amount}",
+  "@forYouGivingAccordionSubtitleWithAmount": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "reccurringGivtIsBeingProcessed": "Vielen Dank für deine wiederkehrende Spende an {value0}!\n Um alle Informationen zu sehen, gehe ins Menü 'Wiederkehrende Spenden'.",
   "amountLimitExceededRecurringDonation": "Dieser Betrag ist höher als der von dir gewählte Höchstbetrag. Möchtest du fortfahren oder den Betrag ändern?",
   "sepaVerifyBody": "Wenn einer der oben genannten Punkte nicht korrekt ist, brich die Registrierung ab und ändere deine \"persönlichen Daten\".",

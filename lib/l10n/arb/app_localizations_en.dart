@@ -1292,6 +1292,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String forYouGivingAccordionSubtitleWithAmount(String label, String amount) {
+    return '$label - $amount';
+  }
+
+  @override
   String get discoverHomeDiscoverTitle => 'For You';
 
   @override
@@ -3993,6 +3998,11 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String forYouGivingCollectionSubtitle(int index) {
     return 'Collection $index';
+  }
+
+  @override
+  String forYouGivingAccordionSubtitleWithAmount(String label, String amount) {
+    return '$label - $amount';
   }
 
   @override

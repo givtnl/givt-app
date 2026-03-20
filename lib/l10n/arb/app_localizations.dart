@@ -2369,6 +2369,12 @@ abstract class AppLocalizations {
   /// **'Collection {index}'**
   String forYouGivingCollectionSubtitle(int index);
 
+  /// No description provided for @forYouGivingAccordionSubtitleWithAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} - {amount}'**
+  String forYouGivingAccordionSubtitleWithAmount(String label, String amount);
+
   /// No description provided for @discoverHomeDiscoverTitle.
   ///
   /// In en, this message translates to:

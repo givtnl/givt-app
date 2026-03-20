@@ -277,16 +277,16 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     required String currencySymbol,
     required GlobalKey accordionKey,
   }) {
-    final (title, subtitle) = switch (line) {
-      ForYouCollectionGoalLine(:final title, :final subtitleIndex) => (
-        title,
-        context.l10n.forYouGivingCollectionSubtitle(subtitleIndex),
-      ),
-      ForYouGeneralGoalLine(:final qr) => (
-        qr.allocationName.trim(),
-        context.l10n.forYouGivingGeneralGoal,
-      ),
+    final title = switch (line) {
+      ForYouCollectionGoalLine(:final title) => title,
+      ForYouGeneralGoalLine(:final qr) => qr.allocationName.trim(),
     };
+    final subtitle = _accordionSubtitle(
+      context,
+      line: line,
+      index: index,
+      currencySymbol: currencySymbol,
+    );
 
     return Container(
       key: accordionKey,
@@ -315,6 +315,28 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
           },
         ),
       ),
+    );
+  }
+
+  String _accordionSubtitle(
+    BuildContext context, {
+    required ForYouGoalLineKind line,
+    required int index,
+    required String currencySymbol,
+  }) {
+    final base = switch (line) {
+      ForYouCollectionGoalLine(:final subtitleIndex) =>
+        context.l10n.forYouGivingCollectionSubtitle(subtitleIndex),
+      ForYouGeneralGoalLine() => context.l10n.forYouGivingGeneralGoal,
+    };
+    final raw = _controllers[index].text;
+    if (_parseAmount(raw) <= 0) {
+      return base;
+    }
+    final amountDisplay = '$currencySymbol$raw';
+    return context.l10n.forYouGivingAccordionSubtitleWithAmount(
+      base,
+      amountDisplay,
     );
   }
 

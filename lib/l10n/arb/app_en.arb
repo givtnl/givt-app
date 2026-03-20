@@ -844,6 +844,17 @@
       }
     }
   },
+  "forYouGivingAccordionSubtitleWithAmount": "{label} - {amount}",
+  "@forYouGivingAccordionSubtitleWithAmount": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "discoverHomeDiscoverTitle": "For You",
   "discoverOrAmountActionSheetOnce": "One-off donation",
   "discoverOrAmountActionSheetRecurring": "Recurring donation",

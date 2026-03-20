@@ -847,6 +847,17 @@
       }
     }
   },
+  "forYouGivingAccordionSubtitleWithAmount": "{label} - {amount}",
+  "@forYouGivingAccordionSubtitleWithAmount": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "reccurringGivtIsBeingProcessed": "Thank you for your recurring donation to {value0}!\n To see all the information, go to 'Recurring donations' in the menu.",
   "amountLimitExceededRecurringDonation": "Este importe es superior al importe máximo elegido. ¿Desea continuar o cambiar el importe?",
   "sepaVerifyBody": "If any of the above is incorrect, please abort the registration and change your 'Personal information'",

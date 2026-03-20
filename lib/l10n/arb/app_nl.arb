@@ -847,6 +847,17 @@
       }
     }
   },
+  "forYouGivingAccordionSubtitleWithAmount": "{label} - {amount}",
+  "@forYouGivingAccordionSubtitleWithAmount": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "reccurringGivtIsBeingProcessed": "Bedankt voor je terugkerende gift aan {value0}! \n Om alle informatie hierover te zien, ga je naar 'Terugkerende giften' in het menu.",
   "amountLimitExceededRecurringDonation": "Hé gulle gever, dit bedrag is hoger dan je geeflimiet. Wil je toch doorgaan of wil je je gift aanpassen?",
   "sepaVerifyBody": "Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.",

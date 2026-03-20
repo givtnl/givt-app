@@ -1305,6 +1305,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String forYouGivingAccordionSubtitleWithAmount(String label, String amount) {
+    return '$label - $amount';
+  }
+
+  @override
   String get discoverHomeDiscoverTitle => 'Für dich';
 
   @override

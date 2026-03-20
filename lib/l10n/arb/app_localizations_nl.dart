@@ -1299,6 +1299,11 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String forYouGivingAccordionSubtitleWithAmount(String label, String amount) {
+    return '$label - $amount';
+  }
+
+  @override
   String get discoverHomeDiscoverTitle => 'Voor jou';
 
   @override
