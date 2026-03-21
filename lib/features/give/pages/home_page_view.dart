@@ -15,6 +15,7 @@ class HomePageView extends StatefulWidget {
     required this.retry,
     required this.afterGivingRedirection,
     required this.code,
+    required this.initialPageIndex,
     this.giveBloc,
     this.qrConfirmWidget,
     super.key,
@@ -25,6 +26,7 @@ class HomePageView extends StatefulWidget {
   final bool retry;
   final String code;
   final String afterGivingRedirection;
+  final int initialPageIndex;
   final void Function(int) onPageChanged;
   final GiveBloc? giveBloc;
   final Widget? qrConfirmWidget;
@@ -35,12 +37,13 @@ class HomePageView extends StatefulWidget {
 
 class _HomePageViewState extends State<HomePageView> {
   late PageController pageController;
-  int pageIndex = 0;
+  late int pageIndex;
   bool isPageAnimationActive = false;
 
   @override
   void initState() {
-    pageController = PageController();
+    pageIndex = widget.initialPageIndex;
+    pageController = PageController(initialPage: widget.initialPageIndex);
     super.initState();
   }
 

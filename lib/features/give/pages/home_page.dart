@@ -27,6 +27,7 @@ import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/utils/shared_preferences_keys.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -54,7 +55,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  int pageIndex = 0;
+  late int pageIndex;
   final _key = GlobalKey<ScaffoldState>();
   final AppConfig _appConfig = getIt();
   final MandatePopupDismissalTracker _mandatePopupDismissalTracker =
@@ -68,6 +69,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    // Load the last used tab index from SharedPreferences
+    pageIndex = getIt<SharedPreferences>()
+            .getInt(NativeSharedPreferencesKeys.homePageLastTabIndex) ??
+        0;
     WidgetsBinding.instance.addObserver(this); // Add lifecycle observer
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
@@ -314,9 +319,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     retry: widget.retry,
                     code: widget.code,
                     afterGivingRedirection: widget.afterGivingRedirection,
+                    initialPageIndex: pageIndex,
                     onPageChanged: (index) => setState(
                       () {
                         pageIndex = index;
+                        getIt<SharedPreferences>().setInt(
+                          NativeSharedPreferencesKeys.homePageLastTabIndex,
+                          index,
+                        );
                       },
                     ),
                     auth: auth,
@@ -380,9 +390,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     retry: widget.retry,
                     code: widget.code,
                     afterGivingRedirection: widget.afterGivingRedirection,
+                    initialPageIndex: pageIndex,
                     onPageChanged: (index) => setState(
                       () {
                         pageIndex = index;
+                        getIt<SharedPreferences>().setInt(
+                          NativeSharedPreferencesKeys.homePageLastTabIndex,
+                          index,
+                        );
                       },
                     ),
                   ),
