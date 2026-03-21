@@ -1244,6 +1244,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forYouGivingPageTitle => 'Nu geven';
 
   @override
+  String get forYouOrganisationConfirmHeadline => 'Je geeft aan';
+
+  @override
   String get forYouGivingFirstCollectionGoal => 'Eerste collectiedoel';
 
   @override

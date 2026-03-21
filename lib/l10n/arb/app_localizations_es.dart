@@ -1239,6 +1239,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get forYouGivingPageTitle => 'Donar ahora';
 
   @override
+  String get forYouOrganisationConfirmHeadline => 'Vas a donar a';
+
+  @override
   String get forYouGivingFirstCollectionGoal => 'Primer objetivo de colecta';
 
   @override
@@ -3959,6 +3962,9 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get forYouGivingPageTitle => 'Donar ahora';
+
+  @override
+  String get forYouOrganisationConfirmHeadline => 'Vas a donar a';
 
   @override
   String get forYouGivingFirstCollectionGoal => 'Primer objetivo de colecta';

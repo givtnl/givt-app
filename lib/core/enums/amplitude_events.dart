@@ -15,6 +15,8 @@ class AmplitudeEvents {
       AnalyticsEventName.forYouOtherWaysQrTapped;
   static const forYouOtherWaysBeaconTapped =
       AnalyticsEventName.forYouOtherWaysBeaconTapped;
+  static const forYouOrganisationConfirmGiveTapped =
+      AnalyticsEventName.forYouOrganisationConfirmGiveTapped;
 
   // Gift Aid registration
   static const giftAidRegistrationLearnMoreClicked =

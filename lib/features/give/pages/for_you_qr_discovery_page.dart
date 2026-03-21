@@ -141,7 +141,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
       if (!mounted) return;
       // Directly open amount+goals screen.
       context.goNamed(
-        Pages.forYouGiving.name,
+        Pages.forYouOrganisationConfirm.name,
         extra: widget.flowContext
             .copyWith(selectedOrganisation: collectGroup)
             .toMap(),

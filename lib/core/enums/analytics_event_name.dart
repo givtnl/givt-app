@@ -197,6 +197,9 @@ enum AnalyticsEventName {
   forYouOtherWaysBeaconTapped('for_you_other_ways_beacon_tapped'),
   forYouFavoriteTapped('for_you_favorite_tapped'),
   forYouOrganisationSelected('for_you_organisation_selected'),
+  forYouOrganisationConfirmGiveTapped(
+    'for_you_organisation_confirm_give_tapped',
+  ),
   forYouGivingContinueTapped('for_you_giving_continue_tapped'),
   forYouGivingMoreGoalsLinkTapped('for_you_giving_more_goals_link_tapped'),
   forYouGivingMoreGoalsConfirmTapped(

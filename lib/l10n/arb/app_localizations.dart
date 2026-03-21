@@ -2279,6 +2279,12 @@ abstract class AppLocalizations {
   /// **'Give now'**
   String get forYouGivingPageTitle;
 
+  /// No description provided for @forYouOrganisationConfirmHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re giving to'**
+  String get forYouOrganisationConfirmHeadline;
+
   /// No description provided for @forYouGivingFirstCollectionGoal.
   ///
   /// In en, this message translates to:

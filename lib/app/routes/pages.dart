@@ -20,6 +20,10 @@ enum Pages {
     path: 'for-you-giving',
     name: 'FOR-YOU-GIVING',
   ),
+  forYouOrganisationConfirm(
+    path: 'for-you-organisation-confirm',
+    name: 'FOR-YOU-ORGANISATION-CONFIRM',
+  ),
   forYouByLocation(
     path: 'for-you-by-location',
     name: 'FOR-YOU-BY-LOCATION',

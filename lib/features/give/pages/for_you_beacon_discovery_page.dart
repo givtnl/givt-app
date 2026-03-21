@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:givt_app/app/routes/routes.dart';
@@ -15,6 +16,10 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sprintf/sprintf.dart';
+
+/// Debug-only: simulated beacon id (2s auto-navigation on this screen).
+/// Resolved with [ForYouDiscoveryResolvers.resolveCollectGroupFromBeaconId].
+const String kDebugForYouBeaconSimulatedId = '61f7ed014e4c0817a000';
 
 class ForYouBeaconDiscoveryPage extends StatefulWidget {
   const ForYouBeaconDiscoveryPage({
@@ -35,19 +40,36 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
   bool _isProcessing = false;
 
   StreamSubscription<List<ScanResult>>? _scanResultsStream;
+  Timer? _debugBeaconSimTimer;
 
   @override
   void initState() {
     super.initState();
     _initBluetooth();
+    if (kDebugMode) {
+      _debugBeaconSimTimer = Timer(
+        const Duration(seconds: 2),
+        _debugSimulateBeaconAndNavigate,
+      );
+    }
   }
 
   @override
   void dispose() {
     _isDisposed = true;
+    _debugBeaconSimTimer?.cancel();
     _scanResultsStream?.cancel();
     FlutterBluePlus.stopScan();
     super.dispose();
+  }
+
+  Future<void> _debugSimulateBeaconAndNavigate() async {
+    if (!kDebugMode || _isDisposed || !mounted || _isProcessing) {
+      return;
+    }
+    _isProcessing = true;
+    await FlutterBluePlus.stopScan();
+    await _resolveAndNavigate(kDebugForYouBeaconSimulatedId);
   }
 
   Future<void> _initBluetooth() async {
@@ -145,6 +167,8 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
   }
 
   Future<void> _resolveAndNavigate(String beaconId) async {
+    _debugBeaconSimTimer?.cancel();
+    _debugBeaconSimTimer = null;
     try {
       final collectGroup = await ForYouDiscoveryResolvers
           .resolveCollectGroupFromBeaconId(beaconId);
@@ -162,7 +186,7 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
 
       if (!mounted) return;
       context.goNamed(
-        Pages.forYouGiving.name,
+        Pages.forYouOrganisationConfirm.name,
         extra: widget.flowContext
             .copyWith(selectedOrganisation: collectGroup)
             .toMap(),
@@ -190,7 +214,6 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 80),
             BodyMediumText(
@@ -213,4 +236,3 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
     );
   }
 }
-

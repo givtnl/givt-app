@@ -1238,6 +1238,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouGivingPageTitle => 'Give now';
 
   @override
+  String get forYouOrganisationConfirmHeadline => 'You\'re giving to';
+
+  @override
   String get forYouGivingFirstCollectionGoal => 'First collection goal';
 
   @override
@@ -3945,6 +3948,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get forYouGivingPageTitle => 'Give now';
+
+  @override
+  String get forYouOrganisationConfirmHeadline => 'You\'re giving to';
 
   @override
   String get forYouGivingFirstCollectionGoal => 'First collection goal';

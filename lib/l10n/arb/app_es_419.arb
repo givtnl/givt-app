@@ -811,6 +811,7 @@
     }
   },
   "forYouGivingPageTitle": "Donar ahora",
+  "forYouOrganisationConfirmHeadline": "Vas a donar a",
   "forYouGivingFirstCollectionGoal": "Primer objetivo de colecta",
   "forYouGivingFirstCollectionGoalSubtitle": "Elige cuánto quieres donar al primer objetivo.",
   "forYouGivingGeneralGoal": "Objetivo general",

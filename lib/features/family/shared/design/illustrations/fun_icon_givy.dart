@@ -67,6 +67,16 @@ class FunIconGivy extends StatelessWidget {
     iconSize: circleSize / 112 * 140,
   );
 
+  factory FunIconGivy.phoneWink({
+    double circleSize = 112,
+  }) => FunIconGivy(
+    icon: SvgPicture.asset(
+      'assets/images/givy_phone_wink.svg',
+    ),
+    circleColor: Colors.transparent,
+    circleSize: circleSize,
+    iconSize: circleSize / 112 * 140,
+  );
 
   final IconData? iconData;
   final Widget? icon;

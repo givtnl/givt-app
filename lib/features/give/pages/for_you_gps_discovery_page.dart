@@ -136,7 +136,7 @@ class _ForYouGpsDiscoveryPageState extends State<ForYouGpsDiscoveryPage> {
 
       if (!mounted) return;
       context.goNamed(
-        Pages.forYouGiving.name,
+        Pages.forYouOrganisationConfirm.name,
         extra: widget.flowContext
             .copyWith(selectedOrganisation: collectGroup)
             .toMap(),

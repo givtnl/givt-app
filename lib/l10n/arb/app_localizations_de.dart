@@ -1250,6 +1250,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get forYouGivingPageTitle => 'Jetzt geben';
 
   @override
+  String get forYouOrganisationConfirmHeadline => 'Du gibst an';
+
+  @override
   String get forYouGivingFirstCollectionGoal => 'Erstes Sammelziel';
 
   @override

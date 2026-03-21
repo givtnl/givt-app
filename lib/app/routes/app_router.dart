@@ -16,15 +16,16 @@ import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
-import 'package:givt_app/features/give/pages/for_you_giving_page.dart';
 import 'package:givt_app/features/give/pages/for_you_beacon_discovery_page.dart';
+import 'package:givt_app/features/give/pages/for_you_giving_page.dart';
 import 'package:givt_app/features/give/pages/for_you_gps_discovery_page.dart';
 import 'package:givt_app/features/give/pages/for_you_list_page.dart';
+import 'package:givt_app/features/give/pages/for_you_organisation_confirm_page.dart';
+import 'package:givt_app/features/give/pages/for_you_qr_discovery_page.dart';
 import 'package:givt_app/features/give/pages/gps_scan_page.dart';
 import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
-import 'package:givt_app/features/give/pages/for_you_qr_discovery_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
 import 'package:givt_app/features/give/models/models.dart';
@@ -580,6 +581,23 @@ class AppRouter {
                     );
 
               return ForYouBeaconDiscoveryPage(flowContext: flowContext);
+            },
+          ),
+          GoRoute(
+            path: Pages.forYouOrganisationConfirm.path,
+            name: Pages.forYouOrganisationConfirm.name,
+            builder: (context, state) {
+              final flowContext = state.extra is Map<String, dynamic>
+                  ? ForYouFlowContext.fromMap(
+                      state.extra! as Map<String, dynamic>,
+                    )
+                  : state.extra is ForYouFlowContext
+                  ? state.extra! as ForYouFlowContext
+                  : const ForYouFlowContext(
+                      source: ForYouEntrySource.search,
+                    );
+
+              return ForYouOrganisationConfirmPage(flowContext: flowContext);
             },
           ),
           GoRoute(
