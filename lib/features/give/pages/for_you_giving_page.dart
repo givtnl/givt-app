@@ -318,17 +318,22 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     );
   }
 
-  String _accordionSubtitle(
+  String? _accordionSubtitle(
     BuildContext context, {
     required ForYouGoalLineKind line,
     required int index,
     required String currencySymbol,
   }) {
     final base = switch (line) {
-      ForYouCollectionGoalLine(:final subtitleIndex) =>
-        context.l10n.forYouGivingCollectionSubtitle(subtitleIndex),
+      ForYouCollectionGoalLine(:final subtitleIndex, :final allocation) =>
+        allocation == null || allocation.allocationName.trim().isEmpty
+            ? null
+            : context.l10n.forYouGivingCollectionSubtitle(subtitleIndex),
       ForYouGeneralGoalLine() => context.l10n.forYouGivingGeneralGoal,
     };
+    if (base == null) {
+      return null;
+    }
     final raw = _controllers[index].text;
     if (_parseAmount(raw) <= 0) {
       return base;
@@ -536,8 +541,14 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   }
 
   void _setupCollectionLinesFromResponse(OrganisationGoalsResponse response) {
-    final allocations = response.allocations
-        .where((a) => a.allocationName.trim().isNotEmpty)
+    final allocations = response.allocations.indexed
+        .where(
+          (entry) => !_isPlaceholderCollectionName(
+            entry.$2.allocationName.trim(),
+            fallbackIndex: entry.$1 + 1,
+          ),
+        )
+        .map((entry) => entry.$2)
         .take(3)
         .toList();
     if (allocations.isEmpty) {
@@ -554,6 +565,26 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
         ),
     ];
     _applyLines(lines);
+  }
+
+  bool _isPlaceholderCollectionName(
+    String allocationName, {
+    required int fallbackIndex,
+  }) {
+    if (allocationName.isEmpty) {
+      return true;
+    }
+    final normalizedName = allocationName.toLowerCase();
+    final fallbackTitle = context.l10n
+        .forYouGivingCollectionTitle(fallbackIndex)
+        .trim()
+        .toLowerCase();
+    final fallbackSubtitle = context.l10n
+        .forYouGivingCollectionSubtitle(fallbackIndex)
+        .trim()
+        .toLowerCase();
+    return normalizedName == fallbackTitle ||
+        normalizedName == fallbackSubtitle;
   }
 
   void _setupFallbackLines() {
