@@ -1,4 +1,4 @@
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -39,7 +39,7 @@ class GiftAidRegistrationCubit
     emitData(_model!);
 
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.giftAidRegistrationCheckboxChanged,
+      eventName: AnalyticsEventName.giftAidRegistrationCheckboxChanged,
       eventProperties: {
         AnalyticsHelper.toggleStatusKey: value,
       },

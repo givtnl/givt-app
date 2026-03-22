@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
@@ -291,7 +291,7 @@ class _BTScanPageState extends State<BTScanPage> {
       isSearching = false;
 
       // Stop the scan asynchronously but don't wait for it
-      FlutterBluePlus.stopScan().catchError((e) {
+      FlutterBluePlus.stopScan().catchError((Object e) {
         LoggingInfo.instance.error('Error stopping scan: $e');
       });
 
@@ -397,7 +397,7 @@ class _BTScanPageState extends State<BTScanPage> {
                       visible: isVisible && !isProcessingBeacon,
                       child: FunButton(
                         analyticsEvent:
-                            AmplitudeEvents.giveButtonPressed.toEvent(),
+                            AnalyticsEventName.giveButtonPressed.toEvent(),
                         onTap: () async {
                           if (_isDisposed || !mounted) return;
 
@@ -438,7 +438,7 @@ class _BTScanPageState extends State<BTScanPage> {
                           isVisible && orgName.isNotEmpty && !isProcessingBeacon,
                       child: FunTextButton(
                         analyticsEvent:
-                            AmplitudeEvents.giveButtonPressed.toEvent(),
+                            AnalyticsEventName.giveButtonPressed.toEvent(),
                         onTap: () async {
                           if (_isDisposed || !mounted) return;
 

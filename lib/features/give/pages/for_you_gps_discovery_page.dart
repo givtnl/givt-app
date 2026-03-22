@@ -4,16 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
 import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import 'package:givt_app/utils/analytics_helper.dart';
 
 class ForYouGpsDiscoveryPage extends StatefulWidget {
   const ForYouGpsDiscoveryPage({

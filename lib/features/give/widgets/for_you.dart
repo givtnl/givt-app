@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_tile.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
@@ -121,7 +120,7 @@ class _ForYouState extends State<ForYou>
                         context,
                         title: locals.forYouSearchOrganizations,
                         analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.forYouSearchTapped,
+                          AnalyticsEventName.forYouSearchTapped,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -153,7 +152,7 @@ class _ForYouState extends State<ForYou>
                                       imageUrl: _otherWayLocationImage,
                                       variant: FunTileVariant.two,
                                       analyticsEvent: AnalyticsEvent(
-                                        AmplitudeEvents
+                                        AnalyticsEventName
                                             .forYouOtherWaysLocationTapped,
                                       ),
                                       onTap: () =>
@@ -172,7 +171,8 @@ class _ForYouState extends State<ForYou>
                                       imageUrl: _otherWayQrImage,
                                       variant: FunTileVariant.one,
                                       analyticsEvent: AnalyticsEvent(
-                                        AmplitudeEvents.forYouOtherWaysQrTapped,
+                                        AnalyticsEventName
+                                            .forYouOtherWaysQrTapped,
                                       ),
                                       onTap: () => _openForYouDiscovery(
                                         ForYouEntrySource.qrCode,
@@ -190,7 +190,7 @@ class _ForYouState extends State<ForYou>
                                       imageUrl: _otherWayBeaconImage,
                                       variant: FunTileVariant.three,
                                       analyticsEvent: AnalyticsEvent(
-                                        AmplitudeEvents
+                                        AnalyticsEventName
                                             .forYouOtherWaysBeaconTapped,
                                       ),
                                       onTap: () => _openForYouDiscovery(
@@ -225,7 +225,7 @@ class _ForYouState extends State<ForYou>
         description: locals.forYouEmptyFavoritesBody,
       ),
       analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.forYouSearchTapped,
+        AnalyticsEventName.forYouSearchTapped,
       ),
       onTap: () => _openForYouList(ForYouEntrySource.emptyState),
     );

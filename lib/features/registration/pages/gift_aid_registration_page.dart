@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -74,7 +74,7 @@ class _GiftAidRegistrationPageState extends State<GiftAidRegistrationPage> {
                 onPressed: () {
                   AnalyticsHelper.logEvent(
                     eventName:
-                        AmplitudeEvents.giftAidRegistrationLearnMoreClicked,
+                        AnalyticsEventName.giftAidRegistrationLearnMoreClicked,
                   );
                   AboutGiftAidBottomSheet.show(context);
                 },
@@ -100,7 +100,7 @@ class _GiftAidRegistrationPageState extends State<GiftAidRegistrationPage> {
                 onTap: isCheckboxChecked ? _cubit.activateForThisTaxYear : null,
                 isDisabled: !isCheckboxChecked,
                 text: locals.giftAidActivateButton,
-                analyticsEvent: AmplitudeEvents
+                analyticsEvent: AnalyticsEventName
                     .giftAidRegistrationActivateClicked
                     .toEvent(),
               ),
@@ -108,7 +108,7 @@ class _GiftAidRegistrationPageState extends State<GiftAidRegistrationPage> {
               FunTextButton.medium(
                 onTap: _cubit.skipForNow,
                 text: locals.giftAidSetUpLaterButton,
-                analyticsEvent: AmplitudeEvents
+                analyticsEvent: AnalyticsEventName
                     .giftAidRegistrationSetUpLaterClicked
                     .toEvent(),
               ),

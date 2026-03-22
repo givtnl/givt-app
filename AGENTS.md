@@ -85,9 +85,9 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
   - Keep each cubit focused on a single feature; use clear method names, proper cleanup, and separate UI-model creation from business logic.
   - See `.cursor/rules/common-cubit-pattern.mdc` for full details.
 - **Analytics**:
-  - Use `AnalyticsEvent` with the appropriate `AmplitudeEvents` enum value (or `AnalyticsEventName` where applicable).
+  - Use `AnalyticsEvent` with `AnalyticsEventName` enum values (PostHog source of truth).
   - Pass `analyticsEvent` into interactive components (e.g. `FunButton`, tiles, summary rows); do not manually call `AnalyticsHelper.logEvent` when the component already supports analytics.
-  - Only use predefined event names in the enums; add new event types to the enum rather than inline strings, following the `componentNameActionVerb` naming style.
+  - Only use predefined event names in `AnalyticsEventName`; add new event types to the enum rather than inline strings, following the `componentNameActionVerb` naming style.
   - Use established parameter keys from `AnalyticsHelper`; never log sensitive or personally identifiable data.
   - See `.cursor/rules/analytics.mdc` for detailed rules.
 
