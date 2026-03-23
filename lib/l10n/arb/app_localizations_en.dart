@@ -1206,7 +1206,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Find it in one tap every time you open Givt';
 
   @override
-  String get forYouLocationBasedTitle => 'Location based';
+  String get forYouLocationBasedTitle => 'Location';
 
   @override
   String get forYouLocationBasedSubtitle => 'Give to organisations near you';
@@ -3965,7 +3965,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
       'Find it in one tap every time you open Givt';
 
   @override
-  String get forYouLocationBasedTitle => 'Location based';
+  String get forYouLocationBasedTitle => 'Location';
 
   @override
   String get forYouLocationBasedSubtitle => 'Give to organizations near you';

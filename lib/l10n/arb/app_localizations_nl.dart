@@ -1210,7 +1210,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Vind het met één tik, elke keer dat je Givt opent';
 
   @override
-  String get forYouLocationBasedTitle => 'Locatiegebonden';
+  String get forYouLocationBasedTitle => 'Locatie';
 
   @override
   String get forYouLocationBasedSubtitle =>
@@ -1224,7 +1224,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Gebruik het wanneer je een Givt QR-code bij jou in de buurt ziet';
 
   @override
-  String get forYouCollectionDeviceTitle => 'Collectietoestel';
+  String get forYouCollectionDeviceTitle => 'Collectemiddel';
 
   @override
   String get forYouCollectionDeviceSubtitle =>
@@ -1247,7 +1247,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forYouOrganisationConfirmHeadline => 'Je geeft aan';
 
   @override
-  String get forYouGivingFirstCollectionGoal => 'Eerste collectiedoel';
+  String get forYouGivingFirstCollectionGoal => 'Eerste collectedoel';
 
   @override
   String get forYouGivingFirstCollectionGoalSubtitle =>
@@ -1293,12 +1293,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String forYouGivingCollectionTitle(int index) {
-    return 'Collecte $index';
+    return 'Collect $index';
   }
 
   @override
   String forYouGivingCollectionSubtitle(int index) {
-    return 'Collecte $index';
+    return 'Collectedoel $index';
   }
 
   @override

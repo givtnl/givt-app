@@ -785,7 +785,7 @@
   "forYouFavoriteTag": "Favourite",
   "forYouEmptyFavoritesTitle": "Add your favourite organisation",
   "forYouEmptyFavoritesBody": "Find it in one tap every time you open Givt",
-  "forYouLocationBasedTitle": "Location based",
+  "forYouLocationBasedTitle": "Location",
   "forYouLocationBasedSubtitle": "Give to organisations near you",
   "forYouQrCodeTitle": "Givt QR-code",
   "forYouQrCodeSubtitle": "Use when you see a Givt QR code nearby",

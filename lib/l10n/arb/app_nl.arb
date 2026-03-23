@@ -788,11 +788,11 @@
   "forYouFavoriteTag": "Favoriet",
   "forYouEmptyFavoritesTitle": "Voeg je favoriete organisatie toe",
   "forYouEmptyFavoritesBody": "Vind het met één tik, elke keer dat je Givt opent",
-  "forYouLocationBasedTitle": "Locatiegebonden",
+  "forYouLocationBasedTitle": "Locatie",
   "forYouLocationBasedSubtitle": "Geef aan organisaties bij jou in de buurt",
   "forYouQrCodeTitle": "Givt QR-code",
   "forYouQrCodeSubtitle": "Gebruik het wanneer je een Givt QR-code bij jou in de buurt ziet",
-  "forYouCollectionDeviceTitle": "Collectietoestel",
+  "forYouCollectionDeviceTitle": "Collectemiddel",
   "forYouCollectionDeviceSubtitle": "Geef wanneer de plaat of tas langskomt",
   "forYouGoalsCountCollections": "{count} verzamelingsdoelen",
   "@forYouGoalsCountCollections": {
@@ -812,7 +812,7 @@
   },
   "forYouGivingPageTitle": "Nu geven",
   "forYouOrganisationConfirmHeadline": "Je geeft aan",
-  "forYouGivingFirstCollectionGoal": "Eerste collectiedoel",
+  "forYouGivingFirstCollectionGoal": "Eerste collectedoel",
   "forYouGivingFirstCollectionGoalSubtitle": "Kies wat je aan het eerste doel wilt geven.",
   "forYouGivingGeneralGoal": "Algemeen doel",
   "forYouGivingGeneralGoalSubtitle": "Je kunt ook een bedrag voor een algemeen doel toevoegen.",
@@ -832,7 +832,7 @@
     }
   },
   "forYouGivingCompleteMyGiving": "Mijn gift afronden",
-  "forYouGivingCollectionTitle": "Collecte {index}",
+  "forYouGivingCollectionTitle": "Collect {index}",
   "@forYouGivingCollectionTitle": {
     "placeholders": {
       "index": {
@@ -840,7 +840,7 @@
       }
     }
   },
-  "forYouGivingCollectionSubtitle": "Collecte {index}",
+  "forYouGivingCollectionSubtitle": "Collectedoel {index}",
   "@forYouGivingCollectionSubtitle": {
     "placeholders": {
       "index": {

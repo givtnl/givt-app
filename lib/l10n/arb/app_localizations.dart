@@ -2228,7 +2228,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouLocationBasedTitle.
   ///
   /// In en, this message translates to:
-  /// **'Location based'**
+  /// **'Location'**
   String get forYouLocationBasedTitle;
 
   /// No description provided for @forYouLocationBasedSubtitle.

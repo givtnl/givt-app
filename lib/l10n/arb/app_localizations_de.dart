@@ -1216,7 +1216,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Finde sie in einem Tipp, jedes Mal wenn du Givt öffnest';
 
   @override
-  String get forYouLocationBasedTitle => 'Standortbasiert';
+  String get forYouLocationBasedTitle => 'Standort';
 
   @override
   String get forYouLocationBasedSubtitle =>
