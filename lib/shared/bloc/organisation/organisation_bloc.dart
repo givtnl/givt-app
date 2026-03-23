@@ -96,8 +96,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     List<CollectGroup> organisations, {
     String? searchQuery,
     List<String>? favoritedOrganisations,
+    bool? sortFavoritesToTop,
   }) {
     final favorites = favoritedOrganisations ?? state.favoritedOrganisations;
+    final shouldSortFavorites = sortFavoritesToTop ?? state.sortByFavorites;
 
     // Never mutate incoming list (may be unmodifiable, e.g. `const []`).
     final sortedOrganisations = organisations.toList()
@@ -126,11 +128,13 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         if (!aMatchesQuery && bMatchesQuery) return 1;
       }
 
-      // Then sort favorites to the top
-      final aIsFavorited = favorites.contains(a.nameSpace);
-      final bIsFavorited = favorites.contains(b.nameSpace);
-      if (aIsFavorited && !bIsFavorited) return -1;
-      if (!aIsFavorited && bIsFavorited) return 1;
+      // Then sort favorites to the top (if enabled)
+      if (shouldSortFavorites) {
+        final aIsFavorited = favorites.contains(a.nameSpace);
+        final bIsFavorited = favorites.contains(b.nameSpace);
+        if (aIsFavorited && !bIsFavorited) return -1;
+        if (!aIsFavorited && bIsFavorited) return 1;
+      }
 
       // Finally, sort alphabetically by organization name
       return a.orgName.compareTo(b.orgName);
@@ -219,15 +223,20 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       emit(
         state.copyWith(
           selectedCollectGroup: selectedGroup,
+          sortByFavorites: event.sortFavoritesToTop,
         ),
       );
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
           organisations: organisations,
-          filteredOrganisations: _applySorting(organisations),
+          filteredOrganisations: _applySorting(
+            organisations,
+            sortFavoritesToTop: event.sortFavoritesToTop,
+          ),
           selectedCollectGroup: selectedGroup,
           favoritedOrganisations: favoritedOrganisations,
+          sortByFavorites: event.sortFavoritesToTop,
         ),
       );
       if (event.type == CollectGroupType.none.index) {
@@ -274,8 +283,12 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         state.copyWith(
           status: OrganisationStatus.filtered,
           organisations: organisations,
-          filteredOrganisations: _applySorting(organisations),
+          filteredOrganisations: _applySorting(
+            organisations,
+            sortFavoritesToTop: true,
+          ),
           favoritedOrganisations: favoritedOrganisations,
+          sortByFavorites: true,
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
@@ -637,14 +650,14 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       ..add(event.nameSpace);
     _sharedPreferences.setStringList(key, updatedFavorites);
     emit(
-      state.copyWith(favoritedOrganisations: updatedFavorites),
-    );
-    emit(
       state.copyWith(
-        filteredOrganisations: _applySorting(
-          state.filteredOrganisations,
-          favoritedOrganisations: updatedFavorites,
-        ),
+        favoritedOrganisations: updatedFavorites,
+        filteredOrganisations: event.reSort
+            ? _applySorting(
+                state.filteredOrganisations,
+                favoritedOrganisations: updatedFavorites,
+              )
+            : state.filteredOrganisations,
       ),
     );
 
@@ -661,14 +674,14 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       ..remove(event.nameSpace);
     _sharedPreferences.setStringList(key, updatedFavorites);
     emit(
-      state.copyWith(favoritedOrganisations: updatedFavorites),
-    );
-    emit(
       state.copyWith(
-        filteredOrganisations: _applySorting(
-          state.filteredOrganisations,
-          favoritedOrganisations: updatedFavorites,
-        ),
+        favoritedOrganisations: updatedFavorites,
+        filteredOrganisations: event.reSort
+            ? _applySorting(
+                state.filteredOrganisations,
+                favoritedOrganisations: updatedFavorites,
+              )
+            : state.filteredOrganisations,
       ),
     );
 

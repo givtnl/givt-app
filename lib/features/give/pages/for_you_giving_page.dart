@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
@@ -541,30 +542,63 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   }
 
   void _setupCollectionLinesFromResponse(OrganisationGoalsResponse response) {
-    final allocations = response.allocations.indexed
-        .where(
-          (entry) => !_isPlaceholderCollectionName(
-            entry.$2.allocationName.trim(),
-            fallbackIndex: entry.$1 + 1,
-          ),
-        )
-        .map((entry) => entry.$2)
-        .take(3)
-        .toList();
-    if (allocations.isEmpty) {
+    final indexedAllocations = _extractIndexedAllocations(response.allocations);
+    if (indexedAllocations.isEmpty) {
       _setupFallbackLines();
       return;
     }
 
     final lines = <ForYouGoalLineKind>[
-      for (var i = 0; i < allocations.length; i++)
+      for (final indexedAllocation in indexedAllocations)
         ForYouCollectionGoalLine(
-          title: allocations[i].allocationName.trim(),
-          subtitleIndex: i + 1,
-          allocation: allocations[i],
+          title: _resolveCollectionTitle(
+            indexedAllocation.allocation,
+            index: indexedAllocation.goalIndex,
+          ),
+          subtitleIndex: indexedAllocation.goalIndex,
+          allocation: indexedAllocation.allocation,
         ),
     ];
     _applyLines(lines);
+  }
+
+  List<_IndexedAllocation> _extractIndexedAllocations(
+    List<OrganisationAllocation> allocations,
+  ) {
+    final perGoal = <int, OrganisationAllocation>{};
+
+    for (var listIndex = 0; listIndex < allocations.length; listIndex++) {
+      final allocation = allocations[listIndex];
+      final parsedGoalIndex = int.tryParse(allocation.collectId);
+      final resolvedGoalIndex =
+          parsedGoalIndex != null && parsedGoalIndex >= 1 && parsedGoalIndex <= 3
+          ? parsedGoalIndex
+          : listIndex + 1;
+      if (resolvedGoalIndex < 1 || resolvedGoalIndex > 3) {
+        continue;
+      }
+      perGoal.putIfAbsent(resolvedGoalIndex, () => allocation);
+    }
+
+    final sortedGoalIndexes = perGoal.keys.toList()..sort();
+    return [
+      for (final goalIndex in sortedGoalIndexes)
+        _IndexedAllocation(
+          goalIndex: goalIndex,
+          allocation: perGoal[goalIndex]!,
+        ),
+    ];
+  }
+
+  String _resolveCollectionTitle(
+    OrganisationAllocation allocation, {
+    required int index,
+  }) {
+    final allocationName = allocation.allocationName.trim();
+    if (_isPlaceholderCollectionName(allocationName, fallbackIndex: index)) {
+      return context.l10n.forYouGivingCollectionTitle(index);
+    }
+    return allocationName;
   }
 
   bool _isPlaceholderCollectionName(
@@ -588,8 +622,11 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   }
 
   void _setupFallbackLines() {
+    final collectGroupType =
+        widget.flowContext.selectedOrganisation?.type ?? CollectGroupType.none;
+    final fallbackCount = _fallbackCollectionGoalCount(collectGroupType);
     final lines = List<ForYouGoalLineKind>.generate(
-      3,
+      fallbackCount,
       (i) => ForYouCollectionGoalLine(
         title: context.l10n.forYouGivingCollectionTitle(i + 1),
         subtitleIndex: i + 1,
@@ -597,6 +634,17 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       ),
     );
     _applyLines(lines);
+  }
+
+  int _fallbackCollectionGoalCount(CollectGroupType collectGroupType) {
+    switch (collectGroupType) {
+      case CollectGroupType.charities:
+        return 1;
+      case CollectGroupType.church:
+        return 3;
+      default:
+        return 3;
+    }
   }
 
   void _applyLines(List<ForYouGoalLineKind> lines) {
@@ -632,4 +680,14 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       _isLoadingGoals = false;
     });
   }
+}
+
+class _IndexedAllocation {
+  const _IndexedAllocation({
+    required this.goalIndex,
+    required this.allocation,
+  });
+
+  final int goalIndex;
+  final OrganisationAllocation allocation;
 }

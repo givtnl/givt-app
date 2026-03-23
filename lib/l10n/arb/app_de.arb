@@ -788,6 +788,8 @@
   "forYouFavoriteTag": "Favorit",
   "forYouEmptyFavoritesTitle": "Füge deine Lieblingsorganisation hinzu",
   "forYouEmptyFavoritesBody": "Finde sie in einem Tipp, jedes Mal wenn du Givt öffnest",
+  "forYouFavoriteTutorialTitle": "Füge deinen ersten Favoriten hinzu",
+  "forYouFavoriteTutorialDescription": "Tippe auf das Herz neben einer Kirche oder Wohltätigkeitsorganisation, um sie als Favorit zu speichern.",
   "forYouLocationBasedTitle": "Standort",
   "forYouLocationBasedSubtitle": "Gib an Organisationen in deiner Nähe",
   "forYouQrCodeTitle": "QR-code",

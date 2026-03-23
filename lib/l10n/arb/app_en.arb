@@ -785,6 +785,8 @@
   "forYouFavoriteTag": "Favourite",
   "forYouEmptyFavoritesTitle": "Add your favourite organisation",
   "forYouEmptyFavoritesBody": "Find it in one tap every time you open Givt",
+  "forYouFavoriteTutorialTitle": "Add your first favourite",
+  "forYouFavoriteTutorialDescription": "Tap the heart next to any church or charity to save it as a favourite.",
   "forYouLocationBasedTitle": "Location",
   "forYouLocationBasedSubtitle": "Give to organisations near you",
   "forYouQrCodeTitle": "QR-code",
