@@ -73,6 +73,16 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 - When the backend returns **distinct error cases** (e.g. invalid email vs email already in use), prefer separate UI states and copy for each case instead of one generic message.
 - Email checks: `checkTld(email)` → invalid format/TLD; `checkEmail(email)` returns `'true'` / `'temp'` → email already in use.
 
+## Text & Localization
+
+- **Phrasing & terminology**: All user-facing text must follow the guidelines in `docs/language.md`, which defines the correct terminology (e.g., "Give" vs "Donate"), tone of voice, capitalization rules, and language-specific phrasing conventions across all supported languages (English, Dutch, German, Spanish).
+- **Adding new text**: When adding new text to the UI:
+  1. First define the text entry in `lib/l10n/arb/app_en.arb` (the English template).
+  2. Follow the phrasing rules from `docs/language.md` for consistency.
+  3. Add translations for all supported languages in the corresponding ARB files (`app_nl.arb`, `app_de.arb`, `app_es.arb`, etc.).
+  4. Run `flutter gen-l10n` to regenerate the localization code.
+- **Language notes**: Avoid hardcoding text strings in Dart; always use the localized strings generated from ARB files. This ensures consistency and makes maintenance easier.
+
 ## State and rules
 
 - **Bloc/Cubit (CommonCubit pattern)**:
@@ -105,6 +115,7 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 - **Auth / current user**: `AuthCubit` (EU), `FamilyAuthRepository` / family auth (US).
 - **Support / infra**: `InfraCubit`, `contactSupportSafely`; used from `lib/shared/bloc/infra/`.
 - **L10n**: `lib/l10n/arb/app_en.arb` (template), then regenerate with `flutter gen-l10n`.
+- **Language & phrasing**: `docs/language.md` for terminology, tone of voice, and translation guidelines.
 
 ## Testing and commands
 

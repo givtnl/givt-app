@@ -205,6 +205,12 @@ enum AnalyticsEventName {
   forYouGivingMoreGoalsConfirmTapped(
     'for_you_giving_more_goals_confirm_tapped',
   ),
+  forYouLocationNoOrgFound('for_you_location_no_org_found'),
+  forYouLocationServiceOff('for_you_location_service_off'),
+  forYouLocationPermissionDenied('for_you_location_permission_denied'),
+  forYouLocationOpenSettingsTapped('for_you_location_open_settings_tapped'),
+  forYouLocationMultipleOrgsFound('for_you_location_multiple_orgs_found'),
+  forYouLocationOrganisationSelected('for_you_location_organisation_selected'),
   helpMeFindCharityPressed('help_me_find_charity_pressed'),
   askToFindCharityPressed('ask_my_parents_to_find_charity_pressed'),
   loginPressed('login_pressed'),

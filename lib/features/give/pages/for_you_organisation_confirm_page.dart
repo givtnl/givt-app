@@ -5,12 +5,11 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_app_theme.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -79,36 +78,23 @@ class _ForYouOrganisationConfirmPageState
     );
   }
 
-  void _goToList() {
-    _timer?.cancel();
-    context.goNamed(
-      Pages.forYouList.name,
-      extra: ForYouFlowContext(source: widget.flowContext.source).toMap(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final organisation = widget.flowContext.selectedOrganisation;
-    final theme = FunTheme.of(context);
 
     if (organisation == null || organisation.nameSpace.isEmpty) {
       return Scaffold(
-        backgroundColor: theme.primary40,
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           elevation: 0,
-          leading: GivtBackButtonFlat(
-            color: theme.primary99,
-            onPressed: () async => _goToList(),
-          ),
+          leading: const GivtBackButtonFlat(),
         ),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: TitleLargeText(
               context.l10n.somethingWentWrong,
-              color: theme.primary99,
               textAlign: TextAlign.center,
             ),
           ),
@@ -117,29 +103,23 @@ class _ForYouOrganisationConfirmPageState
     }
 
     return FunScaffold(
-      backgroundColor: theme.primary80,
-      appBar: FunTopAppBar(
-        color: Colors.transparent,
-        leading: GivtBackButtonFlat(
-          color: theme.primary99,
-          onPressed: () async => _goToList(),
-        ),
+      appBar: const FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
+        leading: GivtBackButtonFlat(),
       ),
       body: Column(
         children: [
           const Spacer(),
-          _HeroIllustration(theme: theme),
+          const _HeroIllustration(),
           const SizedBox(height: 28),
           TitleLargeText(
             context.l10n.forYouOrganisationConfirmHeadline,
             textAlign: TextAlign.center,
-            color: theme.primary99,
           ),
           const SizedBox(height: 24),
           _OrganisationPill(organisation: organisation),
           const Spacer(),
           FunButton(
-            variant: FunButtonVariant.secondary,
             text: '${context.l10n.buttonContinue} ($_countdown)',
             analyticsEvent: AnalyticsEvent(
               AnalyticsEventName.forYouOrganisationConfirmGiveTapped,
@@ -154,9 +134,7 @@ class _ForYouOrganisationConfirmPageState
 }
 
 class _HeroIllustration extends StatelessWidget {
-  const _HeroIllustration({required this.theme});
-
-  final FunAppTheme theme;
+  const _HeroIllustration();
 
   @override
   Widget build(BuildContext context) {
@@ -172,45 +150,27 @@ class _OrganisationPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = FunTheme.of(context);
-    // Use the same glyphs as before (getIconByType); wrap in FunIcon for FUN
-    // styling. getFunIconByType uses different symbols for some types (e.g.
-    // globe vs heart for charities).
-    final collectGroupIcon = FunIcon(
-      iconData: CollectGroupType.getIconByType(organisation.type),
-      circleColor: theme.primary99,
-      iconColor: theme.primary40,
-      circleSize: 56,
-      iconSize: 28,
-      padding: EdgeInsets.zero,
+    final collectGroupIcon = CircleAvatar(
+      radius: 24,
+      backgroundColor: theme.primary95,
+      child: Icon(
+        CollectGroupType.getIconByType(organisation.type),
+        color: theme.primary20,
+      ),
     );
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Container(
-        decoration: BoxDecoration(
-          color: theme.primary30,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: theme.primary80,
-            width: theme.borderWidthThin,
+    return Row(
+      children: [
+        collectGroupIcon,
+        const SizedBox(width: 16),
+        Expanded(
+          child: HeadlineLargeText(
+            organisation.orgName,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
-        padding: const EdgeInsets.fromLTRB(12, 12, 16, 12),
-        child: Row(
-          children: [
-            collectGroupIcon,
-            const SizedBox(width: 12),
-            Expanded(
-              child: LabelLargeText(
-                organisation.orgName,
-                color: theme.primary99,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-      ),
+      ],
     );
   }
 }

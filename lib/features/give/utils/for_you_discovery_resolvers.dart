@@ -82,7 +82,10 @@ class ForYouDiscoveryResolvers {
     return fallbackMatch.nameSpace.isEmpty ? null : fallbackMatch;
   }
 
-  static Future<CollectGroup?> resolveNearestCollectGroup(
+  /// Resolves all [CollectGroup]s within range of the user's location.
+  /// Returns a list of organizations found at the nearest distance.
+  /// If no organizations are found, returns an empty list.
+  static Future<List<CollectGroup>> resolveNearbyCollectGroups(
     double latitude,
     double longitude, {
     CollectGroupRepository? collectGroupRepository,
@@ -93,51 +96,62 @@ class ForYouDiscoveryResolvers {
       collectGroups = await repo.fetchCollectGroupList();
     }
 
-    final locations = <Location>[];
+    // Map each location to its beacon ID and the collect group it belongs to
+    final locationToGroupMap = <String, CollectGroup>{};
     for (final group in collectGroups) {
-      locations.addAll(group.locations);
-    }
-
-    Location? nearestLocation;
-    for (final location in locations) {
-      // Mirror the existing GPS discovery logic: only consider locations
-      // with valid begin/end dates.
-      if (location.end == null || location.begin == null) continue;
-
-      final distance = Geolocator.distanceBetween(
-        location.latitude,
-        location.longitude,
-        latitude,
-        longitude,
-      );
-
-      if (distance < location.radius) {
-        if (nearestLocation == null) {
-          nearestLocation = location;
-          continue;
-        }
-
-        final distanceBetweenPrevious = Geolocator.distanceBetween(
-          nearestLocation.latitude,
-          nearestLocation.longitude,
-          latitude,
-          longitude,
-        );
-
-        if (distanceBetweenPrevious > distance) {
-          nearestLocation = location;
+      for (final location in group.locations) {
+        if (location.beaconId.isNotEmpty) {
+          locationToGroupMap[location.beaconId] = group;
         }
       }
     }
 
-    if (nearestLocation == null || nearestLocation.beaconId.isEmpty) {
-      return null;
+    // Find all locations within range and calculate distances
+    final withinRangeLocations = <Location, double>{};
+    for (final group in collectGroups) {
+      for (final location in group.locations) {
+        // Only consider locations with valid begin/end dates
+        if (location.end == null || location.begin == null) continue;
+
+        final distance = Geolocator.distanceBetween(
+          location.latitude,
+          location.longitude,
+          latitude,
+          longitude,
+        );
+
+        if (distance < location.radius) {
+          withinRangeLocations[location] = distance;
+        }
+      }
     }
 
-    return resolveCollectGroupFromBeaconId(
-      nearestLocation.beaconId,
-      collectGroupRepository: collectGroupRepository,
-    );
+    if (withinRangeLocations.isEmpty) {
+      return [];
+    }
+
+    // Find the minimum distance
+    final minDistance = withinRangeLocations.values.reduce((a, b) => a < b ? a : b);
+
+    // Get all locations at the minimum distance (allowing small tolerance for floating point)
+    final tolerance = 1.0; // 1 meter tolerance
+    final nearestLocations = withinRangeLocations.entries
+        .where((entry) => (entry.value - minDistance).abs() < tolerance)
+        .map((entry) => entry.key)
+        .toList();
+
+    // Get unique collect groups for the nearest locations
+    final uniqueGroups = <String, CollectGroup>{};
+    for (final location in nearestLocations) {
+      if (location.beaconId.isNotEmpty) {
+        final group = locationToGroupMap[location.beaconId];
+        if (group != null) {
+          uniqueGroups[group.nameSpace] = group;
+        }
+      }
+    }
+
+    return uniqueGroups.values.toList();
   }
 }
 

@@ -2381,6 +2381,84 @@ abstract class AppLocalizations {
   /// **'{label} - {amount}'**
   String forYouGivingAccordionSubtitleWithAmount(String label, String amount);
 
+  /// No description provided for @forYouLocationSearchingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking for organisations near you'**
+  String get forYouLocationSearchingTitle;
+
+  /// No description provided for @forYouLocationSearchingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We are searching where you are, care to wait a little?'**
+  String get forYouLocationSearchingBody;
+
+  /// No description provided for @forYouLocationNoOrgFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No organisations found'**
+  String get forYouLocationNoOrgFoundTitle;
+
+  /// No description provided for @forYouLocationNoOrgFoundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t find any Givt-enabled organisations near your current location.'**
+  String get forYouLocationNoOrgFoundBody;
+
+  /// No description provided for @forYouLocationOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is turned off'**
+  String get forYouLocationOffTitle;
+
+  /// No description provided for @forYouLocationOffBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please turn on your device location to find organisations near you.'**
+  String get forYouLocationOffBody;
+
+  /// No description provided for @forYouLocationPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access needed'**
+  String get forYouLocationPermissionTitle;
+
+  /// No description provided for @forYouLocationPermissionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Givt needs access to your location to find organisations nearby. Go to Settings and allow location access.'**
+  String get forYouLocationPermissionBody;
+
+  /// No description provided for @forYouLocationOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get forYouLocationOpenSettings;
+
+  /// No description provided for @forYouLocationMultipleOrgsFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple organisations nearby'**
+  String get forYouLocationMultipleOrgsFoundTitle;
+
+  /// No description provided for @forYouLocationMultipleOrgsFoundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We found several Givt-enabled organisations near your location. Please select one below.'**
+  String get forYouLocationMultipleOrgsFoundBody;
+
+  /// No description provided for @forYouBluetoothOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth is off'**
+  String get forYouBluetoothOffTitle;
+
+  /// No description provided for @forYouBluetoothOffBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please turn on Bluetooth to find organisations nearby.'**
+  String get forYouBluetoothOffBody;
+
   /// No description provided for @discoverHomeDiscoverTitle.
   ///
   /// In en, this message translates to:

@@ -238,20 +238,26 @@ class _ForYouState extends State<ForYou>
   ) {
     return Stack(
       children: [
-        // Invisible card to define the height of the Stack based on its content
-        if (favoriteOrganisations.isNotEmpty)
-          Opacity(
-            opacity: 0,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: _buildFavoriteCard(
-                context,
-                organisation: favoriteOrganisations.first,
-                goalsState: goalsState,
-                showCounts: true,
+        // Invisible cards to define stack height using the tallest favorite card.
+        ...favoriteOrganisations.map((organisation) {
+          final summary =
+              goalsState.summariesByCollectGroupId[organisation.nameSpace];
+          final showCounts = !goalsState.isOffline && summary != null;
+          return IgnorePointer(
+            child: Opacity(
+              opacity: 0,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: _buildFavoriteCard(
+                  context,
+                  organisation: organisation,
+                  goalsState: goalsState,
+                  showCounts: showCounts,
+                ),
               ),
             ),
-          ),
+          );
+        }),
         Positioned.fill(
           child: PageView.builder(
             clipBehavior: Clip.none,
@@ -289,6 +295,10 @@ class _ForYouState extends State<ForYou>
     final theme = FunTheme.of(context);
     final summary =
         goalsState.summariesByCollectGroupId[organisation.nameSpace];
+    final hasAllocationGoals =
+        showCounts && summary != null && summary.allocationsCount > 0;
+    final hasGeneralGoals = showCounts && summary != null && summary.qrCodesCount > 0;
+    final hasAnyGoalText = hasAllocationGoals || hasGeneralGoals;
     return InkWell(
       borderRadius: BorderRadius.circular(18),
       onTap: () => _openForYouGiving(organisation),
@@ -306,6 +316,9 @@ class _ForYouState extends State<ForYou>
             ),
             padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
             child: Column(
+              mainAxisAlignment: hasAnyGoalText
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -337,23 +350,25 @@ class _ForYouState extends State<ForYou>
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
-                Container(
-                  height: 1,
-                  color: theme.neutralVariant95,
-                ),
-                const SizedBox(height: 12),
-                if (showCounts && summary != null) ...[
-                  BodySmallText(
-                    context.l10n.forYouGoalsCountCollections(
-                      summary.allocationsCount,
+                if (hasAnyGoalText) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    height: 1,
+                    color: theme.neutralVariant95,
+                  ),
+                  const SizedBox(height: 12),
+                  if (hasAllocationGoals)
+                    BodySmallText(
+                      context.l10n.forYouGoalsCountCollections(
+                        summary.allocationsCount,
+                      ),
+                      color: theme.primary20,
                     ),
-                    color: theme.primary20,
-                  ),
-                  BodySmallText(
-                    context.l10n.forYouGoalsCountGeneral(summary.qrCodesCount),
-                    color: theme.primary20,
-                  ),
+                  if (hasGeneralGoals)
+                    BodySmallText(
+                      context.l10n.forYouGoalsCountGeneral(summary.qrCodesCount),
+                      color: theme.primary20,
+                    ),
                 ],
               ],
             ),

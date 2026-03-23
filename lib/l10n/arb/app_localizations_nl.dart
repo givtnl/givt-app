@@ -1307,6 +1307,53 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get forYouLocationSearchingTitle =>
+      'Looking for organisations near you';
+
+  @override
+  String get forYouLocationSearchingBody =>
+      'We are searching where you are, care to wait a little?';
+
+  @override
+  String get forYouLocationNoOrgFoundTitle => 'No organisations found';
+
+  @override
+  String get forYouLocationNoOrgFoundBody =>
+      'We couldn\'t find any Givt-enabled organisations near your current location.';
+
+  @override
+  String get forYouLocationOffTitle => 'Location is turned off';
+
+  @override
+  String get forYouLocationOffBody =>
+      'Please turn on your device location to find organisations near you.';
+
+  @override
+  String get forYouLocationPermissionTitle => 'Location access needed';
+
+  @override
+  String get forYouLocationPermissionBody =>
+      'Givt needs access to your location to find organisations nearby. Go to Settings and allow location access.';
+
+  @override
+  String get forYouLocationOpenSettings => 'Open Settings';
+
+  @override
+  String get forYouLocationMultipleOrgsFoundTitle =>
+      'Multiple organisations nearby';
+
+  @override
+  String get forYouLocationMultipleOrgsFoundBody =>
+      'We found several Givt-enabled organisations near your location. Please select one below.';
+
+  @override
+  String get forYouBluetoothOffTitle => 'Bluetooth is off';
+
+  @override
+  String get forYouBluetoothOffBody =>
+      'Please turn on Bluetooth to find organisations nearby.';
+
+  @override
   String get discoverHomeDiscoverTitle => 'Voor jou';
 
   @override

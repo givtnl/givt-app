@@ -6,12 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
 import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,6 +27,11 @@ import 'package:sprintf/sprintf.dart';
 /// Debug-only: simulated beacon id (2s auto-navigation on this screen).
 /// Resolved with [ForYouDiscoveryResolvers.resolveCollectGroupFromBeaconId].
 const String kDebugForYouBeaconSimulatedId = '61f7ed014e4c0817a000';
+
+enum _BeaconDiscoveryState {
+  searching,
+  bluetoothOff,
+}
 
 class ForYouBeaconDiscoveryPage extends StatefulWidget {
   const ForYouBeaconDiscoveryPage({
@@ -36,8 +48,8 @@ class ForYouBeaconDiscoveryPage extends StatefulWidget {
 
 class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
   bool _isDisposed = false;
-  bool _isVisible = false;
   bool _isProcessing = false;
+  _BeaconDiscoveryState _state = _BeaconDiscoveryState.searching;
 
   StreamSubscription<List<ScanResult>>? _scanResultsStream;
   Timer? _debugBeaconSimTimer;
@@ -92,7 +104,19 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       }
     }
 
-    _scanResultsStream = FlutterBluePlus.scanResults.listen(
+    // Check if Bluetooth is enabled
+    final isBluetoothOn = await FlutterBluePlus.isOn;
+    if (!isBluetoothOn) {
+      if (mounted) {
+        await AnalyticsHelper.logEvent(
+          eventName: AnalyticsEventName.forYouLocationServiceOff,
+        );
+        setState(() => _state = _BeaconDiscoveryState.bluetoothOff);
+      }
+      return;
+    }
+
+    _scanResultsStream = FlutterBluePlus.onScanResults.listen(
       _onScanResults,
       onError: (_) {},
     );
@@ -101,10 +125,6 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       timeout: const Duration(seconds: 30),
       androidUsesFineLocation: true,
     );
-
-    if (!_isDisposed && mounted) {
-      setState(() => _isVisible = true);
-    }
   }
 
   Future<void> _showBluetoothDeniedDialog() async {
@@ -138,8 +158,7 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
 
       // Convert service data bytes to a hex string.
       final hex = StringBuffer();
-      for (final b in scanResult
-          .advertisementData.serviceData[serviceUuid]!) {
+      for (final b in scanResult.advertisementData.serviceData[serviceUuid]!) {
         hex.write(sprintf('%02x', [b]));
       }
       final beaconData = hex.toString();
@@ -155,8 +174,7 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       if (startIndex + 32 > beaconData.length) continue;
 
       final namespace = beaconData.substring(startIndex, startIndex + 20);
-      final instance =
-          beaconData.substring(startIndex + 20, startIndex + 32);
+      final instance = beaconData.substring(startIndex + 20, startIndex + 32);
       final beaconId = '$namespace.$instance';
 
       _isProcessing = true;
@@ -170,8 +188,10 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
     _debugBeaconSimTimer?.cancel();
     _debugBeaconSimTimer = null;
     try {
-      final collectGroup = await ForYouDiscoveryResolvers
-          .resolveCollectGroupFromBeaconId(beaconId);
+      final collectGroup =
+          await ForYouDiscoveryResolvers.resolveCollectGroupFromBeaconId(
+            beaconId,
+          );
 
       if (!mounted) return;
 
@@ -204,35 +224,93 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
     );
   }
 
+  Future<void> _openBluetoothSettings() async {
+    await openAppSettings();
+  }
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    return Scaffold(
-      appBar: AppBar(
-        leading: const GivtBackButtonFlat(),
-        title: Text(locals.giveWithYourPhone),
+    return FunScaffold(
+      appBar: const FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
+        leading: GivtBackButtonFlat(),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 80),
-            BodyMediumText(
-              locals.makeContact,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 50),
-            Image.asset('assets/images/givt_animation.gif'),
-            if (_isVisible)
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: TextButton(
-                  onPressed: _goToList,
-                  child: Text(locals.giveDifferently),
-                ),
-              ),
-          ],
+      body: switch (_state) {
+        _BeaconDiscoveryState.searching => _SearchingBody(locals: locals),
+        _BeaconDiscoveryState.bluetoothOff => _BluetoothOffBody(
+          locals: locals,
+          onOpenSettings: _openBluetoothSettings,
         ),
-      ),
+      },
+    );
+  }
+}
+
+class _SearchingBody extends StatelessWidget {
+  const _SearchingBody({required this.locals});
+
+  final AppLocalizations locals;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Spacer(),
+        const CustomCircularProgressIndicator(),
+        const SizedBox(height: 28),
+        TitleLargeText(
+          locals.makeContact,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        BodyMediumText(
+          locals.forYouLocationSearchingBody,
+          textAlign: TextAlign.center,
+        ),
+        const Spacer(),
+      ],
+    );
+  }
+}
+
+class _BluetoothOffBody extends StatelessWidget {
+  const _BluetoothOffBody({
+    required this.locals,
+    required this.onOpenSettings,
+  });
+
+  final AppLocalizations locals;
+  final VoidCallback onOpenSettings;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Spacer(),
+        FunIconGivy.sad(circleSize: 140),
+        const SizedBox(height: 28),
+        TitleLargeText(
+          locals.forYouBluetoothOffTitle,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        BodyMediumText(
+          locals.forYouBluetoothOffBody,
+          textAlign: TextAlign.center,
+        ),
+        const Spacer(),
+        FunButton(
+          text: locals.forYouLocationOpenSettings,
+          analyticsEvent: AnalyticsEvent(
+            AnalyticsEventName.forYouLocationOpenSettingsTapped,
+          ),
+          onTap: onOpenSettings,
+        ),
+        const SizedBox(height: 16),
+      ],
     );
   }
 }
