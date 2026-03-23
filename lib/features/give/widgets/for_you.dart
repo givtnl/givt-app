@@ -402,11 +402,6 @@ class _ForYouState extends State<ForYou>
                             organisation.orgName,
                             color: theme.primary20,
                           ),
-                          if (organisation.locations.isNotEmpty)
-                            BodySmallText(
-                              organisation.locations.first.name,
-                              color: theme.primary20,
-                            ),
                         ],
                       ),
                     ),

@@ -4,14 +4,12 @@ import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
-import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class OrganisationListFamilyContent extends StatefulWidget {
   const OrganisationListFamilyContent({
@@ -21,8 +19,6 @@ class OrganisationListFamilyContent extends StatefulWidget {
     this.showFavorites = false,
     this.autoFocusSearch = false,
     this.allowSelection = true,
-    this.showFavoriteTutorial = false,
-    this.favoriteTutorialController,
     this.reSortOnFavoriteToggle = true,
     super.key,
   });
@@ -33,8 +29,6 @@ class OrganisationListFamilyContent extends StatefulWidget {
   final bool showFavorites;
   final bool autoFocusSearch;
   final bool allowSelection;
-  final bool showFavoriteTutorial;
-  final TooltipController? favoriteTutorialController;
   final bool reSortOnFavoriteToggle;
 
   @override
@@ -46,7 +40,6 @@ class _OrganisationListFamilyContentState
     extends State<OrganisationListFamilyContent> {
   CollectGroup selectedCollectgroup = const CollectGroup.empty();
   final FocusNode _searchFocusNode = FocusNode();
-  bool _hasTriggeredFavoriteTutorial = false;
 
   @override
   void initState() {
@@ -77,27 +70,6 @@ class _OrganisationListFamilyContentState
               content: Text(locals.somethingWentWrong),
             ),
           );
-        }
-
-        final hasVisibleOrganisations = state.filteredOrganisations.any(
-          (organisation) =>
-              !widget.removedCollectGroupTypes.contains(organisation.type),
-        );
-
-        if (widget.showFavoriteTutorial &&
-            !_hasTriggeredFavoriteTutorial &&
-            state.status == OrganisationStatus.filtered &&
-            state.favoritedOrganisations.isEmpty &&
-            hasVisibleOrganisations &&
-            widget.favoriteTutorialController != null) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (!mounted || _hasTriggeredFavoriteTutorial) {
-              return;
-            }
-
-            widget.favoriteTutorialController!.start();
-            _hasTriggeredFavoriteTutorial = true;
-          });
         }
       },
       builder: (context, state) {
@@ -153,7 +125,8 @@ class _OrganisationListFamilyContentState
                     final listTile = _buildListTile(
                       type: organisation.type,
                       title: organisation.orgName,
-                      isSelected: widget.allowSelection &&
+                      isSelected:
+                          widget.allowSelection &&
                           selectedCollectgroup == organisation,
                       isFavorited: isFavorited,
                       onTap: widget.allowSelection
@@ -198,25 +171,6 @@ class _OrganisationListFamilyContentState
                         }
                       },
                     );
-
-                    if (index == 0 &&
-                        widget.showFavoriteTutorial &&
-                        widget.favoriteTutorialController != null &&
-                        state.favoritedOrganisations.isEmpty) {
-                      return FunTooltip(
-                        tooltipIndex: 0,
-                        title: context.l10n.forYouFavoriteTutorialTitle,
-                        description:
-                            context.l10n.forYouFavoriteTutorialDescription,
-                        labelBottomLeft: '',
-                        buttonIcon: const Icon(Icons.check),
-                        onButtonTap:
-                            widget.favoriteTutorialController!.dismiss,
-                        onHighlightedWidgetTap:
-                            widget.favoriteTutorialController!.dismiss,
-                        child: listTile,
-                      );
-                    }
 
                     return listTile;
                   },

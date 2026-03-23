@@ -90,7 +90,7 @@ void main() {
       expect(result!.nameSpace, equals('abc'));
     });
 
-    test('resolveNearestCollectGroup returns nearest location within radius', () async {
+    test('resolveNearbyCollectGroups returns nearest location within radius', () async {
       final now = DateTime.now();
 
       final groupA = CollectGroup(
@@ -168,15 +168,15 @@ void main() {
 
       expect(distanceToB1, lessThan(distanceToB2));
 
-      final result = await ForYouDiscoveryResolvers.resolveNearestCollectGroup(
+      final result = await ForYouDiscoveryResolvers.resolveNearbyCollectGroups(
         targetLat,
         targetLng,
         collectGroupRepository: repo,
       );
 
-      expect(result, isNotNull);
-      expect(result?.nameSpace, equals('b'));
-      expect(result?.orgName, equals('Org B'));
+      expect(result, isNotEmpty);
+      expect(result.first.nameSpace, equals('b'));
+      expect(result.first.orgName, equals('Org B'));
     });
   });
 }

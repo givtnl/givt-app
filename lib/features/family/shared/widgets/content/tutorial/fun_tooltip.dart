@@ -31,6 +31,7 @@ class FunTooltip extends StatelessWidget {
     this.onHighlightedWidgetTap,
     this.dropShadow = false,
     this.enableTapToDismiss = false,
+    this.backgroundColor,
   });
 
   final int tooltipIndex;
@@ -43,6 +44,8 @@ class FunTooltip extends StatelessWidget {
 
   final bool showImage;
   final Widget? imageLeft;
+
+  final Color? backgroundColor;
 
   // Displaces the triangle position with the given offset
   final Offset triangleOffset;
@@ -121,7 +124,7 @@ class FunTooltip extends StatelessWidget {
                         bottom: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: backgroundColor ?? Colors.white,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -149,9 +152,10 @@ class FunTooltip extends StatelessWidget {
                                   children: [
                                     const SizedBox(height: 12),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
+                                  mainAxisAlignment: labelBottomLeft.isEmpty
+                                      ? MainAxisAlignment.end
+                                      : MainAxisAlignment.spaceBetween,
+                                  children: [
                                         if (labelBottomLeft.isNotEmpty)
                                           LabelMediumText(
                                             labelBottomLeft,
@@ -218,7 +222,7 @@ class FunTooltip extends StatelessWidget {
   CustomPaint _bubbleTriangle() {
     return CustomPaint(
       painter: TrianglePainter(
-        strokeColor: Colors.white,
+        strokeColor: backgroundColor ?? Colors.white,
         paintingStyle: PaintingStyle.fill,
         offset: triangleOffset,
         direction: tooltipVerticalPosition == TooltipVerticalPosition.TOP

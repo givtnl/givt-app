@@ -1210,13 +1210,6 @@ class AppLocalizationsNl extends AppLocalizations {
       'Vind het met één tik, elke keer dat je Givt opent';
 
   @override
-  String get forYouFavoriteTutorialTitle => 'Voeg je eerste favoriet toe';
-
-  @override
-  String get forYouFavoriteTutorialDescription =>
-      'Tik op het hart naast een kerk of goed doel om het als favoriet op te slaan.';
-
-  @override
   String get forYouLocationBasedTitle => 'Locatie';
 
   @override

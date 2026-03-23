@@ -11,7 +11,6 @@ import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:go_router/go_router.dart';
-import 'package:overlay_tooltip/overlay_tooltip.dart';
 
 class ForYouListPage extends StatefulWidget {
   const ForYouListPage({
@@ -27,89 +26,71 @@ class ForYouListPage extends StatefulWidget {
 
 class _ForYouListPageState extends State<ForYouListPage> {
   CollectGroup _selectedOrganisation = const CollectGroup.empty();
-  late final TooltipController _favoriteTutorialController;
 
   bool get _isFavoritesOnlyMode =>
       widget.flowContext.source == ForYouEntrySource.emptyState;
 
   @override
-  void initState() {
-    super.initState();
-    _favoriteTutorialController = TooltipController();
-  }
-
-  @override
-  void dispose() {
-    _favoriteTutorialController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return OverlayTooltipScaffold(
-      controller: _favoriteTutorialController,
-      builder: (context) => Scaffold(
-        appBar: FunTopAppBar(
-          variant: FunTopAppBarVariant.white,
-          leading: const GivtBackButtonFlat(),
-          title: context.l10n.forYouSearchOrganizations,
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: OrganisationListFamilyContent(
-                  bloc: context.read<OrganisationBloc>(),
-                  onTapListItem: (collectGroup) {
-                    setState(() {
-                      _selectedOrganisation = collectGroup;
-                    });
-                  },
-                  removedCollectGroupTypes: const [CollectGroupType.artists],
-                  showFavorites: true,
-                  autoFocusSearch: true,
-                  allowSelection: !_isFavoritesOnlyMode,
-                  showFavoriteTutorial: _isFavoritesOnlyMode,
-                  favoriteTutorialController: _favoriteTutorialController,
-                  reSortOnFavoriteToggle: false,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
-              child: FunButton(
-                text: _isFavoritesOnlyMode
-                    ? context.l10n.buttonDone
-                    : context.l10n.selectReceiverButton,
-                isDisabled: !_isFavoritesOnlyMode &&
-                    _selectedOrganisation == const CollectGroup.empty(),
-                analyticsEvent: _isFavoritesOnlyMode
-                    ? AnalyticsEventName.forYouFavoritesDoneTapped.toEvent()
-                    : AnalyticsEventName.forYouOrganisationSelected.toEvent(),
-                onTap: () {
-                  if (_isFavoritesOnlyMode) {
-                    context.pop();
-                    return;
-                  }
-
-                  if (_selectedOrganisation == const CollectGroup.empty()) {
-                    return;
-                  }
-
-                  context.goNamed(
-                    Pages.forYouGiving.name,
-                    extra: widget.flowContext
-                        .copyWith(
-                          selectedOrganisation: _selectedOrganisation,
-                        )
-                        .toMap(),
-                  );
+    return Scaffold(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
+        leading: const GivtBackButtonFlat(),
+        title: context.l10n.forYouSearchOrganizations,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: OrganisationListFamilyContent(
+                bloc: context.read<OrganisationBloc>(),
+                onTapListItem: (collectGroup) {
+                  setState(() {
+                    _selectedOrganisation = collectGroup;
+                  });
                 },
+                removedCollectGroupTypes: const [CollectGroupType.artists],
+                showFavorites: true,
+                autoFocusSearch: true,
+                allowSelection: !_isFavoritesOnlyMode,
+                reSortOnFavoriteToggle: false,
               ),
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
+            child: FunButton(
+              text: _isFavoritesOnlyMode
+                  ? context.l10n.buttonDone
+                  : context.l10n.selectReceiverButton,
+              isDisabled: !_isFavoritesOnlyMode &&
+                  _selectedOrganisation == const CollectGroup.empty(),
+              analyticsEvent: _isFavoritesOnlyMode
+                  ? AnalyticsEventName.forYouFavoritesDoneTapped.toEvent()
+                  : AnalyticsEventName.forYouOrganisationSelected.toEvent(),
+              onTap: () {
+                if (_isFavoritesOnlyMode) {
+                  context.pop();
+                  return;
+                }
+
+                if (_selectedOrganisation == const CollectGroup.empty()) {
+                  return;
+                }
+
+                context.goNamed(
+                  Pages.forYouGiving.name,
+                  extra: widget.flowContext
+                      .copyWith(
+                        selectedOrganisation: _selectedOrganisation,
+                      )
+                      .toMap(),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

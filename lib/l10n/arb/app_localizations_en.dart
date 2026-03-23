@@ -1206,13 +1206,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Find it in one tap every time you open Givt';
 
   @override
-  String get forYouFavoriteTutorialTitle => 'Add your first favourite';
-
-  @override
-  String get forYouFavoriteTutorialDescription =>
-      'Tap the heart next to any church or charity to save it as a favourite.';
-
-  @override
   String get forYouLocationBasedTitle => 'Location';
 
   @override
@@ -3970,13 +3963,6 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String get forYouEmptyFavoritesBody =>
       'Find it in one tap every time you open Givt';
-
-  @override
-  String get forYouFavoriteTutorialTitle => 'Add your first favorite';
-
-  @override
-  String get forYouFavoriteTutorialDescription =>
-      'Tap the heart next to any church or charity to save it as a favorite.';
 
   @override
   String get forYouLocationBasedTitle => 'Location';

@@ -1216,14 +1216,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Finde sie in einem Tipp, jedes Mal wenn du Givt öffnest';
 
   @override
-  String get forYouFavoriteTutorialTitle =>
-      'Füge deinen ersten Favoriten hinzu';
-
-  @override
-  String get forYouFavoriteTutorialDescription =>
-      'Tippe auf das Herz neben einer Kirche oder Wohltätigkeitsorganisation, um sie als Favorit zu speichern.';
-
-  @override
   String get forYouLocationBasedTitle => 'Standort';
 
   @override

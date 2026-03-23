@@ -2225,18 +2225,6 @@ abstract class AppLocalizations {
   /// **'Find it in one tap every time you open Givt'**
   String get forYouEmptyFavoritesBody;
 
-  /// No description provided for @forYouFavoriteTutorialTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Add your first favourite'**
-  String get forYouFavoriteTutorialTitle;
-
-  /// No description provided for @forYouFavoriteTutorialDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Tap the heart next to any church or charity to save it as a favourite.'**
-  String get forYouFavoriteTutorialDescription;
-
   /// No description provided for @forYouLocationBasedTitle.
   ///
   /// In en, this message translates to:
