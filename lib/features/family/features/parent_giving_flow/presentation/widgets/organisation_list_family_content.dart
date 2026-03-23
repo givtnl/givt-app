@@ -72,6 +72,7 @@ class _OrganisationListFamilyContentState
         return Column(
           children: [
             FunOrganisationFilterTilesBar(
+              bloc: widget.bloc,
               onFilterChanged: (type) {
                 if (selectedCollectgroup.type != type) {
                   setState(() {

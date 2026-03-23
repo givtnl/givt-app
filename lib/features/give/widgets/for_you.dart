@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
@@ -106,7 +107,7 @@ class _ForYouState extends State<ForYou>
                         const SizedBox(height: 12),
                         _buildPageIndicators(
                           context,
-                          count: favoriteOrganisations.length,
+                          count: favoriteOrganisations.length + 1,
                           current: _favoritesIndex,
                         ),
                       ],
@@ -155,8 +156,7 @@ class _ForYouState extends State<ForYou>
                                         AnalyticsEventName
                                             .forYouOtherWaysLocationTapped,
                                       ),
-                                      onTap: () =>
-                                          _openForYouDiscovery(
+                                      onTap: () => _openForYouDiscovery(
                                         ForYouEntrySource.location,
                                       ),
                                     ),
@@ -231,6 +231,52 @@ class _ForYouState extends State<ForYou>
     );
   }
 
+  Widget _buildAddFavoriteCard(BuildContext context) {
+    final theme = FunTheme.of(context);
+    final locals = context.l10n;
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: () {
+        AnalyticsHelper.logEvent(
+          eventName: AnalyticsEventName.forYouSearchTapped,
+        );
+        _openForYouList(ForYouEntrySource.emptyState);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.highlight99,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: theme.neutralVariant90,
+            width: theme.borderWidthThinner,
+          ),
+        ),
+        padding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FaIcon(
+              FontAwesomeIcons.solidHeart,
+              color: theme.primary20,
+            ),
+            const SizedBox(height: 12),
+            TitleSmallText(
+              locals.forYouEmptyFavoritesTitle,
+              color: theme.primary20,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 4),
+            BodySmallText(
+              locals.forYouEmptyFavoritesBody,
+              color: theme.primary40,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildFavoritesCarousel(
     BuildContext context,
     List<CollectGroup> favoriteOrganisations,
@@ -258,14 +304,29 @@ class _ForYouState extends State<ForYou>
             ),
           );
         }),
+        IgnorePointer(
+          child: Opacity(
+            opacity: 0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: _buildAddFavoriteCard(context),
+            ),
+          ),
+        ),
         Positioned.fill(
           child: PageView.builder(
             clipBehavior: Clip.none,
             padEnds: false,
             controller: _favoritesController,
             onPageChanged: (index) => setState(() => _favoritesIndex = index),
-            itemCount: favoriteOrganisations.length,
+            itemCount: favoriteOrganisations.length + 1,
             itemBuilder: (context, index) {
+              if (index == favoriteOrganisations.length) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: _buildAddFavoriteCard(context),
+                );
+              }
               final organisation = favoriteOrganisations[index];
               final summary =
                   goalsState.summariesByCollectGroupId[organisation.nameSpace];
@@ -297,7 +358,8 @@ class _ForYouState extends State<ForYou>
         goalsState.summariesByCollectGroupId[organisation.nameSpace];
     final hasAllocationGoals =
         showCounts && summary != null && summary.allocationsCount > 0;
-    final hasGeneralGoals = showCounts && summary != null && summary.qrCodesCount > 0;
+    final hasGeneralGoals =
+        showCounts && summary != null && summary.qrCodesCount > 0;
     final hasAnyGoalText = hasAllocationGoals || hasGeneralGoals;
     return InkWell(
       borderRadius: BorderRadius.circular(18),
@@ -366,7 +428,9 @@ class _ForYouState extends State<ForYou>
                     ),
                   if (hasGeneralGoals)
                     BodySmallText(
-                      context.l10n.forYouGoalsCountGeneral(summary.qrCodesCount),
+                      context.l10n.forYouGoalsCountGeneral(
+                        summary.qrCodesCount,
+                      ),
                       color: theme.primary20,
                     ),
                 ],
