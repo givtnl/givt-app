@@ -342,31 +342,33 @@ class _MultipleOrgsFoundBody extends StatelessWidget {
     final theme = Theme.of(context);
     final funTheme = FunTheme.of(context);
     
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 28, 16, 16),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 140,
-                child: Image.asset('assets/images/givy_lookout.png'),
-              ),
-              const SizedBox(height: 16),
-              TitleLargeText(
-                locals.forYouLocationMultipleOrgsFoundTitle,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              BodyMediumText(
-                locals.forYouLocationMultipleOrgsFoundBody,
-                textAlign: TextAlign.center,
-              ),
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 28, 16, 16),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 140,
+                  child: Image.asset('assets/images/givy_lookout.png'),
+                ),
+                const SizedBox(height: 16),
+                TitleLargeText(
+                  locals.forYouLocationMultipleOrgsFoundTitle,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                BodyMediumText(
+                  locals.forYouLocationMultipleOrgsFoundBody,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
-        ),
-        Expanded(
-          child: ListView.separated(
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             itemCount: organisations.length,
             separatorBuilder: (context, index) => const SizedBox(height: 12),
@@ -422,9 +424,9 @@ class _MultipleOrgsFoundBody extends StatelessWidget {
               );
             },
           ),
-        ),
-        const SizedBox(height: 16),
-      ],
+          const SizedBox(height: 16),
+        ],
+      ),
     );
   }
 }

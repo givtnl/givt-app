@@ -1,5 +1,6 @@
 // ignore_for_file: no_default_cases
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -110,11 +111,16 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                 ),
               );
             }
+            // Request focus after the page is rendered and Hero animation completes
+            if (state.selectedType == CollectGroupType.none.index) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Future.delayed(const Duration(milliseconds: 300), () {
+                  focusNode.requestFocus();
+                });
+              });
+            }
           },
           builder: (context, state) {
-            if (state.selectedType == CollectGroupType.none.index) {
-              focusNode.requestFocus();
-            }
             return Column(
               children: [
                 _buildFilterType(bloc, locals),
