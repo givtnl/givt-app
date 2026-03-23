@@ -1217,7 +1217,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Geef aan organisaties bij jou in de buurt';
 
   @override
-  String get forYouQrCodeTitle => 'Givt QR-code';
+  String get forYouQrCodeTitle => 'QR-code';
 
   @override
   String get forYouQrCodeSubtitle =>

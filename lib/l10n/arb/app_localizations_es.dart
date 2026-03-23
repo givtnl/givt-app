@@ -1212,7 +1212,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get forYouLocationBasedSubtitle => 'Dona a organizaciones cerca de ti';
 
   @override
-  String get forYouQrCodeTitle => 'Código QR de Givt';
+  String get forYouQrCodeTitle => 'QR-code';
 
   @override
   String get forYouQrCodeSubtitle =>
@@ -3984,7 +3984,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get forYouLocationBasedSubtitle => 'Dona a organizaciones cerca de ti';
 
   @override
-  String get forYouQrCodeTitle => 'Código QR de Givt';
+  String get forYouQrCodeTitle => 'QR-code';
 
   @override
   String get forYouQrCodeSubtitle =>

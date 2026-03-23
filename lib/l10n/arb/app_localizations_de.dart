@@ -1223,7 +1223,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gib an Organisationen in deiner Nähe';
 
   @override
-  String get forYouQrCodeTitle => 'Givt QR-Code';
+  String get forYouQrCodeTitle => 'QR-code';
 
   @override
   String get forYouQrCodeSubtitle =>
