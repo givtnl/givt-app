@@ -360,115 +360,130 @@ class _ForYouState extends State<ForYou>
     final theme = FunTheme.of(context);
     final summary =
         goalsState.summariesByCollectGroupId[organisation.nameSpace];
-    final hasAllocationGoals =
-        showCounts && summary != null && summary.allocationsCount > 0;
+
+    var allocationsCount = summary?.allocationsCount ?? 0;
+    if (allocationsCount == 0) {
+      if (organisation.type == CollectGroupType.church) {
+        allocationsCount = 3;
+      } else if (organisation.type == CollectGroupType.charities ||
+          organisation.type == CollectGroupType.campaign ||
+          organisation.type == CollectGroupType.artists) {
+        allocationsCount = 1;
+      }
+    }
+
+    // Always show fallback collection goals if they exist.
+    // General goals are still showCounts-gated as they depend on the API summary.
+    final hasAllocationGoals = allocationsCount > 0;
     final hasGeneralGoals =
         showCounts && summary != null && summary.qrCodesCount > 0;
     final hasAnyGoalText = hasAllocationGoals || hasGeneralGoals;
-    return InkWell(
-      borderRadius: BorderRadius.circular(18),
-      onTap: () => _openForYouGiving(organisation),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: theme.highlight99,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: theme.neutralVariant90,
-                width: theme.borderWidthThinner,
+
+    return IntrinsicHeight(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(18),
+        onTap: () => _openForYouGiving(organisation),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: theme.highlight99,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(
+                  color: theme.neutralVariant90,
+                  width: theme.borderWidthThinner,
+                ),
               ),
-            ),
-            padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
-            child: Column(
-              mainAxisAlignment: hasAnyGoalText
-                  ? MainAxisAlignment.start
-                  : MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 22,
-                      backgroundColor: theme.primary95,
-                      child: Icon(
-                        CollectGroupType.getIconByType(organisation.type),
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 22,
+                        backgroundColor: theme.primary95,
+                        child: Icon(
+                          CollectGroupType.getIconByType(organisation.type),
+                          color: theme.primary20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            LabelMediumText(
+                              organisation.orgName,
+                              color: theme.primary20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (hasAnyGoalText) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      height: 1,
+                      color: theme.neutralVariant95,
+                    ),
+                    const SizedBox(height: 12),
+                    if (hasAllocationGoals)
+                      BodySmallText(
+                        context.l10n.forYouGoalsCountCollections(
+                          allocationsCount,
+                        ),
                         color: theme.primary20,
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          LabelMediumText(
-                            organisation.orgName,
-                            color: theme.primary20,
-                          ),
-                        ],
+                    if (hasGeneralGoals)
+                      BodySmallText(
+                        context.l10n.forYouGoalsCountGeneral(
+                          summary.qrCodesCount,
+                        ),
+                        color: theme.primary20,
                       ),
-                    ),
                   ],
-                ),
-                if (hasAnyGoalText) ...[
-                  const SizedBox(height: 12),
-                  Container(
-                    height: 1,
-                    color: theme.neutralVariant95,
-                  ),
-                  const SizedBox(height: 12),
-                  if (hasAllocationGoals)
-                    BodySmallText(
-                      context.l10n.forYouGoalsCountCollections(
-                        summary.allocationsCount,
-                      ),
-                      color: theme.primary20,
-                    ),
-                  if (hasGeneralGoals)
-                    BodySmallText(
-                      context.l10n.forYouGoalsCountGeneral(
-                        summary.qrCodesCount,
-                      ),
-                      color: theme.primary20,
-                    ),
                 ],
-              ],
+              ),
             ),
-          ),
-          Positioned(
-            top: -16,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: theme.error90,
-                  borderRadius: BorderRadius.circular(999),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.favorite,
-                      size: 14,
-                      color: theme.error40,
-                    ),
-                    const SizedBox(width: 6),
-                    LabelSmallText(
-                      context.l10n.forYouFavoriteTag,
-                      color: theme.error40,
-                    ),
-                  ],
+            Positioned(
+              top: -16,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.error90,
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.favorite,
+                        size: 14,
+                        color: theme.error40,
+                      ),
+                      const SizedBox(width: 6),
+                      LabelSmallText(
+                        context.l10n.forYouFavoriteTag,
+                        color: theme.error40,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

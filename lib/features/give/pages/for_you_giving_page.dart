@@ -559,23 +559,36 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   }
 
   void _setupCollectionLinesFromResponse(OrganisationGoalsResponse response) {
+    var lines = <ForYouGoalLineKind>[];
     final indexedAllocations = _extractIndexedAllocations(response.allocations);
+
     if (indexedAllocations.isEmpty) {
-      _setupFallbackLines();
-      return;
+      final organisation = widget.flowContext.selectedOrganisation;
+      final type = organisation?.type ?? CollectGroupType.none;
+      final fallbackCount = _fallbackCollectionGoalCount(type);
+
+      lines = [
+        for (var i = 0; i < fallbackCount; i++)
+          ForYouCollectionGoalLine(
+            title: context.l10n.forYouGivingCollectionTitle(i + 1),
+            subtitleIndex: i + 1,
+            allocation: null,
+          ),
+      ];
+    } else {
+      lines = [
+        for (final indexedAllocation in indexedAllocations)
+          ForYouCollectionGoalLine(
+            title: _resolveCollectionTitle(
+              indexedAllocation.allocation,
+              index: indexedAllocation.goalIndex,
+            ),
+            subtitleIndex: indexedAllocation.goalIndex,
+            allocation: indexedAllocation.allocation,
+          ),
+      ];
     }
 
-    final lines = <ForYouGoalLineKind>[
-      for (final indexedAllocation in indexedAllocations)
-        ForYouCollectionGoalLine(
-          title: _resolveCollectionTitle(
-            indexedAllocation.allocation,
-            index: indexedAllocation.goalIndex,
-          ),
-          subtitleIndex: indexedAllocation.goalIndex,
-          allocation: indexedAllocation.allocation,
-        ),
-    ];
     _applyLines(lines);
   }
 
@@ -639,26 +652,28 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   }
 
   void _setupFallbackLines() {
-    final collectGroupType =
-        widget.flowContext.selectedOrganisation?.type ?? CollectGroupType.none;
+    final organisation = widget.flowContext.selectedOrganisation;
+    final collectGroupType = organisation?.type ?? CollectGroupType.none;
     final fallbackCount = _fallbackCollectionGoalCount(collectGroupType);
-    final lines = List<ForYouGoalLineKind>.generate(
-      fallbackCount,
-      (i) => ForYouCollectionGoalLine(
-        title: context.l10n.forYouGivingCollectionTitle(i + 1),
-        subtitleIndex: i + 1,
-        allocation: null,
-      ),
-    );
+    final lines = <ForYouGoalLineKind>[
+      for (var i = 0; i < fallbackCount; i++)
+        ForYouCollectionGoalLine(
+          title: context.l10n.forYouGivingCollectionTitle(i + 1),
+          subtitleIndex: i + 1,
+          allocation: null,
+        ),
+    ];
     _applyLines(lines);
   }
 
   int _fallbackCollectionGoalCount(CollectGroupType collectGroupType) {
     switch (collectGroupType) {
-      case CollectGroupType.charities:
-        return 1;
       case CollectGroupType.church:
         return 3;
+      case CollectGroupType.charities:
+      case CollectGroupType.campaign:
+      case CollectGroupType.artists:
+        return 1;
       default:
         return 3;
     }
@@ -671,24 +686,14 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     for (final controller in _controllers) {
       controller.dispose();
     }
-    _controllers
-      ..clear()
-      ..addAll(
-        List.generate(
-          lines.length,
-          (_) => TextEditingController(text: '0'),
-          growable: false,
-        ),
-      );
-    _accordionKeys
-      ..clear()
-      ..addAll(
-        List.generate(
-          lines.length,
-          (_) => GlobalKey(),
-          growable: false,
-        ),
-      );
+    _controllers.clear();
+    for (var i = 0; i < lines.length; i++) {
+      _controllers.add(TextEditingController(text: '0'));
+    }
+    _accordionKeys.clear();
+    for (var i = 0; i < lines.length; i++) {
+      _accordionKeys.add(GlobalKey());
+    }
 
     setState(() {
       _goalLines = lines;

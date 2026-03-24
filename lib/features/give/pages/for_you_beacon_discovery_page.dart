@@ -31,6 +31,7 @@ const String kDebugForYouBeaconSimulatedId = '61f7ed014e4c0817a000';
 enum _BeaconDiscoveryState {
   searching,
   bluetoothOff,
+  permissionDenied,
 }
 
 class ForYouBeaconDiscoveryPage extends StatefulWidget {
@@ -99,8 +100,7 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
         final newStatus = await Permission.bluetoothConnect.request();
         if (newStatus.isDenied || newStatus.isPermanentlyDenied) {
           if (!mounted) return;
-          await _showBluetoothDeniedDialog();
-          if (mounted) _goToList();
+          setState(() => _state = _BeaconDiscoveryState.permissionDenied);
           return;
         }
       }
@@ -133,10 +133,20 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       case BluetoothAdapterState.off:
       case BluetoothAdapterState.unauthorized:
         if (mounted) {
-          await AnalyticsHelper.logEvent(
-            eventName: AnalyticsEventName.forYouLocationServiceOff,
-          );
-          setState(() => _state = _BeaconDiscoveryState.bluetoothOff);
+          if (Platform.isAndroid) {
+            try {
+              await FlutterBluePlus.turnOn(timeout: 10);
+            } catch (_) {
+              // Failed to turn on automatically, show Bluetooth off state
+            }
+          }
+
+          if (mounted) {
+            await AnalyticsHelper.logEvent(
+              eventName: AnalyticsEventName.forYouLocationServiceOff,
+            );
+            setState(() => _state = _BeaconDiscoveryState.bluetoothOff);
+          }
         }
       default:
         break;
@@ -258,6 +268,10 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
           locals: locals,
           onOpenSettings: _openBluetoothSettings,
         ),
+        _BeaconDiscoveryState.permissionDenied => _PermissionDeniedBody(
+          locals: locals,
+          onOpenSettings: _openBluetoothSettings,
+        ),
       },
     );
   }
@@ -315,6 +329,46 @@ class _BluetoothOffBody extends StatelessWidget {
         const SizedBox(height: 12),
         BodyMediumText(
           locals.forYouBluetoothOffBody,
+          textAlign: TextAlign.center,
+        ),
+        const Spacer(),
+        FunButton(
+          text: locals.forYouLocationOpenSettings,
+          analyticsEvent: AnalyticsEvent(
+            AnalyticsEventName.forYouLocationOpenSettingsTapped,
+          ),
+          onTap: onOpenSettings,
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+}
+
+class _PermissionDeniedBody extends StatelessWidget {
+  const _PermissionDeniedBody({
+    required this.locals,
+    required this.onOpenSettings,
+  });
+
+  final AppLocalizations locals;
+  final VoidCallback onOpenSettings;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Spacer(),
+        FunIconGivy.bluetoothSettings(circleSize: 140),
+        const SizedBox(height: 28),
+        TitleLargeText(
+          locals.authoriseBluetooth,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        BodyMediumText(
+          locals.authoriseBluetoothErrorMessage,
           textAlign: TextAlign.center,
         ),
         const Spacer(),
