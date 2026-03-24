@@ -14,6 +14,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/cubit/for_you_goals_cubit.dart';
 import 'package:givt_app/features/give/models/models.dart';
+import 'package:givt_app/features/give/utils/for_you_favorite_cards_sorting.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
@@ -82,6 +83,9 @@ class _ForYouState extends State<ForYou>
                 (org) => state.favoritedOrganisations.contains(org.nameSpace),
               )
               .toList();
+          final sortedFavoriteOrganisations = sortForYouFavoriteCards(
+            favoriteOrganisations,
+          );
           return BlocBuilder<ForYouGoalsCubit, ForYouGoalsState>(
             bloc: _goalsCubit,
             builder: (context, goalsState) {
@@ -96,18 +100,18 @@ class _ForYouState extends State<ForYou>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 24),
-                      if (favoriteOrganisations.isEmpty)
+                      if (sortedFavoriteOrganisations.isEmpty)
                         _buildEmptyState(context)
                       else ...[
                         _buildFavoritesCarousel(
                           context,
-                          favoriteOrganisations,
+                          sortedFavoriteOrganisations,
                           goalsState,
                         ),
                         const SizedBox(height: 12),
                         _buildPageIndicators(
                           context,
-                          count: favoriteOrganisations.length + 1,
+                          count: sortedFavoriteOrganisations.length + 1,
                           current: _favoritesIndex,
                         ),
                       ],
