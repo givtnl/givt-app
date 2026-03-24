@@ -274,7 +274,7 @@ class _SearchingBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(),
-        const CustomCircularProgressIndicator(),
+        FunIconGivy.phoneWink(circleSize: 140),
         const SizedBox(height: 28),
         TitleLargeText(
           locals.makeContact,
@@ -306,7 +306,7 @@ class _BluetoothOffBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(),
-        FunIconGivy.sad(circleSize: 140),
+        FunIconGivy.bluetoothSettings(circleSize: 140),
         const SizedBox(height: 28),
         TitleLargeText(
           locals.forYouBluetoothOffTitle,

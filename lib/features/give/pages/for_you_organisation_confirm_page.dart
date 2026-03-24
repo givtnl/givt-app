@@ -138,7 +138,7 @@ class _HeroIllustration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FunIconGivy.phoneWink(circleSize: 140);
+    return FunIconGivy.love(circleSize: 140);
   }
 }
 

@@ -7,6 +7,7 @@ import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
 import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
@@ -96,8 +97,10 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
                 ),
               ),
             if (_isProcessing)
-              const Positioned.fill(
-                child: Center(child: CircularProgressIndicator()),
+              Positioned.fill(
+                child: Center(
+                  child: FunIconGivy.searching(circleSize: 140),
+                ),
               ),
           ],
         ),

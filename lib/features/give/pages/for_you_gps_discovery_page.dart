@@ -237,7 +237,7 @@ class _SearchingBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(),
-        const CustomCircularProgressIndicator(),
+        FunIconGivy.searching(circleSize: 140),
         const SizedBox(height: 28),
         TitleLargeText(
           locals.forYouLocationSearchingTitle,
@@ -341,7 +341,7 @@ class _MultipleOrgsFoundBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final funTheme = FunTheme.of(context);
-    
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -349,11 +349,8 @@ class _MultipleOrgsFoundBody extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 28, 16, 16),
             child: Column(
               children: [
-                SizedBox(
-                  height: 140,
-                  child: Image.asset('assets/images/givy_lookout.png'),
-                ),
-                const SizedBox(height: 16),
+                FunIconGivy.searching(circleSize: 140),
+                const SizedBox(height: 28),
                 TitleLargeText(
                   locals.forYouLocationMultipleOrgsFoundTitle,
                   textAlign: TextAlign.center,

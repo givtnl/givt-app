@@ -334,14 +334,19 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
             : context.l10n.forYouGivingCollectionSubtitle(subtitleIndex),
       ForYouGeneralGoalLine() => context.l10n.forYouGivingGeneralGoal,
     };
-    if (base == null) {
-      return null;
-    }
+
     final raw = _controllers[index].text;
-    if (_parseAmount(raw) <= 0) {
+    final amount = _parseAmount(raw);
+    final amountDisplay = '$currencySymbol$raw';
+
+    if (base == null) {
+      return amount > 0 ? amountDisplay : null;
+    }
+
+    if (amount <= 0) {
       return base;
     }
-    final amountDisplay = '$currencySymbol$raw';
+
     return context.l10n.forYouGivingAccordionSubtitleWithAmount(
       base,
       amountDisplay,

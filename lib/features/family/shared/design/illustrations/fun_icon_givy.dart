@@ -45,7 +45,7 @@ class FunIconGivy extends StatelessWidget {
     double circleSize = 112,
   }) => FunIconGivy(
     icon: SvgPicture.asset(
-      'assets/images/givy_sad.svg',
+      'assets/fun/givy/givy_sad.svg',
       width: circleSize / 112 * 140,
     ),
     circleColor: circleColor,
@@ -67,11 +67,63 @@ class FunIconGivy extends StatelessWidget {
     iconSize: circleSize / 112 * 140,
   );
 
+  factory FunIconGivy.love({
+    Color circleColor = FamilyAppTheme.primary95,
+    double circleSize = 112,
+  }) => FunIconGivy(
+    icon: SvgPicture.asset(
+      'assets/fun/givy/givy_love.svg',
+      width: circleSize / 112 * 140,
+    ),
+    circleColor: circleColor,
+    circleSize: circleSize,
+    iconSize: circleSize / 112 * 140,
+  );
+
+  factory FunIconGivy.searching({
+    Color circleColor = FamilyAppTheme.primary95,
+    double circleSize = 112,
+  }) => FunIconGivy(
+    icon: SvgPicture.asset(
+      'assets/fun/givy/givy_searching.svg',
+      width: circleSize / 112 * 140,
+    ),
+    circleColor: circleColor,
+    circleSize: circleSize,
+    iconSize: circleSize / 112 * 140,
+  );
+
+  factory FunIconGivy.bluetoothSettings({
+    Color circleColor = FamilyAppTheme.primary95,
+    double circleSize = 112,
+  }) => FunIconGivy(
+    icon: SvgPicture.asset(
+      'assets/fun/givy/givy_bluetooth_settings.svg',
+      width: circleSize / 112 * 140,
+    ),
+    circleColor: circleColor,
+    circleSize: circleSize,
+    iconSize: circleSize / 112 * 140,
+  );
+
+  factory FunIconGivy.phone({
+    Color circleColor = FamilyAppTheme.primary95,
+    double circleSize = 112,
+  }) => FunIconGivy(
+    icon: SvgPicture.asset(
+      'assets/fun/givy/givy_phone.svg',
+      width: circleSize / 112 * 140,
+    ),
+    circleColor: circleColor,
+    circleSize: circleSize,
+    iconSize: circleSize / 112 * 140,
+  );
+
   factory FunIconGivy.phoneWink({
     double circleSize = 112,
   }) => FunIconGivy(
     icon: SvgPicture.asset(
-      'assets/images/givy_phone_wink.svg',
+      'assets/fun/givy/givy_phone_wink.svg',
     ),
     circleColor: Colors.transparent,
     circleSize: circleSize,
