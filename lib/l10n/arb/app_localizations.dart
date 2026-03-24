@@ -2240,7 +2240,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouQrCodeTitle.
   ///
   /// In en, this message translates to:
-  /// **'QR-code'**
+  /// **'QR code'**
   String get forYouQrCodeTitle;
 
   /// No description provided for @forYouQrCodeSubtitle.

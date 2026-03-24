@@ -1308,50 +1308,50 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get forYouLocationSearchingTitle =>
-      'Looking for organisations near you';
+      'Op zoek naar organisaties bij jou in de buurt';
 
   @override
   String get forYouLocationSearchingBody =>
-      'We are searching where you are, care to wait a little?';
+      'We zoeken naar je locatie, even geduld?';
 
   @override
-  String get forYouLocationNoOrgFoundTitle => 'No organisations found';
+  String get forYouLocationNoOrgFoundTitle => 'Geen organisaties gevonden';
 
   @override
   String get forYouLocationNoOrgFoundBody =>
-      'We couldn\'t find any Givt-enabled organisations near your current location.';
+      'We konden geen Givt-organisaties vinden bij jouw huidige locatie.';
 
   @override
-  String get forYouLocationOffTitle => 'Location is turned off';
+  String get forYouLocationOffTitle => 'Locatie is uitgeschakeld';
 
   @override
   String get forYouLocationOffBody =>
-      'Please turn on your device location to find organisations near you.';
+      'Zet je locatiediensten aan om organisaties bij jou in de buurt te vinden.';
 
   @override
-  String get forYouLocationPermissionTitle => 'Location access needed';
+  String get forYouLocationPermissionTitle => 'Locatietoegang nodig';
 
   @override
   String get forYouLocationPermissionBody =>
-      'Givt needs access to your location to find organisations nearby. Go to Settings and allow location access.';
+      'Givt heeft toegang tot je locatie nodig om organisaties bij jou in de buurt te vinden. Ga naar Instellingen en sta locatietoegang toe.';
 
   @override
-  String get forYouLocationOpenSettings => 'Open Settings';
+  String get forYouLocationOpenSettings => 'Instellingen openen';
 
   @override
   String get forYouLocationMultipleOrgsFoundTitle =>
-      'Multiple organisations nearby';
+      'Meerdere organisaties in de buurt';
 
   @override
   String get forYouLocationMultipleOrgsFoundBody =>
-      'We found several Givt-enabled organisations near your location. Please select one below.';
+      'We vonden meerdere Givt-organisaties bij jouw locatie. Kies er hieronder een.';
 
   @override
-  String get forYouBluetoothOffTitle => 'Bluetooth is off';
+  String get forYouBluetoothOffTitle => 'Bluetooth is uitgeschakeld';
 
   @override
   String get forYouBluetoothOffBody =>
-      'Please turn on Bluetooth to find organisations nearby.';
+      'Zet Bluetooth aan om organisaties bij jou in de buurt te vinden.';
 
   @override
   String get discoverHomeDiscoverTitle => 'Voor jou';

@@ -1212,7 +1212,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouLocationBasedSubtitle => 'Give to organisations near you';
 
   @override
-  String get forYouQrCodeTitle => 'QR-code';
+  String get forYouQrCodeTitle => 'QR code';
 
   @override
   String get forYouQrCodeSubtitle => 'Use when you see a Givt QR code nearby';

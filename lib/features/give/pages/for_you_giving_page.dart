@@ -309,6 +309,8 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
           context,
           currencySymbol: currencySymbol,
           controller: _controllers[index],
+          isExpanded: _expandedIndex == index,
+          amount: _parseAmount(_controllers[index].text),
           onClear: () {
             setState(() {
               _controllers[index].text = '0';
@@ -350,13 +352,23 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     BuildContext context, {
     required String currencySymbol,
     required TextEditingController controller,
+    required bool isExpanded,
+    required double amount,
     required VoidCallback onClear,
   }) {
+    final theme = FunTheme.of(context);
+    final isComplete = amount > 0;
+    final borderColor = isComplete
+        ? theme.primary30
+        : isExpanded
+            ? theme.primary70
+            : theme.neutralVariant90;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         border: Border.all(
-          color: FunTheme.of(context).neutralVariant90,
+          color: borderColor,
           width: FunTheme.of(context).borderWidthThin,
         ),
         borderRadius: BorderRadius.circular(12),
@@ -366,7 +378,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
           Expanded(
             child: LabelLargeText(
               '$currencySymbol${controller.text}',
-              color: FunTheme.of(context).neutral50,
+              color: FunTheme.of(context).primary20,
             ),
           ),
           IconButton(

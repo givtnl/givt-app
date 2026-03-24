@@ -51,6 +51,7 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
   bool _isProcessing = false;
   _BeaconDiscoveryState _state = _BeaconDiscoveryState.searching;
 
+  StreamSubscription<BluetoothAdapterState>? _adapterStateStream;
   StreamSubscription<List<ScanResult>>? _scanResultsStream;
   Timer? _debugBeaconSimTimer;
 
@@ -70,6 +71,7 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
   void dispose() {
     _isDisposed = true;
     _debugBeaconSimTimer?.cancel();
+    _adapterStateStream?.cancel();
     _scanResultsStream?.cancel();
     FlutterBluePlus.stopScan();
     super.dispose();
@@ -104,27 +106,41 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       }
     }
 
-    // Check if Bluetooth is enabled
-    final isBluetoothOn = await FlutterBluePlus.isOn;
-    if (!isBluetoothOn) {
-      if (mounted) {
-        await AnalyticsHelper.logEvent(
-          eventName: AnalyticsEventName.forYouLocationServiceOff,
-        );
-        setState(() => _state = _BeaconDiscoveryState.bluetoothOff);
-      }
-      return;
-    }
-
-    _scanResultsStream = FlutterBluePlus.onScanResults.listen(
-      _onScanResults,
+    // Subscribe to adapter state so the scan auto-starts whenever Bluetooth
+    // becomes available — including after the OS permission popup is accepted
+    // (iOS) or the user enables Bluetooth from Settings and returns.
+    _adapterStateStream = FlutterBluePlus.adapterState.listen(
+      _onAdapterStateChanged,
       onError: (_) {},
     );
+  }
 
-    await FlutterBluePlus.startScan(
-      timeout: const Duration(seconds: 30),
-      androidUsesFineLocation: true,
-    );
+  Future<void> _onAdapterStateChanged(BluetoothAdapterState state) async {
+    if (_isDisposed || !mounted) return;
+    switch (state) {
+      case BluetoothAdapterState.on:
+        if (!FlutterBluePlus.isScanningNow && !_isProcessing) {
+          setState(() => _state = _BeaconDiscoveryState.searching);
+          _scanResultsStream ??= FlutterBluePlus.onScanResults.listen(
+            _onScanResults,
+            onError: (_) {},
+          );
+          await FlutterBluePlus.startScan(
+            timeout: const Duration(seconds: 30),
+            androidUsesFineLocation: true,
+          );
+        }
+      case BluetoothAdapterState.off:
+      case BluetoothAdapterState.unauthorized:
+        if (mounted) {
+          await AnalyticsHelper.logEvent(
+            eventName: AnalyticsEventName.forYouLocationServiceOff,
+          );
+          setState(() => _state = _BeaconDiscoveryState.bluetoothOff);
+        }
+      default:
+        break;
+    }
   }
 
   Future<void> _showBluetoothDeniedDialog() async {

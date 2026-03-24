@@ -1303,50 +1303,52 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get forYouLocationSearchingTitle =>
-      'Looking for organisations near you';
+      'Buscando organizaciones cerca de ti';
 
   @override
   String get forYouLocationSearchingBody =>
-      'We are searching where you are, care to wait a little?';
+      'Estamos buscando tu ubicación, ¿puedes esperar un momento?';
 
   @override
-  String get forYouLocationNoOrgFoundTitle => 'No organisations found';
+  String get forYouLocationNoOrgFoundTitle =>
+      'No se encontraron organizaciones';
 
   @override
   String get forYouLocationNoOrgFoundBody =>
-      'We couldn\'t find any Givt-enabled organisations near your current location.';
+      'No pudimos encontrar organizaciones con Givt cerca de tu ubicación actual.';
 
   @override
-  String get forYouLocationOffTitle => 'Location is turned off';
+  String get forYouLocationOffTitle => 'La ubicación está desactivada';
 
   @override
   String get forYouLocationOffBody =>
-      'Please turn on your device location to find organisations near you.';
+      'Por favor, activa la ubicación de tu dispositivo para encontrar organizaciones cerca de ti.';
 
   @override
-  String get forYouLocationPermissionTitle => 'Location access needed';
+  String get forYouLocationPermissionTitle =>
+      'Se necesita acceso a la ubicación';
 
   @override
   String get forYouLocationPermissionBody =>
-      'Givt needs access to your location to find organisations nearby. Go to Settings and allow location access.';
+      'Givt necesita acceso a tu ubicación para encontrar organizaciones cerca. Ve a Configuración y permite el acceso a la ubicación.';
 
   @override
-  String get forYouLocationOpenSettings => 'Open Settings';
+  String get forYouLocationOpenSettings => 'Abrir configuración';
 
   @override
   String get forYouLocationMultipleOrgsFoundTitle =>
-      'Multiple organisations nearby';
+      'Varias organizaciones cercanas';
 
   @override
   String get forYouLocationMultipleOrgsFoundBody =>
-      'We found several Givt-enabled organisations near your location. Please select one below.';
+      'Encontramos varias organizaciones con Givt cerca de tu ubicación. Por favor, selecciona una a continuación.';
 
   @override
-  String get forYouBluetoothOffTitle => 'Bluetooth is off';
+  String get forYouBluetoothOffTitle => 'Bluetooth está desactivado';
 
   @override
   String get forYouBluetoothOffBody =>
-      'Please turn on Bluetooth to find organisations nearby.';
+      'Por favor, activa el Bluetooth para encontrar organizaciones cercanas.';
 
   @override
   String get discoverHomeDiscoverTitle => 'Para ti';
@@ -4072,6 +4074,55 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String forYouGivingAccordionSubtitleWithAmount(String label, String amount) {
     return '$label - $amount';
   }
+
+  @override
+  String get forYouLocationSearchingTitle =>
+      'Buscando organizaciones cerca de ti';
+
+  @override
+  String get forYouLocationSearchingBody =>
+      'Estamos buscando tu ubicación, ¿puedes esperar un momento?';
+
+  @override
+  String get forYouLocationNoOrgFoundTitle =>
+      'No se encontraron organizaciones';
+
+  @override
+  String get forYouLocationNoOrgFoundBody =>
+      'No pudimos encontrar organizaciones con Givt cerca de tu ubicación actual.';
+
+  @override
+  String get forYouLocationOffTitle => 'La ubicación está desactivada';
+
+  @override
+  String get forYouLocationOffBody =>
+      'Por favor, activa la ubicación de tu dispositivo para encontrar organizaciones cerca de ti.';
+
+  @override
+  String get forYouLocationPermissionTitle =>
+      'Se necesita acceso a la ubicación';
+
+  @override
+  String get forYouLocationPermissionBody =>
+      'Givt necesita acceso a tu ubicación para encontrar organizaciones cerca. Ve a Configuración y permite el acceso a la ubicación.';
+
+  @override
+  String get forYouLocationOpenSettings => 'Abrir configuración';
+
+  @override
+  String get forYouLocationMultipleOrgsFoundTitle =>
+      'Varias organizaciones cercanas';
+
+  @override
+  String get forYouLocationMultipleOrgsFoundBody =>
+      'Encontramos varias organizaciones con Givt cerca de tu ubicación. Por favor, selecciona una a continuación.';
+
+  @override
+  String get forYouBluetoothOffTitle => 'Bluetooth está desactivado';
+
+  @override
+  String get forYouBluetoothOffBody =>
+      'Por favor, activa el Bluetooth para encontrar organizaciones cercanas.';
 
   @override
   String get discoverHomeDiscoverTitle => 'Para ti';
