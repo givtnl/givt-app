@@ -74,8 +74,18 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
     _debugBeaconSimTimer?.cancel();
     _adapterStateStream?.cancel();
     _scanResultsStream?.cancel();
-    FlutterBluePlus.stopScan();
+    _stopBluetoothScan();
     super.dispose();
+  }
+
+  Future<void> _stopBluetoothScan() async {
+    try {
+      if (await FlutterBluePlus.isScanningNow) {
+        await FlutterBluePlus.stopScan();
+      }
+    } catch (_) {
+      // Ignore errors during dispose
+    }
   }
 
   Future<void> _debugSimulateBeaconAndNavigate() async {
@@ -83,7 +93,7 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       return;
     }
     _isProcessing = true;
-    await FlutterBluePlus.stopScan();
+    _stopBluetoothScan();
     await _resolveAndNavigate(kDebugForYouBeaconSimulatedId);
   }
 
@@ -103,6 +113,16 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
           setState(() => _state = _BeaconDiscoveryState.permissionDenied);
           return;
         }
+      }
+    }
+
+    // On iOS we need to check Bluetooth status manually because it's not a standard permission
+    if (Platform.isIOS) {
+      final bluetoothState = await FlutterBluePlus.adapterState.first;
+      if (bluetoothState == BluetoothAdapterState.unauthorized) {
+        if (!mounted) return;
+        setState(() => _state = _BeaconDiscoveryState.permissionDenied);
+        return;
       }
     }
 
@@ -133,11 +153,14 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       case BluetoothAdapterState.off:
       case BluetoothAdapterState.unauthorized:
         if (mounted) {
-          if (Platform.isAndroid) {
+          if (state == BluetoothAdapterState.off && Platform.isAndroid) {
             try {
               await FlutterBluePlus.turnOn(timeout: 10);
+              // If turnOn succeeds OR the user clicks "Allow", a new 'on' state 
+              // will be emitted and handled by the 'case .on' above.
+              return;
             } catch (_) {
-              // Failed to turn on automatically, show Bluetooth off state
+              // If it fails or user denies the prompt, fall through to show UI
             }
           }
 
@@ -204,7 +227,7 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       final beaconId = '$namespace.$instance';
 
       _isProcessing = true;
-      await FlutterBluePlus.stopScan();
+      _stopBluetoothScan();
       await _resolveAndNavigate(beaconId);
       return;
     }
