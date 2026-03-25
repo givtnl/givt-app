@@ -98,7 +98,7 @@ abstract class TooltipControllerImpl {
     }
   }
 
-  void onDone(Function() onDone) {
+  void onDone(void Function() onDone) {
     _onDoneCallback = onDone;
   }
 

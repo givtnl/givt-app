@@ -2192,13 +2192,277 @@ abstract class AppLocalizations {
   /// No description provided for @discoverSegmentWho.
   ///
   /// In en, this message translates to:
-  /// **'Discover'**
+  /// **'For You'**
   String get discoverSegmentWho;
+
+  /// No description provided for @forYouOtherWaysToGive.
+  ///
+  /// In en, this message translates to:
+  /// **'Other ways to give'**
+  String get forYouOtherWaysToGive;
+
+  /// No description provided for @forYouSearchOrganizations.
+  ///
+  /// In en, this message translates to:
+  /// **'Search organisations'**
+  String get forYouSearchOrganizations;
+
+  /// No description provided for @forYouFavoriteTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourite'**
+  String get forYouFavoriteTag;
+
+  /// No description provided for @forYouEmptyFavoritesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your favourite organisation'**
+  String get forYouEmptyFavoritesTitle;
+
+  /// No description provided for @forYouEmptyFavoritesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Find it in one tap every time you open Givt'**
+  String get forYouEmptyFavoritesBody;
+
+  /// No description provided for @forYouLocationBasedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get forYouLocationBasedTitle;
+
+  /// No description provided for @forYouLocationBasedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Give to organisations near you'**
+  String get forYouLocationBasedSubtitle;
+
+  /// No description provided for @forYouQrCodeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'QR code'**
+  String get forYouQrCodeTitle;
+
+  /// No description provided for @forYouQrCodeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use when you see a Givt QR code nearby'**
+  String get forYouQrCodeSubtitle;
+
+  /// No description provided for @forYouCollectionDeviceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection device'**
+  String get forYouCollectionDeviceTitle;
+
+  /// No description provided for @forYouCollectionDeviceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Give when the plate or bag passes by'**
+  String get forYouCollectionDeviceSubtitle;
+
+  /// No description provided for @forYouGoalsCountCollections.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Collection Goals'**
+  String forYouGoalsCountCollections(int count);
+
+  /// No description provided for @forYouGoalsCountGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} General Goal'**
+  String forYouGoalsCountGeneral(int count);
+
+  /// No description provided for @forYouGivingPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Give now'**
+  String get forYouGivingPageTitle;
+
+  /// No description provided for @forYouOrganisationConfirmHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re giving to'**
+  String get forYouOrganisationConfirmHeadline;
+
+  /// No description provided for @forYouGivingFirstCollectionGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'First collection goal'**
+  String get forYouGivingFirstCollectionGoal;
+
+  /// No description provided for @forYouGivingFirstCollectionGoalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what you want to give to the first goal.'**
+  String get forYouGivingFirstCollectionGoalSubtitle;
+
+  /// No description provided for @forYouGivingGeneralGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'General goal'**
+  String get forYouGivingGeneralGoal;
+
+  /// No description provided for @forYouGivingGeneralGoalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You can also add a general goal amount.'**
+  String get forYouGivingGeneralGoalSubtitle;
+
+  /// No description provided for @forYouGivingAddGeneralGoalToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add general goal'**
+  String get forYouGivingAddGeneralGoalToggle;
+
+  /// No description provided for @forYouGivingContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get forYouGivingContinue;
+
+  /// No description provided for @forYouGivingMoreGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Give to more goals'**
+  String get forYouGivingMoreGoals;
+
+  /// No description provided for @forYouMoreGeneralGoalsSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Other goals you can give to'**
+  String get forYouMoreGeneralGoalsSheetTitle;
+
+  /// No description provided for @forYouMoreGeneralGoalsSheetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the ones you\'d like to include in your giving.'**
+  String get forYouMoreGeneralGoalsSheetSubtitle;
+
+  /// No description provided for @forYouMoreGeneralGoalsAddPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get forYouMoreGeneralGoalsAddPlaceholder;
+
+  /// No description provided for @forYouMoreGeneralGoalsAddOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Add 1 more goal'**
+  String get forYouMoreGeneralGoalsAddOne;
+
+  /// No description provided for @forYouMoreGeneralGoalsAddMany.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {count} more goals'**
+  String forYouMoreGeneralGoalsAddMany(int count);
+
+  /// No description provided for @forYouGivingCompleteMyGiving.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get forYouGivingCompleteMyGiving;
+
+  /// No description provided for @forYouGivingCollectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection {index}'**
+  String forYouGivingCollectionTitle(int index);
+
+  /// No description provided for @forYouGivingCollectionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Collection {index}'**
+  String forYouGivingCollectionSubtitle(int index);
+
+  /// No description provided for @forYouGivingAccordionSubtitleWithAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{label} - {amount}'**
+  String forYouGivingAccordionSubtitleWithAmount(String label, String amount);
+
+  /// No description provided for @forYouLocationSearchingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking for organisations near you'**
+  String get forYouLocationSearchingTitle;
+
+  /// No description provided for @forYouLocationSearchingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We are searching where you are, care to wait a little?'**
+  String get forYouLocationSearchingBody;
+
+  /// No description provided for @forYouLocationNoOrgFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No organisations found'**
+  String get forYouLocationNoOrgFoundTitle;
+
+  /// No description provided for @forYouLocationNoOrgFoundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t find any Givt-enabled organisations near your current location.'**
+  String get forYouLocationNoOrgFoundBody;
+
+  /// No description provided for @forYouLocationOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is turned off'**
+  String get forYouLocationOffTitle;
+
+  /// No description provided for @forYouLocationOffBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please turn on your device location to find organisations near you.'**
+  String get forYouLocationOffBody;
+
+  /// No description provided for @forYouLocationPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access needed'**
+  String get forYouLocationPermissionTitle;
+
+  /// No description provided for @forYouLocationPermissionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Givt needs access to your location to find organisations nearby. Go to Settings and allow location access.'**
+  String get forYouLocationPermissionBody;
+
+  /// No description provided for @forYouLocationOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get forYouLocationOpenSettings;
+
+  /// No description provided for @forYouLocationMultipleOrgsFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple organisations nearby'**
+  String get forYouLocationMultipleOrgsFoundTitle;
+
+  /// No description provided for @forYouLocationMultipleOrgsFoundBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We found several Givt-enabled organisations near your location. Please select one below.'**
+  String get forYouLocationMultipleOrgsFoundBody;
+
+  /// No description provided for @forYouBluetoothOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bluetooth is off'**
+  String get forYouBluetoothOffTitle;
+
+  /// No description provided for @forYouBluetoothOffBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please turn on Bluetooth to find organisations nearby.'**
+  String get forYouBluetoothOffBody;
 
   /// No description provided for @discoverHomeDiscoverTitle.
   ///
   /// In en, this message translates to:
-  /// **'Choose category'**
+  /// **'For You'**
   String get discoverHomeDiscoverTitle;
 
   /// No description provided for @discoverOrAmountActionSheetOnce.
@@ -3191,8 +3455,8 @@ abstract class AppLocalizations {
   /// No description provided for @chooseGroup.
   ///
   /// In en, this message translates to:
-  /// **'Choose Group'**
-  String get chooseGroup;
+  /// **'Welcome {firstName}'**
+  String chooseGroup(Object firstName);
 
   /// No description provided for @groups.
   ///
@@ -3653,7 +3917,7 @@ abstract class AppLocalizations {
   /// No description provided for @homescreenOverlayDiscoverTitle.
   ///
   /// In en, this message translates to:
-  /// **'Discover your reward!'**
+  /// **'Your For You reward!'**
   String get homescreenOverlayDiscoverTitle;
 
   /// No description provided for @homescreenOverlayGiveTitle.

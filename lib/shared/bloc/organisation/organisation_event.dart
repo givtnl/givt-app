@@ -12,14 +12,16 @@ class OrganisationFetch extends OrganisationEvent {
     this.country, {
     required this.type,
     this.showLastDonated = true,
+    this.sortFavoritesToTop = true,
   });
 
   final Country country;
   final int type;
   final bool showLastDonated;
+  final bool sortFavoritesToTop;
 
   @override
-  List<Object> get props => [country, type, showLastDonated];
+  List<Object> get props => [country, type, showLastDonated, sortFavoritesToTop];
 }
 
 class OrganisationFetchForSelection extends OrganisationEvent {
@@ -66,19 +68,27 @@ class OrganisationFilterQueryChanged extends OrganisationEvent {
 }
 
 class AddOrganisationToFavorites extends OrganisationEvent {
-  const AddOrganisationToFavorites(this.nameSpace);
+  const AddOrganisationToFavorites(
+    this.nameSpace, {
+    this.reSort = true,
+  });
 
   final String nameSpace;
+  final bool reSort;
 
   @override
-  List<Object> get props => [nameSpace];
+  List<Object> get props => [nameSpace, reSort];
 }
 
 class RemoveOrganisationFromFavorites extends OrganisationEvent {
-  const RemoveOrganisationFromFavorites(this.nameSpace);
+  const RemoveOrganisationFromFavorites(
+    this.nameSpace, {
+    this.reSort = true,
+  });
 
   final String nameSpace;
+  final bool reSort;
 
   @override
-  List<Object> get props => [nameSpace];
+  List<Object> get props => [nameSpace, reSort];
 }

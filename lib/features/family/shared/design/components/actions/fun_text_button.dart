@@ -18,6 +18,7 @@ class FunTextButton extends StatelessWidget {
     this.textColor = FamilyAppTheme.primary30,
     this.isMedium = true,
     this.isDebugOnly = false,
+    this.prefixIcon,
   });
 
   factory FunTextButton.medium({
@@ -60,6 +61,7 @@ class FunTextButton extends StatelessWidget {
   final bool isMedium;
   final bool isDebugOnly;
   final AnalyticsEvent analyticsEvent;
+  final Widget? prefixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +91,10 @@ class FunTextButton extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    if (prefixIcon != null) ...[
+                      prefixIcon!,
+                      const SizedBox(width: 8),
+                    ],
                     LabelLargeText(
                       text,
                       color: hasDisabledState ? disabledTextColor : textColor,
@@ -101,6 +107,10 @@ class FunTextButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                if (prefixIcon != null) ...[
+                  prefixIcon!,
+                  const SizedBox(width: 8),
+                ],
                 LabelMediumText(
                   text,
                   color: hasDisabledState ? disabledTextColor : textColor,

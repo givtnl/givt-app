@@ -25,11 +25,27 @@ part 'organisation_state.dart';
 const int _fuzzyScoreThreshold = 70;
 
 class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
+  /// Broadcasts the `userGuid` whose favorites were updated.
+  ///
+  /// We use a shared broadcast to keep multiple `OrganisationBloc` instances
+  /// (e.g. `ForYou` and `ForYouList`) in sync, even when they are created
+  /// in different route scopes.
+  static final StreamController<String> _favoritesChangedController =
+      StreamController<String>.broadcast();
+
   OrganisationBloc(
     this._collectGroupRepository,
     this._campaignRepository,
     this._sharedPreferences,
   ) : super(const OrganisationState()) {
+    _userGuid = _getUserGuid();
+
+    _favoritesChangedSubscription =
+        _favoritesChangedController.stream.listen((changedUserGuid) {
+      if (changedUserGuid != _userGuid) return;
+      add(const FavoritesRefresh());
+    });
+
     on<OrganisationFetch>(_onOrganisationFetch);
 
     on<OrganisationFetchForSelection>(_onOrganisationFetchForSelection);
@@ -51,6 +67,16 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
   Organisation lastDonatedOrganisation = const Organisation.empty();
 
+  late final String _userGuid;
+  late final StreamSubscription<String> _favoritesChangedSubscription;
+
+  static void _notifyFavoritesChanged(String userGuid) {
+    // Ignore events with empty guid - if a user isn't logged in there is no
+    // "real" favorites list to keep in sync.
+    if (userGuid.isEmpty) return;
+    _favoritesChangedController.add(userGuid);
+  }
+
   String _getFavoritedOrganisationsKey(String userGuid) {
     return '${Util.favoritedOrganisationsKey}$userGuid';
   }
@@ -69,9 +95,17 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   List<CollectGroup> _applySorting(
     List<CollectGroup> organisations, {
     String? searchQuery,
+    List<String>? favoritedOrganisations,
+    bool? sortFavoritesToTop,
   }) {
+    final favorites = favoritedOrganisations ?? state.favoritedOrganisations;
+    final shouldSortFavorites = sortFavoritesToTop ?? state.sortByFavorites;
+
+    // Never mutate incoming list (may be unmodifiable, e.g. `const []`).
+    final sortedOrganisations = organisations.toList()
+
     // Always sort the selected group to the top
-    organisations.sort((CollectGroup a, CollectGroup b) {
+    ..sort((CollectGroup a, CollectGroup b) {
       if (a == state.selectedCollectGroup &&
           a.orgName == lastDonatedOrganisation.organisationName) {
         return -1;
@@ -86,24 +120,26 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         final query = _removeDiacritics(searchQuery.toLowerCase());
         final aName = _removeDiacritics(a.orgName.toLowerCase());
         final bName = _removeDiacritics(b.orgName.toLowerCase());
-        
+
         final aMatchesQuery = aName.contains(query);
         final bMatchesQuery = bName.contains(query);
-        
+
         if (aMatchesQuery && !bMatchesQuery) return -1;
         if (!aMatchesQuery && bMatchesQuery) return 1;
       }
 
-      // Then sort favorites to the top
-      final aIsFavorited = state.favoritedOrganisations.contains(a.nameSpace);
-      final bIsFavorited = state.favoritedOrganisations.contains(b.nameSpace);
-      if (aIsFavorited && !bIsFavorited) return -1;
-      if (!aIsFavorited && bIsFavorited) return 1;
+      // Then sort favorites to the top (if enabled)
+      if (shouldSortFavorites) {
+        final aIsFavorited = favorites.contains(a.nameSpace);
+        final bIsFavorited = favorites.contains(b.nameSpace);
+        if (aIsFavorited && !bIsFavorited) return -1;
+        if (!aIsFavorited && bIsFavorited) return 1;
+      }
 
       // Finally, sort alphabetically by organization name
       return a.orgName.compareTo(b.orgName);
     });
-    return organisations;
+    return sortedOrganisations;
   }
 
   FutureOr<void> _onFavoritesRefresh(
@@ -113,13 +149,21 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     final userGuid = _getUserGuid();
     final key = _getFavoritedOrganisationsKey(userGuid);
     final favoritedOrganisations = _sharedPreferences.getStringList(key) ?? [];
-    emit(
-      state.copyWith(favoritedOrganisations: favoritedOrganisations),
-    );
+
+    // Avoid noisy rebuilds when the favorites set hasn't changed.
+    final currentFavoritesSet = state.favoritedOrganisations.toSet();
+    final nextFavoritesSet = favoritedOrganisations.toSet();
+    if (currentFavoritesSet.length == nextFavoritesSet.length &&
+        currentFavoritesSet.containsAll(nextFavoritesSet)) {
+      return Future.value();
+    }
+
     emit(
       state.copyWith(
+        favoritedOrganisations: favoritedOrganisations,
         filteredOrganisations: _applySorting(
           state.filteredOrganisations,
+          favoritedOrganisations: favoritedOrganisations,
         ),
       ),
     );
@@ -179,15 +223,20 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       emit(
         state.copyWith(
           selectedCollectGroup: selectedGroup,
+          sortByFavorites: event.sortFavoritesToTop,
         ),
       );
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
           organisations: organisations,
-          filteredOrganisations: _applySorting(organisations),
+          filteredOrganisations: _applySorting(
+            organisations,
+            sortFavoritesToTop: event.sortFavoritesToTop,
+          ),
           selectedCollectGroup: selectedGroup,
           favoritedOrganisations: favoritedOrganisations,
+          sortByFavorites: event.sortFavoritesToTop,
         ),
       );
       if (event.type == CollectGroupType.none.index) {
@@ -234,8 +283,12 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         state.copyWith(
           status: OrganisationStatus.filtered,
           organisations: organisations,
-          filteredOrganisations: _applySorting(organisations),
+          filteredOrganisations: _applySorting(
+            organisations,
+            sortFavoritesToTop: true,
+          ),
           favoritedOrganisations: favoritedOrganisations,
+          sortByFavorites: true,
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
@@ -597,15 +650,18 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       ..add(event.nameSpace);
     _sharedPreferences.setStringList(key, updatedFavorites);
     emit(
-      state.copyWith(favoritedOrganisations: updatedFavorites),
-    );
-    emit(
       state.copyWith(
-        filteredOrganisations: _applySorting(
-          state.filteredOrganisations,
-        ),
+        favoritedOrganisations: updatedFavorites,
+        filteredOrganisations: event.reSort
+            ? _applySorting(
+                state.filteredOrganisations,
+                favoritedOrganisations: updatedFavorites,
+              )
+            : state.filteredOrganisations,
       ),
     );
+
+    _notifyFavoritesChanged(userGuid);
   }
 
   FutureOr<void> _onRemoveOrganisationFromFavorites(
@@ -618,13 +674,18 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       ..remove(event.nameSpace);
     _sharedPreferences.setStringList(key, updatedFavorites);
     emit(
-      state.copyWith(favoritedOrganisations: updatedFavorites),
-    );
-    emit(
       state.copyWith(
-        filteredOrganisations: _applySorting(state.filteredOrganisations),
+        favoritedOrganisations: updatedFavorites,
+        filteredOrganisations: event.reSort
+            ? _applySorting(
+                state.filteredOrganisations,
+                favoritedOrganisations: updatedFavorites,
+              )
+            : state.filteredOrganisations,
       ),
     );
+
+    _notifyFavoritesChanged(userGuid);
   }
 
   Future<AccountType> _getAccountType(Country country) async {
@@ -638,4 +699,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   }
 
   String _removeDiacritics(String string) => removeDiacritics(string);
+
+  @override
+  Future<void> close() async {
+    await _favoritesChangedSubscription.cancel();
+    return super.close();
+  }
 }

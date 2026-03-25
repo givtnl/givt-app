@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -26,7 +25,7 @@ class AnimatedSwitch extends StatelessWidget {
       options: options,
       selectedIndex: pageIndex,
       onPressed: (index) => onChanged?.call(index),
-      analyticsEvent: AnalyticsEvent(AmplitudeEvents.giveHomeTabsChanged),
+      analyticsEvent: AnalyticsEvent(AnalyticsEventName.giveHomeTabsChanged),
     );
   }
 }

@@ -779,10 +779,99 @@
   "discoverSearchButton": "Suchen",
   "discoverDiscoverButton": "Alles zeigen",
   "discoverSegmentNow": "Spende",
-  "discoverSegmentWho": "Entdecken",
-  "discoverHomeDiscoverTitle": "Kategorie wählen",
+  "discoverSegmentWho": "Für dich",
+  "discoverHomeDiscoverTitle": "Für dich",
   "discoverOrAmountActionSheetOnce": "Einmalige Spende",
   "discoverOrAmountActionSheetRecurring": "Wiederkehrende Spende",
+  "forYouOtherWaysToGive": "Andere Möglichkeiten zu geben",
+  "forYouSearchOrganizations": "Organisationen suchen",
+  "forYouFavoriteTag": "Favorit",
+  "forYouEmptyFavoritesTitle": "Füge deine Lieblingsorganisation hinzu",
+  "forYouEmptyFavoritesBody": "Finde sie in einem Tipp, jedes Mal wenn du Givt öffnest",
+  "forYouLocationBasedTitle": "Standort",
+  "forYouLocationBasedSubtitle": "Gib an Organisationen in deiner Nähe",
+  "forYouQrCodeTitle": "QR-code",
+  "forYouQrCodeSubtitle": "Nutze ihn, wenn du einen Givt QR-Code in deiner Nähe siehst",
+  "forYouCollectionDeviceTitle": "Sammelgerät",
+  "forYouCollectionDeviceSubtitle": "Gib, wenn das Schild oder die Tasche vorbeikommt",
+  "forYouGoalsCountCollections": "{count} Sammelziele",
+  "@forYouGoalsCountCollections": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGoalsCountGeneral": "{count} allgemeine Ziele",
+  "@forYouGoalsCountGeneral": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingPageTitle": "Jetzt geben",
+  "forYouOrganisationConfirmHeadline": "Du gibst an",
+  "forYouGivingFirstCollectionGoal": "Erstes Sammelziel",
+  "forYouGivingFirstCollectionGoalSubtitle": "Wähle aus, was du für das erste Ziel geben möchtest.",
+  "forYouGivingGeneralGoal": "Allgemeines Ziel",
+  "forYouGivingGeneralGoalSubtitle": "Du kannst auch einen Betrag für ein allgemeines Ziel hinzufügen.",
+  "forYouGivingAddGeneralGoalToggle": "Allgemeines Ziel hinzufügen",
+  "forYouGivingContinue": "Weiter",
+  "forYouGivingMoreGoals": "Für mehr Ziele spenden",
+  "forYouMoreGeneralGoalsSheetTitle": "Weitere Ziele, an die du spenden kannst",
+  "forYouMoreGeneralGoalsSheetSubtitle": "Wähle die Ziele aus, die du in deine Spende einbeziehen möchtest.",
+  "forYouMoreGeneralGoalsAddPlaceholder": "Hinzufügen",
+  "forYouMoreGeneralGoalsAddOne": "1 weiteres Ziel hinzufügen",
+  "forYouMoreGeneralGoalsAddMany": "{count} weitere Ziele hinzufügen",
+  "@forYouMoreGeneralGoalsAddMany": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingCompleteMyGiving": "Meine Spende abschließen",
+  "forYouGivingCollectionTitle": "Kollektenziel {index}",
+  "@forYouGivingCollectionTitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingCollectionSubtitle": "Kollekte {index}",
+  "@forYouGivingCollectionSubtitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingAccordionSubtitleWithAmount": "{label} - {amount}",
+  "@forYouGivingAccordionSubtitleWithAmount": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "forYouLocationSearchingTitle": "Suche nach Organisationen in deiner Nähe",
+  "forYouLocationSearchingBody": "Wir suchen nach deinem Standort, einen Moment bitte?",
+  "forYouLocationNoOrgFoundTitle": "Keine Organisationen gefunden",
+  "forYouLocationNoOrgFoundBody": "Wir konnten keine Givt-fähigen Organisationen in deiner Nähe finden.",
+  "forYouLocationOffTitle": "Standort ist deaktiviert",
+  "forYouLocationOffBody": "Bitte aktiviere deinen Standort, um Organisationen in deiner Nähe zu finden.",
+  "forYouLocationPermissionTitle": "Standortzugriff benötigt",
+  "forYouLocationPermissionBody": "Givt benötigt Zugriff auf deinen Standort, um Organisationen in deiner Nähe zu finden. Gehe zu den Einstellungen und erlaube den Standortzugriff.",
+  "forYouLocationOpenSettings": "Einstellungen öffnen",
+  "forYouLocationMultipleOrgsFoundTitle": "Mehrere Organisationen in der Nähe",
+  "forYouLocationMultipleOrgsFoundBody": "Wir haben mehrere Givt-fähige Organisationen in deiner Nähe gefunden. Bitte wähle unten eine aus.",
+  "forYouBluetoothOffTitle": "Bluetooth ist deaktiviert",
+  "forYouBluetoothOffBody": "Bitte aktiviere Bluetooth, um Organisationen in deiner Nähe zu finden.",
   "reccurringGivtIsBeingProcessed": "Vielen Dank für deine wiederkehrende Spende an {value0}!\n Um alle Informationen zu sehen, gehe ins Menü 'Wiederkehrende Spenden'.",
   "amountLimitExceededRecurringDonation": "Dieser Betrag ist höher als der von dir gewählte Höchstbetrag. Möchtest du fortfahren oder den Betrag ändern?",
   "sepaVerifyBody": "Wenn einer der oben genannten Punkte nicht korrekt ist, brich die Registrierung ab und ändere deine \"persönlichen Daten\".",
@@ -945,7 +1034,7 @@
   "permitBiometricActivateWithType": "{value0} aktivieren",
   "youHaveBeenInvitedToImpactGroup": "You have been invited\nto the ",
   "acceptInviteKey": "Accept the invite",
-  "chooseGroup": "Choose Group",
+  "chooseGroup": "Willkommen {firstName}",
   "groups": "Groups",
   "genericSuccessTitle": "Consider it done!",
   "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?",
@@ -1022,7 +1111,7 @@
   "gameStatsActivityThisWeek": "Game activity this week",
   "gameStatsPlayGame": "Play the Gratitude Game",
   "gameStatsAmountOfDeeds": "{amount} deeds",
-  "homescreenOverlayDiscoverTitle": "Discover your reward!",
+  "homescreenOverlayDiscoverTitle": "Belohnung für dich!",
   "homescreenOverlayGiveTitle": "Who would like to give?",
   "tutorialFamilyExplanationTitle": "Here’s your super family!",
   "tutorialFamilyExplanationDescription": "Work together to find causes to support and spread kindness.",

@@ -16,12 +16,19 @@ import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
+import 'package:givt_app/features/give/pages/for_you_beacon_discovery_page.dart';
+import 'package:givt_app/features/give/pages/for_you_giving_page.dart';
+import 'package:givt_app/features/give/pages/for_you_gps_discovery_page.dart';
+import 'package:givt_app/features/give/pages/for_you_list_page.dart';
+import 'package:givt_app/features/give/pages/for_you_organisation_confirm_page.dart';
+import 'package:givt_app/features/give/pages/for_you_qr_discovery_page.dart';
 import 'package:givt_app/features/give/pages/gps_scan_page.dart';
 import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
+import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
@@ -427,45 +434,192 @@ class AppRouter {
           GoRoute(
             path: Pages.chooseCategoryList.path,
             name: Pages.chooseCategoryList.name,
+            pageBuilder: (context, state) {
+              final user = context.read<AuthCubit>().state.user;
+              return CustomTransitionPage<void>(
+                key: state.pageKey,
+                transitionDuration: const Duration(milliseconds: 220),
+                reverseTransitionDuration: const Duration(milliseconds: 180),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                      final fadeAnimation = CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOutCubic,
+                      );
+                      final slideAnimation = Tween<Offset>(
+                        begin: const Offset(0, 0.02),
+                        end: Offset.zero,
+                      ).animate(fadeAnimation);
+
+                      return FadeTransition(
+                        opacity: fadeAnimation,
+                        child: SlideTransition(
+                          position: slideAnimation,
+                          child: child,
+                        ),
+                      );
+                    },
+                child: MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (_) =>
+                          GiveBloc(
+                            getIt(),
+                            getIt(),
+                            getIt(),
+                            getIt(),
+                          )..add(
+                            const GiveCheckLastDonation(),
+                          ),
+                    ),
+                    BlocProvider(
+                      create: (_) =>
+                          OrganisationBloc(
+                            getIt(),
+                            getIt(),
+                            getIt(),
+                          )..add(
+                            OrganisationFetch(
+                              Country.fromCode(user.country),
+
+                              /// Disable last donated organisation
+                              /// in the discover flow as it's
+                              /// not present in the native app
+                              showLastDonated: false,
+                              type: state.extra != null && state.extra is int
+                                  ? state.extra! as int
+                                  : CollectGroupType.none.index,
+                            ),
+                          ),
+                    ),
+                  ],
+                  child: const OrganizationListPage(
+                    isChooseCategory: true,
+                  ),
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.forYouList.path,
+            name: Pages.forYouList.name,
             builder: (context, state) {
               final user = context.read<AuthCubit>().state.user;
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (_) =>
-                        GiveBloc(
-                          getIt(),
-                          getIt(),
-                          getIt(),
-                          getIt(),
-                        )..add(
-                          const GiveCheckLastDonation(),
-                        ),
-                  ),
-                  BlocProvider(
-                    create: (_) =>
-                        OrganisationBloc(
-                          getIt(),
-                          getIt(),
-                          getIt(),
-                        )..add(
-                          OrganisationFetch(
-                            Country.fromCode(user.country),
+              final flowContext = state.extra is Map<String, dynamic>
+                  ? ForYouFlowContext.fromMap(
+                      state.extra! as Map<String, dynamic>,
+                    )
+                  : state.extra is ForYouFlowContext
+                  ? state.extra! as ForYouFlowContext
+                  : const ForYouFlowContext(source: ForYouEntrySource.search);
 
-                            /// Disable last donated organisation
-                            /// in the discover flow as it's
-                            /// not present in the native app
-                            showLastDonated: false,
-                            type: state.extra != null && state.extra is int
-                                ? state.extra! as int
-                                : CollectGroupType.none.index,
-                          ),
+              return BlocProvider(
+                create: (_) =>
+                    OrganisationBloc(
+                        getIt(),
+                        getIt(),
+                        getIt(),
+                      )
+                      ..add(
+                        OrganisationFetch(
+                          Country.fromCode(user.country),
+                          showLastDonated: false,
+                          type: CollectGroupType.none.index,
                         ),
-                  ),
-                ],
-                child: const OrganizationListPage(
-                  isChooseCategory: true,
+                      )
+                      ..add(const FavoritesRefresh()),
+                child: ForYouListPage(flowContext: flowContext),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.forYouByLocation.path,
+            name: Pages.forYouByLocation.name,
+            builder: (context, state) {
+              final flowContext = state.extra is Map<String, dynamic>
+                  ? ForYouFlowContext.fromMap(
+                      state.extra! as Map<String, dynamic>,
+                    )
+                  : state.extra is ForYouFlowContext
+                  ? state.extra! as ForYouFlowContext
+                  : const ForYouFlowContext(
+                      source: ForYouEntrySource.search,
+                    );
+
+              return ForYouGpsDiscoveryPage(flowContext: flowContext);
+            },
+          ),
+          GoRoute(
+            path: Pages.forYouByQrCode.path,
+            name: Pages.forYouByQrCode.name,
+            builder: (context, state) {
+              final flowContext = state.extra is Map<String, dynamic>
+                  ? ForYouFlowContext.fromMap(
+                      state.extra! as Map<String, dynamic>,
+                    )
+                  : state.extra is ForYouFlowContext
+                  ? state.extra! as ForYouFlowContext
+                  : const ForYouFlowContext(
+                      source: ForYouEntrySource.search,
+                    );
+
+              return ForYouQrDiscoveryPage(flowContext: flowContext);
+            },
+          ),
+          GoRoute(
+            path: Pages.forYouByBeacon.path,
+            name: Pages.forYouByBeacon.name,
+            builder: (context, state) {
+              final flowContext = state.extra is Map<String, dynamic>
+                  ? ForYouFlowContext.fromMap(
+                      state.extra! as Map<String, dynamic>,
+                    )
+                  : state.extra is ForYouFlowContext
+                  ? state.extra! as ForYouFlowContext
+                  : const ForYouFlowContext(
+                      source: ForYouEntrySource.search,
+                    );
+
+              return ForYouBeaconDiscoveryPage(flowContext: flowContext);
+            },
+          ),
+          GoRoute(
+            path: Pages.forYouOrganisationConfirm.path,
+            name: Pages.forYouOrganisationConfirm.name,
+            builder: (context, state) {
+              final flowContext = state.extra is Map<String, dynamic>
+                  ? ForYouFlowContext.fromMap(
+                      state.extra! as Map<String, dynamic>,
+                    )
+                  : state.extra is ForYouFlowContext
+                  ? state.extra! as ForYouFlowContext
+                  : const ForYouFlowContext(
+                      source: ForYouEntrySource.search,
+                    );
+
+              return ForYouOrganisationConfirmPage(flowContext: flowContext);
+            },
+          ),
+          GoRoute(
+            path: Pages.forYouGiving.path,
+            name: Pages.forYouGiving.name,
+            builder: (context, state) {
+              final flowContext = state.extra is Map<String, dynamic>
+                  ? ForYouFlowContext.fromMap(
+                      state.extra! as Map<String, dynamic>,
+                    )
+                  : state.extra is ForYouFlowContext
+                  ? state.extra! as ForYouFlowContext
+                  : const ForYouFlowContext(source: ForYouEntrySource.search);
+
+              return BlocProvider(
+                create: (_) => GiveBloc(
+                  getIt(),
+                  getIt(),
+                  getIt(),
+                  getIt(),
                 ),
+                child: ForYouGivingPage(flowContext: flowContext),
               );
             },
           ),
@@ -493,11 +647,31 @@ class AppRouter {
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
           listener: (context, state) =>
               _checkAndRedirectAuth(state, context, routerState),
-          child: BlocProvider(
-            create: (_) => RemoteDataSourceSyncBloc(
-              getIt(),
-              getIt(),
-            )..add(const RemoteDataSourceSyncRequested()),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => RemoteDataSourceSyncBloc(
+                  getIt(),
+                  getIt(),
+                )..add(const RemoteDataSourceSyncRequested()),
+              ),
+              BlocProvider(
+                create: (_) {
+                  final user = context.read<AuthCubit>().state.user;
+                  return OrganisationBloc(
+                    getIt(),
+                    getIt(),
+                    getIt(),
+                  )..add(
+                    OrganisationFetch(
+                      Country.fromCode(user.country),
+                      showLastDonated: false,
+                      type: CollectGroupType.none.index,
+                    ),
+                  );
+                },
+              ),
+            ],
             child: HomePage(
               initialAmount: routerState.uri.queryParameters['amount'] != null
                   ? double.tryParse(routerState.uri.queryParameters['amount']!)

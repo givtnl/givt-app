@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 5.1.1
+version: 5.2.0
 publish_to: none
 
 environment:
@@ -56,7 +56,7 @@ dependencies:
   flutter_keyboard_visibility: ^6.0.0
   local_auth: ^2.3.0
   logging: ^1.3.0
-  lottie: ^3.3.1
+  lottie: ^3.3.2
   material_color_utilities: ^0.13.0
   mobile_scanner: ^7.2.0
   moment_dart: ^5.2.3
@@ -185,6 +185,7 @@ flutter:
           weight: 900
   assets:
     - assets/images/
+    - assets/images/for_you/
     - assets/lotties/
     - assets/ca/
     - assets/family/images/
@@ -198,4 +199,5 @@ flutter:
     - assets/family/images/barcode_hunt/products/
     - assets/family/lotties/
     - assets/fun/illustrations/
+    - assets/fun/givy/
     - assets/family/audio/

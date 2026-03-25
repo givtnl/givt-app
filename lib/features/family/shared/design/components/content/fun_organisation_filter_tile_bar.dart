@@ -10,15 +10,18 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
     this.onFilterChanged,
     this.stratPadding = 24,
     this.removedTypes = const [],
+    this.bloc,
     super.key,
   });
   final double stratPadding;
   final List<String> removedTypes;
   final void Function(CollectGroupType)? onFilterChanged;
+  final OrganisationBloc? bloc;
   @override
   Widget build(BuildContext context) {
+    final effectiveBloc = bloc ?? getIt<OrganisationBloc>();
     return BlocBuilder<OrganisationBloc, OrganisationState>(
-      bloc: getIt<OrganisationBloc>(),
+      bloc: effectiveBloc,
       builder: (context, state) {
         final types = state.organisations.map((e) => e.type).toSet().toList()
           ..removeWhere((item) => removedTypes.contains(item.name));
@@ -33,9 +36,6 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              SizedBox(
-                width: stratPadding,
-              ),
               ...types.map(
                 (e) => FilterTile(
                     type: e,
@@ -46,7 +46,7 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
                           ? CollectGroupType.none.index
                           : e.index;
                       onFilterChanged?.call(CollectGroupType.values[typeIndex]);
-                      getIt<OrganisationBloc>().add(
+                      effectiveBloc.add(
                         OrganisationTypeChanged(typeIndex),
                       );
                     }),

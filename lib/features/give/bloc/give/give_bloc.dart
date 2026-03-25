@@ -47,6 +47,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
     on<GiveOrganisationSelected>(_organisationSelected);
 
+    on<GiveForYouSubmitDonations>(_forYouSubmitDonations);
+
     on<GiveBTBeaconScanned>(_onBeaconScanned);
 
     on<GiveCheckLastDonation>(_checkLastDonation);
@@ -270,6 +272,68 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
+  }
+
+  FutureOr<void> _forYouSubmitDonations(
+    GiveForYouSubmitDonations event,
+    Emitter<GiveState> emit,
+  ) async {
+    if (state.status == GiveStatus.readyToGive) {
+      return;
+    }
+    emit(state.copyWith(status: GiveStatus.loading));
+    try {
+      if (event.donations.isEmpty) {
+        emit(state.copyWith(status: GiveStatus.error));
+        return;
+      }
+
+      final organisation = await _getOrganisation(event.nameSpace);
+
+      await _campaignRepository.saveLastDonation(
+        organisation,
+      );
+
+      var transactionIds = <int>[];
+      try {
+        LoggingInfo.instance.info('Submitting Givts (For You multi-goal)');
+        transactionIds = await _givtRepository.submitGivts(
+          guid: event.userGUID,
+          body: {'donations': GivtTransaction.toJsonList(event.donations)},
+        );
+        await _handleAutoFavorites(event.nameSpace, event.userGUID);
+      } on SocketException catch (e) {
+        log(e.toString());
+        emit(
+          state.copyWith(
+            organisation: organisation,
+            status: GiveStatus.noInternetConnection,
+          ),
+        );
+        return;
+      } on GivtServerFailure catch (e, stackTrace) {
+        _handleGivtServerFailure(e, stackTrace, emit);
+        return;
+      }
+
+      emit(
+        state.copyWith(
+          status: GiveStatus.readyToGive,
+          organisation: organisation,
+          givtTransactions: event.donations,
+          transactionIds: transactionIds,
+          userGUID: event.userGUID,
+        ),
+      );
+    } catch (e, stackTrace) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(state.copyWith(status: GiveStatus.error));
+      return;
+    }
+    emit(state.copyWith(status: GiveStatus.processed));
   }
 
   FutureOr<void> _checkLastDonation(

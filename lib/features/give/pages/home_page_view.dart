@@ -15,6 +15,7 @@ class HomePageView extends StatefulWidget {
     required this.retry,
     required this.afterGivingRedirection,
     required this.code,
+    required this.initialPageIndex,
     this.giveBloc,
     this.qrConfirmWidget,
     super.key,
@@ -25,6 +26,7 @@ class HomePageView extends StatefulWidget {
   final bool retry;
   final String code;
   final String afterGivingRedirection;
+  final int initialPageIndex;
   final void Function(int) onPageChanged;
   final GiveBloc? giveBloc;
   final Widget? qrConfirmWidget;
@@ -35,13 +37,28 @@ class HomePageView extends StatefulWidget {
 
 class _HomePageViewState extends State<HomePageView> {
   late PageController pageController;
-  int pageIndex = 0;
+  late int pageIndex;
   bool isPageAnimationActive = false;
 
   @override
   void initState() {
-    pageController = PageController();
+    pageIndex = widget.initialPageIndex;
+    pageController = PageController(initialPage: widget.initialPageIndex);
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(HomePageView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialPageIndex != oldWidget.initialPageIndex &&
+        widget.initialPageIndex != pageIndex) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        onPageChanged(widget.initialPageIndex);
+      });
+    }
   }
 
   @override
@@ -66,9 +83,11 @@ class _HomePageViewState extends State<HomePageView> {
             child: PageView(
               controller: pageController,
               onPageChanged: onPageChanged,
+              allowImplicitScrolling: true,
               children: [
                 ChooseAmount(
-                  initialAmount: (widget.giveBloc?.state.collections[0] ?? 0) > 0
+                  initialAmount:
+                      (widget.giveBloc?.state.collections[0] ?? 0) > 0
                       ? widget.giveBloc!.state.collections[0]
                       : (widget.code.isEmpty ? widget.initialAmount : null),
                   country: Country.fromCode(auth.user.country),
@@ -81,13 +100,13 @@ class _HomePageViewState extends State<HomePageView> {
                   onAmountChanged: (firstCollection, secondCollection, thirdCollection) async {
                     final currentState =
                         widget.giveBloc?.state ?? const GiveState();
-            
+
                     final isQR = HomePageQRFlowHandler.isQRFlow(
                       currentState,
                       widget.code,
                       widget.giveBloc,
                     );
-            
+
                     LoggingInfo.instance.info(
                       'HomePageView: onAmountChanged - '
                       'isQRFlow: $isQR, '
@@ -100,7 +119,7 @@ class _HomePageViewState extends State<HomePageView> {
                       'hasTransactions: ${currentState.givtTransactions.isNotEmpty}, '
                       'transactionCount: ${currentState.givtTransactions.length}',
                     );
-            
+
                     if (isQR) {
                       await HomePageQRFlowHandler.handleQRFlow(
                         context,
@@ -127,7 +146,7 @@ class _HomePageViewState extends State<HomePageView> {
                     }
                   },
                 ),
-                const ChooseCategory(),
+                const ForYou(),
               ],
             ),
           ),

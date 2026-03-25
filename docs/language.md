@@ -10,7 +10,7 @@ The application distinguishes between the **action** of giving, the **object** (
 | :--- | :--- | :--- | :--- | :--- |
 | **Action (Verb)** | Give | Geven | Geben | Donar / Dar* |
 | **Object (Noun)** | Donation | Gift | Spende | Donación |
-| **Context** | Collection / Collection Bag | Collecte / Collectebus | Kollekte | Colecta / Recolección |
+| **Context** | Collection / Collection Bag | Collectemiddel / collectedoel | Kollekte | Colecta / Recolección |
 
 *\*Note: Spanish uses "Donar" for primary actions (buttons) but may use "Dar" in conversational text (e.g., "Gracias por dar").*
 
@@ -44,6 +44,10 @@ The application distinguishes between the **action** of giving, the **object** (
 ### 5. Capitalization
 *   **Sentence case**: Use sentence case for all text elements, including titles, buttons, and labels. Only the first letter of the first word is capitalized (e.g., "Give now", "Cancel donation", "Hé gulle gever").
     *   *Exception*: Proper nouns and brand names (e.g., "Givt", "Bluetooth").
+
+### 6. Dutch collection terminology (For You flow)
+*   In Dutch UI copy for the For You flow, avoid **"collectie"** terminology.
+*   Prefer **"collectemiddel"** for the device context and **"collectedoel"** for goals (e.g., "Eerste collectedoel").
 
 ## Data Formatting
 

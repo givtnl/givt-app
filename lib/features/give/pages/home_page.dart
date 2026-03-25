@@ -27,6 +27,7 @@ import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/utils/shared_preferences_keys.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -54,7 +55,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  int pageIndex = 0;
+  late int pageIndex;
   final _key = GlobalKey<ScaffoldState>();
   final AppConfig _appConfig = getIt();
   final MandatePopupDismissalTracker _mandatePopupDismissalTracker =
@@ -68,6 +69,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    // Load the last used tab index from SharedPreferences
+    pageIndex = getIt<SharedPreferences>()
+            .getInt(NativeSharedPreferencesKeys.homePageLastTabIndex) ??
+        0;
     WidgetsBinding.instance.addObserver(this); // Add lifecycle observer
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
@@ -167,7 +172,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       );
 
     final auth = context.watch<AuthCubit>().state;
-    final shouldLockScreen = _mandatePopupDismissalTracker.shouldForceCompletion &&
+    final shouldLockScreen =
+        _mandatePopupDismissalTracker.shouldForceCompletion &&
         auth.user.needRegistration;
 
     if (widget.navigateTo.isNotEmpty &&
@@ -184,210 +190,227 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     return PopScope(
       canPop: !shouldLockScreen,
       child: Scaffold(
-      key: _key,
-      resizeToAvoidBottomInset: false,
-      appBar: FunTopAppBar(
-        variant: FunTopAppBarVariant.white,
-        key: const ValueKey('EU-Home-AppBar'),
-        title: switch (pageIndex) {
-          0 => locals.amount,
-          1 => locals.chooseGroup,
-          _ => locals.give,
-        },
-        leading: badges.Badge(
-          showBadge: auth.user.needRegistration || !auth.user.mandateSigned,
-          position: badges.BadgePosition.topStart(
-            top: 10,
-            start: 30,
-          ),
-          child: IconButton(
-            icon: const FaIcon(
-              FontAwesomeIcons.bars,
-              semanticLabel: 'homeMenu',
+        key: _key,
+        resizeToAvoidBottomInset: false,
+        appBar: FunTopAppBar(
+          variant: FunTopAppBarVariant.white,
+          key: const ValueKey('EU-Home-AppBar'),
+          title: switch (pageIndex) {
+            0 => locals.amount,
+            1 => locals.chooseGroup(auth.user.firstName),
+            _ => locals.give,
+          },
+          leading: badges.Badge(
+            showBadge: auth.user.needRegistration || !auth.user.mandateSigned,
+            position: badges.BadgePosition.topStart(
+              top: 10,
+              start: 30,
             ),
-            onPressed: () => _key.currentState?.openDrawer(),
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              useSafeArea: true,
-              backgroundColor: AppTheme.givtPurple,
-              builder: (_) => const FAQBottomSheet(),
-            ),
-            icon: const Icon(
-              semanticLabel: 'homeQuestionMark',
-              Icons.question_mark_outlined,
-              size: 26,
-            ),
-          ),
-          Visibility(
-            // ignore: avoid_redundant_argument_values
-            visible: kDebugMode,
             child: IconButton(
-              onPressed: () async {
-                final prefs = await SharedPreferences.getInstance();
-                if (!context.mounted) {
-                  return;
-                }
-                var prefsStrings = '';
-                prefs.getKeys().forEach((element) {
-                  prefsStrings += '$element: ${prefs.get(element)}\n';
-                });
-                final apiUrl = getIt<RequestHelper>().apiURL;
-                await showDialog<void>(
-                  context: context,
-                  builder: (_) => WarningDialog(
-                    title: 'Debug Panel',
-                    content:
-                        'API Url: $apiUrl\n$auth\n Shared Preferences: \n$prefsStrings',
-                    onConfirm: () => context.pop(),
-                  ),
-                );
-              },
+              icon: const FaIcon(
+                FontAwesomeIcons.bars,
+                semanticLabel: 'homeMenu',
+              ),
+              onPressed: () => _key.currentState?.openDrawer(),
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () => showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                backgroundColor: AppTheme.givtPurple,
+                builder: (_) => const FAQBottomSheet(),
+              ),
               icon: const Icon(
-                semanticLabel: 'homeAdminPanel',
-                Icons.admin_panel_settings,
+                semanticLabel: 'homeQuestionMark',
+                Icons.question_mark_outlined,
                 size: 26,
               ),
             ),
-          ),
-        ],
-      ),
-      drawer: const CustomNavigationDrawer(),
-      body: widget.code.isNotEmpty
-          ? BlocProvider(
-              key: ValueKey(
-                'qr-bloc-${widget.code}-$_scanCounter-${auth.status}',
-              ), // Use counter and status for unique key
-              create: (_) {
-                final bloc = GiveBloc(
-                  getIt(),
-                  getIt(),
-                  getIt(),
-                  getIt(),
-                );
-                // Trigger QR code scan when code is present and user is authenticated
-                if (auth.status == AuthStatus.authenticated) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    LoggingInfo.instance.info(
-                      'HomePage: Creating new BlocProvider for code ${widget.code} (counter: $_scanCounter, status: ${auth.status})',
-                    );
-                    // Mark this code as processed
-                    _lastProcessedCode = widget.code;
-
-                    bloc.add(
-                      GiveQRCodeScannedOutOfApp(
-                        widget.code,
-                        widget.afterGivingRedirection,
-                        auth.user.guid,
-                        amount: widget.initialAmount?.toString() ?? '',
-                      ),
-                    );
-                  });
-                } else {
-                  LoggingInfo.instance.info(
-                    'HomePage: BlocProvider created but waiting for authentication (status: ${auth.status})',
-                  );
-                }
-                return bloc;
-              },
-              child: BlocListener<GiveBloc, GiveState>(
-                listener: (context, state) {
-                  // Reset last processed code when state goes back to initial
-                  // This allows scanning the same QR code again after canceling
-                  if (state.status == GiveStatus.initial) {
-                    // Don't increment counter here - we only want to increment
-                    // when app resumes from background with same code
-                    _lastProcessedCode = null;
-                    LoggingInfo.instance.info(
-                      'HomePage: GiveBloc reset to initial, clearing last processed code',
-                    );
+            Visibility(
+              // ignore: avoid_redundant_argument_values
+              visible: kDebugMode,
+              child: IconButton(
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  if (!context.mounted) {
+                    return;
                   }
+                  var prefsStrings = '';
+                  prefs.getKeys().forEach((element) {
+                    prefsStrings += '$element: ${prefs.get(element)}\n';
+                  });
+                  final apiUrl = getIt<RequestHelper>().apiURL;
+                  await showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: 'Debug Panel',
+                      content:
+                          'API Url: $apiUrl\n$auth\n Shared Preferences: \n$prefsStrings',
+                      onConfirm: () => context.pop(),
+                    ),
+                  );
                 },
-                child: HomePageWithQRCode(
-                  initialAmount: widget.initialAmount,
-                  given: widget.given,
-                  retry: widget.retry,
-                  code: widget.code,
-                  afterGivingRedirection: widget.afterGivingRedirection,
-                  onPageChanged: (index) => setState(
-                    () {
-                      pageIndex = index;
-                    },
-                  ),
-                  auth: auth,
-                  mandatePopupDismissalTracker: _mandatePopupDismissalTracker,
-                ),
-              ),
-            )
-          : MultiBlocListener(
-              listeners: [
-                BlocListener<
-                  RemoteDataSourceSyncBloc,
-                  RemoteDataSourceSyncState
-                >(
-                  listener: (context, state) {
-                    // Debug information
-                    if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                      var syncString = 'Synced successfully';
-                      if (widget.code.isNotEmpty) {
-                        syncString += ' with mediumId/code ${widget.code}';
-                      }
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            syncString,
-                          ),
-                        ),
-                      );
-                    }
-
-                    // Needs registration dialog
-                    if (state is RemoteDataSourceSyncSuccess) {
-                      if (!auth.user.needRegistration &&
-                          auth.user.mandateSigned) {
-                        return;
-                      }
-
-                      // TODO: Not show over biometrics
-                      NeedsRegistrationDialog.show(
-                        context,
-                        mandatePopupDismissalTracker:
-                            _mandatePopupDismissalTracker,
-                      );
-                    }
-                  },
-                ),
-                BlocListener<InfraCubit, InfraState>(
-                  listener: (context, state) {
-                    if (state is InfraUpdateAvailable) {
-                      _displayUpdateDialog(
-                        context,
-                        state.appUpdate,
-                      );
-                    }
-                  },
-                ),
-              ],
-              child: SafeArea(
-                child: HomePageView(
-                  initialAmount: widget.initialAmount,
-                  given: widget.given,
-                  retry: widget.retry,
-                  code: widget.code,
-                  afterGivingRedirection: widget.afterGivingRedirection,
-                  onPageChanged: (index) => setState(
-                    () {
-                      pageIndex = index;
-                    },
-                  ),
+                icon: const Icon(
+                  semanticLabel: 'homeAdminPanel',
+                  Icons.admin_panel_settings,
+                  size: 26,
                 ),
               ),
             ),
-    ),
+          ],
+        ),
+        drawer: const CustomNavigationDrawer(),
+        body: widget.code.isNotEmpty
+            ? BlocProvider(
+                key: ValueKey(
+                  'qr-bloc-${widget.code}-$_scanCounter-${auth.status}',
+                ), // Use counter and status for unique key
+                create: (_) {
+                  final bloc = GiveBloc(
+                    getIt(),
+                    getIt(),
+                    getIt(),
+                    getIt(),
+                  );
+                  // Trigger QR code scan when code is present and user is authenticated
+                  if (auth.status == AuthStatus.authenticated) {
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      LoggingInfo.instance.info(
+                        'HomePage: Creating new BlocProvider for code ${widget.code} (counter: $_scanCounter, status: ${auth.status})',
+                      );
+                      // Mark this code as processed
+                      _lastProcessedCode = widget.code;
+
+                      bloc.add(
+                        GiveQRCodeScannedOutOfApp(
+                          widget.code,
+                          widget.afterGivingRedirection,
+                          auth.user.guid,
+                          amount: widget.initialAmount?.toString() ?? '',
+                        ),
+                      );
+                    });
+                  } else {
+                    LoggingInfo.instance.info(
+                      'HomePage: BlocProvider created but waiting for authentication (status: ${auth.status})',
+                    );
+                  }
+                  return bloc;
+                },
+                child: BlocListener<GiveBloc, GiveState>(
+                  listener: (context, state) {
+                    // Reset last processed code when state goes back to initial
+                    // This allows scanning the same QR code again after canceling
+                    if (state.status == GiveStatus.initial) {
+                      // Don't increment counter here - we only want to increment
+                      // when app resumes from background with same code
+                      _lastProcessedCode = null;
+                      LoggingInfo.instance.info(
+                        'HomePage: GiveBloc reset to initial, clearing last processed code',
+                      );
+                    }
+                  },
+                  child: HomePageWithQRCode(
+                    initialAmount: widget.initialAmount,
+                    given: widget.given,
+                    retry: widget.retry,
+                    code: widget.code,
+                    afterGivingRedirection: widget.afterGivingRedirection,
+                    initialPageIndex: pageIndex,
+                    onPageChanged: (index) => setState(
+                      () {
+                        pageIndex = index;
+                        getIt<SharedPreferences>().setInt(
+                          NativeSharedPreferencesKeys.homePageLastTabIndex,
+                          index,
+                        );
+                      },
+                    ),
+                    onQrConfirmedSwitchToGivtTab: () => setState(() {
+                      pageIndex = 0;
+                      getIt<SharedPreferences>().setInt(
+                        NativeSharedPreferencesKeys.homePageLastTabIndex,
+                        0,
+                      );
+                    }),
+                    auth: auth,
+                    mandatePopupDismissalTracker: _mandatePopupDismissalTracker,
+                  ),
+                ),
+              )
+            : MultiBlocListener(
+                listeners: [
+                  BlocListener<
+                    RemoteDataSourceSyncBloc,
+                    RemoteDataSourceSyncState
+                  >(
+                    listener: (context, state) {
+                      // Debug information
+                      if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+                        var syncString = 'Synced successfully';
+                        if (widget.code.isNotEmpty) {
+                          syncString += ' with mediumId/code ${widget.code}';
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              syncString,
+                            ),
+                          ),
+                        );
+                      }
+
+                      // Needs registration dialog
+                      if (state is RemoteDataSourceSyncSuccess) {
+                        if (!auth.user.needRegistration &&
+                            auth.user.mandateSigned) {
+                          return;
+                        }
+
+                        // TODO: Not show over biometrics
+                        NeedsRegistrationDialog.show(
+                          context,
+                          mandatePopupDismissalTracker:
+                              _mandatePopupDismissalTracker,
+                        );
+                      }
+                    },
+                  ),
+                  BlocListener<InfraCubit, InfraState>(
+                    listener: (context, state) {
+                      if (state is InfraUpdateAvailable) {
+                        _displayUpdateDialog(
+                          context,
+                          state.appUpdate,
+                        );
+                      }
+                    },
+                  ),
+                ],
+                child: SafeArea(
+                  child: HomePageView(
+                    initialAmount: widget.initialAmount,
+                    given: widget.given,
+                    retry: widget.retry,
+                    code: widget.code,
+                    afterGivingRedirection: widget.afterGivingRedirection,
+                    initialPageIndex: pageIndex,
+                    onPageChanged: (index) => setState(
+                      () {
+                        pageIndex = index;
+                        getIt<SharedPreferences>().setInt(
+                          NativeSharedPreferencesKeys.homePageLastTabIndex,
+                          index,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+      ),
     );
   }
 

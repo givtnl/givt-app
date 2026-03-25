@@ -7,15 +7,15 @@ alwaysApply: true
 
 ## Event Implementation
 - Include analytics events for all user interactions
-- Use `AnalyticsEvent` class with `AmplitudeEvents` enum values
+- Use `AnalyticsEvent` class with `AnalyticsEventName` enum values
 - Add `analyticsEvent` parameter to all interactive components
 - Required for FUN components like `FunButton`
 - Don't reuse events for different actions
 
 ## Event Naming
-- Use only predefined event names from `AmplitudeEvents` enum
+- Use only predefined event names from `AnalyticsEventName` enum
 - Follow naming pattern: `componentNameActionVerb`
-- Add new event types to `AmplitudeEvents` enum
+- Add new event types to `AnalyticsEventName` enum
 
 ## Event Parameters
 - Use established key names from `AnalyticsHelper` constants
@@ -38,7 +38,7 @@ SummaryRow(
   label: 'Organization',
   value: 'Charity Name',
   analyticsEvent: AnalyticsEvent(
-    AmplitudeEvents.recurringStep4ConfirmEditOrganisation,
+    AnalyticsEventName.giveButtonPressed,
   ),
   onEdit: () => _cubit.navigateToOrganization(),
 ),
@@ -49,11 +49,11 @@ SummaryRow(
   label: 'Organization',
   value: 'Charity Name',
   analyticsEvent: AnalyticsEvent(
-    AmplitudeEvents.recurringStep4ConfirmEditOrganisation,
+    AnalyticsEventName.giveButtonPressed,
   ),
   onEdit: () {
     AnalyticsHelper.logEvent( // ← Remove this - redundant!
-      eventName: AmplitudeEvents.recurringStep4ConfirmEditOrganisation,
+      eventName: AnalyticsEventName.giveButtonPressed,
     );
     _cubit.navigateToOrganization();
   },

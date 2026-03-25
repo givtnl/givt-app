@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
@@ -18,6 +17,9 @@ class OrganisationListFamilyContent extends StatefulWidget {
     required this.onTapListItem,
     required this.removedCollectGroupTypes,
     this.showFavorites = false,
+    this.autoFocusSearch = false,
+    this.allowSelection = true,
+    this.reSortOnFavoriteToggle = true,
     super.key,
   });
 
@@ -25,6 +27,9 @@ class OrganisationListFamilyContent extends StatefulWidget {
   final void Function(CollectGroup) onTapListItem;
   final List<CollectGroupType> removedCollectGroupTypes;
   final bool showFavorites;
+  final bool autoFocusSearch;
+  final bool allowSelection;
+  final bool reSortOnFavoriteToggle;
 
   @override
   State<OrganisationListFamilyContent> createState() =>
@@ -33,12 +38,23 @@ class OrganisationListFamilyContent extends StatefulWidget {
 
 class _OrganisationListFamilyContentState
     extends State<OrganisationListFamilyContent> {
-  final TextEditingController controller = TextEditingController();
   CollectGroup selectedCollectgroup = const CollectGroup.empty();
+  final FocusNode _searchFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.autoFocusSearch) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _searchFocusNode.requestFocus();
+      });
+    }
+  }
 
   @override
   void dispose() {
-    controller.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -57,9 +73,17 @@ class _OrganisationListFamilyContentState
         }
       },
       builder: (context, state) {
+        final visibleOrganisations = state.filteredOrganisations
+            .where(
+              (organisation) =>
+                  !widget.removedCollectGroupTypes.contains(organisation.type),
+            )
+            .toList();
+
         return Column(
           children: [
             FunOrganisationFilterTilesBar(
+              bloc: widget.bloc,
               onFilterChanged: (type) {
                 if (selectedCollectgroup.type != type) {
                   setState(() {
@@ -67,18 +91,20 @@ class _OrganisationListFamilyContentState
                   });
                 }
               },
-              stratPadding: 0,
               removedTypes: [
                 ...widget.removedCollectGroupTypes.map((e) => e.name),
               ],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              child: FamilySearchField(
-                autocorrect: false,
-                controller: controller,
-                onChanged: (value) =>
-                    widget.bloc.add(OrganisationFilterQueryChanged(value)),
+              child: FunInput(
+                hintText: locals.forYouSearchOrganizations,
+                heroTag: 'discover_search_input_hero',
+                analyticsEvent: AnalyticsEventName.forYouSearchTapped.toEvent(),
+                focusNode: _searchFocusNode,
+                onChanged: (value) {
+                  widget.bloc.add(OrganisationFilterQueryChanged(value));
+                },
               ),
             ),
             if (state.status == OrganisationStatus.filtered)
@@ -89,34 +115,34 @@ class _OrganisationListFamilyContentState
                     color: AppTheme.neutralVariant95,
                   ),
                   shrinkWrap: true,
-                  itemCount: state.filteredOrganisations.length,
+                  itemCount: visibleOrganisations.length,
                   itemBuilder: (context, index) {
-                    final organisation = state.filteredOrganisations[index];
-                    if (widget.removedCollectGroupTypes.contains(
-                      organisation.type,
-                    )) {
-                      return const SizedBox.shrink();
-                    }
+                    final organisation = visibleOrganisations[index];
                     final isFavorited = state.favoritedOrganisations.contains(
                       organisation.nameSpace,
                     );
 
-                    return _buildListTile(
+                    final listTile = _buildListTile(
                       type: organisation.type,
                       title: organisation.orgName,
-                      isSelected: selectedCollectgroup == organisation,
+                      isSelected:
+                          widget.allowSelection &&
+                          selectedCollectgroup == organisation,
                       isFavorited: isFavorited,
-                      onTap: () {
-                        widget.onTapListItem(organisation);
-                        setState(() {
-                          selectedCollectgroup = organisation;
-                        });
-                      },
+                      onTap: widget.allowSelection
+                          ? () {
+                              widget.onTapListItem(organisation);
+                              setState(() {
+                                selectedCollectgroup = organisation;
+                              });
+                            }
+                          : () {},
                       onFavoritePressed: () {
                         if (isFavorited) {
                           widget.bloc.add(
                             RemoveOrganisationFromFavorites(
                               organisation.nameSpace,
+                              reSort: widget.reSortOnFavoriteToggle,
                             ),
                           );
                           AnalyticsHelper.logEvent(
@@ -129,7 +155,10 @@ class _OrganisationListFamilyContentState
                           );
                         } else {
                           widget.bloc.add(
-                            AddOrganisationToFavorites(organisation.nameSpace),
+                            AddOrganisationToFavorites(
+                              organisation.nameSpace,
+                              reSort: widget.reSortOnFavoriteToggle,
+                            ),
                           );
                           AnalyticsHelper.logEvent(
                             eventName:
@@ -142,6 +171,8 @@ class _OrganisationListFamilyContentState
                         }
                       },
                     );
+
+                    return listTile;
                   },
                 ),
               )
@@ -163,27 +194,27 @@ class _OrganisationListFamilyContentState
     required bool isFavorited,
     required VoidCallback onFavoritePressed,
   }) => ListTile(
-        key: UniqueKey(),
-        contentPadding: EdgeInsets.zero,
-        onTap: () => onTap.call(),
-        splashColor: FunTheme.of(context).highlight99,
-        selected: isSelected,
-        selectedTileColor: CollectGroupType.getColorComboByType(
-          type,
-        ).backgroundColor,
-        leading: Icon(
-          CollectGroupType.getIconByTypeUS(type),
-          color: FunTheme.of(context).primary20,
-        ),
-        title: LabelMediumText(title, color: AppTheme.primary20),
-        trailing: widget.showFavorites
-            ? IconButton(
-                icon: Icon(
-                  isFavorited ? Icons.favorite : Icons.favorite_border,
-                  color: isFavorited ? Colors.red : Colors.grey,
-                ),
-                onPressed: onFavoritePressed,
-              )
-            : null,
-      );
+    key: UniqueKey(),
+    contentPadding: EdgeInsets.zero,
+    onTap: () => onTap.call(),
+    splashColor: FunTheme.of(context).highlight99,
+    selected: isSelected,
+    selectedTileColor: CollectGroupType.getColorComboByType(
+      type,
+    ).backgroundColor,
+    leading: Icon(
+      CollectGroupType.getIconByTypeUS(type),
+      color: FunTheme.of(context).primary20,
+    ),
+    title: LabelMediumText(title, color: AppTheme.primary20),
+    trailing: widget.showFavorites
+        ? IconButton(
+            icon: Icon(
+              isFavorited ? Icons.favorite : Icons.favorite_border,
+              color: isFavorited ? Colors.red : Colors.grey,
+            ),
+            onPressed: onFavoritePressed,
+          )
+        : null,
+  );
 }

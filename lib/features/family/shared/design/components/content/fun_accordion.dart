@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_app_theme.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_small_text.dart';
-import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 
 /// FUN Accordion
 ///
@@ -35,13 +36,14 @@ class FunAccordion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = FunTheme.of(context);
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: _contentBackgroundColor,
+        color: _contentBackgroundColor(theme),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: _borderColor,
+          color: _borderColor(theme),
         ),
       ),
       child: Column(
@@ -51,14 +53,17 @@ class FunAccordion extends StatelessWidget {
             onTap: onHeaderTap,
             child: Container(
               decoration: BoxDecoration(
-                color: _headerBackgroundColor,
+                color: _headerBackgroundColor(theme),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 child: Row(
                   children: [
                     if (leadingIcon != null) ...[
-                      FaIcon(leadingIcon!, color: _titleColor, size: 18,),
+                      FaIcon(leadingIcon!, color: _titleColor(theme), size: 18),
                       const SizedBox(width: 12),
                     ],
                     Expanded(
@@ -67,20 +72,20 @@ class FunAccordion extends StatelessWidget {
                         children: [
                           TitleSmallText(
                             title,
-                            color: _titleColor,
+                            color: _titleColor(theme),
                           ),
                           if (subtitle != null) ...[
                             const SizedBox(height: 4),
                             LabelMediumText(
                               subtitle!,
-                              color: _subtitleColor,
+                              color: _subtitleColor(theme),
                             ),
                           ],
                         ],
                       ),
                     ),
                     const SizedBox(width: 8),
-                    _buildTrailingIcon(),
+                    _buildTrailingIcon(theme),
                   ],
                 ),
               ),
@@ -97,66 +102,60 @@ class FunAccordion extends StatelessWidget {
     );
   }
 
-  Color get _headerBackgroundColor {
+  Color _headerBackgroundColor(FunAppTheme theme) {
     switch (state) {
       case FunAccordionState.collapsed:
-        // Use neutral95 for collapsed state background (per Figma design)
-        return FamilyAppTheme.neutral95;
+        return theme.neutral98;
       case FunAccordionState.active:
-        // When active and expanded, use dark primary color for header
-        return isExpanded ? FamilyAppTheme.primary40 : FamilyAppTheme.primary99;
+        return isExpanded ? theme.secondary40 : theme.secondary99;
       case FunAccordionState.completed:
-        return FamilyAppTheme.primary40;
+        return theme.secondary40;
     }
   }
 
-  Color get _contentBackgroundColor {
+  Color _contentBackgroundColor(FunAppTheme theme) {
     if (isExpanded) {
       return Colors.white;
     }
-    // Content area always uses light background
-    return FamilyAppTheme.neutralVariant99;
+    return theme.neutralVariant99;
   }
 
-  Color get _borderColor {
+  Color _borderColor(FunAppTheme theme) {
     switch (state) {
       case FunAccordionState.collapsed:
-        // Use neutral80 for collapsed state border (per Figma design)
-        return FamilyAppTheme.neutral80;
+        return theme.neutral80;
       case FunAccordionState.active:
-        return FamilyAppTheme.primary40;
+        return theme.primary40;
       case FunAccordionState.completed:
-        return FamilyAppTheme.primary40;
+        return theme.primary40;
     }
   }
 
-  Color get _titleColor {
+  Color _titleColor(FunAppTheme theme) {
     switch (state) {
       case FunAccordionState.collapsed:
-        return FamilyAppTheme.primary20;
+        return theme.primary20;
       case FunAccordionState.active:
-        // When active and expanded, use white text on dark header
-        return isExpanded ? Colors.white : FamilyAppTheme.primary20;
+        return isExpanded ? Colors.white : theme.primary20;
       case FunAccordionState.completed:
         return Colors.white;
     }
   }
 
-  Color get _subtitleColor {
+  Color _subtitleColor(FunAppTheme theme) {
     switch (state) {
       case FunAccordionState.collapsed:
-        return FamilyAppTheme.neutral40;
+        return theme.neutral40;
       case FunAccordionState.active:
-        // When active and expanded, use light subtitle on dark header
         return isExpanded
             ? Colors.white.withValues(alpha: 0.9)
-            : FamilyAppTheme.neutral40;
+            : theme.neutral40;
       case FunAccordionState.completed:
         return Colors.white.withValues(alpha: 0.9);
     }
   }
 
-  Widget _buildTrailingIcon() {
+  Widget _buildTrailingIcon(FunAppTheme theme) {
     if (state == FunAccordionState.completed) {
       return const Icon(
         Icons.check_circle,
@@ -165,9 +164,10 @@ class FunAccordion extends StatelessWidget {
     }
 
     // Use white icon when header has dark background (active and expanded)
-    final iconColor = (state == FunAccordionState.active && isExpanded)
-        ? Colors.white
-        : _titleColor;
+    final iconColor =
+        (state == FunAccordionState.active && isExpanded)
+            ? Colors.white
+            : _titleColor(theme);
 
     return Icon(
       isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
