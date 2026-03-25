@@ -48,6 +48,20 @@ class _HomePageViewState extends State<HomePageView> {
   }
 
   @override
+  void didUpdateWidget(HomePageView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialPageIndex != oldWidget.initialPageIndex &&
+        widget.initialPageIndex != pageIndex) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) {
+          return;
+        }
+        onPageChanged(widget.initialPageIndex);
+      });
+    }
+  }
+
+  @override
   void dispose() {
     pageController.dispose();
     super.dispose();

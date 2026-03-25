@@ -329,6 +329,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         );
                       },
                     ),
+                    onQrConfirmedSwitchToGivtTab: () => setState(() {
+                      pageIndex = 0;
+                      getIt<SharedPreferences>().setInt(
+                        NativeSharedPreferencesKeys.homePageLastTabIndex,
+                        0,
+                      );
+                    }),
                     auth: auth,
                     mandatePopupDismissalTracker: _mandatePopupDismissalTracker,
                   ),

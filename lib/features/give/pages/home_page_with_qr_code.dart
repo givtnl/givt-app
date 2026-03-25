@@ -26,6 +26,7 @@ class HomePageWithQRCode extends StatefulWidget {
     required this.code,
     required this.afterGivingRedirection,
     required this.onPageChanged,
+    required this.onQrConfirmedSwitchToGivtTab,
     required this.auth,
     required this.mandatePopupDismissalTracker,
     required this.initialPageIndex,
@@ -39,6 +40,8 @@ class HomePageWithQRCode extends StatefulWidget {
   final String afterGivingRedirection;
   final int initialPageIndex;
   final void Function(int) onPageChanged;
+  /// After confirming the organisation from an out-of-app QR link, move to the Givt tab.
+  final VoidCallback onQrConfirmedSwitchToGivtTab;
   final AuthState auth;
   final MandatePopupDismissalTracker mandatePopupDismissalTracker;
 
@@ -330,6 +333,7 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
             skipSubmission: true,
           ),
         );
+        widget.onQrConfirmedSwitchToGivtTab();
       },
       onCancel: () {
         setState(() {
