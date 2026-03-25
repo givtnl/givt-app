@@ -161,17 +161,20 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       case BluetoothAdapterState.on:
         if (!FlutterBluePlus.isScanningNow && !_isProcessing) {
           setState(() => _state = _BeaconDiscoveryState.searching);
-          _scanResultsStream ??= FlutterBluePlus.onScanResults.listen(
+          _scanResultsStream ??= FlutterBluePlus.scanResults.listen(
             _onScanResults,
             onError: (_) {},
           );
-          await FlutterBluePlus.startScan(
-            timeout: const Duration(seconds: 30),
-            androidUsesFineLocation: true,
-          );
+          try {
+            await FlutterBluePlus.startScan(
+              timeout: const Duration(seconds: 30),
+              androidUsesFineLocation: true,
+            );
+          } catch (_) {}
         }
       case BluetoothAdapterState.off:
       case BluetoothAdapterState.unauthorized:
+      case BluetoothAdapterState.unavailable:
         if (mounted) {
           if (state == BluetoothAdapterState.off && Platform.isAndroid) {
             try {
