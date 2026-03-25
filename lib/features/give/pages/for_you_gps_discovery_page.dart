@@ -7,11 +7,10 @@ import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
 import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
@@ -237,7 +236,7 @@ class _SearchingBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(),
-        FunIconGivy.searching(circleSize: 140),
+        FunIconGivy.findingAnimation(circleSize: 140),
         const SizedBox(height: 28),
         TitleLargeText(
           locals.forYouLocationSearchingTitle,
@@ -349,7 +348,7 @@ class _MultipleOrgsFoundBody extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 28, 16, 16),
             child: Column(
               children: [
-                FunIconGivy.searching(circleSize: 140),
+                FunIconGivy.phone(circleSize: 140),
                 const SizedBox(height: 28),
                 TitleLargeText(
                   locals.forYouLocationMultipleOrgsFoundTitle,

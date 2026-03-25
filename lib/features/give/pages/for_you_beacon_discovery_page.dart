@@ -1,38 +1,27 @@
 import 'dart:async';
-import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
+import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_cubit.dart';
+import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_custom.dart';
+import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_uimodel.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
-import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/warning_dialog.dart';
+import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:sprintf/sprintf.dart';
-
-/// Debug-only: simulated beacon id (2s auto-navigation on this screen).
-/// Resolved with [ForYouDiscoveryResolvers.resolveCollectGroupFromBeaconId].
-const String kDebugForYouBeaconSimulatedId = '61f7ed014e4c0817a000';
-
-enum _BeaconDiscoveryState {
-  searching,
-  bluetoothOff,
-  permissionDenied,
-}
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class ForYouBeaconDiscoveryPage extends StatefulWidget {
   const ForYouBeaconDiscoveryPage({
@@ -47,279 +36,123 @@ class ForYouBeaconDiscoveryPage extends StatefulWidget {
       _ForYouBeaconDiscoveryPageState();
 }
 
-class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
-  bool _isDisposed = false;
-  bool _isProcessing = false;
-  _BeaconDiscoveryState _state = _BeaconDiscoveryState.searching;
-
-  StreamSubscription<BluetoothAdapterState>? _adapterStateStream;
-  StreamSubscription<List<ScanResult>>? _scanResultsStream;
-  StreamSubscription<bool>? _isScanningStream;
-  Timer? _debugBeaconSimTimer;
+class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage>
+    with WidgetsBindingObserver {
+  late final ForYouBeaconDiscoveryCubit _cubit;
 
   @override
   void initState() {
     super.initState();
-    _initBluetooth();
-    if (kDebugMode) {
-      _debugBeaconSimTimer = Timer(
-        const Duration(seconds: 2),
-        _debugSimulateBeaconAndNavigate,
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _isDisposed = true;
-    _debugBeaconSimTimer?.cancel();
-    _adapterStateStream?.cancel();
-    _scanResultsStream?.cancel();
-    _isScanningStream?.cancel();
-    _stopBluetoothScan();
-    super.dispose();
-  }
-
-  Future<void> _stopBluetoothScan() async {
-    try {
-      if (await FlutterBluePlus.isScanningNow) {
-        await FlutterBluePlus.stopScan();
-      }
-    } catch (_) {
-      // Ignore errors during dispose
-    }
-  }
-
-  Future<void> _debugSimulateBeaconAndNavigate() async {
-    if (!kDebugMode || _isDisposed || !mounted || _isProcessing) {
-      return;
-    }
-    _isProcessing = true;
-    _stopBluetoothScan();
-    await _resolveAndNavigate(kDebugForYouBeaconSimulatedId);
-  }
-
-  Future<void> _initBluetooth() async {
-    if (await FlutterBluePlus.isSupported == false) {
-      if (mounted) _goToList();
-      return;
-    }
-
-    // Request bluetooth permission (Android only).
-    if (Platform.isAndroid) {
-      final status = await Permission.bluetoothConnect.status;
-      if (status.isDenied || status.isPermanentlyDenied) {
-        final newStatus = await Permission.bluetoothConnect.request();
-        if (newStatus.isDenied || newStatus.isPermanentlyDenied) {
-          if (!mounted) return;
-          setState(() => _state = _BeaconDiscoveryState.permissionDenied);
-          return;
-        }
-      }
-    }
-
-    // On iOS we need to check Bluetooth status manually because it's not a standard permission
-    if (Platform.isIOS) {
-      final bluetoothState = await FlutterBluePlus.adapterState.first;
-      if (bluetoothState == BluetoothAdapterState.unauthorized) {
-        if (!mounted) return;
-        setState(() => _state = _BeaconDiscoveryState.permissionDenied);
-        return;
-      }
-    }
-
-    // Subscribe to adapter state so the scan auto-starts whenever Bluetooth
-    // becomes available — including after the OS permission popup is accepted
-    // (iOS) or the user enables Bluetooth from Settings and returns.
-    _adapterStateStream = FlutterBluePlus.adapterState.listen(
-      _onAdapterStateChanged,
-      onError: (_) {},
-    );
-
-    // Listen to scanning state changes to restart scan if it stops
-    // (matches the original BTScanPage behavior for infinite searching)
-    _isScanningStream = FlutterBluePlus.isScanning.listen((isScanning) {
-      if (_isDisposed || !mounted || _isProcessing) return;
-
-      if (!isScanning &&
-          _state == _BeaconDiscoveryState.searching &&
-          !_isProcessing &&
-          !FlutterBluePlus.isScanningNow) {
-        FlutterBluePlus.startScan(
-          timeout: const Duration(seconds: 30),
-          androidUsesFineLocation: true,
-        ).catchError((_) {
-          // Ignore errors during auto-restart
-        });
+    _cubit = getIt<ForYouBeaconDiscoveryCubit>();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        unawaited(_cubit.init(widget.flowContext));
+        _syncWakelockToCubitState(_cubit.state);
       }
     });
   }
 
-  Future<void> _onAdapterStateChanged(BluetoothAdapterState state) async {
-    if (_isDisposed || !mounted) return;
-    switch (state) {
-      case BluetoothAdapterState.on:
-        if (!FlutterBluePlus.isScanningNow && !_isProcessing) {
-          setState(() => _state = _BeaconDiscoveryState.searching);
-          _scanResultsStream ??= FlutterBluePlus.scanResults.listen(
-            _onScanResults,
-            onError: (_) {},
-          );
-          try {
-            await FlutterBluePlus.startScan(
-              timeout: const Duration(seconds: 30),
-              androidUsesFineLocation: true,
-            );
-          } catch (_) {}
-        }
-      case BluetoothAdapterState.off:
-      case BluetoothAdapterState.unauthorized:
-      case BluetoothAdapterState.unavailable:
-        if (mounted) {
-          if (state == BluetoothAdapterState.off && Platform.isAndroid) {
-            try {
-              await FlutterBluePlus.turnOn(timeout: 10);
-              // If turnOn succeeds OR the user clicks "Allow", a new 'on' state 
-              // will be emitted and handled by the 'case .on' above.
-              return;
-            } catch (_) {
-              // If it fails or user denies the prompt, fall through to show UI
-            }
-          }
+  @override
+  void dispose() {
+    WakelockPlus.disable();
+    WidgetsBinding.instance.removeObserver(this);
+    unawaited(_cubit.close());
+    super.dispose();
+  }
 
-          if (mounted) {
-            await AnalyticsHelper.logEvent(
-              eventName: AnalyticsEventName.forYouLocationServiceOff,
-            );
-            setState(() => _state = _BeaconDiscoveryState.bluetoothOff);
-          }
-        }
-      default:
-        break;
+  /// Keep the screen awake only while the loading or active beacon search UI
+  /// is shown — not on Bluetooth off / permission settings.
+  void _syncWakelockToCubitState(
+    BaseState<ForYouBeaconDiscoveryUIModel, ForYouBeaconDiscoveryCustom> state,
+  ) {
+    final shouldHold = switch (state) {
+      LoadingState() => true,
+      DataState(:final data) =>
+        data.phase == ForYouBeaconDiscoveryPhase.searching,
+      _ => false,
+    };
+    if (shouldHold) {
+      WakelockPlus.enable();
+    } else {
+      WakelockPlus.disable();
     }
   }
 
-  Future<void> _showBluetoothDeniedDialog() async {
-    if (!mounted) return;
-    await showDialog<void>(
-      context: context,
-      builder: (_) => WarningDialog(
-        title: context.l10n.authoriseBluetooth,
-        content:
-            '''${context.l10n.authoriseBluetoothErrorMessage}\n ${context.l10n.authoriseBluetoothExtraText}''',
-      ),
-    );
-  }
-
-  Future<void> _onScanResults(List<ScanResult> results) async {
-    if (_isDisposed || !mounted || _isProcessing) return;
-
-    for (final scanResult in results) {
-      if (_isDisposed || !mounted || _isProcessing) return;
-
-      if (scanResult.advertisementData.advName.isEmpty) continue;
-      if (scanResult.advertisementData.serviceData.isEmpty) continue;
-      if (scanResult.advertisementData.serviceUuids.isEmpty) continue;
-
-      final serviceUuid = scanResult.advertisementData.serviceUuids.first;
-      if (!scanResult.advertisementData.serviceData.containsKey(serviceUuid)) {
-        continue;
-      }
-
-      if (scanResult.rssi < -69) continue;
-
-      // Convert service data bytes to a hex string.
-      final hex = StringBuffer();
-      for (final b in scanResult.advertisementData.serviceData[serviceUuid]!) {
-        hex.write(sprintf('%02x', [b]));
-      }
-      final beaconData = hex.toString();
-
-      final contains =
-          beaconData.contains('61f7ed01') ||
-          beaconData.contains('61f7ed02') ||
-          beaconData.contains('61f7ed03');
-      if (!contains) continue;
-
-      final startIndex = beaconData.indexOf('61f7ed');
-      if (startIndex < 0) continue;
-      if (startIndex + 32 > beaconData.length) continue;
-
-      final namespace = beaconData.substring(startIndex, startIndex + 20);
-      final instance = beaconData.substring(startIndex + 20, startIndex + 32);
-      final beaconId = '$namespace.$instance';
-
-      _isProcessing = true;
-      _stopBluetoothScan();
-      await _resolveAndNavigate(beaconId);
-      return;
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      unawaited(_cubit.onAppResumed());
     }
-  }
-
-  Future<void> _resolveAndNavigate(String beaconId) async {
-    _debugBeaconSimTimer?.cancel();
-    _debugBeaconSimTimer = null;
-    try {
-      final collectGroup =
-          await ForYouDiscoveryResolvers.resolveCollectGroupFromBeaconId(
-            beaconId,
-          );
-
-      if (!mounted) return;
-
-      if (collectGroup == null) {
-        _goToList();
-        return;
-      }
-
-      await AnalyticsHelper.logEvent(
-        eventName: AnalyticsEventName.forYouOrganisationSelected,
-      );
-
-      if (!mounted) return;
-      context.goNamed(
-        Pages.forYouOrganisationConfirm.name,
-        extra: widget.flowContext
-            .copyWith(selectedOrganisation: collectGroup)
-            .toMap(),
-      );
-    } finally {
-      _isProcessing = false;
-    }
-  }
-
-  void _goToList() {
-    if (!mounted) return;
-    context.goNamed(
-      Pages.forYouList.name,
-      extra: widget.flowContext.toMap(),
-    );
-  }
-
-  Future<void> _openBluetoothSettings() async {
-    await openAppSettings();
   }
 
   @override
   Widget build(BuildContext context) {
-    final locals = context.l10n;
-    return FunScaffold(
-      appBar: const FunTopAppBar(
-        variant: FunTopAppBarVariant.white,
-        leading: GivtBackButtonFlat(),
-      ),
-      body: switch (_state) {
-        _BeaconDiscoveryState.searching => _SearchingBody(locals: locals),
-        _BeaconDiscoveryState.bluetoothOff => _BluetoothOffBody(
-          locals: locals,
-          onOpenSettings: _openBluetoothSettings,
-        ),
-        _BeaconDiscoveryState.permissionDenied => _PermissionDeniedBody(
-          locals: locals,
-          onOpenSettings: _openBluetoothSettings,
-        ),
+    return BlocListener<
+        ForYouBeaconDiscoveryCubit,
+        BaseState<ForYouBeaconDiscoveryUIModel, ForYouBeaconDiscoveryCustom>>(
+      bloc: _cubit,
+      listenWhen: (previous, current) => previous != current,
+      listener: (context, state) {
+        _syncWakelockToCubitState(state);
       },
+      child: FunScaffold(
+        appBar: const FunTopAppBar(
+          variant: FunTopAppBarVariant.white,
+          leading: GivtBackButtonFlat(),
+        ),
+        body:
+            BaseStateConsumer<
+              ForYouBeaconDiscoveryUIModel,
+              ForYouBeaconDiscoveryCustom
+            >(
+              cubit: _cubit,
+              onLoading: (context) => const _SearchingBodyLoader(),
+              onData: (context, uiModel) {
+                return switch (uiModel.phase) {
+                  ForYouBeaconDiscoveryPhase.searching => _SearchingBody(
+                    locals: context.l10n,
+                  ),
+                  ForYouBeaconDiscoveryPhase.bluetoothOff => _BluetoothOffBody(
+                    locals: context.l10n,
+                    onOpenSettings: () =>
+                        unawaited(_cubit.openSystemSettings()),
+                  ),
+                  ForYouBeaconDiscoveryPhase.bluetoothPermissionSettings =>
+                    _PermissionDeniedBody(
+                      locals: context.l10n,
+                      onOpenSettings: () =>
+                          unawaited(_cubit.openSystemSettings()),
+                    ),
+                };
+              },
+              onCustom: (context, custom) {
+                switch (custom) {
+                  case ForYouBeaconNavigateToConfirm(:final flowContext):
+                    context.goNamed(
+                      Pages.forYouOrganisationConfirm.name,
+                      extra: flowContext.toMap(),
+                    );
+                  case ForYouBeaconNavigateToList(:final flowContext):
+                    context.goNamed(
+                      Pages.forYouList.name,
+                      extra: flowContext.toMap(),
+                    );
+                }
+              },
+            ),
+      ),
     );
+  }
+}
+
+/// Shown while the cubit is still loading (before the first data emit).
+class _SearchingBodyLoader extends StatelessWidget {
+  const _SearchingBodyLoader();
+
+  @override
+  Widget build(BuildContext context) {
+    return _SearchingBody(locals: context.l10n);
   }
 }
 
@@ -334,7 +167,7 @@ class _SearchingBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(),
-        FunIconGivy.phoneWink(circleSize: 140),
+        FunIconGivy.bagAnimation(circleSize: 140),
         const SizedBox(height: 28),
         TitleLargeText(
           locals.makeContact,
