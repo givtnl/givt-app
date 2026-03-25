@@ -54,6 +54,7 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
 
   StreamSubscription<BluetoothAdapterState>? _adapterStateStream;
   StreamSubscription<List<ScanResult>>? _scanResultsStream;
+  StreamSubscription<bool>? _isScanningStream;
   Timer? _debugBeaconSimTimer;
 
   @override
@@ -74,6 +75,7 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
     _debugBeaconSimTimer?.cancel();
     _adapterStateStream?.cancel();
     _scanResultsStream?.cancel();
+    _isScanningStream?.cancel();
     _stopBluetoothScan();
     super.dispose();
   }
@@ -133,6 +135,24 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage> {
       _onAdapterStateChanged,
       onError: (_) {},
     );
+
+    // Listen to scanning state changes to restart scan if it stops
+    // (matches the original BTScanPage behavior for infinite searching)
+    _isScanningStream = FlutterBluePlus.isScanning.listen((isScanning) {
+      if (_isDisposed || !mounted || _isProcessing) return;
+
+      if (!isScanning &&
+          _state == _BeaconDiscoveryState.searching &&
+          !_isProcessing &&
+          !FlutterBluePlus.isScanningNow) {
+        FlutterBluePlus.startScan(
+          timeout: const Duration(seconds: 30),
+          androidUsesFineLocation: true,
+        ).catchError((_) {
+          // Ignore errors during auto-restart
+        });
+      }
+    });
   }
 
   Future<void> _onAdapterStateChanged(BluetoothAdapterState state) async {
