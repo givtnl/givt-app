@@ -127,10 +127,11 @@ class _ForYouGpsDiscoveryPageState extends State<ForYouGpsDiscoveryPage> {
 
   Future<void> _resolveFromPositionAndNavigate(Position position) async {
     try {
-      final nearbyOrgs = await ForYouDiscoveryResolvers.resolveNearbyCollectGroups(
-        position.latitude,
-        position.longitude,
-      );
+      final nearbyOrgs =
+          await ForYouDiscoveryResolvers.resolveNearbyCollectGroups(
+            position.latitude,
+            position.longitude,
+          );
 
       if (!mounted) return;
 
@@ -186,9 +187,7 @@ class _ForYouGpsDiscoveryPageState extends State<ForYouGpsDiscoveryPage> {
     if (!mounted) return;
     context.goNamed(
       Pages.forYouGiving.name,
-      extra: widget.flowContext
-          .copyWith(selectedOrganisation: org)
-          .toMap(),
+      extra: widget.flowContext.copyWith(selectedOrganisation: org).toMap(),
     );
   }
 
@@ -371,7 +370,7 @@ class _MultipleOrgsFoundBody extends StatelessWidget {
             itemBuilder: (context, index) {
               final org = organisations[index];
               final iconData = CollectGroupType.getIconByType(org.type);
-              
+
               return Material(
                 color: Colors.transparent,
                 child: InkWell(
