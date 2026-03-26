@@ -11,7 +11,8 @@ import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 class ForYouDiscoveryResolvers {
   ForYouDiscoveryResolvers._();
 
-  static Future<CollectGroup?> resolveCollectGroupFromQrMediumId(
+  static Future<({CollectGroup collectGroup, QrCode qrCode})?>
+  resolveCollectGroupAndQrFromQrMediumId(
     String mediumId, {
     CollectGroupRepository? collectGroupRepository,
   }) async {
@@ -49,7 +50,19 @@ class ForYouDiscoveryResolvers {
       orElse: () => const CollectGroup.empty(),
     );
 
-    return matchingGroup.nameSpace.isEmpty ? null : matchingGroup;
+    if (matchingGroup.nameSpace.isEmpty) return null;
+    return (collectGroup: matchingGroup, qrCode: matchingQrCode);
+  }
+
+  static Future<CollectGroup?> resolveCollectGroupFromQrMediumId(
+    String mediumId, {
+    CollectGroupRepository? collectGroupRepository,
+  }) async {
+    final resolved = await resolveCollectGroupAndQrFromQrMediumId(
+      mediumId,
+      collectGroupRepository: collectGroupRepository,
+    );
+    return resolved?.collectGroup;
   }
 
   static Future<CollectGroup?> resolveCollectGroupFromBeaconId(
@@ -86,6 +99,25 @@ class ForYouDiscoveryResolvers {
   /// Returns a list of organizations found at the nearest distance.
   /// If no organizations are found, returns an empty list.
   static Future<List<CollectGroup>> resolveNearbyCollectGroups(
+    double latitude,
+    double longitude, {
+    CollectGroupRepository? collectGroupRepository,
+  }) async {
+    final hits = await resolveNearbyCollectGroupHits(
+      latitude,
+      longitude,
+      collectGroupRepository: collectGroupRepository,
+    );
+    return hits.map((h) => h.collectGroup).toList();
+  }
+
+  /// Resolves the nearest collect group(s) within range, including the specific
+  /// medium id (`Location.beaconId`) that matched.
+  ///
+  /// When multiple organisations are found at the same nearest distance, one
+  /// hit per organisation is returned.
+  static Future<List<({CollectGroup collectGroup, String beaconId})>>
+  resolveNearbyCollectGroupHits(
     double latitude,
     double longitude, {
     CollectGroupRepository? collectGroupRepository,
@@ -127,7 +159,7 @@ class ForYouDiscoveryResolvers {
     }
 
     if (withinRangeLocations.isEmpty) {
-      return [];
+      return const [];
     }
 
     // Find the minimum distance
@@ -141,17 +173,20 @@ class ForYouDiscoveryResolvers {
         .toList();
 
     // Get unique collect groups for the nearest locations
-    final uniqueGroups = <String, CollectGroup>{};
+    final uniqueHits = <String, ({CollectGroup collectGroup, String beaconId})>{};
     for (final location in nearestLocations) {
       if (location.beaconId.isNotEmpty) {
         final group = locationToGroupMap[location.beaconId];
         if (group != null) {
-          uniqueGroups[group.nameSpace] = group;
+          uniqueHits[group.nameSpace] = (
+            collectGroup: group,
+            beaconId: location.beaconId,
+          );
         }
       }
     }
 
-    return uniqueGroups.values.toList();
+    return uniqueHits.values.toList();
   }
 }
 

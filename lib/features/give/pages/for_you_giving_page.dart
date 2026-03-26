@@ -69,7 +69,8 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       !_isLoadingGoals &&
       _goalsResponse != null &&
       _goalsResponse!.qrCodes.isNotEmpty &&
-      _sheetAvailableQrCodes.isNotEmpty;
+      _sheetAvailableQrCodes.isNotEmpty &&
+      !widget.flowContext.restrictToEntryQrGoal;
 
   @override
   void initState() {
@@ -437,6 +438,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       collectGroupNamespace: namespace,
       lines: _goalLines,
       amounts: amounts,
+      collectionGoalsMediumIdOverride: widget.flowContext.entryMediumId,
     );
     if (donations.isEmpty) {
       return;
@@ -548,6 +550,17 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
         return;
       }
       _goalsResponse = response;
+      final restrict = widget.flowContext.restrictToEntryQrGoal;
+      final entryMediumId = widget.flowContext.entryMediumId?.trim() ?? '';
+      if (restrict && entryMediumId.isNotEmpty) {
+        final match = response.qrCodes
+            .where((q) => q.mediumId.trim() == entryMediumId)
+            .toList();
+        if (match.isNotEmpty) {
+          _applyLines([ForYouGeneralGoalLine(match.first)]);
+          return;
+        }
+      }
       _setupCollectionLinesFromResponse(response);
     } on Exception {
       if (!mounted) {

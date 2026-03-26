@@ -426,7 +426,9 @@ class ForYouBeaconDiscoveryCubit
       if (flow != null) {
         emitCustom(
           ForYouBeaconNavigateToConfirm(
-            flow.copyWith(selectedOrganisation: collectGroup),
+            flow
+                .copyWith(selectedOrganisation: collectGroup)
+                .copyWith(entryMediumId: beaconId),
           ),
         );
       }
