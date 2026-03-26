@@ -126,17 +126,21 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
 
     try {
       final mediumId = utf8.decode(base64.decode(encodedMediumId));
-      final collectGroup =
-          await ForYouDiscoveryResolvers.resolveCollectGroupFromQrMediumId(
-        mediumId,
-      );
+      final resolved =
+          await ForYouDiscoveryResolvers.resolveCollectGroupAndQrFromQrMediumId(
+            mediumId,
+          );
 
       if (!mounted) return;
 
-      if (collectGroup == null) {
+      if (resolved == null) {
         await _showQrUnresolvableDialogAndFallback();
         return;
       }
+
+      final collectGroup = resolved.collectGroup;
+      final qrCode = resolved.qrCode;
+      final restrictToEntryQrGoal = qrCode.name.trim().isNotEmpty;
 
       await AnalyticsHelper.logEvent(
         eventName: AnalyticsEventName.forYouOrganisationSelected,
@@ -148,6 +152,10 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
         Pages.forYouOrganisationConfirm.name,
         extra: widget.flowContext
             .copyWith(selectedOrganisation: collectGroup)
+            .copyWith(
+              entryMediumId: mediumId,
+              restrictToEntryQrGoal: restrictToEntryQrGoal,
+            )
             .toMap(),
       );
     } catch (_) {

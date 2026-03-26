@@ -47,7 +47,7 @@ class _ForYouGpsDiscoveryPageState extends State<ForYouGpsDiscoveryPage> {
   _DiscoveryState _state = _DiscoveryState.searching;
   bool _isResolvingOrg = false;
   late final DateTime _startTime;
-  List<CollectGroup> _nearbyOrgs = [];
+  List<({CollectGroup collectGroup, String beaconId})> _nearbyHits = [];
 
   static const _minimumSearchDuration = Duration(seconds: 2);
 
@@ -127,15 +127,14 @@ class _ForYouGpsDiscoveryPageState extends State<ForYouGpsDiscoveryPage> {
 
   Future<void> _resolveFromPositionAndNavigate(Position position) async {
     try {
-      final nearbyOrgs =
-          await ForYouDiscoveryResolvers.resolveNearbyCollectGroups(
-            position.latitude,
-            position.longitude,
-          );
+      final hits = await ForYouDiscoveryResolvers.resolveNearbyCollectGroupHits(
+        position.latitude,
+        position.longitude,
+      );
 
       if (!mounted) return;
 
-      if (nearbyOrgs.isEmpty) {
+      if (hits.isEmpty) {
         await _waitForMinimumDuration();
         await AnalyticsHelper.logEvent(
           eventName: AnalyticsEventName.forYouLocationNoOrgFound,
@@ -145,13 +144,13 @@ class _ForYouGpsDiscoveryPageState extends State<ForYouGpsDiscoveryPage> {
       }
 
       // Multiple organizations at the same location
-      if (nearbyOrgs.length > 1) {
+      if (hits.length > 1) {
         await AnalyticsHelper.logEvent(
           eventName: AnalyticsEventName.forYouLocationMultipleOrgsFound,
         );
         if (mounted) {
           setState(() {
-            _nearbyOrgs = nearbyOrgs;
+            _nearbyHits = hits;
             _state = _DiscoveryState.multipleOrgsFound;
           });
         }
@@ -164,10 +163,12 @@ class _ForYouGpsDiscoveryPageState extends State<ForYouGpsDiscoveryPage> {
       );
 
       if (!mounted) return;
+      final hit = hits.first;
       context.goNamed(
         Pages.forYouOrganisationConfirm.name,
         extra: widget.flowContext
-            .copyWith(selectedOrganisation: nearbyOrgs.first)
+            .copyWith(selectedOrganisation: hit.collectGroup)
+            .copyWith(entryMediumId: hit.beaconId)
             .toMap(),
       );
     } finally {
@@ -185,9 +186,16 @@ class _ForYouGpsDiscoveryPageState extends State<ForYouGpsDiscoveryPage> {
     );
 
     if (!mounted) return;
+    final hit = _nearbyHits.firstWhere(
+      (h) => h.collectGroup.nameSpace == org.nameSpace,
+      orElse: () => (collectGroup: org, beaconId: ''),
+    );
     context.goNamed(
       Pages.forYouGiving.name,
-      extra: widget.flowContext.copyWith(selectedOrganisation: org).toMap(),
+      extra: widget.flowContext
+          .copyWith(selectedOrganisation: org)
+          .copyWith(entryMediumId: hit.beaconId)
+          .toMap(),
     );
   }
 
@@ -216,7 +224,7 @@ class _ForYouGpsDiscoveryPageState extends State<ForYouGpsDiscoveryPage> {
         ),
         _DiscoveryState.multipleOrgsFound => _MultipleOrgsFoundBody(
           locals: locals,
-          organisations: _nearbyOrgs,
+          organisations: _nearbyHits.map((h) => h.collectGroup).toList(),
           onSelectOrganisation: _selectOrganisation,
         ),
       },

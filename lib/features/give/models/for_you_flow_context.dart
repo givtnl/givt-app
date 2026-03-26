@@ -14,18 +14,26 @@ class ForYouFlowContext extends Equatable {
   const ForYouFlowContext({
     required this.source,
     this.selectedOrganisation,
+    this.entryMediumId,
+    this.restrictToEntryQrGoal = false,
   });
 
   final ForYouEntrySource source;
   final CollectGroup? selectedOrganisation;
+  final String? entryMediumId;
+  final bool restrictToEntryQrGoal;
 
   ForYouFlowContext copyWith({
     ForYouEntrySource? source,
     CollectGroup? selectedOrganisation,
+    String? entryMediumId,
+    bool? restrictToEntryQrGoal,
   }) {
     return ForYouFlowContext(
       source: source ?? this.source,
       selectedOrganisation: selectedOrganisation ?? this.selectedOrganisation,
+      entryMediumId: entryMediumId ?? this.entryMediumId,
+      restrictToEntryQrGoal: restrictToEntryQrGoal ?? this.restrictToEntryQrGoal,
     );
   }
 
@@ -33,6 +41,8 @@ class ForYouFlowContext extends Equatable {
     return <String, dynamic>{
       'source': source.name,
       'selectedOrganisation': selectedOrganisation?.toJson(),
+      'entryMediumId': entryMediumId,
+      'restrictToEntryQrGoal': restrictToEntryQrGoal,
     };
   }
 
@@ -48,12 +58,22 @@ class ForYouFlowContext extends Equatable {
         ? CollectGroup.fromJson(selectedOrgRaw)
         : null;
 
+    final entryMediumId = map['entryMediumId'] as String?;
+    final restrictToEntryQrGoal = map['restrictToEntryQrGoal'] as bool? ?? false;
+
     return ForYouFlowContext(
       source: resolvedSource,
       selectedOrganisation: selectedOrganisation,
+      entryMediumId: entryMediumId,
+      restrictToEntryQrGoal: restrictToEntryQrGoal,
     );
   }
 
   @override
-  List<Object?> get props => [source, selectedOrganisation];
+  List<Object?> get props => [
+    source,
+    selectedOrganisation,
+    entryMediumId,
+    restrictToEntryQrGoal,
+  ];
 }

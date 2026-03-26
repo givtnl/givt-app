@@ -9,6 +9,7 @@ List<GivtTransaction> buildForYouDonationTransactions({
   required String collectGroupNamespace,
   required List<ForYouGoalLineKind> lines,
   required List<double> amounts,
+  String? collectionGoalsMediumIdOverride,
 }) {
   assert(
     lines.length == amounts.length,
@@ -36,7 +37,9 @@ List<GivtTransaction> buildForYouDonationTransactions({
           GivtTransaction(
             guid: userGuid,
             amount: amount,
-            beaconId: collectGroupNamespace,
+            beaconId: (collectionGoalsMediumIdOverride ?? '').trim().isNotEmpty
+                ? collectionGoalsMediumIdOverride!.trim()
+                : collectGroupNamespace,
             timestamp: formattedDate,
             collectId: collectId,
           ),
