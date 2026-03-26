@@ -18,6 +18,7 @@ import 'package:givt_app/features/family/features/edit_parent_profile/repositori
 import 'package:givt_app/features/family/features/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/family/features/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/family/features/parental_approval/repositories/parental_approval_repository.dart';
+import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_cubit.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
@@ -154,6 +155,11 @@ void initRepositories() {
         getIt(),
       ),
     )
+    ..registerLazySingleton<OrganisationGoalsRepository>(
+      () => OrganisationGoalsRepositoryImpl(
+        getIt(),
+      ),
+    )
     ..registerLazySingleton<BeaconRepository>(
       () => BeaconRepositoryImpl(
         getIt(),
@@ -235,6 +241,11 @@ void initRepositories() {
     )
     ..registerFactory<Step4ConfirmCubit>(
       () => Step4ConfirmCubit(getIt<RecurringDonationRepository>()),
+    )
+    ..registerFactory<ForYouBeaconDiscoveryCubit>(
+      () => ForYouBeaconDiscoveryCubit(
+        collectGroupRepository: getIt<CollectGroupRepository>(),
+      ),
     )
     ..registerLazySingleton<RecurringDonationRepository>(
       () => RecurringDonationRepository(

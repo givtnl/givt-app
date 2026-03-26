@@ -18,7 +18,6 @@ class HomeTestPage {
   final Finder drawer = find.byType(CustomNavigationDrawer);
   final Finder pageView = find.byType(PageView);
   final Finder chooseAmount = find.byType(ChooseAmount);
-  final Finder chooseCategory = find.byType(ChooseCategory);
   final Finder animatedSwitch = find.byType(AnimatedSwitch);
 
   // Actions
@@ -75,10 +74,6 @@ class HomeTestPage {
 
   Future<void> verifyChooseAmountIsVisible() async {
     expect(chooseAmount, findsOneWidget);
-  }
-
-  Future<void> verifyChooseCategoryIsVisible() async {
-    expect(chooseCategory, findsOneWidget);
   }
 
   Future<void> verifyAnimatedSwitchIsVisible() async {

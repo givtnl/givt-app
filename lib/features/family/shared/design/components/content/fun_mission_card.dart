@@ -5,8 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -22,13 +22,13 @@ class FunMissionCard extends StatelessWidget {
   });
 
   factory FunMissionCard.loading() => FunMissionCard(
-        uiModel: FunMissionCardUIModel(
-          title: 'Loading...',
-          description: '',
-        ),
-        isLoading: true,
-        analyticsEvent: AnalyticsEventName.loading.toEvent(),
-      );
+    uiModel: FunMissionCardUIModel(
+      title: 'Loading...',
+      description: '',
+    ),
+    isLoading: true,
+    analyticsEvent: AnalyticsEventName.loading.toEvent(),
+  );
 
   final FunMissionCardUIModel uiModel;
   final VoidCallback? onTap;
@@ -76,7 +76,9 @@ class FunMissionCard extends StatelessWidget {
                         if (uiModel.headerIcon != null)
                           uiModel.disabled
                               ? uiModel.headerIcon!.copyWith(
-                                  iconColorOverride: FunTheme.of(context).neutral40,
+                                  iconColorOverride: FunTheme.of(
+                                    context,
+                                  ).neutral40,
                                 )
                               : uiModel.headerIcon!,
                         const SizedBox(height: 12),
@@ -98,16 +100,24 @@ class FunMissionCard extends StatelessWidget {
                         if (uiModel.progress != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 16, bottom: 8),
-                            child: useFunProgressbar ? FunProgressbar(
-                              currentProgress: uiModel.progress!.amount.toInt(),
-                              total: uiModel.progress!.totalAmount.toInt(),
-                              backgroundColor: FunTheme.of(context).neutralVariant95,
-                              progressColor: FunTheme.of(context).primary90,
-                              textColor: FunTheme.of(context).primary20,
-                              suffix: uiModel.progress!.suffix,
-                            ) : GoalProgressBar(
-                              model: uiModel.progress!,
-                            ),
+                            child: useFunProgressbar
+                                ? FunProgressbar(
+                                    currentProgress: uiModel.progress!.amount
+                                        .toInt(),
+                                    total: uiModel.progress!.totalAmount
+                                        .toInt(),
+                                    backgroundColor: FunTheme.of(
+                                      context,
+                                    ).neutralVariant95,
+                                    progressColor: FunTheme.of(
+                                      context,
+                                    ).primary90,
+                                    textColor: FunTheme.of(context).primary20,
+                                    suffix: uiModel.progress!.suffix,
+                                  )
+                                : GoalProgressBar(
+                                    model: uiModel.progress!,
+                                  ),
                           ),
                       ],
                     ),
@@ -119,7 +129,9 @@ class FunMissionCard extends StatelessWidget {
                         semanticLabel:
                             'icon-${uiModel.actionIcon.fontFamily}-${uiModel.actionIcon.codePoint}',
                         uiModel.actionIcon,
-                        color: FunTheme.of(context).primary40.withValues(alpha: 0.75),
+                        color: FunTheme.of(
+                          context,
+                        ).primary20.withValues(alpha: 0.75),
                       ),
                     ),
                 ],

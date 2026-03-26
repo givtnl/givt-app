@@ -12,6 +12,30 @@ enum Pages {
     path: 'choose-category-list',
     name: 'CHOOSE-CATEGORY-LIST',
   ),
+  forYouList(
+    path: 'for-you-list',
+    name: 'FOR-YOU-LIST',
+  ),
+  forYouGiving(
+    path: 'for-you-giving',
+    name: 'FOR-YOU-GIVING',
+  ),
+  forYouOrganisationConfirm(
+    path: 'for-you-organisation-confirm',
+    name: 'FOR-YOU-ORGANISATION-CONFIRM',
+  ),
+  forYouByLocation(
+    path: 'for-you-by-location',
+    name: 'FOR-YOU-BY-LOCATION',
+  ),
+  forYouByQrCode(
+    path: 'for-you-by-qr-code',
+    name: 'FOR-YOU-BY-QR-CODE',
+  ),
+  forYouByBeacon(
+    path: 'for-you-by-beacon',
+    name: 'FOR-YOU-BY-BEACON',
+  ),
   chooseCategoryEnterAmount(
     path: 'choose-category-enter-amount',
     name: 'CHOOSE-CATEGORY-ENTER-AMOUNT',

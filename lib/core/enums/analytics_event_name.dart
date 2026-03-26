@@ -38,7 +38,9 @@ enum AnalyticsEventName {
   childTopUpCardClicked('child_top_up_card_clicked'),
   childTopUpSubmitted('child_top_up_submitted'),
   childEditSaveClicked('child_edit_save_clicked'),
-  childEditMonthlyAllowanceSaveClicked('child_edit_monthly_allowance_save_clicked'),
+  childEditMonthlyAllowanceSaveClicked(
+    'child_edit_monthly_allowance_save_clicked',
+  ),
   aboutGivtSendFeedbackClicked('about_givt_send_feedback_clicked'),
   editPhoneNumberSaveClicked('edit_phone_number_save_clicked'),
   editEmailSaveClicked('edit_email_save_clicked'),
@@ -61,7 +63,9 @@ enum AnalyticsEventName {
   gratitudeGoalMaybeLaterClicked('gratitude_goal_maybe_later_clicked'),
   gratitudeGoalLaterDoneClicked('gratitude_goal_later_done_clicked'),
   gratitudeGoalTapToContinueClicked('gratitude_goal_tap_to_continue_clicked'),
-  gratitudeGoalCommitToThisGoalClicked('gratitude_goal_commit_to_this_goal_clicked'),
+  gratitudeGoalCommitToThisGoalClicked(
+    'gratitude_goal_commit_to_this_goal_clicked',
+  ),
   gratitudeGoalCloseClicked('gratitude_goal_close_clicked'),
   topupFailed('topup_failed'),
   topUpConfirmClicked('top_up_confirm_clicked'),
@@ -82,7 +86,9 @@ enum AnalyticsEventName {
   personalSummaryYearClicked('personal_summary_year_clicked'),
   personalSummaryYearLoaded('personal_summary_year_loaded'),
   downloadAnnualOverviewClicked('download_annual_overview_clicked'),
-  annualOverviewReceiveViaMailClicked('annual_overview_receive_via_mail_clicked'),
+  annualOverviewReceiveViaMailClicked(
+    'annual_overview_receive_via_mail_clicked',
+  ),
   setGivingGoalClicked('set_giving_goal_clicked'),
   editGivingGoalClicked('edit_giving_goal_clicked'),
   givingGoalSaved('giving_goal_saved'),
@@ -93,10 +99,16 @@ enum AnalyticsEventName {
   recurringDonationManageClicked('recurring_donation_manage_clicked'),
   recurringDonationsTabsChanged('recurring_donations_tabs_changed'),
   recurringDonationsAddClicked('recurring_donations_add_clicked'),
-  recurringDonationsAddRecurringDonation('recurring_donations_add_recurring_donation'),
+  recurringDonationsAddRecurringDonation(
+    'recurring_donations_add_recurring_donation',
+  ),
   recurringDonationEditActionClicked('recurring_donation_edit_action_clicked'),
-  recurringDonationPauseActionClicked('recurring_donation_pause_action_clicked'),
-  recurringDonationCancelActionClicked('recurring_donation_cancel_action_clicked'),
+  recurringDonationPauseActionClicked(
+    'recurring_donation_pause_action_clicked',
+  ),
+  recurringDonationCancelActionClicked(
+    'recurring_donation_cancel_action_clicked',
+  ),
   recurringDonationCancelConfirmed('recurring_donation_cancel_confirmed'),
   recurringDonationCancelCancelled('recurring_donation_cancel_cancelled'),
   editAvatarPictureClicked('edit_avatar_picture_clicked'),
@@ -109,14 +121,18 @@ enum AnalyticsEventName {
   editPaymentDetailsCanceled('edit_payment_details_canceled'),
   editPaymentDetailsSuccess('edit_payment_details_success'),
   editPaymentDetailsFailure('edit_payment_details_failure'),
-  editPaymentDetailsConfirmationDialogClosed('edit_payment_details_confirmation_dialog_closed'),
+  editPaymentDetailsConfirmationDialogClosed(
+    'edit_payment_details_confirmation_dialog_closed',
+  ),
   utm('utm'),
   giveToFamilyGoalDirectly('give_to_family_goal_directly'),
   skipBiometricWhenRegistered('skip_biometric_when_registered'),
   activateBiometricWhenRegistered('activate_biometric_when_registered'),
   skipBiometricWhenLoggedIn('skip_biometric_when_logged_in'),
   activateBiometricWhenLoggedIn('activate_biometric_when_logged_in'),
-  invitedToImpactGroupBottomSheetShown('invited_to_impact_group_bottom_sheet_shown'),
+  invitedToImpactGroupBottomSheetShown(
+    'invited_to_impact_group_bottom_sheet_shown',
+  ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
   organisationCardClicked('organisation_card_clicked'),
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
@@ -175,6 +191,27 @@ enum AnalyticsEventName {
   choseGiveWithQRCode('chose_give_with_qr_code'),
   cancelGive('cancel_give'),
   giveHomeTabsChanged('give_home_tabs_changed'),
+  forYouSearchTapped('for_you_search_tapped'),
+  forYouOtherWaysLocationTapped('for_you_other_ways_location_tapped'),
+  forYouOtherWaysQrTapped('for_you_other_ways_qr_tapped'),
+  forYouOtherWaysBeaconTapped('for_you_other_ways_beacon_tapped'),
+  forYouFavoriteTapped('for_you_favorite_tapped'),
+  forYouFavoritesDoneTapped('for_you_favorites_done_tapped'),
+  forYouOrganisationSelected('for_you_organisation_selected'),
+  forYouOrganisationConfirmGiveTapped(
+    'for_you_organisation_confirm_give_tapped',
+  ),
+  forYouGivingContinueTapped('for_you_giving_continue_tapped'),
+  forYouGivingMoreGoalsLinkTapped('for_you_giving_more_goals_link_tapped'),
+  forYouGivingMoreGoalsConfirmTapped(
+    'for_you_giving_more_goals_confirm_tapped',
+  ),
+  forYouLocationNoOrgFound('for_you_location_no_org_found'),
+  forYouLocationServiceOff('for_you_location_service_off'),
+  forYouLocationPermissionDenied('for_you_location_permission_denied'),
+  forYouLocationOpenSettingsTapped('for_you_location_open_settings_tapped'),
+  forYouLocationMultipleOrgsFound('for_you_location_multiple_orgs_found'),
+  forYouLocationOrganisationSelected('for_you_location_organisation_selected'),
   helpMeFindCharityPressed('help_me_find_charity_pressed'),
   askToFindCharityPressed('ask_my_parents_to_find_charity_pressed'),
   loginPressed('login_pressed'),
@@ -215,10 +252,18 @@ enum AnalyticsEventName {
   nfcGoToSettingsClicked('nfc_go_to_settings_clicked'),
   notAGivtCoinNFCErrorShown('not_a_givt_coin_nfc_error_shown'),
   coinMediumIdNotRecognized('coin_medium_id_not_recognized'),
-  notAGivtCoinNFCErrorGoBackHomeClicked('not_a_givt_coin_nfc_error_go_back_home_clicked'),
-  notAGivtCoinNFCErrorTryAgainClicked('not_a_givt_coin_nfc_error_try_again_clicked'),
-  coinMediumIdNotRecognizedGoBackHomeClicked('coin_medium_id_not_recognized_go_back_home_clicked'),
-  coinMediumIdNotRecognizedTryAgainClicked('coin_medium_id_not_recognized_try_again_clicked'),
+  notAGivtCoinNFCErrorGoBackHomeClicked(
+    'not_a_givt_coin_nfc_error_go_back_home_clicked',
+  ),
+  notAGivtCoinNFCErrorTryAgainClicked(
+    'not_a_givt_coin_nfc_error_try_again_clicked',
+  ),
+  coinMediumIdNotRecognizedGoBackHomeClicked(
+    'coin_medium_id_not_recognized_go_back_home_clicked',
+  ),
+  coinMediumIdNotRecognizedTryAgainClicked(
+    'coin_medium_id_not_recognized_try_again_clicked',
+  ),
   organisationSelected('organisation_is_set'),
   editAvatarIconClicked('edit_avatar_icon_clicked'),
   avatarImageSelected('avatar_image_selected'),
@@ -232,7 +277,9 @@ enum AnalyticsEventName {
   choseGiveToFamilyGoal('chose_give_to_family_goal'),
   schoolEventFlowStartButtonClicked('school_event_flow_start_button_clicked'),
   schoolEventFlowLoginButtonClicked('school_event_flow_login_button_clicked'),
-  schoolEventFlowConfirmButtonClicked('school_event_flow_confirm_button_clicked'),
+  schoolEventFlowConfirmButtonClicked(
+    'school_event_flow_confirm_button_clicked',
+  ),
   funDialogAction('fun_dialog_action'),
   schoolEventLogOutTriggered('school_event_log_out_triggered'),
   permissionsGoToSettingsClicked('open_app_permissions_settings'),
@@ -242,7 +289,9 @@ enum AnalyticsEventName {
   navigationBarPressed('navigation_bar_pressed'),
   manageFamilyPressed('manage_family_pressed'),
   registerWithoutChallengeClicked('register_without_challenge_clicked'),
-  goToChallengeFromRegistrationClicked('go_to_challenge_from_registration_clicked'),
+  goToChallengeFromRegistrationClicked(
+    'go_to_challenge_from_registration_clicked',
+  ),
   bottomsheetCloseButtonClicked('bottomsheet_close_button_clicked'),
   modalCloseButtonClicked('modal_close_button_clicked'),
   continueChooseChurchClicked('continue_choose_church_clicked'),
@@ -258,7 +307,9 @@ enum AnalyticsEventName {
   recommendationStartButtonClicked('recommendation_start_button_clicked'),
   recommendationInterestsSelected('recommendation_interests_selected'),
   parentGiveTileClicked('parent_give_tile_clicked'),
-  parentGivingFlowOrganisationClicked('parent_giving_flow_organization_clicked'),
+  parentGivingFlowOrganisationClicked(
+    'parent_giving_flow_organization_clicked',
+  ),
   parentGiveWithAmountClicked('parent_give_with_amount_clicked'),
   parentGiveClicked('parent_give_clicked'),
   parentGiveFilterTileClicked('parent_give_filter_tile_clicked'),
@@ -271,18 +322,30 @@ enum AnalyticsEventName {
   reflectAndShareSeeTheRulesClicked('reflect_and_share_see_the_rules_clicked'),
   reflectAndShareRulesNextClicked('reflect_and_share_next_clicked'),
   reflectAndShareMemberAdded('reflect_and_share_member_added'),
-  reflectAndSharePassThePhoneClicked('reflect_and_share_pass_the_phone_clicked'),
+  reflectAndSharePassThePhoneClicked(
+    'reflect_and_share_pass_the_phone_clicked',
+  ),
   reflectAndShareReadyClicked('reflect_and_share_ready_clicked'),
-  reflectAndShareStartInterviewClicked('reflect_and_share_start_interview_clicked'),
+  reflectAndShareStartInterviewClicked(
+    'reflect_and_share_start_interview_clicked',
+  ),
   reflectAndShareGuessOptionClicked('reflect_and_share_guess_option_clicked'),
-  reflectAndShareGuessTotalAttemptsUntilCorrect('reflect_and_share_guess_total_attempts_until_correct'),
+  reflectAndShareGuessTotalAttemptsUntilCorrect(
+    'reflect_and_share_guess_total_attempts_until_correct',
+  ),
   reflectAndShareQuitClicked('reflect_and_share_quit_clicked'),
-  reflectAndShareNextJournalistClicked('reflect_and_share_next_journalist_clicked'),
-  reflectAndShareLeaveGameButtonClicked('reflect_and_share_leave_game_button_clicked'),
+  reflectAndShareNextJournalistClicked(
+    'reflect_and_share_next_journalist_clicked',
+  ),
+  reflectAndShareLeaveGameButtonClicked(
+    'reflect_and_share_leave_game_button_clicked',
+  ),
   reflectAndShareChangeWordClicked('reflect_and_share_change_word_clicked'),
   reflectAndShareConfirmExitClicked('reflect_and_share_confirm_exit_clicked'),
   reflectAndShareKeepPlayingClicked('reflect_and_share_keep_playing_clicked'),
-  reflectAndShareResultShuffleRolesClicked('reflect_and_share_result_shuffle_roles_clicked'),
+  reflectAndShareResultShuffleRolesClicked(
+    'reflect_and_share_result_shuffle_roles_clicked',
+  ),
   reflectAndShareShowSummaryClicked('reflect_and_share_show_summary_clicked'),
   reflectAndShareWereCommitted('reflect_and_share_were_committed'),
   familyReflectSummaryClaimXp('family_reflect_summary_claim_xp'),
@@ -290,25 +353,49 @@ enum AnalyticsEventName {
   generousTileSubmitted('generous_tile_submitted'),
   generousTileSelected('generous_tile_selected'),
   gratefulTileSelected('grateful_tile_selected'),
-  familyReflectSummaryMinutesPlayedClicked('family_reflect_summary_minutes_played_clicked'),
-  familyReflectSummaryQuestionsAskedClicked('family_reflect_summary_questions_asked_clicked'),
-  parentReflectionFlowOrganisationClicked('parent_reflection_flow_organisation_clicked'),
-  familyReflectSummaryGenerousDeedsClicked('family_reflect_summary_generous_deeds_clicked'),
+  familyReflectSummaryMinutesPlayedClicked(
+    'family_reflect_summary_minutes_played_clicked',
+  ),
+  familyReflectSummaryQuestionsAskedClicked(
+    'family_reflect_summary_questions_asked_clicked',
+  ),
+  parentReflectionFlowOrganisationClicked(
+    'parent_reflection_flow_organisation_clicked',
+  ),
+  familyReflectSummaryGenerousDeedsClicked(
+    'family_reflect_summary_generous_deeds_clicked',
+  ),
   familyReflectSummaryXpClicked('family_reflect_summary_xp_clicked'),
   newActOfGenerosityClicked('new_act_of_generosity_clicked'),
   recommendationTypeSelectorClicked('recommendation_type_selector_clicked'),
   skipGenerosActPressed('skip_generous_act_pressed'),
   childBedtimeSet('bedtime_set_clicked'),
-  redirectedFromGratitudeGameToBedtimeSelection('redirected_from_gratitude_game_to_bedtime_selection'),
-  familyMissionAcceptanceScreenAcceptButtonPressed('family_mission_acceptance_screen_accept_button_pressed'),
-  introBedtimeAnimationContinuePressed('intro_bedtime_animation_continue_pressed'),
+  redirectedFromGratitudeGameToBedtimeSelection(
+    'redirected_from_gratitude_game_to_bedtime_selection',
+  ),
+  familyMissionAcceptanceScreenAcceptButtonPressed(
+    'family_mission_acceptance_screen_accept_button_pressed',
+  ),
+  introBedtimeAnimationContinuePressed(
+    'intro_bedtime_animation_continue_pressed',
+  ),
   introBedtimeTapToContinueClicked('intro_bedtime_tap_to_continue_clicked'),
-  familyMissionAcceptanceScreenAcceptLongPressReleaseToAccept('family_mission_acceptance_screen_accept_long_press_release_to_accept'),
-  familyHomeScreenGratitudeGameButtonClicked('family_home_screen_gratitude_game_button_clicked'),
+  familyMissionAcceptanceScreenAcceptLongPressReleaseToAccept(
+    'family_mission_acceptance_screen_accept_long_press_release_to_accept',
+  ),
+  familyHomeScreenGratitudeGameButtonClicked(
+    'family_home_screen_gratitude_game_button_clicked',
+  ),
   familyHomeScreenGiveButtonClicked('family_home_screen_give_button_clicked'),
-  familyHomeScreenLatestSummaryClicked('family_home_screen_latest_summary_clicked'),
-  familyHomeScreenShowSummariesClicked('family_home_screen_show_summaries_clicked'),
-  familyHomeScreenStatsContainerClicked('family_home_screen_stats_container_clicked'),
+  familyHomeScreenLatestSummaryClicked(
+    'family_home_screen_latest_summary_clicked',
+  ),
+  familyHomeScreenShowSummariesClicked(
+    'family_home_screen_show_summaries_clicked',
+  ),
+  familyHomeScreenStatsContainerClicked(
+    'family_home_screen_stats_container_clicked',
+  ),
   homeGenerosityHuntButtonClicked('home_generosity_hunt_button_clicked'),
   profileGenerosityHuntButtonClicked('profile_generosity_hunt_button_clicked'),
   parentGenerosityHuntButtonClicked('parent_generosity_hunt_button_clicked'),
@@ -355,7 +442,9 @@ enum AnalyticsEventName {
   cancelDonationNoClicked('cancel_donation_no_clicked'),
   onConfirmCancelDonation('donation_cancelled'),
   memorySummaryClicked('memory_summary_clicked'),
-  donationOverviewPlatformContributionClicked('donation_overview_platform_contribution_clicked'),
+  donationOverviewPlatformContributionClicked(
+    'donation_overview_platform_contribution_clicked',
+  ),
   donationOverviewRefundInfoRequested('refund_info_viewed'),
   donationDetailRefundClicked('donation_detail_refund_clicked'),
   donationDetailCancelClicked('donation_detail_cancel_clicked'),
@@ -366,46 +455,74 @@ enum AnalyticsEventName {
   generosityHuntLevelStart('generosity_hunt_level_start'),
   generosityHuntBarcodeScanned('generosity_hunt_barcode_scanned'),
   debugButtonClicked('debug_button_clicked'),
-  recurringStep2SetAmountFrequencySelected('recurring_step2_set_amount_frequency_selected'),
-  recurringStep2SetAmountAmountEntered('recurring_step2_set_amount_amount_entered'),
-  recurringStep2SetAmountContinueClicked('recurring_step2_set_amount_continue_clicked'),
+  recurringStep2SetAmountFrequencySelected(
+    'recurring_step2_set_amount_frequency_selected',
+  ),
+  recurringStep2SetAmountAmountEntered(
+    'recurring_step2_set_amount_amount_entered',
+  ),
+  recurringStep2SetAmountContinueClicked(
+    'recurring_step2_set_amount_continue_clicked',
+  ),
   recurringStep3SetDurationStartDate('recurring_step3_set_duration_start_date'),
   recurringStep3SetDurationOption('recurring_step3_set_duration_option'),
   recurringStep3SetDurationNumber('recurring_step3_set_duration_number'),
   recurringStep3SetDurationEndDate('recurring_step3_set_duration_end_date'),
   recurringStep3SetDurationContinue('recurring_step3_set_duration_continue'),
   recurringStep4ConfirmClose('recurring_step4_confirm_close'),
-  recurringStep4ConfirmEditOrganisation('recurring_step4_confirm_edit_organisation'),
+  recurringStep4ConfirmEditOrganisation(
+    'recurring_step4_confirm_edit_organisation',
+  ),
   recurringStep4ConfirmEditAmount('recurring_step4_confirm_edit_amount'),
   recurringStep4ConfirmEditFrequency('recurring_step4_confirm_edit_frequency'),
   recurringStep4ConfirmEditStartDate('recurring_step4_confirm_edit_start_date'),
   recurringStep4ConfirmEditEndDate('recurring_step4_confirm_edit_end_date'),
   recurringStep4ConfirmDonation('recurring_step4_confirm_donation'),
   recurringStep4ErrorChangeDetails('recurring_step4_error_change_details'),
-  familyHomeScreenNewGameButtonClicked('family_home_screen_new_game_button_clicked'),
-  menuNavigationFinalizeRegistrationClicked('menu_navigation_finalize_registration_clicked'),
+  familyHomeScreenNewGameButtonClicked(
+    'family_home_screen_new_game_button_clicked',
+  ),
+  menuNavigationFinalizeRegistrationClicked(
+    'menu_navigation_finalize_registration_clicked',
+  ),
   menuNavigationSummaryClicked('menu_navigation_summary_clicked'),
   menuNavigationBudgetClicked('menu_navigation_budget_clicked'),
   menuNavigationHistoryClicked('menu_navigation_history_clicked'),
-  menuNavigationRecurringDonationClicked('menu_navigation_recurring_donation_clicked'),
+  menuNavigationRecurringDonationClicked(
+    'menu_navigation_recurring_donation_clicked',
+  ),
   menuNavigationGiveLimitClicked('menu_navigation_give_limit_clicked'),
   menuNavigationPersonalInfoClicked('menu_navigation_personal_info_clicked'),
   signMandateChangeDetailsClicked('sign_mandate_change_details_clicked'),
   menuNavigationAmountPresetsClicked('menu_navigation_amount_presets_clicked'),
-  menuNavigationPlatformContributionClicked('menu_navigation_platform_contribution_clicked'),
+  menuNavigationPlatformContributionClicked(
+    'menu_navigation_platform_contribution_clicked',
+  ),
   menuNavigationBiometricClicked('menu_navigation_biometric_clicked'),
   menuNavigationLogoutClicked('menu_navigation_logout_clicked'),
   menuNavigationUnregisterClicked('menu_navigation_unregister_clicked'),
   menuNavigationAboutGivtClicked('menu_navigation_about_givt_clicked'),
-  platformContributionNavigationClicked('platform_contribution_navigation_clicked'),
+  platformContributionNavigationClicked(
+    'platform_contribution_navigation_clicked',
+  ),
   platformContributionManageClicked('platform_contribution_manage_clicked'),
   platformContributionToggleChanged('platform_contribution_toggle_changed'),
   platformContributionLevelChanged('platform_contribution_level_changed'),
-  platformContributionSaveChangesClicked('platform_contribution_save_changes_clicked'),
-  platformContributionSaveConfirmClicked('platform_contribution_save_confirm_clicked'),
-  platformContributionDiscardConfirmClicked('platform_contribution_discard_confirm_clicked'),
-  finalizeRegistrationModalFinalizeClicked('finalize_registration_modal_finalize_clicked'),
-  finalizeRegistrationModalAskLaterClicked('finalize_registration_modal_ask_later_clicked'),
+  platformContributionSaveChangesClicked(
+    'platform_contribution_save_changes_clicked',
+  ),
+  platformContributionSaveConfirmClicked(
+    'platform_contribution_save_confirm_clicked',
+  ),
+  platformContributionDiscardConfirmClicked(
+    'platform_contribution_discard_confirm_clicked',
+  ),
+  finalizeRegistrationModalFinalizeClicked(
+    'finalize_registration_modal_finalize_clicked',
+  ),
+  finalizeRegistrationModalAskLaterClicked(
+    'finalize_registration_modal_ask_later_clicked',
+  ),
   finalizeRegistrationModalShown('finalize_registration_modal_shown');
 
   const AnalyticsEventName(this.value);
@@ -415,5 +532,3 @@ enum AnalyticsEventName {
 
   final String value;
 }
-
-

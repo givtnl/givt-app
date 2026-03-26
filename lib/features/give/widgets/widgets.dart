@@ -1,7 +1,7 @@
 export 'add_colletion_button.dart';
 export 'animated_switch.dart';
 export 'choose_amount.dart';
-export 'choose_category.dart';
+export 'for_you.dart';
 export 'collection_form_field.dart';
 export 'context_list_tile.dart';
 export 'discover_suggestion_card.dart';

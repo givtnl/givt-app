@@ -8,6 +8,32 @@ This file helps AI agents (and developers) work effectively in this codebase.
 - **Flavors**: `development` and `production`; run via `flutter run --flavor development --target lib/main_development.dart` (see README).
 - **L10n**: ARB files in `lib/l10n/arb/`; run `flutter gen-l10n` after adding or changing keys.
 
+## Flutter baseline best practices (adapted)
+
+These are aligned with Flutter's official AI rules and should be treated as
+baseline behavior in this repository:
+
+- **Code quality first**: Keep code clear, simple, and maintainable; avoid
+  clever patterns when a straightforward one exists.
+- **Null safety and async correctness**: Prefer sound null-safe code, avoid
+  unnecessary `!`, and use `async`/`await` with explicit error handling.
+- **UI composition**: Favor small, composable widgets over large build methods;
+  keep expensive work out of `build()`.
+- **Performance defaults**: Use `const` constructors where possible and builder
+  patterns (for long lists/grids) for lazy rendering.
+- **Architecture**: Keep separation of concerns (presentation/domain/data/core);
+  use repositories and constructor injection for dependencies.
+- **State management**: Prefer existing project patterns (CommonCubit) and keep
+  one-off effects in custom states/events.
+- **Tests**: Add or update tests for behavior changes where practical; prefer
+  deterministic tests with clear Arrange-Act-Assert structure.
+- **Tooling after codegen-sensitive changes**: If l10n/json/codegen inputs are
+  changed, run the corresponding generation step (for example `flutter gen-l10n`
+  or `dart run build_runner build --delete-conflicting-outputs`).
+
+Project-specific rules in `.cursor/rules/` still take precedence where they are
+stricter (FUN design system, analytics requirements, versioning policy, etc.).
+
 ## EU vs US / feature locations
 
 The app has **two main variants**; many features exist in both with different implementations:
@@ -47,6 +73,16 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 - When the backend returns **distinct error cases** (e.g. invalid email vs email already in use), prefer separate UI states and copy for each case instead of one generic message.
 - Email checks: `checkTld(email)` → invalid format/TLD; `checkEmail(email)` returns `'true'` / `'temp'` → email already in use.
 
+## Text & Localization
+
+- **Phrasing & terminology**: All user-facing text must follow the guidelines in `docs/language.md`, which defines the correct terminology (e.g., "Give" vs "Donate"), tone of voice, capitalization rules, and language-specific phrasing conventions across all supported languages (English, Dutch, German, Spanish).
+- **Adding new text**: When adding new text to the UI:
+  1. First define the text entry in `lib/l10n/arb/app_en.arb` (the English template).
+  2. Follow the phrasing rules from `docs/language.md` for consistency.
+  3. Add translations for all supported languages in the corresponding ARB files (`app_nl.arb`, `app_de.arb`, `app_es.arb`, etc.).
+  4. Run `flutter gen-l10n` to regenerate the localization code.
+- **Language notes**: Avoid hardcoding text strings in Dart; always use the localized strings generated from ARB files. This ensures consistency and makes maintenance easier.
+
 ## State and rules
 
 - **Bloc/Cubit (CommonCubit pattern)**:
@@ -59,9 +95,9 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
   - Keep each cubit focused on a single feature; use clear method names, proper cleanup, and separate UI-model creation from business logic.
   - See `.cursor/rules/common-cubit-pattern.mdc` for full details.
 - **Analytics**:
-  - Use `AnalyticsEvent` with the appropriate `AmplitudeEvents` enum value (or `AnalyticsEventName` where applicable).
+  - Use `AnalyticsEvent` with `AnalyticsEventName` enum values (PostHog source of truth).
   - Pass `analyticsEvent` into interactive components (e.g. `FunButton`, tiles, summary rows); do not manually call `AnalyticsHelper.logEvent` when the component already supports analytics.
-  - Only use predefined event names in the enums; add new event types to the enum rather than inline strings, following the `componentNameActionVerb` naming style.
+  - Only use predefined event names in `AnalyticsEventName`; add new event types to the enum rather than inline strings, following the `componentNameActionVerb` naming style.
   - Use established parameter keys from `AnalyticsHelper`; never log sensitive or personally identifiable data.
   - See `.cursor/rules/analytics.mdc` for detailed rules.
 
@@ -72,12 +108,14 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
   - `.cursor/rules/fun-design-system.mdc`: FUN design system components, theming, and confirmation patterns.
   - `.cursor/rules/analytics.mdc`: Analytics event usage, naming, and integration with FUN components.
   - `.cursor/rules/versioning.mdc`: Version bump policy for the Givt app (ensure `develop` has a higher version than `main`, and choose patch vs minor appropriately).
+  - `.cursor/rules/flutter-core-best-practices.mdc`: Adapted Flutter baseline guidance for maintainability, async safety, architecture, and testing.
 
 ## Where to look
 
 - **Auth / current user**: `AuthCubit` (EU), `FamilyAuthRepository` / family auth (US).
 - **Support / infra**: `InfraCubit`, `contactSupportSafely`; used from `lib/shared/bloc/infra/`.
 - **L10n**: `lib/l10n/arb/app_en.arb` (template), then regenerate with `flutter gen-l10n`.
+- **Language & phrasing**: `docs/language.md` for terminology, tone of voice, and translation guidelines.
 
 ## Testing and commands
 

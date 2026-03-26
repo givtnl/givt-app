@@ -1,5 +1,6 @@
 // ignore_for_file: no_default_cases
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -20,8 +21,6 @@ import 'package:givt_app/features/recurring_donations/create/presentation/pages/
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
@@ -112,11 +111,16 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                 ),
               );
             }
+            // Request focus after the page is rendered and Hero animation completes
+            if (state.selectedType == CollectGroupType.none.index) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Future.delayed(const Duration(milliseconds: 300), () {
+                  focusNode.requestFocus();
+                });
+              });
+            }
           },
           builder: (context, state) {
-            if (state.selectedType == CollectGroupType.none.index) {
-              focusNode.requestFocus();
-            }
             return Column(
               children: [
                 _buildFilterType(bloc, locals),
@@ -125,18 +129,16 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: CupertinoSearchTextField(
-                          autocorrect: false,
+                        child: FunInput(
                           focusNode: focusNode,
+                          hintText: locals.searchHere,
+                          heroTag: 'discover_search_input_hero',
                           onChanged: (value) => context
                               .read<OrganisationBloc>()
                               .add(OrganisationFilterQueryChanged(value)),
-                          placeholder: locals.searchHere,
-                          prefixIcon: const Icon(Icons.search),
-                          suffixIcon: const Icon(Icons.close),
                         ),
                       ),
-                      // Sort toggle button has been removed - favorites are always shown at the top
+                      // Favorites are always shown at the top.
                     ],
                   ),
                 ),
@@ -222,8 +224,8 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                                 ),
                               );
                               AnalyticsHelper.logEvent(
-                                eventName:
-                                    AnalyticsEventName.organisationFavoriteToggled,
+                                eventName: AnalyticsEventName
+                                    .organisationFavoriteToggled,
                                 eventProperties: {
                                   'organisation_name': organisation.orgName,
                                   'is_favorited': false,
@@ -236,8 +238,8 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                                 ),
                               );
                               AnalyticsHelper.logEvent(
-                                eventName:
-                                    AnalyticsEventName.organisationFavoriteToggled,
+                                eventName: AnalyticsEventName
+                                    .organisationFavoriteToggled,
                                 eventProperties: {
                                   'organisation_name': organisation.orgName,
                                   'is_favorited': true,
@@ -333,7 +335,8 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               ? FunButton(
                   onTap: onPressed,
                   text: title,
-                  analyticsEvent: AmplitudeEvents.giveButtonPressed.toEvent(),
+                  analyticsEvent:
+                      AnalyticsEventName.giveButtonPressed.toEvent(),
                   isDisabled: onPressed == null,
                 )
               : const Center(

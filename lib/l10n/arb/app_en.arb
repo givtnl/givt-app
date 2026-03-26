@@ -779,8 +779,97 @@
   "discoverSearchButton": "Search",
   "discoverDiscoverButton": "See all",
   "discoverSegmentNow": "Give",
-  "discoverSegmentWho": "Discover",
-  "discoverHomeDiscoverTitle": "Choose category",
+  "discoverSegmentWho": "For You",
+  "forYouOtherWaysToGive": "Other ways to give",
+  "forYouSearchOrganizations": "Search organisations",
+  "forYouFavoriteTag": "Favourite",
+  "forYouEmptyFavoritesTitle": "Add your favourite organisation",
+  "forYouEmptyFavoritesBody": "Find it in one tap every time you open Givt",
+  "forYouLocationBasedTitle": "Location",
+  "forYouLocationBasedSubtitle": "Give to organisations near you",
+  "forYouQrCodeTitle": "QR code",
+  "forYouQrCodeSubtitle": "Use when you see a Givt QR code nearby",
+  "forYouCollectionDeviceTitle": "Collection device",
+  "forYouCollectionDeviceSubtitle": "Give when the plate or bag passes by",
+  "forYouGoalsCountCollections": "{count} Collection Goals",
+  "@forYouGoalsCountCollections": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGoalsCountGeneral": "{count} General Goal",
+  "@forYouGoalsCountGeneral": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingPageTitle": "Give now",
+  "forYouOrganisationConfirmHeadline": "You're giving to",
+  "forYouGivingFirstCollectionGoal": "First collection goal",
+  "forYouGivingFirstCollectionGoalSubtitle": "Choose what you want to give to the first goal.",
+  "forYouGivingGeneralGoal": "General goal",
+  "forYouGivingGeneralGoalSubtitle": "You can also add a general goal amount.",
+  "forYouGivingAddGeneralGoalToggle": "Add general goal",
+  "forYouGivingContinue": "Continue",
+  "forYouGivingMoreGoals": "Give to more goals",
+  "forYouMoreGeneralGoalsSheetTitle": "Other goals you can give to",
+  "forYouMoreGeneralGoalsSheetSubtitle": "Select the ones you'd like to include in your giving.",
+  "forYouMoreGeneralGoalsAddPlaceholder": "Add",
+  "forYouMoreGeneralGoalsAddOne": "Add 1 more goal",
+  "forYouMoreGeneralGoalsAddMany": "Add {count} more goals",
+  "@forYouMoreGeneralGoalsAddMany": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingCompleteMyGiving": "Complete",
+  "forYouGivingCollectionTitle": "Collection {index}",
+  "@forYouGivingCollectionTitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingCollectionSubtitle": "Collection {index}",
+  "@forYouGivingCollectionSubtitle": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "forYouGivingAccordionSubtitleWithAmount": "{label} - {amount}",
+  "@forYouGivingAccordionSubtitleWithAmount": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "forYouLocationSearchingTitle": "Looking for organisations near you",
+  "forYouLocationSearchingBody": "We are searching where you are, care to wait a little?",
+  "forYouLocationNoOrgFoundTitle": "No organisations found",
+  "forYouLocationNoOrgFoundBody": "We couldn't find any Givt-enabled organisations near your current location.",
+  "forYouLocationOffTitle": "Location is turned off",
+  "forYouLocationOffBody": "Please turn on your device location to find organisations near you.",
+  "forYouLocationPermissionTitle": "Location access needed",
+  "forYouLocationPermissionBody": "Givt needs access to your location to find organisations nearby. Go to Settings and allow location access.",
+  "forYouLocationOpenSettings": "Open Settings",
+  "forYouLocationMultipleOrgsFoundTitle": "Multiple organisations nearby",
+  "forYouLocationMultipleOrgsFoundBody": "We found several Givt-enabled organisations near your location. Please select one below.",
+  "forYouBluetoothOffTitle": "Bluetooth is off",
+  "forYouBluetoothOffBody": "Please turn on Bluetooth to find organisations nearby.",
+  "discoverHomeDiscoverTitle": "For You",
   "discoverOrAmountActionSheetOnce": "One-off donation",
   "discoverOrAmountActionSheetRecurring": "Recurring donation",
   "reccurringGivtIsBeingProcessed": "Thank you for your recurring donation to {value0}!\n To see all the information, go to 'Recurring donations' in the menu.",
@@ -945,7 +1034,7 @@
   "permitBiometricActivateWithType": "Activate {value0}",
   "youHaveBeenInvitedToImpactGroup": "You have been invited\nto the ",
   "acceptInviteKey": "Accept the invite",
-  "chooseGroup": "Choose Group",
+  "chooseGroup": "Welcome {firstName}",
   "groups": "Groups",
   "genericSuccessTitle": "Consider it done!",
   "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?",
@@ -1022,7 +1111,7 @@
   "gameStatsActivityThisWeek": "Game activity this week",
   "gameStatsPlayGame": "Play the Gratitude Game",
   "gameStatsAmountOfDeeds": "{amount} deeds",
-  "homescreenOverlayDiscoverTitle": "Discover your reward!",
+  "homescreenOverlayDiscoverTitle": "Your For You reward!",
   "homescreenOverlayGiveTitle": "Who would like to give?",
   "tutorialFamilyExplanationTitle": "Here’s your super family!",
   "tutorialFamilyExplanationDescription": "Work together to find causes to support and spread kindness.",

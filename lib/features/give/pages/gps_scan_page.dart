@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
@@ -18,7 +18,6 @@ import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -155,7 +154,8 @@ class _GPSScanPageState extends State<GPSScanPage> {
                 Visibility(
                   visible: isVisible,
                   child: FunButton(
-                    analyticsEvent: AmplitudeEvents.giveButtonPressed.toEvent(),
+                    analyticsEvent:
+                        AnalyticsEventName.giveButtonPressed.toEvent(),
                     onTap: () {
                       GiveLoadingDialog.showGiveLoadingDialog(context);
                       if (orgName!.isNotEmpty) {
@@ -181,7 +181,8 @@ class _GPSScanPageState extends State<GPSScanPage> {
                 Visibility(
                   visible: isVisible && orgName.isNotEmpty,
                   child: FunTextButton(
-                    analyticsEvent: AmplitudeEvents.giveButtonPressed.toEvent(),
+                    analyticsEvent:
+                        AnalyticsEventName.giveButtonPressed.toEvent(),
                     onTap: () => context.goNamed(
                       Pages.giveByList.name,
                       extra: context.read<GiveBloc>(),
