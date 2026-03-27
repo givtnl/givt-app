@@ -373,11 +373,26 @@ class _ForYouState extends State<ForYou>
     }
 
     // Always show fallback collection goals if they exist.
-    // General goals are still showCounts-gated as they depend on the API summary.
+    // General goals are still showCounts-gated
+    // as they depend on the API summary.
     final hasAllocationGoals = allocationsCount > 0;
     final hasGeneralGoals =
         showCounts && summary != null && summary.qrCodesCount > 0;
     final hasAnyGoalText = hasAllocationGoals || hasGeneralGoals;
+
+    String collectionGoalsLabel(BuildContext context, int count) {
+      if (count == 1) {
+        return context.l10n.forYouGoalsCountCollectionsSingular;
+      }
+      return context.l10n.forYouGoalsCountCollectionsPlural(count);
+    }
+
+    String generalGoalsLabel(BuildContext context, int count) {
+      if (count == 1) {
+        return context.l10n.forYouGoalsCountGeneralSingular;
+      }
+      return context.l10n.forYouGoalsCountGeneralPlural(count);
+    }
 
     return IntrinsicHeight(
       child: InkWell(
@@ -398,7 +413,6 @@ class _ForYouState extends State<ForYou>
               ),
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -434,16 +448,12 @@ class _ForYouState extends State<ForYou>
                     const SizedBox(height: 12),
                     if (hasAllocationGoals)
                       BodySmallText(
-                        context.l10n.forYouGoalsCountCollections(
-                          allocationsCount,
-                        ),
+                        collectionGoalsLabel(context, allocationsCount),
                         color: theme.primary20,
                       ),
                     if (hasGeneralGoals)
                       BodySmallText(
-                        context.l10n.forYouGoalsCountGeneral(
-                          summary.qrCodesCount,
-                        ),
+                        generalGoalsLabel(context, summary.qrCodesCount),
                         color: theme.primary20,
                       ),
                   ],

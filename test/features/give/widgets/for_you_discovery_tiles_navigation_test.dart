@@ -104,9 +104,10 @@ void main() {
 
   Widget _appUnderTest({
     required OrganisationBloc organisationBloc,
+    Locale locale = const Locale('en'),
   }) {
     return MaterialApp.router(
-      locale: const Locale('en'),
+      locale: locale,
       localizationsDelegates:
           AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -149,10 +150,26 @@ void main() {
       await tester.pumpWidget(testWidget);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Location based'));
+      await tester.tap(find.text('Location'));
       await tester.pumpAndSettle();
 
       expect(find.text('BY_LOCATION'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'empty state shows updated Dutch favorites title',
+    (tester) async {
+      final organisationBloc = await _createOrganisationBloc();
+      final testWidget = _appUnderTest(
+        organisationBloc: organisationBloc,
+        locale: const Locale('nl'),
+      );
+
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Je favorieten altijd bij de hand'), findsWidgets);
     },
   );
 
@@ -165,7 +182,7 @@ void main() {
       await tester.pumpWidget(testWidget);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Givt QR-code'));
+      await tester.tap(find.text('QR code'));
       await tester.pumpAndSettle();
 
       expect(find.text('BY_QR'), findsOneWidget);

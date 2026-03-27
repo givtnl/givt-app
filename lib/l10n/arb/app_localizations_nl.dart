@@ -572,8 +572,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get logOut => 'Uitloggen';
 
   @override
-  String get makeContact =>
-      'Dit is het Givt-moment. \n Beweeg nu je telefoon langs de\n collectebus, -zak of -mand.';
+  String get makeContact => 'Dit is het Givt-moment.';
 
   @override
   String get next => 'Volgende';
@@ -1203,7 +1202,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forYouFavoriteTag => 'Favoriet';
 
   @override
-  String get forYouEmptyFavoritesTitle => 'Voeg je favoriete organisatie toe';
+  String get forYouEmptyFavoritesTitle => 'Je favorieten altijd bij de hand';
 
   @override
   String get forYouEmptyFavoritesBody =>
@@ -1220,8 +1219,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forYouQrCodeTitle => 'QR-code';
 
   @override
-  String get forYouQrCodeSubtitle =>
-      'Gebruik het wanneer je een Givt QR-code bij jou in de buurt ziet';
+  String get forYouQrCodeSubtitle => 'Scan een Givt-QR-code';
 
   @override
   String get forYouCollectionDeviceTitle => 'Collectemiddel';
@@ -1232,11 +1230,27 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String forYouGoalsCountCollections(int count) {
-    return '$count verzamelingsdoelen';
+    return '$count collectedoelen';
+  }
+
+  @override
+  String get forYouGoalsCountCollectionsSingular => '1 collectedoel';
+
+  @override
+  String forYouGoalsCountCollectionsPlural(Object count) {
+    return '$count collectedoelen';
   }
 
   @override
   String forYouGoalsCountGeneral(int count) {
+    return '$count algemene doelen';
+  }
+
+  @override
+  String get forYouGoalsCountGeneralSingular => '1 algemeen doel';
+
+  @override
+  String forYouGoalsCountGeneralPlural(Object count) {
     return '$count algemene doelen';
   }
 
@@ -1293,7 +1307,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String forYouGivingCollectionTitle(int index) {
-    return 'Collect $index';
+    return 'Collectedoel $index';
   }
 
   @override
@@ -1312,14 +1326,14 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get forYouLocationSearchingBody =>
-      'We zoeken naar je locatie, even geduld?';
+      'Beweeg je telefoon langs de collectezak om de zender te vinden.';
 
   @override
   String get forYouLocationNoOrgFoundTitle => 'Geen organisaties gevonden';
 
   @override
   String get forYouLocationNoOrgFoundBody =>
-      'We konden geen Givt-organisaties vinden bij jouw huidige locatie.';
+      'Zoek je organisatie handmatig op in de lijst.';
 
   @override
   String get forYouLocationOffTitle => 'Locatie is uitgeschakeld';
@@ -1339,12 +1353,11 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forYouLocationOpenSettings => 'Instellingen openen';
 
   @override
-  String get forYouLocationMultipleOrgsFoundTitle =>
-      'Meerdere organisaties in de buurt';
+  String get forYouLocationMultipleOrgsFoundTitle => 'Kies je organisatie';
 
   @override
   String get forYouLocationMultipleOrgsFoundBody =>
-      'We vonden meerdere Givt-organisaties bij jouw locatie. Kies er hieronder een.';
+      'We vonden er verschillende in je buurt. Welke zoek je?';
 
   @override
   String get forYouBluetoothOffTitle => 'Bluetooth is uitgeschakeld';

@@ -224,7 +224,7 @@
     "description": "Uitloggen knop",
     "type": "text"
   },
-  "makeContact": "Dit is het Givt-moment. \n Beweeg nu je telefoon langs de\n collectebus, -zak of -mand.",
+  "makeContact": "Dit is het Givt-moment.",
   "@makeContact": {
     "description": "\"collectemiddel\" blijft vreemd. Alternatieven: \"collectebus of -zak\" of \"inzamelobject\" of \"Givt logo\" \n  Titel op de scanpagina",
     "type": "text"
@@ -786,21 +786,34 @@
   "forYouOtherWaysToGive": "Andere manieren om te geven",
   "forYouSearchOrganizations": "Zoek organisaties",
   "forYouFavoriteTag": "Favoriet",
-  "forYouEmptyFavoritesTitle": "Voeg je favoriete organisatie toe",
+  "forYouEmptyFavoritesTitle": "Je favorieten altijd bij de hand",
   "forYouEmptyFavoritesBody": "Vind het met één tik, elke keer dat je Givt opent",
   "forYouLocationBasedTitle": "Locatie",
   "forYouLocationBasedSubtitle": "Geef aan organisaties bij jou in de buurt",
   "forYouQrCodeTitle": "QR-code",
-  "forYouQrCodeSubtitle": "Gebruik het wanneer je een Givt QR-code bij jou in de buurt ziet",
+  "forYouQrCodeSubtitle": "Scan een Givt-QR-code",
   "forYouCollectionDeviceTitle": "Collectemiddel",
   "forYouCollectionDeviceSubtitle": "Geef wanneer de plaat of tas langskomt",
-  "forYouGoalsCountCollections": "{count} verzamelingsdoelen",
+  "forYouGoalsCountCollections": "{count} collectedoelen",
   "@forYouGoalsCountCollections": {
     "placeholders": {
       "count": {
         "type": "int"
       }
     }
+  },
+  "forYouGoalsCountCollectionsSingular": "1 collectedoel",
+  "@forYouGoalsCountCollectionsSingular": {
+    "description": "For You favorites: singular collection goal count label",
+    "type": "text"
+  },
+  "forYouGoalsCountCollectionsPlural": "{count} collectedoelen",
+  "@forYouGoalsCountCollectionsPlural": {
+    "description": "For You favorites: plural collection goal count label",
+    "placeholders": {
+      "count": {}
+    },
+    "type": "text"
   },
   "forYouGoalsCountGeneral": "{count} algemene doelen",
   "@forYouGoalsCountGeneral": {
@@ -809,6 +822,19 @@
         "type": "int"
       }
     }
+  },
+  "forYouGoalsCountGeneralSingular": "1 algemeen doel",
+  "@forYouGoalsCountGeneralSingular": {
+    "description": "For You favorites: singular general goal count label",
+    "type": "text"
+  },
+  "forYouGoalsCountGeneralPlural": "{count} algemene doelen",
+  "@forYouGoalsCountGeneralPlural": {
+    "description": "For You favorites: plural general goal count label",
+    "placeholders": {
+      "count": {}
+    },
+    "type": "text"
   },
   "forYouGivingPageTitle": "Nu geven",
   "forYouOrganisationConfirmHeadline": "Je geeft aan",
@@ -832,7 +858,7 @@
     }
   },
   "forYouGivingCompleteMyGiving": "Mijn gift afronden",
-  "forYouGivingCollectionTitle": "Collect {index}",
+  "forYouGivingCollectionTitle": "Collectedoel {index}",
   "@forYouGivingCollectionTitle": {
     "placeholders": {
       "index": {
@@ -860,16 +886,16 @@
     }
   },
   "forYouLocationSearchingTitle": "Op zoek naar organisaties bij jou in de buurt",
-  "forYouLocationSearchingBody": "We zoeken naar je locatie, even geduld?",
+  "forYouLocationSearchingBody": "Beweeg je telefoon langs de collectezak om de zender te vinden.",
   "forYouLocationNoOrgFoundTitle": "Geen organisaties gevonden",
-  "forYouLocationNoOrgFoundBody": "We konden geen Givt-organisaties vinden bij jouw huidige locatie.",
+  "forYouLocationNoOrgFoundBody": "Zoek je organisatie handmatig op in de lijst.",
   "forYouLocationOffTitle": "Locatie is uitgeschakeld",
   "forYouLocationOffBody": "Zet je locatiediensten aan om organisaties bij jou in de buurt te vinden.",
   "forYouLocationPermissionTitle": "Locatietoegang nodig",
   "forYouLocationPermissionBody": "Givt heeft toegang tot je locatie nodig om organisaties bij jou in de buurt te vinden. Ga naar Instellingen en sta locatietoegang toe.",
   "forYouLocationOpenSettings": "Instellingen openen",
-  "forYouLocationMultipleOrgsFoundTitle": "Meerdere organisaties in de buurt",
-  "forYouLocationMultipleOrgsFoundBody": "We vonden meerdere Givt-organisaties bij jouw locatie. Kies er hieronder een.",
+  "forYouLocationMultipleOrgsFoundTitle": "Kies je organisatie",
+  "forYouLocationMultipleOrgsFoundBody": "We vonden er verschillende in je buurt. Welke zoek je?",
   "forYouBluetoothOffTitle": "Bluetooth is uitgeschakeld",
   "forYouBluetoothOffBody": "Zet Bluetooth aan om organisaties bij jou in de buurt te vinden.",
   "reccurringGivtIsBeingProcessed": "Bedankt voor je terugkerende gift aan {value0}! \n Om alle informatie hierover te zien, ga je naar 'Terugkerende giften' in het menu.",

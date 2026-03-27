@@ -224,7 +224,7 @@
     "description": "Uitloggen knop",
     "type": "text"
   },
-  "makeContact": "This is the Givt-moment.\n Move your phone towards the \n collection box, bag or basket.",
+  "makeContact": "Este es el momento Givt.",
   "@makeContact": {
     "description": "\"collectemiddel\" blijft vreemd. Alternatieven: \"collectebus of -zak\" of \"inzamelobject\" of \"Givt logo\" \n  Titel op de scanpagina",
     "type": "text"
@@ -786,12 +786,12 @@
   "forYouOtherWaysToGive": "Otras formas de donar",
   "forYouSearchOrganizations": "Buscar organizaciones",
   "forYouFavoriteTag": "Favorito",
-  "forYouEmptyFavoritesTitle": "Añade tu organización favorita",
+  "forYouEmptyFavoritesTitle": "Tus favoritos siempre a mano",
   "forYouEmptyFavoritesBody": "Encuéntralo con un toque cada vez que abras Givt",
   "forYouLocationBasedTitle": "Ubicación",
   "forYouLocationBasedSubtitle": "Dona a organizaciones cerca de ti",
   "forYouQrCodeTitle": "QR-code",
-  "forYouQrCodeSubtitle": "Úsalo cuando veas un código QR de Givt cerca",
+  "forYouQrCodeSubtitle": "Escanea un código QR de Givt",
   "forYouCollectionDeviceTitle": "Dispositivo de recaudación",
   "forYouCollectionDeviceSubtitle": "Dona cuando pase la placa o la bolsa",
   "forYouGoalsCountCollections": "{count} objetivos de colecciones",
@@ -802,6 +802,19 @@
       }
     }
   },
+  "forYouGoalsCountCollectionsSingular": "1 objetivo de colección",
+  "@forYouGoalsCountCollectionsSingular": {
+    "description": "For You favorites: singular collection goal count label",
+    "type": "text"
+  },
+  "forYouGoalsCountCollectionsPlural": "{count} objetivos de colección",
+  "@forYouGoalsCountCollectionsPlural": {
+    "description": "For You favorites: plural collection goal count label",
+    "placeholders": {
+      "count": {}
+    },
+    "type": "text"
+  },
   "forYouGoalsCountGeneral": "{count} objetivos generales",
   "@forYouGoalsCountGeneral": {
     "placeholders": {
@@ -809,6 +822,19 @@
         "type": "int"
       }
     }
+  },
+  "forYouGoalsCountGeneralSingular": "1 objetivo general",
+  "@forYouGoalsCountGeneralSingular": {
+    "description": "For You favorites: singular general goal count label",
+    "type": "text"
+  },
+  "forYouGoalsCountGeneralPlural": "{count} objetivos generales",
+  "@forYouGoalsCountGeneralPlural": {
+    "description": "For You favorites: plural general goal count label",
+    "placeholders": {
+      "count": {}
+    },
+    "type": "text"
   },
   "forYouGivingPageTitle": "Donar ahora",
   "forYouOrganisationConfirmHeadline": "Vas a donar a",
@@ -832,7 +858,7 @@
     }
   },
   "forYouGivingCompleteMyGiving": "Completar mi donación",
-  "forYouGivingCollectionTitle": "Colecta {index}",
+  "forYouGivingCollectionTitle": "Objetivo de colección {index}",
   "@forYouGivingCollectionTitle": {
     "placeholders": {
       "index": {
@@ -860,16 +886,16 @@
     }
   },
   "forYouLocationSearchingTitle": "Buscando organizaciones cerca de ti",
-  "forYouLocationSearchingBody": "Estamos buscando tu ubicación, ¿puedes esperar un momento?",
+  "forYouLocationSearchingBody": "Mueve tu teléfono a lo largo de la bolsa de colecta para encontrar el transmisor.",
   "forYouLocationNoOrgFoundTitle": "No se encontraron organizaciones",
-  "forYouLocationNoOrgFoundBody": "No pudimos encontrar organizaciones con Givt cerca de tu ubicación actual.",
+  "forYouLocationNoOrgFoundBody": "Busca tu organización manualmente en la lista.",
   "forYouLocationOffTitle": "La ubicación está desactivada",
   "forYouLocationOffBody": "Por favor, activa la ubicación de tu dispositivo para encontrar organizaciones cerca de ti.",
   "forYouLocationPermissionTitle": "Se necesita acceso a la ubicación",
   "forYouLocationPermissionBody": "Givt necesita acceso a tu ubicación para encontrar organizaciones cerca. Ve a Configuración y permite el acceso a la ubicación.",
   "forYouLocationOpenSettings": "Abrir configuración",
-  "forYouLocationMultipleOrgsFoundTitle": "Varias organizaciones cercanas",
-  "forYouLocationMultipleOrgsFoundBody": "Encontramos varias organizaciones con Givt cerca de tu ubicación. Por favor, selecciona una a continuación.",
+  "forYouLocationMultipleOrgsFoundTitle": "Elige tu organización",
+  "forYouLocationMultipleOrgsFoundBody": "Encontramos varias cerca de ti. ¿Cuál estás buscando?",
   "forYouBluetoothOffTitle": "Bluetooth está desactivado",
   "forYouBluetoothOffBody": "Por favor, activa el Bluetooth para encontrar organizaciones cercanas.",
   "reccurringGivtIsBeingProcessed": "Thank you for your recurring donation to {value0}!\n To see all the information, go to 'Recurring donations' in the menu.",

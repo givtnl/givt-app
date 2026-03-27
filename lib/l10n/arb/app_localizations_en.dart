@@ -568,8 +568,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logOut => 'Logout';
 
   @override
-  String get makeContact =>
-      'This is the Givt-moment.\n Move your phone towards the \n collection box, bag or basket.';
+  String get makeContact => 'This is the Givt moment.';
 
   @override
   String get next => 'Next';
@@ -1199,7 +1198,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouFavoriteTag => 'Favourite';
 
   @override
-  String get forYouEmptyFavoritesTitle => 'Add your favourite organisation';
+  String get forYouEmptyFavoritesTitle => 'Keep your favorites close at hand';
 
   @override
   String get forYouEmptyFavoritesBody =>
@@ -1215,7 +1214,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouQrCodeTitle => 'QR code';
 
   @override
-  String get forYouQrCodeSubtitle => 'Use when you see a Givt QR code nearby';
+  String get forYouQrCodeSubtitle => 'Scan a Givt QR code';
 
   @override
   String get forYouCollectionDeviceTitle => 'Collection device';
@@ -1226,12 +1225,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String forYouGoalsCountCollections(int count) {
-    return '$count Collection Goals';
+    return '$count collection goals';
+  }
+
+  @override
+  String get forYouGoalsCountCollectionsSingular => '1 collection goal';
+
+  @override
+  String forYouGoalsCountCollectionsPlural(Object count) {
+    return '$count collection goals';
   }
 
   @override
   String forYouGoalsCountGeneral(int count) {
-    return '$count General Goal';
+    return '$count general goals';
+  }
+
+  @override
+  String get forYouGoalsCountGeneralSingular => '1 general goal';
+
+  @override
+  String forYouGoalsCountGeneralPlural(Object count) {
+    return '$count general goals';
   }
 
   @override
@@ -1286,7 +1301,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String forYouGivingCollectionTitle(int index) {
-    return 'Collection $index';
+    return 'Collection goal $index';
   }
 
   @override
@@ -1305,14 +1320,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forYouLocationSearchingBody =>
-      'We are searching where you are, care to wait a little?';
+      'Move your phone along the collection bag to find the transmitter.';
 
   @override
   String get forYouLocationNoOrgFoundTitle => 'No organisations found';
 
   @override
   String get forYouLocationNoOrgFoundBody =>
-      'We couldn\'t find any Givt-enabled organisations near your current location.';
+      'Look up your organisation manually in the list.';
 
   @override
   String get forYouLocationOffTitle => 'Location is turned off';
@@ -1332,12 +1347,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouLocationOpenSettings => 'Open Settings';
 
   @override
-  String get forYouLocationMultipleOrgsFoundTitle =>
-      'Multiple organisations nearby';
+  String get forYouLocationMultipleOrgsFoundTitle => 'Choose your organisation';
 
   @override
   String get forYouLocationMultipleOrgsFoundBody =>
-      'We found several Givt-enabled organisations near your location. Please select one below.';
+      'We found several in your area. Which one are you looking for?';
 
   @override
   String get forYouBluetoothOffTitle => 'Bluetooth is off';

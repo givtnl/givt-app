@@ -1084,7 +1084,7 @@ abstract class AppLocalizations {
   ///   Titel op de scanpagina
   ///
   /// In en, this message translates to:
-  /// **'This is the Givt-moment.\n Move your phone towards the \n collection box, bag or basket.'**
+  /// **'This is the Givt moment.'**
   String get makeContact;
 
   /// "Volgende" knop
@@ -2216,7 +2216,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouEmptyFavoritesTitle.
   ///
   /// In en, this message translates to:
-  /// **'Add your favourite organisation'**
+  /// **'Keep your favorites close at hand'**
   String get forYouEmptyFavoritesTitle;
 
   /// No description provided for @forYouEmptyFavoritesBody.
@@ -2246,7 +2246,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouQrCodeSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Use when you see a Givt QR code nearby'**
+  /// **'Scan a Givt QR code'**
   String get forYouQrCodeSubtitle;
 
   /// No description provided for @forYouCollectionDeviceTitle.
@@ -2264,14 +2264,38 @@ abstract class AppLocalizations {
   /// No description provided for @forYouGoalsCountCollections.
   ///
   /// In en, this message translates to:
-  /// **'{count} Collection Goals'**
+  /// **'{count} collection goals'**
   String forYouGoalsCountCollections(int count);
+
+  /// For You favorites: singular collection goal count label
+  ///
+  /// In en, this message translates to:
+  /// **'1 collection goal'**
+  String get forYouGoalsCountCollectionsSingular;
+
+  /// For You favorites: plural collection goal count label
+  ///
+  /// In en, this message translates to:
+  /// **'{count} collection goals'**
+  String forYouGoalsCountCollectionsPlural(Object count);
 
   /// No description provided for @forYouGoalsCountGeneral.
   ///
   /// In en, this message translates to:
-  /// **'{count} General Goal'**
+  /// **'{count} general goals'**
   String forYouGoalsCountGeneral(int count);
+
+  /// For You favorites: singular general goal count label
+  ///
+  /// In en, this message translates to:
+  /// **'1 general goal'**
+  String get forYouGoalsCountGeneralSingular;
+
+  /// For You favorites: plural general goal count label
+  ///
+  /// In en, this message translates to:
+  /// **'{count} general goals'**
+  String forYouGoalsCountGeneralPlural(Object count);
 
   /// No description provided for @forYouGivingPageTitle.
   ///
@@ -2366,7 +2390,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouGivingCollectionTitle.
   ///
   /// In en, this message translates to:
-  /// **'Collection {index}'**
+  /// **'Collection goal {index}'**
   String forYouGivingCollectionTitle(int index);
 
   /// No description provided for @forYouGivingCollectionSubtitle.
@@ -2390,7 +2414,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouLocationSearchingBody.
   ///
   /// In en, this message translates to:
-  /// **'We are searching where you are, care to wait a little?'**
+  /// **'Move your phone along the collection bag to find the transmitter.'**
   String get forYouLocationSearchingBody;
 
   /// No description provided for @forYouLocationNoOrgFoundTitle.
@@ -2402,7 +2426,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouLocationNoOrgFoundBody.
   ///
   /// In en, this message translates to:
-  /// **'We couldn\'t find any Givt-enabled organisations near your current location.'**
+  /// **'Look up your organisation manually in the list.'**
   String get forYouLocationNoOrgFoundBody;
 
   /// No description provided for @forYouLocationOffTitle.
@@ -2438,13 +2462,13 @@ abstract class AppLocalizations {
   /// No description provided for @forYouLocationMultipleOrgsFoundTitle.
   ///
   /// In en, this message translates to:
-  /// **'Multiple organisations nearby'**
+  /// **'Choose your organisation'**
   String get forYouLocationMultipleOrgsFoundTitle;
 
   /// No description provided for @forYouLocationMultipleOrgsFoundBody.
   ///
   /// In en, this message translates to:
-  /// **'We found several Givt-enabled organisations near your location. Please select one below.'**
+  /// **'We found several in your area. Which one are you looking for?'**
   String get forYouLocationMultipleOrgsFoundBody;
 
   /// No description provided for @forYouBluetoothOffTitle.

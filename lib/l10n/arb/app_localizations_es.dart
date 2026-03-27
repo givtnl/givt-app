@@ -568,8 +568,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get logOut => 'Logout';
 
   @override
-  String get makeContact =>
-      'This is the Givt-moment.\n Move your phone towards the \n collection box, bag or basket.';
+  String get makeContact => 'Este es el momento Givt.';
 
   @override
   String get next => 'Next';
@@ -1199,7 +1198,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get forYouFavoriteTag => 'Favorito';
 
   @override
-  String get forYouEmptyFavoritesTitle => 'Añade tu organización favorita';
+  String get forYouEmptyFavoritesTitle => 'Tus favoritos siempre a mano';
 
   @override
   String get forYouEmptyFavoritesBody =>
@@ -1215,8 +1214,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get forYouQrCodeTitle => 'QR-code';
 
   @override
-  String get forYouQrCodeSubtitle =>
-      'Úsalo cuando veas un código QR de Givt cerca';
+  String get forYouQrCodeSubtitle => 'Escanea un código QR de Givt';
 
   @override
   String get forYouCollectionDeviceTitle => 'Dispositivo de recaudación';
@@ -1231,7 +1229,23 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get forYouGoalsCountCollectionsSingular => '1 objetivo de colección';
+
+  @override
+  String forYouGoalsCountCollectionsPlural(Object count) {
+    return '$count objetivos de colección';
+  }
+
+  @override
   String forYouGoalsCountGeneral(int count) {
+    return '$count objetivos generales';
+  }
+
+  @override
+  String get forYouGoalsCountGeneralSingular => '1 objetivo general';
+
+  @override
+  String forYouGoalsCountGeneralPlural(Object count) {
     return '$count objetivos generales';
   }
 
@@ -1288,7 +1302,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String forYouGivingCollectionTitle(int index) {
-    return 'Colecta $index';
+    return 'Objetivo de colección $index';
   }
 
   @override
@@ -1307,7 +1321,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get forYouLocationSearchingBody =>
-      'Estamos buscando tu ubicación, ¿puedes esperar un momento?';
+      'Mueve tu teléfono a lo largo de la bolsa de colecta para encontrar el transmisor.';
 
   @override
   String get forYouLocationNoOrgFoundTitle =>
@@ -1315,7 +1329,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get forYouLocationNoOrgFoundBody =>
-      'No pudimos encontrar organizaciones con Givt cerca de tu ubicación actual.';
+      'Busca tu organización manualmente en la lista.';
 
   @override
   String get forYouLocationOffTitle => 'La ubicación está desactivada';
@@ -1336,12 +1350,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get forYouLocationOpenSettings => 'Abrir configuración';
 
   @override
-  String get forYouLocationMultipleOrgsFoundTitle =>
-      'Varias organizaciones cercanas';
+  String get forYouLocationMultipleOrgsFoundTitle => 'Elige tu organización';
 
   @override
   String get forYouLocationMultipleOrgsFoundBody =>
-      'Encontramos varias organizaciones con Givt cerca de tu ubicación. Por favor, selecciona una a continuación.';
+      'Encontramos varias cerca de ti. ¿Cuál estás buscando?';
 
   @override
   String get forYouBluetoothOffTitle => 'Bluetooth está desactivado';
