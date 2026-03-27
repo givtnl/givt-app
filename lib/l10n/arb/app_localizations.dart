@@ -2222,7 +2222,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouEmptyFavoritesBody.
   ///
   /// In en, this message translates to:
-  /// **'Find it in one tap every time you open Givt'**
+  /// **'Pin your regular goals to give even faster'**
   String get forYouEmptyFavoritesBody;
 
   /// No description provided for @forYouLocationBasedTitle.
@@ -2354,13 +2354,13 @@ abstract class AppLocalizations {
   /// No description provided for @forYouMoreGeneralGoalsSheetTitle.
   ///
   /// In en, this message translates to:
-  /// **'Other goals you can give to'**
+  /// **'More goals from this organisation'**
   String get forYouMoreGeneralGoalsSheetTitle;
 
   /// No description provided for @forYouMoreGeneralGoalsSheetSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Select the ones you\'d like to include in your giving.'**
+  /// **'Add the goals you want to give to.'**
   String get forYouMoreGeneralGoalsSheetSubtitle;
 
   /// No description provided for @forYouMoreGeneralGoalsAddPlaceholder.
@@ -2384,7 +2384,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouGivingCompleteMyGiving.
   ///
   /// In en, this message translates to:
-  /// **'Complete'**
+  /// **'Give now'**
   String get forYouGivingCompleteMyGiving;
 
   /// No description provided for @forYouGivingCollectionTitle.
@@ -2468,7 +2468,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouLocationMultipleOrgsFoundBody.
   ///
   /// In en, this message translates to:
-  /// **'We found several in your area. Which one are you looking for?'**
+  /// **'We found several in the area. Which one are you looking for?'**
   String get forYouLocationMultipleOrgsFoundBody;
 
   /// No description provided for @forYouBluetoothOffTitle.

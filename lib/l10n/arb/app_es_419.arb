@@ -224,7 +224,7 @@
     "description": "Uitloggen knop",
     "type": "text"
   },
-  "makeContact": "Este es el momento Givt.\n Acerca tu teléfono a la \n caja, bolsa o cesta de colecta.",
+  "makeContact": "Este es el momento Givt.",
   "@makeContact": {
     "description": "\"collectemiddel\" blijft vreemd. Alternatieven: \"collectebus of -zak\" of \"inzamelobject\" of \"Givt logo\" \n  Titel op de scanpagina",
     "type": "text"
@@ -787,11 +787,11 @@
   "forYouSearchOrganizations": "Buscar organizaciones",
   "forYouFavoriteTag": "Favorito",
   "forYouEmptyFavoritesTitle": "Añade tu organización favorita",
-  "forYouEmptyFavoritesBody": "Encuéntralo con un toque cada vez que abras Givt",
+  "forYouEmptyFavoritesBody": "Marca tus objetivos habituales para donar más rápido",
   "forYouLocationBasedTitle": "Ubicación",
   "forYouLocationBasedSubtitle": "Dona a organizaciones cerca de ti",
   "forYouQrCodeTitle": "QR-code",
-  "forYouQrCodeSubtitle": "Úsalo cuando veas un código QR de Givt cerca",
+  "forYouQrCodeSubtitle": "Escanea un código QR de Givt",
   "forYouCollectionDeviceTitle": "Dispositivo de recaudación",
   "forYouCollectionDeviceSubtitle": "Dona cuando pase la placa o la bolsa",
   "forYouGoalsCountCollections": "{count} objetivos de colecciones",
@@ -819,8 +819,8 @@
   "forYouGivingAddGeneralGoalToggle": "Añadir objetivo general",
   "forYouGivingContinue": "Continuar",
   "forYouGivingMoreGoals": "Donar a más objetivos",
-  "forYouMoreGeneralGoalsSheetTitle": "Otros objetivos a los que puedes donar",
-  "forYouMoreGeneralGoalsSheetSubtitle": "Selecciona los que quieras incluir en tu donación.",
+  "forYouMoreGeneralGoalsSheetTitle": "Más objetivos de esta organización",
+  "forYouMoreGeneralGoalsSheetSubtitle": "Añade los objetivos a los que quieres donar.",
   "forYouMoreGeneralGoalsAddPlaceholder": "Añadir",
   "forYouMoreGeneralGoalsAddOne": "Añadir 1 objetivo más",
   "forYouMoreGeneralGoalsAddMany": "Añadir {count} objetivos más",
@@ -831,8 +831,8 @@
       }
     }
   },
-  "forYouGivingCompleteMyGiving": "Completar mi donación",
-  "forYouGivingCollectionTitle": "Colecta {index}",
+  "forYouGivingCompleteMyGiving": "Donar ahora",
+  "forYouGivingCollectionTitle": "Objetivo de colección {index}",
   "@forYouGivingCollectionTitle": {
     "placeholders": {
       "index": {
@@ -860,16 +860,16 @@
     }
   },
   "forYouLocationSearchingTitle": "Buscando organizaciones cerca de ti",
-  "forYouLocationSearchingBody": "Estamos buscando tu ubicación, ¿puedes esperar un momento?",
+  "forYouLocationSearchingBody": "Mueve tu teléfono a lo largo de la bolsa de colecta para encontrar el transmisor.",
   "forYouLocationNoOrgFoundTitle": "No se encontraron organizaciones",
-  "forYouLocationNoOrgFoundBody": "No pudimos encontrar organizaciones con Givt cerca de tu ubicación actual.",
+  "forYouLocationNoOrgFoundBody": "Busca tu organización manualmente en la lista.",
   "forYouLocationOffTitle": "La ubicación está desactivada",
   "forYouLocationOffBody": "Por favor, activa la ubicación de tu dispositivo para encontrar organizaciones cerca de ti.",
   "forYouLocationPermissionTitle": "Se necesita acceso a la ubicación",
   "forYouLocationPermissionBody": "Givt necesita acceso a tu ubicación para encontrar organizaciones cerca. Ve a Configuración y permite el acceso a la ubicación.",
   "forYouLocationOpenSettings": "Abrir configuración",
-  "forYouLocationMultipleOrgsFoundTitle": "Varias organizaciones cercanas",
-  "forYouLocationMultipleOrgsFoundBody": "Encontramos varias organizaciones con Givt cerca de tu ubicación. Por favor, selecciona una a continuación.",
+  "forYouLocationMultipleOrgsFoundTitle": "Elige tu organización",
+  "forYouLocationMultipleOrgsFoundBody": "Encontramos varias en la zona. ¿Cuál estás buscando?",
   "forYouBluetoothOffTitle": "Bluetooth está desactivado",
   "forYouBluetoothOffBody": "Por favor, activa el Bluetooth para encontrar organizaciones cercanas.",
   "reccurringGivtIsBeingProcessed": "Thank you for your recurring donation to {value0}!\n To see all the information, go to 'Recurring donations' in the menu.",

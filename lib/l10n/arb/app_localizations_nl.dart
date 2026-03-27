@@ -1206,7 +1206,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get forYouEmptyFavoritesBody =>
-      'Vind het met één tik, elke keer dat je Givt opent';
+      'Markeer je vaste doelen om sneller te kunnen geven';
 
   @override
   String get forYouLocationBasedTitle => 'Locatie';
@@ -1285,11 +1285,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get forYouMoreGeneralGoalsSheetTitle =>
-      'Andere doelen waaraan je kunt geven';
+      'Meer doelen van deze organisatie';
 
   @override
   String get forYouMoreGeneralGoalsSheetSubtitle =>
-      'Selecteer de doelen die je wilt opnemen in je gift.';
+      'Voeg de doelen toe waar je aan wil geven.';
 
   @override
   String get forYouMoreGeneralGoalsAddPlaceholder => 'Toevoegen';
@@ -1303,7 +1303,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get forYouGivingCompleteMyGiving => 'Mijn gift afronden';
+  String get forYouGivingCompleteMyGiving => 'Geef nu';
 
   @override
   String forYouGivingCollectionTitle(int index) {
@@ -1357,7 +1357,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get forYouLocationMultipleOrgsFoundBody =>
-      'We vonden er verschillende in je buurt. Welke zoek je?';
+      'We vonden er verschillende in de buurt. Welke zoek je?';
 
   @override
   String get forYouBluetoothOffTitle => 'Bluetooth is uitgeschakeld';

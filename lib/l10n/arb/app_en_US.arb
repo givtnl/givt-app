@@ -224,7 +224,7 @@
     "description": "Uitloggen knop",
     "type": "text"
   },
-  "makeContact": "This is the Givt-moment.\n Move your phone towards the \n collection box, bag or basket.",
+  "makeContact": "This is the Givt moment.",
   "@makeContact": {
     "description": "\"collectemiddel\" blijft vreemd. Alternatieven: \"collectebus of -zak\" of \"inzamelobject\" of \"Givt logo\" \n  Titel op de scanpagina",
     "type": "text"
@@ -784,11 +784,11 @@
   "forYouSearchOrganizations": "Search organizations",
   "forYouFavoriteTag": "Favorite",
   "forYouEmptyFavoritesTitle": "Add your favourite organisation",
-  "forYouEmptyFavoritesBody": "Find it in one tap every time you open Givt",
+  "forYouEmptyFavoritesBody": "Pin your regular goals to give even faster",
   "forYouLocationBasedTitle": "Location",
   "forYouLocationBasedSubtitle": "Give to organizations near you",
   "forYouQrCodeTitle": "QR-code",
-  "forYouQrCodeSubtitle": "Use when you see a Givt QR code nearby",
+  "forYouQrCodeSubtitle": "Scan a Givt QR code",
   "forYouCollectionDeviceTitle": "Collection device",
   "forYouCollectionDeviceSubtitle": "Give when the plate or bag passes by",
   "forYouGoalsCountCollections": "{count} Collection Goals",
@@ -816,8 +816,8 @@
   "forYouGivingAddGeneralGoalToggle": "Add general goal",
   "forYouGivingContinue": "Continue",
   "forYouGivingMoreGoals": "Give to more goals",
-  "forYouMoreGeneralGoalsSheetTitle": "Other goals you can give to",
-  "forYouMoreGeneralGoalsSheetSubtitle": "Select the ones you'd like to include in your giving.",
+  "forYouMoreGeneralGoalsSheetTitle": "More goals from this organisation",
+  "forYouMoreGeneralGoalsSheetSubtitle": "Add the goals you want to give to.",
   "forYouMoreGeneralGoalsAddPlaceholder": "Add",
   "forYouMoreGeneralGoalsAddOne": "Add 1 more goal",
   "forYouMoreGeneralGoalsAddMany": "Add {count} more goals",
@@ -828,8 +828,8 @@
       }
     }
   },
-  "forYouGivingCompleteMyGiving": "Complete",
-  "forYouGivingCollectionTitle": "Collection {index}",
+  "forYouGivingCompleteMyGiving": "Give now",
+  "forYouGivingCollectionTitle": "Collection goal {index}",
   "@forYouGivingCollectionTitle": {
     "placeholders": {
       "index": {

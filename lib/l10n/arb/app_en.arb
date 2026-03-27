@@ -784,7 +784,7 @@
   "forYouSearchOrganizations": "Search organisations",
   "forYouFavoriteTag": "Favourite",
   "forYouEmptyFavoritesTitle": "Keep your favorites close at hand",
-  "forYouEmptyFavoritesBody": "Find it in one tap every time you open Givt",
+  "forYouEmptyFavoritesBody": "Pin your regular goals to give even faster",
   "forYouLocationBasedTitle": "Location",
   "forYouLocationBasedSubtitle": "Give to organisations near you",
   "forYouQrCodeTitle": "QR code",
@@ -842,8 +842,8 @@
   "forYouGivingAddGeneralGoalToggle": "Add general goal",
   "forYouGivingContinue": "Continue",
   "forYouGivingMoreGoals": "Give to more goals",
-  "forYouMoreGeneralGoalsSheetTitle": "Other goals you can give to",
-  "forYouMoreGeneralGoalsSheetSubtitle": "Select the ones you'd like to include in your giving.",
+  "forYouMoreGeneralGoalsSheetTitle": "More goals from this organisation",
+  "forYouMoreGeneralGoalsSheetSubtitle": "Add the goals you want to give to.",
   "forYouMoreGeneralGoalsAddPlaceholder": "Add",
   "forYouMoreGeneralGoalsAddOne": "Add 1 more goal",
   "forYouMoreGeneralGoalsAddMany": "Add {count} more goals",
@@ -854,7 +854,7 @@
       }
     }
   },
-  "forYouGivingCompleteMyGiving": "Complete",
+  "forYouGivingCompleteMyGiving": "Give now",
   "forYouGivingCollectionTitle": "Collection goal {index}",
   "@forYouGivingCollectionTitle": {
     "placeholders": {
@@ -892,7 +892,7 @@
   "forYouLocationPermissionBody": "Givt needs access to your location to find organisations nearby. Go to Settings and allow location access.",
   "forYouLocationOpenSettings": "Open Settings",
   "forYouLocationMultipleOrgsFoundTitle": "Choose your organisation",
-  "forYouLocationMultipleOrgsFoundBody": "We found several in your area. Which one are you looking for?",
+  "forYouLocationMultipleOrgsFoundBody": "We found several in the area. Which one are you looking for?",
   "forYouBluetoothOffTitle": "Bluetooth is off",
   "forYouBluetoothOffBody": "Please turn on Bluetooth to find organisations nearby.",
   "discoverHomeDiscoverTitle": "For You",

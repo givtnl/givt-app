@@ -787,7 +787,7 @@
   "forYouSearchOrganizations": "Organisationen suchen",
   "forYouFavoriteTag": "Favorit",
   "forYouEmptyFavoritesTitle": "Deine Favoriten immer griffbereit",
-  "forYouEmptyFavoritesBody": "Finde sie in einem Tipp, jedes Mal wenn du Givt öffnest",
+  "forYouEmptyFavoritesBody": "Markiere deine festen Ziele, um schneller geben zu können",
   "forYouLocationBasedTitle": "Standort",
   "forYouLocationBasedSubtitle": "Gib an Organisationen in deiner Nähe",
   "forYouQrCodeTitle": "QR-code",
@@ -845,8 +845,8 @@
   "forYouGivingAddGeneralGoalToggle": "Allgemeines Ziel hinzufügen",
   "forYouGivingContinue": "Weiter",
   "forYouGivingMoreGoals": "Für mehr Ziele spenden",
-  "forYouMoreGeneralGoalsSheetTitle": "Weitere Ziele, an die du spenden kannst",
-  "forYouMoreGeneralGoalsSheetSubtitle": "Wähle die Ziele aus, die du in deine Spende einbeziehen möchtest.",
+  "forYouMoreGeneralGoalsSheetTitle": "Mehr Ziele von dieser Organisation",
+  "forYouMoreGeneralGoalsSheetSubtitle": "Füge die Ziele hinzu, an die du geben möchtest.",
   "forYouMoreGeneralGoalsAddPlaceholder": "Hinzufügen",
   "forYouMoreGeneralGoalsAddOne": "1 weiteres Ziel hinzufügen",
   "forYouMoreGeneralGoalsAddMany": "{count} weitere Ziele hinzufügen",
@@ -857,7 +857,7 @@
       }
     }
   },
-  "forYouGivingCompleteMyGiving": "Meine Spende abschließen",
+  "forYouGivingCompleteMyGiving": "Jetzt geben",
   "forYouGivingCollectionTitle": "Sammelziel {index}",
   "@forYouGivingCollectionTitle": {
     "placeholders": {

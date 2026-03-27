@@ -1202,7 +1202,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forYouEmptyFavoritesBody =>
-      'Find it in one tap every time you open Givt';
+      'Pin your regular goals to give even faster';
 
   @override
   String get forYouLocationBasedTitle => 'Location';
@@ -1279,11 +1279,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouGivingMoreGoals => 'Give to more goals';
 
   @override
-  String get forYouMoreGeneralGoalsSheetTitle => 'Other goals you can give to';
+  String get forYouMoreGeneralGoalsSheetTitle =>
+      'More goals from this organisation';
 
   @override
   String get forYouMoreGeneralGoalsSheetSubtitle =>
-      'Select the ones you\'d like to include in your giving.';
+      'Add the goals you want to give to.';
 
   @override
   String get forYouMoreGeneralGoalsAddPlaceholder => 'Add';
@@ -1297,7 +1298,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get forYouGivingCompleteMyGiving => 'Complete';
+  String get forYouGivingCompleteMyGiving => 'Give now';
 
   @override
   String forYouGivingCollectionTitle(int index) {
@@ -1351,7 +1352,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forYouLocationMultipleOrgsFoundBody =>
-      'We found several in your area. Which one are you looking for?';
+      'We found several in the area. Which one are you looking for?';
 
   @override
   String get forYouBluetoothOffTitle => 'Bluetooth is off';
@@ -3341,8 +3342,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get logOut => 'Logout';
 
   @override
-  String get makeContact =>
-      'This is the Givt-moment.\n Move your phone towards the \n collection box, bag or basket.';
+  String get makeContact => 'This is the Givt moment.';
 
   @override
   String get next => 'Next';
@@ -3976,7 +3976,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get forYouEmptyFavoritesBody =>
-      'Find it in one tap every time you open Givt';
+      'Pin your regular goals to give even faster';
 
   @override
   String get forYouLocationBasedTitle => 'Location';
@@ -3988,7 +3988,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get forYouQrCodeTitle => 'QR-code';
 
   @override
-  String get forYouQrCodeSubtitle => 'Use when you see a Givt QR code nearby';
+  String get forYouQrCodeSubtitle => 'Scan a Givt QR code';
 
   @override
   String get forYouCollectionDeviceTitle => 'Collection device';
@@ -4037,11 +4037,12 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get forYouGivingMoreGoals => 'Give to more goals';
 
   @override
-  String get forYouMoreGeneralGoalsSheetTitle => 'Other goals you can give to';
+  String get forYouMoreGeneralGoalsSheetTitle =>
+      'More goals from this organisation';
 
   @override
   String get forYouMoreGeneralGoalsSheetSubtitle =>
-      'Select the ones you\'d like to include in your giving.';
+      'Add the goals you want to give to.';
 
   @override
   String get forYouMoreGeneralGoalsAddPlaceholder => 'Add';
@@ -4055,11 +4056,11 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   }
 
   @override
-  String get forYouGivingCompleteMyGiving => 'Complete';
+  String get forYouGivingCompleteMyGiving => 'Give now';
 
   @override
   String forYouGivingCollectionTitle(int index) {
-    return 'Collection $index';
+    return 'Collection goal $index';
   }
 
   @override

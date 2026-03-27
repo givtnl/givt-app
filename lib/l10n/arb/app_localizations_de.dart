@@ -1211,7 +1211,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get forYouEmptyFavoritesBody =>
-      'Finde sie in einem Tipp, jedes Mal wenn du Givt öffnest';
+      'Markiere deine festen Ziele, um schneller geben zu können';
 
   @override
   String get forYouLocationBasedTitle => 'Standort';
@@ -1290,11 +1290,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get forYouMoreGeneralGoalsSheetTitle =>
-      'Weitere Ziele, an die du spenden kannst';
+      'Mehr Ziele von dieser Organisation';
 
   @override
   String get forYouMoreGeneralGoalsSheetSubtitle =>
-      'Wähle die Ziele aus, die du in deine Spende einbeziehen möchtest.';
+      'Füge die Ziele hinzu, an die du geben möchtest.';
 
   @override
   String get forYouMoreGeneralGoalsAddPlaceholder => 'Hinzufügen';
@@ -1308,7 +1308,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get forYouGivingCompleteMyGiving => 'Meine Spende abschließen';
+  String get forYouGivingCompleteMyGiving => 'Jetzt geben';
 
   @override
   String forYouGivingCollectionTitle(int index) {

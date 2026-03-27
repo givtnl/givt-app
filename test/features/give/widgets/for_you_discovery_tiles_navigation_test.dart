@@ -170,6 +170,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Je favorieten altijd bij de hand'), findsWidgets);
+      expect(
+        find.text('Markeer je vaste doelen om sneller te kunnen geven'),
+        findsWidgets,
+      );
     },
   );
 
