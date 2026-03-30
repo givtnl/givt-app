@@ -54,7 +54,6 @@ class _PasswordRequirementRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(
           isValid ? Icons.check_circle : Icons.circle_outlined,
@@ -62,11 +61,9 @@ class _PasswordRequirementRow extends StatelessWidget {
           size: 16,
         ),
         const SizedBox(width: 8),
-        Expanded(
-          child: BodySmallText(
-            text,
-            color: isValid ? AppTheme.primary40 : AppTheme.neutralVariant60,
-          ),
+        BodySmallText(
+          text,
+          color: isValid ? AppTheme.primary40 : AppTheme.neutralVariant60,
         ),
       ],
     );
