@@ -38,6 +38,7 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
     _refreshTokenFailedStream =
         _familyAuthRepository.refreshTokenFailedStream().listen(
       (_) async {
+        if (isClosed) return;
         if (_networkInfo.isConnected && _backOff.getRetryCount() >= 1) {
           // we can't recover, user needs to login fully anew again
           emitCustom(const SplashCustom.redirectToWelcome());
@@ -47,14 +48,17 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
     _internetConnectionSubscription = _networkInfo
         .hasInternetConnectionStream()
         .listen((hasInternetConnection) async {
+      if (isClosed) return;
       if (hasInternetConnection) {
         await _checkForRedirect();
+        if (isClosed) return;
       } else {
         _showNoInternetMessage();
       }
     });
     if (_networkInfo.isConnected) {
       await _checkForRedirect();
+      if (isClosed) return;
     } else {
       _showNoInternetMessage();
     }
@@ -72,11 +76,13 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
 
   Future<void> _checkForRedirect() async {
     try {
-      //for the session it doesn't matter if we use the family one or the EU one
-      //for now because they are both stored in the same place using the same object
+      // For the session it doesn't matter if we use the family one or the EU
+      // one; both are stored in the same place using the same object.
       final session = await _authRepository.getStoredSession();
+      if (isClosed) return;
 
       final user = await _getUser();
+      if (isClosed) return;
 
       // we don't have a session/ user, go to welcome
       if (session == const Session.empty() || user == null) {
@@ -86,7 +92,7 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
 
       // we are logged in as a EU user, go to EU home
       if (session.isLoggedIn && (user.isUsUser == false)) {
-        // let the auth redirect logic take over, it will take the user to EU Home
+        // EU home: auth redirect logic takes over from here.
         return;
       }
 
@@ -98,13 +104,19 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
 
       // we are logged in and have a session as a US user
       await _familyAuthRepository.initAuth();
+      if (isClosed) return;
+
       final profiles = await _profilesRepository.refreshProfiles();
+      if (isClosed) return;
 
       final fbsdk = FacebookAppEvents();
       await fbsdk.setAutoLogAppEventsEnabled(true);
+      if (isClosed) return;
+
       await fbsdk.logEvent(
         name: 'app_open_and_logged_in',
       );
+      if (isClosed) return;
 
       // user started registration but didn't finish yet
       if (!user.personalInfoRegistered) {
@@ -133,6 +145,7 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       );
       if (_networkInfo.isConnected) {
         await _handleExceptionNotDueToInternetConnection(e, s);
+        if (isClosed) return;
       } else {
         _showNoInternetMessage();
       }
@@ -144,8 +157,10 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
     if (_isBENotAvailableDueToDDOS(e)) {
       // let's retry after a bit of time and see if the server is available
       await _retryAfterABitOfTime();
+      if (isClosed) return;
     } else {
       //we can't recover from this
+      if (isClosed) return;
       emitCustom(const SplashCustom.redirectToWelcome());
     }
   }
@@ -164,9 +179,14 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
 
   Future<void> _retryAfterABitOfTime() async {
     _showExperiencingIssuesMessage();
+    if (isClosed) return;
+
     final nextBackOff = _backOff.nextBackOffMillis();
     if (nextBackOff != BackOff.STOP) {
-      await Future.delayed(Duration(milliseconds: nextBackOff));
+      await Future<void>.delayed(
+        Duration(milliseconds: nextBackOff),
+      );
+      if (isClosed) return;
       await _checkForRedirect();
     }
   }
