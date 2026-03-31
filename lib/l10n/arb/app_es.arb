@@ -786,24 +786,26 @@
   "forYouOtherWaysToGive": "Otras formas de donar",
   "forYouSearchOrganizations": "Buscar organizaciones",
   "forYouFavoriteTag": "Favorito",
-  "forYouEmptyFavoritesTitle": "Añade tu organización favorita",
-  "forYouEmptyFavoritesBody": "Encuéntralo con un toque cada vez que abras Givt",
+  "forYouEmptyFavoritesTitle": "Tus favoritos siempre a mano",
+  "forYouEmptyFavoritesBody": "Marca tus objetivos habituales para donar más rápido",
   "forYouLocationBasedTitle": "Ubicación",
   "forYouLocationBasedSubtitle": "Dona a organizaciones cerca de ti",
   "forYouQrCodeTitle": "QR-code",
-  "forYouQrCodeSubtitle": "Úsalo cuando veas un código QR de Givt cerca",
+  "forYouQrCodeSubtitle": "Escanea un código QR de Givt",
   "forYouCollectionDeviceTitle": "Dispositivo de recaudación",
   "forYouCollectionDeviceSubtitle": "Dona cuando pase la placa o la bolsa",
-  "forYouGoalsCountCollections": "{count} objetivos de colecciones",
-  "@forYouGoalsCountCollections": {
+  "forYouGoalsCountCollectionsOne": "1 objetivo de colecta",
+  "forYouGoalsCountCollectionsMany": "{count} objetivos de colecta",
+  "@forYouGoalsCountCollectionsMany": {
     "placeholders": {
       "count": {
         "type": "int"
       }
     }
   },
-  "forYouGoalsCountGeneral": "{count} objetivos generales",
-  "@forYouGoalsCountGeneral": {
+  "forYouGoalsCountGeneralOne": "1 objetivo general",
+  "forYouGoalsCountGeneralMany": "{count} objetivos generales",
+  "@forYouGoalsCountGeneralMany": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -819,8 +821,8 @@
   "forYouGivingAddGeneralGoalToggle": "Añadir objetivo general",
   "forYouGivingContinue": "Continuar",
   "forYouGivingMoreGoals": "Donar a más objetivos",
-  "forYouMoreGeneralGoalsSheetTitle": "Otros objetivos a los que puedes donar",
-  "forYouMoreGeneralGoalsSheetSubtitle": "Selecciona los que quieras incluir en tu donación.",
+  "forYouMoreGeneralGoalsSheetTitle": "Más objetivos de esta organización",
+  "forYouMoreGeneralGoalsSheetSubtitle": "Añade los objetivos a los que quieres donar.",
   "forYouMoreGeneralGoalsAddPlaceholder": "Añadir",
   "forYouMoreGeneralGoalsAddOne": "Añadir 1 objetivo más",
   "forYouMoreGeneralGoalsAddMany": "Añadir {count} objetivos más",
@@ -831,7 +833,7 @@
       }
     }
   },
-  "forYouGivingCompleteMyGiving": "Completar mi donación",
+  "forYouGivingCompleteMyGiving": "Donar ahora",
   "forYouGivingCollectionTitle": "Colecta {index}",
   "@forYouGivingCollectionTitle": {
     "placeholders": {
@@ -859,17 +861,19 @@
       }
     }
   },
+  "forYouBeaconSearchingTitle": "Este es tu momento Givt.",
+  "forYouBeaconSearchingBody": "Mueve tu teléfono junto a la bolsa de colecta para encontrar el transmisor.",
   "forYouLocationSearchingTitle": "Buscando organizaciones cerca de ti",
   "forYouLocationSearchingBody": "Estamos buscando tu ubicación, ¿puedes esperar un momento?",
   "forYouLocationNoOrgFoundTitle": "No se encontraron organizaciones",
-  "forYouLocationNoOrgFoundBody": "No pudimos encontrar organizaciones con Givt cerca de tu ubicación actual.",
+  "forYouLocationNoOrgFoundBody": "Busca tu organización manualmente en la lista.",
   "forYouLocationOffTitle": "La ubicación está desactivada",
   "forYouLocationOffBody": "Por favor, activa la ubicación de tu dispositivo para encontrar organizaciones cerca de ti.",
   "forYouLocationPermissionTitle": "Se necesita acceso a la ubicación",
   "forYouLocationPermissionBody": "Givt necesita acceso a tu ubicación para encontrar organizaciones cerca. Ve a Configuración y permite el acceso a la ubicación.",
   "forYouLocationOpenSettings": "Abrir configuración",
-  "forYouLocationMultipleOrgsFoundTitle": "Varias organizaciones cercanas",
-  "forYouLocationMultipleOrgsFoundBody": "Encontramos varias organizaciones con Givt cerca de tu ubicación. Por favor, selecciona una a continuación.",
+  "forYouLocationMultipleOrgsFoundTitle": "Elige tu organización",
+  "forYouLocationMultipleOrgsFoundBody": "Encontramos varias cerca. ¿Cuál buscas?",
   "forYouBluetoothOffTitle": "Bluetooth está desactivado",
   "forYouBluetoothOffBody": "Por favor, activa el Bluetooth para encontrar organizaciones cercanas.",
   "reccurringGivtIsBeingProcessed": "Thank you for your recurring donation to {value0}!\n To see all the information, go to 'Recurring donations' in the menu.",

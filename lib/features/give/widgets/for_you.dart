@@ -288,7 +288,8 @@ class _ForYouState extends State<ForYou>
   ) {
     return Stack(
       children: [
-        // Invisible cards to define stack height using the tallest favorite card.
+        // Invisible cards to define stack height
+        // using the tallest favorite card.
         ...favoriteOrganisations.map((organisation) {
           final summary =
               goalsState.summariesByCollectGroupId[organisation.nameSpace];
@@ -373,7 +374,8 @@ class _ForYouState extends State<ForYou>
     }
 
     // Always show fallback collection goals if they exist.
-    // General goals are still showCounts-gated as they depend on the API summary.
+    // General goals are still showCounts-gated,
+    // as they depend on the API summary.
     final hasAllocationGoals = allocationsCount > 0;
     final hasGeneralGoals =
         showCounts && summary != null && summary.qrCodesCount > 0;
@@ -398,7 +400,6 @@ class _ForYouState extends State<ForYou>
               ),
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -434,16 +435,20 @@ class _ForYouState extends State<ForYou>
                     const SizedBox(height: 12),
                     if (hasAllocationGoals)
                       BodySmallText(
-                        context.l10n.forYouGoalsCountCollections(
-                          allocationsCount,
-                        ),
+                        allocationsCount == 1
+                            ? context.l10n.forYouGoalsCountCollectionsOne
+                            : context.l10n.forYouGoalsCountCollectionsMany(
+                                allocationsCount,
+                              ),
                         color: theme.primary20,
                       ),
                     if (hasGeneralGoals)
                       BodySmallText(
-                        context.l10n.forYouGoalsCountGeneral(
-                          summary.qrCodesCount,
-                        ),
+                        summary.qrCodesCount == 1
+                            ? context.l10n.forYouGoalsCountGeneralOne
+                            : context.l10n.forYouGoalsCountGeneralMany(
+                                summary.qrCodesCount,
+                              ),
                         color: theme.primary20,
                       ),
                   ],
