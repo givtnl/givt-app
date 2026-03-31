@@ -31,7 +31,7 @@ class FunStepper extends StatelessWidget {
             color: index == currentStep
                 ? FunTheme.of(context).secondary70
                 : index < currentStep
-                    ? FunTheme.of(context).primary70
+                    ? FunTheme.of(context).secondary70
                     : FunTheme.of(context).neutral90,
             borderRadius: BorderRadius.circular(3),
           ),
