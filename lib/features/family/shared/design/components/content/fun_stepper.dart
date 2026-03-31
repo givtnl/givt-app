@@ -28,9 +28,11 @@ class FunStepper extends StatelessWidget {
           height: 6,
           margin: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
-            color: index <= currentStep
-                ? FunTheme.of(context).primary70
-                : FunTheme.of(context).neutral90,
+            color: index == currentStep
+                ? FunTheme.of(context).secondary70
+                : index < currentStep
+                    ? FunTheme.of(context).primary70
+                    : FunTheme.of(context).neutral90,
             borderRadius: BorderRadius.circular(3),
           ),
         );

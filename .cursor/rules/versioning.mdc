@@ -5,23 +5,24 @@ alwaysApply: true
 
 # Givt App Versioning Rules
 
-- **Always bump the app version when making changes**:
-  - When you implement changes that will be merged into `develop`, ensure the app version is increased if it has not already been bumped for this batch of work.
-  - The version is defined in the Flutter `pubspec.yaml` for the app; make sure that the version on `develop` is **strictly higher** than the version on `main`.
+- **Determine the correct version relative to `main`**:
+  - The goal is to ensure `develop` has the correct version relative to the latest released code in `main`.
+  - Check the version in `main` using `git show main:pubspec.yaml`.
+  - Compare the current `develop` / feature branch version against `main`.
+  - If the version on the current branch is already higher than `main`, only increment it further if the type of change requires a higher level of bump (e.g., from patch to minor).
+  - If the version has already been bumped for this set of changes, **do not** bump it again.
 
-- **How to choose the new version**:
+- **How to choose the new version (relative to `main`)**:
   - **Patch release (`x.y.(z+1)`)**:
-    - Use when changes are **backwards compatible** and relatively small:
-      - Bug fixes and regression fixes
-      - Minor UI tweaks or copy changes
-      - Internal refactors or performance improvements with no user-visible feature changes
+    - Use if all changes compared to `main` are **backwards compatible** and relatively small.
   - **Minor release (`x.(y+1).0`)**:
-    - Use when changes introduce **new user‑visible behavior**:
-      - New features or flows
-      - New screens or significant UX changes
-      - New analytics events for shipped features
+    - Use if the set of changes compared to `main` introduces **new user‑visible behavior**.
   - **Major release (`(x+1).0.0`)**:
-    - **Do not decide automatically.** Major version bumps are handled manually outside this rule and should only happen when explicitly requested.
+    - **Do not decide automatically.** 
+
+- **Check existing differences**:
+  - If `main` is `5.1.0` and you've added new features, the correct version is `5.2.0`.
+  - If the current branch already shows `5.2.0`, or even `5.2.1` (from earlier patches), and your changes are still within the "minor update" scope, revert or keep the version as `5.2.0` to maintain clean semantic versioning.
 
 - **Branch relationship (`main` vs `develop`)**:
   - When starting a new set of changes on `develop`, if the `develop` version **matches** `main`, choose an appropriate bump (patch or minor) and apply it on `develop`.
