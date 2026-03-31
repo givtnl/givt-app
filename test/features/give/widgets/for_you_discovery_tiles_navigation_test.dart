@@ -149,7 +149,7 @@ void main() {
       await tester.pumpWidget(testWidget);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Location based'));
+      await tester.tap(find.text('Location'));
       await tester.pumpAndSettle();
 
       expect(find.text('BY_LOCATION'), findsOneWidget);
@@ -165,7 +165,7 @@ void main() {
       await tester.pumpWidget(testWidget);
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Givt QR-code'));
+      await tester.tap(find.text('QR code'));
       await tester.pumpAndSettle();
 
       expect(find.text('BY_QR'), findsOneWidget);
