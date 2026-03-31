@@ -1199,11 +1199,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouFavoriteTag => 'Favourite';
 
   @override
-  String get forYouEmptyFavoritesTitle => 'Add your favourite organisation';
+  String get forYouEmptyFavoritesTitle => 'Your favourites, always close';
 
   @override
   String get forYouEmptyFavoritesBody =>
-      'Find it in one tap every time you open Givt';
+      'Mark your regular goals to give faster';
 
   @override
   String get forYouLocationBasedTitle => 'Location';
@@ -1215,7 +1215,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouQrCodeTitle => 'QR code';
 
   @override
-  String get forYouQrCodeSubtitle => 'Use when you see a Givt QR code nearby';
+  String get forYouQrCodeSubtitle => 'Scan a Givt QR code';
 
   @override
   String get forYouCollectionDeviceTitle => 'Collection device';
@@ -1225,13 +1225,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Give when the plate or bag passes by';
 
   @override
-  String forYouGoalsCountCollections(int count) {
+  String get forYouGoalsCountCollectionsOne => '1 Collection Goal';
+
+  @override
+  String forYouGoalsCountCollectionsMany(int count) {
     return '$count Collection Goals';
   }
 
   @override
-  String forYouGoalsCountGeneral(int count) {
-    return '$count General Goal';
+  String get forYouGoalsCountGeneralOne => '1 General Goal';
+
+  @override
+  String forYouGoalsCountGeneralMany(int count) {
+    return '$count General Goals';
   }
 
   @override
@@ -1264,11 +1270,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouGivingMoreGoals => 'Give to more goals';
 
   @override
-  String get forYouMoreGeneralGoalsSheetTitle => 'Other goals you can give to';
+  String get forYouMoreGeneralGoalsSheetTitle =>
+      'More goals from this organisation';
 
   @override
   String get forYouMoreGeneralGoalsSheetSubtitle =>
-      'Select the ones you\'d like to include in your giving.';
+      'Add the goals you want to give to.';
 
   @override
   String get forYouMoreGeneralGoalsAddPlaceholder => 'Add';
@@ -1282,7 +1289,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get forYouGivingCompleteMyGiving => 'Complete';
+  String get forYouGivingCompleteMyGiving => 'Give now';
 
   @override
   String forYouGivingCollectionTitle(int index) {
@@ -1300,6 +1307,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get forYouBeaconSearchingTitle => 'This is your Givt moment.';
+
+  @override
+  String get forYouBeaconSearchingBody =>
+      'Move your phone along the collection bag to find the beacon.';
+
+  @override
   String get forYouLocationSearchingTitle =>
       'Looking for organisations near you';
 
@@ -1312,7 +1326,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forYouLocationNoOrgFoundBody =>
-      'We couldn\'t find any Givt-enabled organisations near your current location.';
+      'Search for your organisation manually in the list.';
 
   @override
   String get forYouLocationOffTitle => 'Location is turned off';
@@ -1332,12 +1346,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouLocationOpenSettings => 'Open Settings';
 
   @override
-  String get forYouLocationMultipleOrgsFoundTitle =>
-      'Multiple organisations nearby';
+  String get forYouLocationMultipleOrgsFoundTitle => 'Choose your organisation';
 
   @override
   String get forYouLocationMultipleOrgsFoundBody =>
-      'We found several Givt-enabled organisations near your location. Please select one below.';
+      'We found several nearby. Which one are you looking for?';
 
   @override
   String get forYouBluetoothOffTitle => 'Bluetooth is off';
@@ -3958,11 +3971,11 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get forYouFavoriteTag => 'Favorite';
 
   @override
-  String get forYouEmptyFavoritesTitle => 'Add your favourite organisation';
+  String get forYouEmptyFavoritesTitle => 'Your favorites, always close';
 
   @override
   String get forYouEmptyFavoritesBody =>
-      'Find it in one tap every time you open Givt';
+      'Mark your regular goals to give faster';
 
   @override
   String get forYouLocationBasedTitle => 'Location';
@@ -3974,7 +3987,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get forYouQrCodeTitle => 'QR-code';
 
   @override
-  String get forYouQrCodeSubtitle => 'Use when you see a Givt QR code nearby';
+  String get forYouQrCodeSubtitle => 'Scan a Givt QR code';
 
   @override
   String get forYouCollectionDeviceTitle => 'Collection device';
@@ -3984,13 +3997,19 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
       'Give when the plate or bag passes by';
 
   @override
-  String forYouGoalsCountCollections(int count) {
+  String get forYouGoalsCountCollectionsOne => '1 Collection Goal';
+
+  @override
+  String forYouGoalsCountCollectionsMany(int count) {
     return '$count Collection Goals';
   }
 
   @override
-  String forYouGoalsCountGeneral(int count) {
-    return '$count General Goal';
+  String get forYouGoalsCountGeneralOne => '1 General Goal';
+
+  @override
+  String forYouGoalsCountGeneralMany(int count) {
+    return '$count General Goals';
   }
 
   @override
@@ -4023,11 +4042,12 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get forYouGivingMoreGoals => 'Give to more goals';
 
   @override
-  String get forYouMoreGeneralGoalsSheetTitle => 'Other goals you can give to';
+  String get forYouMoreGeneralGoalsSheetTitle =>
+      'More goals from this organization';
 
   @override
   String get forYouMoreGeneralGoalsSheetSubtitle =>
-      'Select the ones you\'d like to include in your giving.';
+      'Add the goals you want to give to.';
 
   @override
   String get forYouMoreGeneralGoalsAddPlaceholder => 'Add';
@@ -4041,7 +4061,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   }
 
   @override
-  String get forYouGivingCompleteMyGiving => 'Complete';
+  String get forYouGivingCompleteMyGiving => 'Give now';
 
   @override
   String forYouGivingCollectionTitle(int index) {
@@ -4057,6 +4077,13 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String forYouGivingAccordionSubtitleWithAmount(String label, String amount) {
     return '$label - $amount';
   }
+
+  @override
+  String get forYouBeaconSearchingTitle => 'This is your Givt moment.';
+
+  @override
+  String get forYouBeaconSearchingBody =>
+      'Move your phone along the collection bag to find the beacon.';
 
   @override
   String get discoverHomeDiscoverTitle => 'For You';

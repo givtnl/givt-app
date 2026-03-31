@@ -170,12 +170,12 @@ class _SearchingBody extends StatelessWidget {
         FunIconGivy.bagAnimation(circleSize: 140),
         const SizedBox(height: 28),
         TitleLargeText(
-          locals.makeContact,
+          locals.forYouBeaconSearchingTitle,
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 12),
         BodyMediumText(
-          locals.forYouLocationSearchingBody,
+          locals.forYouBeaconSearchingBody,
           textAlign: TextAlign.center,
         ),
         const Spacer(),

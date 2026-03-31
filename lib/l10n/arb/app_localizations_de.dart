@@ -1208,12 +1208,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get forYouFavoriteTag => 'Favorit';
 
   @override
-  String get forYouEmptyFavoritesTitle =>
-      'Füge deine Lieblingsorganisation hinzu';
+  String get forYouEmptyFavoritesTitle => 'Deine Favoriten immer griffbereit';
 
   @override
   String get forYouEmptyFavoritesBody =>
-      'Finde sie in einem Tipp, jedes Mal wenn du Givt öffnest';
+      'Markiere deine regelmäßigen Ziele, um schneller zu geben';
 
   @override
   String get forYouLocationBasedTitle => 'Standort';
@@ -1226,8 +1225,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get forYouQrCodeTitle => 'QR-code';
 
   @override
-  String get forYouQrCodeSubtitle =>
-      'Nutze ihn, wenn du einen Givt QR-Code in deiner Nähe siehst';
+  String get forYouQrCodeSubtitle => 'Scanne einen Givt-QR-Code';
 
   @override
   String get forYouCollectionDeviceTitle => 'Sammelgerät';
@@ -1237,12 +1235,18 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gib, wenn das Schild oder die Tasche vorbeikommt';
 
   @override
-  String forYouGoalsCountCollections(int count) {
+  String get forYouGoalsCountCollectionsOne => '1 Sammelziel';
+
+  @override
+  String forYouGoalsCountCollectionsMany(int count) {
     return '$count Sammelziele';
   }
 
   @override
-  String forYouGoalsCountGeneral(int count) {
+  String get forYouGoalsCountGeneralOne => '1 allgemeines Ziel';
+
+  @override
+  String forYouGoalsCountGeneralMany(int count) {
     return '$count allgemeine Ziele';
   }
 
@@ -1277,11 +1281,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get forYouMoreGeneralGoalsSheetTitle =>
-      'Weitere Ziele, an die du spenden kannst';
+      'Mehr Ziele dieser Organisation';
 
   @override
   String get forYouMoreGeneralGoalsSheetSubtitle =>
-      'Wähle die Ziele aus, die du in deine Spende einbeziehen möchtest.';
+      'Füge die Ziele hinzu, an die du spenden möchtest.';
 
   @override
   String get forYouMoreGeneralGoalsAddPlaceholder => 'Hinzufügen';
@@ -1295,7 +1299,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get forYouGivingCompleteMyGiving => 'Meine Spende abschließen';
+  String get forYouGivingCompleteMyGiving => 'Jetzt geben';
 
   @override
   String forYouGivingCollectionTitle(int index) {
@@ -1313,6 +1317,13 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get forYouBeaconSearchingTitle => 'Das ist dein Givt-Moment.';
+
+  @override
+  String get forYouBeaconSearchingBody =>
+      'Bewege dein Handy an der Kollektentasche entlang, um den Sender zu finden.';
+
+  @override
   String get forYouLocationSearchingTitle =>
       'Suche nach Organisationen in deiner Nähe';
 
@@ -1325,7 +1336,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get forYouLocationNoOrgFoundBody =>
-      'Wir konnten keine Givt-fähigen Organisationen in deiner Nähe finden.';
+      'Suche deine Organisation manuell in der Liste.';
 
   @override
   String get forYouLocationOffTitle => 'Standort ist deaktiviert';
@@ -1345,12 +1356,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get forYouLocationOpenSettings => 'Einstellungen öffnen';
 
   @override
-  String get forYouLocationMultipleOrgsFoundTitle =>
-      'Mehrere Organisationen in der Nähe';
+  String get forYouLocationMultipleOrgsFoundTitle => 'Wähle deine Organisation';
 
   @override
   String get forYouLocationMultipleOrgsFoundBody =>
-      'Wir haben mehrere Givt-fähige Organisationen in deiner Nähe gefunden. Bitte wähle unten eine aus.';
+      'Wir haben mehrere in deiner Nähe gefunden. Welche suchst du?';
 
   @override
   String get forYouBluetoothOffTitle => 'Bluetooth ist deaktiviert';
