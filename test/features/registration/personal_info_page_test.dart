@@ -68,7 +68,7 @@ void main() {
 
       expect(find.text(locals.sortCodePlaceholder), findsOneWidget);
 
-      await tester.tap(find.byType(DropdownButtonFormField<String>));
+      await tester.tap(find.byKey(const ValueKey('FunInputDropdown')));
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('+31').last);

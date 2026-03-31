@@ -6,6 +6,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -99,8 +100,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   @override
   Widget build(BuildContext context) {
     final organisation = widget.flowContext.selectedOrganisation;
+    final auth = context.watch<AuthCubit>().state;
     final country = Country.fromCode(
-      context.read<AuthCubit>().state.user.country,
+      auth.user.country,
     );
     final currencySymbol = Util.getCurrencySymbol(
       countryCode: country.countryCode,
@@ -218,6 +220,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                 const SizedBox(height: 8),
                 NumericKeyboard(
                   currencySymbol: currencySymbol,
+                  presets: auth.presets.isEnabled
+                      ? auth.presets.presets
+                      : const <Preset>[],
                   onPresetTap: onPresetTapped,
                   onKeyboardTap: onNumberTapped,
                   leftButtonFn: onCommaTapped,
