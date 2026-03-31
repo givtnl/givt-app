@@ -11,7 +11,7 @@ class OutlinedTextFormField extends StatelessWidget {
     this.controller,
     this.minLines,
     this.maxLines = 1,
-    this.errorMaxLines,
+    this.errorMaxLines = 1,
     this.initialValue = '', // Only when controller is null
     this.errorStyle,
     this.keyboardType,
