@@ -331,7 +331,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                   email: user.email,
                   asyncCubit: _asyncCubit,
                   onSuccess: () async {
-                    await Future.delayed(const Duration(seconds: 3));
+                    await Future<void>.delayed(const Duration(seconds: 3));
                     logout(context, fromTerminateAccount: true);
                   },
                 ),

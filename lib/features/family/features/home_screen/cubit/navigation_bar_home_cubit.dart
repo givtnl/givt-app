@@ -67,7 +67,7 @@ class NavigationBarHomeCubit
     } else if (fromRegistrationFinished && _shouldShowTutorial()) {
       await _setTutorialSeenOrSkipped();
       //delay is to ensure screen is visible
-      await Future.delayed(const Duration(milliseconds: 30));
+      await Future<void>.delayed(const Duration(milliseconds: 30));
 
       // Temp disabled tutorial popup
       // emitCustom(const NavigationBarHomeCustom.showTutorialPopup());

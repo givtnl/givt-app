@@ -1,23 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
 import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-
-import '../utils/for_you_discovery_resolvers.dart';
 
 class ForYouQrDiscoveryPage extends StatefulWidget {
   const ForYouQrDiscoveryPage({
@@ -133,13 +133,13 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
 
       if (!mounted) return;
 
-      if (resolved == null) {
-        await _showQrUnresolvableDialogAndFallback();
+      if (!resolved.isSuccess) {
+        await _handleDiscoveryFailureAndFallback(resolved);
         return;
       }
 
-      final collectGroup = resolved.collectGroup;
-      final qrCode = resolved.qrCode;
+      final collectGroup = resolved.collectGroup!;
+      final qrCode = resolved.qrCode!;
       final restrictToEntryQrGoal = qrCode.name.trim().isNotEmpty;
 
       await AnalyticsHelper.logEvent(
@@ -158,33 +158,52 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
             )
             .toMap(),
       );
-    } catch (_) {
+    } on Exception {
       if (!mounted) return;
-      await _showQrUnresolvableDialogAndFallback();
+      await _handleDiscoveryFailureAndFallback(
+        const ForYouDiscoveryResult.failure(ForYouDiscoveryFailure.notFound),
+      );
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
   }
 
-  Future<void> _showQrUnresolvableDialogAndFallback() async {
+  Future<void> _handleDiscoveryFailureAndFallback(
+    ForYouDiscoveryResult resolved,
+  ) async {
     final locals = context.l10n;
-    showDialog<void>(
+
+    final failure = resolved.failure ?? ForYouDiscoveryFailure.notFound;
+    final collectGroup = resolved.collectGroup;
+
+    await showDialog<void>(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text(locals.qrScanFailed),
-        content: Text(locals.codeCanNotBeScanned),
+      builder: (_) => WarningDialog(
+        title: switch (failure) {
+          ForYouDiscoveryFailure.inactiveQrCode => locals.invalidQRcodeTitle,
+          ForYouDiscoveryFailure.inactiveCollectGroup =>
+            locals.inactiveCollectGroupTitle,
+          ForYouDiscoveryFailure.notFound => locals.qrScanFailed,
+        },
+        content: switch (failure) {
+          ForYouDiscoveryFailure.inactiveQrCode => locals.invalidQRcodeMessage(
+              collectGroup?.orgName ?? '',
+            ),
+          ForYouDiscoveryFailure.inactiveCollectGroup =>
+            locals.inactiveCollectGroupMessage,
+          ForYouDiscoveryFailure.notFound => locals.codeCanNotBeScanned,
+        },
         actions: [
-          TextButton(
+          CupertinoDialogAction(
             onPressed: () => context.pop(),
-            child: Text(locals.cancel),
+            child: Text(
+              locals.cancel,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
     );
-
-    // Fallback immediately after the dialog is dismissed.
-    // This keeps the implementation simple and still avoids user confusion.
-    await Future<void>.delayed(const Duration(milliseconds: 50));
 
     if (!mounted) return;
     context.goNamed(
@@ -213,4 +232,5 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
     return null;
   }
 }
+
 

@@ -35,7 +35,7 @@ class HttpCertificatePinning {
     return resp;
   }
 
-  Future _platformCallHandler(MethodCall call) async {
+  Future<void> _platformCallHandler(MethodCall call) async {
     print('_platformCallHandler call ${call.method} ${call.arguments}');
   }
 }

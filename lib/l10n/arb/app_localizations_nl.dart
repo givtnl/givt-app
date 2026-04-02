@@ -1668,6 +1668,13 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get inactiveCollectGroupTitle => 'Collectedoel niet actief';
+
+  @override
+  String get inactiveCollectGroupMessage =>
+      'Het gekozen collectedoel is niet meer actief. Geef aan een ander doel.';
+
+  @override
   String get errorOccurred => 'Er is een fout opgetreden';
 
   @override

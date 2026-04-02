@@ -3029,6 +3029,18 @@ abstract class AppLocalizations {
   /// **'Unfortunately, this QR code is no longer active. Would you like to give to the general funds of {value0}?'**
   String invalidQRcodeMessage(Object value0);
 
+  /// No description provided for @inactiveCollectGroupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect group inactive'**
+  String get inactiveCollectGroupTitle;
+
+  /// No description provided for @inactiveCollectGroupMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The chosen goal is no longer active. Please choose another goal.'**
+  String get inactiveCollectGroupMessage;
+
   /// No description provided for @errorOccurred.
   ///
   /// In en, this message translates to:

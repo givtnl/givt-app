@@ -964,6 +964,8 @@
   "faQantwoord0Us": "In the app-menu under \"About Givt / Contact\" there's a text field where you can type a message and send it to us. Of course you can also contact us by calling +1 918-615-9611 or by sending an e-mail to support@givt.app.",
   "invalidQRcodeTitle": "Código QR inactivo",
   "invalidQRcodeMessage": "Unfortunately, this QR code is no longer active. Would you like to give to the general funds of {value0}?",
+  "inactiveCollectGroupTitle": "Objetivo no activo",
+  "inactiveCollectGroupMessage": "El objetivo elegido ya no está activo. Por favor, elige otro objetivo.",
   "errorOccurred": "Ocurrió un error",
   "registrationErrorTitle": "No se puede completar el registro",
   "cantCancelAlreadyProcessed": "Alas, you can't cancel this donation because it is already processed.",

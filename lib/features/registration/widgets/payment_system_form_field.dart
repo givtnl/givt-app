@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:iban/iban.dart';
 
