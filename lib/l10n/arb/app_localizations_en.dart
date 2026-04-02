@@ -1660,6 +1660,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get inactiveCollectGroupTitle => 'Collect group inactive';
+
+  @override
+  String get inactiveCollectGroupMessage =>
+      'The chosen goal is no longer active. Please choose another goal.';
+
+  @override
   String get errorOccurred => 'An error occurred';
 
   @override
@@ -4384,6 +4391,13 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String invalidQRcodeMessage(Object value0) {
     return 'Unfortunately, this QR code is no longer active. Would you like to give to the general funds of $value0?';
   }
+
+  @override
+  String get inactiveCollectGroupTitle => 'Collect group inactive';
+
+  @override
+  String get inactiveCollectGroupMessage =>
+      'The chosen goal is no longer active. Please choose another goal.';
 
   @override
   String get errorOccurred => 'An error occurred';

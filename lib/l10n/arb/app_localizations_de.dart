@@ -1678,6 +1678,13 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get inactiveCollectGroupTitle => 'Ziel nicht aktiv';
+
+  @override
+  String get inactiveCollectGroupMessage =>
+      'Das ausgewählte Ziel ist nicht mehr aktiv. Bitte wähle ein anderes Ziel.';
+
+  @override
   String get errorOccurred => 'Ein Fehler ist aufgetreten';
 
   @override

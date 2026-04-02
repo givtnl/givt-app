@@ -26,7 +26,7 @@ class StageCubit extends CommonCubit<StageUIModel, StageScreenCustom> {
     _checkForMicPermission();
     if (_sharedPreferences.getBool(_aiPopupShownKey) == null) {
       _sharedPreferences.setBool(_aiPopupShownKey, true);
-      Future.delayed(Duration.zero).then((value) {
+      Future<void>.delayed(Duration.zero).then((_) {
         emitCustom(const StageScreenCustom.showCaptainAiPopup());
       });
     }

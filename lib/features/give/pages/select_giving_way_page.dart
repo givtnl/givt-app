@@ -10,7 +10,6 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class SelectGivingWayPage extends StatefulWidget {

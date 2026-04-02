@@ -72,7 +72,7 @@ class _LookingGoodScreenState extends State<LookingGoodScreen> {
                 ConfettiHelper.show(
                   context,
                 );
-                await Future.delayed(const Duration(milliseconds: 1200));
+                await Future<void>.delayed(const Duration(milliseconds: 1200));
                 if (context.mounted) {
                   Navigator.of(context).pop();
                 }

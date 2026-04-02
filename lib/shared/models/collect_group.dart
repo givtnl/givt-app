@@ -8,6 +8,7 @@ class CollectGroup extends Equatable {
     required this.orgName,
     required this.hasCelebration,
     required this.type,
+    this.isActive = true,
     this.locations = const [],
     this.multiUseAllocations = const [],
     this.qrCodes = const [],
@@ -18,6 +19,7 @@ class CollectGroup extends Equatable {
         orgName = '',
         hasCelebration = false,
         type = CollectGroupType.none,
+        isActive = true,
         locations = const [],
         multiUseAllocations = const [],
         qrCodes = const [];
@@ -61,6 +63,7 @@ class CollectGroup extends Equatable {
       type: CollectGroupType.values.firstWhere(
         (e) => e.index == json['T'],
       ),
+      isActive: json['A'] as bool? ?? true,
       locations: locations,
       multiUseAllocations: multiUseAllocations,
       qrCodes: qrCodes,
@@ -71,6 +74,7 @@ class CollectGroup extends Equatable {
   final String orgName;
   final bool hasCelebration;
   final CollectGroupType type;
+  final bool isActive;
   final List<Location> locations;
   final List<MultiUseAllocation> multiUseAllocations;
   final List<QrCode> qrCodes;
@@ -82,6 +86,7 @@ class CollectGroup extends Equatable {
     data['C'] = hasCelebration;
     data['T'] = type.index;
     data['type'] = type.index;
+    data['A'] = isActive;
     data['L'] = locations.map((e) => e.toJson()).toList();
     data['MultiUseAllocations'] =
         multiUseAllocations.map((e) => e.toJson()).toList();
@@ -109,6 +114,7 @@ class CollectGroup extends Equatable {
         orgName,
         hasCelebration,
         type,
+        isActive,
         locations,
         multiUseAllocations,
         qrCodes,
