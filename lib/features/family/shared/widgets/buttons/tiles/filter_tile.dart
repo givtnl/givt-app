@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/quick_tile.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class FilterTile extends StatelessWidget {
   const FilterTile({
@@ -29,10 +30,9 @@ class FilterTile extends StatelessWidget {
           iconPath: iconPath ?? '',
           iconData:
               iconPath == null ? CollectGroupType.getIconByTypeUS(type) : null,
-          titleBig: type == CollectGroupType.charities
-              ? 'Non-profit'
-              : type.name[0].toUpperCase() + type.name.substring(1),
-          analyticsEvent: AnalyticsEventName.parentGiveFilterTileClicked.toEvent(
+          titleBig: _localizedFilterTitle(context, type),
+          analyticsEvent:
+              AnalyticsEventName.parentGiveFilterTileClicked.toEvent(
             parameters: {
               'type': type.name,
               'isSelected': isSelected,
@@ -40,4 +40,22 @@ class FilterTile extends StatelessWidget {
           ),
         ),
       );
+}
+
+String _localizedFilterTitle(BuildContext context, CollectGroupType type) {
+  final locals = context.l10n;
+  switch (type) {
+    case CollectGroupType.charities:
+      return locals.charity;
+    case CollectGroupType.church:
+      return locals.church;
+    case CollectGroupType.campaign:
+      return locals.campaign;
+    case CollectGroupType.artists:
+    case CollectGroupType.unknown:
+    case CollectGroupType.demo:
+    case CollectGroupType.debug:
+    case CollectGroupType.none:
+      return type.name[0].toUpperCase() + type.name.substring(1);
+  }
 }
