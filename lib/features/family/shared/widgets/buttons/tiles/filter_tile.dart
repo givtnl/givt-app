@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/quick_tile.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class FilterTile extends StatelessWidget {
   const FilterTile({
@@ -19,6 +20,25 @@ class FilterTile extends StatelessWidget {
   final bool isSelected;
   final void Function(BuildContext context)? onClick;
 
+  String _titleForType(BuildContext context) {
+    final l10n = context.l10n;
+    switch (type) {
+      case CollectGroupType.charities:
+        return l10n.charity;
+      case CollectGroupType.church:
+        return l10n.church;
+      case CollectGroupType.campaign:
+        return l10n.campaign;
+      case CollectGroupType.artists:
+        return l10n.artists;
+      case CollectGroupType.unknown:
+      case CollectGroupType.demo:
+      case CollectGroupType.debug:
+      case CollectGroupType.none:
+        return type.name[0].toUpperCase() + type.name.substring(1);
+    }
+  }
+
   @override
   Widget build(BuildContext context) => Padding(
         padding: edgeInsets ?? EdgeInsets.zero,
@@ -29,10 +49,9 @@ class FilterTile extends StatelessWidget {
           iconPath: iconPath ?? '',
           iconData:
               iconPath == null ? CollectGroupType.getIconByTypeUS(type) : null,
-          titleBig: type == CollectGroupType.charities
-              ? 'Non-profit'
-              : type.name[0].toUpperCase() + type.name.substring(1),
-          analyticsEvent: AnalyticsEventName.parentGiveFilterTileClicked.toEvent(
+          titleBig: _titleForType(context),
+          analyticsEvent:
+              AnalyticsEventName.parentGiveFilterTileClicked.toEvent(
             parameters: {
               'type': type.name,
               'isSelected': isSelected,

@@ -1790,7 +1790,7 @@ abstract class AppLocalizations {
   /// No description provided for @charity.
   ///
   /// In en, this message translates to:
-  /// **'Charity'**
+  /// **'Non-profit'**
   String get charity;
 
   /// No description provided for @artist.

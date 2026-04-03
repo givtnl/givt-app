@@ -970,7 +970,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'NO! You sign a direct debit so we can deduct the donations you have made using the Givt app. The deductions we make are incidental, user-driven deductions.\n \n\n We will not debit your account unless you make a donation using the Givt app.';
 
   @override
-  String get charity => 'Charity';
+  String get charity => 'Non-profit';
 
   @override
   String get artist => 'Artist';
@@ -3756,7 +3756,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
       'NO! You sign a direct debit so we can deduct the donations you have made using the Givt app. The deductions we make are incidental, user-driven deductions.\n \n\n We will not debit your account unless you make a donation using the Givt app.';
 
   @override
-  String get charity => 'Charity';
+  String get charity => 'Non-profit';
 
   @override
   String get artist => 'Artist';

@@ -974,7 +974,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'NO! You sign a direct debit so we can deduct the donations you have made using the Givt app. The deductions we make are incidental, user-driven deductions.\n \n\n We will not debit your account unless you make a donation using the Givt app.';
 
   @override
-  String get charity => 'Goed doel';
+  String get charity => 'Stichting';
 
   @override
   String get artist => 'Artiest';
@@ -983,7 +983,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get church => 'Kerk';
 
   @override
-  String get campaign => 'Actie';
+  String get campaign => 'Campagne';
 
   @override
   String giveToNearestBeacon(Object value0) {
