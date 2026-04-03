@@ -3038,8 +3038,20 @@ abstract class AppLocalizations {
   /// No description provided for @inactiveCollectGroupMessage.
   ///
   /// In en, this message translates to:
-  /// **'The chosen goal is no longer active. Please choose another goal.'**
+  /// **'The chosen organisation is no longer active. Please choose another goal!'**
   String get inactiveCollectGroupMessage;
+
+  /// No description provided for @forYouQrNonGivtTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a Givt QR code'**
+  String get forYouQrNonGivtTitle;
+
+  /// No description provided for @forYouQrNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not use this QR code. Please try again or choose another way to give.'**
+  String get forYouQrNotFoundMessage;
 
   /// No description provided for @errorOccurred.
   ///

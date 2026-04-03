@@ -1664,7 +1664,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inactiveCollectGroupMessage =>
-      'The chosen goal is no longer active. Please choose another goal.';
+      'The chosen organisation is no longer active. Please choose another goal!';
+
+  @override
+  String get forYouQrNonGivtTitle => 'Not a Givt QR code';
+
+  @override
+  String get forYouQrNotFoundMessage =>
+      'We could not use this QR code. Please try again or choose another way to give.';
 
   @override
   String get errorOccurred => 'An error occurred';
@@ -4397,7 +4404,14 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get inactiveCollectGroupMessage =>
-      'The chosen goal is no longer active. Please choose another goal.';
+      'The chosen organisation is no longer active. Please choose another goal!';
+
+  @override
+  String get forYouQrNonGivtTitle => 'Not a Givt QR code';
+
+  @override
+  String get forYouQrNotFoundMessage =>
+      'We could not use this QR code. Please try again or choose another way to give.';
 
   @override
   String get errorOccurred => 'An error occurred';

@@ -1682,7 +1682,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get inactiveCollectGroupMessage =>
-      'Das ausgewählte Ziel ist nicht mehr aktiv. Bitte wähle ein anderes Ziel.';
+      'Die gewählte Organisation ist nicht mehr aktiv. Bitte wähle ein anderes Ziel!';
+
+  @override
+  String get forYouQrNonGivtTitle => 'Kein Givt-QR-Code';
+
+  @override
+  String get forYouQrNotFoundMessage =>
+      'Dieser QR-Code konnte nicht verwendet werden. Bitte versuche es erneut oder wähle eine andere Art zu spenden.';
 
   @override
   String get errorOccurred => 'Ein Fehler ist aufgetreten';

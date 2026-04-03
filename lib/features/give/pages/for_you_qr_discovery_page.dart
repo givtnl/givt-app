@@ -1,20 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
+import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -28,8 +27,7 @@ class ForYouQrDiscoveryPage extends StatefulWidget {
   final ForYouFlowContext flowContext;
 
   @override
-  State<ForYouQrDiscoveryPage> createState() =>
-      _ForYouQrDiscoveryPageState();
+  State<ForYouQrDiscoveryPage> createState() => _ForYouQrDiscoveryPageState();
 }
 
 class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
@@ -37,6 +35,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
   final CameraCubit _cameraCubit = getIt<CameraCubit>();
 
   bool _isProcessing = false;
+  bool _isStartingScanner = false;
 
   @override
   void didChangeDependencies() {
@@ -48,6 +47,25 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _restartScannerIfMounted() async {
+    if (!mounted || _isStartingScanner) {
+      return;
+    }
+    _isStartingScanner = true;
+    try {
+      await _controller.start();
+    } finally {
+      _isStartingScanner = false;
+    }
+  }
+
+  void _goToForYouList() {
+    context.goNamed(
+      Pages.forYouList.name,
+      extra: widget.flowContext.toMap(),
+    );
   }
 
   @override
@@ -86,8 +104,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
           children: [
             MobileScanner(
               controller: _controller,
-              onDetect: (capture) =>
-                  _processBarcode(barcodeCapture: capture),
+              onDetect: (capture) => _processBarcode(barcodeCapture: capture),
             ),
             const Positioned.fill(child: QrCodeTarget()),
             if (_isProcessing)
@@ -119,7 +136,22 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
     if (raw == null) return;
 
     final encodedMediumId = isGivtQRCode(barcodeCapture.barcodes);
-    if (encodedMediumId == null) return;
+    if (encodedMediumId == null) {
+      setState(() => _isProcessing = true);
+      await _controller.stop();
+      if (!mounted) return;
+      final tryAgain = await ForYouQrDiscoveryDialogs.showNonGivtQrDialog(
+        context,
+      );
+      if (!mounted) return;
+      setState(() => _isProcessing = false);
+      if (tryAgain ?? false) {
+        await _restartScannerIfMounted();
+      } else {
+        _goToForYouList();
+      }
+      return;
+    }
 
     setState(() => _isProcessing = true);
     await _controller.stop();
@@ -134,7 +166,10 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
       if (!mounted) return;
 
       if (!resolved.isSuccess) {
-        await _handleDiscoveryFailureAndFallback(resolved);
+        await _handleDiscoveryFailure(
+          resolved,
+          mediumId: mediumId,
+        );
         return;
       }
 
@@ -147,7 +182,6 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
       );
 
       if (!mounted) return;
-      // Directly open amount+goals screen.
       context.goNamed(
         Pages.forYouOrganisationConfirm.name,
         extra: widget.flowContext
@@ -160,56 +194,59 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
       );
     } on Exception {
       if (!mounted) return;
-      await _handleDiscoveryFailureAndFallback(
+      await _handleDiscoveryFailure(
         const ForYouDiscoveryResult.failure(ForYouDiscoveryFailure.notFound),
+        mediumId: '',
       );
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
   }
 
-  Future<void> _handleDiscoveryFailureAndFallback(
-    ForYouDiscoveryResult resolved,
-  ) async {
-    final locals = context.l10n;
-
+  Future<void> _handleDiscoveryFailure(
+    ForYouDiscoveryResult resolved, {
+    required String mediumId,
+  }) async {
     final failure = resolved.failure ?? ForYouDiscoveryFailure.notFound;
-    final collectGroup = resolved.collectGroup;
 
-    await showDialog<void>(
-      context: context,
-      builder: (_) => WarningDialog(
-        title: switch (failure) {
-          ForYouDiscoveryFailure.inactiveQrCode => locals.invalidQRcodeTitle,
-          ForYouDiscoveryFailure.inactiveCollectGroup =>
-            locals.inactiveCollectGroupTitle,
-          ForYouDiscoveryFailure.notFound => locals.qrScanFailed,
-        },
-        content: switch (failure) {
-          ForYouDiscoveryFailure.inactiveQrCode => locals.invalidQRcodeMessage(
-              collectGroup?.orgName ?? '',
-            ),
-          ForYouDiscoveryFailure.inactiveCollectGroup =>
-            locals.inactiveCollectGroupMessage,
-          ForYouDiscoveryFailure.notFound => locals.codeCanNotBeScanned,
-        },
-        actions: [
-          CupertinoDialogAction(
-            onPressed: () => context.pop(),
-            child: Text(
-              locals.cancel,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    if (!mounted) return;
-    context.goNamed(
-      Pages.forYouList.name,
-      extra: widget.flowContext.toMap(),
-    );
+    switch (failure) {
+      case ForYouDiscoveryFailure.inactiveQrCode:
+        final collectGroup = resolved.collectGroup;
+        if (collectGroup == null || collectGroup.nameSpace.isEmpty) {
+          await ForYouQrDiscoveryDialogs.showNotFoundDialog(context);
+          if (!mounted) return;
+          _goToForYouList();
+          return;
+        }
+        final choice = await ForYouQrDiscoveryDialogs.showInactiveQrDialog(
+          context,
+          organisationName: collectGroup.orgName,
+          organisationIcon: CollectGroupType.getIconByType(collectGroup.type),
+        );
+        if (!mounted) return;
+        if (choice ?? false) {
+          context.goNamed(
+            Pages.forYouOrganisationConfirm.name,
+            extra: widget.flowContext
+                .copyWith(selectedOrganisation: collectGroup)
+                .copyWith(
+                  entryMediumId: mediumId,
+                  restrictToEntryQrGoal: false,
+                )
+                .toMap(),
+          );
+        } else {
+          _goToForYouList();
+        }
+      case ForYouDiscoveryFailure.inactiveCollectGroup:
+        await ForYouQrDiscoveryDialogs.showInactiveCollectGroupDialog(context);
+        if (!mounted) return;
+        _goToForYouList();
+      case ForYouDiscoveryFailure.notFound:
+        await ForYouQrDiscoveryDialogs.showNotFoundDialog(context);
+        if (!mounted) return;
+        _goToForYouList();
+    }
   }
 
   /// Checks if the given barcodes contain a Givt QR code.
@@ -232,5 +269,3 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
     return null;
   }
 }
-
-

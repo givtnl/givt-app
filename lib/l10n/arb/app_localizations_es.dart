@@ -1666,7 +1666,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get inactiveCollectGroupMessage =>
-      'El objetivo elegido ya no está activo. Por favor, elige otro objetivo.';
+      'La organización elegida ya no está activa. ¡Elige otro objetivo!';
+
+  @override
+  String get forYouQrNonGivtTitle => 'No es un código QR de Givt';
+
+  @override
+  String get forYouQrNotFoundMessage =>
+      'No pudimos usar este código QR. Inténtalo de nuevo u elige otra forma de donar.';
 
   @override
   String get errorOccurred => 'An error occurred';
@@ -4466,7 +4473,14 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get inactiveCollectGroupMessage =>
-      'El objetivo elegido ya no está activo. Por favor, elige otro objetivo.';
+      'La organización elegida ya no está activa. ¡Elige otro objetivo!';
+
+  @override
+  String get forYouQrNonGivtTitle => 'No es un código QR de Givt';
+
+  @override
+  String get forYouQrNotFoundMessage =>
+      'No pudimos usar este código QR. Inténtalo de nuevo u elige otra forma de donar.';
 
   @override
   String get errorOccurred => 'Ocurrió un error';

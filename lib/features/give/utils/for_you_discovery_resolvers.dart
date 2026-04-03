@@ -22,8 +22,10 @@ class ForYouDiscoveryResult {
   }) = _ForYouDiscoverySuccess;
 
   const factory ForYouDiscoveryResult.failure(
-    ForYouDiscoveryFailure failure,
-  ) = _ForYouDiscoveryFailure;
+    ForYouDiscoveryFailure failure, {
+    CollectGroup? collectGroup,
+    QrCode? qrCode,
+  }) = _ForYouDiscoveryFailure;
 
   final CollectGroup? collectGroup;
   final QrCode? qrCode;
@@ -41,8 +43,15 @@ class _ForYouDiscoverySuccess extends ForYouDiscoveryResult {
 }
 
 class _ForYouDiscoveryFailure extends ForYouDiscoveryResult {
-  const _ForYouDiscoveryFailure(ForYouDiscoveryFailure failure)
-      : super._(failure: failure);
+  const _ForYouDiscoveryFailure(
+    ForYouDiscoveryFailure failure, {
+    CollectGroup? collectGroup,
+    QrCode? qrCode,
+  }) : super._(
+         failure: failure,
+         collectGroup: collectGroup,
+         qrCode: qrCode,
+       );
 }
 
 /// Resolver helpers for the "for you" discovery flows.
@@ -52,8 +61,7 @@ class _ForYouDiscoveryFailure extends ForYouDiscoveryResult {
 class ForYouDiscoveryResolvers {
   ForYouDiscoveryResolvers._();
 
-  static Future<ForYouDiscoveryResult>
-  resolveCollectGroupAndQrFromQrMediumId(
+  static Future<ForYouDiscoveryResult> resolveCollectGroupAndQrFromQrMediumId(
     String mediumId, {
     CollectGroupRepository? collectGroupRepository,
   }) async {
@@ -106,14 +114,17 @@ class ForYouDiscoveryResolvers {
     }
 
     if (!matchingGroup.isActive) {
-      return const ForYouDiscoveryResult.failure(
+      return ForYouDiscoveryResult.failure(
         ForYouDiscoveryFailure.inactiveCollectGroup,
+        collectGroup: matchingGroup,
       );
     }
 
     if (!matchingQrCode.isActive) {
-      return const ForYouDiscoveryResult.failure(
+      return ForYouDiscoveryResult.failure(
         ForYouDiscoveryFailure.inactiveQrCode,
+        collectGroup: matchingGroup,
+        qrCode: matchingQrCode,
       );
     }
 
@@ -131,6 +142,9 @@ class ForYouDiscoveryResolvers {
       mediumId,
       collectGroupRepository: collectGroupRepository,
     );
+    if (!resolved.isSuccess) {
+      return null;
+    }
     return resolved.collectGroup;
   }
 
@@ -157,7 +171,8 @@ class ForYouDiscoveryResolvers {
 
     final namespace = beaconId.split('.').first;
     final fallbackMatch = collectGroups.firstWhere(
-      (group) => group.nameSpace == namespace || group.nameSpace.startsWith(namespace),
+      (group) =>
+          group.nameSpace == namespace || group.nameSpace.startsWith(namespace),
       orElse: () => const CollectGroup.empty(),
     );
 
@@ -232,7 +247,9 @@ class ForYouDiscoveryResolvers {
     }
 
     // Find the minimum distance
-    final minDistance = withinRangeLocations.values.reduce((a, b) => a < b ? a : b);
+    final minDistance = withinRangeLocations.values.reduce(
+      (a, b) => a < b ? a : b,
+    );
 
     // Get all locations at the minimum distance (allowing small tolerance for floating point)
     const tolerance = 1.0; // 1 meter tolerance
@@ -242,7 +259,8 @@ class ForYouDiscoveryResolvers {
         .toList();
 
     // Get unique collect groups for the nearest locations
-    final uniqueHits = <String, ({CollectGroup collectGroup, String beaconId})>{};
+    final uniqueHits =
+        <String, ({CollectGroup collectGroup, String beaconId})>{};
     for (final location in nearestLocations) {
       if (location.beaconId.isNotEmpty) {
         final group = locationToGroupMap[location.beaconId];
@@ -258,4 +276,3 @@ class ForYouDiscoveryResolvers {
     return uniqueHits.values.toList();
   }
 }
-
