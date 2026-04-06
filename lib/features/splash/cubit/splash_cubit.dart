@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:backoff/backoff.dart';
-import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/auth/models/session.dart';
@@ -107,15 +106,6 @@ class SplashCubit extends CommonCubit<void, SplashCustom> {
       if (isClosed) return;
 
       final profiles = await _profilesRepository.refreshProfiles();
-      if (isClosed) return;
-
-      final fbsdk = FacebookAppEvents();
-      await fbsdk.setAutoLogAppEventsEnabled(true);
-      if (isClosed) return;
-
-      await fbsdk.logEvent(
-        name: 'app_open_and_logged_in',
-      );
       if (isClosed) return;
 
       // user started registration but didn't finish yet
