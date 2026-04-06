@@ -229,6 +229,17 @@ class FunIcon extends StatelessWidget {
         iconSize: iconsize,
         circleSize: circleSize,
       );
+    
+  factory FunIcon.circleQuestion(
+          {Color circleColor = FamilyAppTheme.primary95,
+          double iconsize = 48,
+          double circleSize = 112}) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.circleQuestion,
+        circleColor: circleColor,
+        iconSize: iconsize,
+        circleSize: circleSize,
+      );
 
   factory FunIcon.globe(
           {Color circleColor = FamilyAppTheme.primary95,

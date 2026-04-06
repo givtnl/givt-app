@@ -24,7 +24,8 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
       bloc: effectiveBloc,
       builder: (context, state) {
         final types = state.organisations.map((e) => e.type).toSet().toList()
-          ..removeWhere((item) => removedTypes.contains(item.name));
+          ..removeWhere((item) => removedTypes.contains(item.name))
+          ..sort(CollectGroupType.compareForOrganisationFilterBar);
         if (state.status == OrganisationStatus.loading) {
           return const Center(child: CircularProgressIndicator());
         }

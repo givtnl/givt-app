@@ -6,37 +6,45 @@ import 'package:givt_app/utils/app_theme.dart';
 
 enum CollectGroupType {
   church(
-    icon: 'assets/images/church.png',
-    activeIcon: 'assets/images/church_focus.png',
+    iconData: FontAwesomeIcons.church,
     color: AppTheme.givtLightBlue,
   ),
   campaign(
-    icon: 'assets/images/campaign.png',
-    activeIcon: 'assets/images/campaign_focus.png',
+    iconData: FontAwesomeIcons.bullhorn,
     color: AppTheme.givtOrange,
   ),
   artists(
-    icon: 'assets/images/artist.png',
-    activeIcon: 'assets/images/artist_focus.png',
+    iconData: FontAwesomeIcons.guitar,
     color: AppTheme.givtDarkGreen,
   ),
   charities(
-    icon: 'assets/images/charity.png',
-    activeIcon: 'assets/images/charity_focus.png',
+    iconData: FontAwesomeIcons.earthEurope,
     color: AppTheme.givtYellow,
   ),
-  unknown(icon: '', activeIcon: '', color: Colors.grey),
-  demo(icon: '', activeIcon: '', color: Colors.grey),
-  debug(icon: '', activeIcon: '', color: Colors.grey),
-  none(icon: '', activeIcon: '', color: Colors.grey);
+  unknown(
+    iconData: FontAwesomeIcons.circleQuestion,
+    color: Colors.grey,
+  ),
+  demo(
+    iconData: FontAwesomeIcons.circleQuestion,
+    color: Colors.grey,
+  ),
+  debug(
+    iconData: FontAwesomeIcons.circleQuestion,
+    color: Colors.grey,
+  ),
+  none(
+    iconData: FontAwesomeIcons.circleQuestion,
+    color: Colors.grey,
+  );
 
   const CollectGroupType({
-    required this.icon,
-    required this.activeIcon,
+    required this.iconData,
     required this.color,
   });
-  final String icon;
-  final String activeIcon;
+
+  /// Font Awesome icon for this collect group (single source of truth for EU/US).
+  final IconData iconData;
   final Color color;
 
   static CollectGroupType fromInt(int value) {
@@ -56,6 +64,29 @@ enum CollectGroupType {
     return CollectGroupType.none;
   }
 
+  /// Order for organisation search filter chips: Church, Charity, Campaign,
+  /// Others ([artists]). Types outside this list are sorted after, by index.
+  static int compareForOrganisationFilterBar(
+    CollectGroupType a,
+    CollectGroupType b,
+  ) {
+    const ordered = [
+      CollectGroupType.church,
+      CollectGroupType.charities,
+      CollectGroupType.campaign,
+      CollectGroupType.artists,
+    ];
+    final ia = ordered.indexOf(a);
+    final ib = ordered.indexOf(b);
+    final ra = ia == -1 ? ordered.length : ia;
+    final rb = ib == -1 ? ordered.length : ib;
+    final c = ra.compareTo(rb);
+    if (c != 0) {
+      return c;
+    }
+    return a.index.compareTo(b.index);
+  }
+
   static ColorCombo getColorComboByType(CollectGroupType type) {
     switch (type) {
       case CollectGroupType.church:
@@ -66,24 +97,30 @@ enum CollectGroupType {
         return ColorCombo.highlight;
       case CollectGroupType.artists:
         return ColorCombo.secondary;
-      default:
+      case CollectGroupType.unknown:
+      case CollectGroupType.demo:
+      case CollectGroupType.debug:
+      case CollectGroupType.none:
+        return ColorCombo.secondary;
     }
-    return ColorCombo.secondary;
   }
 
   static IconData getIconByType(CollectGroupType type) {
     switch (type) {
       case CollectGroupType.church:
-        return FontAwesomeIcons.placeOfWorship;
+        return FontAwesomeIcons.church;
       case CollectGroupType.charities:
-        return FontAwesomeIcons.solidHeart;
+        return FontAwesomeIcons.earthEurope;
       case CollectGroupType.campaign:
-        return FontAwesomeIcons.handHoldingHeart;
+        return FontAwesomeIcons.bullhorn;
       case CollectGroupType.artists:
         return FontAwesomeIcons.guitar;
-      default:
+      case CollectGroupType.unknown:
+      case CollectGroupType.demo:
+      case CollectGroupType.debug:
+      case CollectGroupType.none:
+        return FontAwesomeIcons.circleQuestion;
     }
-    return FontAwesomeIcons.church;
   }
 
   static FunIcon getFunIconByType(CollectGroupType type) {
@@ -91,12 +128,14 @@ enum CollectGroupType {
       case CollectGroupType.church:
         return FunIcon.church();
       case CollectGroupType.charities:
-        return FunIcon.globe(
+        return FunIcon(
+          iconData: FontAwesomeIcons.earthEurope,
           circleColor: ColorCombo.tertiary.backgroundColor,
           iconColor: ColorCombo.tertiary.textColor,
         );
       case CollectGroupType.campaign:
-        return FunIcon.seedling(
+        return FunIcon(
+          iconData: FontAwesomeIcons.bullhorn,
           circleColor: ColorCombo.highlight.backgroundColor,
           iconColor: ColorCombo.highlight.textColor,
         );
@@ -105,25 +144,16 @@ enum CollectGroupType {
           circleColor: ColorCombo.secondary.backgroundColor,
           iconColor: ColorCombo.secondary.textColor,
         );
-      default:
+      case CollectGroupType.unknown:
+      case CollectGroupType.demo:
+      case CollectGroupType.debug:
+      case CollectGroupType.none:
+        return FunIcon.circleQuestion();
     }
-    return FunIcon.church();
   }
 
-  static IconData getIconByTypeUS(CollectGroupType type) {
-    switch (type) {
-      case CollectGroupType.church:
-        return FontAwesomeIcons.church;
-      case CollectGroupType.charities:
-        return FontAwesomeIcons.earthAmericas;
-      case CollectGroupType.campaign:
-        return FontAwesomeIcons.seedling;
-      case CollectGroupType.artists:
-        return FontAwesomeIcons.guitar;
-      default:
-    }
-    return FontAwesomeIcons.church;
-  }
+  /// Same mapping as [getIconByType] (US-specific variants were unified).
+  static IconData getIconByTypeUS(CollectGroupType type) => getIconByType(type);
 
   static Color getHighlightColor(CollectGroupType type) {
     switch (type) {
@@ -135,8 +165,11 @@ enum CollectGroupType {
         return AppTheme.givtOrange;
       case CollectGroupType.artists:
         return AppTheme.givtDarkGreen;
-      default:
+      case CollectGroupType.unknown:
+      case CollectGroupType.demo:
+      case CollectGroupType.debug:
+      case CollectGroupType.none:
+        return AppTheme.givtLightBlue;
     }
-    return AppTheme.givtLightBlue;
   }
 }
