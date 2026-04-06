@@ -116,7 +116,9 @@ class DonationListItem extends StatelessWidget {
                                     child: Row(
                                       children: [
                                         BodySmallText(
-                                          '${context.l10n.collect} ${donation.collectId ?? 1}',
+                                          donation.allocationDisplayLabel(
+                                            context.l10n,
+                                          ),
                                           color:
                                               FamilyAppTheme.neutralVariant40,
                                         ),

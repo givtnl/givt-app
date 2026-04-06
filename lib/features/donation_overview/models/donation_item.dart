@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/models/givt.dart';
 
 class DonationItem extends Equatable {
@@ -18,6 +19,7 @@ class DonationItem extends Equatable {
     this.platformFeeAmount,
     this.collectGroupId,
     this.collectId,
+    this.allocationName = '',
   });
 
   factory DonationItem.fromGivt(Givt givt) {
@@ -36,6 +38,7 @@ class DonationItem extends Equatable {
       platformFeeAmount: givt.platformFeeAmount,
       collectGroupId: givt.collectGroupId,
       collectId: givt.collectId,
+      allocationName: (givt.allocationName ?? '').trim(),
     );
   }
 
@@ -53,6 +56,15 @@ class DonationItem extends Equatable {
   final double? platformFeeAmount;
   final String? collectGroupId;
   final int? collectId;
+  final String allocationName;
+
+  /// Allocation label: API name when set, else localized "Collection N".
+  String allocationDisplayLabel(AppLocalizations l10n) {
+    if (allocationName.isNotEmpty) {
+      return allocationName;
+    }
+    return '${l10n.collect} ${collectId ?? 1}';
+  }
 
   DonationItem copyWith({
     int? id,
@@ -69,6 +81,7 @@ class DonationItem extends Equatable {
     double? platformFeeAmount,
     String? collectGroupId,
     int? collectId,
+    String? allocationName,
   }) {
     return DonationItem(
       id: id ?? this.id,
@@ -85,6 +98,7 @@ class DonationItem extends Equatable {
       platformFeeAmount: platformFeeAmount ?? this.platformFeeAmount,
       collectGroupId: collectGroupId ?? this.collectGroupId,
       collectId: collectId ?? this.collectId,
+      allocationName: allocationName ?? this.allocationName,
     );
   }
 
@@ -105,6 +119,7 @@ class DonationItem extends Equatable {
         'platformFeeAmount': platformFeeAmount,
         'collectGroupId': collectGroupId,
         'collectId': collectId,
+        'allocationName': allocationName,
     };
   }
 
@@ -124,5 +139,6 @@ class DonationItem extends Equatable {
         platformFeeAmount,
         collectGroupId,
         collectId,
+        allocationName,
       ];
 }
