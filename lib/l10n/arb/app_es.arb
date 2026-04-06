@@ -1043,6 +1043,7 @@
   "youHaveBeenInvitedToImpactGroup": "You have been invited\nto the ",
   "acceptInviteKey": "Accept the invite",
   "chooseGroup": "Bienvenido {firstName}",
+  "welcomeOnly": "Bienvenido",
   "groups": "Groups",
   "genericSuccessTitle": "Consider it done!",
   "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?",

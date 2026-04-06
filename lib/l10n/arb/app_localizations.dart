@@ -3506,6 +3506,12 @@ abstract class AppLocalizations {
   /// **'Welcome {firstName}'**
   String chooseGroup(Object firstName);
 
+  /// No description provided for @welcomeOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get welcomeOnly;
+
   /// No description provided for @groups.
   ///
   /// In en, this message translates to:
