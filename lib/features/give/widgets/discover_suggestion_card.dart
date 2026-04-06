@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DiscoverSuggestionCard extends StatelessWidget {
   const DiscoverSuggestionCard({
     required this.color,
     required this.title,
-    required this.activeIcon,
-    required this.icon,
+    required this.iconData,
     required this.onTap,
     required this.width,
     required this.height,
@@ -16,8 +16,7 @@ class DiscoverSuggestionCard extends StatelessWidget {
   final bool visible;
   final Color color;
   final String title;
-  final String activeIcon;
-  final String icon;
+  final IconData iconData;
   final double width;
   final double height;
   final VoidCallback onTap;
@@ -66,9 +65,10 @@ class DiscoverSuggestionCard extends StatelessWidget {
                       vertical: 8,
                       horizontal: 8,
                     ),
-                    child: Image.asset(
-                      icon,
-                      width: size.width * 0.1,
+                    child: FaIcon(
+                      iconData,
+                      size: size.width * 0.1,
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 8),
