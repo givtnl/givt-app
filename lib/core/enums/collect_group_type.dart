@@ -64,6 +64,29 @@ enum CollectGroupType {
     return CollectGroupType.none;
   }
 
+  /// Order for organisation search filter chips: Church, Charity, Campaign,
+  /// Others ([artists]). Types outside this list are sorted after, by index.
+  static int compareForOrganisationFilterBar(
+    CollectGroupType a,
+    CollectGroupType b,
+  ) {
+    const ordered = [
+      CollectGroupType.church,
+      CollectGroupType.charities,
+      CollectGroupType.campaign,
+      CollectGroupType.artists,
+    ];
+    final ia = ordered.indexOf(a);
+    final ib = ordered.indexOf(b);
+    final ra = ia == -1 ? ordered.length : ia;
+    final rb = ib == -1 ? ordered.length : ib;
+    final c = ra.compareTo(rb);
+    if (c != 0) {
+      return c;
+    }
+    return a.index.compareTo(b.index);
+  }
+
   static ColorCombo getColorComboByType(CollectGroupType type) {
     switch (type) {
       case CollectGroupType.church:
@@ -96,7 +119,7 @@ enum CollectGroupType {
       case CollectGroupType.demo:
       case CollectGroupType.debug:
       case CollectGroupType.none:
-        return FontAwesomeIcons.church;
+        return FontAwesomeIcons.circleQuestion;
     }
   }
 
@@ -125,7 +148,7 @@ enum CollectGroupType {
       case CollectGroupType.demo:
       case CollectGroupType.debug:
       case CollectGroupType.none:
-        return FunIcon.church();
+        return FunIcon.circleQuestion();
     }
   }
 
