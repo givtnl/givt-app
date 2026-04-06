@@ -1933,6 +1933,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get welcomeOnly => 'Welcome';
+
+  @override
   String get groups => 'Groups';
 
   @override
@@ -4671,6 +4674,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String chooseGroup(Object firstName) {
     return 'Welcome $firstName';
   }
+
+  @override
+  String get welcomeOnly => 'Welcome';
 
   @override
   String get groups => 'Groups';

@@ -1952,6 +1952,9 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get welcomeOnly => 'Willkommen';
+
+  @override
   String get groups => 'Groups';
 
   @override

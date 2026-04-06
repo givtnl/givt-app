@@ -1941,6 +1941,9 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get welcomeOnly => 'Welkom';
+
+  @override
   String get groups => 'Groups';
 
   @override

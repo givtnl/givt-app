@@ -197,7 +197,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           key: const ValueKey('EU-Home-AppBar'),
           title: switch (pageIndex) {
             0 => locals.amount,
-            1 => locals.chooseGroup(auth.user.firstName),
+            1 => (auth.user.tempUser || auth.user.needRegistration)
+                ? locals.welcomeOnly
+                : locals.chooseGroup(auth.user.firstName),
             _ => locals.give,
           },
           leading: badges.Badge(

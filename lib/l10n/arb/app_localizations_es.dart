@@ -1935,6 +1935,9 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get welcomeOnly => 'Bienvenido';
+
+  @override
   String get groups => 'Groups';
 
   @override
@@ -4743,6 +4746,9 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String chooseGroup(Object firstName) {
     return 'Bienvenido $firstName';
   }
+
+  @override
+  String get welcomeOnly => 'Bienvenido';
 
   @override
   String get groups => 'Grupos';
