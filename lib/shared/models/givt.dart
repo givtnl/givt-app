@@ -17,6 +17,7 @@ class Givt extends Equatable {
     this.donationType = 0,
     this.platformFeeTransactionId,
     this.platformFeeAmount,
+    this.allocationName,
   });
 
   factory Givt.fromJson(Map<String, dynamic> json) {
@@ -33,6 +34,12 @@ class Givt extends Equatable {
     );
     if (month <= 3 || (month == 4 && day <= 5)) {
       taxYear = int.parse(DateFormat('yyyy').format(timestamp)) - 1;
+    }
+    final allocationRaw = json['AllocationName'];
+    String? allocationName;
+    if (allocationRaw is String) {
+      final trimmed = allocationRaw.trim();
+      allocationName = trimmed.isEmpty ? null : trimmed;
     }
     return Givt(
       id: json['Id'] as int,
@@ -52,6 +59,7 @@ class Givt extends Equatable {
           json.containsKey('DonationType') ? json['DonationType'] as int : 0,
       platformFeeTransactionId: json['PlatformFeeTransactionId'] as int?,
       platformFeeAmount: json['PlatformFeeAmount'] as double?,
+      allocationName: allocationName,
     );
   }
 
@@ -69,7 +77,8 @@ class Givt extends Equatable {
         mediumId = '',
         donationType = 0,
         platformFeeTransactionId = null,
-        platformFeeAmount = null;
+        platformFeeAmount = null,
+        allocationName = null;
 
   Map<String, dynamic> toJson() {
     return {
@@ -87,6 +96,7 @@ class Givt extends Equatable {
       'DonationType': donationType,
       'PlatformFeeTransactionId': platformFeeTransactionId,
       'PlatformFeeAmount': platformFeeAmount,
+      'AllocationName': allocationName,
     };
   }
 
@@ -112,6 +122,7 @@ class Givt extends Equatable {
   final int donationType;
   final int? platformFeeTransactionId;
   final double? platformFeeAmount;
+  final String? allocationName;
 
   Givt copyWith({
     int? id,
@@ -128,6 +139,7 @@ class Givt extends Equatable {
     int? donationType,
     int? platformFeeTransactionId,
     double? platformFeeAmount,
+    String? allocationName,
   }) =>
       Givt(
         id: id ?? this.id,
@@ -146,6 +158,7 @@ class Givt extends Equatable {
         platformFeeTransactionId:
             platformFeeTransactionId ?? this.platformFeeTransactionId,
         platformFeeAmount: platformFeeAmount ?? this.platformFeeAmount,
+        allocationName: allocationName ?? this.allocationName,
       );
 
   @override
@@ -163,5 +176,6 @@ class Givt extends Equatable {
         donationType,
         platformFeeTransactionId,
         platformFeeAmount,
+        allocationName,
       ];
 }

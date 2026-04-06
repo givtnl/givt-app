@@ -163,7 +163,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                 // Collection amounts
                 ...sortedDonations.map((donation) {
                   return _buildDetailRow(
-                    label: '${context.l10n.collect} ${donation.collectId ?? 1}',
+                    label: donation.allocationDisplayLabel(locals),
                     value:
                         '$currencySymbol ${Util.formatNumberComma(
                           donation.amount,
