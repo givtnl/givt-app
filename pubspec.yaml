@@ -16,7 +16,7 @@ dependencies:
   countup: ^0.1.4
   currency_text_input_formatter: ^2.2.8
   dart_jsonwebtoken: ^2.17.0
-  device_info_plus: ^12.3.0
+  device_info_plus: 12.3.0
   diacritic: ^0.1.6
   dotted_border: ^2.1.0
   equatable: ^2.0.8
@@ -83,7 +83,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   record: ^6.1.2
   audioplayers: ^6.1.2
-  firebase_remote_config: ^6.1.0
+  firebase_remote_config: ^6.3.0
   rxdart: ^0.28.0
   volume_controller: ^3.2.0
   waveform_flutter:
