@@ -33,6 +33,7 @@ List<GivtTransaction> buildForYouDonationTransactions({
         if (amount == 0.0) {
           continue;
         }
+        final allocationName = allocation?.allocationName.trim();
         out.add(
           GivtTransaction(
             guid: userGuid,
@@ -42,12 +43,17 @@ List<GivtTransaction> buildForYouDonationTransactions({
                 : collectGroupNamespace,
             timestamp: formattedDate,
             collectId: collectId,
+            allocationName:
+                allocationName != null && allocationName.isNotEmpty
+                    ? allocationName
+                    : null,
           ),
         );
       case ForYouGeneralGoalLine(:final qr):
         if (amount == 0.0) {
           continue;
         }
+        final allocationName = qr.allocationName.trim();
         out.add(
           GivtTransaction(
             guid: userGuid,
@@ -55,6 +61,7 @@ List<GivtTransaction> buildForYouDonationTransactions({
             beaconId: qr.mediumId,
             timestamp: formattedDate,
             collectId: '1',
+            allocationName: allocationName.isNotEmpty ? allocationName : null,
           ),
         );
     }

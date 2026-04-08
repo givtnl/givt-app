@@ -28,6 +28,7 @@ class GiveState extends Equatable {
     this.transactionIds = const [],
     this.userGUID = '',
     this.tempAmount,
+    this.isForYouFlow = false,
   });
 
   final GiveStatus status;
@@ -41,6 +42,7 @@ class GiveState extends Equatable {
   final List<int> transactionIds;
   final String userGUID;
   final double? tempAmount;
+  final bool isForYouFlow;
 
   GiveState copyWith({
     GiveStatus? status,
@@ -57,6 +59,7 @@ class GiveState extends Equatable {
     List<int>? transactionIds,
     String? userGUID,
     double? tempAmount,
+    bool? isForYouFlow,
   }) {
     return GiveState(
       status: status ?? this.status,
@@ -75,6 +78,7 @@ class GiveState extends Equatable {
       transactionIds: transactionIds ?? this.transactionIds,
       userGUID: userGUID ?? this.userGUID,
       tempAmount: tempAmount ?? this.tempAmount,
+      isForYouFlow: isForYouFlow ?? this.isForYouFlow,
     );
   }
 
@@ -91,5 +95,6 @@ class GiveState extends Equatable {
     transactionIds,
     userGUID,
     tempAmount ?? 0.0,
+    isForYouFlow,
   ];
 }

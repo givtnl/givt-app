@@ -110,7 +110,7 @@ class _GivingPageState extends State<GivingPage> {
       guid: user.guid,
       organisation: orgName,
       collectGroupId: giveBlocState.organisation.collectGroupId,
-      givtObj: GivtTransaction.toJsonList(giveBlocState.givtTransactions),
+      givtObj: GivtTransaction.toWebJsonList(giveBlocState.givtTransactions),
       confirmBtn: context.l10n.next,
       cancel: context.l10n.cancel,
       areYouSureToCancelGivts: context.l10n.areYouSureToCancelGivts,
@@ -135,6 +135,7 @@ class _GivingPageState extends State<GivingPage> {
       platformFeeRequired: context.l10n.platformFeeRequired,
       platformFeeRemember: context.l10n.platformFeeRemember,
       transactionIds: giveBlocState.transactionIds,
+      isForYouFlow: giveBlocState.isForYouFlow,
     ).toJson();
   }
 
