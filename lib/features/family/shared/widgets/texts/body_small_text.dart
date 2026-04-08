@@ -21,8 +21,16 @@ class BodySmallText extends StatelessWidget {
     this.strutStyle,
   });
 
-  factory BodySmallText.primary30(String text) =>
-      BodySmallText(text, color: FamilyAppTheme.primary30);
+  factory BodySmallText.primary30(
+    String text, {
+    int? maxLines,
+    TextOverflow? overflow,
+  }) => BodySmallText(
+    text,
+    color: FamilyAppTheme.primary30,
+    maxLines: maxLines,
+    overflow: overflow,
+  );
 
   factory BodySmallText.primary40(String text) =>
       BodySmallText(text, color: FamilyAppTheme.primary40);

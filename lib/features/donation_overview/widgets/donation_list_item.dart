@@ -113,16 +113,13 @@ class DonationListItem extends StatelessWidget {
                                 ...sortedDonations.map(
                                   (donation) => Padding(
                                     padding: const EdgeInsets.only(bottom: 2),
-                                    child: Row(
-                                      children: [
-                                        BodySmallText(
-                                          donation.allocationDisplayLabel(
-                                            context.l10n,
-                                          ),
-                                          color:
-                                              FamilyAppTheme.neutralVariant40,
-                                        ),
-                                      ],
+                                    child: BodySmallText(
+                                      donation.allocationDisplayLabel(
+                                        context.l10n,
+                                      ),
+                                      color: FamilyAppTheme.neutralVariant40,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ),
