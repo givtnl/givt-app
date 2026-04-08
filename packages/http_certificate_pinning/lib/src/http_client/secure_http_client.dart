@@ -93,9 +93,9 @@ class SecureHttpClient extends http.BaseClient {
   /// Sends a non-streaming [Request] and returns a non-streaming [Response].
   Future<Response> _sendUnstreamed(
     String method,
-    url,
+    Object url,
     Map<String, String>? headers, [
-    body,
+    Object? body,
     Encoding? encoding,
   ]) async {
     // iOS bug: Alamofire is failing to return parallel requests for certificate validation
@@ -138,7 +138,7 @@ class SecureHttpClient extends http.BaseClient {
   }
 
   /// Throws an error if [response] is not successful.
-  void _checkResponseSuccess(url, Response response) {
+  void _checkResponseSuccess(Object url, Response response) {
     if (response.statusCode < 400) return;
     var message = 'Request to $url failed with status ${response.statusCode}';
     if (response.reasonPhrase != null) {
@@ -153,4 +153,5 @@ class SecureHttpClient extends http.BaseClient {
   }
 }
 
-Uri _fromUriOrString(uri) => uri is String ? Uri.parse(uri) : uri as Uri;
+Uri _fromUriOrString(Object uri) =>
+    uri is String ? Uri.parse(uri) : uri as Uri;

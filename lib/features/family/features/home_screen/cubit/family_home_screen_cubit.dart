@@ -205,7 +205,7 @@ class FamilyHomeScreenCubit
   }
 
   Future<void> showRewardOverlay() async {
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
     emitCustom(
       FamilyHomeScreenCustom.openAvatarOverlay(
         _createUIModel(),

@@ -213,7 +213,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
     var currentImage = images[0];
 
     while (_isSpinning) {
-      await Future.delayed(spinInterval);
+      await Future<void>.delayed(spinInterval);
       setState(() {
         currentImage = images[tick % images.length];
         _spinningImage = currentImage;

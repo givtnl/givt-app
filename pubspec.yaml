@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 5.2.0
+version: 5.2.1
 publish_to: none
 
 environment:
@@ -12,11 +12,12 @@ dependencies:
   badges: ^3.1.2
   bloc: ^9.2.0
   carousel_slider: ^5.0.0
+  connectivity_plus: 7.0.0
   country_flags: ^3.2.0
   countup: ^0.1.4
   currency_text_input_formatter: ^2.2.8
   dart_jsonwebtoken: ^2.17.0
-  device_info_plus: ^12.3.0
+  device_info_plus: 12.3.0
   diacritic: ^0.1.6
   dotted_border: ^2.1.0
   equatable: ^2.0.8
@@ -83,9 +84,8 @@ dependencies:
   dropdown_button2: ^2.3.9
   record: ^6.1.2
   audioplayers: ^6.1.2
-  firebase_remote_config: ^6.1.0
+  firebase_remote_config: ^6.3.0
   rxdart: ^0.28.0
-  facebook_app_events: ^0.20.1
   volume_controller: ^3.2.0
   waveform_flutter:
     path: ./packages/waveform

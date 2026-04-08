@@ -471,7 +471,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   @override
   Future<void> onRegistrationFinished() async {
     // a little delay to allow navigation to resolve first
-    await Future.delayed(const Duration(milliseconds: 30));
+    await Future<void>.delayed(const Duration(milliseconds: 30));
     _startedRegistration = false;
     _onRegistrationFinishedStream.add(null);
   }

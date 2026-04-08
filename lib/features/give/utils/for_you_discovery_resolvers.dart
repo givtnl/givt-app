@@ -1,8 +1,58 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
+
+enum ForYouDiscoveryFailure {
+  notFound,
+  inactiveQrCode,
+  inactiveCollectGroup,
+}
+
+class ForYouDiscoveryResult {
+  const ForYouDiscoveryResult._({
+    this.collectGroup,
+    this.qrCode,
+    this.failure,
+  });
+
+  const factory ForYouDiscoveryResult.success({
+    required CollectGroup collectGroup,
+    required QrCode qrCode,
+  }) = _ForYouDiscoverySuccess;
+
+  const factory ForYouDiscoveryResult.failure(
+    ForYouDiscoveryFailure failure, {
+    CollectGroup? collectGroup,
+    QrCode? qrCode,
+  }) = _ForYouDiscoveryFailure;
+
+  final CollectGroup? collectGroup;
+  final QrCode? qrCode;
+  final ForYouDiscoveryFailure? failure;
+
+  bool get isSuccess =>
+      collectGroup != null && qrCode != null && failure == null;
+}
+
+class _ForYouDiscoverySuccess extends ForYouDiscoveryResult {
+  const _ForYouDiscoverySuccess({
+    required CollectGroup collectGroup,
+    required QrCode qrCode,
+  }) : super._(collectGroup: collectGroup, qrCode: qrCode);
+}
+
+class _ForYouDiscoveryFailure extends ForYouDiscoveryResult {
+  const _ForYouDiscoveryFailure(
+    ForYouDiscoveryFailure failure, {
+    CollectGroup? collectGroup,
+    QrCode? qrCode,
+  }) : super._(
+         failure: failure,
+         collectGroup: collectGroup,
+         qrCode: qrCode,
+       );
+}
 
 /// Resolver helpers for the "for you" discovery flows.
 ///
@@ -11,12 +61,15 @@ import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 class ForYouDiscoveryResolvers {
   ForYouDiscoveryResolvers._();
 
-  static Future<({CollectGroup collectGroup, QrCode qrCode})?>
-  resolveCollectGroupAndQrFromQrMediumId(
+  static Future<ForYouDiscoveryResult> resolveCollectGroupAndQrFromQrMediumId(
     String mediumId, {
     CollectGroupRepository? collectGroupRepository,
   }) async {
-    if (mediumId.isEmpty) return null;
+    if (mediumId.isEmpty) {
+      return const ForYouDiscoveryResult.failure(
+        ForYouDiscoveryFailure.notFound,
+      );
+    }
 
     final repo = collectGroupRepository ?? getIt<CollectGroupRepository>();
     var collectGroups = await repo.getCollectGroupList();
@@ -24,23 +77,16 @@ class ForYouDiscoveryResolvers {
       collectGroups = await repo.fetchCollectGroupList();
     }
 
-    if (!mediumId.contains('.')) return null;
+    if (!mediumId.contains('.')) {
+      return const ForYouDiscoveryResult.failure(
+        ForYouDiscoveryFailure.notFound,
+      );
+    }
 
     final namespace = mediumId.split('.').first;
     final instance = mediumId.split('.').last;
 
-    final matchingQrCode = collectGroups
-        .where((group) => group.nameSpace.startsWith(namespace))
-        .expand((group) => group.qrCodes)
-        .firstWhere(
-          (qrCode) => qrCode.instance.endsWith(instance),
-          orElse: () => const QrCode.empty(),
-        );
-
-    if (matchingQrCode.instance.isEmpty) return null;
-    if (!matchingQrCode.isActive) return null;
-
-    // Find the owning collect group for the active QR code.
+    // Find the owning collect group for the QR code instance.
     final matchingGroup = collectGroups.firstWhere(
       (group) =>
           group.nameSpace.startsWith(namespace) &&
@@ -50,8 +96,42 @@ class ForYouDiscoveryResolvers {
       orElse: () => const CollectGroup.empty(),
     );
 
-    if (matchingGroup.nameSpace.isEmpty) return null;
-    return (collectGroup: matchingGroup, qrCode: matchingQrCode);
+    if (matchingGroup.nameSpace.isEmpty) {
+      return const ForYouDiscoveryResult.failure(
+        ForYouDiscoveryFailure.notFound,
+      );
+    }
+
+    final matchingQrCode = matchingGroup.qrCodes.firstWhere(
+      (qrCode) => qrCode.instance.endsWith(instance),
+      orElse: () => const QrCode.empty(),
+    );
+
+    if (matchingQrCode.instance.isEmpty) {
+      return const ForYouDiscoveryResult.failure(
+        ForYouDiscoveryFailure.notFound,
+      );
+    }
+
+    if (!matchingGroup.isActive) {
+      return ForYouDiscoveryResult.failure(
+        ForYouDiscoveryFailure.inactiveCollectGroup,
+        collectGroup: matchingGroup,
+      );
+    }
+
+    if (!matchingQrCode.isActive) {
+      return ForYouDiscoveryResult.failure(
+        ForYouDiscoveryFailure.inactiveQrCode,
+        collectGroup: matchingGroup,
+        qrCode: matchingQrCode,
+      );
+    }
+
+    return ForYouDiscoveryResult.success(
+      collectGroup: matchingGroup,
+      qrCode: matchingQrCode,
+    );
   }
 
   static Future<CollectGroup?> resolveCollectGroupFromQrMediumId(
@@ -62,7 +142,10 @@ class ForYouDiscoveryResolvers {
       mediumId,
       collectGroupRepository: collectGroupRepository,
     );
-    return resolved?.collectGroup;
+    if (!resolved.isSuccess) {
+      return null;
+    }
+    return resolved.collectGroup;
   }
 
   static Future<CollectGroup?> resolveCollectGroupFromBeaconId(
@@ -88,7 +171,8 @@ class ForYouDiscoveryResolvers {
 
     final namespace = beaconId.split('.').first;
     final fallbackMatch = collectGroups.firstWhere(
-      (group) => group.nameSpace == namespace || group.nameSpace.startsWith(namespace),
+      (group) =>
+          group.nameSpace == namespace || group.nameSpace.startsWith(namespace),
       orElse: () => const CollectGroup.empty(),
     );
 
@@ -163,17 +247,20 @@ class ForYouDiscoveryResolvers {
     }
 
     // Find the minimum distance
-    final minDistance = withinRangeLocations.values.reduce((a, b) => a < b ? a : b);
+    final minDistance = withinRangeLocations.values.reduce(
+      (a, b) => a < b ? a : b,
+    );
 
     // Get all locations at the minimum distance (allowing small tolerance for floating point)
-    final tolerance = 1.0; // 1 meter tolerance
+    const tolerance = 1.0; // 1 meter tolerance
     final nearestLocations = withinRangeLocations.entries
         .where((entry) => (entry.value - minDistance).abs() < tolerance)
         .map((entry) => entry.key)
         .toList();
 
     // Get unique collect groups for the nearest locations
-    final uniqueHits = <String, ({CollectGroup collectGroup, String beaconId})>{};
+    final uniqueHits =
+        <String, ({CollectGroup collectGroup, String beaconId})>{};
     for (final location in nearestLocations) {
       if (location.beaconId.isNotEmpty) {
         final group = locationToGroupMap[location.beaconId];
@@ -189,4 +276,3 @@ class ForYouDiscoveryResolvers {
     return uniqueHits.values.toList();
   }
 }
-

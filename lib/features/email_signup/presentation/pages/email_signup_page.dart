@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -263,13 +262,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
 
                                       _cubit.updateApi();
                                       if (state.country?.isUS == true) {
-                                        final fbsdk = FacebookAppEvents();
-                                        await fbsdk
-                                            .setAutoLogAppEventsEnabled(true);
-                                        await fbsdk.logEvent(
-                                          name: 'email_signup_continue_clicked',
-                                        );
-
                                         await _cubit.login();
                                       } else {
                                         setLoading();

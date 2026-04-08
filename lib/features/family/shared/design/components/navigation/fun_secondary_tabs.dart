@@ -13,7 +13,7 @@ class FunSecondaryTabs extends StatelessWidget {
   final List<Tab> tabs;
   final List<Widget> tabContents;
   final TabController? controller;
-  final Function(int)? onTap;
+  final ValueChanged<int>? onTap;
 
   @override
   Widget build(BuildContext context) {

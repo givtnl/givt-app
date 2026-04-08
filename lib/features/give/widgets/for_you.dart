@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
@@ -259,9 +258,10 @@ class _ForYouState extends State<ForYou>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FaIcon(
-              FontAwesomeIcons.solidHeart,
-              color: theme.primary20,
+            FunIcon.heart(
+              iconColor: theme.primary20,
+              iconSize: 24,
+              circleSize: 24,
             ),
             const SizedBox(height: 12),
             TitleSmallText(
@@ -288,7 +288,8 @@ class _ForYouState extends State<ForYou>
   ) {
     return Stack(
       children: [
-        // Invisible cards to define stack height using the tallest favorite card.
+        // Invisible cards to define stack height
+        // using the tallest favorite card.
         ...favoriteOrganisations.map((organisation) {
           final summary =
               goalsState.summariesByCollectGroupId[organisation.nameSpace];
@@ -373,7 +374,8 @@ class _ForYouState extends State<ForYou>
     }
 
     // Always show fallback collection goals if they exist.
-    // General goals are still showCounts-gated as they depend on the API summary.
+    // General goals are still showCounts-gated,
+    // as they depend on the API summary.
     final hasAllocationGoals = allocationsCount > 0;
     final hasGeneralGoals =
         showCounts && summary != null && summary.qrCodesCount > 0;
@@ -398,19 +400,18 @@ class _ForYouState extends State<ForYou>
               ),
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      CircleAvatar(
-                        radius: 22,
-                        backgroundColor: theme.primary95,
-                        child: Icon(
-                          CollectGroupType.getIconByType(organisation.type),
-                          color: theme.primary20,
-                        ),
-                      ),
+                      CollectGroupType.getFunIconByType(organisation.type)
+                          .copyWith(
+                            padding: EdgeInsets.zero,
+                            circleSize: 44,
+                            iconSize: 20,
+                            circleColorOverride: theme.primary95,
+                            iconColorOverride: theme.primary20,
+                          ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
@@ -434,16 +435,20 @@ class _ForYouState extends State<ForYou>
                     const SizedBox(height: 12),
                     if (hasAllocationGoals)
                       BodySmallText(
-                        context.l10n.forYouGoalsCountCollections(
-                          allocationsCount,
-                        ),
+                        allocationsCount == 1
+                            ? context.l10n.forYouGoalsCountCollectionsOne
+                            : context.l10n.forYouGoalsCountCollectionsMany(
+                                allocationsCount,
+                              ),
                         color: theme.primary20,
                       ),
                     if (hasGeneralGoals)
                       BodySmallText(
-                        context.l10n.forYouGoalsCountGeneral(
-                          summary.qrCodesCount,
-                        ),
+                        summary.qrCodesCount == 1
+                            ? context.l10n.forYouGoalsCountGeneralOne
+                            : context.l10n.forYouGoalsCountGeneralMany(
+                                summary.qrCodesCount,
+                              ),
                         color: theme.primary20,
                       ),
                   ],
@@ -467,10 +472,10 @@ class _ForYouState extends State<ForYou>
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(
-                        Icons.favorite,
-                        size: 14,
-                        color: theme.error40,
+                      FunIcon.heart(
+                        iconColor: theme.error40,
+                        iconSize: 14,
+                        circleSize: 14,
                       ),
                       const SizedBox(width: 6),
                       LabelSmallText(

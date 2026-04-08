@@ -3,21 +3,20 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
+import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-
-import '../utils/for_you_discovery_resolvers.dart';
 
 class ForYouQrDiscoveryPage extends StatefulWidget {
   const ForYouQrDiscoveryPage({
@@ -28,8 +27,7 @@ class ForYouQrDiscoveryPage extends StatefulWidget {
   final ForYouFlowContext flowContext;
 
   @override
-  State<ForYouQrDiscoveryPage> createState() =>
-      _ForYouQrDiscoveryPageState();
+  State<ForYouQrDiscoveryPage> createState() => _ForYouQrDiscoveryPageState();
 }
 
 class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
@@ -37,6 +35,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
   final CameraCubit _cameraCubit = getIt<CameraCubit>();
 
   bool _isProcessing = false;
+  bool _isStartingScanner = false;
 
   @override
   void didChangeDependencies() {
@@ -48,6 +47,25 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _restartScannerIfMounted() async {
+    if (!mounted || _isStartingScanner) {
+      return;
+    }
+    _isStartingScanner = true;
+    try {
+      await _controller.start();
+    } finally {
+      _isStartingScanner = false;
+    }
+  }
+
+  void _goToForYouList() {
+    context.goNamed(
+      Pages.forYouList.name,
+      extra: widget.flowContext.toMap(),
+    );
   }
 
   @override
@@ -86,8 +104,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
           children: [
             MobileScanner(
               controller: _controller,
-              onDetect: (capture) =>
-                  _processBarcode(barcodeCapture: capture),
+              onDetect: (capture) => _processBarcode(barcodeCapture: capture),
             ),
             const Positioned.fill(child: QrCodeTarget()),
             if (_isProcessing)
@@ -119,7 +136,22 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
     if (raw == null) return;
 
     final encodedMediumId = isGivtQRCode(barcodeCapture.barcodes);
-    if (encodedMediumId == null) return;
+    if (encodedMediumId == null) {
+      setState(() => _isProcessing = true);
+      await _controller.stop();
+      if (!mounted) return;
+      final tryAgain = await ForYouQrDiscoveryDialogs.showNonGivtQrDialog(
+        context,
+      );
+      if (!mounted) return;
+      setState(() => _isProcessing = false);
+      if (tryAgain ?? false) {
+        await _restartScannerIfMounted();
+      } else {
+        _goToForYouList();
+      }
+      return;
+    }
 
     setState(() => _isProcessing = true);
     await _controller.stop();
@@ -133,13 +165,16 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
 
       if (!mounted) return;
 
-      if (resolved == null) {
-        await _showQrUnresolvableDialogAndFallback();
+      if (!resolved.isSuccess) {
+        await _handleDiscoveryFailure(
+          resolved,
+          mediumId: mediumId,
+        );
         return;
       }
 
-      final collectGroup = resolved.collectGroup;
-      final qrCode = resolved.qrCode;
+      final collectGroup = resolved.collectGroup!;
+      final qrCode = resolved.qrCode!;
       final restrictToEntryQrGoal = qrCode.name.trim().isNotEmpty;
 
       await AnalyticsHelper.logEvent(
@@ -147,7 +182,6 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
       );
 
       if (!mounted) return;
-      // Directly open amount+goals screen.
       context.goNamed(
         Pages.forYouOrganisationConfirm.name,
         extra: widget.flowContext
@@ -158,39 +192,61 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
             )
             .toMap(),
       );
-    } catch (_) {
+    } on Exception {
       if (!mounted) return;
-      await _showQrUnresolvableDialogAndFallback();
+      await _handleDiscoveryFailure(
+        const ForYouDiscoveryResult.failure(ForYouDiscoveryFailure.notFound),
+        mediumId: '',
+      );
     } finally {
       if (mounted) setState(() => _isProcessing = false);
     }
   }
 
-  Future<void> _showQrUnresolvableDialogAndFallback() async {
-    final locals = context.l10n;
-    showDialog<void>(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: Text(locals.qrScanFailed),
-        content: Text(locals.codeCanNotBeScanned),
-        actions: [
-          TextButton(
-            onPressed: () => context.pop(),
-            child: Text(locals.cancel),
-          ),
-        ],
-      ),
-    );
+  Future<void> _handleDiscoveryFailure(
+    ForYouDiscoveryResult resolved, {
+    required String mediumId,
+  }) async {
+    final failure = resolved.failure ?? ForYouDiscoveryFailure.notFound;
 
-    // Fallback immediately after the dialog is dismissed.
-    // This keeps the implementation simple and still avoids user confusion.
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-
-    if (!mounted) return;
-    context.goNamed(
-      Pages.forYouList.name,
-      extra: widget.flowContext.toMap(),
-    );
+    switch (failure) {
+      case ForYouDiscoveryFailure.inactiveQrCode:
+        final collectGroup = resolved.collectGroup;
+        if (collectGroup == null || collectGroup.nameSpace.isEmpty) {
+          await ForYouQrDiscoveryDialogs.showNotFoundDialog(context);
+          if (!mounted) return;
+          _goToForYouList();
+          return;
+        }
+        final choice = await ForYouQrDiscoveryDialogs.showInactiveQrDialog(
+          context,
+          organisationName: collectGroup.orgName,
+          organisationIcon: CollectGroupType.getIconByType(collectGroup.type),
+        );
+        if (!mounted) return;
+        if (choice ?? false) {
+          context.goNamed(
+            Pages.forYouOrganisationConfirm.name,
+            extra: widget.flowContext
+                .copyWith(selectedOrganisation: collectGroup)
+                .copyWith(
+                  entryMediumId: mediumId,
+                  restrictToEntryQrGoal: false,
+                )
+                .toMap(),
+          );
+        } else {
+          _goToForYouList();
+        }
+      case ForYouDiscoveryFailure.inactiveCollectGroup:
+        await ForYouQrDiscoveryDialogs.showInactiveCollectGroupDialog(context);
+        if (!mounted) return;
+        _goToForYouList();
+      case ForYouDiscoveryFailure.notFound:
+        await ForYouQrDiscoveryDialogs.showNotFoundDialog(context);
+        if (!mounted) return;
+        _goToForYouList();
+    }
   }
 
   /// Checks if the given barcodes contain a Givt QR code.
@@ -213,4 +269,3 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
     return null;
   }
 }
-

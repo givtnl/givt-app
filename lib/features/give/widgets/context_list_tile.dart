@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 

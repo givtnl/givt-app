@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 
 class FilterSuggestionCard extends StatelessWidget {
@@ -6,8 +7,7 @@ class FilterSuggestionCard extends StatelessWidget {
     required this.isFocused,
     required this.color,
     required this.title,
-    required this.activeIcon,
-    required this.icon,
+    required this.iconData,
     required this.onTap,
     this.visible = true,
     super.key,
@@ -17,13 +17,14 @@ class FilterSuggestionCard extends StatelessWidget {
   final bool isFocused;
   final Color color;
   final String title;
-  final String activeIcon;
-  final String icon;
+  final IconData iconData;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final iconSize = size.width * (isFocused ? 0.08 : 0.1);
+    final iconColor = isFocused ? color : Colors.white;
     return Visibility(
       visible: visible,
       child: ConstrainedBox(
@@ -65,9 +66,10 @@ class FilterSuggestionCard extends StatelessWidget {
                       vertical: 5,
                       horizontal: 5,
                     ),
-                    child: Image.asset(
-                      isFocused ? activeIcon : icon,
-                      width: size.width * (isFocused ? 0.08 : 0.1),
+                    child: FaIcon(
+                      iconData,
+                      size: iconSize,
+                      color: iconColor,
                     ),
                   ),
                   const Spacer(),

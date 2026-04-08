@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -111,12 +112,15 @@ class _ForYouMoreGeneralGoalsSheetState
                               color: theme.primary30,
                             ),
                           ),
-                          FaIcon(
-                            isSelected
+                          FunIcon(
+                            iconData: isSelected
                                 ? FontAwesomeIcons.check
                                 : FontAwesomeIcons.plus,
-                            size: 18,
-                            color: theme.primary30,
+                            padding: EdgeInsets.zero,
+                            circleColor: Colors.transparent,
+                            circleSize: 18,
+                            iconSize: 18,
+                            iconColor: theme.primary30,
                           ),
                         ],
                       ),

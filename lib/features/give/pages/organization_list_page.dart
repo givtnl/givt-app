@@ -385,8 +385,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
       FilterSuggestionCard(
         isFocused: bloc.state.selectedType == CollectGroupType.church.index,
         title: locals.church,
-        icon: CollectGroupType.church.icon,
-        activeIcon: CollectGroupType.church.activeIcon,
+        iconData: CollectGroupType.church.iconData,
         color: CollectGroupType.church.color,
         onTap: () => bloc.add(
           OrganisationTypeChanged(
@@ -397,8 +396,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
       FilterSuggestionCard(
         isFocused: bloc.state.selectedType == CollectGroupType.charities.index,
         title: locals.charity,
-        icon: CollectGroupType.charities.icon,
-        activeIcon: CollectGroupType.charities.activeIcon,
+        iconData: CollectGroupType.charities.iconData,
         color: CollectGroupType.charities.color,
         onTap: () => bloc.add(
           OrganisationTypeChanged(
@@ -409,8 +407,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
       FilterSuggestionCard(
         isFocused: bloc.state.selectedType == CollectGroupType.campaign.index,
         title: locals.campaign,
-        icon: CollectGroupType.campaign.icon,
-        activeIcon: CollectGroupType.campaign.activeIcon,
+        iconData: CollectGroupType.campaign.iconData,
         color: CollectGroupType.campaign.color,
         onTap: () => bloc.add(
           OrganisationTypeChanged(
@@ -422,8 +419,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
         visible: Platform.isIOS,
         isFocused: bloc.state.selectedType == CollectGroupType.artists.index,
         title: locals.artist,
-        icon: CollectGroupType.artists.icon,
-        activeIcon: CollectGroupType.artists.activeIcon,
+        iconData: CollectGroupType.artists.iconData,
         color: CollectGroupType.artists.color,
         onTap: () => bloc.add(
           OrganisationTypeChanged(

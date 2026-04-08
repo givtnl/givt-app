@@ -6,9 +6,11 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -99,8 +101,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   @override
   Widget build(BuildContext context) {
     final organisation = widget.flowContext.selectedOrganisation;
+    final auth = context.watch<AuthCubit>().state;
     final country = Country.fromCode(
-      context.read<AuthCubit>().state.user.country,
+      auth.user.country,
     );
     final currencySymbol = Util.getCurrencySymbol(
       countryCode: country.countryCode,
@@ -205,10 +208,13 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                   FunTextButton(
                     text: context.l10n.forYouGivingMoreGoals,
                     textColor: FunTheme.of(context).primary30,
-                    prefixIcon: FaIcon(
-                      FontAwesomeIcons.plus,
-                      color: FunTheme.of(context).primary30,
-                      size: 16,
+                    prefixIcon: FunIcon(
+                      iconData: FontAwesomeIcons.plus,
+                      padding: EdgeInsets.zero,
+                      circleColor: Colors.transparent,
+                      circleSize: 16,
+                      iconSize: 16,
+                      iconColor: FunTheme.of(context).primary30,
                     ),
                     analyticsEvent: AnalyticsEventName
                         .forYouGivingMoreGoalsLinkTapped
@@ -218,6 +224,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                 const SizedBox(height: 8),
                 NumericKeyboard(
                   currencySymbol: currencySymbol,
+                  presets: auth.presets.isEnabled
+                      ? auth.presets.presets
+                      : const <Preset>[],
                   onPresetTap: onPresetTapped,
                   onKeyboardTap: onNumberTapped,
                   leftButtonFn: onCommaTapped,
@@ -389,7 +398,14 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
           ),
           IconButton(
             onPressed: onClear,
-            icon: const Icon(Icons.remove_circle_outline),
+            icon: FunIcon(
+              iconData: FontAwesomeIcons.xmark,
+              padding: EdgeInsets.zero,
+              circleColor: Colors.transparent,
+              circleSize: 20,
+              iconSize: 18,
+              iconColor: FunTheme.of(context).primary30,
+            ),
           ),
         ],
       ),

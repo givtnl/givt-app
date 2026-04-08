@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/design/components/input/fun_input_dropdown.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/platform_contribution/domain/models/platform_contribution_organization.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
@@ -55,10 +56,9 @@ class PlatformContributionOrganizationItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Center(
-                  child: Image.asset(
-                    organization.type.icon,
-                    width: 24,
-                    height: 24,
+                  child: FaIcon(
+                    organization.type.iconData,
+                    size: 24,
                     color: FunTheme.of(context).primary40,
                   ),
                 ),

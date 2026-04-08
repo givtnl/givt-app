@@ -8,7 +8,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
@@ -149,19 +148,16 @@ class _OrganisationPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = FunTheme.of(context);
-    final collectGroupIcon = CircleAvatar(
-      radius: 24,
-      backgroundColor: theme.primary95,
-      child: Icon(
-        CollectGroupType.getIconByType(organisation.type),
-        color: theme.primary20,
-      ),
-    );
+    final typeIcon = CollectGroupType.getFunIconByType(organisation.type)
+        .copyWith(
+          padding: EdgeInsets.zero,
+          circleSize: 48,
+          iconSize: 22,
+        );
 
     return Row(
       children: [
-        collectGroupIcon,
+        typeIcon,
         const SizedBox(width: 16),
         Expanded(
           child: HeadlineLargeText(

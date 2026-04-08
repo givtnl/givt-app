@@ -109,7 +109,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
             }
           },
           onDiscovered: (NfcTag tag) async {
-            log('coin discovered: ${tag.data}');
+            log('coin discovered');
             final ndef = Ndef.from(tag);
             if (ndef != null && ndef.cachedMessage != null) {
               if (ndef.cachedMessage!.records.isNotEmpty &&

@@ -2216,13 +2216,13 @@ abstract class AppLocalizations {
   /// No description provided for @forYouEmptyFavoritesTitle.
   ///
   /// In en, this message translates to:
-  /// **'Add your favourite organisation'**
+  /// **'Your favourites, always close'**
   String get forYouEmptyFavoritesTitle;
 
   /// No description provided for @forYouEmptyFavoritesBody.
   ///
   /// In en, this message translates to:
-  /// **'Find it in one tap every time you open Givt'**
+  /// **'Mark your regular goals to give faster'**
   String get forYouEmptyFavoritesBody;
 
   /// No description provided for @forYouLocationBasedTitle.
@@ -2246,7 +2246,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouQrCodeSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Use when you see a Givt QR code nearby'**
+  /// **'Scan a Givt QR code'**
   String get forYouQrCodeSubtitle;
 
   /// No description provided for @forYouCollectionDeviceTitle.
@@ -2261,17 +2261,29 @@ abstract class AppLocalizations {
   /// **'Give when the plate or bag passes by'**
   String get forYouCollectionDeviceSubtitle;
 
-  /// No description provided for @forYouGoalsCountCollections.
+  /// No description provided for @forYouGoalsCountCollectionsOne.
+  ///
+  /// In en, this message translates to:
+  /// **'1 Collection Goal'**
+  String get forYouGoalsCountCollectionsOne;
+
+  /// No description provided for @forYouGoalsCountCollectionsMany.
   ///
   /// In en, this message translates to:
   /// **'{count} Collection Goals'**
-  String forYouGoalsCountCollections(int count);
+  String forYouGoalsCountCollectionsMany(int count);
 
-  /// No description provided for @forYouGoalsCountGeneral.
+  /// No description provided for @forYouGoalsCountGeneralOne.
   ///
   /// In en, this message translates to:
-  /// **'{count} General Goal'**
-  String forYouGoalsCountGeneral(int count);
+  /// **'1 General Goal'**
+  String get forYouGoalsCountGeneralOne;
+
+  /// No description provided for @forYouGoalsCountGeneralMany.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} General Goals'**
+  String forYouGoalsCountGeneralMany(int count);
 
   /// No description provided for @forYouGivingPageTitle.
   ///
@@ -2330,13 +2342,13 @@ abstract class AppLocalizations {
   /// No description provided for @forYouMoreGeneralGoalsSheetTitle.
   ///
   /// In en, this message translates to:
-  /// **'Other goals you can give to'**
+  /// **'More goals from this organisation'**
   String get forYouMoreGeneralGoalsSheetTitle;
 
   /// No description provided for @forYouMoreGeneralGoalsSheetSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Select the ones you\'d like to include in your giving.'**
+  /// **'Add the goals you want to give to.'**
   String get forYouMoreGeneralGoalsSheetSubtitle;
 
   /// No description provided for @forYouMoreGeneralGoalsAddPlaceholder.
@@ -2360,7 +2372,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouGivingCompleteMyGiving.
   ///
   /// In en, this message translates to:
-  /// **'Complete'**
+  /// **'Give now'**
   String get forYouGivingCompleteMyGiving;
 
   /// No description provided for @forYouGivingCollectionTitle.
@@ -2380,6 +2392,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{label} - {amount}'**
   String forYouGivingAccordionSubtitleWithAmount(String label, String amount);
+
+  /// No description provided for @forYouBeaconSearchingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This is your Givt moment.'**
+  String get forYouBeaconSearchingTitle;
+
+  /// No description provided for @forYouBeaconSearchingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Move your phone along the collection bag to find the beacon.'**
+  String get forYouBeaconSearchingBody;
 
   /// No description provided for @forYouLocationSearchingTitle.
   ///
@@ -2402,7 +2426,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouLocationNoOrgFoundBody.
   ///
   /// In en, this message translates to:
-  /// **'We couldn\'t find any Givt-enabled organisations near your current location.'**
+  /// **'Search for your organisation manually in the list.'**
   String get forYouLocationNoOrgFoundBody;
 
   /// No description provided for @forYouLocationOffTitle.
@@ -2438,13 +2462,13 @@ abstract class AppLocalizations {
   /// No description provided for @forYouLocationMultipleOrgsFoundTitle.
   ///
   /// In en, this message translates to:
-  /// **'Multiple organisations nearby'**
+  /// **'Choose your organisation'**
   String get forYouLocationMultipleOrgsFoundTitle;
 
   /// No description provided for @forYouLocationMultipleOrgsFoundBody.
   ///
   /// In en, this message translates to:
-  /// **'We found several Givt-enabled organisations near your location. Please select one below.'**
+  /// **'We found several nearby. Which one are you looking for?'**
   String get forYouLocationMultipleOrgsFoundBody;
 
   /// No description provided for @forYouBluetoothOffTitle.
@@ -3005,6 +3029,30 @@ abstract class AppLocalizations {
   /// **'Unfortunately, this QR code is no longer active. Would you like to give to the general funds of {value0}?'**
   String invalidQRcodeMessage(Object value0);
 
+  /// No description provided for @inactiveCollectGroupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect group inactive'**
+  String get inactiveCollectGroupTitle;
+
+  /// No description provided for @inactiveCollectGroupMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The chosen organisation is no longer active. Please choose another goal!'**
+  String get inactiveCollectGroupMessage;
+
+  /// No description provided for @forYouQrNonGivtTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a Givt QR code'**
+  String get forYouQrNonGivtTitle;
+
+  /// No description provided for @forYouQrNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not use this QR code. Please try again or choose another way to give.'**
+  String get forYouQrNotFoundMessage;
+
   /// No description provided for @errorOccurred.
   ///
   /// In en, this message translates to:
@@ -3457,6 +3505,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Welcome {firstName}'**
   String chooseGroup(Object firstName);
+
+  /// No description provided for @welcomeOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get welcomeOnly;
 
   /// No description provided for @groups.
   ///
