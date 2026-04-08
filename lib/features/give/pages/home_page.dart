@@ -65,6 +65,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   bool _isAppInBackground = false;
   int _scanCounter =
       0; // Counter to force new bloc creation when rescanning same code
+  bool _didApplyForYouStartupOverride = false;
+
+  static const String _forYouStartupFlagKey = 'for_you_new_giving_flow';
 
   @override
   void initState() {
@@ -76,6 +79,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this); // Add lifecycle observer
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
+      _applyForYouStartupOverrideIfEnabled();
 
       FirebaseMessaging.instance.getInitialMessage().then((message) {
         if (!mounted) return;
@@ -86,6 +90,45 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         }
       });
     });
+  }
+
+  Future<void> _applyForYouStartupOverrideIfEnabled() async {
+    if (_didApplyForYouStartupOverride) {
+      return;
+    }
+    _didApplyForYouStartupOverride = true;
+
+    // Don't interfere with QR flows or deep-links.
+    if (widget.code.isNotEmpty || widget.navigateTo.isNotEmpty) {
+      return;
+    }
+
+    bool isEnabled;
+    try {
+      isEnabled = await (() async {
+        await AnalyticsHelper.ensureInitialized();
+        return AnalyticsHelper.isFeatureEnabled(_forYouStartupFlagKey);
+      })().timeout(const Duration(seconds: 1));
+    } on TimeoutException {
+      return;
+    } catch (_) {
+      return;
+    }
+    if (!mounted || !isEnabled) {
+      return;
+    }
+
+    if (pageIndex == 1) {
+      return;
+    }
+
+    setState(() {
+      pageIndex = 1;
+    });
+    await getIt<SharedPreferences>().setInt(
+      NativeSharedPreferencesKeys.homePageLastTabIndex,
+      1,
+    );
   }
 
   @override
