@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:posthog_flutter/posthog_flutter.dart';
@@ -26,6 +27,7 @@ class AnalyticsHelper {
   static const String contributionLevelKey = 'contribution_level';
 
   static bool _isInitialized = false;
+  static Completer<void>? _initCompleter;
 
   static String? _appName;
   static String? _appType;
@@ -45,6 +47,7 @@ class AnalyticsHelper {
     if (_isInitialized) {
       return;
     }
+    _initCompleter ??= Completer<void>();
 
     final config = PostHogConfig(key);
     config.host = 'https://eu.i.posthog.com';
@@ -60,7 +63,30 @@ class AnalyticsHelper {
     await Posthog().setup(
       config,
     );
+    // Fetch feature flags early so pages can safely gate behavior at startup.
+    await Posthog().reloadFeatureFlags();
     _isInitialized = true;
+    _initCompleter?.complete();
+  }
+
+  static Future<void> ensureInitialized() async {
+    if (_isInitialized) {
+      return;
+    }
+    // If init() hasn't been called yet, there's nothing to await.
+    await _initCompleter?.future;
+  }
+
+  static Future<bool> isFeatureEnabled(String key) async {
+    if (!_isInitialized) {
+      return false;
+    }
+    try {
+      return await Posthog().isFeatureEnabled(key);
+    } catch (_) {
+      // Feature flag checks should never crash the app.
+      return false;
+    }
   }
 
   static Future<void> logChatScriptEvent({
@@ -125,6 +151,9 @@ class AnalyticsHelper {
     await Posthog().identify(userId: email, userProperties: properties);
 
     await Posthog().alias(alias: userId);
+
+    // Make sure feature flags are evaluated for the identified user.
+    await Posthog().reloadFeatureFlags();
   }
 
   static Map<String, dynamic> getUserPropertiesFromExt(UserExt user) {

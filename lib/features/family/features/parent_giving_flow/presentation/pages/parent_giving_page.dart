@@ -97,7 +97,7 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
       apiUrl: Uri.https(getIt<RequestHelper>().apiURL).toString(),
       guid: user!.guid,
       organisation: orgName,
-      givtObj: GivtTransaction.toJsonList([state.givtTransactionObject]),
+      givtObj: GivtTransaction.toWebJsonList([state.givtTransactionObject]),
       confirmBtn: context.l10n.next,
       cancel: context.l10n.cancel,
       areYouSureToCancelGivts: context.l10n.areYouSureToCancelGivts,

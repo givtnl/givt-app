@@ -10,6 +10,7 @@ class GivtTransaction extends Equatable {
     required this.timestamp,
     required this.collectId,
     this.goalId,
+    this.allocationName,
   }) : mediumId = beaconId;
   GivtTransaction.fromTransaction(Transaction transaction)
       : guid = transaction.userId,
@@ -18,7 +19,8 @@ class GivtTransaction extends Equatable {
         timestamp = transaction.timestamp,
         collectId = '1',
         goalId = transaction.goalId,
-        mediumId = transaction.mediumId;
+        mediumId = transaction.mediumId,
+        allocationName = null;
 
   factory GivtTransaction.fromJson(Map<String, dynamic> json) {
     return GivtTransaction(
@@ -32,6 +34,7 @@ class GivtTransaction extends Equatable {
       timestamp: json['Timestamp'] as String,
       collectId: json['CollectId'] as String,
       goalId: (json['goalId'] ?? '') as String,
+      allocationName: json['AllocationName'] as String?,
     );
   }
 
@@ -42,8 +45,10 @@ class GivtTransaction extends Equatable {
   final String collectId;
   final String mediumId;
   final String? goalId;
+  final String? allocationName;
 
-  Map<String, dynamic> toJson() {
+  /// The API contract for `submitGivts` must remain stable.
+  Map<String, dynamic> toApiJson() {
     return <String, dynamic>{
       'Guid': guid,
       'Amount': amount,
@@ -55,6 +60,18 @@ class GivtTransaction extends Equatable {
     };
   }
 
+  /// Web-only payload used by the confirm web page.
+  Map<String, dynamic> toWebJson() {
+    final out = <String, dynamic>{
+      ...toApiJson(),
+    };
+    final trimmed = allocationName?.trim() ?? '';
+    if (trimmed.isNotEmpty) {
+      out['AllocationName'] = trimmed;
+    }
+    return out;
+  }
+
   GivtTransaction copyWith({
     String? guid,
     double? amount,
@@ -63,6 +80,7 @@ class GivtTransaction extends Equatable {
     String? collectId,
     String? mediumId,
     String? goalId,
+    String? allocationName,
   }) {
     return GivtTransaction(
       guid: guid ?? this.guid,
@@ -71,13 +89,20 @@ class GivtTransaction extends Equatable {
       timestamp: timestamp ?? this.timestamp,
       collectId: collectId ?? this.collectId,
       goalId: goalId ?? this.goalId,
+      allocationName: allocationName ?? this.allocationName,
     );
   }
 
-  static List<Map<String, dynamic>> toJsonList(
+  static List<Map<String, dynamic>> toApiJsonList(
     List<GivtTransaction> transactionList,
   ) {
-    return transactionList.map((transaction) => transaction.toJson()).toList();
+    return transactionList.map((transaction) => transaction.toApiJson()).toList();
+  }
+
+  static List<Map<String, dynamic>> toWebJsonList(
+    List<GivtTransaction> transactionList,
+  ) {
+    return transactionList.map((transaction) => transaction.toWebJson()).toList();
   }
 
   static List<GivtTransaction> fromJsonList(
@@ -99,6 +124,7 @@ class GivtTransaction extends Equatable {
         collectId,
         mediumId,
         goalId,
+        allocationName,
       ];
 
   static const String givtTransactions = 'givtTransactions';

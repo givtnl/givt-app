@@ -43,6 +43,7 @@ class WebViewInput extends Equatable {
     this.platformFeeRequired = '',
     this.platformFeeRemember = '',
     this.transactionIds = const [],
+    this.isForYouFlow = false,
   });
 
   factory WebViewInput.fromJson(Map<String, dynamic> json) => WebViewInput(
@@ -85,6 +86,7 @@ class WebViewInput extends Equatable {
         platformFeeTitle: json['platformFeeTitle'] as String,
         platformFeeRemember: json['platformFeeRemember'] as String,
         transactionIds: json['transactionIds'] as List<int>,
+        isForYouFlow: json['isForYouFlow'] as bool? ?? false,
       );
 
   final String advertisementImageUrl;
@@ -128,6 +130,7 @@ class WebViewInput extends Equatable {
   final String platformFeeRequired;
   final String platformFeeRemember;
   final List<int> transactionIds;
+  final bool isForYouFlow;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'advertisementImageUrl': advertisementImageUrl,
@@ -171,6 +174,7 @@ class WebViewInput extends Equatable {
         'platformFeeRequired': platformFeeRequired,
         'platformFeeRemember': platformFeeRemember,
         'transactionIds': transactionIds,
+        'isForYouFlow': isForYouFlow,
       };
 
   WebViewInput copyWith({
@@ -215,6 +219,7 @@ class WebViewInput extends Equatable {
     String? platformFeeRequired,
     String? platformFeeRemember,
     List<int>? transactionIds,
+    bool? isForYouFlow,
   }) {
     return WebViewInput(
       advertisementImageUrl:
@@ -261,6 +266,7 @@ class WebViewInput extends Equatable {
       platformFeeRequired: platformFeeRequired ?? this.platformFeeRequired,
       platformFeeRemember: platformFeeRemember ?? this.platformFeeRemember,
       transactionIds: transactionIds ?? this.transactionIds,
+      isForYouFlow: isForYouFlow ?? this.isForYouFlow,
     );
   }
 
@@ -307,5 +313,6 @@ class WebViewInput extends Equatable {
         platformFeeRequired,
         platformFeeRemember,
         transactionIds,
+        isForYouFlow,
       ];
 }

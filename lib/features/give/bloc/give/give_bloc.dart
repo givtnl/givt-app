@@ -299,7 +299,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         LoggingInfo.instance.info('Submitting Givts (For You multi-goal)');
         transactionIds = await _givtRepository.submitGivts(
           guid: event.userGUID,
-          body: {'donations': GivtTransaction.toJsonList(event.donations)},
+          body: {'donations': GivtTransaction.toApiJsonList(event.donations)},
         );
         await _handleAutoFavorites(event.nameSpace, event.userGUID);
       } on SocketException catch (e) {
@@ -323,6 +323,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           givtTransactions: event.donations,
           transactionIds: transactionIds,
           userGUID: event.userGUID,
+          isForYouFlow: true,
         ),
       );
     } catch (e, stackTrace) {
@@ -476,7 +477,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       LoggingInfo.instance.info('Submitting Givts');
       transactionIds = await _givtRepository.submitGivts(
         guid: userGUID,
-        body: {'donations': GivtTransaction.toJsonList(transactionList)},
+        body: {'donations': GivtTransaction.toApiJsonList(transactionList)},
       );
       await _handleAutoFavorites(namespace, userGUID);
     } on SocketException catch (e) {
@@ -731,7 +732,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     try {
       await _givtRepository.submitGivts(
         guid: state.givtTransactions.first.guid,
-        body: {'donations': GivtTransaction.toJsonList(state.givtTransactions)},
+        body: {
+          'donations': GivtTransaction.toApiJsonList(state.givtTransactions),
+        },
       );
       emit(state.copyWith(status: GiveStatus.readyToGive));
     } on SocketException catch (e, stackTrace) {
@@ -789,7 +792,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
       final transactionIds = await _givtRepository.submitGivts(
         guid: userGUID,
-        body: {'donations': GivtTransaction.toJsonList(currentTransactions)},
+        body: {'donations': GivtTransaction.toApiJsonList(currentTransactions)},
       );
 
       if (mediumId.isNotEmpty) {
