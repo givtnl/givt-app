@@ -1,163 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>CFBundleDisplayName</key>
-	<string>$(FLAVOR_APP_NAME)</string>
-	<key>CFBundleExecutable</key>
-	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleLocalizations</key>
-	<array>
-		<string>en</string>
-		<string>de</string>
-		<string>en_US</string>
-		<string>nl</string>
-		<string>es_419</string>
-	</array>
-	<key>CFBundleName</key>
-	<string>$(FLAVOR_APP_NAME)</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>givt</string>
-				<string>givt.app</string>
-				<string>fb623135970055229</string>
-			</array>
-		</dict>
-	</array>
-	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>FlutterDeepLinkingEnabled</key>
-	<true/>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
-    <key>com.apple.developer.nfc.readersession.felica.systemcodes</key>
-     <array>
-       <string>8005</string>
-       <string>8008</string>
-       <string>0003</string>
-       <string>fe00</string>
-       <string>90b7</string>
-       <string>927a</string>
-       <string>86a7</string>
-     </array>
-    <key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
-    <array>
-        <string>A0000002471001</string>
-        <string>A000000003101001</string>
-        <string>A000000003101002</string>
-        <string>A0000000041010</string>
-        <string>A0000000042010</string>
-        <string>A0000000044010</string>
-        <string>44464D46412E44466172653234313031</string>
-        <string>D2760000850100</string>
-        <string>D2760000850101</string>
-        <string>00000000000000</string>
-    </array>
-    <key>NFCReaderUsageDescription</key>
-    <string>Read NFC Tags</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>With Bluetooth we are able to detect the Givt beacons</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Needed to scan the Givt-beacons.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>We need your camera to scan a QR codes or upload pictures</string>
-	<key>NSFaceIDUsageDescription</key>
-	<string>We use FaceID to secure your data</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We need your location for event based giving</string>
-	<key>NSLocationUsageDescription</key>
-	<string>We need your location for event based giving</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location for event based giving</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need to access the gallery if you want to upload pictures </string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We need your permission to record the interview or audio message</string>
-	<key>PermissionGroupNotification</key>
-	<string>We need your permission to send you mission reminders</string>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-		<string>remote-notification</string>
-	</array>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-    	<string>appscheme</string>
-	</array>
-    <key>FacebookAppID</key>
-    <string>623135970055229</string>
-    <key>FacebookClientToken</key>
-    <string>5f700de9f47fe82513aecd9a4fab58d9</string>
-    <key>FacebookDisplayName</key>
-    <string>Givt</string>
-	<key>FacebookAutoLogAppEventsEnabled</key>
-	<false/>
-	<key>UIApplicationSceneManifest</key>
 	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+		<true/>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<key>CFBundleDisplayName</key>
+		<string>$(FLAVOR_APP_NAME)</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleLocalizations</key>
+		<array>
+			<string>en</string>
+			<string>de</string>
+			<string>en_US</string>
+			<string>nl</string>
+			<string>es_419</string>
+		</array>
+		<key>CFBundleName</key>
+		<string>$(FLAVOR_APP_NAME)</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(FLUTTER_BUILD_NAME)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>givt</string>
+					<string>givt.app</string>
+					<string>fb623135970055229</string>
+				</array>
+			</dict>
+		</array>
+		<key>CFBundleVersion</key>
+		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>FlutterDeepLinkingEnabled</key>
+		<true/>
+		<key>ITSAppUsesNonExemptEncryption</key>
 		<false/>
-		<key>UISceneConfigurations</key>
+		<key>com.apple.developer.nfc.readersession.felica.systemcodes</key>
+		<array>
+			<string>8005</string>
+			<string>8008</string>
+			<string>0003</string>
+			<string>fe00</string>
+			<string>90b7</string>
+			<string>927a</string>
+			<string>86a7</string>
+		</array>
+		<key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
+		<array>
+			<string>A0000002471001</string>
+			<string>A000000003101001</string>
+			<string>A000000003101002</string>
+			<string>A0000000041010</string>
+			<string>A0000000042010</string>
+			<string>A0000000044010</string>
+			<string>44464D46412E44466172653234313031</string>
+			<string>D2760000850100</string>
+			<string>D2760000850101</string>
+			<string>00000000000000</string>
+		</array>
+		<key>NFCReaderUsageDescription</key>
+		<string>Read NFC Tags</string>
+		<key>LSApplicationCategoryType</key>
+		<string></string>
+		<key>LSRequiresIPhoneOS</key>
+		<true/>
+		<key>NSBluetoothAlwaysUsageDescription</key>
+		<string>With Bluetooth we are able to detect the Givt beacons</string>
+		<key>NSBluetoothPeripheralUsageDescription</key>
+		<string>Needed to scan the Givt-beacons.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>We need your camera to scan a QR codes or upload pictures</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>We use FaceID to secure your data</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>We need your location for event based giving</string>
+		<key>NSLocationUsageDescription</key>
+		<string>We need your location for event based giving</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>We need your location for event based giving</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need to access the gallery if you want to upload pictures</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>We need your permission to record the interview or audio message</string>
+		<key>PermissionGroupNotification</key>
+		<string>We need your permission to send you mission reminders</string>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true/>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+		</array>
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIMainStoryboardFile</key>
+		<string>Main</string>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>UISupportedInterfaceOrientations~ipad</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationPortraitUpsideDown</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>UIViewControllerBasedStatusBarAppearance</key>
+		<false/>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>appscheme</string>
+		</array>
+		<key>FacebookAppID</key>
+		<string>623135970055229</string>
+		<key>FacebookClientToken</key>
+		<string>5f700de9f47fe82513aecd9a4fab58d9</string>
+		<key>FacebookDisplayName</key>
+		<string>Givt</string>
+		<key>FacebookAutoLogAppEventsEnabled</key>
+		<false/>
+		<key>UIApplicationSceneManifest</key>
 		<dict>
-			<key>UIWindowSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-					<key>UISceneClassName</key>
-					<string>UIWindowScene</string>
-					<key>UISceneDelegateClassName</key>
-					<string>FlutterSceneDelegate</string>
-					<key>UISceneConfigurationName</key>
-					<string>flutter</string>
-					<key>UISceneStoryboardFile</key>
-					<string>Main</string>
-				</dict>
-			</array>
+			<key>UIApplicationSupportsMultipleScenes</key>
+			<false/>
+			<key>UISceneConfigurations</key>
+			<dict>
+				<key>UIWindowSceneSessionRoleApplication</key>
+				<array>
+					<dict>
+						<key>UISceneClassName</key>
+						<string>UIWindowScene</string>
+						<key>UISceneDelegateClassName</key>
+						<string>FlutterSceneDelegate</string>
+						<key>UISceneConfigurationName</key>
+						<string>flutter</string>
+						<key>UISceneStoryboardFile</key>
+						<string>Main</string>
+					</dict>
+				</array>
+			</dict>
 		</dict>
+		<key>UIStatusBarHidden</key>
+		<false/>
 	</dict>
-</dict>
 </plist>

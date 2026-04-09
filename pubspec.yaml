@@ -33,6 +33,7 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   flutter_localizations:
     sdk: flutter
+  flutter_native_splash: ^2.4.7
   flutter_stripe: ^11.4.0
   flutter_svg: ^2.2.0
   flutter_timezone: ^4.1.0
@@ -201,3 +202,13 @@ flutter:
     - assets/fun/illustrations/
     - assets/fun/givy/
     - assets/family/audio/
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/splash_logo.png
+  android: true
+  ios: true
+  web: false
+  android_12:
+    color: "#FFFFFF"
+    image: assets/images/splash_logo.png
