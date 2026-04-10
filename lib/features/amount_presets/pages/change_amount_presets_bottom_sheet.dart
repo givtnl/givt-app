@@ -335,6 +335,7 @@ class _ChangeAmountPresetsBottomSheetState
     final presets = auth.state.presets;
     auth.updatePresets(
       presets: presets.copyWith(
+        isEnabled: _useAmountPresets,
         presets: presets.presets.map((preset) {
           switch (preset.id) {
             case 1:
