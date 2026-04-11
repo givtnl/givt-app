@@ -55,6 +55,7 @@ String _localizedFilterTitle(BuildContext context, CollectGroupType type) {
     case CollectGroupType.unknown:
     case CollectGroupType.demo:
     case CollectGroupType.debug:
+      return locals.other;
     case CollectGroupType.none:
       return type.name[0].toUpperCase() + type.name.substring(1);
   }

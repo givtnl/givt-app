@@ -984,6 +984,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get artist => 'Künstler';
 
   @override
+  String get other => 'Sonstiges';
+
+  @override
   String get church => 'Kirche';
 
   @override
