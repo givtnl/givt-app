@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/widgets/organisation_list_family_content.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -50,7 +49,7 @@ class _ForYouListPageState extends State<ForYouListPage> {
                     _selectedOrganisation = collectGroup;
                   });
                 },
-                removedCollectGroupTypes: const [CollectGroupType.artists],
+                removedCollectGroupTypes: const [],
                 showFavorites: true,
                 autoFocusSearch: true,
                 allowSelection: !_isFavoritesOnlyMode,

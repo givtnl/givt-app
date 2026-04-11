@@ -714,6 +714,7 @@
   "faqAntwoordDdi": "NO! You sign a direct debit so we can deduct the donations you have made using the Givt app. The deductions we make are incidental, user-driven deductions.\n \n\n We will not debit your account unless you make a donation using the Givt app.",
   "charity": "Non-profit",
   "artist": "Artist",
+  "other": "Other",
   "church": "Church",
   "campaign": "Campaign",
   "giveToNearestBeacon": "Give to: {value0}",

@@ -1799,6 +1799,12 @@ abstract class AppLocalizations {
   /// **'Artist'**
   String get artist;
 
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
   /// No description provided for @church.
   ///
   /// In en, this message translates to:

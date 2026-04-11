@@ -14,7 +14,7 @@ enum CollectGroupType {
     color: AppTheme.givtOrange,
   ),
   artists(
-    iconData: FontAwesomeIcons.guitar,
+    iconData: FontAwesomeIcons.layerGroup,
     color: AppTheme.givtDarkGreen,
   ),
   charities(
@@ -65,7 +65,7 @@ enum CollectGroupType {
   }
 
   /// Order for organisation search filter chips: Church, Charity, Campaign,
-  /// Others ([artists]). Types outside this list are sorted after, by index.
+  /// Other (enum value artists, UI label "Other"). Non-core types collapse here.
   static int compareForOrganisationFilterBar(
     CollectGroupType a,
     CollectGroupType b,
@@ -114,7 +114,7 @@ enum CollectGroupType {
       case CollectGroupType.campaign:
         return FontAwesomeIcons.bullhorn;
       case CollectGroupType.artists:
-        return FontAwesomeIcons.guitar;
+        return FontAwesomeIcons.layerGroup;
       case CollectGroupType.unknown:
       case CollectGroupType.demo:
       case CollectGroupType.debug:
@@ -140,7 +140,8 @@ enum CollectGroupType {
           iconColor: ColorCombo.highlight.textColor,
         );
       case CollectGroupType.artists:
-        return FunIcon.guitar(
+        return FunIcon(
+          iconData: FontAwesomeIcons.layerGroup,
           circleColor: ColorCombo.secondary.backgroundColor,
           iconColor: ColorCombo.secondary.textColor,
         );

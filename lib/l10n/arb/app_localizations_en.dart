@@ -976,6 +976,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get artist => 'Artist';
 
   @override
+  String get other => 'Other';
+
+  @override
   String get church => 'Church';
 
   @override
@@ -3763,6 +3766,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get artist => 'Artist';
+
+  @override
+  String get other => 'Other';
 
   @override
   String get church => 'Church';

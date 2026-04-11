@@ -704,7 +704,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       case CollectGroupType.artists:
         return 1;
       default:
-        return 3;
+        return 1;
     }
   }
 

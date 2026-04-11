@@ -980,6 +980,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get artist => 'Artiest';
 
   @override
+  String get other => 'Overig';
+
+  @override
   String get church => 'Kerk';
 
   @override

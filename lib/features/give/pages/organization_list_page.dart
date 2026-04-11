@@ -312,7 +312,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
       case CollectGroupType.campaign:
         title = locals.campaign;
       case CollectGroupType.artists:
-        title = locals.artist;
+        title = locals.other;
       default:
         break;
     }
@@ -416,9 +416,8 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
         ),
       ),
       FilterSuggestionCard(
-        visible: Platform.isIOS,
         isFocused: bloc.state.selectedType == CollectGroupType.artists.index,
-        title: locals.artist,
+        title: locals.other,
         iconData: CollectGroupType.artists.iconData,
         color: CollectGroupType.artists.color,
         onTap: () => bloc.add(
