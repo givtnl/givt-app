@@ -1213,6 +1213,16 @@ class AppLocalizationsNl extends AppLocalizations {
       'Markeer je vaste doelen om sneller te kunnen geven';
 
   @override
+  String get forYouFavoritesTutorialTitle => 'Bewaar je favorieten';
+
+  @override
+  String get forYouFavoritesTutorialBody =>
+      'Tik op het hartje naast een kerk of goed doel om die als favoriet te bewaren.';
+
+  @override
+  String get forYouFavoritesTutorialGotIt => 'Begrepen';
+
+  @override
   String get forYouLocationBasedTitle => 'Locatie';
 
   @override
