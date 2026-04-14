@@ -2231,6 +2231,24 @@ abstract class AppLocalizations {
   /// **'Mark your regular goals to give faster'**
   String get forYouEmptyFavoritesBody;
 
+  /// No description provided for @forYouFavoritesTutorialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your favourites'**
+  String get forYouFavoritesTutorialTitle;
+
+  /// No description provided for @forYouFavoritesTutorialBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart next to any church or charity to save it as a favourite.'**
+  String get forYouFavoritesTutorialBody;
+
+  /// No description provided for @forYouFavoritesTutorialGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get forYouFavoritesTutorialGotIt;
+
   /// No description provided for @forYouLocationBasedTitle.
   ///
   /// In en, this message translates to:

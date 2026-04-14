@@ -1209,6 +1209,16 @@ class AppLocalizationsEs extends AppLocalizations {
       'Marca tus objetivos habituales para donar más rápido';
 
   @override
+  String get forYouFavoritesTutorialTitle => 'Guarda tus favoritos';
+
+  @override
+  String get forYouFavoritesTutorialBody =>
+      'Toca el corazón junto a cualquier iglesia u organización benéfica para guardarla como favorita.';
+
+  @override
+  String get forYouFavoritesTutorialGotIt => 'Entendido';
+
+  @override
   String get forYouLocationBasedTitle => 'Ubicación';
 
   @override
@@ -4012,6 +4022,16 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get forYouEmptyFavoritesBody =>
       'Marca tus objetivos habituales para donar más rápido';
+
+  @override
+  String get forYouFavoritesTutorialTitle => 'Guarda tus favoritos';
+
+  @override
+  String get forYouFavoritesTutorialBody =>
+      'Toca el corazón junto a cualquier iglesia u organización benéfica para guardarla como favorita.';
+
+  @override
+  String get forYouFavoritesTutorialGotIt => 'Entendido';
 
   @override
   String get forYouLocationBasedTitle => 'Ubicación';

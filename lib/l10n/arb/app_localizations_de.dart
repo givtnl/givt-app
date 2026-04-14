@@ -1218,6 +1218,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Markiere deine regelmäßigen Ziele, um schneller zu geben';
 
   @override
+  String get forYouFavoritesTutorialTitle => 'Speichere deine Favoriten';
+
+  @override
+  String get forYouFavoritesTutorialBody =>
+      'Tippe auf das Herz neben einer Kirche oder einem Wohltätigkeitsverein, um sie als Favorit zu speichern.';
+
+  @override
+  String get forYouFavoritesTutorialGotIt => 'Verstanden';
+
+  @override
   String get forYouLocationBasedTitle => 'Standort';
 
   @override
