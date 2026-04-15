@@ -1223,6 +1223,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forYouFavoritesTutorialGotIt => 'Begrepen';
 
   @override
+  String get forYouFavoritesTutorialOrganisationLabel => 'Organisatie';
+
+  @override
   String get forYouLocationBasedTitle => 'Locatie';
 
   @override

@@ -1219,6 +1219,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouFavoritesTutorialGotIt => 'Got it';
 
   @override
+  String get forYouFavoritesTutorialOrganisationLabel => 'Organisation';
+
+  @override
   String get forYouLocationBasedTitle => 'Location';
 
   @override
@@ -4019,6 +4022,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get forYouFavoritesTutorialGotIt => 'Got it';
+
+  @override
+  String get forYouFavoritesTutorialOrganisationLabel => 'Organization';
 
   @override
   String get forYouLocationBasedTitle => 'Location';

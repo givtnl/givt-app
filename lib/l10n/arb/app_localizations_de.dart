@@ -1228,6 +1228,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get forYouFavoritesTutorialGotIt => 'Verstanden';
 
   @override
+  String get forYouFavoritesTutorialOrganisationLabel => 'Organisation';
+
+  @override
   String get forYouLocationBasedTitle => 'Standort';
 
   @override

@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
@@ -7,6 +10,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
+import 'package:givt_app/features/give/utils/lottie_text_localizer.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -30,9 +34,21 @@ class _ForYouListPageState extends State<ForYouListPage> {
 
   bool _favoritesTutorialShownThisVisit = false;
   bool _isFavoritesTutorialDialogOpen = false;
+  Future<Uint8List>? _tutorialLottieBytes;
 
   bool get _isFavoritesOnlyMode =>
       widget.flowContext.source == ForYouEntrySource.emptyState;
+
+  Future<Uint8List> _loadTutorialLottieBytes(BuildContext context) async {
+    final json = await rootBundle.loadString(
+      'assets/lotties/for_you_favorites_tutorial.json',
+    );
+    final label = context.l10n.forYouFavoritesTutorialOrganisationLabel;
+    return replaceLottiePlaceholder(
+      lottieJson: json,
+      replacement: label,
+    );
+  }
 
   @override
   void initState() {
@@ -63,6 +79,7 @@ class _ForYouListPageState extends State<ForYouListPage> {
 
     _favoritesTutorialShownThisVisit = true;
     _isFavoritesTutorialDialogOpen = true;
+    _tutorialLottieBytes ??= _loadTutorialLottieBytes(context);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!context.mounted) return;
@@ -73,10 +90,18 @@ class _ForYouListPageState extends State<ForYouListPage> {
         icon: SizedBox(
           height: 140,
           width: double.infinity,
-          child: Lottie.asset(
-            'assets/lotties/for_you_favorites_tutorial.json',
-            fit: BoxFit.contain,
-            repeat: false,
+          child: FutureBuilder<Uint8List>(
+            future: _tutorialLottieBytes,
+            builder: (context, snapshot) {
+              final data = snapshot.data;
+              if (data == null) return const SizedBox.shrink();
+              if (snapshot.hasError) return const SizedBox.shrink();
+              return Lottie.memory(
+                data,
+                fit: BoxFit.contain,
+                repeat: false,
+              );
+            },
           ),
         ),
         title: context.l10n.forYouFavoritesTutorialTitle,
