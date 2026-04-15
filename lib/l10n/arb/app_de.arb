@@ -792,6 +792,7 @@
   "forYouFavoritesTutorialTitle": "Speichere deine Favoriten",
   "forYouFavoritesTutorialBody": "Tippe auf das Herz neben einer Kirche oder einem Wohltätigkeitsverein, um sie als Favorit zu speichern.",
   "forYouFavoritesTutorialGotIt": "Verstanden",
+  "forYouFavoritesTutorialOrganisationLabel": "Organisation",
   "forYouLocationBasedTitle": "Standort",
   "forYouLocationBasedSubtitle": "Gib an Organisationen in deiner Nähe",
   "forYouQrCodeTitle": "QR-code",

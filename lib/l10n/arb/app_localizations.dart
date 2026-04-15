@@ -2249,6 +2249,12 @@ abstract class AppLocalizations {
   /// **'Got it'**
   String get forYouFavoritesTutorialGotIt;
 
+  /// No description provided for @forYouFavoritesTutorialOrganisationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Organisation'**
+  String get forYouFavoritesTutorialOrganisationLabel;
+
   /// No description provided for @forYouLocationBasedTitle.
   ///
   /// In en, this message translates to:
