@@ -366,9 +366,9 @@ class _ForYouState extends State<ForYou>
     if (allocationsCount == 0) {
       if (organisation.type == CollectGroupType.church) {
         allocationsCount = 3;
-      } else if (organisation.type == CollectGroupType.charities ||
-          organisation.type == CollectGroupType.campaign ||
-          organisation.type == CollectGroupType.artists) {
+      } else {
+        // Charity, campaign, and all other organisation types (incl. legacy
+        // "artists" and uncategorized).
         allocationsCount = 1;
       }
     }

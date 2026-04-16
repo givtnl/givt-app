@@ -635,7 +635,7 @@ abstract class AppLocalizations {
   /// No description provided for @bacsVerifyBody.
   ///
   /// In en, this message translates to:
-  /// **'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.'**
+  /// **'If any of the above is incorrect, please tap \'Change details\' to update your information.\n\nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.'**
   String get bacsVerifyBody;
 
   /// No description provided for @bacsReadDdGuarantee.
@@ -1799,6 +1799,12 @@ abstract class AppLocalizations {
   /// **'Artist'**
   String get artist;
 
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
   /// No description provided for @church.
   ///
   /// In en, this message translates to:
@@ -2225,6 +2231,30 @@ abstract class AppLocalizations {
   /// **'Mark your regular goals to give faster'**
   String get forYouEmptyFavoritesBody;
 
+  /// No description provided for @forYouFavoritesTutorialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your favourites'**
+  String get forYouFavoritesTutorialTitle;
+
+  /// No description provided for @forYouFavoritesTutorialBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart next to any church or charity to save it as a favourite.'**
+  String get forYouFavoritesTutorialBody;
+
+  /// No description provided for @forYouFavoritesTutorialGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get forYouFavoritesTutorialGotIt;
+
+  /// No description provided for @forYouFavoritesTutorialOrganisationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Organisation'**
+  String get forYouFavoritesTutorialOrganisationLabel;
+
   /// No description provided for @forYouLocationBasedTitle.
   ///
   /// In en, this message translates to:
@@ -2516,7 +2546,7 @@ abstract class AppLocalizations {
   /// No description provided for @sepaVerifyBody.
   ///
   /// In en, this message translates to:
-  /// **'If any of the above is incorrect, please abort the registration and change your \'Personal information\''**
+  /// **'If any of the above is incorrect, please tap \'Change details\' to update your information.'**
   String get sepaVerifyBody;
 
   /// No description provided for @signMandate.

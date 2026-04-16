@@ -320,9 +320,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       // Filter organizations by type first if there's a selected type
       final typeFilteredOrgs = state.organisations
           .where(
-            (org) =>
-                state.selectedType == CollectGroupType.none.index ||
-                org.type.index == state.selectedType,
+            (org) => _collectGroupMatchesSelectedFilter(
+              org,
+              state.selectedType,
+            ),
           )
           .toList();
 
@@ -592,7 +593,9 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     var orgs = state.organisations;
     if (newSelectedType != CollectGroupType.none.index) {
       orgs = state.organisations
-          .where((org) => org.type.index == newSelectedType)
+          .where(
+            (org) => _collectGroupMatchesSelectedFilter(org, newSelectedType),
+          )
           .toList();
     }
 
@@ -705,4 +708,22 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     await _favoritesChangedSubscription.cancel();
     return super.close();
   }
+}
+
+/// Church, charity, and campaign use their own filter chips. The artists enum
+/// index is the UI "Other" bucket for every other collect group type.
+bool _isCoreOrganisationFilterType(CollectGroupType type) {
+  return type == CollectGroupType.church ||
+      type == CollectGroupType.charities ||
+      type == CollectGroupType.campaign;
+}
+
+bool _collectGroupMatchesSelectedFilter(CollectGroup group, int selectedType) {
+  if (selectedType == CollectGroupType.none.index) {
+    return true;
+  }
+  if (selectedType == CollectGroupType.artists.index) {
+    return !_isCoreOrganisationFilterType(group.type);
+  }
+  return group.type.index == selectedType;
 }

@@ -23,8 +23,17 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
     return BlocBuilder<OrganisationBloc, OrganisationState>(
       bloc: effectiveBloc,
       builder: (context, state) {
-        final types = state.organisations.map((e) => e.type).toSet().toList()
-          ..removeWhere((item) => removedTypes.contains(item.name))
+        final rawTypes = state.organisations.map((e) => e.type).toSet().toList()
+          ..removeWhere((item) => removedTypes.contains(item.name));
+        final collapsed = <CollectGroupType>{};
+        for (final t in rawTypes) {
+          if (_isCoreOrganisationFilterChipType(t)) {
+            collapsed.add(t);
+          } else {
+            collapsed.add(CollectGroupType.artists);
+          }
+        }
+        final types = collapsed.toList()
           ..sort(CollectGroupType.compareForOrganisationFilterBar);
         if (state.status == OrganisationStatus.loading) {
           return const Center(child: CircularProgressIndicator());
@@ -58,4 +67,10 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
       },
     );
   }
+}
+
+bool _isCoreOrganisationFilterChipType(CollectGroupType type) {
+  return type == CollectGroupType.church ||
+      type == CollectGroupType.charities ||
+      type == CollectGroupType.campaign;
 }

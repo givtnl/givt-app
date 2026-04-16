@@ -318,7 +318,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get bacsVerifyBody =>
-      'Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.\n\nDe bedrijfsnaam die op je transactie zal te zien zijn is \'Givt Ltd.\'.';
+      'Zijn deze gegevens correct? Zo niet, tik op \'Gegevens wijzigen\' om je informatie bij te werken.\n\nDe bedrijfsnaam die op je transactie zal te zien zijn is \'Givt Ltd.\'.';
 
   @override
   String get bacsReadDdGuarantee => 'Lees de incasso garantie';
@@ -980,6 +980,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get artist => 'Artiest';
 
   @override
+  String get other => 'Overig';
+
+  @override
   String get church => 'Kerk';
 
   @override
@@ -1210,6 +1213,19 @@ class AppLocalizationsNl extends AppLocalizations {
       'Markeer je vaste doelen om sneller te kunnen geven';
 
   @override
+  String get forYouFavoritesTutorialTitle => 'Bewaar je favorieten';
+
+  @override
+  String get forYouFavoritesTutorialBody =>
+      'Tik op het hartje naast een kerk of goed doel om die als favoriet te bewaren.';
+
+  @override
+  String get forYouFavoritesTutorialGotIt => 'Begrepen';
+
+  @override
+  String get forYouFavoritesTutorialOrganisationLabel => 'Organisatie';
+
+  @override
   String get forYouLocationBasedTitle => 'Locatie';
 
   @override
@@ -1384,7 +1400,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get sepaVerifyBody =>
-      'Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.';
+      'Zijn deze gegevens correct? Zo niet, tik op \'Gegevens wijzigen\' om je informatie bij te werken.';
 
   @override
   String get signMandate => 'Teken machtiging';
