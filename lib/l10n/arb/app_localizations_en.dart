@@ -315,7 +315,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bacsVerifyBody =>
-      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
+      'If any of the above is incorrect, please tap \'Change details\' to update your information.\n\nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
 
   @override
   String get bacsReadDdGuarantee => 'Read Direct Debit Guarantee';
@@ -1395,7 +1395,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sepaVerifyBody =>
-      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'';
+      'If any of the above is incorrect, please tap \'Change details\' to update your information.';
 
   @override
   String get signMandate => 'Sign mandate';
@@ -3120,7 +3120,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get bacsVerifyBody =>
-      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
+      'If any of the above is incorrect, please tap \'Change details\' to update your information.\n\nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
 
   @override
   String get bacsReadDdGuarantee => 'Read Direct Debit Guarantee';
@@ -4154,7 +4154,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get sepaVerifyBody =>
-      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'';
+      'If any of the above is incorrect, please tap \'Change details\' to update your information.';
 
   @override
   String get signMandate => 'Sign mandate';

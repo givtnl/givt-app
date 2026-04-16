@@ -105,7 +105,7 @@ void main() {
         home: BlocProvider.value(
           value: bloc,
           child: const ForYouListPage(
-            flowContext: ForYouFlowContext(source: ForYouEntrySource.search),
+            flowContext: ForYouFlowContext(source: ForYouEntrySource.emptyState),
           ),
         ),
       ),
@@ -134,7 +134,7 @@ void main() {
         home: BlocProvider.value(
           value: bloc,
           child: const ForYouListPage(
-            flowContext: ForYouFlowContext(source: ForYouEntrySource.search),
+            flowContext: ForYouFlowContext(source: ForYouEntrySource.emptyState),
           ),
         ),
       ),

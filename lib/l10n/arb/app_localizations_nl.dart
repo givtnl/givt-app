@@ -318,7 +318,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get bacsVerifyBody =>
-      'Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.\n\nDe bedrijfsnaam die op je transactie zal te zien zijn is \'Givt Ltd.\'.';
+      'Zijn deze gegevens correct? Zo niet, tik op \'Gegevens wijzigen\' om je informatie bij te werken.\n\nDe bedrijfsnaam die op je transactie zal te zien zijn is \'Givt Ltd.\'.';
 
   @override
   String get bacsReadDdGuarantee => 'Lees de incasso garantie';
@@ -1400,7 +1400,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get sepaVerifyBody =>
-      'Zijn deze gegevens correct? Zo niet, annuleer de registratie en verander je persoonlijke gegevens.';
+      'Zijn deze gegevens correct? Zo niet, tik op \'Gegevens wijzigen\' om je informatie bij te werken.';
 
   @override
   String get signMandate => 'Teken machtiging';
