@@ -64,6 +64,10 @@ class _ForYouListPageState extends State<ForYouListPage> {
     BuildContext context,
     OrganisationState state,
   ) {
+    // Only show the tutorial when the user explicitly entered via the
+    // "Select your favourite org" card (favorites-only entry).
+    if (!_isFavoritesOnlyMode) return;
+
     if (_isFavoritesTutorialDialogOpen &&
         state.favoritedOrganisations.isNotEmpty) {
       final navigator = Navigator.of(context, rootNavigator: true);
