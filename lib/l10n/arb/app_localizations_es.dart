@@ -315,7 +315,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get bacsVerifyBody =>
-      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
+      'If any of the above is incorrect, please tap \'Change details\' to update your information.\n\nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.';
 
   @override
   String get bacsReadDdGuarantee => 'Read Direct Debit Guarantee';
@@ -1397,7 +1397,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get sepaVerifyBody =>
-      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'';
+      'Si alguno de los datos anteriores es incorrecto, pulsa en \'Cambiar datos\' para actualizar tu información.';
 
   @override
   String get signMandate => 'Sign mandate';
@@ -3127,7 +3127,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get bacsVerifyBody =>
-      'Si alguno de los datos anteriores es incorrecto, por favor, anula el registro y cambia tu \'Información personal\'\n\nEl nombre de la empresa que aparecerá en su extracto bancario contra la domiciliación bancaria será Givt Ltd.';
+      'Si alguno de los datos anteriores es incorrecto, pulsa en \'Cambiar datos\' para actualizar tu información.\n\nEl nombre de la empresa que aparecerá en su extracto bancario contra la domiciliación bancaria será Givt Ltd.';
 
   @override
   String get bacsReadDdGuarantee =>
@@ -4215,7 +4215,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get sepaVerifyBody =>
-      'If any of the above is incorrect, please abort the registration and change your \'Personal information\'';
+      'Si alguno de los datos anteriores es incorrecto, pulsa en \'Cambiar datos\' para actualizar tu información.';
 
   @override
   String get signMandate => 'Firmar mandato';

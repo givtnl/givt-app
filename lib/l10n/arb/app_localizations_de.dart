@@ -319,7 +319,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get bacsVerifyBody =>
-      'Wenn einer der oben genannten Punkte nicht korrekt ist, brich die Registrierung ab und ändere deine \"persönlichen Daten\".\n\nDer Firmenname, der auf Ihrem Kontoauszug auf der Lastschrift erscheint, lautet Givt B.V.';
+      'Wenn einer der oben genannten Punkte nicht korrekt ist, tippe auf \'Daten ändern\', um deine Informationen zu aktualisieren.\n\nDer Firmenname, der auf Ihrem Kontoauszug auf der Lastschrift erscheint, lautet Givt B.V.';
 
   @override
   String get bacsReadDdGuarantee => 'Lastschriftgarantie lesen';
@@ -1405,7 +1405,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get sepaVerifyBody =>
-      'Wenn einer der oben genannten Punkte nicht korrekt ist, brich die Registrierung ab und ändere deine \"persönlichen Daten\".';
+      'Wenn einer der oben genannten Punkte nicht korrekt ist, tippe auf \'Daten ändern\', um deine Informationen zu aktualisieren.';
 
   @override
   String get signMandate => 'Mandat unterschreiben';

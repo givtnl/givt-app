@@ -635,7 +635,7 @@ abstract class AppLocalizations {
   /// No description provided for @bacsVerifyBody.
   ///
   /// In en, this message translates to:
-  /// **'If any of the above is incorrect, please abort the registration and change your \'Personal information\'\n \nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.'**
+  /// **'If any of the above is incorrect, please tap \'Change details\' to update your information.\n\nThe company name which will appear on your bank statement against the Direct Debit will be Givt Ltd.'**
   String get bacsVerifyBody;
 
   /// No description provided for @bacsReadDdGuarantee.
@@ -2546,7 +2546,7 @@ abstract class AppLocalizations {
   /// No description provided for @sepaVerifyBody.
   ///
   /// In en, this message translates to:
-  /// **'If any of the above is incorrect, please abort the registration and change your \'Personal information\''**
+  /// **'If any of the above is incorrect, please tap \'Change details\' to update your information.'**
   String get sepaVerifyBody;
 
   /// No description provided for @signMandate.
