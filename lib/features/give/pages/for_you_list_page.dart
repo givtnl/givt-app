@@ -99,7 +99,7 @@ class _ForYouListPageState extends State<ForYouListPage> {
               return Lottie.memory(
                 data,
                 fit: BoxFit.contain,
-                repeat: false,
+                repeat: true,
               );
             },
           ),
