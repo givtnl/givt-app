@@ -1295,5 +1295,6 @@
   "giftAidAboutWhatIs": "Wat is Gift Aid?",
   "giftAidAboutWhoCanUse": "Wie kan Gift Aid gebruiken?",
   "giftAidAboutWhyPayDifference": "Waarom moet ik soms het verschil betalen?",
-  "giftAidAboutDeclaration": "Gift Aid-verklaring:"
+  "giftAidAboutDeclaration": "Gift Aid-verklaring:",
+  "scannerDownloadingModule": "Scanner voorbereiden... Dit kan even duren."
 }

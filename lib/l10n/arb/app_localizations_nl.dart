@@ -2818,4 +2818,8 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get giftAidAboutDeclaration => 'Gift Aid-verklaring:';
+
+  @override
+  String get scannerDownloadingModule =>
+      'Scanner voorbereiden... Dit kan even duren.';
 }

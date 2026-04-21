@@ -32,6 +32,7 @@ class GPSScanPage extends StatefulWidget {
 
 class _GPSScanPageState extends State<GPSScanPage> {
   bool isVisible = false;
+  StreamSubscription<Position>? _positionSubscription;
 
   @override
   void initState() {
@@ -39,13 +40,27 @@ class _GPSScanPageState extends State<GPSScanPage> {
     initGPS();
   }
 
+  @override
+  void dispose() {
+    _positionSubscription?.cancel();
+    super.dispose();
+  }
+
   Future<void> initGPS() async {
     final permission = await Geolocator.requestPermission();
-    if (permission != LocationPermission.whileInUse ||
+    if (permission != LocationPermission.whileInUse &&
         permission != LocationPermission.always) {
       await _permissionCheck();
+      return;
     }
-    Geolocator.getPositionStream(
+
+    final isEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!isEnabled) {
+      await _permissionCheck();
+      return;
+    }
+
+    _positionSubscription = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 2,
