@@ -10,6 +10,7 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/errors/scanner_error_widget.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -87,6 +88,8 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
               children: [
                 MobileScanner(
                   controller: _controller,
+                  errorBuilder: (context, error) =>
+                      ScannerErrorWidget(error: error),
                   onDetect: (BarcodeCapture barcodeCapture) async =>
                       _processBarcode(
                     barcodeCapture: barcodeCapture,

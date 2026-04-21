@@ -5035,6 +5035,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Gift Aid declaration:'**
   String get giftAidAboutDeclaration;
+
+  /// No description provided for @scannerDownloadingModule.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing scanner... This might take a moment.'**
+  String get scannerDownloadingModule;
 }
 
 class _AppLocalizationsDelegate

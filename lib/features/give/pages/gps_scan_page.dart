@@ -32,6 +32,7 @@ class GPSScanPage extends StatefulWidget {
 
 class _GPSScanPageState extends State<GPSScanPage> {
   bool isVisible = false;
+  StreamSubscription<Position>? _positionSubscription;
 
   @override
   void initState() {
@@ -39,37 +40,54 @@ class _GPSScanPageState extends State<GPSScanPage> {
     initGPS();
   }
 
+  @override
+  void dispose() {
+    _positionSubscription?.cancel();
+    super.dispose();
+  }
+
   Future<void> initGPS() async {
     final permission = await Geolocator.requestPermission();
-    if (permission != LocationPermission.whileInUse ||
+    if (permission != LocationPermission.whileInUse &&
         permission != LocationPermission.always) {
       await _permissionCheck();
+      return;
     }
-    Geolocator.getPositionStream(
+
+    final isEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!isEnabled) {
+      await _permissionCheck();
+      return;
+    }
+
+    _positionSubscription = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 2,
         timeLimit: Duration(seconds: 120),
       ),
     ).listen(
-      onError: (Object? error) => LoggingInfo.instance.error(
-        'Error in GPS scan page: $error',
-        methodName: 'initGPS',
-      ),
-      (Position? position) {
-        if (position == null) {
-          return;
-        }
+      (Position position) {
         if (!mounted) {
           return;
         }
-        context.read<GiveBloc>().add(
+
+        final bloc = context.read<GiveBloc>();
+        if (bloc.isClosed) {
+          return;
+        }
+
+        bloc.add(
           GiveGPSLocationChanged(
             latitude: position.latitude,
             longitude: position.longitude,
           ),
         );
       },
+      onError: (Object? error) => LoggingInfo.instance.error(
+        'Error in GPS scan page: $error',
+        methodName: 'initGPS',
+      ),
       onDone: () {
         log('Done');
       },

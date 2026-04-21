@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
+import 'package:givt_app/shared/widgets/errors/scanner_error_widget.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -232,6 +233,7 @@ class _BarcodeLevelScanPageState extends State<BarcodeLevelScanPage> {
           Positioned.fill(
             child: MobileScanner(
               controller: _cameraController,
+              errorBuilder: (context, error) => ScannerErrorWidget(error: error),
               onDetect: cubit.onBarcodeDetected,
             ),
           ),

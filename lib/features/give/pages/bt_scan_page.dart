@@ -36,6 +36,8 @@ class _BTScanPageState extends State<BTScanPage> {
   bool isSearching = false;
   bool _isDisposed = false;
 
+  late final GiveBloc _giveBloc;
+
   StreamSubscription<List<ScanResult>>? _scanResultsStream;
   StreamSubscription<BluetoothAdapterState>? _adapterStateStream;
   StreamSubscription<bool>? _isScanningStream;
@@ -47,10 +49,12 @@ class _BTScanPageState extends State<BTScanPage> {
   void initState() {
     super.initState();
 
+    _giveBloc = context.read<GiveBloc>();
+
     // Signal to GiveBloc that BT scan page is active
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && !_isDisposed) {
-        context.read<GiveBloc>().onBTScanPageInitialized();
+        _giveBloc.onBTScanPageInitialized();
       }
     });
 
@@ -320,7 +324,7 @@ class _BTScanPageState extends State<BTScanPage> {
 
     // Signal to GiveBloc that BT scan page is being disposed
     try {
-      context.read<GiveBloc>().onBTScanPageDisposed();
+      _giveBloc.onBTScanPageDisposed();
     } catch (e) {
       // Context might not be available during dispose
       LoggingInfo.instance.error('Could not signal disposal to GiveBloc: $e');
