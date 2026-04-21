@@ -2807,6 +2807,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get giftAidAboutDeclaration => 'Gift Aid declaration:';
+
+  @override
+  String get scannerDownloadingModule =>
+      'Preparing scanner... This might take a moment.';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -5566,4 +5570,8 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get giftAidAboutDeclaration => 'Gift Aid declaration:';
+
+  @override
+  String get scannerDownloadingModule =>
+      'Preparing scanner... This might take a moment.';
 }

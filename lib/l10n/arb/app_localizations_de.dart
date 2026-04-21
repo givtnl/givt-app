@@ -2830,4 +2830,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get giftAidAboutDeclaration => 'Gift-Aid-Erklärung:';
+
+  @override
+  String get scannerDownloadingModule =>
+      'Scanner wird vorbereitet... Das kann einen Moment dauern.';
 }

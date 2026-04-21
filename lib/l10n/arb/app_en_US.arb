@@ -1282,5 +1282,6 @@
   "giftAidAboutWhatIs": "What is Gift Aid?",
   "giftAidAboutWhoCanUse": "Who can use Gift Aid?",
   "giftAidAboutWhyPayDifference": "Why might I need to pay the difference?",
-  "giftAidAboutDeclaration": "Gift Aid declaration:"
+  "giftAidAboutDeclaration": "Gift Aid declaration:",
+  "scannerDownloadingModule": "Preparing scanner... This might take a moment."
 }

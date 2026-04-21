@@ -14,6 +14,7 @@ import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/errors/scanner_error_widget.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -104,6 +105,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
           children: [
             MobileScanner(
               controller: _controller,
+              errorBuilder: (context, error) => ScannerErrorWidget(error: error),
               onDetect: (capture) => _processBarcode(barcodeCapture: capture),
             ),
             const Positioned.fill(child: QrCodeTarget()),

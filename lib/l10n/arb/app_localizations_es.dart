@@ -2810,6 +2810,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get giftAidAboutDeclaration => 'Declaración de Gift Aid:';
+
+  @override
+  String get scannerDownloadingModule =>
+      'Preparando el escáner... Esto puede tardar un momento.';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -5641,4 +5645,8 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get giftAidAboutDeclaration => 'Declaración de Gift Aid:';
+
+  @override
+  String get scannerDownloadingModule =>
+      'Preparando el escáner... Esto puede tardar un momento.';
 }
