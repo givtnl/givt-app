@@ -67,24 +67,27 @@ class _GPSScanPageState extends State<GPSScanPage> {
         timeLimit: Duration(seconds: 120),
       ),
     ).listen(
-      onError: (Object? error) => LoggingInfo.instance.error(
-        'Error in GPS scan page: $error',
-        methodName: 'initGPS',
-      ),
-      (Position? position) {
-        if (position == null) {
-          return;
-        }
+      (Position position) {
         if (!mounted) {
           return;
         }
-        context.read<GiveBloc>().add(
+
+        final bloc = context.read<GiveBloc>();
+        if (bloc.isClosed) {
+          return;
+        }
+
+        bloc.add(
           GiveGPSLocationChanged(
             latitude: position.latitude,
             longitude: position.longitude,
           ),
         );
       },
+      onError: (Object? error) => LoggingInfo.instance.error(
+        'Error in GPS scan page: $error',
+        methodName: 'initGPS',
+      ),
       onDone: () {
         log('Done');
       },
