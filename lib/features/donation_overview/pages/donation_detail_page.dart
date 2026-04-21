@@ -381,6 +381,8 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                         'donation': widget.donationGroup.toJson(),
                       },
                     );
+                    if (!mounted) return;
+
                     _tooltipController.start(
                       widget.donationGroup.donations.first.id,
                     );
@@ -389,7 +391,9 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
                     Future.delayed(
                       const Duration(milliseconds: 5000),
                       () {
-                        _tooltipController.pause();
+                        if (mounted) {
+                          _tooltipController.pause();
+                        }
                       },
                     );
                   },
