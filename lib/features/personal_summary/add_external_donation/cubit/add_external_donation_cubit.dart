@@ -22,6 +22,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
     emit(state.copyWith(status: AddExternalDonationStatus.loading));
     try {
       final externalDonations = await givtRepository.fetchExternalDonations();
+      if (isClosed) return;
 
       externalDonations.sort((first, second) {
         final firstDate = DateTime.parse(first.creationDate);
@@ -40,6 +41,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
         e.toString(),
         methodName: stackTrace.toString(),
       );
+      if (isClosed) return;
       emit(state.copyWith(status: AddExternalDonationStatus.error));
     }
   }
@@ -62,6 +64,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
           id: state.currentExternalDonation.id,
           body: toBeAdded.toJson(),
         );
+        if (isClosed) return;
 
         if (!isUpdated) {
           emit(state.copyWith(status: AddExternalDonationStatus.error));
@@ -90,6 +93,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
       final isAdded = await givtRepository.addExternalDonation(
         body: toBeAdded.toJson(),
       );
+      if (isClosed) return;
 
       if (!isAdded) {
         emit(state.copyWith(status: AddExternalDonationStatus.error));
@@ -108,6 +112,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
         e.toString(),
         methodName: stackTrace.toString(),
       );
+      if (isClosed) return;
       emit(state.copyWith(status: AddExternalDonationStatus.error));
     }
   }
@@ -122,6 +127,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
       final isDeleted = await givtRepository.deleteExternalDonation(
         toBeRemoved.id,
       );
+      if (isClosed) return;
       if (!isDeleted) {
         emit(state.copyWith(status: AddExternalDonationStatus.error));
         return;
@@ -142,6 +148,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
         e.toString(),
         methodName: stackTrace.toString(),
       );
+      if (isClosed) return;
       emit(state.copyWith(status: AddExternalDonationStatus.error));
     }
   }
