@@ -107,12 +107,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     try {
       isEnabled = await (() async {
         await AnalyticsHelper.ensureInitialized();
-        return AnalyticsHelper.isFeatureEnabled(_forYouStartupFlagKey);
+        return AnalyticsHelper.isFeatureEnabled(
+          _forYouStartupFlagKey,
+          fallback: true,
+        );
       })().timeout(const Duration(seconds: 1));
     } on TimeoutException {
-      return;
-    } catch (_) {
-      return;
+      // Phased rollout: if the flag cannot be evaluated in time, default to
+      // the new giving flow (same as ENG-555 PostHog fallback).
+      isEnabled = true;
+    } on Object {
+      isEnabled = true;
     }
     if (!mounted || !isEnabled) {
       return;
