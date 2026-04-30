@@ -9,6 +9,7 @@ import 'package:givt_app/core/failures/certificate_exception.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/core/network/certificate_check_interceptor.dart';
+import 'package:givt_app/core/network/certificate_retry_policy.dart';
 import 'package:givt_app/core/network/expired_token_retry_policy.dart';
 import 'package:givt_app/core/network/family_expired_token_retry_policy.dart';
 import 'package:givt_app/core/network/network.dart';
@@ -30,7 +31,7 @@ class RequestHelper {
     this._networkInfo,
     this._sharedPreferences, {
     required String apiURL,
-  })  : _apiURL = apiURL;
+  }) : _apiURL = apiURL;
 
   final NetworkInfo _networkInfo;
   final SharedPreferences _sharedPreferences;
@@ -44,6 +45,10 @@ class RequestHelper {
   late String euBaseUrl;
   late String usBaseUrl;
   late String country;
+
+  /// When true, [euClient] / [usClient] wrap pinned [SecureHttpClient]s whose
+  /// fingerprint lists can be updated in place via [refreshFingerprints].
+  bool _secureHttpClientsReady = false;
 
   Client get client => country == Country.us.countryCode ? usClient : euClient;
 
@@ -74,7 +79,9 @@ class RequestHelper {
       _secureUsClient = _getSecureClient(allowedUSFingerprints);
       euClient = createEUClient(client: _secureEuClient);
       usClient = createUSClient(client: _secureUsClient);
+      _secureHttpClientsReady = true;
     } catch (e, s) {
+      _secureHttpClientsReady = false;
       if (_failedDueToInternetConnectionButWeHaveInternetNow(e)) {
         LoggingInfo.instance.info(
           '''
@@ -84,15 +91,16 @@ Error while setting up secure http clients (while having an internet connection)
       } else {
         euClient = createEUClient();
         usClient = createUSClient();
-        _internetSubscription =
-            _networkInfo.hasInternetConnectionStream().listen(
-          (hasConnection) async {
-            if (hasConnection) {
-              await _createClients();
-              _internetSubscription?.cancel();
-            }
-          },
-        );
+        _internetSubscription = _networkInfo
+            .hasInternetConnectionStream()
+            .listen(
+              (hasConnection) async {
+                if (hasConnection) {
+                  await _createClients();
+                  _internetSubscription?.cancel();
+                }
+              },
+            );
       }
     }
   }
@@ -106,8 +114,9 @@ Error while setting up secure http clients (while having an internet connection)
   Future<void> _checkForAndroidTrustedCertificate() async {
     try {
       if (Platform.isAndroid) {
-        final data =
-            await PlatformAssetBundle().load('assets/ca/isrgrootx1.pem');
+        final data = await PlatformAssetBundle().load(
+          'assets/ca/isrgrootx1.pem',
+        );
         SecurityContext.defaultContext.setTrustedCertificatesBytes(
           data.buffer.asUint8List(),
         );
@@ -128,8 +137,9 @@ Error while setting up secure http clients (while having an internet connection)
     if (prefs.containsKey(UserExt.tag)) {
       final userExtString = prefs.getString(UserExt.tag);
       if (userExtString != null) {
-        final user =
-            UserExt.fromJson(jsonDecode(userExtString) as Map<String, dynamic>);
+        final user = UserExt.fromJson(
+          jsonDecode(userExtString) as Map<String, dynamic>,
+        );
         return user.country;
       }
     }
@@ -145,7 +155,10 @@ Error while setting up secure http clients (while having an internet connection)
         if (client == null) CertificateCheckInterceptor(),
         TokenInterceptor(),
       ],
-      retryPolicy: ExpiredTokenRetryPolicy(),
+      retryPolicy: CompositeRetryCertificateWithTokenPolicy(
+        tokenRetryPolicy: ExpiredTokenRetryPolicy(),
+        onRefreshFingerprints: refreshFingerprints,
+      ),
     );
   }
 
@@ -157,8 +170,28 @@ Error while setting up secure http clients (while having an internet connection)
         if (client == null) CertificateCheckInterceptor(),
         TokenInterceptor(),
       ],
-      retryPolicy: FamilyExpiredTokenRetryPolicy(),
+      retryPolicy: CompositeRetryCertificateWithTokenPolicy(
+        tokenRetryPolicy: FamilyExpiredTokenRetryPolicy(),
+        onRefreshFingerprints: refreshFingerprints,
+      ),
     );
+  }
+
+  /// Re-fetches JWT-backed fingerprints for EU and US, updates [SharedPreferences],
+  /// and refreshes in-memory pins on active [SecureHttpClient]s when available.
+  Future<void> refreshFingerprints() async {
+    await _checkForAndroidTrustedCertificate();
+    final allowedEUFingerprints = await _getAllowedFingerprints(euBaseUrl);
+    final allowedUSFingerprints = await _getAllowedFingerprints(usBaseUrl);
+
+    if (_secureHttpClientsReady) {
+      _secureEuClient.allowedSHAFingerprints
+        ..clear()
+        ..addAll(allowedEUFingerprints);
+      _secureUsClient.allowedSHAFingerprints
+        ..clear()
+        ..addAll(allowedUSFingerprints);
+    }
   }
 
   Future<List<String>> _getAllowedFingerprints(
@@ -167,8 +200,9 @@ Error while setting up secure http clients (while having an internet connection)
     try {
       final response = await _requestCerts(apiUrl);
 
-      final publicKey =
-          await rootBundle.loadString('assets/ca/certificatekey.txt');
+      final publicKey = await rootBundle.loadString(
+        'assets/ca/certificatekey.txt',
+      );
       final jwtVerified = JWT.verify(response.token, RSAPublicKey(publicKey));
 
       final allowedFingerprints = [

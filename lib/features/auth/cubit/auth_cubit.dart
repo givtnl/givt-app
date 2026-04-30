@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
@@ -15,13 +16,15 @@ import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:http_certificate_pinning/http_certificate_pinning.dart';
 import 'package:permission_handler/permission_handler.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authRepositoy) : super(const AuthState()) {
-    _sessionSubscription =
-        _authRepositoy.hasSessionStream().listen((hasSession) {
+    _sessionSubscription = _authRepositoy.hasSessionStream().listen((
+      hasSession,
+    ) {
       checkAuth(hasSession: hasSession);
     });
   }
@@ -78,7 +81,8 @@ class AuthCubit extends Cubit<AuthState> {
 
       final biometricSetting = await BiometricsHelper.getBiometricSetting();
 
-      final showBiometricCheck = biometricSetting == BiometricSetting.unknown &&
+      final showBiometricCheck =
+          biometricSetting == BiometricSetting.unknown &&
           userExt.tempUser == false;
 
       emit(
@@ -129,6 +133,17 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
         return;
+      } else if (_isCertificateAuthFailure(e)) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.certificateException,
+          ),
+        );
+        LoggingInfo.instance.error(
+          e.toString(),
+          methodName: stackTrace.toString(),
+        );
+        return;
       } else {
         LoggingInfo.instance.error(
           e.toString(),
@@ -145,15 +160,26 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  bool _isCertificateAuthFailure(Object e) {
+    if (e is CertificatesException) return true;
+    if (e is CertificateNotVerifiedException) return true;
+    if (e is PlatformException && e.code == 'CONNECTION_NOT_SECURE') {
+      return true;
+    }
+    final message = e.toString();
+    return message.contains('CONNECTION_NOT_SECURE') ||
+        message.contains('CertificateNotVerifiedException');
+  }
+
   void completeBiometricsCheck() =>
       emit(state.copyWith(status: AuthStatus.authenticated));
 
   void clearNavigation() => emit(
-        state.copyWith(
-          status: state.status,
-          navigate: AuthState._emptyNavigate,
-        ),
-      );
+    state.copyWith(
+      status: state.status,
+      navigate: AuthState._emptyNavigate,
+    ),
+  );
 
   Future<void> checkAuth({
     bool isAppStartupCheck = false,
@@ -315,8 +341,7 @@ class AuthCubit extends Cubit<AuthState> {
         );
         return;
       }
-      if (e is CertificatesException ||
-          e.toString().contains('CONNECTION_NOT_SECURE')) {
+      if (_isCertificateAuthFailure(e)) {
         emit(
           state.copyWith(
             status: AuthStatus.certificateException,
@@ -477,8 +502,10 @@ class AuthCubit extends Cubit<AuthState> {
       final notificationPermissionStatus =
           await Permission.notification.status.isGranted;
 
-      LoggingInfo.instance.info('New FCM token: $notificationId; '
-          'Notification permission status: $notificationPermissionStatus');
+      LoggingInfo.instance.info(
+        'New FCM token: $notificationId; '
+        'Notification permission status: $notificationPermissionStatus',
+      );
 
       if (userExt.notificationId == notificationId &&
           userExt.pushNotificationsEnabled == notificationPermissionStatus) {

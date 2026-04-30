@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -22,22 +23,39 @@ class CertificateCheckInterceptor extends InterceptorContract {
       return request;
     }
 
+    final host = request.url.host;
     final storedSHAFigerprint =
         getIt<SharedPreferences>().getString(apiURL) ?? '';
 
-    final secure = await HttpCertificatePinning.check(
-      serverURL: request.url.toString(),
-      sha: SHA.SHA256,
-      allowedSHAFingerprints: [storedSHAFigerprint],
-      timeout: 50,
-    );
-    if (!secure.contains('CONNECTION_SECURE')) {
-      LoggingInfo.instance.error(
-        request.url.toString(),
-        methodName: StackTrace.current.toString(),
+    try {
+      final secure = await HttpCertificatePinning.check(
+        serverURL: request.url.toString(),
+        sha: SHA.SHA256,
+        allowedSHAFingerprints: [storedSHAFigerprint],
+        timeout: 50,
       );
+      if (!secure.contains('CONNECTION_SECURE')) {
+        LoggingInfo.instance.error(
+          'Certificate pinning check failed: host=$host '
+          'requestUrl=${request.url} pluginResult=$secure '
+          'storedFingerprintLength=${storedSHAFigerprint.length} '
+          'sharedPrefsKeyHost=$apiURL',
+          methodName: StackTrace.current.toString(),
+        );
 
-      throw const CertificatesException(message: 'CONNECTION_NOT_SECURE');
+        throw const CertificatesException(message: 'CONNECTION_NOT_SECURE');
+      }
+    } on PlatformException catch (e, s) {
+      LoggingInfo.instance.error(
+        'Certificate pinning PlatformException: host=$host '
+        'code=${e.code} message=${e.message} '
+        'storedFingerprintLength=${storedSHAFigerprint.length}',
+        methodName: s.toString(),
+      );
+      if (e.code == 'CONNECTION_NOT_SECURE') {
+        throw const CertificatesException(message: 'CONNECTION_NOT_SECURE');
+      }
+      rethrow;
     }
     return request;
   }
@@ -45,6 +63,5 @@ class CertificateCheckInterceptor extends InterceptorContract {
   @override
   Future<BaseResponse> interceptResponse({
     required BaseResponse response,
-  }) async =>
-      response;
+  }) async => response;
 }
