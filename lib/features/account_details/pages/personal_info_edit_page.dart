@@ -355,11 +355,23 @@ class PersonalInfoEditPage extends StatelessWidget {
   }
 
   void _showSupportRequestConfirmationModal(BuildContext context) {
+    final locals = context.l10n;
+    void onClose() => Navigator.of(context).pop();
+
     FunModal(
-      autoClose: const Duration(milliseconds: 1500),
       icon: FunIcon.checkmark(),
-      title: null,
-      closeAction: () => Navigator.of(context).pop(),
+      title: locals.mergeAccountsSupportSentTitle,
+      subtitle: locals.mergeAccountsSupportSentBody,
+      closeAction: onClose,
+      buttons: [
+        FunButton(
+          text: locals.gotIt,
+          analyticsEvent: AnalyticsEvent(
+            AnalyticsEventName.mergeAccountsConfirmationClosed,
+          ),
+          onTap: onClose,
+        ),
+      ],
     ).show(context);
   }
 

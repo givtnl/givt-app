@@ -489,6 +489,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emailAlreadyInUseCloseButton => 'Cerrar';
 
   @override
+  String get mergeAccountsSupportSentTitle => 'Solicitud recibida';
+
+  @override
+  String get mergeAccountsSupportSentBody =>
+      'Hemos recibido tu solicitud para fusionar tus cuentas. Lo solucionaremos y te avisaremos por correo cuando esté listo para que puedas continuar. Suele tardar unos días laborables.';
+
+  @override
+  String get gotIt => 'Entendido';
+
+  @override
   String get giftsOverviewSent =>
       'We\'ve sent your donations overview to your mailbox.';
 
@@ -3305,6 +3315,16 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get emailAlreadyInUseCloseButton => 'Cerrar';
+
+  @override
+  String get mergeAccountsSupportSentTitle => 'Solicitud recibida';
+
+  @override
+  String get mergeAccountsSupportSentBody =>
+      'Hemos recibido tu solicitud para fusionar tus cuentas. Lo solucionaremos y te avisaremos por correo cuando esté listo para que puedas continuar. Suele tardar unos días laborables.';
+
+  @override
+  String get gotIt => 'Entendido';
 
   @override
   String get giftsOverviewSent =>

@@ -932,6 +932,24 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get emailAlreadyInUseCloseButton;
 
+  /// No description provided for @mergeAccountsSupportSentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request received'**
+  String get mergeAccountsSupportSentTitle;
+
+  /// No description provided for @mergeAccountsSupportSentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve received your request to merge your accounts. We\'ll fix it and let you know via email when it\'s done so you can continue. This usually takes a few business days.'**
+  String get mergeAccountsSupportSentBody;
+
+  /// No description provided for @gotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get gotIt;
+
   /// No description provided for @giftsOverviewSent.
   ///
   /// In en, this message translates to:

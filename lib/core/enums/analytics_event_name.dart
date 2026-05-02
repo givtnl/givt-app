@@ -45,6 +45,7 @@ enum AnalyticsEventName {
   editPhoneNumberSaveClicked('edit_phone_number_save_clicked'),
   editEmailSaveClicked('edit_email_save_clicked'),
   emailAlreadyInUseContactClicked('email_already_in_use_contact_clicked'),
+  mergeAccountsConfirmationClosed('merge_accounts_confirmation_closed'),
   emailAlreadyInUseCloseClicked('email_already_in_use_close_clicked'),
   inAppReviewTriggered('in_app_review_triggered'),
   askForInterviewTriggered('ask_for_interview_triggered'),

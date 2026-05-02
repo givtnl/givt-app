@@ -494,6 +494,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get emailAlreadyInUseCloseButton => 'Schließen';
 
   @override
+  String get mergeAccountsSupportSentTitle => 'Anfrage erhalten';
+
+  @override
+  String get mergeAccountsSupportSentBody =>
+      'Wir haben deine Anfrage zum Zusammenführen deiner Konten erhalten. Wir kümmern uns darum und informieren dich per E-Mail, sobald es erledigt ist, damit du weitermachen kannst. Das dauert in der Regel ein paar Werktage.';
+
+  @override
+  String get gotIt => 'Verstanden';
+
+  @override
   String get giftsOverviewSent =>
       'Wir haben die Spendenübersicht an deine Mailbox geschickt.';
 
