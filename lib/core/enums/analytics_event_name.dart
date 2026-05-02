@@ -183,6 +183,16 @@ enum AnalyticsEventName {
   giftAidRegistrationCheckboxChanged(
     'gift_aid_registration_checkbox_changed',
   ),
+  manageGiftAidInfoClicked('manage_gift_aid_info_clicked'),
+  manageGiftAidDeactivateClicked('manage_gift_aid_deactivate_clicked'),
+  manageGiftAidKeepActiveClicked('manage_gift_aid_keep_active_clicked'),
+  manageGiftAidTurnOffConfirmedClicked(
+    'manage_gift_aid_turn_off_confirmed_clicked',
+  ),
+  manageGiftAidActivateForTaxYearClicked(
+    'manage_gift_aid_activate_for_tax_year_clicked',
+  ),
+  manageGiftAidSuccessDoneClicked('manage_gift_aid_success_done_clicked'),
   amountPressed('amount_pressed'),
   backButtonPressed('back_button_pressed'),
   returnToHomePressed('return_to_home_pressed'),

@@ -7,6 +7,10 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/account_details/manage_gift_aid/cubit/manage_gift_aid_cubit.dart';
+import 'package:givt_app/features/account_details/manage_gift_aid/pages/gift_aid_activated_success_page.dart';
+import 'package:givt_app/features/account_details/manage_gift_aid/pages/gift_aid_deactivated_success_page.dart';
+import 'package:givt_app/features/account_details/manage_gift_aid/pages/manage_gift_aid_page.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/donation_overview.dart';
@@ -14,21 +18,21 @@ import 'package:givt_app/features/email_signup/presentation/pages/email_signup_p
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
-import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/pages/for_you_beacon_discovery_page.dart';
 import 'package:givt_app/features/give/pages/for_you_giving_page.dart';
 import 'package:givt_app/features/give/pages/for_you_gps_discovery_page.dart';
 import 'package:givt_app/features/give/pages/for_you_list_page.dart';
 import 'package:givt_app/features/give/pages/for_you_organisation_confirm_page.dart';
 import 'package:givt_app/features/give/pages/for_you_qr_discovery_page.dart';
+import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/pages/gps_scan_page.dart';
 import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
-import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
@@ -86,7 +90,7 @@ class AppRouter {
         name: 'search-for-coin',
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
           listener: (context, state) =>
-              // Temp solution to redirect users to the app as it is (not a specific page)
+              // Temp: redirect as-is, not to a specific page.
               _checkAndRedirectAuth(state, context, routerState),
           child: const SplashPage(),
         ),
@@ -217,6 +221,27 @@ class AppRouter {
                 child: const PersonalInfoEditPage(),
               );
             },
+          ),
+          GoRoute(
+            path: Pages.manageGiftAid.path,
+            name: Pages.manageGiftAid.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => ManageGiftAidCubit(
+                getIt(),
+                getIt(),
+              ),
+              child: const ManageGiftAidPage(),
+            ),
+          ),
+          GoRoute(
+            path: Pages.giftAidDeactivatedSuccess.path,
+            name: Pages.giftAidDeactivatedSuccess.name,
+            builder: (context, state) => const GiftAidDeactivatedSuccessPage(),
+          ),
+          GoRoute(
+            path: Pages.giftAidActivatedSuccess.path,
+            name: Pages.giftAidActivatedSuccess.name,
+            builder: (context, state) => const GiftAidActivatedSuccessPage(),
           ),
           GoRoute(
             path: Pages.recurringDonations.path,

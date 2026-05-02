@@ -1286,5 +1286,39 @@
   "giftAidAboutWhoCanUse": "Who can use Gift Aid?",
   "giftAidAboutWhyPayDifference": "Why might I need to pay the difference?",
   "giftAidAboutDeclaration": "Gift Aid declaration:",
+  "manageGiftAidTitle": "Manage Gift Aid",
+  "manageGiftAidSectionTitle": "Gift Aid",
+  "manageGiftAidStatusActive": "Active",
+  "manageGiftAidStatusInactive": "Inactive",
+  "manageGiftAidIntroLead": "Donating with Gift Aid means ",
+  "manageGiftAidIntroEmphasis": "charities and churches can claim an extra 25p for every £1 you give.",
+  "manageGiftAidIntroTail": " It will not cost you any more.",
+  "manageGiftAidImpactInTaxYear": "Your Gift Aid impact in tax year {year}",
+  "@manageGiftAidImpactInTaxYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "manageGiftAidYouHaveGiven": "You have given:",
+  "manageGiftAidExtraAddedWithGiftAid": "Extra added with Gift Aid:",
+  "manageGiftAidTotalImpact": "Total impact:",
+  "manageGiftAidDeactivate": "Deactivate Gift Aid",
+  "manageGiftAidTurnOffTitle": "Turn off Gift Aid?",
+  "manageGiftAidTurnOffBody": "Future donations won’t include the 25% Gift Aid addition.\nYou can turn it back on anytime.",
+  "manageGiftAidKeepActive": "Keep Gift Aid active",
+  "manageGiftAidTurnOff": "Turn off Gift Aid",
+  "manageGiftAidOrangeCardTitle": "Activate Gift Aid to increase your impact",
+  "manageGiftAidGivingInTaxYear": "Giving in tax year {year}:",
+  "@manageGiftAidGivingInTaxYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "manageGiftAidPotentialBonus": "Potential Gift Aid bonus (25%):",
+  "manageGiftAidPotentialTotalImpact": "With Gift Aid, your total impact would be:",
   "scannerDownloadingModule": "Preparing scanner... This might take a moment."
 }

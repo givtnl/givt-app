@@ -60,6 +60,7 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 - **Typography**: Use specialized text components like `TitleMediumText`, `BodyMediumText`, etc.
 - **Theming**: Use the FUN color palette (`FunTheme.of(context)` / `FamilyAppTheme`) and ensure responsive design across screen sizes.
 - **Success confirmation**: Use **`FunIcon.checkmark()`** as the main content of a modal or bottom sheet (big green circle). Use a single “Done” button or **`FunModal` with `autoClose`** for brief confirmations (e.g. support request sent). Do not use a checkmark on the button for “confirm” actions; the icon in the modal is the confirmation.
+- **`FunScaffold` padding**: `FunScaffold` (`lib/shared/widgets/fun_scaffold.dart`) wraps `body` in `SafeArea` with default **`minimumPadding` LTRB `24 / 24 / 24 / 40`**. Do not duplicate that inset with an outer `Padding` or scroll-view padding on `body`; only add spacing between inner widgets or override `minimumPadding` / `withSafeArea` when you need full-bleed content. See class dartdoc on `FunScaffold` for detail.
 - **Refactoring**: When touching existing UI, consider refactoring to FUN components. See `.cursor/rules/fun-design-system.mdc` for more detail.
 
 ## Support requests (in-app)
