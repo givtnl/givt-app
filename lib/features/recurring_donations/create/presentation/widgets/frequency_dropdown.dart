@@ -7,16 +7,20 @@ import 'package:givt_app/l10n/l10n.dart';
 
 class FrequencyDropdown extends StatelessWidget {
   const FrequencyDropdown({
-    required this.value, required this.onChanged, super.key,
+    required this.value,
+    required this.onChanged,
+    this.label,
+    super.key,
   });
 
   final overview.Frequency? value;
   final ValueChanged<overview.Frequency> onChanged;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    
+
     final frequencyOptions = [
       overview.Frequency.weekly,
       overview.Frequency.monthly,
@@ -26,6 +30,7 @@ class FrequencyDropdown extends StatelessWidget {
     ];
 
     return FunInputDropdown<overview.Frequency>(
+      label: label,
       value: value,
       items: frequencyOptions,
       hint: Text(locals.recurringDonationsCreateFrequencyHint),
@@ -37,7 +42,10 @@ class FrequencyDropdown extends StatelessWidget {
     );
   }
 
-  String _getFrequencyDisplayText(overview.Frequency frequency, AppLocalizations locals) {
+  String _getFrequencyDisplayText(
+    overview.Frequency frequency,
+    AppLocalizations locals,
+  ) {
     switch (frequency) {
       case overview.Frequency.weekly:
         return locals.recurringDonationsFrequenciesWeekly;
@@ -54,4 +62,4 @@ class FrequencyDropdown extends StatelessWidget {
         return '';
     }
   }
-} 
+}

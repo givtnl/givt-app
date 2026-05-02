@@ -7,7 +7,6 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step2_set_amount_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_amount_ui_model.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step3_set_duration_page.dart';
@@ -18,7 +17,6 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class Step2SetAmountPage extends StatefulWidget {
@@ -100,12 +98,8 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),
-              LabelMediumText(
-                context.l10n.recurringDonationsFrequencyTitle,
-                color: FunTheme.of(context).primary40,
-              ),
-              const SizedBox(height: 8),
               FrequencyDropdown(
+                label: context.l10n.recurringDonationsFrequencyTitle,
                 value: uiModel.selectedFrequency,
                 onChanged: (value) {
                   _cubit.selectFrequency(value);
@@ -120,12 +114,8 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                 },
               ),
               const SizedBox(height: 24),
-              LabelMediumText(
-                context.l10n.recurringDonationsAmountTitle,
-                color: FunTheme.of(context).primary40,
-              ),
-              const SizedBox(height: 8),
-              OutlinedTextFormField(
+              FunInput(
+                label: context.l10n.recurringDonationsAmountTitle,
                 controller: _amountController,
                 hintText: context.l10n.recurringDonationsCreateStep2AmountHint,
                 keyboardType: const TextInputType.numberWithOptions(
@@ -139,6 +129,7 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                 prefixText: Util.getCurrencySymbol(
                   countryCode: context.read<AuthCubit>().state.user.country,
                 ),
+                textInputAction: TextInputAction.done,
                 onChanged: (value) {
                   _cubit.enterAmount(value);
 
@@ -155,7 +146,9 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
               FunButton(
                 text: context.l10n.buttonContinue,
                 isDisabled: !uiModel.isContinueEnabled,
-                analyticsEvent: AnalyticsEventName.recurringStep2SetAmountContinueClicked.toEvent(
+                analyticsEvent: AnalyticsEventName
+                    .recurringStep2SetAmountContinueClicked
+                    .toEvent(
                   parameters: {
                     AnalyticsHelper.amountKey: uiModel.amount,
                     'frequency': uiModel.selectedFrequency?.name ?? '',
