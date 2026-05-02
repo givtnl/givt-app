@@ -16,18 +16,21 @@ class AppLocalizationsNl extends AppLocalizations {
       'Hé gulle gever, dit bedrag is hoger dan je geeflimiet. Pas de limiet aan of verlaag het bedrag.';
 
   @override
-  String get slimPayInformation =>
-      'Om het geven zo makkelijk mogelijk te maken, vragen we je een SEPA-machtiging te tekenen. Dit hoef je maar één keer te doen.';
-
-  @override
   String get buttonContinue => 'Doorgaan';
 
   @override
-  String get slimPayInfoDetail =>
-      'Givt werkt samen met Better World Payments voor het verwerken van transacties. Better World Payments is gespecialiseerd in het verwerken van machtigingen en automatische incasso’s voor digitale platforms. Dit doet Better World Payments voor Givt tegen de laagste kosten in de markt en met hoge snelheid.\n\nBetter World Payments is voor Givt de ideale partner omdat zij het geven zonder contant geld eenvoudig en veilig maakt. \n\nHet geïncasseerde geld wordt verzameld op een rekening bij Better World Payments. Givt zorgt ervoor dat het geld verdeeld wordt.';
+  String get mandateIntroTitleSepa => 'Je machtiging instellen';
 
   @override
-  String get slimPayInfoDetailTitle => 'Wat is Better World Payments?';
+  String get mandateIntroTitleUk => 'Je automatische incasso instellen';
+
+  @override
+  String get mandateIntroBodySepa =>
+      'Koppel je rekening veilig zodat je eenvoudig kunt geven. Je bank noemt dit misschien een doorlopende incasso, maar we innen alleen geld als je geeft.';
+
+  @override
+  String get mandateIntroBodyUk =>
+      'Bij elke gift halen we het bedrag per automatische incasso binnen. Je bank noemt dit misschien een doorlopende incasso, maar we innen alleen geld als je geeft.';
 
   @override
   String get unregisterButton => 'Mijn account opzeggen';
@@ -668,6 +671,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tryAgain => 'Opnieuw proberen';
 
   @override
+  String get flowGenericErrorContactSupport => 'Contact opnemen';
+
+  @override
+  String get flowGenericErrorGoToHome => 'Naar home';
+
+  @override
   String get wrongCredentials =>
       'Dit e-mailadres of wachtwoord komt ons niet bekend voor. Is het mogelijk dat je een ander e-mailadres en/of wachtwoord hebt opgegeven?';
 
@@ -789,10 +798,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String givtNotEnough(Object value0) {
     return 'Helaas, we kunnen alleen bedragen boven $value0 verwerken.';
   }
-
-  @override
-  String get slimPayInformationPart2 =>
-      'We incasseren alleen wanneer je ervoor kiest om te geven. Omdat we met machtigingen werken, heb je ook de optie om een gift later te herroepen als dat nodig is.';
 
   @override
   String get unregister => 'Account opzeggen';
@@ -2767,6 +2772,41 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get signMandateTitle => 'Machtiging tekenen';
+
+  @override
+  String get signMandateConfirmTitle => 'Controleer je gegevens';
+
+  @override
+  String get signMandateRowAccountHolder => 'Rekeninghouder';
+
+  @override
+  String get signMandateRowEmail => 'E-mail';
+
+  @override
+  String get signMandateRowAddress => 'Adres';
+
+  @override
+  String get signMandateRowBankDetails => 'Bankgegevens';
+
+  @override
+  String get signMandateRowSortCode => 'Sortcode';
+
+  @override
+  String get signMandateRowBankAccountNumber => 'Rekeningnummer';
+
+  @override
+  String get signMandateSepaFooter =>
+      'Als je doorgaat, onderteken je een SEPA e-machtiging waarmee je Givt machtigt om giften van je bankrekening te innen. Een kopie van deze machtiging wordt naar je e-mail gestuurd.';
+
+  @override
+  String get signMandateLinkBankButton => 'Koppel mijn bankrekening';
+
+  @override
+  String get signMandateUkDdFooterBeforeLink =>
+      'Door te gaan machtig je Givt Ltd om alleen bij een gift geld te innen, in overeenstemming met de ';
+
+  @override
+  String get signMandateUkDdGuaranteeLink => 'Direct Debit-garantie.';
 
   @override
   String get giftAidYourDonationsTitle => 'Gift Aid op je giften';

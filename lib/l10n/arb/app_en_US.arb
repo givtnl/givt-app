@@ -5,10 +5,27 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.",
   "buttonContinue": "Continue",
-  "slimPayInfoDetail": "Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.",
-  "slimPayInfoDetailTitle": "What is Better World Payments?",
+  "mandateIntroTitleSepa": "Set up your mandate",
+  "@mandateIntroTitleSepa": {
+    "description": "Title on EU/SEPA mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroTitleUk": "Set up your Direct Debit",
+  "@mandateIntroTitleUk": {
+    "description": "Title on UK Direct Debit mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroBodySepa": "Securely link your account so you can easily donate. Your bank may call this recurring, but we only collect money when you give.",
+  "@mandateIntroBodySepa": {
+    "description": "Body copy on EU/SEPA mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroBodyUk": "Each time you donate, we collect the payment via Direct Debit. Your bank may call this recurring, but we only collect money when you give.",
+  "@mandateIntroBodyUk": {
+    "description": "Body copy on UK Direct Debit mandate setup intro screen",
+    "type": "text"
+  },
   "unregisterButton": "Terminate my account",
   "unregisterUnderstood": "I understand",
   "givtIsBeingProcessed": "Thank you for your Givt to {value0}!",
@@ -346,6 +363,16 @@
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
     "type": "text"
   },
+  "flowGenericErrorContactSupport": "Contact support",
+  "@flowGenericErrorContactSupport": {
+    "description": "Support action on shared flow error screen (opens contact sheet)",
+    "type": "text"
+  },
+  "flowGenericErrorGoToHome": "Go to home",
+  "@flowGenericErrorGoToHome": {
+    "description": "Leave shared flow error screen to app home",
+    "type": "text"
+  },
   "wrongCredentials": "Invalid email address or password. Is it possible that you registered with a different email account?",
   "@wrongCredentials": {
     "description": "Kan dit leuker? \n  Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert",
@@ -521,7 +548,6 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.",
   "unregister": "Terminate account",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1268,6 +1294,17 @@
   "reviewDonationsProcessedTitle": "Your donations are being processed",
   "reviewDonationsProcessedDescription": "We’ll collect {amount} in one transaction within {days} business days. Check the status in donation history.",
   "signMandateTitle": "Sign mandate",
+  "signMandateConfirmTitle": "Confirm your details",
+  "signMandateRowAccountHolder": "Account holder",
+  "signMandateRowEmail": "Email",
+  "signMandateRowAddress": "Address",
+  "signMandateRowBankDetails": "Bank details",
+  "signMandateRowSortCode": "Sort code",
+  "signMandateRowBankAccountNumber": "Bank account number",
+  "signMandateSepaFooter": "By continuing, you sign a SEPA eMandate authorising Givt to collect donations from your bank account. A copy of this mandate will be sent to your email.",
+  "signMandateLinkBankButton": "Link my bank account",
+  "signMandateUkDdFooterBeforeLink": "By continuing, you authorise Givt Ltd to collect payments only when you make a donation, in accordance with the ",
+  "signMandateUkDdGuaranteeLink": "Direct Debit Guarantee.",
   "giftAidYourDonationsTitle": "Gift Aid your donations",
   "giftAidShortExplanation": "Donating with Gift Aid means charities can claim an extra 25p for every £1 you give. It will not cost you any more.",
   "giftAidExampleTitle": "For example",

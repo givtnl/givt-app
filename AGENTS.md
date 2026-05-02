@@ -46,6 +46,12 @@ The app has **two main variants**; many features exist in both with different im
 
 When a task mentions “EU” or “US” (or “family”), work in the corresponding feature folder. Do not assume one implementation applies to both.
 
+## Registration mandate flow (EU / UK, main app)
+
+- **Intro**: [`MandateExplanationPage`](lib/features/registration/pages/mandate_explanation_page.dart) — SEPA vs UK Direct Debit intro; continues to sign step.
+- **Confirm & sign**: [`SignMandatePage`](lib/features/registration/pages/sign_mandate_page.dart) — single screen; rows and footer depend on `Country.unitedKingdomCodes()`. Reuses account **change** bottom sheets from [`personal_info_edit_sheets.dart`](lib/features/account_details/personal_info_edit_sheets.dart). Widget pieces live under [`lib/features/registration/widgets/`](lib/features/registration/widgets/) (`SignMandateDetailRow`, `SignMandateUkDdFooter`).
+- **Errors**: mandate failures can route to [`FlowGenericErrorPage`](lib/shared/pages/flow_generic_error_page.dart) via [`Pages.flowGenericError`](lib/app/routes/pages.dart).
+
 ## Design system (FUN)
 
 - **Use FUN for UI**: Use the FUN design system for all new and refactored UI; keep components consistent.
@@ -68,6 +74,13 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 - **Do not** open the device mail app for “contact support” flows in the main app.
 - Use **`InfraCubit.contactSupportSafely()`** with `message`, `appLanguage`, `email`, `guid` (from `AuthCubit.state.user`). Same pattern as the About Givt / Contact bottom sheet.
 - Include any relevant context in the message (e.g. “Requested new email address: …” when the user tried to change email).
+
+## Shared flow error screen (reusable)
+
+- **Purpose**: Full-screen error with **Try again**, **Contact support** (opens the localized About Givt / contact bottom sheet), and **Go to home**.
+- **UI**: [`FlowGenericErrorPage`](lib/shared/pages/flow_generic_error_page.dart); pass [`FlowGenericErrorExtra`](lib/shared/pages/flow_generic_error_extra.dart) as `GoRouterState.extra` (includes **`screenTitle`** for the app bar, plus **`title` / `message`** for the body, **`errorReason`** for support metadata, and **`onTryAgain` / `onGoHome`** callbacks — often capture `RegistrationBloc` or similar before `pushNamed` so callbacks work without the bloc in the subtree).
+- **Route**: [`Pages.flowGenericError`](lib/app/routes/pages.dart) (registered under the home shell in [`app_router.dart`](lib/app/routes/app_router.dart)).
+- **Support metadata**: When opening contact from this screen, pass `AboutGivtBottomSheet.show` `metadata` with at least **`Flow`** (e.g. `Onboarding`) and **`Error reason`** (a short technical code such as `failure`, `conflict`). These are appended to the support email body by [`InfraCubit`](lib/shared/bloc/infra/infra_cubit.dart).
 
 ## Backend / API
 

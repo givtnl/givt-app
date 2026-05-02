@@ -5,10 +5,27 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "Um das Geben so einfach wie möglich zu machen, bitten wir dich, ein SEPA-Mandat zu unterschreiben. Das musst du nur einmal tun.",
   "buttonContinue": "Continue",
-  "slimPayInfoDetail": "Givt arbeitet bei der Ausführung der Transaktionen mit Better World Payments zusammen. Better World Payments ist spezialisiert auf die Abwicklung von Mandaten und automatischen Geldüberweisungen auf digitalen Plattformen. Better World Payments führt diese Aufträge für Givt zu den niedrigsten Preisen auf diesem Markt und mit hoher Geschwindigkeit aus.\n\nBetter World Payments ist ein idealer Partner für Givt, weil sie das bargeldlose Spenden sehr einfach und sicher machen. \n\nDas Geld wird auf einem Better World Payments-Konto gesammelt. \nGivt wird sicherstellen, dass das Geld korrekt ausgegeben wird.",
-  "slimPayInfoDetailTitle": "Was ist Better World Payments?`",
+  "mandateIntroTitleSepa": "Richte dein Mandat ein",
+  "@mandateIntroTitleSepa": {
+    "description": "Title on EU/SEPA mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroTitleUk": "Richte dein Lastschrift ein",
+  "@mandateIntroTitleUk": {
+    "description": "Title on UK Direct Debit mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroBodySepa": "Verknüpfe dein Konto sicher, damit du einfach spenden kannst. Deine Bank nennt das vielleicht wiederkehrend, aber wir buchen nur Geld ab, wenn du gibst.",
+  "@mandateIntroBodySepa": {
+    "description": "Body copy on EU/SEPA mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroBodyUk": "Bei jeder Spende ziehen wir den Betrag per Lastschrift ein. Deine Bank nennt das vielleicht wiederkehrend, aber wir buchen nur Geld ab, wenn du gibst.",
+  "@mandateIntroBodyUk": {
+    "description": "Body copy on UK Direct Debit mandate setup intro screen",
+    "type": "text"
+  },
   "unregisterButton": "Meinen Account schließen",
   "unregisterUnderstood": "Ich verstehe",
   "givtIsBeingProcessed": "Danke für deine Spende an {value0}!\n Den Status kannst du in der Übersicht überprüfen.",
@@ -346,6 +363,16 @@
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
     "type": "text"
   },
+  "flowGenericErrorContactSupport": "Support kontaktieren",
+  "@flowGenericErrorContactSupport": {
+    "description": "Support action on shared flow error screen (opens contact sheet)",
+    "type": "text"
+  },
+  "flowGenericErrorGoToHome": "Zur Startseite",
+  "@flowGenericErrorGoToHome": {
+    "description": "Leave shared flow error screen to app home",
+    "type": "text"
+  },
   "wrongCredentials": "Ungültige E-Mail-Adresse oder Passwort. Ist es möglich, dass du dich mit einem anderen E-Mail-Konto registriert hast?",
   "@wrongCredentials": {
     "description": "Kan dit leuker? \n  Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert",
@@ -521,7 +548,6 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "Wir buchen nur ab, wenn du dich entscheidest zu geben. Da wir mit Mandaten arbeiten, hast du die Möglichkeit, eine Spende später zu widerrufen, falls nötig.",
   "unregister": "Account löschen",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1281,6 +1307,17 @@
   "reviewDonationsProcessedTitle": "Deine Spenden werden verarbeitet",
   "reviewDonationsProcessedDescription": "Wir buchen {amount} in einer Summe innerhalb von {days} Werktagen ab. Überprüfe den Status in der Spendenhistorie.",
   "signMandateTitle": "Mandat unterschreiben",
+  "signMandateConfirmTitle": "Daten bestätigen",
+  "signMandateRowAccountHolder": "Kontoinhaber",
+  "signMandateRowEmail": "E-Mail",
+  "signMandateRowAddress": "Adresse",
+  "signMandateRowBankDetails": "Bankverbindung",
+  "signMandateRowSortCode": "Bankleitzahl",
+  "signMandateRowBankAccountNumber": "Kontonummer",
+  "signMandateSepaFooter": "Wenn du fortfährst, unterzeichnest du ein SEPA-eMandat und ermächtigst Givt, Spenden von deinem Bankkonto einzuziehen. Eine Kopie dieses Mandats wird dir per E-Mail zugesandt.",
+  "signMandateLinkBankButton": "Bankkonto verknüpfen",
+  "signMandateUkDdFooterBeforeLink": "Wenn du fortfährst, ermächtigst du Givt Ltd, Zahlungen nur dann einzuziehen, wenn du spendest, gemäß der ",
+  "signMandateUkDdGuaranteeLink": "Direct-Debit-Garantie.",
   "giftAidYourDonationsTitle": "Gift Aid für deine Spenden",
   "giftAidShortExplanation": "Mit Gift Aid können Wohltätigkeitsorganisationen für jedes gespendete Pfund 25 Pence zusätzlich erhalten. Es kostet dich nichts extra.",
   "giftAidExampleTitle": "Zum Beispiel",

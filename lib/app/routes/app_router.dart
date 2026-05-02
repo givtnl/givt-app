@@ -55,6 +55,8 @@ import 'package:givt_app/features/splash/pages/splash_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/pages/flow_generic_error_extra.dart';
+import 'package:givt_app/shared/pages/flow_generic_error_page.dart';
 import 'package:givt_app/shared/pages/redirect_to_browser_page.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -278,6 +280,14 @@ class AppRouter {
             builder: (_, state) => const RegistrationCompletedPage(),
           ),
           GoRoute(
+            path: Pages.flowGenericError.path,
+            name: Pages.flowGenericError.name,
+            builder: (context, state) {
+              final extra = state.extra! as FlowGenericErrorExtra;
+              return FlowGenericErrorPage(extra: extra);
+            },
+          ),
+          GoRoute(
             path: Pages.reviewDonations.path,
             name: Pages.reviewDonations.name,
             builder: (context, state) => const ReviewDonationsPage(),
@@ -296,7 +306,7 @@ class AppRouter {
                 name: Pages.signSepaMandate.name,
                 builder: (context, state) => BlocProvider.value(
                   value: state.extra! as RegistrationBloc,
-                  child: const SignSepaMandatePage(),
+                  child: const SignMandatePage(),
                 ),
               ),
               GoRoute(
@@ -308,7 +318,7 @@ class AppRouter {
                     name: Pages.signBacsMandate.name,
                     builder: (context, state) => BlocProvider.value(
                       value: state.extra! as RegistrationBloc,
-                      child: const SignBacsMandatePage(),
+                      child: const SignMandatePage(),
                     ),
                   ),
                   GoRoute(
