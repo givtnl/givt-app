@@ -1299,5 +1299,39 @@
   "giftAidAboutWhoCanUse": "¿Quién puede usar Gift Aid?",
   "giftAidAboutWhyPayDifference": "¿Por qué podría tener que pagar la diferencia?",
   "giftAidAboutDeclaration": "Declaración de Gift Aid:",
+  "manageGiftAidTitle": "Gestionar Gift Aid",
+  "manageGiftAidSectionTitle": "Gift Aid",
+  "manageGiftAidStatusActive": "Activo",
+  "manageGiftAidStatusInactive": "Inactivo",
+  "manageGiftAidIntroLead": "Donar con Gift Aid significa que ",
+  "manageGiftAidIntroEmphasis": "las organizaciones benéficas e iglesias pueden reclamar 25p extra por cada £1 que das.",
+  "manageGiftAidIntroTail": " No te costará más.",
+  "manageGiftAidImpactInTaxYear": "Tu impacto de Gift Aid en el año fiscal {year}",
+  "@manageGiftAidImpactInTaxYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "manageGiftAidYouHaveGiven": "Has donado:",
+  "manageGiftAidExtraAddedWithGiftAid": "Extra añadido con Gift Aid:",
+  "manageGiftAidTotalImpact": "Impacto total:",
+  "manageGiftAidDeactivate": "Desactivar Gift Aid",
+  "manageGiftAidTurnOffTitle": "¿Desactivar Gift Aid?",
+  "manageGiftAidTurnOffBody": "Las donaciones futuras no incluirán el 25% adicional de Gift Aid.\nPuedes volver a activarlo en cualquier momento.",
+  "manageGiftAidKeepActive": "Mantener Gift Aid activo",
+  "manageGiftAidTurnOff": "Desactivar Gift Aid",
+  "manageGiftAidOrangeCardTitle": "Activa Gift Aid para aumentar tu impacto",
+  "manageGiftAidGivingInTaxYear": "Donaciones en el año fiscal {year}:",
+  "@manageGiftAidGivingInTaxYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "manageGiftAidPotentialBonus": "Bonificación potencial de Gift Aid (25%):",
+  "manageGiftAidPotentialTotalImpact": "Con Gift Aid, tu impacto total sería:",
   "scannerDownloadingModule": "Preparando el escáner... Esto puede tardar un momento."
 }

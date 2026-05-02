@@ -2819,6 +2819,74 @@ class AppLocalizationsEn extends AppLocalizations {
   String get giftAidAboutDeclaration => 'Gift Aid declaration:';
 
   @override
+  String get manageGiftAidTitle => 'Manage Gift Aid';
+
+  @override
+  String get manageGiftAidSectionTitle => 'Gift Aid';
+
+  @override
+  String get manageGiftAidStatusActive => 'Active';
+
+  @override
+  String get manageGiftAidStatusInactive => 'Inactive';
+
+  @override
+  String get manageGiftAidIntroLead => 'Donating with Gift Aid means ';
+
+  @override
+  String get manageGiftAidIntroEmphasis =>
+      'charities and churches can claim an extra 25p for every £1 you give.';
+
+  @override
+  String get manageGiftAidIntroTail => ' It will not cost you any more.';
+
+  @override
+  String manageGiftAidImpactInTaxYear(String year) {
+    return 'Your Gift Aid impact in tax year $year';
+  }
+
+  @override
+  String get manageGiftAidYouHaveGiven => 'You have given:';
+
+  @override
+  String get manageGiftAidExtraAddedWithGiftAid => 'Extra added with Gift Aid:';
+
+  @override
+  String get manageGiftAidTotalImpact => 'Total impact:';
+
+  @override
+  String get manageGiftAidDeactivate => 'Deactivate Gift Aid';
+
+  @override
+  String get manageGiftAidTurnOffTitle => 'Turn off Gift Aid?';
+
+  @override
+  String get manageGiftAidTurnOffBody =>
+      'Future donations won’t include the 25% Gift Aid addition.\nYou can turn it back on anytime.';
+
+  @override
+  String get manageGiftAidKeepActive => 'Keep Gift Aid active';
+
+  @override
+  String get manageGiftAidTurnOff => 'Turn off Gift Aid';
+
+  @override
+  String get manageGiftAidOrangeCardTitle =>
+      'Activate Gift Aid to increase your impact';
+
+  @override
+  String manageGiftAidGivingInTaxYear(String year) {
+    return 'Giving in tax year $year:';
+  }
+
+  @override
+  String get manageGiftAidPotentialBonus => 'Potential Gift Aid bonus (25%):';
+
+  @override
+  String get manageGiftAidPotentialTotalImpact =>
+      'With Gift Aid, your total impact would be:';
+
+  @override
   String get scannerDownloadingModule =>
       'Preparing scanner... This might take a moment.';
 }
@@ -5590,6 +5658,74 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get giftAidAboutDeclaration => 'Gift Aid declaration:';
+
+  @override
+  String get manageGiftAidTitle => 'Manage Gift Aid';
+
+  @override
+  String get manageGiftAidSectionTitle => 'Gift Aid';
+
+  @override
+  String get manageGiftAidStatusActive => 'Active';
+
+  @override
+  String get manageGiftAidStatusInactive => 'Inactive';
+
+  @override
+  String get manageGiftAidIntroLead => 'Donating with Gift Aid means ';
+
+  @override
+  String get manageGiftAidIntroEmphasis =>
+      'charities and churches can claim an extra 25p for every £1 you give.';
+
+  @override
+  String get manageGiftAidIntroTail => ' It will not cost you any more.';
+
+  @override
+  String manageGiftAidImpactInTaxYear(String year) {
+    return 'Your Gift Aid impact in tax year $year';
+  }
+
+  @override
+  String get manageGiftAidYouHaveGiven => 'You have given:';
+
+  @override
+  String get manageGiftAidExtraAddedWithGiftAid => 'Extra added with Gift Aid:';
+
+  @override
+  String get manageGiftAidTotalImpact => 'Total impact:';
+
+  @override
+  String get manageGiftAidDeactivate => 'Deactivate Gift Aid';
+
+  @override
+  String get manageGiftAidTurnOffTitle => 'Turn off Gift Aid?';
+
+  @override
+  String get manageGiftAidTurnOffBody =>
+      'Future donations won’t include the 25% Gift Aid addition.\nYou can turn it back on anytime.';
+
+  @override
+  String get manageGiftAidKeepActive => 'Keep Gift Aid active';
+
+  @override
+  String get manageGiftAidTurnOff => 'Turn off Gift Aid';
+
+  @override
+  String get manageGiftAidOrangeCardTitle =>
+      'Activate Gift Aid to increase your impact';
+
+  @override
+  String manageGiftAidGivingInTaxYear(String year) {
+    return 'Giving in tax year $year:';
+  }
+
+  @override
+  String get manageGiftAidPotentialBonus => 'Potential Gift Aid bonus (25%):';
+
+  @override
+  String get manageGiftAidPotentialTotalImpact =>
+      'With Gift Aid, your total impact would be:';
 
   @override
   String get scannerDownloadingModule =>

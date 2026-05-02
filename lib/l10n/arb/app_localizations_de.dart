@@ -2842,6 +2842,75 @@ class AppLocalizationsDe extends AppLocalizations {
   String get giftAidAboutDeclaration => 'Gift-Aid-Erklärung:';
 
   @override
+  String get manageGiftAidTitle => 'Gift Aid verwalten';
+
+  @override
+  String get manageGiftAidSectionTitle => 'Gift Aid';
+
+  @override
+  String get manageGiftAidStatusActive => 'Aktiv';
+
+  @override
+  String get manageGiftAidStatusInactive => 'Inaktiv';
+
+  @override
+  String get manageGiftAidIntroLead => 'Wenn du mit Gift Aid spendest, ';
+
+  @override
+  String get manageGiftAidIntroEmphasis =>
+      'können gemeinnützige Organisationen und Kirchen für jedes gespendete £1 zusätzlich 25p beanspruchen.';
+
+  @override
+  String get manageGiftAidIntroTail => ' Es kostet dich nicht mehr.';
+
+  @override
+  String manageGiftAidImpactInTaxYear(String year) {
+    return 'Deine Gift-Aid-Wirkung im Steuerjahr $year';
+  }
+
+  @override
+  String get manageGiftAidYouHaveGiven => 'Du hast gespendet:';
+
+  @override
+  String get manageGiftAidExtraAddedWithGiftAid => 'Zusätzlich durch Gift Aid:';
+
+  @override
+  String get manageGiftAidTotalImpact => 'Gesamtwirkung:';
+
+  @override
+  String get manageGiftAidDeactivate => 'Gift Aid deaktivieren';
+
+  @override
+  String get manageGiftAidTurnOffTitle => 'Gift Aid ausschalten?';
+
+  @override
+  String get manageGiftAidTurnOffBody =>
+      'Künftige Spenden enthalten keine 25% Gift Aid mehr.\nDu kannst es jederzeit wieder einschalten.';
+
+  @override
+  String get manageGiftAidKeepActive => 'Gift Aid aktiv lassen';
+
+  @override
+  String get manageGiftAidTurnOff => 'Gift Aid ausschalten';
+
+  @override
+  String get manageGiftAidOrangeCardTitle =>
+      'Aktiviere Gift Aid, um deine Wirkung zu steigern';
+
+  @override
+  String manageGiftAidGivingInTaxYear(String year) {
+    return 'Spenden im Steuerjahr $year:';
+  }
+
+  @override
+  String get manageGiftAidPotentialBonus =>
+      'Potenzieller Gift-Aid-Bonus (25%):';
+
+  @override
+  String get manageGiftAidPotentialTotalImpact =>
+      'Mit Gift Aid wäre deine Gesamtwirkung:';
+
+  @override
   String get scannerDownloadingModule =>
       'Scanner wird vorbereitet... Das kann einen Moment dauern.';
 }

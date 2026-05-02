@@ -2822,6 +2822,76 @@ class AppLocalizationsEs extends AppLocalizations {
   String get giftAidAboutDeclaration => 'Declaración de Gift Aid:';
 
   @override
+  String get manageGiftAidTitle => 'Gestionar Gift Aid';
+
+  @override
+  String get manageGiftAidSectionTitle => 'Gift Aid';
+
+  @override
+  String get manageGiftAidStatusActive => 'Activo';
+
+  @override
+  String get manageGiftAidStatusInactive => 'Inactivo';
+
+  @override
+  String get manageGiftAidIntroLead => 'Donar con Gift Aid significa que ';
+
+  @override
+  String get manageGiftAidIntroEmphasis =>
+      'las organizaciones benéficas e iglesias pueden reclamar 25p extra por cada £1 que das.';
+
+  @override
+  String get manageGiftAidIntroTail => ' No te costará más.';
+
+  @override
+  String manageGiftAidImpactInTaxYear(String year) {
+    return 'Tu impacto de Gift Aid en el año fiscal $year';
+  }
+
+  @override
+  String get manageGiftAidYouHaveGiven => 'Has donado:';
+
+  @override
+  String get manageGiftAidExtraAddedWithGiftAid =>
+      'Extra añadido con Gift Aid:';
+
+  @override
+  String get manageGiftAidTotalImpact => 'Impacto total:';
+
+  @override
+  String get manageGiftAidDeactivate => 'Desactivar Gift Aid';
+
+  @override
+  String get manageGiftAidTurnOffTitle => '¿Desactivar Gift Aid?';
+
+  @override
+  String get manageGiftAidTurnOffBody =>
+      'Las donaciones futuras no incluirán el 25% adicional de Gift Aid.\nPuedes volver a activarlo en cualquier momento.';
+
+  @override
+  String get manageGiftAidKeepActive => 'Mantener Gift Aid activo';
+
+  @override
+  String get manageGiftAidTurnOff => 'Desactivar Gift Aid';
+
+  @override
+  String get manageGiftAidOrangeCardTitle =>
+      'Activa Gift Aid para aumentar tu impacto';
+
+  @override
+  String manageGiftAidGivingInTaxYear(String year) {
+    return 'Donaciones en el año fiscal $year:';
+  }
+
+  @override
+  String get manageGiftAidPotentialBonus =>
+      'Bonificación potencial de Gift Aid (25%):';
+
+  @override
+  String get manageGiftAidPotentialTotalImpact =>
+      'Con Gift Aid, tu impacto total sería:';
+
+  @override
   String get scannerDownloadingModule =>
       'Preparando el escáner... Esto puede tardar un momento.';
 }
@@ -5665,6 +5735,76 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get giftAidAboutDeclaration => 'Declaración de Gift Aid:';
+
+  @override
+  String get manageGiftAidTitle => 'Gestionar Gift Aid';
+
+  @override
+  String get manageGiftAidSectionTitle => 'Gift Aid';
+
+  @override
+  String get manageGiftAidStatusActive => 'Activo';
+
+  @override
+  String get manageGiftAidStatusInactive => 'Inactivo';
+
+  @override
+  String get manageGiftAidIntroLead => 'Donar con Gift Aid significa que ';
+
+  @override
+  String get manageGiftAidIntroEmphasis =>
+      'las organizaciones benéficas e iglesias pueden reclamar 25p extra por cada £1 que das.';
+
+  @override
+  String get manageGiftAidIntroTail => ' No te costará más.';
+
+  @override
+  String manageGiftAidImpactInTaxYear(String year) {
+    return 'Tu impacto de Gift Aid en el año fiscal $year';
+  }
+
+  @override
+  String get manageGiftAidYouHaveGiven => 'Has donado:';
+
+  @override
+  String get manageGiftAidExtraAddedWithGiftAid =>
+      'Extra añadido con Gift Aid:';
+
+  @override
+  String get manageGiftAidTotalImpact => 'Impacto total:';
+
+  @override
+  String get manageGiftAidDeactivate => 'Desactivar Gift Aid';
+
+  @override
+  String get manageGiftAidTurnOffTitle => '¿Desactivar Gift Aid?';
+
+  @override
+  String get manageGiftAidTurnOffBody =>
+      'Las donaciones futuras no incluirán el 25% adicional de Gift Aid.\nPuedes volver a activarlo en cualquier momento.';
+
+  @override
+  String get manageGiftAidKeepActive => 'Mantener Gift Aid activo';
+
+  @override
+  String get manageGiftAidTurnOff => 'Desactivar Gift Aid';
+
+  @override
+  String get manageGiftAidOrangeCardTitle =>
+      'Activa Gift Aid para aumentar tu impacto';
+
+  @override
+  String manageGiftAidGivingInTaxYear(String year) {
+    return 'Donaciones en el año fiscal $year:';
+  }
+
+  @override
+  String get manageGiftAidPotentialBonus =>
+      'Bonificación potencial de Gift Aid (25%):';
+
+  @override
+  String get manageGiftAidPotentialTotalImpact =>
+      'Con Gift Aid, tu impacto total sería:';
 
   @override
   String get scannerDownloadingModule =>

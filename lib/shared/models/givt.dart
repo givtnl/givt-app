@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
+import 'package:givt_app/utils/uk_gift_aid_tax_year.dart';
 
 class Givt extends Equatable {
   const Givt({
@@ -21,20 +21,8 @@ class Givt extends Equatable {
   });
 
   factory Givt.fromJson(Map<String, dynamic> json) {
-    var taxYear = 0;
     final timestamp = DateTime.parse(json['Timestamp'] as String);
-    final month = int.parse(
-      DateFormat('M').format(timestamp),
-    );
-    final day = int.parse(
-      DateFormat('d').format(timestamp),
-    );
-    taxYear = int.parse(
-      DateFormat('yyyy').format(timestamp),
-    );
-    if (month <= 3 || (month == 4 && day <= 5)) {
-      taxYear = int.parse(DateFormat('yyyy').format(timestamp)) - 1;
-    }
+    final taxYear = ukGiftAidTaxYearIndexForDate(timestamp);
     final allocationRaw = json['AllocationName'];
     String? allocationName;
     if (allocationRaw is String) {
@@ -46,9 +34,8 @@ class Givt extends Equatable {
       amount: json['Amount'] as double,
       collectGroupId: json['CollectGroupId'] as String,
       organisationName: json['OrgName'] as String,
-      organisationTaxDeductible: json.containsKey('OrganisationTaxDeductible')
-          ? json['OrganisationTaxDeductible'] as bool
-          : false,
+      organisationTaxDeductible:
+          (json['OrganisationTaxDeductible'] as bool?) ?? false,
       collectId: int.parse(json['CollectId'] as String),
       isGiftAidEnabled: json['GiftAidEnabled'] as bool,
       status: json['Status'] as int,

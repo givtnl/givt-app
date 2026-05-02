@@ -2830,6 +2830,74 @@ class AppLocalizationsNl extends AppLocalizations {
   String get giftAidAboutDeclaration => 'Gift Aid-verklaring:';
 
   @override
+  String get manageGiftAidTitle => 'Gift Aid beheren';
+
+  @override
+  String get manageGiftAidSectionTitle => 'Gift Aid';
+
+  @override
+  String get manageGiftAidStatusActive => 'Actief';
+
+  @override
+  String get manageGiftAidStatusInactive => 'Inactief';
+
+  @override
+  String get manageGiftAidIntroLead => 'Als je met Gift Aid geeft, ';
+
+  @override
+  String get manageGiftAidIntroEmphasis =>
+      'kunnen goede doelen en kerken 25p extra claimen voor elke £1 die jij geeft.';
+
+  @override
+  String get manageGiftAidIntroTail => ' Het kost jou niets extra.';
+
+  @override
+  String manageGiftAidImpactInTaxYear(String year) {
+    return 'Je Gift Aid-effect in belastingjaar $year';
+  }
+
+  @override
+  String get manageGiftAidYouHaveGiven => 'Je hebt gegeven:';
+
+  @override
+  String get manageGiftAidExtraAddedWithGiftAid => 'Extra via Gift Aid:';
+
+  @override
+  String get manageGiftAidTotalImpact => 'Totale impact:';
+
+  @override
+  String get manageGiftAidDeactivate => 'Gift Aid uitschakelen';
+
+  @override
+  String get manageGiftAidTurnOffTitle => 'Gift Aid uitzetten?';
+
+  @override
+  String get manageGiftAidTurnOffBody =>
+      'Toekomstige giften krijgen geen 25% Gift Aid meer.\nJe kunt het altijd weer inschakelen.';
+
+  @override
+  String get manageGiftAidKeepActive => 'Gift Aid actief houden';
+
+  @override
+  String get manageGiftAidTurnOff => 'Gift Aid uitzetten';
+
+  @override
+  String get manageGiftAidOrangeCardTitle =>
+      'Schakel Gift Aid in om je impact te vergroten';
+
+  @override
+  String manageGiftAidGivingInTaxYear(String year) {
+    return 'Geven in belastingjaar $year:';
+  }
+
+  @override
+  String get manageGiftAidPotentialBonus => 'Potentiële Gift Aid-bonus (25%):';
+
+  @override
+  String get manageGiftAidPotentialTotalImpact =>
+      'Met Gift Aid zou je totale impact zijn:';
+
+  @override
   String get scannerDownloadingModule =>
       'Scanner voorbereiden... Dit kan even duren.';
 }

@@ -17,6 +17,11 @@ alwaysApply: true
 - Overlays: `FunBottomSheet`, `FunModal`
 - Inputs: `FunCounter`
 
+## Screen layout (`FunScaffold`)
+- **`FunScaffold`** (`lib/shared/widgets/fun_scaffold.dart`) applies **`SafeArea`** with default **`minimumPadding`** `EdgeInsets.fromLTRB(24, 24, 24, 40)` around **`body`**.
+- **Do not** stack the same inset again (e.g. `Padding` or `SingleChildScrollView(padding: …)` with 24 horizontal / 40 bottom on the root `body`); use spacing between child widgets instead.
+- **Edge-to-edge**: pass **`minimumPadding: EdgeInsets.zero`** (and **`withSafeArea: false`** if needed) and handle insets yourself.
+
 ## Typography
 - Use specialized text components:
   - `TitleMediumText`

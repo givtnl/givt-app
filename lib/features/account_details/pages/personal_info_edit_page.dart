@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/change_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_bank_details_bottom_sheet.dart';
-import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_name_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
@@ -15,9 +15,9 @@ import 'package:givt_app/features/family/features/reset_password/presentation/pa
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/shared/pages/gift_aid_page.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -77,12 +77,12 @@ class PersonalInfoEditPage extends StatelessWidget {
             );
           }
 
-          /// if change is success refresh user that used in the cubit
-          /// (email change shows success state inside the sheet, then Done pops)
+          /// On success, refresh auth user (email change uses sheet + Done).
           if (state.status == PersonalInfoEditStatus.success) {
-            context.read<AuthCubit>().refreshUser().whenComplete(
-              () => context.pop(),
-            );
+            context.read<AuthCubit>().refreshUser().whenComplete(() {
+              if (!context.mounted) return;
+              context.pop();
+            });
           }
         },
         child: SingleChildScrollView(
@@ -149,10 +149,8 @@ class PersonalInfoEditPage extends StatelessWidget {
                   color: AppTheme.givtLightGreen,
                 ),
                 value:
-                    '${user.address}\n${user.postalCode} ${user.city}, ${Country.getCountry(
-                      user.country,
-                      locals,
-                    )}',
+                    '${user.address}\n${user.postalCode} ${user.city}, '
+                    '${Country.getCountry(user.country, locals)}',
                 onTap: () {
                   AnalyticsHelper.logEvent(
                     eventName: AnalyticsEventName.onInfoRowClicked,
@@ -231,17 +229,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                     eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'gift_aid'},
                   );
-                  _showModalBottomSheet(
-                    context,
-                    bottomSheet: GiftAidPage(
-                      onGiftAidChanged: (useGiftAid) =>
-                          context.read<PersonalInfoEditBloc>().add(
-                            PersonalInfoEditGiftAid(
-                              isGiftAidEnabled: useGiftAid,
-                            ),
-                          ),
-                    ),
-                  );
+                  context.pushNamed(Pages.manageGiftAid.name);
                 },
               ),
               _buildInfoRow(
@@ -296,7 +284,7 @@ class PersonalInfoEditPage extends StatelessWidget {
           onTap: onClose,
         ),
       ],
-    ).show(context, isDismissible: false);
+    ).show(context);
   }
 
   void _showEmailAlreadyInUseModal(
@@ -351,7 +339,7 @@ class PersonalInfoEditPage extends StatelessWidget {
           onTap: onClose,
         ),
       ],
-    ).show(context, isDismissible: false);
+    ).show(context);
   }
 
   void _showSupportRequestConfirmationModal(BuildContext context) {

@@ -63,6 +63,15 @@ enum Pages {
   overview(path: 'overview', name: 'OVERVIEW'),
   donationOverview(path: 'donation-overview', name: 'DONATION-OVERVIEW'),
   personalInfoEdit(path: 'personal-info-edit', name: 'PERSONAL-INFO-EDIT'),
+  manageGiftAid(path: 'manage-gift-aid', name: 'MANAGE-GIFT-AID'),
+  giftAidDeactivatedSuccess(
+    path: 'gift-aid-deactivated-success',
+    name: 'GIFT-AID-DEACTIVATED-SUCCESS',
+  ),
+  giftAidActivatedSuccess(
+    path: 'gift-aid-activated-success',
+    name: 'GIFT-AID-ACTIVATED-SUCCESS',
+  ),
   unregister(path: 'unregister', name: 'UNREGISTER'),
   personalSummary(path: 'personal-summary', name: 'PERSONAL-SUMMARY'),
   yearlyOverview(path: 'yearly-overview', name: 'YEARLY-OVERVIEW'),
@@ -80,7 +89,10 @@ enum Pages {
     name: 'DONATION-DETAIL',
   ),
   permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
-  platformContribution(path: 'platform-contribution', name: 'PLATFORM-CONTRIBUTION'),
+  platformContribution(
+    path: 'platform-contribution',
+    name: 'PLATFORM-CONTRIBUTION',
+  ),
   reviewDonations(
     path: 'review-donations',
     name: 'REVIEW-DONATIONS',

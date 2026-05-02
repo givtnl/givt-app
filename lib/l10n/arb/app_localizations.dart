@@ -5054,6 +5054,126 @@ abstract class AppLocalizations {
   /// **'Gift Aid declaration:'**
   String get giftAidAboutDeclaration;
 
+  /// No description provided for @manageGiftAidTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Gift Aid'**
+  String get manageGiftAidTitle;
+
+  /// No description provided for @manageGiftAidSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Aid'**
+  String get manageGiftAidSectionTitle;
+
+  /// No description provided for @manageGiftAidStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get manageGiftAidStatusActive;
+
+  /// No description provided for @manageGiftAidStatusInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get manageGiftAidStatusInactive;
+
+  /// No description provided for @manageGiftAidIntroLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Donating with Gift Aid means '**
+  String get manageGiftAidIntroLead;
+
+  /// No description provided for @manageGiftAidIntroEmphasis.
+  ///
+  /// In en, this message translates to:
+  /// **'charities and churches can claim an extra 25p for every £1 you give.'**
+  String get manageGiftAidIntroEmphasis;
+
+  /// No description provided for @manageGiftAidIntroTail.
+  ///
+  /// In en, this message translates to:
+  /// **' It will not cost you any more.'**
+  String get manageGiftAidIntroTail;
+
+  /// No description provided for @manageGiftAidImpactInTaxYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Gift Aid impact in tax year {year}'**
+  String manageGiftAidImpactInTaxYear(String year);
+
+  /// No description provided for @manageGiftAidYouHaveGiven.
+  ///
+  /// In en, this message translates to:
+  /// **'You have given:'**
+  String get manageGiftAidYouHaveGiven;
+
+  /// No description provided for @manageGiftAidExtraAddedWithGiftAid.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra added with Gift Aid:'**
+  String get manageGiftAidExtraAddedWithGiftAid;
+
+  /// No description provided for @manageGiftAidTotalImpact.
+  ///
+  /// In en, this message translates to:
+  /// **'Total impact:'**
+  String get manageGiftAidTotalImpact;
+
+  /// No description provided for @manageGiftAidDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Gift Aid'**
+  String get manageGiftAidDeactivate;
+
+  /// No description provided for @manageGiftAidTurnOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off Gift Aid?'**
+  String get manageGiftAidTurnOffTitle;
+
+  /// No description provided for @manageGiftAidTurnOffBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Future donations won’t include the 25% Gift Aid addition.\nYou can turn it back on anytime.'**
+  String get manageGiftAidTurnOffBody;
+
+  /// No description provided for @manageGiftAidKeepActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Gift Aid active'**
+  String get manageGiftAidKeepActive;
+
+  /// No description provided for @manageGiftAidTurnOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off Gift Aid'**
+  String get manageGiftAidTurnOff;
+
+  /// No description provided for @manageGiftAidOrangeCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate Gift Aid to increase your impact'**
+  String get manageGiftAidOrangeCardTitle;
+
+  /// No description provided for @manageGiftAidGivingInTaxYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Giving in tax year {year}:'**
+  String manageGiftAidGivingInTaxYear(String year);
+
+  /// No description provided for @manageGiftAidPotentialBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Potential Gift Aid bonus (25%):'**
+  String get manageGiftAidPotentialBonus;
+
+  /// No description provided for @manageGiftAidPotentialTotalImpact.
+  ///
+  /// In en, this message translates to:
+  /// **'With Gift Aid, your total impact would be:'**
+  String get manageGiftAidPotentialTotalImpact;
+
   /// No description provided for @scannerDownloadingModule.
   ///
   /// In en, this message translates to:
