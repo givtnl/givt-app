@@ -517,6 +517,9 @@ enum AnalyticsEventName {
   menuNavigationGiveLimitClicked('menu_navigation_give_limit_clicked'),
   menuNavigationPersonalInfoClicked('menu_navigation_personal_info_clicked'),
   signMandateChangeDetailsClicked('sign_mandate_change_details_clicked'),
+  signMandateDirectDebitGuaranteeOpened(
+    'sign_mandate_direct_debit_guarantee_opened',
+  ),
   menuNavigationAmountPresetsClicked('menu_navigation_amount_presets_clicked'),
   menuNavigationPlatformContributionClicked(
     'menu_navigation_platform_contribution_clicked',
@@ -546,7 +549,12 @@ enum AnalyticsEventName {
   finalizeRegistrationModalAskLaterClicked(
     'finalize_registration_modal_ask_later_clicked',
   ),
-  finalizeRegistrationModalShown('finalize_registration_modal_shown');
+  finalizeRegistrationModalShown('finalize_registration_modal_shown'),
+  flowGenericErrorTryAgainClicked('flow_generic_error_try_again_clicked'),
+  flowGenericErrorContactSupportClicked(
+    'flow_generic_error_contact_support_clicked',
+  ),
+  flowGenericErrorGoHomeClicked('flow_generic_error_go_home_clicked');
 
   const AnalyticsEventName(this.value);
 

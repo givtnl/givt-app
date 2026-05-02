@@ -16,18 +16,21 @@ class AppLocalizationsEn extends AppLocalizations {
       'This amount is higher than your chosen maximum amount. Please adjust the maximum donation amount or choose a lower amount.';
 
   @override
-  String get slimPayInformation =>
-      'To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.';
-
-  @override
   String get buttonContinue => 'Continue';
 
   @override
-  String get slimPayInfoDetail =>
-      'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.';
+  String get mandateIntroTitleSepa => 'Set up your mandate';
 
   @override
-  String get slimPayInfoDetailTitle => 'What is Better World Payments?';
+  String get mandateIntroTitleUk => 'Set up your Direct Debit';
+
+  @override
+  String get mandateIntroBodySepa =>
+      'Securely link your account so you can easily donate. Your bank may call this recurring, but we only collect money when you give.';
+
+  @override
+  String get mandateIntroBodyUk =>
+      'Each time you donate, we collect the payment via Direct Debit. Your bank may call this recurring, but we only collect money when you give.';
 
   @override
   String get unregisterButton => 'Terminate my account';
@@ -664,6 +667,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tryAgain => 'Try again';
 
   @override
+  String get flowGenericErrorContactSupport => 'Contact support';
+
+  @override
+  String get flowGenericErrorGoToHome => 'Go to home';
+
+  @override
   String get wrongCredentials =>
       'Invalid e-mail address or password. Is it possible that you registered with a different e-mail account?';
 
@@ -785,10 +794,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String givtNotEnough(Object value0) {
     return 'Sorry, but the minimum amount we can work with is $value0.';
   }
-
-  @override
-  String get slimPayInformationPart2 =>
-      'We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.';
 
   @override
   String get unregister => 'Terminate account';
@@ -2758,6 +2763,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signMandateTitle => 'Sign mandate';
 
   @override
+  String get signMandateConfirmTitle => 'Confirm your details';
+
+  @override
+  String get signMandateRowAccountHolder => 'Account holder';
+
+  @override
+  String get signMandateRowEmail => 'Email';
+
+  @override
+  String get signMandateRowAddress => 'Address';
+
+  @override
+  String get signMandateRowBankDetails => 'Bank details';
+
+  @override
+  String get signMandateRowSortCode => 'Sort code';
+
+  @override
+  String get signMandateRowBankAccountNumber => 'Bank account number';
+
+  @override
+  String get signMandateSepaFooter =>
+      'By continuing, you sign a SEPA eMandate authorising Givt to collect donations from your bank account. A copy of this mandate will be sent to your email.';
+
+  @override
+  String get signMandateLinkBankButton => 'Link my bank account';
+
+  @override
+  String get signMandateUkDdFooterBeforeLink =>
+      'By continuing, you authorise Givt Ltd to collect payments only when you make a donation, in accordance with the ';
+
+  @override
+  String get signMandateUkDdGuaranteeLink => 'Direct Debit Guarantee.';
+
+  @override
   String get giftAidYourDonationsTitle => 'Gift Aid your donations';
 
   @override
@@ -2903,18 +2943,21 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
       'This amount is higher than your chosen maximum amount. Please adjust the maximum donation amount or choose a lower amount.';
 
   @override
-  String get slimPayInformation =>
-      'To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.';
-
-  @override
   String get buttonContinue => 'Continue';
 
   @override
-  String get slimPayInfoDetail =>
-      'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.';
+  String get mandateIntroTitleSepa => 'Set up your mandate';
 
   @override
-  String get slimPayInfoDetailTitle => 'What is Better World Payments?';
+  String get mandateIntroTitleUk => 'Set up your Direct Debit';
+
+  @override
+  String get mandateIntroBodySepa =>
+      'Securely link your account so you can easily donate. Your bank may call this recurring, but we only collect money when you give.';
+
+  @override
+  String get mandateIntroBodyUk =>
+      'Each time you donate, we collect the payment via Direct Debit. Your bank may call this recurring, but we only collect money when you give.';
 
   @override
   String get unregisterButton => 'Terminate my account';
@@ -3551,6 +3594,12 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get tryAgain => 'Try again';
 
   @override
+  String get flowGenericErrorContactSupport => 'Contact support';
+
+  @override
+  String get flowGenericErrorGoToHome => 'Go to home';
+
+  @override
   String get wrongCredentials =>
       'Invalid email address or password. Is it possible that you registered with a different email account?';
 
@@ -3672,10 +3721,6 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String givtNotEnough(Object value0) {
     return 'Sorry, but the minimum amount we can work with is $value0.';
   }
-
-  @override
-  String get slimPayInformationPart2 =>
-      'We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.';
 
   @override
   String get unregister => 'Terminate account';
@@ -5597,6 +5642,41 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get signMandateTitle => 'Sign mandate';
+
+  @override
+  String get signMandateConfirmTitle => 'Confirm your details';
+
+  @override
+  String get signMandateRowAccountHolder => 'Account holder';
+
+  @override
+  String get signMandateRowEmail => 'Email';
+
+  @override
+  String get signMandateRowAddress => 'Address';
+
+  @override
+  String get signMandateRowBankDetails => 'Bank details';
+
+  @override
+  String get signMandateRowSortCode => 'Sort code';
+
+  @override
+  String get signMandateRowBankAccountNumber => 'Bank account number';
+
+  @override
+  String get signMandateSepaFooter =>
+      'By continuing, you sign a SEPA eMandate authorising Givt to collect donations from your bank account. A copy of this mandate will be sent to your email.';
+
+  @override
+  String get signMandateLinkBankButton => 'Link my bank account';
+
+  @override
+  String get signMandateUkDdFooterBeforeLink =>
+      'By continuing, you authorise Givt Ltd to collect payments only when you make a donation, in accordance with the ';
+
+  @override
+  String get signMandateUkDdGuaranteeLink => 'Direct Debit Guarantee.';
 
   @override
   String get giftAidYourDonationsTitle => 'Gift Aid your donations';

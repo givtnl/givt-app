@@ -116,29 +116,35 @@ abstract class AppLocalizations {
   /// **'This amount is higher than your chosen maximum amount. Please adjust the maximum donation amount or choose a lower amount.'**
   String get amountLimitExceeded;
 
-  /// No description provided for @slimPayInformation.
-  ///
-  /// In en, this message translates to:
-  /// **'To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.'**
-  String get slimPayInformation;
-
   /// No description provided for @buttonContinue.
   ///
   /// In en, this message translates to:
   /// **'Continue'**
   String get buttonContinue;
 
-  /// No description provided for @slimPayInfoDetail.
+  /// Title on EU/SEPA mandate setup intro screen
   ///
   /// In en, this message translates to:
-  /// **'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.'**
-  String get slimPayInfoDetail;
+  /// **'Set up your mandate'**
+  String get mandateIntroTitleSepa;
 
-  /// No description provided for @slimPayInfoDetailTitle.
+  /// Title on UK Direct Debit mandate setup intro screen
   ///
   /// In en, this message translates to:
-  /// **'What is Better World Payments?'**
-  String get slimPayInfoDetailTitle;
+  /// **'Set up your Direct Debit'**
+  String get mandateIntroTitleUk;
+
+  /// Body copy on EU/SEPA mandate setup intro screen
+  ///
+  /// In en, this message translates to:
+  /// **'Securely link your account so you can easily donate. Your bank may call this recurring, but we only collect money when you give.'**
+  String get mandateIntroBodySepa;
+
+  /// Body copy on UK Direct Debit mandate setup intro screen
+  ///
+  /// In en, this message translates to:
+  /// **'Each time you donate, we collect the payment via Direct Debit. Your bank may call this recurring, but we only collect money when you give.'**
+  String get mandateIntroBodyUk;
 
   /// No description provided for @unregisterButton.
   ///
@@ -1265,6 +1271,18 @@ abstract class AppLocalizations {
   /// **'Try again'**
   String get tryAgain;
 
+  /// Support action on shared flow error screen (opens contact sheet)
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get flowGenericErrorContactSupport;
+
+  /// Leave shared flow error screen to app home
+  ///
+  /// In en, this message translates to:
+  /// **'Go to home'**
+  String get flowGenericErrorGoToHome;
+
   /// Kan dit leuker?
   ///   Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert
   ///
@@ -1480,12 +1498,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sorry, but the minimum amount we can work with is {value0}.'**
   String givtNotEnough(Object value0);
-
-  /// No description provided for @slimPayInformationPart2.
-  ///
-  /// In en, this message translates to:
-  /// **'We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.'**
-  String get slimPayInformationPart2;
 
   /// Title van de pagina "Account opzeggen"
   ///
@@ -4945,6 +4957,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign mandate'**
   String get signMandateTitle;
+
+  /// App bar title on mandate confirmation screen (Figma)
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your details'**
+  String get signMandateConfirmTitle;
+
+  /// Label for name row on mandate confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Account holder'**
+  String get signMandateRowAccountHolder;
+
+  /// Label for email row on mandate confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get signMandateRowEmail;
+
+  /// Label for address row on mandate confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get signMandateRowAddress;
+
+  /// Label for IBAN / bank row (EU) on mandate confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Bank details'**
+  String get signMandateRowBankDetails;
+
+  /// Label for UK sort code row
+  ///
+  /// In en, this message translates to:
+  /// **'Sort code'**
+  String get signMandateRowSortCode;
+
+  /// Label for UK account number row
+  ///
+  /// In en, this message translates to:
+  /// **'Bank account number'**
+  String get signMandateRowBankAccountNumber;
+
+  /// Footer copy above primary button on EU SEPA mandate confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you sign a SEPA eMandate authorising Givt to collect donations from your bank account. A copy of this mandate will be sent to your email.'**
+  String get signMandateSepaFooter;
+
+  /// Primary CTA on mandate confirmation (EU and UK)
+  ///
+  /// In en, this message translates to:
+  /// **'Link my bank account'**
+  String get signMandateLinkBankButton;
+
+  /// UK mandate footer text before Direct Debit Guarantee link
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you authorise Givt Ltd to collect payments only when you make a donation, in accordance with the '**
+  String get signMandateUkDdFooterBeforeLink;
+
+  /// Tappable Direct Debit Guarantee phrase in UK mandate footer
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Debit Guarantee.'**
+  String get signMandateUkDdGuaranteeLink;
 
   /// No description provided for @giftAidYourDonationsTitle.
   ///

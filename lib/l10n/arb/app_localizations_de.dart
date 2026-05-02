@@ -16,18 +16,21 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dieser Betrag ist höher als dein gewählter Maximalbetrag. Bitte pass den Maximalbetrag an oder wähle einen niedrigeren Betrag.';
 
   @override
-  String get slimPayInformation =>
-      'Um das Geben so einfach wie möglich zu machen, bitten wir dich, ein SEPA-Mandat zu unterschreiben. Das musst du nur einmal tun.';
-
-  @override
   String get buttonContinue => 'Continue';
 
   @override
-  String get slimPayInfoDetail =>
-      'Givt arbeitet bei der Ausführung der Transaktionen mit Better World Payments zusammen. Better World Payments ist spezialisiert auf die Abwicklung von Mandaten und automatischen Geldüberweisungen auf digitalen Plattformen. Better World Payments führt diese Aufträge für Givt zu den niedrigsten Preisen auf diesem Markt und mit hoher Geschwindigkeit aus.\n\nBetter World Payments ist ein idealer Partner für Givt, weil sie das bargeldlose Spenden sehr einfach und sicher machen. \n\nDas Geld wird auf einem Better World Payments-Konto gesammelt. \nGivt wird sicherstellen, dass das Geld korrekt ausgegeben wird.';
+  String get mandateIntroTitleSepa => 'Richte dein Mandat ein';
 
   @override
-  String get slimPayInfoDetailTitle => 'Was ist Better World Payments?`';
+  String get mandateIntroTitleUk => 'Richte dein Lastschrift ein';
+
+  @override
+  String get mandateIntroBodySepa =>
+      'Verknüpfe dein Konto sicher, damit du einfach spenden kannst. Deine Bank nennt das vielleicht wiederkehrend, aber wir buchen nur Geld ab, wenn du gibst.';
+
+  @override
+  String get mandateIntroBodyUk =>
+      'Bei jeder Spende ziehen wir den Betrag per Lastschrift ein. Deine Bank nennt das vielleicht wiederkehrend, aber wir buchen nur Geld ab, wenn du gibst.';
 
   @override
   String get unregisterButton => 'Meinen Account schließen';
@@ -670,6 +673,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tryAgain => 'Versuche es nochmal';
 
   @override
+  String get flowGenericErrorContactSupport => 'Support kontaktieren';
+
+  @override
+  String get flowGenericErrorGoToHome => 'Zur Startseite';
+
+  @override
   String get wrongCredentials =>
       'Ungültige E-Mail-Adresse oder Passwort. Ist es möglich, dass du dich mit einem anderen E-Mail-Konto registriert hast?';
 
@@ -794,10 +803,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String givtNotEnough(Object value0) {
     return 'Tut mir Leid, aber der Mindestbetrag den wir verarbeiten können beträgt $value0.';
   }
-
-  @override
-  String get slimPayInformationPart2 =>
-      'Wir buchen nur ab, wenn du dich entscheidest zu geben. Da wir mit Mandaten arbeiten, hast du die Möglichkeit, eine Spende später zu widerrufen, falls nötig.';
 
   @override
   String get unregister => 'Account löschen';
@@ -2779,6 +2784,41 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get signMandateTitle => 'Mandat unterschreiben';
+
+  @override
+  String get signMandateConfirmTitle => 'Daten bestätigen';
+
+  @override
+  String get signMandateRowAccountHolder => 'Kontoinhaber';
+
+  @override
+  String get signMandateRowEmail => 'E-Mail';
+
+  @override
+  String get signMandateRowAddress => 'Adresse';
+
+  @override
+  String get signMandateRowBankDetails => 'Bankverbindung';
+
+  @override
+  String get signMandateRowSortCode => 'Bankleitzahl';
+
+  @override
+  String get signMandateRowBankAccountNumber => 'Kontonummer';
+
+  @override
+  String get signMandateSepaFooter =>
+      'Wenn du fortfährst, unterzeichnest du ein SEPA-eMandat und ermächtigst Givt, Spenden von deinem Bankkonto einzuziehen. Eine Kopie dieses Mandats wird dir per E-Mail zugesandt.';
+
+  @override
+  String get signMandateLinkBankButton => 'Bankkonto verknüpfen';
+
+  @override
+  String get signMandateUkDdFooterBeforeLink =>
+      'Wenn du fortfährst, ermächtigst du Givt Ltd, Zahlungen nur dann einzuziehen, wenn du spendest, gemäß der ';
+
+  @override
+  String get signMandateUkDdGuaranteeLink => 'Direct-Debit-Garantie.';
 
   @override
   String get giftAidYourDonationsTitle => 'Gift Aid für deine Spenden';

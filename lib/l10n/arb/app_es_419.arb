@@ -5,10 +5,27 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "Para que dar sea lo más sencillo posible, te pedimos que firmes un mandato SEPA. Solo necesitas hacer esto una vez.",
   "buttonContinue": "Continuar",
-  "slimPayInfoDetail": "Givt trabaja junto con Better World Payments para ejecutar las transacciones. Better World Payments se especializa en la gestión de mandatos y transferencias automáticas de dinero en plataformas digitales. Better World Payments ejecuta estas solicitudes para Givt a las tarifas más bajas del mercado y a gran velocidad.\n\nBetter World Payments es un socio ideal para Givt porque facilita mucho la donación sin efectivo de forma segura. \n\nEl dinero se recogerá en una cuenta de Better World Payments. \nGivt se asegurará de que el dinero se distribuya correctamente.",
-  "slimPayInfoDetailTitle": "¿Qué es Better World Payments?",
+  "mandateIntroTitleSepa": "Configura tu mandato",
+  "@mandateIntroTitleSepa": {
+    "description": "Title on EU/SEPA mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroTitleUk": "Configura tu domiciliación bancaria",
+  "@mandateIntroTitleUk": {
+    "description": "Title on UK Direct Debit mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroBodySepa": "Vincula tu cuenta de forma segura para donar fácilmente. Tu banco puede llamarlo recurrente, pero solo cobramos cuando donas.",
+  "@mandateIntroBodySepa": {
+    "description": "Body copy on EU/SEPA mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroBodyUk": "Cada vez que donas, cobramos el pago por domiciliación. Tu banco puede llamarlo recurrente, pero solo cobramos cuando donas.",
+  "@mandateIntroBodyUk": {
+    "description": "Body copy on UK Direct Debit mandate setup intro screen",
+    "type": "text"
+  },
   "unregisterButton": "Eliminar mi cuenta",
   "unregisterUnderstood": "Entendido",
   "givtIsBeingProcessed": "¡Gracias por dar con Givt a {value0}!\nPuede comprobar el estado en el resumen.",
@@ -346,6 +363,16 @@
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
     "type": "text"
   },
+  "flowGenericErrorContactSupport": "Contactar con soporte",
+  "@flowGenericErrorContactSupport": {
+    "description": "Support action on shared flow error screen (opens contact sheet)",
+    "type": "text"
+  },
+  "flowGenericErrorGoToHome": "Ir al inicio",
+  "@flowGenericErrorGoToHome": {
+    "description": "Leave shared flow error screen to app home",
+    "type": "text"
+  },
   "wrongCredentials": "Correo electrónico o contraseña no válidos. ¿Es posible que te hayas registrado con un correo electrónico diferente?",
   "@wrongCredentials": {
     "description": "Kan dit leuker? \n  Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert",
@@ -521,7 +548,6 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "Solo retiraremos fondos cuando tú elijas dar. Al usar mandatos, también tienes la opción de revocar una donación más tarde si es necesario.",
   "unregister": "Cancelar cuenta",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1281,6 +1307,17 @@
   "reviewDonationsProcessedTitle": "Your donations are being processed",
   "reviewDonationsProcessedDescription": "We’ll collect {amount} in one transaction within {days} business days. Check the status in donation history.",
   "signMandateTitle": "Sign mandate",
+  "signMandateConfirmTitle": "Confirma tus datos",
+  "signMandateRowAccountHolder": "Titular de la cuenta",
+  "signMandateRowEmail": "Correo electrónico",
+  "signMandateRowAddress": "Dirección",
+  "signMandateRowBankDetails": "Datos bancarios",
+  "signMandateRowSortCode": "Código de sucursal",
+  "signMandateRowBankAccountNumber": "Número de cuenta",
+  "signMandateSepaFooter": "Al continuar, firmas un mandato SEPA que autoriza a Givt a cobrar donativos de tu cuenta bancaria. Recibirás una copia de este mandato por correo electrónico.",
+  "signMandateLinkBankButton": "Vincular mi cuenta bancaria",
+  "signMandateUkDdFooterBeforeLink": "Al continuar, autorizas a Givt Ltd a cobrar solo cuando hagas un donativo, de acuerdo con la ",
+  "signMandateUkDdGuaranteeLink": "Garantía de domiciliación bancaria.",
   "giftAidYourDonationsTitle": "Gift Aid para tus donaciones",
   "giftAidShortExplanation": "Con Gift Aid, las organizaciones benéficas pueden recibir 25 peniques extra por cada libra que das. No te cuesta nada más.",
   "giftAidExampleTitle": "Por ejemplo",

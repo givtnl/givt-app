@@ -60,6 +60,10 @@ enum Pages {
     path: 'registration-success',
     name: 'REGISTRATION-SUCCESS',
   ),
+  flowGenericError(
+    path: 'flow-generic-error',
+    name: 'FLOW-GENERIC-ERROR',
+  ),
   overview(path: 'overview', name: 'OVERVIEW'),
   donationOverview(path: 'donation-overview', name: 'DONATION-OVERVIEW'),
   personalInfoEdit(path: 'personal-info-edit', name: 'PERSONAL-INFO-EDIT'),

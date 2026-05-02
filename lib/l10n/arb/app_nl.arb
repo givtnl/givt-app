@@ -5,10 +5,27 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "Om het geven zo makkelijk mogelijk te maken, vragen we je een SEPA-machtiging te tekenen. Dit hoef je maar één keer te doen.",
   "buttonContinue": "Doorgaan",
-  "slimPayInfoDetail": "Givt werkt samen met Better World Payments voor het verwerken van transacties. Better World Payments is gespecialiseerd in het verwerken van machtigingen en automatische incasso’s voor digitale platforms. Dit doet Better World Payments voor Givt tegen de laagste kosten in de markt en met hoge snelheid.\n\nBetter World Payments is voor Givt de ideale partner omdat zij het geven zonder contant geld eenvoudig en veilig maakt. \n\nHet geïncasseerde geld wordt verzameld op een rekening bij Better World Payments. Givt zorgt ervoor dat het geld verdeeld wordt.",
-  "slimPayInfoDetailTitle": "Wat is Better World Payments?",
+  "mandateIntroTitleSepa": "Je machtiging instellen",
+  "@mandateIntroTitleSepa": {
+    "description": "Title on EU/SEPA mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroTitleUk": "Je automatische incasso instellen",
+  "@mandateIntroTitleUk": {
+    "description": "Title on UK Direct Debit mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroBodySepa": "Koppel je rekening veilig zodat je eenvoudig kunt geven. Je bank noemt dit misschien een doorlopende incasso, maar we innen alleen geld als je geeft.",
+  "@mandateIntroBodySepa": {
+    "description": "Body copy on EU/SEPA mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroBodyUk": "Bij elke gift halen we het bedrag per automatische incasso binnen. Je bank noemt dit misschien een doorlopende incasso, maar we innen alleen geld als je geeft.",
+  "@mandateIntroBodyUk": {
+    "description": "Body copy on UK Direct Debit mandate setup intro screen",
+    "type": "text"
+  },
   "unregisterButton": "Mijn account opzeggen",
   "unregisterUnderstood": "Ik begrijp het",
   "givtIsBeingProcessed": "Bedankt voor je Givt aan {value0}!\n Kijk voor de status in je overzicht.",
@@ -346,6 +363,16 @@
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
     "type": "text"
   },
+  "flowGenericErrorContactSupport": "Contact opnemen",
+  "@flowGenericErrorContactSupport": {
+    "description": "Support action on shared flow error screen (opens contact sheet)",
+    "type": "text"
+  },
+  "flowGenericErrorGoToHome": "Naar home",
+  "@flowGenericErrorGoToHome": {
+    "description": "Leave shared flow error screen to app home",
+    "type": "text"
+  },
   "wrongCredentials": "Dit e-mailadres of wachtwoord komt ons niet bekend voor. Is het mogelijk dat je een ander e-mailadres en/of wachtwoord hebt opgegeven?",
   "@wrongCredentials": {
     "description": "Kan dit leuker? \n  Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert",
@@ -521,7 +548,6 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "We incasseren alleen wanneer je ervoor kiest om te geven. Omdat we met machtigingen werken, heb je ook de optie om een gift later te herroepen als dat nodig is.",
   "unregister": "Account opzeggen",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1281,6 +1307,17 @@
   "reviewDonationsProcessedTitle": "Je giften worden verwerkt",
   "reviewDonationsProcessedDescription": "We schrijven {amount} in één keer af binnen {days} werkdagen. Bekijk de status in je giftenoverzicht.",
   "signMandateTitle": "Machtiging tekenen",
+  "signMandateConfirmTitle": "Controleer je gegevens",
+  "signMandateRowAccountHolder": "Rekeninghouder",
+  "signMandateRowEmail": "E-mail",
+  "signMandateRowAddress": "Adres",
+  "signMandateRowBankDetails": "Bankgegevens",
+  "signMandateRowSortCode": "Sortcode",
+  "signMandateRowBankAccountNumber": "Rekeningnummer",
+  "signMandateSepaFooter": "Als je doorgaat, onderteken je een SEPA e-machtiging waarmee je Givt machtigt om giften van je bankrekening te innen. Een kopie van deze machtiging wordt naar je e-mail gestuurd.",
+  "signMandateLinkBankButton": "Koppel mijn bankrekening",
+  "signMandateUkDdFooterBeforeLink": "Door te gaan machtig je Givt Ltd om alleen bij een gift geld te innen, in overeenstemming met de ",
+  "signMandateUkDdGuaranteeLink": "Direct Debit-garantie.",
   "giftAidYourDonationsTitle": "Gift Aid op je giften",
   "giftAidShortExplanation": "Met Gift Aid kan een goed doel 25p extra krijgen voor elke £1 die jij geeft. Het kost jou niets extra.",
   "giftAidExampleTitle": "Bijvoorbeeld",

@@ -73,17 +73,8 @@ class _TermsAndConditionsDialogState extends State<TermsAndConditionsDialog> {
       }
     }
 
-    if (widget.content == locals.slimPayInfoDetail) {
-      title = locals.slimPayInfoDetailTitle;
-    }
-    if (widget.content == locals.bacsAdvanceNotice) {
-      title = locals.bacsAdvanceNoticeTitle;
-    }
     if (widget.content == locals.bacsDdGuarantee) {
       title = locals.bacsDdGuaranteeTitle;
-    }
-    if (widget.content == locals.giftAidInfoBody) {
-      title = locals.giftAidInfoTitle;
     }
 
     return FunBottomSheet(
