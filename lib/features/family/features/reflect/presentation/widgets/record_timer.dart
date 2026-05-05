@@ -4,7 +4,7 @@ import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/models/record_uimodel.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/presentation/widgets/record_waveform.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 

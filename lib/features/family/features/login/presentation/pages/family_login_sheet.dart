@@ -4,13 +4,12 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
 import 'package:givt_app/features/family/features/login/presentation/models/family_login_sheet_custom.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -62,11 +61,17 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
     );
   }
 
+  /// Must not call [FormState.validate] here — it runs during build and would
+  /// show errors on empty fields before the user acts.
   bool get isEnabled {
-    if (formKey.currentState == null) return false;
-    if (formKey.currentState!.validate() == false) return false;
-    return emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty;
+    final email = emailController.text;
+    final password = passwordController.text;
+    if (email.isEmpty || password.isEmpty) return false;
+    if (!Util.emailRegEx.hasMatch(email)) return false;
+    if (password.length < 7) return false;
+    if (!password.contains(RegExp('[0-9]'))) return false;
+    if (!password.contains(RegExp('[A-Z]'))) return false;
+    return true;
   }
 
   @override
@@ -104,7 +109,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-            OutlinedTextFormField(
+            InputFormField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
               readOnly: true,
@@ -112,11 +117,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
                 AutofillHints.username,
                 AutofillHints.email,
               ],
-              onChanged: (value) {
-                setState(() {
-                  formKey.currentState!.validate();
-                });
-              },
+              onChanged: (_) => setState(() {}),
               validator: (value) {
                 if (value == null ||
                     value.isEmpty ||
@@ -128,15 +129,11 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
               hintText: context.l10n.email,
             ),
             const SizedBox(height: 16),
-            OutlinedTextFormField(
+            InputFormField(
               controller: passwordController,
               autofillHints: const [AutofillHints.password],
               keyboardType: TextInputType.visiblePassword,
-              onChanged: (value) {
-                setState(() {
-                  formKey.currentState!.validate();
-                });
-              },
+              onChanged: (_) => setState(() {}),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return context.l10n.passwordRule;

@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 class MyGivtsButton extends StatefulWidget {
   const MyGivtsButton({required this.userId, super.key});

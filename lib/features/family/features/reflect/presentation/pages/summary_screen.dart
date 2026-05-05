@@ -9,11 +9,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/summary_
 import 'package:givt_app/features/family/features/reflect/presentation/models/summary_details_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/goal_progress_screen.dart';
 import 'package:givt_app/features/family/helpers/helpers.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
-import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';

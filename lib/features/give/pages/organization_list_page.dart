@@ -11,7 +11,7 @@ import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -133,6 +133,10 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                           focusNode: focusNode,
                           hintText: locals.searchHere,
                           heroTag: 'discover_search_input_hero',
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: FunTheme.of(context).neutral40,
+                          ),
                           onChanged: (value) => context
                               .read<OrganisationBloc>()
                               .add(OrganisationFilterQueryChanged(value)),

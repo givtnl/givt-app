@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:givt_app/features/family/features/league/domain/models/league_item.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/custom_avatar_uimodel.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 
 class LeagueEntryUIModel {

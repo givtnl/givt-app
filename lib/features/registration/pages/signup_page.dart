@@ -7,8 +7,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
-import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/password_requirements_checklist.dart';
 import 'package:givt_app/features/registration/widgets/accept_policy_row.dart';
@@ -16,7 +15,6 @@ import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/fun_faq_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
@@ -218,7 +216,7 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            OutlinedTextFormField(
+            InputFormField(
               controller: _firstNameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -233,7 +231,7 @@ class _SignUpPageState extends State<SignUpPage> {
               textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
-            OutlinedTextFormField(
+            InputFormField(
               controller: _lastNameController,
               onChanged: (value) => setState(() {}),
               validator: (value) {
@@ -248,7 +246,7 @@ class _SignUpPageState extends State<SignUpPage> {
               textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
-            OutlinedTextFormField(
+            InputFormField(
               enabled: widget.email.isEmpty,
               readOnly: widget.email.isNotEmpty,
               controller: _emailController,
@@ -270,7 +268,7 @@ class _SignUpPageState extends State<SignUpPage> {
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 16),
-            OutlinedTextFormField(
+            InputFormField(
               controller: _passwordController,
               scrollPadding: const EdgeInsets.only(bottom: 150),
               onChanged: (value) => setState(() {}),
@@ -293,7 +291,7 @@ class _SignUpPageState extends State<SignUpPage> {
               suffixIcon: IconButton(
                 icon: Icon(
                   _obscureText ? Icons.visibility : Icons.visibility_off,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: FunTheme.of(context).primary30,
                 ),
                 onPressed: () {
                   setState(() {

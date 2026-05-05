@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/features/gratitude-summary/bloc/record_cubit.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:waveform_flutter/waveform_flutter.dart';
 
 class RecordWaveform extends StatefulWidget {

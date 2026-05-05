@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,8 +10,6 @@ import 'package:givt_app/features/family/features/game_summary/cubit/game_summar
 import 'package:givt_app/features/family/features/game_summary/data/models/game_summary_item.dart';
 import 'package:givt_app/features/family/features/game_summary/presentation/pages/game_summary_screen.dart';
 import 'package:givt_app/features/family/helpers/helpers.dart';
-import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';

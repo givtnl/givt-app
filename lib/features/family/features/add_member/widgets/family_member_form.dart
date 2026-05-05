@@ -5,11 +5,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/features/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 
@@ -52,7 +51,7 @@ class FamilyMemberForm extends StatelessWidget {
   ) {
     return Column(
       children: [
-        OutlinedTextFormField(
+        InputFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
               return context.l10n.pleaseEnterChildName;
@@ -70,7 +69,7 @@ class FamilyMemberForm extends StatelessWidget {
           textCapitalization: TextCapitalization.sentences,
         ),
         const SizedBox(height: 16),
-        OutlinedTextFormField(
+        InputFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
               return context.l10n.pleaseEnterChildAge;
@@ -123,7 +122,7 @@ class FamilyMemberForm extends StatelessWidget {
   ) {
     return Column(
       children: [
-        OutlinedTextFormField(
+        InputFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Please enter the adult's name";
@@ -141,7 +140,7 @@ class FamilyMemberForm extends StatelessWidget {
           textCapitalization: TextCapitalization.sentences,
         ),
         const SizedBox(height: 16),
-        OutlinedTextFormField(
+        InputFormField(
           validator: (value) {
             if (value == null ||
                 value.isEmpty ||

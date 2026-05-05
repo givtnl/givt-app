@@ -2,27 +2,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
-import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
-import 'package:go_router/go_router.dart';
 
-/// TODO: This file should be moved to a different location.
-/// It's not used during registration anymore.
-/// It's used in the family app, when bank details are needed
+/// Stripe payment sheet during US registration (EU shell).
 class CreditCardDetails extends StatefulWidget {
   const CreditCardDetails({
-    required this.onSuccess, this.shrink = false,
+    required this.parentContext,
+    required this.onSuccess,
+    this.shrink = false,
     super.key,
   });
+
+  /// Host route context (below this modal) for presenting Stripe after dismiss.
+  final BuildContext parentContext;
 
   final bool shrink;
   final VoidCallback onSuccess;
@@ -37,12 +38,14 @@ class CreditCardDetails extends StatefulWidget {
   }) {
     showModalBottomSheet<void>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
       backgroundColor: Colors.white,
-      builder: (context) => CreditCardDetails(
+      builder: (modalContext) => CreditCardDetails(
+        parentContext: context,
         shrink: shrink,
         onSuccess: onSuccess,
       ),
@@ -56,88 +59,106 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
   @override
   void initState() {
     super.initState();
-    getIt<StripeCubit>().fetchSetupIntent();
-    context.read<RegistrationBloc>().add(const RegistrationInit());
+    // Defer fetch until after first frame so the route is stable.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        unawaited(_fetchSetupIntentThenPresentSheet());
+      }
+    });
+  }
+
+  Future<void> _fetchSetupIntentThenPresentSheet() async {
+    await getIt<StripeCubit>().fetchSetupIntent();
+    if (!mounted) return;
+    await _presentStripeSheetIfReady();
+  }
+
+  Future<void> _presentStripeSheetIfReady() async {
+    if (!mounted || showPaymentSheet) return;
+    final stripeState = getIt<StripeCubit>().state;
+    if (stripeState.stripeStatus != StripeObjectStatus.display) return;
+
+    setState(() {
+      showPaymentSheet = true;
+    });
+
+    try {
+      final parent = widget.parentContext;
+      await StripeHelper(context).prepareSetupPaymentSheet();
+      if (!mounted) return;
+      if (!parent.mounted) return;
+
+      Navigator.of(context, rootNavigator: true).pop();
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+      if (!parent.mounted) return;
+
+      await StripeHelper(parent).presentSetupPaymentSheet();
+      if (!parent.mounted) return;
+      _handleStripeRegistrationSuccess(parent);
+      final user = parent.read<AuthCubit>().state.user;
+      unawaited(
+        AnalyticsHelper.setUserProperties(
+          userId: user.guid,
+        ),
+      );
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AnalyticsEventName.registrationStripeSheetFilled,
+          eventProperties: AnalyticsHelper.getUserPropertiesFromExt(
+            user,
+          ),
+        ),
+      );
+    } on Object catch (e, stackTrace) {
+      if (mounted) {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
+      final parent = widget.parentContext;
+      if (!parent.mounted) return;
+      final user = parent.read<AuthCubit>().state.user;
+
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AnalyticsEventName.registrationStripeSheetIncompleteClosed,
+          eventProperties: {
+            'id': user.guid,
+            'profile_country': user.country,
+          },
+        ),
+      );
+
+      LoggingInfo.instance.info(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegistrationBloc, RegistrationState>(
-        listener: (context, state) {
-          if (state.status == RegistrationStatus.success) {
-            context.pop();
-            widget.onSuccess();
-          }
-        },
-        child: BlocConsumer<StripeCubit, StripeState>(
-            bloc: getIt<StripeCubit>(),
-            listener: (context, state) {
-              if (state.stripeStatus == StripeObjectStatus.display &&
-                  !showPaymentSheet) {
-                setState(() {
-                  showPaymentSheet = true;
-                });
-                StripeHelper(context).showPaymentSheet().then((value) {
-                  _handleStripeRegistrationSuccess(context);
-                  final user = context.read<FamilyAuthCubit>().user!;
-                  AnalyticsHelper.setUserProperties(
-                    userId: user.guid,
-                  );
-                  unawaited(
-                    AnalyticsHelper.logEvent(
-                      eventName: AnalyticsEventName.registrationStripeSheetFilled,
-                      eventProperties: AnalyticsHelper.getUserPropertiesFromExt(
-                        user,
-                      ),
-                    ),
-                  );
-                }).onError((e, stackTrace) {
-                  context.pop();
-                  final user = context.read<FamilyAuthCubit>().user!;
+    return BlocBuilder<StripeCubit, StripeState>(
+      bloc: getIt<StripeCubit>(),
+      builder: (_, state) {
+        if (state.stripeStatus == StripeObjectStatus.failure) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: RetryErrorWidget(
+              onTapPrimaryButton: () =>
+                  unawaited(_fetchSetupIntentThenPresentSheet()),
+            ),
+          );
+        }
 
-                  unawaited(
-                    AnalyticsHelper.logEvent(
-                      eventName: AnalyticsEventName
-                          .registrationStripeSheetIncompleteClosed,
-                      eventProperties: {
-                        'id': user.guid,
-                        'profile_country': user.country,
-                      },
-                    ),
-                  );
-                  getIt<NavigationBarHomeCubit>().refreshData();
-
-                  /* Logged as info as stripe is giving exception
-                   when for example people close the bottomsheet.
-                   So it's not a real error :)
-                */
-                  LoggingInfo.instance.info(
-                    e.toString(),
-                    methodName: stackTrace.toString(),
-                  );
-                });
-              }
-            },
-            builder: (_, state) {
-              if (state.stripeStatus == StripeObjectStatus.failure) {
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.5,
-                  child: RetryErrorWidget(
-                    onTapPrimaryButton: () =>
-                        getIt<StripeCubit>().fetchSetupIntent(),
-                  ),
-                );
-              }
-
-              return SizedBox(
-                height: widget.shrink
-                    ? MediaQuery.of(context).size.height * 0.5
-                    : null,
-                child: const FullScreenLoadingWidget(
-                  text: 'Hold on, we are saving your card details...',
-                ),
-              );
-            }));
+        return SizedBox(
+          height: widget.shrink
+              ? MediaQuery.of(context).size.height * 0.5
+              : null,
+          child: const FullScreenLoadingWidget(
+            text: 'Hold on, we are saving your card details...',
+          ),
+        );
+      },
+    );
   }
 
   void _handleStripeRegistrationSuccess(BuildContext context) {

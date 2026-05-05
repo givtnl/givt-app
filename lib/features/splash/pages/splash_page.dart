@@ -1,18 +1,20 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
-import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
 import 'package:givt_app/features/splash/cubit/splash_custom.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/organisation/organisation_bloc.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/utils/add_member_util.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({
@@ -32,11 +34,24 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _cubit.init();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      unawaited(_cubit.init());
+      var country = Country.nl;
+      final prefs = await SharedPreferences.getInstance();
+      final userExtString = prefs.getString(UserExt.tag);
+      if (userExtString != null) {
+        try {
+          final user =
+              UserExt.fromJson(jsonDecode(userExtString) as Map<String, dynamic>);
+          country = Country.fromCode(user.country);
+        } on Object catch (_) {
+          country = Country.nl;
+        }
+      }
+      if (!mounted) return;
       getIt<OrganisationBloc>().add(
         OrganisationFetch(
-          Country.fromCode(Country.us.countryCode),
+          country,
           type: CollectGroupType.none.index,
         ),
       );
@@ -90,20 +105,6 @@ class _SplashPageState extends State<SplashPage> {
     switch (state) {
       case SplashRedirectToWelcome():
         context.goNamed(Pages.welcome.name);
-      case SplashRedirectToUSRegistration():
-        context.goNamed(
-          FamilyPages.registrationUS.name,
-          queryParameters: {'email': state.email},
-        );
-      case SplashRedirectToUSHome():
-        context.goNamed(FamilyPages.profileSelection.name);
-      case SplashRedirectToAddMembers():
-        context.pushReplacementNamed(
-          FamilyPages.permitUSBiometric.name,
-          extra: PermitBiometricRequest.registration(
-            redirect: AddMemberUtil.addFamilyPushPages,
-          ),
-        );
       case NoInternet():
         setState(() {
           _showNoInternetMessage = true;
@@ -114,8 +115,6 @@ class _SplashPageState extends State<SplashPage> {
           _showCurrentlyExperiencingIssues = true;
           _showNoInternetMessage = false;
         });
-      case SplashRedirectToEUHome():
-        context.goNamed(Pages.home.name);
       case SplashRedirectToEmailSignup():
         context.goNamed(
           Pages.welcome.name,

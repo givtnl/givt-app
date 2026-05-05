@@ -1,6 +1,6 @@
 import 'package:givt_app/features/family/features/reflect/domain/models/game_stats.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/mission_stats.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 class FamilyHomeScreenUIModel {
   const FamilyHomeScreenUIModel({

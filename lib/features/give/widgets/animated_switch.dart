@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 

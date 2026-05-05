@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
-import 'package:givt_app/features/family/shared/design/components/content/fun_tag.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 class OrganisationHeader extends StatelessWidget {
   const OrganisationHeader({

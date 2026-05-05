@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
+import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/core/network/request_helper.dart';
+import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/family/features/admin_fee/application/admin_fee_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/data/repositories/admin_fee_repository.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
@@ -66,7 +68,7 @@ import 'package:givt_app/features/family/features/unlocked_badge/cubit/unlocked_
 import 'package:givt_app/features/family/features/unlocked_badge/repository/unlocked_badge_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
-import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/features/splash/cubit/splash_cubit.dart';
@@ -210,7 +212,10 @@ void initCubits() {
       ),
     )
     ..registerFactory<SplashCubit>(
-      () => SplashCubit(getIt(), getIt(), getIt(), getIt()),
+      () => SplashCubit(
+        getIt<AuthRepository>(),
+        getIt<NetworkInfo>(),
+      ),
     )
     ..registerFactory<EditAvatarCubit>(
       () => EditAvatarCubit(

@@ -18,7 +18,7 @@ import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_f
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_not_available_sheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_scanning_bottomsheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/start_scan_nfc_button.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/something_went_wrong_dialog.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';

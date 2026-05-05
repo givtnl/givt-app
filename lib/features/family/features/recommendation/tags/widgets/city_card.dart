@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 class CityCard extends StatelessWidget {
   const CityCard({

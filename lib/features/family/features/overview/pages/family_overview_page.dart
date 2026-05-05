@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/features/overview/cubit/family_overview
 import 'package:givt_app/features/family/features/overview/widgets/allowance_warning_dialog.dart';
 import 'package:givt_app/features/family/features/overview/widgets/children_loading_page.dart';
 import 'package:givt_app/features/family/features/overview/widgets/family_available_page.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/add_member_util.dart';

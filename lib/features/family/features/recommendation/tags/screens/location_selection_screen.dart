@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/features/recommendation/tags/widgets/ci
 import 'package:givt_app/features/family/features/recommendation/tags/widgets/location_card.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/donation_overview/models/donation_overview_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/utils/util.dart';
 
 class MonthlyHeader extends StatelessWidget {

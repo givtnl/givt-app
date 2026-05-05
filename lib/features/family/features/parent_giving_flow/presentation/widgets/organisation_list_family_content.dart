@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -100,6 +99,10 @@ class _OrganisationListFamilyContentState
               child: FunInput(
                 hintText: locals.forYouSearchOrganizations,
                 heroTag: 'discover_search_input_hero',
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: FunTheme.of(context).neutral40,
+                ),
                 analyticsEvent: AnalyticsEventName.forYouSearchTapped.toEvent(),
                 focusNode: _searchFocusNode,
                 onChanged: (value) {

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class DrawerMenuItem extends StatelessWidget {

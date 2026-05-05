@@ -55,14 +55,14 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 ## Design system (FUN)
 
 - **Use FUN for UI**: Use the FUN design system for all new and refactored UI; keep components consistent.
-- **Component prefix**: All FUN components use the `Fun` prefix (e.g. `FunButton`, `FunPrimaryTabs`, `FunBottomSheet`).
-- **Imports**: Import from `package:givt_app/features/family/shared/design/components/components.dart` (and `fun_icon.dart` for `FunIcon` when needed).
+- **Component prefix**: **Only** documented FUN design-system widgets use the `Fun` prefix (e.g. `FunButton`, `FunInput`, `FunBottomSheet`). Do not use `Fun` for helpers or Flutter integration wrappers (e.g. `InputFormField` wraps `FunInput` for `Form` validation — it is not a FUN component).
+- **Imports**: Prefer a single barrel — `package:givt_app/shared/design_system/design_system.dart` (components, `FunTheme`, `FamilyAppTheme`, `FunTextStyles`, `FunAppTheme`, common illustrations including `FunIcon`). Use granular paths under `shared/design_system/` only when you intentionally want a smaller import surface (e.g. token types from `tokens/`, or `export` barrels like [`family/utils/utils.dart`](lib/features/family/utils/utils.dart)).
 - **Component categories**:
   - Actions: `FunButton`, `FunTile`
   - Content: `FunCard`
   - Navigation: `FunTopAppBar`, `FunPrimaryTabs`, `FunNavigationBar`
   - Overlays: `FunBottomSheet`, `FunModal`
-  - Inputs: `FunCounter`
+  - Inputs: `FunCounter`, `FunInput` (use `InputFormField` when you need `Form` / `validator` integration)
 - **Typography**: Use specialized text components like `TitleMediumText`, `BodyMediumText`, etc.
 - **Theming**: Use the FUN color palette (`FunTheme.of(context)` / `FamilyAppTheme`) and ensure responsive design across screen sizes.
 - **Success confirmation**: Use **`FunIcon.checkmark()`** as the main content of a modal or bottom sheet (big green circle). Use a single “Done” button or **`FunModal` with `autoClose`** for brief confirmations (e.g. support request sent). Do not use a checkmark on the button for “confirm” actions; the icon in the modal is the confirmation.
