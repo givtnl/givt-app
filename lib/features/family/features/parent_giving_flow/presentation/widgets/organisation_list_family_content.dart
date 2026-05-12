@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OrganisationListFamilyContent extends StatefulWidget {
@@ -80,6 +81,8 @@ class _OrganisationListFamilyContentState
             )
             .toList();
 
+        final showFallbackRow = state.previousSearchQuery.isNotEmpty;
+
         return Column(
           children: [
             FunOrganisationFilterTilesBar(
@@ -115,8 +118,52 @@ class _OrganisationListFamilyContentState
                     color: AppTheme.neutralVariant95,
                   ),
                   shrinkWrap: true,
-                  itemCount: visibleOrganisations.length,
+                  itemCount:
+                      visibleOrganisations.length + (showFallbackRow ? 1 : 0),
                   itemBuilder: (context, index) {
+                    if (showFallbackRow &&
+                        index == visibleOrganisations.length) {
+                      return ListTile(
+                        key: const ValueKey<String>(
+                          'organisation_list_report_missing',
+                        ),
+                        contentPadding: EdgeInsets.zero,
+                        splashColor: FunTheme.of(context).highlight99,
+                        onTap: () {
+                          AnalyticsHelper.logEvent(
+                            eventName: AnalyticsEventName
+                                .forYouReportMissingOrganisationTapped,
+                          );
+                          final metadata =
+                              state.previousSearchQuery.isNotEmpty
+                                  ? {'searchText': state.previousSearchQuery}
+                                  : null;
+                          showModalBottomSheet<void>(
+                            context: context,
+                            isScrollControlled: true,
+                            useSafeArea: true,
+                            builder: (_) => AboutGivtBottomSheet(
+                              initialMessage:
+                                  locals.reportMissingOrganisationPrefilledText,
+                              metadata: metadata,
+                            ),
+                          );
+                        },
+                        leading: Icon(
+                          Icons.report_problem_outlined,
+                          color: FunTheme.of(context).primary20,
+                        ),
+                        title: LabelMediumText(
+                          locals.reportMissingOrganisationListItem,
+                          color: AppTheme.primary20,
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: FunTheme.of(context).primary20,
+                        ),
+                      );
+                    }
+
                     final organisation = visibleOrganisations[index];
                     final isFavorited = state.favoritedOrganisations.contains(
                       organisation.nameSpace,

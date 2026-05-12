@@ -213,6 +213,9 @@ enum AnalyticsEventName {
   ),
   forYouFavoritesDoneTapped('for_you_favorites_done_tapped'),
   forYouOrganisationSelected('for_you_organisation_selected'),
+  forYouReportMissingOrganisationTapped(
+    'for_you_report_missing_organisation_tapped',
+  ),
   forYouOrganisationConfirmGiveTapped(
     'for_you_organisation_confirm_give_tapped',
   ),
