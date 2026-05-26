@@ -177,26 +177,29 @@ class SignMandatePage extends StatelessWidget {
     final router = GoRouter.of(context);
 
     void pushError({
-      required String title,
-      required String message,
       required String errorReason,
+      required String specificErrorContext,
     }) {
+      void dismissError() {
+        registrationBloc.add(const RegistrationMandateErrorDismissed());
+      }
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!context.mounted) return;
         router.pushNamed(
           Pages.flowGenericError.name,
           extra: FlowGenericErrorExtra(
-            screenTitle: locals.signMandateConfirmTitle,
-            title: title,
-            message: message,
             errorReason: errorReason,
-            onTryAgain: () {
-              registrationBloc.add(const RegistrationMandateErrorDismissed());
-              router.pop();
+            supportMetadata: {
+              'Screen': 'Sign mandate',
+              'Registration status': state.status.name,
+              'Country': user.country,
+              'Specific error context': specificErrorContext,
             },
-            onGoHome: () {
-              registrationBloc.add(const RegistrationMandateErrorDismissed());
-              router.goNamed(Pages.home.name);
+            onDismiss: dismissError,
+            onTryAgain: () {
+              dismissError();
+              router.pop();
             },
           ),
         );
@@ -205,33 +208,29 @@ class SignMandatePage extends StatelessWidget {
 
     if (state.status == RegistrationStatus.conflict) {
       pushError(
-        title: locals.mandateFailed,
-        message: locals.mandateFailPersonalInformation,
         errorReason: 'conflict',
+        specificErrorContext: locals.mandateFailPersonalInformation,
       );
     } else if (state.status == RegistrationStatus.badRequest) {
       pushError(
-        title: locals.mandateFailed,
-        message: locals.duplicateAccountOrganisationMessage,
         errorReason: 'bad_request',
+        specificErrorContext: locals.duplicateAccountOrganisationMessage,
       );
     } else if (state.status == RegistrationStatus.failure) {
       pushError(
-        title: locals.mandateFailed,
-        message: locals.mandateFailTryAgainLater,
         errorReason: 'failure',
+        specificErrorContext: locals.mandateFailTryAgainLater,
       );
     } else if (state.status == RegistrationStatus.bacsDetailsWrong) {
       pushError(
-        title: locals.mandateFailed,
-        message: locals.updateBacsAccountDetailsError,
         errorReason: 'bacs_details_wrong',
+        specificErrorContext: locals.updateBacsAccountDetailsError,
       );
     } else if (state.status == RegistrationStatus.ddiFailed) {
       pushError(
-        title: locals.ddiFailedTitle,
-        message: locals.ddiFailedMessage,
         errorReason: 'ddi_failed',
+        specificErrorContext:
+            '${locals.ddiFailedTitle}. ${locals.ddiFailedMessage}',
       );
     }
   }

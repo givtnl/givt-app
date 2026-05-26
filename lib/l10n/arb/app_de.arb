@@ -363,6 +363,16 @@
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
     "type": "text"
   },
+  "flowGenericErrorTitle": "Etwas ist schiefgelaufen",
+  "@flowGenericErrorTitle": {
+    "description": "Title on shared flow error screen",
+    "type": "text"
+  },
+  "flowGenericErrorMessage": "Es ist ein Fehler aufgetreten. Bitte versuche es später erneut oder kontaktiere uns, wenn das Problem weiterhin besteht.",
+  "@flowGenericErrorMessage": {
+    "description": "Body copy on shared flow error screen",
+    "type": "text"
+  },
   "flowGenericErrorContactSupport": "Support kontaktieren",
   "@flowGenericErrorContactSupport": {
     "description": "Support action on shared flow error screen (opens contact sheet)",

@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 
-/// Arguments for [FlowGenericErrorPage] (via `GoRouterState.extra`).
+/// Arguments for the shared flow error screen (via `GoRouterState.extra`).
 class FlowGenericErrorExtra {
   const FlowGenericErrorExtra({
-    required this.screenTitle,
-    required this.title,
-    required this.message,
     required this.errorReason,
+    required this.onDismiss,
     required this.onTryAgain,
-    required this.onGoHome,
+    this.supportFlow = 'Onboarding',
+    this.supportMetadata = const {},
   });
 
-  /// Shown in the app bar (e.g. mandate flow vs other flows).
-  final String screenTitle;
-
-  final String title;
-  final String message;
-
-  /// Included in support contact metadata (e.g. `conflict`, `failure`).
+  /// Technical error code for support (e.g. `conflict`, `failure`).
   final String errorReason;
 
-  /// Typically: clear flow state + pop this route.
-  final VoidCallback onTryAgain;
+  /// Flow label sent with support contact metadata.
+  final String supportFlow;
 
-  /// Typically: clear flow state + navigate home.
-  final VoidCallback onGoHome;
+  /// Extra key/value pairs appended to the support email (e.g. country, status).
+  final Map<String, String> supportMetadata;
+
+  /// Clears flow error state when the screen is dismissed (any route).
+  final VoidCallback onDismiss;
+
+  /// Returns the user to the previous step to retry.
+  final VoidCallback onTryAgain;
 }

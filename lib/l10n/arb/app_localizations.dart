@@ -1271,6 +1271,18 @@ abstract class AppLocalizations {
   /// **'Try again'**
   String get tryAgain;
 
+  /// Title on shared flow error screen
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get flowGenericErrorTitle;
+
+  /// Body copy on shared flow error screen
+  ///
+  /// In en, this message translates to:
+  /// **'We ran into an error. Please try again later or contact us if the problem continues.'**
+  String get flowGenericErrorMessage;
+
   /// Support action on shared flow error screen (opens contact sheet)
   ///
   /// In en, this message translates to:

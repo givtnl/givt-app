@@ -667,6 +667,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tryAgain => 'Try again';
 
   @override
+  String get flowGenericErrorTitle => 'Something went wrong';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'We ran into an error. Please try again later or contact us if the problem continues.';
+
+  @override
   String get flowGenericErrorContactSupport => 'Contact support';
 
   @override
@@ -3592,6 +3599,13 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get tryAgain => 'Try again';
+
+  @override
+  String get flowGenericErrorTitle => 'Something went wrong';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'We ran into an error. Please try again later or contact us if the problem continues.';
 
   @override
   String get flowGenericErrorContactSupport => 'Contact support';

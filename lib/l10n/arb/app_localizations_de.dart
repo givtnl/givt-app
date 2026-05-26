@@ -673,6 +673,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tryAgain => 'Versuche es nochmal';
 
   @override
+  String get flowGenericErrorTitle => 'Etwas ist schiefgelaufen';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'Es ist ein Fehler aufgetreten. Bitte versuche es später erneut oder kontaktiere uns, wenn das Problem weiterhin besteht.';
+
+  @override
   String get flowGenericErrorContactSupport => 'Support kontaktieren';
 
   @override

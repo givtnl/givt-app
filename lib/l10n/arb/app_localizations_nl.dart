@@ -671,6 +671,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tryAgain => 'Opnieuw proberen';
 
   @override
+  String get flowGenericErrorTitle => 'Er is iets misgegaan';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'Er is een fout opgetreden. Probeer het later opnieuw of neem contact met ons op als het probleem blijft bestaan.';
+
+  @override
   String get flowGenericErrorContactSupport => 'Contact opnemen';
 
   @override

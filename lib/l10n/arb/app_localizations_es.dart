@@ -667,6 +667,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tryAgain => 'Try again';
 
   @override
+  String get flowGenericErrorTitle => 'Algo salió mal';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'Ha ocurrido un error. Inténtalo de nuevo más tarde o contáctanos si el problema continúa.';
+
+  @override
   String get flowGenericErrorContactSupport => 'Contactar con soporte';
 
   @override
@@ -3605,6 +3612,13 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get tryAgain => 'Intentar de nuevo';
+
+  @override
+  String get flowGenericErrorTitle => 'Algo salió mal';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'Ha ocurrido un error. Inténtalo de nuevo más tarde o contáctanos si el problema continúa.';
 
   @override
   String get flowGenericErrorContactSupport => 'Contactar con soporte';
