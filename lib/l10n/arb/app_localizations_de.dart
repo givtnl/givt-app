@@ -2754,7 +2754,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Ist das die Organisation, der du geben möchtest?';
 
   @override
-  String get homeScreenConfirmOrgYes => 'Ja, bestätigen';
+  String get homeScreenConfirmOrgYes => 'Ja, fortfahren';
+
+  @override
+  String get homeScreenConfirmOrgGoBack => 'Zurück';
 
   @override
   String homeScreenChosenOrg(Object org) {
