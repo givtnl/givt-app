@@ -4913,8 +4913,14 @@ abstract class AppLocalizations {
   /// No description provided for @homeScreenConfirmOrgYes.
   ///
   /// In en, this message translates to:
-  /// **'Yes, confirm'**
+  /// **'Yes, continue'**
   String get homeScreenConfirmOrgYes;
+
+  /// No description provided for @homeScreenConfirmOrgGoBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back'**
+  String get homeScreenConfirmOrgGoBack;
 
   /// No description provided for @homeScreenChosenOrg.
   ///
