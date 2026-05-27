@@ -5,7 +5,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon_givy.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -88,7 +87,6 @@ class _MandateSetupIntroScaffold extends StatelessWidget {
     return FunScaffold(
       appBar: const FunTopAppBar(
         variant: FunTopAppBarVariant.white,
-        leading: GivtBackButtonFlat(),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
