@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/shared/design/components/input/fun_input_label.dart';
 import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 
 class FunInputDropdown<T> extends StatefulWidget {
@@ -12,6 +13,9 @@ class FunInputDropdown<T> extends StatefulWidget {
     this.hint,
     this.focusNode,
     this.selectedItemBuilder,
+    this.label,
+    this.enabled = true,
+    this.errorText,
     super.key,
   });
 
@@ -22,6 +26,9 @@ class FunInputDropdown<T> extends StatefulWidget {
   final FocusNode? focusNode;
   final Widget Function(BuildContext, T) itemBuilder;
   final Widget Function(BuildContext, T)? selectedItemBuilder;
+  final String? label;
+  final bool enabled;
+  final String? errorText;
 
   @override
   State<FunInputDropdown<T>> createState() => _FunInputDropdownState<T>();
@@ -30,9 +37,25 @@ class FunInputDropdown<T> extends StatefulWidget {
 class _FunInputDropdownState<T> extends State<FunInputDropdown<T>> {
   bool _isOpen = false;
 
+  FunInputLabelState _labelState() {
+    if (!widget.enabled) {
+      return FunInputLabelState.disabled;
+    }
+    if (widget.errorText != null && widget.errorText!.isNotEmpty) {
+      return FunInputLabelState.error;
+    }
+    if (_isOpen) {
+      return FunInputLabelState.focused;
+    }
+    if (widget.value != null) {
+      return FunInputLabelState.filled;
+    }
+    return FunInputLabelState.defaultState;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DropdownButton2<T>(
+    final dropdown = DropdownButton2<T>(
       key: const ValueKey('FunInputDropdown'),
       items: widget.items
           .map((item) => DropdownMenuItem<T>(
@@ -77,12 +100,14 @@ class _FunInputDropdownState<T> extends State<FunInputDropdown<T>> {
       style: Theme.of(context).textTheme.labelLarge,
       value: widget.value,
       hint: widget.hint,
-      onChanged: (T? value) {
-        if (value != null) {
-          widget.onChanged?.call(value);
-          widget.focusNode?.unfocus();
-        }
-      },
+      onChanged: widget.enabled
+          ? (T? value) {
+              if (value != null) {
+                widget.onChanged?.call(value);
+                widget.focusNode?.unfocus();
+              }
+            }
+          : null,
       iconStyleData: const IconStyleData(
         icon: Padding(
           padding: EdgeInsets.only(right: 20),
@@ -109,6 +134,12 @@ class _FunInputDropdownState<T> extends State<FunInputDropdown<T>> {
               .map((item) => widget.selectedItemBuilder!(context, item))
               .toList()
           : null,
+    );
+
+    return LabeledField(
+      label: widget.label,
+      labelState: _labelState(),
+      child: dropdown,
     );
   }
 }

@@ -5,10 +5,27 @@
     "description": "`@Tine, vind je 'Ho' kunnen? Of 'Ha' of moet de zin gewoon anders? Sjoerd kan niet leven met 'Hé'",
     "type": "text"
   },
-  "slimPayInformation": "To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.",
   "buttonContinue": "Continue",
-  "slimPayInfoDetail": "Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.",
-  "slimPayInfoDetailTitle": "What is Better World Payments?",
+  "mandateIntroTitleSepa": "Configura tu mandato",
+  "@mandateIntroTitleSepa": {
+    "description": "Title on EU/SEPA mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroTitleUk": "Configura tu domiciliación bancaria",
+  "@mandateIntroTitleUk": {
+    "description": "Title on UK Direct Debit mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroBodySepa": "Vincula tu cuenta de forma segura para donar fácilmente. Tu banco puede llamarlo recurrente, pero solo cobramos cuando donas.",
+  "@mandateIntroBodySepa": {
+    "description": "Body copy on EU/SEPA mandate setup intro screen",
+    "type": "text"
+  },
+  "mandateIntroBodyUk": "Cada vez que donas, cobramos el pago por domiciliación. Tu banco puede llamarlo recurrente, pero solo cobramos cuando donas.",
+  "@mandateIntroBodyUk": {
+    "description": "Body copy on UK Direct Debit mandate setup intro screen",
+    "type": "text"
+  },
   "unregisterButton": "Terminate my account",
   "unregisterUnderstood": "I understand",
   "givtIsBeingProcessed": "Thank you for your Givt to {value0}!\n You can check the status in the overview.",
@@ -140,6 +157,9 @@
   "emailAlreadyInUseTitle": "Correo electrónico en uso",
   "emailAlreadyInUseContactButton": "Sí, poneros en contacto",
   "emailAlreadyInUseCloseButton": "Cerrar",
+  "mergeAccountsSupportSentTitle": "Solicitud recibida",
+  "mergeAccountsSupportSentBody": "Hemos recibido tu solicitud para fusionar tus cuentas. Lo solucionaremos y te avisaremos por correo cuando esté listo para que puedas continuar. Suele tardar unos días laborables.",
+  "gotIt": "Entendido",
   "giftsOverviewSent": "We've sent your donations overview to your mailbox.",
   "downloadYearOverviewByChoice": "Do you want to download an annual overview of your donations? Choose the year below and we will send the overview to",
   "mandateFailTryAgainLater": "Something went wrong while generating the mandate. Can you try again later?",
@@ -343,6 +363,26 @@
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
     "type": "text"
   },
+  "flowGenericErrorTitle": "Algo salió mal",
+  "@flowGenericErrorTitle": {
+    "description": "Title on shared flow error screen",
+    "type": "text"
+  },
+  "flowGenericErrorMessage": "Ha ocurrido un error. Inténtalo de nuevo más tarde o contáctanos si el problema continúa.",
+  "@flowGenericErrorMessage": {
+    "description": "Body copy on shared flow error screen",
+    "type": "text"
+  },
+  "flowGenericErrorContactSupport": "Contactar con soporte",
+  "@flowGenericErrorContactSupport": {
+    "description": "Support action on shared flow error screen (opens contact sheet)",
+    "type": "text"
+  },
+  "flowGenericErrorGoToHome": "Ir al inicio",
+  "@flowGenericErrorGoToHome": {
+    "description": "Leave shared flow error screen to app home",
+    "type": "text"
+  },
   "wrongCredentials": "Invalid e-mail address or password. Is it possible that you registered with a different e-mail account?",
   "@wrongCredentials": {
     "description": "Kan dit leuker? \n  Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert",
@@ -518,7 +558,6 @@
     "description": "Cindy, die {0} stond daar express ... \n  Sorry, maar we nemen pas genoegen met minstens 0,50 euro.",
     "type": "text"
   },
-  "slimPayInformationPart2": "We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.",
   "unregister": "Terminate account",
   "@unregister": {
     "description": "Title van de pagina \"Account opzeggen\"",
@@ -1268,7 +1307,8 @@
   "platformContributionSaveChangesModalNoButton": "No, discard",
   "homeScreenConfirmOrgTitle": "Apoya a {org}",
   "homeScreenConfirmOrgDescription": "¿Es esta la organización a la que quieres donar?",
-  "homeScreenConfirmOrgYes": "Sí, confirmar",
+  "homeScreenConfirmOrgYes": "Sí, continuar",
+  "homeScreenConfirmOrgGoBack": "Volver",
   "homeScreenChosenOrg": "¡Increíble! Vas a donar a {org}",
   "donationOverviewProcessingTimeTitle": "Tu donación está lista.",
   "donationOverviewProcessingTime3Days": "Por lo general, toma 2-3 días hábiles hasta que este monto sea cobrado de tu cuenta.",
@@ -1278,6 +1318,17 @@
   "reviewDonationsProcessedTitle": "Tus donaciones se están procesando",
   "reviewDonationsProcessedDescription": "Cobraremos {amount} en una sola transacción dentro de {days} días hábiles. Revisa el estado en el historial de donaciones.",
   "signMandateTitle": "Firmar mandato",
+  "signMandateConfirmTitle": "Confirma tus datos",
+  "signMandateRowAccountHolder": "Titular de la cuenta",
+  "signMandateRowEmail": "Correo electrónico",
+  "signMandateRowAddress": "Dirección",
+  "signMandateRowBankDetails": "Datos bancarios",
+  "signMandateRowSortCode": "Código de sucursal",
+  "signMandateRowBankAccountNumber": "Número de cuenta",
+  "signMandateSepaFooter": "Al continuar, firmas un mandato SEPA que autoriza a Givt a cobrar donativos de tu cuenta bancaria. Recibirás una copia de este mandato por correo electrónico.",
+  "signMandateLinkBankButton": "Vincular mi cuenta bancaria",
+  "signMandateUkDdFooterBeforeLink": "Al continuar, autorizas a Givt Ltd a cobrar solo cuando hagas un donativo, de acuerdo con la ",
+  "signMandateUkDdGuaranteeLink": "Garantía de domiciliación bancaria.",
   "giftAidYourDonationsTitle": "Gift Aid para tus donaciones",
   "giftAidShortExplanation": "Con Gift Aid, las organizaciones benéficas pueden recibir 25 peniques extra por cada libra que das. No te cuesta nada más.",
   "giftAidExampleTitle": "Por ejemplo",
@@ -1296,5 +1347,39 @@
   "giftAidAboutWhoCanUse": "¿Quién puede usar Gift Aid?",
   "giftAidAboutWhyPayDifference": "¿Por qué podría tener que pagar la diferencia?",
   "giftAidAboutDeclaration": "Declaración de Gift Aid:",
+  "manageGiftAidTitle": "Gestionar Gift Aid",
+  "manageGiftAidSectionTitle": "Gift Aid",
+  "manageGiftAidStatusActive": "Activo",
+  "manageGiftAidStatusInactive": "Inactivo",
+  "manageGiftAidIntroLead": "Donar con Gift Aid significa que ",
+  "manageGiftAidIntroEmphasis": "las organizaciones benéficas e iglesias pueden reclamar 25p extra por cada £1 que das.",
+  "manageGiftAidIntroTail": " No te costará más.",
+  "manageGiftAidImpactInTaxYear": "Tu impacto de Gift Aid en el año fiscal {year}",
+  "@manageGiftAidImpactInTaxYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "manageGiftAidYouHaveGiven": "Has donado:",
+  "manageGiftAidExtraAddedWithGiftAid": "Extra añadido con Gift Aid:",
+  "manageGiftAidTotalImpact": "Impacto total:",
+  "manageGiftAidDeactivate": "Desactivar Gift Aid",
+  "manageGiftAidTurnOffTitle": "¿Desactivar Gift Aid?",
+  "manageGiftAidTurnOffBody": "Las donaciones futuras no incluirán el 25% adicional de Gift Aid.\nPuedes volver a activarlo en cualquier momento.",
+  "manageGiftAidKeepActive": "Mantener Gift Aid activo",
+  "manageGiftAidTurnOff": "Desactivar Gift Aid",
+  "manageGiftAidOrangeCardTitle": "Activa Gift Aid para aumentar tu impacto",
+  "manageGiftAidGivingInTaxYear": "Donaciones en el año fiscal {year}:",
+  "@manageGiftAidGivingInTaxYear": {
+    "placeholders": {
+      "year": {
+        "type": "String"
+      }
+    }
+  },
+  "manageGiftAidPotentialBonus": "Bonificación potencial de Gift Aid (25%):",
+  "manageGiftAidPotentialTotalImpact": "Con Gift Aid, tu impacto total sería:",
   "scannerDownloadingModule": "Preparando el escáner... Esto puede tardar un momento."
 }

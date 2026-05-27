@@ -273,7 +273,7 @@ class APIService {
     if (response.statusCode >= 400) {
       throw Exception(response.statusCode);
     }
-    return response.statusCode == 200;
+    return response.statusCode == 200 || response.statusCode == 201;
   }
 
   Future<bool> resetPassword(Map<String, dynamic> params) async {

@@ -116,29 +116,35 @@ abstract class AppLocalizations {
   /// **'This amount is higher than your chosen maximum amount. Please adjust the maximum donation amount or choose a lower amount.'**
   String get amountLimitExceeded;
 
-  /// No description provided for @slimPayInformation.
-  ///
-  /// In en, this message translates to:
-  /// **'To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.'**
-  String get slimPayInformation;
-
   /// No description provided for @buttonContinue.
   ///
   /// In en, this message translates to:
   /// **'Continue'**
   String get buttonContinue;
 
-  /// No description provided for @slimPayInfoDetail.
+  /// Title on EU/SEPA mandate setup intro screen
   ///
   /// In en, this message translates to:
-  /// **'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.'**
-  String get slimPayInfoDetail;
+  /// **'Set up your mandate'**
+  String get mandateIntroTitleSepa;
 
-  /// No description provided for @slimPayInfoDetailTitle.
+  /// Title on UK Direct Debit mandate setup intro screen
   ///
   /// In en, this message translates to:
-  /// **'What is Better World Payments?'**
-  String get slimPayInfoDetailTitle;
+  /// **'Set up your Direct Debit'**
+  String get mandateIntroTitleUk;
+
+  /// Body copy on EU/SEPA mandate setup intro screen
+  ///
+  /// In en, this message translates to:
+  /// **'Securely link your account so you can easily donate. Your bank may call this recurring, but we only collect money when you give.'**
+  String get mandateIntroBodySepa;
+
+  /// Body copy on UK Direct Debit mandate setup intro screen
+  ///
+  /// In en, this message translates to:
+  /// **'Each time you donate, we collect the payment via Direct Debit. Your bank may call this recurring, but we only collect money when you give.'**
+  String get mandateIntroBodyUk;
 
   /// No description provided for @unregisterButton.
   ///
@@ -932,6 +938,24 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get emailAlreadyInUseCloseButton;
 
+  /// No description provided for @mergeAccountsSupportSentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request received'**
+  String get mergeAccountsSupportSentTitle;
+
+  /// No description provided for @mergeAccountsSupportSentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve received your request to merge your accounts. We\'ll fix it and let you know via email when it\'s done so you can continue. This usually takes a few business days.'**
+  String get mergeAccountsSupportSentBody;
+
+  /// No description provided for @gotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get gotIt;
+
   /// No description provided for @giftsOverviewSent.
   ///
   /// In en, this message translates to:
@@ -1247,6 +1271,30 @@ abstract class AppLocalizations {
   /// **'Try again'**
   String get tryAgain;
 
+  /// Title on shared flow error screen
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get flowGenericErrorTitle;
+
+  /// Body copy on shared flow error screen
+  ///
+  /// In en, this message translates to:
+  /// **'We ran into an error. Please try again later or contact us if the problem continues.'**
+  String get flowGenericErrorMessage;
+
+  /// Support action on shared flow error screen (opens contact sheet)
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get flowGenericErrorContactSupport;
+
+  /// Leave shared flow error screen to app home
+  ///
+  /// In en, this message translates to:
+  /// **'Go to home'**
+  String get flowGenericErrorGoToHome;
+
   /// Kan dit leuker?
   ///   Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert
   ///
@@ -1462,12 +1510,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sorry, but the minimum amount we can work with is {value0}.'**
   String givtNotEnough(Object value0);
-
-  /// No description provided for @slimPayInformationPart2.
-  ///
-  /// In en, this message translates to:
-  /// **'We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.'**
-  String get slimPayInformationPart2;
 
   /// Title van de pagina "Account opzeggen"
   ///
@@ -4871,8 +4913,14 @@ abstract class AppLocalizations {
   /// No description provided for @homeScreenConfirmOrgYes.
   ///
   /// In en, this message translates to:
-  /// **'Yes, confirm'**
+  /// **'Yes, continue'**
   String get homeScreenConfirmOrgYes;
+
+  /// No description provided for @homeScreenConfirmOrgGoBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back'**
+  String get homeScreenConfirmOrgGoBack;
 
   /// No description provided for @homeScreenChosenOrg.
   ///
@@ -4927,6 +4975,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign mandate'**
   String get signMandateTitle;
+
+  /// App bar title on mandate confirmation screen (Figma)
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your details'**
+  String get signMandateConfirmTitle;
+
+  /// Label for name row on mandate confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Account holder'**
+  String get signMandateRowAccountHolder;
+
+  /// Label for email row on mandate confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get signMandateRowEmail;
+
+  /// Label for address row on mandate confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get signMandateRowAddress;
+
+  /// Label for IBAN / bank row (EU) on mandate confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Bank details'**
+  String get signMandateRowBankDetails;
+
+  /// Label for UK sort code row
+  ///
+  /// In en, this message translates to:
+  /// **'Sort code'**
+  String get signMandateRowSortCode;
+
+  /// Label for UK account number row
+  ///
+  /// In en, this message translates to:
+  /// **'Bank account number'**
+  String get signMandateRowBankAccountNumber;
+
+  /// Footer copy above primary button on EU SEPA mandate confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you sign a SEPA eMandate authorising Givt to collect donations from your bank account. A copy of this mandate will be sent to your email.'**
+  String get signMandateSepaFooter;
+
+  /// Primary CTA on mandate confirmation (EU and UK)
+  ///
+  /// In en, this message translates to:
+  /// **'Link my bank account'**
+  String get signMandateLinkBankButton;
+
+  /// UK mandate footer text before Direct Debit Guarantee link
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing, you authorise Givt Ltd to collect payments only when you make a donation, in accordance with the '**
+  String get signMandateUkDdFooterBeforeLink;
+
+  /// Tappable Direct Debit Guarantee phrase in UK mandate footer
+  ///
+  /// In en, this message translates to:
+  /// **'Direct Debit Guarantee.'**
+  String get signMandateUkDdGuaranteeLink;
 
   /// No description provided for @giftAidYourDonationsTitle.
   ///
@@ -5035,6 +5149,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Gift Aid declaration:'**
   String get giftAidAboutDeclaration;
+
+  /// No description provided for @manageGiftAidTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Gift Aid'**
+  String get manageGiftAidTitle;
+
+  /// No description provided for @manageGiftAidSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Aid'**
+  String get manageGiftAidSectionTitle;
+
+  /// No description provided for @manageGiftAidStatusActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get manageGiftAidStatusActive;
+
+  /// No description provided for @manageGiftAidStatusInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get manageGiftAidStatusInactive;
+
+  /// No description provided for @manageGiftAidIntroLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Donating with Gift Aid means '**
+  String get manageGiftAidIntroLead;
+
+  /// No description provided for @manageGiftAidIntroEmphasis.
+  ///
+  /// In en, this message translates to:
+  /// **'charities and churches can claim an extra 25p for every £1 you give.'**
+  String get manageGiftAidIntroEmphasis;
+
+  /// No description provided for @manageGiftAidIntroTail.
+  ///
+  /// In en, this message translates to:
+  /// **' It will not cost you any more.'**
+  String get manageGiftAidIntroTail;
+
+  /// No description provided for @manageGiftAidImpactInTaxYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Gift Aid impact in tax year {year}'**
+  String manageGiftAidImpactInTaxYear(String year);
+
+  /// No description provided for @manageGiftAidYouHaveGiven.
+  ///
+  /// In en, this message translates to:
+  /// **'You have given:'**
+  String get manageGiftAidYouHaveGiven;
+
+  /// No description provided for @manageGiftAidExtraAddedWithGiftAid.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra added with Gift Aid:'**
+  String get manageGiftAidExtraAddedWithGiftAid;
+
+  /// No description provided for @manageGiftAidTotalImpact.
+  ///
+  /// In en, this message translates to:
+  /// **'Total impact:'**
+  String get manageGiftAidTotalImpact;
+
+  /// No description provided for @manageGiftAidDeactivate.
+  ///
+  /// In en, this message translates to:
+  /// **'Deactivate Gift Aid'**
+  String get manageGiftAidDeactivate;
+
+  /// No description provided for @manageGiftAidTurnOffTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off Gift Aid?'**
+  String get manageGiftAidTurnOffTitle;
+
+  /// No description provided for @manageGiftAidTurnOffBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Future donations won’t include the 25% Gift Aid addition.\nYou can turn it back on anytime.'**
+  String get manageGiftAidTurnOffBody;
+
+  /// No description provided for @manageGiftAidKeepActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Gift Aid active'**
+  String get manageGiftAidKeepActive;
+
+  /// No description provided for @manageGiftAidTurnOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off Gift Aid'**
+  String get manageGiftAidTurnOff;
+
+  /// No description provided for @manageGiftAidOrangeCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate Gift Aid to increase your impact'**
+  String get manageGiftAidOrangeCardTitle;
+
+  /// No description provided for @manageGiftAidGivingInTaxYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Giving in tax year {year}:'**
+  String manageGiftAidGivingInTaxYear(String year);
+
+  /// No description provided for @manageGiftAidPotentialBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Potential Gift Aid bonus (25%):'**
+  String get manageGiftAidPotentialBonus;
+
+  /// No description provided for @manageGiftAidPotentialTotalImpact.
+  ///
+  /// In en, this message translates to:
+  /// **'With Gift Aid, your total impact would be:'**
+  String get manageGiftAidPotentialTotalImpact;
 
   /// No description provided for @scannerDownloadingModule.
   ///

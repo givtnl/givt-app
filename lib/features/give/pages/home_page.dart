@@ -16,7 +16,6 @@ import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
-import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/pages/home_page_view.dart';
 import 'package:givt_app/features/give/pages/home_page_with_qr_code.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
@@ -72,10 +71,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    // Load the last used tab index from SharedPreferences
-    pageIndex = getIt<SharedPreferences>()
-            .getInt(NativeSharedPreferencesKeys.homePageLastTabIndex) ??
-        0;
+    // QR deep links open on the For You tab (ENG-595).
+    if (widget.code.isNotEmpty) {
+      pageIndex = 1;
+    } else {
+      pageIndex = getIt<SharedPreferences>().getInt(
+            NativeSharedPreferencesKeys.homePageLastTabIndex,
+          ) ??
+          0;
+    }
     WidgetsBinding.instance.addObserver(this); // Add lifecycle observer
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
@@ -107,12 +111,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     try {
       isEnabled = await (() async {
         await AnalyticsHelper.ensureInitialized();
-        return AnalyticsHelper.isFeatureEnabled(_forYouStartupFlagKey);
+        return AnalyticsHelper.isFeatureEnabled(
+          _forYouStartupFlagKey,
+          fallback: true,
+        );
       })().timeout(const Duration(seconds: 1));
     } on TimeoutException {
-      return;
-    } catch (_) {
-      return;
+      // Phased rollout: if the flag cannot be evaluated in time, default to
+      // the new giving flow (same as ENG-555 PostHog fallback).
+      isEnabled = true;
+    } on Object {
+      isEnabled = true;
     }
     if (!mounted || !isEnabled) {
       return;
@@ -187,8 +196,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
       // We need to trigger the scan on the next frame
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        // The BlocProvider in the body will handle creating a new GiveBloc
-        // and triggering the scan, so we just need to trigger a rebuild
+        // HomePageWithQRCode will resolve the code on the next build.
         setState(() {});
       });
     }
@@ -309,82 +317,23 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ),
         drawer: const CustomNavigationDrawer(),
         body: widget.code.isNotEmpty
-            ? BlocProvider(
+            ? HomePageWithQRCode(
                 key: ValueKey(
-                  'qr-bloc-${widget.code}-$_scanCounter-${auth.status}',
-                ), // Use counter and status for unique key
-                create: (_) {
-                  final bloc = GiveBloc(
-                    getIt(),
-                    getIt(),
-                    getIt(),
-                    getIt(),
-                  );
-                  // Trigger QR code scan when code is present and user is authenticated
-                  if (auth.status == AuthStatus.authenticated) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      LoggingInfo.instance.info(
-                        'HomePage: Creating new BlocProvider for code ${widget.code} (counter: $_scanCounter, status: ${auth.status})',
-                      );
-                      // Mark this code as processed
-                      _lastProcessedCode = widget.code;
-
-                      bloc.add(
-                        GiveQRCodeScannedOutOfApp(
-                          widget.code,
-                          widget.afterGivingRedirection,
-                          auth.user.guid,
-                          amount: widget.initialAmount?.toString() ?? '',
-                        ),
-                      );
-                    });
-                  } else {
-                    LoggingInfo.instance.info(
-                      'HomePage: BlocProvider created but waiting for authentication (status: ${auth.status})',
-                    );
-                  }
-                  return bloc;
-                },
-                child: BlocListener<GiveBloc, GiveState>(
-                  listener: (context, state) {
-                    // Reset last processed code when state goes back to initial
-                    // This allows scanning the same QR code again after canceling
-                    if (state.status == GiveStatus.initial) {
-                      // Don't increment counter here - we only want to increment
-                      // when app resumes from background with same code
-                      _lastProcessedCode = null;
-                      LoggingInfo.instance.info(
-                        'HomePage: GiveBloc reset to initial, clearing last processed code',
-                      );
-                    }
-                  },
-                  child: HomePageWithQRCode(
-                    initialAmount: widget.initialAmount,
-                    given: widget.given,
-                    retry: widget.retry,
-                    code: widget.code,
-                    afterGivingRedirection: widget.afterGivingRedirection,
-                    initialPageIndex: pageIndex,
-                    onPageChanged: (index) => setState(
-                      () {
-                        pageIndex = index;
-                        getIt<SharedPreferences>().setInt(
-                          NativeSharedPreferencesKeys.homePageLastTabIndex,
-                          index,
-                        );
-                      },
-                    ),
-                    onQrConfirmedSwitchToGivtTab: () => setState(() {
-                      pageIndex = 0;
-                      getIt<SharedPreferences>().setInt(
-                        NativeSharedPreferencesKeys.homePageLastTabIndex,
-                        0,
-                      );
-                    }),
-                    auth: auth,
-                    mandatePopupDismissalTracker: _mandatePopupDismissalTracker,
-                  ),
+                  'qr-entry-${widget.code}-$_scanCounter-${auth.status}',
                 ),
+                code: widget.code,
+                initialPageIndex: pageIndex,
+                onPageChanged: (index) => setState(
+                  () {
+                    pageIndex = index;
+                    getIt<SharedPreferences>().setInt(
+                      NativeSharedPreferencesKeys.homePageLastTabIndex,
+                      index,
+                    );
+                  },
+                ),
+                auth: auth,
+                mandatePopupDismissalTracker: _mandatePopupDismissalTracker,
               )
             : MultiBlocListener(
                 listeners: [

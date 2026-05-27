@@ -45,6 +45,7 @@ enum AnalyticsEventName {
   editPhoneNumberSaveClicked('edit_phone_number_save_clicked'),
   editEmailSaveClicked('edit_email_save_clicked'),
   emailAlreadyInUseContactClicked('email_already_in_use_contact_clicked'),
+  mergeAccountsConfirmationClosed('merge_accounts_confirmation_closed'),
   emailAlreadyInUseCloseClicked('email_already_in_use_close_clicked'),
   inAppReviewTriggered('in_app_review_triggered'),
   askForInterviewTriggered('ask_for_interview_triggered'),
@@ -182,6 +183,16 @@ enum AnalyticsEventName {
   giftAidRegistrationCheckboxChanged(
     'gift_aid_registration_checkbox_changed',
   ),
+  manageGiftAidInfoClicked('manage_gift_aid_info_clicked'),
+  manageGiftAidDeactivateClicked('manage_gift_aid_deactivate_clicked'),
+  manageGiftAidKeepActiveClicked('manage_gift_aid_keep_active_clicked'),
+  manageGiftAidTurnOffConfirmedClicked(
+    'manage_gift_aid_turn_off_confirmed_clicked',
+  ),
+  manageGiftAidActivateForTaxYearClicked(
+    'manage_gift_aid_activate_for_tax_year_clicked',
+  ),
+  manageGiftAidSuccessDoneClicked('manage_gift_aid_success_done_clicked'),
   amountPressed('amount_pressed'),
   backButtonPressed('back_button_pressed'),
   returnToHomePressed('return_to_home_pressed'),
@@ -506,6 +517,9 @@ enum AnalyticsEventName {
   menuNavigationGiveLimitClicked('menu_navigation_give_limit_clicked'),
   menuNavigationPersonalInfoClicked('menu_navigation_personal_info_clicked'),
   signMandateChangeDetailsClicked('sign_mandate_change_details_clicked'),
+  signMandateDirectDebitGuaranteeOpened(
+    'sign_mandate_direct_debit_guarantee_opened',
+  ),
   menuNavigationAmountPresetsClicked('menu_navigation_amount_presets_clicked'),
   menuNavigationPlatformContributionClicked(
     'menu_navigation_platform_contribution_clicked',
@@ -535,7 +549,12 @@ enum AnalyticsEventName {
   finalizeRegistrationModalAskLaterClicked(
     'finalize_registration_modal_ask_later_clicked',
   ),
-  finalizeRegistrationModalShown('finalize_registration_modal_shown');
+  finalizeRegistrationModalShown('finalize_registration_modal_shown'),
+  flowGenericErrorTryAgainClicked('flow_generic_error_try_again_clicked'),
+  flowGenericErrorContactSupportClicked(
+    'flow_generic_error_contact_support_clicked',
+  ),
+  flowGenericErrorGoHomeClicked('flow_generic_error_go_home_clicked');
 
   const AnalyticsEventName(this.value);
 

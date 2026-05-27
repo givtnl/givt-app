@@ -75,17 +75,14 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-                  LabelMediumText.secondary40(
-                    context.l10n.recurringDonationsStartingTitle,
-                  ),
-                  const SizedBox(height: 8),
                   FunDatePicker(
+                    label: context.l10n.recurringDonationsStartingTitle,
                     selectedDate: uiModel.startDate,
                     onDateSelected: (date) {
                       _cubit.updateStartDate(date);
                       AnalyticsHelper.logEvent(
-                        eventName:
-                            AnalyticsEventName.recurringStep3SetDurationStartDate,
+                        eventName: AnalyticsEventName
+                            .recurringStep3SetDurationStartDate,
                         eventProperties: {'date': date.toIso8601String()},
                       );
                     },

@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/change_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_bank_details_bottom_sheet.dart';
-import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_name_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
+import 'package:givt_app/features/account_details/widgets/personal_info_edit_feedback_listener.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/shared/pages/gift_aid_page.dart';
-import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
+import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -47,44 +46,7 @@ class PersonalInfoEditPage extends StatelessWidget {
         ),
         title: Text(locals.personalInfo),
       ),
-      body: BlocListener<PersonalInfoEditBloc, PersonalInfoEditState>(
-        listener: (context, state) {
-          if (state.status == PersonalInfoEditStatus.noInternet) {
-            _showInfoModal(
-              context,
-              title: locals.noInternetConnectionTitle,
-              subtitle: locals.noInternet,
-            );
-          }
-          if (state.status == PersonalInfoEditStatus.invalidEmail) {
-            _showInfoModal(
-              context,
-              title: locals.invalidEmail,
-              subtitle: locals.errorTldCheck,
-            );
-          }
-          if (state.status == PersonalInfoEditStatus.emailUsed) {
-            _showEmailAlreadyInUseModal(
-              context,
-              requestedNewEmail: state.requestedNewEmail ?? '',
-            );
-          }
-          if (state.status == PersonalInfoEditStatus.error) {
-            _showInfoModal(
-              context,
-              title: locals.saveFailed,
-              subtitle: locals.updatePersonalInfoError,
-            );
-          }
-
-          /// if change is success refresh user that used in the cubit
-          /// (email change shows success state inside the sheet, then Done pops)
-          if (state.status == PersonalInfoEditStatus.success) {
-            context.read<AuthCubit>().refreshUser().whenComplete(
-              () => context.pop(),
-            );
-          }
-        },
+      body: PersonalInfoEditFeedbackListener(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -149,10 +111,8 @@ class PersonalInfoEditPage extends StatelessWidget {
                   color: AppTheme.givtLightGreen,
                 ),
                 value:
-                    '${user.address}\n${user.postalCode} ${user.city}, ${Country.getCountry(
-                      user.country,
-                      locals,
-                    )}',
+                    '${user.address}\n${user.postalCode} ${user.city}, '
+                    '${Country.getCountry(user.country, locals)}',
                 onTap: () {
                   AnalyticsHelper.logEvent(
                     eventName: AnalyticsEventName.onInfoRowClicked,
@@ -231,17 +191,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                     eventName: AnalyticsEventName.onInfoRowClicked,
                     eventProperties: {'row_type': 'gift_aid'},
                   );
-                  _showModalBottomSheet(
-                    context,
-                    bottomSheet: GiftAidPage(
-                      onGiftAidChanged: (useGiftAid) =>
-                          context.read<PersonalInfoEditBloc>().add(
-                            PersonalInfoEditGiftAid(
-                              isGiftAidEnabled: useGiftAid,
-                            ),
-                          ),
-                    ),
-                  );
+                  context.pushNamed(Pages.manageGiftAid.name);
                 },
               ),
               _buildInfoRow(
@@ -271,96 +221,6 @@ class PersonalInfoEditPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _showInfoModal(
-    BuildContext context, {
-    required String title,
-    String? subtitle,
-  }) {
-    final bloc = context.read<PersonalInfoEditBloc>();
-    final navigator = Navigator.of(context);
-    void onClose() {
-      bloc.add(const PersonalInfoEditStatusReset());
-      navigator.pop();
-    }
-
-    FunModal(
-      title: title,
-      subtitle: subtitle,
-      closeAction: onClose,
-      buttons: [
-        FunButton(
-          text: context.l10n.confirm,
-          analyticsEvent: AnalyticsEvent(AnalyticsEventName.okClicked),
-          onTap: onClose,
-        ),
-      ],
-    ).show(context, isDismissible: false);
-  }
-
-  void _showEmailAlreadyInUseModal(
-    BuildContext context, {
-    required String requestedNewEmail,
-  }) {
-    final locals = context.l10n;
-    final bloc = context.read<PersonalInfoEditBloc>();
-    void onClose() {
-      bloc.add(const PersonalInfoEditStatusReset());
-      Navigator.of(context).pop();
-    }
-
-    Future<void> createSupportRequest() async {
-      final user = context.read<AuthCubit>().state.user;
-      final infraCubit = context.read<InfraCubit>();
-      final message =
-          'The user wants to change their email address and would '
-          'like to get in contact to merge their accounts or resolve a '
-          'duplicate account. Requested new email address: $requestedNewEmail';
-      await infraCubit.contactSupportSafely(
-        message: message,
-        appLanguage: locals.localeName,
-        email: user.email,
-        guid: user.guid,
-      );
-      onClose();
-      if (context.mounted && infraCubit.state is InfraSuccess) {
-        _showSupportRequestConfirmationModal(context);
-      }
-    }
-
-    FunModal(
-      title: locals.emailAlreadyInUseTitle,
-      subtitle: locals.emailAlreadyInUse,
-      closeAction: onClose,
-      buttons: [
-        FunButton(
-          text: locals.emailAlreadyInUseContactButton,
-          analyticsEvent: AnalyticsEvent(
-            AnalyticsEventName.emailAlreadyInUseContactClicked,
-          ),
-          onTap: createSupportRequest,
-        ),
-        FunButton(
-          variant: FunButtonVariant.secondary,
-          fullBorder: true,
-          text: locals.emailAlreadyInUseCloseButton,
-          analyticsEvent: AnalyticsEvent(
-            AnalyticsEventName.emailAlreadyInUseCloseClicked,
-          ),
-          onTap: onClose,
-        ),
-      ],
-    ).show(context, isDismissible: false);
-  }
-
-  void _showSupportRequestConfirmationModal(BuildContext context) {
-    FunModal(
-      autoClose: const Duration(milliseconds: 1500),
-      icon: FunIcon.checkmark(),
-      title: null,
-      closeAction: () => Navigator.of(context).pop(),
-    ).show(context);
   }
 
   Future<void> _showModalBottomSheet(

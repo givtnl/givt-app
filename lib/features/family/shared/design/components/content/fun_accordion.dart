@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_app_theme.dart';
 import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/title_small_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 
 /// FUN Accordion
 ///
@@ -62,21 +61,21 @@ class FunAccordion extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    if (leadingIcon != null) ...[
-                      FaIcon(leadingIcon!, color: _titleColor(theme), size: 18),
+                    if (leadingIcon case final icon?) ...[
+                      FaIcon(icon, color: _titleColor(theme), size: 18),
                       const SizedBox(width: 12),
                     ],
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TitleSmallText(
+                          TitleMediumText(
                             title,
                             color: _titleColor(theme),
                           ),
                           if (subtitle != null) ...[
                             const SizedBox(height: 4),
-                            LabelMediumText(
+                            BodyMediumText(
                               subtitle!,
                               color: _subtitleColor(theme),
                             ),

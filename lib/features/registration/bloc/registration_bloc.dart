@@ -35,6 +35,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationStripeInit>(_onStripeInit);
 
     on<RegistrationReset>(_onReset);
+
+    on<RegistrationMandateErrorDismissed>(_onMandateErrorDismissed);
   }
 
   final AuthRepository authRepositoy;
@@ -301,5 +303,25 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   FutureOr<void> _onReset(
       RegistrationReset event, Emitter<RegistrationState> emit) {
     emit(const RegistrationState());
+  }
+
+  FutureOr<void> _onMandateErrorDismissed(
+    RegistrationMandateErrorDismissed event,
+    Emitter<RegistrationState> emit,
+  ) {
+    final user = authCubit.state.user;
+    if (Country.unitedKingdomCodes().contains(user.country)) {
+      emit(
+        state.copyWith(
+          status: RegistrationStatus.bacsDirectDebitMandateExplanation,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          status: RegistrationStatus.sepaMandateExplanation,
+        ),
+      );
+    }
   }
 }

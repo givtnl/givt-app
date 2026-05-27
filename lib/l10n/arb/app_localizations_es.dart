@@ -16,18 +16,21 @@ class AppLocalizationsEs extends AppLocalizations {
       'This amount is higher than your chosen maximum amount. Please adjust the maximum donation amount or choose a lower amount.';
 
   @override
-  String get slimPayInformation =>
-      'To make giving as smooth as possible, we ask you to sign a SEPA eMandate. You only need to do this once.';
-
-  @override
   String get buttonContinue => 'Continue';
 
   @override
-  String get slimPayInfoDetail =>
-      'Givt works together with Better World Payments for executing the transactions. Better World Payments is specialised in handling mandates and automatic money transfers on digital platforms. Better World Payments executes these orders for Givt at the lowest rates on this market and at a high speed.\n\nBetter World Payments is an ideal partner for Givt because they make giving without cash very easy and safe. \n\nThe money will be collected in a Better World Payments account. \nGivt will ensure that the money is distributed correctly.';
+  String get mandateIntroTitleSepa => 'Configura tu mandato';
 
   @override
-  String get slimPayInfoDetailTitle => 'What is Better World Payments?';
+  String get mandateIntroTitleUk => 'Configura tu domiciliación bancaria';
+
+  @override
+  String get mandateIntroBodySepa =>
+      'Vincula tu cuenta de forma segura para donar fácilmente. Tu banco puede llamarlo recurrente, pero solo cobramos cuando donas.';
+
+  @override
+  String get mandateIntroBodyUk =>
+      'Cada vez que donas, cobramos el pago por domiciliación. Tu banco puede llamarlo recurrente, pero solo cobramos cuando donas.';
 
   @override
   String get unregisterButton => 'Terminate my account';
@@ -489,6 +492,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emailAlreadyInUseCloseButton => 'Cerrar';
 
   @override
+  String get mergeAccountsSupportSentTitle => 'Solicitud recibida';
+
+  @override
+  String get mergeAccountsSupportSentBody =>
+      'Hemos recibido tu solicitud para fusionar tus cuentas. Lo solucionaremos y te avisaremos por correo cuando esté listo para que puedas continuar. Suele tardar unos días laborables.';
+
+  @override
+  String get gotIt => 'Entendido';
+
+  @override
   String get giftsOverviewSent =>
       'We\'ve sent your donations overview to your mailbox.';
 
@@ -654,6 +667,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tryAgain => 'Try again';
 
   @override
+  String get flowGenericErrorTitle => 'Algo salió mal';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'Ha ocurrido un error. Inténtalo de nuevo más tarde o contáctanos si el problema continúa.';
+
+  @override
+  String get flowGenericErrorContactSupport => 'Contactar con soporte';
+
+  @override
+  String get flowGenericErrorGoToHome => 'Ir al inicio';
+
+  @override
   String get wrongCredentials =>
       'Invalid e-mail address or password. Is it possible that you registered with a different e-mail account?';
 
@@ -775,10 +801,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String givtNotEnough(Object value0) {
     return 'Sorry, but the minimum amount we can work with is $value0.';
   }
-
-  @override
-  String get slimPayInformationPart2 =>
-      'We will only collect funds when you choose to give. Because we use mandates, you also have the option to revoke a donation later if necessary.';
 
   @override
   String get unregister => 'Terminate account';
@@ -2713,7 +2735,10 @@ class AppLocalizationsEs extends AppLocalizations {
       '¿Es esta la organización a la que quieres donar?';
 
   @override
-  String get homeScreenConfirmOrgYes => 'Sí, confirmar';
+  String get homeScreenConfirmOrgYes => 'Sí, continuar';
+
+  @override
+  String get homeScreenConfirmOrgGoBack => 'Volver';
 
   @override
   String homeScreenChosenOrg(Object org) {
@@ -2749,6 +2774,42 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get signMandateTitle => 'Firmar mandato';
+
+  @override
+  String get signMandateConfirmTitle => 'Confirma tus datos';
+
+  @override
+  String get signMandateRowAccountHolder => 'Titular de la cuenta';
+
+  @override
+  String get signMandateRowEmail => 'Correo electrónico';
+
+  @override
+  String get signMandateRowAddress => 'Dirección';
+
+  @override
+  String get signMandateRowBankDetails => 'Datos bancarios';
+
+  @override
+  String get signMandateRowSortCode => 'Código de sucursal';
+
+  @override
+  String get signMandateRowBankAccountNumber => 'Número de cuenta';
+
+  @override
+  String get signMandateSepaFooter =>
+      'Al continuar, firmas un mandato SEPA que autoriza a Givt a cobrar donativos de tu cuenta bancaria. Recibirás una copia de este mandato por correo electrónico.';
+
+  @override
+  String get signMandateLinkBankButton => 'Vincular mi cuenta bancaria';
+
+  @override
+  String get signMandateUkDdFooterBeforeLink =>
+      'Al continuar, autorizas a Givt Ltd a cobrar solo cuando hagas un donativo, de acuerdo con la ';
+
+  @override
+  String get signMandateUkDdGuaranteeLink =>
+      'Garantía de domiciliación bancaria.';
 
   @override
   String get giftAidYourDonationsTitle => 'Gift Aid para tus donaciones';
@@ -2812,6 +2873,76 @@ class AppLocalizationsEs extends AppLocalizations {
   String get giftAidAboutDeclaration => 'Declaración de Gift Aid:';
 
   @override
+  String get manageGiftAidTitle => 'Gestionar Gift Aid';
+
+  @override
+  String get manageGiftAidSectionTitle => 'Gift Aid';
+
+  @override
+  String get manageGiftAidStatusActive => 'Activo';
+
+  @override
+  String get manageGiftAidStatusInactive => 'Inactivo';
+
+  @override
+  String get manageGiftAidIntroLead => 'Donar con Gift Aid significa que ';
+
+  @override
+  String get manageGiftAidIntroEmphasis =>
+      'las organizaciones benéficas e iglesias pueden reclamar 25p extra por cada £1 que das.';
+
+  @override
+  String get manageGiftAidIntroTail => ' No te costará más.';
+
+  @override
+  String manageGiftAidImpactInTaxYear(String year) {
+    return 'Tu impacto de Gift Aid en el año fiscal $year';
+  }
+
+  @override
+  String get manageGiftAidYouHaveGiven => 'Has donado:';
+
+  @override
+  String get manageGiftAidExtraAddedWithGiftAid =>
+      'Extra añadido con Gift Aid:';
+
+  @override
+  String get manageGiftAidTotalImpact => 'Impacto total:';
+
+  @override
+  String get manageGiftAidDeactivate => 'Desactivar Gift Aid';
+
+  @override
+  String get manageGiftAidTurnOffTitle => '¿Desactivar Gift Aid?';
+
+  @override
+  String get manageGiftAidTurnOffBody =>
+      'Las donaciones futuras no incluirán el 25% adicional de Gift Aid.\nPuedes volver a activarlo en cualquier momento.';
+
+  @override
+  String get manageGiftAidKeepActive => 'Mantener Gift Aid activo';
+
+  @override
+  String get manageGiftAidTurnOff => 'Desactivar Gift Aid';
+
+  @override
+  String get manageGiftAidOrangeCardTitle =>
+      'Activa Gift Aid para aumentar tu impacto';
+
+  @override
+  String manageGiftAidGivingInTaxYear(String year) {
+    return 'Donaciones en el año fiscal $year:';
+  }
+
+  @override
+  String get manageGiftAidPotentialBonus =>
+      'Bonificación potencial de Gift Aid (25%):';
+
+  @override
+  String get manageGiftAidPotentialTotalImpact =>
+      'Con Gift Aid, tu impacto total sería:';
+
+  @override
   String get scannerDownloadingModule =>
       'Preparando el escáner... Esto puede tardar un momento.';
 }
@@ -2828,18 +2959,21 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
       'Esta cantidad es mayor que su importe máximo elegido. Ajuste el importe máximo de donación o elija una cantidad inferior.';
 
   @override
-  String get slimPayInformation =>
-      'Para que dar sea lo más sencillo posible, te pedimos que firmes un mandato SEPA. Solo necesitas hacer esto una vez.';
-
-  @override
   String get buttonContinue => 'Continuar';
 
   @override
-  String get slimPayInfoDetail =>
-      'Givt trabaja junto con Better World Payments para ejecutar las transacciones. Better World Payments se especializa en la gestión de mandatos y transferencias automáticas de dinero en plataformas digitales. Better World Payments ejecuta estas solicitudes para Givt a las tarifas más bajas del mercado y a gran velocidad.\n\nBetter World Payments es un socio ideal para Givt porque facilita mucho la donación sin efectivo de forma segura. \n\nEl dinero se recogerá en una cuenta de Better World Payments. \nGivt se asegurará de que el dinero se distribuya correctamente.';
+  String get mandateIntroTitleSepa => 'Configura tu mandato';
 
   @override
-  String get slimPayInfoDetailTitle => '¿Qué es Better World Payments?';
+  String get mandateIntroTitleUk => 'Configura tu domiciliación bancaria';
+
+  @override
+  String get mandateIntroBodySepa =>
+      'Vincula tu cuenta de forma segura para donar fácilmente. Tu banco puede llamarlo recurrente, pero solo cobramos cuando donas.';
+
+  @override
+  String get mandateIntroBodyUk =>
+      'Cada vez que donas, cobramos el pago por domiciliación. Tu banco puede llamarlo recurrente, pero solo cobramos cuando donas.';
 
   @override
   String get unregisterButton => 'Eliminar mi cuenta';
@@ -3307,6 +3441,16 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get emailAlreadyInUseCloseButton => 'Cerrar';
 
   @override
+  String get mergeAccountsSupportSentTitle => 'Solicitud recibida';
+
+  @override
+  String get mergeAccountsSupportSentBody =>
+      'Hemos recibido tu solicitud para fusionar tus cuentas. Lo solucionaremos y te avisaremos por correo cuando esté listo para que puedas continuar. Suele tardar unos días laborables.';
+
+  @override
+  String get gotIt => 'Entendido';
+
+  @override
   String get giftsOverviewSent =>
       'Hemos enviado el resumen de tus donaciones a tu buzón de correo.';
 
@@ -3473,6 +3617,19 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get tryAgain => 'Intentar de nuevo';
 
   @override
+  String get flowGenericErrorTitle => 'Algo salió mal';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'Ha ocurrido un error. Inténtalo de nuevo más tarde o contáctanos si el problema continúa.';
+
+  @override
+  String get flowGenericErrorContactSupport => 'Contactar con soporte';
+
+  @override
+  String get flowGenericErrorGoToHome => 'Ir al inicio';
+
+  @override
   String get wrongCredentials =>
       'Correo electrónico o contraseña no válidos. ¿Es posible que te hayas registrado con un correo electrónico diferente?';
 
@@ -3595,10 +3752,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String givtNotEnough(Object value0) {
     return 'Lo sentimos, pero el importe mínimo con el que podemos trabajar es $value0.';
   }
-
-  @override
-  String get slimPayInformationPart2 =>
-      'Solo retiraremos fondos cuando tú elijas dar. Al usar mandatos, también tienes la opción de revocar una donación más tarde si es necesario.';
 
   @override
   String get unregister => 'Cancelar cuenta';
@@ -5548,7 +5701,10 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
       'Is this the organisation you\'d like to give to?';
 
   @override
-  String get homeScreenConfirmOrgYes => 'Yes, confirm';
+  String get homeScreenConfirmOrgYes => 'Yes, continue';
+
+  @override
+  String get homeScreenConfirmOrgGoBack => 'Go back';
 
   @override
   String homeScreenChosenOrg(Object org) {
@@ -5584,6 +5740,42 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get signMandateTitle => 'Sign mandate';
+
+  @override
+  String get signMandateConfirmTitle => 'Confirma tus datos';
+
+  @override
+  String get signMandateRowAccountHolder => 'Titular de la cuenta';
+
+  @override
+  String get signMandateRowEmail => 'Correo electrónico';
+
+  @override
+  String get signMandateRowAddress => 'Dirección';
+
+  @override
+  String get signMandateRowBankDetails => 'Datos bancarios';
+
+  @override
+  String get signMandateRowSortCode => 'Código de sucursal';
+
+  @override
+  String get signMandateRowBankAccountNumber => 'Número de cuenta';
+
+  @override
+  String get signMandateSepaFooter =>
+      'Al continuar, firmas un mandato SEPA que autoriza a Givt a cobrar donativos de tu cuenta bancaria. Recibirás una copia de este mandato por correo electrónico.';
+
+  @override
+  String get signMandateLinkBankButton => 'Vincular mi cuenta bancaria';
+
+  @override
+  String get signMandateUkDdFooterBeforeLink =>
+      'Al continuar, autorizas a Givt Ltd a cobrar solo cuando hagas un donativo, de acuerdo con la ';
+
+  @override
+  String get signMandateUkDdGuaranteeLink =>
+      'Garantía de domiciliación bancaria.';
 
   @override
   String get giftAidYourDonationsTitle => 'Gift Aid para tus donaciones';
@@ -5645,6 +5837,76 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get giftAidAboutDeclaration => 'Declaración de Gift Aid:';
+
+  @override
+  String get manageGiftAidTitle => 'Gestionar Gift Aid';
+
+  @override
+  String get manageGiftAidSectionTitle => 'Gift Aid';
+
+  @override
+  String get manageGiftAidStatusActive => 'Activo';
+
+  @override
+  String get manageGiftAidStatusInactive => 'Inactivo';
+
+  @override
+  String get manageGiftAidIntroLead => 'Donar con Gift Aid significa que ';
+
+  @override
+  String get manageGiftAidIntroEmphasis =>
+      'las organizaciones benéficas e iglesias pueden reclamar 25p extra por cada £1 que das.';
+
+  @override
+  String get manageGiftAidIntroTail => ' No te costará más.';
+
+  @override
+  String manageGiftAidImpactInTaxYear(String year) {
+    return 'Tu impacto de Gift Aid en el año fiscal $year';
+  }
+
+  @override
+  String get manageGiftAidYouHaveGiven => 'Has donado:';
+
+  @override
+  String get manageGiftAidExtraAddedWithGiftAid =>
+      'Extra añadido con Gift Aid:';
+
+  @override
+  String get manageGiftAidTotalImpact => 'Impacto total:';
+
+  @override
+  String get manageGiftAidDeactivate => 'Desactivar Gift Aid';
+
+  @override
+  String get manageGiftAidTurnOffTitle => '¿Desactivar Gift Aid?';
+
+  @override
+  String get manageGiftAidTurnOffBody =>
+      'Las donaciones futuras no incluirán el 25% adicional de Gift Aid.\nPuedes volver a activarlo en cualquier momento.';
+
+  @override
+  String get manageGiftAidKeepActive => 'Mantener Gift Aid activo';
+
+  @override
+  String get manageGiftAidTurnOff => 'Desactivar Gift Aid';
+
+  @override
+  String get manageGiftAidOrangeCardTitle =>
+      'Activa Gift Aid para aumentar tu impacto';
+
+  @override
+  String manageGiftAidGivingInTaxYear(String year) {
+    return 'Donaciones en el año fiscal $year:';
+  }
+
+  @override
+  String get manageGiftAidPotentialBonus =>
+      'Bonificación potencial de Gift Aid (25%):';
+
+  @override
+  String get manageGiftAidPotentialTotalImpact =>
+      'Con Gift Aid, tu impacto total sería:';
 
   @override
   String get scannerDownloadingModule =>

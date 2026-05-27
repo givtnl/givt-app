@@ -77,15 +77,23 @@ class AnalyticsHelper {
     await _initCompleter?.future;
   }
 
-  static Future<bool> isFeatureEnabled(String key) async {
+  /// Checks whether [key] is enabled in PostHog.
+  ///
+  /// When PostHog is not ready yet or evaluating the flag fails, returns
+  /// [fallback]. Defaults to false so existing call sites keep backward
+  /// compatibility.
+  static Future<bool> isFeatureEnabled(
+    String key, {
+    bool fallback = false,
+  }) async {
     if (!_isInitialized) {
-      return false;
+      return fallback;
     }
     try {
       return await Posthog().isFeatureEnabled(key);
     } catch (_) {
       // Feature flag checks should never crash the app.
-      return false;
+      return fallback;
     }
   }
 

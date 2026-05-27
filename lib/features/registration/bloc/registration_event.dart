@@ -114,6 +114,12 @@ class RegistrationReset extends RegistrationEvent {
   const RegistrationReset();
 }
 
+/// Clears mandate signing error state so the user can retry after
+/// [FlowGenericErrorPage] or similar is dismissed.
+class RegistrationMandateErrorDismissed extends RegistrationEvent {
+  const RegistrationMandateErrorDismissed();
+}
+
 class RegistrationGiftAidChanged extends RegistrationEvent {
   const RegistrationGiftAidChanged({
     required this.isGiftAidEnabled,

@@ -20,7 +20,7 @@ on:
 jobs:
   build-ios: 
     name: Build Flutter iOS
-    runs-on: macos-15
+    runs-on: macos-26
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Test' }}
     steps:
