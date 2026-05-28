@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 class GivtBanner extends StatelessWidget {
   const GivtBanner({

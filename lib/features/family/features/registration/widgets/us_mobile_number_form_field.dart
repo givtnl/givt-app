@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
 typedef OnMobileNumberChanged = void Function(String selected);
@@ -75,7 +74,7 @@ class MobileNumberFormFieldUs extends StatelessWidget {
         ),
         Flexible(
           flex: 2,
-          child: OutlinedTextFormField(
+          child: InputFormField(
             inputFormatters: formatter != null ? [...formatter!] : null,
             controller: phone,
             validator: validator,
@@ -83,10 +82,6 @@ class MobileNumberFormFieldUs extends StatelessWidget {
             keyboardType: TextInputType.phone,
             hintText: hintText,
             autofillHints: const [AutofillHints.telephoneNumber],
-            errorStyle: const TextStyle(
-              height: 0,
-              fontSize: 0,
-            ),
           ),
         ),
       ],

@@ -8,8 +8,7 @@ import 'package:givt_app/features/account_details/manage_gift_aid/models/manage_
 import 'package:givt_app/features/account_details/manage_gift_aid/widgets/gift_aid_deactivate_dialog.dart';
 import 'package:givt_app/features/account_details/manage_gift_aid/widgets/manage_gift_aid_impact_section.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/registration/widgets/about_gift_aid_bottom_sheet.dart';

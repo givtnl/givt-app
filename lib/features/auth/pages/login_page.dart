@@ -5,12 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -78,11 +77,17 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  /// Whether login can be attempted — must not call [FormState.validate],
+  /// or every rebuild would show validation errors on untouched fields.
   bool get isEnabled {
-    if (formKey.currentState == null) return false;
-    if (formKey.currentState!.validate() == false) return false;
-    return emailController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty;
+    final email = emailController.text;
+    final password = passwordController.text;
+    if (email.isEmpty || password.isEmpty) return false;
+    if (!Util.emailRegEx.hasMatch(email)) return false;
+    if (password.length < 7) return false;
+    if (!password.contains(RegExp('[0-9]'))) return false;
+    if (!password.contains(RegExp('[A-Z]'))) return false;
+    return true;
   }
 
   @override
@@ -174,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-            OutlinedTextFormField(
+            InputFormField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
               readOnly: !widget.isEmailEditable,
@@ -185,9 +190,7 @@ class _LoginPageState extends State<LoginPage> {
               onChanged: (value) {
                 if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
                 _debounceTimer = Timer(const Duration(milliseconds: 300), () {
-                  setState(() {
-                    formKey.currentState!.validate();
-                  });
+                  setState(() {});
                 });
               },
               validator: (value) {
@@ -201,16 +204,12 @@ class _LoginPageState extends State<LoginPage> {
               hintText: locals.email,
             ),
             const SizedBox(height: 16),
-            OutlinedTextFormField(
+            InputFormField(
               key: const ValueKey('Login-Bottomsheet-Password-Input'),
               controller: passwordController,
               autofillHints: const [AutofillHints.password],
               keyboardType: TextInputType.visiblePassword,
-              onChanged: (value) {
-                setState(() {
-                  formKey.currentState!.validate();
-                });
-              },
+              onChanged: (_) => setState(() {}),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return locals.passwordRule;

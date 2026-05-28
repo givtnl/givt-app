@@ -1,4 +1,4 @@
-import 'package:givt_app/features/family/shared/design/components/content/models/custom_avatar_uimodel.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 class LookingGoodUIModel {
   LookingGoodUIModel({

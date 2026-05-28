@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/features/edit_child_name/models/edit_ch
 import 'package:givt_app/features/family/features/edit_child_name/widgets/create_child_text_field.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/l10n/l10n.dart';

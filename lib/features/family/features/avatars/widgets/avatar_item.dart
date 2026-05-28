@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class AvatarItem extends StatelessWidget {

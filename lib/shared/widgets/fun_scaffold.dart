@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 /// EU-style scaffold: applies FUN legacy theme, dismisses keyboard on tap, and
 /// pads [body] with [SafeArea] using [minimumPadding].

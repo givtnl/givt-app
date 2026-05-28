@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/registration/cubit/gift_aid_registration_cubit.dart';
 import 'package:givt_app/features/registration/pages/gift_aid_skipped_page.dart';

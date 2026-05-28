@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/features/history/models/donation_item_u
 import 'package:givt_app/features/family/features/history/models/income.dart';
 import 'package:givt_app/features/family/features/history/models/income_item_uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/content/donation_item_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/content/income_item_widget.dart';

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 
@@ -47,8 +46,6 @@ class AboutGivtBottomSheet extends StatefulWidget {
 }
 
 class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
-  final _formKey = GlobalKey<FormState>();
-
   final messageController = TextEditingController();
   final messageFocusNode = FocusNode();
   final scrollController = ScrollController();
@@ -101,49 +98,47 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
         return FunBottomSheet(
           title: locals.titleAboutGivt,
           closeAction: () => context.pop(),
-          content: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              controller: scrollController,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SizedBox(height: 16),
-                  Center(
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      height: 24,
-                    ),
+          content: SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 16),
+                Center(
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    height: 24,
                   ),
-                  const SizedBox(height: 16),
-                  BodySmallText(
-                    user.country == Country.us.countryCode
-                        ? locals.informationAboutUsUs
-                        : Country.unitedKingdomCodes().contains(user.country)
-                            ? locals.informationAboutUsGb
-                            : locals.informationAboutUs,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  AppVersion(),
-                  const SizedBox(height: 16),
-                  TitleSmallText(
-                    locals.feedbackTitle,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  OutlinedTextFormField(
-                    key: messageKey,
-                    focusNode: messageFocusNode,
-                    controller: messageController,
-                    minLines: 5,
-                    maxLines: 5,
-                    keyboardType: TextInputType.multiline,
-                    onChanged: (_) => setState(() {}),
-                    smallFont: true,
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 16),
+                BodySmallText(
+                  user.country == Country.us.countryCode
+                      ? locals.informationAboutUsUs
+                      : Country.unitedKingdomCodes().contains(user.country)
+                          ? locals.informationAboutUsGb
+                          : locals.informationAboutUs,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                AppVersion(),
+                const SizedBox(height: 16),
+                TitleSmallText(
+                  locals.feedbackTitle,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                FunInput(
+                  key: messageKey,
+                  focusNode: messageFocusNode,
+                  controller: messageController,
+                  hintText: '',
+                  minLines: 5,
+                  maxLines: 5,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  onChanged: (_) => setState(() {}),
+                ),
+              ],
             ),
           ),
           icon: state is InfraLoading
@@ -155,9 +150,6 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                   isDisabled: !isEnabled,
                   onTap: isEnabled
                       ? () async {
-                          if (!_formKey.currentState!.validate()) {
-                            return;
-                          }
                           await context.read<InfraCubit>().contactSupportSafely(
                                 message: messageController.text,
                                 appLanguage: locals.localeName,

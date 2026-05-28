@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/league_entry_item.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/models/league_entry_uimodel.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 class LeagueEntryList extends StatelessWidget {
   const LeagueEntryList({

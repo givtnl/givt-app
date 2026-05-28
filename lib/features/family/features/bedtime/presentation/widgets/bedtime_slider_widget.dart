@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/models/bedtime.dart';
-import 'package:givt_app/features/family/shared/design/components/input/input.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class BedtimeSliderWidget extends StatefulWidget {

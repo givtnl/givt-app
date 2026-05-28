@@ -49,8 +49,8 @@ jobs:
       - name: Fail if generated token files changed
         run: |
           git diff --exit-code -- \
-            lib/features/family/shared/design/tokens/fun_givt_tokens_generated.dart \
-            lib/features/family/shared/design/tokens/fun_givt4kids_tokens_generated.dart || (
+            lib/shared/design_system/tokens/fun_givt_tokens_generated.dart \
+            lib/shared/design_system/tokens/fun_givt4kids_tokens_generated.dart || (
             echo "Generated token files are out of date. Run: dart run tool/gen_tokens.dart"
             exit 1
           )

@@ -1,10 +1,9 @@
 import 'package:country_flags/country_flags.dart';
-import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';

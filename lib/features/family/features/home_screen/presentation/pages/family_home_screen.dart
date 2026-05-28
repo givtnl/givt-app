@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +25,6 @@ import 'package:givt_app/features/family/features/impact_groups/cubit/impact_gro
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/unlocked_badge/repository/models/features.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/content/tutorial/fun_tooltip.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:givt_app/app/injection/injection.dart';
@@ -9,7 +11,8 @@ class StripeHelper {
 
   BuildContext context;
 
-  Future<PaymentSheetPaymentOption?> showPaymentSheet({
+  /// Initializes the Payment Sheet for the current setup intent.
+  Future<void> prepareSetupPaymentSheet({
     StripeResponse? stripe,
   }) async {
     stripe ??= getIt<StripeCubit>().state.stripeObject;
@@ -34,7 +37,26 @@ class StripeHelper {
         ),
       ),
     );
+  }
 
-    return Stripe.instance.presentPaymentSheet();
+  /// Presents the native sheet.
+  /// Prefer a [BuildContext] with no other modal route on top.
+  Future<PaymentSheetPaymentOption?> presentSetupPaymentSheet() async {
+    return Stripe.instance.presentPaymentSheet().timeout(
+      const Duration(seconds: 20),
+      onTimeout: () {
+        throw TimeoutException(
+          'Stripe presentPaymentSheet timed out after 20 seconds',
+        );
+      },
+    );
+  }
+
+  /// Prepare then present (e.g. account edit, no stacked modal).
+  Future<PaymentSheetPaymentOption?> showPaymentSheet({
+    StripeResponse? stripe,
+  }) async {
+    await prepareSetupPaymentSheet(stripe: stripe);
+    return presentSetupPaymentSheet();
   }
 }

@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/models/in
 import 'package:givt_app/features/family/features/reflect/presentation/pages/gratitude_selection_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
-import 'package:givt_app/features/family/shared/design/components/content/fun_bubble.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_small_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 

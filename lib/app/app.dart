@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,14 +11,6 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
-import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
-import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart'
-    as FamilyImpactGroupsCubit;
-import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
-import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
@@ -66,7 +59,7 @@ class _AppState extends State<App> {
       },
     );
 
-    initializeStripe();
+    unawaited(initializeStripe());
 
     /// Setup firebase messaging for background notifications
     final notificationService = getIt<NotificationService>();
@@ -94,10 +87,6 @@ class _AppState extends State<App> {
             lazy: false,
           ),
           BlocProvider(
-            create: (_) => getIt<FamilyAuthCubit>()..checkAuthOnAppStartup(),
-            lazy: false,
-          ),
-          BlocProvider(
             create: (_) => InfraCubit(
               getIt(),
               getIt(),
@@ -110,26 +99,6 @@ class _AppState extends State<App> {
               getIt(),
             ),
             lazy: false,
-          ),
-          BlocProvider<ProfilesCubit>(
-            create: (BuildContext context) =>
-                ProfilesCubit(getIt(), getIt(), getIt()),
-          ),
-          BlocProvider(
-            create: (context) => TopupCubit(getIt()),
-          ),
-          BlocProvider<CollectGroupDetailsCubit>(
-            create: (BuildContext context) => CollectGroupDetailsCubit(getIt()),
-          ),
-          BlocProvider<FlowsCubit>(
-            create: (BuildContext context) => FlowsCubit(),
-          ),
-          BlocProvider<FamilyImpactGroupsCubit.ImpactGroupsCubit>(
-            create: (BuildContext context) =>
-                FamilyImpactGroupsCubit.ImpactGroupsCubit(getIt()),
-          ),
-          BlocProvider(
-            create: (context) => ScanNfcCubit(),
           ),
           BlocProvider(
             create: (context) => RegistrationBloc(
@@ -157,6 +126,8 @@ class _AppState extends State<App> {
     Stripe.publishableKey = const String.fromEnvironment('STRIPE_PK');
     Stripe.merchantIdentifier =
         const String.fromEnvironment('STRIPE_MERCHANT_ID');
+
+    await Stripe.instance.applySettings();
   }
 }
 

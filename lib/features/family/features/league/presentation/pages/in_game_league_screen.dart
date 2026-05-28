@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/features/league/presentation/widgets/le
 import 'package:givt_app/features/family/features/league/presentation/widgets/whos_on_top_of_league.dart';
 import 'package:givt_app/features/family/features/reward/presentation/models/reward_uimodel.dart';
 import 'package:givt_app/features/family/features/reward/presentation/pages/reward_screen.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';

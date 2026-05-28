@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/features/coin_flow/widgets/coin_found_p
 import 'package:givt_app/features/family/features/coin_flow/widgets/coin_search_page.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step1_select_organisation_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/widgets/recurring_donations_empty_state.dart';

@@ -9,9 +9,7 @@ import 'package:givt_app/features/family/features/giving_flow/collectgroup_detai
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:go_router/go_router.dart';
 
 class GiveBottomSheet extends StatelessWidget {

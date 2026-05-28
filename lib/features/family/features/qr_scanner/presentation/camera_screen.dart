@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_screen_frame.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/errors/scanner_error_widget.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';

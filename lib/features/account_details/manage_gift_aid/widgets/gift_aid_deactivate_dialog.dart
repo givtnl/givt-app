@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';

@@ -11,7 +11,6 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/missions/domain/repositories/mission_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
@@ -498,17 +497,14 @@ class NotificationService implements INotificationService {
     final param = test.queryParameters;
 
     if (pathName.isNotNullAndNotEmpty()) {
-      final validValues = [
-        ...FamilyPages.values.map((e) => e.name),
-        ...Pages.values.map((e) => e.name),
-      ];
+      final validValues = Pages.values.map((e) => e.name).toList();
       if (validValues.contains(pathName)) {
         AppRouter.router.goNamed(pathName, queryParameters: param);
       } else {
         LoggingInfo.instance.error(
           'Invalid path name received from firebase notification: $pathName',
         );
-        AppRouter.router.goNamed(FamilyPages.profileSelection.name);
+        AppRouter.router.goNamed(Pages.home.name);
         return;
       }
       LoggingInfo.instance.info(
@@ -518,7 +514,7 @@ class NotificationService implements INotificationService {
       LoggingInfo.instance.info(
         'Navigating to home screen, from firebase notification type ${data['Type']}, no path found.',
       );
-      AppRouter.router.goNamed(FamilyPages.profileSelection.name);
+      AppRouter.router.goNamed(Pages.home.name);
     }
   }
 }

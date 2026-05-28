@@ -5,11 +5,6 @@ import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
-import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
-import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -33,18 +28,17 @@ void logout(
   }
 
   try {
-    context.read<AuthCubit>().logout(fullReset: true);
     getIt<FamilyAuthRepository>().logout();
-    getIt<ReflectAndShareRepository>().logout();
-    context.read<ProfilesCubit>().logout();
-    context.read<FlowsCubit>().resetFlow();
-    context.read<FamilyHomeScreenCubit>().logout();
-    context.read<NavigationBarHomeCubit>().logout();
-    context.read<RegistrationBloc>().add(const RegistrationReset());
-    AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
-  } catch (e) {
-    // do nothing, even if logging out fails, from welcome page user can re-login
+  } on Object catch (_) {
+    // Family session may be absent when using EU shell only.
   }
+  try {
+    context.read<RegistrationBloc>().add(const RegistrationReset());
+  } on Object catch (_) {
+    // Registration bloc may not be in this subtree.
+  }
+  context.read<AuthCubit>().logout(fullReset: true);
+  AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
 
   context.goNamed(Pages.welcome.name);
 }

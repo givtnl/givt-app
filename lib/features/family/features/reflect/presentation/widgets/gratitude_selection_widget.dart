@@ -4,9 +4,8 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/gratitude_selection_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeSelectionWidget extends StatelessWidget {

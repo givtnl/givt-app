@@ -15,8 +15,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/g
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/reporters_widget.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/rule_card.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 

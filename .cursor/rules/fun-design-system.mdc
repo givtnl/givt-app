@@ -7,15 +7,15 @@ alwaysApply: true
 
 ## Component Usage
 - Use FUN design system components for all UI elements
-- Components must be prefixed with 'Fun' (e.g., `FunButton`, `FunPrimaryTabs`)
-- Import from: `package:givt_app/features/family/shared/design/components/components.dart`
+- **FUN design-system widgets use the `Fun` prefix** (e.g. `FunButton`, `FunInput`, `FunPrimaryTabs`). Do not name app glue or wrappers with `Fun` — for example use `InputFormField` for the `Form` + `FormField` wrapper around `FunInput`, not `FunInputFormField`.
+- Prefer import from: `package:givt_app/shared/design_system/design_system.dart` (single barrel: components, theme, text styles, common illustrations). Use `components/components.dart` or other subpaths only when you need a narrower import.
 
 ## Component Categories
 - Actions: `FunButton`, `FunTile`
 - Content: `FunCard`
 - Navigation: `FunTopAppBar`, `FunPrimaryTabs`, `FunNavigationBar`
 - Overlays: `FunBottomSheet`, `FunModal`
-- Inputs: `FunCounter`
+- Inputs: `FunCounter`, `FunInput`
 
 ## Screen layout (`FunScaffold`)
 - **`FunScaffold`** (`lib/shared/widgets/fun_scaffold.dart`) applies **`SafeArea`** with default **`minimumPadding`** `EdgeInsets.fromLTRB(24, 24, 24, 40)` around **`body`**.
@@ -32,7 +32,7 @@ alwaysApply: true
 - Use FUN color palette and ensure responsive design across screen sizes
 - **When `BuildContext` is available** (e.g. inside `build(BuildContext context)` or any method that receives `context`): use **`FunTheme.of(context).xxx`** for theme colors (e.g. `FunTheme.of(context).primary30`, `FunTheme.of(context).error50`). This respects the active theme (Givt vs Givt4Kids).
 - **Where Dart requires const** (default parameter values, factory constructor arguments, static/const fields): use **`FamilyAppTheme.xxx`** (from `fun_theme_legacy.dart`). Do not use `FunTheme.of(context)` in const expressions.
-- Import `package:givt_app/features/family/shared/design/theme/fun_theme.dart` for `FunTheme`, and `package:givt_app/features/family/utils/fun_theme_legacy.dart` when you need `FamilyAppTheme` for const defaults.
+- Import `package:givt_app/shared/design_system/design_system.dart` for `FunTheme` and `FamilyAppTheme` (const defaults) unless a narrower import is required.
 
 ## Success and confirmation
 - **Confirm = icon in modal, not on button**: For “action done” confirmation, show **`FunIcon.checkmark()`** as the modal/sheet *content* (big green circle). Use a single “Done” button or no button with **`FunModal`** `autoClose` for brief confirmations (e.g. support request sent). Do not put a checkmark on the primary action button.

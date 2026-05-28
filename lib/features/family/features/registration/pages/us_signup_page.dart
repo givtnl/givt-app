@@ -14,7 +14,7 @@ import 'package:givt_app/features/family/features/registration/widgets/avatar_se
 import 'package:givt_app/features/family/features/registration/widgets/random_avatar.dart';
 import 'package:givt_app/features/family/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/features/family/helpers/logout_helper.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
@@ -23,7 +23,6 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/features/registration/widgets/password_requirements_checklist.dart';
 import 'package:givt_app/utils/add_member_util.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -256,14 +255,14 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          OutlinedTextFormField(
+          InputFormField(
             controller: _firstNameController,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return '';
+                return locals.fieldRequired;
               }
               if (!Util.nameFieldsRegEx.hasMatch(value)) {
-                return '';
+                return locals.fieldRequired;
               }
               return null;
             },
@@ -271,31 +270,23 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             hintText: context.l10n.registrationParentFirstName,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
-            errorStyle: const TextStyle(
-              height: 0,
-              fontSize: 0,
-            ),
           ),
           const SizedBox(height: 16),
-          OutlinedTextFormField(
+          InputFormField(
             controller: _lastNameController,
             onChanged: (value) => setState(() {}),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return '';
+                return locals.fieldRequired;
               }
               if (!Util.nameFieldsRegEx.hasMatch(value)) {
-                return '';
+                return locals.fieldRequired;
               }
               return null;
             },
             hintText: context.l10n.registrationParentLastName,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
-            errorStyle: const TextStyle(
-              height: 0,
-              fontSize: 0,
-            ),
           ),
           const SizedBox(height: 16),
           MobileNumberFormFieldUs(
@@ -317,13 +308,13 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             ],
             validator: (String? value) {
               if (value == null || value.isEmpty) {
-                return '';
+                return locals.fieldRequired;
               }
 
               if (Country.us == _selectedCountry) {
                 if (!Util.usPhoneNumberRegEx
                     .hasMatch(Util.formatPhoneNrUs(value))) {
-                  return '';
+                  return locals.fieldRequired;
                 }
               }
 
@@ -331,7 +322,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             },
           ),
           const SizedBox(height: 32),
-          OutlinedTextFormField(
+          InputFormField(
             controller: _emailController,
             enabled: widget.email.isEmpty,
             readOnly: widget.email.isNotEmpty,
@@ -349,10 +340,11 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               AutofillHints.email,
               AutofillHints.username,
             ],
+            hintText: '',
             keyboardType: TextInputType.emailAddress,
           ),
           const SizedBox(height: 16),
-          OutlinedTextFormField(
+          InputFormField(
             controller: _passwordController,
             scrollPadding: const EdgeInsets.only(bottom: 150),
             onChanged: (value) => setState(() {}),
@@ -371,10 +363,6 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             autofillHints: const [
               AutofillHints.newPassword,
             ],
-            errorStyle: const TextStyle(
-              height: 0,
-              fontSize: 0,
-            ),
             obscureText: _obscureText,
             hintText: AppLocalizations.of(context).password,
             suffixIcon: IconButton(

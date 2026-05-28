@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/w
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_header.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
