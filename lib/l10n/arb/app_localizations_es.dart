@@ -667,6 +667,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tryAgain => 'Try again';
 
   @override
+  String get flowGenericErrorTitle => 'Algo salió mal';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'Ha ocurrido un error. Inténtalo de nuevo más tarde o contáctanos si el problema continúa.';
+
+  @override
   String get flowGenericErrorContactSupport => 'Contactar con soporte';
 
   @override
@@ -2728,7 +2735,10 @@ class AppLocalizationsEs extends AppLocalizations {
       '¿Es esta la organización a la que quieres donar?';
 
   @override
-  String get homeScreenConfirmOrgYes => 'Sí, confirmar';
+  String get homeScreenConfirmOrgYes => 'Sí, continuar';
+
+  @override
+  String get homeScreenConfirmOrgGoBack => 'Volver';
 
   @override
   String homeScreenChosenOrg(Object org) {
@@ -3605,6 +3615,13 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get tryAgain => 'Intentar de nuevo';
+
+  @override
+  String get flowGenericErrorTitle => 'Algo salió mal';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'Ha ocurrido un error. Inténtalo de nuevo más tarde o contáctanos si el problema continúa.';
 
   @override
   String get flowGenericErrorContactSupport => 'Contactar con soporte';
@@ -5684,7 +5701,10 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
       'Is this the organisation you\'d like to give to?';
 
   @override
-  String get homeScreenConfirmOrgYes => 'Yes, confirm';
+  String get homeScreenConfirmOrgYes => 'Yes, continue';
+
+  @override
+  String get homeScreenConfirmOrgGoBack => 'Go back';
 
   @override
   String homeScreenChosenOrg(Object org) {

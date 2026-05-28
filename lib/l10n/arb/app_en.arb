@@ -363,6 +363,16 @@
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
     "type": "text"
   },
+  "flowGenericErrorTitle": "Something went wrong",
+  "@flowGenericErrorTitle": {
+    "description": "Title on shared flow error screen",
+    "type": "text"
+  },
+  "flowGenericErrorMessage": "We ran into an error. Please try again later or contact us if the problem continues.",
+  "@flowGenericErrorMessage": {
+    "description": "Body copy on shared flow error screen",
+    "type": "text"
+  },
   "flowGenericErrorContactSupport": "Contact support",
   "@flowGenericErrorContactSupport": {
     "description": "Support action on shared flow error screen (opens contact sheet)",
@@ -1297,7 +1307,8 @@
   "platformContributionSaveChangesModalNoButton": "No, discard",
   "homeScreenConfirmOrgTitle": "Support {org}",
   "homeScreenConfirmOrgDescription": "Is this the organisation you'd like to give to?",
-  "homeScreenConfirmOrgYes": "Yes, confirm",
+  "homeScreenConfirmOrgYes": "Yes, continue",
+  "homeScreenConfirmOrgGoBack": "Go back",
   "homeScreenChosenOrg": "Amazing! You'll give to {org}",
   "donationOverviewProcessingTimeTitle": "Your donation is all set.",
   "donationOverviewProcessingTime3Days": "In general, it takes 2-3 working days until this amount is collected from your account.",

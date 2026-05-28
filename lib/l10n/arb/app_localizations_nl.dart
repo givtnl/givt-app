@@ -671,6 +671,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get tryAgain => 'Opnieuw proberen';
 
   @override
+  String get flowGenericErrorTitle => 'Er is iets misgegaan';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'Er is een fout opgetreden. Probeer het later opnieuw of neem contact met ons op als het probleem blijft bestaan.';
+
+  @override
   String get flowGenericErrorContactSupport => 'Contact opnemen';
 
   @override
@@ -2737,7 +2744,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Is dit de organisatie waaraan je wilt geven?';
 
   @override
-  String get homeScreenConfirmOrgYes => 'Ja, bevestigen';
+  String get homeScreenConfirmOrgYes => 'Ja, doorgaan';
+
+  @override
+  String get homeScreenConfirmOrgGoBack => 'Ga terug';
 
   @override
   String homeScreenChosenOrg(Object org) {

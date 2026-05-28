@@ -363,6 +363,16 @@
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
     "type": "text"
   },
+  "flowGenericErrorTitle": "Etwas ist schiefgelaufen",
+  "@flowGenericErrorTitle": {
+    "description": "Title on shared flow error screen",
+    "type": "text"
+  },
+  "flowGenericErrorMessage": "Es ist ein Fehler aufgetreten. Bitte versuche es später erneut oder kontaktiere uns, wenn das Problem weiterhin besteht.",
+  "@flowGenericErrorMessage": {
+    "description": "Body copy on shared flow error screen",
+    "type": "text"
+  },
   "flowGenericErrorContactSupport": "Support kontaktieren",
   "@flowGenericErrorContactSupport": {
     "description": "Support action on shared flow error screen (opens contact sheet)",
@@ -1297,7 +1307,8 @@
   "platformContributionSaveChangesModalNoButton": "Nein, verwerfen",
   "homeScreenConfirmOrgTitle": "Unterstütze {org}",
   "homeScreenConfirmOrgDescription": "Ist das die Organisation, der du geben möchtest?",
-  "homeScreenConfirmOrgYes": "Ja, bestätigen",
+  "homeScreenConfirmOrgYes": "Ja, fortfahren",
+  "homeScreenConfirmOrgGoBack": "Zurück",
   "homeScreenChosenOrg": "Großartig! Du gibst an {org}",
   "donationOverviewProcessingTimeTitle": "Deine Spende ist eingerichtet.",
   "donationOverviewProcessingTime3Days": "Im Allgemeinen dauert es 2-3 Werktage, bis dieser Betrag von deinem Konto abgebucht wird.",

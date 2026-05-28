@@ -673,6 +673,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tryAgain => 'Versuche es nochmal';
 
   @override
+  String get flowGenericErrorTitle => 'Etwas ist schiefgelaufen';
+
+  @override
+  String get flowGenericErrorMessage =>
+      'Es ist ein Fehler aufgetreten. Bitte versuche es später erneut oder kontaktiere uns, wenn das Problem weiterhin besteht.';
+
+  @override
   String get flowGenericErrorContactSupport => 'Support kontaktieren';
 
   @override
@@ -2747,7 +2754,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Ist das die Organisation, der du geben möchtest?';
 
   @override
-  String get homeScreenConfirmOrgYes => 'Ja, bestätigen';
+  String get homeScreenConfirmOrgYes => 'Ja, fortfahren';
+
+  @override
+  String get homeScreenConfirmOrgGoBack => 'Zurück';
 
   @override
   String homeScreenChosenOrg(Object org) {

@@ -363,6 +363,16 @@
     "description": "\"Nogmaals proberen\" knop op de geef mislukt pagina",
     "type": "text"
   },
+  "flowGenericErrorTitle": "Er is iets misgegaan",
+  "@flowGenericErrorTitle": {
+    "description": "Title on shared flow error screen",
+    "type": "text"
+  },
+  "flowGenericErrorMessage": "Er is een fout opgetreden. Probeer het later opnieuw of neem contact met ons op als het probleem blijft bestaan.",
+  "@flowGenericErrorMessage": {
+    "description": "Body copy on shared flow error screen",
+    "type": "text"
+  },
   "flowGenericErrorContactSupport": "Contact opnemen",
   "@flowGenericErrorContactSupport": {
     "description": "Support action on shared flow error screen (opens contact sheet)",
@@ -1297,7 +1307,8 @@
   "platformContributionSaveChangesModalNoButton": "Nee, negeren",
   "homeScreenConfirmOrgTitle": "Steun {org}",
   "homeScreenConfirmOrgDescription": "Is dit de organisatie waaraan je wilt geven?",
-  "homeScreenConfirmOrgYes": "Ja, bevestigen",
+  "homeScreenConfirmOrgYes": "Ja, doorgaan",
+  "homeScreenConfirmOrgGoBack": "Ga terug",
   "homeScreenChosenOrg": "Geweldig! Je geeft aan {org}",
   "donationOverviewProcessingTimeTitle": "Je gift is verwerkt.",
   "donationOverviewProcessingTime3Days": "Het duurt doorgaans 2-3 werkdagen totdat dit bedrag van je rekening is afgeschreven.",

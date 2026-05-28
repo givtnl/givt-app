@@ -141,7 +141,7 @@ class _QrConfirmOrgDialogState extends State<QrConfirmOrgDialog> {
                     Navigator.of(context).pop();
                     widget.onCancel();
                   },
-                  text: locals.cancel,
+                  text: locals.homeScreenConfirmOrgGoBack,
                   analyticsEvent: AnalyticsEventName.qrCodeScanned.toEvent(
                     parameters: {
                       'goal_name': _formattedOrganizationName,
