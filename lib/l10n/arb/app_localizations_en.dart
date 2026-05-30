@@ -1715,6 +1715,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorOccurred => 'An error occurred';
 
   @override
+  String get donationSubmissionTimeoutTitle => 'Status unknown';
+
+  @override
+  String get donationSubmissionTimeoutMessage =>
+      'Something went wrong while processing your donation. Please check your donation history before trying again to avoid double donations.';
+
+  @override
+  String get donationSubmissionTimeoutCheckHistoryButton =>
+      'Check donation history';
+
+  @override
   String get registrationErrorTitle => 'Registration cannot be completed';
 
   @override
@@ -4604,6 +4615,17 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get errorOccurred => 'An error occurred';
+
+  @override
+  String get donationSubmissionTimeoutTitle => 'Status unknown';
+
+  @override
+  String get donationSubmissionTimeoutMessage =>
+      'Something went wrong while processing your donation. Please check your donation history before trying again to avoid double donations.';
+
+  @override
+  String get donationSubmissionTimeoutCheckHistoryButton =>
+      'Check donation history';
 
   @override
   String get registrationErrorTitle => 'Registration cannot be completed';

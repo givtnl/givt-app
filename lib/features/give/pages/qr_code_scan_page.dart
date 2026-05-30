@@ -7,6 +7,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/dialogs/donation_submission_timeout_dialog.dart';
 import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -79,6 +80,9 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
         body: BlocConsumer<GiveBloc, GiveState>(
           listenWhen: (previous, current) => previous != current,
           listener: (context, state) {
+            if (state.status == GiveStatus.submissionTimeout) {
+              DonationSubmissionTimeoutDialog.show(context);
+            }
             if (state.status == GiveStatus.error) {
               displayErrorDialog();
             }

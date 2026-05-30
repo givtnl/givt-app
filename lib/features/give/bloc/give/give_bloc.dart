@@ -13,6 +13,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
+import 'package:givt_app/features/give/utils/donation_submission_errors.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
@@ -312,8 +313,14 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         );
         return;
       } on GivtServerFailure catch (e, stackTrace) {
-        _handleGivtServerFailure(e, stackTrace, emit);
-        return;
+        if (_handleGivtServerFailure(e, stackTrace, emit, organisation)) {
+          return;
+        }
+      } catch (e, stackTrace) {
+        if (_handleDonationSubmissionTimeout(e, stackTrace, emit, organisation)) {
+          return;
+        }
+        rethrow;
       }
 
       emit(
@@ -327,6 +334,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         ),
       );
     } catch (e, stackTrace) {
+      if (_handleDonationSubmissionTimeout(e, stackTrace, emit)) {
+        return;
+      }
       LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
@@ -490,7 +500,14 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       );
       return;
     } on GivtServerFailure catch (e, stackTrace) {
-      _handleGivtServerFailure(e, stackTrace, emit);
+      if (_handleGivtServerFailure(e, stackTrace, emit, organisation)) {
+        return;
+      }
+    } catch (e, stackTrace) {
+      if (_handleDonationSubmissionTimeout(e, stackTrace, emit, organisation)) {
+        return;
+      }
+      rethrow;
     }
 
     emit(
@@ -503,11 +520,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     );
   }
 
-  void _handleGivtServerFailure(
+  bool _handleGivtServerFailure(
     GivtServerFailure e,
     StackTrace stackTrace,
-    Emitter<GiveState> emit,
-  ) {
+    Emitter<GiveState> emit, [
+    Organisation? organisation,
+  ]) {
     final statusCode = e.statusCode;
     final body = e.body;
     log('StatusCode:$statusCode Body:$body');
@@ -515,18 +533,49 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       body.toString(),
       methodName: stackTrace.toString(),
     );
+    if (statusCode == 408) {
+      emit(
+        state.copyWith(
+          status: GiveStatus.submissionTimeout,
+          organisation: organisation ?? state.organisation,
+        ),
+      );
+      return true;
+    }
     if (statusCode == 417) {
       emit(
         state.copyWith(
           status: GiveStatus.donatedToSameOrganisationInLessThan30Seconds,
         ),
       );
-      return;
+      return true;
     }
     emit(
       state.copyWith(status: GiveStatus.error),
     );
-    return;
+    return true;
+  }
+
+  bool _handleDonationSubmissionTimeout(
+    Object error,
+    StackTrace stackTrace,
+    Emitter<GiveState> emit, [
+    Organisation? organisation,
+  ]) {
+    if (!isDonationSubmissionTimeout(error)) {
+      return false;
+    }
+    LoggingInfo.instance.warning(
+      error.toString(),
+      methodName: stackTrace.toString(),
+    );
+    emit(
+      state.copyWith(
+        status: GiveStatus.submissionTimeout,
+        organisation: organisation ?? state.organisation,
+      ),
+    );
+    return true;
   }
 
   Future<void> _checkBatteryVoltage(
@@ -750,7 +799,19 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       );
       return;
     } on GivtServerFailure catch (e, stackTrace) {
-      _handleGivtServerFailure(e, stackTrace, emit);
+      if (_handleGivtServerFailure(e, stackTrace, emit, currentOrganisation)) {
+        return;
+      }
+    } catch (e, stackTrace) {
+      if (_handleDonationSubmissionTimeout(
+        e,
+        stackTrace,
+        emit,
+        currentOrganisation,
+      )) {
+        return;
+      }
+      rethrow;
     }
   }
 
@@ -824,10 +885,25 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       emit(
         state.copyWith(
           status: GiveStatus.noInternetConnection,
+          organisation: currentOrganisation,
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
-      _handleGivtServerFailure(e, stackTrace, emit);
+      _handleGivtServerFailure(e, stackTrace, emit, currentOrganisation);
+    } catch (e, stackTrace) {
+      if (_handleDonationSubmissionTimeout(
+        e,
+        stackTrace,
+        emit,
+        currentOrganisation,
+      )) {
+        return;
+      }
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(state.copyWith(status: GiveStatus.error));
     }
   }
 
