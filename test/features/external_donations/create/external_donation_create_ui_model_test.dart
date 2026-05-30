@@ -1,0 +1,149 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:givt_app/features/external_donations/create/models/external_donation_create_draft.dart';
+import 'package:givt_app/features/external_donations/create/models/external_donation_create_flow_step.dart';
+import 'package:givt_app/features/external_donations/create/models/external_donation_create_ui_model.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
+import 'package:givt_app/l10n/arb/app_localizations_en.dart';
+
+void main() {
+  final en = AppLocalizationsEn();
+
+  ExternalDonationCreateUIModel buildModel(ExternalDonationCreateDraft draft) {
+    return ExternalDonationCreateUIModel(draft: draft);
+  }
+
+  group('ExternalDonationCreateUIModel previewRowsForStep', () {
+    test('returns empty preview on organisation step', () {
+      const model = ExternalDonationCreateUIModel(
+        draft: ExternalDonationCreateDraft(organisationName: 'World Vision'),
+      );
+
+      expect(
+        model.previewRowsForStep(
+          ExternalDonationCreateFlowStep.organisation,
+          currencySymbol: '€',
+          formatAmount: (a) => a.toStringAsFixed(2),
+          locals: en,
+        ),
+        isEmpty,
+      );
+    });
+
+    test('donation type step returns summary row when org is set', () {
+      const model = ExternalDonationCreateUIModel(
+        draft: ExternalDonationCreateDraft(
+          organisationName: 'World Vision',
+          amountInput: '10',
+          isOneOff: true,
+        ),
+      );
+
+      final rows = model.previewRowsForStep(
+        ExternalDonationCreateFlowStep.donationType,
+        currencySymbol: '€',
+        formatAmount: (a) => a.toStringAsFixed(2),
+        locals: en,
+      );
+
+      expect(rows, hasLength(1));
+      expect(rows.first.organisationName, 'World Vision');
+      expect(rows.first.typeTagLabel, en.externalDonationsCreatePreviewTypeTag);
+      expect(rows.first.primarySubtitle, en.externalDonationsCreateFrequencyOneOff);
+      expect(rows.first.amountLabel, '€10.00');
+      expect(rows.first.isCompleted, isFalse);
+      expect(rows.first.secondarySubtitle, isNull);
+    });
+
+    test('one-off date step shows date on third line without completed', () {
+      final model = ExternalDonationCreateUIModel(
+        draft: ExternalDonationCreateDraft(
+          organisationName: 'World Vision',
+          amountInput: '15',
+          isOneOff: true,
+          dateMade: DateTime(2024, 3, 10),
+        ),
+      );
+
+      final rows = model.previewRowsForStep(
+        ExternalDonationCreateFlowStep.oneOffDate,
+        currencySymbol: '€',
+        formatAmount: (a) => a.toStringAsFixed(2),
+        locals: en,
+      );
+
+      expect(rows, hasLength(1));
+      expect(rows.first.dateLabel, '10 Mar 2024');
+      expect(rows.first.isCompleted, isFalse);
+    });
+
+    test('stepCount is 3 for one-off and 4 for recurring', () {
+      expect(
+        buildModel(
+          const ExternalDonationCreateDraft(isOneOff: true),
+        ).stepCount,
+        3,
+      );
+      expect(
+        buildModel(
+          const ExternalDonationCreateDraft(
+            isOneOff: false,
+            frequency: ExternalDonationFrequency.monthly,
+          ),
+        ).stepCount,
+        4,
+      );
+    });
+
+    test('start date step caps preview rows and reports hidden count', () {
+      final model = ExternalDonationCreateUIModel(
+        draft: ExternalDonationCreateDraft(
+          organisationName: 'World Vision',
+          amountInput: '25',
+          isOneOff: false,
+          frequency: ExternalDonationFrequency.monthly,
+          lastGiftDate: DateTime(2024, 6, 15),
+          startMonthYear: DateTime(2024, 1),
+        ),
+        previewVisibleCount: 3,
+      );
+
+      final rows = model.previewRowsForStep(
+        ExternalDonationCreateFlowStep.startMonthYear,
+        currencySymbol: '€',
+        formatAmount: (a) => a.toStringAsFixed(0),
+        locals: en,
+      );
+
+      expect(rows.length, lessThanOrEqualTo(3));
+      expect(model.hiddenPreviewCount, greaterThanOrEqualTo(0));
+      if (model.hiddenPreviewCount > 0) {
+        expect(
+          model.previewMoreRecordsLabel(en),
+          isNotNull,
+        );
+      }
+    });
+  });
+
+  group('ExternalDonationCreateDraft validation', () {
+    test('isDonationTypeStepValid requires amount and type', () {
+      const incomplete = ExternalDonationCreateDraft(
+        amountInput: '10',
+      );
+      expect(incomplete.isDonationTypeStepValid, isFalse);
+
+      const oneOff = ExternalDonationCreateDraft(
+        amountInput: '10',
+        isOneOff: true,
+      );
+      expect(oneOff.isDonationTypeStepValid, isTrue);
+
+      const recurring = ExternalDonationCreateDraft(
+        amountInput: '10',
+        isOneOff: false,
+        frequency: ExternalDonationFrequency.monthly,
+      );
+      expect(recurring.isDonationTypeStepValid, isTrue);
+    });
+  });
+}

@@ -39,9 +39,11 @@ mixin GivtRepository {
     required String toDate,
   });
 
-  Future<bool> addExternalDonation({
+  Future<ExternalDonation?> addExternalDonation({
     required Map<String, dynamic> body,
   });
+
+  Future<ExternalDonation?> fetchExternalDonationDetail(String id);
 
   Future<bool> updateExternalDonation({
     required String id,
@@ -247,11 +249,15 @@ class GivtRepositoryImpl with GivtRepository {
   }
 
   @override
-  Future<bool> addExternalDonation({
+  Future<ExternalDonation?> addExternalDonation({
     required Map<String, dynamic> body,
   }) async {
-    final result = apiClient.addExternalDonation(body);
-    return result;
+    return apiClient.addExternalDonation(body);
+  }
+
+  @override
+  Future<ExternalDonation?> fetchExternalDonationDetail(String id) async {
+    return apiClient.fetchExternalDonationDetail(id);
   }
 
   @override

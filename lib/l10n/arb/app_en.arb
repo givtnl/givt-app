@@ -1268,6 +1268,72 @@
   "externalDonationsStopModalMessage": "We will not add any more upcoming gifts for this organisation. Gifts you already recorded stay in your summary.",
   "externalDonationsStopModalConfirm": "Yes, stop recording",
   "externalDonationsStopModalCancel": "No, continue as normal",
+  "externalDonationsCreateTitle": "Add external donation",
+  "externalDonationsCreateOrganisationDescription": "Which organisation did you give to?",
+  "externalDonationsCreateOrganisationLabel": "Organisation",
+  "externalDonationsCreateOrganisationHint": "Search for an organisation",
+  "externalDonationsCreateSearchTitle": "Search organisations",
+  "externalDonationsCreateSearchHint": "Search by name",
+  "externalDonationsCreateAddCustomOrganisation": "Add \"{name}\"",
+  "@externalDonationsCreateAddCustomOrganisation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsCreateAmountDescription": "How much did you give?",
+  "externalDonationsCreateAmountLabel": "Amount",
+  "externalDonationsCreateFrequencyDescription": "Was this a one-off or recurring gift?",
+  "externalDonationsCreateDonationTypeDescription": "What kind of donation is this?",
+  "externalDonationsCreateTaxReliefLabel": "Tax relief applies to this charity",
+  "externalDonationsCreateLastGiftDescriptionWithOrg": "When did your last {frequency} gift to {organisation} go out?",
+  "@externalDonationsCreateLastGiftDescriptionWithOrg": {
+    "placeholders": {
+      "frequency": { "type": "String" },
+      "organisation": { "type": "String" }
+    }
+  },
+  "externalDonationsCreateStartDateDescriptionWithOrg": "When did this recurring gift to {organisation} start?",
+  "@externalDonationsCreateStartDateDescriptionWithOrg": {
+    "placeholders": {
+      "organisation": { "type": "String" }
+    }
+  },
+  "externalDonationsCreateSuccessHeadline": "{organisation} is now part of your giving history",
+  "@externalDonationsCreateSuccessHeadline": {
+    "placeholders": {
+      "organisation": { "type": "String" }
+    }
+  },
+  "externalDonationsCreateFrequencyOneOff": "One-off",
+  "externalDonationsCreateFrequencyRecurring": "Recurring",
+  "externalDonationsCreateFrequencyLabel": "Frequency",
+  "externalDonationsCreateOneOffDateDescription": "When did you make this gift?",
+  "externalDonationsCreateLastGiftDescription": "When was your last gift? This sets the day each gift falls on.",
+  "externalDonationsCreateLastGiftLabel": "Last gift date",
+  "externalDonationsCreateStartDateDescription": "When did you start giving to this organisation?",
+  "externalDonationsCreateStartDateLabel": "Start date",
+  "externalDonationsCreateSelectDateHint": "Select date",
+  "externalDonationsCreateSelectMonthYearHint": "Select month and year",
+  "externalDonationsCreateConfirmTitle": "Confirm",
+  "externalDonationsCreateConfirmDescription": "Check the details before saving.",
+  "externalDonationsCreateConfirmButton": "Save external donation",
+  "externalDonationsCreatePreviewTitle": "Building your overview entry:",
+  "externalDonationsCreatePreviewTypeTag": "Ext. Donation",
+  "externalDonationsCreatePreviewMoreRecords": "+ {count} more records back to {startMonthYear}",
+  "@externalDonationsCreatePreviewMoreRecords": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "startMonthYear": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsCreateSuccessTitle": "External donation saved",
+  "externalDonationsCreateSuccessMessage": "Your giving summary will include this donation.",
   "recurringDonationsDetailProgressSuffix": "donations",
   "recurringDonationsDetailSummaryDonated": "Donated",
   "recurringDonationsDetailSummaryHelping": "Helping",

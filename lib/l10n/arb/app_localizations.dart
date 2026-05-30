@@ -4568,6 +4568,212 @@ abstract class AppLocalizations {
   /// **'No, continue as normal'**
   String get externalDonationsStopModalCancel;
 
+  /// No description provided for @externalDonationsCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add external donation'**
+  String get externalDonationsCreateTitle;
+
+  /// No description provided for @externalDonationsCreateOrganisationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Which organisation did you give to?'**
+  String get externalDonationsCreateOrganisationDescription;
+
+  /// No description provided for @externalDonationsCreateOrganisationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Organisation'**
+  String get externalDonationsCreateOrganisationLabel;
+
+  /// No description provided for @externalDonationsCreateOrganisationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for an organisation'**
+  String get externalDonationsCreateOrganisationHint;
+
+  /// No description provided for @externalDonationsCreateSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search organisations'**
+  String get externalDonationsCreateSearchTitle;
+
+  /// No description provided for @externalDonationsCreateSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name'**
+  String get externalDonationsCreateSearchHint;
+
+  /// No description provided for @externalDonationsCreateAddCustomOrganisation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add \"{name}\"'**
+  String externalDonationsCreateAddCustomOrganisation(String name);
+
+  /// No description provided for @externalDonationsCreateAmountDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'How much did you give?'**
+  String get externalDonationsCreateAmountDescription;
+
+  /// No description provided for @externalDonationsCreateAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get externalDonationsCreateAmountLabel;
+
+  /// No description provided for @externalDonationsCreateFrequencyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Was this a one-off or recurring gift?'**
+  String get externalDonationsCreateFrequencyDescription;
+
+  /// No description provided for @externalDonationsCreateDonationTypeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'What kind of donation is this?'**
+  String get externalDonationsCreateDonationTypeDescription;
+
+  /// No description provided for @externalDonationsCreateTaxReliefLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax relief applies to this charity'**
+  String get externalDonationsCreateTaxReliefLabel;
+
+  /// No description provided for @externalDonationsCreateLastGiftDescriptionWithOrg.
+  ///
+  /// In en, this message translates to:
+  /// **'When did your last {frequency} gift to {organisation} go out?'**
+  String externalDonationsCreateLastGiftDescriptionWithOrg(
+    String frequency,
+    String organisation,
+  );
+
+  /// No description provided for @externalDonationsCreateStartDateDescriptionWithOrg.
+  ///
+  /// In en, this message translates to:
+  /// **'When did this recurring gift to {organisation} start?'**
+  String externalDonationsCreateStartDateDescriptionWithOrg(
+    String organisation,
+  );
+
+  /// No description provided for @externalDonationsCreateSuccessHeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'{organisation} is now part of your giving history'**
+  String externalDonationsCreateSuccessHeadline(String organisation);
+
+  /// No description provided for @externalDonationsCreateFrequencyOneOff.
+  ///
+  /// In en, this message translates to:
+  /// **'One-off'**
+  String get externalDonationsCreateFrequencyOneOff;
+
+  /// No description provided for @externalDonationsCreateFrequencyRecurring.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring'**
+  String get externalDonationsCreateFrequencyRecurring;
+
+  /// No description provided for @externalDonationsCreateFrequencyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get externalDonationsCreateFrequencyLabel;
+
+  /// No description provided for @externalDonationsCreateOneOffDateDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'When did you make this gift?'**
+  String get externalDonationsCreateOneOffDateDescription;
+
+  /// No description provided for @externalDonationsCreateLastGiftDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'When was your last gift? This sets the day each gift falls on.'**
+  String get externalDonationsCreateLastGiftDescription;
+
+  /// No description provided for @externalDonationsCreateLastGiftLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last gift date'**
+  String get externalDonationsCreateLastGiftLabel;
+
+  /// No description provided for @externalDonationsCreateStartDateDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'When did you start giving to this organisation?'**
+  String get externalDonationsCreateStartDateDescription;
+
+  /// No description provided for @externalDonationsCreateStartDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get externalDonationsCreateStartDateLabel;
+
+  /// No description provided for @externalDonationsCreateSelectDateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get externalDonationsCreateSelectDateHint;
+
+  /// No description provided for @externalDonationsCreateSelectMonthYearHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select month and year'**
+  String get externalDonationsCreateSelectMonthYearHint;
+
+  /// No description provided for @externalDonationsCreateConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get externalDonationsCreateConfirmTitle;
+
+  /// No description provided for @externalDonationsCreateConfirmDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the details before saving.'**
+  String get externalDonationsCreateConfirmDescription;
+
+  /// No description provided for @externalDonationsCreateConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save external donation'**
+  String get externalDonationsCreateConfirmButton;
+
+  /// No description provided for @externalDonationsCreatePreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Building your overview entry:'**
+  String get externalDonationsCreatePreviewTitle;
+
+  /// No description provided for @externalDonationsCreatePreviewTypeTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Ext. Donation'**
+  String get externalDonationsCreatePreviewTypeTag;
+
+  /// No description provided for @externalDonationsCreatePreviewMoreRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'+ {count} more records back to {startMonthYear}'**
+  String externalDonationsCreatePreviewMoreRecords(
+    int count,
+    String startMonthYear,
+  );
+
+  /// No description provided for @externalDonationsCreateSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'External donation saved'**
+  String get externalDonationsCreateSuccessTitle;
+
+  /// No description provided for @externalDonationsCreateSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your giving summary will include this donation.'**
+  String get externalDonationsCreateSuccessMessage;
+
   /// No description provided for @recurringDonationsDetailProgressSuffix.
   ///
   /// In en, this message translates to:

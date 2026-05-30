@@ -102,6 +102,8 @@ class ExternalDonationItem extends StatelessWidget {
     switch (frequency) {
       case ExternalDonationFrequency.once:
         return locals.budgetExternalGiftsFrequencyOnce;
+      case ExternalDonationFrequency.weekly:
+        return locals.recurringDonationsFrequenciesWeekly;
       case ExternalDonationFrequency.monthly:
         return locals.budgetExternalGiftsFrequencyMonthly;
       case ExternalDonationFrequency.quarterly:

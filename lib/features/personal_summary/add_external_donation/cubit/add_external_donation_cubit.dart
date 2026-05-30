@@ -90,12 +90,12 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
         return;
       }
 
-      final isAdded = await givtRepository.addExternalDonation(
+      final created = await givtRepository.addExternalDonation(
         body: toBeAdded.toJson(),
       );
       if (isClosed) return;
 
-      if (!isAdded) {
+      if (created == null) {
         emit(state.copyWith(status: AddExternalDonationStatus.error));
         return;
       }
@@ -103,7 +103,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
       emit(
         state.copyWith(
           status: AddExternalDonationStatus.success,
-          externalDonations: state.externalDonations..insert(0, toBeAdded),
+          externalDonations: state.externalDonations..insert(0, created),
           currentExternalDonation: const ExternalDonation.empty(),
         ),
       );

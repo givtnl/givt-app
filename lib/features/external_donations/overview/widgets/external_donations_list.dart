@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/external_donations/create/widgets/external_donation_frequency_dropdown.dart';
 import 'package:givt_app/features/external_donations/detail/pages/external_donation_detail_page.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
@@ -80,19 +81,10 @@ class ExternalDonationsList extends StatelessWidget {
     BuildContext context,
     ExternalDonationFrequency frequency,
   ) {
-    final locals = context.l10n;
-    switch (frequency) {
-      case ExternalDonationFrequency.once:
-        return locals.budgetExternalGiftsFrequencyOnce;
-      case ExternalDonationFrequency.monthly:
-        return locals.budgetExternalGiftsFrequencyMonthly;
-      case ExternalDonationFrequency.quarterly:
-        return locals.budgetExternalGiftsFrequencyQuarterly;
-      case ExternalDonationFrequency.halfYearly:
-        return locals.budgetExternalGiftsFrequencyHalfYearly;
-      case ExternalDonationFrequency.yearly:
-        return locals.budgetExternalGiftsFrequencyYearly;
-    }
+    return ExternalDonationFrequencyDropdown.frequencyLabel(
+      context.l10n,
+      frequency,
+    );
   }
 
   void _onDonationTap(BuildContext context, ExternalDonation donation) {

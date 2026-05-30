@@ -2538,6 +2538,135 @@ class AppLocalizationsNl extends AppLocalizations {
   String get externalDonationsStopModalCancel => 'Nee, ga door zoals normaal';
 
   @override
+  String get externalDonationsCreateTitle => 'Externe gift toevoegen';
+
+  @override
+  String get externalDonationsCreateOrganisationDescription =>
+      'Aan welke organisatie heb je gegeven?';
+
+  @override
+  String get externalDonationsCreateOrganisationLabel => 'Organisatie';
+
+  @override
+  String get externalDonationsCreateOrganisationHint => 'Zoek een organisatie';
+
+  @override
+  String get externalDonationsCreateSearchTitle => 'Organisaties zoeken';
+
+  @override
+  String get externalDonationsCreateSearchHint => 'Zoek op naam';
+
+  @override
+  String externalDonationsCreateAddCustomOrganisation(String name) {
+    return '\"$name\" toevoegen';
+  }
+
+  @override
+  String get externalDonationsCreateAmountDescription =>
+      'Hoeveel heb je gegeven?';
+
+  @override
+  String get externalDonationsCreateAmountLabel => 'Bedrag';
+
+  @override
+  String get externalDonationsCreateFrequencyDescription =>
+      'Was dit een eenmalige of terugkerende gift?';
+
+  @override
+  String get externalDonationsCreateDonationTypeDescription =>
+      'Wat voor gift is dit?';
+
+  @override
+  String get externalDonationsCreateTaxReliefLabel =>
+      'Belastingvoordeel geldt voor deze goede doel';
+
+  @override
+  String externalDonationsCreateLastGiftDescriptionWithOrg(
+    String frequency,
+    String organisation,
+  ) {
+    return 'Wanneer ging je laatste $frequency gift naar $organisation?';
+  }
+
+  @override
+  String externalDonationsCreateStartDateDescriptionWithOrg(
+    String organisation,
+  ) {
+    return 'Wanneer is deze terugkerende gift naar $organisation begonnen?';
+  }
+
+  @override
+  String externalDonationsCreateSuccessHeadline(String organisation) {
+    return '$organisation maakt nu deel uit van je giftenhistorie';
+  }
+
+  @override
+  String get externalDonationsCreateFrequencyOneOff => 'Eenmalig';
+
+  @override
+  String get externalDonationsCreateFrequencyRecurring => 'Terugkerend';
+
+  @override
+  String get externalDonationsCreateFrequencyLabel => 'Frequentie';
+
+  @override
+  String get externalDonationsCreateOneOffDateDescription =>
+      'Wanneer heb je deze gift gedaan?';
+
+  @override
+  String get externalDonationsCreateLastGiftDescription =>
+      'Wanneer was je laatste gift? Dit bepaalt op welke dag elke gift valt.';
+
+  @override
+  String get externalDonationsCreateLastGiftLabel => 'Datum laatste gift';
+
+  @override
+  String get externalDonationsCreateStartDateDescription =>
+      'Wanneer ben je begonnen met geven aan deze organisatie?';
+
+  @override
+  String get externalDonationsCreateStartDateLabel => 'Startdatum';
+
+  @override
+  String get externalDonationsCreateSelectDateHint => 'Selecteer datum';
+
+  @override
+  String get externalDonationsCreateSelectMonthYearHint =>
+      'Selecteer maand en jaar';
+
+  @override
+  String get externalDonationsCreateConfirmTitle => 'Bevestigen';
+
+  @override
+  String get externalDonationsCreateConfirmDescription =>
+      'Controleer de details voordat je opslaat.';
+
+  @override
+  String get externalDonationsCreateConfirmButton => 'Externe gift opslaan';
+
+  @override
+  String get externalDonationsCreatePreviewTitle =>
+      'Je overzichtsregel wordt opgebouwd:';
+
+  @override
+  String get externalDonationsCreatePreviewTypeTag => 'Ext. Gift';
+
+  @override
+  String externalDonationsCreatePreviewMoreRecords(
+    int count,
+    String startMonthYear,
+  ) {
+    return '+ $count extra records terug tot $startMonthYear';
+  }
+
+  @override
+  String get externalDonationsCreateSuccessTitle => 'Externe gift opgeslagen';
+
+  @override
+  String get externalDonationsCreateSuccessMessage =>
+      'Je giftenoverzicht bevat deze gift.';
+
+  @override
   String get recurringDonationsDetailProgressSuffix => 'donaties';
 
   @override

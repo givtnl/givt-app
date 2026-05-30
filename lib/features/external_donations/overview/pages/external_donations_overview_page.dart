@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/features/external_donations/create/pages/step1_organisation_page.dart';
 import 'package:givt_app/features/external_donations/overview/cubit/external_donations_overview_cubit.dart';
 import 'package:givt_app/features/external_donations/overview/widgets/external_donations_empty_state.dart';
 import 'package:givt_app/features/external_donations/overview/widgets/external_donations_list.dart';
@@ -10,6 +11,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 
 class ExternalDonationsOverviewPage extends StatefulWidget {
   const ExternalDonationsOverviewPage({super.key});
@@ -120,7 +122,11 @@ class _ExternalDonationsOverviewPageState
         },
       ),
       floatingActionButton: FunButton(
-        onTap: null,
+        onTap: () {
+          Navigator.of(context).push(
+            const Step1OrganisationPage().toRoute(context),
+          );
+        },
         text: locals.externalDonationsOverviewAddButton,
         leftIcon: Icons.add,
         analyticsEvent: AnalyticsEventName.externalDonationsAddClicked.toEvent(),
