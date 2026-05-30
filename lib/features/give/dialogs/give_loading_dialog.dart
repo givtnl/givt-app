@@ -27,6 +27,7 @@ class GiveLoadingDialog extends StatelessWidget {
       listener: (context, state) {
         if (state.status == GiveStatus.processed ||
             state.status == GiveStatus.error ||
+            state.status == GiveStatus.submissionTimeout ||
             state.status == GiveStatus.readyToGive) {
           context.pop();
         }

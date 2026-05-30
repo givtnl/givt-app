@@ -431,6 +431,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get amountTooHigh => 'Betrag zu hoch';
 
   @override
+  String donationAmountExceedsMaximum(String maxAmount) {
+    return 'Der Betrag überschreitet den maximal zulässigen Spendenbetrag von $maxAmount';
+  }
+
+  @override
   String get loginFailure => 'Login Fehler';
 
   @override
@@ -1731,6 +1736,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get errorOccurred => 'Ein Fehler ist aufgetreten';
+
+  @override
+  String get donationSubmissionTimeoutTitle => 'Status unbekannt';
+
+  @override
+  String get donationSubmissionTimeoutMessage =>
+      'Beim Verarbeiten deiner Spende ist etwas schiefgelaufen. Bitte prüfe deine Spendenhistorie, bevor du es erneut versuchst, um doppelte Spenden zu vermeiden.';
+
+  @override
+  String get donationSubmissionTimeoutCheckHistoryButton =>
+      'Spendenhistorie prüfen';
 
   @override
   String get registrationErrorTitle =>

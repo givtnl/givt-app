@@ -137,6 +137,14 @@
   "fingerprintUsage": "Aquí puedes cambiar el uso de tu huella dactilar para iniciar sesión en la aplicación Givt.",
   "offlineGiftsTitle": "Donaciones sin conexión",
   "amountTooHigh": "Monto demasiado alto",
+  "donationAmountExceedsMaximum": "El monto supera la donación máxima permitida de {maxAmount}",
+  "@donationAmountExceedsMaximum": {
+    "placeholders": {
+      "maxAmount": {
+        "type": "String"
+      }
+    }
+  },
   "loginFailure": "Error de inicio de sesión",
   "requestFailed": "Solicitud fallida",
   "resetPasswordSent": "Debería haber recibido un correo electrónico con un enlace para restablecer tu contraseña. En caso de que no veas el correo electrónico de inmediato, revisa tu correo no deseado.",
@@ -1013,6 +1021,9 @@
   "forYouQrNonGivtTitle": "No es un código QR de Givt",
   "forYouQrNotFoundMessage": "No pudimos usar este código QR. Inténtalo de nuevo u elige otra forma de donar.",
   "errorOccurred": "Ocurrió un error",
+  "donationSubmissionTimeoutTitle": "Estado desconocido",
+  "donationSubmissionTimeoutMessage": "Algo salió mal al procesar tu donación. Revisa tu historial de donaciones antes de intentarlo de nuevo para evitar donaciones duplicadas.",
+  "donationSubmissionTimeoutCheckHistoryButton": "Ver historial de donaciones",
   "registrationErrorTitle": "No se puede completar el registro",
   "cantCancelAlreadyProcessed": "Alas, you can't cancel this donation because it is already processed.",
   "countryStringUs": "Estados Unidos",

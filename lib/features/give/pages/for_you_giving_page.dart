@@ -12,6 +12,7 @@ import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/dialogs/donation_submission_timeout_dialog.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/utils/for_you_donation_transactions.dart';
 import 'package:givt_app/features/give/widgets/for_you_more_general_goals_sheet.dart';
@@ -115,7 +116,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       amountLimit: amountLimit,
       decimalSeparator: _decimalSeparator,
     );
-    final hasValidAmounts = _hasAnyAmount && !hasAmountLimitViolation;
+    final canSubmit = _hasValidAmounts && !hasAmountLimitViolation;
 
     if (organisation == null) {
       return FunScaffold(
@@ -140,6 +141,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
               'orgName': organisation.orgName,
             },
           );
+        }
+        if (state.status == GiveStatus.submissionTimeout) {
+          DonationSubmissionTimeoutDialog.show(context);
         }
         if (state.status == GiveStatus.error) {
           showDialog<void>(
@@ -253,7 +257,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                         child: FunButton(
                           text: context.l10n.forYouGivingCompleteMyGiving,
                           variant: FunButtonVariant.secondary,
-                          isDisabled: !hasValidAmounts || isLoading,
+                          isDisabled: !canSubmit || isLoading,
                           analyticsEvent: AnalyticsEventName
                               .forYouGivingContinueTapped
                               .toEvent(),
@@ -280,7 +284,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                       Expanded(
                         child: FunButton(
                           text: context.l10n.forYouGivingCompleteMyGiving,
-                          isDisabled: !hasValidAmounts || isLoading,
+                          isDisabled: !canSubmit || isLoading,
                           isLoading: isLoading,
                           analyticsEvent: AnalyticsEventName
                               .forYouGivingContinueTapped
@@ -481,12 +485,12 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     String namespace, {
     required int amountLimit,
   }) {
-    if (!(_hasAnyAmount &&
-        !DonationAmountValidation.anyExceedsUserAmountLimit(
+    if (!_hasValidAmounts ||
+        DonationAmountValidation.anyExceedsUserAmountLimit(
           values: _controllers.map((controller) => controller.text),
           amountLimit: amountLimit,
           decimalSeparator: _decimalSeparator,
-        ))) {
+        )) {
       return;
     }
     final userGuid = context.read<AuthCubit>().state.user.guid;
@@ -549,6 +553,13 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   bool get _hasAnyAmount =>
       _controllers.any((controller) => _parseAmount(controller.text) > 0);
 
+  bool get _hasValidAmounts =>
+      _hasAnyAmount &&
+      _controllers.every(
+        (controller) =>
+            !DonationAmountValidation.exceedsMaxInputAmount(controller.text),
+      );
+
   bool get _isLastAccordion => _expandedIndex >= _goalLines.length - 1;
 
   void onBackspaceTapped() {
@@ -569,22 +580,22 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
 
   void onCommaTapped() {
     final controller = _controllers[_selectedField];
-    if (controller.text.contains(_decimalSeparator)) {
-      return;
-    }
     setState(() {
-      controller.text = '${controller.text}$_decimalSeparator';
+      controller.text = DonationAmountValidation.appendDecimalSeparator(
+        currentText: controller.text,
+        decimalSeparator: _decimalSeparator,
+      );
     });
   }
 
   void onNumberTapped(String value) {
     final controller = _controllers[_selectedField];
     setState(() {
-      if (controller.text == '0') {
-        controller.text = value;
-      } else {
-        controller.text = '${controller.text}$value';
-      }
+      controller.text = DonationAmountValidation.appendDigit(
+        currentText: controller.text,
+        digit: value,
+        decimalSeparator: _decimalSeparator,
+      );
     });
   }
 

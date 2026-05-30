@@ -137,6 +137,14 @@
   "fingerprintUsage": "Hier änderst du die Verwendung des Fingerabdrucks, um dich bei der Givt App anzumelden.",
   "offlineGiftsTitle": "Offline Spenden",
   "amountTooHigh": "Betrag zu hoch",
+  "donationAmountExceedsMaximum": "Der Betrag überschreitet den maximal zulässigen Spendenbetrag von {maxAmount}",
+  "@donationAmountExceedsMaximum": {
+    "placeholders": {
+      "maxAmount": {
+        "type": "String"
+      }
+    }
+  },
   "loginFailure": "Login Fehler",
   "requestFailed": "Anfrage fehlgeschlagen",
   "resetPasswordSent": "Du solltest eine E-Mail mit einem Link erhalten haben, um dein Passwort zurück setzen zu können. Falls du diese E-Mail nicht sofort findest, überprüf bitte auch den Spam-Ordner.",
@@ -1013,6 +1021,9 @@
   "forYouQrNonGivtTitle": "Kein Givt-QR-Code",
   "forYouQrNotFoundMessage": "Dieser QR-Code konnte nicht verwendet werden. Bitte versuche es erneut oder wähle eine andere Art zu spenden.",
   "errorOccurred": "Ein Fehler ist aufgetreten",
+  "donationSubmissionTimeoutTitle": "Status unbekannt",
+  "donationSubmissionTimeoutMessage": "Beim Verarbeiten deiner Spende ist etwas schiefgelaufen. Bitte prüfe deine Spendenhistorie, bevor du es erneut versuchst, um doppelte Spenden zu vermeiden.",
+  "donationSubmissionTimeoutCheckHistoryButton": "Spendenhistorie prüfen",
   "registrationErrorTitle": "Die Registrierung kann nicht abgeschlossen werden",
   "cantCancelAlreadyProcessed": "Leider können Sie diese Spende nicht stornieren, da sie bereits bearbeitet wurde.",
   "countryStringUs": "United States of America",

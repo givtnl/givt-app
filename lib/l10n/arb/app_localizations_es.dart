@@ -426,6 +426,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get amountTooHigh => 'Amount too high';
 
   @override
+  String donationAmountExceedsMaximum(String maxAmount) {
+    return 'El monto supera la donación máxima permitida de $maxAmount';
+  }
+
+  @override
   String get loginFailure => 'Login error';
 
   @override
@@ -1715,6 +1720,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorOccurred => 'An error occurred';
+
+  @override
+  String get donationSubmissionTimeoutTitle => 'Status unknown';
+
+  @override
+  String get donationSubmissionTimeoutMessage =>
+      'Something went wrong while processing your donation. Please check your donation history before trying again to avoid double donations.';
+
+  @override
+  String get donationSubmissionTimeoutCheckHistoryButton =>
+      'Check donation history';
 
   @override
   String get registrationErrorTitle => 'Registration cannot be completed';
@@ -3375,6 +3391,11 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get amountTooHigh => 'Monto demasiado alto';
 
   @override
+  String donationAmountExceedsMaximum(String maxAmount) {
+    return 'El monto supera la donación máxima permitida de $maxAmount';
+  }
+
+  @override
   String get loginFailure => 'Error de inicio de sesión';
 
   @override
@@ -4676,6 +4697,17 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get errorOccurred => 'Ocurrió un error';
+
+  @override
+  String get donationSubmissionTimeoutTitle => 'Estado desconocido';
+
+  @override
+  String get donationSubmissionTimeoutMessage =>
+      'Algo salió mal al procesar tu donación. Revisa tu historial de donaciones antes de intentarlo de nuevo para evitar donaciones duplicadas.';
+
+  @override
+  String get donationSubmissionTimeoutCheckHistoryButton =>
+      'Ver historial de donaciones';
 
   @override
   String get registrationErrorTitle => 'No se puede completar el registro';

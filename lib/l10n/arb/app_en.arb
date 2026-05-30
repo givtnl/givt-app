@@ -137,6 +137,14 @@
   "fingerprintUsage": "This is where you change the use of your fingerprint to login into the Givt app.",
   "offlineGiftsTitle": "Offline donations",
   "amountTooHigh": "Amount too high",
+  "donationAmountExceedsMaximum": "Amount exceeds the maximum allowed donation of {maxAmount}",
+  "@donationAmountExceedsMaximum": {
+    "placeholders": {
+      "maxAmount": {
+        "type": "String"
+      }
+    }
+  },
   "loginFailure": "Login error",
   "requestFailed": "Request failed",
   "resetPasswordSent": "You should have received an e-mail with a link to reset your password. In case you do not see the e-mail right away, check your spam.",
@@ -1013,6 +1021,18 @@
   "forYouQrNonGivtTitle": "Not a Givt QR code",
   "forYouQrNotFoundMessage": "We could not use this QR code. Please try again or choose another way to give.",
   "errorOccurred": "An error occurred",
+  "donationSubmissionTimeoutTitle": "Status unknown",
+  "@donationSubmissionTimeoutTitle": {
+    "description": "Title shown when a donation submission times out"
+  },
+  "donationSubmissionTimeoutMessage": "Something went wrong while processing your donation. Please check your donation history before trying again to avoid double donations.",
+  "@donationSubmissionTimeoutMessage": {
+    "description": "Message shown when a donation submission times out"
+  },
+  "donationSubmissionTimeoutCheckHistoryButton": "Check donation history",
+  "@donationSubmissionTimeoutCheckHistoryButton": {
+    "description": "Primary action to open donation history after a submission timeout"
+  },
   "registrationErrorTitle": "Registration cannot be completed",
   "cantCancelAlreadyProcessed": "Alas, you can't cancel this donation because it is already processed.",
   "countryStringUs": "United States of America",

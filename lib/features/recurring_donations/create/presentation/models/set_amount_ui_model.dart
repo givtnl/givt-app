@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
+import 'package:givt_app/utils/donation_amount_validation.dart';
 
 class SetAmountUIModel extends Equatable {
   const SetAmountUIModel({
@@ -19,7 +20,8 @@ class SetAmountUIModel extends Equatable {
     return selectedFrequency != null &&
         amount.isNotEmpty &&
         double.tryParse(normalizedAmount) != null &&
-        double.parse(normalizedAmount) > 0;
+        double.parse(normalizedAmount) > 0 &&
+        !DonationAmountValidation.exceedsMaxInputAmount(amount);
   }
 
   SetAmountUIModel copyWith({
@@ -38,4 +40,4 @@ class SetAmountUIModel extends Equatable {
 
   @override
   List<Object?> get props => [selectedFrequency, amount, isLoading, error];
-} 
+}

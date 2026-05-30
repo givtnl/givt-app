@@ -818,6 +818,12 @@ abstract class AppLocalizations {
   /// **'Amount too high'**
   String get amountTooHigh;
 
+  /// No description provided for @donationAmountExceedsMaximum.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount exceeds the maximum allowed donation of {maxAmount}'**
+  String donationAmountExceedsMaximum(String maxAmount);
+
   /// No description provided for @loginFailure.
   ///
   /// In en, this message translates to:
@@ -3130,6 +3136,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred'**
   String get errorOccurred;
+
+  /// Title shown when a donation submission times out
+  ///
+  /// In en, this message translates to:
+  /// **'Status unknown'**
+  String get donationSubmissionTimeoutTitle;
+
+  /// Message shown when a donation submission times out
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while processing your donation. Please check your donation history before trying again to avoid double donations.'**
+  String get donationSubmissionTimeoutMessage;
+
+  /// Primary action to open donation history after a submission timeout
+  ///
+  /// In en, this message translates to:
+  /// **'Check donation history'**
+  String get donationSubmissionTimeoutCheckHistoryButton;
 
   /// No description provided for @registrationErrorTitle.
   ///

@@ -137,6 +137,14 @@
   "fingerprintUsage": "Hier beheer je het gebruik van je vingerafdruk om in de Givt-app in te loggen.",
   "offlineGiftsTitle": "Offline giften",
   "amountTooHigh": "Bedrag te hoog",
+  "donationAmountExceedsMaximum": "Dit bedrag is hoger dan het maximaal toegestane geefbedrag van {maxAmount}",
+  "@donationAmountExceedsMaximum": {
+    "placeholders": {
+      "maxAmount": {
+        "type": "String"
+      }
+    }
+  },
   "loginFailure": "Fout bij inloggen",
   "requestFailed": "Aanvraag mislukt",
   "resetPasswordSent": "Je krijgt een e-mail met daarin een link om je wachtwoord opnieuw in te stellen. Heb je na 5 minuten nog steeds de e-mail niet ontvangen? Kijk dan even in je spam.",
@@ -1013,6 +1021,9 @@
   "forYouQrNonGivtTitle": "Geen Givt-QR-code",
   "forYouQrNotFoundMessage": "We konden deze QR-code niet gebruiken. Probeer het opnieuw of kies een andere manier om te geven.",
   "errorOccurred": "Er is een fout opgetreden",
+  "donationSubmissionTimeoutTitle": "Status onbekend",
+  "donationSubmissionTimeoutMessage": "Er ging iets mis bij het verwerken van je gift. Controleer je giftenoverzicht voordat je het opnieuw probeert, om dubbele giften te voorkomen.",
+  "donationSubmissionTimeoutCheckHistoryButton": "Bekijk giftenoverzicht",
   "registrationErrorTitle": "Registratie kan niet worden voltooid",
   "cantCancelAlreadyProcessed": "Helaas kan je deze gift niet meer annuleren omdat deze al verwerkt is.",
   "countryStringUs": "Amerika",
