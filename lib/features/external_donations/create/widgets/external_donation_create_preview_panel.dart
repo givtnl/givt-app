@@ -41,11 +41,14 @@ class ExternalDonationCreatePreviewPanel extends StatelessWidget {
         ...rows.map(
           (row) => Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: _PreviewHistoryItem(row: row),
+            child: Opacity(
+              opacity: row.isFaded ? 0.55 : 1,
+              child: _PreviewHistoryItem(row: row),
+            ),
           ),
         ),
         if (moreRecordsLabel != null)
-          BodySmallText(
+          LabelSmallText(
             moreRecordsLabel!,
             color: theme.neutralVariant40,
           ),
@@ -62,13 +65,10 @@ class _PreviewHistoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = FunTheme.of(context);
-    final locals = context.l10n;
-    final statusBackgroundColor = row.isUpcoming
-        ? theme.secondary95
-        : theme.primary95;
-    final statusIconColor = row.isUpcoming
-        ? theme.secondary40
-        : theme.primary30;
+    final statusBackgroundColor =
+        row.isUpcoming ? theme.neutral90 : theme.primary95;
+    final statusIconColor =
+        row.isUpcoming ? theme.neutral40 : theme.primary30;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
@@ -117,15 +117,6 @@ class _PreviewHistoryItem extends StatelessWidget {
                       color: theme.neutral30,
                     ),
                   ],
-                  if (row.isUpcoming || row.isCompleted) ...[
-                    const SizedBox(height: 2),
-                    BodySmallText(
-                      row.isUpcoming
-                          ? locals.recurringDonationsDetailStatusUpcoming
-                          : locals.recurringDonationsDetailStatusCompleted,
-                      color: statusIconColor,
-                    ),
-                  ],
                 ],
               ),
             ),
@@ -172,7 +163,7 @@ class _PreviewHistoryItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: FaIcon(
-        row.isUpcoming ? FontAwesomeIcons.solidClock : FontAwesomeIcons.check,
+        row.isUpcoming ? FontAwesomeIcons.ellipsis : FontAwesomeIcons.check,
         size: 20,
         color: statusIconColor,
       ),

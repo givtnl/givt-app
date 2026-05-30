@@ -19,11 +19,52 @@ DateTime? computeNextOccurrenceDate({
   return cursor;
 }
 
+/// Last scheduled occurrence on or before [onOrBefore], walking forward from
+/// [startMonthYear] using [lastGiftDate]'s day-of-month as anchor.
+DateTime occurrenceSeriesEndDate({
+  required DateTime startMonthYear,
+  required DateTime lastGiftDate,
+  required ExternalDonationFrequency frequency,
+  required DateTime onOrBefore,
+}) {
+  if (frequency == ExternalDonationFrequency.once) {
+    return lastGiftDate;
+  }
+
+  final anchorDay = lastGiftDate.day;
+  final onOrBeforeDay = DateTime(
+    onOrBefore.year,
+    onOrBefore.month,
+    onOrBefore.day,
+  );
+  var cursor = _dateWithAnchorDay(
+    startMonthYear.year,
+    startMonthYear.month,
+    anchorDay,
+  );
+  var lastOnOrBefore = lastGiftDate;
+  var guard = 0;
+  while (!cursor.isAfter(onOrBeforeDay) && guard < 500) {
+    lastOnOrBefore = cursor;
+    cursor = _addFrequency(cursor, frequency);
+    guard++;
+  }
+
+  final lastGiftDay = DateTime(
+    lastGiftDate.year,
+    lastGiftDate.month,
+    lastGiftDate.day,
+  );
+  return lastGiftDay.isAfter(lastOnOrBefore) ? lastGiftDay : lastOnOrBefore;
+}
+
 /// Preview of recurring occurrence dates for the create-flow confirm step.
 ///
 /// Uses [lastGiftDate]'s day-of-month as the anchor for every period.
 /// [startMonthYear] is the first month/year the user started giving (day 1 used
 /// only to derive month/year; anchor day comes from [lastGiftDate]).
+/// Past occurrences run through the latest scheduled date on or before [now],
+/// so the preview can show recent months even when [lastGiftDate] is earlier.
 List<DateTime> generateOccurrencePreview({
   required DateTime startMonthYear,
   required DateTime lastGiftDate,
@@ -40,10 +81,13 @@ List<DateTime> generateOccurrencePreview({
     startMonthYear.month,
     anchorDay,
   );
-  final end = DateTime(
-    lastGiftDate.year,
-    lastGiftDate.month,
-    lastGiftDate.day,
+  final reference = now ?? DateTime.now();
+  final today = DateTime(reference.year, reference.month, reference.day);
+  final end = occurrenceSeriesEndDate(
+    startMonthYear: startMonthYear,
+    lastGiftDate: lastGiftDate,
+    frequency: frequency,
+    onOrBefore: today,
   );
 
   final occurrences = <DateTime>[];
@@ -58,7 +102,6 @@ List<DateTime> generateOccurrencePreview({
     occurrences.add(lastGiftDate);
   }
 
-  final reference = now ?? DateTime.now();
   final next = computeNextOccurrenceDate(
     startDate: occurrences.first,
     frequency: frequency,

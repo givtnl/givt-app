@@ -111,12 +111,24 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: _formatDisplay());
+    _controller = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _syncControllerText();
   }
 
   @override
   void didUpdateWidget(_MonthYearPicker oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedDate != widget.selectedDate) {
+      _syncControllerText();
+    }
+  }
+
+  void _syncControllerText() {
     final newText = _formatDisplay();
     if (_controller.text != newText) {
       _controller.text = newText;

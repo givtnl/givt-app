@@ -64,6 +64,36 @@ void main() {
       expect(preview.any((date) => date.day == 12), isTrue);
     });
 
+    test('includes months through today when last gift is earlier', () {
+      final preview = generateOccurrencePreview(
+        startMonthYear: DateTime(2026, 3),
+        lastGiftDate: DateTime(2026, 3, 1),
+        frequency: ExternalDonationFrequency.monthly,
+        now: DateTime(2026, 5, 30),
+      );
+
+      expect(
+        preview,
+        [
+          DateTime(2026, 3, 1),
+          DateTime(2026, 4, 1),
+          DateTime(2026, 5, 1),
+          DateTime(2026, 6, 1),
+        ],
+      );
+    });
+
+    test('appends next monthly occurrence after last gift in same month', () {
+      final preview = generateOccurrencePreview(
+        startMonthYear: DateTime(2026, 5),
+        lastGiftDate: DateTime(2026, 5, 1),
+        frequency: ExternalDonationFrequency.monthly,
+        now: DateTime(2026, 5, 30),
+      );
+
+      expect(preview.last, DateTime(2026, 6, 1));
+    });
+
     test('supports weekly frequency', () {
       final preview = generateOccurrencePreview(
         startMonthYear: DateTime(2023, 10),

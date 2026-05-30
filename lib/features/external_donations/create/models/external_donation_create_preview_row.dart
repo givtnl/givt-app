@@ -11,6 +11,7 @@ class ExternalDonationCreatePreviewRow extends Equatable {
     this.secondarySubtitle,
     this.isUpcoming = false,
     this.isCompleted = false,
+    this.isFaded = false,
   });
 
   final String organisationName;
@@ -24,6 +25,8 @@ class ExternalDonationCreatePreviewRow extends Equatable {
   final String? secondarySubtitle;
   final bool isUpcoming;
   final bool isCompleted;
+  /// Oldest visible past row when three preview cards are shown.
+  final bool isFaded;
 
   @override
   List<Object?> get props => [
@@ -35,5 +38,6 @@ class ExternalDonationCreatePreviewRow extends Equatable {
         secondarySubtitle,
         isUpcoming,
         isCompleted,
+        isFaded,
       ];
 }

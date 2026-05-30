@@ -26,27 +26,73 @@ class ExternalDonationCreateUIModel extends Equatable {
     final draft = this.draft;
     if (draft.isOneOff != false ||
         draft.frequency == null ||
-        draft.lastGiftDate == null ||
-        draft.startMonthYear == null) {
+        draft.lastGiftDate == null) {
       return const [];
     }
     return generateOccurrencePreview(
-      startMonthYear: draft.startMonthYear!,
+      startMonthYear: _effectiveStartMonthYear,
       lastGiftDate: draft.lastGiftDate!,
       frequency: draft.frequency!,
     );
   }
 
-  int get hiddenPreviewCount {
-    final total = occurrencePreview.length;
-    if (total <= previewVisibleCount) {
-      return 0;
-    }
-    return total - previewVisibleCount;
+  /// Start month from the draft, or last-gift month while start is not chosen yet.
+  DateTime get _effectiveStartMonthYear {
+    final lastGift = draft.lastGiftDate!;
+    return draft.startMonthYear ?? DateTime(lastGift.year, lastGift.month);
   }
 
-  List<DateTime> get visiblePreview =>
-      occurrencePreview.take(previewVisibleCount).toList();
+  int get hiddenPastPreviewCount {
+    final split = _splitOccurrencePreview();
+    if (split.past.isEmpty) {
+      return 0;
+    }
+    final pastSlots = previewVisibleCount - (split.upcoming.isNotEmpty ? 1 : 0);
+    final shownPast = pastSlots < split.past.length ? pastSlots : split.past.length;
+    return split.past.length - shownPast;
+  }
+
+  ({List<DateTime> upcoming, List<DateTime> past}) _splitOccurrencePreview({
+    DateTime? now,
+  }) {
+    final all = occurrencePreview;
+    final reference = now ?? DateTime.now();
+    final today = DateTime(reference.year, reference.month, reference.day);
+
+    final upcoming = <DateTime>[];
+    final past = <DateTime>[];
+    for (final date in all) {
+      final day = DateTime(date.year, date.month, date.day);
+      if (day.isAfter(today)) {
+        upcoming.add(date);
+      } else {
+        past.add(date);
+      }
+    }
+    return (upcoming: upcoming, past: past);
+  }
+
+  /// Upcoming occurrence first, then most recent past (capped).
+  List<DateTime> get visiblePreview => _recurringPreviewDatesForDisplay();
+
+  List<DateTime> _recurringPreviewDatesForDisplay({DateTime? now}) {
+    final split = _splitOccurrencePreview(now: now);
+    if (split.upcoming.isEmpty && split.past.isEmpty) {
+      return const [];
+    }
+
+    final displayed = <DateTime>[];
+    if (split.upcoming.isNotEmpty) {
+      displayed.add(split.upcoming.first);
+    }
+    for (final date in split.past.reversed) {
+      if (displayed.length >= previewVisibleCount) {
+        break;
+      }
+      displayed.add(date);
+    }
+    return displayed;
+  }
 
   ExternalDonationFrequency? get effectiveFrequency {
     if (draft.isOneOff == true) {
@@ -99,13 +145,13 @@ class ExternalDonationCreateUIModel extends Equatable {
 
   String? previewMoreRecordsLabel(AppLocalizations locals, String locale) {
     if (draft.isOneOff != false ||
-        draft.startMonthYear == null ||
-        hiddenPreviewCount <= 0) {
+        draft.lastGiftDate == null ||
+        hiddenPastPreviewCount <= 0) {
       return null;
     }
     return locals.externalDonationsCreatePreviewMoreRecords(
-      hiddenPreviewCount,
-      _formatMonthYear(draft.startMonthYear!, locale),
+      hiddenPastPreviewCount,
+      _formatMonthYear(_effectiveStartMonthYear, locale),
     );
   }
 
@@ -152,21 +198,19 @@ class ExternalDonationCreateUIModel extends Equatable {
     AppLocalizations locals,
     String locale,
   ) {
-    final rows = <ExternalDonationCreatePreviewRow>[_summaryRow(currencySymbol, formatAmount, locals)];
-    if (draft.lastGiftDate != null) {
-      rows.add(
-        ExternalDonationCreatePreviewRow(
-          organisationName: draft.organisationName,
-          typeTagLabel: _previewTypeTag(locals),
-          amountLabel: draft.parsedAmount != null
-              ? '$currencySymbol${formatAmount(draft.parsedAmount!)}'
-              : null,
-          primarySubtitle: _donationTypeSubtitle(locals),
-          dateLabel: _formatShortDate(draft.lastGiftDate!, locale),
-        ),
-      );
+    if (draft.lastGiftDate == null) {
+      return [_summaryRow(currencySymbol, formatAmount, locals)];
     }
-    return rows;
+    if (occurrencePreview.isEmpty) {
+      return [_summaryRow(currencySymbol, formatAmount, locals)];
+    }
+    return _recurringPreviewRowsFromDates(
+      _recurringPreviewDatesForDisplay(),
+      currencySymbol: currencySymbol,
+      formatAmount: formatAmount,
+      locals: locals,
+      locale: locale,
+    );
   }
 
   List<ExternalDonationCreatePreviewRow> _startDatePreviewRows(
@@ -175,25 +219,13 @@ class ExternalDonationCreateUIModel extends Equatable {
     AppLocalizations locals,
     String locale,
   ) {
-    final amount = draft.parsedAmount;
-    final formattedAmount = amount != null
-        ? '$currencySymbol${formatAmount(amount)}'
-        : null;
-    return visiblePreview.map((date) {
-      final now = DateTime.now();
-      final today = DateTime(now.year, now.month, now.day);
-      final day = DateTime(date.year, date.month, date.day);
-      final isFuture = day.isAfter(today);
-      return ExternalDonationCreatePreviewRow(
-        organisationName: draft.organisationName,
-        typeTagLabel: _previewTypeTag(locals),
-        amountLabel: formattedAmount,
-        primarySubtitle: _donationTypeSubtitle(locals),
-        dateLabel: _formatShortDate(date, locale),
-        isUpcoming: isFuture,
-        isCompleted: !isFuture,
-      );
-    }).toList();
+    return _recurringPreviewRowsFromDates(
+      visiblePreview,
+      currencySymbol: currencySymbol,
+      formatAmount: formatAmount,
+      locals: locals,
+      locale: locale,
+    );
   }
 
   List<ExternalDonationCreatePreviewRow> _successPreviewRows(
@@ -208,22 +240,70 @@ class ExternalDonationCreateUIModel extends Equatable {
     if (occurrencePreview.isEmpty) {
       return [_summaryRow(currencySymbol, formatAmount, locals)];
     }
-    return occurrencePreview.take(previewVisibleCount).map((date) {
-      final now = DateTime.now();
-      final isFuture = date.isAfter(DateTime(now.year, now.month, now.day));
-      final amount = draft.parsedAmount;
-      return ExternalDonationCreatePreviewRow(
-        organisationName: draft.organisationName,
-        typeTagLabel: _previewTypeTag(locals),
-        amountLabel: amount != null
-            ? '$currencySymbol${formatAmount(amount)}'
-            : null,
-        primarySubtitle: _donationTypeSubtitle(locals),
-        dateLabel: _formatShortDate(date, locale),
+    return _recurringPreviewRowsFromDates(
+      _recurringPreviewDatesForDisplay(),
+      currencySymbol: currencySymbol,
+      formatAmount: formatAmount,
+      locals: locals,
+      locale: locale,
+    );
+  }
+
+  List<ExternalDonationCreatePreviewRow> _recurringPreviewRowsFromDates(
+    List<DateTime> dates, {
+    required String currencySymbol,
+    required String Function(double amount) formatAmount,
+    required AppLocalizations locals,
+    required String locale,
+    DateTime? now,
+  }) {
+    final reference = now ?? DateTime.now();
+    final today = DateTime(reference.year, reference.month, reference.day);
+
+    return dates.asMap().entries.map((entry) {
+      final index = entry.key;
+      final date = entry.value;
+      final day = DateTime(date.year, date.month, date.day);
+      final isFuture = day.isAfter(today);
+      final isFaded = dates.length == previewVisibleCount &&
+          index == dates.length - 1 &&
+          !isFuture;
+      return _recurringHistoryRow(
+        currencySymbol: currencySymbol,
+        formatAmount: formatAmount,
+        locals: locals,
+        locale: locale,
+        date: date,
         isUpcoming: isFuture,
         isCompleted: !isFuture,
+        isFaded: isFaded,
       );
     }).toList();
+  }
+
+  ExternalDonationCreatePreviewRow _recurringHistoryRow({
+    required String currencySymbol,
+    required String Function(double amount) formatAmount,
+    required AppLocalizations locals,
+    required String locale,
+    required DateTime date,
+    bool isUpcoming = false,
+    bool isCompleted = false,
+    bool isFaded = false,
+  }) {
+    final amount = draft.parsedAmount;
+    return ExternalDonationCreatePreviewRow(
+      organisationName: draft.organisationName,
+      typeTagLabel: _previewTypeTag(locals),
+      amountLabel: amount != null
+          ? '$currencySymbol${formatAmount(amount)}'
+          : null,
+      primarySubtitle: _donationTypeSubtitle(locals),
+      dateLabel: _formatShortDate(date, locale),
+      isUpcoming: isUpcoming,
+      isCompleted: isCompleted,
+      isFaded: isFaded,
+    );
   }
 
   String _previewTypeTag(AppLocalizations locals) =>
