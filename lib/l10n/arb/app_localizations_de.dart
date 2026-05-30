@@ -1146,6 +1146,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get menuItemRecurringDonation => 'Wiederkehrende Spende';
 
   @override
+  String get menuItemExternalDonations => 'Externe Spenden';
+
+  @override
   String get setupRecurringGiftHalfYear => 'Halbes Jahr';
 
   @override
@@ -2502,6 +2505,49 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get recurringDonationsOverviewAddButton => 'Wiederkehrende Spende';
+
+  @override
+  String get externalDonationsOverviewTabCurrent => 'Aktuell';
+
+  @override
+  String get externalDonationsOverviewTabPast => 'Vergangen';
+
+  @override
+  String get externalDonationsOverviewAddButton => 'Externe Spende hinzufügen';
+
+  @override
+  String get externalDonationsEmptyStateTitle =>
+      'Spenden außerhalb Givt verfolgen';
+
+  @override
+  String get externalDonationsEmptyStateDescription =>
+      'Füge Spenden hinzu, die du direkt an Organisationen gibst, damit deine Übersicht vollständig bleibt.';
+
+  @override
+  String get externalDonationsListStatusStopped => 'Beendet';
+
+  @override
+  String get externalDonationsDetailSummaryGiving => 'Geben';
+
+  @override
+  String get externalDonationsDetailOneOffDate => 'Datum';
+
+  @override
+  String get externalDonationsDetailStopButton =>
+      'Ich habe aufgehört zu spenden';
+
+  @override
+  String get externalDonationsStopModalTitle => 'Aufzeichnung beenden?';
+
+  @override
+  String get externalDonationsStopModalMessage =>
+      'Wir fügen keine weiteren kommenden Spenden für diese Organisation hinzu. Bereits erfasste Spenden bleiben in deiner Übersicht.';
+
+  @override
+  String get externalDonationsStopModalConfirm => 'Ja, Aufzeichnung beenden';
+
+  @override
+  String get externalDonationsStopModalCancel => 'Nein, normal fortfahren';
 
   @override
   String get recurringDonationsDetailProgressSuffix => 'Spenden';

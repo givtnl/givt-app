@@ -1,0 +1,103 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/external_donations/detail/pages/external_donation_detail_page.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
+import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/utils/util.dart';
+import 'package:intl/intl.dart';
+
+class ExternalDonationsList extends StatelessWidget {
+  const ExternalDonationsList({
+    required this.donations,
+    super.key,
+  });
+
+  final List<ExternalDonation> donations;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemCount: donations.length,
+      separatorBuilder: (context, index) => const SizedBox(height: 16),
+      itemBuilder: (context, index) {
+        return _buildDonationCard(context, donations[index]);
+      },
+    );
+  }
+
+  Widget _buildDonationCard(BuildContext context, ExternalDonation donation) {
+    final auth = context.read<AuthCubit>().state;
+    final currency = Util.getCurrencySymbol(countryCode: auth.user.country);
+
+    return FunMissionCard(
+      uiModel: FunMissionCardUIModel(
+        title: donation.description,
+        description: _buildDescription(context, donation, currency),
+      ),
+      onTap: () => _onDonationTap(context, donation),
+      analyticsEvent: AnalyticsEventName.externalDonationsCardClicked.toEvent(
+        parameters: {
+          'donation_id': donation.id,
+          'frequency': donation.frequencyString,
+          'active': donation.active.toString(),
+        },
+      ),
+    );
+  }
+
+  String _buildDescription(
+    BuildContext context,
+    ExternalDonation donation,
+    String currency,
+  ) {
+    final auth = context.read<AuthCubit>().state;
+    final country = Country.fromCode(auth.user.country);
+    final amount = Util.formatNumberComma(donation.amount, country);
+    final frequency = _frequencyLabel(context, donation.frequency);
+    final date = DateTime.tryParse(donation.creationDate);
+    final dateText = date != null
+        ? DateFormat.yMMMd(Util.getLanguageTageFromLocale(context)).format(date)
+        : '';
+
+    if (donation.frequency == ExternalDonationFrequency.once) {
+      return '$currency$amount · $dateText';
+    }
+
+    if (!donation.active) {
+      return '$frequency $currency$amount · ${context.l10n.externalDonationsListStatusStopped}';
+    }
+
+    return '$frequency $currency$amount';
+  }
+
+  String _frequencyLabel(
+    BuildContext context,
+    ExternalDonationFrequency frequency,
+  ) {
+    final locals = context.l10n;
+    switch (frequency) {
+      case ExternalDonationFrequency.once:
+        return locals.budgetExternalGiftsFrequencyOnce;
+      case ExternalDonationFrequency.monthly:
+        return locals.budgetExternalGiftsFrequencyMonthly;
+      case ExternalDonationFrequency.quarterly:
+        return locals.budgetExternalGiftsFrequencyQuarterly;
+      case ExternalDonationFrequency.halfYearly:
+        return locals.budgetExternalGiftsFrequencyHalfYearly;
+      case ExternalDonationFrequency.yearly:
+        return locals.budgetExternalGiftsFrequencyYearly;
+    }
+  }
+
+  void _onDonationTap(BuildContext context, ExternalDonation donation) {
+    Navigator.of(context).push(
+      ExternalDonationDetailPage(donation: donation).toRoute(context),
+    );
+  }
+}

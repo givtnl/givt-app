@@ -115,6 +115,27 @@ class CustomNavigationDrawer extends StatelessWidget {
                 ),
                 DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
+                  title: locals.menuItemExternalDonations,
+                  icon: FontAwesomeIcons.handHoldingHeart,
+                  analyticsEvent:
+                      AnalyticsEventName.menuNavigationExternalDonationsClicked,
+                  onTap: () async => AuthUtils.checkToken(
+                    context,
+                    checkAuthRequest: CheckAuthRequest(
+                      navigate: (context) async {
+                        context.goNamed(Pages.externalDonations.name);
+                        unawaited(
+                          AnalyticsHelper.logEvent(
+                            eventName:
+                                AnalyticsEventName.externalDonationsNavigationClicked,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                DrawerMenuItem(
+                  isVisible: !auth.user.needRegistration,
                   title: locals.menuItemRecurringDonation,
                   icon: Icons.autorenew,
                   analyticsEvent: AnalyticsEventName.menuNavigationRecurringDonationClicked,

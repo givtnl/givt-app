@@ -1137,6 +1137,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuItemRecurringDonation => 'Recurring donations';
 
   @override
+  String get menuItemExternalDonations => 'External donations';
+
+  @override
   String get setupRecurringGiftHalfYear => 'half year';
 
   @override
@@ -2481,6 +2484,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recurringDonationsOverviewAddButton => 'Add recurring donation';
+
+  @override
+  String get externalDonationsOverviewTabCurrent => 'Current';
+
+  @override
+  String get externalDonationsOverviewTabPast => 'Past';
+
+  @override
+  String get externalDonationsOverviewAddButton => 'Add external donation';
+
+  @override
+  String get externalDonationsEmptyStateTitle => 'Track giving outside Givt';
+
+  @override
+  String get externalDonationsEmptyStateDescription =>
+      'Add donations you make directly to organisations so your giving summary stays complete.';
+
+  @override
+  String get externalDonationsListStatusStopped => 'Stopped';
+
+  @override
+  String get externalDonationsDetailSummaryGiving => 'Giving';
+
+  @override
+  String get externalDonationsDetailOneOffDate => 'Date';
+
+  @override
+  String get externalDonationsDetailStopButton => 'I\'ve stopped giving';
+
+  @override
+  String get externalDonationsStopModalTitle => 'Stop recording this donation?';
+
+  @override
+  String get externalDonationsStopModalMessage =>
+      'We will not add any more upcoming gifts for this organisation. Gifts you already recorded stay in your summary.';
+
+  @override
+  String get externalDonationsStopModalConfirm => 'Yes, stop recording';
+
+  @override
+  String get externalDonationsStopModalCancel => 'No, continue as normal';
 
   @override
   String get recurringDonationsDetailProgressSuffix => 'donations';
@@ -4090,6 +4134,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get menuItemRecurringDonation => 'Recurring donations';
 
   @override
+  String get menuItemExternalDonations => 'External donations';
+
+  @override
   String get setupRecurringGiftHalfYear => 'half year';
 
   @override
@@ -5388,6 +5435,47 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get recurringDonationsOverviewAddButton => 'Add recurring donation';
+
+  @override
+  String get externalDonationsOverviewTabCurrent => 'Current';
+
+  @override
+  String get externalDonationsOverviewTabPast => 'Past';
+
+  @override
+  String get externalDonationsOverviewAddButton => 'Add external donation';
+
+  @override
+  String get externalDonationsEmptyStateTitle => 'Track giving outside Givt';
+
+  @override
+  String get externalDonationsEmptyStateDescription =>
+      'Add donations you make directly to organizations so your giving summary stays complete.';
+
+  @override
+  String get externalDonationsListStatusStopped => 'Stopped';
+
+  @override
+  String get externalDonationsDetailSummaryGiving => 'Giving';
+
+  @override
+  String get externalDonationsDetailOneOffDate => 'Date';
+
+  @override
+  String get externalDonationsDetailStopButton => 'I\'ve stopped giving';
+
+  @override
+  String get externalDonationsStopModalTitle => 'Stop recording this donation?';
+
+  @override
+  String get externalDonationsStopModalMessage =>
+      'We will not add any more upcoming gifts for this organization. Gifts you already recorded stay in your summary.';
+
+  @override
+  String get externalDonationsStopModalConfirm => 'Yes, stop recording';
+
+  @override
+  String get externalDonationsStopModalCancel => 'No, continue as normal';
 
   @override
   String get recurringDonationsDetailProgressSuffix => 'donations';

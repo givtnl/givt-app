@@ -1141,6 +1141,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get menuItemRecurringDonation => 'Terugkerende giften';
 
   @override
+  String get menuItemExternalDonations => 'Externe giften';
+
+  @override
   String get setupRecurringGiftHalfYear => 'half jaar';
 
   @override
@@ -2492,6 +2495,47 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsOverviewAddButton => 'Terugkerende donatie';
+
+  @override
+  String get externalDonationsOverviewTabCurrent => 'Huidig';
+
+  @override
+  String get externalDonationsOverviewTabPast => 'Verleden';
+
+  @override
+  String get externalDonationsOverviewAddButton => 'Externe gift toevoegen';
+
+  @override
+  String get externalDonationsEmptyStateTitle => 'Houd giften buiten Givt bij';
+
+  @override
+  String get externalDonationsEmptyStateDescription =>
+      'Voeg giften toe die je rechtstreeks aan organisaties doet, zodat je overzicht compleet blijft.';
+
+  @override
+  String get externalDonationsListStatusStopped => 'Gestopt';
+
+  @override
+  String get externalDonationsDetailSummaryGiving => 'Geven';
+
+  @override
+  String get externalDonationsDetailOneOffDate => 'Datum';
+
+  @override
+  String get externalDonationsDetailStopButton => 'Ik ben gestopt met geven';
+
+  @override
+  String get externalDonationsStopModalTitle => 'Stoppen met registreren?';
+
+  @override
+  String get externalDonationsStopModalMessage =>
+      'We voegen geen komende giften meer toe voor deze organisatie. Gifts die je al hebt geregistreerd blijven in je overzicht.';
+
+  @override
+  String get externalDonationsStopModalConfirm => 'Ja, stop met registreren';
+
+  @override
+  String get externalDonationsStopModalCancel => 'Nee, ga door zoals normaal';
 
   @override
   String get recurringDonationsDetailProgressSuffix => 'donaties';

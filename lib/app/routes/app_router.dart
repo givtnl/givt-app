@@ -42,6 +42,7 @@ import 'package:givt_app/features/personal_summary/overview/pages/personal_summa
 import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/pages/yearly_overview_page.dart';
 import 'package:givt_app/features/platform_contribution/presentation/screens/platform_contribution_screen.dart';
+import 'package:givt_app/features/external_donations/overview/pages/external_donations_overview_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -250,6 +251,11 @@ class AppRouter {
               create: (_) => RecurringDonationsOverviewCubit(getIt()),
               child: const RecurringDonationsOverviewPage(),
             ),
+          ),
+          GoRoute(
+            path: Pages.externalDonations.path,
+            name: Pages.externalDonations.name,
+            builder: (context, state) => const ExternalDonationsOverviewPage(),
           ),
           GoRoute(
             path: Pages.registration.path,

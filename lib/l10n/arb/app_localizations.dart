@@ -2105,6 +2105,12 @@ abstract class AppLocalizations {
   /// **'Recurring donations'**
   String get menuItemRecurringDonation;
 
+  /// No description provided for @menuItemExternalDonations.
+  ///
+  /// In en, this message translates to:
+  /// **'External donations'**
+  String get menuItemExternalDonations;
+
   /// No description provided for @setupRecurringGiftHalfYear.
   ///
   /// In en, this message translates to:
@@ -4483,6 +4489,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add recurring donation'**
   String get recurringDonationsOverviewAddButton;
+
+  /// No description provided for @externalDonationsOverviewTabCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get externalDonationsOverviewTabCurrent;
+
+  /// No description provided for @externalDonationsOverviewTabPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get externalDonationsOverviewTabPast;
+
+  /// No description provided for @externalDonationsOverviewAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add external donation'**
+  String get externalDonationsOverviewAddButton;
+
+  /// No description provided for @externalDonationsEmptyStateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track giving outside Givt'**
+  String get externalDonationsEmptyStateTitle;
+
+  /// No description provided for @externalDonationsEmptyStateDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add donations you make directly to organisations so your giving summary stays complete.'**
+  String get externalDonationsEmptyStateDescription;
+
+  /// No description provided for @externalDonationsListStatusStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped'**
+  String get externalDonationsListStatusStopped;
+
+  /// No description provided for @externalDonationsDetailSummaryGiving.
+  ///
+  /// In en, this message translates to:
+  /// **'Giving'**
+  String get externalDonationsDetailSummaryGiving;
+
+  /// No description provided for @externalDonationsDetailOneOffDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get externalDonationsDetailOneOffDate;
+
+  /// No description provided for @externalDonationsDetailStopButton.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve stopped giving'**
+  String get externalDonationsDetailStopButton;
+
+  /// No description provided for @externalDonationsStopModalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop recording this donation?'**
+  String get externalDonationsStopModalTitle;
+
+  /// No description provided for @externalDonationsStopModalMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We will not add any more upcoming gifts for this organisation. Gifts you already recorded stay in your summary.'**
+  String get externalDonationsStopModalMessage;
+
+  /// No description provided for @externalDonationsStopModalConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, stop recording'**
+  String get externalDonationsStopModalConfirm;
+
+  /// No description provided for @externalDonationsStopModalCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'No, continue as normal'**
+  String get externalDonationsStopModalCancel;
 
   /// No description provided for @recurringDonationsDetailProgressSuffix.
   ///
