@@ -12,6 +12,7 @@ import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/dialogs/donation_submission_timeout_dialog.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/utils/for_you_donation_transactions.dart';
 import 'package:givt_app/features/give/widgets/for_you_more_general_goals_sheet.dart';
@@ -133,6 +134,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
               'orgName': organisation.orgName,
             },
           );
+        }
+        if (state.status == GiveStatus.submissionTimeout) {
+          DonationSubmissionTimeoutDialog.show(context);
         }
         if (state.status == GiveStatus.error) {
           showDialog<void>(
