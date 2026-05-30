@@ -186,6 +186,7 @@ flutter:
           weight: 900
   assets:
     - assets/images/
+    - assets/images/external_donations/
     - assets/images/for_you/
     - assets/lotties/
     - assets/ca/

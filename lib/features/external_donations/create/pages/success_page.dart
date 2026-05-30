@@ -5,6 +5,7 @@ import 'package:givt_app/features/external_donations/create/cubit/external_donat
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_flow_step.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_ui_model.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_preview_helper.dart';
+import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_preview_panel.dart';
 import 'package:givt_app/features/external_donations/overview/pages/external_donations_overview_page.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -24,7 +25,8 @@ class ExternalDonationCreateSuccessPage extends StatefulWidget {
 
 class _ExternalDonationCreateSuccessPageState
     extends State<ExternalDonationCreateSuccessPage> {
-  final ExternalDonationCreateCubit _cubit = getIt<ExternalDonationCreateCubit>();
+  final ExternalDonationCreateCubit _cubit =
+      getIt<ExternalDonationCreateCubit>();
 
   @override
   void didChangeDependencies() {
@@ -39,6 +41,7 @@ class _ExternalDonationCreateSuccessPageState
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final theme = FunTheme.of(context);
 
     return BaseStateConsumer<ExternalDonationCreateUIModel,
         ExternalDonationCreateCustom>(
@@ -48,43 +51,29 @@ class _ExternalDonationCreateSuccessPageState
           context,
           uiModel,
           ExternalDonationCreateFlowStep.success,
+          showSectionTitle: false,
+          historyItemStyle:
+              ExternalDonationCreatePreviewHistoryItemStyle.success,
         );
 
         return FunScaffold(
           canPop: false,
-          minimumPadding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
-                    decoration: BoxDecoration(
-                      color: FunTheme.of(context).neutral98,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: FunTheme.of(context).neutralVariant95,
-                        width: 2,
-                      ),
-                    ),
+                child: Center(
+                  child: SingleChildScrollView(
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        TitleMediumText(
+                        TitleLargeText(
                           locals.externalDonationsCreateSuccessHeadline(
                             uiModel.draft.organisationName,
                           ),
                           textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 32),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.asset(
-                            'assets/images/external_donations/create_success_device.png',
-                            fit: BoxFit.contain,
-                            height: 200,
-                          ),
+                          color: theme.primary20,
                         ),
                         if (preview != null) ...[
                           const SizedBox(height: 32),
