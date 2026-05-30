@@ -137,6 +137,14 @@
   "fingerprintUsage": "This is where you change the use of your fingerprint to login into the Givt app.",
   "offlineGiftsTitle": "Offline donations",
   "amountTooHigh": "Amount too high",
+  "donationAmountExceedsMaximum": "El monto supera la donación máxima permitida de {maxAmount}",
+  "@donationAmountExceedsMaximum": {
+    "placeholders": {
+      "maxAmount": {
+        "type": "String"
+      }
+    }
+  },
   "loginFailure": "Login error",
   "requestFailed": "Request failed",
   "resetPasswordSent": "You should have received an e-mail with a link to reset your password. In case you do not see the e-mail right away, check your spam.",

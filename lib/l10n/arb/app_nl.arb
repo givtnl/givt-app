@@ -137,6 +137,14 @@
   "fingerprintUsage": "Hier beheer je het gebruik van je vingerafdruk om in de Givt-app in te loggen.",
   "offlineGiftsTitle": "Offline giften",
   "amountTooHigh": "Bedrag te hoog",
+  "donationAmountExceedsMaximum": "Dit bedrag is hoger dan het maximaal toegestane geefbedrag van {maxAmount}",
+  "@donationAmountExceedsMaximum": {
+    "placeholders": {
+      "maxAmount": {
+        "type": "String"
+      }
+    }
+  },
   "loginFailure": "Fout bij inloggen",
   "requestFailed": "Aanvraag mislukt",
   "resetPasswordSent": "Je krijgt een e-mail met daarin een link om je wachtwoord opnieuw in te stellen. Heb je na 5 minuten nog steeds de e-mail niet ontvangen? Kijk dan even in je spam.",

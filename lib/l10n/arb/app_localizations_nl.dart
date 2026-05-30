@@ -429,6 +429,11 @@ class AppLocalizationsNl extends AppLocalizations {
   String get amountTooHigh => 'Bedrag te hoog';
 
   @override
+  String donationAmountExceedsMaximum(String maxAmount) {
+    return 'Dit bedrag is hoger dan het maximaal toegestane geefbedrag van $maxAmount';
+  }
+
+  @override
   String get loginFailure => 'Fout bij inloggen';
 
   @override

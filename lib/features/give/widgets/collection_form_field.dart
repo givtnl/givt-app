@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/constants/donation_amount_constants.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -56,6 +57,9 @@ String? _validateCollectionValue(
   );
   if (currentValue == 0) {
     return null;
+  }
+  if (currentValue > DonationAmountConstants.maxInputAmount) {
+    return '';
   }
   if (currentValue > double.parse(amountLimit.toString())) {
     return '';

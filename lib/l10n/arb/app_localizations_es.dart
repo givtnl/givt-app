@@ -426,6 +426,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get amountTooHigh => 'Amount too high';
 
   @override
+  String donationAmountExceedsMaximum(String maxAmount) {
+    return 'El monto supera la donación máxima permitida de $maxAmount';
+  }
+
+  @override
   String get loginFailure => 'Login error';
 
   @override
@@ -3384,6 +3389,11 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get amountTooHigh => 'Monto demasiado alto';
+
+  @override
+  String donationAmountExceedsMaximum(String maxAmount) {
+    return 'El monto supera la donación máxima permitida de $maxAmount';
+  }
 
   @override
   String get loginFailure => 'Error de inicio de sesión';
