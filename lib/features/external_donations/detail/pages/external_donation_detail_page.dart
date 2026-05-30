@@ -7,7 +7,6 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/external_donations/detail/cubit/external_donation_detail_cubit.dart';
 import 'package:givt_app/features/external_donations/detail/models/external_donation_history_item.dart';
-import 'package:givt_app/features/external_donations/detail/repositories/external_donation_detail_repository.dart';
 import 'package:givt_app/features/external_donations/detail/widgets/stop_recording_modal.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -38,9 +37,8 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
   @override
   void initState() {
     super.initState();
-    getIt<ExternalDonationDetailRepository>().setDonation(widget.donation);
     _cubit = getIt<ExternalDonationDetailCubit>();
-    _cubit.init();
+    _cubit.init(widget.donation);
   }
 
   @override
@@ -112,10 +110,11 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                BodyMediumText.opacityBlack50(
-                  error ?? '',
-                  textAlign: TextAlign.center,
-                ),
+                if (error != null && error.isNotEmpty)
+                  BodyMediumText.opacityBlack50(
+                    error,
+                    textAlign: TextAlign.center,
+                  ),
               ],
             ),
           );

@@ -18,18 +18,20 @@ ExternalDonationCreatePreviewPanel? externalDonationCreatePreviewForStep(
   final auth = context.read<AuthCubit>().state;
   final country = Country.fromCode(auth.user.country);
   final currency = Util.getCurrencySymbol(countryCode: auth.user.country);
+  final locale = Util.getLanguageTageFromLocale(context);
   final rows = uiModel.previewRowsForStep(
     step,
     currencySymbol: currency,
     formatAmount: (amount) => Util.formatNumberComma(amount, country),
     locals: context.l10n,
+    locale: locale,
   );
   if (rows.isEmpty) {
     return null;
   }
   return ExternalDonationCreatePreviewPanel(
     rows: rows,
-    moreRecordsLabel: uiModel.previewMoreRecordsLabel(context.l10n),
+    moreRecordsLabel: uiModel.previewMoreRecordsLabel(context.l10n, locale),
     showSectionTitle: showSectionTitle,
   );
 }

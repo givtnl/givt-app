@@ -8,7 +8,6 @@ class ExternalDonationDetailUIModel {
     required this.history,
     required this.isRecurring,
     required this.isActive,
-    required this.isLoading,
   });
 
   final ExternalDonation donation;
@@ -17,7 +16,6 @@ class ExternalDonationDetailUIModel {
   final List<ExternalDonationHistoryItem> history;
   final bool isRecurring;
   final bool isActive;
-  final bool isLoading;
 
   @override
   bool operator ==(Object other) {
@@ -28,8 +26,7 @@ class ExternalDonationDetailUIModel {
         other.givingDays == givingDays &&
         other.history == history &&
         other.isRecurring == isRecurring &&
-        other.isActive == isActive &&
-        other.isLoading == isLoading;
+        other.isActive == isActive;
   }
 
   @override
@@ -40,7 +37,6 @@ class ExternalDonationDetailUIModel {
         history,
         isRecurring,
         isActive,
-        isLoading,
       );
 }
 

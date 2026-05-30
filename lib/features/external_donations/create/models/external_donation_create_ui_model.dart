@@ -60,6 +60,7 @@ class ExternalDonationCreateUIModel extends Equatable {
     required String currencySymbol,
     required String Function(double amount) formatAmount,
     required AppLocalizations locals,
+    required String locale,
   }) {
     if (!draft.hasOrganisation) {
       return const [];
@@ -71,17 +72,32 @@ class ExternalDonationCreateUIModel extends Equatable {
       case ExternalDonationCreateFlowStep.donationType:
         return [_summaryRow(currencySymbol, formatAmount, locals)];
       case ExternalDonationCreateFlowStep.oneOffDate:
-        return [_oneOffPreviewRow(currencySymbol, formatAmount, locals)];
+        return [_oneOffPreviewRow(currencySymbol, formatAmount, locals, locale)];
       case ExternalDonationCreateFlowStep.lastGiftDate:
-        return _lastGiftPreviewRows(currencySymbol, formatAmount, locals);
+        return _lastGiftPreviewRows(
+          currencySymbol,
+          formatAmount,
+          locals,
+          locale,
+        );
       case ExternalDonationCreateFlowStep.startMonthYear:
-        return _startDatePreviewRows(currencySymbol, formatAmount, locals);
+        return _startDatePreviewRows(
+          currencySymbol,
+          formatAmount,
+          locals,
+          locale,
+        );
       case ExternalDonationCreateFlowStep.success:
-        return _successPreviewRows(currencySymbol, formatAmount, locals);
+        return _successPreviewRows(
+          currencySymbol,
+          formatAmount,
+          locals,
+          locale,
+        );
     }
   }
 
-  String? previewMoreRecordsLabel(AppLocalizations locals) {
+  String? previewMoreRecordsLabel(AppLocalizations locals, String locale) {
     if (draft.isOneOff != false ||
         draft.startMonthYear == null ||
         hiddenPreviewCount <= 0) {
@@ -89,9 +105,15 @@ class ExternalDonationCreateUIModel extends Equatable {
     }
     return locals.externalDonationsCreatePreviewMoreRecords(
       hiddenPreviewCount,
-      DateFormat('MMMM yyyy').format(draft.startMonthYear!),
+      _formatMonthYear(draft.startMonthYear!, locale),
     );
   }
+
+  static String _formatShortDate(DateTime date, String locale) =>
+      DateFormat('d MMM yyyy', locale).format(date);
+
+  static String _formatMonthYear(DateTime date, String locale) =>
+      DateFormat('MMMM yyyy', locale).format(date);
 
   ExternalDonationCreatePreviewRow _summaryRow(
     String currencySymbol,
@@ -111,6 +133,7 @@ class ExternalDonationCreateUIModel extends Equatable {
     String currencySymbol,
     String Function(double amount) formatAmount,
     AppLocalizations locals,
+    String locale,
   ) {
     final amount = draft.parsedAmount;
     final date = draft.dateMade;
@@ -119,7 +142,7 @@ class ExternalDonationCreateUIModel extends Equatable {
       typeTagLabel: _previewTypeTag(locals),
       amountLabel: amount != null ? '$currencySymbol${formatAmount(amount)}' : null,
       primarySubtitle: locals.externalDonationsCreateFrequencyOneOff,
-      dateLabel: date != null ? DateFormat('d MMM yyyy').format(date) : null,
+      dateLabel: date != null ? _formatShortDate(date, locale) : null,
     );
   }
 
@@ -127,6 +150,7 @@ class ExternalDonationCreateUIModel extends Equatable {
     String currencySymbol,
     String Function(double amount) formatAmount,
     AppLocalizations locals,
+    String locale,
   ) {
     final rows = <ExternalDonationCreatePreviewRow>[_summaryRow(currencySymbol, formatAmount, locals)];
     if (draft.lastGiftDate != null) {
@@ -138,7 +162,7 @@ class ExternalDonationCreateUIModel extends Equatable {
               ? '$currencySymbol${formatAmount(draft.parsedAmount!)}'
               : null,
           primarySubtitle: _donationTypeSubtitle(locals),
-          dateLabel: DateFormat('d MMM yyyy').format(draft.lastGiftDate!),
+          dateLabel: _formatShortDate(draft.lastGiftDate!, locale),
         ),
       );
     }
@@ -149,6 +173,7 @@ class ExternalDonationCreateUIModel extends Equatable {
     String currencySymbol,
     String Function(double amount) formatAmount,
     AppLocalizations locals,
+    String locale,
   ) {
     final amount = draft.parsedAmount;
     final formattedAmount = amount != null
@@ -164,7 +189,7 @@ class ExternalDonationCreateUIModel extends Equatable {
         typeTagLabel: _previewTypeTag(locals),
         amountLabel: formattedAmount,
         primarySubtitle: _donationTypeSubtitle(locals),
-        dateLabel: DateFormat('d MMM yyyy').format(date),
+        dateLabel: _formatShortDate(date, locale),
         isUpcoming: isFuture,
         isCompleted: !isFuture,
       );
@@ -175,9 +200,10 @@ class ExternalDonationCreateUIModel extends Equatable {
     String currencySymbol,
     String Function(double amount) formatAmount,
     AppLocalizations locals,
+    String locale,
   ) {
     if (draft.isOneOff == true) {
-      return [_oneOffPreviewRow(currencySymbol, formatAmount, locals)];
+      return [_oneOffPreviewRow(currencySymbol, formatAmount, locals, locale)];
     }
     if (occurrencePreview.isEmpty) {
       return [_summaryRow(currencySymbol, formatAmount, locals)];
@@ -193,7 +219,7 @@ class ExternalDonationCreateUIModel extends Equatable {
             ? '$currencySymbol${formatAmount(amount)}'
             : null,
         primarySubtitle: _donationTypeSubtitle(locals),
-        dateLabel: DateFormat('d MMM yyyy').format(date),
+        dateLabel: _formatShortDate(date, locale),
         isUpcoming: isFuture,
         isCompleted: !isFuture,
       );

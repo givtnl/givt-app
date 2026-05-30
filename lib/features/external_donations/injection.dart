@@ -31,7 +31,7 @@ void registerExternalDonationsDependencies() {
         getIt<ExternalDonationsOverviewRepository>(),
       ),
     )
-    ..registerLazySingleton<ExternalDonationDetailRepository>(
+    ..registerFactory<ExternalDonationDetailRepository>(
       () => ExternalDonationDetailRepositoryImpl(
         getIt<GivtRepository>(),
       ),

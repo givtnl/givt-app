@@ -12,9 +12,7 @@ mixin ExternalDonationDetailRepository {
 
   ExternalDonation? getDonation();
 
-  void setDonation(ExternalDonation donation);
-
-  Future<void> loadDetail();
+  Future<void> loadDetail(ExternalDonation donation);
 
   double getTotalDonated();
 
@@ -49,15 +47,6 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
   ExternalDonation? getDonation() => _donation;
 
   @override
-  void setDonation(ExternalDonation donation) {
-    _donation = donation;
-    _history = const [];
-    _totalDonated = 0;
-    _givingDays = 0;
-    _error = null;
-  }
-
-  @override
   bool get isRecurring =>
       _donation?.frequency != ExternalDonationFrequency.once;
 
@@ -74,13 +63,11 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
   List<ExternalDonationHistoryItem> getHistory() => _history;
 
   @override
-  Future<void> loadDetail() async {
-    final donation = _donation;
-    if (donation == null) {
-      _error = 'No external donation set';
-      return;
-    }
-
+  Future<void> loadDetail(ExternalDonation donation) async {
+    _donation = donation;
+    _history = const [];
+    _totalDonated = 0;
+    _givingDays = 0;
     _isLoading = true;
     _error = null;
 

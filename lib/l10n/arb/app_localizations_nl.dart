@@ -2529,7 +2529,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get externalDonationsStopModalMessage =>
-      'We voegen geen komende giften meer toe voor deze organisatie. Gifts die je al hebt geregistreerd blijven in je overzicht.';
+      'We voegen geen komende giften meer toe voor deze organisatie. Giften die je al hebt geregistreerd blijven in je overzicht.';
 
   @override
   String get externalDonationsStopModalConfirm => 'Ja, stop met registreren';
@@ -2570,7 +2570,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get externalDonationsCreateTaxReliefLabel =>
-      'Belastingvoordeel geldt voor deze goede doel';
+      'Belastingvoordeel geldt voor dit goede doel';
 
   @override
   String externalDonationsCreateLastGiftDescriptionWithOrg(

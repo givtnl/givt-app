@@ -29,9 +29,8 @@ class ExternalDonationsOverviewCubit extends CommonCubit<
       await _repository.loadDonations();
       if (isClosed) return;
 
-      final error = _repository.getError();
-      if (error != null) {
-        emitError(error);
+      if (_repository.getError() != null) {
+        emitError(null);
         return;
       }
 
@@ -42,7 +41,7 @@ class ExternalDonationsOverviewCubit extends CommonCubit<
         methodName: 'ExternalDonationsOverviewCubit._loadDonations',
       );
       if (isClosed) return;
-      emitError(error.toString());
+      emitError(null);
     }
   }
 
@@ -51,7 +50,6 @@ class ExternalDonationsOverviewCubit extends CommonCubit<
     return ExternalDonationsOverviewUIModel(
       currentDonations: ExternalDonationsPartition.current(donations),
       pastDonations: ExternalDonationsPartition.past(donations),
-      isLoading: _repository.isLoading(),
     );
   }
 }

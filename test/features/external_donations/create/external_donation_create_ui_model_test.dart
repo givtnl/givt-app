@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_draft.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_flow_step.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_ui_model.dart';
@@ -6,6 +7,10 @@ import 'package:givt_app/features/personal_summary/add_external_donation/models/
 import 'package:givt_app/l10n/arb/app_localizations_en.dart';
 
 void main() {
+  setUpAll(() async {
+    await initializeDateFormatting('en');
+  });
+
   final en = AppLocalizationsEn();
 
   ExternalDonationCreateUIModel buildModel(ExternalDonationCreateDraft draft) {
@@ -24,6 +29,7 @@ void main() {
           currencySymbol: '€',
           formatAmount: (a) => a.toStringAsFixed(2),
           locals: en,
+          locale: 'en',
         ),
         isEmpty,
       );
@@ -43,6 +49,7 @@ void main() {
         currencySymbol: '€',
         formatAmount: (a) => a.toStringAsFixed(2),
         locals: en,
+        locale: 'en',
       );
 
       expect(rows, hasLength(1));
@@ -69,6 +76,7 @@ void main() {
         currencySymbol: '€',
         formatAmount: (a) => a.toStringAsFixed(2),
         locals: en,
+        locale: 'en',
       );
 
       expect(rows, hasLength(1));
@@ -112,13 +120,14 @@ void main() {
         currencySymbol: '€',
         formatAmount: (a) => a.toStringAsFixed(0),
         locals: en,
+        locale: 'en',
       );
 
       expect(rows.length, lessThanOrEqualTo(3));
       expect(model.hiddenPreviewCount, greaterThanOrEqualTo(0));
       if (model.hiddenPreviewCount > 0) {
         expect(
-          model.previewMoreRecordsLabel(en),
+          model.previewMoreRecordsLabel(en, 'en'),
           isNotNull,
         );
       }

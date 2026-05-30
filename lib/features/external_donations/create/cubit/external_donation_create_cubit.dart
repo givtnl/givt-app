@@ -28,7 +28,7 @@ class ExternalDonationCreateCubit
         methodName: 'ExternalDonationCreateCubit.init',
       );
       if (isClosed) return;
-      emitError(error.toString());
+      emitError(null);
     }
   }
 
@@ -123,7 +123,7 @@ class ExternalDonationCreateCubit
       final created = await _repository.submit();
       if (isClosed) return;
       if (created == null) {
-        emitError('Failed to create external donation');
+        emitError(null);
         _emitData(isSubmitting: false);
         return;
       }
@@ -135,7 +135,7 @@ class ExternalDonationCreateCubit
         methodName: 'ExternalDonationCreateCubit.submit',
       );
       if (isClosed) return;
-      emitError(error.toString());
+      emitError(null);
       _emitData(isSubmitting: false);
     }
   }

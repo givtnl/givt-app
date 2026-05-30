@@ -12,6 +12,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:intl/intl.dart';
 
 class Step5StartMonthYearPage extends StatelessWidget {
@@ -126,7 +127,8 @@ class _MonthYearPickerState extends State<_MonthYearPicker> {
     if (widget.selectedDate == null) {
       return '';
     }
-    return DateFormat('MMMM yyyy').format(widget.selectedDate!);
+    final locale = Util.getLanguageTageFromLocale(context);
+    return DateFormat('MMMM yyyy', locale).format(widget.selectedDate!);
   }
 
   @override

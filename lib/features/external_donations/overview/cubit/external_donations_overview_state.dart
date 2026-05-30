@@ -4,12 +4,10 @@ class ExternalDonationsOverviewUIModel {
   const ExternalDonationsOverviewUIModel({
     required this.currentDonations,
     required this.pastDonations,
-    required this.isLoading,
   });
 
   final List<ExternalDonation> currentDonations;
   final List<ExternalDonation> pastDonations;
-  final bool isLoading;
 
   bool get hasCurrentDonations => currentDonations.isNotEmpty;
   bool get hasPastDonations => pastDonations.isNotEmpty;
@@ -20,13 +18,12 @@ class ExternalDonationsOverviewUIModel {
     if (identical(this, other)) return true;
     return other is ExternalDonationsOverviewUIModel &&
         other.currentDonations == currentDonations &&
-        other.pastDonations == pastDonations &&
-        other.isLoading == isLoading;
+        other.pastDonations == pastDonations;
   }
 
   @override
   int get hashCode =>
-      Object.hash(currentDonations, pastDonations, isLoading);
+      Object.hash(currentDonations, pastDonations);
 }
 
 sealed class ExternalDonationsOverviewCustom {

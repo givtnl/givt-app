@@ -15,15 +15,14 @@ class ExternalDonationDetailCubit
 
   final ExternalDonationDetailRepository _repository;
 
-  Future<void> init() async {
+  Future<void> init(ExternalDonation donation) async {
     emitLoading();
     try {
-      await _repository.loadDetail();
+      await _repository.loadDetail(donation);
       if (isClosed) return;
 
-      final error = _repository.getError();
-      if (error != null) {
-        emitError(error);
+      if (_repository.getError() != null || _repository.getDonation() == null) {
+        emitError(null);
         return;
       }
 
@@ -34,7 +33,7 @@ class ExternalDonationDetailCubit
         methodName: 'ExternalDonationDetailCubit.init',
       );
       if (isClosed) return;
-      emitError(error.toString());
+      emitError(null);
     }
   }
 
@@ -43,15 +42,14 @@ class ExternalDonationDetailCubit
   }
 
   ExternalDonationDetailUIModel _createUIModel() {
-    final donation = _repository.getDonation();
+    final donation = _repository.getDonation()!;
     return ExternalDonationDetailUIModel(
-      donation: donation!,
+      donation: donation,
       totalDonated: _repository.getTotalDonated(),
       givingDays: _repository.getGivingDays(),
       history: _repository.getHistory(),
       isRecurring: _repository.isRecurring,
       isActive: _repository.isActive,
-      isLoading: _repository.isLoading(),
     );
   }
 }
