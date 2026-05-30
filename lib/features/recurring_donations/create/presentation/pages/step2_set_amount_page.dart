@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/constants/donation_amount_constants.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -125,7 +127,11 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                   FilteringTextInputFormatter.allow(
                     Util.numberInputFieldRegExp(),
                   ),
+                  LengthLimitingTextInputFormatter(
+                    DonationAmountConstants.maxIntegerDigits + 3,
+                  ),
                 ],
+                errorText: _amountErrorText(context, uiModel.amount),
                 prefixText: Util.getCurrencySymbol(
                   countryCode: context.read<AuthCubit>().state.user.country,
                 ),
@@ -163,5 +169,21 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
         );
       },
     );
+  }
+
+  String? _amountErrorText(BuildContext context, String amount) {
+    if (!DonationAmountValidation.exceedsMaxInputAmount(amount)) {
+      return null;
+    }
+
+    final country = Country.fromCode(
+      context.read<AuthCubit>().state.user.country,
+    );
+    final formattedMax = Util.formatNumberComma(
+      DonationAmountConstants.maxInputAmount,
+      country,
+    );
+
+    return context.l10n.donationAmountExceedsMaximum(formattedMax);
   }
 }

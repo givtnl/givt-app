@@ -818,6 +818,12 @@ abstract class AppLocalizations {
   /// **'Amount too high'**
   String get amountTooHigh;
 
+  /// No description provided for @donationAmountExceedsMaximum.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount exceeds the maximum allowed donation of {maxAmount}'**
+  String donationAmountExceedsMaximum(String maxAmount);
+
   /// No description provided for @loginFailure.
   ///
   /// In en, this message translates to:

@@ -237,7 +237,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                         child: FunButton(
                           text: context.l10n.forYouGivingCompleteMyGiving,
                           variant: FunButtonVariant.secondary,
-                          isDisabled: !_hasAnyAmount || isLoading,
+                          isDisabled: !_hasValidAmounts || isLoading,
                           analyticsEvent: AnalyticsEventName
                               .forYouGivingContinueTapped
                               .toEvent(),
@@ -260,7 +260,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                       Expanded(
                         child: FunButton(
                           text: context.l10n.forYouGivingCompleteMyGiving,
-                          isDisabled: !_hasAnyAmount || isLoading,
+                          isDisabled: !_hasValidAmounts || isLoading,
                           isLoading: isLoading,
                           analyticsEvent: AnalyticsEventName
                               .forYouGivingContinueTapped
@@ -444,6 +444,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   }
 
   void _submit(BuildContext context, String namespace) {
+    if (!_hasValidAmounts) {
+      return;
+    }
     final userGuid = context.read<AuthCubit>().state.user.guid;
     final amounts = _controllers.map((c) => _parseAmount(c.text)).toList();
     final donations = buildForYouDonationTransactions(
@@ -504,6 +507,13 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   bool get _hasAnyAmount =>
       _controllers.any((controller) => _parseAmount(controller.text) > 0);
 
+  bool get _hasValidAmounts =>
+      _hasAnyAmount &&
+      _controllers.every(
+        (controller) =>
+            !DonationAmountValidation.exceedsMaxInputAmount(controller.text),
+      );
+
   bool get _isLastAccordion => _expandedIndex >= _goalLines.length - 1;
 
   void onBackspaceTapped() {
@@ -524,22 +534,22 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
 
   void onCommaTapped() {
     final controller = _controllers[_selectedField];
-    if (controller.text.contains(_decimalSeparator)) {
-      return;
-    }
     setState(() {
-      controller.text = '${controller.text}$_decimalSeparator';
+      controller.text = DonationAmountValidation.appendDecimalSeparator(
+        currentText: controller.text,
+        decimalSeparator: _decimalSeparator,
+      );
     });
   }
 
   void onNumberTapped(String value) {
     final controller = _controllers[_selectedField];
     setState(() {
-      if (controller.text == '0') {
-        controller.text = value;
-      } else {
-        controller.text = '${controller.text}$value';
-      }
+      controller.text = DonationAmountValidation.appendDigit(
+        currentText: controller.text,
+        digit: value,
+        decimalSeparator: _decimalSeparator,
+      );
     });
   }
 

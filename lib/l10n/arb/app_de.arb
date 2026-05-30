@@ -137,6 +137,14 @@
   "fingerprintUsage": "Hier änderst du die Verwendung des Fingerabdrucks, um dich bei der Givt App anzumelden.",
   "offlineGiftsTitle": "Offline Spenden",
   "amountTooHigh": "Betrag zu hoch",
+  "donationAmountExceedsMaximum": "Der Betrag überschreitet den maximal zulässigen Spendenbetrag von {maxAmount}",
+  "@donationAmountExceedsMaximum": {
+    "placeholders": {
+      "maxAmount": {
+        "type": "String"
+      }
+    }
+  },
   "loginFailure": "Login Fehler",
   "requestFailed": "Anfrage fehlgeschlagen",
   "resetPasswordSent": "Du solltest eine E-Mail mit einem Link erhalten haben, um dein Passwort zurück setzen zu können. Falls du diese E-Mail nicht sofort findest, überprüf bitte auch den Spam-Ordner.",

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/constants/donation_amount_constants.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/models/preset.dart';
@@ -399,6 +400,22 @@ class _ChooseAmountState extends State<ChooseAmount> {
             content: context.l10n.givtNotEnough(
               '$currency ${Util.formatNumberComma(
                 lowerLimit,
+                widget.country,
+              )}',
+            ),
+            onConfirm: () => context.pop(),
+          ),
+        );
+        return false;
+      }
+      if (amount > DonationAmountConstants.maxInputAmount) {
+        await showDialog<void>(
+          context: context,
+          builder: (_) => WarningDialog(
+            title: context.l10n.amountTooHigh,
+            content: context.l10n.donationAmountExceedsMaximum(
+              '$currency ${Util.formatNumberComma(
+                DonationAmountConstants.maxInputAmount,
                 widget.country,
               )}',
             ),

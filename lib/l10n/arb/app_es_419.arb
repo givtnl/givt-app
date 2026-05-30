@@ -137,6 +137,14 @@
   "fingerprintUsage": "Aquí puedes cambiar el uso de tu huella dactilar para iniciar sesión en la aplicación Givt.",
   "offlineGiftsTitle": "Donaciones sin conexión",
   "amountTooHigh": "Monto demasiado alto",
+  "donationAmountExceedsMaximum": "El monto supera la donación máxima permitida de {maxAmount}",
+  "@donationAmountExceedsMaximum": {
+    "placeholders": {
+      "maxAmount": {
+        "type": "String"
+      }
+    }
+  },
   "loginFailure": "Error de inicio de sesión",
   "requestFailed": "Solicitud fallida",
   "resetPasswordSent": "Debería haber recibido un correo electrónico con un enlace para restablecer tu contraseña. En caso de que no veas el correo electrónico de inmediato, revisa tu correo no deseado.",
