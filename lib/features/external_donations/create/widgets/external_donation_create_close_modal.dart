@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/utils.dart';
 
 class ExternalDonationCreateCloseModal {
   const ExternalDonationCreateCloseModal();

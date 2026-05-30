@@ -2575,15 +2575,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get externalDonationsCreateAmountDescription =>
-      'How much did you give?';
-
-  @override
   String get externalDonationsCreateAmountLabel => 'Amount';
-
-  @override
-  String get externalDonationsCreateFrequencyDescription =>
-      'Was this a one-off or recurring gift?';
 
   @override
   String get externalDonationsCreateDonationTypeDescription =>
@@ -2627,15 +2619,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'When did you make this gift?';
 
   @override
-  String get externalDonationsCreateLastGiftDescription =>
-      'When was your last gift? This sets the day each gift falls on.';
-
-  @override
   String get externalDonationsCreateLastGiftLabel => 'Last gift date';
-
-  @override
-  String get externalDonationsCreateStartDateDescription =>
-      'When did you start giving to this organisation?';
 
   @override
   String get externalDonationsCreateStartDateLabel => 'Start date';
@@ -2646,13 +2630,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get externalDonationsCreateSelectMonthYearHint =>
       'Select month and year';
-
-  @override
-  String get externalDonationsCreateConfirmTitle => 'Confirm';
-
-  @override
-  String get externalDonationsCreateConfirmDescription =>
-      'Check the details before saving.';
 
   @override
   String get externalDonationsCreateConfirmButton => 'Save external donation';
@@ -2671,13 +2648,6 @@ class AppLocalizationsDe extends AppLocalizations {
   ) {
     return '+ $count more records back to $startMonthYear';
   }
-
-  @override
-  String get externalDonationsCreateSuccessTitle => 'External donation saved';
-
-  @override
-  String get externalDonationsCreateSuccessMessage =>
-      'Your giving summary will include this donation.';
 
   @override
   String get recurringDonationsDetailProgressSuffix => 'Spenden';

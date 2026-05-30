@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';

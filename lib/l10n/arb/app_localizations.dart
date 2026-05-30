@@ -4517,7 +4517,7 @@ abstract class AppLocalizations {
   /// No description provided for @externalDonationsEmptyStateDescription.
   ///
   /// In en, this message translates to:
-  /// **'Add donations you make directly to organisations so your giving summary stays complete.'**
+  /// **'Add donations you make directly to organisations so your donations history stays complete.'**
   String get externalDonationsEmptyStateDescription;
 
   /// No description provided for @externalDonationsListStatusStopped.
@@ -4553,7 +4553,7 @@ abstract class AppLocalizations {
   /// No description provided for @externalDonationsStopModalMessage.
   ///
   /// In en, this message translates to:
-  /// **'We will not add any more upcoming gifts for this organisation. Gifts you already recorded stay in your summary.'**
+  /// **'We will not add any more upcoming donations for this organisation. Donations you already recorded stay in your history.'**
   String get externalDonationsStopModalMessage;
 
   /// No description provided for @externalDonationsStopModalConfirm.
@@ -4610,23 +4610,11 @@ abstract class AppLocalizations {
   /// **'Add \"{name}\"'**
   String externalDonationsCreateAddCustomOrganisation(String name);
 
-  /// No description provided for @externalDonationsCreateAmountDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'How much did you give?'**
-  String get externalDonationsCreateAmountDescription;
-
   /// No description provided for @externalDonationsCreateAmountLabel.
   ///
   /// In en, this message translates to:
   /// **'Amount'**
   String get externalDonationsCreateAmountLabel;
-
-  /// No description provided for @externalDonationsCreateFrequencyDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Was this a one-off or recurring gift?'**
-  String get externalDonationsCreateFrequencyDescription;
 
   /// No description provided for @externalDonationsCreateDonationTypeDescription.
   ///
@@ -4643,7 +4631,7 @@ abstract class AppLocalizations {
   /// No description provided for @externalDonationsCreateLastGiftDescriptionWithOrg.
   ///
   /// In en, this message translates to:
-  /// **'When did your last {frequency} gift to {organisation} go out?'**
+  /// **'When did your last {frequency} donation to {organisation} go out?'**
   String externalDonationsCreateLastGiftDescriptionWithOrg(
     String frequency,
     String organisation,
@@ -4652,7 +4640,7 @@ abstract class AppLocalizations {
   /// No description provided for @externalDonationsCreateStartDateDescriptionWithOrg.
   ///
   /// In en, this message translates to:
-  /// **'When did this recurring gift to {organisation} start?'**
+  /// **'When did this recurring donation to {organisation} start?'**
   String externalDonationsCreateStartDateDescriptionWithOrg(
     String organisation,
   );
@@ -4660,7 +4648,7 @@ abstract class AppLocalizations {
   /// No description provided for @externalDonationsCreateSuccessHeadline.
   ///
   /// In en, this message translates to:
-  /// **'{organisation} is now part of your giving history'**
+  /// **'{organisation} is now part of your donations history'**
   String externalDonationsCreateSuccessHeadline(String organisation);
 
   /// No description provided for @externalDonationsCreateFrequencyOneOff.
@@ -4684,26 +4672,14 @@ abstract class AppLocalizations {
   /// No description provided for @externalDonationsCreateOneOffDateDescription.
   ///
   /// In en, this message translates to:
-  /// **'When did you make this gift?'**
+  /// **'When did you make this donation?'**
   String get externalDonationsCreateOneOffDateDescription;
-
-  /// No description provided for @externalDonationsCreateLastGiftDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'When was your last gift? This sets the day each gift falls on.'**
-  String get externalDonationsCreateLastGiftDescription;
 
   /// No description provided for @externalDonationsCreateLastGiftLabel.
   ///
   /// In en, this message translates to:
-  /// **'Last gift date'**
+  /// **'Date of last donation'**
   String get externalDonationsCreateLastGiftLabel;
-
-  /// No description provided for @externalDonationsCreateStartDateDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'When did you start giving to this organisation?'**
-  String get externalDonationsCreateStartDateDescription;
 
   /// No description provided for @externalDonationsCreateStartDateLabel.
   ///
@@ -4723,18 +4699,6 @@ abstract class AppLocalizations {
   /// **'Select month and year'**
   String get externalDonationsCreateSelectMonthYearHint;
 
-  /// No description provided for @externalDonationsCreateConfirmTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Confirm'**
-  String get externalDonationsCreateConfirmTitle;
-
-  /// No description provided for @externalDonationsCreateConfirmDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Check the details before saving.'**
-  String get externalDonationsCreateConfirmDescription;
-
   /// No description provided for @externalDonationsCreateConfirmButton.
   ///
   /// In en, this message translates to:
@@ -4750,7 +4714,7 @@ abstract class AppLocalizations {
   /// No description provided for @externalDonationsCreatePreviewTypeTag.
   ///
   /// In en, this message translates to:
-  /// **'Ext. Donation'**
+  /// **'Ext. donation'**
   String get externalDonationsCreatePreviewTypeTag;
 
   /// No description provided for @externalDonationsCreatePreviewMoreRecords.
@@ -4761,18 +4725,6 @@ abstract class AppLocalizations {
     int count,
     String startMonthYear,
   );
-
-  /// No description provided for @externalDonationsCreateSuccessTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'External donation saved'**
-  String get externalDonationsCreateSuccessTitle;
-
-  /// No description provided for @externalDonationsCreateSuccessMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Your giving summary will include this donation.'**
-  String get externalDonationsCreateSuccessMessage;
 
   /// No description provided for @recurringDonationsDetailProgressSuffix.
   ///

@@ -154,8 +154,6 @@ class ExternalDonationCreateUIModel extends Equatable {
     final formattedAmount = amount != null
         ? '$currencySymbol${formatAmount(amount)}'
         : null;
-    final now = DateTime.now();
-
     return visiblePreview.map((date) {
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
