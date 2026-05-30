@@ -4,10 +4,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_flow_step.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_ui_model.dart';
-import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_preview_panel.dart'
-    show
-        ExternalDonationCreatePreviewHistoryItemStyle,
-        ExternalDonationCreatePreviewPanel;
+import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_preview_panel.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -17,8 +14,6 @@ ExternalDonationCreatePreviewPanel? externalDonationCreatePreviewForStep(
   ExternalDonationCreateUIModel uiModel,
   ExternalDonationCreateFlowStep step, {
   bool showSectionTitle = true,
-  ExternalDonationCreatePreviewHistoryItemStyle historyItemStyle =
-      ExternalDonationCreatePreviewHistoryItemStyle.createFlow,
 }) {
   final auth = context.read<AuthCubit>().state;
   final country = Country.fromCode(auth.user.country);
@@ -36,6 +31,5 @@ ExternalDonationCreatePreviewPanel? externalDonationCreatePreviewForStep(
     rows: rows,
     moreRecordsLabel: uiModel.previewMoreRecordsLabel(context.l10n),
     showSectionTitle: showSectionTitle,
-    historyItemStyle: historyItemStyle,
   );
 }

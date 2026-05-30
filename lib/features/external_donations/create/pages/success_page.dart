@@ -5,7 +5,6 @@ import 'package:givt_app/features/external_donations/create/cubit/external_donat
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_flow_step.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_ui_model.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_preview_helper.dart';
-import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_preview_panel.dart';
 import 'package:givt_app/features/external_donations/overview/pages/external_donations_overview_page.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -52,8 +51,6 @@ class _ExternalDonationCreateSuccessPageState
           uiModel,
           ExternalDonationCreateFlowStep.success,
           showSectionTitle: false,
-          historyItemStyle:
-              ExternalDonationCreatePreviewHistoryItemStyle.success,
         );
 
         return FunScaffold(
