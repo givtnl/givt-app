@@ -106,10 +106,17 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     final currencySymbol = Util.getCurrencySymbol(
       countryCode: country.countryCode,
     );
+    final amountLimit = auth.user.amountLimit;
     if (country.countryCode == Country.us.countryCode ||
         Country.unitedKingdomCodes().contains(country.countryCode)) {
       _decimalSeparator = '.';
     }
+    final hasAmountLimitViolation = DonationAmountValidation.anyExceedsUserAmountLimit(
+      values: _controllers.map((controller) => controller.text),
+      amountLimit: amountLimit,
+      decimalSeparator: _decimalSeparator,
+    );
+    final canSubmit = _hasValidAmounts && !hasAmountLimitViolation;
 
     if (organisation == null) {
       return FunScaffold(
@@ -197,6 +204,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                               line: _goalLines[index],
                               index: index,
                               currencySymbol: currencySymbol,
+                              amountLimit: amountLimit,
                               accordionKey: _accordionKeys[index],
                             ),
                           );
@@ -205,6 +213,14 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                     ),
                   ),
                 ),
+                if (hasAmountLimitViolation)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: BodySmallText(
+                      context.l10n.amountLimitExceeded,
+                      color: FunTheme.of(context).error50,
+                    ),
+                  ),
                 if (_showMoreGoalsLink)
                   FunTextButton(
                     text: context.l10n.forYouGivingMoreGoals,
@@ -241,18 +257,22 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                         child: FunButton(
                           text: context.l10n.forYouGivingCompleteMyGiving,
                           variant: FunButtonVariant.secondary,
-                          isDisabled: !_hasValidAmounts || isLoading,
+                          isDisabled: !canSubmit || isLoading,
                           analyticsEvent: AnalyticsEventName
                               .forYouGivingContinueTapped
                               .toEvent(),
-                          onTap: () => _submit(context, organisation.nameSpace),
+                          onTap: () => _submit(
+                            context,
+                            organisation.nameSpace,
+                            amountLimit: amountLimit,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: FunButton(
                           text: context.l10n.next,
-                          isDisabled: isLoading,
+                          isDisabled: isLoading || hasAmountLimitViolation,
                           isLoading: false,
                           analyticsEvent: AnalyticsEventName
                               .forYouGivingContinueTapped
@@ -264,12 +284,16 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                       Expanded(
                         child: FunButton(
                           text: context.l10n.forYouGivingCompleteMyGiving,
-                          isDisabled: !_hasValidAmounts || isLoading,
+                          isDisabled: !canSubmit || isLoading,
                           isLoading: isLoading,
                           analyticsEvent: AnalyticsEventName
                               .forYouGivingContinueTapped
                               .toEvent(),
-                          onTap: () => _submit(context, organisation.nameSpace),
+                          onTap: () => _submit(
+                            context,
+                            organisation.nameSpace,
+                            amountLimit: amountLimit,
+                          ),
                         ),
                       ),
                   ],
@@ -287,6 +311,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     required ForYouGoalLineKind line,
     required int index,
     required String currencySymbol,
+    required int amountLimit,
     required GlobalKey accordionKey,
   }) {
     final title = switch (line) {
@@ -322,6 +347,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
           controller: _controllers[index],
           isExpanded: _expandedIndex == index,
           amount: _parseAmount(_controllers[index].text),
+          amountLimit: amountLimit,
           onClear: () {
             setState(() {
               _controllers[index].text = '0';
@@ -370,15 +396,22 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     required TextEditingController controller,
     required bool isExpanded,
     required double amount,
+    required int amountLimit,
     required VoidCallback onClear,
   }) {
     final theme = FunTheme.of(context);
     final isComplete = amount > 0;
-    final borderColor = isComplete
-        ? theme.primary30
-        : isExpanded
-            ? theme.primary70
-            : theme.neutralVariant90;
+    final exceedsLimit = DonationAmountValidation.exceedsUserAmountLimit(
+      amount: amount,
+      amountLimit: amountLimit,
+    );
+    final borderColor = exceedsLimit
+        ? theme.error50
+        : isComplete
+            ? theme.primary30
+            : isExpanded
+                ? theme.primary70
+                : theme.neutralVariant90;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -447,8 +480,17 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     });
   }
 
-  void _submit(BuildContext context, String namespace) {
-    if (!_hasValidAmounts) {
+  void _submit(
+    BuildContext context,
+    String namespace, {
+    required int amountLimit,
+  }) {
+    if (!_hasValidAmounts ||
+        DonationAmountValidation.anyExceedsUserAmountLimit(
+          values: _controllers.map((controller) => controller.text),
+          amountLimit: amountLimit,
+          decimalSeparator: _decimalSeparator,
+        )) {
       return;
     }
     final userGuid = context.read<AuthCubit>().state.user.guid;
