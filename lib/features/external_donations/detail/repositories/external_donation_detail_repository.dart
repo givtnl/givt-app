@@ -23,6 +23,8 @@ mixin ExternalDonationDetailRepository {
   bool get isRecurring;
 
   bool get isActive;
+
+  Future<bool> stopDonation(String externalDonationId);
 }
 
 class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository {
@@ -153,6 +155,11 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
     } finally {
       _isLoading = false;
     }
+  }
+
+  @override
+  Future<bool> stopDonation(String externalDonationId) async {
+    return _givtRepository.stopExternalDonation(externalDonationId);
   }
 
   bool _matchesParent(ExternalDonation occurrence, ExternalDonation parent) {

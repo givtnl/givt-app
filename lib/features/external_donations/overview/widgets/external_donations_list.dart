@@ -16,10 +16,12 @@ import 'package:intl/intl.dart';
 class ExternalDonationsList extends StatelessWidget {
   const ExternalDonationsList({
     required this.donations,
+    this.onDonationUpdated,
     super.key,
   });
 
   final List<ExternalDonation> donations;
+  final VoidCallback? onDonationUpdated;
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +89,15 @@ class ExternalDonationsList extends StatelessWidget {
     );
   }
 
-  void _onDonationTap(BuildContext context, ExternalDonation donation) {
-    Navigator.of(context).push(
+  Future<void> _onDonationTap(
+    BuildContext context,
+    ExternalDonation donation,
+  ) async {
+    final didUpdate = await Navigator.of(context).push(
       ExternalDonationDetailPage(donation: donation).toRoute(context),
     );
+    if (didUpdate == true) {
+      onDonationUpdated?.call();
+    }
   }
 }

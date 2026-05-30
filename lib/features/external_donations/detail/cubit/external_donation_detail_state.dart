@@ -45,8 +45,22 @@ sealed class ExternalDonationDetailCustom {
 
   const factory ExternalDonationDetailCustom.showStopRecordingModal() =
       ShowStopRecordingModal;
+
+  const factory ExternalDonationDetailCustom.stopRecordingSucceeded() =
+      StopRecordingSucceeded;
+
+  const factory ExternalDonationDetailCustom.stopRecordingFailed() =
+      StopRecordingFailed;
 }
 
 class ShowStopRecordingModal extends ExternalDonationDetailCustom {
   const ShowStopRecordingModal();
+}
+
+class StopRecordingSucceeded extends ExternalDonationDetailCustom {
+  const StopRecordingSucceeded();
+}
+
+class StopRecordingFailed extends ExternalDonationDetailCustom {
+  const StopRecordingFailed();
 }

@@ -659,10 +659,13 @@ class APIService {
     return decodedBody['items'] as List<dynamic>;
   }
 
-  Future<bool> deleteExternalDonation(String id) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/$id');
+  Future<bool> stopExternalDonation(String id) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/ExternalDonations/$id/stop',
+    );
 
-    final response = await client.delete(
+    final response = await client.post(
       url,
       headers: {
         'Content-Type': 'application/json',
@@ -678,7 +681,14 @@ class APIService {
       );
     }
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    return decodedBody['item'] as bool;
+    final isError = decodedBody['isError'] as bool? ?? false;
+    if (isError) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+    return decodedBody['item'] as bool? ?? false;
   }
 
   Future<ExternalDonation?> addExternalDonation(Map<String, dynamic> body) async {

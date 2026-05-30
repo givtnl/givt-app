@@ -7,7 +7,10 @@ import 'package:go_router/go_router.dart';
 class StopRecordingModal {
   const StopRecordingModal._();
 
-  static Future<void> show(BuildContext context) {
+  static Future<void> show(
+    BuildContext context, {
+    required Future<void> Function() onConfirm,
+  }) {
     final locals = context.l10n;
 
     return FunModal(
@@ -16,7 +19,10 @@ class StopRecordingModal {
       closeAction: () => context.pop(),
       buttons: [
         FunButton(
-          onTap: null,
+          onTap: () async {
+            context.pop();
+            await onConfirm();
+          },
           text: locals.externalDonationsStopModalConfirm,
           analyticsEvent:
               AnalyticsEventName.externalDonationsStopConfirmClicked.toEvent(),

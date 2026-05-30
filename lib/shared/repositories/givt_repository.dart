@@ -30,7 +30,7 @@ mixin GivtRepository {
     required String tillDate,
   });
 
-  Future<bool> deleteExternalDonation(String id);
+  Future<bool> stopExternalDonation(String id);
 
   Future<bool> deleteGivt(List<dynamic> ids);
 
@@ -243,9 +243,8 @@ class GivtRepositoryImpl with GivtRepository {
   }
 
   @override
-  Future<bool> deleteExternalDonation(String id) async {
-    final result = apiClient.deleteExternalDonation(id);
-    return result;
+  Future<bool> stopExternalDonation(String id) async {
+    return apiClient.stopExternalDonation(id);
   }
 
   @override

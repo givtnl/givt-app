@@ -16,6 +16,7 @@ import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class ExternalDonationDetailPage extends StatefulWidget {
@@ -64,7 +65,18 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
         onCustom: (context, custom) {
           switch (custom) {
             case ShowStopRecordingModal():
-              StopRecordingModal.show(context);
+              StopRecordingModal.show(
+                context,
+                onConfirm: _cubit.confirmStopRecording,
+              );
+            case StopRecordingSucceeded():
+              context.pop(true);
+            case StopRecordingFailed():
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(context.l10n.somethingWentWrong),
+                ),
+              );
           }
         },
         onData: (context, uiModel) {

@@ -41,6 +41,34 @@ class ExternalDonationDetailCubit
     emitCustom(const ExternalDonationDetailCustom.showStopRecordingModal());
   }
 
+  Future<void> confirmStopRecording() async {
+    final donation = _repository.getDonation();
+    if (donation == null) {
+      return;
+    }
+
+    try {
+      final stopped = await _repository.stopDonation(donation.id);
+      if (isClosed) return;
+
+      if (!stopped) {
+        emitCustom(const ExternalDonationDetailCustom.stopRecordingFailed());
+        emitData(_createUIModel());
+        return;
+      }
+
+      emitCustom(const ExternalDonationDetailCustom.stopRecordingSucceeded());
+    } catch (error) {
+      LoggingInfo.instance.error(
+        'Failed to stop external donation: $error',
+        methodName: 'ExternalDonationDetailCubit.confirmStopRecording',
+      );
+      if (isClosed) return;
+      emitCustom(const ExternalDonationDetailCustom.stopRecordingFailed());
+      emitData(_createUIModel());
+    }
+  }
+
   ExternalDonationDetailUIModel _createUIModel() {
     final donation = _repository.getDonation()!;
     return ExternalDonationDetailUIModel(

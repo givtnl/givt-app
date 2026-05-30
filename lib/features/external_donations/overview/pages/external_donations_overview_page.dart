@@ -139,7 +139,10 @@ class _ExternalDonationsOverviewPageState
       return const ExternalDonationsEmptyState();
     }
 
-    return ExternalDonationsList(donations: uiModel.currentDonations);
+    return ExternalDonationsList(
+      donations: uiModel.currentDonations,
+      onDonationUpdated: _cubit.refresh,
+    );
   }
 
   Widget _buildPastTab(ExternalDonationsOverviewUIModel uiModel) {
@@ -147,6 +150,9 @@ class _ExternalDonationsOverviewPageState
       return const ExternalDonationsEmptyState();
     }
 
-    return ExternalDonationsList(donations: uiModel.pastDonations);
+    return ExternalDonationsList(
+      donations: uiModel.pastDonations,
+      onDonationUpdated: _cubit.refresh,
+    );
   }
 }

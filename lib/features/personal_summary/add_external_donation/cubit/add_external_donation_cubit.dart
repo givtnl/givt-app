@@ -21,7 +21,9 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
   Future<void> init() async {
     emit(state.copyWith(status: AddExternalDonationStatus.loading));
     try {
-      final externalDonations = await givtRepository.fetchExternalDonations();
+      final externalDonations = (await givtRepository.fetchExternalDonations())
+          .where((donation) => donation.active)
+          .toList();
       if (isClosed) return;
 
       externalDonations.sort((first, second) {
@@ -124,11 +126,11 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
     try {
       final toBeRemoved = state.externalDonations[index];
 
-      final isDeleted = await givtRepository.deleteExternalDonation(
+      final isStopped = await givtRepository.stopExternalDonation(
         toBeRemoved.id,
       );
       if (isClosed) return;
-      if (!isDeleted) {
+      if (!isStopped) {
         emit(state.copyWith(status: AddExternalDonationStatus.error));
         return;
       }
