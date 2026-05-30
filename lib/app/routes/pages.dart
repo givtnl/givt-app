@@ -84,6 +84,7 @@ enum Pages {
     name: 'ADD-EXTERNAL-DONATION',
   ),
   recurringDonations(path: 'recurring-donations', name: 'RECURRING-DONATIONS'),
+  externalDonations(path: 'external-donations', name: 'EXTERNAL-DONATIONS'),
   editCreditCardDetails(
     path: 'edit-credit-card-details',
     name: 'EDIT-CREDIT-CARD-DETAILS',

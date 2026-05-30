@@ -112,6 +112,56 @@ enum AnalyticsEventName {
   ),
   recurringDonationCancelConfirmed('recurring_donation_cancel_confirmed'),
   recurringDonationCancelCancelled('recurring_donation_cancel_cancelled'),
+  externalDonationsNavigationClicked('external_donations_navigation_clicked'),
+  externalDonationsTabsChanged('external_donations_tabs_changed'),
+  externalDonationsAddClicked('external_donations_add_clicked'),
+  externalDonationsCardClicked('external_donations_card_clicked'),
+  externalDonationsDetailSummaryViewed('external_donations_detail_summary_viewed'),
+  externalDonationsStopClicked('external_donations_stop_clicked'),
+  externalDonationsStopConfirmClicked('external_donations_stop_confirm_clicked'),
+  externalDonationsStopCancelClicked('external_donations_stop_cancel_clicked'),
+  externalDonationsCreateOrganisationSearchClicked(
+    'external_donations_create_organisation_search_clicked',
+  ),
+  externalDonationsCreateOrganisationSelected(
+    'external_donations_create_organisation_selected',
+  ),
+  externalDonationsCreateCustomOrganisationAdded(
+    'external_donations_create_custom_organisation_added',
+  ),
+  externalDonationsCreateOrganisationContinueClicked(
+    'external_donations_create_organisation_continue_clicked',
+  ),
+  externalDonationsCreateAmountEntered('external_donations_create_amount_entered'),
+  externalDonationsCreateAmountContinueClicked(
+    'external_donations_create_amount_continue_clicked',
+  ),
+  externalDonationsCreateFrequencySelected(
+    'external_donations_create_frequency_selected',
+  ),
+  externalDonationsCreateFrequencyContinueClicked(
+    'external_donations_create_frequency_continue_clicked',
+  ),
+  externalDonationsCreateOneOffDateContinueClicked(
+    'external_donations_create_one_off_date_continue_clicked',
+  ),
+  externalDonationsCreateLastGiftContinueClicked(
+    'external_donations_create_last_gift_continue_clicked',
+  ),
+  externalDonationsCreateStartDateContinueClicked(
+    'external_donations_create_start_date_continue_clicked',
+  ),
+  externalDonationsCreateConfirmClicked('external_donations_create_confirm_clicked'),
+  externalDonationsCreateSuccessDoneClicked(
+    'external_donations_create_success_done_clicked',
+  ),
+  externalDonationsCreateCloseConfirmClicked(
+    'external_donations_create_close_confirm_clicked',
+  ),
+  externalDonationsCreateCloseCancelClicked(
+    'external_donations_create_close_cancel_clicked',
+  ),
+  externalDonationsCreateSearchTapped('external_donations_create_search_tapped'),
   editAvatarPictureClicked('edit_avatar_picture_clicked'),
   familyGoalCreateClicked('family_goal_create_clicked'),
   familyGoalCauseSet('family_goal_cause_set'),
@@ -511,6 +561,9 @@ enum AnalyticsEventName {
   menuNavigationSummaryClicked('menu_navigation_summary_clicked'),
   menuNavigationBudgetClicked('menu_navigation_budget_clicked'),
   menuNavigationHistoryClicked('menu_navigation_history_clicked'),
+  menuNavigationExternalDonationsClicked(
+    'menu_navigation_external_donations_clicked',
+  ),
   menuNavigationRecurringDonationClicked(
     'menu_navigation_recurring_donation_clicked',
   ),

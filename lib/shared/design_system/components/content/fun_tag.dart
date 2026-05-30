@@ -15,6 +15,8 @@ enum FunTagVariant {
   primary,
   secondary,
   tertiary,
+  /// Figma accent tokens (tertiary40 on tertiary90).
+  accent,
   highlight,
 }
 
@@ -31,6 +33,7 @@ class FunTag extends StatelessWidget {
     this.flatSide = FlatSide.none,
     this.iconSize,
     this.fontFeatures,
+    this.margin = const EdgeInsets.symmetric(vertical: 3),
   }) : assert(
          variant != null || (textColor != null && accentColor != null),
          'Either variant or both textColor and accentColor must be set',
@@ -107,6 +110,7 @@ class FunTag extends StatelessWidget {
   final FlatSide flatSide;
   final double? iconSize;
   final List<FontFeature>? fontFeatures;
+  final EdgeInsetsGeometry margin;
 
   ({Color text, Color accent}) _themeColors(
     FunAppTheme theme,
@@ -125,6 +129,10 @@ class FunTag extends StatelessWidget {
           text: theme.tertiary40,
           accent: theme.tertiary95,
         ),
+      FunTagVariant.accent => (
+          text: theme.tertiary40,
+          accent: theme.tertiary90,
+        ),
       FunTagVariant.highlight => (
           text: theme.highlight40,
           accent: theme.highlight95,
@@ -139,7 +147,7 @@ class FunTag extends StatelessWidget {
         ? _themeColors(theme, variant!)
         : (text: textColor!, accent: accentColor!);
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 3),
+      margin: margin,
       decoration: BoxDecoration(
         color: resolved.accent,
         borderRadius: borderRadius ?? _getBorderRadius(),
@@ -152,9 +160,11 @@ class FunTag extends StatelessWidget {
           right: flatSide == FlatSide.right ? 16 : 12,
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (iconData != null)
                   Icon(

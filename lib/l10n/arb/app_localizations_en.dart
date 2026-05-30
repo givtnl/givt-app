@@ -1137,6 +1137,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuItemRecurringDonation => 'Recurring donations';
 
   @override
+  String get menuItemExternalDonations => 'External donations';
+
+  @override
   String get setupRecurringGiftHalfYear => 'half year';
 
   @override
@@ -2481,6 +2484,147 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recurringDonationsOverviewAddButton => 'Add recurring donation';
+
+  @override
+  String get externalDonationsOverviewTabCurrent => 'Current';
+
+  @override
+  String get externalDonationsOverviewTabPast => 'Past';
+
+  @override
+  String get externalDonationsOverviewAddButton => 'Add external donation';
+
+  @override
+  String get externalDonationsEmptyStateTitle => 'Track giving outside Givt';
+
+  @override
+  String get externalDonationsEmptyStateDescription =>
+      'Add donations you make directly to organisations so your donations history stays complete.';
+
+  @override
+  String get externalDonationsListStatusStopped => 'Stopped';
+
+  @override
+  String get externalDonationsDetailSummaryGiving => 'Giving';
+
+  @override
+  String get externalDonationsDetailOneOffDate => 'Date';
+
+  @override
+  String get externalDonationsDetailStopButton => 'I\'ve stopped giving';
+
+  @override
+  String get externalDonationsStopModalTitle => 'Stop recording this donation?';
+
+  @override
+  String get externalDonationsStopModalMessage =>
+      'We will not add any more upcoming donations for this organisation. Donations you already recorded stay in your history.';
+
+  @override
+  String get externalDonationsStopModalConfirm => 'Yes, stop recording';
+
+  @override
+  String get externalDonationsStopModalCancel => 'No, continue as normal';
+
+  @override
+  String get externalDonationsCreateTitle => 'Add external donation';
+
+  @override
+  String get externalDonationsCreateOrganisationDescription =>
+      'Which organisation did you give to?';
+
+  @override
+  String get externalDonationsCreateOrganisationLabel => 'Organisation';
+
+  @override
+  String get externalDonationsCreateOrganisationHint =>
+      'Search for an organisation';
+
+  @override
+  String get externalDonationsCreateSearchTitle => 'Search organisations';
+
+  @override
+  String get externalDonationsCreateSearchHint => 'Search by name';
+
+  @override
+  String externalDonationsCreateAddCustomOrganisation(String name) {
+    return 'Add \"$name\"';
+  }
+
+  @override
+  String get externalDonationsCreateAmountLabel => 'Amount';
+
+  @override
+  String get externalDonationsCreateDonationTypeDescription =>
+      'What kind of donation is this?';
+
+  @override
+  String get externalDonationsCreateTaxReliefLabel =>
+      'Tax relief applies to this charity';
+
+  @override
+  String externalDonationsCreateLastGiftDescriptionWithOrg(
+    String frequency,
+    String organisation,
+  ) {
+    return 'When did your last $frequency donation to $organisation go out?';
+  }
+
+  @override
+  String externalDonationsCreateStartDateDescriptionWithOrg(
+    String organisation,
+  ) {
+    return 'When did this recurring donation to $organisation start?';
+  }
+
+  @override
+  String externalDonationsCreateSuccessHeadline(String organisation) {
+    return '$organisation is now part of your donations history';
+  }
+
+  @override
+  String get externalDonationsCreateFrequencyOneOff => 'One-off';
+
+  @override
+  String get externalDonationsCreateFrequencyRecurring => 'Recurring';
+
+  @override
+  String get externalDonationsCreateFrequencyLabel => 'Frequency';
+
+  @override
+  String get externalDonationsCreateOneOffDateDescription =>
+      'When did you make this donation?';
+
+  @override
+  String get externalDonationsCreateLastGiftLabel => 'Date of last donation';
+
+  @override
+  String get externalDonationsCreateStartDateLabel => 'Start date';
+
+  @override
+  String get externalDonationsCreateSelectDateHint => 'Select date';
+
+  @override
+  String get externalDonationsCreateSelectMonthYearHint =>
+      'Select month and year';
+
+  @override
+  String get externalDonationsCreateConfirmButton => 'Save external donation';
+
+  @override
+  String get externalDonationsCreatePreviewTitle =>
+      'Building your overview entry:';
+
+  @override
+  String get externalDonationsCreatePreviewTypeTag => 'Ext. donation';
+
+  @override
+  String externalDonationsCreatePreviewMoreRecords(
+    int count,
+    String startMonthYear,
+  ) {
+    return '+ $count more records back to $startMonthYear';
+  }
 
   @override
   String get recurringDonationsDetailProgressSuffix => 'donations';
@@ -4090,6 +4234,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get menuItemRecurringDonation => 'Recurring donations';
 
   @override
+  String get menuItemExternalDonations => 'External donations';
+
+  @override
   String get setupRecurringGiftHalfYear => 'half year';
 
   @override
@@ -5388,6 +5535,147 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get recurringDonationsOverviewAddButton => 'Add recurring donation';
+
+  @override
+  String get externalDonationsOverviewTabCurrent => 'Current';
+
+  @override
+  String get externalDonationsOverviewTabPast => 'Past';
+
+  @override
+  String get externalDonationsOverviewAddButton => 'Add external donation';
+
+  @override
+  String get externalDonationsEmptyStateTitle => 'Track giving outside Givt';
+
+  @override
+  String get externalDonationsEmptyStateDescription =>
+      'Add donations you make directly to organizations so your donations history stays complete.';
+
+  @override
+  String get externalDonationsListStatusStopped => 'Stopped';
+
+  @override
+  String get externalDonationsDetailSummaryGiving => 'Giving';
+
+  @override
+  String get externalDonationsDetailOneOffDate => 'Date';
+
+  @override
+  String get externalDonationsDetailStopButton => 'I\'ve stopped giving';
+
+  @override
+  String get externalDonationsStopModalTitle => 'Stop recording this donation?';
+
+  @override
+  String get externalDonationsStopModalMessage =>
+      'We will not add any more upcoming donations for this organization. Donations you already recorded stay in your history.';
+
+  @override
+  String get externalDonationsStopModalConfirm => 'Yes, stop recording';
+
+  @override
+  String get externalDonationsStopModalCancel => 'No, continue as normal';
+
+  @override
+  String get externalDonationsCreateTitle => 'Add external donation';
+
+  @override
+  String get externalDonationsCreateOrganisationDescription =>
+      'Which organisation did you give to?';
+
+  @override
+  String get externalDonationsCreateOrganisationLabel => 'Organisation';
+
+  @override
+  String get externalDonationsCreateOrganisationHint =>
+      'Search for an organisation';
+
+  @override
+  String get externalDonationsCreateSearchTitle => 'Search organisations';
+
+  @override
+  String get externalDonationsCreateSearchHint => 'Search by name';
+
+  @override
+  String externalDonationsCreateAddCustomOrganisation(String name) {
+    return 'Add \"$name\"';
+  }
+
+  @override
+  String get externalDonationsCreateAmountLabel => 'Amount';
+
+  @override
+  String get externalDonationsCreateDonationTypeDescription =>
+      'What kind of donation is this?';
+
+  @override
+  String get externalDonationsCreateTaxReliefLabel =>
+      'Tax relief applies to this charity';
+
+  @override
+  String externalDonationsCreateLastGiftDescriptionWithOrg(
+    String frequency,
+    String organisation,
+  ) {
+    return 'When did your last $frequency donation to $organisation go out?';
+  }
+
+  @override
+  String externalDonationsCreateStartDateDescriptionWithOrg(
+    String organisation,
+  ) {
+    return 'When did this recurring donation to $organisation start?';
+  }
+
+  @override
+  String externalDonationsCreateSuccessHeadline(String organisation) {
+    return '$organisation is now part of your donations history';
+  }
+
+  @override
+  String get externalDonationsCreateFrequencyOneOff => 'One-off';
+
+  @override
+  String get externalDonationsCreateFrequencyRecurring => 'Recurring';
+
+  @override
+  String get externalDonationsCreateFrequencyLabel => 'Frequency';
+
+  @override
+  String get externalDonationsCreateOneOffDateDescription =>
+      'When did you make this donation?';
+
+  @override
+  String get externalDonationsCreateLastGiftLabel => 'Date of last donation';
+
+  @override
+  String get externalDonationsCreateStartDateLabel => 'Start date';
+
+  @override
+  String get externalDonationsCreateSelectDateHint => 'Select date';
+
+  @override
+  String get externalDonationsCreateSelectMonthYearHint =>
+      'Select month and year';
+
+  @override
+  String get externalDonationsCreateConfirmButton => 'Save external donation';
+
+  @override
+  String get externalDonationsCreatePreviewTitle =>
+      'Building your overview entry:';
+
+  @override
+  String get externalDonationsCreatePreviewTypeTag => 'Ext. donation';
+
+  @override
+  String externalDonationsCreatePreviewMoreRecords(
+    int count,
+    String startMonthYear,
+  ) {
+    return '+ $count more records back to $startMonthYear';
+  }
 
   @override
   String get recurringDonationsDetailProgressSuffix => 'donations';

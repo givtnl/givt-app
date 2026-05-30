@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 class APIService {
@@ -658,10 +659,13 @@ class APIService {
     return decodedBody['items'] as List<dynamic>;
   }
 
-  Future<bool> deleteExternalDonation(String id) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/$id');
+  Future<bool> stopExternalDonation(String id) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/ExternalDonations/$id/stop',
+    );
 
-    final response = await client.delete(
+    final response = await client.post(
       url,
       headers: {
         'Content-Type': 'application/json',
@@ -677,10 +681,17 @@ class APIService {
       );
     }
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    return decodedBody['item'] as bool;
+    final isError = decodedBody['isError'] as bool? ?? false;
+    if (isError) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+    return decodedBody['item'] as bool? ?? false;
   }
 
-  Future<bool> addExternalDonation(Map<String, dynamic> body) async {
+  Future<ExternalDonation?> addExternalDonation(Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations');
 
     final response = await client.post(
@@ -699,7 +710,44 @@ class APIService {
             : null,
       );
     }
-    return response.statusCode == 200 || response.statusCode == 201;
+    if (response.body.isEmpty) {
+      return null;
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final item = decodedBody['item'];
+    if (item is Map<String, dynamic>) {
+      return ExternalDonation.fromJson(item);
+    }
+    return null;
+  }
+
+  Future<ExternalDonation?> fetchExternalDonationDetail(String id) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/externaldonations/detail/$id',
+    );
+
+    final response = await client.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final item = decodedBody['item'];
+    if (item is Map<String, dynamic>) {
+      return ExternalDonation.fromJson(item);
+    }
+    return null;
   }
 
   Future<bool> updateExternalDonation(
