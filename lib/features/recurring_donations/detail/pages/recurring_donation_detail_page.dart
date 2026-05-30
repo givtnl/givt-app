@@ -340,18 +340,6 @@ class _RecurringDonationDetailPageState
               ],
             ),
           ),
-          // Status tag
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: _getStatusColor(context, item.status),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: LabelSmallText(
-              _getStatusText(item.status, context),
-              color: _getStatusTextColor(context, item.status),
-            ),
-          ),
         ],
       ),
     );
@@ -397,17 +385,6 @@ class _RecurringDonationDetailPageState
         return Icons.check;
       case DonationStatus.inprocess:
         return Icons.schedule;
-    }
-  }
-
-  String _getStatusText(DonationStatus status, BuildContext context) {
-    switch (status) {
-      case DonationStatus.upcoming:
-        return context.l10n.recurringDonationsDetailStatusUpcoming;
-      case DonationStatus.processed:
-        return context.l10n.recurringDonationsDetailStatusCompleted;
-      case DonationStatus.inprocess:
-        return context.l10n.recurringDonationsDetailStatusPending;
     }
   }
 

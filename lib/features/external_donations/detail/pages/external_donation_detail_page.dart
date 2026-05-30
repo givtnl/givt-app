@@ -87,7 +87,7 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildOrganizationHeader(uiModel.donation.description),
+                      _buildOrganizationHeader(context, uiModel.donation.description),
                       const SizedBox(height: 24),
                       if (uiModel.isRecurring) ...[
                         _buildSummaryCards(uiModel, currency, context),
@@ -135,7 +135,10 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
     );
   }
 
-  Widget _buildOrganizationHeader(String organizationName) {
+  Widget _buildOrganizationHeader(
+    BuildContext context,
+    String organizationName,
+  ) {
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -149,6 +152,14 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
           TitleMediumText(
             organizationName,
             textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          FunTag(
+            text: context.l10n.externalDonationsCreatePreviewTypeTag,
+            variant: FunTagVariant.accent,
+            iconData: FontAwesomeIcons.arrowsRotate,
+            iconSize: 12,
+            margin: EdgeInsets.zero,
           ),
         ],
       ),
@@ -282,15 +293,15 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
             height: 32,
             decoration: BoxDecoration(
               color: item.isUpcoming
-                  ? FamilyAppTheme.highlight90
-                  : FamilyAppTheme.primary90,
+                  ? FamilyAppTheme.secondary95
+                  : FamilyAppTheme.primary95,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(
-              item.isUpcoming ? Icons.schedule : Icons.check,
+              item.isUpcoming ? Icons.more_horiz : Icons.check,
               size: 16,
               color: item.isUpcoming
-                  ? FamilyAppTheme.highlight30
+                  ? FamilyAppTheme.secondary40
                   : FamilyAppTheme.primary30,
             ),
           ),
@@ -310,15 +321,6 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
                 ),
               ],
             ),
-          ),
-          LabelSmallText(
-            item.isUpcoming
-                ? context.l10n.recurringDonationsDetailStatusUpcoming
-                : context.l10n.recurringDonationsDetailStatusCompleted,
-            color: item.isUpcoming
-                ? FamilyAppTheme.highlight30
-                : FamilyAppTheme.primary30,
-            fontWeight: FontWeight.w600,
           ),
         ],
       ),
