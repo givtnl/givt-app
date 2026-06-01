@@ -10,9 +10,8 @@ import 'package:givt_app/shared/repositories/givt_repository.dart';
 /// **API contract (COR-1029 + ENG-651):**
 /// - `amount`, `description`, `frequency` (`Once`, `Weekly`, `Monthly`, …)
 /// - `taxDeductable` — user-selected tax relief flag (custom and known orgs)
-/// - `creationDate` — one-off gift date, or recurring last-gift anchor day
-/// - `startDate` — recurring series start (first day of selected month/year);
-///   backend generates historical + upcoming transaction records
+/// - `startDate` — one-off gift date (`dateMade`), or recurring series start
+///   (first day of selected month/year); backend generates transaction records
 ///
 /// Does not send `active` (defaults on server) or `collectGroupId`.
 class ExternalDonationCreatePayloadBuilder {
@@ -31,23 +30,25 @@ class ExternalDonationCreatePayloadBuilder {
       'taxDeductable': draft.taxDeductible,
     };
 
-    if (draft.isOneOff == true && draft.dateMade != null) {
-      body['creationDate'] = draft.dateMade!.toUtc().toIso8601String();
-    }
-
-    if (draft.isOneOff == false) {
-      if (draft.lastGiftDate != null) {
-        body['creationDate'] = draft.lastGiftDate!.toUtc().toIso8601String();
-      }
-      if (draft.startMonthYear != null) {
-        body['startDate'] = DateTime(
-          draft.startMonthYear!.year,
-          draft.startMonthYear!.month,
-        ).toUtc().toIso8601String();
-      }
+    final startDate = _startDate(draft);
+    if (startDate != null) {
+      body['startDate'] = startDate.toUtc().toIso8601String();
     }
 
     return body;
+  }
+
+  static DateTime? _startDate(ExternalDonationCreateDraft draft) {
+    if (draft.isOneOff ?? false) {
+      return draft.dateMade;
+    }
+    if (draft.isOneOff == false && draft.startMonthYear != null) {
+      return DateTime(
+        draft.startMonthYear!.year,
+        draft.startMonthYear!.month,
+      );
+    }
+    return null;
   }
 }
 

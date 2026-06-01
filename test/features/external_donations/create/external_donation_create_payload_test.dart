@@ -6,7 +6,7 @@ import 'package:givt_app/features/personal_summary/add_external_donation/models/
 
 void main() {
   group('ExternalDonationCreatePayloadBuilder', () {
-    test('builds one-off payload with creationDate', () {
+    test('builds one-off payload without creationDate', () {
       final body = ExternalDonationCreatePayloadBuilder.build(
         const ExternalDonationCreateDraft(
           organisationName: 'Red Cross',
@@ -24,8 +24,8 @@ void main() {
       expect(body['description'], 'Red Cross');
       expect(body['frequency'], 'Once');
       expect(body['taxDeductable'], isTrue);
-      expect(body['creationDate'], isNotNull);
-      expect(body.containsKey('startDate'), isFalse);
+      expect(body.containsKey('creationDate'), isFalse);
+      expect(body['startDate'], isNotNull);
       expect(body.containsKey('active'), isFalse);
       expect(body.containsKey('collectGroupId'), isFalse);
     });
@@ -46,7 +46,7 @@ void main() {
 
       expect(body['frequency'], 'Monthly');
       expect(body['startDate'], isNotNull);
-      expect(body['creationDate'], isNotNull);
+      expect(body.containsKey('creationDate'), isFalse);
       expect(body['taxDeductable'], isFalse);
       expect(body.containsKey('active'), isFalse);
       expect(body.containsKey('collectGroupId'), isFalse);
