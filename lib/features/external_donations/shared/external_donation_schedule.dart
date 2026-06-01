@@ -1,5 +1,18 @@
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
 
+/// First calendar date of a recurring series: selected start month/year with
+/// [lastGiftDate]'s day-of-month as anchor (clamped to month length).
+DateTime recurringSeriesStartDate({
+  required DateTime startMonthYear,
+  required DateTime lastGiftDate,
+}) {
+  return _dateWithAnchorDay(
+    startMonthYear.year,
+    startMonthYear.month,
+    lastGiftDate.day,
+  );
+}
+
 /// Computes the next occurrence date for a recurring external donation.
 DateTime? computeNextOccurrenceDate({
   required DateTime startDate,

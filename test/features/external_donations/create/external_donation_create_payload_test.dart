@@ -45,7 +45,10 @@ void main() {
       );
 
       expect(body['frequency'], 'Monthly');
-      expect(body['startDate'], isNotNull);
+      expect(
+        body['startDate'],
+        DateTime(2024, 1, 12).toUtc().toIso8601String(),
+      );
       expect(body.containsKey('creationDate'), isFalse);
       expect(body['taxDeductable'], isFalse);
       expect(body.containsKey('active'), isFalse);

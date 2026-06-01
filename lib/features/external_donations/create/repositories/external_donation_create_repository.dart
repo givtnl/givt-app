@@ -1,4 +1,5 @@
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_draft.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
@@ -11,7 +12,7 @@ import 'package:givt_app/shared/repositories/givt_repository.dart';
 /// - `amount`, `description`, `frequency` (`Once`, `Weekly`, `Monthly`, …)
 /// - `taxDeductable` — user-selected tax relief flag (custom and known orgs)
 /// - `startDate` — one-off gift date (`dateMade`), or recurring series start
-///   (first day of selected month/year); backend generates transaction records
+///   (start month/year with last-gift day-of-month); backend generates records
 ///
 /// Does not send `active` (defaults on server) or `collectGroupId`.
 class ExternalDonationCreatePayloadBuilder {
@@ -39,13 +40,15 @@ class ExternalDonationCreatePayloadBuilder {
   }
 
   static DateTime? _startDate(ExternalDonationCreateDraft draft) {
-    if (draft.isOneOff ?? false) {
+    if (draft.isOneOff == true) {
       return draft.dateMade;
     }
-    if (draft.isOneOff == false && draft.startMonthYear != null) {
-      return DateTime(
-        draft.startMonthYear!.year,
-        draft.startMonthYear!.month,
+    if (draft.isOneOff == false &&
+        draft.startMonthYear != null &&
+        draft.lastGiftDate != null) {
+      return recurringSeriesStartDate(
+        startMonthYear: draft.startMonthYear!,
+        lastGiftDate: draft.lastGiftDate!,
       );
     }
     return null;
