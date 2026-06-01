@@ -2157,7 +2157,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Your XP sets your rank. Grow in generosity and climb to the top!';
 
   @override
-  String get buttonDone => 'Done';
+  String get buttonDone => 'Klaar';
 
   @override
   String get originQuestionTitle => 'Laatste stap';

@@ -2169,7 +2169,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Your XP sets your rank. Grow in generosity and climb to the top!';
 
   @override
-  String get buttonDone => 'Done';
+  String get buttonDone => 'Fertig';
 
   @override
   String get originQuestionTitle => 'Last step';

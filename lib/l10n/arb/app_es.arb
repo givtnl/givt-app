@@ -332,7 +332,7 @@
     "description": "Postcode placeholder",
     "type": "text"
   },
-  "ready": "Done",
+  "ready": "Hecho",
   "@ready": {
     "description": "\"Klaar'-knop bij het succesvol geven",
     "type": "text"
@@ -1147,7 +1147,7 @@
   "leagueUnlocked": "League Unlocked!",
   "leagueWelcome": "Welcome to the League!",
   "leagueExplanation": "Your XP sets your rank. Grow in generosity and climb to the top!",
-  "buttonDone": "Done",
+  "buttonDone": "Listo",
   "originQuestionTitle": "Last step",
   "originQuestionSubtitle": "Where did you get your box?",
   "originSelectLocation": "Select location",

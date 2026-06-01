@@ -637,7 +637,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get postalCode => 'Postal Code';
 
   @override
-  String get ready => 'Done';
+  String get ready => 'Hecho';
 
   @override
   String get registerPersonalPage =>
@@ -2152,7 +2152,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Your XP sets your rank. Grow in generosity and climb to the top!';
 
   @override
-  String get buttonDone => 'Done';
+  String get buttonDone => 'Listo';
 
   @override
   String get originQuestionTitle => 'Last step';
