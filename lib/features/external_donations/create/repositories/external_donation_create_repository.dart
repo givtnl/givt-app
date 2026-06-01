@@ -9,7 +9,7 @@ import 'package:givt_app/shared/repositories/givt_repository.dart';
 ///
 /// **API contract (COR-1029 + ENG-651):**
 /// - `amount`, `description`, `frequency` (`Once`, `Weekly`, `Monthly`, …)
-/// - `taxDeductable` — sent for custom organisations; omitted for known orgs
+/// - `taxDeductable` — user-selected tax relief flag (custom and known orgs)
 /// - `collectGroupId` — optional known-org namespace
 /// - `creationDate` — one-off gift date, or recurring last-gift anchor day
 /// - `startDate` — recurring series start (first day of selected month/year);
@@ -35,9 +35,7 @@ class ExternalDonationCreatePayloadBuilder {
       body['collectGroupId'] = namespace;
     }
 
-    if (draft.isCustomOrganisation) {
-      body['taxDeductable'] = draft.taxDeductible;
-    }
+    body['taxDeductable'] = draft.taxDeductible;
 
     if (draft.isOneOff == true && draft.dateMade != null) {
       body['creationDate'] = draft.dateMade!.toUtc().toIso8601String();
@@ -123,6 +121,7 @@ class ExternalDonationCreateRepositoryImpl
       organisationName: name.trim(),
       clearSelectedOrganisation: true,
       isCustomOrganisation: true,
+      taxDeductible: false,
     );
   }
 

@@ -89,7 +89,7 @@ class _Step1OrganisationPageState extends State<Step1OrganisationPage> {
                     .externalDonationsCreateOrganisationSearchClicked
                     .toEvent(),
               ),
-              if (draft.isCustomOrganisation) ...[
+              if (draft.hasOrganisation) ...[
                 const SizedBox(height: 24),
                 ListTile(
                   contentPadding: EdgeInsets.zero,

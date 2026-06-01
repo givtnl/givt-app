@@ -3,12 +3,8 @@ import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 /// Loads external donations for the overview screen.
 ///
-/// **API contract (ENG-652 spike):**
-/// - Overview uses `GET /givtservice/v1/externaldonations` ([GivtRepository.fetchExternalDonations]).
-/// - Occurrence history uses `POST .../externaldonations/transactions/search` with
-///   `{ startDate, endDate }` only — no documented parent-id filter yet (see detail repo).
-/// - Stop recording has no dedicated client endpoint; treat as unavailable until backend
-///   confirms whether `PUT` with `active: false` is the contract.
+/// Uses [GivtRepository.fetchExternalDonations]
+/// (`GET /givtservice/v1/externaldonations`).
 mixin ExternalDonationsOverviewRepository {
   bool isLoading();
 

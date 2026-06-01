@@ -45,7 +45,7 @@ void main() {
       expect(body['frequency'], 'Monthly');
       expect(body['startDate'], isNotNull);
       expect(body['creationDate'], isNotNull);
-      expect(body.containsKey('taxDeductable'), isFalse);
+      expect(body['taxDeductable'], isFalse);
     });
   });
 

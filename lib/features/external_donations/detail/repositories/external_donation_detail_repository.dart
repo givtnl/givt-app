@@ -5,6 +5,12 @@ import 'package:givt_app/features/personal_summary/add_external_donation/models/
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 /// Repository for a single external donation detail view.
+///
+/// History uses [GivtRepository.fetchExternalDonationSummary]
+/// (`POST .../externaldonations/transactions/search`); occurrences are matched to
+/// the parent donation client-side (see [_matchesParent]).
+///
+/// Stop uses [stopDonation] → `POST /givtservice/v1/ExternalDonations/{id}/stop`.
 mixin ExternalDonationDetailRepository {
   bool isLoading();
 
