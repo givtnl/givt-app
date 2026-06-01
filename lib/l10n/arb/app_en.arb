@@ -1030,10 +1030,6 @@
   "@donationSubmissionTimeoutMessage": {
     "description": "Message shown when a donation submission times out"
   },
-  "donationSubmissionTimeoutCheckHistoryButton": "Check donation history",
-  "@donationSubmissionTimeoutCheckHistoryButton": {
-    "description": "Primary action to open donation history after a submission timeout"
-  },
   "registrationErrorTitle": "Registration cannot be completed",
   "cantCancelAlreadyProcessed": "Alas, you can't cancel this donation because it is already processed.",
   "countryStringUs": "United States of America",

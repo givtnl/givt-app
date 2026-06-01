@@ -1024,7 +1024,6 @@
   "errorOccurred": "Ocurrió un error",
   "donationSubmissionTimeoutTitle": "Estado desconocido",
   "donationSubmissionTimeoutMessage": "Algo salió mal al procesar tu donación. Revisa tu historial de donaciones antes de intentarlo de nuevo para evitar donaciones duplicadas.",
-  "donationSubmissionTimeoutCheckHistoryButton": "Ver historial de donaciones",
   "registrationErrorTitle": "No se puede completar el registro",
   "cantCancelAlreadyProcessed": "Alas, you can't cancel this donation because it is already processed.",
   "countryStringUs": "Estados Unidos",

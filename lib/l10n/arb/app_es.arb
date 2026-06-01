@@ -1024,7 +1024,6 @@
   "errorOccurred": "An error occurred",
   "donationSubmissionTimeoutTitle": "Status unknown",
   "donationSubmissionTimeoutMessage": "Something went wrong while processing your donation. Please check your donation history before trying again to avoid double donations.",
-  "donationSubmissionTimeoutCheckHistoryButton": "Check donation history",
   "registrationErrorTitle": "Registration cannot be completed",
   "cantCancelAlreadyProcessed": "Alas, you can't cancel this donation because it is already processed.",
   "countryStringUs": "United States of America",

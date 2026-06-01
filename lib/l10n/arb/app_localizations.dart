@@ -3155,12 +3155,6 @@ abstract class AppLocalizations {
   /// **'Something went wrong while processing your donation. Please check your donation history before trying again to avoid double donations.'**
   String get donationSubmissionTimeoutMessage;
 
-  /// Primary action to open donation history after a submission timeout
-  ///
-  /// In en, this message translates to:
-  /// **'Check donation history'**
-  String get donationSubmissionTimeoutCheckHistoryButton;
-
   /// No description provided for @registrationErrorTitle.
   ///
   /// In en, this message translates to:

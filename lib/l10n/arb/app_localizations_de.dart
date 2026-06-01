@@ -1748,10 +1748,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Beim Verarbeiten deiner Spende ist etwas schiefgelaufen. Bitte prüfe deine Spendenhistorie, bevor du es erneut versuchst, um doppelte Spenden zu vermeiden.';
 
   @override
-  String get donationSubmissionTimeoutCheckHistoryButton =>
-      'Spendenhistorie prüfen';
-
-  @override
   String get registrationErrorTitle =>
       'Die Registrierung kann nicht abgeschlossen werden';
 

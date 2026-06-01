@@ -1024,7 +1024,6 @@
   "errorOccurred": "Ein Fehler ist aufgetreten",
   "donationSubmissionTimeoutTitle": "Status unbekannt",
   "donationSubmissionTimeoutMessage": "Beim Verarbeiten deiner Spende ist etwas schiefgelaufen. Bitte prüfe deine Spendenhistorie, bevor du es erneut versuchst, um doppelte Spenden zu vermeiden.",
-  "donationSubmissionTimeoutCheckHistoryButton": "Spendenhistorie prüfen",
   "registrationErrorTitle": "Die Registrierung kann nicht abgeschlossen werden",
   "cantCancelAlreadyProcessed": "Leider können Sie diese Spende nicht stornieren, da sie bereits bearbeitet wurde.",
   "countryStringUs": "United States of America",

@@ -1024,7 +1024,6 @@
   "errorOccurred": "Er is een fout opgetreden",
   "donationSubmissionTimeoutTitle": "Status onbekend",
   "donationSubmissionTimeoutMessage": "Er ging iets mis bij het verwerken van je gift. Controleer je giftenoverzicht voordat je het opnieuw probeert, om dubbele giften te voorkomen.",
-  "donationSubmissionTimeoutCheckHistoryButton": "Bekijk giftenoverzicht",
   "registrationErrorTitle": "Registratie kan niet worden voltooid",
   "cantCancelAlreadyProcessed": "Helaas kan je deze gift niet meer annuleren omdat deze al verwerkt is.",
   "countryStringUs": "Amerika",

@@ -1738,10 +1738,6 @@ class AppLocalizationsNl extends AppLocalizations {
       'Er ging iets mis bij het verwerken van je gift. Controleer je giftenoverzicht voordat je het opnieuw probeert, om dubbele giften te voorkomen.';
 
   @override
-  String get donationSubmissionTimeoutCheckHistoryButton =>
-      'Bekijk giftenoverzicht';
-
-  @override
   String get registrationErrorTitle => 'Registratie kan niet worden voltooid';
 
   @override

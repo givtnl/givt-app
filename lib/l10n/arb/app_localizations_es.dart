@@ -1732,10 +1732,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Something went wrong while processing your donation. Please check your donation history before trying again to avoid double donations.';
 
   @override
-  String get donationSubmissionTimeoutCheckHistoryButton =>
-      'Check donation history';
-
-  @override
   String get registrationErrorTitle => 'Registration cannot be completed';
 
   @override
@@ -4854,10 +4850,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get donationSubmissionTimeoutMessage =>
       'Algo salió mal al procesar tu donación. Revisa tu historial de donaciones antes de intentarlo de nuevo para evitar donaciones duplicadas.';
-
-  @override
-  String get donationSubmissionTimeoutCheckHistoryButton =>
-      'Ver historial de donaciones';
 
   @override
   String get registrationErrorTitle => 'No se puede completar el registro';
