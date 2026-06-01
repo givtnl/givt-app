@@ -631,6 +631,40 @@ class APIService {
     return decodedBody['items'] as List<dynamic>;
   }
 
+  Future<List<dynamic>> fetchExternalDonationTransactions(
+    String externalDonationId,
+  ) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/externaldonations/$externalDonationId/transactions',
+    );
+
+    final response = await client.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final isError = decodedBody['isError'] as bool? ?? false;
+    if (isError) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+    return decodedBody['items'] as List<dynamic>? ?? [];
+  }
+
   Future<List<dynamic>> fetchExternalDonationsSearch({
     required Map<String, dynamic> params,
   }) async {

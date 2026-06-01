@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/features/external_donations/detail/cubit/external_donation_detail_cubit.dart';
 import 'package:givt_app/features/external_donations/detail/models/external_donation_history_item.dart';
 import 'package:givt_app/features/external_donations/detail/repositories/external_donation_detail_repository.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 
@@ -24,7 +25,11 @@ class _FakeExternalDonationDetailRepository
   double getTotalDonated() => _donation?.amount ?? 0;
 
   @override
-  int getGivingDays() => 1;
+  GivingDuration? getGivingDuration() =>
+      const GivingDuration(1, GivingDurationUnit.days);
+
+  @override
+  DateTime? getOneOffTransactionDate() => null;
 
   @override
   List<ExternalDonationHistoryItem> getHistory() => const [];

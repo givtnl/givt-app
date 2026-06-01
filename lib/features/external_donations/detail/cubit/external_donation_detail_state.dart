@@ -4,7 +4,8 @@ class ExternalDonationDetailUIModel {
   const ExternalDonationDetailUIModel({
     required this.donation,
     required this.totalDonated,
-    required this.givingDays,
+    required this.givingDuration,
+    required this.oneOffTransactionDate,
     required this.history,
     required this.isRecurring,
     required this.isActive,
@@ -12,7 +13,8 @@ class ExternalDonationDetailUIModel {
 
   final ExternalDonation donation;
   final double totalDonated;
-  final int givingDays;
+  final GivingDuration? givingDuration;
+  final DateTime? oneOffTransactionDate;
   final List<ExternalDonationHistoryItem> history;
   final bool isRecurring;
   final bool isActive;
@@ -23,7 +25,8 @@ class ExternalDonationDetailUIModel {
     return other is ExternalDonationDetailUIModel &&
         other.donation == donation &&
         other.totalDonated == totalDonated &&
-        other.givingDays == givingDays &&
+        other.givingDuration == givingDuration &&
+        other.oneOffTransactionDate == oneOffTransactionDate &&
         other.history == history &&
         other.isRecurring == isRecurring &&
         other.isActive == isActive;
@@ -33,7 +36,8 @@ class ExternalDonationDetailUIModel {
   int get hashCode => Object.hash(
         donation,
         totalDonated,
-        givingDays,
+        givingDuration,
+        oneOffTransactionDate,
         history,
         isRecurring,
         isActive,

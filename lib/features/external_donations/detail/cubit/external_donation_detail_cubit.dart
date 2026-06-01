@@ -1,6 +1,7 @@
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/external_donations/detail/models/external_donation_history_item.dart';
 import 'package:givt_app/features/external_donations/detail/repositories/external_donation_detail_repository.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
@@ -74,7 +75,8 @@ class ExternalDonationDetailCubit
     return ExternalDonationDetailUIModel(
       donation: donation,
       totalDonated: _repository.getTotalDonated(),
-      givingDays: _repository.getGivingDays(),
+      givingDuration: _repository.getGivingDuration(),
+      oneOffTransactionDate: _repository.getOneOffTransactionDate(),
       history: _repository.getHistory(),
       isRecurring: _repository.isRecurring,
       isActive: _repository.isActive,

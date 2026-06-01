@@ -4780,6 +4780,36 @@ abstract class AppLocalizations {
   /// **'{days} days'**
   String recurringDonationsDetailTimeDisplayDays(Object days);
 
+  /// No description provided for @recurringDonationsDetailTimeDisplayDay.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} day'**
+  String recurringDonationsDetailTimeDisplayDay(Object days);
+
+  /// No description provided for @recurringDonationsDetailTimeDisplayMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} months'**
+  String recurringDonationsDetailTimeDisplayMonths(Object months);
+
+  /// No description provided for @recurringDonationsDetailTimeDisplayMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} month'**
+  String recurringDonationsDetailTimeDisplayMonth(Object months);
+
+  /// No description provided for @recurringDonationsDetailTimeDisplayYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{years} years'**
+  String recurringDonationsDetailTimeDisplayYears(Object years);
+
+  /// No description provided for @recurringDonationsDetailTimeDisplayYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{years} year'**
+  String recurringDonationsDetailTimeDisplayYear(Object years);
+
   /// No description provided for @recurringDonationsDetailManageButton.
   ///
   /// In en, this message translates to:

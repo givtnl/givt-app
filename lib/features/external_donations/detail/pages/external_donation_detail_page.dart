@@ -7,6 +7,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/external_donations/detail/cubit/external_donation_detail_cubit.dart';
 import 'package:givt_app/features/external_donations/detail/models/external_donation_history_item.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
 import 'package:givt_app/features/external_donations/detail/widgets/stop_recording_modal.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -173,7 +174,7 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
   ) {
     final auth = context.read<AuthCubit>().state;
     final country = Country.fromCode(auth.user.country);
-    final date = DateTime.tryParse(uiModel.donation.creationDate);
+    final date = uiModel.oneOffTransactionDate;
 
     return Row(
       children: [
@@ -219,9 +220,7 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
         Expanded(
           child: _buildSummaryCard(
             icon: FontAwesomeIcons.solidCalendar,
-            value: context.l10n.recurringDonationsDetailTimeDisplayDays(
-              uiModel.givingDays.toString(),
-            ),
+            value: _formatGivingDuration(uiModel.givingDuration, context),
             label: uiModel.isActive
                 ? context.l10n.externalDonationsDetailSummaryGiving
                 : context.l10n.recurringDonationsDetailSummaryHelped,
@@ -339,5 +338,27 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
   String _formatDate(DateTime date, BuildContext context) {
     final locale = Util.getLanguageTageFromLocale(context);
     return DateFormat.yMMMd(locale).format(date);
+  }
+
+  String _formatGivingDuration(
+    GivingDuration? duration,
+    BuildContext context,
+  ) {
+    if (duration == null) {
+      return '';
+    }
+    final count = duration.value.toString();
+    final singular = duration.value == 1;
+    return switch (duration.unit) {
+      GivingDurationUnit.days => singular
+          ? context.l10n.recurringDonationsDetailTimeDisplayDay(count)
+          : context.l10n.recurringDonationsDetailTimeDisplayDays(count),
+      GivingDurationUnit.months => singular
+          ? context.l10n.recurringDonationsDetailTimeDisplayMonth(count)
+          : context.l10n.recurringDonationsDetailTimeDisplayMonths(count),
+      GivingDurationUnit.years => singular
+          ? context.l10n.recurringDonationsDetailTimeDisplayYear(count)
+          : context.l10n.recurringDonationsDetailTimeDisplayYears(count),
+    };
   }
 }

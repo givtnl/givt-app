@@ -2658,6 +2658,31 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String recurringDonationsDetailTimeDisplayDay(Object days) {
+    return '$days day';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayMonths(Object months) {
+    return '$months months';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayMonth(Object months) {
+    return '$months month';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayYears(Object years) {
+    return '$years years';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayYear(Object years) {
+    return '$years year';
+  }
+
+  @override
   String get recurringDonationsDetailManageButton => 'Manage donation';
 
   @override
@@ -5698,6 +5723,31 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String recurringDonationsDetailTimeDisplayDays(Object days) {
     return '$days days';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayDay(Object days) {
+    return '$days day';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayMonths(Object months) {
+    return '$months months';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayMonth(Object months) {
+    return '$months month';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayYears(Object years) {
+    return '$years years';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayYear(Object years) {
+    return '$years year';
   }
 
   @override

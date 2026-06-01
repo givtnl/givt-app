@@ -135,3 +135,49 @@ int givingDaysSince(DateTime startDate, DateTime endDate) {
   final days = endDate.difference(startDate).inDays;
   return days < 0 ? 0 : days;
 }
+
+enum GivingDurationUnit { days, months, years }
+
+/// A giving period length for display (e.g. "3 months", "2 years").
+class GivingDuration {
+  const GivingDuration(this.value, this.unit);
+
+  final int value;
+  final GivingDurationUnit unit;
+}
+
+/// Picks days, months, or years based on calendar distance between [startDate] and [endDate].
+GivingDuration givingDurationBetween(DateTime startDate, DateTime endDate) {
+  final start = DateTime(startDate.year, startDate.month, startDate.day);
+  final end = DateTime(endDate.year, endDate.month, endDate.day);
+
+  final years = _calendarYearsBetween(start, end);
+  if (years >= 1) {
+    return GivingDuration(years, GivingDurationUnit.years);
+  }
+
+  final months = _calendarMonthsBetween(start, end);
+  if (months >= 1) {
+    return GivingDuration(months, GivingDurationUnit.months);
+  }
+
+  final days = givingDaysSince(start, end);
+  return GivingDuration(days < 1 ? 1 : days, GivingDurationUnit.days);
+}
+
+int _calendarYearsBetween(DateTime start, DateTime end) {
+  var years = end.year - start.year;
+  if (end.month < start.month ||
+      (end.month == start.month && end.day < start.day)) {
+    years--;
+  }
+  return years < 0 ? 0 : years;
+}
+
+int _calendarMonthsBetween(DateTime start, DateTime end) {
+  var months = (end.year - start.year) * 12 + end.month - start.month;
+  if (end.day < start.day) {
+    months--;
+  }
+  return months < 0 ? 0 : months;
+}

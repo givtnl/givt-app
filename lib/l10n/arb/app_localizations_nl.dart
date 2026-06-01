@@ -2669,6 +2669,31 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String recurringDonationsDetailTimeDisplayDay(Object days) {
+    return '$days dag';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayMonths(Object months) {
+    return '$months maanden';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayMonth(Object months) {
+    return '$months maand';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayYears(Object years) {
+    return '$years jaar';
+  }
+
+  @override
+  String recurringDonationsDetailTimeDisplayYear(Object years) {
+    return '$years jaar';
+  }
+
+  @override
   String get recurringDonationsDetailManageButton => 'Donatie beheren';
 
   @override

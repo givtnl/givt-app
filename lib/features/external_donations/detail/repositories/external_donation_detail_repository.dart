@@ -1,14 +1,14 @@
 import 'package:givt_app/features/external_donations/detail/models/external_donation_history_item.dart';
 import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation_transaction.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 /// Repository for a single external donation detail view.
 ///
-/// History uses [GivtRepository.fetchExternalDonationSummary]
-/// (`POST .../externaldonations/transactions/search`); occurrences are matched to
-/// the parent donation client-side (see [_matchesParent]).
+/// Recurring history uses [GivtRepository.fetchExternalDonationTransactions]
+/// (`GET .../externaldonations/{id}/transactions`).
 ///
 /// Stop uses [stopDonation] → `POST /givtservice/v1/ExternalDonations/{id}/stop`.
 mixin ExternalDonationDetailRepository {
@@ -22,7 +22,9 @@ mixin ExternalDonationDetailRepository {
 
   double getTotalDonated();
 
-  int getGivingDays();
+  GivingDuration? getGivingDuration();
+
+  DateTime? getOneOffTransactionDate();
 
   List<ExternalDonationHistoryItem> getHistory();
 
@@ -41,7 +43,8 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
   ExternalDonation? _donation;
   List<ExternalDonationHistoryItem> _history = const [];
   double _totalDonated = 0;
-  int _givingDays = 0;
+  GivingDuration? _givingDuration;
+  DateTime? _oneOffTransactionDate;
   bool _isLoading = false;
   String? _error;
 
@@ -65,7 +68,10 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
   double getTotalDonated() => _totalDonated;
 
   @override
-  int getGivingDays() => _givingDays;
+  GivingDuration? getGivingDuration() => _givingDuration;
+
+  @override
+  DateTime? getOneOffTransactionDate() => _oneOffTransactionDate;
 
   @override
   List<ExternalDonationHistoryItem> getHistory() => _history;
@@ -75,34 +81,31 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
     _donation = donation;
     _history = const [];
     _totalDonated = 0;
-    _givingDays = 0;
+    _givingDuration = null;
+    _oneOffTransactionDate = null;
     _isLoading = true;
     _error = null;
 
     try {
-      final startDate = DateTime.tryParse(donation.creationDate) ?? DateTime.now();
       final now = DateTime.now();
-      _givingDays = givingDaysSince(startDate, now);
+      final fallbackDate =
+          DateTime.tryParse(donation.creationDate) ?? now;
+
+      final transactions = await _givtRepository.fetchExternalDonationTransactions(
+        donation.id,
+      );
 
       if (!isRecurring) {
         _totalDonated = donation.amount;
         _history = const [];
+        _oneOffTransactionDate =
+            _earliestTransactionDate(transactions) ?? fallbackDate;
         return;
       }
 
-      final searchEnd = now.add(const Duration(days: 365));
-      final occurrences = await _givtRepository.fetchExternalDonationSummary(
-        fromDate: startDate.toIso8601String(),
-        tillDate: searchEnd.toIso8601String(),
-      );
-
-      final matched = occurrences
-          .where((item) => _matchesParent(item, donation))
-          .toList();
-
       final recorded = <ExternalDonationHistoryItem>[];
-      for (final occurrence in matched) {
-        final date = DateTime.tryParse(occurrence.creationDate);
+      for (final transaction in transactions) {
+        final date = DateTime.tryParse(transaction.creationDate);
         if (date == null) {
           continue;
         }
@@ -111,7 +114,7 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
         }
         recorded.add(
           ExternalDonationHistoryItem(
-            amount: occurrence.amount,
+            amount: transaction.amount,
             date: date,
             isUpcoming: false,
           ),
@@ -124,7 +127,7 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
         recorded.add(
           ExternalDonationHistoryItem(
             amount: donation.amount,
-            date: startDate,
+            date: fallbackDate,
             isUpcoming: false,
           ),
         );
@@ -135,11 +138,16 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
         (sum, item) => sum + item.amount,
       );
 
+      final firstGivingDate = recorded.last.date;
+      final lastGivingDate = recorded.first.date;
+      final givingEndDate = isActive ? now : lastGivingDate;
+      _givingDuration = givingDurationBetween(firstGivingDate, givingEndDate);
+
       var history = recorded;
 
       if (isActive) {
         final nextDate = computeNextOccurrenceDate(
-          startDate: startDate,
+          startDate: fallbackDate,
           frequency: donation.frequency,
           after: now,
         );
@@ -163,16 +171,24 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
     }
   }
 
+  DateTime? _earliestTransactionDate(
+    List<ExternalDonationTransaction> transactions,
+  ) {
+    DateTime? earliest;
+    for (final transaction in transactions) {
+      final date = DateTime.tryParse(transaction.creationDate);
+      if (date == null) {
+        continue;
+      }
+      if (earliest == null || date.isBefore(earliest)) {
+        earliest = date;
+      }
+    }
+    return earliest;
+  }
+
   @override
   Future<bool> stopDonation(String externalDonationId) async {
     return _givtRepository.stopExternalDonation(externalDonationId);
-  }
-
-  bool _matchesParent(ExternalDonation occurrence, ExternalDonation parent) {
-    if (occurrence.id == parent.id) {
-      return true;
-    }
-    return occurrence.description == parent.description &&
-        occurrence.frequency == parent.frequency;
   }
 }
