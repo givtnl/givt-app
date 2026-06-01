@@ -8,6 +8,7 @@ import 'package:givt_app/features/external_donations/create/pages/success_page.d
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_close_modal.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_preview_helper.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_step_shell.dart';
+import 'package:givt_app/features/external_donations/create/widgets/external_donation_past_date_picker.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -61,7 +62,7 @@ class Step4OneOffDatePage extends StatelessWidget {
                 text: locals.externalDonationsCreateOneOffDateDescription,
               ),
               const SizedBox(height: 32),
-              _PastDatePicker(
+              ExternalDonationPastDatePicker(
                 label: locals.externalDonationsDetailOneOffDate,
                 selectedDate: uiModel.draft.dateMade,
                 onDateSelected: cubit.updateDateMade,
@@ -79,89 +80,6 @@ class Step4OneOffDatePage extends StatelessWidget {
                 : null,
           ),
         );
-      },
-    );
-  }
-}
-
-class _PastDatePicker extends StatefulWidget {
-  const _PastDatePicker({
-    required this.selectedDate,
-    required this.onDateSelected,
-    this.label,
-  });
-
-  final DateTime? selectedDate;
-  final ValueChanged<DateTime> onDateSelected;
-  final String? label;
-
-  @override
-  State<_PastDatePicker> createState() => _PastDatePickerState();
-}
-
-class _PastDatePickerState extends State<_PastDatePicker> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _syncControllerText();
-  }
-
-  @override
-  void didUpdateWidget(_PastDatePicker oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.selectedDate != widget.selectedDate) {
-      _syncControllerText();
-    }
-  }
-
-  void _syncControllerText() {
-    final newText = _formatDisplay();
-    if (_controller.text != newText) {
-      _controller.text = newText;
-    }
-  }
-
-  String _formatDisplay() {
-    if (widget.selectedDate == null) {
-      return '';
-    }
-    return MaterialLocalizations.of(context)
-        .formatMediumDate(widget.selectedDate!);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FunInput(
-      label: widget.label,
-      controller: _controller,
-      readOnly: true,
-      hintText: context.l10n.externalDonationsCreateSelectDateHint,
-      suffixIcon: Icon(Icons.calendar_today, color: FunTheme.of(context).neutral40),
-      onTap: () async {
-        final now = DateTime.now();
-        final picked = await showDatePicker(
-          context: context,
-          initialDate: widget.selectedDate ?? now,
-          firstDate: DateTime(now.year - 30),
-          lastDate: now,
-        );
-        if (picked != null) {
-          widget.onDateSelected(picked);
-        }
       },
     );
   }

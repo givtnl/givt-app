@@ -67,13 +67,8 @@ class ExternalDonationCreateCubit
     _emitData();
   }
 
-  void updateLastGiftDate(DateTime date) {
-    _repository.updateLastGiftDate(date);
-    _emitData();
-  }
-
-  void updateStartMonthYear(DateTime monthYear) {
-    _repository.updateStartMonthYear(monthYear);
+  void updateSeriesStartDate(DateTime date) {
+    _repository.updateSeriesStartDate(date);
     _emitData();
   }
 
@@ -93,18 +88,11 @@ class ExternalDonationCreateCubit
       _emitNavigate(const ExternalDonationCreateCustom.navigateToOneOffDate());
       return;
     }
-    _emitNavigate(const ExternalDonationCreateCustom.navigateToLastGiftDate());
+    _emitNavigate(const ExternalDonationCreateCustom.navigateToSeriesStartDate());
   }
 
-  void continueFromLastGiftDate() {
-    if (!_repository.getDraft().isLastGiftDateValid) {
-      return;
-    }
-    _emitNavigate(const ExternalDonationCreateCustom.navigateToStartMonthYear());
-  }
-
-  void continueFromStartMonthYear() {
-    if (!_repository.getDraft().isStartMonthYearValid) {
+  void continueFromSeriesStartDate() {
+    if (!_repository.getDraft().isSeriesStartDateValid) {
       return;
     }
     submit();

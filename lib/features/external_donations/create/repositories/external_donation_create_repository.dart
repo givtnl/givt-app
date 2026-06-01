@@ -1,5 +1,4 @@
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_draft.dart';
-import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
@@ -12,7 +11,6 @@ import 'package:givt_app/shared/repositories/givt_repository.dart';
 /// - `amount`, `description`, `frequency` (`Once`, `Weekly`, `Monthly`, …)
 /// - `taxDeductable` — user-selected tax relief flag (custom and known orgs)
 /// - `startDate` — one-off gift date (`dateMade`), or recurring series start
-///   (start month/year with last-gift day-of-month); backend generates records
 ///
 /// Does not send `active` (defaults on server) or `collectGroupId`.
 class ExternalDonationCreatePayloadBuilder {
@@ -43,13 +41,8 @@ class ExternalDonationCreatePayloadBuilder {
     if (draft.isOneOff == true) {
       return draft.dateMade;
     }
-    if (draft.isOneOff == false &&
-        draft.startMonthYear != null &&
-        draft.lastGiftDate != null) {
-      return recurringSeriesStartDate(
-        startMonthYear: draft.startMonthYear!,
-        lastGiftDate: draft.lastGiftDate!,
-      );
+    if (draft.isOneOff == false && draft.seriesStartDate != null) {
+      return draft.seriesStartDate;
     }
     return null;
   }
@@ -74,9 +67,7 @@ mixin ExternalDonationCreateRepository {
 
   void updateDateMade(DateTime date);
 
-  void updateLastGiftDate(DateTime date);
-
-  void updateStartMonthYear(DateTime monthYear);
+  void updateSeriesStartDate(DateTime date);
 
   Future<ExternalDonation?> submit();
 
@@ -157,14 +148,9 @@ class ExternalDonationCreateRepositoryImpl
   }
 
   @override
-  void updateLastGiftDate(DateTime date) {
-    _draft = _draft.copyWith(lastGiftDate: date);
-  }
-
-  @override
-  void updateStartMonthYear(DateTime monthYear) {
+  void updateSeriesStartDate(DateTime date) {
     _draft = _draft.copyWith(
-      startMonthYear: DateTime(monthYear.year, monthYear.month),
+      seriesStartDate: DateTime(date.year, date.month, date.day),
     );
   }
 

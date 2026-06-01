@@ -13,8 +13,7 @@ class ExternalDonationCreateDraft extends Equatable {
     this.isOneOff,
     this.frequency,
     this.dateMade,
-    this.lastGiftDate,
-    this.startMonthYear,
+    this.seriesStartDate,
   });
 
   final String organisationName;
@@ -25,8 +24,7 @@ class ExternalDonationCreateDraft extends Equatable {
   final bool? isOneOff;
   final ExternalDonationFrequency? frequency;
   final DateTime? dateMade;
-  final DateTime? lastGiftDate;
-  final DateTime? startMonthYear;
+  final DateTime? seriesStartDate;
 
   bool get hasOrganisation => organisationName.trim().isNotEmpty;
 
@@ -57,10 +55,8 @@ class ExternalDonationCreateDraft extends Equatable {
 
   bool get isOneOffDateValid => isOneOff == true && dateMade != null;
 
-  bool get isLastGiftDateValid => isOneOff == false && lastGiftDate != null;
-
-  bool get isStartMonthYearValid =>
-      isOneOff == false && startMonthYear != null;
+  bool get isSeriesStartDateValid =>
+      isOneOff == false && seriesStartDate != null;
 
   ExternalDonationCreateDraft copyWith({
     String? organisationName,
@@ -71,8 +67,7 @@ class ExternalDonationCreateDraft extends Equatable {
     bool? isOneOff,
     ExternalDonationFrequency? frequency,
     DateTime? dateMade,
-    DateTime? lastGiftDate,
-    DateTime? startMonthYear,
+    DateTime? seriesStartDate,
     bool clearSelectedOrganisation = false,
     bool clearFrequency = false,
     bool clearDates = false,
@@ -89,8 +84,8 @@ class ExternalDonationCreateDraft extends Equatable {
       isOneOff: isOneOff ?? this.isOneOff,
       frequency: clearFrequency ? null : frequency ?? this.frequency,
       dateMade: clearDates ? null : dateMade ?? this.dateMade,
-      lastGiftDate: clearDates ? null : lastGiftDate ?? this.lastGiftDate,
-      startMonthYear: clearDates ? null : startMonthYear ?? this.startMonthYear,
+      seriesStartDate:
+          clearDates ? null : seriesStartDate ?? this.seriesStartDate,
     );
   }
 
@@ -104,7 +99,6 @@ class ExternalDonationCreateDraft extends Equatable {
         isOneOff,
         frequency,
         dateMade,
-        lastGiftDate,
-        startMonthYear,
+        seriesStartDate,
       ];
 }

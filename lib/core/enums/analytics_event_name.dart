@@ -145,9 +145,6 @@ enum AnalyticsEventName {
   externalDonationsCreateOneOffDateContinueClicked(
     'external_donations_create_one_off_date_continue_clicked',
   ),
-  externalDonationsCreateLastGiftContinueClicked(
-    'external_donations_create_last_gift_continue_clicked',
-  ),
   externalDonationsCreateStartDateContinueClicked(
     'external_donations_create_start_date_continue_clicked',
   ),

@@ -9,8 +9,8 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/external_donations/create/cubit/external_donation_create_cubit.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_flow_step.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_ui_model.dart';
-import 'package:givt_app/features/external_donations/create/pages/step4_last_gift_date_page.dart';
 import 'package:givt_app/features/external_donations/create/pages/step4_one_off_date_page.dart';
+import 'package:givt_app/features/external_donations/create/pages/step4_series_start_date_page.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_close_modal.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_preview_helper.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_step_shell.dart';
@@ -67,9 +67,9 @@ class _Step2DonationTypePageState extends State<Step2DonationTypePage> {
             Navigator.of(context).push(
               const Step4OneOffDatePage().toRoute(context),
             );
-          case NavigateToLastGiftDate():
+          case NavigateToSeriesStartDate():
             Navigator.of(context).push(
-              const Step4LastGiftDatePage().toRoute(context),
+              const Step4SeriesStartDatePage().toRoute(context),
             );
           case _:
             break;

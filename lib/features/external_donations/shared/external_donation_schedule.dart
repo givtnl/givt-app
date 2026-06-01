@@ -1,18 +1,5 @@
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
 
-/// First calendar date of a recurring series: selected start month/year with
-/// [lastGiftDate]'s day-of-month as anchor (clamped to month length).
-DateTime recurringSeriesStartDate({
-  required DateTime startMonthYear,
-  required DateTime lastGiftDate,
-}) {
-  return _dateWithAnchorDay(
-    startMonthYear.year,
-    startMonthYear.month,
-    lastGiftDate.day,
-  );
-}
-
 /// Computes the next occurrence date for a recurring external donation.
 DateTime? computeNextOccurrenceDate({
   required DateTime startDate,
@@ -33,29 +20,27 @@ DateTime? computeNextOccurrenceDate({
 }
 
 /// Last scheduled occurrence on or before [onOrBefore], walking forward from
-/// [startMonthYear] using [lastGiftDate]'s day-of-month as anchor.
+/// [seriesStartDate] with [frequency].
 DateTime occurrenceSeriesEndDate({
-  required DateTime startMonthYear,
-  required DateTime lastGiftDate,
+  required DateTime seriesStartDate,
   required ExternalDonationFrequency frequency,
   required DateTime onOrBefore,
 }) {
   if (frequency == ExternalDonationFrequency.once) {
-    return lastGiftDate;
+    return seriesStartDate;
   }
 
-  final anchorDay = lastGiftDate.day;
   final onOrBeforeDay = DateTime(
     onOrBefore.year,
     onOrBefore.month,
     onOrBefore.day,
   );
-  var cursor = _dateWithAnchorDay(
-    startMonthYear.year,
-    startMonthYear.month,
-    anchorDay,
+  var cursor = DateTime(
+    seriesStartDate.year,
+    seriesStartDate.month,
+    seriesStartDate.day,
   );
-  var lastOnOrBefore = lastGiftDate;
+  var lastOnOrBefore = cursor;
   var guard = 0;
   while (!cursor.isAfter(onOrBeforeDay) && guard < 500) {
     lastOnOrBefore = cursor;
@@ -63,42 +48,31 @@ DateTime occurrenceSeriesEndDate({
     guard++;
   }
 
-  final lastGiftDay = DateTime(
-    lastGiftDate.year,
-    lastGiftDate.month,
-    lastGiftDate.day,
-  );
-  return lastGiftDay.isAfter(lastOnOrBefore) ? lastGiftDay : lastOnOrBefore;
+  return lastOnOrBefore;
 }
 
 /// Preview of recurring occurrence dates for the create-flow confirm step.
 ///
-/// Uses [lastGiftDate]'s day-of-month as the anchor for every period.
-/// [startMonthYear] is the first month/year the user started giving (day 1 used
-/// only to derive month/year; anchor day comes from [lastGiftDate]).
 /// Past occurrences run through the latest scheduled date on or before [now],
-/// so the preview can show recent months even when [lastGiftDate] is earlier.
+/// plus one upcoming occurrence when applicable.
 List<DateTime> generateOccurrencePreview({
-  required DateTime startMonthYear,
-  required DateTime lastGiftDate,
+  required DateTime seriesStartDate,
   required ExternalDonationFrequency frequency,
   DateTime? now,
 }) {
   if (frequency == ExternalDonationFrequency.once) {
-    return [lastGiftDate];
+    return [seriesStartDate];
   }
 
-  final anchorDay = lastGiftDate.day;
-  var cursor = _dateWithAnchorDay(
-    startMonthYear.year,
-    startMonthYear.month,
-    anchorDay,
+  var cursor = DateTime(
+    seriesStartDate.year,
+    seriesStartDate.month,
+    seriesStartDate.day,
   );
   final reference = now ?? DateTime.now();
   final today = DateTime(reference.year, reference.month, reference.day);
   final end = occurrenceSeriesEndDate(
-    startMonthYear: startMonthYear,
-    lastGiftDate: lastGiftDate,
+    seriesStartDate: seriesStartDate,
     frequency: frequency,
     onOrBefore: today,
   );
@@ -112,7 +86,7 @@ List<DateTime> generateOccurrencePreview({
   }
 
   if (occurrences.isEmpty) {
-    occurrences.add(lastGiftDate);
+    occurrences.add(seriesStartDate);
   }
 
   final next = computeNextOccurrenceDate(

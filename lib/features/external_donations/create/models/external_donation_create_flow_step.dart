@@ -3,7 +3,6 @@ enum ExternalDonationCreateFlowStep {
   organisation,
   donationType,
   oneOffDate,
-  lastGiftDate,
-  startMonthYear,
+  seriesStartDate,
   success,
 }

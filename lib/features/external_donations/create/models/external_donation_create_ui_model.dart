@@ -19,27 +19,20 @@ class ExternalDonationCreateUIModel extends Equatable {
   final bool isSubmitting;
   final int previewVisibleCount;
 
-  /// One-off: org → type/amount → date (3). Recurring: + last gift + start (4).
-  int get stepCount => draft.isOneOff == false ? 4 : 3;
+  /// Org → type/amount → date (3 steps for one-off and recurring).
+  int get stepCount => 3;
 
   List<DateTime> get occurrencePreview {
     final draft = this.draft;
     if (draft.isOneOff != false ||
         draft.frequency == null ||
-        draft.lastGiftDate == null) {
+        draft.seriesStartDate == null) {
       return const [];
     }
     return generateOccurrencePreview(
-      startMonthYear: _effectiveStartMonthYear,
-      lastGiftDate: draft.lastGiftDate!,
+      seriesStartDate: draft.seriesStartDate!,
       frequency: draft.frequency!,
     );
-  }
-
-  /// Start month from the draft, or last-gift month while start is not chosen yet.
-  DateTime get _effectiveStartMonthYear {
-    final lastGift = draft.lastGiftDate!;
-    return draft.startMonthYear ?? DateTime(lastGift.year, lastGift.month);
   }
 
   int get hiddenPastPreviewCount {
@@ -119,15 +112,8 @@ class ExternalDonationCreateUIModel extends Equatable {
         return [_summaryRow(currencySymbol, formatAmount, locals)];
       case ExternalDonationCreateFlowStep.oneOffDate:
         return [_oneOffPreviewRow(currencySymbol, formatAmount, locals, locale)];
-      case ExternalDonationCreateFlowStep.lastGiftDate:
-        return _lastGiftPreviewRows(
-          currencySymbol,
-          formatAmount,
-          locals,
-          locale,
-        );
-      case ExternalDonationCreateFlowStep.startMonthYear:
-        return _startDatePreviewRows(
+      case ExternalDonationCreateFlowStep.seriesStartDate:
+        return _seriesStartDatePreviewRows(
           currencySymbol,
           formatAmount,
           locals,
@@ -145,13 +131,13 @@ class ExternalDonationCreateUIModel extends Equatable {
 
   String? previewMoreRecordsLabel(AppLocalizations locals, String locale) {
     if (draft.isOneOff != false ||
-        draft.lastGiftDate == null ||
+        draft.seriesStartDate == null ||
         hiddenPastPreviewCount <= 0) {
       return null;
     }
     return locals.externalDonationsCreatePreviewMoreRecords(
       hiddenPastPreviewCount,
-      _formatMonthYear(_effectiveStartMonthYear, locale),
+      _formatMonthYear(draft.seriesStartDate!, locale),
     );
   }
 
@@ -192,33 +178,15 @@ class ExternalDonationCreateUIModel extends Equatable {
     );
   }
 
-  List<ExternalDonationCreatePreviewRow> _lastGiftPreviewRows(
+  List<ExternalDonationCreatePreviewRow> _seriesStartDatePreviewRows(
     String currencySymbol,
     String Function(double amount) formatAmount,
     AppLocalizations locals,
     String locale,
   ) {
-    if (draft.lastGiftDate == null) {
+    if (draft.seriesStartDate == null || occurrencePreview.isEmpty) {
       return [_summaryRow(currencySymbol, formatAmount, locals)];
     }
-    if (occurrencePreview.isEmpty) {
-      return [_summaryRow(currencySymbol, formatAmount, locals)];
-    }
-    return _recurringPreviewRowsFromDates(
-      _recurringPreviewDatesForDisplay(),
-      currencySymbol: currencySymbol,
-      formatAmount: formatAmount,
-      locals: locals,
-      locale: locale,
-    );
-  }
-
-  List<ExternalDonationCreatePreviewRow> _startDatePreviewRows(
-    String currencySymbol,
-    String Function(double amount) formatAmount,
-    AppLocalizations locals,
-    String locale,
-  ) {
     return _recurringPreviewRowsFromDates(
       visiblePreview,
       currencySymbol: currencySymbol,

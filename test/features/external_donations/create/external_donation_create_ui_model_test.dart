@@ -85,7 +85,7 @@ void main() {
       expect(rows.first.isCompleted, isFalse);
     });
 
-    test('stepCount is 3 for one-off and 4 for recurring', () {
+    test('stepCount is 3 for one-off and recurring', () {
       expect(
         buildModel(
           const ExternalDonationCreateDraft(isOneOff: true),
@@ -99,31 +99,30 @@ void main() {
             frequency: ExternalDonationFrequency.monthly,
           ),
         ).stepCount,
-        4,
+        3,
       );
     });
 
-    test('last gift step shows months through today before start month is set', () {
+    test('series start step shows preview when start date is set', () {
       final model = ExternalDonationCreateUIModel(
         draft: ExternalDonationCreateDraft(
           organisationName: 'Arango Test',
           amountInput: '24',
           isOneOff: false,
           frequency: ExternalDonationFrequency.monthly,
-          lastGiftDate: DateTime(2026, 3, 4),
+          seriesStartDate: DateTime(2026, 3, 4),
         ),
       );
 
       final preview = generateOccurrencePreview(
-        startMonthYear: DateTime(2026, 3),
-        lastGiftDate: DateTime(2026, 3, 4),
+        seriesStartDate: DateTime(2026, 3, 4),
         frequency: ExternalDonationFrequency.monthly,
         now: DateTime(2026, 5, 30),
       );
       expect(preview.length, greaterThan(2));
 
       final rows = model.previewRowsForStep(
-        ExternalDonationCreateFlowStep.lastGiftDate,
+        ExternalDonationCreateFlowStep.seriesStartDate,
         currencySymbol: '€',
         formatAmount: (a) => a.toStringAsFixed(2),
         locals: en,
@@ -146,8 +145,7 @@ void main() {
           amountInput: '87',
           isOneOff: false,
           frequency: ExternalDonationFrequency.monthly,
-          lastGiftDate: DateTime(2024, 6, 12),
-          startMonthYear: DateTime(2024, 1),
+          seriesStartDate: DateTime(2024, 1, 12),
         ),
       );
 
@@ -164,7 +162,7 @@ void main() {
       expect(firstDay.isAfter(todayDate), isTrue);
 
       final rows = model.previewRowsForStep(
-        ExternalDonationCreateFlowStep.startMonthYear,
+        ExternalDonationCreateFlowStep.seriesStartDate,
         currencySymbol: '€',
         formatAmount: (a) => a.toStringAsFixed(2),
         locals: en,
@@ -175,20 +173,19 @@ void main() {
       expect(rows.any((row) => row.isCompleted), isTrue);
     });
 
-    test('start month preview shows three rows with faded oldest past', () {
+    test('series start preview shows three rows with faded oldest past', () {
       final model = ExternalDonationCreateUIModel(
         draft: ExternalDonationCreateDraft(
           organisationName: 'Colorful Church',
           amountInput: '87',
           isOneOff: false,
           frequency: ExternalDonationFrequency.monthly,
-          lastGiftDate: DateTime(2020, 1, 1),
-          startMonthYear: DateTime(2020, 1),
+          seriesStartDate: DateTime(2020, 1, 1),
         ),
       );
 
       final rows = model.previewRowsForStep(
-        ExternalDonationCreateFlowStep.startMonthYear,
+        ExternalDonationCreateFlowStep.seriesStartDate,
         currencySymbol: '€',
         formatAmount: (a) => a.toStringAsFixed(2),
         locals: en,
@@ -203,21 +200,20 @@ void main() {
       expect(model.previewMoreRecordsLabel(en, 'en'), isNotNull);
     });
 
-    test('start date step caps preview rows and reports hidden count', () {
+    test('series start step caps preview rows and reports hidden count', () {
       final model = ExternalDonationCreateUIModel(
         draft: ExternalDonationCreateDraft(
           organisationName: 'World Vision',
           amountInput: '25',
           isOneOff: false,
           frequency: ExternalDonationFrequency.monthly,
-          lastGiftDate: DateTime(2024, 6, 15),
-          startMonthYear: DateTime(2024, 1),
+          seriesStartDate: DateTime(2024, 1, 15),
         ),
         previewVisibleCount: 3,
       );
 
       final rows = model.previewRowsForStep(
-        ExternalDonationCreateFlowStep.startMonthYear,
+        ExternalDonationCreateFlowStep.seriesStartDate,
         currencySymbol: '€',
         formatAmount: (a) => a.toStringAsFixed(0),
         locals: en,

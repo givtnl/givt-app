@@ -30,15 +30,14 @@ void main() {
       expect(body.containsKey('collectGroupId'), isFalse);
     });
 
-    test('builds recurring payload with startDate and last gift anchor', () {
+    test('builds recurring payload with startDate from first donation date', () {
       final body = ExternalDonationCreatePayloadBuilder.build(
         ExternalDonationCreateDraft(
           organisationName: 'WWF',
           amountInput: '10',
           isOneOff: false,
           frequency: ExternalDonationFrequency.monthly,
-          lastGiftDate: DateTime(2024, 6, 12),
-          startMonthYear: DateTime(2024, 1),
+          seriesStartDate: DateTime(2024, 1, 12),
           selectedOrganisation: null,
           isCustomOrganisation: false,
         ),
@@ -59,22 +58,20 @@ void main() {
   group('generateOccurrencePreview', () {
     test('includes past occurrences and one upcoming for monthly series', () {
       final preview = generateOccurrencePreview(
-        startMonthYear: DateTime(2024, 1),
-        lastGiftDate: DateTime(2024, 3, 12),
+        seriesStartDate: DateTime(2024, 1, 12),
         frequency: ExternalDonationFrequency.monthly,
         now: DateTime(2024, 3, 12),
       );
 
       expect(preview, isNotEmpty);
       expect(preview.length, greaterThan(1));
-      expect(preview.first.month, 1);
+      expect(preview.first, DateTime(2024, 1, 12));
       expect(preview.any((date) => date.day == 12), isTrue);
     });
 
-    test('includes months through today when last gift is earlier', () {
+    test('includes months through today from series start', () {
       final preview = generateOccurrencePreview(
-        startMonthYear: DateTime(2026, 3),
-        lastGiftDate: DateTime(2026, 3, 1),
+        seriesStartDate: DateTime(2026, 3, 1),
         frequency: ExternalDonationFrequency.monthly,
         now: DateTime(2026, 5, 30),
       );
@@ -90,10 +87,9 @@ void main() {
       );
     });
 
-    test('appends next monthly occurrence after last gift in same month', () {
+    test('appends next monthly occurrence after last past in same month', () {
       final preview = generateOccurrencePreview(
-        startMonthYear: DateTime(2026, 5),
-        lastGiftDate: DateTime(2026, 5, 1),
+        seriesStartDate: DateTime(2026, 5, 1),
         frequency: ExternalDonationFrequency.monthly,
         now: DateTime(2026, 5, 30),
       );
@@ -103,10 +99,9 @@ void main() {
 
     test('supports weekly frequency', () {
       final preview = generateOccurrencePreview(
-        startMonthYear: DateTime(2023, 10),
-        lastGiftDate: DateTime(2024, 1, 21),
+        seriesStartDate: DateTime(2024, 1, 21),
         frequency: ExternalDonationFrequency.weekly,
-        now: DateTime(2024, 1, 21),
+        now: DateTime(2024, 2, 4),
       );
 
       expect(preview.length, greaterThan(2));

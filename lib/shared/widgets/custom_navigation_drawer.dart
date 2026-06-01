@@ -116,7 +116,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                 DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
                   title: locals.menuItemExternalDonations,
-                  icon: FontAwesomeIcons.handHoldingHeart,
+                  icon: FontAwesomeIcons.arrowUpRightFromSquare,
                   analyticsEvent:
                       AnalyticsEventName.menuNavigationExternalDonationsClicked,
                   onTap: () async => AuthUtils.checkToken(
