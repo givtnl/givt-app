@@ -60,7 +60,7 @@ class _Step1OrganisationPageState extends State<Step1OrganisationPage> {
           _organisationController.text = draft.organisationName;
         }
         return ExternalDonationCreateStepShell(
-          title: locals.externalDonationsCreateTitle,
+          title: locals.externalDonationsCreateOrganisationLabel,
           currentStep: 0,
           stepCount: uiModel.stepCount,
           onClose: () => const ExternalDonationCreateCloseModal().show(context),
@@ -98,7 +98,10 @@ class _Step1OrganisationPageState extends State<Step1OrganisationPage> {
                   ),
                   trailing: Switch(
                     value: draft.taxDeductible,
-                    activeColor: FunTheme.of(context).primary30,
+                    activeColor: FunTheme.of(context).primary40,
+                    activeTrackColor: FunTheme.of(context).primary80,
+                    inactiveThumbColor: FunTheme.of(context).neutralVariant60,
+                    inactiveTrackColor: FunTheme.of(context).neutralVariant90,
                     onChanged: _cubit.updateTaxDeductible,
                   ),
                 ),

@@ -2570,7 +2570,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get externalDonationsCreateTaxReliefLabel =>
-      'Belastingvoordeel geldt voor dit goede doel';
+      'Gift is aftrekbaar voor de belasting';
 
   @override
   String externalDonationsCreateLastGiftDescriptionWithOrg(

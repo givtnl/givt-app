@@ -1250,7 +1250,7 @@
   "externalDonationsCreateOrganisationDescription": "Which organisation did you give to?",
   "externalDonationsCreateOrganisationLabel": "Organisation",
   "externalDonationsCreateOrganisationHint": "Search for an organisation",
-  "externalDonationsCreateSearchTitle": "Search organisations",
+  "externalDonationsCreateSearchTitle": "Search organization",
   "externalDonationsCreateSearchHint": "Search by name",
   "externalDonationsCreateAddCustomOrganisation": "Add \"{name}\"",
   "externalDonationsCreateAmountLabel": "Amount",

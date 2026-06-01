@@ -85,7 +85,7 @@ class _Step2DonationTypePageState extends State<Step2DonationTypePage> {
         final tabIndex = isRecurring ? 1 : 0;
 
         return ExternalDonationCreateStepShell(
-          title: locals.externalDonationsCreateTitle,
+          title: locals.externalDonationsCreateFrequencyLabel,
           currentStep: 1,
           stepCount: uiModel.stepCount,
           onClose: () => const ExternalDonationCreateCloseModal().show(context),

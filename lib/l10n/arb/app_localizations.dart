@@ -4595,7 +4595,7 @@ abstract class AppLocalizations {
   /// No description provided for @externalDonationsCreateSearchTitle.
   ///
   /// In en, this message translates to:
-  /// **'Search organisations'**
+  /// **'Search organization'**
   String get externalDonationsCreateSearchTitle;
 
   /// No description provided for @externalDonationsCreateSearchHint.

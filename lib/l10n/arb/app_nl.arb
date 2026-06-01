@@ -1268,7 +1268,7 @@
   "externalDonationsCreateAddCustomOrganisation": "\"{name}\" toevoegen",
   "externalDonationsCreateAmountLabel": "Bedrag",
   "externalDonationsCreateDonationTypeDescription": "Wat voor gift is dit?",
-  "externalDonationsCreateTaxReliefLabel": "Belastingvoordeel geldt voor dit goede doel",
+  "externalDonationsCreateTaxReliefLabel": "Gift is aftrekbaar voor de belasting",
   "externalDonationsCreateLastGiftDescriptionWithOrg": "Wanneer ging je laatste {frequency} gift naar {organisation}?",
   "externalDonationsCreateStartDateDescriptionWithOrg": "Wanneer is deze terugkerende gift naar {organisation} begonnen?",
   "externalDonationsCreateSuccessHeadline": "{organisation} maakt nu deel uit van je giftenhistorie",

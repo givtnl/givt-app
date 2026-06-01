@@ -45,7 +45,7 @@ class Step4LastGiftDatePage extends StatelessWidget {
             : '';
 
         return ExternalDonationCreateStepShell(
-          title: locals.externalDonationsCreateTitle,
+          title: locals.externalDonationsDetailOneOffDate,
           currentStep: 2,
           stepCount: uiModel.stepCount,
           onClose: () => const ExternalDonationCreateCloseModal().show(context),

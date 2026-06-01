@@ -49,7 +49,7 @@ class Step5StartMonthYearPage extends StatelessWidget {
         final draft = uiModel.draft;
 
         return ExternalDonationCreateStepShell(
-          title: locals.externalDonationsCreateTitle,
+          title: locals.externalDonationsCreateStartDateLabel,
           currentStep: 3,
           stepCount: uiModel.stepCount,
           onClose: () => const ExternalDonationCreateCloseModal().show(context),
