@@ -2544,9 +2544,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get externalDonationsCreateOrganisationLabel => 'Organisatie';
 
   @override
-  String get externalDonationsCreateOrganisationHint => 'Zoek een organisatie';
-
-  @override
   String get externalDonationsCreateSearchTitle => 'Organisaties zoeken';
 
   @override

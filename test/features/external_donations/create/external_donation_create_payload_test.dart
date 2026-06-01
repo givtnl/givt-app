@@ -26,6 +26,8 @@ void main() {
       expect(body['taxDeductable'], isTrue);
       expect(body['creationDate'], isNotNull);
       expect(body.containsKey('startDate'), isFalse);
+      expect(body.containsKey('active'), isFalse);
+      expect(body.containsKey('collectGroupId'), isFalse);
     });
 
     test('builds recurring payload with startDate and last gift anchor', () {
@@ -46,6 +48,8 @@ void main() {
       expect(body['startDate'], isNotNull);
       expect(body['creationDate'], isNotNull);
       expect(body['taxDeductable'], isFalse);
+      expect(body.containsKey('active'), isFalse);
+      expect(body.containsKey('collectGroupId'), isFalse);
     });
   });
 

@@ -2555,9 +2555,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get externalDonationsCreateOrganisationLabel => 'Organisation';
 
   @override
-  String get externalDonationsCreateOrganisationHint => 'Organisation suchen';
-
-  @override
   String get externalDonationsCreateSearchTitle => 'Organisationen suchen';
 
   @override

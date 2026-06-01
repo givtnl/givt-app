@@ -2533,10 +2533,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get externalDonationsCreateOrganisationLabel => 'Organisation';
 
   @override
-  String get externalDonationsCreateOrganisationHint =>
-      'Search for an organisation';
-
-  @override
   String get externalDonationsCreateSearchTitle => 'Search organization';
 
   @override
@@ -5578,10 +5574,6 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get externalDonationsCreateOrganisationLabel => 'Organisation';
-
-  @override
-  String get externalDonationsCreateOrganisationHint =>
-      'Search for an organisation';
 
   @override
   String get externalDonationsCreateSearchTitle => 'Search organization';

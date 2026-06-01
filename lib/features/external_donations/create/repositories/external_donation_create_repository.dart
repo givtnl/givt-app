@@ -10,10 +10,11 @@ import 'package:givt_app/shared/repositories/givt_repository.dart';
 /// **API contract (COR-1029 + ENG-651):**
 /// - `amount`, `description`, `frequency` (`Once`, `Weekly`, `Monthly`, …)
 /// - `taxDeductable` — user-selected tax relief flag (custom and known orgs)
-/// - `collectGroupId` — optional known-org namespace
 /// - `creationDate` — one-off gift date, or recurring last-gift anchor day
 /// - `startDate` — recurring series start (first day of selected month/year);
 ///   backend generates historical + upcoming transaction records
+///
+/// Does not send `active` (defaults on server) or `collectGroupId`.
 class ExternalDonationCreatePayloadBuilder {
   const ExternalDonationCreatePayloadBuilder._();
 
@@ -27,15 +28,8 @@ class ExternalDonationCreatePayloadBuilder {
       'amount': amount,
       'description': draft.organisationName.trim(),
       'frequency': ExternalDonation.frequencyEnumToString(frequency),
-      'active': true,
+      'taxDeductable': draft.taxDeductible,
     };
-
-    final namespace = draft.selectedOrganisation?.nameSpace;
-    if (namespace != null && namespace.isNotEmpty && !draft.isCustomOrganisation) {
-      body['collectGroupId'] = namespace;
-    }
-
-    body['taxDeductable'] = draft.taxDeductible;
 
     if (draft.isOneOff == true && draft.dateMade != null) {
       body['creationDate'] = draft.dateMade!.toUtc().toIso8601String();

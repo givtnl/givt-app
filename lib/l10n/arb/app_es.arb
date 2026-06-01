@@ -1261,7 +1261,6 @@
   "externalDonationsCreateTitle": "Añadir donación externa",
   "externalDonationsCreateOrganisationDescription": "¿A qué organización donaste?",
   "externalDonationsCreateOrganisationLabel": "Organización",
-  "externalDonationsCreateOrganisationHint": "Buscar una organización",
   "externalDonationsCreateSearchTitle": "Buscar organizaciones",
   "externalDonationsCreateSearchHint": "Buscar por nombre",
   "externalDonationsCreateAddCustomOrganisation": "Añadir \"{name}\"",

@@ -74,7 +74,7 @@ class _Step1OrganisationPageState extends State<Step1OrganisationPage> {
               FunInput(
                 label: locals.externalDonationsCreateOrganisationLabel,
                 readOnly: true,
-                hintText: locals.externalDonationsCreateOrganisationHint,
+                hintText: locals.externalDonationsCreateSearchHint,
                 controller: _organisationController,
                 onTap: () {
                   Navigator.of(context).push(
