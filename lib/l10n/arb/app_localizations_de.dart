@@ -2523,7 +2523,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get externalDonationsListStatusStopped => 'Beendet';
 
   @override
-  String get externalDonationsDetailSummaryGiving => 'Geben';
+  String get externalDonationsDetailSummaryGiving => 'Gegeben';
 
   @override
   String get externalDonationsDetailOneOffDate => 'Datum';

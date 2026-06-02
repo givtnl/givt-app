@@ -10,6 +10,7 @@ class ExternalDonation extends Equatable {
     required this.creationDate,
     required this.taxDeductible,
     this.active = true,
+    this.nextRecurringDate,
   });
 
   factory ExternalDonation.fromJson(Map<String, dynamic> json) {
@@ -21,6 +22,7 @@ class ExternalDonation extends Equatable {
       creationDate: json['creationDate'] as String,
       taxDeductible: json['taxDeductable'] as bool,
       active: json['active'] as bool? ?? true,
+      nextRecurringDate: json['nextRecurringDate'] as String?,
     );
   }
 
@@ -31,7 +33,8 @@ class ExternalDonation extends Equatable {
         frequencyString = 'Once',
         creationDate = '',
         taxDeductible = false,
-        active = true;
+        active = true,
+        nextRecurringDate = null;
 
   final String id;
   final double amount;
@@ -40,6 +43,16 @@ class ExternalDonation extends Equatable {
   final String creationDate;
   final bool taxDeductible;
   final bool active;
+  final String? nextRecurringDate;
+
+  /// Next scheduled occurrence from the API (`nextRecurringDate`).
+  DateTime? get nextRecurringOccurrenceDate {
+    final raw = nextRecurringDate;
+    if (raw == null || raw.isEmpty) {
+      return null;
+    }
+    return DateTime.tryParse(raw);
+  }
 
   ExternalDonationFrequency get frequency {
     switch (frequencyString) {
@@ -91,6 +104,7 @@ class ExternalDonation extends Equatable {
     String? creationDate,
     bool? taxDeductible,
     bool? active,
+    String? nextRecurringDate,
     ExternalDonationFrequency? frequency,
   }) {
     String? newFrequencyString = frequencyString;
@@ -106,6 +120,7 @@ class ExternalDonation extends Equatable {
       creationDate: creationDate ?? this.creationDate,
       taxDeductible: taxDeductible ?? this.taxDeductible,
       active: active ?? this.active,
+      nextRecurringDate: nextRecurringDate ?? this.nextRecurringDate,
     );
   }
 
@@ -135,5 +150,6 @@ class ExternalDonation extends Equatable {
         creationDate,
         taxDeductible,
         active,
+        nextRecurringDate,
       ];
 }

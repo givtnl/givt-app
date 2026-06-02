@@ -1251,7 +1251,7 @@
   "externalDonationsEmptyStateTitle": "Houd giften buiten Givt bij",
   "externalDonationsEmptyStateDescription": "Voeg giften toe die je rechtstreeks aan organisaties doet, zodat je overzicht compleet blijft.",
   "externalDonationsListStatusStopped": "Gestopt",
-  "externalDonationsDetailSummaryGiving": "Geven",
+  "externalDonationsDetailSummaryGiving": "Gegeven",
   "externalDonationsDetailOneOffDate": "Datum",
   "externalDonationsDetailStopButton": "Ik ben gestopt met geven",
   "externalDonationsStopModalTitle": "Stoppen met registreren?",

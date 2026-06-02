@@ -146,11 +146,12 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
       var history = recorded;
 
       if (isActive) {
-        final nextDate = computeNextOccurrenceDate(
-          startDate: fallbackDate,
-          frequency: donation.frequency,
-          after: now,
-        );
+        final nextDate = donation.nextRecurringOccurrenceDate ??
+            computeNextOccurrenceDate(
+              startDate: fallbackDate,
+              frequency: donation.frequency,
+              after: now,
+            );
         if (nextDate != null) {
           history = [
             ExternalDonationHistoryItem(

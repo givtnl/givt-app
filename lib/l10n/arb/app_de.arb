@@ -1251,7 +1251,7 @@
   "externalDonationsEmptyStateTitle": "Spenden außerhalb Givt verfolgen",
   "externalDonationsEmptyStateDescription": "Füge Spenden hinzu, die du direkt an Organisationen gibst, damit deine Spendenhistorie vollständig bleibt.",
   "externalDonationsListStatusStopped": "Beendet",
-  "externalDonationsDetailSummaryGiving": "Geben",
+  "externalDonationsDetailSummaryGiving": "Gegeben",
   "externalDonationsDetailOneOffDate": "Datum",
   "externalDonationsDetailStopButton": "Ich habe aufgehört zu geben",
   "externalDonationsStopModalTitle": "Aufzeichnung beenden?",

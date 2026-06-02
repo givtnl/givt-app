@@ -2512,7 +2512,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get externalDonationsListStatusStopped => 'Gestopt';
 
   @override
-  String get externalDonationsDetailSummaryGiving => 'Geven';
+  String get externalDonationsDetailSummaryGiving => 'Gegeven';
 
   @override
   String get externalDonationsDetailOneOffDate => 'Datum';
