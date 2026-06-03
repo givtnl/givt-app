@@ -115,6 +115,26 @@ class CustomNavigationDrawer extends StatelessWidget {
                 ),
                 DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
+                  title: locals.menuItemRecurringDonation,
+                  icon: Icons.autorenew,
+                  analyticsEvent: AnalyticsEventName.menuNavigationRecurringDonationClicked,
+                  onTap: () async => AuthUtils.checkToken(
+                    context,
+                    checkAuthRequest: CheckAuthRequest(
+                      navigate: (context) async {
+                        context.goNamed(Pages.recurringDonations.name);
+                        unawaited(
+                          AnalyticsHelper.logEvent(
+                            eventName:
+                                AnalyticsEventName.recurringDonationsNavigationClicked,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                DrawerMenuItem(
+                  isVisible: !auth.user.needRegistration,
                   title: locals.menuItemExternalDonations,
                   icon: FontAwesomeIcons.arrowUpRightFromSquare,
                   analyticsEvent:
@@ -128,26 +148,6 @@ class CustomNavigationDrawer extends StatelessWidget {
                           AnalyticsHelper.logEvent(
                             eventName:
                                 AnalyticsEventName.externalDonationsNavigationClicked,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.menuItemRecurringDonation,
-                  icon: Icons.autorenew,
-                  analyticsEvent: AnalyticsEventName.menuNavigationRecurringDonationClicked,
-                  onTap: () async => AuthUtils.checkToken(
-                    context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context) async {
-                        context.goNamed(Pages.recurringDonations.name);
-                        unawaited(
-                          AnalyticsHelper.logEvent(
-                            eventName:
-                                AnalyticsEventName.recurringDonationsNavigationClicked,
                           ),
                         );
                       },
