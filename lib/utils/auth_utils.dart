@@ -76,6 +76,13 @@ class AuthUtils {
     try {
       final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
       if (!hasAuthenticated) {
+        if (!context.mounted) {
+          return;
+        }
+        await displayLoginBottomSheet(
+          context,
+          checkAuthRequest: checkAuthRequest,
+        );
         return;
       }
       if (!context.mounted) {
