@@ -29,16 +29,7 @@ class _FakeExternalDonationDetailRepository
       const GivingDuration(1, GivingDurationUnit.days);
 
   @override
-  DateTime? getOneOffTransactionDate() => null;
-
-  @override
   List<ExternalDonationHistoryItem> getHistory() => const [];
-
-  @override
-  bool get isRecurring => true;
-
-  @override
-  bool get isActive => _donation?.active ?? false;
 
   void setDonation(ExternalDonation donation) {
     _donation = donation;

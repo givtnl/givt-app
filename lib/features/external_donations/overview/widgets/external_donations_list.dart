@@ -5,13 +5,13 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_frequency_dropdown.dart';
 import 'package:givt_app/features/external_donations/detail/pages/external_donation_detail_page.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_display.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/util.dart';
-import 'package:intl/intl.dart';
 
 class ExternalDonationsList extends StatelessWidget {
   const ExternalDonationsList({
@@ -63,10 +63,10 @@ class ExternalDonationsList extends StatelessWidget {
     final country = Country.fromCode(auth.user.country);
     final amount = Util.formatNumberComma(donation.amount, country);
     final frequency = _frequencyLabel(context, donation.frequency);
-    final date = DateTime.tryParse(donation.creationDate);
-    final dateText = date != null
-        ? DateFormat.yMMMd(Util.getLanguageTageFromLocale(context)).format(date)
-        : '';
+    final dateText = ExternalDonationDisplay.formatStartDate(
+      donation,
+      Util.getLanguageTageFromLocale(context),
+    );
 
     if (donation.frequency == ExternalDonationFrequency.once) {
       return '$currency$amount · $dateText';

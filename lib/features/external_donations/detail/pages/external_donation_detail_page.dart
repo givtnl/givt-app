@@ -11,14 +11,14 @@ import 'package:givt_app/features/external_donations/shared/external_donation_sc
 import 'package:givt_app/features/external_donations/detail/widgets/stop_recording_modal.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_display.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class ExternalDonationDetailPage extends StatefulWidget {
   const ExternalDonationDetailPage({
@@ -174,7 +174,7 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
   ) {
     final auth = context.read<AuthCubit>().state;
     final country = Country.fromCode(auth.user.country);
-    final date = uiModel.oneOffTransactionDate;
+    final date = uiModel.donation.startDateTime;
 
     return Row(
       children: [
@@ -190,7 +190,10 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
         Expanded(
           child: _buildSummaryCard(
             icon: FontAwesomeIcons.solidCalendar,
-            value: date != null ? _formatDate(date, context) : '',
+            value: ExternalDonationDisplay.formatDate(
+              date,
+              Util.getLanguageTageFromLocale(context),
+            ),
             label: context.l10n.externalDonationsDetailOneOffDate,
           ),
         ),
@@ -314,7 +317,10 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
                   color: FamilyAppTheme.primary40,
                 ),
                 LabelSmallText(
-                  _formatDate(item.date, context),
+                  ExternalDonationDisplay.formatDate(
+                    item.date,
+                    Util.getLanguageTageFromLocale(context),
+                  ),
                   color: FamilyAppTheme.neutralVariant50,
                   fontWeight: FontWeight.w500,
                 ),
@@ -333,11 +339,6 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
       variant: FunButtonVariant.secondary,
       analyticsEvent: AnalyticsEventName.externalDonationsStopClicked.toEvent(),
     );
-  }
-
-  String _formatDate(DateTime date, BuildContext context) {
-    final locale = Util.getLanguageTageFromLocale(context);
-    return DateFormat.yMMMd(locale).format(date);
   }
 
   String _formatGivingDuration(
