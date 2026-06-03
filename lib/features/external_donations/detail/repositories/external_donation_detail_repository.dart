@@ -1,11 +1,12 @@
 import 'package:givt_app/features/external_donations/detail/models/external_donation_history_item.dart';
 import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
-import 'package:givt_app/features/external_donations/shared/models/external_donation_transaction.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 /// Repository for a single external donation detail view.
+///
+/// One-off detail uses fields on [ExternalDonation] only (no transactions call).
 ///
 /// Recurring history uses [GivtRepository.fetchExternalDonationTransactions]
 /// (`GET .../externaldonations/{id}/transactions`).
@@ -91,17 +92,16 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
       final fallbackDate =
           DateTime.tryParse(donation.creationDate) ?? now;
 
-      final transactions = await _givtRepository.fetchExternalDonationTransactions(
-        donation.id,
-      );
-
       if (!isRecurring) {
         _totalDonated = donation.amount;
         _history = const [];
-        _oneOffTransactionDate =
-            _earliestTransactionDate(transactions) ?? fallbackDate;
+        _oneOffTransactionDate = fallbackDate;
         return;
       }
+
+      final transactions = await _givtRepository.fetchExternalDonationTransactions(
+        donation.id,
+      );
 
       final recorded = <ExternalDonationHistoryItem>[];
       for (final transaction in transactions) {
@@ -170,22 +170,6 @@ class ExternalDonationDetailRepositoryImpl with ExternalDonationDetailRepository
     } finally {
       _isLoading = false;
     }
-  }
-
-  DateTime? _earliestTransactionDate(
-    List<ExternalDonationTransaction> transactions,
-  ) {
-    DateTime? earliest;
-    for (final transaction in transactions) {
-      final date = DateTime.tryParse(transaction.creationDate);
-      if (date == null) {
-        continue;
-      }
-      if (earliest == null || date.isBefore(earliest)) {
-        earliest = date;
-      }
-    }
-    return earliest;
   }
 
   @override
