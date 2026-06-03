@@ -15,6 +15,8 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/dialogs/donation_submission_timeout_dialog.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/utils/for_you_donation_transactions.dart';
+import 'package:givt_app/features/give/utils/for_you_giving_analytics.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/features/give/widgets/for_you_more_general_goals_sheet.dart';
 import 'package:givt_app/features/give/widgets/numeric_keyboard.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -258,9 +260,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                           text: context.l10n.forYouGivingCompleteMyGiving,
                           variant: FunButtonVariant.secondary,
                           isDisabled: !canSubmit || isLoading,
-                          analyticsEvent: AnalyticsEventName
-                              .forYouGivingContinueTapped
-                              .toEvent(),
+                          analyticsEvent: _givingContinueAnalyticsEvent(),
                           onTap: () => _submit(
                             context,
                             organisation.nameSpace,
@@ -274,9 +274,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                           text: context.l10n.next,
                           isDisabled: isLoading || hasAmountLimitViolation,
                           isLoading: false,
-                          analyticsEvent: AnalyticsEventName
-                              .forYouGivingContinueTapped
-                              .toEvent(),
+                          analyticsEvent: _givingContinueAnalyticsEvent(),
                           onTap: _openNextAccordion,
                         ),
                       ),
@@ -286,9 +284,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                           text: context.l10n.forYouGivingCompleteMyGiving,
                           isDisabled: !canSubmit || isLoading,
                           isLoading: isLoading,
-                          analyticsEvent: AnalyticsEventName
-                              .forYouGivingContinueTapped
-                              .toEvent(),
+                          analyticsEvent: _givingContinueAnalyticsEvent(),
                           onTap: () => _submit(
                             context,
                             organisation.nameSpace,
@@ -478,6 +474,16 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       }
       _scrollAccordionIntoView(_expandedIndex);
     });
+  }
+
+  AnalyticsEvent _givingContinueAnalyticsEvent() {
+    return AnalyticsEvent(
+      AnalyticsEventName.forYouGivingContinueTapped,
+      parameters: buildForYouGivingContinueAnalyticsParameters(
+        lines: _goalLines,
+        amountTexts: _controllers.map((c) => c.text).toList(),
+      ),
+    );
   }
 
   void _submit(
