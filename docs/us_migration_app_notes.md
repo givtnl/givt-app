@@ -5,6 +5,8 @@
 - US and EU users share the same navigation shell (`Pages.home`, EU registration, account screens).
 - US API base URL is still selected from the user’s country (see `RequestHelper` / `EmailSignupCubit`).
 - US payments use **Stripe** during registration (`PersonalInfoPage` → `CreditCardDetails`) and from **Personal info edit** (card row when `Country.isCreditCard`).
+- US donations in the unified give flow open **`confirm-G4F.html`** from `GivingPage` when `Country.isCreditCard` is true (same in-app browser as EU, but G4F confirm page + `shouldShowCreditCard` in the web payload). EU/UK use `confirm.html`.
+- **Backend:** Unified flow calls `submitGivts` first and passes `transactionIds` in the confirm `msg` payload. Legacy G4F parent flow used `createTransaction` without `transactionIds`. Confirm with backend that `confirm-G4F.html` accepts the unified payload before release.
 - Givt4Kids routes are no longer registered (`FamilyAppRoutes.routes` is empty). Legacy deep links that pointed at family route names fall back to **home** (see `NotificationService`).
 
 ## Legacy US / G4K users

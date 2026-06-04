@@ -1,22 +1,15 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
-import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
-import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
-import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_amount_page.dart';
-import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
@@ -27,7 +20,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/g
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
-import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -44,8 +36,6 @@ class GratefulScreen extends StatefulWidget {
 
 class _GratefulScreenState extends State<GratefulScreen> {
   final GratefulCubit _cubit = getIt<GratefulCubit>();
-  final GiveCubit _give = getIt<GiveCubit>();
-  final MediumCubit _medium = getIt<MediumCubit>();
   final ScrollController _scrollController = ScrollController();
   int _currentIndex = 0;
 
@@ -64,124 +54,110 @@ class _GratefulScreenState extends State<GratefulScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<GiveCubit, GiveState>(
-      bloc: _give,
-      listener: (context, state) {
-        final userGUID = context.read<FamilyAuthCubit>().user!.guid;
-        if (state is GiveFromBrowser) {
-          // we assume the parent confirms on browser
-          _handleParentBrowser(userGUID);
+    return BaseStateConsumer(
+      cubit: _cubit,
+      onCustom: _handleCustom,
+      onLoading: (context) => const GratefulLoading(),
+      onData: (context, uiModel) {
+        if (_currentIndex >=
+            uiModel.recommendationsUIModel.organisations.length) {
+          _currentIndex = 0;
         }
-        if (state is GiveError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(context.l10n.somethingWentWrong),
-            ),
-          );
-        }
-      },
-      child: BaseStateConsumer(
-        cubit: _cubit,
-        onCustom: _handleCustom,
-        onLoading: (context) => const GratefulLoading(),
-        onData: (context, uiModel) {
-          if (_currentIndex >=
-              uiModel.recommendationsUIModel.organisations.length) {
-            _currentIndex = 0;
-          }
-          return FunScaffold(
-            canPop: false,
-            minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
-            appBar: const FunTopAppBar(
-              title: 'Generosity time',
-            ),
-            body: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    child: Column(
-                      children: [
-                        AvatarBar(
-                          backgroundColor: FunTheme.of(context).primary99,
-                          uiModel: uiModel.avatarBarUIModel,
-                          onAvatarTapped: _cubit.onAvatarTapped,
-                          circleSize: 50,
+        return FunScaffold(
+          canPop: false,
+          minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
+          appBar: const FunTopAppBar(
+            title: 'Generosity time',
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    children: [
+                      AvatarBar(
+                        backgroundColor: FunTheme.of(context).primary99,
+                        uiModel: uiModel.avatarBarUIModel,
+                        onAvatarTapped: _cubit.onAvatarTapped,
+                        circleSize: 50,
+                      ),
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 48,
                         ),
-                        const SizedBox(height: 16),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 48,
-                          ),
-                          child: TitleMediumText(
-                            '${uiModel.recommendationsUIModel.name} would you like to Help or Give?',
-                            textAlign: TextAlign.center,
-                          ),
+                        child: TitleMediumText(
+                          '${uiModel.recommendationsUIModel.name} would you like to Help or Give?',
+                          textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 16),
-                        Center(
-                          child: FunPrimaryTabs(
-                            selectedIndex:
-                                uiModel.recommendationsUIModel.tabIndex,
-                            onPressed: _cubit.onSelectionChanged,
-                            options: _cubit.tabsOptions,
-                            analyticsEvent: AnalyticsEventName.recommendationTypeSelectorClicked.toEvent(),
-                          ),
+                      ),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: FunPrimaryTabs(
+                          selectedIndex:
+                              uiModel.recommendationsUIModel.tabIndex,
+                          onPressed: _cubit.onSelectionChanged,
+                          options: _cubit.tabsOptions,
+                          analyticsEvent: AnalyticsEventName
+                              .recommendationTypeSelectorClicked
+                              .toEvent(),
                         ),
-                        const SizedBox(height: 16),
-                        RecommendationsWidget(
-                          uiModel: uiModel.recommendationsUIModel,
-                          onRecommendationChosen: _cubit.onRecommendationChosen,
-                          onTapRetry: _cubit.onRetry,
-                          onSkip: _cubit.onSkip,
-                          onIndexChanged: (index) {
-                            _currentIndex = index;
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                if (!uiModel.recommendationsUIModel.isNotLoggedInParent ||
-                    uiModel.recommendationsUIModel.isShowingActsOfService)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
-                    child: FunButton(
-                      onTap: () => _cubit.onRecommendationChosen(_currentIndex),
-                      text:
-                          uiModel.recommendationsUIModel.isShowingActsOfService
-                              ? "I'm going to do this"
-                              : 'Give',
-                      analyticsEvent: AnalyticsEventName.newActOfGenerosityClicked.toEvent(
-                        parameters: {
-                          uiModel.recommendationsUIModel.isShowingActsOfService
-                                  ? 'act_of_service'
-                                  : 'donation':
-                              uiModel.recommendationsUIModel.organisations
-                                  .elementAtOrNull(_currentIndex)
-                                  ?.name,
-                          AnalyticsHelper.firstNameKey:
-                              uiModel.recommendationsUIModel.name,
+                      ),
+                      const SizedBox(height: 16),
+                      RecommendationsWidget(
+                        uiModel: uiModel.recommendationsUIModel,
+                        onRecommendationChosen: _cubit.onRecommendationChosen,
+                        onTapRetry: _cubit.onRetry,
+                        onSkip: _cubit.onSkip,
+                        onIndexChanged: (index) {
+                          _currentIndex = index;
                         },
                       ),
-                    ),
-                  ),
-                const SizedBox(height: 4),
-                FunTextButton(
-                  onTap: _cubit.onSkip,
-                  text: 'Skip this time',
-                  analyticsEvent: AnalyticsEventName.skipGenerosActPressed.toEvent(
-                    parameters: {
-                      AnalyticsHelper.firstNameKey:
-                          uiModel.recommendationsUIModel.name,
-                    },
+                    ],
                   ),
                 ),
-              ],
-            ),
-          );
-        },
-      ),
+              ),
+              if (!uiModel.recommendationsUIModel.isNotLoggedInParent ||
+                  uiModel.recommendationsUIModel.isShowingActsOfService)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+                  child: FunButton(
+                    onTap: () => _cubit.onRecommendationChosen(_currentIndex),
+                    text: uiModel.recommendationsUIModel.isShowingActsOfService
+                        ? "I'm going to do this"
+                        : 'Give',
+                    analyticsEvent:
+                        AnalyticsEventName.newActOfGenerosityClicked.toEvent(
+                      parameters: {
+                        uiModel.recommendationsUIModel.isShowingActsOfService
+                                ? 'act_of_service'
+                                : 'donation':
+                            uiModel.recommendationsUIModel.organisations
+                                .elementAtOrNull(_currentIndex)
+                                ?.name,
+                        AnalyticsHelper.firstNameKey:
+                            uiModel.recommendationsUIModel.name,
+                      },
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 4),
+              FunTextButton(
+                onTap: _cubit.onSkip,
+                text: 'Skip this time',
+                analyticsEvent:
+                    AnalyticsEventName.skipGenerosActPressed.toEvent(
+                  parameters: {
+                    AnalyticsHelper.firstNameKey:
+                        uiModel.recommendationsUIModel.name,
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -199,11 +175,6 @@ class _GratefulScreenState extends State<GratefulScreen> {
         _navigateToChildGivingScreen(
           context,
           data.profile,
-          data.organisation,
-        );
-      case final GratefulOpenParentDonationFlow data:
-        _navigateToParentGivingScreen(
-          context,
           data.organisation,
         );
       case final GratefulOpenActOfServiceSuccess data:
@@ -284,67 +255,6 @@ class _GratefulScreenState extends State<GratefulScreen> {
         },
       ).toRoute(context),
     );
-  }
-
-  Future<void> _navigateToParentGivingScreen(
-    BuildContext context,
-    Organisation org,
-  ) async {
-    _medium.setMediumId(org.namespace);
-    unawaited(
-      AnalyticsHelper.logEvent(
-        eventName: AnalyticsEventName.parentReflectionFlowOrganisationClicked,
-        eventProperties: {
-          'organisation': org.name,
-        },
-      ),
-    );
-    final dynamic result = await Navigator.push(
-      context,
-      ParentAmountPage(
-        authcheck: true,
-        currency: r'$',
-        organisationName: org.name,
-        icon: CollectGroupType.getFunIconByType(CollectGroupType.charities),
-      ).toRoute(context),
-    );
-    if (result != null && result is int && context.mounted) {
-      unawaited(
-        AnalyticsHelper.logEvent(
-          eventName: AnalyticsEventName.parentGiveWithAmountClicked,
-          eventProperties: {
-            'amount': result,
-            'organisation': org.name,
-            'mediumid': org.namespace,
-          },
-        ),
-      );
-      await _give.createTransaction(
-        userId: context.read<FamilyAuthCubit>().user!.guid,
-        amount: result,
-        isGratitude: true,
-        orgName: org.name,
-        mediumId: org.namespace,
-        experiencePoints: org.experiencePoints,
-      );
-
-      await Navigator.push(
-        context,
-        const FullScreenLoadingWidget(
-          text: 'Setting up your donation',
-        ).toRoute(context),
-      );
-    }
-  }
-
-  Future<void> _handleParentBrowser(String guid) async {
-    final dynamic result = await Navigator.pushReplacement(
-      context,
-      const ParentGivingPage().toRoute(context),
-    );
-    if (result != null && result == true && context.mounted) {
-      await _cubit.onParentDonated(guid);
-    }
   }
 
   void _navigateToGatherAround(BuildContext context) {

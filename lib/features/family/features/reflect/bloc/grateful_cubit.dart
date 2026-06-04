@@ -231,22 +231,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
         ),
       );
     } else {
-      emitCustom(
-        GratefulCustom.openParentDonationFlow(
-          profile: _getCurrentProfile(),
-          organisation: organisation,
-        ),
-      );
+      onSkip();
     }
-  }
-
-  Future<void> onParentDonated(String userId) async {
-    final parent = _profiles.firstWhere(
-      (e) => e.userId == userId,
-      orElse: () =>
-          throw Exception('Parent profile not found for userId: $userId'),
-    );
-    await onDeed(parent);
   }
 
   Future<void> onDeed(GameProfile profile, {bool skip = false}) async {
