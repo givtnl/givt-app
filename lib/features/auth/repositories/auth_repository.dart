@@ -443,8 +443,7 @@ class AuthRepositoyImpl with AuthRepository {
   @override
   Future<StripeResponse> fetchStripeSetupIntent() async {
     final reponse = await _apiService.fetchStripeSetupIntent();
-    final stripeResponse = StripeResponse.fromJson(reponse);
-    return stripeResponse;
+    return StripeResponse.fromJson(reponse);
   }
 
   @override

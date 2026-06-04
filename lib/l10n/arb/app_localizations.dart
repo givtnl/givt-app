@@ -3179,6 +3179,18 @@ abstract class AppLocalizations {
   /// **'Enter Payment Details'**
   String get enterPaymentDetails;
 
+  /// No description provided for @registrationAccountSetupMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re setting up your account. This may take a moment.'**
+  String get registrationAccountSetupMessage;
+
+  /// No description provided for @registrationPaymentConfirmFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Next, you\'ll add your payment card so you can give with Givt.'**
+  String get registrationPaymentConfirmFooter;
+
   /// No description provided for @directNoticeText.
   ///
   /// In en, this message translates to:

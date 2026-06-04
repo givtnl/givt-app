@@ -56,6 +56,14 @@ enum Pages {
     name: 'BACS-MANDATE-EXPLANATION',
   ),
   registration(path: 'registration', name: 'REGISTRATION'),
+  registrationAccountSetup(
+    path: 'account-setup',
+    name: 'REGISTRATION-ACCOUNT-SETUP',
+  ),
+  registrationPaymentConfirm(
+    path: 'payment-confirm',
+    name: 'REGISTRATION-PAYMENT-CONFIRM',
+  ),
   registrationSuccess(
     path: 'registration-success',
     name: 'REGISTRATION-SUCCESS',

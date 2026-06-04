@@ -32,8 +32,6 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
     on<RegistrationStripeSuccess>(_onStripeSuccess);
 
-    on<RegistrationStripeInit>(_onStripeInit);
-
     on<RegistrationReset>(_onReset);
 
     on<RegistrationMandateErrorDismissed>(_onMandateErrorDismissed);
@@ -63,6 +61,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     Emitter<RegistrationState> emit,
   ) async {
     emit(state.copyWith(status: RegistrationStatus.loading));
+
+    final isUs =
+        event.country.toUpperCase() == Country.us.countryCode;
 
     try {
       // Trim spaces from IBAN and phone number to avoid duplicates - KIDS-2075
@@ -95,10 +96,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
 
       await authCubit.refreshUser();
-      if (event.country.toUpperCase() == Country.us.countryCode) {
+      if (isUs) {
         emit(
           state.copyWith(
-            status: RegistrationStatus.createStripeAccount,
+            status: RegistrationStatus.confirmPaymentDetails,
           ),
         );
         return;
@@ -228,17 +229,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     );
   }
 
-  void _onStripeInit(
-    RegistrationStripeInit event,
-    Emitter<RegistrationState> emit,
-  ) {
-    emit(state.copyWith(status: RegistrationStatus.createStripeAccount));
-  }
-
   Future<void> _onStripeSuccess(
     RegistrationStripeSuccess event,
     Emitter<RegistrationState> emit,
   ) async {
+    emit(state.copyWith(status: RegistrationStatus.finalizingAccount));
+
     var user = authCubit.state.user;
 
     var trials = 1;

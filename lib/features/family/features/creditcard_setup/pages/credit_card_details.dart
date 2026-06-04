@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_
 import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 
@@ -18,6 +19,7 @@ class CreditCardDetails extends StatefulWidget {
   const CreditCardDetails({
     required this.parentContext,
     required this.onSuccess,
+    this.onFlowEnded,
     this.shrink = false,
     super.key,
   });
@@ -28,15 +30,19 @@ class CreditCardDetails extends StatefulWidget {
   final bool shrink;
   final VoidCallback onSuccess;
 
+  /// Called when Stripe setup was not completed (cancel, error, dismiss).
+  final VoidCallback? onFlowEnded;
+
   @override
   State<CreditCardDetails> createState() => _CreditCardDetailsState();
 
-  static void show(
+  static Future<void> show(
     BuildContext context, {
     required VoidCallback onSuccess,
+    VoidCallback? onFlowEnded,
     bool shrink = true,
   }) {
-    showModalBottomSheet<void>(
+    return showModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
       isScrollControlled: true,
@@ -48,6 +54,7 @@ class CreditCardDetails extends StatefulWidget {
         parentContext: context,
         shrink: shrink,
         onSuccess: onSuccess,
+        onFlowEnded: onFlowEnded,
       ),
     );
   }
@@ -55,6 +62,8 @@ class CreditCardDetails extends StatefulWidget {
 
 class _CreditCardDetailsState extends State<CreditCardDetails> {
   bool showPaymentSheet = false;
+  bool _handedOffToNativeStripe = false;
+  bool _stripeSetupCompleted = false;
 
   @override
   void initState() {
@@ -88,6 +97,7 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
       if (!mounted) return;
       if (!parent.mounted) return;
 
+      _handedOffToNativeStripe = true;
       Navigator.of(context, rootNavigator: true).pop();
       await Future<void>.delayed(const Duration(milliseconds: 200));
       if (!parent.mounted) return;
@@ -131,6 +141,7 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
         e.toString(),
         methodName: stackTrace.toString(),
       );
+      widget.onFlowEnded?.call();
     }
   }
 
@@ -153,8 +164,8 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
           height: widget.shrink
               ? MediaQuery.of(context).size.height * 0.5
               : null,
-          child: const FullScreenLoadingWidget(
-            text: 'Hold on, we are saving your card details...',
+          child: FullScreenLoadingWidget(
+            text: context.l10n.registrationAccountSetupMessage,
           ),
         );
       },
@@ -162,6 +173,15 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
   }
 
   void _handleStripeRegistrationSuccess(BuildContext context) {
+    _stripeSetupCompleted = true;
     context.read<RegistrationBloc>().add(const RegistrationStripeSuccess());
+  }
+
+  @override
+  void dispose() {
+    if (!_stripeSetupCompleted && !_handedOffToNativeStripe) {
+      widget.onFlowEnded?.call();
+    }
+    super.dispose();
   }
 }

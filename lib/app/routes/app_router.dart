@@ -276,6 +276,22 @@ class AppRouter {
                   child: const PersonalInfoPage(),
                 ),
               ),
+              GoRoute(
+                path: Pages.registrationAccountSetup.path,
+                name: Pages.registrationAccountSetup.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as RegistrationBloc,
+                  child: const RegistrationAccountSetupPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.registrationPaymentConfirm.path,
+                name: Pages.registrationPaymentConfirm.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as RegistrationBloc,
+                  child: const RegistrationPaymentConfirmPage(),
+                ),
+              ),
             ],
           ),
           GoRoute(

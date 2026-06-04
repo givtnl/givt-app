@@ -28,7 +28,7 @@ name: Ask for creditcard details in give flow
     text: "123"
 - tapOn: "Set up"
 - assertVisible: 
-    text: ".*Hold on.*"
+    text: ".*setting up your account.*"
     optional: true
 - repeat:
     label: "Add more money +"

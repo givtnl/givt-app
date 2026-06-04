@@ -1,19 +1,16 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
-import 'package:givt_app/features/family/features/creditcard_setup/pages/credit_card_details.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
-import 'package:givt_app/features/review_donations/utils/navigation_helper.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -44,7 +41,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   Country _selectedCountry = Country.sortedCountries().first;
   Country _selectedPhoneCountry = Country.sortedCountries().first;
   bool isLoading = false;
-  bool _stripeSheetOffered = false;
+  bool _navigatedToPaymentConfirm = false;
 
   @override
   void initState() {
@@ -114,9 +111,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         onTap: isEnabled ? _onNext : null,
         isDisabled: !isEnabled,
         isLoading: isLoading,
-        text: _selectedCountry == Country.us
-            ? locals.enterPaymentDetails
-            : locals.next,
+        text: locals.next,
         analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
       ),
       body: BlocListener<RegistrationBloc, RegistrationState>(
@@ -129,29 +124,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             );
             setState(() {
               isLoading = false;
-              _stripeSheetOffered = false;
             });
           }
-          if (state.status == RegistrationStatus.createStripeAccount &&
-              !_stripeSheetOffered) {
+          if (state.status == RegistrationStatus.confirmPaymentDetails &&
+              !_navigatedToPaymentConfirm) {
+            _navigatedToPaymentConfirm = true;
             setState(() {
               isLoading = false;
             });
-            _stripeSheetOffered = true;
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              if (!context.mounted) return;
-              CreditCardDetails.show(
-                context,
-                onSuccess: () {},
-              );
-            });
-          }
-          if (state.status == RegistrationStatus.success) {
-            unawaited(
-              navigateAfterMandateSigning(
-                context,
-                context.read<AuthCubit>().state.user.country,
-              ),
+            context.pushReplacementNamed(
+              Pages.registrationPaymentConfirm.name,
+              extra: context.read<RegistrationBloc>(),
             );
           }
         },
