@@ -5,19 +5,17 @@ class ExternalDonationDetailUIModel {
     required this.donation,
     required this.totalDonated,
     required this.givingDuration,
-    required this.oneOffTransactionDate,
     required this.history,
-    required this.isRecurring,
-    required this.isActive,
   });
 
   final ExternalDonation donation;
   final double totalDonated;
   final GivingDuration? givingDuration;
-  final DateTime? oneOffTransactionDate;
   final List<ExternalDonationHistoryItem> history;
-  final bool isRecurring;
-  final bool isActive;
+
+  bool get isRecurring => donation.isRecurring;
+
+  bool get isActive => donation.active;
 
   @override
   bool operator ==(Object other) {
@@ -26,10 +24,7 @@ class ExternalDonationDetailUIModel {
         other.donation == donation &&
         other.totalDonated == totalDonated &&
         other.givingDuration == givingDuration &&
-        other.oneOffTransactionDate == oneOffTransactionDate &&
-        other.history == history &&
-        other.isRecurring == isRecurring &&
-        other.isActive == isActive;
+        other.history == history;
   }
 
   @override
@@ -37,10 +32,7 @@ class ExternalDonationDetailUIModel {
         donation,
         totalDonated,
         givingDuration,
-        oneOffTransactionDate,
         history,
-        isRecurring,
-        isActive,
       );
 }
 

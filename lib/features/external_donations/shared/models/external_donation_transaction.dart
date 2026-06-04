@@ -1,3 +1,5 @@
+import 'package:givt_app/core/datetime/api_date_time.dart';
+
 class ExternalDonationTransaction {
   const ExternalDonationTransaction({
     required this.id,
@@ -16,6 +18,9 @@ class ExternalDonationTransaction {
   final String id;
   final double amount;
   final String creationDate;
+
+  /// When the transaction occurred, in local time.
+  DateTime? get occurredAt => ApiDateTime.parseLocal(creationDate);
 
   static List<ExternalDonationTransaction> fromJsonList(List<dynamic> json) {
     return json
