@@ -19,7 +19,7 @@ class ExternalDonationTransaction {
   final double amount;
   final String creationDate;
 
-  /// When the transaction occurred, in local time.
+  /// When the transaction occurred (local wall-clock time).
   DateTime? get occurredAt => ApiDateTime.parseLocal(creationDate);
 
   static List<ExternalDonationTransaction> fromJsonList(List<dynamic> json) {

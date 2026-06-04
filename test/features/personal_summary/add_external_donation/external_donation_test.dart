@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:givt_app/core/datetime/api_date_time.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 
 void main() {
@@ -16,13 +17,10 @@ void main() {
       });
 
       expect(donation.nextRecurringDate, '2024-06-01T00:00:00.000Z');
-      expect(
-        donation.nextRecurringOccurrenceDate,
-        DateTime.parse('2024-06-01T00:00:00.000Z').toLocal(),
-      );
+      expect(donation.nextRecurringOccurrenceDate, DateTime(2024, 6, 1));
     });
 
-    test('fromJson parses startDate and startDateTime in local time', () {
+    test('fromJson parses startDate and startDateTime as local wall-clock time', () {
       final donation = ExternalDonation.fromJson({
         'id': 'donation-1',
         'amount': 25,
@@ -36,7 +34,7 @@ void main() {
       expect(donation.startDate, '2026-05-30T18:50:17.5669885+00:00');
       expect(
         donation.startDateTime,
-        DateTime.parse('2026-05-30T18:50:17.5669885+00:00').toLocal(),
+        ApiDateTime.parseLocal('2026-05-30T18:50:17.5669885+00:00'),
       );
     });
 

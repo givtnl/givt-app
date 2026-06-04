@@ -56,13 +56,13 @@ class ExternalDonation extends Equatable {
 
   bool get isRecurring => !isOneOff;
 
-  /// Parsed [startDate] in local time (gift date or recurring series start).
+  /// Parsed [startDate] as local wall-clock time (gift date or series start).
   DateTime? get startDateTime => ApiDateTime.parseLocal(startDate);
 
-  /// Parsed [creationDate] in local time (when the record was created in Givt).
+  /// Parsed [creationDate] as local wall-clock time (when the record was created).
   DateTime? get creationDateTime => ApiDateTime.parseLocal(creationDate);
 
-  /// Next scheduled occurrence (`nextRecurringDate`), in local time.
+  /// Next scheduled occurrence (`nextRecurringDate`) as local wall-clock time.
   DateTime? get nextRecurringOccurrenceDate =>
       ApiDateTime.parseLocal(nextRecurringDate);
 

@@ -3,7 +3,7 @@ import 'package:givt_app/features/external_donations/shared/models/external_dona
 
 /// Display helpers for [ExternalDonation] list and detail UI.
 abstract final class ExternalDonationDisplay {
-  /// Gift / series start date formatted for the user's locale and timezone.
+  /// Gift or series start date formatted for the user's locale.
   static String formatStartDate(ExternalDonation donation, String locale) {
     return ApiDateTime.formatYMMMd(donation.startDateTime, locale);
   }

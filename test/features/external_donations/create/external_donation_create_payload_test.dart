@@ -25,7 +25,8 @@ void main() {
       expect(body['frequency'], 'Once');
       expect(body['taxDeductable'], isTrue);
       expect(body.containsKey('creationDate'), isFalse);
-      expect(body['startDate'], isNotNull);
+      expect(body['startDate'], '2024-03-15T00:00:00.000');
+      expect((body['startDate'] as String).endsWith('Z'), isFalse);
       expect(body.containsKey('active'), isFalse);
       expect(body.containsKey('collectGroupId'), isFalse);
     });
@@ -44,10 +45,8 @@ void main() {
       );
 
       expect(body['frequency'], 'Monthly');
-      expect(
-        body['startDate'],
-        DateTime(2024, 1, 12).toUtc().toIso8601String(),
-      );
+      expect(body['startDate'], '2024-01-12T00:00:00.000');
+      expect((body['startDate'] as String).endsWith('Z'), isFalse);
       expect(body.containsKey('creationDate'), isFalse);
       expect(body['taxDeductable'], isFalse);
       expect(body.containsKey('active'), isFalse);

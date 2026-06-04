@@ -31,7 +31,7 @@ class ExternalDonationCreatePayloadBuilder {
 
     final startDate = _startDate(draft);
     if (startDate != null) {
-      body['startDate'] = startDate.toUtc().toIso8601String();
+      body['startDate'] = _formatStartDate(startDate);
     }
 
     return body;
@@ -45,6 +45,11 @@ class ExternalDonationCreatePayloadBuilder {
       return draft.seriesStartDate;
     }
     return null;
+  }
+
+  /// Selected calendar date at local midnight as ISO-8601 without a timezone offset.
+  static String _formatStartDate(DateTime date) {
+    return DateTime(date.year, date.month, date.day).toIso8601String();
   }
 }
 
@@ -144,7 +149,9 @@ class ExternalDonationCreateRepositoryImpl
 
   @override
   void updateDateMade(DateTime date) {
-    _draft = _draft.copyWith(dateMade: date);
+    _draft = _draft.copyWith(
+      dateMade: DateTime(date.year, date.month, date.day),
+    );
   }
 
   @override
