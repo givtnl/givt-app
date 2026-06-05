@@ -4,7 +4,7 @@ import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_overview_uimodel.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/utils/util.dart';
 

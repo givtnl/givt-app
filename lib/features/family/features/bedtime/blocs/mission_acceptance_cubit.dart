@@ -4,7 +4,7 @@ import 'package:givt_app/features/family/features/bedtime/presentation/models/mi
 import 'package:givt_app/features/family/features/bedtime/presentation/models/mission_acceptance_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';

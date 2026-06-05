@@ -8,15 +8,15 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_text_button.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/dialogs/donation_submission_timeout_dialog.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/utils/for_you_donation_transactions.dart';
+import 'package:givt_app/features/give/utils/for_you_giving_analytics.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/features/give/widgets/for_you_more_general_goals_sheet.dart';
 import 'package:givt_app/features/give/widgets/numeric_keyboard.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -108,10 +108,17 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     final currencySymbol = Util.getCurrencySymbol(
       countryCode: country.countryCode,
     );
+    final amountLimit = auth.user.amountLimit;
     if (country.countryCode == Country.us.countryCode ||
         Country.unitedKingdomCodes().contains(country.countryCode)) {
       _decimalSeparator = '.';
     }
+    final hasAmountLimitViolation = DonationAmountValidation.anyExceedsUserAmountLimit(
+      values: _controllers.map((controller) => controller.text),
+      amountLimit: amountLimit,
+      decimalSeparator: _decimalSeparator,
+    );
+    final canSubmit = _hasValidAmounts && !hasAmountLimitViolation;
 
     if (organisation == null) {
       return FunScaffold(
@@ -136,6 +143,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
               'orgName': organisation.orgName,
             },
           );
+        }
+        if (state.status == GiveStatus.submissionTimeout) {
+          DonationSubmissionTimeoutDialog.show(context);
         }
         if (state.status == GiveStatus.error) {
           showDialog<void>(
@@ -196,6 +206,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                               line: _goalLines[index],
                               index: index,
                               currencySymbol: currencySymbol,
+                              amountLimit: amountLimit,
                               accordionKey: _accordionKeys[index],
                             ),
                           );
@@ -204,6 +215,14 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                     ),
                   ),
                 ),
+                if (hasAmountLimitViolation)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: BodySmallText(
+                      context.l10n.amountLimitExceeded,
+                      color: FunTheme.of(context).error50,
+                    ),
+                  ),
                 if (_showMoreGoalsLink)
                   FunTextButton(
                     text: context.l10n.forYouGivingMoreGoals,
@@ -240,22 +259,22 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                         child: FunButton(
                           text: context.l10n.forYouGivingCompleteMyGiving,
                           variant: FunButtonVariant.secondary,
-                          isDisabled: !_hasAnyAmount || isLoading,
-                          analyticsEvent: AnalyticsEventName
-                              .forYouGivingContinueTapped
-                              .toEvent(),
-                          onTap: () => _submit(context, organisation.nameSpace),
+                          isDisabled: !canSubmit || isLoading,
+                          analyticsEvent: _givingContinueAnalyticsEvent(),
+                          onTap: () => _submit(
+                            context,
+                            organisation.nameSpace,
+                            amountLimit: amountLimit,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: FunButton(
                           text: context.l10n.next,
-                          isDisabled: isLoading,
+                          isDisabled: isLoading || hasAmountLimitViolation,
                           isLoading: false,
-                          analyticsEvent: AnalyticsEventName
-                              .forYouGivingContinueTapped
-                              .toEvent(),
+                          analyticsEvent: _givingContinueAnalyticsEvent(),
                           onTap: _openNextAccordion,
                         ),
                       ),
@@ -263,12 +282,14 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
                       Expanded(
                         child: FunButton(
                           text: context.l10n.forYouGivingCompleteMyGiving,
-                          isDisabled: !_hasAnyAmount || isLoading,
+                          isDisabled: !canSubmit || isLoading,
                           isLoading: isLoading,
-                          analyticsEvent: AnalyticsEventName
-                              .forYouGivingContinueTapped
-                              .toEvent(),
-                          onTap: () => _submit(context, organisation.nameSpace),
+                          analyticsEvent: _givingContinueAnalyticsEvent(),
+                          onTap: () => _submit(
+                            context,
+                            organisation.nameSpace,
+                            amountLimit: amountLimit,
+                          ),
                         ),
                       ),
                   ],
@@ -286,6 +307,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     required ForYouGoalLineKind line,
     required int index,
     required String currencySymbol,
+    required int amountLimit,
     required GlobalKey accordionKey,
   }) {
     final title = switch (line) {
@@ -321,6 +343,7 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
           controller: _controllers[index],
           isExpanded: _expandedIndex == index,
           amount: _parseAmount(_controllers[index].text),
+          amountLimit: amountLimit,
           onClear: () {
             setState(() {
               _controllers[index].text = '0';
@@ -369,15 +392,22 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     required TextEditingController controller,
     required bool isExpanded,
     required double amount,
+    required int amountLimit,
     required VoidCallback onClear,
   }) {
     final theme = FunTheme.of(context);
     final isComplete = amount > 0;
-    final borderColor = isComplete
-        ? theme.primary30
-        : isExpanded
-            ? theme.primary70
-            : theme.neutralVariant90;
+    final exceedsLimit = DonationAmountValidation.exceedsUserAmountLimit(
+      amount: amount,
+      amountLimit: amountLimit,
+    );
+    final borderColor = exceedsLimit
+        ? theme.error50
+        : isComplete
+            ? theme.primary30
+            : isExpanded
+                ? theme.primary70
+                : theme.neutralVariant90;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -446,7 +476,29 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     });
   }
 
-  void _submit(BuildContext context, String namespace) {
+  AnalyticsEvent _givingContinueAnalyticsEvent() {
+    return AnalyticsEvent(
+      AnalyticsEventName.forYouGivingContinueTapped,
+      parameters: buildForYouGivingContinueAnalyticsParameters(
+        lines: _goalLines,
+        amountTexts: _controllers.map((c) => c.text).toList(),
+      ),
+    );
+  }
+
+  void _submit(
+    BuildContext context,
+    String namespace, {
+    required int amountLimit,
+  }) {
+    if (!_hasValidAmounts ||
+        DonationAmountValidation.anyExceedsUserAmountLimit(
+          values: _controllers.map((controller) => controller.text),
+          amountLimit: amountLimit,
+          decimalSeparator: _decimalSeparator,
+        )) {
+      return;
+    }
     final userGuid = context.read<AuthCubit>().state.user.guid;
     final amounts = _controllers.map((c) => _parseAmount(c.text)).toList();
     final donations = buildForYouDonationTransactions(
@@ -507,6 +559,13 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   bool get _hasAnyAmount =>
       _controllers.any((controller) => _parseAmount(controller.text) > 0);
 
+  bool get _hasValidAmounts =>
+      _hasAnyAmount &&
+      _controllers.every(
+        (controller) =>
+            !DonationAmountValidation.exceedsMaxInputAmount(controller.text),
+      );
+
   bool get _isLastAccordion => _expandedIndex >= _goalLines.length - 1;
 
   void onBackspaceTapped() {
@@ -527,22 +586,22 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
 
   void onCommaTapped() {
     final controller = _controllers[_selectedField];
-    if (controller.text.contains(_decimalSeparator)) {
-      return;
-    }
     setState(() {
-      controller.text = '${controller.text}$_decimalSeparator';
+      controller.text = DonationAmountValidation.appendDecimalSeparator(
+        currentText: controller.text,
+        decimalSeparator: _decimalSeparator,
+      );
     });
   }
 
   void onNumberTapped(String value) {
     final controller = _controllers[_selectedField];
     setState(() {
-      if (controller.text == '0') {
-        controller.text = value;
-      } else {
-        controller.text = '${controller.text}$value';
-      }
+      controller.text = DonationAmountValidation.appendDigit(
+        currentText: controller.text,
+        digit: value,
+        decimalSeparator: _decimalSeparator,
+      );
     });
   }
 

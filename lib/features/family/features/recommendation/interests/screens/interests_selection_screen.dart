@@ -7,9 +7,8 @@ import 'package:givt_app/features/family/features/recommendation/interests/cubit
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interest_card.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interests_tally.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class InterestsSelectionScreen extends StatelessWidget {

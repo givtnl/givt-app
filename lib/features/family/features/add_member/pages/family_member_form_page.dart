@@ -11,8 +11,7 @@ import 'package:givt_app/features/family/features/add_member/widgets/family_memb
 import 'package:givt_app/features/family/features/add_member/widgets/member_counter.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/registration/widgets/random_avatar.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';

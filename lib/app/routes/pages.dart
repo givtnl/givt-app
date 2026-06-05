@@ -56,6 +56,14 @@ enum Pages {
     name: 'BACS-MANDATE-EXPLANATION',
   ),
   registration(path: 'registration', name: 'REGISTRATION'),
+  registrationAccountSetup(
+    path: 'account-setup',
+    name: 'REGISTRATION-ACCOUNT-SETUP',
+  ),
+  registrationPaymentConfirm(
+    path: 'payment-confirm',
+    name: 'REGISTRATION-PAYMENT-CONFIRM',
+  ),
   registrationSuccess(
     path: 'registration-success',
     name: 'REGISTRATION-SUCCESS',
@@ -84,6 +92,7 @@ enum Pages {
     name: 'ADD-EXTERNAL-DONATION',
   ),
   recurringDonations(path: 'recurring-donations', name: 'RECURRING-DONATIONS'),
+  externalDonations(path: 'external-donations', name: 'EXTERNAL-DONATIONS'),
   editCreditCardDetails(
     path: 'edit-credit-card-details',
     name: 'EDIT-CREDIT-CARD-DETAILS',

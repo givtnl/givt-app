@@ -7,11 +7,9 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/components/content/fun_progressbar.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
 import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_donation_detail_cubit.dart';
 import 'package:givt_app/features/recurring_donations/detail/repositories/recurring_donation_detail_repository.dart';
@@ -342,18 +340,6 @@ class _RecurringDonationDetailPageState
               ],
             ),
           ),
-          // Status tag
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: _getStatusColor(context, item.status),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: LabelSmallText(
-              _getStatusText(item.status, context),
-              color: _getStatusTextColor(context, item.status),
-            ),
-          ),
         ],
       ),
     );
@@ -399,17 +385,6 @@ class _RecurringDonationDetailPageState
         return Icons.check;
       case DonationStatus.inprocess:
         return Icons.schedule;
-    }
-  }
-
-  String _getStatusText(DonationStatus status, BuildContext context) {
-    switch (status) {
-      case DonationStatus.upcoming:
-        return context.l10n.recurringDonationsDetailStatusUpcoming;
-      case DonationStatus.processed:
-        return context.l10n.recurringDonationsDetailStatusCompleted;
-      case DonationStatus.inprocess:
-        return context.l10n.recurringDonationsDetailStatusPending;
     }
   }
 

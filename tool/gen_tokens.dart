@@ -32,10 +32,8 @@ void main(List<String> args) {
   final outDir = Directory(p.join(
     projectRoot.path,
     'lib',
-    'features',
-    'family',
     'shared',
-    'design',
+    'design_system',
     'tokens',
   ));
   if (!outDir.existsSync()) outDir.createSync(recursive: true);

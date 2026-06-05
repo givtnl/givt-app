@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 
 class Mission extends Equatable {

@@ -1,7 +1,7 @@
 import 'package:givt_app/features/family/features/profiles/models/custom_avatar_model.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/utils/profile_type.dart';
 
 class GameProfile {

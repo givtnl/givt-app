@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/shared/design/components/content/fun_bubble.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 class LockedCaptainMessageWidget extends StatelessWidget {
   const LockedCaptainMessageWidget({

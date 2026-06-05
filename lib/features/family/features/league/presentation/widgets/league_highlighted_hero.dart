@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/models/league_entry_uimodel.dart';
 import 'package:givt_app/features/family/features/league/presentation/widgets/rank_widget.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_avatar.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 
 class LeagueHighlightedHero extends StatelessWidget {
   const LeagueHighlightedHero({

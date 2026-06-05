@@ -15,7 +15,6 @@ import 'package:givt_app/features/account_details/pages/personal_info_edit_page.
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/donation_overview.dart';
 import 'package:givt_app/features/email_signup/presentation/pages/email_signup_page.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
@@ -43,6 +42,7 @@ import 'package:givt_app/features/personal_summary/overview/pages/personal_summa
 import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/pages/yearly_overview_page.dart';
 import 'package:givt_app/features/platform_contribution/presentation/screens/platform_contribution_screen.dart';
+import 'package:givt_app/features/external_donations/overview/pages/external_donations_overview_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -58,7 +58,6 @@ import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_
 import 'package:givt_app/shared/pages/flow_generic_error_extra.dart';
 import 'package:givt_app/shared/pages/flow_generic_error_page.dart';
 import 'package:givt_app/shared/pages/redirect_to_browser_page.dart';
-import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -254,6 +253,11 @@ class AppRouter {
             ),
           ),
           GoRoute(
+            path: Pages.externalDonations.path,
+            name: Pages.externalDonations.name,
+            builder: (context, state) => const ExternalDonationsOverviewPage(),
+          ),
+          GoRoute(
             path: Pages.registration.path,
             name: Pages.registration.name,
             builder: (context, state) {
@@ -270,6 +274,22 @@ class AppRouter {
                 builder: (context, state) => BlocProvider.value(
                   value: state.extra! as RegistrationBloc,
                   child: const PersonalInfoPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.registrationAccountSetup.path,
+                name: Pages.registrationAccountSetup.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as RegistrationBloc,
+                  child: const RegistrationAccountSetupPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.registrationPaymentConfirm.path,
+                name: Pages.registrationPaymentConfirm.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as RegistrationBloc,
+                  child: const RegistrationPaymentConfirmPage(),
                 ),
               ),
             ],
@@ -804,13 +824,7 @@ class AppRouter {
     }
 
     if (auth.status == AuthStatus.authenticated) {
-      if (auth.user.isUsUser) {
-        return navigatingPage.isNotNullAndNotEmpty()
-            ? '${FamilyPages.profileSelection.path}?$query'
-            : '${FamilyPages.profileSelection.path}${state.uri}';
-      } else {
-        return '${Pages.home.path}?$query';
-      }
+      return '${Pages.home.path}?$query';
     }
 
     return '${Pages.welcome.path}?$query';
@@ -822,8 +836,6 @@ class AppRouter {
     BuildContext context,
     GoRouterState routerState,
   ) async {
-    if (state.user.isUsUser) return;
-
     if (state.status == AuthStatus.biometricCheck) {
       await context.pushNamed(
         Pages.permitBiometric.name,
@@ -840,7 +852,6 @@ class AppRouter {
         return;
       }
 
-      //needs to be after isUsUser check
       if (routerState.name == Pages.home.name) {
         return;
       }

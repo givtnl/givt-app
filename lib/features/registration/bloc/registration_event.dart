@@ -91,10 +91,6 @@ class RegistrationSignMandate extends RegistrationEvent {
   List<Object> get props => [guid, appLanguage];
 }
 
-class RegistrationStripeInit extends RegistrationEvent {
-  const RegistrationStripeInit();
-}
-
 class RegistrationStripeSuccess extends RegistrationEvent {
   const RegistrationStripeSuccess({
     this.emitAuthenticated = true,

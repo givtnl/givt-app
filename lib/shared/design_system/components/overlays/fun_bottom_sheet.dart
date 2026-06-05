@@ -1,0 +1,169 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/shared/design_system/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
+import 'package:givt_app/shared/design_system/theme/fun_theme_legacy.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
+
+class FunBottomSheet extends StatelessWidget {
+  const FunBottomSheet({
+    required this.title,
+    required this.content,
+    this.icon,
+    this.headlineContent,
+    this.titleColor,
+    this.primaryButton,
+    this.secondaryButton,
+    this.closeAction,
+    super.key,
+  });
+
+  final String title;
+  final Color? titleColor;
+  final Widget? icon;
+  final Widget content;
+  final Widget? headlineContent;
+
+  final FunButton? primaryButton;
+  final Widget? secondaryButton;
+
+  final VoidCallback? closeAction;
+
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      data: const FamilyAppTheme().toThemeData(),
+      child: SafeArea(
+        minimum: EdgeInsets.fromLTRB(
+          0,
+          0,
+          0,
+          MediaQuery.of(context).viewInsets.bottom + 40,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Title
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Spacer(),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 96,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 40),
+                      child: TitleMediumText(
+                        title,
+                        textAlign: TextAlign.center,
+                        color: titleColor,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: showCloseButton(),
+                  ),
+                ],
+              ),
+
+              // Icon
+              if (icon != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: SizedBox(
+                    width: 140,
+                    height: 140,
+                    child: icon,
+                  ),
+                ),
+
+              if (icon == null) const SizedBox(height: 8),
+              // Content
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    content,
+
+                    // Extra text above buttons
+                    showHeadlineContent(),
+
+                    // Buttons
+                    showPrimaryButton(),
+                    showSecondaryButton(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget showCloseButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        if (closeAction == null) const SizedBox(height: 24),
+        if (closeAction != null)
+          IconButton(
+            icon: FaIcon(
+              semanticLabel: 'xmark',
+              FontAwesomeIcons.xmark,
+              color: titleColor,
+            ),
+            onPressed: () {
+              AnalyticsHelper.logEvent(
+                eventName: AnalyticsEventName.bottomsheetCloseButtonClicked,
+              );
+
+              closeAction!.call();
+            },
+          ),
+      ],
+    );
+  }
+
+  Widget showHeadlineContent() {
+    if (headlineContent == null) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 36),
+      child: headlineContent,
+    );
+  }
+
+  Widget showPrimaryButton() {
+    if (primaryButton == null) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: primaryButton,
+    );
+  }
+
+  Widget showSecondaryButton() {
+    if (secondaryButton == null) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: secondaryButton,
+    );
+  }
+
+  void show(BuildContext context, {bool isDismissible = true}) {
+    showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      isDismissible: isDismissible,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      backgroundColor: Colors.white,
+      builder: (context) => this,
+    );
+  }
+}

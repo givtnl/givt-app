@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
@@ -15,20 +14,17 @@ import 'package:givt_app/features/auth/widgets/country_dropdown.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/email_signup/cubit/email_signup_cubit.dart';
 import 'package:givt_app/features/email_signup/cubit/email_signup_custom.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/email_signup/presentation/models/email_signup_uimodel.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/utils/fun_theme_legacy.dart';
-import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
-import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/auth_utils.dart';
 import 'package:go_router/go_router.dart';
@@ -52,6 +48,9 @@ class EmailSignupPage extends StatefulWidget {
 class _EmailSignupPageState extends State<EmailSignupPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+  bool _emailHydrated = false;
+  late final TextEditingController _emailController;
+  StreamSubscription<dynamic>? _emailHydrationSub;
 
   final EmailSignupCubit _cubit = getIt<EmailSignupCubit>();
   final InternetConnectionCubit _connectionCubit = getIt<InternetConnectionCubit>();
@@ -67,6 +66,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
 
   @override
   void dispose() {
+    _emailHydrationSub?.cancel();
+    _emailController.dispose();
     _cubit.close();
     super.dispose();
   }
@@ -80,6 +81,26 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   @override
   void initState() {
     super.initState();
+    _emailController = TextEditingController();
+    final cur = _cubit.state;
+    if (cur is DataState<EmailSignupUiModel, EmailSignupCustom>) {
+      _emailHydrated = true;
+      _emailController.text = cur.data.email;
+    } else {
+      _emailHydrationSub = _cubit.stream.listen((state) {
+        if (!_emailHydrated &&
+            state is DataState<EmailSignupUiModel, EmailSignupCustom>) {
+          _emailHydrated = true;
+          _emailHydrationSub?.cancel();
+          _emailHydrationSub = null;
+          if (mounted) {
+            setState(() {
+              _emailController.text = state.data.email;
+            });
+          }
+        }
+      });
+    }
 
     _checkAuthentication();
   }
@@ -87,7 +108,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final size = MediaQuery.sizeOf(context);
 
     return BlocListener<InternetConnectionCubit, InternetConnectionState>(
       bloc: _connectionCubit,
@@ -136,7 +156,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
             ),
             body: LayoutBuilder(
               builder: (context, constraint) {
-                final isUS = true == state.country?.isUS;
                 return SingleChildScrollView(
                   reverse: true,
                   key: const ValueKey('Email-Signup-Scrollable'),
@@ -156,29 +175,17 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               'assets/images/logo.png',
                               width: 100,
                             ),
-                            if (isUS)
-                              const SizedBox(
-                                height: 24,
-                              ),
-                            if (!isUS) const Spacer(),
+                            const Spacer(),
                             TitleLargeText(
-                              isUS
-                                  ? locals.homescreenFamilyWelcome
-                                  : locals.homescreenLetsGo,
+                              locals.homescreenLetsGo,
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 4),
                             BodyMediumText(
-                              isUS
-                                  ? locals.homescreenFamilyGenerosity
-                                  : locals.homescreenJourneyOfGenerosity,
+                              locals.homescreenJourneyOfGenerosity,
                               textAlign: TextAlign.center,
                             ),
                             const Spacer(),
-                            if (isUS && size.height > 750)
-                              SvgPicture.asset(
-                                'assets/family/images/captain.svg',
-                              ),
                             CountryDropDown(
                               selectedCountry: state.country,
                               onChanged: (Country? newValue) {
@@ -186,12 +193,10 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               },
                             ),
                             const SizedBox(height: 12),
-                            OutlinedTextFormField(
+                            InputFormField(
                               key: const ValueKey('Email-Input'),
-                              initialValue: state.email,
-                              hintText: state.country?.isUS == true
-                                  ? locals.homepageParentEmailHint
-                                  : locals.email,
+                              controller: _emailController,
+                              hintText: locals.email,
                               onChanged: _cubit.updateEmail,
                               validator: (value) {
                                 if (!_cubit.validateEmail(value)) {
@@ -261,27 +266,23 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                       FocusScope.of(context).unfocus();
 
                                       _cubit.updateApi();
-                                      if (state.country?.isUS == true) {
-                                        await _cubit.login();
-                                      } else {
-                                        setLoading();
-                                        AppThemeSwitcher.of(context)
-                                            .switchTheme(isFamilyApp: false);
-                                        try {
-                                          await context
-                                              .read<AuthCubit>()
-                                              .register(
-                                                country: state.country!,
-                                                email: state.email,
-                                                locale: Localizations.localeOf(
-                                                        context)
-                                                    .languageCode,
-                                              );
-                                        } catch (e) {
-                                          //do nothing (error will be shown via custom state)
-                                        }
-                                        setLoading(state: false);
+                                      setLoading();
+                                      AppThemeSwitcher.of(context)
+                                          .switchTheme(isFamilyApp: false);
+                                      try {
+                                        await context
+                                            .read<AuthCubit>()
+                                            .register(
+                                              country: state.country!,
+                                              email: state.email,
+                                              locale: Localizations.localeOf(
+                                                      context)
+                                                  .languageCode,
+                                            );
+                                      } catch (e) {
+                                        // Error surfaced via AuthCubit / dialogs.
                                       }
+                                      setLoading(state: false);
                                     }
                                   : null,
                               text: locals.buttonContinue,
@@ -314,29 +315,22 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
         setLoading();
       case EmailSignupShowFamilyRegistration():
         setLoading(state: false);
-        AppThemeSwitcher.of(context).switchTheme(isFamilyApp: true);
+        AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
         context.goNamed(
-          FamilyPages.registrationUS.name,
+          Pages.registration.name,
           queryParameters: {
             'email': custom.email,
           },
         );
       case EmailSignupShowFamilyLogin():
         setLoading(state: false);
-        AppThemeSwitcher.of(context).switchTheme(isFamilyApp: true);
-        await FamilyAuthUtils.authenticateUser(
+        AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
+        await AuthUtils.checkToken(
           context,
-          checkAuthRequest: FamilyCheckAuthRequest(
-            useBiometrics: false,
+          checkAuthRequest: CheckAuthRequest(
             email: custom.email,
-            navigate: (context) async => context.pushReplacementNamed(
-              FamilyPages.permitUSBiometric.name,
-              extra: PermitBiometricRequest.registration(
-                redirect: (context) {
-                  context.goNamed(FamilyPages.profileSelection.name);
-                },
-              ),
-            ),
+            navigate: (context) async => context.goNamed(Pages.home.name),
+            forceLogin: true,
           ),
         );
       case EmailSignupNoInternet():
@@ -375,7 +369,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   /// EU (Legacy) Code
   Future<void> _checkAuthentication() async {
     final user = context.read<AuthCubit>().state.user;
-    if (user.needRegistration || user.isUsUser) return;
+    if (user.needRegistration) return;
 
     // Without biometrics we use the regular route to login
     if (!await LocalAuthInfo.instance.canCheckBiometrics) return;

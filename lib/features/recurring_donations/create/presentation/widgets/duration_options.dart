@@ -3,16 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/components/input/fun_date_picker.dart';
-import 'package:givt_app/features/family/shared/design/components/input/fun_input_radio.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:intl/intl.dart';
 import 'package:moment_dart/moment_dart.dart';
 
@@ -49,10 +45,14 @@ class _DurationOptionsState extends State<DurationOptions> {
   StreamSubscription<bool>? _keyboardVisibilitySubscription;
   late KeyboardVisibilityController _keyboardVisibilityController;
   bool _isKeyboardVisible = false;
+  late TextEditingController _numberOfDonationsController;
 
   @override
   void initState() {
     super.initState();
+    _numberOfDonationsController = TextEditingController(
+      text: widget.uiModel.numberOfDonations,
+    );
     _keyboardVisibilityController = KeyboardVisibilityController();
 
     // Listen to keyboard visibility changes
@@ -75,7 +75,19 @@ class _DurationOptionsState extends State<DurationOptions> {
   void dispose() {
     _snackbarTimer?.cancel();
     _keyboardVisibilitySubscription?.cancel();
+    _numberOfDonationsController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(DurationOptions oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.uiModel.numberOfDonations !=
+            widget.uiModel.numberOfDonations &&
+        _numberOfDonationsController.text !=
+            widget.uiModel.numberOfDonations) {
+      _numberOfDonationsController.text = widget.uiModel.numberOfDonations;
+    }
   }
 
   void _showSnackbarWithKeyboardCheck(
@@ -214,9 +226,9 @@ class _DurationOptionsState extends State<DurationOptions> {
   Widget _buildNumberInput(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8),
-      child: OutlinedTextFormField(
+      child: FunInput(
+        controller: _numberOfDonationsController,
         hintText: context.l10n.recurringDonationsCreateDurationNumberHint,
-        initialValue: widget.uiModel.numberOfDonations,
         keyboardType: TextInputType.number,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,

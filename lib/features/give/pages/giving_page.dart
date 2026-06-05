@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -96,6 +97,7 @@ class _GivingPageState extends State<GivingPage> {
   ) {
     final giveBlocState = context.read<GiveBloc>().state;
     final user = context.read<AuthCubit>().state.user;
+    final country = Country.fromCode(user.country);
     final format = NumberFormat.simpleCurrency(
       name: giveBlocState.organisation.currency,
     );
@@ -136,7 +138,15 @@ class _GivingPageState extends State<GivingPage> {
       platformFeeRemember: context.l10n.platformFeeRemember,
       transactionIds: giveBlocState.transactionIds,
       isForYouFlow: giveBlocState.isForYouFlow,
+      shouldShowCreditCard: country.isCreditCard,
     ).toJson();
+  }
+
+  String _confirmPagePath(BuildContext context) {
+    final country = Country.fromCode(
+      context.read<AuthCubit>().state.user.country,
+    );
+    return country.isCreditCard ? 'confirm-G4F.html' : 'confirm.html';
   }
 
   @override
@@ -150,10 +160,11 @@ class _GivingPageState extends State<GivingPage> {
             return const SizedBox.shrink();
           }
           final givt = _buildGivt(context);
+          final confirmPath = _confirmPagePath(context);
 
           Vibration.vibrate(amplitude: 128);
           LoggingInfo.instance.info(
-            'Opening browser with $givt',
+            'Opening browser at $confirmPath with $givt',
           );
 
           browserIsOpened = true;
@@ -162,7 +173,7 @@ class _GivingPageState extends State<GivingPage> {
               url: WebUri.uri(
                 Uri.https(
                   getIt<RequestHelper>().apiURL,
-                  'confirm.html',
+                  confirmPath,
                   {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
                 ),
               ),

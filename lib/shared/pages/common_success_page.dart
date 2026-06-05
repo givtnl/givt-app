@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';

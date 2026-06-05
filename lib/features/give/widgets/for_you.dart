@@ -3,12 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_tile.dart';
-import 'package:givt_app/features/family/shared/design/components/content/fun_mission_card.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/fun_mission_card_ui_model.dart';
-import 'package:givt_app/features/family/shared/design/components/input/fun_input.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/cubit/for_you_goals_cubit.dart';
@@ -528,6 +523,10 @@ class _ForYouState extends State<ForYou>
       hintText: title,
       readOnly: true,
       heroTag: 'discover_search_input_hero',
+      prefixIcon: Icon(
+        Icons.search,
+        color: FunTheme.of(context).neutral40,
+      ),
       analyticsEvent: analyticsEvent,
       onTap: () => _openForYouList(ForYouEntrySource.search),
     );

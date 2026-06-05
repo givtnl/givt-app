@@ -19,7 +19,7 @@ import 'package:givt_app/features/family/features/overview/pages/edit_allowance_
 import 'package:givt_app/features/family/features/overview/pages/models/edit_allowance_success_uimodel.dart';
 import 'package:givt_app/features/family/features/overview/pages/models/top_up_success_uimodel.dart';
 import 'package:givt_app/features/family/features/overview/pages/top_up_success_page.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';

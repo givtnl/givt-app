@@ -1,5 +1,4 @@
 enum FamilyPages {
-  parentGive(path: 'parent-give', name: 'PARENT-GIVE'),
   profileSelection(path: '/profile-selection', name: 'PROFILE_SELECTION'),
   wallet(path: 'wallet', name: 'WALLET'),
   parentHome(path: 'parent-home', name: 'PARENT-HOME'),
@@ -21,7 +20,6 @@ enum FamilyPages {
     name: 'US-PERMIT-BIOMETRIC-US',
   ),
   heardAboutGivt(path: 'heard-about-givt', name: 'HEARD-ABOUT-GIVT'),
-  giveByListFamily(path: 'give-by-list-family', name: 'GIVE-BY-LIST-FAMILY'),
   test(path: 'test', name: 'TEST'),
   scanNFC(path: 'scan-nfc', name: 'SCAN_NFC'),
   history(path: 'history', name: 'HISTORY'),

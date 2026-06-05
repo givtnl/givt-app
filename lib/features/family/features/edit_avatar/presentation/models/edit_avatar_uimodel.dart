@@ -1,5 +1,5 @@
 import 'package:givt_app/features/family/features/edit_avatar/presentation/models/edit_avatar_item_uimodel.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/custom_avatar_uimodel.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 class EditAvatarUIModel {
   EditAvatarUIModel({

@@ -11,7 +11,7 @@ import 'package:givt_app/features/family/features/reflect/domain/reflect_and_sha
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
@@ -231,22 +231,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
         ),
       );
     } else {
-      emitCustom(
-        GratefulCustom.openParentDonationFlow(
-          profile: _getCurrentProfile(),
-          organisation: organisation,
-        ),
-      );
+      onSkip();
     }
-  }
-
-  Future<void> onParentDonated(String userId) async {
-    final parent = _profiles.firstWhere(
-      (e) => e.userId == userId,
-      orElse: () =>
-          throw Exception('Parent profile not found for userId: $userId'),
-    );
-    await onDeed(parent);
   }
 
   Future<void> onDeed(GameProfile profile, {bool skip = false}) async {

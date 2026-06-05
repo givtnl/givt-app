@@ -4,18 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
-import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
-import 'package:givt_app/features/family/shared/design/components/overlays/fun_bottom_sheet.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/fun_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/models/fun_dialog_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/uppercase_text_formatter.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
@@ -43,6 +41,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   Country _selectedCountry = Country.sortedCountries().first;
   Country _selectedPhoneCountry = Country.sortedCountries().first;
   bool isLoading = false;
+  bool _navigatedToPaymentConfirm = false;
 
   @override
   void initState() {
@@ -72,6 +71,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       _selectedCountry.countryCode,
     );
     final isNl = _selectedCountry.isNetherlands;
+    final isUs = _selectedCountry == Country.us;
     return FunScaffold(
       appBar: FunTopAppBar(
         variant: FunTopAppBarVariant.white,
@@ -111,9 +111,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         onTap: isEnabled ? _onNext : null,
         isDisabled: !isEnabled,
         isLoading: isLoading,
-        text: _selectedCountry == Country.us
-            ? locals.enterPaymentDetails
-            : locals.next,
+        text: locals.next,
         analyticsEvent: AnalyticsEventName.continueClicked.toEvent(),
       ),
       body: BlocListener<RegistrationBloc, RegistrationState>(
@@ -127,6 +125,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             setState(() {
               isLoading = false;
             });
+          }
+          if (state.status == RegistrationStatus.confirmPaymentDetails &&
+              !_navigatedToPaymentConfirm) {
+            _navigatedToPaymentConfirm = true;
+            setState(() {
+              isLoading = false;
+            });
+            context.pushReplacementNamed(
+              Pages.registrationPaymentConfirm.name,
+              extra: context.read<RegistrationBloc>(),
+            );
           }
         },
         child: Form(
@@ -240,24 +249,38 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         // const Spacer(),
                         const SizedBox(height: 32),
                         // Bank details section header for UK and NL
-                        if (isUk || isNl) ...[
+                        if (!isUs && (isUk || isNl)) ...[
                           Align(
                             alignment: Alignment.centerLeft,
                             child: LabelLargeText(locals.bankDetails),
                           ),
                           const SizedBox(height: 8),
                         ],
-                        PaymentSystemTab(
-                          isUK: isUk,
-                          bankAccount: bankAccount,
-                          ibanNumber: ibanNumber,
-                          sortCode: sortCode,
-                          onFieldChanged: (value) => setState(() {}),
-                          onPaymentChanged: (value) {
-                            if (value == 0) {
-                              bankAccount.clear();
-                              sortCode.clear();
-                              if (isUk) {
+                        if (!isUs)
+                          PaymentSystemTab(
+                            isUK: isUk,
+                            bankAccount: bankAccount,
+                            ibanNumber: ibanNumber,
+                            sortCode: sortCode,
+                            onFieldChanged: (value) => setState(() {}),
+                            onPaymentChanged: (value) {
+                              if (value == 0) {
+                                bankAccount.clear();
+                                sortCode.clear();
+                                if (isUk) {
+                                  _showWarningDialog(
+                                    message: locals.alertSepaMessage(
+                                      Country.getCountry(
+                                        _selectedCountry.countryCode,
+                                        locals,
+                                      ),
+                                    ),
+                                  );
+                                }
+                                setState(() {});
+                                return;
+                              }
+                              if (!isUk) {
                                 _showWarningDialog(
                                   message: locals.alertSepaMessage(
                                     Country.getCountry(
@@ -267,22 +290,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                                   ),
                                 );
                               }
-                              setState(() {});
-                              return;
-                            }
-                            if (!isUk) {
-                              _showWarningDialog(
-                                message: locals.alertSepaMessage(
-                                  Country.getCountry(
-                                    _selectedCountry.countryCode,
-                                    locals,
-                                  ),
-                                ),
-                              );
-                            }
-                            setState(ibanNumber.clear);
-                          },
-                        ),
+                              setState(ibanNumber.clear);
+                            },
+                          ),
                         const SizedBox(
                           height: 80,
                         ),
@@ -418,7 +428,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           country: _selectedPhoneCountry,
           phoneNumber: _phone.text,
         ),
-        iban: ibanNumber.text,
+        iban: _selectedCountry == Country.us
+            ? Util.defaultIban
+            : ibanNumber.text,
         sortCode: sortCodeValue,
         accountNumber: bankAccount.text,
         appLanguage: Localizations.localeOf(context).languageCode,
@@ -474,6 +486,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       }
     }
 
+    if (_selectedCountry == Country.us) {
+      return true;
+    }
+
     if (isUk) {
       if (sortCode.text.isEmpty ||
           !Util.ukSortCodeRegEx.hasMatch(sortCode.text)) {
@@ -500,7 +516,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   }) {
     return Visibility(
       visible: isVisible,
-      child: OutlinedTextFormField(
+      child: InputFormField(
         controller: controller,
         hintText: hintText,
         inputFormatters: toUpperCase ? [UpperCaseTextFormatter()] : [],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/shared/design/theme/fun_app_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 

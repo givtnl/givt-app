@@ -11,11 +11,12 @@ import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/dialogs/donation_submission_timeout_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step1_select_organisation_page.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
@@ -64,6 +65,9 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               'orgName': state.organisation.organisationName,
             },
           );
+        }
+        if (state.status == GiveStatus.submissionTimeout) {
+          DonationSubmissionTimeoutDialog.show(context);
         }
         if (state.status == GiveStatus.error) {
           showDialog<void>(
@@ -133,6 +137,10 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                           focusNode: focusNode,
                           hintText: locals.searchHere,
                           heroTag: 'discover_search_input_hero',
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: FunTheme.of(context).neutral40,
+                          ),
                           onChanged: (value) => context
                               .read<OrganisationBloc>()
                               .add(OrganisationFilterQueryChanged(value)),

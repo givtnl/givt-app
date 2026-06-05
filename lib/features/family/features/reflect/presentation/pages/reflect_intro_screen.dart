@@ -7,7 +7,7 @@ import 'package:givt_app/features/family/features/reflect/bloc/reflect_intro_cub
 import 'package:givt_app/features/family/features/reflect/presentation/models/reflect_intro_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_selection_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/stage_screen.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';

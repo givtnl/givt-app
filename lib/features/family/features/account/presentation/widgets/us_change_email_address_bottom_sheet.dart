@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/components/overlays/bloc/fun_bottom_sheet_with_async_action_cubit.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/util.dart';
 
 class USChangeEmailAddressBottomSheet extends StatefulWidget {
@@ -28,8 +26,8 @@ class _ChangeEmailAddressBottomSheetState
   final FamilyAuthRepository _familyAuthRepository =
       getIt<FamilyAuthRepository>();
 
-  final formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
+  String? _emailError;
 
   @override
   void initState() {
@@ -47,7 +45,7 @@ class _ChangeEmailAddressBottomSheetState
         isDisabled: !isEnabled,
         onTap: isEnabled
             ? () {
-                if (!formKey.currentState!.validate()) {
+                if (!_validateEmail(locals.invalidEmail)) {
                   return;
                 }
                 widget.asyncCubit.doAsyncAction(
@@ -67,35 +65,43 @@ class _ChangeEmailAddressBottomSheetState
           },
         ),
       ),
-      content: Form(
-        key: formKey,
-        child: Column(
-          children: [
-            const SizedBox(height: 24),
-            OutlinedTextFormField(
-              controller: emailController,
-              onChanged: (value) => setState(() {}),
-              validator: (value) {
-                if (value == null ||
-                    value.isEmpty ||
-                    value.contains(Util.emailRegEx) == false) {
-                  return locals.invalidEmail;
-                }
-                return null;
-              },
-              hintText: locals.email,
-              textInputAction: TextInputAction.go,
-            ),
-          ],
-        ),
+      content: Column(
+        children: [
+          const SizedBox(height: 24),
+          FunInput(
+            controller: emailController,
+            hintText: locals.email,
+            textInputAction: TextInputAction.go,
+            errorText: _emailError,
+            onChanged: (_) {
+              setState(() {
+                _emailError = null;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
 
+  bool _validateEmail(String invalidEmailMessage) {
+    final value = emailController.text;
+    if (value.isEmpty || !value.contains(Util.emailRegEx)) {
+      setState(() {
+        _emailError = invalidEmailMessage;
+      });
+      return false;
+    }
+    setState(() {
+      _emailError = null;
+    });
+    return true;
+  }
+
   bool get isEnabled {
-    if (emailController.text == widget.email) return false;
-    if (formKey.currentState == null) return false;
-    if (formKey.currentState!.validate() == false) return false;
-    return emailController.text.isNotEmpty;
+    final text = emailController.text;
+    if (text == widget.email) return false;
+    if (text.isEmpty) return false;
+    return text.contains(Util.emailRegEx);
   }
 }

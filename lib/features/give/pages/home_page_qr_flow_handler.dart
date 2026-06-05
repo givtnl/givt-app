@@ -3,6 +3,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/dialogs/donation_submission_timeout_dialog.dart';
 import 'package:go_router/go_router.dart';
 
 /// Helper class to handle QR code flow logic for home page
@@ -194,6 +195,7 @@ class HomePageQRFlowHandler {
           (state) =>
               state.status == GiveStatus.readyToGive ||
               state.status == GiveStatus.noInternetConnection ||
+              state.status == GiveStatus.submissionTimeout ||
               state.status == GiveStatus.error,
           delay: const Duration(milliseconds: 200),
           mounted: mounted,
@@ -201,6 +203,17 @@ class HomePageQRFlowHandler {
 
         if (!mounted()) {
           dismissLoadingDialog(context);
+          return;
+        }
+
+        if (submissionState?.status == GiveStatus.submissionTimeout) {
+          LoggingInfo.instance.warning(
+            'QR flow: Transaction submission timed out',
+          );
+          dismissLoadingDialog(context);
+          if (mounted()) {
+            await DonationSubmissionTimeoutDialog.show(context);
+          }
           return;
         }
 

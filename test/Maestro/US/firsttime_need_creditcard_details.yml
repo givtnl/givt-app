@@ -19,5 +19,5 @@ name: Entering the creditcard details because they are not known yet
     text: "123"
 - tapOn: "Set up"
 - assertVisible: 
-    text: ".*Hold on.*"
+    text: ".*setting up your account.*"
     optional: true

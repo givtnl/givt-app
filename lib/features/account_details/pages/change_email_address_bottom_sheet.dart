@@ -3,11 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/util.dart';
 
 class ChangeEmailAddressBottomSheet extends StatefulWidget {
@@ -25,8 +23,8 @@ class ChangeEmailAddressBottomSheet extends StatefulWidget {
 
 class _ChangeEmailAddressBottomSheetState
     extends State<ChangeEmailAddressBottomSheet> {
-  final formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
+  String? _emailError;
 
   @override
   void initState() {
@@ -71,33 +69,28 @@ class _ChangeEmailAddressBottomSheetState
         return FunBottomSheet(
           closeAction: () => Navigator.of(context).pop(),
           title: locals.changeEmail,
-          content: Form(
-            key: formKey,
-            child: Column(
-              children: [
-                const SizedBox(height: 24),
-                OutlinedTextFormField(
-                  controller: emailController,
-                  onChanged: (_) => setState(() {}),
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        value.contains(Util.emailRegEx) == false) {
-                      return locals.invalidEmail;
-                    }
-                    return null;
-                  },
-                  hintText: locals.email,
-                  textInputAction: TextInputAction.go,
-                ),
-              ],
-            ),
+          content: Column(
+            children: [
+              const SizedBox(height: 24),
+              FunInput(
+                controller: emailController,
+                hintText: locals.email,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.go,
+                errorText: _emailError,
+                onChanged: (_) {
+                  setState(() {
+                    _emailError = null;
+                  });
+                },
+              ),
+            ],
           ),
           primaryButton: FunButton(
             isDisabled: !isEnabled || isLoading,
             onTap: isEnabled && !isLoading
                 ? () {
-                    if (!formKey.currentState!.validate()) {
+                    if (!_validateEmail(locals.invalidEmail)) {
                       return;
                     }
                     context.read<PersonalInfoEditBloc>().add(
@@ -122,15 +115,31 @@ class _ChangeEmailAddressBottomSheetState
   }
 
   void _onEmailChangeSuccessDone(BuildContext context) {
-    context.read<PersonalInfoEditBloc>().add(const PersonalInfoEditStatusReset());
+    context.read<PersonalInfoEditBloc>().add(
+          const PersonalInfoEditStatusReset(),
+        );
     Navigator.of(context).pop();
     context.read<AuthCubit>().refreshUser();
   }
 
+  bool _validateEmail(String invalidEmailMessage) {
+    final value = emailController.text;
+    if (value.isEmpty || !value.contains(Util.emailRegEx)) {
+      setState(() {
+        _emailError = invalidEmailMessage;
+      });
+      return false;
+    }
+    setState(() {
+      _emailError = null;
+    });
+    return true;
+  }
+
   bool get isEnabled {
-    if (emailController.text == widget.email) return false;
-    if (formKey.currentState == null) return false;
-    if (formKey.currentState!.validate() == false) return false;
-    return emailController.text.isNotEmpty;
+    final text = emailController.text;
+    if (text == widget.email) return false;
+    if (text.isEmpty) return false;
+    return text.contains(Util.emailRegEx);
   }
 }

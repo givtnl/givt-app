@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:iban/iban.dart';
@@ -114,7 +114,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab> {
     TextInputType? keyboardType = TextInputType.number,
     List<TextInputFormatter>? inputFormatters,
   }) {
-    return OutlinedTextFormField(
+    return InputFormField(
       controller: controller,
       focusNode: focusNode,
       hintText: hintText,
