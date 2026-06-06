@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/overview/cubit/family_overview_cubit.dart';
@@ -94,10 +95,7 @@ class ProfileOverviewTile extends StatelessWidget {
         },
       );
       if (isGivtAccount) {
-        context.pushNamed(
-          FamilyPages.familyPersonalInfoEdit.name,
-          extra: true,
-        );
+        context.pushNamed(Pages.personalInfoEdit.name);
       }
       return;
     }

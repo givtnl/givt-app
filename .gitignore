@@ -101,6 +101,9 @@ unlinked_spec.ds
 # Coverage
 coverage/
 
+# Golden test failure artifacts (generated locally on mismatch)
+test/golden/**/failures/
+
 # Submodules
 !pubspec.lock
 packages/**/pubspec.lock

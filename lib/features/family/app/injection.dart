@@ -27,9 +27,6 @@ import 'package:givt_app/features/family/features/gratitude_goal/bloc/gratitude_
 import 'package:givt_app/features/family/features/gratitude_goal/domain/repositories/gratitude_goal_repository.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/gratitude_goal_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
 import 'package:givt_app/features/family/features/league/bloc/in_game_league_cubit.dart';
 import 'package:givt_app/features/family/features/league/bloc/league_cubit.dart';
@@ -98,7 +95,6 @@ void initCubits() {
     ..registerFactory(() => ReflectIntroCubit(getIt()))
     ..registerFactory(ParentSummaryCubit.new)
     ..registerFactory(FunBottomSheetWithAsyncActionCubit.new)
-    ..registerFactory(() => GratitudeGoalCubit(getIt()))
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => LeaveGameCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
@@ -132,27 +128,8 @@ void initCubits() {
       ),
     )
     ..registerLazySingleton(() => SummaryCubit(getIt()))
-    ..registerLazySingleton<NavigationBarHomeCubit>(
-      () => NavigationBarHomeCubit(
-        getIt(),
-        getIt(),
-        getIt(),
-      ),
-    )
     ..registerFactory<FamilySelectionCubit>(
       () => FamilySelectionCubit(
-        getIt(),
-      ),
-    )
-    ..registerLazySingleton<FamilyHomeScreenCubit>(
-      () => FamilyHomeScreenCubit(
-        getIt(),
-        getIt(),
-        getIt(),
-        getIt(),
-        getIt(),
-        getIt(),
-        getIt(),
         getIt(),
       ),
     )

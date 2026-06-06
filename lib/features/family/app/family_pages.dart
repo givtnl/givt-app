@@ -1,17 +1,12 @@
 enum FamilyPages {
   profileSelection(path: '/profile-selection', name: 'PROFILE_SELECTION'),
   wallet(path: 'wallet', name: 'WALLET'),
-  parentHome(path: 'parent-home', name: 'PARENT-HOME'),
   camera(path: 'camera', name: 'CAMERA'),
   success(path: 'success', name: 'SUCCESS'),
   unregisterUS(path: 'unregister-us', name: 'UNREGISTER-US'),
   familyChooseAmountSlider(
     path: 'family-choose-amount-slider',
     name: 'FAMILY_CHOOSE_AMOUNT_SLIDER',
-  ),
-  familyPersonalInfoEdit(
-    path: 'family-personal-info-edit',
-    name: 'FAMILY-PERSONAL-INFO-EDIT',
   ),
   gratitudeGoal(path: 'gratitude-goal', name: 'GRATITUDE-GOAL'),
   registrationUS(path: '/registration-us', name: 'REGISTRATION-US'),

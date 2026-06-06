@@ -9,8 +9,6 @@ class Features {
 
   static const String profileEditAvatarButton = 'profile_edit_avatar_button';
 
-  static const String familyHomeProfile = 'family_home_profile';
-
   static const List<String> tabsOrderOfFeatures = [
     Features.avatarCustomBody,
     Features.avatarCustomHair,
@@ -37,9 +35,6 @@ class Features {
       Features.avatarCustomHair,
       Features.avatarCustomMask,
       Features.avatarCustomSuit,
-    ],
-    Features.familyHomeProfile: [
-      Features.profileEditAvatarButton,
     ],
   };
 

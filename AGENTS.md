@@ -40,7 +40,7 @@ The app has **two main variants**; many features exist in both with different im
 
 | Area | EU (default) | US (family) |
 |------|----------------|-------------|
-| Personal info / account | `lib/features/account_details/` | `lib/features/family/features/account/` |
+| Personal info / account | `lib/features/account_details/` | `lib/features/account_details/` (shared; US-specific fields gated by country) |
 | Auth / login | `lib/features/auth/` | `lib/features/family/features/auth/` |
 | Registration | `lib/features/registration/` | `lib/features/family/features/registration/` |
 

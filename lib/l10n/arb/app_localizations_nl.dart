@@ -168,6 +168,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get personalInfo => 'Persoonlijke gegevens';
 
   @override
+  String get accountSettingsTitle => 'Accountinstellingen';
+
+  @override
+  String get accountSettingsPersonalDetails => 'Persoonlijke gegevens';
+
+  @override
+  String get accountSettingsSecurity => 'Beveiliging';
+
+  @override
+  String get accountSettingsPreferences => 'Voorkeuren';
+
+  @override
   String get changeDetails => 'Gegevens wijzigen';
 
   @override
@@ -2091,14 +2103,6 @@ class AppLocalizationsNl extends AppLocalizations {
       'We vinden het jammer om je te zien gaan en we hopen om je weer terug te zien.';
 
   @override
-  String get homeScreenWelcome => 'Welcome!';
-
-  @override
-  String homeScreenHeyFamily(Object family) {
-    return 'Hey $family!';
-  }
-
-  @override
   String get tutorialGratitudeGameTitle => 'Gratitude Game';
 
   @override
@@ -2106,29 +2110,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'This game helps you to build gratitude by reflecting on your day as a family';
 
   @override
-  String homeScreenSecondParentDialogTitle(Object firstName) {
-    return '$firstName needs to use their own account';
-  }
-
-  @override
-  String get homeScreenSecondParentDialogDescription =>
-      'Use the Givt App on your own device';
-
-  @override
-  String get homeScreenSecondParentDialogConfirmButton => 'Got it';
-
-  @override
   String get tutorialFirstMissionTitle => 'Let\'s complete your first mission!';
 
   @override
   String get tutorialFirstMissionDescription =>
       'New missions help your family grow together. Tap above to begin!';
-
-  @override
-  String get homeScreenGratitudeGameButtonTitle => 'Family Game';
-
-  @override
-  String get homeScreenGratitudeGameButtonSubtitle => 'Play now!';
 
   @override
   String get setupFamilyTitle => 'Set up Family';
@@ -2180,12 +2166,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get originSelectLocation => 'Select location';
 
   @override
-  String get homeScreenGiveButtonTitle => 'Give';
-
-  @override
-  String get homeScreenGivtButtonDescription => 'Donate to a cause';
-
-  @override
   String gratitudeWeeklyGoal(Object amount) {
     return 'Play ${amount}x Weekly';
   }
@@ -2194,18 +2174,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String gratitudeGoalDaysLeft(Object amount) {
     return '$amount days left';
   }
-
-  @override
-  String get familyNavigationBarHome => 'Home';
-
-  @override
-  String get familyNavigationBarFamily => 'Family';
-
-  @override
-  String get familyNavigationBarMemories => 'Memories';
-
-  @override
-  String get familyNavigationBarLeague => 'League';
 
   @override
   String get missionsTitle => 'Missions available';
@@ -2261,12 +2229,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String gameStatsAmountOfDeeds(Object amount) {
     return '$amount deeds';
   }
-
-  @override
-  String get homescreenOverlayDiscoverTitle => 'Beloning voor jou!';
-
-  @override
-  String get homescreenOverlayGiveTitle => 'Who would like to give?';
 
   @override
   String get tutorialFamilyExplanationTitle => 'Here’s your super family!';

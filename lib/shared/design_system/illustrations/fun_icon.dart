@@ -117,11 +117,11 @@ class FunIcon extends StatelessWidget {
       );
 
   factory FunIcon.userLarge(
-          {Color circleColor = FamilyAppTheme.primary95,
+          {Color circleColor = FamilyAppTheme.secondary95,
           double iconsize = 48,
           double circleSize = 112}) =>
       FunIcon(
-        iconData: FontAwesomeIcons.userLarge,
+        iconData: FontAwesomeIcons.solidUser,
         circleColor: circleColor,
         iconSize: iconsize,
         circleSize: circleSize,
