@@ -374,6 +374,30 @@ abstract class AppLocalizations {
   /// **'Personal info'**
   String get personalInfo;
 
+  /// No description provided for @accountSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account settings'**
+  String get accountSettingsTitle;
+
+  /// No description provided for @accountSettingsPersonalDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal details'**
+  String get accountSettingsPersonalDetails;
+
+  /// No description provided for @accountSettingsSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get accountSettingsSecurity;
+
+  /// No description provided for @accountSettingsPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get accountSettingsPreferences;
+
   /// No description provided for @changeDetails.
   ///
   /// In en, this message translates to:
@@ -3776,18 +3800,6 @@ abstract class AppLocalizations {
   /// **'We’re sad to see you leave and we hope to see you again.'**
   String get unregisterSuccessText;
 
-  /// No description provided for @homeScreenWelcome.
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome!'**
-  String get homeScreenWelcome;
-
-  /// No description provided for @homeScreenHeyFamily.
-  ///
-  /// In en, this message translates to:
-  /// **'Hey {family}!'**
-  String homeScreenHeyFamily(Object family);
-
   /// No description provided for @tutorialGratitudeGameTitle.
   ///
   /// In en, this message translates to:
@@ -3800,24 +3812,6 @@ abstract class AppLocalizations {
   /// **'This game helps you to build gratitude by reflecting on your day as a family'**
   String get tutorialGratitudeGameDescription;
 
-  /// No description provided for @homeScreenSecondParentDialogTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'{firstName} needs to use their own account'**
-  String homeScreenSecondParentDialogTitle(Object firstName);
-
-  /// No description provided for @homeScreenSecondParentDialogDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Use the Givt App on your own device'**
-  String get homeScreenSecondParentDialogDescription;
-
-  /// No description provided for @homeScreenSecondParentDialogConfirmButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Got it'**
-  String get homeScreenSecondParentDialogConfirmButton;
-
   /// No description provided for @tutorialFirstMissionTitle.
   ///
   /// In en, this message translates to:
@@ -3829,18 +3823,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New missions help your family grow together. Tap above to begin!'**
   String get tutorialFirstMissionDescription;
-
-  /// No description provided for @homeScreenGratitudeGameButtonTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Family Game'**
-  String get homeScreenGratitudeGameButtonTitle;
-
-  /// No description provided for @homeScreenGratitudeGameButtonSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Play now!'**
-  String get homeScreenGratitudeGameButtonSubtitle;
 
   /// No description provided for @setupFamilyTitle.
   ///
@@ -3938,18 +3920,6 @@ abstract class AppLocalizations {
   /// **'Select location'**
   String get originSelectLocation;
 
-  /// No description provided for @homeScreenGiveButtonTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Give'**
-  String get homeScreenGiveButtonTitle;
-
-  /// No description provided for @homeScreenGivtButtonDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Donate to a cause'**
-  String get homeScreenGivtButtonDescription;
-
   /// No description provided for @gratitudeWeeklyGoal.
   ///
   /// In en, this message translates to:
@@ -3961,30 +3931,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{amount} days left'**
   String gratitudeGoalDaysLeft(Object amount);
-
-  /// No description provided for @familyNavigationBarHome.
-  ///
-  /// In en, this message translates to:
-  /// **'Home'**
-  String get familyNavigationBarHome;
-
-  /// No description provided for @familyNavigationBarFamily.
-  ///
-  /// In en, this message translates to:
-  /// **'Family'**
-  String get familyNavigationBarFamily;
-
-  /// No description provided for @familyNavigationBarMemories.
-  ///
-  /// In en, this message translates to:
-  /// **'Memories'**
-  String get familyNavigationBarMemories;
-
-  /// No description provided for @familyNavigationBarLeague.
-  ///
-  /// In en, this message translates to:
-  /// **'League'**
-  String get familyNavigationBarLeague;
 
   /// No description provided for @missionsTitle.
   ///
@@ -4081,18 +4027,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{amount} deeds'**
   String gameStatsAmountOfDeeds(Object amount);
-
-  /// No description provided for @homescreenOverlayDiscoverTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Your For You reward!'**
-  String get homescreenOverlayDiscoverTitle;
-
-  /// No description provided for @homescreenOverlayGiveTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Who would like to give?'**
-  String get homescreenOverlayGiveTitle;
 
   /// No description provided for @tutorialFamilyExplanationTitle.
   ///
