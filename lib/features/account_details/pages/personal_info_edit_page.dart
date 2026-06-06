@@ -97,10 +97,6 @@ class PersonalInfoEditPage extends StatelessWidget {
   }
 
   Future<void> _openStripePayment(BuildContext context) async {
-    await AnalyticsHelper.logEvent(
-      eventName: AnalyticsEventName.editPaymentDetailsClicked,
-    );
-
     if (!context.mounted) return;
     await getIt<StripeCubit>().fetchSetupIntent();
 
@@ -225,9 +221,8 @@ class _PersonalDetailsSection extends StatelessWidget {
               size: 20,
               color: iconColor,
             ),
-            analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
-              parameters: {'row_type': 'bank_details'},
-            ),
+            analyticsEvent:
+                AnalyticsEventName.editPaymentDetailsClicked.toEvent(),
             onTap: onOpenStripePayment,
           )
         else

@@ -213,9 +213,19 @@ void main() {
       ),
     );
 
-    final chevrons = find.byIcon(FontAwesomeIcons.chevronRight);
-    expect(chevrons, findsWidgets);
-    expect(tester.widgetList(chevrons).length, lessThan(10));
+    const iban = 'NL8610000000124300013';
+    final ibanFinder = find.text(iban);
+    expect(ibanFinder, findsOneWidget);
+    expect(
+      find.ancestor(of: ibanFinder, matching: find.byType(InkWell)),
+      findsNothing,
+    );
+    expect(
+      find.ancestor(of: ibanFinder, matching: find.byIcon(
+        FontAwesomeIcons.chevronRight,
+      )),
+      findsNothing,
+    );
   });
 }
 
