@@ -135,3 +135,32 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 
 - Run tests: `flutter test --coverage --test-randomize-ordering-seed random`
 - Makefile: see project root for common commands (README and Makefile).
+
+## Cursor Cloud specific instructions
+
+### Toolchain (one-time VM setup)
+
+- **Flutter**: Pin to **3.41.x** (CI uses `3.41.x`). Newer stable (e.g. 3.44+) can break `font_awesome_flutter` tests (`IconData` is final). Install to `$HOME/flutter` and `git checkout 3.41.0`.
+- **Melos**: `dart pub global activate melos` (executable in `$HOME/.pub-cache/bin`).
+- **Android SDK** (for APK builds): `$HOME/Android/Sdk` with platform 36, build-tools 36.0.0, platform-tools. Run `flutter config --android-sdk $HOME/Android/Sdk`.
+- **PATH** (in `~/.bashrc`): `$HOME/flutter/bin`, `$HOME/.pub-cache/bin`, `$ANDROID_HOME/cmdline-tools/latest/bin`, `$ANDROID_HOME/platform-tools`.
+
+### Dependency refresh
+
+See the VM update script (`melos install`). Do not re-run Flutter/Android SDK installs on every session.
+
+### Running the app
+
+This is a **mobile-only** client (iOS/Android). Web/desktop targets are not configured (`web: false`, no `linux/` folder).
+
+- **Dev flavor** requires `--dart-define` values — copy from `.vscode/launch.json` (`POSTHOG_API_KEY`, `API_URL_EU`, `API_URL_US`, `STRIPE_PK`, `STRIPE_MERCHANT_ID`). `make run_dev` does **not** include them.
+- Example: `flutter run --flavor development --target lib/main_development.dart` plus the dart-defines from launch.json.
+- **Android APK**: `flutter build apk --flavor development --target lib/main_development.dart` plus the same dart-defines.
+- **Android emulator**: Requires `/dev/kvm` (hardware acceleration). Cloud VMs without KVM cannot run the x86_64 emulator; use APK build + unit tests, or a physical device.
+
+### Lint and tests
+
+- `make lint` runs `dart format lib test` then `flutter analyze`. **Avoid running `make lint` during env-only setup** — `dart format` reformats the entire codebase. Use `flutter analyze` alone to check static analysis.
+- Analyze reports many pre-existing `info`-level issues; `make lint` may exit non-zero even when there are no errors.
+- `make test`: 123+ tests pass on Flutter 3.41.0. One widget test (`personal_info_page_test.dart`) can fail in headless CI/VM environments due to `FragmentProgram`/shader loading.
+- No local backend — E2E flows hit hosted dev APIs (`dev-backend.givtapp.net` / `dev-backend.givt.app`). Integration tests: see `integration_test/README.md` (Patrol + device).
