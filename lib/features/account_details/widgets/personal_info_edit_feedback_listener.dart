@@ -50,13 +50,6 @@ class PersonalInfoEditFeedbackListener extends StatelessWidget {
             subtitle: locals.updatePersonalInfoError,
           );
         }
-
-        if (state.status == PersonalInfoEditStatus.success) {
-          context.read<AuthCubit>().refreshUser().whenComplete(() {
-            if (!context.mounted) return;
-            Navigator.of(context).pop();
-          });
-        }
       },
       child: child,
     );

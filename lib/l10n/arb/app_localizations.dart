@@ -581,7 +581,7 @@ abstract class AppLocalizations {
   /// No description provided for @changePhone.
   ///
   /// In en, this message translates to:
-  /// **'Change mobile number'**
+  /// **'Edit phone number'**
   String get changePhone;
 
   /// No description provided for @artists.
@@ -593,8 +593,14 @@ abstract class AppLocalizations {
   /// No description provided for @changeAddress.
   ///
   /// In en, this message translates to:
-  /// **'Change address'**
+  /// **'Edit address'**
   String get changeAddress;
+
+  /// No description provided for @editIbanAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit IBAN account'**
+  String get editIbanAccount;
 
   /// No description provided for @selectLocationContextLong.
   ///

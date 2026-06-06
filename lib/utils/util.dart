@@ -274,4 +274,36 @@ AgMBAAE=
     // For other unsupported locales, default to English as well
     return const Locale('en');
   }
+
+  /// Splits a combined Dutch address into street and house number for edit forms.
+  ///
+  /// If the last whitespace-separated token contains a digit it is treated as the
+  /// house number; otherwise the full [address] is returned as street.
+  static ({String street, String houseNumber}) splitNetherlandsAddress(
+    String address,
+  ) {
+    final trimmed = address.trim();
+    if (trimmed.isEmpty) {
+      return (street: '', houseNumber: '');
+    }
+    final parts = trimmed.split(RegExp(r'\s+'));
+    if (parts.length >= 2 && RegExp(r'\d').hasMatch(parts.last)) {
+      final houseNumber = parts.removeLast();
+      return (street: parts.join(' '), houseNumber: houseNumber);
+    }
+    return (street: trimmed, houseNumber: '');
+  }
+
+  /// Combines Dutch street and house number for API submission.
+  static String combineNetherlandsAddress({
+    required String street,
+    required String houseNumber,
+  }) {
+    final trimmedStreet = street.trim();
+    final trimmedHouseNumber = houseNumber.trim();
+    if (trimmedHouseNumber.isEmpty) {
+      return trimmedStreet;
+    }
+    return '$trimmedStreet $trimmedHouseNumber';
+  }
 }

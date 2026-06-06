@@ -289,13 +289,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Unsergottesdienst.de\n Wenn du mithilfe der Unsergottesdienst-App Gottesdienste live verfolgst, kannst du mit Givt ganz einfach spenden. Voraussetzung ist natürlich, dass deine Kirche unseren Dienst nutzt. Am Ende der Seite findest du eine kleine Schaltfläche, mit der du zur Givt-App gelangen kannst. Wähle einfach einen Betrag aus, bestätigen mit \"Ja, bitte\" und das war es!';
 
   @override
-  String get changePhone => 'Handynummer ändern';
+  String get changePhone => 'Telefonnummer bearbeiten';
 
   @override
   String get artists => 'Künstler';
 
   @override
-  String get changeAddress => 'Adresse ändern';
+  String get changeAddress => 'Adresse bearbeiten';
+
+  @override
+  String get editIbanAccount => 'IBAN-Konto bearbeiten';
 
   @override
   String get selectLocationContextLong => 'Spende am Standort';

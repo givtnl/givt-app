@@ -288,13 +288,16 @@ class AppLocalizationsNl extends AppLocalizations {
       'Wanneer je via de Kerkdienst Gemist-app naar een kerkdienst aan het kijken bent, kun je ook meteen geven met Givt. Onderaan de pagina vind je een Givt-knop die je doorstuurt naar de Givt-app. Kies een bedrag, en klaar!';
 
   @override
-  String get changePhone => 'Mobiel nummer wijzigen';
+  String get changePhone => 'Telefoonnummer bewerken';
 
   @override
   String get artists => 'Artiesten';
 
   @override
-  String get changeAddress => 'Adres wijzigen';
+  String get changeAddress => 'Adres bewerken';
+
+  @override
+  String get editIbanAccount => 'IBAN-rekening bewerken';
 
   @override
   String get selectLocationContextLong => 'Geef op locatie';

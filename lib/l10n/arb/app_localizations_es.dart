@@ -285,13 +285,16 @@ class AppLocalizationsEs extends AppLocalizations {
       'Kerkdienst Gemist\n If you’re watching using the Kerkdienst Gemist App, you can easily give with Givt when your church uses our service. At the bottom of the page, you’ll find a small button that will take you to the Givt app. Choose an amount, confirm with \'Yes, please\' and you’re done!';
 
   @override
-  String get changePhone => 'Change mobile number';
+  String get changePhone => 'Edit phone number';
 
   @override
   String get artists => 'Artists';
 
   @override
-  String get changeAddress => 'Change address';
+  String get changeAddress => 'Edit address';
+
+  @override
+  String get editIbanAccount => 'Edit IBAN account';
 
   @override
   String get selectLocationContextLong => 'Give based on your location';
@@ -3420,13 +3423,16 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
       'Kerkdienst Gemist\n Si está viendo con la aplicación Kerkdienst Gemist, puede donar fácilmente con Givt cuando su iglesia utiliza nuestro servicio. En la parte inferior de la página, encontrará un pequeño botón que le llevará a la aplicación Givt. Elija un importe, confirme con \'Sí, por favor\' y ¡listo!';
 
   @override
-  String get changePhone => 'Cambiar número de teléfono';
+  String get changePhone => 'Editar número de teléfono';
 
   @override
   String get artists => 'Artistas';
 
   @override
-  String get changeAddress => 'Cambiar dirección';
+  String get changeAddress => 'Editar dirección';
+
+  @override
+  String get editIbanAccount => 'Editar cuenta IBAN';
 
   @override
   String get selectLocationContextLong => 'Donar según tu ubicación';

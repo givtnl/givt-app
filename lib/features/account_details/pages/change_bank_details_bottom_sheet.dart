@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/account_details/widgets/personal_info_edit_sheet_success.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:iban/iban.dart';
 
@@ -27,132 +30,150 @@ class ChangeBankDetailsBottomSheet extends StatefulWidget {
 class _ChangeBankDetailsBottomSheetState
     extends State<ChangeBankDetailsBottomSheet> {
   final formKey = GlobalKey<FormState>();
-  final TextEditingController iban = TextEditingController();
-  final TextEditingController accountNumber = TextEditingController();
-  final TextEditingController sortCode = TextEditingController();
+  final TextEditingController ibanController = TextEditingController();
+  final TextEditingController accountNumberController = TextEditingController();
+  final TextEditingController sortCodeController = TextEditingController();
+
+  bool get _isSepa => widget.iban.isNotEmpty;
 
   @override
   void initState() {
-    iban.text = widget.iban;
-    accountNumber.text = widget.accountNumber;
-    sortCode.text = SortCodeTextFormatter.formatForDisplay(widget.sortCode);
+    ibanController.text = widget.iban;
+    accountNumberController.text = widget.accountNumber;
+    sortCodeController.text = SortCodeTextFormatter.formatForDisplay(
+      widget.sortCode,
+    );
     super.initState();
   }
 
   @override
+  void dispose() {
+    ibanController.dispose();
+    accountNumberController.dispose();
+    sortCodeController.dispose();
+    super.dispose();
+  }
+
+  String get _submittedSortCode => SortCodeTextFormatter.stripDashes(
+        sortCodeController.text,
+      );
+
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final locals = context.l10n;
-    return BottomSheetLayout(
-      title: Text(
-        widget.iban.isNotEmpty
-            ? locals.changeIban
-            : locals.changeBankAccountNumberAndSortCode,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+    return BlocBuilder<PersonalInfoEditBloc, PersonalInfoEditState>(
+      builder: (context, state) {
+        final isLoading = state.status == PersonalInfoEditStatus.loading;
+        final isSuccess = state.status == PersonalInfoEditStatus.success;
+
+        if (isSuccess) {
+          return FunBottomSheet(
+            closeAction: () => completePersonalInfoEditSheet(context),
+            title: locals.success,
+            content: FunIcon.checkmark(),
+            primaryButton: FunButton(
+              text: locals.buttonDone,
+              onTap: () => completePersonalInfoEditSheet(context),
+              analyticsEvent: AnalyticsEvent(
+                AnalyticsEventName.editBankDetailsSaveClicked,
+              ),
             ),
-      ),
-      child: BlocBuilder<PersonalInfoEditBloc, PersonalInfoEditState>(
-        builder: (context, state) {
-          return Form(
+          );
+        }
+
+        return FunBottomSheet(
+          closeAction: () => Navigator.of(context).pop(),
+          title: _isSepa ? locals.editIbanAccount : locals.changeBankAccountNumberAndSortCode,
+          content: Form(
             key: formKey,
             child: Column(
               children: [
-                _buildTextFormField(
-                  isVisibile: widget.iban.isNotEmpty,
-                  hintText: locals.ibanPlaceHolder,
-                  controller: iban,
-                  keyboardType: TextInputType.text,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '';
-                    }
-                    if (!isValid(value)) {
-                      return '';
-                    }
-                    return null;
-                  },
-                ),
-                _buildTextFormField(
-                  isVisibile: widget.iban.isEmpty,
-                  hintText: locals.sortCodePlaceholder,
-                  controller: sortCode,
-                  inputFormatters: [SortCodeTextFormatter()],
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return locals.fieldRequired;
-                    }
-                    if (!Util.ukSortCodeRegEx.hasMatch(value)) {
-                      return locals.sortCodeMustBe6Digits;
-                    }
-                    return null;
-                  },
-                ),
-                _buildTextFormField(
-                  isVisibile: widget.iban.isEmpty,
-                  hintText: locals.bankAccountNumberPlaceholder,
-                  controller: accountNumber,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '';
-                    }
-                    if (value.length != 8) {
-                      return '';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: size.height * 0.05),
-                Expanded(child: Container()),
-                if (state.status == PersonalInfoEditStatus.loading)
-                  const Center(child: CircularProgressIndicator())
-                else
-                  ElevatedButton(
-                    onPressed: () {
-                      if (!formKey.currentState!.validate()) {
-                        return;
+                const SizedBox(height: 16),
+                if (_isSepa)
+                  InputFormField(
+                    controller: ibanController,
+                    hintText: locals.ibanPlaceHolder,
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.characters,
+                    validator: (value) {
+                      if (value == null || value.isEmpty || !isValid(value)) {
+                        return '';
                       }
-                      context.read<PersonalInfoEditBloc>().add(
-                            PersonalInfoEditBankDetails(
-                              iban: iban.text,
-                              accountNumber: accountNumber.text,
-                              sortCode: SortCodeTextFormatter.stripDashes(
-                                sortCode.text,
-                              ),
-                            ),
-                          );
+                      return null;
                     },
-                    child: Text(locals.save),
+                    onChanged: (_) => setState(() {}),
+                  )
+                else ...[
+                  InputFormField(
+                    controller: sortCodeController,
+                    label: locals.sortCodePlaceholder,
+                    hintText: locals.sortCodePlaceholder,
+                    inputFormatters: [SortCodeTextFormatter()],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return locals.fieldRequired;
+                      }
+                      if (!Util.ukSortCodeRegEx.hasMatch(value)) {
+                        return locals.sortCodeMustBe6Digits;
+                      }
+                      return null;
+                    },
+                    onChanged: (_) => setState(() {}),
                   ),
+                  const SizedBox(height: 16),
+                  InputFormField(
+                    controller: accountNumberController,
+                    label: locals.bankAccountNumberPlaceholder,
+                    hintText: locals.bankAccountNumberPlaceholder,
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty || value.length != 8) {
+                        return '';
+                      }
+                      return null;
+                    },
+                    onChanged: (_) => setState(() {}),
+                  ),
+                ],
               ],
             ),
-          );
-        },
-      ),
+          ),
+          primaryButton: FunButton(
+            isDisabled: !isEnabled || isLoading,
+            onTap: isEnabled && !isLoading ? _onSave : null,
+            text: isLoading ? locals.loadingTitle : locals.save,
+            analyticsEvent: AnalyticsEvent(
+              AnalyticsEventName.editBankDetailsSaveClicked,
+            ),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildTextFormField({
-    required String hintText,
-    required TextEditingController controller,
-    required String? Function(String?) validator,
-    bool isVisibile = true,
-    TextInputType? keyboardType = TextInputType.number,
-    List<TextInputFormatter>? inputFormatters,
-  }) {
-    return Visibility(
-      visible: isVisibile,
-      child: CustomTextFormField(
-        controller: controller,
-        hintText: hintText,
-        validator: validator,
-        onChanged: (value) => setState(() {
-          formKey.currentState!.validate();
-        }),
-        keyboardType: keyboardType,
-        textCapitalization: TextCapitalization.words,
-        inputFormatters: inputFormatters ?? const [],
-      ),
-    );
+  void _onSave() {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+    context.read<PersonalInfoEditBloc>().add(
+          PersonalInfoEditBankDetails(
+            iban: ibanController.text.replaceAll(' ', ''),
+            accountNumber: accountNumberController.text,
+            sortCode: _submittedSortCode,
+          ),
+        );
+  }
+
+  bool get isEnabled {
+    if (formKey.currentState == null) return false;
+    if (!formKey.currentState!.validate()) return false;
+
+    if (_isSepa) {
+      final cleanedIban = ibanController.text.replaceAll(' ', '');
+      return cleanedIban != widget.iban.replaceAll(' ', '');
+    }
+
+    return accountNumberController.text != widget.accountNumber ||
+        _submittedSortCode != widget.sortCode;
   }
 }
