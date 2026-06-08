@@ -1,9 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/features/external_donations/detail/cubit/external_donation_detail_cubit.dart';
 import 'package:givt_app/features/external_donations/detail/models/external_donation_history_item.dart';
+import 'package:givt_app/features/external_donations/detail/models/external_donation_update_scope.dart';
 import 'package:givt_app/features/external_donations/detail/repositories/external_donation_detail_repository.dart';
 import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 
 class _FakeExternalDonationDetailRepository
@@ -50,6 +52,54 @@ class _FakeExternalDonationDetailRepository
     expect(externalDonationId, _donation?.id);
     return _stopResult;
   }
+
+  @override
+  Future<bool> updateAmount({
+    required String externalDonationId,
+    required double amount,
+    ExternalDonationUpdateScope? scope,
+  }) async =>
+      true;
+
+  @override
+  Future<bool> updateFrequency({
+    required String externalDonationId,
+    required ExternalDonationFrequency frequency,
+    required DateTime anchorDate,
+    ExternalDonationUpdateScope? scope,
+  }) async =>
+      true;
+
+  @override
+  Future<bool> updateStartDate({
+    required String externalDonationId,
+    required DateTime startDate,
+  }) async =>
+      true;
+
+  @override
+  Future<bool> updateOneOff({
+    required String externalDonationId,
+    double? amount,
+    DateTime? date,
+  }) async =>
+      true;
+
+  @override
+  Future<bool> deleteDonation(String externalDonationId) async => true;
+
+  @override
+  Future<bool> bulkUpdateTransactions({
+    required List<String> transactionIds,
+    required double newAmount,
+  }) async =>
+      true;
+
+  @override
+  Future<bool> bulkDeleteTransactions({
+    required List<String> transactionIds,
+  }) async =>
+      true;
 }
 
 void main() {
@@ -102,6 +152,17 @@ void main() {
 
       expect(repository.stopCalled, isTrue);
       expect(cubit.state, isA<DataState<ExternalDonationDetailUIModel, ExternalDonationDetailCustom>>());
+    });
+
+    test('onEditSpecificRecordsPressed enables selection mode', () async {
+      repository.setDonation(donation);
+      await cubit.init(donation);
+
+      cubit.onEditSpecificRecordsPressed();
+
+      final state =
+          cubit.state as DataState<ExternalDonationDetailUIModel, ExternalDonationDetailCustom>;
+      expect(state.data.isSelectionMode, isTrue);
     });
   });
 }

@@ -80,6 +80,7 @@ abstract final class ExternalDonationHistoryBuilder {
       }
       recorded.add(
         ExternalDonationHistoryItem(
+          transactionId: transaction.id,
           amount: transaction.amount,
           date: date,
           isUpcoming: false,
