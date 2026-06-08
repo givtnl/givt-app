@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/personal_summary/giving_goal/pages/setup_giving_goal_bottom_sheet.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/models.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class FirstUseSummaryDialog extends StatefulWidget {
@@ -146,9 +150,12 @@ class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
                     Navigator.of(context).pop();
                     switch (currentIndex) {
                       case 1:
-                        context.goNamed(
-                          Pages.addExternalDonation.name,
-                          extra: context.read<PersonalSummaryBloc>(),
+                        context.goNamed(Pages.externalDonations.name);
+                        unawaited(
+                          AnalyticsHelper.logEvent(
+                            eventName: AnalyticsEventName
+                                .externalDonationsNavigationClicked,
+                          ),
                         );
                       case 2:
                         showModalBottomSheet<void>(
