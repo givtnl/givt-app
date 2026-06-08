@@ -788,7 +788,10 @@ class APIService {
     String id,
     Map<String, dynamic> body,
   ) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/$id');
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/ExternalDonations/$id',
+    );
 
     final response = await client.put(
       url,
@@ -807,7 +810,94 @@ class APIService {
       );
     }
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    return decodedBody['item'] as bool;
+    return decodedBody['item'] as bool? ?? false;
+  }
+
+  Future<bool> deleteExternalDonation(String id) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/ExternalDonations/$id',
+    );
+
+    final response = await client.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['item'] as bool? ?? false;
+  }
+
+  Future<bool> bulkUpdateExternalDonationTransactions({
+    required List<String> transactionIds,
+    required double newAmount,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/ExternalDonations/transactions/bulk-update',
+    );
+
+    final response = await client.post(
+      url,
+      body: jsonEncode({
+        'transactionIds': transactionIds,
+        'newAmount': newAmount,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['item'] as bool? ?? false;
+  }
+
+  Future<bool> bulkDeleteExternalDonationTransactions({
+    required List<String> transactionIds,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/ExternalDonations/transactions/bulk-delete',
+    );
+
+    final response = await client.post(
+      url,
+      body: jsonEncode({
+        'transactionIds': transactionIds,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['item'] as bool? ?? false;
   }
 
   Future<bool> updateNotificationId({

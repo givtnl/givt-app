@@ -164,6 +164,57 @@ enum AnalyticsEventName {
     'external_donations_create_close_cancel_clicked',
   ),
   externalDonationsCreateSearchTapped('external_donations_create_search_tapped'),
+  externalDonationsManageClicked('external_donations_manage_clicked'),
+  externalDonationsManageAmountClicked('external_donations_manage_amount_clicked'),
+  externalDonationsManageFrequencyClicked(
+    'external_donations_manage_frequency_clicked',
+  ),
+  externalDonationsManageStartDateClicked(
+    'external_donations_manage_start_date_clicked',
+  ),
+  externalDonationsManageDateClicked('external_donations_manage_date_clicked'),
+  externalDonationsManageDeleteClicked(
+    'external_donations_manage_delete_clicked',
+  ),
+  externalDonationsManageEditRecordsClicked(
+    'external_donations_manage_edit_records_clicked',
+  ),
+  externalDonationsScopeContinueClicked(
+    'external_donations_scope_continue_clicked',
+  ),
+  externalDonationsEditAmountSaveClicked(
+    'external_donations_edit_amount_save_clicked',
+  ),
+  externalDonationsEditFrequencySaveClicked(
+    'external_donations_edit_frequency_save_clicked',
+  ),
+  externalDonationsEditStartDateSaveClicked(
+    'external_donations_edit_start_date_save_clicked',
+  ),
+  externalDonationsEditDateSaveClicked(
+    'external_donations_edit_date_save_clicked',
+  ),
+  externalDonationsDeleteConfirmClicked(
+    'external_donations_delete_confirm_clicked',
+  ),
+  externalDonationsDeleteCancelClicked(
+    'external_donations_delete_cancel_clicked',
+  ),
+  externalDonationsBulkDeleteConfirmClicked(
+    'external_donations_bulk_delete_confirm_clicked',
+  ),
+  externalDonationsBulkDeleteCancelClicked(
+    'external_donations_bulk_delete_cancel_clicked',
+  ),
+  externalDonationsSelectionEditClicked(
+    'external_donations_selection_edit_clicked',
+  ),
+  externalDonationsSelectionDeleteClicked(
+    'external_donations_selection_delete_clicked',
+  ),
+  externalDonationsSelectionDoneClicked(
+    'external_donations_selection_done_clicked',
+  ),
   editAvatarPictureClicked('edit_avatar_picture_clicked'),
   familyGoalCreateClicked('family_goal_create_clicked'),
   familyGoalCauseSet('family_goal_cause_set'),

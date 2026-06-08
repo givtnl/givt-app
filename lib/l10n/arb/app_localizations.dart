@@ -4666,6 +4666,219 @@ abstract class AppLocalizations {
     String startMonthYear,
   );
 
+  /// No description provided for @externalDonationsManageAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get externalDonationsManageAmount;
+
+  /// No description provided for @externalDonationsManageFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get externalDonationsManageFrequency;
+
+  /// No description provided for @externalDonationsManageStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get externalDonationsManageStartDate;
+
+  /// No description provided for @externalDonationsManageDeleteDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete donation'**
+  String get externalDonationsManageDeleteDonation;
+
+  /// No description provided for @externalDonationsManageEditSpecificRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit specific records'**
+  String get externalDonationsManageEditSpecificRecords;
+
+  /// No description provided for @externalDonationsDeleteModalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this donation?'**
+  String get externalDonationsDeleteModalTitle;
+
+  /// No description provided for @externalDonationsDeleteModalMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This removes the organisation and every record from your giving history. This cannot be undone.'**
+  String get externalDonationsDeleteModalMessage;
+
+  /// No description provided for @externalDonationsDeleteModalConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, delete donation'**
+  String get externalDonationsDeleteModalConfirm;
+
+  /// No description provided for @externalDonationsDeleteModalCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'No, keep donation'**
+  String get externalDonationsDeleteModalCancel;
+
+  /// No description provided for @externalDonationsBulkDeleteModalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete selected records?'**
+  String get externalDonationsBulkDeleteModalTitle;
+
+  /// No description provided for @externalDonationsBulkDeleteModalMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This removes {count} selected records from your history.'**
+  String externalDonationsBulkDeleteModalMessage(int count);
+
+  /// No description provided for @externalDonationsBulkDeleteModalConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, delete records'**
+  String get externalDonationsBulkDeleteModalConfirm;
+
+  /// No description provided for @externalDonationsBulkDeleteModalCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'No, keep records'**
+  String get externalDonationsBulkDeleteModalCancel;
+
+  /// No description provided for @externalDonationsScopeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which donations should change?'**
+  String get externalDonationsScopeTitle;
+
+  /// No description provided for @externalDonationsScopeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All donations'**
+  String get externalDonationsScopeAll;
+
+  /// No description provided for @externalDonationsScopeOnwards.
+  ///
+  /// In en, this message translates to:
+  /// **'From now onwards'**
+  String get externalDonationsScopeOnwards;
+
+  /// No description provided for @externalDonationsScopeContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get externalDonationsScopeContinue;
+
+  /// No description provided for @externalDonationsSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get externalDonationsSave;
+
+  /// No description provided for @externalDonationsEditAmountInfoAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All your records — past and future — will be updated to {amount}.'**
+  String externalDonationsEditAmountInfoAll(String amount);
+
+  /// No description provided for @externalDonationsEditAmountInfoOnwards.
+  ///
+  /// In en, this message translates to:
+  /// **'From {date} you\'ll give {amount} each month. Past records stay as they are.'**
+  String externalDonationsEditAmountInfoOnwards(String date, String amount);
+
+  /// No description provided for @externalDonationsEditAmountInfoOneOff.
+  ///
+  /// In en, this message translates to:
+  /// **'This record will be updated to {amount}.'**
+  String externalDonationsEditAmountInfoOneOff(String amount);
+
+  /// No description provided for @externalDonationsEditAmountBulkInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'The new amount will apply to the selected records only.'**
+  String get externalDonationsEditAmountBulkInfo;
+
+  /// No description provided for @externalDonationsEditFrequencyInfoAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Your whole history will be recalculated to {frequency}.'**
+  String externalDonationsEditFrequencyInfoAll(String frequency);
+
+  /// No description provided for @externalDonationsEditFrequencyInfoOnwards.
+  ///
+  /// In en, this message translates to:
+  /// **'From {date} your gift repeats {frequency}. Past records stay as they are.'**
+  String externalDonationsEditFrequencyInfoOnwards(
+    String date,
+    String frequency,
+  );
+
+  /// No description provided for @externalDonationsEditStartDateInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Your history will be rebuilt to start from {monthYear}.'**
+  String externalDonationsEditStartDateInfo(String monthYear);
+
+  /// No description provided for @externalDonationsManageFrequencyWeeklyOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'weekly on {day}'**
+  String externalDonationsManageFrequencyWeeklyOnDay(String day);
+
+  /// No description provided for @externalDonationsManageFrequencyMonthlyOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'monthly on the {day}'**
+  String externalDonationsManageFrequencyMonthlyOnDay(String day);
+
+  /// No description provided for @externalDonationsManageFrequencyHalfYearlyOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'half-yearly on the {day}'**
+  String externalDonationsManageFrequencyHalfYearlyOnDay(String day);
+
+  /// No description provided for @externalDonationsManageFrequencyYearlyOnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'yearly on {date}'**
+  String externalDonationsManageFrequencyYearlyOnDate(String date);
+
+  /// No description provided for @externalDonationsManageFrequencyDayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Day it falls on'**
+  String get externalDonationsManageFrequencyDayLabel;
+
+  /// No description provided for @externalDonationsSelectionSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get externalDonationsSelectionSelectAll;
+
+  /// No description provided for @externalDonationsSelectionSelectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String externalDonationsSelectionSelectedCount(int count);
+
+  /// No description provided for @externalDonationsSelectionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get externalDonationsSelectionEdit;
+
+  /// No description provided for @externalDonationsSelectionDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get externalDonationsSelectionDelete;
+
+  /// No description provided for @externalDonationsSelectionDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get externalDonationsSelectionDone;
+
   /// No description provided for @recurringDonationsDetailProgressSuffix.
   ///
   /// In en, this message translates to:

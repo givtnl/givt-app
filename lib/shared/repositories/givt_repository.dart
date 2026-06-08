@@ -55,6 +55,17 @@ mixin GivtRepository {
     required Map<String, dynamic> body,
   });
 
+  Future<bool> deleteExternalDonation(String id);
+
+  Future<bool> bulkUpdateExternalDonationTransactions({
+    required List<String> transactionIds,
+    required double newAmount,
+  });
+
+  Future<bool> bulkDeleteExternalDonationTransactions({
+    required List<String> transactionIds,
+  });
+
   Future<List<SummaryItem>> fetchSummary({
     required String guid,
     required String fromDate,
@@ -281,5 +292,30 @@ class GivtRepositoryImpl with GivtRepository {
   }) async {
     final result = apiClient.updateExternalDonation(id, body);
     return result;
+  }
+
+  @override
+  Future<bool> deleteExternalDonation(String id) async {
+    return apiClient.deleteExternalDonation(id);
+  }
+
+  @override
+  Future<bool> bulkUpdateExternalDonationTransactions({
+    required List<String> transactionIds,
+    required double newAmount,
+  }) async {
+    return apiClient.bulkUpdateExternalDonationTransactions(
+      transactionIds: transactionIds,
+      newAmount: newAmount,
+    );
+  }
+
+  @override
+  Future<bool> bulkDeleteExternalDonationTransactions({
+    required List<String> transactionIds,
+  }) async {
+    return apiClient.bulkDeleteExternalDonationTransactions(
+      transactionIds: transactionIds,
+    );
   }
 }

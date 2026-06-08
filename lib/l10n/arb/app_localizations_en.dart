@@ -2592,6 +2592,142 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get externalDonationsManageAmount => 'Amount';
+
+  @override
+  String get externalDonationsManageFrequency => 'Frequency';
+
+  @override
+  String get externalDonationsManageStartDate => 'Start date';
+
+  @override
+  String get externalDonationsManageDeleteDonation => 'Delete donation';
+
+  @override
+  String get externalDonationsManageEditSpecificRecords =>
+      'Edit specific records';
+
+  @override
+  String get externalDonationsDeleteModalTitle => 'Delete this donation?';
+
+  @override
+  String get externalDonationsDeleteModalMessage =>
+      'This removes the organisation and every record from your giving history. This cannot be undone.';
+
+  @override
+  String get externalDonationsDeleteModalConfirm => 'Yes, delete donation';
+
+  @override
+  String get externalDonationsDeleteModalCancel => 'No, keep donation';
+
+  @override
+  String get externalDonationsBulkDeleteModalTitle =>
+      'Delete selected records?';
+
+  @override
+  String externalDonationsBulkDeleteModalMessage(int count) {
+    return 'This removes $count selected records from your history.';
+  }
+
+  @override
+  String get externalDonationsBulkDeleteModalConfirm => 'Yes, delete records';
+
+  @override
+  String get externalDonationsBulkDeleteModalCancel => 'No, keep records';
+
+  @override
+  String get externalDonationsScopeTitle => 'Which donations should change?';
+
+  @override
+  String get externalDonationsScopeAll => 'All donations';
+
+  @override
+  String get externalDonationsScopeOnwards => 'From now onwards';
+
+  @override
+  String get externalDonationsScopeContinue => 'Continue';
+
+  @override
+  String get externalDonationsSave => 'Save';
+
+  @override
+  String externalDonationsEditAmountInfoAll(String amount) {
+    return 'All your records — past and future — will be updated to $amount.';
+  }
+
+  @override
+  String externalDonationsEditAmountInfoOnwards(String date, String amount) {
+    return 'From $date you\'ll give $amount each month. Past records stay as they are.';
+  }
+
+  @override
+  String externalDonationsEditAmountInfoOneOff(String amount) {
+    return 'This record will be updated to $amount.';
+  }
+
+  @override
+  String get externalDonationsEditAmountBulkInfo =>
+      'The new amount will apply to the selected records only.';
+
+  @override
+  String externalDonationsEditFrequencyInfoAll(String frequency) {
+    return 'Your whole history will be recalculated to $frequency.';
+  }
+
+  @override
+  String externalDonationsEditFrequencyInfoOnwards(
+    String date,
+    String frequency,
+  ) {
+    return 'From $date your gift repeats $frequency. Past records stay as they are.';
+  }
+
+  @override
+  String externalDonationsEditStartDateInfo(String monthYear) {
+    return 'Your history will be rebuilt to start from $monthYear.';
+  }
+
+  @override
+  String externalDonationsManageFrequencyWeeklyOnDay(String day) {
+    return 'weekly on $day';
+  }
+
+  @override
+  String externalDonationsManageFrequencyMonthlyOnDay(String day) {
+    return 'monthly on the $day';
+  }
+
+  @override
+  String externalDonationsManageFrequencyHalfYearlyOnDay(String day) {
+    return 'half-yearly on the $day';
+  }
+
+  @override
+  String externalDonationsManageFrequencyYearlyOnDate(String date) {
+    return 'yearly on $date';
+  }
+
+  @override
+  String get externalDonationsManageFrequencyDayLabel => 'Day it falls on';
+
+  @override
+  String get externalDonationsSelectionSelectAll => 'Select all';
+
+  @override
+  String externalDonationsSelectionSelectedCount(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String get externalDonationsSelectionEdit => 'Edit';
+
+  @override
+  String get externalDonationsSelectionDelete => 'Delete';
+
+  @override
+  String get externalDonationsSelectionDone => 'Done';
+
+  @override
   String get recurringDonationsDetailProgressSuffix => 'donations';
 
   @override
@@ -5619,6 +5755,142 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   ) {
     return '+ $count more records back to $startMonthYear';
   }
+
+  @override
+  String get externalDonationsManageAmount => 'Amount';
+
+  @override
+  String get externalDonationsManageFrequency => 'Frequency';
+
+  @override
+  String get externalDonationsManageStartDate => 'Start date';
+
+  @override
+  String get externalDonationsManageDeleteDonation => 'Delete donation';
+
+  @override
+  String get externalDonationsManageEditSpecificRecords =>
+      'Edit specific records';
+
+  @override
+  String get externalDonationsDeleteModalTitle => 'Delete this donation?';
+
+  @override
+  String get externalDonationsDeleteModalMessage =>
+      'This removes the organization and every record from your giving history. This cannot be undone.';
+
+  @override
+  String get externalDonationsDeleteModalConfirm => 'Yes, delete donation';
+
+  @override
+  String get externalDonationsDeleteModalCancel => 'No, keep donation';
+
+  @override
+  String get externalDonationsBulkDeleteModalTitle =>
+      'Delete selected records?';
+
+  @override
+  String externalDonationsBulkDeleteModalMessage(int count) {
+    return 'This removes $count selected records from your history.';
+  }
+
+  @override
+  String get externalDonationsBulkDeleteModalConfirm => 'Yes, delete records';
+
+  @override
+  String get externalDonationsBulkDeleteModalCancel => 'No, keep records';
+
+  @override
+  String get externalDonationsScopeTitle => 'Which donations should change?';
+
+  @override
+  String get externalDonationsScopeAll => 'All donations';
+
+  @override
+  String get externalDonationsScopeOnwards => 'From now onwards';
+
+  @override
+  String get externalDonationsScopeContinue => 'Continue';
+
+  @override
+  String get externalDonationsSave => 'Save';
+
+  @override
+  String externalDonationsEditAmountInfoAll(String amount) {
+    return 'All your records — past and future — will be updated to $amount.';
+  }
+
+  @override
+  String externalDonationsEditAmountInfoOnwards(String date, String amount) {
+    return 'From $date you\'ll give $amount each month. Past records stay as they are.';
+  }
+
+  @override
+  String externalDonationsEditAmountInfoOneOff(String amount) {
+    return 'This record will be updated to $amount.';
+  }
+
+  @override
+  String get externalDonationsEditAmountBulkInfo =>
+      'The new amount will apply to the selected records only.';
+
+  @override
+  String externalDonationsEditFrequencyInfoAll(String frequency) {
+    return 'Your whole history will be recalculated to $frequency.';
+  }
+
+  @override
+  String externalDonationsEditFrequencyInfoOnwards(
+    String date,
+    String frequency,
+  ) {
+    return 'From $date your gift repeats $frequency. Past records stay as they are.';
+  }
+
+  @override
+  String externalDonationsEditStartDateInfo(String monthYear) {
+    return 'Your history will be rebuilt to start from $monthYear.';
+  }
+
+  @override
+  String externalDonationsManageFrequencyWeeklyOnDay(String day) {
+    return 'weekly on $day';
+  }
+
+  @override
+  String externalDonationsManageFrequencyMonthlyOnDay(String day) {
+    return 'monthly on the $day';
+  }
+
+  @override
+  String externalDonationsManageFrequencyHalfYearlyOnDay(String day) {
+    return 'half-yearly on the $day';
+  }
+
+  @override
+  String externalDonationsManageFrequencyYearlyOnDate(String date) {
+    return 'yearly on $date';
+  }
+
+  @override
+  String get externalDonationsManageFrequencyDayLabel => 'Day it falls on';
+
+  @override
+  String get externalDonationsSelectionSelectAll => 'Select all';
+
+  @override
+  String externalDonationsSelectionSelectedCount(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String get externalDonationsSelectionEdit => 'Edit';
+
+  @override
+  String get externalDonationsSelectionDelete => 'Delete';
+
+  @override
+  String get externalDonationsSelectionDone => 'Done';
 
   @override
   String get recurringDonationsDetailProgressSuffix => 'donations';
