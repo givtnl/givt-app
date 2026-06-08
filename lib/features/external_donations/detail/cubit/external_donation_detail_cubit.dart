@@ -20,6 +20,14 @@ class ExternalDonationDetailCubit
 
   final ExternalDonationDetailRepository _repository;
 
+  /// Latest UI model while the cubit is in a [CustomState] (e.g. before sheets).
+  ExternalDonationDetailUIModel? get currentUIModel {
+    if (_repository.getDonation() == null) {
+      return null;
+    }
+    return _createUIModel();
+  }
+
   bool _isSelectionMode = false;
   Set<String> _selectedTransactionIds = {};
   bool _isSaving = false;
@@ -48,6 +56,7 @@ class ExternalDonationDetailCubit
 
   void onManagePressed() {
     emitCustom(const ExternalDonationDetailCustom.showManageSheet());
+    emitData(_createUIModel());
   }
 
   void onManageFieldPressed(ExternalDonationManageField field) {
@@ -68,6 +77,7 @@ class ExternalDonationDetailCubit
         case ExternalDonationManageField.startDate:
           return;
       }
+      emitData(_createUIModel());
       return;
     }
 
@@ -82,6 +92,7 @@ class ExternalDonationDetailCubit
       case ExternalDonationManageField.date:
         return;
     }
+    emitData(_createUIModel());
   }
 
   void onScopeSelected({
@@ -104,10 +115,12 @@ class ExternalDonationDetailCubit
       case ExternalDonationManageField.date:
         return;
     }
+    emitData(_createUIModel());
   }
 
   void onDeleteDonationPressed() {
     emitCustom(const ExternalDonationDetailCustom.showDeleteDonationModal());
+    emitData(_createUIModel());
   }
 
   void onEditSpecificRecordsPressed() {
@@ -164,6 +177,7 @@ class ExternalDonationDetailCubit
     emitCustom(
       const ExternalDonationDetailCustom.showAmountEditor(isBulk: true),
     );
+    emitData(_createUIModel());
   }
 
   void onBulkDeletePressed() {
@@ -171,6 +185,7 @@ class ExternalDonationDetailCubit
       return;
     }
     emitCustom(const ExternalDonationDetailCustom.showBulkDeleteModal());
+    emitData(_createUIModel());
   }
 
   Future<void> saveAmount({
@@ -423,6 +438,7 @@ class ExternalDonationDetailCubit
 
   void onStopRecordingPressed() {
     emitCustom(const ExternalDonationDetailCustom.showStopRecordingModal());
+    emitData(_createUIModel());
   }
 
   Future<void> confirmStopRecording() async {

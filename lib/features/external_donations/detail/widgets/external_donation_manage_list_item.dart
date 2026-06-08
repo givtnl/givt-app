@@ -69,7 +69,7 @@ class ExternalDonationManageListItem extends StatelessWidget {
                   ),
                 ),
                 FaIcon(
-                  FontAwesomeIcons.penToSquare,
+                  FontAwesomeIcons.pen,
                   size: 18,
                   color: theme.primary50.withValues(alpha: 0.5),
                 ),

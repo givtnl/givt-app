@@ -22,7 +22,6 @@ import 'package:givt_app/features/external_donations/shared/external_donation_di
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
-import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -81,7 +80,7 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
                 );
               }
               return IconButton(
-                icon: const FaIcon(FontAwesomeIcons.penToSquare, size: 20),
+                icon: const FaIcon(FontAwesomeIcons.pen, size: 20),
                 onPressed: () {
                   AnalyticsHelper.logEvent(
                     eventName: AnalyticsEventName.externalDonationsManageClicked,
@@ -99,14 +98,7 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
       body: BaseStateConsumer(
         cubit: _cubit,
         onCustom: (context, custom) {
-          final uiModel = switch (_cubit.state) {
-            DataState<ExternalDonationDetailUIModel,
-                    ExternalDonationDetailCustom>(
-              data: final data,
-            ) =>
-              data,
-            _ => null,
-          };
+          final uiModel = _cubit.currentUIModel;
 
           switch (custom) {
             case ShowStopRecordingModal():
