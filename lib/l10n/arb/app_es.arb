@@ -1302,6 +1302,7 @@
   "externalDonationsManageFrequencyWeeklyOnDay": "semanalmente los {day}",
   "externalDonationsManageFrequencyMonthlyOnDay": "mensualmente el día {day}",
   "externalDonationsManageFrequencyHalfYearlyOnDay": "semestralmente el día {day}",
+  "externalDonationsManageFrequencyQuarterlyOnDay": "trimestralmente el día {day}",
   "externalDonationsManageFrequencyYearlyOnDate": "anualmente el {date}",
   "externalDonationsManageFrequencyDayLabel": "Día en que cae",
   "externalDonationsSelectionSelectAll": "Seleccionar todo",

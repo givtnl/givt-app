@@ -2727,6 +2727,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String externalDonationsManageFrequencyQuarterlyOnDay(String day) {
+    return 'vierteljährlich am $day.';
+  }
+
+  @override
   String externalDonationsManageFrequencyYearlyOnDate(String date) {
     return 'jährlich am $date';
   }

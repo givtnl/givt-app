@@ -6,7 +6,6 @@ import 'package:givt_app/features/external_donations/detail/cubit/external_donat
 import 'package:givt_app/features/external_donations/detail/models/external_donation_update_scope.dart';
 import 'package:givt_app/features/external_donations/shared/external_donation_display.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/utils/util.dart';
@@ -23,9 +22,9 @@ class ExternalDonationFrequencyEditorSheet {
     final locals = context.l10n;
     final locale = Util.getLanguageTageFromLocale(context);
     final donation = uiModel.donation;
-    var frequency = donation.frequency == ExternalDonationFrequency.once
-        ? ExternalDonationFrequency.monthly
-        : donation.frequency;
+    var frequency = ExternalDonationFrequencyDropdown.frequencyForEditor(
+      donation.frequency,
+    );
     var anchorDate = donation.startDateTime ?? DateTime.now();
     final initialFrequency = frequency;
     final initialAnchorDate = anchorDate;
@@ -80,6 +79,7 @@ class ExternalDonationFrequencyEditorSheet {
                 children: [
                   ExternalDonationFrequencyDropdown(
                     value: frequency,
+                    frequencies: manageRecurringFrequencies,
                     onChanged: (value) => setState(() => frequency = value),
                   ),
                   if (scope == ExternalDonationUpdateScope.all) ...[

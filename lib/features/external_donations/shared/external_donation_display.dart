@@ -42,10 +42,13 @@ abstract final class ExternalDonationDisplay {
           anchorDate.day.toString(),
         );
       case ExternalDonationFrequency.yearly:
-        final monthYear = DateFormat.yMMMM(locale).format(anchorDate);
-        return locals.externalDonationsManageFrequencyYearlyOnDate(monthYear);
+        return locals.externalDonationsManageFrequencyYearlyOnDate(
+          formatDate(anchorDate, locale),
+        );
       case ExternalDonationFrequency.quarterly:
-        return '$frequencyLabel on the ${anchorDate.day}';
+        return locals.externalDonationsManageFrequencyQuarterlyOnDay(
+          anchorDate.day.toString(),
+        );
       case ExternalDonationFrequency.once:
         return frequencyLabel;
     }

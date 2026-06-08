@@ -2703,6 +2703,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String externalDonationsManageFrequencyQuarterlyOnDay(String day) {
+    return 'quarterly on the $day';
+  }
+
+  @override
   String externalDonationsManageFrequencyYearlyOnDate(String date) {
     return 'yearly on $date';
   }
@@ -5865,6 +5870,11 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String externalDonationsManageFrequencyHalfYearlyOnDay(String day) {
     return 'half-yearly on the $day';
+  }
+
+  @override
+  String externalDonationsManageFrequencyQuarterlyOnDay(String day) {
+    return 'quarterly on the $day';
   }
 
   @override

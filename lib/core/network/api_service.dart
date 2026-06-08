@@ -809,8 +809,7 @@ class APIService {
             : null,
       );
     }
-    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    return decodedBody['item'] as bool? ?? false;
+    return _decodeItemBool(response.body);
   }
 
   Future<bool> deleteExternalDonation(String id) async {
@@ -834,8 +833,7 @@ class APIService {
             : null,
       );
     }
-    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    return decodedBody['item'] as bool? ?? false;
+    return _decodeItemBool(response.body);
   }
 
   Future<bool> bulkUpdateExternalDonationTransactions({
@@ -866,8 +864,7 @@ class APIService {
             : null,
       );
     }
-    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    return decodedBody['item'] as bool? ?? false;
+    return _decodeItemBool(response.body);
   }
 
   Future<bool> bulkDeleteExternalDonationTransactions({
@@ -896,7 +893,14 @@ class APIService {
             : null,
       );
     }
-    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return _decodeItemBool(response.body);
+  }
+
+  bool _decodeItemBool(String body) {
+    if (body.isEmpty) {
+      return true;
+    }
+    final decodedBody = jsonDecode(body) as Map<String, dynamic>;
     return decodedBody['item'] as bool? ?? false;
   }
 

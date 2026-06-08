@@ -4837,6 +4837,12 @@ abstract class AppLocalizations {
   /// **'half-yearly on the {day}'**
   String externalDonationsManageFrequencyHalfYearlyOnDay(String day);
 
+  /// No description provided for @externalDonationsManageFrequencyQuarterlyOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'quarterly on the {day}'**
+  String externalDonationsManageFrequencyQuarterlyOnDay(String day);
+
   /// No description provided for @externalDonationsManageFrequencyYearlyOnDate.
   ///
   /// In en, this message translates to:

@@ -1417,6 +1417,14 @@
       }
     }
   },
+  "externalDonationsManageFrequencyQuarterlyOnDay": "quarterly on the {day}",
+  "@externalDonationsManageFrequencyQuarterlyOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
   "externalDonationsManageFrequencyYearlyOnDate": "yearly on {date}",
   "@externalDonationsManageFrequencyYearlyOnDate": {
     "placeholders": {

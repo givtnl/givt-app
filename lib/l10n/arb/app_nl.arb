@@ -1302,6 +1302,7 @@
   "externalDonationsManageFrequencyWeeklyOnDay": "wekelijks op {day}",
   "externalDonationsManageFrequencyMonthlyOnDay": "maandelijks op de {day}e",
   "externalDonationsManageFrequencyHalfYearlyOnDay": "halfjaarlijks op de {day}e",
+  "externalDonationsManageFrequencyQuarterlyOnDay": "per kwartaal op de {day}e",
   "externalDonationsManageFrequencyYearlyOnDate": "jaarlijks op {date}",
   "externalDonationsManageFrequencyDayLabel": "Dag waarop het valt",
   "externalDonationsSelectionSelectAll": "Alles selecteren",

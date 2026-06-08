@@ -2715,6 +2715,11 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String externalDonationsManageFrequencyQuarterlyOnDay(String day) {
+    return 'per kwartaal op de ${day}e';
+  }
+
+  @override
   String externalDonationsManageFrequencyYearlyOnDate(String date) {
     return 'jaarlijks op $date';
   }

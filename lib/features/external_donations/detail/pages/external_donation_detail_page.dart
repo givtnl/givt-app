@@ -72,7 +72,13 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
             onData: (context, uiModel) {
               if (uiModel.isSelectionMode) {
                 return TextButton(
-                  onPressed: _cubit.onCancelSelectionMode,
+                  onPressed: () {
+                    AnalyticsHelper.logEvent(
+                      eventName: AnalyticsEventName
+                          .externalDonationsSelectionDoneClicked,
+                    );
+                    _cubit.onCancelSelectionMode();
+                  },
                   child: LabelMediumText(
                     context.l10n.externalDonationsSelectionDone,
                     color: FamilyAppTheme.primary40,
