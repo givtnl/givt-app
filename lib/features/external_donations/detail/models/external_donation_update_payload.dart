@@ -24,8 +24,11 @@ abstract final class ExternalDonationUpdatePayload {
   }) {
     final body = <String, dynamic>{
       'frequency': ExternalDonation.frequencyEnumToString(frequency),
-      'startDate': _formatStartDate(anchorDate),
     };
+    // Core always rebuilds full history when `startDate` is sent (ignores scope).
+    if (scope != ExternalDonationUpdateScope.onwards) {
+      body['startDate'] = _formatStartDate(anchorDate);
+    }
     if (scope != null) {
       body['scope'] = scope.apiValue;
     }

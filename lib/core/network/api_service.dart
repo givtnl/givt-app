@@ -758,7 +758,7 @@ class APIService {
   Future<ExternalDonation?> fetchExternalDonationDetail(String id) async {
     final url = Uri.https(
       _apiURL,
-      '/givtservice/v1/externaldonations/detail/$id',
+      '/givtservice/v1/ExternalDonations/$id/details',
     );
 
     final response = await client.get(

@@ -387,15 +387,6 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
               ),
           ],
         ),
-        if (uiModel.isSelectionMode && uiModel.hasSelection) ...[
-          const SizedBox(height: 8),
-          LabelSmallText(
-            context.l10n.externalDonationsSelectionSelectedCount(
-              uiModel.selectedCount,
-            ),
-            color: FamilyAppTheme.neutralVariant50,
-          ),
-        ],
         const SizedBox(height: 16),
         ...uiModel.history.map(
           (item) => _buildHistoryItem(item, currency, context, uiModel),
@@ -490,49 +481,34 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
     BuildContext context,
     ExternalDonationDetailUIModel uiModel,
   ) {
-    return Column(
+    return Row(
       children: [
-        if (uiModel.hasSelection)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: LabelMediumText(
-              context.l10n.externalDonationsSelectionSelectedCount(
-                uiModel.selectedCount,
-              ),
-              color: FamilyAppTheme.neutral50,
-            ),
+        Expanded(
+          child: FunButton(
+            text: context.l10n.externalDonationsSelectionEdit,
+            variant: FunButtonVariant.secondary,
+            fullBorder: true,
+            isDisabled: !uiModel.hasSelection,
+            analyticsEvent: AnalyticsEventName
+                .externalDonationsSelectionEditClicked
+                .toEvent(),
+            onTap: uiModel.hasSelection ? _cubit.onBulkEditPressed : null,
           ),
-        Row(
-          children: [
-            Expanded(
-              child: FunButton(
-                text: context.l10n.externalDonationsSelectionEdit,
-                variant: FunButtonVariant.secondary,
-                fullBorder: true,
-                isDisabled: !uiModel.hasSelection,
-                analyticsEvent: AnalyticsEventName
-                    .externalDonationsSelectionEditClicked
-                    .toEvent(),
-                onTap: uiModel.hasSelection ? _cubit.onBulkEditPressed : null,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: FunButton(
-                text: context.l10n.externalDonationsSelectionDelete,
-                variant: FunButtonVariant.secondary,
-                fullBorder: true,
-                borderColor: FamilyAppTheme.error40,
-                textColor: FamilyAppTheme.error40,
-                isDisabled: !uiModel.hasSelection,
-                analyticsEvent: AnalyticsEventName
-                    .externalDonationsSelectionDeleteClicked
-                    .toEvent(),
-                onTap:
-                    uiModel.hasSelection ? _cubit.onBulkDeletePressed : null,
-              ),
-            ),
-          ],
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: FunButton(
+            text: context.l10n.externalDonationsSelectionDelete,
+            variant: FunButtonVariant.secondary,
+            fullBorder: true,
+            borderColor: FamilyAppTheme.error40,
+            textColor: FamilyAppTheme.error40,
+            isDisabled: !uiModel.hasSelection,
+            analyticsEvent: AnalyticsEventName
+                .externalDonationsSelectionDeleteClicked
+                .toEvent(),
+            onTap: uiModel.hasSelection ? _cubit.onBulkDeletePressed : null,
+          ),
         ),
       ],
     );

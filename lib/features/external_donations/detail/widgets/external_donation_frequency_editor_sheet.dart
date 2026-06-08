@@ -52,6 +52,9 @@ class ExternalDonationFrequencyEditorSheet {
     }
 
     bool hasChanged() {
+      if (scope == ExternalDonationUpdateScope.onwards) {
+        return frequency != initialFrequency;
+      }
       return frequency != initialFrequency ||
           anchorDate.day != initialAnchorDate.day ||
           anchorDate.month != initialAnchorDate.month ||
@@ -79,13 +82,15 @@ class ExternalDonationFrequencyEditorSheet {
                     value: frequency,
                     onChanged: (value) => setState(() => frequency = value),
                   ),
-                  const SizedBox(height: 16),
-                  ExternalDonationPastDatePicker(
-                    label: locals.externalDonationsManageFrequencyDayLabel,
-                    selectedDate: anchorDate,
-                    onDateSelected: (date) =>
-                        setState(() => anchorDate = date),
-                  ),
+                  if (scope == ExternalDonationUpdateScope.all) ...[
+                    const SizedBox(height: 16),
+                    ExternalDonationPastDatePicker(
+                      label: locals.externalDonationsManageFrequencyDayLabel,
+                      selectedDate: anchorDate,
+                      onDateSelected: (date) =>
+                          setState(() => anchorDate = date),
+                    ),
+                  ],
                   const SizedBox(height: 16),
                   BodySmallText(
                     infoText(),

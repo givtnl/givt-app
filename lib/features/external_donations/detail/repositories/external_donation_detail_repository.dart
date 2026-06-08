@@ -134,14 +134,23 @@ class ExternalDonationDetailRepositoryImpl
   }
 
   Future<void> _reloadCurrentDonation() async {
-    final donation = _donation;
-    if (donation == null) {
+    final current = _donation;
+    if (current == null) {
       return;
     }
 
-    final refreshed =
-        await _givtRepository.fetchExternalDonationDetail(donation.id);
-    await loadDetail(refreshed ?? donation);
+    // Use the list endpoint so `active` and other summary fields stay correct.
+    // `GET …/details` omits `Active` in the BFF mapping (serializes as false).
+    final donations = await _givtRepository.fetchExternalDonations();
+    ExternalDonation? refreshed;
+    for (final donation in donations) {
+      if (donation.id == current.id) {
+        refreshed = donation;
+        break;
+      }
+    }
+
+    await loadDetail(refreshed ?? current);
   }
 
   @override

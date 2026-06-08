@@ -14,6 +14,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ExternalDonationAmountEditorSheet {
   const ExternalDonationAmountEditorSheet._();
 
+  static double _initialBulkAmount(ExternalDonationDetailUIModel uiModel) {
+    final selected = uiModel.history.where(
+      (item) =>
+          item.transactionId != null &&
+          uiModel.selectedTransactionIds.contains(item.transactionId),
+    );
+    final firstSelected = selected.firstOrNull;
+    return firstSelected?.amount ?? uiModel.donation.amount;
+  }
+
   static Future<void> show(
     BuildContext context, {
     required ExternalDonationDetailCubit cubit,
@@ -28,7 +38,7 @@ class ExternalDonationAmountEditorSheet {
     final locale = Util.getLanguageTageFromLocale(context);
     final donation = uiModel.donation;
     final initialAmount = isBulk
-        ? donation.amount.round()
+        ? _initialBulkAmount(uiModel).round()
         : donation.amount.round();
     var currentAmount = initialAmount;
 
