@@ -32,7 +32,7 @@ class RecurringDonationsList extends StatelessWidget {
     }
 
     return ListView.separated(
-      padding: const EdgeInsets.only(bottom: 100),
+      padding: const EdgeInsets.only(bottom: 98), // inset + button size
       itemCount: donations.length,
       separatorBuilder: (context, index) => const SizedBox(height: 16),
       itemBuilder: (context, index) {
