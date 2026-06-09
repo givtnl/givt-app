@@ -20,20 +20,21 @@ class ExternalDonationDeleteModal {
       closeAction: () => context.pop(),
       buttons: [
         FunButton(
+          onTap: () => context.pop(),
+          text: locals.externalDonationsDeleteModalCancel,
+          analyticsEvent:
+              AnalyticsEventName.externalDonationsDeleteCancelClicked.toEvent(),
+        ),
+        FunButton(
           onTap: () async {
             context.pop();
             await cubit.confirmDeleteDonation();
           },
           text: locals.externalDonationsDeleteModalConfirm,
+          variant: FunButtonVariant.destructiveSecondary,
+          fullBorder: true,
           analyticsEvent:
               AnalyticsEventName.externalDonationsDeleteConfirmClicked.toEvent(),
-        ),
-        FunButton(
-          onTap: () => context.pop(),
-          text: locals.externalDonationsDeleteModalCancel,
-          variant: FunButtonVariant.secondary,
-          analyticsEvent:
-              AnalyticsEventName.externalDonationsDeleteCancelClicked.toEvent(),
         ),
       ],
     ).show(context, isDismissible: true);
@@ -56,21 +57,22 @@ class ExternalDonationBulkDeleteModal {
       closeAction: () => context.pop(),
       buttons: [
         FunButton(
+          onTap: () => context.pop(),
+          text: locals.externalDonationsBulkDeleteModalCancel,
+          analyticsEvent: AnalyticsEventName
+              .externalDonationsBulkDeleteCancelClicked
+              .toEvent(),
+        ),
+        FunButton(
           onTap: () async {
             context.pop();
             await cubit.confirmBulkDelete();
           },
           text: locals.externalDonationsBulkDeleteModalConfirm,
+          variant: FunButtonVariant.destructiveSecondary,
+          fullBorder: true,
           analyticsEvent: AnalyticsEventName
               .externalDonationsBulkDeleteConfirmClicked
-              .toEvent(),
-        ),
-        FunButton(
-          onTap: () => context.pop(),
-          text: locals.externalDonationsBulkDeleteModalCancel,
-          variant: FunButtonVariant.secondary,
-          analyticsEvent: AnalyticsEventName
-              .externalDonationsBulkDeleteCancelClicked
               .toEvent(),
         ),
       ],
