@@ -141,10 +141,9 @@ class RecurringDonationsOverviewCubit
     final remainingTurns = donation.getRemainingTurns();
     final progressPercentage = donation.getProgressPercentage();
     
-    // For inactive tab, determine status based on currentState
-    final isCompleted = _selectedTabIndex == 1 
-        ? (donation.currentState == RecurringDonationState.finished || 
-           donation.currentState == RecurringDonationState.active)
+    // Past-tab items are inactive; treat all non-active states as ended for UI.
+    final isCompleted = _selectedTabIndex == 1
+        ? donation.currentState != RecurringDonationState.active
         : donation.isCompleted;
     
     // Only show next donation date for active donations
