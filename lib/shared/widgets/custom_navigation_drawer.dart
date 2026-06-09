@@ -182,7 +182,8 @@ class CustomNavigationDrawer extends StatelessWidget {
                   },
                 ),
                 DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
+                  isVisible:
+                      !auth.user.needRegistration && !auth.user.isUsUser,
                   title: locals.platformContributionTitle,
                   icon: FontAwesomeIcons.handHoldingDollar,
                   analyticsEvent: AnalyticsEventName.menuNavigationPlatformContributionClicked,

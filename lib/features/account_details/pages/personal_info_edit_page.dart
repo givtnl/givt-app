@@ -419,19 +419,21 @@ class _PreferencesSection extends StatelessWidget {
           ),
           onTap: () => AccountSettingsActions.openAmountPresets(context),
         ),
-        AccountSettingsListItem(
-          value: locals.platformContributionTitle,
-          semanticsIdentifier: 'accountSettingsRowPlatformContribution',
-          leading: FaIcon(
-            FontAwesomeIcons.handHoldingDollar,
-            size: 20,
-            color: iconColor,
+        if (!user.isUsUser)
+          AccountSettingsListItem(
+            value: locals.platformContributionTitle,
+            semanticsIdentifier: 'accountSettingsRowPlatformContribution',
+            leading: FaIcon(
+              FontAwesomeIcons.handHoldingDollar,
+              size: 20,
+              color: iconColor,
+            ),
+            analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
+              parameters: {'row_type': 'platform_contribution'},
+            ),
+            onTap: () =>
+                AccountSettingsActions.openPlatformContribution(context),
           ),
-          analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
-            parameters: {'row_type': 'platform_contribution'},
-          ),
-          onTap: () => AccountSettingsActions.openPlatformContribution(context),
-        ),
       ],
     );
   }
