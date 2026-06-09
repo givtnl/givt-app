@@ -7,6 +7,7 @@ import 'package:givt_app/features/recurring_donations/overview/pages/recurring_d
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
+
 class RecurringDonationDetailManageSheet {
   const RecurringDonationDetailManageSheet._();
 

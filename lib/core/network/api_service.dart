@@ -579,7 +579,11 @@ class APIService {
     final response = await client.post(
       url,
       body: jsonEncode({
-        'restartDate': restartDate.toUtc().toIso8601String(),
+        'restartDate': DateTime.utc(
+          restartDate.year,
+          restartDate.month,
+          restartDate.day,
+        ).toIso8601String(),
       }),
       headers: {'Content-Type': 'application/json'},
     );

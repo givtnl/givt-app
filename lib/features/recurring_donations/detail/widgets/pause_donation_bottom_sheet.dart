@@ -13,7 +13,10 @@ class PauseDonationBottomSheet {
     required RecurringDonationDetailCubit cubit,
   }) {
     final locals = context.l10n;
-    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    final today = DateTime.now();
+    final tomorrow = DateTime(today.year, today.month, today.day).add(
+      const Duration(days: 1),
+    );
     var selectedDate = tomorrow;
 
     return showModalBottomSheet<void>(
@@ -33,15 +36,20 @@ class PauseDonationBottomSheet {
                 children: [
                   BodyMediumText(
                     locals.recurringDonationsPauseSheetDescription,
-                    color: FamilyAppTheme.neutral50,
+                    color: FunTheme.of(context).neutral50,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
                   FunDatePicker(
                     label: locals.recurringDonationsPauseRestartDateLabel,
                     selectedDate: selectedDate,
-                    onDateSelected: (date) =>
-                        setState(() => selectedDate = date),
+                    onDateSelected: (date) => setState(
+                      () => selectedDate = DateTime(
+                        date.year,
+                        date.month,
+                        date.day,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -52,7 +60,13 @@ class PauseDonationBottomSheet {
                     .toEvent(),
                 onTap: () {
                   Navigator.of(sheetContext).pop();
-                  cubit.onPauseRestartDateSelected(selectedDate);
+                  cubit.onPauseRestartDateSelected(
+                    DateTime(
+                      selectedDate.year,
+                      selectedDate.month,
+                      selectedDate.day,
+                    ),
+                  );
                 },
               ),
             );

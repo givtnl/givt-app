@@ -6,7 +6,6 @@ import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -17,7 +16,6 @@ import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donat
 import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_success_modal.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/recurring_donation_detail_manage_sheet.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
-import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -89,8 +87,8 @@ class _RecurringDonationDetailPageState
             case ShowPauseDonationConfirmation(:final restartDate):
               PauseDonationConfirmationModal.show(
                 context,
-                cubit: _cubit,
                 restartDate: restartDate,
+                onConfirm: () => _cubit.pauseDonation(restartDate),
               );
             case PauseDonationSucceeded(:final restartDate):
               PauseDonationSuccessModal.show(
@@ -98,9 +96,7 @@ class _RecurringDonationDetailPageState
                 restartDate: restartDate,
                 onDone: () {
                   if (!context.mounted) return;
-                  Navigator.of(context).push(
-                    const RecurringDonationsOverviewPage().toRoute(context),
-                  );
+                  context.pop();
                 },
               );
             case PauseDonationFailed():

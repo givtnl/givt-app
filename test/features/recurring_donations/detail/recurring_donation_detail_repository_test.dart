@@ -27,11 +27,23 @@ class _FakeApiService extends APIService {
     },
   };
 
+  String? pauseDonationId;
+  DateTime? pauseRestartDate;
+
   @override
   Future<Map<String, dynamic>> fetchRecurringDonationById(
     String donationId,
   ) async {
     return response;
+  }
+
+  @override
+  Future<void> pauseRecurringDonation({
+    required String recurringDonationId,
+    required DateTime restartDate,
+  }) async {
+    pauseDonationId = recurringDonationId;
+    pauseRestartDate = restartDate;
   }
 }
 
@@ -186,6 +198,30 @@ void main() {
 
         final history = repository.getHistory();
         expect(history, isEmpty);
+      },
+    );
+
+    test('pauseDonation calls API with donation id and restart date', () async {
+      final donation = _buildDonation(state: RecurringDonationState.active);
+      final restartDate = DateTime(2026, 7, 15);
+
+      repository.setRecurringDonation(donation);
+
+      await repository.pauseDonation(restartDate: restartDate);
+
+      expect(apiService.pauseDonationId, donation.id);
+      expect(apiService.pauseRestartDate, restartDate);
+    });
+
+    test(
+      'pauseDonation throws StateError when no donation is set',
+      () async {
+        expect(
+          () => repository.pauseDonation(
+            restartDate: DateTime(2026, 7, 15),
+          ),
+          throwsA(isA<StateError>()),
+        );
       },
     );
 

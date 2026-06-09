@@ -22,10 +22,6 @@ class PauseDonationSuccessModal {
       icon: FunIcon.checkmark(),
       title: locals.recurringDonationsPauseSuccessTitle,
       subtitle: locals.recurringDonationsPauseSuccessMessage(formattedDate),
-      closeAction: () {
-        context.pop();
-        onDone();
-      },
       buttons: [
         FunButton(
           onTap: () {

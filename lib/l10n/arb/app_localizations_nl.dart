@@ -2830,7 +2830,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsPauseSheetDescription =>
-      'Selecteer een datum om je gift te hervatten.';
+      'Selecteer een datum om je donatie te hervatten.';
 
   @override
   String get recurringDonationsPauseRestartDateLabel => 'Hervattingsdatum';
@@ -2843,26 +2843,26 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String recurringDonationsPauseConfirmMessage(String date) {
-    return 'Je gift wordt gepauzeerd tot $date. Een nieuwe periodieke gift start op die datum met je resterende giften.';
+    return 'Je donatie wordt gepauzeerd tot $date. Een nieuwe periodieke donatie start op die datum met je resterende donaties.';
   }
 
   @override
-  String get recurringDonationsPauseConfirmButton => 'Ja, pauzeer gift';
+  String get recurringDonationsPauseConfirmButton => 'Ja, pauzeer donatie';
 
   @override
   String get recurringDonationsPauseCancelButton => 'Annuleren';
 
   @override
-  String get recurringDonationsPauseSuccessTitle => 'Gift gepauzeerd';
+  String get recurringDonationsPauseSuccessTitle => 'Donatie gepauzeerd';
 
   @override
   String recurringDonationsPauseSuccessMessage(String date) {
-    return 'Je gift wordt hervat op $date.';
+    return 'Je donatie wordt hervat op $date.';
   }
 
   @override
   String get recurringDonationsPauseFailed =>
-      'We konden je gift niet pauzeren. Probeer het opnieuw.';
+      'We konden je donatie niet pauzeren. Probeer het opnieuw.';
 
   @override
   String get recurringDonationsDetailCancelDonation => 'Donatie annuleren';

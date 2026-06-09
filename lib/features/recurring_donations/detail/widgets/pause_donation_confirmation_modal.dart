@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_donation_detail_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/utils/util.dart';
@@ -12,8 +11,8 @@ class PauseDonationConfirmationModal {
 
   static Future<void> show(
     BuildContext context, {
-    required RecurringDonationDetailCubit cubit,
     required DateTime restartDate,
+    required Future<void> Function() onConfirm,
   }) {
     final locals = context.l10n;
     final locale = Util.getLanguageTageFromLocale(context);
@@ -27,10 +26,9 @@ class PauseDonationConfirmationModal {
         FunButton(
           onTap: () async {
             context.pop();
-            await cubit.pauseDonation(restartDate);
+            await onConfirm();
           },
           text: locals.recurringDonationsPauseConfirmButton,
-          isLoading: cubit.isPausing,
           analyticsEvent:
               AnalyticsEventName.recurringDonationPauseConfirmClicked.toEvent(),
         ),

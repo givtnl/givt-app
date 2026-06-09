@@ -22,15 +22,6 @@ class RecurringDonationDetailCubit extends CommonCubit<RecurringDonationDetailUI
 
   bool _isPausing = false;
 
-  RecurringDonationDetailUIModel? get currentUIModel {
-    if (_recurringDonationDetailRepository.getRecurringDonation() == null) {
-      return null;
-    }
-    return _createUIModel();
-  }
-
-  bool get isPausing => _isPausing;
-
   void init() {
     _loadRecurringDonationDetail();
   }
@@ -77,7 +68,6 @@ class RecurringDonationDetailCubit extends CommonCubit<RecurringDonationDetailUI
     }
 
     _isPausing = true;
-    emitData(_createUIModel());
 
     try {
       await _recurringDonationDetailRepository.pauseDonation(
@@ -85,12 +75,16 @@ class RecurringDonationDetailCubit extends CommonCubit<RecurringDonationDetailUI
       );
       if (isClosed) return;
 
-      await _recurringDonationsOverviewRepository.loadRecurringDonations(
-        status: 'active',
-      );
+      await Future.wait([
+        _recurringDonationDetailRepository.loadRecurringDonationDetail(),
+        _recurringDonationsOverviewRepository.loadRecurringDonations(
+          status: 'active',
+        ),
+      ]);
       if (isClosed) return;
 
       _isPausing = false;
+      emitData(_createUIModel());
       emitCustom(
         RecurringDonationDetailCustom.pauseDonationSucceeded(
           restartDate: restartDate,
@@ -121,7 +115,6 @@ class RecurringDonationDetailCubit extends CommonCubit<RecurringDonationDetailUI
       history: _recurringDonationDetailRepository.getHistory(),
       isLoading: _recurringDonationDetailRepository.isLoading(),
       isActive: _recurringDonationDetailRepository.isRecurringDonationActive(),
-      isPausing: _isPausing,
       monthsHelped: _recurringDonationDetailRepository.getMonthsHelped(),
       error: _recurringDonationDetailRepository.getError(),
     );
