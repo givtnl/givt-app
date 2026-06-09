@@ -1,0 +1,82 @@
+appId: net.givtapp.ios.test
+name: E2E — EU account settings via login (ENG-666)
+env:
+    USERNAME: donna+maestronl@givtapp.net
+    PASSWORD: Test123
+---
+- runFlow: NL_LoginWithAccount.yml
+- runFlow: NL_Opening.yml
+
+# Change password
+- scrollUntilVisible:
+    element:
+      id: "accountSettingsRowChangePassword"
+    direction: DOWN
+- tapOn:
+    id: "accountSettingsRowChangePassword"
+- assertVisible:
+    id: "accountSettingsChangePasswordSheet"
+- runFlow: ../_shared/Dismiss_BottomSheet.yml
+- assertVisible:
+    id: "accountSettingsScreen"
+
+# Biometric setup (skipped when unavailable on simulator)
+- scrollUntilVisible:
+    element:
+      id: "accountSettingsRowBiometric"
+    direction: DOWN
+    optional: true
+- tapOn:
+    id: "accountSettingsRowBiometric"
+    optional: true
+- runFlow:
+    file: ../_shared/Dismiss_BottomSheet.yml
+    optional: true
+
+# Maximum amount
+- scrollUntilVisible:
+    element:
+      id: "accountSettingsRowMaxAmount"
+    direction: DOWN
+- tapOn:
+    id: "accountSettingsRowMaxAmount"
+- runFlow:
+    when:
+      visible:
+        id: "Login-Bottomsheet-Password-Input"
+    file: ../_shared/Login_AuthNeeded.yml
+- assertVisible:
+    id: "accountSettingsMaxAmountSheet"
+- runFlow: ../_shared/Dismiss_BottomSheet.yml
+
+# Amount presets
+- scrollUntilVisible:
+    element:
+      id: "accountSettingsRowAmountPresets"
+    direction: DOWN
+- tapOn:
+    id: "accountSettingsRowAmountPresets"
+- assertVisible:
+    id: "accountSettingsAmountPresetsSheet"
+- runFlow: ../_shared/Dismiss_BottomSheet.yml
+
+# Platform contribution
+- scrollUntilVisible:
+    element:
+      id: "accountSettingsRowPlatformContribution"
+    direction: DOWN
+- tapOn:
+    id: "accountSettingsRowPlatformContribution"
+- runFlow:
+    when:
+      visible:
+        id: "Login-Bottomsheet-Password-Input"
+    file: ../_shared/Login_AuthNeeded.yml
+- assertVisible:
+    id: "accountSettingsPlatformContributionScreen"
+- tapOn:
+    id: "backButton"
+
+- tapOn:
+    id: "backButton"
+    optional: true

@@ -48,6 +48,7 @@ class FunButton extends StatelessWidget {
     this.funButtonBadge,
     this.onDisabledTap,
     this.variant = FunButtonVariant.primary,
+    this.semanticsIdentifier,
   });
 
   final void Function()? onTap;
@@ -75,6 +76,7 @@ class FunButton extends StatelessWidget {
   final AnalyticsEvent analyticsEvent;
   final FunButtonBadge? funButtonBadge;
   final VoidCallback? onDisabledTap;
+  final String? semanticsIdentifier;
 
   /// Resolves theme colors for the current variant when not explicitly provided.
   ({
@@ -148,7 +150,7 @@ class FunButton extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Theme(
+    final button = Theme(
       data: themeData,
       child: ActionContainer(
         analyticsEvent: analyticsEvent,
@@ -201,6 +203,16 @@ class FunButton extends StatelessWidget {
           },
         ),
       ),
+    );
+
+    if (semanticsIdentifier == null) {
+      return button;
+    }
+
+    return Semantics(
+      identifier: semanticsIdentifier,
+      button: true,
+      child: button,
     );
   }
 

@@ -134,6 +134,7 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 ## Testing and commands
 
 - Run tests: `flutter test --coverage --test-randomize-ordering-seed random`
+- **Maestro E2E**: flows live in `test/Maestro/` (`EU/` main app, `US/` family). See **`test/Maestro/README.md`** for folder layout, naming, semantics IDs, and how to run. Maestro patterns: `.agents/skills/maestro-mobile-testing/SKILL.md` (includes a Givt-specific section).
 - Makefile: see project root for common commands (README and Makefile).
 
 ## Cursor Cloud specific instructions

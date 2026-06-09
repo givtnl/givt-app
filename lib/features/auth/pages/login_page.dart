@@ -204,8 +204,10 @@ class _LoginPageState extends State<LoginPage> {
               hintText: locals.email,
             ),
             const SizedBox(height: 16),
-            InputFormField(
-              key: const ValueKey('Login-Bottomsheet-Password-Input'),
+            Semantics(
+              identifier: 'Login-Bottomsheet-Password-Input',
+              textField: true,
+              child: InputFormField(
               controller: passwordController,
               autofillHints: const [AutofillHints.password],
               keyboardType: TextInputType.visiblePassword,
@@ -241,6 +243,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
               ),
             ),
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: Align(
@@ -263,6 +266,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
       primaryButton: FunButton(
+        semanticsIdentifier: 'Login-Bottomsheet-Submit-Button',
         isDisabled: !isEnabled || isLoading,
         onTap: isEnabled && !isLoading ? () => onLogin(context) : null,
         text: locals.login,

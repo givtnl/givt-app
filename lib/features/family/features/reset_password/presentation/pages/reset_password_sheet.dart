@@ -63,7 +63,9 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
     return BaseStateConsumer(
       cubit: _cubit,
       onInitial: (context) {
-        return FunBottomSheet(
+        return Semantics(
+          identifier: 'accountSettingsChangePasswordSheet',
+          child: FunBottomSheet(
           closeAction: () => Navigator.of(context).pop(),
           title: context.l10n.changePassword,
           content: SingleChildScrollView(
@@ -102,6 +104,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
             text: context.l10n.changePassword,
             analyticsEvent: AnalyticsEventName.changePasswordClicked.toEvent(),
           ),
+        ),
         );
       },
       onLoading: (context) {

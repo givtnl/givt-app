@@ -44,7 +44,9 @@ class PersonalInfoEditPage extends StatelessWidget {
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
 
-    return FunScaffold(
+    return Semantics(
+      identifier: 'accountSettingsScreen',
+      child: FunScaffold(
       minimumPadding: EdgeInsets.zero,
       appBar: FunTopAppBar(
         variant: FunTopAppBarVariant.white,
@@ -79,13 +81,17 @@ class PersonalInfoEditPage extends StatelessWidget {
               const SizedBox(height: 24),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: FunButton(
-                  text: locals.unregister,
-                  variant: FunButtonVariant.destructiveSecondary,
-                  onTap: () => AccountSettingsActions.openUnregister(context),
-                  analyticsEvent: AnalyticsEventName
-                      .accountSettingsTerminateClicked
-                      .toEvent(),
+                child: Semantics(
+                  identifier: 'accountSettingsTerminateAccount',
+                  button: true,
+                  child: FunButton(
+                    text: locals.unregister,
+                    variant: FunButtonVariant.destructiveSecondary,
+                    onTap: () => AccountSettingsActions.openUnregister(context),
+                    analyticsEvent: AnalyticsEventName
+                        .accountSettingsTerminateClicked
+                        .toEvent(),
+                  ),
                 ),
               ),
               const SizedBox(height: 40),
@@ -93,6 +99,7 @@ class PersonalInfoEditPage extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 
@@ -156,7 +163,10 @@ class _PersonalDetailsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AccountSettingsSectionHeader(title: locals.accountSettingsPersonalDetails),
+        AccountSettingsSectionHeader(
+          title: locals.accountSettingsPersonalDetails,
+          semanticsIdentifier: 'accountSettingsSectionPersonalDetails',
+        ),
         AccountSettingsListItem(
           value: '${user.firstName} ${user.lastName}',
           leading: FaIcon(FontAwesomeIcons.user, size: 20, color: iconColor),
@@ -288,9 +298,13 @@ class _SecuritySection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AccountSettingsSectionHeader(title: locals.accountSettingsSecurity),
+        AccountSettingsSectionHeader(
+          title: locals.accountSettingsSecurity,
+          semanticsIdentifier: 'accountSettingsSectionSecurity',
+        ),
         AccountSettingsListItem(
           value: locals.changePassword,
+          semanticsIdentifier: 'accountSettingsRowChangePassword',
           leading: FaIcon(FontAwesomeIcons.lock, size: 20, color: iconColor),
           analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
             parameters: {'row_type': 'password'},
@@ -344,6 +358,7 @@ class _BiometricSettingsRow extends StatelessWidget {
 
         return AccountSettingsListItem(
           value: label,
+          semanticsIdentifier: 'accountSettingsRowBiometric',
           leading: Platform.isIOS && isFaceIdAvailable
               ? SvgPicture.asset(
                   'assets/images/face_id.svg',
@@ -382,9 +397,13 @@ class _PreferencesSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AccountSettingsSectionHeader(title: locals.accountSettingsPreferences),
+        AccountSettingsSectionHeader(
+          title: locals.accountSettingsPreferences,
+          semanticsIdentifier: 'accountSettingsSectionPreferences',
+        ),
         AccountSettingsListItem(
           value: locals.giveLimit,
+          semanticsIdentifier: 'accountSettingsRowMaxAmount',
           leading: FaIcon(currencyIcon, size: 20, color: iconColor),
           analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
             parameters: {'row_type': 'max_amount'},
@@ -393,6 +412,7 @@ class _PreferencesSection extends StatelessWidget {
         ),
         AccountSettingsListItem(
           value: locals.amountPresetsTitle,
+          semanticsIdentifier: 'accountSettingsRowAmountPresets',
           leading: FaIcon(FontAwesomeIcons.sliders, size: 20, color: iconColor),
           analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
             parameters: {'row_type': 'amount_presets'},
@@ -401,6 +421,7 @@ class _PreferencesSection extends StatelessWidget {
         ),
         AccountSettingsListItem(
           value: locals.platformContributionTitle,
+          semanticsIdentifier: 'accountSettingsRowPlatformContribution',
           leading: FaIcon(
             FontAwesomeIcons.handHoldingDollar,
             size: 20,

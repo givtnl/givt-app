@@ -258,12 +258,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               top: 10,
               start: 30,
             ),
-            child: IconButton(
-              icon: const FaIcon(
-                FontAwesomeIcons.bars,
-                semanticLabel: 'homeMenu',
+            child: Semantics(
+              identifier: 'homeMenu',
+              button: true,
+              child: IconButton(
+                icon: const FaIcon(
+                  FontAwesomeIcons.bars,
+                  semanticLabel: 'homeMenu',
+                ),
+                onPressed: () => _key.currentState?.openDrawer(),
               ),
-              onPressed: () => _key.currentState?.openDrawer(),
             ),
           ),
           actions: [

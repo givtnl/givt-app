@@ -1,0 +1,11 @@
+appId: net.givtapp.ios.test
+name: Re-authenticate when the login bottom sheet is shown
+
+env:
+    PASSWORD: Test123
+---
+- tapOn:
+    id: "Login-Bottomsheet-Password-Input"
+- inputText: ${PASSWORD}
+- tapOn:
+    id: "Login-Bottomsheet-Submit-Button"

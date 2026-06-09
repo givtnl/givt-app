@@ -1,0 +1,22 @@
+appId: net.givtapp.ios.test
+name: EU Account settings — Platform contribution opens the contribution screen
+
+---
+
+- runFlow: NL_LoginWithAccount.yml
+- runFlow: NL_Opening.yml
+- scrollUntilVisible:
+    element:
+      id: "accountSettingsRowPlatformContribution"
+    direction: DOWN
+- tapOn:
+    id: "accountSettingsRowPlatformContribution"
+- runFlow:
+    when:
+      visible:
+        id: "Login-Bottomsheet-Password-Input"
+    file: ../_shared/Login_AuthNeeded.yml
+- assertVisible:
+    id: "accountSettingsPlatformContributionScreen"
+- tapOn:
+    id: "backButton"

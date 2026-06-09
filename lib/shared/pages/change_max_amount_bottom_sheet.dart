@@ -313,7 +313,9 @@ class _ChangeMaxAmountBottomSheetViewState
   /// Builds the main editing interface
   Widget _buildEditSheet(BuildContext context) {
     final locals = context.l10n;
-    return FunBottomSheet(
+    return Semantics(
+      identifier: 'accountSettingsMaxAmountSheet',
+      child: FunBottomSheet(
       title: locals.giveLimit,
       closeAction: () => context.pop(),
       content: Column(
@@ -332,6 +334,7 @@ class _ChangeMaxAmountBottomSheetViewState
         ],
       ),
       primaryButton: _buildActionButton(context),
+    ),
     );
   }
 }

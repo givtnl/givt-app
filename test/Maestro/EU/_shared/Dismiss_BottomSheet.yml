@@ -1,0 +1,7 @@
+appId: net.givtapp.ios.test
+name: Close a bottom sheet
+
+---
+
+- tapOn:
+    id: "xmark"

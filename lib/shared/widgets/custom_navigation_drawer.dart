@@ -168,6 +168,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: true,
                   title: locals.personalInfo,
                   icon: Icons.mode_edit_outline,
+                  semanticsIdentifier: 'menuPersonalInfo',
                   analyticsEvent: AnalyticsEventName.menuNavigationPersonalInfoClicked,
                   onTap: () async {
                     return AuthUtils.checkToken(

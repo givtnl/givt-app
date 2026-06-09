@@ -22,4 +22,7 @@ env:
     label: "Enter the test user's email address"
     text: ${USERNAME}
 - tapOn: "Continue"
-- tapOn: "Ask me later"
+- tapOn:
+    label: Dismiss biometric setup prompt
+    text: "Ask me later"
+    optional: true

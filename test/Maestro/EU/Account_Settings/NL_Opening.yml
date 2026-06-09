@@ -1,0 +1,30 @@
+appId: net.givtapp.ios.test
+name: Open the Account settings screen from the menu (EU)
+
+---
+
+- extendedWaitUntil:
+    visible:
+      id: "homeMenu"
+    timeout: 15000
+- tapOn:
+    id: "homeMenu"
+- tapOn:
+    id: "menuPersonalInfo"
+- runFlow:
+    when:
+      visible:
+        id: "Login-Bottomsheet-Password-Input"
+    file: ../_shared/Login_AuthNeeded.yml
+- assertVisible:
+    id: "accountSettingsScreen"
+- assertVisible:
+    id: "accountSettingsSectionPersonalDetails"
+- assertVisible:
+    id: "accountSettingsSectionSecurity"
+- scrollUntilVisible:
+    element:
+      id: "accountSettingsSectionPreferences"
+    direction: DOWN
+- assertVisible:
+    id: "accountSettingsSectionPreferences"

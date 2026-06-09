@@ -11,6 +11,7 @@ class AccountSettingsListItem extends StatelessWidget {
     required this.leading,
     this.onTap,
     this.analyticsEvent,
+    this.semanticsIdentifier,
     this.maxLines = 2,
     super.key,
   });
@@ -19,6 +20,7 @@ class AccountSettingsListItem extends StatelessWidget {
   final Widget leading;
   final VoidCallback? onTap;
   final AnalyticsEvent? analyticsEvent;
+  final String? semanticsIdentifier;
   final int maxLines;
 
   bool get _isEnabled => onTap != null;
@@ -82,11 +84,15 @@ class AccountSettingsListItem extends StatelessWidget {
           ),
         ),
         child: _isEnabled
-            ? Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: _handleTap,
-                  child: row,
+            ? Semantics(
+                identifier: semanticsIdentifier,
+                button: semanticsIdentifier != null,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: _handleTap,
+                    child: row,
+                  ),
                 ),
               )
             : row,

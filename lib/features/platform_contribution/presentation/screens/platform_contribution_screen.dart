@@ -38,7 +38,9 @@ class _PlatformContributionScreenState
   Widget build(BuildContext context) {
     final locals = context.l10n;
 
-    return FunScaffold(
+    return Semantics(
+      identifier: 'accountSettingsPlatformContributionScreen',
+      child: FunScaffold(
       appBar: FunTopAppBar(
         variant: FunTopAppBarVariant.white,
         title: locals.platformContributionTitle,
@@ -53,6 +55,7 @@ class _PlatformContributionScreenState
         onError: _buildErrorScaffold,
         onCustom: _handleCustom,
       ),
+    ),
     );
   }
 

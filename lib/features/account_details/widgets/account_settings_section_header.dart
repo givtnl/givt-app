@@ -5,20 +5,26 @@ import 'package:givt_app/shared/design_system/design_system.dart';
 class AccountSettingsSectionHeader extends StatelessWidget {
   const AccountSettingsSectionHeader({
     required this.title,
+    this.semanticsIdentifier,
     super.key,
   });
 
   final String title;
+  final String? semanticsIdentifier;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: BodySmallText(
-          title,
-          color: FunTheme.of(context).primary30,
+    return Semantics(
+      identifier: semanticsIdentifier,
+      header: semanticsIdentifier != null,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: BodySmallText(
+            title,
+            color: FunTheme.of(context).primary30,
+          ),
         ),
       ),
     );

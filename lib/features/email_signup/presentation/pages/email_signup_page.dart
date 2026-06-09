@@ -193,8 +193,10 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               },
                             ),
                             const SizedBox(height: 12),
-                            InputFormField(
-                              key: const ValueKey('Email-Input'),
+                            Semantics(
+                              identifier: 'Email-Input',
+                              textField: true,
+                              child: InputFormField(
                               controller: _emailController,
                               hintText: locals.email,
                               onChanged: _cubit.updateEmail,
@@ -210,6 +212,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                 AutofillHints.username,
                                 AutofillHints.email,
                               ],
+                            ),
                             ),
                             const Spacer(),
                             Padding(
@@ -257,7 +260,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             ),
                             const SizedBox(height: 12),
                             FunButton(
-                              key: const ValueKey('Email-Continue-Button'),
+                              semanticsIdentifier: 'Email-Continue-Button',
                               isDisabled: !state.continueButtonEnabled,
                               isLoading: _isLoading,
                               onTap: state.continueButtonEnabled

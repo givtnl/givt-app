@@ -139,7 +139,9 @@ class _ChangeAmountPresetsBottomSheetState
   /// Builds the main sheet UI with enable/disable option
   Widget _buildMainSheet(BuildContext context) {
     final locals = context.l10n;
-    return FunBottomSheet(
+    return Semantics(
+      identifier: 'accountSettingsAmountPresetsSheet',
+      child: FunBottomSheet(
       title: locals.amountPresetsTitle,
       closeAction: () => context.pop(),
       content: Column(
@@ -168,6 +170,7 @@ class _ChangeAmountPresetsBottomSheetState
           },
         ),
       ),
+    ),
     );
   }
 

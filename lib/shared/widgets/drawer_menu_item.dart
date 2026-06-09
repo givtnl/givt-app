@@ -15,6 +15,7 @@ class DrawerMenuItem extends StatelessWidget {
     this.showBadge = false,
     this.showUnderline = false,
     this.isAccent = false,
+    this.semanticsIdentifier,
     super.key,
     this.imageIcon,
   });
@@ -28,6 +29,7 @@ class DrawerMenuItem extends StatelessWidget {
   final Widget? imageIcon;
   final VoidCallback onTap;
   final AnalyticsEventName analyticsEvent;
+  final String? semanticsIdentifier;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,8 @@ class DrawerMenuItem extends StatelessWidget {
               ),
             ),
             child: isAccent
-                ? ListTile(
+                ? _withSemantics(
+                    ListTile(
                     minVerticalPadding: 0,
                     contentPadding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
                     title: Row(
@@ -81,8 +84,10 @@ class DrawerMenuItem extends StatelessWidget {
                       );
                       onTap();
                     },
+                  ),
                   )
-                : ListTile(
+                : _withSemantics(
+                    ListTile(
                     leading: imageIcon ??
                         Icon(
                           icon,
@@ -114,9 +119,22 @@ class DrawerMenuItem extends StatelessWidget {
                       onTap();
                     },
                   ),
+                  ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _withSemantics(Widget child) {
+    if (semanticsIdentifier == null) {
+      return child;
+    }
+
+    return Semantics(
+      identifier: semanticsIdentifier,
+      button: true,
+      child: child,
     );
   }
 }
