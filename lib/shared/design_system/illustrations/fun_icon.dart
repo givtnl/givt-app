@@ -184,6 +184,16 @@ class FunIcon extends StatelessWidget {
         iconColor: iconColor,
       );
 
+  factory FunIcon.trash({
+    Color circleColor = FamilyAppTheme.error90,
+    Color iconColor = FamilyAppTheme.error20,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.trash,
+        circleColor: circleColor,
+        iconColor: iconColor,
+      );
+
   factory FunIcon.xmarkPlain() => const FunIcon(
         iconData: FontAwesomeIcons.xmark,
         circleColor: Colors.transparent,

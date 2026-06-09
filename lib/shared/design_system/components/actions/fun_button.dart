@@ -126,7 +126,7 @@ class FunButton extends StatelessWidget {
         disabledBg: theme.neutral100,
         pressedBg: theme.neutral95,
         border: theme.error70,
-        text: theme.error50,
+        text: theme.error30,
         disabledText: theme.neutral60,
       ),
     };

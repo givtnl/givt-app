@@ -2630,17 +2630,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Einzelne Einträge bearbeiten';
 
   @override
-  String get externalDonationsDeleteModalTitle => 'Diese Spende löschen?';
+  String externalDonationsDeleteModalTitle(String organisation) {
+    return '$organisation aus deiner Spendenhistorie entfernen?';
+  }
 
   @override
-  String get externalDonationsDeleteModalMessage =>
-      'Dadurch werden die Organisation und alle Einträge aus deiner Spendenhistorie entfernt. Das kann nicht rückgängig gemacht werden.';
+  String get externalDonationsDeleteModalConfirm => 'Ja, löschen';
 
   @override
-  String get externalDonationsDeleteModalConfirm => 'Ja, Spende löschen';
-
-  @override
-  String get externalDonationsDeleteModalCancel => 'Nein, Spende behalten';
+  String get externalDonationsDeleteModalCancel =>
+      'Nein, meine Spende behalten';
 
   @override
   String get externalDonationsBulkDeleteModalTitle =>

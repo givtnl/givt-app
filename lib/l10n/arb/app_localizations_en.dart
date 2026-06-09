@@ -2608,17 +2608,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Edit specific records';
 
   @override
-  String get externalDonationsDeleteModalTitle => 'Delete this donation?';
+  String externalDonationsDeleteModalTitle(String organisation) {
+    return 'Remove $organisation from your giving history?';
+  }
 
   @override
-  String get externalDonationsDeleteModalMessage =>
-      'This removes the organisation and every record from your giving history. This cannot be undone.';
+  String get externalDonationsDeleteModalConfirm => 'Yes, delete';
 
   @override
-  String get externalDonationsDeleteModalConfirm => 'Yes, delete donation';
-
-  @override
-  String get externalDonationsDeleteModalCancel => 'No, keep donation';
+  String get externalDonationsDeleteModalCancel => 'No, keep my donation';
 
   @override
   String get externalDonationsBulkDeleteModalTitle =>
@@ -5817,17 +5815,15 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
       'Edit specific records';
 
   @override
-  String get externalDonationsDeleteModalTitle => 'Delete this donation?';
+  String externalDonationsDeleteModalTitle(String organisation) {
+    return 'Remove $organisation from your giving history?';
+  }
 
   @override
-  String get externalDonationsDeleteModalMessage =>
-      'This removes the organization and every record from your giving history. This cannot be undone.';
+  String get externalDonationsDeleteModalConfirm => 'Yes, delete';
 
   @override
-  String get externalDonationsDeleteModalConfirm => 'Yes, delete donation';
-
-  @override
-  String get externalDonationsDeleteModalCancel => 'No, keep donation';
+  String get externalDonationsDeleteModalCancel => 'No, keep my donation';
 
   @override
   String get externalDonationsBulkDeleteModalTitle =>

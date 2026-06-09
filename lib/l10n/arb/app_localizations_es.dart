@@ -2614,17 +2614,15 @@ class AppLocalizationsEs extends AppLocalizations {
       'Editar registros específicos';
 
   @override
-  String get externalDonationsDeleteModalTitle => '¿Eliminar esta donación?';
+  String externalDonationsDeleteModalTitle(String organisation) {
+    return '¿Eliminar $organisation de tu historial de donaciones?';
+  }
 
   @override
-  String get externalDonationsDeleteModalMessage =>
-      'Esto elimina la organización y todos los registros de tu historial de donaciones. No se puede deshacer.';
+  String get externalDonationsDeleteModalConfirm => 'Sí, eliminar';
 
   @override
-  String get externalDonationsDeleteModalConfirm => 'Sí, eliminar donación';
-
-  @override
-  String get externalDonationsDeleteModalCancel => 'No, conservar donación';
+  String get externalDonationsDeleteModalCancel => 'No, conservar mi donación';
 
   @override
   String get externalDonationsBulkDeleteModalTitle =>
@@ -5903,17 +5901,15 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
       'Editar registros específicos';
 
   @override
-  String get externalDonationsDeleteModalTitle => '¿Eliminar esta donación?';
+  String externalDonationsDeleteModalTitle(String organisation) {
+    return '¿Eliminar $organisation de tu historial de donaciones?';
+  }
 
   @override
-  String get externalDonationsDeleteModalMessage =>
-      'Esto elimina la organización y todos los registros de tu historial de donaciones. No se puede deshacer.';
+  String get externalDonationsDeleteModalConfirm => 'Sí, eliminar';
 
   @override
-  String get externalDonationsDeleteModalConfirm => 'Sí, eliminar donación';
-
-  @override
-  String get externalDonationsDeleteModalCancel => 'No, conservar donación';
+  String get externalDonationsDeleteModalCancel => 'No, conservar mi donación';
 
   @override
   String get externalDonationsBulkDeleteModalTitle =>

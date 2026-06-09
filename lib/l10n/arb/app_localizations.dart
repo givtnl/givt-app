@@ -4699,25 +4699,19 @@ abstract class AppLocalizations {
   /// No description provided for @externalDonationsDeleteModalTitle.
   ///
   /// In en, this message translates to:
-  /// **'Delete this donation?'**
-  String get externalDonationsDeleteModalTitle;
-
-  /// No description provided for @externalDonationsDeleteModalMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'This removes the organisation and every record from your giving history. This cannot be undone.'**
-  String get externalDonationsDeleteModalMessage;
+  /// **'Remove {organisation} from your giving history?'**
+  String externalDonationsDeleteModalTitle(String organisation);
 
   /// No description provided for @externalDonationsDeleteModalConfirm.
   ///
   /// In en, this message translates to:
-  /// **'Yes, delete donation'**
+  /// **'Yes, delete'**
   String get externalDonationsDeleteModalConfirm;
 
   /// No description provided for @externalDonationsDeleteModalCancel.
   ///
   /// In en, this message translates to:
-  /// **'No, keep donation'**
+  /// **'No, keep my donation'**
   String get externalDonationsDeleteModalCancel;
 
   /// No description provided for @externalDonationsBulkDeleteModalTitle.

@@ -2555,7 +2555,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String externalDonationsCreateSuccessHeadline(String organisation) {
-    return '$organisation maakt nu deel uit van je giftenhistorie';
+    return '$organisation staat nu in je giftenoverzicht';
   }
 
   @override
@@ -2619,17 +2619,15 @@ class AppLocalizationsNl extends AppLocalizations {
       'Specifieke records bewerken';
 
   @override
-  String get externalDonationsDeleteModalTitle => 'Deze gift verwijderen?';
+  String externalDonationsDeleteModalTitle(String organisation) {
+    return '$organisation uit je giftenoverzicht verwijderen?';
+  }
 
   @override
-  String get externalDonationsDeleteModalMessage =>
-      'Hiermee verwijder je de organisatie en elk record uit je gifthistorie. Dit kan niet ongedaan worden gemaakt.';
+  String get externalDonationsDeleteModalConfirm => 'Ja, verwijderen';
 
   @override
-  String get externalDonationsDeleteModalConfirm => 'Ja, gift verwijderen';
-
-  @override
-  String get externalDonationsDeleteModalCancel => 'Nee, gift behouden';
+  String get externalDonationsDeleteModalCancel => 'Nee, mijn gift behouden';
 
   @override
   String get externalDonationsBulkDeleteModalTitle =>

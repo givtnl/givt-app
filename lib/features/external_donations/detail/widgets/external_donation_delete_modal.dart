@@ -11,20 +11,15 @@ class ExternalDonationDeleteModal {
   static Future<void> show(
     BuildContext context, {
     required ExternalDonationDetailCubit cubit,
+    required String organisationName,
   }) {
     final locals = context.l10n;
 
     return FunModal(
-      title: locals.externalDonationsDeleteModalTitle,
-      subtitle: locals.externalDonationsDeleteModalMessage,
+      icon: FunIcon.trash(),
+      title: locals.externalDonationsDeleteModalTitle(organisationName),
       closeAction: () => context.pop(),
       buttons: [
-        FunButton(
-          onTap: () => context.pop(),
-          text: locals.externalDonationsDeleteModalCancel,
-          analyticsEvent:
-              AnalyticsEventName.externalDonationsDeleteCancelClicked.toEvent(),
-        ),
         FunButton(
           onTap: () async {
             context.pop();
@@ -35,6 +30,12 @@ class ExternalDonationDeleteModal {
           fullBorder: true,
           analyticsEvent:
               AnalyticsEventName.externalDonationsDeleteConfirmClicked.toEvent(),
+        ),
+        FunButton(
+          onTap: () => context.pop(),
+          text: locals.externalDonationsDeleteModalCancel,
+          analyticsEvent:
+              AnalyticsEventName.externalDonationsDeleteCancelClicked.toEvent(),
         ),
       ],
     ).show(context, isDismissible: true);
@@ -52,17 +53,11 @@ class ExternalDonationBulkDeleteModal {
     final locals = context.l10n;
 
     return FunModal(
+      icon: FunIcon.trash(),
       title: locals.externalDonationsBulkDeleteModalTitle,
       subtitle: locals.externalDonationsBulkDeleteModalMessage(selectedCount),
       closeAction: () => context.pop(),
       buttons: [
-        FunButton(
-          onTap: () => context.pop(),
-          text: locals.externalDonationsBulkDeleteModalCancel,
-          analyticsEvent: AnalyticsEventName
-              .externalDonationsBulkDeleteCancelClicked
-              .toEvent(),
-        ),
         FunButton(
           onTap: () async {
             context.pop();
@@ -73,6 +68,13 @@ class ExternalDonationBulkDeleteModal {
           fullBorder: true,
           analyticsEvent: AnalyticsEventName
               .externalDonationsBulkDeleteConfirmClicked
+              .toEvent(),
+        ),
+        FunButton(
+          onTap: () => context.pop(),
+          text: locals.externalDonationsBulkDeleteModalCancel,
+          analyticsEvent: AnalyticsEventName
+              .externalDonationsBulkDeleteCancelClicked
               .toEvent(),
         ),
       ],

@@ -166,7 +166,13 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
                 );
               }
             case ShowDeleteDonationModal():
-              ExternalDonationDeleteModal.show(context, cubit: _cubit);
+              if (uiModel != null) {
+                ExternalDonationDeleteModal.show(
+                  context,
+                  cubit: _cubit,
+                  organisationName: uiModel.donation.description,
+                );
+              }
             case ShowBulkDeleteModal():
               if (uiModel != null) {
                 ExternalDonationBulkDeleteModal.show(

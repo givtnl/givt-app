@@ -1318,10 +1318,14 @@
   "externalDonationsManageStartDate": "Start date",
   "externalDonationsManageDeleteDonation": "Delete donation",
   "externalDonationsManageEditSpecificRecords": "Edit specific records",
-  "externalDonationsDeleteModalTitle": "Delete this donation?",
-  "externalDonationsDeleteModalMessage": "This removes the organisation and every record from your giving history. This cannot be undone.",
-  "externalDonationsDeleteModalConfirm": "Yes, delete donation",
-  "externalDonationsDeleteModalCancel": "No, keep donation",
+  "externalDonationsDeleteModalTitle": "Remove {organisation} from your giving history?",
+  "@externalDonationsDeleteModalTitle": {
+    "placeholders": {
+      "organisation": { "type": "String" }
+    }
+  },
+  "externalDonationsDeleteModalConfirm": "Yes, delete",
+  "externalDonationsDeleteModalCancel": "No, keep my donation",
   "externalDonationsBulkDeleteModalTitle": "Delete selected records?",
   "externalDonationsBulkDeleteModalMessage": "This removes {count} selected records from your history.",
   "@externalDonationsBulkDeleteModalMessage": {
