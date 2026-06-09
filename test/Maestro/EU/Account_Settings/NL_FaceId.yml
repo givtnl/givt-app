@@ -1,0 +1,18 @@
+appId: net.givtapp.ios.test
+name: EU Account settings — Biometric row opens setup (device-dependent)
+
+---
+
+- runFlow: NL_LoginWithAccount.yml
+- runFlow: NL_Opening.yml
+- scrollUntilVisible:
+    element:
+      id: "accountSettingsRowBiometric"
+    direction: DOWN
+    optional: true
+- tapOn:
+    id: "accountSettingsRowBiometric"
+    optional: true
+- runFlow:
+    file: ../_shared/Dismiss_BottomSheet.yml
+    optional: true

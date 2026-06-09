@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/components/input/fun_input.dart';
 import 'package:givt_app/shared/design_system/components/input/fun_input_label.dart';
 import 'package:givt_app/shared/design_system/theme/fun_theme.dart';
-import 'package:intl/intl.dart';
 
 class FunDatePicker extends StatefulWidget {
   const FunDatePicker({
@@ -28,9 +28,18 @@ class _FunDatePickerState extends State<FunDatePicker> {
   late TextEditingController _displayController;
 
   String _formatDisplay() {
-    return widget.selectedDate != null
-        ? DateFormat('d MMMM yyyy').format(widget.selectedDate!)
-        : 'Select date';
+    if (widget.selectedDate == null) {
+      return '';
+    }
+    return MaterialLocalizations.of(context)
+        .formatMediumDate(widget.selectedDate!);
+  }
+
+  void _syncControllerText() {
+    final newText = _formatDisplay();
+    if (_displayController.text != newText) {
+      _displayController.text = newText;
+    }
   }
 
   FunInputLabelState _labelState() {
@@ -49,15 +58,20 @@ class _FunDatePickerState extends State<FunDatePicker> {
   @override
   void initState() {
     super.initState();
-    _displayController = TextEditingController(text: _formatDisplay());
+    _displayController = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _syncControllerText();
   }
 
   @override
   void didUpdateWidget(FunDatePicker oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final newText = _formatDisplay();
-    if (_displayController.text != newText) {
-      _displayController.text = newText;
+    if (oldWidget.selectedDate != widget.selectedDate) {
+      _syncControllerText();
     }
   }
 
@@ -87,7 +101,7 @@ class _FunDatePickerState extends State<FunDatePicker> {
       child: AbsorbPointer(
         child: FunInput(
           controller: _displayController,
-          hintText: 'Select date',
+          hintText: context.l10n.externalDonationsCreateSelectDateHint,
           readOnly: true,
           enabled: widget.enabled,
           suffixIcon: IconButton(

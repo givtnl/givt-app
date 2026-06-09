@@ -1,0 +1,21 @@
+appId: net.givtapp.ios.test
+name: EU Account settings — Maximum amount opens the give-limit sheet
+
+---
+
+- runFlow: NL_LoginWithAccount.yml
+- runFlow: NL_Opening.yml
+- scrollUntilVisible:
+    element:
+      id: "accountSettingsRowMaxAmount"
+    direction: DOWN
+- tapOn:
+    id: "accountSettingsRowMaxAmount"
+- runFlow:
+    when:
+      visible:
+        id: "Login-Bottomsheet-Password-Input"
+    file: ../_shared/Login_AuthNeeded.yml
+- assertVisible:
+    id: "accountSettingsMaxAmountSheet"
+- runFlow: ../_shared/Dismiss_BottomSheet.yml

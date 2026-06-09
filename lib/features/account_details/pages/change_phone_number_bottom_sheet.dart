@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/account_details/widgets/personal_info_edit_sheet_success.dart';
 import 'package:givt_app/features/family/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/util.dart';
 
 class ChangePhoneNumberBottomSheet extends StatefulWidget {
@@ -34,6 +36,12 @@ class _ChangePhoneNumberBottomSheetState
     selectedCountry = Country.fromCode(widget.country);
     phone.text = widget.phoneNumber.replaceAll(selectedCountry.prefix, '');
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    phone.dispose();
+    super.dispose();
   }
 
   String? validator(String? value) {
@@ -78,22 +86,42 @@ class _ChangePhoneNumberBottomSheetState
     setState(() {});
   }
 
+  String get _formattedPhoneNumber => Util.formatPhoneNumberWithPrefix(
+        country: selectedCountry,
+        phoneNumber: phone.text,
+      );
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    return BottomSheetLayout(
-      title: Text(
-        locals.changePhone,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+    return BlocBuilder<PersonalInfoEditBloc, PersonalInfoEditState>(
+      builder: (context, state) {
+        final isLoading = state.status == PersonalInfoEditStatus.loading;
+        final isSuccess = state.status == PersonalInfoEditStatus.success;
+
+        if (isSuccess) {
+          return FunBottomSheet(
+            closeAction: () => completePersonalInfoEditSheet(context),
+            title: locals.success,
+            content: FunIcon.checkmark(),
+            primaryButton: FunButton(
+              text: locals.buttonDone,
+              onTap: () => completePersonalInfoEditSheet(context),
+              analyticsEvent: AnalyticsEvent(
+                AnalyticsEventName.editPhoneNumberSaveClicked,
+              ),
             ),
-      ),
-      child: BlocBuilder<PersonalInfoEditBloc, PersonalInfoEditState>(
-        builder: (context, state) {
-          return Form(
+          );
+        }
+
+        return FunBottomSheet(
+          closeAction: () => Navigator.of(context).pop(),
+          title: locals.changePhone,
+          content: Form(
             key: formKey,
             child: Column(
               children: [
+                const SizedBox(height: 16),
                 if (selectedCountry == Country.us)
                   MobileNumberFormFieldUs(
                     phone: phone,
@@ -112,49 +140,36 @@ class _ChangePhoneNumberBottomSheetState
                     onPrefixChanged: onPrefixChanged,
                     validator: validator,
                   ),
-                const SizedBox(height: 15),
-                Expanded(child: Container()),
-                if (state.status == PersonalInfoEditStatus.loading)
-                  const Center(child: CircularProgressIndicator())
-                else
-                  ElevatedButton(
-                    onPressed: isEnabled
-                        ? () {
-                            if (!formKey.currentState!.validate()) {
-                              return;
-                            }
-                            context.read<PersonalInfoEditBloc>().add(
-                                  PersonalInfoEditPhoneNumber(
-                                    phoneNumber:
-                                        Util.formatPhoneNumberWithPrefix(
-                                      country: selectedCountry,
-                                      phoneNumber: phone.text,
-                                    ),
-                                  ),
-                                );
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                      disabledBackgroundColor: Colors.grey,
-                    ),
-                    child: Text(
-                      locals.save,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                  ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+          primaryButton: FunButton(
+            isDisabled: !isEnabled || isLoading,
+            onTap: isEnabled && !isLoading ? _onSave : null,
+            text: isLoading ? locals.loadingTitle : locals.save,
+            analyticsEvent: AnalyticsEvent(
+              AnalyticsEventName.editPhoneNumberSaveClicked,
+            ),
+          ),
+        );
+      },
     );
+  }
+
+  void _onSave() {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+    context.read<PersonalInfoEditBloc>().add(
+          PersonalInfoEditPhoneNumber(
+            phoneNumber: _formattedPhoneNumber,
+          ),
+        );
   }
 
   bool get isEnabled {
     if (formKey.currentState == null) return false;
-    return formKey.currentState!.validate();
+    if (!formKey.currentState!.validate()) return false;
+    return _formattedPhoneNumber != widget.phoneNumber;
   }
 }

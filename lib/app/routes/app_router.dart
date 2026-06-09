@@ -35,8 +35,6 @@ import 'package:givt_app/features/give/pages/success_donation_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/cubit/add_external_donation_cubit.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/pages/add_external_donation_page.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/features/personal_summary/overview/pages/personal_summary_page.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
@@ -158,27 +156,6 @@ class AppRouter {
               child: const PersonalSummary(),
             ),
             routes: [
-              GoRoute(
-                path: Pages.addExternalDonation.path,
-                name: Pages.addExternalDonation.name,
-                builder: (context, state) {
-                  final summaryBloc = state.extra! as PersonalSummaryBloc;
-                  return MultiBlocProvider(
-                    providers: [
-                      BlocProvider.value(
-                        value: summaryBloc,
-                      ),
-                      BlocProvider(
-                        create: (context) => AddExternalDonationCubit(
-                          dateTime: summaryBloc.state.dateTime,
-                          givtRepository: getIt(),
-                        )..init(),
-                      ),
-                    ],
-                    child: const AddExternalDonationPage(),
-                  );
-                },
-              ),
               GoRoute(
                 path: Pages.yearlyOverview.path,
                 name: Pages.yearlyOverview.name,

@@ -11,13 +11,12 @@ import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/network.dart';
-import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
+import 'package:givt_app/features/account_details/account_settings_actions.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -163,31 +162,13 @@ class CustomNavigationDrawer extends StatelessWidget {
                     ),
                   ),
                   analyticsEvent: AnalyticsEventName.menuNavigationGiveLimitClicked,
-                  onTap: () async {
-                    return AuthUtils.checkToken(
-                      context,
-                      checkAuthRequest: CheckAuthRequest(
-                        navigate: (context) => showModalBottomSheet<void>(
-                          context: context,
-                          isScrollControlled: true,
-                          useSafeArea: true,
-                          builder: (_) => ChangeMaxAmountBottomSheet(
-                            maxAmount: auth.user.amountLimit,
-                            icon: Util.getCurrencyIconData(
-                              country: Country.fromCode(
-                                auth.user.country,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: () => AccountSettingsActions.openMaxAmount(context),
                 ),
                 DrawerMenuItem(
                   isVisible: true,
                   title: locals.personalInfo,
                   icon: Icons.mode_edit_outline,
+                  semanticsIdentifier: 'menuPersonalInfo',
                   analyticsEvent: AnalyticsEventName.menuNavigationPersonalInfoClicked,
                   onTap: () async {
                     return AuthUtils.checkToken(
@@ -201,23 +182,13 @@ class CustomNavigationDrawer extends StatelessWidget {
                   },
                 ),
                 DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
+                  isVisible:
+                      !auth.user.needRegistration && !auth.user.isUsUser,
                   title: locals.platformContributionTitle,
                   icon: FontAwesomeIcons.handHoldingDollar,
                   analyticsEvent: AnalyticsEventName.menuNavigationPlatformContributionClicked,
-                  onTap: () async => AuthUtils.checkToken(
-                    context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context) async {
-                        context.goNamed(Pages.platformContribution.name);
-                        unawaited(
-                          AnalyticsHelper.logEvent(
-                            eventName: AnalyticsEventName.platformContributionNavigationClicked,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  onTap: () =>
+                      AccountSettingsActions.openPlatformContribution(context),
                 ),
                 DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
@@ -231,14 +202,8 @@ class CustomNavigationDrawer extends StatelessWidget {
                     ),
                   ),
                   analyticsEvent: AnalyticsEventName.menuNavigationAmountPresetsClicked,
-                  onTap: () {
-                    showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (_) => const ChangeAmountPresetsBottomSheet(),
-                    );
-                  },
+                  onTap: () =>
+                      AccountSettingsActions.openAmountPresets(context),
                 ),
                 FutureBuilder(
                   initialData: false,
@@ -282,21 +247,10 @@ class CustomNavigationDrawer extends StatelessWidget {
                             )
                           : null,
                       analyticsEvent: AnalyticsEventName.menuNavigationBiometricClicked,
-                      onTap: () async {
-                        return AuthUtils.checkToken(
-                          context,
-                          checkAuthRequest: CheckAuthRequest(
-                            navigate: (context) => showModalBottomSheet<void>(
-                              context: context,
-                              isScrollControlled: true,
-                              useSafeArea: true,
-                              builder: (_) => FingerprintBottomSheet(
-                                isFingerprint: isFingerprintAvailable,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                      onTap: () => AccountSettingsActions.openBiometricSetup(
+                        context,
+                        isFingerprint: isFingerprintAvailable,
+                      ),
                     );
                   },
                 ),
@@ -331,22 +285,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   title: locals.unregister,
                   icon: FontAwesomeIcons.userXmark,
                   analyticsEvent: AnalyticsEventName.menuNavigationUnregisterClicked,
-                  onTap: () async {
-                    if (auth.user.tempUser) {
-                      context.goNamed(
-                        Pages.unregister.name,
-                      );
-                      return;
-                    }
-                    await AuthUtils.checkToken(
-                      context,
-                      checkAuthRequest: CheckAuthRequest(
-                        navigate: (context) async => context.goNamed(
-                          Pages.unregister.name,
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: () => AccountSettingsActions.openUnregister(context),
                 ),
                 _buildEmptySpace(),
                 DrawerMenuItem(

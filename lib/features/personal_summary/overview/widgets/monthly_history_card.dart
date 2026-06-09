@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
@@ -118,10 +120,8 @@ class MonthlyHistoryCard extends StatelessWidget {
                         Align(
                           alignment: Alignment.centerRight,
                           child: _buildAddExternalDonation(
-                            onPressed: () => context.goNamed(
-                              Pages.addExternalDonation.name,
-                              extra: context.read<PersonalSummaryBloc>(),
-                            ),
+                            onPressed: () =>
+                                _navigateToExternalDonations(context),
                           ),
                         ),
                       ],
@@ -274,17 +274,21 @@ class MonthlyHistoryCard extends StatelessWidget {
             _buildManageExternalDonations(
               locals,
               onPressed: () {
-                /// always pop the dialog before navigating
-                context
-                  ..pop()
-                  ..goNamed(
-                    Pages.addExternalDonation.name,
-                    extra: context.read<PersonalSummaryBloc>(),
-                  );
+                context.pop();
+                _navigateToExternalDonations(context);
               },
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _navigateToExternalDonations(BuildContext context) {
+    context.goNamed(Pages.externalDonations.name);
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AnalyticsEventName.externalDonationsNavigationClicked,
       ),
     );
   }

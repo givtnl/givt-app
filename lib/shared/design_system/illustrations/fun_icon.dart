@@ -117,11 +117,11 @@ class FunIcon extends StatelessWidget {
       );
 
   factory FunIcon.userLarge(
-          {Color circleColor = FamilyAppTheme.primary95,
+          {Color circleColor = FamilyAppTheme.secondary95,
           double iconsize = 48,
           double circleSize = 112}) =>
       FunIcon(
-        iconData: FontAwesomeIcons.userLarge,
+        iconData: FontAwesomeIcons.solidUser,
         circleColor: circleColor,
         iconSize: iconsize,
         circleSize: circleSize,
@@ -180,6 +180,16 @@ class FunIcon extends StatelessWidget {
   }) =>
       FunIcon(
         iconData: FontAwesomeIcons.xmark,
+        circleColor: circleColor,
+        iconColor: iconColor,
+      );
+
+  factory FunIcon.trash({
+    Color circleColor = FamilyAppTheme.error90,
+    Color iconColor = FamilyAppTheme.error20,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.trash,
         circleColor: circleColor,
         iconColor: iconColor,
       );

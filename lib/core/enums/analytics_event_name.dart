@@ -44,6 +44,8 @@ enum AnalyticsEventName {
   aboutGivtSendFeedbackClicked('about_givt_send_feedback_clicked'),
   editPhoneNumberSaveClicked('edit_phone_number_save_clicked'),
   editEmailSaveClicked('edit_email_save_clicked'),
+  editAddressSaveClicked('edit_address_save_clicked'),
+  editBankDetailsSaveClicked('edit_bank_details_save_clicked'),
   emailAlreadyInUseContactClicked('email_already_in_use_contact_clicked'),
   mergeAccountsConfirmationClosed('merge_accounts_confirmation_closed'),
   emailAlreadyInUseCloseClicked('email_already_in_use_close_clicked'),
@@ -52,6 +54,9 @@ enum AnalyticsEventName {
   organisationFavoriteToggled('organisation_favorite_toggled'),
   organisationSortByFavoritesToggled('organisation_sort_by_favorites_toggled'),
   onInfoRowClicked('on_info_row_clicked'),
+  accountSettingsTerminateClicked(
+    'account_settings_terminate_clicked',
+  ),
   profileSectionClicked('profile_section_clicked'),
   maxAmountSaveClicked('max_amount_save_clicked'),
   amountPresetsSaveClicked('amount_presets_save_clicked'),
@@ -107,6 +112,18 @@ enum AnalyticsEventName {
   recurringDonationPauseActionClicked(
     'recurring_donation_pause_action_clicked',
   ),
+  recurringDonationPauseRestartDateContinueClicked(
+    'recurring_donation_pause_restart_date_continue_clicked',
+  ),
+  recurringDonationPauseConfirmClicked(
+    'recurring_donation_pause_confirm_clicked',
+  ),
+  recurringDonationPauseCancelClicked(
+    'recurring_donation_pause_cancel_clicked',
+  ),
+  recurringDonationPauseSuccessDoneClicked(
+    'recurring_donation_pause_success_done_clicked',
+  ),
   recurringDonationCancelActionClicked(
     'recurring_donation_cancel_action_clicked',
   ),
@@ -159,6 +176,57 @@ enum AnalyticsEventName {
     'external_donations_create_close_cancel_clicked',
   ),
   externalDonationsCreateSearchTapped('external_donations_create_search_tapped'),
+  externalDonationsManageClicked('external_donations_manage_clicked'),
+  externalDonationsManageAmountClicked('external_donations_manage_amount_clicked'),
+  externalDonationsManageFrequencyClicked(
+    'external_donations_manage_frequency_clicked',
+  ),
+  externalDonationsManageStartDateClicked(
+    'external_donations_manage_start_date_clicked',
+  ),
+  externalDonationsManageDateClicked('external_donations_manage_date_clicked'),
+  externalDonationsManageDeleteClicked(
+    'external_donations_manage_delete_clicked',
+  ),
+  externalDonationsManageEditRecordsClicked(
+    'external_donations_manage_edit_records_clicked',
+  ),
+  externalDonationsScopeContinueClicked(
+    'external_donations_scope_continue_clicked',
+  ),
+  externalDonationsEditAmountSaveClicked(
+    'external_donations_edit_amount_save_clicked',
+  ),
+  externalDonationsEditFrequencySaveClicked(
+    'external_donations_edit_frequency_save_clicked',
+  ),
+  externalDonationsEditStartDateSaveClicked(
+    'external_donations_edit_start_date_save_clicked',
+  ),
+  externalDonationsEditDateSaveClicked(
+    'external_donations_edit_date_save_clicked',
+  ),
+  externalDonationsDeleteConfirmClicked(
+    'external_donations_delete_confirm_clicked',
+  ),
+  externalDonationsDeleteCancelClicked(
+    'external_donations_delete_cancel_clicked',
+  ),
+  externalDonationsBulkDeleteConfirmClicked(
+    'external_donations_bulk_delete_confirm_clicked',
+  ),
+  externalDonationsBulkDeleteCancelClicked(
+    'external_donations_bulk_delete_cancel_clicked',
+  ),
+  externalDonationsSelectionEditClicked(
+    'external_donations_selection_edit_clicked',
+  ),
+  externalDonationsSelectionDeleteClicked(
+    'external_donations_selection_delete_clicked',
+  ),
+  externalDonationsSelectionDoneClicked(
+    'external_donations_selection_done_clicked',
+  ),
   editAvatarPictureClicked('edit_avatar_picture_clicked'),
   familyGoalCreateClicked('family_goal_create_clicked'),
   familyGoalCauseSet('family_goal_cause_set'),
@@ -308,7 +376,6 @@ enum AnalyticsEventName {
   walletTracker('wallet_tracker'),
   parentProfileIconClicked('parent_profile_icon_clicked'),
   mySettingsClicked('my_settings_clicked'),
-  homeSettingsClicked('home_settings_clicked'),
   leaguePlayGameClicked('league_play_game_clicked'),
   leagueExplanationContinueClicked('league_explanation_continue_clicked'),
   unlockLeagueClicked('unlock_league_clicked'),
@@ -356,7 +423,6 @@ enum AnalyticsEventName {
   permissionsNextClicked('next_permissions_clicked'),
   nextPermissionsDialogClicked('next_permissions_dialog_clicked'),
   closePermissionsDialog('close_permissions_dialog'),
-  navigationBarPressed('navigation_bar_pressed'),
   manageFamilyPressed('manage_family_pressed'),
   registerWithoutChallengeClicked('register_without_challenge_clicked'),
   goToChallengeFromRegistrationClicked(
@@ -453,22 +519,6 @@ enum AnalyticsEventName {
   familyMissionAcceptanceScreenAcceptLongPressReleaseToAccept(
     'family_mission_acceptance_screen_accept_long_press_release_to_accept',
   ),
-  familyHomeScreenGratitudeGameButtonClicked(
-    'family_home_screen_gratitude_game_button_clicked',
-  ),
-  familyHomeScreenGiveButtonClicked('family_home_screen_give_button_clicked'),
-  familyHomeScreenLatestSummaryClicked(
-    'family_home_screen_latest_summary_clicked',
-  ),
-  familyHomeScreenShowSummariesClicked(
-    'family_home_screen_show_summaries_clicked',
-  ),
-  familyHomeScreenStatsContainerClicked(
-    'family_home_screen_stats_container_clicked',
-  ),
-  homeGenerosityHuntButtonClicked('home_generosity_hunt_button_clicked'),
-  profileGenerosityHuntButtonClicked('profile_generosity_hunt_button_clicked'),
-  parentGenerosityHuntButtonClicked('parent_generosity_hunt_button_clicked'),
   enableCaptainAiClicked('enable_captain_ai_clicked'),
   maybeLaterCaptainAiClicked('maybe_later_captain_ai_clicked'),
   userToggledAIFeature('user_toggled_ai_feature'),
@@ -549,9 +599,6 @@ enum AnalyticsEventName {
   recurringStep4ConfirmEditEndDate('recurring_step4_confirm_edit_end_date'),
   recurringStep4ConfirmDonation('recurring_step4_confirm_donation'),
   recurringStep4ErrorChangeDetails('recurring_step4_error_change_details'),
-  familyHomeScreenNewGameButtonClicked(
-    'family_home_screen_new_game_button_clicked',
-  ),
   menuNavigationFinalizeRegistrationClicked(
     'menu_navigation_finalize_registration_clicked',
   ),

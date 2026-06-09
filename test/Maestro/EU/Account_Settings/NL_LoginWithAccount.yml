@@ -1,0 +1,40 @@
+appId: net.givtapp.ios.test
+name: EU NL — Log in with an existing account
+
+env:
+    USERNAME: donna+maestronl@givtapp.net
+    PASSWORD: Test123
+---
+
+- launchApp:
+    clearState: true
+- tapOn:
+    label: Select country
+    id: "icon-FontAwesomeSolid-62845"
+- tapOn: "Netherlands"
+- tapOn: "By continuing you agree to our terms and conditions."
+- tapOn:
+    label: Close terms popup
+    point: "94%,10%"
+    optional: true
+- extendedWaitUntil:
+    visible:
+      id: "Email-Input"
+    timeout: 15000
+- tapOn:
+    id: "Email-Input"
+- inputText:
+    label: Enter the test user's email address
+    text: ${USERNAME}
+- tapOn:
+    id: "Email-Continue-Button"
+- tapOn:
+    id: "Login-Bottomsheet-Password-Input"
+- inputText:
+    label: Enter the test user's password
+    text: ${PASSWORD}
+- tapOn:
+    id: "Login-Bottomsheet-Submit-Button"
+- tapOn:
+    id: "PermitBiometric-Deny-Button"
+    optional: true

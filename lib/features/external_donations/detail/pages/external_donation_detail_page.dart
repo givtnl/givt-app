@@ -7,8 +7,15 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/external_donations/detail/cubit/external_donation_detail_cubit.dart';
 import 'package:givt_app/features/external_donations/detail/models/external_donation_history_item.dart';
-import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
+import 'package:givt_app/features/external_donations/detail/widgets/external_donation_amount_editor_sheet.dart';
+import 'package:givt_app/features/external_donations/detail/widgets/external_donation_date_editor_sheet.dart';
+import 'package:givt_app/features/external_donations/detail/widgets/external_donation_delete_modal.dart';
+import 'package:givt_app/features/external_donations/detail/widgets/external_donation_edit_scope_sheet.dart';
+import 'package:givt_app/features/external_donations/detail/widgets/external_donation_frequency_editor_sheet.dart';
+import 'package:givt_app/features/external_donations/detail/widgets/external_donation_manage_sheet.dart';
+import 'package:givt_app/features/external_donations/detail/widgets/external_donation_start_date_editor_sheet.dart';
 import 'package:givt_app/features/external_donations/detail/widgets/stop_recording_modal.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/external_donations/shared/external_donation_display.dart';
@@ -17,6 +24,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -51,19 +59,53 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    final auth = context.read<AuthCubit>().state;
-    final currency = Util.getCurrencySymbol(countryCode: auth.user.country);
-
     return FunScaffold(
       appBar: FunTopAppBar(
         variant: FunTopAppBarVariant.white,
         leading: GivtBackButtonFlat(
           onPressed: () async => Navigator.of(context).pop(),
         ),
+        actions: [
+          BaseStateConsumer<ExternalDonationDetailUIModel,
+              ExternalDonationDetailCustom>(
+            cubit: _cubit,
+            onData: (context, uiModel) {
+              if (uiModel.isSelectionMode) {
+                return TextButton(
+                  onPressed: () {
+                    AnalyticsHelper.logEvent(
+                      eventName: AnalyticsEventName
+                          .externalDonationsSelectionDoneClicked,
+                    );
+                    _cubit.onCancelSelectionMode();
+                  },
+                  child: LabelMediumText(
+                    context.l10n.externalDonationsSelectionDone,
+                    color: FamilyAppTheme.primary40,
+                  ),
+                );
+              }
+              return IconButton(
+                icon: const FaIcon(FontAwesomeIcons.pen, size: 20),
+                onPressed: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AnalyticsEventName.externalDonationsManageClicked,
+                  );
+                  _cubit.onManagePressed();
+                },
+                tooltip: context.l10n.recurringDonationsDetailManageButton,
+              );
+            },
+            onLoading: (_) => const SizedBox.shrink(),
+            onError: (_, __) => const SizedBox.shrink(),
+          ),
+        ],
       ),
       body: BaseStateConsumer(
         cubit: _cubit,
         onCustom: (context, custom) {
+          final uiModel = _cubit.currentUIModel;
+
           switch (custom) {
             case ShowStopRecordingModal():
               StopRecordingModal.show(
@@ -73,14 +115,84 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
             case StopRecordingSucceeded():
               context.pop(true);
             case StopRecordingFailed():
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(context.l10n.somethingWentWrong),
-                ),
+              _showErrorSnackBar(context);
+            case ShowManageSheet():
+              if (uiModel != null) {
+                ExternalDonationManageSheet.show(
+                  context,
+                  cubit: _cubit,
+                  uiModel: uiModel,
+                );
+              }
+            case ShowScopeSheet(:final field):
+              ExternalDonationEditScopeSheet.show(
+                context,
+                cubit: _cubit,
+                field: field,
               );
+            case ShowAmountEditor(:final scope, :final isBulk):
+              if (uiModel != null) {
+                ExternalDonationAmountEditorSheet.show(
+                  context,
+                  cubit: _cubit,
+                  uiModel: uiModel,
+                  scope: scope,
+                  isBulk: isBulk,
+                );
+              }
+            case ShowFrequencyEditor(:final scope):
+              if (uiModel != null) {
+                ExternalDonationFrequencyEditorSheet.show(
+                  context,
+                  cubit: _cubit,
+                  uiModel: uiModel,
+                  scope: scope,
+                );
+              }
+            case ShowStartDateEditor():
+              if (uiModel != null) {
+                ExternalDonationStartDateEditorSheet.show(
+                  context,
+                  cubit: _cubit,
+                  uiModel: uiModel,
+                );
+              }
+            case ShowDateEditor():
+              if (uiModel != null) {
+                ExternalDonationDateEditorSheet.show(
+                  context,
+                  cubit: _cubit,
+                  uiModel: uiModel,
+                );
+              }
+            case ShowDeleteDonationModal():
+              if (uiModel != null) {
+                ExternalDonationDeleteModal.show(
+                  context,
+                  cubit: _cubit,
+                  organisationName: uiModel.donation.description,
+                );
+              }
+            case ShowBulkDeleteModal():
+              if (uiModel != null) {
+                ExternalDonationBulkDeleteModal.show(
+                  context,
+                  cubit: _cubit,
+                  selectedCount: uiModel.selectedCount,
+                );
+              }
+            case ManageUpdateSucceeded():
+              break;
+            case ManageUpdateFailed():
+              _showErrorSnackBar(context);
+            case DonationDeleted():
+              context.pop(true);
           }
         },
         onData: (context, uiModel) {
+          final auth = context.read<AuthCubit>().state;
+          final currency = Util.getCurrencySymbol(countryCode: auth.user.country);
+
           return Column(
             children: [
               Expanded(
@@ -101,7 +213,9 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
                   ),
                 ),
               ),
-              if (uiModel.isRecurring && uiModel.isActive)
+              if (uiModel.isSelectionMode)
+                _buildSelectionActions(context, uiModel)
+              else if (uiModel.isRecurring && uiModel.isActive)
                 _buildStopButton(context),
             ],
           );
@@ -133,6 +247,12 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
           );
         },
       ),
+    );
+  }
+
+  void _showErrorSnackBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(context.l10n.somethingWentWrong)),
     );
   }
 
@@ -262,10 +382,26 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleMediumText(context.l10n.recurringDonationsDetailHistoryTitle),
+        Row(
+          children: [
+            Expanded(
+              child: TitleMediumText(
+                context.l10n.recurringDonationsDetailHistoryTitle,
+              ),
+            ),
+            if (uiModel.isSelectionMode)
+              TextButton(
+                onPressed: _cubit.onToggleSelectAll,
+                child: LabelMediumText(
+                  context.l10n.externalDonationsSelectionSelectAll,
+                  color: FamilyAppTheme.primary40,
+                ),
+              ),
+          ],
+        ),
         const SizedBox(height: 16),
         ...uiModel.history.map(
-          (item) => _buildHistoryItem(item, currency, context),
+          (item) => _buildHistoryItem(item, currency, context, uiModel),
         ),
       ],
     );
@@ -275,60 +411,118 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
     ExternalDonationHistoryItem item,
     String currency,
     BuildContext context,
+    ExternalDonationDetailUIModel uiModel,
   ) {
     final auth = context.read<AuthCubit>().state;
     final country = Country.fromCode(auth.user.country);
+    final isSelected = item.transactionId != null &&
+        uiModel.selectedTransactionIds.contains(item.transactionId);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: FamilyAppTheme.neutralVariant95,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: uiModel.isSelectionMode && item.isSelectable
+            ? () => _cubit.onToggleHistoryItemSelection(item)
+            : null,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: FamilyAppTheme.neutralVariant95,
+              ),
+            ),
+          ),
+          child: Row(
+            children: [
+              if (uiModel.isSelectionMode) ...[
+                Checkbox(
+                  value: isSelected,
+                  onChanged: item.isSelectable
+                      ? (_) => _cubit.onToggleHistoryItemSelection(item)
+                      : null,
+                  activeColor: FamilyAppTheme.primary40,
+                ),
+                const SizedBox(width: 4),
+              ],
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: item.isUpcoming
+                      ? FamilyAppTheme.secondary95
+                      : FamilyAppTheme.primary95,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Icon(
+                  item.isUpcoming ? Icons.more_horiz : Icons.check,
+                  size: 16,
+                  color: item.isUpcoming
+                      ? FamilyAppTheme.secondary40
+                      : FamilyAppTheme.primary30,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LabelMediumText(
+                      '$currency${Util.formatNumberComma(item.amount, country)}',
+                      color: FamilyAppTheme.primary40,
+                    ),
+                    LabelSmallText(
+                      ExternalDonationDisplay.formatDate(
+                        item.date,
+                        Util.getLanguageTageFromLocale(context),
+                      ),
+                      color: FamilyAppTheme.neutralVariant50,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
-      child: Row(
-        children: [
-          Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: item.isUpcoming
-                  ? FamilyAppTheme.secondary95
-                  : FamilyAppTheme.primary95,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Icon(
-              item.isUpcoming ? Icons.more_horiz : Icons.check,
-              size: 16,
-              color: item.isUpcoming
-                  ? FamilyAppTheme.secondary40
-                  : FamilyAppTheme.primary30,
-            ),
+    );
+  }
+
+  Widget _buildSelectionActions(
+    BuildContext context,
+    ExternalDonationDetailUIModel uiModel,
+  ) {
+    return Row(
+      children: [
+        Expanded(
+          child: FunButton(
+            text: context.l10n.externalDonationsSelectionEdit,
+            variant: FunButtonVariant.secondary,
+            fullBorder: true,
+            isDisabled: !uiModel.hasSelection,
+            analyticsEvent: AnalyticsEventName
+                .externalDonationsSelectionEditClicked
+                .toEvent(),
+            onTap: uiModel.hasSelection ? _cubit.onBulkEditPressed : null,
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                LabelMediumText(
-                  '$currency${Util.formatNumberComma(item.amount, country)}',
-                  color: FamilyAppTheme.primary40,
-                ),
-                LabelSmallText(
-                  ExternalDonationDisplay.formatDate(
-                    item.date,
-                    Util.getLanguageTageFromLocale(context),
-                  ),
-                  color: FamilyAppTheme.neutralVariant50,
-                  fontWeight: FontWeight.w500,
-                ),
-              ],
-            ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: FunButton(
+            text: context.l10n.externalDonationsSelectionDelete,
+            variant: FunButtonVariant.secondary,
+            fullBorder: true,
+            borderColor: FamilyAppTheme.error40,
+            textColor: FamilyAppTheme.error40,
+            isDisabled: !uiModel.hasSelection,
+            analyticsEvent: AnalyticsEventName
+                .externalDonationsSelectionDeleteClicked
+                .toEvent(),
+            onTap: uiModel.hasSelection ? _cubit.onBulkDeletePressed : null,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

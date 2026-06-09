@@ -163,8 +163,42 @@ sealed class RecurringDonationDetailCustom {
   const RecurringDonationDetailCustom();
 
   const factory RecurringDonationDetailCustom.manageDonation() = ManageDonation;
+
+  const factory RecurringDonationDetailCustom.showPauseDonationSheet() =
+      ShowPauseDonationSheet;
+
+  const factory RecurringDonationDetailCustom.showPauseDonationConfirmation({
+    required DateTime restartDate,
+  }) = ShowPauseDonationConfirmation;
+
+  const factory RecurringDonationDetailCustom.pauseDonationSucceeded({
+    required DateTime restartDate,
+  }) = PauseDonationSucceeded;
+
+  const factory RecurringDonationDetailCustom.pauseDonationFailed() =
+      PauseDonationFailed;
 }
 
 final class ManageDonation extends RecurringDonationDetailCustom {
   const ManageDonation();
+}
+
+final class ShowPauseDonationSheet extends RecurringDonationDetailCustom {
+  const ShowPauseDonationSheet();
+}
+
+final class ShowPauseDonationConfirmation extends RecurringDonationDetailCustom {
+  const ShowPauseDonationConfirmation({required this.restartDate});
+
+  final DateTime restartDate;
+}
+
+final class PauseDonationSucceeded extends RecurringDonationDetailCustom {
+  const PauseDonationSucceeded({required this.restartDate});
+
+  final DateTime restartDate;
+}
+
+final class PauseDonationFailed extends RecurringDonationDetailCustom {
+  const PauseDonationFailed();
 }

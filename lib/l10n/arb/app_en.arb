@@ -64,6 +64,10 @@
   "joinGivt": "Get involved on givtapp.net/download.",
   "yesSuccess": "Yes, success!",
   "personalInfo": "Personal info",
+  "accountSettingsTitle": "Account settings",
+  "accountSettingsPersonalDetails": "Personal details",
+  "accountSettingsSecurity": "Security",
+  "accountSettingsPreferences": "Preferences",
   "changeDetails": "Change details",
   "searchHere": "Search ...",
   "noInternet": "Whoops! It looks like you're not connected to the internet. Try again when you are connected with the internet.",
@@ -98,9 +102,10 @@
   "changeIban": "Change IBAN",
   "kerkdienstGemistQuestion": "How can I give with Givt through 3rd-parties?",
   "kerkdienstGemistAnswer": "Kerkdienst Gemist\n If you’re watching using the Kerkdienst Gemist App, you can easily give with Givt when your church uses our service. At the bottom of the page, you’ll find a small button that will take you to the Givt app. Choose an amount, confirm with 'Yes, please' and you’re done!",
-  "changePhone": "Change mobile number",
+  "changePhone": "Edit phone number",
   "artists": "Artists",
-  "changeAddress": "Change address",
+  "changeAddress": "Edit address",
+  "editIbanAccount": "Edit IBAN account",
   "selectLocationContextLong": "Give based on your location",
   "sortCodePlaceholder": "Sort code",
   "bankAccountNumberPlaceholder": "Bank account number",
@@ -1132,17 +1137,10 @@
   "unregisterCheckboxText": "Yes, I want to terminate my account",
   "unregisterLoading": "Terminating account",
   "unregisterSuccessText": "We’re sad to see you leave and we hope to see you again.",
-  "homeScreenWelcome": "Welcome!",
-  "homeScreenHeyFamily": "Hey {family}!",
   "tutorialGratitudeGameTitle": "Gratitude Game",
   "tutorialGratitudeGameDescription": "This game helps you to build gratitude by reflecting on your day as a family",
-  "homeScreenSecondParentDialogTitle": "{firstName} needs to use their own account",
-  "homeScreenSecondParentDialogDescription": "Use the Givt App on your own device",
-  "homeScreenSecondParentDialogConfirmButton": "Got it",
   "tutorialFirstMissionTitle": "Let's complete your first mission!",
   "tutorialFirstMissionDescription": "New missions help your family grow together. Tap above to begin!",
-  "homeScreenGratitudeGameButtonTitle": "Family Game",
-  "homeScreenGratitudeGameButtonSubtitle": "Play now!",
   "setupFamilyTitle": "Set up Family",
   "setupFamilyHowManyTitle": "How many people are in your family?",
   "childKey": "Child",
@@ -1159,14 +1157,8 @@
   "originQuestionTitle": "Last step",
   "originQuestionSubtitle": "Where did you get your box?",
   "originSelectLocation": "Select location",
-  "homeScreenGiveButtonTitle": "Give",
-  "homeScreenGivtButtonDescription": "Donate to a cause",
   "gratitudeWeeklyGoal": "Play {amount}x Weekly",
   "gratitudeGoalDaysLeft": "{amount} days left",
-  "familyNavigationBarHome": "Home",
-  "familyNavigationBarFamily": "Family",
-  "familyNavigationBarMemories": "Memories",
-  "familyNavigationBarLeague": "League",
   "missionsTitle": "Missions available",
   "missionsNoMissions": "You don't have any missions currently",
   "missionsNoCompletedMissions": "You haven't completed any missions yet",
@@ -1183,8 +1175,6 @@
   "gameStatsActivityThisWeek": "Game activity this week",
   "gameStatsPlayGame": "Play the Gratitude Game",
   "gameStatsAmountOfDeeds": "{amount} deeds",
-  "homescreenOverlayDiscoverTitle": "Your For You reward!",
-  "homescreenOverlayGiveTitle": "Who would like to give?",
   "tutorialFamilyExplanationTitle": "Here’s your super family!",
   "tutorialFamilyExplanationDescription": "Work together to find causes to support and spread kindness.",
   "tutorialManagingFamilyTitle": "Managing your family",
@@ -1323,6 +1313,143 @@
       }
     }
   },
+  "externalDonationsManageAmount": "Amount",
+  "externalDonationsManageFrequency": "Frequency",
+  "externalDonationsManageStartDate": "Start date",
+  "externalDonationsManageDeleteDonation": "Delete donation",
+  "externalDonationsManageEditSpecificRecords": "Edit specific records",
+  "externalDonationsDeleteModalTitle": "Remove {organisation} from your giving history?",
+  "@externalDonationsDeleteModalTitle": {
+    "placeholders": {
+      "organisation": { "type": "String" }
+    }
+  },
+  "externalDonationsDeleteModalConfirm": "Yes, delete",
+  "externalDonationsDeleteModalCancel": "No, keep my donation",
+  "externalDonationsBulkDeleteModalTitle": "Delete selected records?",
+  "externalDonationsBulkDeleteModalMessage": "This removes {count} selected records from your history.",
+  "@externalDonationsBulkDeleteModalMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "externalDonationsBulkDeleteModalConfirm": "Yes, delete records",
+  "externalDonationsBulkDeleteModalCancel": "No, keep records",
+  "externalDonationsScopeTitle": "Which donations should change?",
+  "externalDonationsScopeAll": "All donations",
+  "externalDonationsScopeOnwards": "From now onwards",
+  "externalDonationsScopeContinue": "Continue",
+  "externalDonationsSave": "Save",
+  "externalDonationsEditAmountInfoAll": "All your records — past and future — will be updated to {amount}.",
+  "@externalDonationsEditAmountInfoAll": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsEditAmountInfoOnwards": "From {date} you'll give {amount} each month. Past records stay as they are.",
+  "@externalDonationsEditAmountInfoOnwards": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsEditAmountInfoOneOff": "This record will be updated to {amount}.",
+  "@externalDonationsEditAmountInfoOneOff": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsEditAmountBulkInfo": "The new amount will apply to the selected records only.",
+  "externalDonationsEditFrequencyInfoAll": "Your whole history will be recalculated to {frequency}.",
+  "@externalDonationsEditFrequencyInfoAll": {
+    "placeholders": {
+      "frequency": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsEditFrequencyInfoOnwards": "From {date} your gift repeats {frequency}. Past records stay as they are.",
+  "@externalDonationsEditFrequencyInfoOnwards": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "frequency": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsEditStartDateInfo": "Your history will be rebuilt to start from {monthYear}.",
+  "@externalDonationsEditStartDateInfo": {
+    "placeholders": {
+      "monthYear": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsManageFrequencyWeeklyOnDay": "weekly on {day}",
+  "@externalDonationsManageFrequencyWeeklyOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsManageFrequencyMonthlyOnDay": "monthly on the {day}",
+  "@externalDonationsManageFrequencyMonthlyOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsManageFrequencyHalfYearlyOnDay": "half-yearly on the {day}",
+  "@externalDonationsManageFrequencyHalfYearlyOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsManageFrequencyQuarterlyOnDay": "quarterly on the {day}",
+  "@externalDonationsManageFrequencyQuarterlyOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsManageFrequencyYearlyOnDate": "yearly on {date}",
+  "@externalDonationsManageFrequencyYearlyOnDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "externalDonationsManageFrequencyDayLabel": "Day it falls on",
+  "externalDonationsSelectionSelectAll": "Select all",
+  "externalDonationsSelectionSelectedCount": "{count} selected",
+  "@externalDonationsSelectionSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "externalDonationsSelectionEdit": "Edit",
+  "externalDonationsSelectionDelete": "Delete",
+  "externalDonationsSelectionDone": "Done",
   "recurringDonationsDetailProgressSuffix": "donations",
   "recurringDonationsDetailSummaryDonated": "Donated",
   "recurringDonationsDetailSummaryHelping": "Helping",
@@ -1344,6 +1471,31 @@
   "recurringDonationsDetailEditComingSoon": "Edit functionality coming soon",
   "recurringDonationsDetailPauseDonation": "Pause donation",
   "recurringDonationsDetailPauseComingSoon": "Pause functionality coming soon",
+  "recurringDonationsPauseSheetTitle": "Pause donation",
+  "recurringDonationsPauseSheetDescription": "Select a date to resume your donation.",
+  "recurringDonationsPauseRestartDateLabel": "Restart date",
+  "recurringDonationsPauseContinueButton": "Continue",
+  "recurringDonationsPauseConfirmTitle": "Pause donation?",
+  "recurringDonationsPauseConfirmMessage": "Your donation will pause until {date}. A new recurring donation will start on that date with your remaining donations.",
+  "@recurringDonationsPauseConfirmMessage": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "recurringDonationsPauseConfirmButton": "Yes, pause donation",
+  "recurringDonationsPauseCancelButton": "Cancel",
+  "recurringDonationsPauseSuccessTitle": "Donation paused",
+  "recurringDonationsPauseSuccessMessage": "Your donation will resume on {date}.",
+  "@recurringDonationsPauseSuccessMessage": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "recurringDonationsPauseFailed": "We couldn't pause your donation. Please try again.",
   "recurringDonationsDetailCancelDonation": "Cancel donation",
   "recurringDonationsCreateStep2AmountHint": "Enter amount",
   "recurringDonationsCreateFrequencyHint": "Select one",

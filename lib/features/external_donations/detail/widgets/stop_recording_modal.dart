@@ -19,20 +19,21 @@ class StopRecordingModal {
       closeAction: () => context.pop(),
       buttons: [
         FunButton(
+          onTap: () => context.pop(),
+          text: locals.externalDonationsStopModalCancel,
+          analyticsEvent:
+              AnalyticsEventName.externalDonationsStopCancelClicked.toEvent(),
+        ),
+        FunButton(
           onTap: () async {
             context.pop();
             await onConfirm();
           },
           text: locals.externalDonationsStopModalConfirm,
+          variant: FunButtonVariant.destructiveSecondary,
+          fullBorder: true,
           analyticsEvent:
               AnalyticsEventName.externalDonationsStopConfirmClicked.toEvent(),
-        ),
-        FunButton(
-          onTap: () => context.pop(),
-          text: locals.externalDonationsStopModalCancel,
-          variant: FunButtonVariant.secondary,
-          analyticsEvent:
-              AnalyticsEventName.externalDonationsStopCancelClicked.toEvent(),
         ),
       ],
     ).show(context, isDismissible: true);

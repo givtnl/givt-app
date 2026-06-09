@@ -168,6 +168,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get personalInfo => 'Persönliche Infos';
 
   @override
+  String get accountSettingsTitle => 'Kontoeinstellungen';
+
+  @override
+  String get accountSettingsPersonalDetails => 'Persönliche Daten';
+
+  @override
+  String get accountSettingsSecurity => 'Sicherheit';
+
+  @override
+  String get accountSettingsPreferences => 'Einstellungen';
+
+  @override
   String get changeDetails => 'Daten ändern';
 
   @override
@@ -289,13 +301,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Unsergottesdienst.de\n Wenn du mithilfe der Unsergottesdienst-App Gottesdienste live verfolgst, kannst du mit Givt ganz einfach spenden. Voraussetzung ist natürlich, dass deine Kirche unseren Dienst nutzt. Am Ende der Seite findest du eine kleine Schaltfläche, mit der du zur Givt-App gelangen kannst. Wähle einfach einen Betrag aus, bestätigen mit \"Ja, bitte\" und das war es!';
 
   @override
-  String get changePhone => 'Handynummer ändern';
+  String get changePhone => 'Telefonnummer bearbeiten';
 
   @override
   String get artists => 'Künstler';
 
   @override
-  String get changeAddress => 'Adresse ändern';
+  String get changeAddress => 'Adresse bearbeiten';
+
+  @override
+  String get editIbanAccount => 'IBAN-Konto bearbeiten';
 
   @override
   String get selectLocationContextLong => 'Spende am Standort';
@@ -2100,14 +2115,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Es macht uns traurig, dass Sie gehen, und wir hoffen, Sie wiederzusehen.';
 
   @override
-  String get homeScreenWelcome => 'Welcome!';
-
-  @override
-  String homeScreenHeyFamily(Object family) {
-    return 'Hey $family!';
-  }
-
-  @override
   String get tutorialGratitudeGameTitle => 'Gratitude Game';
 
   @override
@@ -2115,29 +2122,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'This game helps you to build gratitude by reflecting on your day as a family';
 
   @override
-  String homeScreenSecondParentDialogTitle(Object firstName) {
-    return '$firstName needs to use their own account';
-  }
-
-  @override
-  String get homeScreenSecondParentDialogDescription =>
-      'Use the Givt App on your own device';
-
-  @override
-  String get homeScreenSecondParentDialogConfirmButton => 'Got it';
-
-  @override
   String get tutorialFirstMissionTitle => 'Let\'s complete your first mission!';
 
   @override
   String get tutorialFirstMissionDescription =>
       'New missions help your family grow together. Tap above to begin!';
-
-  @override
-  String get homeScreenGratitudeGameButtonTitle => 'Family Game';
-
-  @override
-  String get homeScreenGratitudeGameButtonSubtitle => 'Play now!';
 
   @override
   String get setupFamilyTitle => 'Set up Family';
@@ -2189,12 +2178,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get originSelectLocation => 'Select location';
 
   @override
-  String get homeScreenGiveButtonTitle => 'Give';
-
-  @override
-  String get homeScreenGivtButtonDescription => 'Donate to a cause';
-
-  @override
   String gratitudeWeeklyGoal(Object amount) {
     return 'Play ${amount}x Weekly';
   }
@@ -2203,18 +2186,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String gratitudeGoalDaysLeft(Object amount) {
     return '$amount days left';
   }
-
-  @override
-  String get familyNavigationBarHome => 'Home';
-
-  @override
-  String get familyNavigationBarFamily => 'Family';
-
-  @override
-  String get familyNavigationBarMemories => 'Memories';
-
-  @override
-  String get familyNavigationBarLeague => 'League';
 
   @override
   String get missionsTitle => 'Missions available';
@@ -2270,12 +2241,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String gameStatsAmountOfDeeds(Object amount) {
     return '$amount deeds';
   }
-
-  @override
-  String get homescreenOverlayDiscoverTitle => 'Belohnung für dich!';
-
-  @override
-  String get homescreenOverlayGiveTitle => 'Who would like to give?';
 
   @override
   String get tutorialFamilyExplanationTitle => 'Here’s your super family!';
@@ -2649,6 +2614,149 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get externalDonationsManageAmount => 'Betrag';
+
+  @override
+  String get externalDonationsManageFrequency => 'Häufigkeit';
+
+  @override
+  String get externalDonationsManageStartDate => 'Startdatum';
+
+  @override
+  String get externalDonationsManageDeleteDonation => 'Spende löschen';
+
+  @override
+  String get externalDonationsManageEditSpecificRecords =>
+      'Einzelne Einträge bearbeiten';
+
+  @override
+  String externalDonationsDeleteModalTitle(String organisation) {
+    return '$organisation aus deiner Spendenhistorie entfernen?';
+  }
+
+  @override
+  String get externalDonationsDeleteModalConfirm => 'Ja, löschen';
+
+  @override
+  String get externalDonationsDeleteModalCancel =>
+      'Nein, meine Spende behalten';
+
+  @override
+  String get externalDonationsBulkDeleteModalTitle =>
+      'Ausgewählte Einträge löschen?';
+
+  @override
+  String externalDonationsBulkDeleteModalMessage(int count) {
+    return 'Dadurch werden $count ausgewählte Einträge aus deiner Historie entfernt.';
+  }
+
+  @override
+  String get externalDonationsBulkDeleteModalConfirm => 'Ja, Einträge löschen';
+
+  @override
+  String get externalDonationsBulkDeleteModalCancel =>
+      'Nein, Einträge behalten';
+
+  @override
+  String get externalDonationsScopeTitle =>
+      'Welche Spenden sollen sich ändern?';
+
+  @override
+  String get externalDonationsScopeAll => 'Alle Spenden';
+
+  @override
+  String get externalDonationsScopeOnwards => 'Ab jetzt';
+
+  @override
+  String get externalDonationsScopeContinue => 'Weiter';
+
+  @override
+  String get externalDonationsSave => 'Speichern';
+
+  @override
+  String externalDonationsEditAmountInfoAll(String amount) {
+    return 'Alle deine Einträge — vergangen und zukünftig — werden auf $amount aktualisiert.';
+  }
+
+  @override
+  String externalDonationsEditAmountInfoOnwards(String date, String amount) {
+    return 'Ab $date spendest du $amount pro Monat. Frühere Einträge bleiben unverändert.';
+  }
+
+  @override
+  String externalDonationsEditAmountInfoOneOff(String amount) {
+    return 'Dieser Eintrag wird auf $amount aktualisiert.';
+  }
+
+  @override
+  String get externalDonationsEditAmountBulkInfo =>
+      'Der neue Betrag gilt nur für die ausgewählten Einträge.';
+
+  @override
+  String externalDonationsEditFrequencyInfoAll(String frequency) {
+    return 'Deine gesamte Historie wird auf $frequency neu berechnet.';
+  }
+
+  @override
+  String externalDonationsEditFrequencyInfoOnwards(
+    String date,
+    String frequency,
+  ) {
+    return 'Ab $date wiederholt sich deine Spende $frequency. Frühere Einträge bleiben unverändert.';
+  }
+
+  @override
+  String externalDonationsEditStartDateInfo(String monthYear) {
+    return 'Deine Historie wird ab $monthYear neu aufgebaut.';
+  }
+
+  @override
+  String externalDonationsManageFrequencyWeeklyOnDay(String day) {
+    return 'wöchentlich am $day';
+  }
+
+  @override
+  String externalDonationsManageFrequencyMonthlyOnDay(String day) {
+    return 'monatlich am $day.';
+  }
+
+  @override
+  String externalDonationsManageFrequencyHalfYearlyOnDay(String day) {
+    return 'halbjährlich am $day.';
+  }
+
+  @override
+  String externalDonationsManageFrequencyQuarterlyOnDay(String day) {
+    return 'vierteljährlich am $day.';
+  }
+
+  @override
+  String externalDonationsManageFrequencyYearlyOnDate(String date) {
+    return 'jährlich am $date';
+  }
+
+  @override
+  String get externalDonationsManageFrequencyDayLabel =>
+      'Tag, an dem sie fällt';
+
+  @override
+  String get externalDonationsSelectionSelectAll => 'Alle auswählen';
+
+  @override
+  String externalDonationsSelectionSelectedCount(int count) {
+    return '$count ausgewählt';
+  }
+
+  @override
+  String get externalDonationsSelectionEdit => 'Bearbeiten';
+
+  @override
+  String get externalDonationsSelectionDelete => 'Löschen';
+
+  @override
+  String get externalDonationsSelectionDone => 'Fertig';
+
+  @override
   String get recurringDonationsDetailProgressSuffix => 'Spenden';
 
   @override
@@ -2728,6 +2836,45 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get recurringDonationsDetailPauseComingSoon =>
       'Pausierungsfunktion kommt bald';
+
+  @override
+  String get recurringDonationsPauseSheetTitle => 'Spende pausieren';
+
+  @override
+  String get recurringDonationsPauseSheetDescription =>
+      'Wähle ein Datum, an dem deine Spende fortgesetzt werden soll.';
+
+  @override
+  String get recurringDonationsPauseRestartDateLabel => 'Fortsetzungsdatum';
+
+  @override
+  String get recurringDonationsPauseContinueButton => 'Weiter';
+
+  @override
+  String get recurringDonationsPauseConfirmTitle => 'Spende pausieren?';
+
+  @override
+  String recurringDonationsPauseConfirmMessage(String date) {
+    return 'Deine Spende wird bis zum $date pausiert. Eine neue Dauerspende startet an diesem Datum mit deinen verbleibenden Spenden.';
+  }
+
+  @override
+  String get recurringDonationsPauseConfirmButton => 'Ja, Spende pausieren';
+
+  @override
+  String get recurringDonationsPauseCancelButton => 'Abbrechen';
+
+  @override
+  String get recurringDonationsPauseSuccessTitle => 'Spende pausiert';
+
+  @override
+  String recurringDonationsPauseSuccessMessage(String date) {
+    return 'Deine Spende wird am $date fortgesetzt.';
+  }
+
+  @override
+  String get recurringDonationsPauseFailed =>
+      'Wir konnten deine Spende nicht pausieren. Bitte versuche es erneut.';
 
   @override
   String get recurringDonationsDetailCancelDonation => 'Spende stornieren';

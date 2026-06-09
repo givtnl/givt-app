@@ -108,7 +108,10 @@ class FunBottomSheet extends StatelessWidget {
       children: [
         if (closeAction == null) const SizedBox(height: 24),
         if (closeAction != null)
-          IconButton(
+          Semantics(
+            identifier: 'xmark',
+            button: true,
+            child: IconButton(
             icon: FaIcon(
               semanticLabel: 'xmark',
               FontAwesomeIcons.xmark,
@@ -121,6 +124,7 @@ class FunBottomSheet extends StatelessWidget {
 
               closeAction!.call();
             },
+          ),
           ),
       ],
     );

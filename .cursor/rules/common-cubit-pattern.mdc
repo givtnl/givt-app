@@ -6,14 +6,14 @@ alwaysApply: true
 # CommonCubit Pattern Rules
 
 ## Architecture Overview
-- Each page/screen has its own cubit (e.g., `FamilyHomeScreen` has `FamilyHomeScreenCubit`)
+- Each page/screen has its own cubit (e.g., `LeagueScreen` has `LeagueCubit`)
 - Features can have one or more repositories
 - Cubits can use repositories from other features when needed
-- Example from FamilyHomeScreen:
+- Example from LeagueScreen:
 ```dart
-// FamilyHomeScreen uses multiple repositories from different features
+// LeagueCubit uses multiple repositories from different features
+final LeagueRepository _leagueRepository;
 final ProfilesRepository _profilesRepository;
-final ImpactGroupsRepository _impactGroupsRepository;
 final MissionsRepository _missionsRepository;
 ```
 
@@ -31,16 +31,16 @@ void registerDependencies() {
   );
   
   // Cubits
-  getIt.registerFactory<FamilyHomeScreenCubit>(
-    () => FamilyHomeScreenCubit(
+  getIt.registerFactory<LeagueCubit>(
+    () => LeagueCubit(
+      getIt<LeagueRepository>(),
       getIt<ProfilesRepository>(),
-      getIt<ImpactGroupsRepository>(),
     ),
   );
 }
 
 // In the page
-final _cubit = getIt<FamilyHomeScreenCubit>();
+final _cubit = getIt<LeagueCubit>();
 ```
 
 ## Repository Pattern
@@ -138,11 +138,11 @@ BaseStateConsumer(
 - Keep custom states focused and specific
 - Example:
 ```dart
-sealed class FamilyHomeScreenCustom {
-  const FamilyHomeScreenCustom();
+sealed class LeagueCustom {
+  const LeagueCustom();
   
-  const factory FamilyHomeScreenCustom.slideCarouselTo(int index) = SlideCarouselTo;
-  const factory FamilyHomeScreenCustom.openAvatarOverlay() = OpenAvatarOverlay;
+  const factory LeagueCustom.showTutorial() = ShowTutorial;
+  const factory LeagueCustom.navigateToGame() = NavigateToGame;
 }
 ```
 

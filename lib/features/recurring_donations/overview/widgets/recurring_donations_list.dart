@@ -32,6 +32,7 @@ class RecurringDonationsList extends StatelessWidget {
     }
 
     return ListView.separated(
+      padding: const EdgeInsets.only(bottom: 98), // inset + button size
       itemCount: donations.length,
       separatorBuilder: (context, index) => const SizedBox(height: 16),
       itemBuilder: (context, index) {
@@ -89,15 +90,13 @@ class RecurringDonationsList extends StatelessWidget {
       return '$frequency $currency$amount · ${context.l10n.recurringDonationsCancelled}';
     }
 
-    // Check if this is a past donation (completed)
-    final isPastDonation = donationWithProgress.isCompleted;
+    final isPastDonation = !isCurrentTab || donationWithProgress.isCompleted;
 
     final statusText = isPastDonation
         ? context.l10n.recurringDonationsListStatusEnded
         : context.l10n.recurringDonationsListStatusNextUp;
 
-    // Use end date for past donations, next date for current donations
-    final dateToShow = isPastDonation
+    final dateToShow = !isCurrentTab
         ? donationWithProgress.donation.endDate
         : donationWithProgress.nextDonationDate?.toString();
 

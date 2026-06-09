@@ -374,6 +374,30 @@ abstract class AppLocalizations {
   /// **'Personal info'**
   String get personalInfo;
 
+  /// No description provided for @accountSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account settings'**
+  String get accountSettingsTitle;
+
+  /// No description provided for @accountSettingsPersonalDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal details'**
+  String get accountSettingsPersonalDetails;
+
+  /// No description provided for @accountSettingsSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get accountSettingsSecurity;
+
+  /// No description provided for @accountSettingsPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get accountSettingsPreferences;
+
   /// No description provided for @changeDetails.
   ///
   /// In en, this message translates to:
@@ -581,7 +605,7 @@ abstract class AppLocalizations {
   /// No description provided for @changePhone.
   ///
   /// In en, this message translates to:
-  /// **'Change mobile number'**
+  /// **'Edit phone number'**
   String get changePhone;
 
   /// No description provided for @artists.
@@ -593,8 +617,14 @@ abstract class AppLocalizations {
   /// No description provided for @changeAddress.
   ///
   /// In en, this message translates to:
-  /// **'Change address'**
+  /// **'Edit address'**
   String get changeAddress;
+
+  /// No description provided for @editIbanAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit IBAN account'**
+  String get editIbanAccount;
 
   /// No description provided for @selectLocationContextLong.
   ///
@@ -3770,18 +3800,6 @@ abstract class AppLocalizations {
   /// **'We’re sad to see you leave and we hope to see you again.'**
   String get unregisterSuccessText;
 
-  /// No description provided for @homeScreenWelcome.
-  ///
-  /// In en, this message translates to:
-  /// **'Welcome!'**
-  String get homeScreenWelcome;
-
-  /// No description provided for @homeScreenHeyFamily.
-  ///
-  /// In en, this message translates to:
-  /// **'Hey {family}!'**
-  String homeScreenHeyFamily(Object family);
-
   /// No description provided for @tutorialGratitudeGameTitle.
   ///
   /// In en, this message translates to:
@@ -3794,24 +3812,6 @@ abstract class AppLocalizations {
   /// **'This game helps you to build gratitude by reflecting on your day as a family'**
   String get tutorialGratitudeGameDescription;
 
-  /// No description provided for @homeScreenSecondParentDialogTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'{firstName} needs to use their own account'**
-  String homeScreenSecondParentDialogTitle(Object firstName);
-
-  /// No description provided for @homeScreenSecondParentDialogDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Use the Givt App on your own device'**
-  String get homeScreenSecondParentDialogDescription;
-
-  /// No description provided for @homeScreenSecondParentDialogConfirmButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Got it'**
-  String get homeScreenSecondParentDialogConfirmButton;
-
   /// No description provided for @tutorialFirstMissionTitle.
   ///
   /// In en, this message translates to:
@@ -3823,18 +3823,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New missions help your family grow together. Tap above to begin!'**
   String get tutorialFirstMissionDescription;
-
-  /// No description provided for @homeScreenGratitudeGameButtonTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Family Game'**
-  String get homeScreenGratitudeGameButtonTitle;
-
-  /// No description provided for @homeScreenGratitudeGameButtonSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Play now!'**
-  String get homeScreenGratitudeGameButtonSubtitle;
 
   /// No description provided for @setupFamilyTitle.
   ///
@@ -3932,18 +3920,6 @@ abstract class AppLocalizations {
   /// **'Select location'**
   String get originSelectLocation;
 
-  /// No description provided for @homeScreenGiveButtonTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Give'**
-  String get homeScreenGiveButtonTitle;
-
-  /// No description provided for @homeScreenGivtButtonDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Donate to a cause'**
-  String get homeScreenGivtButtonDescription;
-
   /// No description provided for @gratitudeWeeklyGoal.
   ///
   /// In en, this message translates to:
@@ -3955,30 +3931,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{amount} days left'**
   String gratitudeGoalDaysLeft(Object amount);
-
-  /// No description provided for @familyNavigationBarHome.
-  ///
-  /// In en, this message translates to:
-  /// **'Home'**
-  String get familyNavigationBarHome;
-
-  /// No description provided for @familyNavigationBarFamily.
-  ///
-  /// In en, this message translates to:
-  /// **'Family'**
-  String get familyNavigationBarFamily;
-
-  /// No description provided for @familyNavigationBarMemories.
-  ///
-  /// In en, this message translates to:
-  /// **'Memories'**
-  String get familyNavigationBarMemories;
-
-  /// No description provided for @familyNavigationBarLeague.
-  ///
-  /// In en, this message translates to:
-  /// **'League'**
-  String get familyNavigationBarLeague;
 
   /// No description provided for @missionsTitle.
   ///
@@ -4075,18 +4027,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{amount} deeds'**
   String gameStatsAmountOfDeeds(Object amount);
-
-  /// No description provided for @homescreenOverlayDiscoverTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Your For You reward!'**
-  String get homescreenOverlayDiscoverTitle;
-
-  /// No description provided for @homescreenOverlayGiveTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Who would like to give?'**
-  String get homescreenOverlayGiveTitle;
 
   /// No description provided for @tutorialFamilyExplanationTitle.
   ///
@@ -4726,6 +4666,219 @@ abstract class AppLocalizations {
     String startMonthYear,
   );
 
+  /// No description provided for @externalDonationsManageAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get externalDonationsManageAmount;
+
+  /// No description provided for @externalDonationsManageFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get externalDonationsManageFrequency;
+
+  /// No description provided for @externalDonationsManageStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get externalDonationsManageStartDate;
+
+  /// No description provided for @externalDonationsManageDeleteDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete donation'**
+  String get externalDonationsManageDeleteDonation;
+
+  /// No description provided for @externalDonationsManageEditSpecificRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit specific records'**
+  String get externalDonationsManageEditSpecificRecords;
+
+  /// No description provided for @externalDonationsDeleteModalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {organisation} from your giving history?'**
+  String externalDonationsDeleteModalTitle(String organisation);
+
+  /// No description provided for @externalDonationsDeleteModalConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, delete'**
+  String get externalDonationsDeleteModalConfirm;
+
+  /// No description provided for @externalDonationsDeleteModalCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'No, keep my donation'**
+  String get externalDonationsDeleteModalCancel;
+
+  /// No description provided for @externalDonationsBulkDeleteModalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete selected records?'**
+  String get externalDonationsBulkDeleteModalTitle;
+
+  /// No description provided for @externalDonationsBulkDeleteModalMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This removes {count} selected records from your history.'**
+  String externalDonationsBulkDeleteModalMessage(int count);
+
+  /// No description provided for @externalDonationsBulkDeleteModalConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, delete records'**
+  String get externalDonationsBulkDeleteModalConfirm;
+
+  /// No description provided for @externalDonationsBulkDeleteModalCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'No, keep records'**
+  String get externalDonationsBulkDeleteModalCancel;
+
+  /// No description provided for @externalDonationsScopeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Which donations should change?'**
+  String get externalDonationsScopeTitle;
+
+  /// No description provided for @externalDonationsScopeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All donations'**
+  String get externalDonationsScopeAll;
+
+  /// No description provided for @externalDonationsScopeOnwards.
+  ///
+  /// In en, this message translates to:
+  /// **'From now onwards'**
+  String get externalDonationsScopeOnwards;
+
+  /// No description provided for @externalDonationsScopeContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get externalDonationsScopeContinue;
+
+  /// No description provided for @externalDonationsSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get externalDonationsSave;
+
+  /// No description provided for @externalDonationsEditAmountInfoAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All your records — past and future — will be updated to {amount}.'**
+  String externalDonationsEditAmountInfoAll(String amount);
+
+  /// No description provided for @externalDonationsEditAmountInfoOnwards.
+  ///
+  /// In en, this message translates to:
+  /// **'From {date} you\'ll give {amount} each month. Past records stay as they are.'**
+  String externalDonationsEditAmountInfoOnwards(String date, String amount);
+
+  /// No description provided for @externalDonationsEditAmountInfoOneOff.
+  ///
+  /// In en, this message translates to:
+  /// **'This record will be updated to {amount}.'**
+  String externalDonationsEditAmountInfoOneOff(String amount);
+
+  /// No description provided for @externalDonationsEditAmountBulkInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'The new amount will apply to the selected records only.'**
+  String get externalDonationsEditAmountBulkInfo;
+
+  /// No description provided for @externalDonationsEditFrequencyInfoAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Your whole history will be recalculated to {frequency}.'**
+  String externalDonationsEditFrequencyInfoAll(String frequency);
+
+  /// No description provided for @externalDonationsEditFrequencyInfoOnwards.
+  ///
+  /// In en, this message translates to:
+  /// **'From {date} your gift repeats {frequency}. Past records stay as they are.'**
+  String externalDonationsEditFrequencyInfoOnwards(
+    String date,
+    String frequency,
+  );
+
+  /// No description provided for @externalDonationsEditStartDateInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Your history will be rebuilt to start from {monthYear}.'**
+  String externalDonationsEditStartDateInfo(String monthYear);
+
+  /// No description provided for @externalDonationsManageFrequencyWeeklyOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'weekly on {day}'**
+  String externalDonationsManageFrequencyWeeklyOnDay(String day);
+
+  /// No description provided for @externalDonationsManageFrequencyMonthlyOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'monthly on the {day}'**
+  String externalDonationsManageFrequencyMonthlyOnDay(String day);
+
+  /// No description provided for @externalDonationsManageFrequencyHalfYearlyOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'half-yearly on the {day}'**
+  String externalDonationsManageFrequencyHalfYearlyOnDay(String day);
+
+  /// No description provided for @externalDonationsManageFrequencyQuarterlyOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'quarterly on the {day}'**
+  String externalDonationsManageFrequencyQuarterlyOnDay(String day);
+
+  /// No description provided for @externalDonationsManageFrequencyYearlyOnDate.
+  ///
+  /// In en, this message translates to:
+  /// **'yearly on {date}'**
+  String externalDonationsManageFrequencyYearlyOnDate(String date);
+
+  /// No description provided for @externalDonationsManageFrequencyDayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Day it falls on'**
+  String get externalDonationsManageFrequencyDayLabel;
+
+  /// No description provided for @externalDonationsSelectionSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get externalDonationsSelectionSelectAll;
+
+  /// No description provided for @externalDonationsSelectionSelectedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String externalDonationsSelectionSelectedCount(int count);
+
+  /// No description provided for @externalDonationsSelectionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get externalDonationsSelectionEdit;
+
+  /// No description provided for @externalDonationsSelectionDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get externalDonationsSelectionDelete;
+
+  /// No description provided for @externalDonationsSelectionDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get externalDonationsSelectionDone;
+
   /// No description provided for @recurringDonationsDetailProgressSuffix.
   ///
   /// In en, this message translates to:
@@ -4851,6 +5004,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pause functionality coming soon'**
   String get recurringDonationsDetailPauseComingSoon;
+
+  /// No description provided for @recurringDonationsPauseSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause donation'**
+  String get recurringDonationsPauseSheetTitle;
+
+  /// No description provided for @recurringDonationsPauseSheetDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a date to resume your donation.'**
+  String get recurringDonationsPauseSheetDescription;
+
+  /// No description provided for @recurringDonationsPauseRestartDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart date'**
+  String get recurringDonationsPauseRestartDateLabel;
+
+  /// No description provided for @recurringDonationsPauseContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get recurringDonationsPauseContinueButton;
+
+  /// No description provided for @recurringDonationsPauseConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause donation?'**
+  String get recurringDonationsPauseConfirmTitle;
+
+  /// No description provided for @recurringDonationsPauseConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation will pause until {date}. A new recurring donation will start on that date with your remaining donations.'**
+  String recurringDonationsPauseConfirmMessage(String date);
+
+  /// No description provided for @recurringDonationsPauseConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, pause donation'**
+  String get recurringDonationsPauseConfirmButton;
+
+  /// No description provided for @recurringDonationsPauseCancelButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get recurringDonationsPauseCancelButton;
+
+  /// No description provided for @recurringDonationsPauseSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Donation paused'**
+  String get recurringDonationsPauseSuccessTitle;
+
+  /// No description provided for @recurringDonationsPauseSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation will resume on {date}.'**
+  String recurringDonationsPauseSuccessMessage(String date);
+
+  /// No description provided for @recurringDonationsPauseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t pause your donation. Please try again.'**
+  String get recurringDonationsPauseFailed;
 
   /// No description provided for @recurringDonationsDetailCancelDonation.
   ///

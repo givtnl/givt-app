@@ -1,0 +1,16 @@
+appId: net.givtapp.ios.test
+name: EU Account settings — Amount presets opens the presets sheet
+
+---
+
+- runFlow: NL_LoginWithAccount.yml
+- runFlow: NL_Opening.yml
+- scrollUntilVisible:
+    element:
+      id: "accountSettingsRowAmountPresets"
+    direction: DOWN
+- tapOn:
+    id: "accountSettingsRowAmountPresets"
+- assertVisible:
+    id: "accountSettingsAmountPresetsSheet"
+- runFlow: ../_shared/Dismiss_BottomSheet.yml

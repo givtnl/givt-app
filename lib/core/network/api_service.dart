@@ -567,6 +567,34 @@ class APIService {
     }
   }
 
+  Future<void> pauseRecurringDonation({
+    required String recurringDonationId,
+    required DateTime restartDate,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/recurringdonation/$recurringDonationId/pause',
+    );
+
+    final response = await client.post(
+      url,
+      body: jsonEncode({
+        'restartDate': DateTime.utc(
+          restartDate.year,
+          restartDate.month,
+          restartDate.day,
+        ).toIso8601String(),
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+  }
+
   Future<Map<String, dynamic>> fetchRecurringDonationById(
     String donationId,
   ) async {
@@ -758,7 +786,7 @@ class APIService {
   Future<ExternalDonation?> fetchExternalDonationDetail(String id) async {
     final url = Uri.https(
       _apiURL,
-      '/givtservice/v1/externaldonations/detail/$id',
+      '/givtservice/v1/ExternalDonations/$id/details',
     );
 
     final response = await client.get(
@@ -788,7 +816,10 @@ class APIService {
     String id,
     Map<String, dynamic> body,
   ) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations/$id');
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/ExternalDonations/$id',
+    );
 
     final response = await client.put(
       url,
@@ -806,8 +837,99 @@ class APIService {
             : null,
       );
     }
-    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    return decodedBody['item'] as bool;
+    return _decodeItemBool(response.body);
+  }
+
+  Future<bool> deleteExternalDonation(String id) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/ExternalDonations/$id',
+    );
+
+    final response = await client.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return _decodeItemBool(response.body);
+  }
+
+  Future<bool> bulkUpdateExternalDonationTransactions({
+    required List<String> transactionIds,
+    required double newAmount,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/ExternalDonations/transactions/bulk-update',
+    );
+
+    final response = await client.post(
+      url,
+      body: jsonEncode({
+        'transactionIds': transactionIds,
+        'newAmount': newAmount,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return _decodeItemBool(response.body);
+  }
+
+  Future<bool> bulkDeleteExternalDonationTransactions({
+    required List<String> transactionIds,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/ExternalDonations/transactions/bulk-delete',
+    );
+
+    final response = await client.post(
+      url,
+      body: jsonEncode({
+        'transactionIds': transactionIds,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return _decodeItemBool(response.body);
+  }
+
+  bool _decodeItemBool(String body) {
+    if (body.isEmpty) {
+      return true;
+    }
+    final decodedBody = jsonDecode(body) as Map<String, dynamic>;
+    return decodedBody['item'] as bool? ?? false;
   }
 
   Future<bool> updateNotificationId({
