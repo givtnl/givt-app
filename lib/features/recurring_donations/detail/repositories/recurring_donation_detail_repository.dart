@@ -49,6 +49,12 @@ mixin RecurringDonationDetailRepository {
 
   /// Returns the organization type for the recurring donation.
   CollectGroupType getOrganisationType();
+
+  /// Returns the current recurring donation, if set.
+  RecurringDonation? getRecurringDonation();
+
+  /// Pauses the recurring donation and schedules it to restart on [restartDate].
+  Future<void> pauseDonation({required DateTime restartDate});
 }
 
 /// Implementation of [RecurringDonationDetailRepository] that uses [APIService].
@@ -416,6 +422,23 @@ class RecurringDonationDetailRepositoryImpl
   @override
   CollectGroupType getOrganisationType() {
     return _resolvedOrganisationType;
+  }
+
+  @override
+  RecurringDonation? getRecurringDonation() {
+    return _recurringDonation;
+  }
+
+  @override
+  Future<void> pauseDonation({required DateTime restartDate}) async {
+    if (_recurringDonation == null) {
+      throw StateError('No recurring donation set');
+    }
+
+    await apiService.pauseRecurringDonation(
+      recurringDonationId: _recurringDonation!.id,
+      restartDate: restartDate,
+    );
   }
 
   /// Disposes of any resources used by the repository.

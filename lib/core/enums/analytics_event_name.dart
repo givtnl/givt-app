@@ -112,6 +112,18 @@ enum AnalyticsEventName {
   recurringDonationPauseActionClicked(
     'recurring_donation_pause_action_clicked',
   ),
+  recurringDonationPauseRestartDateContinueClicked(
+    'recurring_donation_pause_restart_date_continue_clicked',
+  ),
+  recurringDonationPauseConfirmClicked(
+    'recurring_donation_pause_confirm_clicked',
+  ),
+  recurringDonationPauseCancelClicked(
+    'recurring_donation_pause_cancel_clicked',
+  ),
+  recurringDonationPauseSuccessDoneClicked(
+    'recurring_donation_pause_success_done_clicked',
+  ),
   recurringDonationCancelActionClicked(
     'recurring_donation_cancel_action_clicked',
   ),

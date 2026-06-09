@@ -2826,6 +2826,45 @@ class AppLocalizationsNl extends AppLocalizations {
       'Pauzeringsfunctionaliteit komt binnenkort';
 
   @override
+  String get recurringDonationsPauseSheetTitle => 'Donatie pauzeren';
+
+  @override
+  String get recurringDonationsPauseSheetDescription =>
+      'Selecteer een datum om je donatie te hervatten.';
+
+  @override
+  String get recurringDonationsPauseRestartDateLabel => 'Hervattingsdatum';
+
+  @override
+  String get recurringDonationsPauseContinueButton => 'Doorgaan';
+
+  @override
+  String get recurringDonationsPauseConfirmTitle => 'Donatie pauzeren?';
+
+  @override
+  String recurringDonationsPauseConfirmMessage(String date) {
+    return 'Je donatie wordt gepauzeerd tot $date. Een nieuwe periodieke donatie start op die datum met je resterende donaties.';
+  }
+
+  @override
+  String get recurringDonationsPauseConfirmButton => 'Ja, pauzeer donatie';
+
+  @override
+  String get recurringDonationsPauseCancelButton => 'Annuleren';
+
+  @override
+  String get recurringDonationsPauseSuccessTitle => 'Donatie gepauzeerd';
+
+  @override
+  String recurringDonationsPauseSuccessMessage(String date) {
+    return 'Je donatie wordt hervat op $date.';
+  }
+
+  @override
+  String get recurringDonationsPauseFailed =>
+      'We konden je donatie niet pauzeren. Probeer het opnieuw.';
+
+  @override
   String get recurringDonationsDetailCancelDonation => 'Donatie annuleren';
 
   @override
