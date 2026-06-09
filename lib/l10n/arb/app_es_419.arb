@@ -64,6 +64,8 @@
   "joinGivt": "Únete en givtapp.net/download.",
   "yesSuccess": "¡Sí, completado!",
   "personalInfo": "Información personal",
+  "menuItemContact": "Contacto",
+  "menuItemLogOut": "Cerrar sesión",
   "changeDetails": "Cambiar datos",
   "searchHere": "Buscar ...",
   "noInternet": "¡Ups! Parece que no estás conectado a Internet. Inténtalo de nuevo cuando estés conectado a Internet.",

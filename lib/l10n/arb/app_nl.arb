@@ -68,6 +68,8 @@
   "accountSettingsPersonalDetails": "Persoonlijke gegevens",
   "accountSettingsSecurity": "Beveiliging",
   "accountSettingsPreferences": "Voorkeuren",
+  "menuItemContact": "Contact",
+  "menuItemLogOut": "Uitloggen",
   "changeDetails": "Gegevens wijzigen",
   "searchHere": "Zoeken ...",
   "noInternet": "Oeps! Het lijkt erop dat je niet verbonden bent met internet. Probeer het nog eens wanneer je wel verbinding met internet hebt.",

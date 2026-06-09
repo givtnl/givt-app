@@ -179,6 +179,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accountSettingsPreferences => 'Preferencias';
 
   @override
+  String get menuItemContact => 'Contacto';
+
+  @override
+  String get menuItemLogOut => 'Cerrar sesión';
+
+  @override
   String get changeDetails => 'Cambiar datos';
 
   @override
@@ -3442,6 +3448,12 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get personalInfo => 'Información personal';
+
+  @override
+  String get menuItemContact => 'Contacto';
+
+  @override
+  String get menuItemLogOut => 'Cerrar sesión';
 
   @override
   String get changeDetails => 'Cambiar datos';

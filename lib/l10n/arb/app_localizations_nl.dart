@@ -180,6 +180,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get accountSettingsPreferences => 'Voorkeuren';
 
   @override
+  String get menuItemContact => 'Contact';
+
+  @override
+  String get menuItemLogOut => 'Uitloggen';
+
+  @override
   String get changeDetails => 'Gegevens wijzigen';
 
   @override

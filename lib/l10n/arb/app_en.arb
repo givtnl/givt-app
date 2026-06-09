@@ -68,6 +68,8 @@
   "accountSettingsPersonalDetails": "Personal details",
   "accountSettingsSecurity": "Security",
   "accountSettingsPreferences": "Preferences",
+  "menuItemContact": "Contact",
+  "menuItemLogOut": "Log out",
   "changeDetails": "Change details",
   "searchHere": "Search ...",
   "noInternet": "Whoops! It looks like you're not connected to the internet. Try again when you are connected with the internet.",

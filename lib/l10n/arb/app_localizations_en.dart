@@ -179,6 +179,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountSettingsPreferences => 'Preferences';
 
   @override
+  String get menuItemContact => 'Contact';
+
+  @override
+  String get menuItemLogOut => 'Log out';
+
+  @override
   String get changeDetails => 'Change details';
 
   @override
@@ -3430,6 +3436,12 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get personalInfo => 'Personal info';
+
+  @override
+  String get menuItemContact => 'Contact';
+
+  @override
+  String get menuItemLogOut => 'Log out';
 
   @override
   String get changeDetails => 'Change details';
