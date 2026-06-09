@@ -1,21 +1,16 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/network.dart';
-import 'package:givt_app/features/account_details/account_settings_actions.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -28,307 +23,248 @@ class CustomNavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
+    final theme = FunTheme.of(context);
+    final iconColor = theme.primary20;
 
     return Drawer(
-      backgroundColor: FunTheme.of(context).neutralVariant99,
+      backgroundColor: Colors.white,
+      width: 304,
       child: auth.status == AuthStatus.loading
           ? const Center(
               child: CircularProgressIndicator.adaptive(),
             )
-          : ListView(
-              children: [
-                _buildGivtLogo(size),
-                DrawerMenuItem(
-                  isVisible:
-                      auth.user.needRegistration || !auth.user.mandateSigned,
-                  showBadge: true,
-                  title: locals.finalizeRegistration,
-                  icon: Icons.edit,
-                  analyticsEvent: AnalyticsEventName.menuNavigationFinalizeRegistrationClicked,
-                  onTap: () {
-                    if (auth.user.needRegistration) {
-                      context
-                        ..goNamed(
-                          Pages.registration.name,
-                          queryParameters: {
-                            'email': auth.user.email,
+          : SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.only(top: 40),
+                      children: [
+                        _buildGivtLogo(),
+                        _buildDecorativeAvatar(context),
+                        DrawerMenuItem(
+                          isVisible: auth.user.needRegistration ||
+                              !auth.user.mandateSigned,
+                          showBadge: true,
+                          title: locals.finalizeRegistration,
+                          leading: Icon(Icons.edit, size: 20, color: iconColor),
+                          analyticsEvent: AnalyticsEventName
+                              .menuNavigationFinalizeRegistrationClicked,
+                          onTap: () {
+                            if (auth.user.needRegistration) {
+                              context
+                                ..goNamed(
+                                  Pages.registration.name,
+                                  queryParameters: {
+                                    'email': auth.user.email,
+                                  },
+                                )
+                                ..pop();
+                              return;
+                            }
+                            context.goNamed(
+                              Pages.sepaMandateExplanation.name,
+                            );
                           },
-                        )
-                        ..pop();
-                      return;
-                    }
-                    context.goNamed(
-                      Pages.sepaMandateExplanation.name,
-                    );
-                  },
-                ),
-                const SummaryMenuItem(),
-                Divider(
-                  thickness: size.height * 0.02,
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  isAccent: true,
-                  icon: Icons.wallet,
-                  title: locals.budgetMenuView,
-                  imageIcon: Image.asset(
-                    'assets/images/givy_budget_menu.png',
-                    fit: BoxFit.contain,
-                  ),
-                  analyticsEvent: AnalyticsEventName.menuNavigationBudgetClicked,
-                  onTap: () async => AuthUtils.checkToken(
-                    context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context) async {
-                        context.goNamed(Pages.personalSummary.name);
-                        unawaited(
-                          AnalyticsHelper.logEvent(
-                            eventName: AnalyticsEventName.personalSummaryClicked,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.historyTitle,
-                  icon: FontAwesomeIcons.listUl,
-                  analyticsEvent: AnalyticsEventName.menuNavigationHistoryClicked,
-                  onTap: () async {
-                    context.read<RemoteDataSourceSyncBloc>().add(
-                          const RemoteDataSourceSyncRequested(),
-                        );
-                    await AuthUtils.checkToken(
-                      context,
-                      checkAuthRequest: CheckAuthRequest(
-                        navigate: (context) async => context.goNamed(
-                          Pages.donationOverview.name,
                         ),
-                      ),
-                    );
-                  },
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.menuItemRecurringDonation,
-                  icon: Icons.autorenew,
-                  analyticsEvent: AnalyticsEventName.menuNavigationRecurringDonationClicked,
-                  onTap: () async => AuthUtils.checkToken(
-                    context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context) async {
-                        context.goNamed(Pages.recurringDonations.name);
-                        unawaited(
-                          AnalyticsHelper.logEvent(
-                            eventName:
-                                AnalyticsEventName.recurringDonationsNavigationClicked,
+                        DrawerMenuItem(
+                          isVisible: !auth.user.needRegistration,
+                          title: locals.budgetMenuView,
+                          leading: FaIcon(
+                            FontAwesomeIcons.list,
+                            size: 20,
+                            color: iconColor,
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.menuItemExternalDonations,
-                  icon: FontAwesomeIcons.arrowUpRightFromSquare,
-                  analyticsEvent:
-                      AnalyticsEventName.menuNavigationExternalDonationsClicked,
-                  onTap: () async => AuthUtils.checkToken(
-                    context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context) async {
-                        context.goNamed(Pages.externalDonations.name);
-                        unawaited(
-                          AnalyticsHelper.logEvent(
-                            eventName:
-                                AnalyticsEventName.externalDonationsNavigationClicked,
+                          analyticsEvent:
+                              AnalyticsEventName.menuNavigationBudgetClicked,
+                          onTap: () async => AuthUtils.checkToken(
+                            context,
+                            checkAuthRequest: CheckAuthRequest(
+                              navigate: (context) async {
+                                context.goNamed(Pages.personalSummary.name);
+                                unawaited(
+                                  AnalyticsHelper.logEvent(
+                                    eventName: AnalyticsEventName
+                                        .personalSummaryClicked,
+                                  ),
+                                );
+                              },
+                            ),
                           ),
-                        );
-                      },
+                        ),
+                        DrawerMenuItem(
+                          isVisible: !auth.user.needRegistration,
+                          title: locals.historyTitle,
+                          leading: FaIcon(
+                            FontAwesomeIcons.clockRotateLeft,
+                            size: 20,
+                            color: iconColor,
+                          ),
+                          analyticsEvent:
+                              AnalyticsEventName.menuNavigationHistoryClicked,
+                          onTap: () async {
+                            context.read<RemoteDataSourceSyncBloc>().add(
+                                  const RemoteDataSourceSyncRequested(),
+                                );
+                            await AuthUtils.checkToken(
+                              context,
+                              checkAuthRequest: CheckAuthRequest(
+                                navigate: (context) async => context.goNamed(
+                                  Pages.donationOverview.name,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        DrawerMenuItem(
+                          isVisible: !auth.user.needRegistration,
+                          title: locals.menuItemRecurringDonation,
+                          leading: FaIcon(
+                            FontAwesomeIcons.arrowsRotate,
+                            size: 20,
+                            color: iconColor,
+                          ),
+                          analyticsEvent: AnalyticsEventName
+                              .menuNavigationRecurringDonationClicked,
+                          onTap: () async => AuthUtils.checkToken(
+                            context,
+                            checkAuthRequest: CheckAuthRequest(
+                              navigate: (context) async {
+                                context.goNamed(Pages.recurringDonations.name);
+                                unawaited(
+                                  AnalyticsHelper.logEvent(
+                                    eventName: AnalyticsEventName
+                                        .recurringDonationsNavigationClicked,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        DrawerMenuItem(
+                          isVisible: !auth.user.needRegistration,
+                          title: locals.menuItemExternalDonations,
+                          leading: FaIcon(
+                            FontAwesomeIcons.arrowUpRightFromSquare,
+                            size: 20,
+                            color: iconColor,
+                          ),
+                          analyticsEvent: AnalyticsEventName
+                              .menuNavigationExternalDonationsClicked,
+                          onTap: () async => AuthUtils.checkToken(
+                            context,
+                            checkAuthRequest: CheckAuthRequest(
+                              navigate: (context) async {
+                                context.goNamed(Pages.externalDonations.name);
+                                unawaited(
+                                  AnalyticsHelper.logEvent(
+                                    eventName: AnalyticsEventName
+                                        .externalDonationsNavigationClicked,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.giveLimit,
-                  icon: Util.getCurrencyIconData(
-                    country: Country.fromCode(
-                      auth.user.country,
+                  DrawerMenuItem(
+                    title: locals.accountSettingsTitle,
+                    leading: FaIcon(
+                      FontAwesomeIcons.gear,
+                      size: 20,
+                      color: iconColor,
                     ),
-                  ),
-                  analyticsEvent: AnalyticsEventName.menuNavigationGiveLimitClicked,
-                  onTap: () => AccountSettingsActions.openMaxAmount(context),
-                ),
-                DrawerMenuItem(
-                  isVisible: true,
-                  title: locals.personalInfo,
-                  icon: Icons.mode_edit_outline,
-                  semanticsIdentifier: 'menuPersonalInfo',
-                  analyticsEvent: AnalyticsEventName.menuNavigationPersonalInfoClicked,
-                  onTap: () async {
-                    return AuthUtils.checkToken(
+                    semanticsIdentifier: 'menuAccountSettings',
+                    analyticsEvent: AnalyticsEventName
+                        .menuNavigationAccountSettingsClicked,
+                    onTap: () async => AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
                         navigate: (context) async => context.goNamed(
                           Pages.personalInfoEdit.name,
                         ),
                       ),
-                    );
-                  },
-                ),
-                DrawerMenuItem(
-                  isVisible:
-                      !auth.user.needRegistration && !auth.user.isUsUser,
-                  title: locals.platformContributionTitle,
-                  icon: FontAwesomeIcons.handHoldingDollar,
-                  analyticsEvent: AnalyticsEventName.menuNavigationPlatformContributionClicked,
-                  onTap: () =>
-                      AccountSettingsActions.openPlatformContribution(context),
-                ),
-                DrawerMenuItem(
-                  isVisible: !auth.user.needRegistration,
-                  title: locals.amountPresetsTitle,
-                  icon: Icons.tune,
-                  imageIcon: Transform.rotate(
-                    angle: 1.57,
-                    child: const Icon(
-                      Icons.tune,
-                      color: AppTheme.givtBlue,
                     ),
                   ),
-                  analyticsEvent: AnalyticsEventName.menuNavigationAmountPresetsClicked,
-                  onTap: () =>
-                      AccountSettingsActions.openAmountPresets(context),
-                ),
-                FutureBuilder(
-                  initialData: false,
-                  future: Future.wait<bool>([
-                    LocalAuthInfo.instance.checkFingerprint(),
-                    LocalAuthInfo.instance.checkFaceId(),
-                  ]),
-                  builder: (_, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return const SizedBox.shrink();
-                    }
-                    if (!snapshot.hasData) {
-                      return const SizedBox.shrink();
-                    }
-                    if (snapshot.data == null) {
-                      return const SizedBox.shrink();
-                    }
-
-                    final data = snapshot.data! as List<bool>;
-                    final isFingerprintAvailable = data[0];
-                    final isFaceIdAvailable = data[1];
-
-                    return DrawerMenuItem(
-                      isVisible:
-                          (isFingerprintAvailable || isFaceIdAvailable) &&
-                              !auth.user.tempUser,
-                      title: isFingerprintAvailable
-                          ? Platform.isAndroid
-                              ? locals.fingerprintTitle
-                              : locals.touchId
-                          : locals.faceId,
-                      icon: Icons.fingerprint,
-                      imageIcon: Platform.isIOS && isFaceIdAvailable
-                          ? SvgPicture.asset(
-                              'assets/images/face_id.svg',
-                              width: 24,
-                              colorFilter: const ColorFilter.mode(
-                                AppTheme.givtBlue,
-                                BlendMode.srcIn,
-                              ),
-                            )
-                          : null,
-                      analyticsEvent: AnalyticsEventName.menuNavigationBiometricClicked,
-                      onTap: () => AccountSettingsActions.openBiometricSetup(
-                        context,
-                        isFingerprint: isFingerprintAvailable,
-                      ),
-                    );
-                  },
-                ),
-                _buildEmptySpace(),
-                DrawerMenuItem(
-                  isVisible: true,
-                  title: locals.logOut,
-                  icon: Icons.logout_sharp,
-                  analyticsEvent: AnalyticsEventName.menuNavigationLogoutClicked,
-                  onTap: () async {
-                    if (!getIt<NetworkInfo>().isConnected) {
+                  DrawerMenuItem(
+                    title: locals.menuItemContact,
+                    leading: FaIcon(
+                      FontAwesomeIcons.circleInfo,
+                      size: 20,
+                      color: iconColor,
+                    ),
+                    analyticsEvent:
+                        AnalyticsEventName.menuNavigationAboutGivtClicked,
+                    onTap: () => showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (_) => const AboutGivtBottomSheet(),
+                    ),
+                  ),
+                  DrawerMenuItem(
+                    title: locals.menuItemLogOut,
+                    leading: FaIcon(
+                      FontAwesomeIcons.arrowRightFromBracket,
+                      size: 20,
+                      color: iconColor,
+                    ),
+                    analyticsEvent:
+                        AnalyticsEventName.menuNavigationLogoutClicked,
+                    onTap: () async {
+                      if (!getIt<NetworkInfo>().isConnected) {
+                        if (!context.mounted) {
+                          return;
+                        }
+                        await showDialog<void>(
+                          context: context,
+                          builder: (_) => WarningDialog(
+                            title: locals.noInternetConnectionTitle,
+                            content: locals.noInternet,
+                          ),
+                        );
+                        return;
+                      }
                       if (!context.mounted) {
                         return;
                       }
-                      await showDialog<void>(
-                        context: context,
-                        builder: (_) => WarningDialog(
-                          title: locals.noInternetConnectionTitle,
-                          content: locals.noInternet,
-                        ),
-                      );
-                      return;
-                    }
-                    if (!context.mounted) {
-                      return;
-                    }
-                    return context.read<AuthCubit>().logout();
-                  },
-                ),
-                DrawerMenuItem(
-                  isVisible: true,
-                  title: locals.unregister,
-                  icon: FontAwesomeIcons.userXmark,
-                  analyticsEvent: AnalyticsEventName.menuNavigationUnregisterClicked,
-                  onTap: () => AccountSettingsActions.openUnregister(context),
-                ),
-                _buildEmptySpace(),
-                DrawerMenuItem(
-                  isVisible: true,
-                  title: locals.titleAboutGivt,
-                  icon: Icons.info,
-                  analyticsEvent: AnalyticsEventName.menuNavigationAboutGivtClicked,
-                  onTap: () => showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                    builder: (_) => const AboutGivtBottomSheet(),
+                      return context.read<AuthCubit>().logout();
+                    },
                   ),
-                ),
-              ],
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
     );
   }
 
-  Widget _buildEmptySpace() => Container(
-        height: 20,
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 240, 240, 240),
-          border: Border(
-            top: BorderSide(
-              color: Color.fromARGB(255, 173, 173, 173),
-              width: 0.5,
-            ),
-            bottom: BorderSide(
-              color: Color.fromARGB(255, 173, 173, 173),
-              width: 0.5,
-            ),
+  Widget _buildDecorativeAvatar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Center(
+        child: ExcludeSemantics(
+          child: FunIconGivy.happy(
+            circleSize: 80,
+            circleColor: FunTheme.of(context).secondary95,
           ),
         ),
-      );
+      ),
+    );
+  }
 
-  Widget _buildGivtLogo(Size size) => Container(
-        margin: EdgeInsets.only(
-          bottom: size.height * 0.02,
-        ),
-        height: size.height * 0.03,
-        child: Image.asset(
-          'assets/images/logo.png',
+  Widget _buildGivtLogo() => Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Center(
+          child: SizedBox(
+            height: 24,
+            child: Image.asset(
+              'assets/images/logo.png',
+            ),
+          ),
         ),
       );
 }

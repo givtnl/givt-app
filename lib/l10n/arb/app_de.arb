@@ -68,6 +68,8 @@
   "accountSettingsPersonalDetails": "Persönliche Daten",
   "accountSettingsSecurity": "Sicherheit",
   "accountSettingsPreferences": "Einstellungen",
+  "menuItemContact": "Kontakt",
+  "menuItemLogOut": "Abmelden",
   "changeDetails": "Daten ändern",
   "searchHere": "Suche....",
   "noInternet": "Hoppla! Es sieht so aus, als ob du keinerlei Verbindung zum Internet hättest. Probier es noch einmal, wenn wieder eine Verbindung mit dem Internet besteht.",

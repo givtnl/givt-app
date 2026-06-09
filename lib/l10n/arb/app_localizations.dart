@@ -398,6 +398,18 @@ abstract class AppLocalizations {
   /// **'Preferences'**
   String get accountSettingsPreferences;
 
+  /// No description provided for @menuItemContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get menuItemContact;
+
+  /// No description provided for @menuItemLogOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get menuItemLogOut;
+
   /// No description provided for @changeDetails.
   ///
   /// In en, this message translates to:

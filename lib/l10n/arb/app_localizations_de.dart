@@ -180,6 +180,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get accountSettingsPreferences => 'Einstellungen';
 
   @override
+  String get menuItemContact => 'Kontakt';
+
+  @override
+  String get menuItemLogOut => 'Abmelden';
+
+  @override
   String get changeDetails => 'Daten ändern';
 
   @override

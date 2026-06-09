@@ -613,6 +613,9 @@ enum AnalyticsEventName {
   ),
   menuNavigationGiveLimitClicked('menu_navigation_give_limit_clicked'),
   menuNavigationPersonalInfoClicked('menu_navigation_personal_info_clicked'),
+  menuNavigationAccountSettingsClicked(
+    'menu_navigation_account_settings_clicked',
+  ),
   signMandateChangeDetailsClicked('sign_mandate_change_details_clicked'),
   signMandateDirectDebitGuaranteeOpened(
     'sign_mandate_direct_debit_guarantee_opened',
