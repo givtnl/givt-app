@@ -1467,6 +1467,31 @@
   "recurringDonationsDetailEditComingSoon": "Edit functionality coming soon",
   "recurringDonationsDetailPauseDonation": "Pause donation",
   "recurringDonationsDetailPauseComingSoon": "Pause functionality coming soon",
+  "recurringDonationsPauseSheetTitle": "Pause donation",
+  "recurringDonationsPauseSheetDescription": "Select a date to resume your donation.",
+  "recurringDonationsPauseRestartDateLabel": "Restart date",
+  "recurringDonationsPauseContinueButton": "Continue",
+  "recurringDonationsPauseConfirmTitle": "Pause donation?",
+  "recurringDonationsPauseConfirmMessage": "Your donation will pause until {date}. A new recurring donation will start on that date with your remaining donations.",
+  "@recurringDonationsPauseConfirmMessage": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "recurringDonationsPauseConfirmButton": "Yes, pause donation",
+  "recurringDonationsPauseCancelButton": "Cancel",
+  "recurringDonationsPauseSuccessTitle": "Donation paused",
+  "recurringDonationsPauseSuccessMessage": "Your donation will resume on {date}.",
+  "@recurringDonationsPauseSuccessMessage": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "recurringDonationsPauseFailed": "We couldn't pause your donation. Please try again.",
   "recurringDonationsDetailCancelDonation": "Cancel donation",
   "recurringDonationsCreateStep2AmountHint": "Enter amount",
   "recurringDonationsCreateFrequencyHint": "Select one",

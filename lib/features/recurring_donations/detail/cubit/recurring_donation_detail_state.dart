@@ -13,6 +13,7 @@ class RecurringDonationDetailUIModel {
     required this.history,
     required this.isLoading,
     required this.isActive,
+    this.isPausing = false,
     this.error,
     this.monthsHelped,
   });
@@ -27,6 +28,7 @@ class RecurringDonationDetailUIModel {
   final List<DonationHistoryItem> history;
   final bool isLoading;
   final bool isActive;
+  final bool isPausing;
   final String? error;
   final int? monthsHelped;
 
@@ -48,6 +50,7 @@ class RecurringDonationDetailUIModel {
         other.history == history &&
         other.isLoading == isLoading &&
         other.isActive == isActive &&
+        other.isPausing == isPausing &&
         other.error == error &&
         other.monthsHelped == monthsHelped;
   }
@@ -64,6 +67,7 @@ class RecurringDonationDetailUIModel {
         history.hashCode ^
         isLoading.hashCode ^
         isActive.hashCode ^
+        isPausing.hashCode ^
         error.hashCode ^
         monthsHelped.hashCode;
   }
@@ -79,6 +83,7 @@ class RecurringDonationDetailUIModel {
     List<DonationHistoryItem>? history,
     bool? isLoading,
     bool? isActive,
+    bool? isPausing,
     String? error,
     int? monthsHelped,
   }) {
@@ -93,6 +98,7 @@ class RecurringDonationDetailUIModel {
       history: history ?? this.history,
       isLoading: isLoading ?? this.isLoading,
       isActive: isActive ?? this.isActive,
+      isPausing: isPausing ?? this.isPausing,
       error: error ?? this.error,
       monthsHelped: monthsHelped ?? this.monthsHelped,
     );
@@ -163,8 +169,42 @@ sealed class RecurringDonationDetailCustom {
   const RecurringDonationDetailCustom();
 
   const factory RecurringDonationDetailCustom.manageDonation() = ManageDonation;
+
+  const factory RecurringDonationDetailCustom.showPauseDonationSheet() =
+      ShowPauseDonationSheet;
+
+  const factory RecurringDonationDetailCustom.showPauseDonationConfirmation({
+    required DateTime restartDate,
+  }) = ShowPauseDonationConfirmation;
+
+  const factory RecurringDonationDetailCustom.pauseDonationSucceeded({
+    required DateTime restartDate,
+  }) = PauseDonationSucceeded;
+
+  const factory RecurringDonationDetailCustom.pauseDonationFailed() =
+      PauseDonationFailed;
 }
 
 final class ManageDonation extends RecurringDonationDetailCustom {
   const ManageDonation();
+}
+
+final class ShowPauseDonationSheet extends RecurringDonationDetailCustom {
+  const ShowPauseDonationSheet();
+}
+
+final class ShowPauseDonationConfirmation extends RecurringDonationDetailCustom {
+  const ShowPauseDonationConfirmation({required this.restartDate});
+
+  final DateTime restartDate;
+}
+
+final class PauseDonationSucceeded extends RecurringDonationDetailCustom {
+  const PauseDonationSucceeded({required this.restartDate});
+
+  final DateTime restartDate;
+}
+
+final class PauseDonationFailed extends RecurringDonationDetailCustom {
+  const PauseDonationFailed();
 }

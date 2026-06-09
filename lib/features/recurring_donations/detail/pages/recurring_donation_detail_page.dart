@@ -10,15 +10,17 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
 import 'package:givt_app/features/recurring_donations/detail/cubit/recurring_donation_detail_cubit.dart';
 import 'package:givt_app/features/recurring_donations/detail/repositories/recurring_donation_detail_repository.dart';
+import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_bottom_sheet.dart';
+import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_confirmation_modal.dart';
+import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_success_modal.dart';
+import 'package:givt_app/features/recurring_donations/detail/widgets/recurring_donation_detail_manage_sheet.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -77,8 +79,39 @@ class _RecurringDonationDetailPageState
         onCustom: (context, custom) {
           switch (custom) {
             case ManageDonation():
-              // Navigate to manage donation page or show options
-              _showManageOptions(context);
+              RecurringDonationDetailManageSheet.show(
+                context,
+                cubit: _cubit,
+                recurringDonation: widget.recurringDonation,
+              );
+            case ShowPauseDonationSheet():
+              PauseDonationBottomSheet.show(context, cubit: _cubit);
+            case ShowPauseDonationConfirmation(:final restartDate):
+              PauseDonationConfirmationModal.show(
+                context,
+                cubit: _cubit,
+                restartDate: restartDate,
+              );
+            case PauseDonationSucceeded(:final restartDate):
+              PauseDonationSuccessModal.show(
+                context,
+                restartDate: restartDate,
+                onDone: () {
+                  if (!context.mounted) return;
+                  Navigator.of(context).push(
+                    const RecurringDonationsOverviewPage().toRoute(context),
+                  );
+                },
+              );
+            case PauseDonationFailed():
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    context.l10n.recurringDonationsPauseFailed,
+                  ),
+                  duration: const Duration(seconds: 3),
+                ),
+              );
           }
         },
         onData: (context, uiModel) {
@@ -445,82 +478,4 @@ class _RecurringDonationDetailPageState
     return DateFormat.yMMMd(locale).format(date);
   }
 
-  void _showManageOptions(BuildContext context) {
-    showModalBottomSheet<bool>(
-      context: context,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: Text(context.l10n.recurringDonationsDetailEditDonation),
-              onTap: () {
-                AnalyticsHelper.logEvent(
-                  eventName: AnalyticsEventName.recurringDonationEditActionClicked,
-                );
-                Navigator.of(context).pop();
-                // TODO: Navigate to edit page when implemented
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      context.l10n.recurringDonationsDetailEditComingSoon,
-                    ),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.pause),
-              title: Text(context.l10n.recurringDonationsDetailPauseDonation),
-              onTap: () {
-                AnalyticsHelper.logEvent(
-                  eventName: AnalyticsEventName.recurringDonationPauseActionClicked,
-                );
-                Navigator.of(context).pop();
-                // TODO: Implement pause functionality when available
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      context.l10n.recurringDonationsDetailPauseComingSoon,
-                    ),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.cancel, color: Colors.red),
-              title: Text(
-                context.l10n.recurringDonationsDetailCancelDonation,
-                style: const TextStyle(color: Colors.red),
-              ),
-              onTap: () {
-                AnalyticsHelper.logEvent(
-                  eventName: AnalyticsEventName.recurringDonationCancelActionClicked,
-                );
-                // Show cancel confirmation dialog
-                showDialog<bool>(
-                  context: context,
-                  builder: (context) =>
-                      CancelRecurringDonationConfirmationDialog(
-                        recurringDonation: widget.recurringDonation,
-                      ),
-                ).then((result) {
-                  // If cancellation was successful, navigate back to overview
-                  if (result == true && context.mounted) {
-                    Navigator.of(context).push(
-                      const RecurringDonationsOverviewPage().toRoute(context),
-                    );
-                  }
-                });
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

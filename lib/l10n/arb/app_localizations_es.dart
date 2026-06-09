@@ -2822,6 +2822,45 @@ class AppLocalizationsEs extends AppLocalizations {
       'Pause functionality coming soon';
 
   @override
+  String get recurringDonationsPauseSheetTitle => 'Pausar donación';
+
+  @override
+  String get recurringDonationsPauseSheetDescription =>
+      'Selecciona una fecha para reanudar tu donación.';
+
+  @override
+  String get recurringDonationsPauseRestartDateLabel => 'Fecha de reanudación';
+
+  @override
+  String get recurringDonationsPauseContinueButton => 'Continuar';
+
+  @override
+  String get recurringDonationsPauseConfirmTitle => '¿Pausar donación?';
+
+  @override
+  String recurringDonationsPauseConfirmMessage(String date) {
+    return 'Tu donación se pausará hasta el $date. Una nueva donación recurrente comenzará en esa fecha con tus donaciones restantes.';
+  }
+
+  @override
+  String get recurringDonationsPauseConfirmButton => 'Sí, pausar donación';
+
+  @override
+  String get recurringDonationsPauseCancelButton => 'Cancelar';
+
+  @override
+  String get recurringDonationsPauseSuccessTitle => 'Donación pausada';
+
+  @override
+  String recurringDonationsPauseSuccessMessage(String date) {
+    return 'Tu donación se reanudará el $date.';
+  }
+
+  @override
+  String get recurringDonationsPauseFailed =>
+      'No pudimos pausar tu donación. Inténtalo de nuevo.';
+
+  @override
   String get recurringDonationsDetailCancelDonation => 'Cancel donation';
 
   @override
@@ -6070,6 +6109,45 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get recurringDonationsDetailPauseComingSoon =>
       'Pause functionality coming soon';
+
+  @override
+  String get recurringDonationsPauseSheetTitle => 'Pausar donación';
+
+  @override
+  String get recurringDonationsPauseSheetDescription =>
+      'Selecciona una fecha para reanudar tu donación.';
+
+  @override
+  String get recurringDonationsPauseRestartDateLabel => 'Fecha de reanudación';
+
+  @override
+  String get recurringDonationsPauseContinueButton => 'Continuar';
+
+  @override
+  String get recurringDonationsPauseConfirmTitle => '¿Pausar donación?';
+
+  @override
+  String recurringDonationsPauseConfirmMessage(String date) {
+    return 'Tu donación se pausará hasta el $date. Una nueva donación recurrente comenzará en esa fecha con tus donaciones restantes.';
+  }
+
+  @override
+  String get recurringDonationsPauseConfirmButton => 'Sí, pausar donación';
+
+  @override
+  String get recurringDonationsPauseCancelButton => 'Cancelar';
+
+  @override
+  String get recurringDonationsPauseSuccessTitle => 'Donación pausada';
+
+  @override
+  String recurringDonationsPauseSuccessMessage(String date) {
+    return 'Tu donación se reanudará el $date.';
+  }
+
+  @override
+  String get recurringDonationsPauseFailed =>
+      'No pudimos pausar tu donación. Inténtalo de nuevo.';
 
   @override
   String get recurringDonationsDetailCancelDonation => 'Cancel donation';

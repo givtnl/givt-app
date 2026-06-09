@@ -5011,6 +5011,72 @@ abstract class AppLocalizations {
   /// **'Pause functionality coming soon'**
   String get recurringDonationsDetailPauseComingSoon;
 
+  /// No description provided for @recurringDonationsPauseSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause donation'**
+  String get recurringDonationsPauseSheetTitle;
+
+  /// No description provided for @recurringDonationsPauseSheetDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a date to resume your donation.'**
+  String get recurringDonationsPauseSheetDescription;
+
+  /// No description provided for @recurringDonationsPauseRestartDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart date'**
+  String get recurringDonationsPauseRestartDateLabel;
+
+  /// No description provided for @recurringDonationsPauseContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get recurringDonationsPauseContinueButton;
+
+  /// No description provided for @recurringDonationsPauseConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause donation?'**
+  String get recurringDonationsPauseConfirmTitle;
+
+  /// No description provided for @recurringDonationsPauseConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation will pause until {date}. A new recurring donation will start on that date with your remaining donations.'**
+  String recurringDonationsPauseConfirmMessage(String date);
+
+  /// No description provided for @recurringDonationsPauseConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, pause donation'**
+  String get recurringDonationsPauseConfirmButton;
+
+  /// No description provided for @recurringDonationsPauseCancelButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get recurringDonationsPauseCancelButton;
+
+  /// No description provided for @recurringDonationsPauseSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Donation paused'**
+  String get recurringDonationsPauseSuccessTitle;
+
+  /// No description provided for @recurringDonationsPauseSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation will resume on {date}.'**
+  String recurringDonationsPauseSuccessMessage(String date);
+
+  /// No description provided for @recurringDonationsPauseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t pause your donation. Please try again.'**
+  String get recurringDonationsPauseFailed;
+
   /// No description provided for @recurringDonationsDetailCancelDonation.
   ///
   /// In en, this message translates to:

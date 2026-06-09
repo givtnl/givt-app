@@ -567,6 +567,30 @@ class APIService {
     }
   }
 
+  Future<void> pauseRecurringDonation({
+    required String recurringDonationId,
+    required DateTime restartDate,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/recurringdonation/$recurringDonationId/pause',
+    );
+
+    final response = await client.post(
+      url,
+      body: jsonEncode({
+        'restartDate': restartDate.toUtc().toIso8601String(),
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+  }
+
   Future<Map<String, dynamic>> fetchRecurringDonationById(
     String donationId,
   ) async {

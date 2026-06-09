@@ -2839,6 +2839,45 @@ class AppLocalizationsDe extends AppLocalizations {
       'Pausierungsfunktion kommt bald';
 
   @override
+  String get recurringDonationsPauseSheetTitle => 'Spende pausieren';
+
+  @override
+  String get recurringDonationsPauseSheetDescription =>
+      'Wähle ein Datum, an dem deine Spende fortgesetzt werden soll.';
+
+  @override
+  String get recurringDonationsPauseRestartDateLabel => 'Fortsetzungsdatum';
+
+  @override
+  String get recurringDonationsPauseContinueButton => 'Weiter';
+
+  @override
+  String get recurringDonationsPauseConfirmTitle => 'Spende pausieren?';
+
+  @override
+  String recurringDonationsPauseConfirmMessage(String date) {
+    return 'Deine Spende wird bis zum $date pausiert. Eine neue Dauerspende startet an diesem Datum mit deinen verbleibenden Spenden.';
+  }
+
+  @override
+  String get recurringDonationsPauseConfirmButton => 'Ja, Spende pausieren';
+
+  @override
+  String get recurringDonationsPauseCancelButton => 'Abbrechen';
+
+  @override
+  String get recurringDonationsPauseSuccessTitle => 'Spende pausiert';
+
+  @override
+  String recurringDonationsPauseSuccessMessage(String date) {
+    return 'Deine Spende wird am $date fortgesetzt.';
+  }
+
+  @override
+  String get recurringDonationsPauseFailed =>
+      'Wir konnten deine Spende nicht pausieren. Bitte versuche es erneut.';
+
+  @override
   String get recurringDonationsDetailCancelDonation => 'Spende stornieren';
 
   @override
