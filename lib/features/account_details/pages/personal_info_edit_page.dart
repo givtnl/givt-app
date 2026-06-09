@@ -21,6 +21,7 @@ import 'package:givt_app/features/account_details/widgets/account_settings_avata
 import 'package:givt_app/features/account_details/widgets/account_settings_list_item.dart';
 import 'package:givt_app/features/account_details/widgets/account_settings_section_header.dart';
 import 'package:givt_app/features/account_details/widgets/personal_info_edit_feedback_listener.dart';
+import 'package:givt_app/features/account_details/widgets/personal_info_edit_sheet_success.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
@@ -128,16 +129,21 @@ class PersonalInfoEditPage extends StatelessWidget {
   Future<void> _showModalBottomSheet(
     BuildContext context, {
     required Widget bottomSheet,
-  }) =>
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        builder: (_) => BlocProvider.value(
-          value: context.read<PersonalInfoEditBloc>(),
-          child: bottomSheet,
-        ),
-      );
+  }) async {
+    final bloc = context.read<PersonalInfoEditBloc>();
+    final authCubit = context.read<AuthCubit>();
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => BlocProvider.value(
+        value: bloc,
+        child: bottomSheet,
+      ),
+    );
+    if (!context.mounted) return;
+    resetPersonalInfoEditSheetOnDismiss(bloc, authCubit);
+  }
 }
 
 class _PersonalDetailsSection extends StatelessWidget {

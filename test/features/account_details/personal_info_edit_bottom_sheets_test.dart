@@ -8,6 +8,7 @@ import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.d
 import 'package:givt_app/features/account_details/pages/change_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_bank_details_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_name_bottom_sheet.dart';
+import 'package:givt_app/features/account_details/widgets/personal_info_edit_sheet_success.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
@@ -67,6 +68,21 @@ void main() {
       find.widgetWithText(FunButton, 'Save'),
     );
   }
+
+  test('resetPersonalInfoEditSheetOnDismiss clears leaked success state', () async {
+    personalInfoEditBloc.add(
+      const PersonalInfoEditName(firstName: 'Jane', lastName: 'Doe'),
+    );
+    await personalInfoEditBloc.stream.firstWhere(
+      (state) => state.status == PersonalInfoEditStatus.success,
+    );
+
+    resetPersonalInfoEditSheetOnDismiss(personalInfoEditBloc, authCubit);
+
+    await personalInfoEditBloc.stream.firstWhere(
+      (state) => state.status == PersonalInfoEditStatus.initial,
+    );
+  });
 
   testWidgets('name sheet disables save until name changes', (tester) async {
     await pumpSheet(
