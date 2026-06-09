@@ -247,9 +247,10 @@ class CustomNavigationDrawer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Center(
         child: ExcludeSemantics(
-          child: FunIconGivy.happy(
-            circleSize: 80,
-            circleColor: FunTheme.of(context).secondary95,
+          child: Image.asset(
+            'assets/images/givy_wink_green.png',
+            width: 80,
+            height: 80,
           ),
         ),
       ),
