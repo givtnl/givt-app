@@ -175,7 +175,11 @@ class _PersonalDetailsSection extends StatelessWidget {
         ),
         AccountSettingsListItem(
           value: '${user.firstName} ${user.lastName}',
-          leading: FaIcon(FontAwesomeIcons.user, size: 20, color: iconColor),
+          leading: FaIcon(
+            FontAwesomeIcons.solidUser,
+            size: 20,
+            color: iconColor,
+          ),
           analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
             parameters: {'row_type': 'name'},
           ),
@@ -188,7 +192,11 @@ class _PersonalDetailsSection extends StatelessWidget {
         ),
         AccountSettingsListItem(
           value: user.email,
-          leading: FaIcon(FontAwesomeIcons.envelope, size: 20, color: iconColor),
+          leading: FaIcon(
+            FontAwesomeIcons.solidEnvelope,
+            size: 20,
+            color: iconColor,
+          ),
           analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
             parameters: {'row_type': 'email'},
           ),
@@ -201,7 +209,11 @@ class _PersonalDetailsSection extends StatelessWidget {
               '${user.address}\n${user.postalCode} ${user.city}, '
               '${Country.getCountry(user.country, locals)}',
           maxLines: 3,
-          leading: FaIcon(FontAwesomeIcons.house, size: 20, color: iconColor),
+          leading: FaIcon(
+            FontAwesomeIcons.solidHouse,
+            size: 20,
+            color: iconColor,
+          ),
           analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
             parameters: {'row_type': 'address'},
           ),
