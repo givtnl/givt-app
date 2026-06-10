@@ -21,9 +21,14 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
 class Step1SelectOrganisationPage extends StatefulWidget {
-  const Step1SelectOrganisationPage({this.collectGroup, super.key});
+  const Step1SelectOrganisationPage({
+    this.collectGroup,
+    this.editMode = false,
+    super.key,
+  });
 
   final CollectGroup? collectGroup;
+  final bool editMode;
 
   @override
   State<Step1SelectOrganisationPage> createState() =>
@@ -39,8 +44,12 @@ class _Step1SelectOrganisationPageState
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final user = context.read<AuthCubit>().state.user;
-    _cubit.init(user, widget.collectGroup);
+    if (widget.editMode) {
+      _cubit.initForEdit();
+    } else {
+      final user = context.read<AuthCubit>().state.user;
+      _cubit.init(user, widget.collectGroup);
+    }
   }
 
   @override
@@ -56,9 +65,13 @@ class _Step1SelectOrganisationPageState
       onCustom: (context, action) {
         switch (action) {
           case SelectOrganizationAction.navigateToAmount:
-            Navigator.of(context).push(
-              const Step2SetAmountPage().toRoute(context),
-            );
+            if (widget.editMode) {
+              Navigator.of(context).pop();
+            } else {
+              Navigator.of(context).push(
+                const Step2SetAmountPage().toRoute(context),
+              );
+            }
         }
       },
       onData: (context, uiModel) {

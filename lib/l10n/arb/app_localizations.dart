@@ -4993,6 +4993,30 @@ abstract class AppLocalizations {
   /// **'Manage donation'**
   String get recurringDonationsDetailManageButton;
 
+  /// No description provided for @recurringDonationsDetailRestartButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart donation'**
+  String get recurringDonationsDetailRestartButton;
+
+  /// No description provided for @recurringDonationsRestartConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to restart your donation?'**
+  String get recurringDonationsRestartConfirmTitle;
+
+  /// No description provided for @recurringDonationsRestartConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart donation'**
+  String get recurringDonationsRestartConfirmButton;
+
+  /// No description provided for @recurringDonationsRestartFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t restart this donation. Please try again.'**
+  String get recurringDonationsRestartFailed;
+
   /// No description provided for @recurringDonationsDetailEditDonation.
   ///
   /// In en, this message translates to:
