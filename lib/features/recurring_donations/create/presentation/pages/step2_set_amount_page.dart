@@ -91,7 +91,11 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                   AnalyticsHelper.logEvent(
                     eventName: AnalyticsEventName.cancelClicked,
                   );
-                  const FunModalCloseFlow().show(context);
+                  if (widget.editMode) {
+                    Navigator.of(context).pop();
+                  } else {
+                    const FunModalCloseFlow().show(context);
+                  }
                 },
               ),
             ],

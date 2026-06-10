@@ -417,7 +417,7 @@ class _RecurringDonationDetailPageState
       await Navigator.of(context).push(
         const Step4ConfirmPage(restartMode: true).toRoute(context),
       );
-    } catch (_) {
+    } on Exception catch (_) {
       if (!context.mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(

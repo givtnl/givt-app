@@ -123,11 +123,12 @@ void main() {
       expect(repository.endDate, isNull);
     });
 
-    test('maps explicit end date donations to on specific date', () async {
+    test('maps future end date donations to on specific date', () async {
+      final futureEndDate = DateTime.now().add(const Duration(days: 30));
       await repository.initFromRecurringDonation(
         donation: buildDonation(
           numberOfTurns: 6,
-          endDate: '2025-06-01T00:00:00.000Z',
+          endDate: futureEndDate.toIso8601String(),
         ),
         guid: 'guid-1',
         country: 'NL',
@@ -137,7 +138,25 @@ void main() {
         repository.selectedEndOption,
         RecurringDonationStringKeys.onSpecificDate,
       );
-      expect(repository.endDate, DateTime.parse('2025-06-01T00:00:00.000Z'));
+      expect(repository.endDate, futureEndDate);
+    });
+
+    test('maps past end date donations to number of donations', () async {
+      await repository.initFromRecurringDonation(
+        donation: buildDonation(
+          numberOfTurns: 6,
+          endDate: '2020-01-01T00:00:00.000Z',
+        ),
+        guid: 'guid-1',
+        country: 'NL',
+      );
+
+      expect(
+        repository.selectedEndOption,
+        RecurringDonationStringKeys.afterNumberOfDonations,
+      );
+      expect(repository.numberOfDonations, '6');
+      expect(repository.endDate, isNull);
     });
 
     test('throws when organization cannot be resolved', () async {

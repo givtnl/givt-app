@@ -64,7 +64,11 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                   AnalyticsHelper.logEvent(
                     eventName: AnalyticsEventName.cancelClicked,
                   );
-                  const FunModalCloseFlow().show(context);
+                  if (widget.editMode) {
+                    Navigator.of(context).pop();
+                  } else {
+                    const FunModalCloseFlow().show(context);
+                  }
                 },
               ),
             ],

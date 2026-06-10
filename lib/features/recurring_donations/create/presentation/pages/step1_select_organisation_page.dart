@@ -87,7 +87,11 @@ class _Step1SelectOrganisationPageState
                   AnalyticsHelper.logEvent(
                     eventName: AnalyticsEventName.cancelClicked,
                   );
-                  const FunModalCloseFlow().show(context);
+                  if (widget.editMode) {
+                    Navigator.of(context).pop();
+                  } else {
+                    const FunModalCloseFlow().show(context);
+                  }
                 },
               ),
             ],

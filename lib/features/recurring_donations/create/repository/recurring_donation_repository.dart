@@ -114,12 +114,18 @@ class RecurringDonationRepository {
     if (donation.numberOfTurns == 999) {
       _selectedEndOption = RecurringDonationStringKeys.whenIDecide;
     } else if (donation.endDate != null) {
-      _selectedEndOption = RecurringDonationStringKeys.onSpecificDate;
-      _endDate = DateTime.parse(donation.endDate!);
+      final parsedEndDate = DateTime.parse(donation.endDate!);
+      if (parsedEndDate.isAfter(tomorrow)) {
+        _selectedEndOption = RecurringDonationStringKeys.onSpecificDate;
+        _endDate = parsedEndDate;
+      } else {
+        _selectedEndOption =
+            RecurringDonationStringKeys.afterNumberOfDonations;
+        _numberOfDonations = donation.numberOfTurns.toString();
+      }
     } else {
       _selectedEndOption = RecurringDonationStringKeys.afterNumberOfDonations;
       _numberOfDonations = donation.numberOfTurns.toString();
-      _endDate = donation.calculatedEndDate;
     }
   }
 
