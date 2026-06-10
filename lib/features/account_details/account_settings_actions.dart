@@ -49,7 +49,7 @@ abstract final class AccountSettingsActions {
       context,
       checkAuthRequest: CheckAuthRequest(
         navigate: (context) async {
-          context.goNamed(Pages.platformContribution.name);
+          context.pushNamed(Pages.platformContribution.name);
           unawaited(
             AnalyticsHelper.logEvent(
               eventName: AnalyticsEventName.platformContributionNavigationClicked,
@@ -83,14 +83,14 @@ abstract final class AccountSettingsActions {
     final user = context.read<AuthCubit>().state.user;
 
     if (user.tempUser) {
-      context.goNamed(Pages.unregister.name);
+      context.pushNamed(Pages.unregister.name);
       return Future.value();
     }
 
     return AuthUtils.checkToken(
       context,
       checkAuthRequest: CheckAuthRequest(
-        navigate: (context) async => context.goNamed(Pages.unregister.name),
+        navigate: (context) async => context.pushNamed(Pages.unregister.name),
       ),
     );
   }
