@@ -37,6 +37,19 @@ class Step1SelectOrganizationCubit
     }
   }
 
+  Future<void> initForEdit() async {
+    emitLoading();
+    try {
+      final organizations = await _repository.fetchOrganizations();
+      _emitData(
+        organizations: organizations,
+        selectedOrganization: _repository.selectedOrganization,
+      );
+    } catch (e) {
+      emitError(e.toString());
+    }
+  }
+
   void selectOrganization(CollectGroup organization) {
     _repository.selectedOrganization = organization;
     emitCustom(SelectOrganizationAction.navigateToAmount);

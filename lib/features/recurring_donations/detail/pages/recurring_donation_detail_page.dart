@@ -14,8 +14,11 @@ import 'package:givt_app/features/recurring_donations/detail/repositories/recurr
 import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_bottom_sheet.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_confirmation_modal.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_success_modal.dart';
+import 'package:givt_app/features/recurring_donations/create/presentation/pages/step4_confirm_page.dart';
+import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/recurring_donation_detail_manage_sheet.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -155,8 +158,10 @@ class _RecurringDonationDetailPageState
                   ),
                 ),
               ),
-              // Only show manage button if the donation is still active
-              if (uiModel.isActive) _buildManageButton(context),
+              if (uiModel.isActive)
+                _buildManageButton(context)
+              else
+                _buildRestartButton(context),
             ],
           );
         },
@@ -382,6 +387,46 @@ class _RecurringDonationDetailPageState
       text: context.l10n.recurringDonationsDetailManageButton,
       analyticsEvent: AnalyticsEventName.recurringDonationManageClicked.toEvent(),
     );
+  }
+
+  Widget _buildRestartButton(BuildContext context) {
+    return FunButton(
+      fullBorder: true,
+      onTap: () => _onRestartDonationPressed(context),
+      text: context.l10n.recurringDonationsDetailRestartButton,
+      analyticsEvent: AnalyticsEventName.recurringDonationRestartClicked.toEvent(
+        parameters: {
+          'recurring_donation_id': widget.recurringDonation.id,
+        },
+      ),
+    );
+  }
+
+  Future<void> _onRestartDonationPressed(BuildContext context) async {
+    final auth = context.read<AuthCubit>().state;
+    final repository = getIt<RecurringDonationRepository>();
+
+    try {
+      await repository.initFromRecurringDonation(
+        donation: widget.recurringDonation,
+        guid: auth.user.guid,
+        country: auth.user.country,
+      );
+      if (!context.mounted) return;
+
+      await Navigator.of(context).push(
+        const Step4ConfirmPage(restartMode: true).toRoute(context),
+      );
+    } on Exception catch (_) {
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.recurringDonationsRestartFailed),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
   }
 
   Color _getStatusColor(BuildContext context, DonationStatus status) {

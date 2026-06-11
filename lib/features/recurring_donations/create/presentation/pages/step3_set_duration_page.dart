@@ -18,7 +18,9 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
 class Step3SetDurationPage extends StatefulWidget {
-  const Step3SetDurationPage({super.key});
+  const Step3SetDurationPage({this.editMode = false, super.key});
+
+  final bool editMode;
 
   @override
   State<Step3SetDurationPage> createState() => _Step3SetDurationPageState();
@@ -40,9 +42,13 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
       onCustom: (context, action) {
         switch (action) {
           case SetDurationAction.navigateToConfirm:
-            Navigator.of(context).push(
-              const Step4ConfirmPage().toRoute(context),
-            );
+            if (widget.editMode) {
+              Navigator.of(context).pop();
+            } else {
+              Navigator.of(context).push(
+                const Step4ConfirmPage().toRoute(context),
+              );
+            }
         }
       },
       onData: (context, uiModel) {
@@ -58,7 +64,11 @@ class _Step3SetDurationPageState extends State<Step3SetDurationPage> {
                   AnalyticsHelper.logEvent(
                     eventName: AnalyticsEventName.cancelClicked,
                   );
-                  const FunModalCloseFlow().show(context);
+                  if (widget.editMode) {
+                    Navigator.of(context).pop();
+                  } else {
+                    const FunModalCloseFlow().show(context);
+                  }
                 },
               ),
             ],

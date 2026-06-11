@@ -11,6 +11,9 @@ import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/step4_confirm_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/confirm_ui_model.dart';
+import 'package:givt_app/features/recurring_donations/create/presentation/pages/step1_select_organisation_page.dart';
+import 'package:givt_app/features/recurring_donations/create/presentation/pages/step2_set_amount_page.dart';
+import 'package:givt_app/features/recurring_donations/create/presentation/pages/step3_set_duration_page.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/success_page.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/widgets/fun_modal_close_flow.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/widgets/summary_row.dart';
@@ -23,7 +26,9 @@ import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
 
 class Step4ConfirmPage extends StatefulWidget {
-  const Step4ConfirmPage({super.key});
+  const Step4ConfirmPage({this.restartMode = false, super.key});
+
+  final bool restartMode;
 
   @override
   State<Step4ConfirmPage> createState() => _Step4ConfirmPageState();
@@ -43,6 +48,36 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
     return BaseStateConsumer<ConfirmUIModel, ConfirmAction>(
       cubit: _cubit,
       onCustom: (context, action) {
+        if (widget.restartMode) {
+          switch (action) {
+            case ConfirmAction.navigateToOrganization:
+              Navigator.of(context).push(
+                const Step1SelectOrganisationPage(editMode: true).toRoute(
+                  context,
+                ),
+              );
+            case ConfirmAction.navigateToAmount:
+            case ConfirmAction.navigateToFrequency:
+              Navigator.of(context).push(
+                const Step2SetAmountPage(editMode: true).toRoute(context),
+              );
+            case ConfirmAction.navigateToStartDate:
+            case ConfirmAction.navigateToEndDate:
+              Navigator.of(context).push(
+                const Step3SetDurationPage(editMode: true).toRoute(context),
+              );
+            case ConfirmAction.navigateToSuccess:
+              Navigator.of(context).pushReplacement(
+                SuccessPage(model: _cubit.getCurrent()).toRoute(context),
+              );
+            case ConfirmAction.showErrorBottomSheet:
+              _showErrorBottomSheet(context);
+            case ConfirmAction.navigateToRecurringDonationsHome:
+              Navigator.of(context).pop();
+          }
+          return;
+        }
+
         var amountOfPops = 0;
         switch (action) {
           case ConfirmAction.navigateToOrganization:
@@ -62,7 +97,6 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
           case ConfirmAction.showErrorBottomSheet:
             _showErrorBottomSheet(context);
           case ConfirmAction.navigateToRecurringDonationsHome:
-            // Navigate back to recurring donations home screen
             Navigator.of(context).popUntil((route) => route.isFirst);
         }
 
@@ -103,7 +137,11 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                   AnalyticsHelper.logEvent(
                     eventName: AnalyticsEventName.recurringStep4ConfirmClose,
                   );
-                  const FunModalCloseFlow().show(context);
+                  if (widget.restartMode) {
+                    _showRestartCloseConfirmation(context);
+                  } else {
+                    const FunModalCloseFlow().show(context);
+                  }
                 },
               ),
             ],
@@ -115,10 +153,13 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const FunStepper(currentStep: 3, stepCount: 4),
-                    const SizedBox(height: 32),
+                    if (!widget.restartMode)
+                      const FunStepper(currentStep: 3, stepCount: 4),
+                    if (!widget.restartMode) const SizedBox(height: 32),
                     TitleMediumText(
-                      context.l10n.recurringDonationsStep4Description,
+                      widget.restartMode
+                          ? context.l10n.recurringDonationsRestartConfirmTitle
+                          : context.l10n.recurringDonationsStep4Description,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 32),
@@ -185,11 +226,14 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
                   children: [
                     const SizedBox(height: 32),
                     FunButton(
-                      text:
-                          context.l10n.recurringDonationsStep4ConfirmMyDonation,
+                      text: widget.restartMode
+                          ? context.l10n.recurringDonationsRestartConfirmButton
+                          : context.l10n.recurringDonationsStep4ConfirmMyDonation,
                       isLoading: model.isLoading,
-                      analyticsEvent: AnalyticsEventName
-                          .recurringStep4ConfirmDonation
+                      analyticsEvent: (widget.restartMode
+                              ? AnalyticsEventName
+                                  .recurringDonationRestartConfirmClicked
+                              : AnalyticsEventName.recurringStep4ConfirmDonation)
                           .toEvent(
                             parameters: model.analyticsParams,
                           ),
@@ -206,6 +250,33 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
         );
       },
     );
+  }
+
+  void _showRestartCloseConfirmation(BuildContext context) {
+    FunModal(
+      icon: FunIcon.xmark(),
+      title: context.l10n.closeModalAreYouSure,
+      subtitle: context.l10n.closeModalWontBeSaved,
+      buttons: [
+        FunButton(
+          variant: FunButtonVariant.destructive,
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+          text: context.l10n.closeModalYesExit,
+          analyticsEvent: AnalyticsEventName.cancelClicked.toEvent(),
+        ),
+        FunButton(
+          variant: FunButtonVariant.secondary,
+          fullBorder: true,
+          onTap: () => Navigator.of(context).pop(),
+          text: context.l10n.closeModalNoBack,
+          analyticsEvent: AnalyticsEventName.backClicked.toEvent(),
+        ),
+      ],
+      closeAction: () => Navigator.of(context).pop(),
+    ).show(context);
   }
 
   void _showErrorBottomSheet(BuildContext context) {

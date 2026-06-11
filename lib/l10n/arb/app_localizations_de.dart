@@ -2830,6 +2830,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get recurringDonationsDetailManageButton => 'Spende verwalten';
 
   @override
+  String get recurringDonationsDetailRestartButton => 'Spende neu starten';
+
+  @override
+  String get recurringDonationsRestartConfirmTitle =>
+      'Bereit, Ihre Spende neu zu starten?';
+
+  @override
+  String get recurringDonationsRestartConfirmButton => 'Spende neu starten';
+
+  @override
+  String get recurringDonationsRestartFailed =>
+      'Diese Spende konnte nicht neu gestartet werden. Bitte versuchen Sie es erneut.';
+
+  @override
   String get recurringDonationsDetailEditDonation => 'Spende bearbeiten';
 
   @override

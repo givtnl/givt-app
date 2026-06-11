@@ -129,6 +129,10 @@ enum AnalyticsEventName {
   ),
   recurringDonationCancelConfirmed('recurring_donation_cancel_confirmed'),
   recurringDonationCancelCancelled('recurring_donation_cancel_cancelled'),
+  recurringDonationRestartClicked('recurring_donation_restart_clicked'),
+  recurringDonationRestartConfirmClicked(
+    'recurring_donation_restart_confirm_clicked',
+  ),
   externalDonationsNavigationClicked('external_donations_navigation_clicked'),
   externalDonationsTabsChanged('external_donations_tabs_changed'),
   externalDonationsAddClicked('external_donations_add_clicked'),
