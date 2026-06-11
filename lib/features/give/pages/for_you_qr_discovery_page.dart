@@ -177,7 +177,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
 
       final collectGroup = resolved.collectGroup!;
       final qrCode = resolved.qrCode!;
-      final restrictToEntryQrGoal = qrCode.name.trim().isNotEmpty;
+      final restrictToEntryQrGoal = !qrCode.isGeneric;
 
       await AnalyticsHelper.logEvent(
         eventName: AnalyticsEventName.forYouOrganisationSelected,

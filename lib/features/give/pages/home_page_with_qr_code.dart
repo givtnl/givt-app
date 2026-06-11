@@ -213,7 +213,7 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
         _openForYouGiving(
           collectGroup: collectGroup,
           mediumId: mediumId,
-          restrictToEntryQrGoal: qrGoalName.isNotEmpty,
+          restrictToEntryQrGoal: !qrCode.isGeneric,
         );
       },
       onCancel: () {
