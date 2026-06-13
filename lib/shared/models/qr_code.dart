@@ -21,7 +21,7 @@ class QrCode extends Equatable {
       name: name,
       instance: json['I'] as String,
       isActive: json['A'] as bool,
-      isGeneric: name.isEmpty,
+      isGeneric: json['G'] as bool? ?? name.trim().isEmpty,
     );
   }
 
@@ -36,6 +36,7 @@ class QrCode extends Equatable {
       'N': name,
       'I': instance,
       'A': isActive,
+      if (isGeneric) 'G': isGeneric,
     };
   }
 

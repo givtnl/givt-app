@@ -43,7 +43,7 @@ class CollectGroup extends Equatable {
     if (json['Q'] != null) {
       for (final qrCode in json['Q'] as List<dynamic>) {
         var code = QrCode.fromJson(qrCode as Map<String, dynamic>);
-        if (code.name.isEmpty) {
+        if (code.name.trim().isEmpty) {
           code = code.copyWith(name: json['N'] as String);
         }
         if (!code.instance.contains('.')) {
