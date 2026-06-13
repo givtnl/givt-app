@@ -35,8 +35,21 @@ void main() {
       expect(qrCode.isGeneric, isTrue);
     });
 
-    test('toJson/fromJson roundtrip preserves isGeneric after org name fallback',
+    test('toJson/fromJson roundtrip preserves raw name and derives isGeneric',
         () {
+      final qrCode = QrCode.fromJson(const {
+        'N': '',
+        'I': 'abc.def',
+        'A': true,
+      });
+
+      final roundTripped = QrCode.fromJson(qrCode.toJson());
+
+      expect(roundTripped.name, equals(''));
+      expect(roundTripped.isGeneric, isTrue);
+    });
+
+    test('CollectGroup JSON roundtrip preserves raw QR name and isGeneric', () {
       final group = CollectGroup.fromJson({
         'NS': 'abc',
         'N': 'Org A',
@@ -52,43 +65,13 @@ void main() {
         ],
       });
 
-      final qrCode = group.qrCodes.first;
-      expect(qrCode.name, equals('Org A'));
+      final roundTripped = CollectGroup.fromJson(group.toJson());
+      final qrCode = roundTripped.qrCodes.first;
+      expect(qrCode.name, equals(''));
       expect(qrCode.isGeneric, isTrue);
-
-      final roundTripped = QrCode.fromJson(qrCode.toJson());
-      expect(roundTripped.name, equals('Org A'));
-      expect(roundTripped.isGeneric, isTrue);
     });
 
-    test(
-      'CollectGroup JSON roundtrip preserves isGeneric after org name fallback',
-      () {
-        final group = CollectGroup.fromJson({
-          'NS': 'abc',
-          'N': 'Org A',
-          'C': false,
-          'T': CollectGroupType.church.index,
-          'A': true,
-          'Q': [
-            const {
-              'N': '',
-              'I': 'def',
-              'A': true,
-            },
-          ],
-        });
-
-        final roundTripped = CollectGroup.fromJson(group.toJson());
-        final qrCode = roundTripped.qrCodes.first;
-        expect(qrCode.name, equals('Org A'));
-        expect(qrCode.isGeneric, isTrue);
-      },
-    );
-
-    test(
-      'CollectGroup.fromJson preserves isGeneric after org name fallback',
-      () {
+    test('CollectGroup.fromJson keeps raw QR name for generic codes', () {
       final group = CollectGroup.fromJson({
         'NS': 'abc',
         'N': 'Org A',
@@ -106,9 +89,8 @@ void main() {
 
       expect(group.qrCodes, hasLength(1));
       final qrCode = group.qrCodes.first;
-      expect(qrCode.name, equals('Org A'));
+      expect(qrCode.name, equals(''));
       expect(qrCode.isGeneric, isTrue);
-      },
-    );
+    });
   });
 }

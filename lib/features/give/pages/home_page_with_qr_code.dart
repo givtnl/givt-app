@@ -195,11 +195,7 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
     required String mediumId,
     required IconData iconData,
   }) async {
-    final qrGoalName = qrCode.name.trim();
-    final instanceName =
-        qrGoalName.isNotEmpty && qrGoalName != collectGroup.orgName
-        ? qrGoalName
-        : null;
+    final instanceName = qrCode.isGeneric ? null : qrCode.name;
 
     await QrConfirmOrgDialog.show(
       context,
