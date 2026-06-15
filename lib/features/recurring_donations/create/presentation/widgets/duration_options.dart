@@ -184,6 +184,7 @@ class _DurationOptionsState extends State<DurationOptions> {
               size: 32,
             ),
           );
+          break;
         case RecurringDonationStringKeys.afterNumberOfDonations:
           final numberOfDonations = int.tryParse(widget.uiModel.numberOfDonations) ?? 1;
           final calculatedEndDate = _calculateEndDateFromNumberOfDonations(
@@ -206,6 +207,7 @@ class _DurationOptionsState extends State<DurationOptions> {
               size: 32,
             ),
           );
+          break;
         case RecurringDonationStringKeys.onSpecificDate:
           final endDate = widget.uiModel.endDate ?? DateTime.now();
           final message = _buildSnackbarMessage(
@@ -223,6 +225,7 @@ class _DurationOptionsState extends State<DurationOptions> {
               size: 32,
             ),
           );
+          break;
       }
     });
   }
