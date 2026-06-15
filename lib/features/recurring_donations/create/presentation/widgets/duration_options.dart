@@ -9,8 +9,9 @@ import 'package:givt_app/features/recurring_donations/overview/models/recurring_
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/models/set_duration_ui_model.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/recurring_donation_date_utils.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
-import 'package:moment_dart/moment_dart.dart';
 
 class DurationOptions extends StatefulWidget {
   const DurationOptions({
@@ -167,13 +168,16 @@ class _DurationOptionsState extends State<DurationOptions> {
       
       switch (optionKey) {
         case RecurringDonationStringKeys.whenIDecide:
-          final day = _getDayWithOrdinal(widget.uiModel.startDate!);
+          final message = RecurringDonationDateUtils.buildEndDateHintMessage(
+            l10n: context.l10n,
+            frequency: widget.frequency!,
+            startDate: widget.uiModel.startDate!,
+            locale: Util.getLanguageTageFromLocale(context),
+          );
+          if (message.isEmpty) return;
           _showSnackbarWithKeyboardCheck(
             context,
-            context.l10n.recurringDonationsEndDateHintEveryMonth(
-              day,
-              day,
-            ),
+            message,
             const Icon(
               Icons.calendar_today,
               color: Color(0xFF234B5E),
@@ -435,10 +439,4 @@ DateTime _calculateEndDateFromNumberOfDonations(
     case overview.Frequency.none:
       return startDate;
   }
-}
-
-String _getDayWithOrdinal(DateTime date) {
-  // Use localized ordinal formatting from the current locale
-  final now = date.toMoment();
-  return now.format('Do');
 }

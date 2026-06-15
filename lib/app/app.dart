@@ -17,6 +17,7 @@ import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:moment_dart/moment_dart.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class App extends StatefulWidget {
@@ -147,6 +148,14 @@ class _AppView extends StatelessWidget {
       routeInformationParser: AppRouter.router.routeInformationParser,
       routerDelegate: AppRouter.router.routerDelegate,
       builder: (context, child) {
+        final locale = Localizations.localeOf(context);
+        final momentLocalization =
+            MomentLocalizations.byLocale(locale.toLanguageTag()) ??
+            MomentLocalizations.byLanguage(locale.languageCode);
+        if (momentLocalization != null) {
+          Moment.setGlobalLocalization(momentLocalization);
+        }
+
         final mediaQueryData = MediaQuery.of(context);
         final currentScale = mediaQueryData.textScaler.scale(1.0);
         final clampedScale = currentScale.clamp(1.0, 1.2);
