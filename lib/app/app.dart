@@ -17,6 +17,7 @@ import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:moment_dart/moment_dart.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class App extends StatefulWidget {
@@ -131,15 +132,34 @@ class _AppState extends State<App> {
   }
 }
 
-class _AppView extends StatelessWidget {
+class _AppView extends StatefulWidget {
   const _AppView({required this.themeData});
 
   final ThemeData themeData;
 
   @override
+  State<_AppView> createState() => _AppViewState();
+}
+
+class _AppViewState extends State<_AppView> {
+  Locale? _momentLocale;
+
+  void _syncMomentLocalization(Locale locale) {
+    if (_momentLocale == locale) return;
+    _momentLocale = locale;
+
+    final momentLocalization =
+        MomentLocalizations.byLocale(locale.toLanguageTag()) ??
+        MomentLocalizations.byLanguage(locale.languageCode);
+    if (momentLocalization != null) {
+      Moment.setGlobalLocalization(momentLocalization);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      theme: themeData,
+      theme: widget.themeData,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       localeResolutionCallback: Util.resolveLocale,
@@ -147,6 +167,8 @@ class _AppView extends StatelessWidget {
       routeInformationParser: AppRouter.router.routeInformationParser,
       routerDelegate: AppRouter.router.routerDelegate,
       builder: (context, child) {
+        _syncMomentLocalization(Localizations.localeOf(context));
+
         final mediaQueryData = MediaQuery.of(context);
         final currentScale = mediaQueryData.textScaler.scale(1.0);
         final clampedScale = currentScale.clamp(1.0, 1.2);
