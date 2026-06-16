@@ -49,32 +49,7 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
       cubit: _cubit,
       onCustom: (context, action) {
         if (widget.restartMode) {
-          switch (action) {
-            case ConfirmAction.navigateToOrganization:
-              Navigator.of(context).push(
-                const Step1SelectOrganisationPage(editMode: true).toRoute(
-                  context,
-                ),
-              );
-            case ConfirmAction.navigateToAmount:
-            case ConfirmAction.navigateToFrequency:
-              Navigator.of(context).push(
-                const Step2SetAmountPage(editMode: true).toRoute(context),
-              );
-            case ConfirmAction.navigateToStartDate:
-            case ConfirmAction.navigateToEndDate:
-              Navigator.of(context).push(
-                const Step3SetDurationPage(editMode: true).toRoute(context),
-              );
-            case ConfirmAction.navigateToSuccess:
-              Navigator.of(context).pushReplacement(
-                SuccessPage(model: _cubit.getCurrent()).toRoute(context),
-              );
-            case ConfirmAction.showErrorBottomSheet:
-              _showErrorBottomSheet(context);
-            case ConfirmAction.navigateToRecurringDonationsHome:
-              Navigator.of(context).pop();
-          }
+          _handleRestartModeAction(context, action);
           return;
         }
 
@@ -250,6 +225,42 @@ class _Step4ConfirmPageState extends State<Step4ConfirmPage> {
         );
       },
     );
+  }
+
+  void _handleRestartModeAction(BuildContext context, ConfirmAction action) {
+    switch (action) {
+      case ConfirmAction.navigateToOrganization:
+        _navigateToEditScreen(
+          context,
+          const Step1SelectOrganisationPage(editMode: true),
+        );
+      case ConfirmAction.navigateToAmount:
+      case ConfirmAction.navigateToFrequency:
+        _navigateToEditScreen(
+          context,
+          const Step2SetAmountPage(editMode: true),
+        );
+      case ConfirmAction.navigateToStartDate:
+      case ConfirmAction.navigateToEndDate:
+        _navigateToEditScreen(
+          context,
+          const Step3SetDurationPage(editMode: true),
+        );
+      case ConfirmAction.navigateToSuccess:
+        Navigator.of(context).pushReplacement(
+          SuccessPage(model: _cubit.getCurrent()).toRoute(context),
+        );
+      case ConfirmAction.showErrorBottomSheet:
+        _showErrorBottomSheet(context);
+      case ConfirmAction.navigateToRecurringDonationsHome:
+        Navigator.of(context).pop();
+    }
+  }
+
+  Future<void> _navigateToEditScreen(BuildContext context, Widget page) async {
+    await Navigator.of(context).push(page.toRoute(context));
+    if (!mounted) return;
+    _cubit.init();
   }
 
   void _showRestartCloseConfirmation(BuildContext context) {
