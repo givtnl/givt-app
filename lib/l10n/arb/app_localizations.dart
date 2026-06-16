@@ -398,6 +398,18 @@ abstract class AppLocalizations {
   /// **'Preferences'**
   String get accountSettingsPreferences;
 
+  /// No description provided for @menuItemContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get menuItemContact;
+
+  /// No description provided for @menuItemLogOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get menuItemLogOut;
+
   /// No description provided for @changeDetails.
   ///
   /// In en, this message translates to:
@@ -4980,6 +4992,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage donation'**
   String get recurringDonationsDetailManageButton;
+
+  /// No description provided for @recurringDonationsDetailRestartButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart donation'**
+  String get recurringDonationsDetailRestartButton;
+
+  /// No description provided for @recurringDonationsRestartConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to restart your donation?'**
+  String get recurringDonationsRestartConfirmTitle;
+
+  /// No description provided for @recurringDonationsRestartConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart donation'**
+  String get recurringDonationsRestartConfirmButton;
+
+  /// No description provided for @recurringDonationsRestartFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t restart this donation. Please try again.'**
+  String get recurringDonationsRestartFailed;
 
   /// No description provided for @recurringDonationsDetailEditDonation.
   ///

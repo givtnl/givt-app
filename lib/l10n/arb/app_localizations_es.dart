@@ -179,6 +179,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accountSettingsPreferences => 'Preferencias';
 
   @override
+  String get menuItemContact => 'Contacto';
+
+  @override
+  String get menuItemLogOut => 'Cerrar sesión';
+
+  @override
   String get changeDetails => 'Cambiar datos';
 
   @override
@@ -2806,6 +2812,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get recurringDonationsDetailManageButton => 'Manage donation';
 
   @override
+  String get recurringDonationsDetailRestartButton => 'Restart donation';
+
+  @override
+  String get recurringDonationsRestartConfirmTitle =>
+      'Ready to restart your donation?';
+
+  @override
+  String get recurringDonationsRestartConfirmButton => 'Restart donation';
+
+  @override
+  String get recurringDonationsRestartFailed =>
+      'We couldn\'t restart this donation. Please try again.';
+
+  @override
   String get recurringDonationsDetailEditDonation => 'Edit donation';
 
   @override
@@ -3442,6 +3462,12 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get personalInfo => 'Información personal';
+
+  @override
+  String get menuItemContact => 'Contacto';
+
+  @override
+  String get menuItemLogOut => 'Cerrar sesión';
 
   @override
   String get changeDetails => 'Cambiar datos';
@@ -6091,6 +6117,20 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get recurringDonationsDetailManageButton => 'Manage donation';
+
+  @override
+  String get recurringDonationsDetailRestartButton => 'Restart donation';
+
+  @override
+  String get recurringDonationsRestartConfirmTitle =>
+      'Ready to restart your donation?';
+
+  @override
+  String get recurringDonationsRestartConfirmButton => 'Restart donation';
+
+  @override
+  String get recurringDonationsRestartFailed =>
+      'We couldn\'t restart this donation. Please try again.';
 
   @override
   String get recurringDonationsDetailEditDonation => 'Edit donation';

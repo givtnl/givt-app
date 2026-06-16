@@ -180,6 +180,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get accountSettingsPreferences => 'Voorkeuren';
 
   @override
+  String get menuItemContact => 'Contact';
+
+  @override
+  String get menuItemLogOut => 'Uitloggen';
+
+  @override
   String get changeDetails => 'Gegevens wijzigen';
 
   @override
@@ -2808,6 +2814,20 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsDetailManageButton => 'Donatie beheren';
+
+  @override
+  String get recurringDonationsDetailRestartButton => 'Donatie herstarten';
+
+  @override
+  String get recurringDonationsRestartConfirmTitle =>
+      'Klaar om je donatie te herstarten?';
+
+  @override
+  String get recurringDonationsRestartConfirmButton => 'Donatie herstarten';
+
+  @override
+  String get recurringDonationsRestartFailed =>
+      'We konden deze donatie niet herstarten. Probeer het opnieuw.';
 
   @override
   String get recurringDonationsDetailEditDonation => 'Donatie bewerken';

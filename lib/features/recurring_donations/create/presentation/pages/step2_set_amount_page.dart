@@ -22,7 +22,9 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class Step2SetAmountPage extends StatefulWidget {
-  const Step2SetAmountPage({super.key});
+  const Step2SetAmountPage({this.editMode = false, super.key});
+
+  final bool editMode;
 
   @override
   State<Step2SetAmountPage> createState() => _Step2SetAmountPageState();
@@ -62,9 +64,13 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
       onCustom: (context, action) {
         switch (action) {
           case SetAmountAction.navigateToDuration:
-            Navigator.of(context).push(
-              const Step3SetDurationPage().toRoute(context),
-            );
+            if (widget.editMode) {
+              Navigator.of(context).pop();
+            } else {
+              Navigator.of(context).push(
+                const Step3SetDurationPage().toRoute(context),
+              );
+            }
         }
       },
       onData: (context, uiModel) {
@@ -85,7 +91,11 @@ class _Step2SetAmountPageState extends State<Step2SetAmountPage> {
                   AnalyticsHelper.logEvent(
                     eventName: AnalyticsEventName.cancelClicked,
                   );
-                  const FunModalCloseFlow().show(context);
+                  if (widget.editMode) {
+                    Navigator.of(context).pop();
+                  } else {
+                    const FunModalCloseFlow().show(context);
+                  }
                 },
               ),
             ],

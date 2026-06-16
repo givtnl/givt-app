@@ -26,6 +26,9 @@ class QrCode extends Equatable {
   final bool isActive;
   final String nameSpace;
 
+  /// True when this QR has no goal-specific name from the backend (`N` empty).
+  bool get isGeneric => name.trim().isEmpty;
+
   Map<String, dynamic> toJson() {
     return {
       'N': name,
