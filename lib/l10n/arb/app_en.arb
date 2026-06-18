@@ -850,7 +850,7 @@
   "forYouQrCodeTitle": "QR code",
   "forYouQrCodeSubtitle": "Scan a Givt QR code",
   "forYouCollectionDeviceTitle": "Collection device",
-  "forYouCollectionDeviceSubtitle": "Give when the plate or bag passes by",
+  "forYouCollectionDeviceSubtitle": "Give when the collection bag or plate passes by",
   "forYouGoalsCountCollectionsOne": "1 Collection Goal",
   "forYouGoalsCountCollectionsMany": "{count} Collection Goals",
   "@forYouGoalsCountCollectionsMany": {

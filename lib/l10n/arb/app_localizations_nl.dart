@@ -1294,7 +1294,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get forYouCollectionDeviceSubtitle =>
-      'Geef wanneer de plaat of tas langskomt';
+      'Geef wanneer de collectezak of -plaat langskomt';
 
   @override
   String get forYouGoalsCountCollectionsOne => '1 collectedoel';

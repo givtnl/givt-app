@@ -1289,7 +1289,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get forYouCollectionDeviceSubtitle =>
-      'Dona cuando pase la placa o la bolsa';
+      'Dona cuando pase la bolsa de colecta o la placa';
 
   @override
   String get forYouGoalsCountCollectionsOne => '1 objetivo de colecta';
@@ -4583,7 +4583,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get forYouCollectionDeviceSubtitle =>
-      'Dona cuando pase la placa o la bolsa';
+      'Dona cuando pase la bolsa de colecta o la placa';
 
   @override
   String get forYouGoalsCountCollectionsOne => '1 objetivo de colecta';

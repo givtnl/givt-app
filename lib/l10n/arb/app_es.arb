@@ -853,7 +853,7 @@
   "forYouQrCodeTitle": "QR-code",
   "forYouQrCodeSubtitle": "Escanea un código QR de Givt",
   "forYouCollectionDeviceTitle": "Dispositivo de recaudación",
-  "forYouCollectionDeviceSubtitle": "Dona cuando pase la placa o la bolsa",
+  "forYouCollectionDeviceSubtitle": "Dona cuando pase la bolsa de colecta o la placa",
   "forYouGoalsCountCollectionsOne": "1 objetivo de colecta",
   "forYouGoalsCountCollectionsMany": "{count} objetivos de colecta",
   "@forYouGoalsCountCollectionsMany": {

@@ -1299,7 +1299,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get forYouCollectionDeviceSubtitle =>
-      'Gib, wenn das Schild oder die Tasche vorbeikommt';
+      'Gib, wenn die Kollektentasche oder -platte vorbeikommt';
 
   @override
   String get forYouGoalsCountCollectionsOne => '1 Sammelziel';
