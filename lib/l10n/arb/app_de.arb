@@ -853,7 +853,7 @@
   "forYouQrCodeTitle": "QR-code",
   "forYouQrCodeSubtitle": "Scanne einen Givt-QR-Code",
   "forYouCollectionDeviceTitle": "Sammelgerät",
-  "forYouCollectionDeviceSubtitle": "Gib, wenn das Schild oder die Tasche vorbeikommt",
+  "forYouCollectionDeviceSubtitle": "Gib, wenn die Kollektentasche oder -platte vorbeikommt",
   "forYouGoalsCountCollectionsOne": "1 Sammelziel",
   "forYouGoalsCountCollectionsMany": "{count} Sammelziele",
   "@forYouGoalsCountCollectionsMany": {

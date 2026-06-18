@@ -853,7 +853,7 @@
   "forYouQrCodeTitle": "QR-code",
   "forYouQrCodeSubtitle": "Scan een Givt-QR-code",
   "forYouCollectionDeviceTitle": "Collectemiddel",
-  "forYouCollectionDeviceSubtitle": "Geef wanneer de plaat of tas langskomt",
+  "forYouCollectionDeviceSubtitle": "Geef wanneer de collectezak of -plaat langskomt",
   "forYouGoalsCountCollectionsOne": "1 collectedoel",
   "forYouGoalsCountCollectionsMany": "{count} collectedoelen",
   "@forYouGoalsCountCollectionsMany": {

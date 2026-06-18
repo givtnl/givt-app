@@ -1289,7 +1289,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forYouCollectionDeviceSubtitle =>
-      'Give when the plate or bag passes by';
+      'Give when the collection bag or plate passes by';
 
   @override
   String get forYouGoalsCountCollectionsOne => '1 Collection Goal';
@@ -4562,7 +4562,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get forYouCollectionDeviceSubtitle =>
-      'Give when the plate or bag passes by';
+      'Give when the collection bag or plate passes by';
 
   @override
   String get forYouGoalsCountCollectionsOne => '1 Collection Goal';

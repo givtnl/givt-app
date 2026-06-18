@@ -2384,7 +2384,7 @@ abstract class AppLocalizations {
   /// No description provided for @forYouCollectionDeviceSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Give when the plate or bag passes by'**
+  /// **'Give when the collection bag or plate passes by'**
   String get forYouCollectionDeviceSubtitle;
 
   /// No description provided for @forYouGoalsCountCollectionsOne.
