@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_draft.dart';
 import 'package:givt_app/features/external_donations/create/repositories/external_donation_create_repository.dart';
 import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
 
 void main() {
   group('ExternalDonationCreatePayloadBuilder', () {

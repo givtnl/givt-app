@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/datetime/api_date_time.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
 
 /// External (off-platform) donation returned by `GET /externaldonations`.
 class ExternalDonation extends Equatable {

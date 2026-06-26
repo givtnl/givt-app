@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/network/network.dart';
-import 'package:givt_app/features/personal_summary/overview/models/giving_goal.dart';
+import 'package:givt_app/shared/models/giving_goal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin GivingGoalRepository {
@@ -48,7 +48,7 @@ class GivingGoalRepositoryImpl with GivingGoalRepository {
   }) async {
     await apiClient.addGivingGoal(body: body);
 
-    return GivingGoal.fromJson(body);
+    return fetchGivingGoal();
   }
 
   @override

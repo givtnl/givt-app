@@ -4,7 +4,7 @@ import 'package:givt_app/features/external_donations/create/models/external_dona
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_preview_row.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_frequency_dropdown.dart';
 import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:intl/intl.dart';
 

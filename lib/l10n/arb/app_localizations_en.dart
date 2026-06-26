@@ -1524,7 +1524,119 @@ class AppLocalizationsEn extends AppLocalizations {
   String get budgetSummaryGivingGoalRest => 'Remaining giving goal';
 
   @override
-  String get budgetMenuView => 'My personal summary';
+  String get budgetMenuView => 'My giving';
+
+  @override
+  String get personalSummaryTitle => 'My giving';
+
+  @override
+  String get personalSummaryAddDonation => 'Add a donation';
+
+  @override
+  String get personalSummarySetGivingGoal => 'Set my giving goal';
+
+  @override
+  String get personalSummaryCategoryChurch => 'Church';
+
+  @override
+  String get personalSummaryCategoryCharity => 'Charity';
+
+  @override
+  String get personalSummaryCategoryCampaign => 'Campaign';
+
+  @override
+  String get personalSummaryCategoryOther => 'Other';
+
+  @override
+  String get personalSummaryGivingGoalTitle => 'Giving goal';
+
+  @override
+  String personalSummaryGivingGoalProgress(String given, String goal) {
+    return '$given of $goal';
+  }
+
+  @override
+  String personalSummaryGivingGoalPercent(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String personalSummaryYourYearGoal(int year) {
+    return 'Your $year goal';
+  }
+
+  @override
+  String personalSummaryYouReachedYearGoal(int year) {
+    return 'You reached your $year goal';
+  }
+
+  @override
+  String personalSummaryGoalOfTarget(String goal) {
+    return 'of $goal';
+  }
+
+  @override
+  String get personalSummarySectionByCause => 'Who you support';
+
+  @override
+  String get personalSummarySectionByCauseSubtitle =>
+      'Where your money made a difference';
+
+  @override
+  String get personalSummarySectionMonthly => 'Monthly giving';
+
+  @override
+  String get personalSummarySectionMonthlySubtitle =>
+      'What you gave each month, and where it went';
+
+  @override
+  String get personalSummarySectionRecurring => 'Recurring vs one-off';
+
+  @override
+  String get personalSummarySectionRecurringSubtitle =>
+      'How much of your giving is regular';
+
+  @override
+  String get personalSummarySectionGivtVsExternal => 'Givt vs external giving';
+
+  @override
+  String get personalSummarySectionGivtVsExternalSubtitle =>
+      'How you gave, via Givt or outside the app';
+
+  @override
+  String get personalSummaryRecurring => 'Recurring';
+
+  @override
+  String get personalSummaryOneOff => 'One-off';
+
+  @override
+  String get personalSummaryThroughGivt => 'Givt donations';
+
+  @override
+  String get personalSummaryExternal => 'External donations';
+
+  @override
+  String get personalSummaryYearTotal => 'Total given';
+
+  @override
+  String get personalSummaryYearCenterLabel => 'this year';
+
+  @override
+  String get personalSummaryAddDonationSheetTitle => 'Add a donation';
+
+  @override
+  String get personalSummaryGiveThroughGivt => 'Give through Givt';
+
+  @override
+  String get personalSummaryGiveThroughGivtSubtitle =>
+      'Find a charity and donate now';
+
+  @override
+  String get personalSummaryAddExternalDonation => 'Add external donation';
+
+  @override
+  String get personalSummaryAddExternalDonationSubtitle =>
+      'Count a donation made outside Givt';
 
   @override
   String get budgetSummarySetGoalBold => 'Give consciously';
@@ -4751,7 +4863,119 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get budgetSummaryGivingGoalRest => 'Remaining giving goal';
 
   @override
-  String get budgetMenuView => 'My personal summary';
+  String get budgetMenuView => 'My giving';
+
+  @override
+  String get personalSummaryTitle => 'My giving';
+
+  @override
+  String get personalSummaryAddDonation => 'Add a donation';
+
+  @override
+  String get personalSummarySetGivingGoal => 'Set my giving goal';
+
+  @override
+  String get personalSummaryCategoryChurch => 'Church';
+
+  @override
+  String get personalSummaryCategoryCharity => 'Charity';
+
+  @override
+  String get personalSummaryCategoryCampaign => 'Campaign';
+
+  @override
+  String get personalSummaryCategoryOther => 'Other';
+
+  @override
+  String get personalSummaryGivingGoalTitle => 'Giving goal';
+
+  @override
+  String personalSummaryGivingGoalProgress(String given, String goal) {
+    return '$given of $goal';
+  }
+
+  @override
+  String personalSummaryGivingGoalPercent(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String personalSummaryYourYearGoal(int year) {
+    return 'Your $year goal';
+  }
+
+  @override
+  String personalSummaryYouReachedYearGoal(int year) {
+    return 'You reached your $year goal';
+  }
+
+  @override
+  String personalSummaryGoalOfTarget(String goal) {
+    return 'of $goal';
+  }
+
+  @override
+  String get personalSummarySectionByCause => 'Who you support';
+
+  @override
+  String get personalSummarySectionByCauseSubtitle =>
+      'Where your money made a difference';
+
+  @override
+  String get personalSummarySectionMonthly => 'Monthly giving';
+
+  @override
+  String get personalSummarySectionMonthlySubtitle =>
+      'What you gave each month, and where it went';
+
+  @override
+  String get personalSummarySectionRecurring => 'Recurring vs one-off';
+
+  @override
+  String get personalSummarySectionRecurringSubtitle =>
+      'How much of your giving is regular';
+
+  @override
+  String get personalSummarySectionGivtVsExternal => 'Givt vs external giving';
+
+  @override
+  String get personalSummarySectionGivtVsExternalSubtitle =>
+      'How you gave, via Givt or outside the app';
+
+  @override
+  String get personalSummaryRecurring => 'Recurring';
+
+  @override
+  String get personalSummaryOneOff => 'One-off';
+
+  @override
+  String get personalSummaryThroughGivt => 'Givt donations';
+
+  @override
+  String get personalSummaryExternal => 'External donations';
+
+  @override
+  String get personalSummaryYearTotal => 'Total given';
+
+  @override
+  String get personalSummaryYearCenterLabel => 'this year';
+
+  @override
+  String get personalSummaryAddDonationSheetTitle => 'Add a donation';
+
+  @override
+  String get personalSummaryGiveThroughGivt => 'Give through Givt';
+
+  @override
+  String get personalSummaryGiveThroughGivtSubtitle =>
+      'Find a charity and donate now';
+
+  @override
+  String get personalSummaryAddExternalDonation => 'Add external donation';
+
+  @override
+  String get personalSummaryAddExternalDonationSubtitle =>
+      'Count a donation made outside Givt';
 
   @override
   String get budgetSummarySetGoalBold => 'Give consciously';
