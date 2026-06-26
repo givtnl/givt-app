@@ -116,7 +116,7 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
       ),
     );
     if (context.mounted) {
-      await _cubit.refresh();
+      await _cubit.refreshGivingGoal();
     }
   }
 

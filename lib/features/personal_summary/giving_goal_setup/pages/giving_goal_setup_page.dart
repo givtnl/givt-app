@@ -10,6 +10,7 @@ import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/failures/failure.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/personal_summary/giving_goal_setup/models/giving_goal_setup_extra.dart';
@@ -115,7 +116,8 @@ class _GivingGoalSetupPageState extends State<GivingGoalSetupPage> {
           body: body,
         );
       } else {
-        await _givingGoalRepository.addGivingGoal(body: body);
+        final goal = await _givingGoalRepository.addGivingGoal(body: body);
+        _goalId = goal.id;
       }
 
       if (!mounted) {
@@ -128,9 +130,55 @@ class _GivingGoalSetupPageState extends State<GivingGoalSetupPage> {
       );
     } on GivtServerFailure {
       _showError(context, isNoInternet: false);
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
     } on SocketException {
       _showError(context, isNoInternet: true);
-    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    } catch (error, stackTrace) {
+      LoggingInfo.instance.error(
+        error.toString(),
+        methodName: stackTrace.toString(),
+      );
+      _showError(context, isNoInternet: false);
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    }
+  }
+
+  Future<void> _onRemove() async {
+    if (_goalId == null || _isSaving) {
+      return;
+    }
+
+    setState(() => _isSaving = true);
+
+    try {
+      await _givingGoalRepository.removeGivingGoal();
+      if (!mounted) {
+        return;
+      }
+      context.pop();
+    } on GivtServerFailure {
+      _showError(context, isNoInternet: false);
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    } on SocketException {
+      _showError(context, isNoInternet: true);
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    } catch (error, stackTrace) {
+      LoggingInfo.instance.error(
+        error.toString(),
+        methodName: stackTrace.toString(),
+      );
+      _showError(context, isNoInternet: false);
       if (mounted) {
         setState(() => _isSaving = false);
       }
@@ -221,6 +269,18 @@ class _GivingGoalSetupPageState extends State<GivingGoalSetupPage> {
             ),
             if (monthlyHint != null) ...[
               GivingGoalMonthlyHintBanner(text: monthlyHint),
+              const SizedBox(height: 12),
+            ],
+            if (_goalId != null) ...[
+              FunButton(
+                text: locals.budgetGivingGoalRemove,
+                variant: FunButtonVariant.tertiary,
+                isDisabled: _isSaving,
+                analyticsEvent: AnalyticsEvent(
+                  AnalyticsEventName.removeGivingGoalClicked,
+                ),
+                onTap: _isSaving ? null : () => unawaited(_onRemove()),
+              ),
               const SizedBox(height: 12),
             ],
             FunButton(
