@@ -2987,6 +2987,48 @@ abstract class AppLocalizations {
   /// **'Count a donation made outside Givt'**
   String get personalSummaryAddExternalDonationSubtitle;
 
+  /// No description provided for @personalSummaryGivingGoalSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up goal'**
+  String get personalSummaryGivingGoalSetupTitle;
+
+  /// No description provided for @personalSummaryGivingGoalSetupQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'How much would you like to give in {year}?'**
+  String personalSummaryGivingGoalSetupQuestion(int year);
+
+  /// No description provided for @personalSummaryGivingGoalSetupInputLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Giving goal'**
+  String get personalSummaryGivingGoalSetupInputLabel;
+
+  /// No description provided for @personalSummaryGivingGoalSetupAmountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter amount'**
+  String get personalSummaryGivingGoalSetupAmountHint;
+
+  /// No description provided for @personalSummaryGivingGoalSetupMonthlyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s about {amount} a month'**
+  String personalSummaryGivingGoalSetupMonthlyHint(String amount);
+
+  /// No description provided for @personalSummaryGivingGoalSetupSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all set!'**
+  String get personalSummaryGivingGoalSetupSuccessTitle;
+
+  /// No description provided for @personalSummaryGivingGoalSetupSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {year} giving goal is ready, let\'s make it count.'**
+  String personalSummaryGivingGoalSetupSuccessMessage(int year);
+
   /// No description provided for @budgetSummarySetGoalBold.
   ///
   /// In en, this message translates to:

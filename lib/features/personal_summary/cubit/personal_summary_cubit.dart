@@ -44,6 +44,30 @@ class PersonalSummaryCubit
     await _loadAll();
   }
 
+  Future<void> refreshGivingGoal() async {
+    try {
+      _givingGoal = await _givingGoalRepository.fetchGivingGoal();
+      if (isClosed) {
+        return;
+      }
+      _emitData();
+    } on GivtServerFailure catch (error, stackTrace) {
+      LoggingInfo.instance.error(
+        error.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emitCustom(const PersonalSummaryGoalMutationFailed(isNoInternet: false));
+    } on SocketException {
+      emitCustom(const PersonalSummaryGoalMutationFailed(isNoInternet: true));
+    } catch (error, stackTrace) {
+      LoggingInfo.instance.error(
+        error.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emitCustom(const PersonalSummaryGoalMutationFailed(isNoInternet: false));
+    }
+  }
+
   Future<void> selectPreviousYear() async {
     final uiModel = _currentUiModelOrNull();
     if (uiModel == null || !uiModel.canGoToPreviousYear) {
@@ -74,8 +98,8 @@ class PersonalSummaryCubit
     emitCustom(const NavigateToExternalDonationCreate());
   }
 
-  void openGivingGoalSheet() {
-    emitCustom(const ShowGivingGoalSheet());
+  void navigateToGivingGoalSetup() {
+    emitCustom(const NavigateToGivingGoalSetup());
   }
 
   Future<bool> saveGivingGoal({

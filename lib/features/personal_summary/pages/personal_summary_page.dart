@@ -16,6 +16,7 @@ import 'package:givt_app/features/personal_summary/models/models.dart';
 import 'package:givt_app/features/personal_summary/widgets/category_donut_chart.dart';
 import 'package:givt_app/features/personal_summary/widgets/giving_goal_card.dart';
 import 'package:givt_app/features/personal_summary/widgets/monthly_category_bar_chart.dart';
+import 'package:givt_app/features/personal_summary/giving_goal_setup/models/giving_goal_setup_extra.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_sheets.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_sticky_actions.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_year_header.dart';
@@ -82,14 +83,8 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
             _navigateToExternalDonationAndRefresh(context),
           ),
         );
-      case ShowGivingGoalSheet():
-        final goal = _uiModel?.givingGoal ?? const GivingGoal.empty();
-        GivingGoalBottomSheet.show(
-          context,
-          cubit: _cubit,
-          initialGoal: goal,
-          countryCode: _country.countryCode,
-        );
+      case NavigateToGivingGoalSetup():
+        unawaited(_navigateToGivingGoalSetup(context));
       case NavigateToForYouList():
         unawaited(_navigateToForYouAndRefresh(context));
       case NavigateToExternalDonationCreate():
@@ -107,6 +102,21 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
               : (message ?? context.l10n.somethingWentWrong),
           isError: true,
         );
+    }
+  }
+
+  Future<void> _navigateToGivingGoalSetup(BuildContext context) async {
+    final goal = _uiModel?.givingGoal ?? const GivingGoal.empty();
+    await context.pushNamed(
+      Pages.givingGoalSetup.name,
+      extra: GivingGoalSetupExtra(
+        initialYearlyAmount:
+            goal.hasGoal ? goal.yearlyGivingGoal.round() : 0,
+        goalId: goal.id,
+      ),
+    );
+    if (context.mounted) {
+      await _cubit.refreshGivingGoal();
     }
   }
 
@@ -222,7 +232,7 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
                       formattedYearTotal: formatAmount(uiModel.yearTotal),
                       formattedGoalAmount:
                           formatAmount(uiModel.givingGoal.yearlyGivingGoal),
-                      onEdit: _cubit.openGivingGoalSheet,
+                      onEdit: _cubit.navigateToGivingGoalSetup,
                     ),
                     const SizedBox(height: 32),
                   ],
@@ -273,7 +283,7 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
           PersonalSummaryStickyActions(
             hasGivingGoal: uiModel.hasGivingGoal,
             onAddDonation: _cubit.requestAddDonationSheet,
-            onSetGivingGoal: _cubit.openGivingGoalSheet,
+            onSetGivingGoal: _cubit.navigateToGivingGoalSetup,
           ),
         ],
       ),

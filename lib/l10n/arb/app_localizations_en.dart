@@ -1639,6 +1639,33 @@ class AppLocalizationsEn extends AppLocalizations {
       'Count a donation made outside Givt';
 
   @override
+  String get personalSummaryGivingGoalSetupTitle => 'Set up goal';
+
+  @override
+  String personalSummaryGivingGoalSetupQuestion(int year) {
+    return 'How much would you like to give in $year?';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupInputLabel => 'Giving goal';
+
+  @override
+  String get personalSummaryGivingGoalSetupAmountHint => 'Enter amount';
+
+  @override
+  String personalSummaryGivingGoalSetupMonthlyHint(String amount) {
+    return 'That\'s about $amount a month';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupSuccessTitle => 'You\'re all set!';
+
+  @override
+  String personalSummaryGivingGoalSetupSuccessMessage(int year) {
+    return 'Your $year giving goal is ready, let\'s make it count.';
+  }
+
+  @override
   String get budgetSummarySetGoalBold => 'Give consciously';
 
   @override
@@ -4976,6 +5003,33 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String get personalSummaryAddExternalDonationSubtitle =>
       'Count a donation made outside Givt';
+
+  @override
+  String get personalSummaryGivingGoalSetupTitle => 'Set up goal';
+
+  @override
+  String personalSummaryGivingGoalSetupQuestion(int year) {
+    return 'How much would you like to give in $year?';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupInputLabel => 'Giving goal';
+
+  @override
+  String get personalSummaryGivingGoalSetupAmountHint => 'Enter amount';
+
+  @override
+  String personalSummaryGivingGoalSetupMonthlyHint(String amount) {
+    return 'That\'s about $amount a month';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupSuccessTitle => 'You\'re all set!';
+
+  @override
+  String personalSummaryGivingGoalSetupSuccessMessage(int year) {
+    return 'Your $year giving goal is ready, let\'s make it count.';
+  }
 
   @override
   String get budgetSummarySetGoalBold => 'Give consciously';

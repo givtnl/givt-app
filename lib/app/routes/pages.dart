@@ -86,6 +86,11 @@ enum Pages {
   ),
   unregister(path: 'unregister', name: 'UNREGISTER'),
   personalSummary(path: 'personal-summary', name: 'PERSONAL-SUMMARY'),
+  givingGoalSetup(path: 'giving-goal-setup', name: 'GIVING-GOAL-SETUP'),
+  givingGoalSetupSuccess(
+    path: 'giving-goal-setup-success',
+    name: 'GIVING-GOAL-SETUP-SUCCESS',
+  ),
   yearlyOverview(path: 'yearly-overview', name: 'YEARLY-OVERVIEW'),
   recurringDonations(path: 'recurring-donations', name: 'RECURRING-DONATIONS'),
   externalDonations(path: 'external-donations', name: 'EXTERNAL-DONATIONS'),

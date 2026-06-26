@@ -1022,6 +1022,28 @@
   "personalSummaryGiveThroughGivtSubtitle": "Vind een goed doel en geef nu",
   "personalSummaryAddExternalDonation": "Externe donatie toevoegen",
   "personalSummaryAddExternalDonationSubtitle": "Tel een gift mee die je buiten Givt hebt gedaan",
+  "personalSummaryGivingGoalSetupTitle": "Streefbedrag instellen",
+  "personalSummaryGivingGoalSetupQuestion": "Hoeveel wil je geven in {year}?",
+  "@personalSummaryGivingGoalSetupQuestion": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryGivingGoalSetupInputLabel": "Streefbedrag",
+  "personalSummaryGivingGoalSetupAmountHint": "Voer bedrag in",
+  "personalSummaryGivingGoalSetupMonthlyHint": "Dat is ongeveer {amount} per maand",
+  "@personalSummaryGivingGoalSetupMonthlyHint": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "personalSummaryGivingGoalSetupSuccessTitle": "Je bent er helemaal klaar voor!",
+  "personalSummaryGivingGoalSetupSuccessMessage": "Je streefbedrag voor {year} staat klaar, laten we het waar maken.",
+  "@personalSummaryGivingGoalSetupSuccessMessage": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
   "budgetSummarySetGoalBold": "Bewust geven?",
   "budgetExternalGiftsInfoBold": "Inzicht in wat je geeft",
   "budgetGivingGoalInfoBold": "Stel jezelf een doel",

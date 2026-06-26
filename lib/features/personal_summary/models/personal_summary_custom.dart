@@ -14,8 +14,8 @@ final class ShowAddDonationSheet extends PersonalSummaryCustom {
   const ShowAddDonationSheet();
 }
 
-final class ShowGivingGoalSheet extends PersonalSummaryCustom {
-  const ShowGivingGoalSheet();
+final class NavigateToGivingGoalSetup extends PersonalSummaryCustom {
+  const NavigateToGivingGoalSetup();
 }
 
 final class PersonalSummaryGoalSaved extends PersonalSummaryCustom {

@@ -1645,6 +1645,34 @@ class AppLocalizationsNl extends AppLocalizations {
       'Tel een gift mee die je buiten Givt hebt gedaan';
 
   @override
+  String get personalSummaryGivingGoalSetupTitle => 'Streefbedrag instellen';
+
+  @override
+  String personalSummaryGivingGoalSetupQuestion(int year) {
+    return 'Hoeveel wil je geven in $year?';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupInputLabel => 'Streefbedrag';
+
+  @override
+  String get personalSummaryGivingGoalSetupAmountHint => 'Voer bedrag in';
+
+  @override
+  String personalSummaryGivingGoalSetupMonthlyHint(String amount) {
+    return 'Dat is ongeveer $amount per maand';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupSuccessTitle =>
+      'Je bent er helemaal klaar voor!';
+
+  @override
+  String personalSummaryGivingGoalSetupSuccessMessage(int year) {
+    return 'Je streefbedrag voor $year staat klaar, laten we het waar maken.';
+  }
+
+  @override
   String get budgetSummarySetGoalBold => 'Bewust geven?';
 
   @override
