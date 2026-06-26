@@ -1641,6 +1641,33 @@ class AppLocalizationsEs extends AppLocalizations {
       'Count a donation made outside Givt';
 
   @override
+  String get personalSummaryGivingGoalSetupTitle => 'Set up goal';
+
+  @override
+  String personalSummaryGivingGoalSetupQuestion(int year) {
+    return 'How much would you like to give in $year?';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupInputLabel => 'Giving goal';
+
+  @override
+  String get personalSummaryGivingGoalSetupAmountHint => 'Enter amount';
+
+  @override
+  String personalSummaryGivingGoalSetupMonthlyHint(String amount) {
+    return 'That\'s about $amount a month';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupSuccessTitle => 'You\'re all set!';
+
+  @override
+  String personalSummaryGivingGoalSetupSuccessMessage(int year) {
+    return 'Your $year giving goal is ready, let\'s make it count.';
+  }
+
+  @override
   String get budgetSummarySetGoalBold => 'Give consciously';
 
   @override
@@ -5047,6 +5074,33 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get personalSummaryAddExternalDonationSubtitle =>
       'Registra una donación hecha fuera de Givt';
+
+  @override
+  String get personalSummaryGivingGoalSetupTitle => 'Establecer objetivo';
+
+  @override
+  String personalSummaryGivingGoalSetupQuestion(int year) {
+    return '¿Cuánto te gustaría dar en $year?';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupInputLabel => 'Objetivo de donación';
+
+  @override
+  String get personalSummaryGivingGoalSetupAmountHint => 'Ingresa el monto';
+
+  @override
+  String personalSummaryGivingGoalSetupMonthlyHint(String amount) {
+    return 'Eso es aproximadamente $amount al mes';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupSuccessTitle => '¡Todo listo!';
+
+  @override
+  String personalSummaryGivingGoalSetupSuccessMessage(int year) {
+    return 'Tu objetivo de donación para $year está listo, hagámoslo realidad.';
+  }
 
   @override
   String get budgetSummarySetGoalBold => 'Done conscientemente';

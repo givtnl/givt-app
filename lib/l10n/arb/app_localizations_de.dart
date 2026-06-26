@@ -1649,6 +1649,33 @@ class AppLocalizationsDe extends AppLocalizations {
       'Erfasse eine Spende, die du außerhalb von Givt gemacht hast';
 
   @override
+  String get personalSummaryGivingGoalSetupTitle => 'Spendenziel festlegen';
+
+  @override
+  String personalSummaryGivingGoalSetupQuestion(int year) {
+    return 'Wie viel möchtest du in $year geben?';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupInputLabel => 'Spendenziel';
+
+  @override
+  String get personalSummaryGivingGoalSetupAmountHint => 'Betrag eingeben';
+
+  @override
+  String personalSummaryGivingGoalSetupMonthlyHint(String amount) {
+    return 'Das sind etwa $amount pro Monat';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupSuccessTitle => 'Alles bereit!';
+
+  @override
+  String personalSummaryGivingGoalSetupSuccessMessage(int year) {
+    return 'Dein Spendenziel für $year ist bereit – lass es uns angehen.';
+  }
+
+  @override
   String get budgetSummarySetGoalBold => 'Gib bewusst';
 
   @override

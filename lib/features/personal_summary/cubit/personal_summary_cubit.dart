@@ -74,8 +74,8 @@ class PersonalSummaryCubit
     emitCustom(const NavigateToExternalDonationCreate());
   }
 
-  void openGivingGoalSheet() {
-    emitCustom(const ShowGivingGoalSheet());
+  void navigateToGivingGoalSetup() {
+    emitCustom(const NavigateToGivingGoalSetup());
   }
 
   Future<bool> saveGivingGoal({

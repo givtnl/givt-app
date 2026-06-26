@@ -1018,6 +1018,28 @@
   "personalSummaryGiveThroughGivtSubtitle": "Encuentra una organización y dona ahora",
   "personalSummaryAddExternalDonation": "Añadir donación externa",
   "personalSummaryAddExternalDonationSubtitle": "Registra una donación hecha fuera de Givt",
+  "personalSummaryGivingGoalSetupTitle": "Establecer objetivo",
+  "personalSummaryGivingGoalSetupQuestion": "¿Cuánto te gustaría dar en {year}?",
+  "@personalSummaryGivingGoalSetupQuestion": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryGivingGoalSetupInputLabel": "Objetivo de donación",
+  "personalSummaryGivingGoalSetupAmountHint": "Ingresa el monto",
+  "personalSummaryGivingGoalSetupMonthlyHint": "Eso es aproximadamente {amount} al mes",
+  "@personalSummaryGivingGoalSetupMonthlyHint": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "personalSummaryGivingGoalSetupSuccessTitle": "¡Todo listo!",
+  "personalSummaryGivingGoalSetupSuccessMessage": "Tu objetivo de donación para {year} está listo, hagámoslo realidad.",
+  "@personalSummaryGivingGoalSetupSuccessMessage": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
   "budgetSummarySetGoalBold": "Done conscientemente",
   "budgetExternalGiftsInfoBold": "Obtenga información sobre lo que dona",
   "budgetGivingGoalInfoBold": "Establecer objetivo de donación",

@@ -103,6 +103,12 @@ enum AnalyticsEventName {
   editGivingGoalClicked('edit_giving_goal_clicked'),
   givingGoalSaved('giving_goal_saved'),
   removeGivingGoalClicked('remove_giving_goal_clicked'),
+  personalSummaryGivingGoalSetupCloseClicked(
+    'personal_summary_giving_goal_setup_close_clicked',
+  ),
+  personalSummaryGivingGoalSetupSuccessDoneClicked(
+    'personal_summary_giving_goal_setup_success_done_clicked',
+  ),
   recurringDonationsNavigationClicked('recurring_donations_navigation_clicked'),
   recurringDonationCardClicked('recurring_donation_card_clicked'),
   recurringDonationEditClicked('recurring_donation_edit_clicked'),
