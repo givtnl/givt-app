@@ -124,10 +124,14 @@ class _GivingGoalSetupPageState extends State<GivingGoalSetupPage> {
         return;
       }
 
-      context.pushReplacementNamed(
+      await context.pushNamed(
         Pages.givingGoalSetupSuccess.name,
         extra: _year,
       );
+      if (!mounted) {
+        return;
+      }
+      context.pop(true);
     } on GivtServerFailure {
       _showError(context, isNoInternet: false);
       if (mounted) {
@@ -162,7 +166,7 @@ class _GivingGoalSetupPageState extends State<GivingGoalSetupPage> {
       if (!mounted) {
         return;
       }
-      context.pop();
+      context.pop(true);
     } on GivtServerFailure {
       _showError(context, isNoInternet: false);
       if (mounted) {
