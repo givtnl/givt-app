@@ -1534,10 +1534,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get budgetSummaryGivingGoalRest => 'Verbleibendes Spendenziel';
 
   @override
-  String get budgetMenuView => 'Mein Geben';
+  String get budgetMenuView => 'Persönliche Zusammenfassung';
 
   @override
-  String get personalSummaryTitle => 'Mein Geben';
+  String get personalSummaryTitle => 'Persönliche Zusammenfassung';
 
   @override
   String get personalSummaryAddDonation => 'Spende hinzufügen';

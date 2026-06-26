@@ -1526,10 +1526,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get budgetSummaryGivingGoalRest => 'Remaining giving goal';
 
   @override
-  String get budgetMenuView => 'My giving';
+  String get budgetMenuView => 'Resumen personal';
 
   @override
-  String get personalSummaryTitle => 'My giving';
+  String get personalSummaryTitle => 'Resumen personal';
 
   @override
   String get personalSummaryAddDonation => 'Add a donation';
@@ -4960,10 +4960,10 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get budgetSummaryGivingGoalRest => 'Objetivo de donación restante';
 
   @override
-  String get budgetMenuView => 'Mi donación';
+  String get budgetMenuView => 'Resumen personal';
 
   @override
-  String get personalSummaryTitle => 'Mi donación';
+  String get personalSummaryTitle => 'Resumen personal';
 
   @override
   String get personalSummaryAddDonation => 'Añadir una donación';

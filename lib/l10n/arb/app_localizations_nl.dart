@@ -1530,10 +1530,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get budgetSummaryGivingGoalRest => 'Resterend streefbedrag';
 
   @override
-  String get budgetMenuView => 'Mijn geven';
+  String get budgetMenuView => 'Persoonlijke samenvatting';
 
   @override
-  String get personalSummaryTitle => 'Mijn geven';
+  String get personalSummaryTitle => 'Persoonlijke samenvatting';
 
   @override
   String get personalSummaryAddDonation => 'Donatie toevoegen';

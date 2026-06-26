@@ -26,7 +26,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/giving_goal.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_create_navigation.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
@@ -133,8 +133,9 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
   Future<void> _navigateToExternalDonationAndRefresh(
     BuildContext context,
   ) async {
-    await Navigator.of(context).push(
-      const Step1OrganisationPage().toRoute(context),
+    await ExternalDonationCreateNavigation.pushFlow<void>(
+      context,
+      const Step1OrganisationPage(),
     );
     if (context.mounted) {
       await _cubit.refresh();

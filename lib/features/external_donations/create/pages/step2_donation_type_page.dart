@@ -20,7 +20,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_create_navigation.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class Step2DonationTypePage extends StatefulWidget {
@@ -65,11 +65,11 @@ class _Step2DonationTypePageState extends State<Step2DonationTypePage> {
         switch (action) {
           case NavigateToOneOffDate():
             Navigator.of(context).push(
-              const Step4OneOffDatePage().toRoute(context),
+              const Step4OneOffDatePage().toCreateFlowRoute(context),
             );
           case NavigateToSeriesStartDate():
             Navigator.of(context).push(
-              const Step4SeriesStartDatePage().toRoute(context),
+              const Step4SeriesStartDatePage().toCreateFlowRoute(context),
             );
           case _:
             break;

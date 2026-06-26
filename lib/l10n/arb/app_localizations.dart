@@ -2792,13 +2792,13 @@ abstract class AppLocalizations {
   /// No description provided for @budgetMenuView.
   ///
   /// In en, this message translates to:
-  /// **'My giving'**
+  /// **'Personal summary'**
   String get budgetMenuView;
 
   /// No description provided for @personalSummaryTitle.
   ///
   /// In en, this message translates to:
-  /// **'My giving'**
+  /// **'Personal summary'**
   String get personalSummaryTitle;
 
   /// No description provided for @personalSummaryAddDonation.

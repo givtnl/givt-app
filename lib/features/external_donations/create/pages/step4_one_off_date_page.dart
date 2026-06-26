@@ -12,7 +12,7 @@ import 'package:givt_app/features/external_donations/create/widgets/external_don
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_create_navigation.dart';
 
 class Step4OneOffDatePage extends StatelessWidget {
   const Step4OneOffDatePage({super.key});
@@ -29,7 +29,9 @@ class Step4OneOffDatePage extends StatelessWidget {
         switch (action) {
           case NavigateToSuccess():
             Navigator.of(context).pushReplacement(
-              const ExternalDonationCreateSuccessPage().toRoute(context),
+              const ExternalDonationCreateSuccessPage().toCreateFlowRoute(
+                context,
+              ),
             );
           case _:
             break;

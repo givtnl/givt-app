@@ -5,13 +5,12 @@ import 'package:givt_app/features/external_donations/create/cubit/external_donat
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_flow_step.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_ui_model.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_create_preview_helper.dart';
-import 'package:givt_app/features/external_donations/overview/pages/external_donations_overview_page.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_create_navigation.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/animations/confetti_helper.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class ExternalDonationCreateSuccessPage extends StatefulWidget {
@@ -88,9 +87,8 @@ class _ExternalDonationCreateSuccessPageState
                     .toEvent(),
                 onTap: () {
                   _cubit.clearDraftAfterSuccess();
-                  Navigator.of(context).pushAndRemoveUntil(
-                    const ExternalDonationsOverviewPage().toRoute(context),
-                    (route) => route.isFirst,
+                  ExternalDonationCreateNavigation.completeFlowToOverview(
+                    context,
                   );
                 },
               ),
