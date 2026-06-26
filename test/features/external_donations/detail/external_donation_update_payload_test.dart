@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/features/external_donations/detail/models/external_donation_update_payload.dart';
 import 'package:givt_app/features/external_donations/detail/models/external_donation_update_scope.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
 
 void main() {
   group('ExternalDonationUpdatePayload.frequency', () {

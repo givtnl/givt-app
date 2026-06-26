@@ -1,4 +1,4 @@
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 /// Loads external donations for the overview screen.

@@ -4,7 +4,7 @@ import 'package:givt_app/features/external_donations/detail/models/external_dona
 import 'package:givt_app/features/external_donations/shared/external_donation_history_builder.dart';
 import 'package:givt_app/features/external_donations/shared/external_donation_schedule.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 /// Repository for a single external donation detail view.

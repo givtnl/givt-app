@@ -2792,8 +2792,200 @@ abstract class AppLocalizations {
   /// No description provided for @budgetMenuView.
   ///
   /// In en, this message translates to:
-  /// **'My personal summary'**
+  /// **'My giving'**
   String get budgetMenuView;
+
+  /// No description provided for @personalSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My giving'**
+  String get personalSummaryTitle;
+
+  /// No description provided for @personalSummaryAddDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a donation'**
+  String get personalSummaryAddDonation;
+
+  /// No description provided for @personalSummarySetGivingGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Set my giving goal'**
+  String get personalSummarySetGivingGoal;
+
+  /// No description provided for @personalSummaryCategoryChurch.
+  ///
+  /// In en, this message translates to:
+  /// **'Church'**
+  String get personalSummaryCategoryChurch;
+
+  /// No description provided for @personalSummaryCategoryCharity.
+  ///
+  /// In en, this message translates to:
+  /// **'Charity'**
+  String get personalSummaryCategoryCharity;
+
+  /// No description provided for @personalSummaryCategoryCampaign.
+  ///
+  /// In en, this message translates to:
+  /// **'Campaign'**
+  String get personalSummaryCategoryCampaign;
+
+  /// No description provided for @personalSummaryCategoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get personalSummaryCategoryOther;
+
+  /// No description provided for @personalSummaryGivingGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Giving goal'**
+  String get personalSummaryGivingGoalTitle;
+
+  /// No description provided for @personalSummaryGivingGoalProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{given} of {goal}'**
+  String personalSummaryGivingGoalProgress(String given, String goal);
+
+  /// No description provided for @personalSummaryGivingGoalPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String personalSummaryGivingGoalPercent(int percent);
+
+  /// No description provided for @personalSummaryYourYearGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {year} goal'**
+  String personalSummaryYourYearGoal(int year);
+
+  /// No description provided for @personalSummaryYouReachedYearGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'You reached your {year} goal'**
+  String personalSummaryYouReachedYearGoal(int year);
+
+  /// No description provided for @personalSummaryGoalOfTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'of {goal}'**
+  String personalSummaryGoalOfTarget(String goal);
+
+  /// No description provided for @personalSummarySectionByCause.
+  ///
+  /// In en, this message translates to:
+  /// **'Who you support'**
+  String get personalSummarySectionByCause;
+
+  /// No description provided for @personalSummarySectionByCauseSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where your money made a difference'**
+  String get personalSummarySectionByCauseSubtitle;
+
+  /// No description provided for @personalSummarySectionMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly giving'**
+  String get personalSummarySectionMonthly;
+
+  /// No description provided for @personalSummarySectionMonthlySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What you gave each month, and where it went'**
+  String get personalSummarySectionMonthlySubtitle;
+
+  /// No description provided for @personalSummarySectionRecurring.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring vs one-off'**
+  String get personalSummarySectionRecurring;
+
+  /// No description provided for @personalSummarySectionRecurringSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How much of your giving is regular'**
+  String get personalSummarySectionRecurringSubtitle;
+
+  /// No description provided for @personalSummarySectionGivtVsExternal.
+  ///
+  /// In en, this message translates to:
+  /// **'Givt vs external giving'**
+  String get personalSummarySectionGivtVsExternal;
+
+  /// No description provided for @personalSummarySectionGivtVsExternalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How you gave, via Givt or outside the app'**
+  String get personalSummarySectionGivtVsExternalSubtitle;
+
+  /// No description provided for @personalSummaryRecurring.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring'**
+  String get personalSummaryRecurring;
+
+  /// No description provided for @personalSummaryOneOff.
+  ///
+  /// In en, this message translates to:
+  /// **'One-off'**
+  String get personalSummaryOneOff;
+
+  /// No description provided for @personalSummaryThroughGivt.
+  ///
+  /// In en, this message translates to:
+  /// **'Givt donations'**
+  String get personalSummaryThroughGivt;
+
+  /// No description provided for @personalSummaryExternal.
+  ///
+  /// In en, this message translates to:
+  /// **'External donations'**
+  String get personalSummaryExternal;
+
+  /// No description provided for @personalSummaryYearTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total given'**
+  String get personalSummaryYearTotal;
+
+  /// No description provided for @personalSummaryYearCenterLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'this year'**
+  String get personalSummaryYearCenterLabel;
+
+  /// No description provided for @personalSummaryAddDonationSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a donation'**
+  String get personalSummaryAddDonationSheetTitle;
+
+  /// No description provided for @personalSummaryGiveThroughGivt.
+  ///
+  /// In en, this message translates to:
+  /// **'Give through Givt'**
+  String get personalSummaryGiveThroughGivt;
+
+  /// No description provided for @personalSummaryGiveThroughGivtSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a charity and donate now'**
+  String get personalSummaryGiveThroughGivtSubtitle;
+
+  /// No description provided for @personalSummaryAddExternalDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add external donation'**
+  String get personalSummaryAddExternalDonation;
+
+  /// No description provided for @personalSummaryAddExternalDonationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Count a donation made outside Givt'**
+  String get personalSummaryAddExternalDonationSubtitle;
 
   /// No description provided for @budgetSummarySetGoalBold.
   ///

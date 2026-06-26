@@ -35,10 +35,7 @@ import 'package:givt_app/features/give/pages/success_donation_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
-import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
-import 'package:givt_app/features/personal_summary/overview/pages/personal_summary_page.dart';
-import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
-import 'package:givt_app/features/personal_summary/yearly_overview/pages/yearly_overview_page.dart';
+import 'package:givt_app/features/personal_summary/pages/personal_summary_page.dart';
 import 'package:givt_app/features/platform_contribution/presentation/screens/platform_contribution_screen.dart';
 import 'package:givt_app/features/external_donations/overview/pages/external_donations_overview_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
@@ -144,44 +141,7 @@ class AppRouter {
           GoRoute(
             path: Pages.personalSummary.path,
             name: Pages.personalSummary.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) =>
-                  PersonalSummaryBloc(
-                    loggedInUserExt: context.read<AuthCubit>().state.user,
-                    givingGoalRepository: getIt(),
-                    givtRepo: getIt(),
-                  )..add(
-                    const PersonalSummaryInit(),
-                  ),
-              child: const PersonalSummary(),
-            ),
-            routes: [
-              GoRoute(
-                path: Pages.yearlyOverview.path,
-                name: Pages.yearlyOverview.name,
-                builder: (context, state) {
-                  final guid = context.read<AuthCubit>().state.user.guid;
-                  final summaryBloc = state.extra! as PersonalSummaryBloc;
-                  return MultiBlocProvider(
-                    providers: [
-                      BlocProvider.value(
-                        value: summaryBloc,
-                      ),
-                      BlocProvider(
-                        create: (context) =>
-                            YearlyOverviewCubit(
-                              getIt(),
-                            )..init(
-                              year: state.uri.queryParameters['year']!,
-                              guid: guid,
-                            ),
-                      ),
-                    ],
-                    child: const YearlyOverviewPage(),
-                  );
-                },
-              ),
-            ],
+            builder: (context, state) => const PersonalSummaryPage(),
           ),
           GoRoute(
             path: Pages.personalInfoEdit.path,

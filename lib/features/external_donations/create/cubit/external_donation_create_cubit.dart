@@ -1,7 +1,7 @@
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/external_donations/create/models/external_donation_create_ui_model.dart';
 import 'package:givt_app/features/external_donations/create/repositories/external_donation_create_repository.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation_frequency.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/shared/models/collect_group.dart';

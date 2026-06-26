@@ -946,7 +946,65 @@
   "budgetSummaryGivingGoalMonth": "Monthly giving goal",
   "budgetSummaryGivingGoalEdit": "Edit giving goal",
   "budgetSummaryGivingGoalRest": "Remaining giving goal",
-  "budgetMenuView": "My personal summary",
+  "budgetMenuView": "My giving",
+  "personalSummaryTitle": "My giving",
+  "personalSummaryAddDonation": "Add a donation",
+  "personalSummarySetGivingGoal": "Set my giving goal",
+  "personalSummaryCategoryChurch": "Church",
+  "personalSummaryCategoryCharity": "Charity",
+  "personalSummaryCategoryCampaign": "Campaign",
+  "personalSummaryCategoryOther": "Other",
+  "personalSummaryGivingGoalTitle": "Giving goal",
+  "personalSummaryGivingGoalProgress": "{given} of {goal}",
+  "@personalSummaryGivingGoalProgress": {
+    "placeholders": {
+      "given": {"type": "String"},
+      "goal": {"type": "String"}
+    }
+  },
+  "personalSummaryGivingGoalPercent": "{percent}%",
+  "@personalSummaryGivingGoalPercent": {
+    "placeholders": {
+      "percent": {"type": "int"}
+    }
+  },
+  "personalSummaryYourYearGoal": "Your {year} goal",
+  "@personalSummaryYourYearGoal": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryYouReachedYearGoal": "You reached your {year} goal",
+  "@personalSummaryYouReachedYearGoal": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryGoalOfTarget": "of {goal}",
+  "@personalSummaryGoalOfTarget": {
+    "placeholders": {
+      "goal": {"type": "String"}
+    }
+  },
+  "personalSummarySectionByCause": "Who you support",
+  "personalSummarySectionByCauseSubtitle": "Where your money made a difference",
+  "personalSummarySectionMonthly": "Monthly giving",
+  "personalSummarySectionMonthlySubtitle": "What you gave each month, and where it went",
+  "personalSummarySectionRecurring": "Recurring vs one-off",
+  "personalSummarySectionRecurringSubtitle": "How much of your giving is regular",
+  "personalSummarySectionGivtVsExternal": "Givt vs external giving",
+  "personalSummarySectionGivtVsExternalSubtitle": "How you gave, via Givt or outside the app",
+  "personalSummaryRecurring": "Recurring",
+  "personalSummaryOneOff": "One-off",
+  "personalSummaryThroughGivt": "Givt donations",
+  "personalSummaryExternal": "External donations",
+  "personalSummaryYearTotal": "Total given",
+  "personalSummaryYearCenterLabel": "this year",
+  "personalSummaryAddDonationSheetTitle": "Add a donation",
+  "personalSummaryGiveThroughGivt": "Give through Givt",
+  "personalSummaryGiveThroughGivtSubtitle": "Find a charity and donate now",
+  "personalSummaryAddExternalDonation": "Add external donation",
+  "personalSummaryAddExternalDonationSubtitle": "Count a donation made outside Givt",
   "budgetSummarySetGoalBold": "Give consciously",
   "budgetExternalGiftsInfoBold": "Gain insight into what you give",
   "budgetGivingGoalInfoBold": "Set giving goal",
