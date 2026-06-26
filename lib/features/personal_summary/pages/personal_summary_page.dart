@@ -107,7 +107,7 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
 
   Future<void> _navigateToGivingGoalSetup(BuildContext context) async {
     final goal = _uiModel?.givingGoal ?? const GivingGoal.empty();
-    await context.pushNamed(
+    final goalChanged = await context.pushNamed<bool>(
       Pages.givingGoalSetup.name,
       extra: GivingGoalSetupExtra(
         initialYearlyAmount:
@@ -115,7 +115,7 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
         goalId: goal.id,
       ),
     );
-    if (context.mounted) {
+    if (context.mounted && (goalChanged ?? false)) {
       await _cubit.refreshGivingGoal();
     }
   }
