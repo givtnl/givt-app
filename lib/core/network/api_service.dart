@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 class APIService {

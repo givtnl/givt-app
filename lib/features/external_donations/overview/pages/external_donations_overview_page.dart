@@ -5,13 +5,13 @@ import 'package:givt_app/features/external_donations/create/pages/step1_organisa
 import 'package:givt_app/features/external_donations/overview/cubit/external_donations_overview_cubit.dart';
 import 'package:givt_app/features/external_donations/overview/widgets/external_donations_empty_state.dart';
 import 'package:givt_app/features/external_donations/overview/widgets/external_donations_list.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_create_navigation.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 
 class ExternalDonationsOverviewPage extends StatefulWidget {
   const ExternalDonationsOverviewPage({super.key});
@@ -50,15 +50,10 @@ class _ExternalDonationsOverviewPageState
     final locals = context.l10n;
 
     return FunScaffold(
-      canPop: false,
       appBar: FunTopAppBar(
         variant: FunTopAppBarVariant.white,
         title: locals.menuItemExternalDonations,
-        leading: GivtBackButtonFlat(
-          onPressed: () async => {
-            Navigator.of(context).popUntil((route) => route.isFirst),
-          },
-        ),
+        leading: const GivtBackButtonFlat(),
       ),
       body: BaseStateConsumer(
         cubit: _cubit,
@@ -122,10 +117,14 @@ class _ExternalDonationsOverviewPageState
         },
       ),
       floatingActionButton: FunButton(
-        onTap: () {
-          Navigator.of(context).push(
-            const Step1OrganisationPage().toRoute(context),
+        onTap: () async {
+          await ExternalDonationCreateNavigation.pushFlow<void>(
+            context,
+            const Step1OrganisationPage(),
           );
+          if (mounted) {
+            await _cubit.refresh();
+          }
         },
         text: locals.externalDonationsOverviewAddButton,
         leftIcon: Icons.add,

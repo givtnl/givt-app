@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/features/external_donations/overview/cubit/external_donations_overview_cubit.dart';
 import 'package:givt_app/features/external_donations/overview/repositories/external_donations_overview_repository.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 
 class _FakeExternalDonationsOverviewRepository

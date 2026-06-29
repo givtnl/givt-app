@@ -853,7 +853,7 @@
   "forYouQrCodeTitle": "QR-code",
   "forYouQrCodeSubtitle": "Escanea un código QR de Givt",
   "forYouCollectionDeviceTitle": "Dispositivo de recaudación",
-  "forYouCollectionDeviceSubtitle": "Dona cuando pase la placa o la bolsa",
+  "forYouCollectionDeviceSubtitle": "Dona cuando pase la bolsa de colecta o la placa",
   "forYouGoalsCountCollectionsOne": "1 objetivo de colecta",
   "forYouGoalsCountCollectionsMany": "{count} objetivos de colecta",
   "@forYouGoalsCountCollectionsMany": {
@@ -963,7 +963,87 @@
   "budgetSummaryGivingGoalMonth": "Monthly giving goal",
   "budgetSummaryGivingGoalEdit": "Edit giving goal",
   "budgetSummaryGivingGoalRest": "Remaining giving goal",
-  "budgetMenuView": "My personal summary",
+  "budgetMenuView": "Resumen personal",
+  "personalSummaryTitle": "Resumen personal",
+  "personalSummaryAddDonation": "Add a donation",
+  "personalSummarySetGivingGoal": "Set my giving goal",
+  "personalSummaryCategoryChurch": "Church",
+  "personalSummaryCategoryCharity": "Charity",
+  "personalSummaryCategoryCampaign": "Campaign",
+  "personalSummaryCategoryOther": "Other",
+  "personalSummaryGivingGoalTitle": "Giving goal",
+  "personalSummaryGivingGoalProgress": "{given} of {goal}",
+  "@personalSummaryGivingGoalProgress": {
+    "placeholders": {
+      "given": {"type": "String"},
+      "goal": {"type": "String"}
+    }
+  },
+  "personalSummaryGivingGoalPercent": "{percent}%",
+  "@personalSummaryGivingGoalPercent": {
+    "placeholders": {
+      "percent": {"type": "int"}
+    }
+  },
+  "personalSummaryYourYearGoal": "Your {year} goal",
+  "@personalSummaryYourYearGoal": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryYouReachedYearGoal": "You reached your {year} goal",
+  "@personalSummaryYouReachedYearGoal": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryGoalOfTarget": "of {goal}",
+  "@personalSummaryGoalOfTarget": {
+    "placeholders": {
+      "goal": {"type": "String"}
+    }
+  },
+  "personalSummarySectionByCause": "Who you support",
+  "personalSummarySectionByCauseSubtitle": "Where your money made a difference",
+  "personalSummarySectionMonthly": "Monthly giving",
+  "personalSummarySectionMonthlySubtitle": "What you gave each month, and where it went",
+  "personalSummarySectionRecurring": "Recurring vs one-off",
+  "personalSummarySectionRecurringSubtitle": "How much of your giving is regular",
+  "personalSummarySectionGivtVsExternal": "Givt vs external giving",
+  "personalSummarySectionGivtVsExternalSubtitle": "How you gave, via Givt or outside the app",
+  "personalSummaryRecurring": "Recurring",
+  "personalSummaryOneOff": "One-off",
+  "personalSummaryThroughGivt": "Givt donations",
+  "personalSummaryExternal": "External donations",
+  "personalSummaryYearTotal": "Total given",
+  "personalSummaryYearCenterLabel": "this year",
+  "personalSummaryAddDonationSheetTitle": "Add a donation",
+  "personalSummaryGiveThroughGivt": "Give through Givt",
+  "personalSummaryGiveThroughGivtSubtitle": "Find a charity and donate now",
+  "personalSummaryAddExternalDonation": "Add external donation",
+  "personalSummaryAddExternalDonationSubtitle": "Count a donation made outside Givt",
+  "personalSummaryGivingGoalSetupTitle": "Set up goal",
+  "personalSummaryGivingGoalSetupQuestion": "How much would you like to give in {year}?",
+  "@personalSummaryGivingGoalSetupQuestion": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryGivingGoalSetupInputLabel": "Giving goal",
+  "personalSummaryGivingGoalSetupAmountHint": "Enter amount",
+  "personalSummaryGivingGoalSetupMonthlyHint": "That's about {amount} a month",
+  "@personalSummaryGivingGoalSetupMonthlyHint": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "personalSummaryGivingGoalSetupSuccessTitle": "You're all set!",
+  "personalSummaryGivingGoalSetupSuccessMessage": "Your {year} giving goal is ready, let's make it count.",
+  "@personalSummaryGivingGoalSetupSuccessMessage": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
   "budgetSummarySetGoalBold": "Give consciously",
   "budgetExternalGiftsInfoBold": "Gain insight into what you give",
   "budgetGivingGoalInfoBold": "Set giving goal",

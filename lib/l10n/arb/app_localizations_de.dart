@@ -1299,7 +1299,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get forYouCollectionDeviceSubtitle =>
-      'Gib, wenn das Schild oder die Tasche vorbeikommt';
+      'Gib, wenn die Kollektentasche oder -platte vorbeikommt';
 
   @override
   String get forYouGoalsCountCollectionsOne => '1 Sammelziel';
@@ -1534,7 +1534,146 @@ class AppLocalizationsDe extends AppLocalizations {
   String get budgetSummaryGivingGoalRest => 'Verbleibendes Spendenziel';
 
   @override
-  String get budgetMenuView => 'Meine persönliche Zusammenfassung';
+  String get budgetMenuView => 'Persönliche Zusammenfassung';
+
+  @override
+  String get personalSummaryTitle => 'Persönliche Zusammenfassung';
+
+  @override
+  String get personalSummaryAddDonation => 'Spende hinzufügen';
+
+  @override
+  String get personalSummarySetGivingGoal => 'Spendenziel festlegen';
+
+  @override
+  String get personalSummaryCategoryChurch => 'Kirche';
+
+  @override
+  String get personalSummaryCategoryCharity => 'Wohltätigkeitsorganisation';
+
+  @override
+  String get personalSummaryCategoryCampaign => 'Aktion';
+
+  @override
+  String get personalSummaryCategoryOther => 'Sonstiges';
+
+  @override
+  String get personalSummaryGivingGoalTitle => 'Spendenziel';
+
+  @override
+  String personalSummaryGivingGoalProgress(String given, String goal) {
+    return '$given von $goal';
+  }
+
+  @override
+  String personalSummaryGivingGoalPercent(int percent) {
+    return '$percent %';
+  }
+
+  @override
+  String personalSummaryYourYearGoal(int year) {
+    return 'Dein Ziel für $year';
+  }
+
+  @override
+  String personalSummaryYouReachedYearGoal(int year) {
+    return 'Du hast dein Ziel für $year erreicht';
+  }
+
+  @override
+  String personalSummaryGoalOfTarget(String goal) {
+    return 'von $goal';
+  }
+
+  @override
+  String get personalSummarySectionByCause => 'Wen du unterstützt';
+
+  @override
+  String get personalSummarySectionByCauseSubtitle =>
+      'Wo dein Geld einen Unterschied gemacht hat';
+
+  @override
+  String get personalSummarySectionMonthly => 'Monatliches Geben';
+
+  @override
+  String get personalSummarySectionMonthlySubtitle =>
+      'Was du jeden Monat gegeben hast und wohin es ging';
+
+  @override
+  String get personalSummarySectionRecurring => 'Wiederkehrend vs einmalig';
+
+  @override
+  String get personalSummarySectionRecurringSubtitle =>
+      'Wie viel deines Gebens regelmäßig ist';
+
+  @override
+  String get personalSummarySectionGivtVsExternal => 'Givt vs externes Geben';
+
+  @override
+  String get personalSummarySectionGivtVsExternalSubtitle =>
+      'Wie du gegeben hast, über Givt oder außerhalb der App';
+
+  @override
+  String get personalSummaryRecurring => 'Wiederkehrend';
+
+  @override
+  String get personalSummaryOneOff => 'Einmalig';
+
+  @override
+  String get personalSummaryThroughGivt => 'Givt-Spenden';
+
+  @override
+  String get personalSummaryExternal => 'Externe Spenden';
+
+  @override
+  String get personalSummaryYearTotal => 'Insgesamt gegeben';
+
+  @override
+  String get personalSummaryYearCenterLabel => 'dieses Jahr';
+
+  @override
+  String get personalSummaryAddDonationSheetTitle => 'Spende hinzufügen';
+
+  @override
+  String get personalSummaryGiveThroughGivt => 'Über Givt geben';
+
+  @override
+  String get personalSummaryGiveThroughGivtSubtitle =>
+      'Finde eine Organisation und gib jetzt';
+
+  @override
+  String get personalSummaryAddExternalDonation => 'Externe Spende hinzufügen';
+
+  @override
+  String get personalSummaryAddExternalDonationSubtitle =>
+      'Erfasse eine Spende, die du außerhalb von Givt gemacht hast';
+
+  @override
+  String get personalSummaryGivingGoalSetupTitle => 'Spendenziel festlegen';
+
+  @override
+  String personalSummaryGivingGoalSetupQuestion(int year) {
+    return 'Wie viel möchtest du in $year geben?';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupInputLabel => 'Spendenziel';
+
+  @override
+  String get personalSummaryGivingGoalSetupAmountHint => 'Betrag eingeben';
+
+  @override
+  String personalSummaryGivingGoalSetupMonthlyHint(String amount) {
+    return 'Das sind etwa $amount pro Monat';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupSuccessTitle => 'Alles bereit!';
+
+  @override
+  String personalSummaryGivingGoalSetupSuccessMessage(int year) {
+    return 'Dein Spendenziel für $year ist bereit – lass es uns angehen.';
+  }
 
   @override
   String get budgetSummarySetGoalBold => 'Gib bewusst';

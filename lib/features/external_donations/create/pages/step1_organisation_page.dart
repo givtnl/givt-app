@@ -11,7 +11,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_create_navigation.dart';
 
 class Step1OrganisationPage extends StatefulWidget {
   const Step1OrganisationPage({super.key});
@@ -48,7 +48,7 @@ class _Step1OrganisationPageState extends State<Step1OrganisationPage> {
         switch (action) {
           case NavigateToDonationType():
             Navigator.of(context).push(
-              const Step2DonationTypePage().toRoute(context),
+              const Step2DonationTypePage().toCreateFlowRoute(context),
             );
           case _:
             break;
@@ -78,7 +78,9 @@ class _Step1OrganisationPageState extends State<Step1OrganisationPage> {
                 controller: _organisationController,
                 onTap: () {
                   Navigator.of(context).push(
-                    OrganisationSearchPage(cubit: _cubit).toRoute(context),
+                    OrganisationSearchPage(cubit: _cubit).toCreateFlowRoute(
+                      context,
+                    ),
                   );
                 },
                 suffixIcon: Icon(

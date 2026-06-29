@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/features/external_donations/shared/external_donations_partition.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 
 void main() {
   group('ExternalDonationsPartition', () {

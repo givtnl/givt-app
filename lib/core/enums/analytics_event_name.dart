@@ -91,6 +91,10 @@ enum AnalyticsEventName {
   personalSummaryClicked('personal_summary_clicked'),
   personalSummaryYearClicked('personal_summary_year_clicked'),
   personalSummaryYearLoaded('personal_summary_year_loaded'),
+  personalSummaryAddDonationClicked('personal_summary_add_donation_clicked'),
+  personalSummaryAddDonationContinueClicked(
+    'personal_summary_add_donation_continue_clicked',
+  ),
   downloadAnnualOverviewClicked('download_annual_overview_clicked'),
   annualOverviewReceiveViaMailClicked(
     'annual_overview_receive_via_mail_clicked',
@@ -99,6 +103,12 @@ enum AnalyticsEventName {
   editGivingGoalClicked('edit_giving_goal_clicked'),
   givingGoalSaved('giving_goal_saved'),
   removeGivingGoalClicked('remove_giving_goal_clicked'),
+  personalSummaryGivingGoalSetupCloseClicked(
+    'personal_summary_giving_goal_setup_close_clicked',
+  ),
+  personalSummaryGivingGoalSetupSuccessDoneClicked(
+    'personal_summary_giving_goal_setup_success_done_clicked',
+  ),
   recurringDonationsNavigationClicked('recurring_donations_navigation_clicked'),
   recurringDonationCardClicked('recurring_donation_card_clicked'),
   recurringDonationEditClicked('recurring_donation_edit_clicked'),

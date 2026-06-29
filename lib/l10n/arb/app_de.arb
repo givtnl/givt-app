@@ -853,7 +853,7 @@
   "forYouQrCodeTitle": "QR-code",
   "forYouQrCodeSubtitle": "Scanne einen Givt-QR-Code",
   "forYouCollectionDeviceTitle": "Sammelgerät",
-  "forYouCollectionDeviceSubtitle": "Gib, wenn das Schild oder die Tasche vorbeikommt",
+  "forYouCollectionDeviceSubtitle": "Gib, wenn die Kollektentasche oder -platte vorbeikommt",
   "forYouGoalsCountCollectionsOne": "1 Sammelziel",
   "forYouGoalsCountCollectionsMany": "{count} Sammelziele",
   "@forYouGoalsCountCollectionsMany": {
@@ -963,7 +963,87 @@
   "budgetSummaryGivingGoalMonth": "Monatliches Spendenziel",
   "budgetSummaryGivingGoalEdit": "Bearbeite das Spendenziel",
   "budgetSummaryGivingGoalRest": "Verbleibendes Spendenziel",
-  "budgetMenuView": "Meine persönliche Zusammenfassung",
+  "budgetMenuView": "Persönliche Zusammenfassung",
+  "personalSummaryTitle": "Persönliche Zusammenfassung",
+  "personalSummaryAddDonation": "Spende hinzufügen",
+  "personalSummarySetGivingGoal": "Spendenziel festlegen",
+  "personalSummaryCategoryChurch": "Kirche",
+  "personalSummaryCategoryCharity": "Wohltätigkeitsorganisation",
+  "personalSummaryCategoryCampaign": "Aktion",
+  "personalSummaryCategoryOther": "Sonstiges",
+  "personalSummaryGivingGoalTitle": "Spendenziel",
+  "personalSummaryGivingGoalProgress": "{given} von {goal}",
+  "@personalSummaryGivingGoalProgress": {
+    "placeholders": {
+      "given": {"type": "String"},
+      "goal": {"type": "String"}
+    }
+  },
+  "personalSummaryGivingGoalPercent": "{percent} %",
+  "@personalSummaryGivingGoalPercent": {
+    "placeholders": {
+      "percent": {"type": "int"}
+    }
+  },
+  "personalSummaryYourYearGoal": "Dein Ziel für {year}",
+  "@personalSummaryYourYearGoal": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryYouReachedYearGoal": "Du hast dein Ziel für {year} erreicht",
+  "@personalSummaryYouReachedYearGoal": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryGoalOfTarget": "von {goal}",
+  "@personalSummaryGoalOfTarget": {
+    "placeholders": {
+      "goal": {"type": "String"}
+    }
+  },
+  "personalSummarySectionByCause": "Wen du unterstützt",
+  "personalSummarySectionByCauseSubtitle": "Wo dein Geld einen Unterschied gemacht hat",
+  "personalSummarySectionMonthly": "Monatliches Geben",
+  "personalSummarySectionMonthlySubtitle": "Was du jeden Monat gegeben hast und wohin es ging",
+  "personalSummarySectionRecurring": "Wiederkehrend vs einmalig",
+  "personalSummarySectionRecurringSubtitle": "Wie viel deines Gebens regelmäßig ist",
+  "personalSummarySectionGivtVsExternal": "Givt vs externes Geben",
+  "personalSummarySectionGivtVsExternalSubtitle": "Wie du gegeben hast, über Givt oder außerhalb der App",
+  "personalSummaryRecurring": "Wiederkehrend",
+  "personalSummaryOneOff": "Einmalig",
+  "personalSummaryThroughGivt": "Givt-Spenden",
+  "personalSummaryExternal": "Externe Spenden",
+  "personalSummaryYearTotal": "Insgesamt gegeben",
+  "personalSummaryYearCenterLabel": "dieses Jahr",
+  "personalSummaryAddDonationSheetTitle": "Spende hinzufügen",
+  "personalSummaryGiveThroughGivt": "Über Givt geben",
+  "personalSummaryGiveThroughGivtSubtitle": "Finde eine Organisation und gib jetzt",
+  "personalSummaryAddExternalDonation": "Externe Spende hinzufügen",
+  "personalSummaryAddExternalDonationSubtitle": "Erfasse eine Spende, die du außerhalb von Givt gemacht hast",
+  "personalSummaryGivingGoalSetupTitle": "Spendenziel festlegen",
+  "personalSummaryGivingGoalSetupQuestion": "Wie viel möchtest du in {year} geben?",
+  "@personalSummaryGivingGoalSetupQuestion": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryGivingGoalSetupInputLabel": "Spendenziel",
+  "personalSummaryGivingGoalSetupAmountHint": "Betrag eingeben",
+  "personalSummaryGivingGoalSetupMonthlyHint": "Das sind etwa {amount} pro Monat",
+  "@personalSummaryGivingGoalSetupMonthlyHint": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "personalSummaryGivingGoalSetupSuccessTitle": "Alles bereit!",
+  "personalSummaryGivingGoalSetupSuccessMessage": "Dein Spendenziel für {year} ist bereit – lass es uns angehen.",
+  "@personalSummaryGivingGoalSetupSuccessMessage": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
   "budgetSummarySetGoalBold": "Gib bewusst",
   "budgetExternalGiftsInfoBold": "Gewinne einen Einblick über das, was du gibst",
   "budgetGivingGoalInfoBold": "Setze ein Spendenziel",

@@ -1294,7 +1294,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get forYouCollectionDeviceSubtitle =>
-      'Geef wanneer de plaat of tas langskomt';
+      'Geef wanneer de collectezak of -plaat langskomt';
 
   @override
   String get forYouGoalsCountCollectionsOne => '1 collectedoel';
@@ -1530,7 +1530,147 @@ class AppLocalizationsNl extends AppLocalizations {
   String get budgetSummaryGivingGoalRest => 'Resterend streefbedrag';
 
   @override
-  String get budgetMenuView => 'Mijn persoonlijke samenvatting';
+  String get budgetMenuView => 'Persoonlijke samenvatting';
+
+  @override
+  String get personalSummaryTitle => 'Persoonlijke samenvatting';
+
+  @override
+  String get personalSummaryAddDonation => 'Donatie toevoegen';
+
+  @override
+  String get personalSummarySetGivingGoal => 'Streefbedrag instellen';
+
+  @override
+  String get personalSummaryCategoryChurch => 'Kerk';
+
+  @override
+  String get personalSummaryCategoryCharity => 'Goed doel';
+
+  @override
+  String get personalSummaryCategoryCampaign => 'Actie';
+
+  @override
+  String get personalSummaryCategoryOther => 'Overig';
+
+  @override
+  String get personalSummaryGivingGoalTitle => 'Streefbedrag';
+
+  @override
+  String personalSummaryGivingGoalProgress(String given, String goal) {
+    return '$given van $goal';
+  }
+
+  @override
+  String personalSummaryGivingGoalPercent(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String personalSummaryYourYearGoal(int year) {
+    return 'Jouw doel voor $year';
+  }
+
+  @override
+  String personalSummaryYouReachedYearGoal(int year) {
+    return 'Je hebt je doel voor $year behaald';
+  }
+
+  @override
+  String personalSummaryGoalOfTarget(String goal) {
+    return 'van $goal';
+  }
+
+  @override
+  String get personalSummarySectionByCause => 'Wie je steunt';
+
+  @override
+  String get personalSummarySectionByCauseSubtitle =>
+      'Waar jouw geld het verschil maakte';
+
+  @override
+  String get personalSummarySectionMonthly => 'Maandelijks geven';
+
+  @override
+  String get personalSummarySectionMonthlySubtitle =>
+      'Wat je per maand gaf, en waar het naartoe ging';
+
+  @override
+  String get personalSummarySectionRecurring => 'Periodiek vs eenmalig';
+
+  @override
+  String get personalSummarySectionRecurringSubtitle =>
+      'Hoeveel van je geven is structureel';
+
+  @override
+  String get personalSummarySectionGivtVsExternal => 'Givt vs extern geven';
+
+  @override
+  String get personalSummarySectionGivtVsExternalSubtitle =>
+      'Hoe je gaf, via Givt of buiten de app';
+
+  @override
+  String get personalSummaryRecurring => 'Periodiek';
+
+  @override
+  String get personalSummaryOneOff => 'Eenmalig';
+
+  @override
+  String get personalSummaryThroughGivt => 'Givt-donaties';
+
+  @override
+  String get personalSummaryExternal => 'Externe donaties';
+
+  @override
+  String get personalSummaryYearTotal => 'Totaal gegeven';
+
+  @override
+  String get personalSummaryYearCenterLabel => 'dit jaar';
+
+  @override
+  String get personalSummaryAddDonationSheetTitle => 'Donatie toevoegen';
+
+  @override
+  String get personalSummaryGiveThroughGivt => 'Geven via Givt';
+
+  @override
+  String get personalSummaryGiveThroughGivtSubtitle =>
+      'Vind een goed doel en geef nu';
+
+  @override
+  String get personalSummaryAddExternalDonation => 'Externe donatie toevoegen';
+
+  @override
+  String get personalSummaryAddExternalDonationSubtitle =>
+      'Tel een gift mee die je buiten Givt hebt gedaan';
+
+  @override
+  String get personalSummaryGivingGoalSetupTitle => 'Streefbedrag instellen';
+
+  @override
+  String personalSummaryGivingGoalSetupQuestion(int year) {
+    return 'Hoeveel wil je geven in $year?';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupInputLabel => 'Streefbedrag';
+
+  @override
+  String get personalSummaryGivingGoalSetupAmountHint => 'Voer bedrag in';
+
+  @override
+  String personalSummaryGivingGoalSetupMonthlyHint(String amount) {
+    return 'Dat is ongeveer $amount per maand';
+  }
+
+  @override
+  String get personalSummaryGivingGoalSetupSuccessTitle =>
+      'Je bent er helemaal klaar voor!';
+
+  @override
+  String personalSummaryGivingGoalSetupSuccessMessage(int year) {
+    return 'Je streefbedrag voor $year staat klaar, laten we het waar maken.';
+  }
 
   @override
   String get budgetSummarySetGoalBold => 'Bewust geven?';

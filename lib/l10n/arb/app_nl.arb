@@ -853,7 +853,7 @@
   "forYouQrCodeTitle": "QR-code",
   "forYouQrCodeSubtitle": "Scan een Givt-QR-code",
   "forYouCollectionDeviceTitle": "Collectemiddel",
-  "forYouCollectionDeviceSubtitle": "Geef wanneer de plaat of tas langskomt",
+  "forYouCollectionDeviceSubtitle": "Geef wanneer de collectezak of -plaat langskomt",
   "forYouGoalsCountCollectionsOne": "1 collectedoel",
   "forYouGoalsCountCollectionsMany": "{count} collectedoelen",
   "@forYouGoalsCountCollectionsMany": {
@@ -963,7 +963,87 @@
   "budgetSummaryGivingGoalMonth": "Streefbedrag per maand",
   "budgetSummaryGivingGoalEdit": "Streefbedrag aanpassen",
   "budgetSummaryGivingGoalRest": "Resterend streefbedrag",
-  "budgetMenuView": "Mijn persoonlijke samenvatting",
+  "budgetMenuView": "Persoonlijke samenvatting",
+  "personalSummaryTitle": "Persoonlijke samenvatting",
+  "personalSummaryAddDonation": "Donatie toevoegen",
+  "personalSummarySetGivingGoal": "Streefbedrag instellen",
+  "personalSummaryCategoryChurch": "Kerk",
+  "personalSummaryCategoryCharity": "Goed doel",
+  "personalSummaryCategoryCampaign": "Actie",
+  "personalSummaryCategoryOther": "Overig",
+  "personalSummaryGivingGoalTitle": "Streefbedrag",
+  "personalSummaryGivingGoalProgress": "{given} van {goal}",
+  "@personalSummaryGivingGoalProgress": {
+    "placeholders": {
+      "given": {"type": "String"},
+      "goal": {"type": "String"}
+    }
+  },
+  "personalSummaryGivingGoalPercent": "{percent}%",
+  "@personalSummaryGivingGoalPercent": {
+    "placeholders": {
+      "percent": {"type": "int"}
+    }
+  },
+  "personalSummaryYourYearGoal": "Jouw doel voor {year}",
+  "@personalSummaryYourYearGoal": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryYouReachedYearGoal": "Je hebt je doel voor {year} behaald",
+  "@personalSummaryYouReachedYearGoal": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryGoalOfTarget": "van {goal}",
+  "@personalSummaryGoalOfTarget": {
+    "placeholders": {
+      "goal": {"type": "String"}
+    }
+  },
+  "personalSummarySectionByCause": "Wie je steunt",
+  "personalSummarySectionByCauseSubtitle": "Waar jouw geld het verschil maakte",
+  "personalSummarySectionMonthly": "Maandelijks geven",
+  "personalSummarySectionMonthlySubtitle": "Wat je per maand gaf, en waar het naartoe ging",
+  "personalSummarySectionRecurring": "Periodiek vs eenmalig",
+  "personalSummarySectionRecurringSubtitle": "Hoeveel van je geven is structureel",
+  "personalSummarySectionGivtVsExternal": "Givt vs extern geven",
+  "personalSummarySectionGivtVsExternalSubtitle": "Hoe je gaf, via Givt of buiten de app",
+  "personalSummaryRecurring": "Periodiek",
+  "personalSummaryOneOff": "Eenmalig",
+  "personalSummaryThroughGivt": "Givt-donaties",
+  "personalSummaryExternal": "Externe donaties",
+  "personalSummaryYearTotal": "Totaal gegeven",
+  "personalSummaryYearCenterLabel": "dit jaar",
+  "personalSummaryAddDonationSheetTitle": "Donatie toevoegen",
+  "personalSummaryGiveThroughGivt": "Geven via Givt",
+  "personalSummaryGiveThroughGivtSubtitle": "Vind een goed doel en geef nu",
+  "personalSummaryAddExternalDonation": "Externe donatie toevoegen",
+  "personalSummaryAddExternalDonationSubtitle": "Tel een gift mee die je buiten Givt hebt gedaan",
+  "personalSummaryGivingGoalSetupTitle": "Streefbedrag instellen",
+  "personalSummaryGivingGoalSetupQuestion": "Hoeveel wil je geven in {year}?",
+  "@personalSummaryGivingGoalSetupQuestion": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
+  "personalSummaryGivingGoalSetupInputLabel": "Streefbedrag",
+  "personalSummaryGivingGoalSetupAmountHint": "Voer bedrag in",
+  "personalSummaryGivingGoalSetupMonthlyHint": "Dat is ongeveer {amount} per maand",
+  "@personalSummaryGivingGoalSetupMonthlyHint": {
+    "placeholders": {
+      "amount": {"type": "String"}
+    }
+  },
+  "personalSummaryGivingGoalSetupSuccessTitle": "Je bent er helemaal klaar voor!",
+  "personalSummaryGivingGoalSetupSuccessMessage": "Je streefbedrag voor {year} staat klaar, laten we het waar maken.",
+  "@personalSummaryGivingGoalSetupSuccessMessage": {
+    "placeholders": {
+      "year": {"type": "int"}
+    }
+  },
   "budgetSummarySetGoalBold": "Bewust geven?",
   "budgetExternalGiftsInfoBold": "Inzicht in wat je geeft",
   "budgetGivingGoalInfoBold": "Stel jezelf een doel",
