@@ -330,7 +330,7 @@
     "description": "Telefoonnummer placeholder bij registratie",
     "type": "text"
   },
-  "postalCode": "Postal Code",
+  "postalCode": "ZIP code",
   "@postalCode": {
     "description": "Postcode placeholder",
     "type": "text"

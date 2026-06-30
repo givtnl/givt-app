@@ -4067,7 +4067,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get phoneNumber => 'Mobile number';
 
   @override
-  String get postalCode => 'Postal Code';
+  String get postalCode => 'ZIP code';
 
   @override
   String get ready => 'Done';
