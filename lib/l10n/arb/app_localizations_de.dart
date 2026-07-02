@@ -446,6 +446,15 @@ class AppLocalizationsDe extends AppLocalizations {
       'Hier änderst du die Verwendung des Fingerabdrucks, um dich bei der Givt App anzumelden.';
 
   @override
+  String get loginUsingFaceId => 'Mit Face ID anmelden';
+
+  @override
+  String get loginUsingTouchId => 'Mit Touch ID anmelden';
+
+  @override
+  String get loginUsingFingerprint => 'Mit Fingerabdruck anmelden';
+
+  @override
   String get offlineGiftsTitle => 'Offline Spenden';
 
   @override

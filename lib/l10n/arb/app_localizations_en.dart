@@ -441,6 +441,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'This is where you change the use of your fingerprint to login into the Givt app.';
 
   @override
+  String get loginUsingFaceId => 'Login using Face ID';
+
+  @override
+  String get loginUsingTouchId => 'Login using Touch ID';
+
+  @override
+  String get loginUsingFingerprint => 'Login using fingerprint';
+
+  @override
   String get offlineGiftsTitle => 'Offline donations';
 
   @override
@@ -3851,6 +3860,15 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String get fingerprintUsage =>
       'This is where you change the use of your fingerprint to login into the Givt app.';
+
+  @override
+  String get loginUsingFaceId => 'Login using Face ID';
+
+  @override
+  String get loginUsingTouchId => 'Login using Touch ID';
+
+  @override
+  String get loginUsingFingerprint => 'Login using fingerprint';
 
   @override
   String get offlineGiftsTitle => 'Offline donations';
