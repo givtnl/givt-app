@@ -114,6 +114,9 @@ class _ActionContainerState extends State<ActionContainer> {
                   eventProperties: widget.analyticsEvent.parameters,
                 ),
               );
+              if (!mounted) {
+                return;
+              }
               widget.onTap?.call();
               // await _actionDelay();
             },

@@ -53,18 +53,21 @@ class CustomNavigationDrawer extends StatelessWidget {
                           analyticsEvent: AnalyticsEventName
                               .menuNavigationFinalizeRegistrationClicked,
                           onTap: () {
-                            if (auth.user.needRegistration) {
-                              context
-                                ..goNamed(
-                                  Pages.registration.name,
-                                  queryParameters: {
-                                    'email': auth.user.email,
-                                  },
-                                )
-                                ..pop();
+                            if (!context.mounted) {
                               return;
                             }
-                            context.goNamed(
+                            final router = GoRouter.of(context)
+                              ..pop();
+                            if (auth.user.needRegistration) {
+                              router.goNamed(
+                                Pages.registration.name,
+                                queryParameters: {
+                                  'email': auth.user.email,
+                                },
+                              );
+                              return;
+                            }
+                            router.goNamed(
                               Pages.sepaMandateExplanation.name,
                             );
                           },
