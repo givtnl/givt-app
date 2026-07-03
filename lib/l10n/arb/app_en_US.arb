@@ -808,6 +808,92 @@
   "setupRecurringGiftYear": "year",
   "menuItemRecurringDonation": "Recurring donations",
   "menuItemExternalDonations": "External donations",
+  "menuItemPledges": "Pledge",
+  "pledgesEmptyStateTitle": "No pledges yet",
+  "pledgesEmptyStateDescription": "Pledges you make outside the app will appear here.",
+  "pledgesGroupGoalSummary": "{goalName}: {amount}",
+  "@pledgesGroupGoalSummary": {
+    "placeholders": {
+      "goalName": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListNextExecution": "Next: {date}",
+  "@pledgesListNextExecution": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesOverviewTabCurrent": "Current",
+  "pledgesOverviewTabPast": "Past",
+  "pledgesOverviewAddButton": "Add a pledge",
+  "pledgesListNextUp": "Next up {date}",
+  "@pledgesListNextUp": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListCardSubtitleOnce": "All at once {amount}",
+  "@pledgesListCardSubtitleOnce": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListCardSubtitleRecurring": "{frequency} {amount} · Next up {date}",
+  "@pledgesListCardSubtitleRecurring": {
+    "placeholders": {
+      "frequency": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailGivenSoFarTitle": "Given so far",
+  "pledgesDetailOfPledged": "of {amount} pledged",
+  "@pledgesDetailOfPledged": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailPerGoalTitle": "Per goal",
+  "pledgesDetailGoalProgress": "{given} given of {target}",
+  "@pledgesDetailGoalProgress": {
+    "placeholders": {
+      "given": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailGiveButton": "Give to {campaign}",
+  "@pledgesDetailGiveButton": {
+    "placeholders": {
+      "campaign": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailEditButton": "Edit pledge",
+  "pledgesDetailEndsLabel": "Ends",
   "setupRecurringGiftHalfYear": "half year",
   "setupRecurringGiftText6": "times",
   "recurringGiftsSetupCreate": "Schedule your",

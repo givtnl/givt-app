@@ -43,7 +43,11 @@ class AuthUtils {
     final auth = context.read<AuthCubit>();
     final isExpired = auth.state.session.isExpired;
     if (!isExpired) {
-      final didTokenRefresh = await context.read<AuthCubit>().refreshSession();
+      // Avoid emitting [AuthStatus.loading]: drawer menu rebuilds to a
+      // spinner and deactivates the caller's [BuildContext] mid-flow.
+      final didTokenRefresh = await context.read<AuthCubit>().refreshSession(
+            emitAuthentication: false,
+          );
       if (!context.mounted) {
         return;
       }
@@ -88,7 +92,9 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      final didTokenRefresh = await context.read<AuthCubit>().refreshSession();
+      final didTokenRefresh = await context.read<AuthCubit>().refreshSession(
+            emitAuthentication: false,
+          );
       if (!context.mounted) {
         return;
       }
@@ -138,11 +144,11 @@ class AuthUtils {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) {
+      builder: (sheetContext) {
         return LoginPage(
           email: checkAuthRequest.email.isNotEmpty
               ? checkAuthRequest.email
-              : context.read<AuthCubit>().state.user.email,
+              : sheetContext.read<AuthCubit>().state.user.email,
           isEmailEditable: checkAuthRequest.email.isNotEmpty,
           navigate: checkAuthRequest.navigate,
         );

@@ -808,6 +808,92 @@
   "setupRecurringGiftYear": "año",
   "menuItemRecurringDonation": "Donaciones recurrentes",
   "menuItemExternalDonations": "Donaciones externas",
+  "menuItemPledges": "Compromiso",
+  "pledgesEmptyStateTitle": "Aún no hay compromisos",
+  "pledgesEmptyStateDescription": "Los compromisos que hagas fuera de la app aparecerán aquí.",
+  "pledgesGroupGoalSummary": "{goalName}: {amount}",
+  "@pledgesGroupGoalSummary": {
+    "placeholders": {
+      "goalName": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListNextExecution": "Próximo: {date}",
+  "@pledgesListNextExecution": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesOverviewTabCurrent": "Actuales",
+  "pledgesOverviewTabPast": "Anteriores",
+  "pledgesOverviewAddButton": "Agregar compromiso",
+  "pledgesListNextUp": "Próximo el {date}",
+  "@pledgesListNextUp": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListCardSubtitleOnce": "De una vez {amount}",
+  "@pledgesListCardSubtitleOnce": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListCardSubtitleRecurring": "{frequency} {amount} · Próximo el {date}",
+  "@pledgesListCardSubtitleRecurring": {
+    "placeholders": {
+      "frequency": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailGivenSoFarTitle": "Dado hasta ahora",
+  "pledgesDetailOfPledged": "de {amount} comprometido",
+  "@pledgesDetailOfPledged": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailPerGoalTitle": "Por objetivo",
+  "pledgesDetailGoalProgress": "{given} dado de {target}",
+  "@pledgesDetailGoalProgress": {
+    "placeholders": {
+      "given": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailGiveButton": "Dar a {campaign}",
+  "@pledgesDetailGiveButton": {
+    "placeholders": {
+      "campaign": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailEditButton": "Editar compromiso",
+  "pledgesDetailEndsLabel": "Finaliza",
   "setupRecurringGiftHalfYear": "semestre",
   "setupRecurringGiftText6": "veces",
   "recurringGiftsSetupCreate": "Programe su",

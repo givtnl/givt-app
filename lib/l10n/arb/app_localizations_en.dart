@@ -1161,6 +1161,81 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuItemExternalDonations => 'External donations';
 
   @override
+  String get menuItemPledges => 'Pledge';
+
+  @override
+  String get pledgesEmptyStateTitle => 'No pledges yet';
+
+  @override
+  String get pledgesEmptyStateDescription =>
+      'Pledges you make outside the app will appear here.';
+
+  @override
+  String pledgesGroupGoalSummary(String goalName, String amount) {
+    return '$goalName: $amount';
+  }
+
+  @override
+  String pledgesListNextExecution(String date) {
+    return 'Next: $date';
+  }
+
+  @override
+  String get pledgesOverviewTabCurrent => 'Current';
+
+  @override
+  String get pledgesOverviewTabPast => 'Past';
+
+  @override
+  String get pledgesOverviewAddButton => 'Add a pledge';
+
+  @override
+  String pledgesListNextUp(String date) {
+    return 'Next up $date';
+  }
+
+  @override
+  String pledgesListCardSubtitleOnce(String amount) {
+    return 'All at once $amount';
+  }
+
+  @override
+  String pledgesListCardSubtitleRecurring(
+    String frequency,
+    String amount,
+    String date,
+  ) {
+    return '$frequency $amount · Next up $date';
+  }
+
+  @override
+  String get pledgesDetailGivenSoFarTitle => 'Given so far';
+
+  @override
+  String pledgesDetailOfPledged(String amount) {
+    return 'of $amount pledged';
+  }
+
+  @override
+  String get pledgesDetailPerGoalTitle => 'Per goal';
+
+  @override
+  String pledgesDetailGoalProgress(String given, String target) {
+    return '$given given of $target';
+  }
+
+  @override
+  String pledgesDetailGiveButton(String campaign) {
+    return 'Give to $campaign';
+  }
+
+  @override
+  String get pledgesDetailEditButton => 'Edit pledge';
+
+  @override
+  String get pledgesDetailEndsLabel => 'Ends';
+
+  @override
   String get setupRecurringGiftHalfYear => 'half year';
 
   @override
@@ -4571,6 +4646,81 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get menuItemExternalDonations => 'External donations';
+
+  @override
+  String get menuItemPledges => 'Pledge';
+
+  @override
+  String get pledgesEmptyStateTitle => 'No pledges yet';
+
+  @override
+  String get pledgesEmptyStateDescription =>
+      'Pledges you make outside the app will appear here.';
+
+  @override
+  String pledgesGroupGoalSummary(String goalName, String amount) {
+    return '$goalName: $amount';
+  }
+
+  @override
+  String pledgesListNextExecution(String date) {
+    return 'Next: $date';
+  }
+
+  @override
+  String get pledgesOverviewTabCurrent => 'Current';
+
+  @override
+  String get pledgesOverviewTabPast => 'Past';
+
+  @override
+  String get pledgesOverviewAddButton => 'Add a pledge';
+
+  @override
+  String pledgesListNextUp(String date) {
+    return 'Next up $date';
+  }
+
+  @override
+  String pledgesListCardSubtitleOnce(String amount) {
+    return 'All at once $amount';
+  }
+
+  @override
+  String pledgesListCardSubtitleRecurring(
+    String frequency,
+    String amount,
+    String date,
+  ) {
+    return '$frequency $amount · Next up $date';
+  }
+
+  @override
+  String get pledgesDetailGivenSoFarTitle => 'Given so far';
+
+  @override
+  String pledgesDetailOfPledged(String amount) {
+    return 'of $amount pledged';
+  }
+
+  @override
+  String get pledgesDetailPerGoalTitle => 'Per goal';
+
+  @override
+  String pledgesDetailGoalProgress(String given, String target) {
+    return '$given given of $target';
+  }
+
+  @override
+  String pledgesDetailGiveButton(String campaign) {
+    return 'Give to $campaign';
+  }
+
+  @override
+  String get pledgesDetailEditButton => 'Edit pledge';
+
+  @override
+  String get pledgesDetailEndsLabel => 'Ends';
 
   @override
   String get setupRecurringGiftHalfYear => 'half year';

@@ -94,6 +94,7 @@ enum Pages {
   yearlyOverview(path: 'yearly-overview', name: 'YEARLY-OVERVIEW'),
   recurringDonations(path: 'recurring-donations', name: 'RECURRING-DONATIONS'),
   externalDonations(path: 'external-donations', name: 'EXTERNAL-DONATIONS'),
+  pledges(path: 'pledges', name: 'PLEDGES'),
   editCreditCardDetails(
     path: 'edit-credit-card-details',
     name: 'EDIT-CREDIT-CARD-DETAILS',

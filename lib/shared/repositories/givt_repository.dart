@@ -10,6 +10,7 @@ import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation_transaction.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
+import 'package:givt_app/features/pledges/shared/models/pledge.dart';
 import 'package:givt_app/shared/models/givt.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,10 @@ mixin GivtRepository {
   Future<void> syncOfflineGivts();
 
   Future<List<Givt>> fetchGivts();
+
+  Future<List<Pledge>> fetchPledges();
+
+  Future<PledgeGroup> fetchPledgeGroupDetail(String pledgeGroupId);
 
   Future<List<ExternalDonation>> fetchExternalDonations();
 
@@ -231,6 +236,18 @@ class GivtRepositoryImpl with GivtRepository {
       );
       return [];
     }
+  }
+
+  @override
+  Future<List<Pledge>> fetchPledges() async {
+    final decodedJson = await apiClient.fetchPledges();
+    return Pledge.fromApiItems(decodedJson);
+  }
+
+  @override
+  Future<PledgeGroup> fetchPledgeGroupDetail(String pledgeGroupId) async {
+    final item = await apiClient.fetchPledgeGroupDetail(pledgeGroupId);
+    return PledgeGroup.fromJson(item);
   }
 
   @override

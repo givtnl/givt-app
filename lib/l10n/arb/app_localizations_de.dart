@@ -1170,6 +1170,81 @@ class AppLocalizationsDe extends AppLocalizations {
   String get menuItemExternalDonations => 'Externe Spenden';
 
   @override
+  String get menuItemPledges => 'Zusage';
+
+  @override
+  String get pledgesEmptyStateTitle => 'Noch keine Zusagen';
+
+  @override
+  String get pledgesEmptyStateDescription =>
+      'Zusagen, die du außerhalb der App machst, erscheinen hier.';
+
+  @override
+  String pledgesGroupGoalSummary(String goalName, String amount) {
+    return '$goalName: $amount';
+  }
+
+  @override
+  String pledgesListNextExecution(String date) {
+    return 'Nächste: $date';
+  }
+
+  @override
+  String get pledgesOverviewTabCurrent => 'Aktuell';
+
+  @override
+  String get pledgesOverviewTabPast => 'Vergangen';
+
+  @override
+  String get pledgesOverviewAddButton => 'Zusage hinzufügen';
+
+  @override
+  String pledgesListNextUp(String date) {
+    return 'Nächste am $date';
+  }
+
+  @override
+  String pledgesListCardSubtitleOnce(String amount) {
+    return 'Einmalig $amount';
+  }
+
+  @override
+  String pledgesListCardSubtitleRecurring(
+    String frequency,
+    String amount,
+    String date,
+  ) {
+    return '$frequency $amount · Nächste am $date';
+  }
+
+  @override
+  String get pledgesDetailGivenSoFarTitle => 'Bisher gegeben';
+
+  @override
+  String pledgesDetailOfPledged(String amount) {
+    return 'von $amount zugesagt';
+  }
+
+  @override
+  String get pledgesDetailPerGoalTitle => 'Pro Ziel';
+
+  @override
+  String pledgesDetailGoalProgress(String given, String target) {
+    return '$given gegeben von $target';
+  }
+
+  @override
+  String pledgesDetailGiveButton(String campaign) {
+    return 'An $campaign geben';
+  }
+
+  @override
+  String get pledgesDetailEditButton => 'Zusage bearbeiten';
+
+  @override
+  String get pledgesDetailEndsLabel => 'Endet';
+
+  @override
   String get setupRecurringGiftHalfYear => 'Halbes Jahr';
 
   @override

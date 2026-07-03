@@ -622,6 +622,14 @@ enum AnalyticsEventName {
   menuNavigationExternalDonationsClicked(
     'menu_navigation_external_donations_clicked',
   ),
+  menuNavigationPledgesClicked('menu_navigation_pledges_clicked'),
+  pledgesOverviewRefreshed('pledges_overview_refreshed'),
+  pledgesOverviewCardClicked('pledges_overview_card_clicked'),
+  pledgesTabsChanged('pledges_tabs_changed'),
+  pledgesAddClicked('pledges_add_clicked'),
+  pledgesDetailOpened('pledges_detail_opened'),
+  pledgesDetailGiveClicked('pledges_detail_give_clicked'),
+  pledgesDetailEditClicked('pledges_detail_edit_clicked'),
   menuNavigationRecurringDonationClicked(
     'menu_navigation_recurring_donation_clicked',
   ),

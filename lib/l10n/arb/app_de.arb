@@ -812,6 +812,92 @@
   "setupRecurringGiftYear": "Jahr",
   "menuItemRecurringDonation": "Wiederkehrende Spende",
   "menuItemExternalDonations": "Externe Spenden",
+  "menuItemPledges": "Zusage",
+  "pledgesEmptyStateTitle": "Noch keine Zusagen",
+  "pledgesEmptyStateDescription": "Zusagen, die du außerhalb der App machst, erscheinen hier.",
+  "pledgesGroupGoalSummary": "{goalName}: {amount}",
+  "@pledgesGroupGoalSummary": {
+    "placeholders": {
+      "goalName": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListNextExecution": "Nächste: {date}",
+  "@pledgesListNextExecution": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesOverviewTabCurrent": "Aktuell",
+  "pledgesOverviewTabPast": "Vergangen",
+  "pledgesOverviewAddButton": "Zusage hinzufügen",
+  "pledgesListNextUp": "Nächste am {date}",
+  "@pledgesListNextUp": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListCardSubtitleOnce": "Einmalig {amount}",
+  "@pledgesListCardSubtitleOnce": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListCardSubtitleRecurring": "{frequency} {amount} · Nächste am {date}",
+  "@pledgesListCardSubtitleRecurring": {
+    "placeholders": {
+      "frequency": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailGivenSoFarTitle": "Bisher gegeben",
+  "pledgesDetailOfPledged": "von {amount} zugesagt",
+  "@pledgesDetailOfPledged": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailPerGoalTitle": "Pro Ziel",
+  "pledgesDetailGoalProgress": "{given} gegeben von {target}",
+  "@pledgesDetailGoalProgress": {
+    "placeholders": {
+      "given": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailGiveButton": "An {campaign} geben",
+  "@pledgesDetailGiveButton": {
+    "placeholders": {
+      "campaign": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailEditButton": "Zusage bearbeiten",
+  "pledgesDetailEndsLabel": "Endet",
   "setupRecurringGiftHalfYear": "Halbes Jahr",
   "setupRecurringGiftText6": "Mal",
   "recurringGiftsSetupCreate": "Plane deine",

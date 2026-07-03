@@ -14,6 +14,8 @@ enum FunTileVariant {
   two,
   three,
   five,
+  /// Gray neutral tile (Figma type 6): neutral99 bg, neutralVariant80 border.
+  six,
 }
 
 class FunTile extends StatelessWidget {
@@ -70,7 +72,8 @@ class FunTile extends StatelessWidget {
   final AnalyticsEvent analyticsEvent;
   final FunTileVariant variant;
 
-  ({Color border, Color bg, Color text, Color icon}) _themeColors(
+  ({Color border, Color bg, Color text, Color icon, Color subtitle})
+      _themeColors(
     FunAppTheme theme,
   ) {
     return switch (variant) {
@@ -79,24 +82,35 @@ class FunTile extends StatelessWidget {
         bg: theme.highlight98,
         text: theme.highlight40,
         icon: theme.highlight95,
+        subtitle: theme.highlight40.withValues(alpha: 0.7),
       ),
       FunTileVariant.three => (
         border: theme.secondary80,
         bg: theme.secondary98,
         text: theme.secondary40,
         icon: theme.secondary95,
+        subtitle: theme.secondary40.withValues(alpha: 0.7),
       ),
       FunTileVariant.two => (
         border: theme.primary80,
         bg: theme.primary98,
         text: theme.primary40,
         icon: theme.primary95,
+        subtitle: theme.primary40.withValues(alpha: 0.7),
       ),
       FunTileVariant.five => (
         border: theme.error80,
         bg: theme.error98,
         text: theme.error40,
         icon: theme.error50,
+        subtitle: theme.error40.withValues(alpha: 0.7),
+      ),
+      FunTileVariant.six => (
+        border: theme.neutralVariant80,
+        bg: const Color(0xFFF8F8F8),
+        text: theme.neutral40,
+        icon: theme.neutral30,
+        subtitle: theme.neutral50,
       ),
     };
   }
@@ -109,6 +123,7 @@ class FunTile extends StatelessWidget {
     final resolvedBg = backgroundColor ?? defaults.bg;
     final resolvedText = textColor ?? defaults.text;
     final resolvedIconColor = iconColor ?? defaults.icon;
+    final resolvedSubtitle = defaults.subtitle;
 
     final isOnlineIcon = iconPath.startsWith('http');
 
@@ -174,6 +189,7 @@ class FunTile extends StatelessWidget {
                   _buildLabels(
                     theme: theme,
                     resolvedText: resolvedText,
+                    resolvedSubtitle: resolvedSubtitle,
                   ),
                 ],
               ),
@@ -209,6 +225,7 @@ class FunTile extends StatelessWidget {
   Widget _buildLabels({
     required FunAppTheme theme,
     required Color resolvedText,
+    required Color resolvedSubtitle,
   }) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -242,7 +259,7 @@ class FunTile extends StatelessWidget {
           LabelMediumText(
             subtitle!,
             textAlign: TextAlign.center,
-            color: resolvedText.withValues(alpha: 0.7),
+            color: isDisabled ? theme.disabledTileBorder : resolvedSubtitle,
           ),
         ],
       ],

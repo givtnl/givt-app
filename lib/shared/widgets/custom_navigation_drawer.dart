@@ -7,11 +7,13 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/core/feature_flags.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/widgets/feature_flag_builder.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -167,6 +169,31 @@ class CustomNavigationDrawer extends StatelessWidget {
                               },
                             ),
                           ),
+                        ),
+                        FeatureFlagBuilder(
+                          featureFlagKey: FeatureFlags.showPledges,
+                          builder: (context, isEnabled) {
+                            return DrawerMenuItem(
+                              isVisible:
+                                  !auth.user.needRegistration && isEnabled,
+                              title: locals.menuItemPledges,
+                              leading: FaIcon(
+                                FontAwesomeIcons.handHoldingHeart,
+                                size: 20,
+                                color: iconColor,
+                              ),
+                              analyticsEvent: AnalyticsEventName
+                                  .menuNavigationPledgesClicked,
+                              onTap: () async => AuthUtils.checkToken(
+                                context,
+                                checkAuthRequest: CheckAuthRequest(
+                                  navigate: (context) async {
+                                    context.goNamed(Pages.pledges.name);
+                                  },
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
