@@ -56,13 +56,15 @@ class CustomNavigationDrawer extends StatelessWidget {
                             if (!context.mounted) {
                               return;
                             }
-                            final router = GoRouter.of(context)
-                              ..pop();
-                            if (auth.user.needRegistration) {
+                            final router = GoRouter.of(context);
+                            final currentUser =
+                                context.read<AuthCubit>().state.user;
+                            Navigator.of(context).pop();
+                            if (currentUser.needRegistration) {
                               router.goNamed(
                                 Pages.registration.name,
                                 queryParameters: {
-                                  'email': auth.user.email,
+                                  'email': currentUser.email,
                                 },
                               );
                               return;

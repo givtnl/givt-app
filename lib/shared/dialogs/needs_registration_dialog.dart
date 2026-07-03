@@ -19,7 +19,6 @@ class NeedsRegistrationDialog {
       return Future<void>.value();
     }
 
-    final user = context.read<AuthCubit>().state.user;
     final isMandatory = mandatePopupDismissalTracker.shouldForceCompletion;
     final l10n = context.l10n;
     final router = GoRouter.of(context);
@@ -30,11 +29,15 @@ class NeedsRegistrationDialog {
     );
 
     void navigateToFinalizeRegistration() {
-      if (user.needRegistration) {
+      if (!context.mounted) {
+        return;
+      }
+      final currentUser = context.read<AuthCubit>().state.user;
+      if (currentUser.needRegistration) {
         router.goNamed(
           Pages.registration.name,
           queryParameters: {
-            'email': user.email,
+            'email': currentUser.email,
           },
         );
         return;
