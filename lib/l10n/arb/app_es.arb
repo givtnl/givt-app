@@ -898,6 +898,26 @@
   },
   "pledgesDetailEditButton": "Editar compromiso",
   "pledgesDetailEndsLabel": "Finaliza",
+  "pledgesManageTitle": "Gestionar compromiso",
+  "pledgesEditTitle": "Editar compromiso",
+  "pledgesEditAmountLabel": "Importe",
+  "pledgesEditFrequencyLabel": "Frecuencia",
+  "pledgesEditGivingMethodLabel": "Dar desde",
+  "pledgesEditValidationIncreaseOnly": "Solo puedes aumentar el importe de tu compromiso.",
+  "pledgesEditSaveButton": "Guardar cambios",
+  "pledgesEditUpdateSucceeded": "Cambios guardados",
+  "pledgesGivingMethodAutomaticCollection": "Cobro automático",
+  "pledgesManageGoalSubtitle": "{target} comprometidos · {recurring}",
+  "@pledgesManageGoalSubtitle": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      },
+      "recurring": {
+        "type": "String"
+      }
+    }
+  },
   "setupRecurringGiftHalfYear": "half year",
   "setupRecurringGiftText6": "times",
   "recurringGiftsSetupCreate": "Schedule your",

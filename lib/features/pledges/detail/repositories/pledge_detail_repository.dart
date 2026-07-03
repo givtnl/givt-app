@@ -9,6 +9,13 @@ mixin PledgeDetailRepository {
   PledgeGroup? getPledgeGroup();
 
   Future<void> loadDetail(String pledgeGroupId);
+
+  Future<bool> updatePledge({
+    required String pledgeId,
+    double? amount,
+    String? frequency,
+    String? type,
+  });
 }
 
 class PledgeDetailRepositoryImpl with PledgeDetailRepository {
@@ -42,5 +49,29 @@ class PledgeDetailRepositoryImpl with PledgeDetailRepository {
     } finally {
       _isLoading = false;
     }
+  }
+
+  @override
+  Future<bool> updatePledge({
+    required String pledgeId,
+    double? amount,
+    String? frequency,
+    String? type,
+  }) async {
+    final body = <String, dynamic>{};
+    if (amount != null) {
+      body['amount'] = amount;
+    }
+    if (frequency != null) {
+      body['frequency'] = frequency;
+    }
+    if (type != null) {
+      body['type'] = type;
+    }
+
+    return _givtRepository.updatePledge(
+      pledgeId: pledgeId,
+      body: body,
+    );
   }
 }

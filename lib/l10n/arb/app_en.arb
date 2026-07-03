@@ -898,6 +898,26 @@
   },
   "pledgesDetailEditButton": "Edit pledge",
   "pledgesDetailEndsLabel": "Ends",
+  "pledgesManageTitle": "Manage pledge",
+  "pledgesEditTitle": "Edit pledge",
+  "pledgesEditAmountLabel": "Amount",
+  "pledgesEditFrequencyLabel": "Frequency",
+  "pledgesEditGivingMethodLabel": "Give from",
+  "pledgesEditValidationIncreaseOnly": "You can only increase your pledge amount.",
+  "pledgesEditSaveButton": "Save changes",
+  "pledgesEditUpdateSucceeded": "Changes saved",
+  "pledgesGivingMethodAutomaticCollection": "Automatic collection",
+  "pledgesManageGoalSubtitle": "{target} pledged · {recurring}",
+  "@pledgesManageGoalSubtitle": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      },
+      "recurring": {
+        "type": "String"
+      }
+    }
+  },
   "setupRecurringGiftHalfYear": "half year",
   "setupRecurringGiftText6": "times",
   "recurringGiftsSetupCreate": "Schedule your",

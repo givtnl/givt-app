@@ -1242,6 +1242,39 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Endet';
 
   @override
+  String get pledgesManageTitle => 'Zusage verwalten';
+
+  @override
+  String get pledgesEditTitle => 'Zusage bearbeiten';
+
+  @override
+  String get pledgesEditAmountLabel => 'Betrag';
+
+  @override
+  String get pledgesEditFrequencyLabel => 'Häufigkeit';
+
+  @override
+  String get pledgesEditGivingMethodLabel => 'Geben von';
+
+  @override
+  String get pledgesEditValidationIncreaseOnly =>
+      'Du kannst deinen Zusagenbetrag nur erhöhen.';
+
+  @override
+  String get pledgesEditSaveButton => 'Änderungen speichern';
+
+  @override
+  String get pledgesEditUpdateSucceeded => 'Änderungen gespeichert';
+
+  @override
+  String get pledgesGivingMethodAutomaticCollection => 'Automatische Abbuchung';
+
+  @override
+  String pledgesManageGoalSubtitle(String target, String recurring) {
+    return '$target zugesagt · $recurring';
+  }
+
+  @override
   String get setupRecurringGiftHalfYear => 'Halbes Jahr';
 
   @override

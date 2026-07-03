@@ -898,6 +898,26 @@
   },
   "pledgesDetailEditButton": "Zusage bearbeiten",
   "pledgesDetailEndsLabel": "Endet",
+  "pledgesManageTitle": "Zusage verwalten",
+  "pledgesEditTitle": "Zusage bearbeiten",
+  "pledgesEditAmountLabel": "Betrag",
+  "pledgesEditFrequencyLabel": "Häufigkeit",
+  "pledgesEditGivingMethodLabel": "Geben von",
+  "pledgesEditValidationIncreaseOnly": "Du kannst deinen Zusagenbetrag nur erhöhen.",
+  "pledgesEditSaveButton": "Änderungen speichern",
+  "pledgesEditUpdateSucceeded": "Änderungen gespeichert",
+  "pledgesGivingMethodAutomaticCollection": "Automatische Abbuchung",
+  "pledgesManageGoalSubtitle": "{target} zugesagt · {recurring}",
+  "@pledgesManageGoalSubtitle": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      },
+      "recurring": {
+        "type": "String"
+      }
+    }
+  },
   "setupRecurringGiftHalfYear": "Halbes Jahr",
   "setupRecurringGiftText6": "Mal",
   "recurringGiftsSetupCreate": "Plane deine",

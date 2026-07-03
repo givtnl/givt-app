@@ -1233,6 +1233,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Ends';
 
   @override
+  String get pledgesManageTitle => 'Manage pledge';
+
+  @override
+  String get pledgesEditTitle => 'Edit pledge';
+
+  @override
+  String get pledgesEditAmountLabel => 'Amount';
+
+  @override
+  String get pledgesEditFrequencyLabel => 'Frequency';
+
+  @override
+  String get pledgesEditGivingMethodLabel => 'Give from';
+
+  @override
+  String get pledgesEditValidationIncreaseOnly =>
+      'You can only increase your pledge amount.';
+
+  @override
+  String get pledgesEditSaveButton => 'Save changes';
+
+  @override
+  String get pledgesEditUpdateSucceeded => 'Changes saved';
+
+  @override
+  String get pledgesGivingMethodAutomaticCollection => 'Automatic collection';
+
+  @override
+  String pledgesManageGoalSubtitle(String target, String recurring) {
+    return '$target pledged · $recurring';
+  }
+
+  @override
   String get setupRecurringGiftHalfYear => 'half year';
 
   @override
@@ -4715,6 +4748,39 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get pledgesDetailEndsLabel => 'Ends';
+
+  @override
+  String get pledgesManageTitle => 'Manage pledge';
+
+  @override
+  String get pledgesEditTitle => 'Edit pledge';
+
+  @override
+  String get pledgesEditAmountLabel => 'Amount';
+
+  @override
+  String get pledgesEditFrequencyLabel => 'Frequency';
+
+  @override
+  String get pledgesEditGivingMethodLabel => 'Give from';
+
+  @override
+  String get pledgesEditValidationIncreaseOnly =>
+      'You can only increase your pledge amount.';
+
+  @override
+  String get pledgesEditSaveButton => 'Save changes';
+
+  @override
+  String get pledgesEditUpdateSucceeded => 'Changes saved';
+
+  @override
+  String get pledgesGivingMethodAutomaticCollection => 'Automatic collection';
+
+  @override
+  String pledgesManageGoalSubtitle(String target, String recurring) {
+    return '$target pledged · $recurring';
+  }
 
   @override
   String get setupRecurringGiftHalfYear => 'half year';

@@ -10,9 +10,11 @@ import 'package:givt_app/features/pledges/detail/widgets/pledge_detail_goals_sec
 import 'package:givt_app/features/pledges/detail/widgets/pledge_detail_history_section.dart';
 import 'package:givt_app/features/pledges/detail/widgets/pledge_detail_summary_card.dart';
 import 'package:givt_app/features/pledges/detail/widgets/pledge_detail_summary_tiles.dart';
+import 'package:givt_app/features/pledges/manage/pages/pledge_manage_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -163,7 +165,10 @@ class _PledgeDetailPageState extends State<PledgeDetailPage> {
           fullBorder: true,
           analyticsEvent:
               AnalyticsEventName.pledgesDetailEditClicked.toEvent(),
-          onTap: () {},
+          onTap: () => Navigator.of(context).push(
+            PledgeManagePage(pledgeGroupId: widget.pledgeGroupId)
+                .toRoute(context),
+          ),
         ),
       ],
     );

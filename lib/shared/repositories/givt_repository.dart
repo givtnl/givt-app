@@ -29,6 +29,11 @@ mixin GivtRepository {
 
   Future<PledgeGroup> fetchPledgeGroupDetail(String pledgeGroupId);
 
+  Future<bool> updatePledge({
+    required String pledgeId,
+    required Map<String, dynamic> body,
+  });
+
   Future<List<ExternalDonation>> fetchExternalDonations();
 
   Future<List<ExternalDonation>> fetchExternalDonationSummary({
@@ -248,6 +253,14 @@ class GivtRepositoryImpl with GivtRepository {
   Future<PledgeGroup> fetchPledgeGroupDetail(String pledgeGroupId) async {
     final item = await apiClient.fetchPledgeGroupDetail(pledgeGroupId);
     return PledgeGroup.fromJson(item);
+  }
+
+  @override
+  Future<bool> updatePledge({
+    required String pledgeId,
+    required Map<String, dynamic> body,
+  }) async {
+    return apiClient.updatePledge(pledgeId, body);
   }
 
   @override
