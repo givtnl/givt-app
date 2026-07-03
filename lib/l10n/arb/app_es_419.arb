@@ -902,6 +902,8 @@
   "pledgesEditValidationIncreaseOnly": "Solo puedes aumentar el importe de tu compromiso.",
   "pledgesEditSaveButton": "Guardar cambios",
   "pledgesEditUpdateSucceeded": "Cambios guardados",
+  "pledgesEditValidationBankDetailsRequired": "Agrega tus datos bancarios en Información personal para usar el cobro automático.",
+  "pledgesManageMixedFrequency": "Varias frecuencias",
   "pledgesGivingMethodAutomaticCollection": "Cobro automático",
   "pledgesManageGoalSubtitle": "{target} comprometidos · {recurring}",
   "@pledgesManageGoalSubtitle": {

@@ -906,6 +906,8 @@
   "pledgesEditValidationIncreaseOnly": "You can only increase your pledge amount.",
   "pledgesEditSaveButton": "Save changes",
   "pledgesEditUpdateSucceeded": "Changes saved",
+  "pledgesEditValidationBankDetailsRequired": "Add your bank details in Personal information to use automatic collection.",
+  "pledgesManageMixedFrequency": "Multiple frequencies",
   "pledgesGivingMethodAutomaticCollection": "Automatic collection",
   "pledgesManageGoalSubtitle": "{target} pledged · {recurring}",
   "@pledgesManageGoalSubtitle": {

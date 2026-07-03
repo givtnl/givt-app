@@ -32,6 +32,10 @@ class PledgeManagePage extends StatefulWidget {
 class _PledgeManagePageState extends State<PledgeManagePage> {
   late final PledgeManageCubit _cubit;
 
+  void _popWithResult() {
+    context.pop(_cubit.hasUpdates);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -93,7 +97,7 @@ class _PledgeManagePageState extends State<PledgeManagePage> {
           appBar: FunTopAppBar(
             variant: FunTopAppBarVariant.white,
             leading: GivtBackButtonFlat(
-              onPressed: () async => context.pop(),
+              onPressed: () async => _popWithResult(),
             ),
             title: context.l10n.pledgesManageTitle,
           ),
@@ -111,7 +115,7 @@ class _PledgeManagePageState extends State<PledgeManagePage> {
         appBar: FunTopAppBar(
           variant: FunTopAppBarVariant.white,
           leading: GivtBackButtonFlat(
-            onPressed: () async => context.pop(),
+            onPressed: () async => _popWithResult(),
           ),
           title: context.l10n.pledgesManageTitle,
         ),
@@ -123,7 +127,7 @@ class _PledgeManagePageState extends State<PledgeManagePage> {
           appBar: FunTopAppBar(
             variant: FunTopAppBarVariant.white,
             leading: GivtBackButtonFlat(
-              onPressed: () async => context.pop(),
+              onPressed: () async => _popWithResult(),
             ),
             title: locals.pledgesManageTitle,
           ),

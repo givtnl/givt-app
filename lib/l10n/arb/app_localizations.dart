@@ -2313,6 +2313,18 @@ abstract class AppLocalizations {
   /// **'Changes saved'**
   String get pledgesEditUpdateSucceeded;
 
+  /// No description provided for @pledgesEditValidationBankDetailsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your bank details in Personal information to use automatic collection.'**
+  String get pledgesEditValidationBankDetailsRequired;
+
+  /// No description provided for @pledgesManageMixedFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple frequencies'**
+  String get pledgesManageMixedFrequency;
+
   /// No description provided for @pledgesGivingMethodAutomaticCollection.
   ///
   /// In en, this message translates to:

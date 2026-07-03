@@ -20,10 +20,11 @@ class PledgeFrequencyEditorSheet {
     final currentFrequency = group.goals.firstOrNull?.frequency ?? 'Monthly';
     final parsedFrequency =
         PledgeDisplay.parseFrequency(currentFrequency) ??
-            ExternalDonationFrequency.monthly;
+        ExternalDonationFrequency.monthly;
     var frequency = ExternalDonationFrequencyDropdown.frequencyForEditor(
       parsedFrequency,
     );
+    final initialFrequency = frequency;
 
     return showModalBottomSheet<void>(
       context: context,
@@ -35,8 +36,7 @@ class PledgeFrequencyEditorSheet {
       builder: (sheetContext) {
         return StatefulBuilder(
           builder: (context, setState) {
-            final canSave =
-                PledgeDisplay.toApiFrequency(frequency) != currentFrequency;
+            final canSave = frequency != initialFrequency;
 
             return FunBottomSheet(
               title: locals.pledgesEditFrequencyLabel,
@@ -51,8 +51,9 @@ class PledgeFrequencyEditorSheet {
                 text: locals.pledgesEditSaveButton,
                 isDisabled: !canSave,
                 isLoading: uiModel.isSaving,
-                analyticsEvent:
-                    AnalyticsEventName.pledgesEditFrequencySaveClicked.toEvent(),
+                analyticsEvent: AnalyticsEventName
+                    .pledgesEditFrequencySaveClicked
+                    .toEvent(),
                 onTap: canSave && !uiModel.isSaving
                     ? () async {
                         Navigator.of(sheetContext).pop();

@@ -13,7 +13,7 @@ void registerPledgesDependencies() {
         getIt<GivtRepository>(),
       ),
     )
-    ..registerLazySingleton<PledgeDetailRepository>(
+    ..registerFactory<PledgeDetailRepository>(
       () => PledgeDetailRepositoryImpl(
         getIt<GivtRepository>(),
       ),

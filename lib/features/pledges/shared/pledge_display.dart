@@ -7,6 +7,7 @@ import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
+
 abstract final class PledgeDisplay {
   static String formatAmount({
     required double amount,
@@ -56,7 +57,8 @@ abstract final class PledgeDisplay {
     required Pledge pledge,
     required List<Pledge> sectionPledges,
   }) {
-    final hasDuplicatePledgeGroup = sectionPledges
+    final hasDuplicatePledgeGroup =
+        sectionPledges
             .where((item) => item.pledgeGroupName == pledge.pledgeGroupName)
             .length >
         1;
@@ -167,8 +169,8 @@ abstract final class PledgeDisplay {
     final target = goalAmount != null && goalAmount > 0
         ? goalAmount
         : _displaysAsAllAtOnce(pledge.frequency)
-            ? pledge.amount
-            : null;
+        ? pledge.amount
+        : null;
     if (target == null || target <= 0) {
       return null;
     }
@@ -258,8 +260,14 @@ abstract final class PledgeDisplay {
     required String countryCode,
     required AppLocalizations locals,
   }) {
-    final formattedGiven = formatAmount(amount: given, countryCode: countryCode);
-    final formattedTarget = formatAmount(amount: target, countryCode: countryCode);
+    final formattedGiven = formatAmount(
+      amount: given,
+      countryCode: countryCode,
+    );
+    final formattedTarget = formatAmount(
+      amount: target,
+      countryCode: countryCode,
+    );
     return locals.pledgesDetailGoalProgress(formattedGiven, formattedTarget);
   }
 
@@ -389,12 +397,17 @@ abstract final class PledgeDisplay {
     required PledgeGroup group,
     required String locale,
   }) {
-    final frequency = _resolveSharedFrequency(group.goals);
-    if (frequency == null) {
+    if (group.goals.isEmpty) {
       return '';
     }
 
-    final anchorDate = _resolveFrequencyAnchorDate(group.goals) ?? DateTime.now();
+    final frequency = _resolveSharedFrequency(group.goals);
+    if (frequency == null) {
+      return locals.pledgesManageMixedFrequency;
+    }
+
+    final anchorDate =
+        _resolveFrequencyAnchorDate(group.goals) ?? DateTime.now();
     return formatFrequencyWithDay(
       locals: locals,
       frequencyString: frequency,
@@ -410,7 +423,10 @@ abstract final class PledgeDisplay {
     required String accountNumber,
   }) {
     final typeLabel = formatGivingMethodType(locals, pledgeType);
-    final maskedAccount = maskBankAccount(iban: iban, accountNumber: accountNumber);
+    final maskedAccount = maskBankAccount(
+      iban: iban,
+      accountNumber: accountNumber,
+    );
     if (maskedAccount.isEmpty) {
       return typeLabel;
     }
@@ -475,7 +491,7 @@ abstract final class PledgeDisplay {
     }
     final first = goals.first.frequency;
     final allSame = goals.every((goal) => goal.frequency == first);
-    return allSame ? first : goals.first.frequency;
+    return allSame ? first : null;
   }
 
   static DateTime? _resolveFrequencyAnchorDate(List<PledgeGoal> goals) {

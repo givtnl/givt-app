@@ -906,6 +906,8 @@
   "pledgesEditValidationIncreaseOnly": "Je kunt je toezeggingsbedrag alleen verhogen.",
   "pledgesEditSaveButton": "Wijzigingen opslaan",
   "pledgesEditUpdateSucceeded": "Wijzigingen opgeslagen",
+  "pledgesEditValidationBankDetailsRequired": "Voeg je bankgegevens toe bij Persoonlijke gegevens om automatische incasso te gebruiken.",
+  "pledgesManageMixedFrequency": "Meerdere frequenties",
   "pledgesGivingMethodAutomaticCollection": "Automatische incasso",
   "pledgesManageGoalSubtitle": "{target} toegezegd · {recurring}",
   "@pledgesManageGoalSubtitle": {

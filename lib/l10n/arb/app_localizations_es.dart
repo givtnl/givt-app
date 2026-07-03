@@ -1258,6 +1258,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pledgesEditUpdateSucceeded => 'Cambios guardados';
 
   @override
+  String get pledgesEditValidationBankDetailsRequired =>
+      'Añade tus datos bancarios en Información personal para usar el cobro automático.';
+
+  @override
+  String get pledgesManageMixedFrequency => 'Varias frecuencias';
+
+  @override
   String get pledgesGivingMethodAutomaticCollection => 'Cobro automático';
 
   @override
@@ -4794,6 +4801,13 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get pledgesEditUpdateSucceeded => 'Cambios guardados';
+
+  @override
+  String get pledgesEditValidationBankDetailsRequired =>
+      'Agrega tus datos bancarios en Información personal para usar el cobro automático.';
+
+  @override
+  String get pledgesManageMixedFrequency => 'Varias frecuencias';
 
   @override
   String get pledgesGivingMethodAutomaticCollection => 'Cobro automático';

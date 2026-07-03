@@ -1267,6 +1267,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pledgesEditUpdateSucceeded => 'Änderungen gespeichert';
 
   @override
+  String get pledgesEditValidationBankDetailsRequired =>
+      'Füge deine Bankdaten unter Persönliche Daten hinzu, um automatische Abbuchung zu nutzen.';
+
+  @override
+  String get pledgesManageMixedFrequency => 'Mehrere Frequenzen';
+
+  @override
   String get pledgesGivingMethodAutomaticCollection => 'Automatische Abbuchung';
 
   @override

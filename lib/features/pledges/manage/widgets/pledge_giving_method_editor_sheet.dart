@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/pledges/manage/cubit/pledge_manage_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -32,7 +34,12 @@ class PledgeGivingMethodEditorSheet {
       builder: (sheetContext) {
         return StatefulBuilder(
           builder: (context, setState) {
-            final canSave = selectedType != currentType;
+            final auth = context.read<AuthCubit>().state.user;
+            final hasBankDetails =
+                auth.iban.isNotEmpty || auth.accountNumber.isNotEmpty;
+            final missingBankDetails =
+                selectedType == _directDebitType && !hasBankDetails;
+            final canSave = selectedType != currentType && !missingBankDetails;
 
             return FunBottomSheet(
               title: locals.pledgesEditGivingMethodLabel,
@@ -50,6 +57,14 @@ class PledgeGivingMethodEditorSheet {
                     onTap: () =>
                         setState(() => selectedType = _directDebitType),
                   ),
+                  if (missingBankDetails) ...[
+                    const SizedBox(height: 8),
+                    BodySmallText(
+                      locals.pledgesEditValidationBankDetailsRequired,
+                      color: FamilyAppTheme.error80,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ],
               ),
               primaryButton: FunButton(

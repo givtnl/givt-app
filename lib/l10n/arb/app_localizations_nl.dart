@@ -1262,6 +1262,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get pledgesEditUpdateSucceeded => 'Wijzigingen opgeslagen';
 
   @override
+  String get pledgesEditValidationBankDetailsRequired =>
+      'Voeg je bankgegevens toe bij Persoonlijke gegevens om automatische incasso te gebruiken.';
+
+  @override
+  String get pledgesManageMixedFrequency => 'Meerdere frequenties';
+
+  @override
   String get pledgesGivingMethodAutomaticCollection => 'Automatische incasso';
 
   @override

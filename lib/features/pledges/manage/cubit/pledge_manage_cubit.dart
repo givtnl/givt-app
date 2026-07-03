@@ -24,6 +24,9 @@ class PledgeManageCubit
   }
 
   bool _isSaving = false;
+  bool _hasUpdates = false;
+
+  bool get hasUpdates => _hasUpdates;
 
   Future<void> init(String pledgeGroupId) async {
     emitLoading();
@@ -31,7 +34,8 @@ class PledgeManageCubit
       await _repository.loadDetail(pledgeGroupId);
       if (isClosed) return;
 
-      if (_repository.getError() != null || _repository.getPledgeGroup() == null) {
+      if (_repository.getError() != null ||
+          _repository.getPledgeGroup() == null) {
         emitError(null);
         return;
       }
@@ -51,6 +55,10 @@ class PledgeManageCubit
     required PledgeManageField field,
     PledgeGoal? goal,
   }) {
+    if (_isSaving) {
+      return;
+    }
+
     switch (field) {
       case PledgeManageField.goalAmount:
         if (goal == null) {
@@ -132,6 +140,10 @@ class PledgeManageCubit
     required Future<bool> Function() update,
     required String methodName,
   }) async {
+    if (_isSaving) {
+      return;
+    }
+
     final group = _repository.getPledgeGroup();
     if (group == null) {
       return;
@@ -145,9 +157,13 @@ class PledgeManageCubit
       if (isClosed) return;
 
       if (!success) {
+        await _repository.loadDetail(group.pledgeGroupId);
+        if (isClosed) return;
+
         _isSaving = false;
         emitCustom(const PledgeManageCustom.manageUpdateFailed());
-        emitData(_createUIModel(group));
+        final refreshedGroup = _repository.getPledgeGroup() ?? group;
+        emitData(_createUIModel(refreshedGroup));
         return;
       }
 
@@ -163,6 +179,7 @@ class PledgeManageCubit
       }
 
       _isSaving = false;
+      _hasUpdates = true;
       emitCustom(const PledgeManageCustom.manageUpdateSucceeded());
       emitData(_createUIModel(refreshedGroup));
     } catch (error) {
@@ -215,6 +232,6 @@ class PledgeManageCubit
     }
     final first = goals.first.frequency;
     final allSame = goals.every((goal) => goal.frequency == first);
-    return allSame ? first : goals.first.frequency;
+    return allSame ? first : null;
   }
 }

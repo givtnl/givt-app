@@ -146,7 +146,10 @@ class _PledgeDetailPageState extends State<PledgeDetailPage> {
     );
   }
 
-  Widget _buildBottomActions(BuildContext context, PledgeDetailUIModel uiModel) {
+  Widget _buildBottomActions(
+    BuildContext context,
+    PledgeDetailUIModel uiModel,
+  ) {
     final locals = context.l10n;
     final campaignName = uiModel.group.pledgeGroupName;
 
@@ -154,8 +157,7 @@ class _PledgeDetailPageState extends State<PledgeDetailPage> {
       children: [
         FunButton(
           text: locals.pledgesDetailGiveButton(campaignName),
-          analyticsEvent:
-              AnalyticsEventName.pledgesDetailGiveClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.pledgesDetailGiveClicked.toEvent(),
           onTap: () {},
         ),
         const SizedBox(height: 12),
@@ -163,12 +165,17 @@ class _PledgeDetailPageState extends State<PledgeDetailPage> {
           text: locals.pledgesDetailEditButton,
           variant: FunButtonVariant.secondary,
           fullBorder: true,
-          analyticsEvent:
-              AnalyticsEventName.pledgesDetailEditClicked.toEvent(),
-          onTap: () => Navigator.of(context).push(
-            PledgeManagePage(pledgeGroupId: widget.pledgeGroupId)
-                .toRoute(context),
-          ),
+          analyticsEvent: AnalyticsEventName.pledgesDetailEditClicked.toEvent(),
+          onTap: () async {
+            final didUpdate = await Navigator.of(context).push(
+              PledgeManagePage(
+                pledgeGroupId: widget.pledgeGroupId,
+              ).toRoute(context),
+            );
+            if (didUpdate == true && mounted) {
+              await _cubit.init(widget.pledgeGroupId);
+            }
+          },
         ),
       ],
     );
