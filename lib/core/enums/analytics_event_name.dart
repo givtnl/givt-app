@@ -647,6 +647,7 @@ enum AnalyticsEventName {
     'menu_navigation_platform_contribution_clicked',
   ),
   menuNavigationBiometricClicked('menu_navigation_biometric_clicked'),
+  biometricSettingsSaveClicked('biometric_settings_save_clicked'),
   menuNavigationLogoutClicked('menu_navigation_logout_clicked'),
   menuNavigationUnregisterClicked('menu_navigation_unregister_clicked'),
   menuNavigationAboutGivtClicked('menu_navigation_about_givt_clicked'),

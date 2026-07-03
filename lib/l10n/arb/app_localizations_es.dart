@@ -429,16 +429,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get faceId => 'Face ID';
 
   @override
-  String get touchIdUsage =>
-      'This is where you change the use of your Touch ID to login into the Givt app.';
+  String get loginUsingFaceId => 'Iniciar sesión con Face ID';
 
   @override
-  String get faceIdUsage =>
-      'This is where you change the use of your Face ID to login into the Givt app.';
+  String get loginUsingTouchId => 'Iniciar sesión con Touch ID';
 
   @override
-  String get fingerprintUsage =>
-      'This is where you change the use of your fingerprint to login into the Givt app.';
+  String get loginUsingFingerprint => 'Iniciar sesión con huella dactilar';
 
   @override
   String get offlineGiftsTitle => 'Offline donations';
@@ -3933,16 +3930,13 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get faceId => 'Face ID';
 
   @override
-  String get touchIdUsage =>
-      'Aquí puedes cambiar el uso de tu Touch ID para iniciar sesión en la aplicación Givt.';
+  String get loginUsingFaceId => 'Iniciar sesión con Face ID';
 
   @override
-  String get faceIdUsage =>
-      'Aquí puedes cambiar el uso de tu Face ID para iniciar sesión en la aplicación Givt.';
+  String get loginUsingTouchId => 'Iniciar sesión con Touch ID';
 
   @override
-  String get fingerprintUsage =>
-      'Aquí puedes cambiar el uso de tu huella dactilar para iniciar sesión en la aplicación Givt.';
+  String get loginUsingFingerprint => 'Iniciar sesión con huella dactilar';
 
   @override
   String get offlineGiftsTitle => 'Donaciones sin conexión';

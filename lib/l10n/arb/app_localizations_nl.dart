@@ -432,16 +432,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get faceId => 'Face ID';
 
   @override
-  String get touchIdUsage =>
-      'Hier beheer je het gebruik van je Touch ID om in de Givt-app in te loggen.';
+  String get loginUsingFaceId => 'Inloggen met Face ID';
 
   @override
-  String get faceIdUsage =>
-      'Hier beheer je het gebruik van je Face ID om in de Givt-app in te loggen.';
+  String get loginUsingTouchId => 'Inloggen met Touch ID';
 
   @override
-  String get fingerprintUsage =>
-      'Hier beheer je het gebruik van je vingerafdruk om in de Givt-app in te loggen.';
+  String get loginUsingFingerprint => 'Inloggen met vingerafdruk';
 
   @override
   String get offlineGiftsTitle => 'Offline giften';

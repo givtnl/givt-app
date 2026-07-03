@@ -434,16 +434,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get faceId => 'Face ID';
 
   @override
-  String get touchIdUsage =>
-      'Hier änderst du die Verwendung von Touch ID, um dich bei der Givt App anzumelden.';
+  String get loginUsingFaceId => 'Mit Face ID anmelden';
 
   @override
-  String get faceIdUsage =>
-      'Hier änderst du die Verwendung von Face ID, um dich bei der Givt App anzumelden.';
+  String get loginUsingTouchId => 'Mit Touch ID anmelden';
 
   @override
-  String get fingerprintUsage =>
-      'Hier änderst du die Verwendung des Fingerabdrucks, um dich bei der Givt App anzumelden.';
+  String get loginUsingFingerprint => 'Mit Fingerabdruck anmelden';
 
   @override
   String get offlineGiftsTitle => 'Offline Spenden';

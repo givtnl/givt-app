@@ -830,23 +830,23 @@ abstract class AppLocalizations {
   /// **'Face ID'**
   String get faceId;
 
-  /// No description provided for @touchIdUsage.
+  /// No description provided for @loginUsingFaceId.
   ///
   /// In en, this message translates to:
-  /// **'This is where you change the use of your Touch ID to login into the Givt app.'**
-  String get touchIdUsage;
+  /// **'Log in with Face ID'**
+  String get loginUsingFaceId;
 
-  /// No description provided for @faceIdUsage.
+  /// No description provided for @loginUsingTouchId.
   ///
   /// In en, this message translates to:
-  /// **'This is where you change the use of your Face ID to login into the Givt app.'**
-  String get faceIdUsage;
+  /// **'Log in with Touch ID'**
+  String get loginUsingTouchId;
 
-  /// No description provided for @fingerprintUsage.
+  /// No description provided for @loginUsingFingerprint.
   ///
   /// In en, this message translates to:
-  /// **'This is where you change the use of your fingerprint to login into the Givt app.'**
-  String get fingerprintUsage;
+  /// **'Log in with fingerprint'**
+  String get loginUsingFingerprint;
 
   /// No description provided for @offlineGiftsTitle.
   ///
