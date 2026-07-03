@@ -8,7 +8,6 @@ import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_uimodel.
 import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
 
-/// Display helpers for [Pledge] list UI.
 abstract final class PledgeDisplay {
   static String formatAmount({
     required double amount,
@@ -58,7 +57,8 @@ abstract final class PledgeDisplay {
     required Pledge pledge,
     required List<Pledge> sectionPledges,
   }) {
-    final hasDuplicatePledgeGroup = sectionPledges
+    final hasDuplicatePledgeGroup =
+        sectionPledges
             .where((item) => item.pledgeGroupName == pledge.pledgeGroupName)
             .length >
         1;
@@ -169,8 +169,8 @@ abstract final class PledgeDisplay {
     final target = goalAmount != null && goalAmount > 0
         ? goalAmount
         : _displaysAsAllAtOnce(pledge.frequency)
-            ? pledge.amount
-            : null;
+        ? pledge.amount
+        : null;
     if (target == null || target <= 0) {
       return null;
     }
@@ -260,8 +260,14 @@ abstract final class PledgeDisplay {
     required String countryCode,
     required AppLocalizations locals,
   }) {
-    final formattedGiven = formatAmount(amount: given, countryCode: countryCode);
-    final formattedTarget = formatAmount(amount: target, countryCode: countryCode);
+    final formattedGiven = formatAmount(
+      amount: given,
+      countryCode: countryCode,
+    );
+    final formattedTarget = formatAmount(
+      amount: target,
+      countryCode: countryCode,
+    );
     return locals.pledgesDetailGoalProgress(formattedGiven, formattedTarget);
   }
 
@@ -316,6 +322,190 @@ abstract final class PledgeDisplay {
     }
 
     return parts.join(' · ');
+  }
+
+  static String buildManageGoalSubtitle({
+    required AppLocalizations locals,
+    required PledgeGoal goal,
+    required String countryCode,
+  }) {
+    final target = goal.pledgeTargetAmount;
+    final amountParts = parseGoalAmountFrequency(
+      locals: locals,
+      goal: goal,
+      countryCode: countryCode,
+    );
+
+    if (amountParts.isAllAtOnce) {
+      return amountParts.allAtOnceText ?? '';
+    }
+
+    final recurring = '${amountParts.amount}${amountParts.unitSuffix ?? ''}';
+    if (target == null) {
+      return recurring;
+    }
+
+    return locals.pledgesManageGoalSubtitle(
+      formatAmount(amount: target, countryCode: countryCode),
+      recurring,
+    );
+  }
+
+  static String formatFrequencyWithDay({
+    required AppLocalizations locals,
+    required String frequencyString,
+    required DateTime anchorDate,
+    required String locale,
+  }) {
+    final frequency = _parseFrequency(frequencyString);
+    if (frequency == null) {
+      return formatFrequency(locals, frequencyString);
+    }
+
+    final frequencyLabel = ExternalDonationFrequencyDropdown.frequencyLabel(
+      locals,
+      frequency,
+    ).toLowerCase();
+
+    switch (frequency) {
+      case ExternalDonationFrequency.weekly:
+        final weekday = DateFormat.EEEE(locale).format(anchorDate);
+        return locals.externalDonationsManageFrequencyWeeklyOnDay(weekday);
+      case ExternalDonationFrequency.monthly:
+        return locals.externalDonationsManageFrequencyMonthlyOnDay(
+          anchorDate.day.toString(),
+        );
+      case ExternalDonationFrequency.halfYearly:
+        return locals.externalDonationsManageFrequencyHalfYearlyOnDay(
+          anchorDate.day.toString(),
+        );
+      case ExternalDonationFrequency.yearly:
+        return locals.externalDonationsManageFrequencyYearlyOnDate(
+          formatHistoryDate(anchorDate, locale),
+        );
+      case ExternalDonationFrequency.quarterly:
+        return locals.externalDonationsManageFrequencyQuarterlyOnDay(
+          anchorDate.day.toString(),
+        );
+      case ExternalDonationFrequency.once:
+        return frequencyLabel;
+    }
+  }
+
+  static String buildManageFrequencySubtitle({
+    required AppLocalizations locals,
+    required PledgeGroup group,
+    required String locale,
+  }) {
+    if (group.goals.isEmpty) {
+      return '';
+    }
+
+    final frequency = _resolveSharedFrequency(group.goals);
+    if (frequency == null) {
+      return locals.pledgesManageMixedFrequency;
+    }
+
+    final anchorDate =
+        _resolveFrequencyAnchorDate(group.goals) ?? DateTime.now();
+    return formatFrequencyWithDay(
+      locals: locals,
+      frequencyString: frequency,
+      anchorDate: anchorDate,
+      locale: locale,
+    );
+  }
+
+  static String buildGivingMethodSubtitle({
+    required AppLocalizations locals,
+    required String pledgeType,
+    required String iban,
+    required String accountNumber,
+  }) {
+    final typeLabel = formatGivingMethodType(locals, pledgeType);
+    final maskedAccount = maskBankAccount(
+      iban: iban,
+      accountNumber: accountNumber,
+    );
+    if (maskedAccount.isEmpty) {
+      return typeLabel;
+    }
+    return '$typeLabel · $maskedAccount';
+  }
+
+  static String formatGivingMethodType(
+    AppLocalizations locals,
+    String pledgeType,
+  ) {
+    switch (pledgeType) {
+      case 'DirectDebit':
+        return locals.pledgesGivingMethodAutomaticCollection;
+      case 'Online':
+      default:
+        return locals.onlineGivingLabel;
+    }
+  }
+
+  static String maskBankAccount({
+    required String iban,
+    required String accountNumber,
+  }) {
+    final value = iban.isNotEmpty
+        ? iban.replaceAll(' ', '')
+        : accountNumber.replaceAll(' ', '');
+    if (value.length < 4) {
+      return '';
+    }
+
+    final last4 = value.substring(value.length - 4);
+    if (value.length >= 4 && RegExp(r'^[A-Z]{2}').hasMatch(value)) {
+      return '${value.substring(0, 2)}•• •• $last4';
+    }
+    return '•••• $last4';
+  }
+
+  static ExternalDonationFrequency? parseFrequency(String frequencyString) {
+    return _parseFrequency(frequencyString);
+  }
+
+  static String toApiFrequency(ExternalDonationFrequency frequency) {
+    switch (frequency) {
+      case ExternalDonationFrequency.once:
+        return 'Once';
+      case ExternalDonationFrequency.weekly:
+        return 'Weekly';
+      case ExternalDonationFrequency.monthly:
+        return 'Monthly';
+      case ExternalDonationFrequency.quarterly:
+        return 'Quarterly';
+      case ExternalDonationFrequency.halfYearly:
+        return 'HalfYearly';
+      case ExternalDonationFrequency.yearly:
+        return 'Yearly';
+    }
+  }
+
+  static String? _resolveSharedFrequency(List<PledgeGoal> goals) {
+    if (goals.isEmpty) {
+      return null;
+    }
+    final first = goals.first.frequency;
+    final allSame = goals.every((goal) => goal.frequency == first);
+    return allSame ? first : null;
+  }
+
+  static DateTime? _resolveFrequencyAnchorDate(List<PledgeGoal> goals) {
+    DateTime? earliest;
+    for (final goal in goals) {
+      final date = goal.nextExecutionDateTime;
+      if (date == null) {
+        continue;
+      }
+      if (earliest == null || date.isBefore(earliest)) {
+        earliest = date;
+      }
+    }
+    return earliest;
   }
 
   static bool _displaysAsAllAtOnce(String frequencyString) {

@@ -1233,6 +1233,46 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Finaliza';
 
   @override
+  String get pledgesManageTitle => 'Gestionar compromiso';
+
+  @override
+  String get pledgesEditTitle => 'Editar compromiso';
+
+  @override
+  String get pledgesEditAmountLabel => 'Importe';
+
+  @override
+  String get pledgesEditFrequencyLabel => 'Frecuencia';
+
+  @override
+  String get pledgesEditGivingMethodLabel => 'Dar desde';
+
+  @override
+  String get pledgesEditValidationIncreaseOnly =>
+      'Solo puedes aumentar el importe de tu compromiso.';
+
+  @override
+  String get pledgesEditSaveButton => 'Guardar cambios';
+
+  @override
+  String get pledgesEditUpdateSucceeded => 'Cambios guardados';
+
+  @override
+  String get pledgesEditValidationBankDetailsRequired =>
+      'Añade tus datos bancarios en Información personal para usar el cobro automático.';
+
+  @override
+  String get pledgesManageMixedFrequency => 'Varias frecuencias';
+
+  @override
+  String get pledgesGivingMethodAutomaticCollection => 'Cobro automático';
+
+  @override
+  String pledgesManageGoalSubtitle(String target, String recurring) {
+    return '$target comprometidos · $recurring';
+  }
+
+  @override
   String get setupRecurringGiftHalfYear => 'half year';
 
   @override
@@ -4736,6 +4776,46 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get pledgesDetailEndsLabel => 'Finaliza';
+
+  @override
+  String get pledgesManageTitle => 'Gestionar compromiso';
+
+  @override
+  String get pledgesEditTitle => 'Editar compromiso';
+
+  @override
+  String get pledgesEditAmountLabel => 'Importe';
+
+  @override
+  String get pledgesEditFrequencyLabel => 'Frecuencia';
+
+  @override
+  String get pledgesEditGivingMethodLabel => 'Dar desde';
+
+  @override
+  String get pledgesEditValidationIncreaseOnly =>
+      'Solo puedes aumentar el importe de tu compromiso.';
+
+  @override
+  String get pledgesEditSaveButton => 'Guardar cambios';
+
+  @override
+  String get pledgesEditUpdateSucceeded => 'Cambios guardados';
+
+  @override
+  String get pledgesEditValidationBankDetailsRequired =>
+      'Agrega tus datos bancarios en Información personal para usar el cobro automático.';
+
+  @override
+  String get pledgesManageMixedFrequency => 'Varias frecuencias';
+
+  @override
+  String get pledgesGivingMethodAutomaticCollection => 'Cobro automático';
+
+  @override
+  String pledgesManageGoalSubtitle(String target, String recurring) {
+    return '$target comprometidos · $recurring';
+  }
 
   @override
   String get setupRecurringGiftHalfYear => 'semestre';

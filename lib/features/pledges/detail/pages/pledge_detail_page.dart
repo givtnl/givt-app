@@ -10,9 +10,11 @@ import 'package:givt_app/features/pledges/detail/widgets/pledge_detail_goals_sec
 import 'package:givt_app/features/pledges/detail/widgets/pledge_detail_history_section.dart';
 import 'package:givt_app/features/pledges/detail/widgets/pledge_detail_summary_card.dart';
 import 'package:givt_app/features/pledges/detail/widgets/pledge_detail_summary_tiles.dart';
+import 'package:givt_app/features/pledges/manage/pages/pledge_manage_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -144,7 +146,10 @@ class _PledgeDetailPageState extends State<PledgeDetailPage> {
     );
   }
 
-  Widget _buildBottomActions(BuildContext context, PledgeDetailUIModel uiModel) {
+  Widget _buildBottomActions(
+    BuildContext context,
+    PledgeDetailUIModel uiModel,
+  ) {
     final locals = context.l10n;
     final campaignName = uiModel.group.pledgeGroupName;
 
@@ -152,8 +157,7 @@ class _PledgeDetailPageState extends State<PledgeDetailPage> {
       children: [
         FunButton(
           text: locals.pledgesDetailGiveButton(campaignName),
-          analyticsEvent:
-              AnalyticsEventName.pledgesDetailGiveClicked.toEvent(),
+          analyticsEvent: AnalyticsEventName.pledgesDetailGiveClicked.toEvent(),
           onTap: () {},
         ),
         const SizedBox(height: 12),
@@ -161,9 +165,17 @@ class _PledgeDetailPageState extends State<PledgeDetailPage> {
           text: locals.pledgesDetailEditButton,
           variant: FunButtonVariant.secondary,
           fullBorder: true,
-          analyticsEvent:
-              AnalyticsEventName.pledgesDetailEditClicked.toEvent(),
-          onTap: () {},
+          analyticsEvent: AnalyticsEventName.pledgesDetailEditClicked.toEvent(),
+          onTap: () async {
+            final didUpdate = await Navigator.of(context).push(
+              PledgeManagePage(
+                pledgeGroupId: widget.pledgeGroupId,
+              ).toRoute(context),
+            );
+            if (didUpdate == true && mounted) {
+              await _cubit.init(widget.pledgeGroupId);
+            }
+          },
         ),
       ],
     );

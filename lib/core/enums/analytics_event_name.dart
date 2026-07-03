@@ -630,6 +630,15 @@ enum AnalyticsEventName {
   pledgesDetailOpened('pledges_detail_opened'),
   pledgesDetailGiveClicked('pledges_detail_give_clicked'),
   pledgesDetailEditClicked('pledges_detail_edit_clicked'),
+  pledgesManageOpened('pledges_manage_opened'),
+  pledgesManageGoalEditClicked('pledges_manage_goal_edit_clicked'),
+  pledgesManageFrequencyEditClicked('pledges_manage_frequency_edit_clicked'),
+  pledgesManageGivingMethodEditClicked(
+    'pledges_manage_giving_method_edit_clicked',
+  ),
+  pledgesEditAmountSaveClicked('pledges_edit_amount_save_clicked'),
+  pledgesEditFrequencySaveClicked('pledges_edit_frequency_save_clicked'),
+  pledgesEditGivingMethodSaveClicked('pledges_edit_giving_method_save_clicked'),
   menuNavigationRecurringDonationClicked(
     'menu_navigation_recurring_donation_clicked',
   ),

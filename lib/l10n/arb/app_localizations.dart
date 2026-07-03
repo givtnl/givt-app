@@ -2265,6 +2265,78 @@ abstract class AppLocalizations {
   /// **'Ends'**
   String get pledgesDetailEndsLabel;
 
+  /// No description provided for @pledgesManageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage pledge'**
+  String get pledgesManageTitle;
+
+  /// No description provided for @pledgesEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit pledge'**
+  String get pledgesEditTitle;
+
+  /// No description provided for @pledgesEditAmountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get pledgesEditAmountLabel;
+
+  /// No description provided for @pledgesEditFrequencyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get pledgesEditFrequencyLabel;
+
+  /// No description provided for @pledgesEditGivingMethodLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Give from'**
+  String get pledgesEditGivingMethodLabel;
+
+  /// No description provided for @pledgesEditValidationIncreaseOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'You can only increase your pledge amount.'**
+  String get pledgesEditValidationIncreaseOnly;
+
+  /// No description provided for @pledgesEditSaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get pledgesEditSaveButton;
+
+  /// No description provided for @pledgesEditUpdateSucceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes saved'**
+  String get pledgesEditUpdateSucceeded;
+
+  /// No description provided for @pledgesEditValidationBankDetailsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your bank details in Personal information to use automatic collection.'**
+  String get pledgesEditValidationBankDetailsRequired;
+
+  /// No description provided for @pledgesManageMixedFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple frequencies'**
+  String get pledgesManageMixedFrequency;
+
+  /// No description provided for @pledgesGivingMethodAutomaticCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic collection'**
+  String get pledgesGivingMethodAutomaticCollection;
+
+  /// No description provided for @pledgesManageGoalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{target} pledged · {recurring}'**
+  String pledgesManageGoalSubtitle(String target, String recurring);
+
   /// No description provided for @setupRecurringGiftHalfYear.
   ///
   /// In en, this message translates to:

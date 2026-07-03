@@ -898,6 +898,28 @@
   },
   "pledgesDetailEditButton": "Toezegging bewerken",
   "pledgesDetailEndsLabel": "Eindigt",
+  "pledgesManageTitle": "Toezegging beheren",
+  "pledgesEditTitle": "Toezegging bewerken",
+  "pledgesEditAmountLabel": "Bedrag",
+  "pledgesEditFrequencyLabel": "Frequentie",
+  "pledgesEditGivingMethodLabel": "Geven vanaf",
+  "pledgesEditValidationIncreaseOnly": "Je kunt je toezeggingsbedrag alleen verhogen.",
+  "pledgesEditSaveButton": "Wijzigingen opslaan",
+  "pledgesEditUpdateSucceeded": "Wijzigingen opgeslagen",
+  "pledgesEditValidationBankDetailsRequired": "Voeg je bankgegevens toe bij Persoonlijke gegevens om automatische incasso te gebruiken.",
+  "pledgesManageMixedFrequency": "Meerdere frequenties",
+  "pledgesGivingMethodAutomaticCollection": "Automatische incasso",
+  "pledgesManageGoalSubtitle": "{target} toegezegd · {recurring}",
+  "@pledgesManageGoalSubtitle": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      },
+      "recurring": {
+        "type": "String"
+      }
+    }
+  },
   "setupRecurringGiftHalfYear": "half jaar",
   "setupRecurringGiftText6": "keer",
   "recurringGiftsSetupCreate": "Plan je",

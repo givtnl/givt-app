@@ -1237,6 +1237,46 @@ class AppLocalizationsNl extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Eindigt';
 
   @override
+  String get pledgesManageTitle => 'Toezegging beheren';
+
+  @override
+  String get pledgesEditTitle => 'Toezegging bewerken';
+
+  @override
+  String get pledgesEditAmountLabel => 'Bedrag';
+
+  @override
+  String get pledgesEditFrequencyLabel => 'Frequentie';
+
+  @override
+  String get pledgesEditGivingMethodLabel => 'Geven vanaf';
+
+  @override
+  String get pledgesEditValidationIncreaseOnly =>
+      'Je kunt je toezeggingsbedrag alleen verhogen.';
+
+  @override
+  String get pledgesEditSaveButton => 'Wijzigingen opslaan';
+
+  @override
+  String get pledgesEditUpdateSucceeded => 'Wijzigingen opgeslagen';
+
+  @override
+  String get pledgesEditValidationBankDetailsRequired =>
+      'Voeg je bankgegevens toe bij Persoonlijke gegevens om automatische incasso te gebruiken.';
+
+  @override
+  String get pledgesManageMixedFrequency => 'Meerdere frequenties';
+
+  @override
+  String get pledgesGivingMethodAutomaticCollection => 'Automatische incasso';
+
+  @override
+  String pledgesManageGoalSubtitle(String target, String recurring) {
+    return '$target toegezegd · $recurring';
+  }
+
+  @override
   String get setupRecurringGiftHalfYear => 'half jaar';
 
   @override

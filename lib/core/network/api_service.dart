@@ -684,6 +684,31 @@ class APIService {
     return decodedBody['item'] as Map<String, dynamic>;
   }
 
+  Future<bool> updatePledge(
+    String pledgeId,
+    Map<String, dynamic> body,
+  ) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/Pledge/$pledgeId');
+
+    final response = await client.put(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return _decodeItemBool(response.body);
+  }
+
   Future<List<dynamic>> fetchExternalDonations() async {
     final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations');
 
@@ -976,7 +1001,14 @@ class APIService {
       return true;
     }
     final decodedBody = jsonDecode(body) as Map<String, dynamic>;
-    return decodedBody['item'] as bool? ?? false;
+    final isError = decodedBody['isError'] as bool? ?? false;
+    if (isError) {
+      return false;
+    }
+    if (decodedBody.containsKey('item')) {
+      return decodedBody['item'] as bool? ?? false;
+    }
+    return true;
   }
 
   Future<bool> updateNotificationId({

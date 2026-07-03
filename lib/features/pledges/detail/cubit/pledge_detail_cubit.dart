@@ -19,7 +19,8 @@ class PledgeDetailCubit extends CommonCubit<PledgeDetailUIModel, dynamic> {
       await _repository.loadDetail(pledgeGroupId);
       if (isClosed) return;
 
-      if (_repository.getError() != null || _repository.getPledgeGroup() == null) {
+      if (_repository.getError() != null ||
+          _repository.getPledgeGroup() == null) {
         emitError(null);
         return;
       }
@@ -70,6 +71,6 @@ class PledgeDetailCubit extends CommonCubit<PledgeDetailUIModel, dynamic> {
     }
     final first = goals.first.frequency;
     final allSame = goals.every((goal) => goal.frequency == first);
-    return allSame ? first : goals.first.frequency;
+    return allSame ? first : null;
   }
 }
