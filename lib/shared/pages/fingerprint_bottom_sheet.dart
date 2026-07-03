@@ -28,6 +28,7 @@ class FingerprintBottomSheet extends StatefulWidget {
 class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
   bool _initialValue = false;
   bool _currentValue = false;
+  bool _hasLoadedInitialValue = false;
   bool _isLoading = false;
 
   @override
@@ -40,11 +41,14 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
       setState(() {
         _initialValue = value;
         _currentValue = value;
+        _hasLoadedInitialValue = true;
       });
     });
   }
 
   bool get _hasChanges => _currentValue != _initialValue;
+
+  bool get _canInteract => _hasLoadedInitialValue && !_isLoading;
 
   String _title(AppLocalizations locals) {
     if (widget.isFingerprint) {
@@ -73,6 +77,7 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
       if (_currentValue) {
         final hasAuthentication = await LocalAuthInfo.instance.authenticate();
         if (!hasAuthentication) {
+          _revertToInitialValue();
           return;
         }
       }
@@ -90,6 +95,7 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
       }
       context.pop();
     } on Object catch (e, stackTrace) {
+      _revertToInitialValue();
       LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
@@ -112,6 +118,13 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
     }
   }
 
+  void _revertToInitialValue() {
+    if (!mounted || _currentValue == _initialValue) {
+      return;
+    }
+    setState(() => _currentValue = _initialValue);
+  }
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
@@ -130,19 +143,23 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
             Switch.adaptive(
               value: _currentValue,
               activeTrackColor: FamilyAppTheme.secondary30,
-              onChanged: _isLoading
-                  ? null
-                  : (value) => setState(() => _currentValue = value),
+              onChanged: _canInteract
+                  ? (value) => setState(() => _currentValue = value)
+                  : null,
             ),
           ],
         ),
       ),
       primaryButton: FunButton(
-        isDisabled: !_hasChanges || _isLoading,
-        onTap: _hasChanges && !_isLoading ? _onSave : null,
+        isDisabled: !_canInteract || !_hasChanges,
+        onTap: _canInteract && _hasChanges ? _onSave : null,
         text: _isLoading ? locals.loadingTitle : locals.save,
         analyticsEvent: AnalyticsEvent(
-          AnalyticsEventName.menuNavigationBiometricClicked,
+          AnalyticsEventName.biometricSettingsSaveClicked,
+          parameters: {
+            AnalyticsHelper.toggleStatusKey:
+                _currentValue ? 'enabled' : 'disabled',
+          },
         ),
       ),
     );
