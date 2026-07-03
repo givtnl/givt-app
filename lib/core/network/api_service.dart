@@ -1001,7 +1001,14 @@ class APIService {
       return true;
     }
     final decodedBody = jsonDecode(body) as Map<String, dynamic>;
-    return decodedBody['item'] as bool? ?? false;
+    final isError = decodedBody['isError'] as bool? ?? false;
+    if (isError) {
+      return false;
+    }
+    if (decodedBody.containsKey('item')) {
+      return decodedBody['item'] as bool? ?? false;
+    }
+    return true;
   }
 
   Future<bool> updateNotificationId({
