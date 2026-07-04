@@ -45,6 +45,7 @@ void main() {
       'user+tag.@example.com',
       '.user@example.com',
       'user..name@example.com',
+      'user @example.com',
       '@example.com',
       'user@example',
       '',

@@ -173,7 +173,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
 
   bool _validateEmail(String invalidEmailMessage) {
     final value = emailController.text;
-    if (value.isEmpty || !value.contains(Util.emailRegEx)) {
+    if (value.isEmpty || !Util.emailRegEx.hasMatch(value)) {
       setState(() {
         _emailError = invalidEmailMessage;
       });
@@ -189,6 +189,6 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
     if (widget.initialEmail.isNotEmpty) return true;
     final text = emailController.text;
     if (text.isEmpty) return false;
-    return text.contains(Util.emailRegEx);
+    return Util.emailRegEx.hasMatch(text);
   }
 }
