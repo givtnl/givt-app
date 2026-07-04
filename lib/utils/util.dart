@@ -42,7 +42,8 @@ class Util {
       RegExp(r'^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$');
   static final ukSortCodeRegEx = RegExp(r'^\d{2}-\d{2}-\d{2}$');
   static final emailRegEx = RegExp(
-      r'^(?!.*\.\.)[a-zA-Z0-9][\w-\.]*[a-zA-Z0-9_\.]?(\+[\w-\.]+)?@([\w-]+\.)+[\w]+$');
+    r'^(?!.*\.\.)[a-zA-Z0-9]([\w-\.]*[a-zA-Z0-9_ ])?(\+[\w-\.]*[a-zA-Z0-9_])?@([\w-]+\.)+[\w]+$',
+  );
   static final nameFieldsRegEx =
       RegExp(r'^[^0-9_!,¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$');
 

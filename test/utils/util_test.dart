@@ -30,6 +30,39 @@ void main() {
     });
   });
 
+  group('Util.emailRegEx', () {
+    const validEmails = [
+      'user@example.com',
+      'user.name@example.co.uk',
+      'user+tag@example.com',
+      'u@example.com',
+      'user_name@example.com',
+    ];
+
+    const invalidEmails = [
+      'donna.@givtapp.net',
+      'user.+@example.com',
+      'user+tag.@example.com',
+      '.user@example.com',
+      'user..name@example.com',
+      '@example.com',
+      'user@example',
+      '',
+    ];
+
+    for (final email in validEmails) {
+      test('should validate $email as valid', () {
+        expect(Util.emailRegEx.hasMatch(email), isTrue);
+      });
+    }
+
+    for (final email in invalidEmails) {
+      test('should validate $email as invalid', () {
+        expect(Util.emailRegEx.hasMatch(email), isFalse);
+      });
+    }
+  });
+
   group('Util.resolveLocale', () {
     const supportedLocales = [
       Locale('de'),
