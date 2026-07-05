@@ -124,7 +124,7 @@ class _ChangeEmailAddressBottomSheetState
 
   bool _validateEmail(String invalidEmailMessage) {
     final value = emailController.text;
-    if (value.isEmpty || !value.contains(Util.emailRegEx)) {
+    if (value.isEmpty || !Util.emailRegEx.hasMatch(value)) {
       setState(() {
         _emailError = invalidEmailMessage;
       });
@@ -140,6 +140,6 @@ class _ChangeEmailAddressBottomSheetState
     final text = emailController.text;
     if (text == widget.email) return false;
     if (text.isEmpty) return false;
-    return text.contains(Util.emailRegEx);
+    return Util.emailRegEx.hasMatch(text);
   }
 }
