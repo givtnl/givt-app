@@ -4,7 +4,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
-import 'package:givt_app/shared/models/analytics_event.dart';
 
 enum _AddDonationOption { giveThroughGivt, addExternal }
 
@@ -77,8 +76,13 @@ class _AddDonationBottomSheetState extends State<AddDonationBottomSheet> {
       primaryButton: FunButton(
         text: locals.buttonContinue,
         isDisabled: _selected == null,
-        analyticsEvent: AnalyticsEvent(
-          AnalyticsEventName.personalSummaryAddDonationContinueClicked,
+        analyticsEvent: AnalyticsEventName
+            .personalSummaryAddDonationContinueClicked
+            .toEvent(
+          parameters: {
+            'givt_donation': _selected == _AddDonationOption.giveThroughGivt,
+            'external_donation': _selected == _AddDonationOption.addExternal,
+          },
         ),
         onTap: _selected == null
             ? null
