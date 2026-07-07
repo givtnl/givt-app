@@ -110,12 +110,6 @@ class _PledgesOverviewPageState extends State<PledgesOverviewPage> {
           );
         },
       ),
-      floatingActionButton: FunButton(
-        onTap: () {},
-        text: locals.pledgesOverviewAddButton,
-        leftIcon: Icons.add,
-        analyticsEvent: AnalyticsEventName.pledgesAddClicked.toEvent(),
-      ),
     );
   }
 
