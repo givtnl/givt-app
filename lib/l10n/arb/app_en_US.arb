@@ -894,28 +894,11 @@
   },
   "pledgesDetailEditButton": "Edit pledge",
   "pledgesDetailEndsLabel": "Ends",
-  "pledgesManageTitle": "Manage pledge",
-  "pledgesEditTitle": "Edit pledge",
-  "pledgesEditAmountLabel": "Amount",
-  "pledgesEditFrequencyLabel": "Frequency",
-  "pledgesEditGivingMethodLabel": "Give from",
-  "pledgesEditValidationIncreaseOnly": "You can only increase your pledge amount.",
-  "pledgesEditSaveButton": "Save changes",
-  "pledgesEditUpdateSucceeded": "Changes saved",
-  "pledgesEditValidationBankDetailsRequired": "Add your bank details in Personal information to use automatic collection.",
-  "pledgesManageMixedFrequency": "Multiple frequencies",
-  "pledgesGivingMethodAutomaticCollection": "Automatic collection",
-  "pledgesManageGoalSubtitle": "{target} pledged · {recurring}",
-  "@pledgesManageGoalSubtitle": {
-    "placeholders": {
-      "target": {
-        "type": "String"
-      },
-      "recurring": {
-        "type": "String"
-      }
-    }
-  },
+  "pledgesEditRequestTitle": "Request a pledge change",
+  "pledgesEditRequestBody": "You can't change your pledge yourself yet. Tell us what you'd like to change and we'll get back to you.",
+  "pledgesEditRequestPrefilledText": "I'd like to change my pledge:",
+  "pledgesEditRequestSendButton": "Send request",
+  "pledgesEditRequestSuccessTitle": "Request sent",
   "setupRecurringGiftHalfYear": "half year",
   "setupRecurringGiftText6": "times",
   "recurringGiftsSetupCreate": "Schedule your",

@@ -16,19 +16,37 @@ void main() {
           'id': '11111111-1111-1111-1111-111111111111',
           'goalId': '22222222-2222-2222-2222-222222222222',
           'goalName': 'Building Fund',
-          'amount': 25.50,
-          'frequency': 'Monthly',
+          'totalAmount': 306.00,
           'type': 'Online',
-          'nextExecutionDate': '2026-08-01T00:00:00Z',
+          'transactions': [
+            {
+              'id': 'tx-1',
+              'amount': 25.50,
+              'executionDate': '2026-08-01T00:00:00Z',
+              'state': 'Entered',
+            },
+            {
+              'id': 'tx-2',
+              'amount': 25.50,
+              'executionDate': '2026-09-01T00:00:00Z',
+              'state': 'Entered',
+            },
+          ],
         },
         {
           'id': '33333333-3333-3333-3333-333333333333',
           'goalId': '44444444-4444-4444-4444-444444444444',
           'goalName': 'Youth Ministry',
-          'amount': 10.00,
-          'frequency': 'Weekly',
+          'totalAmount': 40.00,
           'type': 'DirectDebit',
-          'nextExecutionDate': '2026-08-01T00:00:00Z',
+          'transactions': [
+            {
+              'id': 'tx-3',
+              'amount': 10.00,
+              'executionDate': '2026-08-01T00:00:00Z',
+              'state': 'Entered',
+            },
+          ],
         },
       ],
     };
@@ -45,7 +63,36 @@ void main() {
       expect(group.endDate, '2026-12-31T00:00:00Z');
       expect(group.goals, hasLength(2));
       expect(group.goals.first.goalName, 'Building Fund');
+      expect(group.goals.first.totalAmount, 306);
       expect(group.goals.last.type, 'DirectDebit');
+    });
+
+    test('upcomingInstallmentAmount uses earliest future entered transaction', () {
+      final goal = PledgeGoal.fromJson({
+        'id': 'goal-1',
+        'goalId': 'g1',
+        'goalName': 'Building Fund',
+        'totalAmount': 306,
+        'type': 'Online',
+        'transactions': [
+          {
+            'id': 'tx-2',
+            'amount': 25.50,
+            'executionDate': '2026-09-01T00:00:00Z',
+            'state': 'Entered',
+          },
+          {
+            'id': 'tx-1',
+            'amount': 25.50,
+            'executionDate': '2026-08-01T00:00:00Z',
+            'state': 'Entered',
+          },
+        ],
+      });
+
+      expect(goal.upcomingInstallmentAmount, 25.5);
+      expect(goal.installmentAmount, 25.5);
+      expect(goal.upcomingInstallmentAmount, isNot(goal.totalAmount));
     });
 
     test('toPledges flattens goals with campaign metadata', () {
@@ -56,7 +103,7 @@ void main() {
       expect(pledges.first.pledgeGroupName, '2026 Pledge Campaign');
       expect(pledges.first.goalName, 'Building Fund');
       expect(pledges.first.amount, 25.5);
-      expect(pledges.first.frequency, 'Monthly');
+      expect(pledges.first.goalAmount, 306);
       expect(pledges.first.startDate, '2026-01-01T00:00:00Z');
       expect(pledges.first.endDate, '2026-12-31T00:00:00Z');
       expect(pledges.last.goalName, 'Youth Ministry');
@@ -77,11 +124,16 @@ void main() {
           'id': '11111111-1111-1111-1111-111111111111',
           'goalId': '22222222-2222-2222-2222-222222222222',
           'goalName': 'Building Fund',
-          'goalAmount': 1500,
-          'amount': 25.50,
-          'frequency': 'Monthly',
+          'totalAmount': 1500,
           'type': 'Online',
-          'nextExecutionDate': '2026-08-01T00:00:00Z',
+          'transactions': [
+            {
+              'id': 'tx-1',
+              'amount': 25.50,
+              'executionDate': '2026-08-01T00:00:00Z',
+              'state': 'Entered',
+            },
+          ],
         },
       ],
     };

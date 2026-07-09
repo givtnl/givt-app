@@ -894,28 +894,11 @@
   },
   "pledgesDetailEditButton": "Editar compromiso",
   "pledgesDetailEndsLabel": "Finaliza",
-  "pledgesManageTitle": "Gestionar compromiso",
-  "pledgesEditTitle": "Editar compromiso",
-  "pledgesEditAmountLabel": "Importe",
-  "pledgesEditFrequencyLabel": "Frecuencia",
-  "pledgesEditGivingMethodLabel": "Dar desde",
-  "pledgesEditValidationIncreaseOnly": "Solo puedes aumentar el importe de tu compromiso.",
-  "pledgesEditSaveButton": "Guardar cambios",
-  "pledgesEditUpdateSucceeded": "Cambios guardados",
-  "pledgesEditValidationBankDetailsRequired": "Agrega tus datos bancarios en Información personal para usar el cobro automático.",
-  "pledgesManageMixedFrequency": "Varias frecuencias",
-  "pledgesGivingMethodAutomaticCollection": "Cobro automático",
-  "pledgesManageGoalSubtitle": "{target} comprometidos · {recurring}",
-  "@pledgesManageGoalSubtitle": {
-    "placeholders": {
-      "target": {
-        "type": "String"
-      },
-      "recurring": {
-        "type": "String"
-      }
-    }
-  },
+  "pledgesEditRequestTitle": "Solicitar un cambio de compromiso",
+  "pledgesEditRequestBody": "Aún no puedes cambiar tu compromiso tú mismo. Cuéntanos qué te gustaría cambiar y nos pondremos en contacto contigo.",
+  "pledgesEditRequestPrefilledText": "Me gustaría cambiar mi compromiso:",
+  "pledgesEditRequestSendButton": "Enviar solicitud",
+  "pledgesEditRequestSuccessTitle": "Solicitud enviada",
   "setupRecurringGiftHalfYear": "semestre",
   "setupRecurringGiftText6": "veces",
   "recurringGiftsSetupCreate": "Programe su",

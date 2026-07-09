@@ -17,137 +17,17 @@ class PledgeCollectGroup extends Equatable {
   List<Object?> get props => [id, namespace, name];
 }
 
-/// A single pledged goal within a pledge group.
-class PledgeGoal extends Equatable {
-  const PledgeGoal({
-    required this.id,
-    required this.goalId,
-    required this.goalName,
-    required this.amount,
-    required this.frequency,
-    required this.type,
-    this.goalAmount,
-    this.paidAmount = 0,
-    this.nextExecutionDate,
-    this.transactions = const [],
-  });
-
-  factory PledgeGoal.fromJson(Map<String, dynamic> json) {
-    final transactionsJson = json['transactions'] as List<dynamic>? ?? const [];
-    return PledgeGoal(
-      id: json['id'] as String,
-      goalId: json['goalId'] as String,
-      goalName: json['goalName'] as String,
-      amount: (json['amount'] as num).toDouble(),
-      frequency: json['frequency'] as String,
-      type: json['type'] as String,
-      goalAmount: _parseGoalAmount(json),
-      paidAmount: (json['paidAmount'] as num?)?.toDouble() ?? 0,
-      nextExecutionDate: json['nextExecutionDate'] as String?,
-      transactions: transactionsJson
-          .map(
-            (transaction) =>
-                PledgeTransaction.fromJson(transaction as Map<String, dynamic>),
-          )
-          .toList(),
-    );
-  }
-
-  static double? _parseGoalAmount(Map<String, dynamic> json) {
-    final goalAmount = json['goalAmount'];
-    if (goalAmount is num) {
-      return goalAmount.toDouble();
-    }
-    final goal = json['goal'];
-    if (goal is num) {
-      return goal.toDouble();
-    }
-    if (goal is Map<String, dynamic>) {
-      final nested = goal['goalAmount'] ?? goal['amount'];
-      if (nested is num) {
-        return nested.toDouble();
-      }
-    }
-    return null;
-  }
-
-  bool get isAllAtOncePledge {
-    switch (frequency) {
-      case 'Once':
-      case 'OneTime':
-      case 'Yearly':
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  /// Target for "of €X pledged" and per-goal progress.
-  ///
-  /// Uses [goalAmount] when the API provides it; for all-at-once pledges the
-  /// pledged total is the goal [amount] (e.g. €26 all at once).
-  double? get pledgeTargetAmount {
-    if (goalAmount != null && goalAmount! > 0) {
-      return goalAmount;
-    }
-    if (isAllAtOncePledge) {
-      return amount;
-    }
-    return null;
-  }
-
-  final String id;
-  final String goalId;
-  final String goalName;
-  final double amount;
-  final String frequency;
-  final String type;
-  final double? goalAmount;
-  final double paidAmount;
-  final String? nextExecutionDate;
-  final List<PledgeTransaction> transactions;
-
-  DateTime? get nextExecutionDateTime =>
-      ApiDateTime.parseLocal(nextExecutionDate);
-
-  double get givenAmount => transactions
-      .where((transaction) => transaction.isProcessed)
-      .fold(0, (sum, transaction) => sum + transaction.amount);
-
-  /// Processed transactions, or [paidAmount] when the detail API omits history.
-  double get displayGivenAmount {
-    if (givenAmount > 0) {
-      return givenAmount;
-    }
-    return paidAmount;
-  }
-
-  @override
-  List<Object?> get props => [
-        id,
-        goalId,
-        goalName,
-        amount,
-        frequency,
-        type,
-        goalAmount,
-        paidAmount,
-        nextExecutionDate,
-        transactions,
-      ];
-}
-
-/// Transaction linked to a pledged goal (`GET /Pledge/{id}` detail).
-class PledgeTransaction extends Equatable {
-  const PledgeTransaction({
+/// Wallet donation linked to a pledged goal (detail API only).
+class PledgeDonation extends Equatable {
+  const PledgeDonation({
     required this.id,
     required this.amount,
     required this.donationDate,
     required this.status,
   });
 
-  factory PledgeTransaction.fromJson(Map<String, dynamic> json) {
-    return PledgeTransaction(
+  factory PledgeDonation.fromJson(Map<String, dynamic> json) {
+    return PledgeDonation(
       id: json['id'] as int,
       amount: (json['amount'] as num).toDouble(),
       donationDate: json['donationDate'] as String,
@@ -166,6 +46,250 @@ class PledgeTransaction extends Equatable {
 
   @override
   List<Object?> get props => [id, amount, donationDate, status];
+}
+
+/// Scheduled pledge transaction from the pledge API.
+class PledgeTransaction extends Equatable {
+  const PledgeTransaction({
+    required this.id,
+    required this.amount,
+    required this.executionDate,
+    required this.state,
+  });
+
+  factory PledgeTransaction.fromJson(Map<String, dynamic> json) {
+    return PledgeTransaction(
+      id: json['id'].toString(),
+      amount: (json['amount'] as num).toDouble(),
+      executionDate: (json['executionDate'] ?? json['donationDate']) as String,
+      state: (json['state'] ?? json['status']) as String,
+    );
+  }
+
+  final String id;
+  final double amount;
+  final String executionDate;
+  final String state;
+
+  bool get isProcessed => state == 'Processed';
+
+  bool get isEntered => state == 'Entered';
+
+  DateTime? get executionDateTime => ApiDateTime.parseLocal(executionDate);
+
+  @override
+  List<Object?> get props => [id, amount, executionDate, state];
+}
+
+/// A single pledged goal within a pledge group.
+class PledgeGoal extends Equatable {
+  const PledgeGoal({
+    required this.id,
+    required this.goalId,
+    required this.goalName,
+    required this.totalAmount,
+    required this.type,
+    this.frequency,
+    this.transactions = const [],
+    this.donations = const [],
+  });
+
+  factory PledgeGoal.fromJson(Map<String, dynamic> json) {
+    final transactionsJson = json['transactions'] as List<dynamic>? ?? const [];
+    final donationsJson = json['donations'] as List<dynamic>? ?? const [];
+    final transactions = transactionsJson
+        .map(
+          (transaction) =>
+              PledgeTransaction.fromJson(transaction as Map<String, dynamic>),
+        )
+        .toList();
+  final donations = donationsJson
+        .map(
+          (donation) =>
+              PledgeDonation.fromJson(donation as Map<String, dynamic>),
+        )
+        .toList();
+
+    final totalAmount = _parseTotalAmount(json);
+    final frequency = json['frequency'] as String? ??
+        _inferFrequency(transactions);
+
+    return PledgeGoal(
+      id: json['id'] as String,
+      goalId: json['goalId'] as String,
+      goalName: json['goalName'] as String,
+      totalAmount: totalAmount,
+      type: json['type'] as String,
+      frequency: frequency,
+      transactions: transactions,
+      donations: donations,
+    );
+  }
+
+  static double _parseTotalAmount(Map<String, dynamic> json) {
+    final totalAmount = json['totalAmount'];
+    if (totalAmount is num) {
+      return totalAmount.toDouble();
+    }
+    final amount = json['amount'];
+    if (amount is num) {
+      return amount.toDouble();
+    }
+    return 0;
+  }
+
+  static String? _inferFrequency(List<PledgeTransaction> transactions) {
+    final active = transactions
+        .where(
+          (transaction) =>
+              transaction.isEntered || transaction.isProcessed,
+        )
+        .toList()
+      ..sort(
+        (a, b) => (a.executionDateTime ?? DateTime(0))
+            .compareTo(b.executionDateTime ?? DateTime(0)),
+      );
+
+    if (active.length <= 1) {
+      return active.isEmpty ? null : 'Once';
+    }
+
+    final intervals = <int>[];
+    for (var index = 1; index < active.length; index++) {
+      final previous = active[index - 1].executionDateTime;
+      final current = active[index].executionDateTime;
+      if (previous == null || current == null) {
+        continue;
+      }
+      intervals.add(current.difference(previous).inDays.abs());
+    }
+    if (intervals.isEmpty) {
+      return null;
+    }
+
+    final averageDays = intervals.reduce((a, b) => a + b) / intervals.length;
+    if (averageDays <= 10) {
+      return 'Weekly';
+    }
+    if (averageDays <= 45) {
+      return 'Monthly';
+    }
+    if (averageDays <= 120) {
+      return 'Quarterly';
+    }
+    if (averageDays <= 240) {
+      return 'HalfYearly';
+    }
+    return 'Yearly';
+  }
+
+  final String id;
+  final String goalId;
+  final String goalName;
+  final double totalAmount;
+  final String type;
+  final String? frequency;
+  final List<PledgeTransaction> transactions;
+  final List<PledgeDonation> donations;
+
+  /// Amount of the earliest upcoming scheduled transaction.
+  double? get upcomingInstallmentAmount =>
+      _earliestUpcomingTransaction()?.amount;
+
+  /// Per-occurrence amount for recurring display (next upcoming payment).
+  double get installmentAmount {
+    final upcoming = upcomingInstallmentAmount;
+    if (upcoming != null) {
+      return upcoming;
+    }
+    if (transactions.length == 1) {
+      return transactions.first.amount;
+    }
+    if (isAllAtOncePledge && totalAmount > 0) {
+      return totalAmount;
+    }
+    return 0;
+  }
+
+  PledgeTransaction? _earliestUpcomingTransaction() {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    PledgeTransaction? earliest;
+    for (final transaction in transactions) {
+      if (!transaction.isEntered) {
+        continue;
+      }
+      final date = transaction.executionDateTime;
+      if (date == null) {
+        continue;
+      }
+      final dateOnly = DateTime(date.year, date.month, date.day);
+      if (dateOnly.isBefore(today)) {
+        continue;
+      }
+      final earliestDate = earliest?.executionDateTime;
+      if (earliest == null ||
+          (earliestDate != null && date.isBefore(earliestDate))) {
+        earliest = transaction;
+      }
+    }
+    return earliest;
+  }
+
+  /// Alias kept for display code that referenced per-installment [amount].
+  double get amount => installmentAmount;
+
+  bool get isAllAtOncePledge {
+    switch (frequency) {
+      case 'Once':
+      case 'OneTime':
+      case 'Yearly':
+        return true;
+      case null:
+        return transactions.length <= 1;
+      default:
+        return false;
+    }
+  }
+
+  /// Target for "of €X pledged" and per-goal progress.
+  double? get pledgeTargetAmount =>
+      totalAmount > 0 ? totalAmount : null;
+
+  DateTime? get nextExecutionDateTime =>
+      _earliestUpcomingTransaction()?.executionDateTime;
+
+  String? get nextExecutionDate =>
+      nextExecutionDateTime?.toUtc().toIso8601String();
+
+  double get scheduledGivenAmount => transactions
+      .where((transaction) => transaction.isProcessed)
+      .fold(0, (sum, transaction) => sum + transaction.amount);
+
+  double get donationGivenAmount => donations
+      .where((donation) => donation.isProcessed)
+      .fold(0, (sum, donation) => sum + donation.amount);
+
+  /// Wallet donations on detail; otherwise processed scheduled transactions.
+  double get displayGivenAmount {
+    if (donations.isNotEmpty) {
+      return donationGivenAmount;
+    }
+    return scheduledGivenAmount;
+  }
+
+  @override
+  List<Object?> get props => [
+        id,
+        goalId,
+        goalName,
+        totalAmount,
+        frequency,
+        type,
+        transactions,
+        donations,
+      ];
 }
 
 /// Pledge campaign returned by `GET givtservice/v1/Pledge`.
@@ -229,9 +353,6 @@ class PledgeGroup extends Equatable {
   }
 
   /// Denominator for the segmented "Given so far" bar (Figma).
-  ///
-  /// Uses [totalPledged] when every goal has a target; otherwise falls back to
-  /// [givenSoFar] so progress is still visible when only paid amounts exist.
   double? get segmentBarTotal {
     final pledged = totalPledged;
     if (pledged != null && pledged > 0) {
@@ -242,6 +363,48 @@ class PledgeGroup extends Equatable {
       return given;
     }
     return null;
+  }
+
+  /// Sum of upcoming installment amounts on the group's earliest next date.
+  double? get upcomingRecurringTotal {
+    DateTime? earliestDate;
+    for (final goal in goals) {
+      final date = goal.nextExecutionDateTime;
+      if (date == null) {
+        continue;
+      }
+      if (earliestDate == null || date.isBefore(earliestDate)) {
+        earliestDate = date;
+      }
+    }
+    if (earliestDate == null) {
+      return null;
+    }
+
+    final targetDay = DateTime(
+      earliestDate.year,
+      earliestDate.month,
+      earliestDate.day,
+    );
+    var sum = 0.0;
+    var hasAmount = false;
+    for (final goal in goals) {
+      final date = goal.nextExecutionDateTime;
+      if (date == null) {
+        continue;
+      }
+      final goalDay = DateTime(date.year, date.month, date.day);
+      if (goalDay != targetDay) {
+        continue;
+      }
+      final amount = goal.upcomingInstallmentAmount;
+      if (amount == null) {
+        continue;
+      }
+      sum += amount;
+      hasAmount = true;
+    }
+    return hasAmount ? sum : null;
   }
 
   List<Pledge> toPledges() {
@@ -269,10 +432,10 @@ class Pledge extends Equatable {
     required this.pledgeGroupId,
     required this.type,
     required this.amount,
-    required this.frequency,
     required this.collectGroup,
     required this.pledgeGroupName,
     required this.goalName,
+    this.frequency,
     this.goalAmount,
     this.paidAmount = 0,
     this.startDate,
@@ -289,13 +452,13 @@ class Pledge extends Equatable {
       goalId: goal.goalId,
       pledgeGroupId: group.pledgeGroupId,
       type: goal.type,
-      amount: goal.amount,
+      amount: goal.installmentAmount,
       frequency: goal.frequency,
       collectGroup: group.collectGroup,
       pledgeGroupName: group.pledgeGroupName,
       goalName: goal.goalName,
-      goalAmount: goal.goalAmount,
-      paidAmount: goal.paidAmount,
+      goalAmount: goal.totalAmount,
+      paidAmount: goal.displayGivenAmount,
       startDate: group.startDate,
       endDate: group.endDate,
       nextExecutionDate: goal.nextExecutionDate,
@@ -313,7 +476,7 @@ class Pledge extends Equatable {
   final String pledgeGroupId;
   final String type;
   final double amount;
-  final String frequency;
+  final String? frequency;
   final PledgeCollectGroup collectGroup;
   final String pledgeGroupName;
   final String goalName;
@@ -371,6 +534,29 @@ class PledgeOverviewCard extends Equatable {
   double get totalAmount =>
       pledges.fold(0, (sum, pledge) => sum + pledge.amount);
 
+  /// Sum of upcoming installment amounts on the card's earliest next date.
+  double get upcomingAmount {
+    final nextDate = earliestNextExecution;
+    if (nextDate == null) {
+      return totalAmount;
+    }
+    final targetDay = DateTime(
+      nextDate.year,
+      nextDate.month,
+      nextDate.day,
+    );
+    return pledges
+        .where((pledge) {
+          final date = pledge.nextExecutionDateTime;
+          if (date == null) {
+            return false;
+          }
+          final pledgeDay = DateTime(date.year, date.month, date.day);
+          return pledgeDay == targetDay;
+        })
+        .fold(0, (sum, pledge) => sum + pledge.amount);
+  }
+
   double get totalPaid =>
       pledges.fold(0, (sum, pledge) => sum + pledge.paidAmount);
 
@@ -395,6 +581,9 @@ class PledgeOverviewCard extends Equatable {
       return null;
     }
     final frequency = pledges.first.frequency;
+    if (frequency == null) {
+      return null;
+    }
     for (final pledge in pledges) {
       if (pledge.frequency != frequency) {
         return null;
@@ -428,6 +617,8 @@ extension PledgeAllAtOnce on Pledge {
       case 'OneTime':
       case 'Yearly':
         return true;
+      case null:
+        return false;
       default:
         return false;
     }

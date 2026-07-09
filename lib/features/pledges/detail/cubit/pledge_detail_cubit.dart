@@ -46,10 +46,7 @@ class PledgeDetailCubit extends CommonCubit<PledgeDetailUIModel, dynamic> {
       group: group,
       givenSoFar: group.givenSoFar,
       totalPledged: group.totalPledged,
-      recurringTotal: group.goals.fold<double>(
-        0,
-        (sum, goal) => sum + goal.amount,
-      ),
+      recurringTotal: group.upcomingRecurringTotal ?? 0,
       recurringFrequency: _resolveRecurringFrequency(group.goals),
       goalProgress: group.goals
           .map(

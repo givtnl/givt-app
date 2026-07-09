@@ -126,7 +126,7 @@ void main() {
       expect(uiModel.currentGroups, hasLength(2));
       expect(uiModel.currentGroups.first.groupName, 'Alpha Church');
       expect(uiModel.currentGroups.first.cards, hasLength(1));
-      expect(uiModel.currentGroups.first.cards.first.totalAmount, 25);
+      expect(uiModel.currentGroups.first.cards.first.upcomingAmount, 20);
       final nextDate =
           uiModel.currentGroups.first.cards.first.earliestNextExecution;
       expect(nextDate, isNotNull);

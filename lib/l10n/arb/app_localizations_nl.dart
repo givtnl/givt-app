@@ -1237,44 +1237,21 @@ class AppLocalizationsNl extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Eindigt';
 
   @override
-  String get pledgesManageTitle => 'Toezegging beheren';
+  String get pledgesEditRequestTitle => 'Toezegging wijzigen aanvragen';
 
   @override
-  String get pledgesEditTitle => 'Toezegging bewerken';
+  String get pledgesEditRequestBody =>
+      'Je kunt je toezegging nog niet zelf wijzigen. Laat ons weten wat je wilt veranderen, dan nemen we contact met je op.';
 
   @override
-  String get pledgesEditAmountLabel => 'Bedrag';
+  String get pledgesEditRequestPrefilledText =>
+      'Ik wil mijn toezegging wijzigen:';
 
   @override
-  String get pledgesEditFrequencyLabel => 'Frequentie';
+  String get pledgesEditRequestSendButton => 'Verzoek versturen';
 
   @override
-  String get pledgesEditGivingMethodLabel => 'Geven vanaf';
-
-  @override
-  String get pledgesEditValidationIncreaseOnly =>
-      'Je kunt je toezeggingsbedrag alleen verhogen.';
-
-  @override
-  String get pledgesEditSaveButton => 'Wijzigingen opslaan';
-
-  @override
-  String get pledgesEditUpdateSucceeded => 'Wijzigingen opgeslagen';
-
-  @override
-  String get pledgesEditValidationBankDetailsRequired =>
-      'Voeg je bankgegevens toe bij Persoonlijke gegevens om automatische incasso te gebruiken.';
-
-  @override
-  String get pledgesManageMixedFrequency => 'Meerdere frequenties';
-
-  @override
-  String get pledgesGivingMethodAutomaticCollection => 'Automatische incasso';
-
-  @override
-  String pledgesManageGoalSubtitle(String target, String recurring) {
-    return '$target toegezegd · $recurring';
-  }
+  String get pledgesEditRequestSuccessTitle => 'Verzoek verstuurd';
 
   @override
   String get setupRecurringGiftHalfYear => 'half jaar';

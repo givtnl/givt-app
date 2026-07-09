@@ -1233,44 +1233,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Ends';
 
   @override
-  String get pledgesManageTitle => 'Manage pledge';
+  String get pledgesEditRequestTitle => 'Request a pledge change';
 
   @override
-  String get pledgesEditTitle => 'Edit pledge';
+  String get pledgesEditRequestBody =>
+      'You can\'t change your pledge yourself yet. Tell us what you\'d like to change and we\'ll get back to you.';
 
   @override
-  String get pledgesEditAmountLabel => 'Amount';
+  String get pledgesEditRequestPrefilledText =>
+      'I\'d like to change my pledge:';
 
   @override
-  String get pledgesEditFrequencyLabel => 'Frequency';
+  String get pledgesEditRequestSendButton => 'Send request';
 
   @override
-  String get pledgesEditGivingMethodLabel => 'Give from';
-
-  @override
-  String get pledgesEditValidationIncreaseOnly =>
-      'You can only increase your pledge amount.';
-
-  @override
-  String get pledgesEditSaveButton => 'Save changes';
-
-  @override
-  String get pledgesEditUpdateSucceeded => 'Changes saved';
-
-  @override
-  String get pledgesEditValidationBankDetailsRequired =>
-      'Add your bank details in Personal information to use automatic collection.';
-
-  @override
-  String get pledgesManageMixedFrequency => 'Multiple frequencies';
-
-  @override
-  String get pledgesGivingMethodAutomaticCollection => 'Automatic collection';
-
-  @override
-  String pledgesManageGoalSubtitle(String target, String recurring) {
-    return '$target pledged · $recurring';
-  }
+  String get pledgesEditRequestSuccessTitle => 'Request sent';
 
   @override
   String get setupRecurringGiftHalfYear => 'half year';
@@ -4757,44 +4734,21 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get pledgesDetailEndsLabel => 'Ends';
 
   @override
-  String get pledgesManageTitle => 'Manage pledge';
+  String get pledgesEditRequestTitle => 'Request a pledge change';
 
   @override
-  String get pledgesEditTitle => 'Edit pledge';
+  String get pledgesEditRequestBody =>
+      'You can\'t change your pledge yourself yet. Tell us what you\'d like to change and we\'ll get back to you.';
 
   @override
-  String get pledgesEditAmountLabel => 'Amount';
+  String get pledgesEditRequestPrefilledText =>
+      'I\'d like to change my pledge:';
 
   @override
-  String get pledgesEditFrequencyLabel => 'Frequency';
+  String get pledgesEditRequestSendButton => 'Send request';
 
   @override
-  String get pledgesEditGivingMethodLabel => 'Give from';
-
-  @override
-  String get pledgesEditValidationIncreaseOnly =>
-      'You can only increase your pledge amount.';
-
-  @override
-  String get pledgesEditSaveButton => 'Save changes';
-
-  @override
-  String get pledgesEditUpdateSucceeded => 'Changes saved';
-
-  @override
-  String get pledgesEditValidationBankDetailsRequired =>
-      'Add your bank details in Personal information to use automatic collection.';
-
-  @override
-  String get pledgesManageMixedFrequency => 'Multiple frequencies';
-
-  @override
-  String get pledgesGivingMethodAutomaticCollection => 'Automatic collection';
-
-  @override
-  String pledgesManageGoalSubtitle(String target, String recurring) {
-    return '$target pledged · $recurring';
-  }
+  String get pledgesEditRequestSuccessTitle => 'Request sent';
 
   @override
   String get setupRecurringGiftHalfYear => 'half year';

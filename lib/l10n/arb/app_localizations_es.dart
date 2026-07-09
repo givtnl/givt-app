@@ -1233,44 +1233,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Finaliza';
 
   @override
-  String get pledgesManageTitle => 'Gestionar compromiso';
+  String get pledgesEditRequestTitle => 'Solicitar un cambio de compromiso';
 
   @override
-  String get pledgesEditTitle => 'Editar compromiso';
+  String get pledgesEditRequestBody =>
+      'Aún no puedes cambiar tu compromiso tú mismo. Cuéntanos qué te gustaría cambiar y nos pondremos en contacto contigo.';
 
   @override
-  String get pledgesEditAmountLabel => 'Importe';
+  String get pledgesEditRequestPrefilledText =>
+      'Me gustaría cambiar mi compromiso:';
 
   @override
-  String get pledgesEditFrequencyLabel => 'Frecuencia';
+  String get pledgesEditRequestSendButton => 'Enviar solicitud';
 
   @override
-  String get pledgesEditGivingMethodLabel => 'Dar desde';
-
-  @override
-  String get pledgesEditValidationIncreaseOnly =>
-      'Solo puedes aumentar el importe de tu compromiso.';
-
-  @override
-  String get pledgesEditSaveButton => 'Guardar cambios';
-
-  @override
-  String get pledgesEditUpdateSucceeded => 'Cambios guardados';
-
-  @override
-  String get pledgesEditValidationBankDetailsRequired =>
-      'Añade tus datos bancarios en Información personal para usar el cobro automático.';
-
-  @override
-  String get pledgesManageMixedFrequency => 'Varias frecuencias';
-
-  @override
-  String get pledgesGivingMethodAutomaticCollection => 'Cobro automático';
-
-  @override
-  String pledgesManageGoalSubtitle(String target, String recurring) {
-    return '$target comprometidos · $recurring';
-  }
+  String get pledgesEditRequestSuccessTitle => 'Solicitud enviada';
 
   @override
   String get setupRecurringGiftHalfYear => 'half year';
@@ -4778,44 +4755,21 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get pledgesDetailEndsLabel => 'Finaliza';
 
   @override
-  String get pledgesManageTitle => 'Gestionar compromiso';
+  String get pledgesEditRequestTitle => 'Solicitar un cambio de compromiso';
 
   @override
-  String get pledgesEditTitle => 'Editar compromiso';
+  String get pledgesEditRequestBody =>
+      'Aún no puedes cambiar tu compromiso tú mismo. Cuéntanos qué te gustaría cambiar y nos pondremos en contacto contigo.';
 
   @override
-  String get pledgesEditAmountLabel => 'Importe';
+  String get pledgesEditRequestPrefilledText =>
+      'Me gustaría cambiar mi compromiso:';
 
   @override
-  String get pledgesEditFrequencyLabel => 'Frecuencia';
+  String get pledgesEditRequestSendButton => 'Enviar solicitud';
 
   @override
-  String get pledgesEditGivingMethodLabel => 'Dar desde';
-
-  @override
-  String get pledgesEditValidationIncreaseOnly =>
-      'Solo puedes aumentar el importe de tu compromiso.';
-
-  @override
-  String get pledgesEditSaveButton => 'Guardar cambios';
-
-  @override
-  String get pledgesEditUpdateSucceeded => 'Cambios guardados';
-
-  @override
-  String get pledgesEditValidationBankDetailsRequired =>
-      'Agrega tus datos bancarios en Información personal para usar el cobro automático.';
-
-  @override
-  String get pledgesManageMixedFrequency => 'Varias frecuencias';
-
-  @override
-  String get pledgesGivingMethodAutomaticCollection => 'Cobro automático';
-
-  @override
-  String pledgesManageGoalSubtitle(String target, String recurring) {
-    return '$target comprometidos · $recurring';
-  }
+  String get pledgesEditRequestSuccessTitle => 'Solicitud enviada';
 
   @override
   String get setupRecurringGiftHalfYear => 'semestre';

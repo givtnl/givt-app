@@ -2265,77 +2265,35 @@ abstract class AppLocalizations {
   /// **'Ends'**
   String get pledgesDetailEndsLabel;
 
-  /// No description provided for @pledgesManageTitle.
+  /// No description provided for @pledgesEditRequestTitle.
   ///
   /// In en, this message translates to:
-  /// **'Manage pledge'**
-  String get pledgesManageTitle;
+  /// **'Request a pledge change'**
+  String get pledgesEditRequestTitle;
 
-  /// No description provided for @pledgesEditTitle.
+  /// No description provided for @pledgesEditRequestBody.
   ///
   /// In en, this message translates to:
-  /// **'Edit pledge'**
-  String get pledgesEditTitle;
+  /// **'You can\'t change your pledge yourself yet. Tell us what you\'d like to change and we\'ll get back to you.'**
+  String get pledgesEditRequestBody;
 
-  /// No description provided for @pledgesEditAmountLabel.
+  /// No description provided for @pledgesEditRequestPrefilledText.
   ///
   /// In en, this message translates to:
-  /// **'Amount'**
-  String get pledgesEditAmountLabel;
+  /// **'I\'d like to change my pledge:'**
+  String get pledgesEditRequestPrefilledText;
 
-  /// No description provided for @pledgesEditFrequencyLabel.
+  /// No description provided for @pledgesEditRequestSendButton.
   ///
   /// In en, this message translates to:
-  /// **'Frequency'**
-  String get pledgesEditFrequencyLabel;
+  /// **'Send request'**
+  String get pledgesEditRequestSendButton;
 
-  /// No description provided for @pledgesEditGivingMethodLabel.
+  /// No description provided for @pledgesEditRequestSuccessTitle.
   ///
   /// In en, this message translates to:
-  /// **'Give from'**
-  String get pledgesEditGivingMethodLabel;
-
-  /// No description provided for @pledgesEditValidationIncreaseOnly.
-  ///
-  /// In en, this message translates to:
-  /// **'You can only increase your pledge amount.'**
-  String get pledgesEditValidationIncreaseOnly;
-
-  /// No description provided for @pledgesEditSaveButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Save changes'**
-  String get pledgesEditSaveButton;
-
-  /// No description provided for @pledgesEditUpdateSucceeded.
-  ///
-  /// In en, this message translates to:
-  /// **'Changes saved'**
-  String get pledgesEditUpdateSucceeded;
-
-  /// No description provided for @pledgesEditValidationBankDetailsRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Add your bank details in Personal information to use automatic collection.'**
-  String get pledgesEditValidationBankDetailsRequired;
-
-  /// No description provided for @pledgesManageMixedFrequency.
-  ///
-  /// In en, this message translates to:
-  /// **'Multiple frequencies'**
-  String get pledgesManageMixedFrequency;
-
-  /// No description provided for @pledgesGivingMethodAutomaticCollection.
-  ///
-  /// In en, this message translates to:
-  /// **'Automatic collection'**
-  String get pledgesGivingMethodAutomaticCollection;
-
-  /// No description provided for @pledgesManageGoalSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'{target} pledged · {recurring}'**
-  String pledgesManageGoalSubtitle(String target, String recurring);
+  /// **'Request sent'**
+  String get pledgesEditRequestSuccessTitle;
 
   /// No description provided for @setupRecurringGiftHalfYear.
   ///

@@ -4,18 +4,33 @@ import 'package:givt_app/features/pledges/shared/models/pledge.dart';
 
 void main() {
   group('PledgeTransaction', () {
-    test('fromJson parses transaction fields', () {
+    test('fromJson parses scheduled transaction fields', () {
       final transaction = PledgeTransaction.fromJson({
+        'id': 'tx-42',
+        'amount': 150.0,
+        'executionDate': '2026-06-15T11:30:00Z',
+        'state': 'Processed',
+      });
+
+      expect(transaction.id, 'tx-42');
+      expect(transaction.amount, 150);
+      expect(transaction.isProcessed, isTrue);
+      expect(transaction.executionDateTime, isNotNull);
+    });
+  });
+
+  group('PledgeDonation', () {
+    test('fromJson parses wallet donation fields', () {
+      final donation = PledgeDonation.fromJson({
         'id': 42,
         'amount': 150.0,
         'donationDate': '2026-06-15T11:30:00Z',
         'status': 'Processed',
       });
 
-      expect(transaction.id, 42);
-      expect(transaction.amount, 150);
-      expect(transaction.isProcessed, isTrue);
-      expect(transaction.donationDateTime, isNotNull);
+      expect(donation.id, 42);
+      expect(donation.isProcessed, isTrue);
+      expect(donation.donationDateTime, isNotNull);
     });
   });
 
@@ -33,12 +48,23 @@ void main() {
           'id': 'goal-1',
           'goalId': 'g1',
           'goalName': 'Church fund',
-          'amount': 150,
-          'frequency': 'Monthly',
+          'totalAmount': 1800,
           'type': 'Online',
-          'goalAmount': 1800,
-          'nextExecutionDate': '2026-07-15T00:00:00Z',
           'transactions': [
+            {
+              'id': 'tx-1',
+              'amount': 150,
+              'executionDate': '2026-06-15T11:30:00Z',
+              'state': 'Processed',
+            },
+            {
+              'id': 'tx-2',
+              'amount': 150,
+              'executionDate': '2026-05-15T11:30:00Z',
+              'state': 'Processed',
+            },
+          ],
+          'donations': [
             {
               'id': 1,
               'amount': 150,
@@ -57,12 +83,17 @@ void main() {
           'id': 'goal-2',
           'goalId': 'g2',
           'goalName': 'Mission',
-          'amount': 50,
-          'frequency': 'Monthly',
+          'totalAmount': 600,
           'type': 'Online',
-          'goalAmount': 600,
-          'nextExecutionDate': '2026-07-15T00:00:00Z',
           'transactions': [
+            {
+              'id': 'tx-3',
+              'amount': 50,
+              'executionDate': '2026-06-15T11:30:00Z',
+              'state': 'Processed',
+            },
+          ],
+          'donations': [
             {
               'id': 3,
               'amount': 50,
@@ -74,13 +105,13 @@ void main() {
       ],
     });
 
-    test('givenSoFar sums processed transactions across goals', () {
+    test('givenSoFar sums processed donations across goals', () {
       expect(group.givenSoFar, 350);
       expect(group.totalPledged, 2400);
       expect(group.segmentBarTotal, 2400);
     });
 
-    test('segmentBarTotal falls back to givenSoFar without goal targets', () {
+    test('segmentBarTotal falls back to givenSoFar without commitment totals', () {
       final groupWithoutTargets = PledgeGroup.fromJson({
         'pledgeGroupId': 'group-1',
         'pledgeGroupName': 'Actie Kerkbalans',
@@ -92,18 +123,24 @@ void main() {
             'id': 'goal-1',
             'goalId': 'g1',
             'goalName': 'Church fund',
-            'amount': 26,
-            'frequency': 'Monthly',
+            'totalAmount': 0,
             'type': 'Online',
-            'paidAmount': 10,
+            'transactions': [
+              {
+                'id': 'tx-1',
+                'amount': 10,
+                'executionDate': '2026-06-15T11:30:00Z',
+                'state': 'Processed',
+              },
+            ],
           },
           {
             'id': 'goal-2',
             'goalId': 'g2',
             'goalName': 'Mission',
-            'amount': 15,
-            'frequency': 'Monthly',
+            'totalAmount': 0,
             'type': 'Online',
+            'transactions': const [],
           },
         ],
       });
@@ -113,7 +150,7 @@ void main() {
       expect(groupWithoutTargets.segmentBarTotal, 10);
     });
 
-    test('totalPledged uses amount for all-at-once goals without goalAmount', () {
+    test('totalPledged uses totalAmount for all goals', () {
       final allAtOnceGroup = PledgeGroup.fromJson({
         'pledgeGroupId': 'group-1',
         'pledgeGroupName': 'Actie Kerkbalans 2026',
@@ -125,17 +162,31 @@ void main() {
             'id': 'goal-1',
             'goalId': 'g1',
             'goalName': 'Church balance',
-            'amount': 26,
-            'frequency': 'Yearly',
+            'totalAmount': 26,
             'type': 'Online',
+            'transactions': [
+              {
+                'id': 'tx-1',
+                'amount': 26,
+                'executionDate': '2026-12-31T00:00:00Z',
+                'state': 'Entered',
+              },
+            ],
           },
           {
             'id': 'goal-2',
             'goalId': 'g2',
             'goalName': 'Mission',
-            'amount': 15,
-            'frequency': 'Once',
+            'totalAmount': 15,
             'type': 'Online',
+            'transactions': [
+              {
+                'id': 'tx-2',
+                'amount': 15,
+                'executionDate': '2026-12-31T00:00:00Z',
+                'state': 'Entered',
+              },
+            ],
           },
         ],
       });
@@ -156,11 +207,23 @@ void main() {
           'id': 'goal-1',
           'goalId': 'g1',
           'goalName': 'Church fund',
-          'amount': 150,
-          'frequency': 'Monthly',
+          'totalAmount': 300,
           'type': 'Online',
-          'nextExecutionDate': '2026-07-15T00:00:00Z',
           'transactions': [
+            {
+              'id': 'tx-1',
+              'amount': 150,
+              'executionDate': '2026-07-15T00:00:00Z',
+              'state': 'Entered',
+            },
+            {
+              'id': 'tx-2',
+              'amount': 150,
+              'executionDate': '2026-06-15T11:30:00Z',
+              'state': 'Processed',
+            },
+          ],
+          'donations': [
             {
               'id': 1,
               'amount': 150,
@@ -173,11 +236,16 @@ void main() {
           'id': 'goal-2',
           'goalId': 'g2',
           'goalName': 'Mission',
-          'amount': 50,
-          'frequency': 'Monthly',
+          'totalAmount': 50,
           'type': 'Online',
-          'nextExecutionDate': '2026-07-15T00:00:00Z',
-          'transactions': [],
+          'transactions': [
+            {
+              'id': 'tx-3',
+              'amount': 50,
+              'executionDate': '2026-07-15T00:00:00Z',
+              'state': 'Entered',
+            },
+          ],
         },
       ],
     });

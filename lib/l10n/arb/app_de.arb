@@ -898,28 +898,11 @@
   },
   "pledgesDetailEditButton": "Zusage bearbeiten",
   "pledgesDetailEndsLabel": "Endet",
-  "pledgesManageTitle": "Zusage verwalten",
-  "pledgesEditTitle": "Zusage bearbeiten",
-  "pledgesEditAmountLabel": "Betrag",
-  "pledgesEditFrequencyLabel": "Häufigkeit",
-  "pledgesEditGivingMethodLabel": "Geben von",
-  "pledgesEditValidationIncreaseOnly": "Du kannst deinen Zusagenbetrag nur erhöhen.",
-  "pledgesEditSaveButton": "Änderungen speichern",
-  "pledgesEditUpdateSucceeded": "Änderungen gespeichert",
-  "pledgesEditValidationBankDetailsRequired": "Füge deine Bankdaten unter Persönliche Daten hinzu, um automatische Abbuchung zu nutzen.",
-  "pledgesManageMixedFrequency": "Mehrere Frequenzen",
-  "pledgesGivingMethodAutomaticCollection": "Automatische Abbuchung",
-  "pledgesManageGoalSubtitle": "{target} zugesagt · {recurring}",
-  "@pledgesManageGoalSubtitle": {
-    "placeholders": {
-      "target": {
-        "type": "String"
-      },
-      "recurring": {
-        "type": "String"
-      }
-    }
-  },
+  "pledgesEditRequestTitle": "Zusageänderung anfragen",
+  "pledgesEditRequestBody": "Du kannst deine Zusage noch nicht selbst ändern. Sag uns, was du ändern möchtest, und wir melden uns bei dir.",
+  "pledgesEditRequestPrefilledText": "Ich möchte meine Zusage ändern:",
+  "pledgesEditRequestSendButton": "Anfrage senden",
+  "pledgesEditRequestSuccessTitle": "Anfrage gesendet",
   "setupRecurringGiftHalfYear": "Halbes Jahr",
   "setupRecurringGiftText6": "Mal",
   "recurringGiftsSetupCreate": "Plane deine",
