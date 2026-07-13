@@ -90,6 +90,7 @@ In Flutter, expose IDs via `Semantics(identifier: …)` or the `semanticsIdentif
 | ID | Element |
 |----|---------|
 | `homeMenu` | Home drawer menu button |
+| `homeQuestionMark` | Home FAQ question mark button |
 | `menuPersonalInfo` | Drawer → Personal info |
 | `accountSettingsScreen` | Account settings page |
 | `accountSettingsRowChangePassword` | Change password row |

@@ -272,25 +272,29 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
           ),
           actions: [
-            IconButton(
-              onPressed: () {
-                unawaited(
-                  AnalyticsHelper.logEvent(
-                    eventName: AnalyticsEventName.homeFaqIconClicked,
-                  ),
-                );
-                showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  backgroundColor: AppTheme.givtPurple,
-                  builder: (_) => const FAQBottomSheet(),
-                );
-              },
-              icon: const Icon(
-                semanticLabel: 'homeQuestionMark',
-                Icons.question_mark_outlined,
-                size: 26,
+            Semantics(
+              identifier: 'homeQuestionMark',
+              button: true,
+              child: IconButton(
+                onPressed: () {
+                  unawaited(
+                    AnalyticsHelper.logEvent(
+                      eventName: AnalyticsEventName.homeFaqIconClicked,
+                    ),
+                  );
+                  showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    backgroundColor: AppTheme.givtPurple,
+                    builder: (_) => const FAQBottomSheet(),
+                  );
+                },
+                icon: const Icon(
+                  semanticLabel: 'homeQuestionMark',
+                  Icons.question_mark_outlined,
+                  size: 26,
+                ),
               ),
             ),
             Visibility(
