@@ -678,7 +678,8 @@ enum AnalyticsEventName {
   flowGenericErrorContactSupportClicked(
     'flow_generic_error_contact_support_clicked',
   ),
-  flowGenericErrorGoHomeClicked('flow_generic_error_go_home_clicked');
+  flowGenericErrorGoHomeClicked('flow_generic_error_go_home_clicked'),
+  homeFaqIconClicked('home_faq_icon_clicked');
 
   const AnalyticsEventName(this.value);
 
