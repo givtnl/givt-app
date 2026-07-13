@@ -11,6 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/config/app_config.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
@@ -272,13 +273,20 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ),
           actions: [
             IconButton(
-              onPressed: () => showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                backgroundColor: AppTheme.givtPurple,
-                builder: (_) => const FAQBottomSheet(),
-              ),
+              onPressed: () {
+                unawaited(
+                  AnalyticsHelper.logEvent(
+                    eventName: AnalyticsEventName.homeFaqIconClicked,
+                  ),
+                );
+                showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  backgroundColor: AppTheme.givtPurple,
+                  builder: (_) => const FAQBottomSheet(),
+                );
+              },
               icon: const Icon(
                 semanticLabel: 'homeQuestionMark',
                 Icons.question_mark_outlined,
