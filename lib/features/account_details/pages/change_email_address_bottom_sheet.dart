@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/features/account_details/widgets/personal_info_edit_sheet_success.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/util.dart';
 
@@ -94,10 +94,10 @@ class _ChangeEmailAddressBottomSheetState
                       return;
                     }
                     context.read<PersonalInfoEditBloc>().add(
-                          PersonalInfoEditEmail(
-                            email: emailController.text,
-                          ),
-                        );
+                      PersonalInfoEditEmail(
+                        email: emailController.text,
+                      ),
+                    );
                   }
                 : null,
             text: isLoading ? locals.loadingTitle : locals.save,
@@ -115,11 +115,7 @@ class _ChangeEmailAddressBottomSheetState
   }
 
   void _onEmailChangeSuccessDone(BuildContext context) {
-    context.read<PersonalInfoEditBloc>().add(
-          const PersonalInfoEditStatusReset(),
-        );
-    Navigator.of(context).pop();
-    context.read<AuthCubit>().refreshUser();
+    completePersonalInfoEditSheet(context);
   }
 
   bool _validateEmail(String invalidEmailMessage) {

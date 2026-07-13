@@ -18,6 +18,7 @@ import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   late _FakeAuthRepository repository;
@@ -25,6 +26,7 @@ void main() {
   late PersonalInfoEditBloc personalInfoEditBloc;
 
   setUp(() {
+    SharedPreferences.setMockInitialValues({});
     repository = _FakeAuthRepository();
     authCubit = AuthCubit(repository);
     personalInfoEditBloc = PersonalInfoEditBloc(
@@ -69,20 +71,58 @@ void main() {
     );
   }
 
-  test('resetPersonalInfoEditSheetOnDismiss clears leaked success state', () async {
-    personalInfoEditBloc.add(
-      const PersonalInfoEditName(firstName: 'Jane', lastName: 'Doe'),
-    );
-    await personalInfoEditBloc.stream.firstWhere(
-      (state) => state.status == PersonalInfoEditStatus.success,
-    );
+  test(
+    'resetPersonalInfoEditSheetOnDismiss clears leaked success state',
+    () async {
+      personalInfoEditBloc.add(
+        const PersonalInfoEditName(firstName: 'Jane', lastName: 'Doe'),
+      );
+      await personalInfoEditBloc.stream.firstWhere(
+        (state) => state.status == PersonalInfoEditStatus.success,
+      );
 
-    resetPersonalInfoEditSheetOnDismiss(personalInfoEditBloc, authCubit);
+      resetPersonalInfoEditSheetOnDismiss(personalInfoEditBloc, authCubit);
 
-    await personalInfoEditBloc.stream.firstWhere(
-      (state) => state.status == PersonalInfoEditStatus.initial,
-    );
-  });
+      await personalInfoEditBloc.stream.firstWhere(
+        (state) => state.status == PersonalInfoEditStatus.initial,
+      );
+    },
+  );
+
+  testWidgets(
+    'completePersonalInfoEditSheet pops without post-pop provider access',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) => Scaffold(
+              body: ElevatedButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (sheetContext) => TextButton(
+                      onPressed: () =>
+                          completePersonalInfoEditSheet(sheetContext),
+                      child: const Text('Done'),
+                    ),
+                  );
+                },
+                child: const Text('Open'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Open'));
+      await tester.pumpAndSettle();
+      expect(find.text('Done'), findsOneWidget);
+
+      await tester.tap(find.text('Done'));
+      await tester.pumpAndSettle();
+      expect(find.text('Done'), findsNothing);
+    },
+  );
 
   testWidgets('name sheet disables save until name changes', (tester) async {
     await pumpSheet(
@@ -133,11 +173,16 @@ void main() {
     final locals = AppLocalizations.of(context)!;
 
     expect(find.text(locals.sortCodePlaceholder), findsAtLeastNWidgets(1));
-    expect(find.text(locals.bankAccountNumberPlaceholder), findsAtLeastNWidgets(1));
+    expect(
+      find.text(locals.bankAccountNumberPlaceholder),
+      findsAtLeastNWidgets(1),
+    );
     expect(find.text(locals.editIbanAccount), findsNothing);
   });
 
-  testWidgets('address sheet shows split fields for Netherlands', (tester) async {
+  testWidgets('address sheet shows split fields for Netherlands', (
+    tester,
+  ) async {
     await pumpSheet(
       tester,
       ChangeAddressBottomSheet(
@@ -157,7 +202,9 @@ void main() {
     expect(saveButton(tester).isDisabled, isTrue);
   });
 
-  testWidgets('address sheet shows single address field for UK', (tester) async {
+  testWidgets('address sheet shows single address field for UK', (
+    tester,
+  ) async {
     await pumpSheet(
       tester,
       ChangeAddressBottomSheet(
@@ -198,10 +245,10 @@ class _FakeAuthRepository with AuthRepository {
 
   @override
   Future<(UserExt, Session, UserPresets)?> isAuthenticated() async => (
-        const UserExt(email: '', guid: '', amountLimit: 0),
-        const Session.empty(),
-        const UserPresets.empty(),
-      );
+    const UserExt(email: '', guid: '', amountLimit: 0),
+    const Session.empty(),
+    const UserPresets.empty(),
+  );
 
   @override
   Future<bool> logout() async => true;
@@ -219,8 +266,7 @@ class _FakeAuthRepository with AuthRepository {
   Future<String> signSepaMandate({
     required String guid,
     required String appLanguage,
-  }) async =>
-      '';
+  }) async => '';
 
   @override
   Future<StripeResponse> fetchStripeSetupIntent() async =>
@@ -230,15 +276,13 @@ class _FakeAuthRepository with AuthRepository {
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isNewUser,
-  }) async =>
-      const UserExt(email: '', guid: '', amountLimit: 0);
+  }) async => const UserExt(email: '', guid: '', amountLimit: 0);
 
   @override
   Future<bool> changeGiftAid({
     required String guid,
     required bool giftAid,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   Future<bool> unregisterUser({required String email}) async => true;
@@ -247,8 +291,7 @@ class _FakeAuthRepository with AuthRepository {
   Future<bool> updateUser({
     required String guid,
     required Map<String, dynamic> newUserExt,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   Future<bool> updateUserExt(Map<String, dynamic> newUserExt) async => true;
@@ -256,8 +299,7 @@ class _FakeAuthRepository with AuthRepository {
   @override
   Future<bool> updateLocalUserPresets({
     required UserPresets newUserPresets,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   Future<void> checkUserExt({required String email}) async {}
@@ -267,8 +309,7 @@ class _FakeAuthRepository with AuthRepository {
     required String guid,
     required String notificationId,
     required bool notificationPermissionStatus,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   void updateSessionStream(bool hasSession) {
