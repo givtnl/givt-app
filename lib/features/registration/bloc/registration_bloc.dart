@@ -74,7 +74,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         email: state.email,
         country: event.country,
         appLanguage: event.appLanguage,
-        timeZoneId: await FlutterTimezone.getLocalTimezone(),
+        timeZoneId: (await FlutterTimezone.getLocalTimezone()).identifier,
         amountLimit:
             event.country.toUpperCase() == Country.us.countryCode ? 4999 : 499,
         address: event.address,

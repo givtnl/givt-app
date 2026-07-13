@@ -151,9 +151,11 @@ class _CountryDropDownState extends State<CountryDropDown> {
                 const SizedBox(width: 24),
                 CountryFlag.fromCountryCode(
                   country.countryCode,
-                  shape: const RoundedRectangle(4),
-                  height: 20,
-                  width: 25,
+                  theme: const ImageTheme(
+                    shape: RoundedRectangle(4),
+                    height: 20,
+                    width: 25,
+                  ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
