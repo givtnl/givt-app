@@ -31,8 +31,7 @@ class GivtCloseButton extends StatelessWidget {
           width: 40,
           height: 40,
           color: isDisabled ? FunTheme.of(context).disabledTileBorder : Colors.white,
-          child: Icon(
-            FontAwesomeIcons.xmark,
+          child: FaIcon(FontAwesomeIcons.xmark,
             size: 20,
             color: Theme.of(context)
                 .colorScheme

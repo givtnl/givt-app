@@ -82,8 +82,7 @@ class _PresetFormFieldState extends State<PresetFormField> {
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,
-        suffixIcon: Icon(
-          FontAwesomeIcons.penToSquare,
+        suffixIcon: FaIcon(FontAwesomeIcons.penToSquare,
           color: FunTheme.of(context).primary30,
           size: 20,
         ),

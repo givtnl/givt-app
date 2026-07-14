@@ -63,8 +63,7 @@ class MobileNumberFormFieldUs extends StatelessWidget {
             onChanged: (String? newValue) {
               onPrefixChanged(newValue!);
             },
-            icon: const Icon(
-              FontAwesomeIcons.chevronDown,
+            icon: FaIcon(FontAwesomeIcons.chevronDown,
               color: FamilyAppTheme.primary20,
             ),
           ),

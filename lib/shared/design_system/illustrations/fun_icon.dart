@@ -366,7 +366,7 @@ class FunIcon extends StatelessWidget {
       );
 
   FunIcon copyWith({
-    IconData? iconData,
+    FaIconData? iconData,
     Widget? icon,
     double? circleSize,
     double? iconSize,
@@ -395,7 +395,7 @@ class FunIcon extends StatelessWidget {
 
   /// The icon to be displayed in the center of the circle.
   /// If [icon] is provided, it will be used instead of [iconData].
-  final IconData? iconData;
+  final FaIconData? iconData;
 
   /// The widget to be displayed in the center of the circle.
   /// If [icon] is provided, it will be used instead of [iconData].

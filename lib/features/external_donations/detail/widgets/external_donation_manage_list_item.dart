@@ -15,7 +15,7 @@ class ExternalDonationManageListItem extends StatelessWidget {
     super.key,
   });
 
-  final IconData icon;
+  final FaIconData icon;
   final String label;
   final String value;
   final VoidCallback onTap;

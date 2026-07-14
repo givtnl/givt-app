@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/src/widgets/icon_data.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
 
 class Tag extends Equatable {
@@ -42,7 +42,7 @@ class Tag extends Equatable {
   final String? subtitle;
   final String pictureUrl;
   final TagType type;
-  final IconData? iconData;
+  final FaIconData? iconData;
   final double? iconSize;
 
   @override

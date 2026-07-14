@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
@@ -20,7 +21,7 @@ class ForYouQrDiscoveryDialogs {
   static Future<bool?> showInactiveQrDialog(
     BuildContext context, {
     required String organisationName,
-    required IconData organisationIcon,
+    required FaIconData organisationIcon,
   }) {
     final l10n = context.l10n;
     return showDialog<bool>(

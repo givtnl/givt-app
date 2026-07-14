@@ -16,7 +16,7 @@ class FunMissionCardUIModel {
 
   final String title;
   final String description;
-  final IconData actionIcon;
+  final FaIconData actionIcon;
   final GoalCardProgressUImodel? progress;
   final FunIcon? headerIcon;
   final String? namedPage;

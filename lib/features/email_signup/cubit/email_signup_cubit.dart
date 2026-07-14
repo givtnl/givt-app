@@ -181,7 +181,7 @@ class EmailSignupCubit
       email: _currentEmail,
       appLanguage: _language!,
       country: _currentCountry!.countryCode,
-      timeZoneId: await FlutterTimezone.getLocalTimezone(),
+      timeZoneId: (await FlutterTimezone.getLocalTimezone()).identifier,
       amountLimit: _currentCountry!.isUS ? 4999 : 499,
     );
 

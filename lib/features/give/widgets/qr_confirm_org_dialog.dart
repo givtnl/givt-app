@@ -27,7 +27,7 @@ class QrConfirmOrgDialog extends StatefulWidget {
   final String organizationName;
   final VoidCallback onConfirm;
   final VoidCallback onCancel;
-  final IconData? icon;
+  final FaIconData? icon;
   final String? instanceName;
 
   static Future<void> show(
@@ -35,7 +35,7 @@ class QrConfirmOrgDialog extends StatefulWidget {
     required String organizationName,
     required VoidCallback onConfirm,
     required VoidCallback onCancel,
-    IconData? icon,
+    FaIconData? icon,
     String? instanceName,
   }) async {
     await showDialog<void>(

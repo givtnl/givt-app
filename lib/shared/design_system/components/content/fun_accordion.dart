@@ -31,7 +31,7 @@ class FunAccordion extends StatelessWidget {
   final FunAccordionState state;
   final bool isExpanded;
   final VoidCallback onHeaderTap;
-  final IconData? leadingIcon;
+  final FaIconData? leadingIcon;
 
   @override
   Widget build(BuildContext context) {

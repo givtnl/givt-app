@@ -195,7 +195,7 @@ class NotificationService implements INotificationService {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     await flutterLocalNotificationsPlugin.initialize(
-      const InitializationSettings(
+      settings: const InitializationSettings(
         android: AndroidInitializationSettings('icon'),
         iOS: DarwinInitializationSettings(),
       ),
@@ -305,10 +305,10 @@ class NotificationService implements INotificationService {
     /// Notification id
     final id = Random().nextInt(9999 - 1000) + 1000;
     await flutterLocalNotificationsPlugin.show(
-      id,
-      title,
-      message,
-      notificationDetailsAndroid,
+      id: id,
+      title: title,
+      body: message,
+      notificationDetails: notificationDetailsAndroid,
       payload: jsonEncode(payload),
     );
   }
@@ -339,14 +339,12 @@ class NotificationService implements INotificationService {
 
     try {
       await flutterLocalNotificationsPlugin.zonedSchedule(
-        id,
-        title,
-        body,
-        scheduledDate,
+        id: id,
+        title: title,
+        body: body,
+        scheduledDate: scheduledDate,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-        notificationDetailsAndroid,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
+        notificationDetails: notificationDetailsAndroid,
         payload: jsonEncode(payload),
       );
     } catch (e) {
@@ -356,7 +354,7 @@ class NotificationService implements INotificationService {
 
   Future<bool> cancelNotification(int id) async {
     try {
-      await flutterLocalNotificationsPlugin.cancel(id);
+      await flutterLocalNotificationsPlugin.cancel(id: id);
       return true;
     } catch (e) {
       LoggingInfo.instance.error('Error cancelling notification: $e');

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
@@ -205,7 +206,7 @@ class _OrganisationListFamilyContentState
     selectedTileColor: CollectGroupType.getColorComboByType(
       type,
     ).backgroundColor,
-    leading: Icon(
+    leading: FaIcon(
       CollectGroupType.getIconByTypeUS(type),
       color: FunTheme.of(context).primary20,
     ),

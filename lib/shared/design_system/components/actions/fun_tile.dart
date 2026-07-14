@@ -63,7 +63,7 @@ class FunTile extends StatelessWidget {
   final String? titleSmall;
   final String? subtitle;
   final double? assetSize;
-  final IconData? iconData;
+  final FaIconData? iconData;
   final Color? iconColor;
   final Widget? iconWidget;
   final bool hasIcon;

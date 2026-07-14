@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -24,10 +25,10 @@ class SomethingWentWrongDialog extends StatefulWidget {
   final String primaryBtnText;
   final String? secondaryBtnText;
   final String? description;
-  final IconData? icon;
+  final FaIconData? icon;
   final Color? iconColor;
   final Color? circleColor;
-  final IconData? primaryBtnLeftIcon;
+  final FaIconData? primaryBtnLeftIcon;
   final Widget? primaryBtnLeadingImage;
   final bool? showLoading;
   final AnalyticsEventName analyticsEventName;
@@ -41,11 +42,11 @@ class SomethingWentWrongDialog extends StatefulWidget {
     required AnalyticsEventName analyticsEventName,
     String? secondaryBtnText = 'Close',
     String? description = 'Oops, something went wrong',
-    IconData? icon,
+    FaIconData? icon,
     Color? iconColor,
     Color? circleColor,
-    IconData? primaryLeftIcon,
-    IconData? primaryRightIcon,
+    FaIconData? primaryLeftIcon,
+    FaIconData? primaryRightIcon,
     Widget? primaryLeadingImage,
     bool? showLoadingState = false,
     void Function()? onClickSecondaryBtn,

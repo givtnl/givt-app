@@ -111,15 +111,13 @@ class _FunInputDropdownState<T> extends State<FunInputDropdown<T>> {
       iconStyleData: const IconStyleData(
         icon: Padding(
           padding: EdgeInsets.only(right: 20),
-          child: Icon(
-            FontAwesomeIcons.chevronDown,
+          child: FaIcon(FontAwesomeIcons.chevronDown,
             color: FamilyAppTheme.primary20,
           ),
         ),
         openMenuIcon: Padding(
           padding: EdgeInsets.only(right: 20),
-          child: Icon(
-            FontAwesomeIcons.chevronUp,
+          child: FaIcon(FontAwesomeIcons.chevronUp,
             color: FamilyAppTheme.primary20,
           ),
         ),
