@@ -434,19 +434,25 @@ class FunIcon extends StatelessWidget {
               child: SizedBox(
                 width: iconSize,
                 height: iconSize,
-                child: icon,
+                child: Center(child: icon),
               ),
             )
           else
             Semantics(
               identifier: semanticsIdentifier ??
                   'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
-              child: FaIcon(
-                iconData,
-                semanticLabel:
-                    'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
-                color: iconColorOverride ?? iconColor,
-                size: iconSize,
+              child: SizedBox(
+                width: iconSize,
+                height: iconSize,
+                child: Center(
+                  child: FaIcon(
+                    iconData,
+                    semanticLabel:
+                        'icon-${iconData?.fontFamily}-${iconData?.codePoint}',
+                    color: iconColorOverride ?? iconColor,
+                    size: iconSize,
+                  ),
+                ),
               ),
             ),
         ],

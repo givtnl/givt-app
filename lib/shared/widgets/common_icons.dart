@@ -219,11 +219,14 @@ Widget primaryCircleWithIcon({
             ),
           ),
           SizedBox(
-            width: iconSize * 2,
-            child: FaIcon(
-              iconData,
-              color: iconColor ?? FamilyAppTheme.primary20,
-              size: iconSize,
+            width: iconSize,
+            height: iconSize,
+            child: Center(
+              child: FaIcon(
+                iconData,
+                color: iconColor ?? FamilyAppTheme.primary20,
+                size: iconSize,
+              ),
             ),
           ),
         ],
