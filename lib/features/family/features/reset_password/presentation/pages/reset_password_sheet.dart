@@ -118,15 +118,16 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
       },
       onData: (context, data) {
         return FunBottomSheet(
-          title: context.l10n.changePassword,
-          icon: primaryCircleWithIcon(
-            circleSize: 140,
-            iconData: FontAwesomeIcons.check,
-            iconSize: 48,
-          ),
-          content: BodyMediumText(
-            context.l10n.resetPasswordSent,
-            textAlign: TextAlign.center,
+          title: context.l10n.success,
+          content: Column(
+            children: [
+              FunIcon.checkmark(),
+              const SizedBox(height: 24),
+              BodyMediumText(
+                context.l10n.resetPasswordSent,
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
           primaryButton: FunButton(
             text: context.l10n.buttonDone,

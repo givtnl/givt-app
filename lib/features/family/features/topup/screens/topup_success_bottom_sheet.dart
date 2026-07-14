@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
 class TopupSuccessBottomSheet extends StatelessWidget {
@@ -28,13 +26,10 @@ class TopupSuccessBottomSheet extends StatelessWidget {
 
     return FunBottomSheet(
       title: 'Consider it done!',
-      icon: primaryCircleWithIcon(
-        circleSize: 140,
-        iconData: FontAwesomeIcons.check,
-        iconSize: 48,
-      ),
       content: Column(
         children: [
+          FunIcon.checkmark(),
+          const SizedBox(height: 24),
           BodyMediumText(
             text,
             textAlign: TextAlign.center,

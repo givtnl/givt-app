@@ -11,7 +11,6 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -179,20 +178,8 @@ class _ChangeMaxAmountBottomSheetViewState
   Widget _buildSuccessSheet(BuildContext context) {
     final locals = context.l10n;
     return FunBottomSheet(
-      title: locals.giveLimit,
-      icon: primaryCircleWithIcon(
-        circleSize: 140,
-        iconData: FontAwesomeIcons.check,
-        iconSize: 48,
-      ),
-      content: Column(
-        children: [
-          BodyMediumText(
-            context.l10n.success,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+      title: locals.success,
+      content: FunIcon.checkmark(),
     );
   }
 
