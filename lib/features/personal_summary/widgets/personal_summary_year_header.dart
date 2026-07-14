@@ -74,7 +74,7 @@ class _YearChevron extends StatelessWidget {
     required this.onTap,
   });
 
-  final IconData icon;
+  final FaIconData icon;
   final bool enabled;
   final VoidCallback onTap;
 

@@ -18,7 +18,7 @@ class SignMandateDetailRow extends StatelessWidget {
 
   final String label;
   final String value;
-  final IconData leadingIcon;
+  final FaIconData leadingIcon;
   final Color leadingIconColor;
   final bool showEdit;
   final VoidCallback? onEdit;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
@@ -154,7 +155,7 @@ class _ExternalDonationOrganisationSearchContentState
                     final organisation = organisations[index];
                     return ListTile(
                       contentPadding: EdgeInsets.zero,
-                      leading: Icon(
+                      leading: FaIcon(
                         CollectGroupType.getIconByTypeUS(organisation.type),
                         color: FunTheme.of(context).primary20,
                       ),

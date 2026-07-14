@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -34,7 +35,7 @@ Future<void> showBoxOriginErrorDialog(
       FunButton(
         text: 'Retry',
         onTap: onTapRetry ?? () => context.pop(),
-        leftIcon: Icons.refresh_rounded,
+        leftIcon: FontAwesomeIcons.arrowsRotate,
         analyticsEvent: AnalyticsEventName.retryClicked.toEvent(),
       ),
       FunButton(

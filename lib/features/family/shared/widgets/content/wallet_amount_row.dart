@@ -24,8 +24,7 @@ class WalletAmountRow extends StatelessWidget {
               ),
         ),
         SizedBox(width: 6),
-        Icon(
-          FontAwesomeIcons.wallet,
+        FaIcon(FontAwesomeIcons.wallet,
           color: FunTheme.of(context).info40,
           size: 20,
         ),

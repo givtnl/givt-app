@@ -203,8 +203,7 @@ class _ChangeMaxAmountBottomSheetViewState
       children: [
         IconButton.filled(
           onPressed: decreaseAmount,
-          icon: const Icon(
-            FontAwesomeIcons.circleMinus,
+          icon: FaIcon(FontAwesomeIcons.circleMinus,
             color: AppTheme.givtLightGreen,
           ),
           iconSize: 48,
@@ -213,8 +212,7 @@ class _ChangeMaxAmountBottomSheetViewState
         _buildAmountField(context),
         IconButton.filled(
           onPressed: increaseAmount,
-          icon: const Icon(
-            FontAwesomeIcons.circlePlus,
+          icon: FaIcon(FontAwesomeIcons.circlePlus,
           ),
           color: AppTheme.givtLightGreen,
           iconSize: 48,

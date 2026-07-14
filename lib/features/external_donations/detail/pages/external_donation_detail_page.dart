@@ -354,7 +354,7 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
   }
 
   Widget _buildSummaryCard({
-    required IconData icon,
+    required FaIconData icon,
     required String value,
     required String label,
   }) {

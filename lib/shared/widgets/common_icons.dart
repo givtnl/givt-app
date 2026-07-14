@@ -198,7 +198,7 @@ Widget primaryCircleWithText({
     );
 
 Widget primaryCircleWithIcon({
-  IconData? iconData,
+  FaIconData? iconData,
   double circleSize = 62,
   double iconSize = 40,
   Color? circleColor,
@@ -220,7 +220,7 @@ Widget primaryCircleWithIcon({
           ),
           SizedBox(
             width: iconSize * 2,
-            child: Icon(
+            child: FaIcon(
               iconData,
               color: iconColor ?? FamilyAppTheme.primary20,
               size: iconSize,
@@ -231,7 +231,7 @@ Widget primaryCircleWithIcon({
     );
 
 Widget errorCircleWithIcon({
-  IconData? iconData,
+  FaIconData? iconData,
   double circleSize = 62,
   double iconSize = 40,
   Color? circleColor,
@@ -248,7 +248,7 @@ Widget errorCircleWithIcon({
           shape: BoxShape.circle,
         ),
         child: Center(
-          child: Icon(
+          child: FaIcon(
             iconData,
             color: iconColor ?? FamilyAppTheme.error30,
             size: iconSize,

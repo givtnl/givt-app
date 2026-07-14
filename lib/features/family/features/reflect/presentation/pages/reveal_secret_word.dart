@@ -180,8 +180,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Icon(
-                FontAwesomeIcons.shuffle,
+              child: FaIcon(FontAwesomeIcons.shuffle,
                 size: 24,
                 color: _isSecretWordVisible
                     ? FunTheme.of(context).primary30

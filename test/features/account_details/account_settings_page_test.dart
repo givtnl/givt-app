@@ -174,7 +174,7 @@ void main() {
     );
 
     expect(find.byType(AccountSettingsAvatar), findsOneWidget);
-    expect(find.byIcon(FontAwesomeIcons.pen), findsNothing);
+    expect(find.byIcon(FontAwesomeIcons.pen.data), findsNothing);
   });
 
   testWidgets('US user can edit profile avatar when picture is set', (
@@ -194,7 +194,7 @@ void main() {
     );
 
     expect(find.byType(AccountSettingsAvatar), findsOneWidget);
-    expect(find.byIcon(FontAwesomeIcons.pen), findsOneWidget);
+    expect(find.byIcon(FontAwesomeIcons.pen.data), findsOneWidget);
   });
 
   testWidgets('bank row is not tappable when mandate is unsigned', (
@@ -222,7 +222,7 @@ void main() {
     );
     expect(
       find.ancestor(of: ibanFinder, matching: find.byIcon(
-        FontAwesomeIcons.chevronRight,
+        FontAwesomeIcons.chevronRight.data,
       )),
       findsNothing,
     );

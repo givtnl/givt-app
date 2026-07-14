@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
@@ -124,7 +125,7 @@ class _RecurringDonationsOverviewPageState
       floatingActionButton: FunButton(
         onTap: () => _cubit.onAddRecurringDonationPressed(),
         text: locals.recurringDonationsOverviewAddButton,
-        leftIcon: Icons.add,
+        leftIcon: FontAwesomeIcons.plus,
         analyticsEvent: AnalyticsEventName.recurringDonationsAddClicked.toEvent(),
       ),
     );

@@ -22,7 +22,7 @@ class DonationStatus extends Equatable {
   });
 
   final DonationStatusType type;
-  final IconData icon;
+  final FaIconData icon;
   final Color iconColor;
   final Color backgroundColor;
   final Color textColor;

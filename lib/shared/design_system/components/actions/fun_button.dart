@@ -61,7 +61,7 @@ class FunButton extends StatelessWidget {
   final bool isPressedDown;
   final String text;
   final bool isLoading;
-  final IconData? leftIcon;
+  final FaIconData? leftIcon;
   final Widget? leadingImage;
   final Color? backgroundColor;
   final Color? disabledBackgroundColor;

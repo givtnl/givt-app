@@ -52,8 +52,7 @@ class AcceptPolicyRowUs extends StatelessWidget {
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Icon(
-              FontAwesomeIcons.circleInfo,
+            child: FaIcon(FontAwesomeIcons.circleInfo,
               size: 20,
               color: AppTheme.primary20,
             ),

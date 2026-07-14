@@ -17,7 +17,7 @@ class FilterSuggestionCard extends StatelessWidget {
   final bool isFocused;
   final Color color;
   final String title;
-  final IconData iconData;
+  final FaIconData iconData;
   final VoidCallback onTap;
 
   @override

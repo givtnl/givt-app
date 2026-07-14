@@ -125,7 +125,7 @@ class RuleScreen extends StatefulWidget {
   final String buttonText;
   final String bodyText;
   final Widget header;
-  final IconData iconData;
+  final FaIconData iconData;
   final Color? backgroundColor;
   final String audioPath;
   final String title;

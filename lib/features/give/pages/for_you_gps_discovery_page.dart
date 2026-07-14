@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
@@ -397,7 +398,7 @@ class _MultipleOrgsFoundBody extends StatelessWidget {
                         CircleAvatar(
                           radius: 24,
                           backgroundColor: funTheme.primary95,
-                          child: Icon(
+                          child: FaIcon(
                             iconData,
                             color: funTheme.primary20,
                             size: 24,

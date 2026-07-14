@@ -366,7 +366,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             obscureText: _obscureText,
             hintText: AppLocalizations.of(context).password,
             suffixIcon: IconButton(
-              icon: Icon(
+              icon: FaIcon(
                 _obscureText
                     ? FontAwesomeIcons.solidEye
                     : FontAwesomeIcons.solidEyeSlash,

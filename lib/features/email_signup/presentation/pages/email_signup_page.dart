@@ -240,8 +240,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Icon(
-                                      FontAwesomeIcons.circleInfo,
+                                    FaIcon(FontAwesomeIcons.circleInfo,
                                       size: 20,
                                       color: FamilyAppTheme.primary20,
                                     ),

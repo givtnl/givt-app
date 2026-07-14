@@ -41,8 +41,14 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
-    # Start of the permission_handler configuration
     target.build_configurations.each do |config|
+
+      # Privacy bundles are resource-only; prevent Xcode from treating them as Swift executables.
+      if target.name.match?(/_privacy$/i)
+        config.build_settings['ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES'] = 'NO'
+        config.build_settings['EMBEDDED_CONTENT_CONTAINS_SWIFT'] = 'NO'
+        config.build_settings['DEFINES_MODULE'] = 'NO'
+      end
 
       #  Preprocessor definitions can be found at: https://github.com/Baseflow/flutter-permission-handler/blob/master/permission_handler_apple/ios/Classes/PermissionHandlerEnums.h
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [

@@ -114,8 +114,7 @@ class ChildDetailsPage extends StatelessWidget {
                   child: Semantics(
                     identifier: 'penIcon',
                     child: IconButton(
-                      icon: const Icon(
-                        FontAwesomeIcons.pen,
+                      icon: FaIcon(FontAwesomeIcons.pen,
                         color: AppTheme.primary20,
                       ),
                       onPressed: () {

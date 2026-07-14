@@ -44,7 +44,7 @@ enum CollectGroupType {
   });
 
   /// Font Awesome icon for this collect group (single source of truth for EU/US).
-  final IconData iconData;
+  final FaIconData iconData;
   final Color color;
 
   static CollectGroupType fromInt(int value) {
@@ -105,7 +105,7 @@ enum CollectGroupType {
     }
   }
 
-  static IconData getIconByType(CollectGroupType type) {
+  static FaIconData getIconByType(CollectGroupType type) {
     switch (type) {
       case CollectGroupType.church:
         return FontAwesomeIcons.church;
@@ -154,7 +154,7 @@ enum CollectGroupType {
   }
 
   /// Same mapping as [getIconByType] (US-specific variants were unified).
-  static IconData getIconByTypeUS(CollectGroupType type) => getIconByType(type);
+  static FaIconData getIconByTypeUS(CollectGroupType type) => getIconByType(type);
 
   static Color getHighlightColor(CollectGroupType type) {
     switch (type) {
