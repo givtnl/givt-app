@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/shared/design_system/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -147,7 +148,7 @@ class FunIconGivy extends StatelessWidget {
     iconSize: circleSize / 112 * 140,
   );
 
-  final IconData? iconData;
+  final FaIconData? iconData;
   final Widget? icon;
   final double circleSize;
   final double iconSize;

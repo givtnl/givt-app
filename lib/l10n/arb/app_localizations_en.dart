@@ -429,16 +429,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get faceId => 'Face ID';
 
   @override
-  String get touchIdUsage =>
-      'This is where you change the use of your Touch ID to login into the Givt app.';
+  String get loginUsingFaceId => 'Log in with Face ID';
 
   @override
-  String get faceIdUsage =>
-      'This is where you change the use of your Face ID to login into the Givt app.';
+  String get loginUsingTouchId => 'Log in with Touch ID';
 
   @override
-  String get fingerprintUsage =>
-      'This is where you change the use of your fingerprint to login into the Givt app.';
+  String get loginUsingFingerprint => 'Log in with fingerprint';
 
   @override
   String get offlineGiftsTitle => 'Offline donations';
@@ -1159,6 +1156,98 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get menuItemExternalDonations => 'External donations';
+
+  @override
+  String get menuItemPledges => 'Pledge';
+
+  @override
+  String get pledgesEmptyStateTitle => 'No pledges yet';
+
+  @override
+  String get pledgesEmptyStateDescription =>
+      'Pledges you make outside the app will appear here.';
+
+  @override
+  String pledgesGroupGoalSummary(String goalName, String amount) {
+    return '$goalName: $amount';
+  }
+
+  @override
+  String pledgesListNextExecution(String date) {
+    return 'Next: $date';
+  }
+
+  @override
+  String get pledgesOverviewTabCurrent => 'Current';
+
+  @override
+  String get pledgesOverviewTabPast => 'Past';
+
+  @override
+  String get pledgesOverviewAddButton => 'Add a pledge';
+
+  @override
+  String pledgesListNextUp(String date) {
+    return 'Next up $date';
+  }
+
+  @override
+  String pledgesListCardSubtitleOnce(String amount) {
+    return 'All at once $amount';
+  }
+
+  @override
+  String pledgesListCardSubtitleRecurring(
+    String frequency,
+    String amount,
+    String date,
+  ) {
+    return '$frequency $amount · Next up $date';
+  }
+
+  @override
+  String get pledgesDetailGivenSoFarTitle => 'Given so far';
+
+  @override
+  String pledgesDetailOfPledged(String amount) {
+    return 'of $amount pledged';
+  }
+
+  @override
+  String get pledgesDetailPerGoalTitle => 'Per goal';
+
+  @override
+  String pledgesDetailGoalProgress(String given, String target) {
+    return '$given given of $target';
+  }
+
+  @override
+  String pledgesDetailGiveButton(String campaign) {
+    return 'Give to $campaign';
+  }
+
+  @override
+  String get pledgesDetailEditButton => 'Edit pledge';
+
+  @override
+  String get pledgesDetailEndsLabel => 'Ends';
+
+  @override
+  String get pledgesEditRequestTitle => 'Request a pledge change';
+
+  @override
+  String get pledgesEditRequestBody =>
+      'You can\'t change your pledge yourself yet. Tell us what you\'d like to change and we\'ll get back to you.';
+
+  @override
+  String get pledgesEditRequestPrefilledText =>
+      'I\'d like to change my pledge:';
+
+  @override
+  String get pledgesEditRequestSendButton => 'Send request';
+
+  @override
+  String get pledgesEditRequestSuccessTitle => 'Request sent';
 
   @override
   String get setupRecurringGiftHalfYear => 'half year';
@@ -3841,16 +3930,13 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get faceId => 'Face ID';
 
   @override
-  String get touchIdUsage =>
-      'This is where you change the use of your Touch ID to login into the Givt app.';
+  String get loginUsingFaceId => 'Log in with Face ID';
 
   @override
-  String get faceIdUsage =>
-      'This is where you change the use of your Face ID to login into the Givt app.';
+  String get loginUsingTouchId => 'Log in with Touch ID';
 
   @override
-  String get fingerprintUsage =>
-      'This is where you change the use of your fingerprint to login into the Givt app.';
+  String get loginUsingFingerprint => 'Log in with fingerprint';
 
   @override
   String get offlineGiftsTitle => 'Offline donations';
@@ -4067,7 +4153,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get phoneNumber => 'Mobile number';
 
   @override
-  String get postalCode => 'Postal Code';
+  String get postalCode => 'ZIP code';
 
   @override
   String get ready => 'Done';
@@ -4571,6 +4657,98 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get menuItemExternalDonations => 'External donations';
+
+  @override
+  String get menuItemPledges => 'Pledge';
+
+  @override
+  String get pledgesEmptyStateTitle => 'No pledges yet';
+
+  @override
+  String get pledgesEmptyStateDescription =>
+      'Pledges you make outside the app will appear here.';
+
+  @override
+  String pledgesGroupGoalSummary(String goalName, String amount) {
+    return '$goalName: $amount';
+  }
+
+  @override
+  String pledgesListNextExecution(String date) {
+    return 'Next: $date';
+  }
+
+  @override
+  String get pledgesOverviewTabCurrent => 'Current';
+
+  @override
+  String get pledgesOverviewTabPast => 'Past';
+
+  @override
+  String get pledgesOverviewAddButton => 'Add a pledge';
+
+  @override
+  String pledgesListNextUp(String date) {
+    return 'Next up $date';
+  }
+
+  @override
+  String pledgesListCardSubtitleOnce(String amount) {
+    return 'All at once $amount';
+  }
+
+  @override
+  String pledgesListCardSubtitleRecurring(
+    String frequency,
+    String amount,
+    String date,
+  ) {
+    return '$frequency $amount · Next up $date';
+  }
+
+  @override
+  String get pledgesDetailGivenSoFarTitle => 'Given so far';
+
+  @override
+  String pledgesDetailOfPledged(String amount) {
+    return 'of $amount pledged';
+  }
+
+  @override
+  String get pledgesDetailPerGoalTitle => 'Per goal';
+
+  @override
+  String pledgesDetailGoalProgress(String given, String target) {
+    return '$given given of $target';
+  }
+
+  @override
+  String pledgesDetailGiveButton(String campaign) {
+    return 'Give to $campaign';
+  }
+
+  @override
+  String get pledgesDetailEditButton => 'Edit pledge';
+
+  @override
+  String get pledgesDetailEndsLabel => 'Ends';
+
+  @override
+  String get pledgesEditRequestTitle => 'Request a pledge change';
+
+  @override
+  String get pledgesEditRequestBody =>
+      'You can\'t change your pledge yourself yet. Tell us what you\'d like to change and we\'ll get back to you.';
+
+  @override
+  String get pledgesEditRequestPrefilledText =>
+      'I\'d like to change my pledge:';
+
+  @override
+  String get pledgesEditRequestSendButton => 'Send request';
+
+  @override
+  String get pledgesEditRequestSuccessTitle => 'Request sent';
 
   @override
   String get setupRecurringGiftHalfYear => 'half year';

@@ -139,9 +139,9 @@
   "fingerprintTitle": "Fingerprint",
   "touchId": "Touch ID",
   "faceId": "Face ID",
-  "touchIdUsage": "This is where you change the use of your Touch ID to login into the Givt app.",
-  "faceIdUsage": "This is where you change the use of your Face ID to login into the Givt app.",
-  "fingerprintUsage": "This is where you change the use of your fingerprint to login into the Givt app.",
+  "loginUsingFaceId": "Log in with Face ID",
+  "loginUsingTouchId": "Log in with Touch ID",
+  "loginUsingFingerprint": "Log in with fingerprint",
   "offlineGiftsTitle": "Offline donations",
   "amountTooHigh": "Amount too high",
   "donationAmountExceedsMaximum": "Amount exceeds the maximum allowed donation of {maxAmount}",
@@ -812,6 +812,97 @@
   "setupRecurringGiftYear": "year",
   "menuItemRecurringDonation": "Recurring donations",
   "menuItemExternalDonations": "External donations",
+  "menuItemPledges": "Pledge",
+  "pledgesEmptyStateTitle": "No pledges yet",
+  "pledgesEmptyStateDescription": "Pledges you make outside the app will appear here.",
+  "pledgesGroupGoalSummary": "{goalName}: {amount}",
+  "@pledgesGroupGoalSummary": {
+    "placeholders": {
+      "goalName": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListNextExecution": "Next: {date}",
+  "@pledgesListNextExecution": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesOverviewTabCurrent": "Current",
+  "pledgesOverviewTabPast": "Past",
+  "pledgesOverviewAddButton": "Add a pledge",
+  "pledgesListNextUp": "Next up {date}",
+  "@pledgesListNextUp": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListCardSubtitleOnce": "All at once {amount}",
+  "@pledgesListCardSubtitleOnce": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListCardSubtitleRecurring": "{frequency} {amount} · Next up {date}",
+  "@pledgesListCardSubtitleRecurring": {
+    "placeholders": {
+      "frequency": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailGivenSoFarTitle": "Given so far",
+  "pledgesDetailOfPledged": "of {amount} pledged",
+  "@pledgesDetailOfPledged": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailPerGoalTitle": "Per goal",
+  "pledgesDetailGoalProgress": "{given} given of {target}",
+  "@pledgesDetailGoalProgress": {
+    "placeholders": {
+      "given": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailGiveButton": "Give to {campaign}",
+  "@pledgesDetailGiveButton": {
+    "placeholders": {
+      "campaign": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailEditButton": "Edit pledge",
+  "pledgesDetailEndsLabel": "Ends",
+  "pledgesEditRequestTitle": "Request a pledge change",
+  "pledgesEditRequestBody": "You can't change your pledge yourself yet. Tell us what you'd like to change and we'll get back to you.",
+  "pledgesEditRequestPrefilledText": "I'd like to change my pledge:",
+  "pledgesEditRequestSendButton": "Send request",
+  "pledgesEditRequestSuccessTitle": "Request sent",
   "setupRecurringGiftHalfYear": "half year",
   "setupRecurringGiftText6": "times",
   "recurringGiftsSetupCreate": "Schedule your",

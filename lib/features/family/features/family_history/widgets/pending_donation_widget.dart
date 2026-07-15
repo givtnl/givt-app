@@ -77,11 +77,12 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         child: DottedBorder(
-          borderType: BorderType.RRect,
-          dashPattern: const [4, 4],
-          radius: const Radius.circular(20),
-          strokeWidth: 2,
-          color: AppTheme.childHistoryPendingLight,
+          options: RoundedRectDottedBorderOptions(
+            dashPattern: const [4, 4],
+            radius: const Radius.circular(20),
+            strokeWidth: 2,
+            color: AppTheme.childHistoryPendingLight,
+          ),
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(

@@ -40,6 +40,7 @@ import 'package:givt_app/features/personal_summary/giving_goal_setup/pages/givin
 import 'package:givt_app/features/personal_summary/pages/personal_summary_page.dart';
 import 'package:givt_app/features/platform_contribution/presentation/screens/platform_contribution_screen.dart';
 import 'package:givt_app/features/external_donations/overview/pages/external_donations_overview_page.dart';
+import 'package:givt_app/features/pledges/overview/pages/pledges_overview_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_overview_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -205,6 +206,11 @@ class AppRouter {
             path: Pages.externalDonations.path,
             name: Pages.externalDonations.name,
             builder: (context, state) => const ExternalDonationsOverviewPage(),
+          ),
+          GoRoute(
+            path: Pages.pledges.path,
+            name: Pages.pledges.name,
+            builder: (context, state) => const PledgesOverviewPage(),
           ),
           GoRoute(
             path: Pages.registration.path,
@@ -801,7 +807,8 @@ class AppRouter {
         return;
       }
 
-      if (routerState.name == Pages.home.name) {
+      final isOnHomeShell = _isOnHomeShellRoute(routerState);
+      if (isOnHomeShell) {
         return;
       }
 
@@ -815,5 +822,10 @@ class AppRouter {
         state.status == AuthStatus.unknown) {
       context.goNamed(Pages.welcome.name);
     }
+  }
+
+  static bool _isOnHomeShellRoute(GoRouterState routerState) {
+    final path = routerState.uri.path;
+    return path == Pages.home.path || path.startsWith('${Pages.home.path}/');
   }
 }

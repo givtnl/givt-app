@@ -244,7 +244,7 @@ class _RecurringDonationDetailPageState
   }
 
   Widget _buildSummaryCard({
-    required IconData icon,
+    required FaIconData icon,
     required String value,
     required String label,
     DateTime? endDateTag,

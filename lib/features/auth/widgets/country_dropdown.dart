@@ -93,15 +93,13 @@ class _CountryDropDownState extends State<CountryDropDown> {
         iconStyleData: const IconStyleData(
           icon: Padding(
             padding: EdgeInsets.only(right: 20),
-            child: Icon(
-              FontAwesomeIcons.chevronDown,
+            child: FaIcon(FontAwesomeIcons.chevronDown,
               color: FamilyAppTheme.primary20,
             ),
           ),
           openMenuIcon: Padding(
             padding: EdgeInsets.only(right: 20),
-            child: Icon(
-              FontAwesomeIcons.chevronUp,
+            child: FaIcon(FontAwesomeIcons.chevronUp,
               color: FamilyAppTheme.primary20,
             ),
           ),
@@ -151,9 +149,11 @@ class _CountryDropDownState extends State<CountryDropDown> {
                 const SizedBox(width: 24),
                 CountryFlag.fromCountryCode(
                   country.countryCode,
-                  shape: const RoundedRectangle(4),
-                  height: 20,
-                  width: 25,
+                  theme: const ImageTheme(
+                    shape: RoundedRectangle(4),
+                    height: 20,
+                    width: 25,
+                  ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(

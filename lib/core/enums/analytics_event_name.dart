@@ -622,6 +622,15 @@ enum AnalyticsEventName {
   menuNavigationExternalDonationsClicked(
     'menu_navigation_external_donations_clicked',
   ),
+  menuNavigationPledgesClicked('menu_navigation_pledges_clicked'),
+  pledgesOverviewRefreshed('pledges_overview_refreshed'),
+  pledgesOverviewCardClicked('pledges_overview_card_clicked'),
+  pledgesTabsChanged('pledges_tabs_changed'),
+  pledgesAddClicked('pledges_add_clicked'),
+  pledgesDetailOpened('pledges_detail_opened'),
+  pledgesDetailGiveClicked('pledges_detail_give_clicked'),
+  pledgesDetailEditClicked('pledges_detail_edit_clicked'),
+  pledgesEditRequestSendClicked('pledges_edit_request_send_clicked'),
   menuNavigationRecurringDonationClicked(
     'menu_navigation_recurring_donation_clicked',
   ),
@@ -639,6 +648,7 @@ enum AnalyticsEventName {
     'menu_navigation_platform_contribution_clicked',
   ),
   menuNavigationBiometricClicked('menu_navigation_biometric_clicked'),
+  biometricSettingsSaveClicked('biometric_settings_save_clicked'),
   menuNavigationLogoutClicked('menu_navigation_logout_clicked'),
   menuNavigationUnregisterClicked('menu_navigation_unregister_clicked'),
   menuNavigationAboutGivtClicked('menu_navigation_about_givt_clicked'),
@@ -668,7 +678,8 @@ enum AnalyticsEventName {
   flowGenericErrorContactSupportClicked(
     'flow_generic_error_contact_support_clicked',
   ),
-  flowGenericErrorGoHomeClicked('flow_generic_error_go_home_clicked');
+  flowGenericErrorGoHomeClicked('flow_generic_error_go_home_clicked'),
+  homeFaqIconClicked('home_faq_icon_clicked');
 
   const AnalyticsEventName(this.value);
 

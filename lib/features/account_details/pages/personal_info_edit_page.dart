@@ -422,7 +422,7 @@ class _PreferencesSection extends StatelessWidget {
         AccountSettingsListItem(
           value: locals.giveLimit,
           semanticsIdentifier: 'accountSettingsRowMaxAmount',
-          leading: FaIcon(currencyIcon, size: 20, color: iconColor),
+          leading: Icon(currencyIcon, size: 20, color: iconColor),
           analyticsEvent: AnalyticsEventName.onInfoRowClicked.toEvent(
             parameters: {'row_type': 'max_amount'},
           ),

@@ -139,9 +139,9 @@
   "fingerprintTitle": "Vingerafdruk",
   "touchId": "Touch ID",
   "faceId": "Face ID",
-  "touchIdUsage": "Hier beheer je het gebruik van je Touch ID om in de Givt-app in te loggen.",
-  "faceIdUsage": "Hier beheer je het gebruik van je Face ID om in de Givt-app in te loggen.",
-  "fingerprintUsage": "Hier beheer je het gebruik van je vingerafdruk om in de Givt-app in te loggen.",
+  "loginUsingFaceId": "Inloggen met Face ID",
+  "loginUsingTouchId": "Inloggen met Touch ID",
+  "loginUsingFingerprint": "Inloggen met vingerafdruk",
   "offlineGiftsTitle": "Offline giften",
   "amountTooHigh": "Bedrag te hoog",
   "donationAmountExceedsMaximum": "Dit bedrag is hoger dan het maximaal toegestane geefbedrag van {maxAmount}",
@@ -812,6 +812,97 @@
   "setupRecurringGiftYear": "jaar",
   "menuItemRecurringDonation": "Terugkerende giften",
   "menuItemExternalDonations": "Externe giften",
+  "menuItemPledges": "Toezegging",
+  "pledgesEmptyStateTitle": "Nog geen toezeggingen",
+  "pledgesEmptyStateDescription": "Toezeggingen die je buiten de app doet, verschijnen hier.",
+  "pledgesGroupGoalSummary": "{goalName}: {amount}",
+  "@pledgesGroupGoalSummary": {
+    "placeholders": {
+      "goalName": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListNextExecution": "Volgende: {date}",
+  "@pledgesListNextExecution": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesOverviewTabCurrent": "Huidig",
+  "pledgesOverviewTabPast": "Verleden",
+  "pledgesOverviewAddButton": "Toezegging toevoegen",
+  "pledgesListNextUp": "Volgende op {date}",
+  "@pledgesListNextUp": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListCardSubtitleOnce": "In één keer {amount}",
+  "@pledgesListCardSubtitleOnce": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesListCardSubtitleRecurring": "{frequency} {amount} · Volgende op {date}",
+  "@pledgesListCardSubtitleRecurring": {
+    "placeholders": {
+      "frequency": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailGivenSoFarTitle": "Tot nu toe gegeven",
+  "pledgesDetailOfPledged": "van {amount} toegezegd",
+  "@pledgesDetailOfPledged": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailPerGoalTitle": "Per doel",
+  "pledgesDetailGoalProgress": "{given} gegeven van {target}",
+  "@pledgesDetailGoalProgress": {
+    "placeholders": {
+      "given": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailGiveButton": "Geef aan {campaign}",
+  "@pledgesDetailGiveButton": {
+    "placeholders": {
+      "campaign": {
+        "type": "String"
+      }
+    }
+  },
+  "pledgesDetailEditButton": "Toezegging bewerken",
+  "pledgesDetailEndsLabel": "Eindigt",
+  "pledgesEditRequestTitle": "Toezegging wijzigen aanvragen",
+  "pledgesEditRequestBody": "Je kunt je toezegging nog niet zelf wijzigen. Laat ons weten wat je wilt veranderen, dan nemen we contact met je op.",
+  "pledgesEditRequestPrefilledText": "Ik wil mijn toezegging wijzigen:",
+  "pledgesEditRequestSendButton": "Verzoek versturen",
+  "pledgesEditRequestSuccessTitle": "Verzoek verstuurd",
   "setupRecurringGiftHalfYear": "half jaar",
   "setupRecurringGiftText6": "keer",
   "recurringGiftsSetupCreate": "Plan je",

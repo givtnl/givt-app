@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/external_donations/create/pages/step1_organisation_page.dart';
@@ -127,7 +128,7 @@ class _ExternalDonationsOverviewPageState
           }
         },
         text: locals.externalDonationsOverviewAddButton,
-        leftIcon: Icons.add,
+        leftIcon: FontAwesomeIcons.plus,
         analyticsEvent: AnalyticsEventName.externalDonationsAddClicked.toEvent(),
       ),
     );

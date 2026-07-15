@@ -193,7 +193,7 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
     required CollectGroup collectGroup,
     required QrCode qrCode,
     required String mediumId,
-    required IconData iconData,
+    required FaIconData iconData,
   }) async {
     final instanceName = qrCode.isGeneric ? null : qrCode.name;
 
@@ -276,11 +276,11 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
     );
   }
 
-  Future<IconData> _getOrganisationIcon(CollectGroup collectGroup) {
+  Future<FaIconData> _getOrganisationIcon(CollectGroup collectGroup) {
     return _getOrganisationIconFromNamespace(collectGroup.nameSpace);
   }
 
-  Future<IconData> _getOrganisationIconFromNamespace(String namespace) async {
+  Future<FaIconData> _getOrganisationIconFromNamespace(String namespace) async {
     if (namespace.isEmpty) {
       return FontAwesomeIcons.church;
     }

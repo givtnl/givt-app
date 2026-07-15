@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
@@ -23,7 +24,7 @@ class QuickTile extends StatelessWidget {
   final EdgeInsets? edgeInsets;
   final bool isSelected;
   final ColorCombo colorCombo;
-  final IconData? iconData;
+  final FaIconData? iconData;
   final void Function(BuildContext context)? onClick;
   final AnalyticsEvent analyticsEvent;
 

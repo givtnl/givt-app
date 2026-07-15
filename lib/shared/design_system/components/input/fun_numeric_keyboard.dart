@@ -96,8 +96,7 @@ class _FunNumericKeyboardState extends State<FunNumericKeyboard> {
                       onTap: widget.rightButtonFn,
                       child: Padding(
                         padding: const EdgeInsets.all(2),
-                        child: Icon(
-                          FontAwesomeIcons.deleteLeft,
+                        child: FaIcon(FontAwesomeIcons.deleteLeft,
                           color: FunTheme.of(context).secondary40,
                         ),
                       ),

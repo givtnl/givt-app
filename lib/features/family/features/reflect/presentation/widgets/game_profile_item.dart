@@ -108,7 +108,7 @@ class GameProfileItem extends StatelessWidget {
         shape: BoxShape.circle,
         color: accentColor ?? role.color.accentColor,
       ),
-      child: Icon(
+      child: FaIcon(
         _getIconPerRole(role),
         size: 16,
         color: FamilyAppTheme.primary20,
@@ -116,7 +116,7 @@ class GameProfileItem extends StatelessWidget {
     );
   }
 
-  IconData _getIconPerRole(Role? role) {
+  FaIconData _getIconPerRole(Role? role) {
     switch (role.runtimeType) {
       case SuperHero:
         return FontAwesomeIcons.mask;

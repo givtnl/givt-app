@@ -52,7 +52,7 @@ class UsSignupCubit extends CommonCubit<UserExt, UsSignupCustom> {
         email: email,
         country: country,
         appLanguage: appLanguage,
-        timeZoneId: await FlutterTimezone.getLocalTimezone(),
+        timeZoneId: (await FlutterTimezone.getLocalTimezone()).identifier,
         amountLimit:
             country.toUpperCase() == Country.us.countryCode ? 4999 : 499,
         address: Util.defaultAddress,

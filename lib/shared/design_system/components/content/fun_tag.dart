@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
 import 'package:givt_app/shared/design_system/theme/fun_app_theme.dart';
@@ -42,7 +43,7 @@ class FunTag extends StatelessWidget {
   factory FunTag.fromArea({
     required Areas area,
     required String text,
-    IconData? iconData,
+    FaIconData? iconData,
     FlatSide flatSide = FlatSide.none,
     double? iconSize,
     String? subtitle,
@@ -75,7 +76,7 @@ class FunTag extends StatelessWidget {
   factory FunTag.fromColorCombo({
     required ColorCombo combo,
     required String text,
-    IconData? iconData,
+    FaIconData? iconData,
     FlatSide flatSide = FlatSide.none,
     double? iconSize,
     List<FontFeature>? fontFeatures,
@@ -95,7 +96,7 @@ class FunTag extends StatelessWidget {
     return FunTag.fromArea(
       area: Areas.gold,
       text: '$xp XP',
-      iconData: Icons.bolt,
+      iconData: FontAwesomeIcons.bolt,
       iconSize: 16,
     );
   }
@@ -106,7 +107,7 @@ class FunTag extends StatelessWidget {
   final Color? accentColor;
   final FunTagVariant? variant;
   final BorderRadius? borderRadius;
-  final IconData? iconData;
+  final FaIconData? iconData;
   final FlatSide flatSide;
   final double? iconSize;
   final List<FontFeature>? fontFeatures;
@@ -167,7 +168,7 @@ class FunTag extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (iconData != null)
-                  Icon(
+                  FaIcon(
                     iconData,
                     color: resolved.text,
                     size: iconSize,

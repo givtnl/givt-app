@@ -291,8 +291,12 @@ class _GivingGoalSetupPageState extends State<GivingGoalSetupPage> {
               text: locals.confirm,
               isLoading: _isSaving,
               isDisabled: !_canConfirm || _isSaving,
-              analyticsEvent: AnalyticsEvent(
-                AnalyticsEventName.givingGoalSaved,
+              analyticsEvent: AnalyticsEventName.givingGoalSaved.toEvent(
+                parameters: {
+                  if (_parsedAmount != null)
+                    AnalyticsHelper.amountKey: _parsedAmount,
+                  'frequency': GivingGoalFrequency.annually.name,
+                },
               ),
               onTap: !_canConfirm || _isSaving
                   ? null

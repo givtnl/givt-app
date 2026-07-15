@@ -79,7 +79,11 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         actions: [
           IconButton(
             onPressed: () => FunBottomSheet(
-              closeAction: () => context.pop(),
+              closeAction: () {
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
               title: locals.personalInfo,
               content: BodyMediumText(
                 locals.informationPersonalData,

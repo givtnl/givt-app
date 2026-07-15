@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
@@ -166,7 +167,7 @@ class _PlatformContributionScreenState
         children: [
           Row(
             children: [
-              Icon(
+              FaIcon(
                 CollectGroupType.getIconByType(organization.type),
                 size: 20,
                 color: FamilyAppTheme.primary30,

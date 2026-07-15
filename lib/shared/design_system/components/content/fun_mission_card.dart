@@ -105,13 +105,18 @@ class FunMissionCard extends StatelessWidget {
                                     currentProgress: uiModel.progress!.amount
                                         .toInt(),
                                     total: uiModel.progress!.totalAmount
-                                        .toInt(),
+                                        .toInt()
+                                        .clamp(1, 999999999),
+                                    displayText: uiModel.progress!.displayText,
                                     backgroundColor: FunTheme.of(
                                       context,
                                     ).neutralVariant95,
-                                    progressColor: FunTheme.of(
-                                      context,
-                                    ).primary90,
+                                    progressColor:
+                                        uiModel.progress!.displayText != null
+                                            ? FunTheme.of(context).highlight90
+                                            : FunTheme.of(
+                                                context,
+                                              ).primary90,
                                     textColor: FunTheme.of(context).primary20,
                                     suffix: uiModel.progress!.suffix,
                                   )

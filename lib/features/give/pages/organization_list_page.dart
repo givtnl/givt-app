@@ -367,7 +367,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
     onTap: onTap,
     selected: isSelected,
     selectedTileColor: CollectGroupType.getHighlightColor(type),
-    leading: Icon(
+    leading: FaIcon(
       CollectGroupType.getIconByType(type),
       color: FunTheme.of(context).primary20,
     ),
@@ -484,8 +484,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: const Icon(
-              FontAwesomeIcons.handHoldingHeart,
+            leading: FaIcon(FontAwesomeIcons.handHoldingHeart,
               color: AppTheme.givtBlue,
             ),
             title: Text(locals.discoverOrAmountActionSheetOnce),

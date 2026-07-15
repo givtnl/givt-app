@@ -181,8 +181,7 @@ class FamilyMemberForm extends StatelessWidget {
         children: [
           const Padding(
             padding: EdgeInsets.only(left: 4, right: 8),
-            child: Icon(
-              FontAwesomeIcons.check,
+            child: FaIcon(FontAwesomeIcons.check,
               color: AppTheme.primary40,
               size: 16,
             ),

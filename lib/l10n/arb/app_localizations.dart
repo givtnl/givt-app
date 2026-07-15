@@ -830,23 +830,23 @@ abstract class AppLocalizations {
   /// **'Face ID'**
   String get faceId;
 
-  /// No description provided for @touchIdUsage.
+  /// No description provided for @loginUsingFaceId.
   ///
   /// In en, this message translates to:
-  /// **'This is where you change the use of your Touch ID to login into the Givt app.'**
-  String get touchIdUsage;
+  /// **'Log in with Face ID'**
+  String get loginUsingFaceId;
 
-  /// No description provided for @faceIdUsage.
+  /// No description provided for @loginUsingTouchId.
   ///
   /// In en, this message translates to:
-  /// **'This is where you change the use of your Face ID to login into the Givt app.'**
-  String get faceIdUsage;
+  /// **'Log in with Touch ID'**
+  String get loginUsingTouchId;
 
-  /// No description provided for @fingerprintUsage.
+  /// No description provided for @loginUsingFingerprint.
   ///
   /// In en, this message translates to:
-  /// **'This is where you change the use of your fingerprint to login into the Givt app.'**
-  String get fingerprintUsage;
+  /// **'Log in with fingerprint'**
+  String get loginUsingFingerprint;
 
   /// No description provided for @offlineGiftsTitle.
   ///
@@ -2152,6 +2152,148 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'External donations'**
   String get menuItemExternalDonations;
+
+  /// No description provided for @menuItemPledges.
+  ///
+  /// In en, this message translates to:
+  /// **'Pledge'**
+  String get menuItemPledges;
+
+  /// No description provided for @pledgesEmptyStateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No pledges yet'**
+  String get pledgesEmptyStateTitle;
+
+  /// No description provided for @pledgesEmptyStateDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Pledges you make outside the app will appear here.'**
+  String get pledgesEmptyStateDescription;
+
+  /// No description provided for @pledgesGroupGoalSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{goalName}: {amount}'**
+  String pledgesGroupGoalSummary(String goalName, String amount);
+
+  /// No description provided for @pledgesListNextExecution.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {date}'**
+  String pledgesListNextExecution(String date);
+
+  /// No description provided for @pledgesOverviewTabCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get pledgesOverviewTabCurrent;
+
+  /// No description provided for @pledgesOverviewTabPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get pledgesOverviewTabPast;
+
+  /// No description provided for @pledgesOverviewAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a pledge'**
+  String get pledgesOverviewAddButton;
+
+  /// No description provided for @pledgesListNextUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Next up {date}'**
+  String pledgesListNextUp(String date);
+
+  /// No description provided for @pledgesListCardSubtitleOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'All at once {amount}'**
+  String pledgesListCardSubtitleOnce(String amount);
+
+  /// No description provided for @pledgesListCardSubtitleRecurring.
+  ///
+  /// In en, this message translates to:
+  /// **'{frequency} {amount} · Next up {date}'**
+  String pledgesListCardSubtitleRecurring(
+    String frequency,
+    String amount,
+    String date,
+  );
+
+  /// No description provided for @pledgesDetailGivenSoFarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Given so far'**
+  String get pledgesDetailGivenSoFarTitle;
+
+  /// No description provided for @pledgesDetailOfPledged.
+  ///
+  /// In en, this message translates to:
+  /// **'of {amount} pledged'**
+  String pledgesDetailOfPledged(String amount);
+
+  /// No description provided for @pledgesDetailPerGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Per goal'**
+  String get pledgesDetailPerGoalTitle;
+
+  /// No description provided for @pledgesDetailGoalProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{given} given of {target}'**
+  String pledgesDetailGoalProgress(String given, String target);
+
+  /// No description provided for @pledgesDetailGiveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Give to {campaign}'**
+  String pledgesDetailGiveButton(String campaign);
+
+  /// No description provided for @pledgesDetailEditButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit pledge'**
+  String get pledgesDetailEditButton;
+
+  /// No description provided for @pledgesDetailEndsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends'**
+  String get pledgesDetailEndsLabel;
+
+  /// No description provided for @pledgesEditRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request a pledge change'**
+  String get pledgesEditRequestTitle;
+
+  /// No description provided for @pledgesEditRequestBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You can\'t change your pledge yourself yet. Tell us what you\'d like to change and we\'ll get back to you.'**
+  String get pledgesEditRequestBody;
+
+  /// No description provided for @pledgesEditRequestPrefilledText.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'d like to change my pledge:'**
+  String get pledgesEditRequestPrefilledText;
+
+  /// No description provided for @pledgesEditRequestSendButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send request'**
+  String get pledgesEditRequestSendButton;
+
+  /// No description provided for @pledgesEditRequestSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request sent'**
+  String get pledgesEditRequestSuccessTitle;
 
   /// No description provided for @setupRecurringGiftHalfYear.
   ///

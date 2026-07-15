@@ -270,7 +270,7 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         country: country.countryCode,
         appLanguage: locale,
-        timeZoneId: await FlutterTimezone.getLocalTimezone(),
+        timeZoneId: (await FlutterTimezone.getLocalTimezone()).identifier,
         amountLimit: country.isUS ? 4999 : 499,
       );
 

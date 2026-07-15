@@ -118,15 +118,16 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
       },
       onData: (context, data) {
         return FunBottomSheet(
-          title: context.l10n.changePassword,
-          icon: primaryCircleWithIcon(
-            circleSize: 140,
-            iconData: FontAwesomeIcons.check,
-            iconSize: 48,
-          ),
-          content: BodyMediumText(
-            context.l10n.resetPasswordSent,
-            textAlign: TextAlign.center,
+          title: context.l10n.success,
+          content: Column(
+            children: [
+              FunIcon.checkmark(),
+              const SizedBox(height: 24),
+              BodyMediumText(
+                context.l10n.resetPasswordSent,
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
           primaryButton: FunButton(
             text: context.l10n.buttonDone,
@@ -173,7 +174,7 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
 
   bool _validateEmail(String invalidEmailMessage) {
     final value = emailController.text;
-    if (value.isEmpty || !value.contains(Util.emailRegEx)) {
+    if (value.isEmpty || !Util.emailRegEx.hasMatch(value)) {
       setState(() {
         _emailError = invalidEmailMessage;
       });
@@ -189,6 +190,6 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
     if (widget.initialEmail.isNotEmpty) return true;
     final text = emailController.text;
     if (text.isEmpty) return false;
-    return text.contains(Util.emailRegEx);
+    return Util.emailRegEx.hasMatch(text);
   }
 }

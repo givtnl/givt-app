@@ -16,6 +16,7 @@ class FunProgressbar extends StatefulWidget {
     this.backgroundColor,
     this.progressColor,
     this.textColor,
+    this.displayText,
   })  : assert(currentProgress >= 0, 'Current progress must be non-negative'),
         assert(total > 0, 'Total must be greater than zero');
 
@@ -108,6 +109,9 @@ class FunProgressbar extends StatefulWidget {
   final Color? progressColor;
   final Color? textColor;
 
+  /// When set, replaces the default `current / total` label.
+  final String? displayText;
+
   @override
   State<FunProgressbar> createState() => _FunProgressbarState();
 }
@@ -174,7 +178,8 @@ class _FunProgressbarState extends State<FunProgressbar> {
                     children: [
                       if (widget.prefixWidget != null) widget.prefixWidget!,
                       LabelSmallText(
-                        '${widget.currentProgress} / ${widget.total}${widget.suffix == null ? '' : ' ${widget.suffix}'}',
+                        widget.displayText ??
+                            '${widget.currentProgress} / ${widget.total}${widget.suffix == null ? '' : ' ${widget.suffix}'}',
                         color: widget.textColor ?? FamilyAppTheme.highlight30,
                       ),
                     ],

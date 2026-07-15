@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/amount_presets/widgets/widgets.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -8,7 +7,6 @@ import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -119,20 +117,8 @@ class _ChangeAmountPresetsBottomSheetState
   Widget _buildSuccessSheet(BuildContext context) {
     final locals = context.l10n;
     return FunBottomSheet(
-      title: locals.amountPresetsTitle,
-      icon: primaryCircleWithIcon(
-        circleSize: 140,
-        iconData: FontAwesomeIcons.check,
-        iconSize: 48,
-      ),
-      content: Column(
-        children: [
-          BodyMediumText(
-            context.l10n.success,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+      title: locals.success,
+      content: FunIcon.checkmark(),
     );
   }
 

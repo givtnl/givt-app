@@ -432,16 +432,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get faceId => 'Face ID';
 
   @override
-  String get touchIdUsage =>
-      'Hier beheer je het gebruik van je Touch ID om in de Givt-app in te loggen.';
+  String get loginUsingFaceId => 'Inloggen met Face ID';
 
   @override
-  String get faceIdUsage =>
-      'Hier beheer je het gebruik van je Face ID om in de Givt-app in te loggen.';
+  String get loginUsingTouchId => 'Inloggen met Touch ID';
 
   @override
-  String get fingerprintUsage =>
-      'Hier beheer je het gebruik van je vingerafdruk om in de Givt-app in te loggen.';
+  String get loginUsingFingerprint => 'Inloggen met vingerafdruk';
 
   @override
   String get offlineGiftsTitle => 'Offline giften';
@@ -1163,6 +1160,98 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get menuItemExternalDonations => 'Externe giften';
+
+  @override
+  String get menuItemPledges => 'Toezegging';
+
+  @override
+  String get pledgesEmptyStateTitle => 'Nog geen toezeggingen';
+
+  @override
+  String get pledgesEmptyStateDescription =>
+      'Toezeggingen die je buiten de app doet, verschijnen hier.';
+
+  @override
+  String pledgesGroupGoalSummary(String goalName, String amount) {
+    return '$goalName: $amount';
+  }
+
+  @override
+  String pledgesListNextExecution(String date) {
+    return 'Volgende: $date';
+  }
+
+  @override
+  String get pledgesOverviewTabCurrent => 'Huidig';
+
+  @override
+  String get pledgesOverviewTabPast => 'Verleden';
+
+  @override
+  String get pledgesOverviewAddButton => 'Toezegging toevoegen';
+
+  @override
+  String pledgesListNextUp(String date) {
+    return 'Volgende op $date';
+  }
+
+  @override
+  String pledgesListCardSubtitleOnce(String amount) {
+    return 'In één keer $amount';
+  }
+
+  @override
+  String pledgesListCardSubtitleRecurring(
+    String frequency,
+    String amount,
+    String date,
+  ) {
+    return '$frequency $amount · Volgende op $date';
+  }
+
+  @override
+  String get pledgesDetailGivenSoFarTitle => 'Tot nu toe gegeven';
+
+  @override
+  String pledgesDetailOfPledged(String amount) {
+    return 'van $amount toegezegd';
+  }
+
+  @override
+  String get pledgesDetailPerGoalTitle => 'Per doel';
+
+  @override
+  String pledgesDetailGoalProgress(String given, String target) {
+    return '$given gegeven van $target';
+  }
+
+  @override
+  String pledgesDetailGiveButton(String campaign) {
+    return 'Geef aan $campaign';
+  }
+
+  @override
+  String get pledgesDetailEditButton => 'Toezegging bewerken';
+
+  @override
+  String get pledgesDetailEndsLabel => 'Eindigt';
+
+  @override
+  String get pledgesEditRequestTitle => 'Toezegging wijzigen aanvragen';
+
+  @override
+  String get pledgesEditRequestBody =>
+      'Je kunt je toezegging nog niet zelf wijzigen. Laat ons weten wat je wilt veranderen, dan nemen we contact met je op.';
+
+  @override
+  String get pledgesEditRequestPrefilledText =>
+      'Ik wil mijn toezegging wijzigen:';
+
+  @override
+  String get pledgesEditRequestSendButton => 'Verzoek versturen';
+
+  @override
+  String get pledgesEditRequestSuccessTitle => 'Verzoek verstuurd';
 
   @override
   String get setupRecurringGiftHalfYear => 'half jaar';

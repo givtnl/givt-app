@@ -11,7 +11,7 @@ class SummaryRow extends StatelessWidget {
     this.analyticsEvent,
   });
 
-  final IconData icon;
+  final FaIconData icon;
   final String label;
   final String value;
   final VoidCallback onEdit;
@@ -33,7 +33,7 @@ class SummaryRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          Icon(
+          FaIcon(
             icon,
             color: FamilyAppTheme.primary40,
             size: 24,
