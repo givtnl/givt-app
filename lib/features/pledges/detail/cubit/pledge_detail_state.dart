@@ -5,8 +5,8 @@ class PledgeDetailUIModel {
     required this.group,
     required this.givenSoFar,
     required this.totalPledged,
-    required this.recurringTotal,
-    required this.recurringFrequency,
+    required this.completedTransactionCount,
+    required this.totalTransactionCount,
     required this.goalProgress,
     required this.history,
   });
@@ -14,8 +14,8 @@ class PledgeDetailUIModel {
   final PledgeGroup group;
   final double givenSoFar;
   final double? totalPledged;
-  final double recurringTotal;
-  final String? recurringFrequency;
+  final int completedTransactionCount;
+  final int totalTransactionCount;
   final List<PledgeGoalProgress> goalProgress;
   final List<PledgeHistoryItem> history;
 
@@ -26,8 +26,8 @@ class PledgeDetailUIModel {
         other.group == group &&
         other.givenSoFar == givenSoFar &&
         other.totalPledged == totalPledged &&
-        other.recurringTotal == recurringTotal &&
-        other.recurringFrequency == recurringFrequency &&
+        other.completedTransactionCount == completedTransactionCount &&
+        other.totalTransactionCount == totalTransactionCount &&
         other.goalProgress == goalProgress &&
         other.history == history;
   }
@@ -37,8 +37,8 @@ class PledgeDetailUIModel {
         group,
         givenSoFar,
         totalPledged,
-        recurringTotal,
-        recurringFrequency,
+        completedTransactionCount,
+        totalTransactionCount,
         goalProgress,
         history,
       );

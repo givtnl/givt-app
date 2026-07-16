@@ -898,6 +898,7 @@
   },
   "pledgesDetailEditButton": "Edit pledge",
   "pledgesDetailEndsLabel": "Ends",
+  "pledgesDetailTransactionsLabel": "Transactions",
   "pledgesEditRequestTitle": "Request a pledge change",
   "pledgesEditRequestBody": "You can't change your pledge yourself yet. Tell us what you'd like to change and we'll get back to you.",
   "pledgesEditRequestPrefilledText": "I'd like to change my pledge:",

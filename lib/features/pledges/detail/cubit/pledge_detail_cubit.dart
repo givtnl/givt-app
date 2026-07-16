@@ -46,8 +46,8 @@ class PledgeDetailCubit extends CommonCubit<PledgeDetailUIModel, dynamic> {
       group: group,
       givenSoFar: group.givenSoFar,
       totalPledged: group.totalPledged,
-      recurringTotal: group.upcomingRecurringTotal ?? 0,
-      recurringFrequency: _resolveRecurringFrequency(group.goals),
+      completedTransactionCount: group.completedTransactionCount,
+      totalTransactionCount: group.totalTransactionCount,
       goalProgress: group.goals
           .map(
             (goal) => PledgeGoalProgress(
@@ -61,13 +61,4 @@ class PledgeDetailCubit extends CommonCubit<PledgeDetailUIModel, dynamic> {
     );
   }
 
-  /// Shared frequency when all goals match; otherwise first goal's frequency.
-  String? _resolveRecurringFrequency(List<PledgeGoal> goals) {
-    if (goals.isEmpty) {
-      return null;
-    }
-    final first = goals.first.frequency;
-    final allSame = goals.every((goal) => goal.frequency == first);
-    return allSame ? first : null;
-  }
 }

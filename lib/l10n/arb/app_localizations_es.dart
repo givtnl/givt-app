@@ -1233,6 +1233,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Finaliza';
 
   @override
+  String get pledgesDetailTransactionsLabel => 'Transacciones';
+
+  @override
   String get pledgesEditRequestTitle => 'Solicitar un cambio de compromiso';
 
   @override
@@ -4753,6 +4756,9 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get pledgesDetailEndsLabel => 'Finaliza';
+
+  @override
+  String get pledgesDetailTransactionsLabel => 'Transacciones';
 
   @override
   String get pledgesEditRequestTitle => 'Solicitar un cambio de compromiso';
