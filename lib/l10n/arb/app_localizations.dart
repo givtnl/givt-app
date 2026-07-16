@@ -2265,6 +2265,12 @@ abstract class AppLocalizations {
   /// **'Ends'**
   String get pledgesDetailEndsLabel;
 
+  /// No description provided for @pledgesDetailTransactionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get pledgesDetailTransactionsLabel;
+
   /// No description provided for @pledgesEditRequestTitle.
   ///
   /// In en, this message translates to:

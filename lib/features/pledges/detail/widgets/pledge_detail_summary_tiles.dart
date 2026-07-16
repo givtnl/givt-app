@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/datetime/api_date_time.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/pledges/detail/cubit/pledge_detail_cubit.dart';
-import 'package:givt_app/features/pledges/shared/pledge_display.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 
@@ -23,30 +22,28 @@ class PledgeDetailSummaryTiles extends StatelessWidget {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final endDate = uiModel.group.endDateTime;
-    final frequencyLabel = uiModel.recurringFrequency == null
-        ? null
-        : PledgeDisplay.formatFrequency(locals, uiModel.recurringFrequency!);
+    final showTransactionTile = uiModel.totalTransactionCount > 0;
 
     return Row(
       children: [
-        Expanded(
-          child: FunTile(
-            variant: FunTileVariant.six,
-            iconData: FontAwesomeIcons.arrowsRotate,
-            assetSize: 32,
-            iconPath: '',
-            analyticsEvent:
-                AnalyticsEventName.pledgesDetailOpened.toEvent(),
-            isPressedDown: true,
-            titleBig: PledgeDisplay.formatAmount(
-              amount: uiModel.recurringTotal,
-              countryCode: countryCode,
+        if (showTransactionTile) ...[
+          Expanded(
+            child: FunTile(
+              variant: FunTileVariant.six,
+              iconData: FontAwesomeIcons.arrowsRotate,
+              assetSize: 32,
+              iconPath: '',
+              analyticsEvent:
+                  AnalyticsEventName.pledgesDetailOpened.toEvent(),
+              isPressedDown: true,
+              titleBig:
+                  '${uiModel.completedTransactionCount} / ${uiModel.totalTransactionCount}',
+              subtitle: locals.pledgesDetailTransactionsLabel,
             ),
-            subtitle: frequencyLabel ?? '',
           ),
-        ),
+        ],
         if (endDate != null) ...[
-          const SizedBox(width: 16),
+          if (showTransactionTile) const SizedBox(width: 16),
           Expanded(
             child: FunTile(
               variant: FunTileVariant.six,
