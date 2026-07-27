@@ -16,6 +16,7 @@ import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
+import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/shared/repositories/infra_repository.dart';
@@ -82,6 +83,19 @@ class _FakeInfraRepository with InfraRepository {
       null;
 }
 
+class _TestAuthCubit extends AuthCubit {
+  _TestAuthCubit(super.repository);
+
+  void setAuthenticatedUser(UserExt user) {
+    emit(
+      state.copyWith(
+        status: AuthStatus.authenticated,
+        user: user,
+      ),
+    );
+  }
+}
+
 void main() {
   const userGuid = 'report-missing-test-user-guid';
 
@@ -93,7 +107,7 @@ void main() {
   );
 
   late OrganisationBloc organisationBloc;
-  late AuthCubit authCubit;
+  late _TestAuthCubit authCubit;
   late InfraCubit infraCubit;
 
   Future<void> initBloc({List<CollectGroup> groups = const []}) async {
@@ -148,6 +162,19 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  void ignoreKnownBottomSheetOverflow(WidgetTester tester) {
+    final exception = tester.takeException();
+    if (exception == null) {
+      return;
+    }
+
+    if (exception.toString().contains('RenderFlex overflowed')) {
+      return;
+    }
+
+    throw exception;
+  }
+
   setUp(() async {
     SharedPreferences.setMockInitialValues({
       Session.tag: jsonEncode({
@@ -161,7 +188,15 @@ void main() {
       '${Util.favoritedOrganisationsKey}$userGuid': <String>[],
     });
 
-    authCubit = AuthCubit(_FakeAuthRepository());
+    authCubit = _TestAuthCubit(_FakeAuthRepository())
+      ..setAuthenticatedUser(
+        const UserExt(
+          email: 'test@example.com',
+          guid: userGuid,
+          amountLimit: 100,
+          country: 'NL',
+        ),
+      );
     infraCubit = InfraCubit(_FakeInfraRepository(), AppConfig());
   });
 
@@ -213,12 +248,42 @@ void main() {
       );
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 300));
-      tester.takeException();
+      ignoreKnownBottomSheetOverflow(tester);
 
       expect(
         find.text('Hi! I would really like to give to:'),
         findsOneWidget,
       );
+    },
+  );
+
+  testWidgets(
+    'passes search text as metadata when user has searched',
+    (tester) async {
+      const searchQuery = 'missing church';
+
+      await pumpContent(
+        tester,
+        showReportMissingOption: true,
+        groups: const [],
+      );
+
+      await tester.enterText(find.byType(TextField).first, searchQuery);
+      await tester.pump();
+
+      expect(organisationBloc.state.previousSearchQuery, searchQuery);
+
+      await tester.tap(
+        find.byKey(const ValueKey('reportMissingOrganisationTile')),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+      ignoreKnownBottomSheetOverflow(tester);
+
+      final bottomSheet = tester.widget<AboutGivtBottomSheet>(
+        find.byType(AboutGivtBottomSheet),
+      );
+      expect(bottomSheet.metadata, {'searchText': searchQuery});
     },
   );
 }

@@ -131,6 +131,10 @@ class _OrganisationListFamilyContentState
                         key: const ValueKey('reportMissingOrganisationTile'),
                         leading: const Icon(
                           Icons.add,
+                          color: Colors.transparent,
+                        ),
+                        trailing: const Icon(
+                          Icons.add,
                           color: AppTheme.givtBlue,
                         ),
                         title: Text(
