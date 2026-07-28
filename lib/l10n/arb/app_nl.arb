@@ -888,14 +888,6 @@
       }
     }
   },
-  "pledgesDetailGiveButton": "Geef aan {campaign}",
-  "@pledgesDetailGiveButton": {
-    "placeholders": {
-      "campaign": {
-        "type": "String"
-      }
-    }
-  },
   "pledgesDetailEditButton": "Toezegging bewerken",
   "pledgesDetailEndsLabel": "Eindigt",
   "pledgesDetailTransactionsLabel": "Transacties",

@@ -1222,11 +1222,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String pledgesDetailGiveButton(String campaign) {
-    return 'Give to $campaign';
-  }
-
-  @override
   String get pledgesDetailEditButton => 'Edit pledge';
 
   @override
@@ -4723,11 +4718,6 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String pledgesDetailGoalProgress(String given, String target) {
     return '$given given of $target';
-  }
-
-  @override
-  String pledgesDetailGiveButton(String campaign) {
-    return 'Give to $campaign';
   }
 
   @override

@@ -884,14 +884,6 @@
       }
     }
   },
-  "pledgesDetailGiveButton": "Give to {campaign}",
-  "@pledgesDetailGiveButton": {
-    "placeholders": {
-      "campaign": {
-        "type": "String"
-      }
-    }
-  },
   "pledgesDetailEditButton": "Edit pledge",
   "pledgesDetailEndsLabel": "Ends",
   "pledgesDetailTransactionsLabel": "Transactions",
