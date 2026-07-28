@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/dialogs/donation_submission_timeout_dialog.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class SelectGivingWayPage extends StatefulWidget {
@@ -120,57 +121,69 @@ class _SelectGivingWayPageState extends State<SelectGivingWayPage> {
                       ),
                     ),
                     _buildListTile(
-                      onTap: () {
-                        context.goNamed(
-                          Pages.giveByBeacon.name,
-                          extra: context.read<GiveBloc>(),
-                        );
-                        setState(() {
-                          showErrorDialog = true;
-                        });
-                      },
+                      onTap: () => _continueGiving(
+                        context,
+                        () {
+                          context.goNamed(
+                            Pages.giveByBeacon.name,
+                            extra: context.read<GiveBloc>(),
+                          );
+                          setState(() {
+                            showErrorDialog = true;
+                          });
+                        },
+                      ),
                       title: locals.givingContextCollectionBag,
                       subtitle: locals.selectContextCollect,
                       image: 'assets/images/select_givtbox.png',
                     ),
                     _buildListTile(
-                      onTap: () {
-                        context.goNamed(
-                          Pages.giveByQrCode.name,
-                          extra: context.read<GiveBloc>(),
-                        );
-                        setState(() {
-                          showErrorDialog = false;
-                        });
-                      },
+                      onTap: () => _continueGiving(
+                        context,
+                        () {
+                          context.goNamed(
+                            Pages.giveByQrCode.name,
+                            extra: context.read<GiveBloc>(),
+                          );
+                          setState(() {
+                            showErrorDialog = false;
+                          });
+                        },
+                      ),
                       title: locals.givingContextQrCode,
                       subtitle: locals.giveContextQr,
                       image: 'assets/images/select_qr_phone_scan.png',
                     ),
                     _buildListTile(
-                      onTap: () {
-                        context.goNamed(
-                          Pages.giveByList.name,
-                          extra: context.read<GiveBloc>(),
-                        );
-                        setState(() {
-                          showErrorDialog = true;
-                        });
-                      },
+                      onTap: () => _continueGiving(
+                        context,
+                        () {
+                          context.goNamed(
+                            Pages.giveByList.name,
+                            extra: context.read<GiveBloc>(),
+                          );
+                          setState(() {
+                            showErrorDialog = true;
+                          });
+                        },
+                      ),
                       title: locals.givingContextCollectionBagList,
                       subtitle: locals.selectContextList,
                       image: 'assets/images/select_list.png',
                     ),
                     _buildListTile(
-                      onTap: () {
-                        context.goNamed(
-                          Pages.giveByLocation.name,
-                          extra: context.read<GiveBloc>(),
-                        );
-                        setState(() {
-                          showErrorDialog = true;
-                        });
-                      },
+                      onTap: () => _continueGiving(
+                        context,
+                        () {
+                          context.goNamed(
+                            Pages.giveByLocation.name,
+                            extra: context.read<GiveBloc>(),
+                          );
+                          setState(() {
+                            showErrorDialog = true;
+                          });
+                        },
+                      ),
                       title: locals.givingContextLocation,
                       subtitle: locals.selectLocationContextLong,
                       image: 'assets/images/select_location.png',
@@ -181,6 +194,18 @@ class _SelectGivingWayPageState extends State<SelectGivingWayPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<void> _continueGiving(
+    BuildContext context,
+    VoidCallback onAuthenticated,
+  ) async {
+    await AuthUtils.checkToken(
+      context,
+      checkAuthRequest: CheckAuthRequest(
+        navigate: (context) async => onAuthenticated(),
       ),
     );
   }
