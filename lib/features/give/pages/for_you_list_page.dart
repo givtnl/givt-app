@@ -156,6 +156,7 @@ class _ForYouListPageState extends State<ForYouListPage> {
                   autoFocusSearch: true,
                   allowSelection: !_isFavoritesOnlyMode,
                   reSortOnFavoriteToggle: false,
+                  showReportMissingOption: true,
                 ),
               ),
             ),

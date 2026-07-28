@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
-import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OrganisationListFamilyContent extends StatefulWidget {
@@ -20,6 +21,7 @@ class OrganisationListFamilyContent extends StatefulWidget {
     this.autoFocusSearch = false,
     this.allowSelection = true,
     this.reSortOnFavoriteToggle = true,
+    this.showReportMissingOption = false,
     super.key,
   });
 
@@ -30,6 +32,7 @@ class OrganisationListFamilyContent extends StatefulWidget {
   final bool autoFocusSearch;
   final bool allowSelection;
   final bool reSortOnFavoriteToggle;
+  final bool showReportMissingOption;
 
   @override
   State<OrganisationListFamilyContent> createState() =>
@@ -119,8 +122,48 @@ class _OrganisationListFamilyContentState
                     color: AppTheme.neutralVariant95,
                   ),
                   shrinkWrap: true,
-                  itemCount: visibleOrganisations.length,
+                  itemCount: visibleOrganisations.length +
+                      (widget.showReportMissingOption ? 1 : 0),
                   itemBuilder: (context, index) {
+                    if (widget.showReportMissingOption &&
+                        index == visibleOrganisations.length) {
+                      return ListTile(
+                        key: const ValueKey('reportMissingOrganisationTile'),
+                        leading: const Icon(
+                          Icons.add,
+                          color: Colors.transparent,
+                        ),
+                        trailing: const Icon(
+                          Icons.add,
+                          color: AppTheme.givtBlue,
+                        ),
+                        title: Text(
+                          locals.reportMissingOrganisationListItem,
+                          style: const TextStyle(
+                            color: AppTheme.givtBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onTap: () {
+                          final searchQuery =
+                              widget.bloc.state.previousSearchQuery;
+                          final metadata = searchQuery.isNotEmpty
+                              ? {'searchText': searchQuery}
+                              : null;
+                          showModalBottomSheet<void>(
+                            context: context,
+                            isScrollControlled: true,
+                            useSafeArea: true,
+                            builder: (_) => AboutGivtBottomSheet(
+                              initialMessage:
+                                  locals.reportMissingOrganisationPrefilledText,
+                              metadata: metadata,
+                            ),
+                          );
+                        },
+                      );
+                    }
+
                     final organisation = visibleOrganisations[index];
                     final isFavorited = state.favoritedOrganisations.contains(
                       organisation.nameSpace,
