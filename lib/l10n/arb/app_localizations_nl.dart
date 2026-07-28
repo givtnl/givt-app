@@ -1226,11 +1226,6 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String pledgesDetailGiveButton(String campaign) {
-    return 'Geef aan $campaign';
-  }
-
-  @override
   String get pledgesDetailEditButton => 'Toezegging bewerken';
 
   @override

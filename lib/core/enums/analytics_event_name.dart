@@ -628,7 +628,6 @@ enum AnalyticsEventName {
   pledgesTabsChanged('pledges_tabs_changed'),
   pledgesAddClicked('pledges_add_clicked'),
   pledgesDetailOpened('pledges_detail_opened'),
-  pledgesDetailGiveClicked('pledges_detail_give_clicked'),
   pledgesDetailEditClicked('pledges_detail_edit_clicked'),
   pledgesEditRequestSendClicked('pledges_edit_request_send_clicked'),
   menuNavigationRecurringDonationClicked(

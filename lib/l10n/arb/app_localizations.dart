@@ -2247,12 +2247,6 @@ abstract class AppLocalizations {
   /// **'{given} given of {target}'**
   String pledgesDetailGoalProgress(String given, String target);
 
-  /// No description provided for @pledgesDetailGiveButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Give to {campaign}'**
-  String pledgesDetailGiveButton(String campaign);
-
   /// No description provided for @pledgesDetailEditButton.
   ///
   /// In en, this message translates to:

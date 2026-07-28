@@ -150,27 +150,16 @@ class _PledgeDetailPageState extends State<PledgeDetailPage> {
     PledgeDetailUIModel uiModel,
   ) {
     final locals = context.l10n;
-    final campaignName = uiModel.group.pledgeGroupName;
 
-    return Column(
-      children: [
-        FunButton(
-          text: locals.pledgesDetailGiveButton(campaignName),
-          analyticsEvent: AnalyticsEventName.pledgesDetailGiveClicked.toEvent(),
-          onTap: () {},
-        ),
-        const SizedBox(height: 12),
-        FunButton(
-          text: locals.pledgesDetailEditButton,
-          variant: FunButtonVariant.secondary,
-          fullBorder: true,
-          analyticsEvent: AnalyticsEventName.pledgesDetailEditClicked.toEvent(),
-          onTap: () => PledgeEditRequestBottomSheet.show(
-            context,
-            uiModel: uiModel,
-          ),
-        ),
-      ],
+    return FunButton(
+      text: locals.pledgesDetailEditButton,
+      variant: FunButtonVariant.secondary,
+      fullBorder: true,
+      analyticsEvent: AnalyticsEventName.pledgesDetailEditClicked.toEvent(),
+      onTap: () => PledgeEditRequestBottomSheet.show(
+        context,
+        uiModel: uiModel,
+      ),
     );
   }
 }

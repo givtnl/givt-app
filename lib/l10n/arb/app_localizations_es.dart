@@ -1222,11 +1222,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String pledgesDetailGiveButton(String campaign) {
-    return 'Dar a $campaign';
-  }
-
-  @override
   String get pledgesDetailEditButton => 'Editar compromiso';
 
   @override
@@ -4744,11 +4739,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String pledgesDetailGoalProgress(String given, String target) {
     return '$given dado de $target';
-  }
-
-  @override
-  String pledgesDetailGiveButton(String campaign) {
-    return 'Dar a $campaign';
   }
 
   @override

@@ -888,14 +888,6 @@
       }
     }
   },
-  "pledgesDetailGiveButton": "Dar a {campaign}",
-  "@pledgesDetailGiveButton": {
-    "placeholders": {
-      "campaign": {
-        "type": "String"
-      }
-    }
-  },
   "pledgesDetailEditButton": "Editar compromiso",
   "pledgesDetailEndsLabel": "Finaliza",
   "pledgesDetailTransactionsLabel": "Transacciones",

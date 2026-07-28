@@ -1231,11 +1231,6 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String pledgesDetailGiveButton(String campaign) {
-    return 'An $campaign geben';
-  }
-
-  @override
   String get pledgesDetailEditButton => 'Zusage bearbeiten';
 
   @override

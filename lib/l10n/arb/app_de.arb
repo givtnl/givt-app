@@ -888,14 +888,6 @@
       }
     }
   },
-  "pledgesDetailGiveButton": "An {campaign} geben",
-  "@pledgesDetailGiveButton": {
-    "placeholders": {
-      "campaign": {
-        "type": "String"
-      }
-    }
-  },
   "pledgesDetailEditButton": "Zusage bearbeiten",
   "pledgesDetailEndsLabel": "Endet",
   "pledgesDetailTransactionsLabel": "Transaktionen",
