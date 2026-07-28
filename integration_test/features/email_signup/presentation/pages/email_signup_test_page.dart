@@ -13,7 +13,7 @@ class EmailSignupTestPage {
   final Finder emailInput = find.byKey(const ValueKey('Email-Input'));
   final Finder continueButton = find.byKey(const ValueKey('Email-Continue-Button'));
   final Finder scrollable = find.byKey(const ValueKey('Email-Signup-Scrollable'));
-  final Finder countryDropdown = find.byKey(const ValueKey('Country-Dropdown'));
+  final Finder countryDropdown = find.byKey(const ValueKey('CountryDropDown'));
 
   // Actions
   Future<void> enterEmail(String email) async {

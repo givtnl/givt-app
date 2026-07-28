@@ -140,14 +140,18 @@ class EmailSignupCubit
   Future<void> login() async {
     emitCustom(const EmailSignupCustom.checkingEmail());
 
-    if (!shouldContinueBeEnabled(_currentEmail)) {
-      // It shouldn't be possible to get here
+    final country = _currentCountry;
+    if (country == null) {
+      emitSnackbarMessage('Please select a country');
+      return;
+    }
+
+    if (!validateEmail(_currentEmail)) {
       emitSnackbarMessage('Invalid email address');
       return;
     }
 
-    if (!_currentCountry!.isUS) {
-      // It shouldn't be possible to get here
+    if (!country.isUS) {
       emitSnackbarMessage("EU shouldn't make use of family login");
       return;
     }
@@ -182,9 +186,9 @@ class EmailSignupCubit
     final tempUser = TempUser.prefilled(
       email: _currentEmail,
       appLanguage: _language!,
-      country: _currentCountry!.countryCode,
+      country: country.countryCode,
       timeZoneId: (await FlutterTimezone.getLocalTimezone()).identifier,
-      amountLimit: _currentCountry!.isUS ? 4999 : 499,
+      amountLimit: country.isUS ? 4999 : 499,
     );
 
     try {

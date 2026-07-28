@@ -174,5 +174,20 @@ void main() {
     test('updateApi does not throw when country is null', () {
       expect(cubit.updateApi, returnsNormally);
     });
+
+    test('login emits snackbar when country is unset', () async {
+      await cubit.init();
+      await cubit.updateEmail('test@example.com');
+
+      await cubit.login();
+
+      expect(
+        cubit.state,
+        isA<SnackbarState<EmailSignupUiModel, EmailSignupCustom>>(),
+      );
+      final snackbar =
+          cubit.state as SnackbarState<EmailSignupUiModel, EmailSignupCustom>;
+      expect(snackbar.text, 'Please select a country');
+    });
   });
 }
