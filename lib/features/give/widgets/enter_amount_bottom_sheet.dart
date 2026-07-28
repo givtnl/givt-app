@@ -8,6 +8,7 @@ import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class EnterAmountBottomSheet extends StatefulWidget {
@@ -63,14 +64,21 @@ class _EnterAmountBottomSheetState extends State<EnterAmountBottomSheet> {
           showAddCollectionButton: false,
           onAmountChanged:
               (firstCollection, secondCollection, thirdCollection) {
-            GiveLoadingDialog.showGiveLoadingDialog(context);
-            context.read<GiveBloc>().add(
-                  GiveAmountChanged(
-                    firstCollectionAmount: firstCollection,
-                    secondCollectionAmount: secondCollection,
-                    thirdCollectionAmount: thirdCollection,
-                  ),
-                );
+            AuthUtils.checkToken(
+              context,
+              checkAuthRequest: CheckAuthRequest(
+                navigate: (context) async {
+                  GiveLoadingDialog.showGiveLoadingDialog(context);
+                  context.read<GiveBloc>().add(
+                        GiveAmountChanged(
+                          firstCollectionAmount: firstCollection,
+                          secondCollectionAmount: secondCollection,
+                          thirdCollectionAmount: thirdCollection,
+                        ),
+                      );
+                },
+              ),
+            );
           },
         ),
       ),

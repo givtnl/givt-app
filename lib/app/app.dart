@@ -84,6 +84,7 @@ class _AppState extends State<App> {
           BlocProvider(
             create: (_) => AuthCubit(
               getIt(),
+              networkInfo: getIt(),
             )..checkAuth(isAppStartupCheck: true),
             lazy: false,
           ),

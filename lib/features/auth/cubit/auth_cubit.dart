@@ -10,6 +10,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
@@ -19,7 +20,11 @@ import 'package:permission_handler/permission_handler.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._authRepositoy) : super(const AuthState()) {
+  AuthCubit(
+    this._authRepositoy, {
+    NetworkInfo? networkInfo,
+  })  : _networkInfo = networkInfo,
+        super(const AuthState()) {
     _sessionSubscription =
         _authRepositoy.hasSessionStream().listen((hasSession) {
       checkAuth(hasSession: hasSession);
@@ -27,7 +32,10 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   final AuthRepository _authRepositoy;
+  final NetworkInfo? _networkInfo;
   late StreamSubscription<bool> _sessionSubscription;
+
+  bool get _isOnline => _networkInfo?.isConnected ?? true;
 
   @override
   Future<void> close() async {
@@ -89,6 +97,7 @@ class AuthCubit extends Cubit<AuthState> {
           user: userExt,
           session: session,
           navigate: navigate,
+          needsReauthentication: false,
         ),
       );
       _authRepositoy.updateSessionStream(true);
@@ -155,6 +164,18 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
 
+  void clearNeedsReauthentication() {
+    if (!state.needsReauthentication) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        status: state.status,
+        needsReauthentication: false,
+      ),
+    );
+  }
+
   Future<void> checkAuth({
     bool isAppStartupCheck = false,
     bool? hasSession,
@@ -178,6 +199,24 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
+      var needsReauthentication = false;
+      if (isAppStartupCheck && _isOnline) {
+        try {
+          LoggingInfo.instance.info('Refreshing session on app startup');
+          session = await _authRepositoy.refreshToken();
+        } on SocketException {
+          LoggingInfo.instance.info(
+            'No internet while refreshing session on startup; continuing offline',
+          );
+        } on Object catch (e, stackTrace) {
+          LoggingInfo.instance.warning(
+            'Session refresh failed on app startup: $e',
+            methodName: stackTrace.toString(),
+          );
+          needsReauthentication = true;
+        }
+      }
+
       // Update notification id if needed
       final newNotificationId = await _updateNotificationId(
         userExt: userExt,
@@ -194,6 +233,19 @@ class AuthCubit extends Cubit<AuthState> {
             user: userExt,
             session: session,
             presets: amountPresets,
+            needsReauthentication: needsReauthentication,
+          ),
+        );
+      } else if (needsReauthentication) {
+        emit(
+          state.copyWith(
+            status: currentStatus == AuthStatus.loading
+                ? AuthStatus.authenticated
+                : currentStatus,
+            user: userExt,
+            session: session,
+            presets: amountPresets,
+            needsReauthentication: true,
           ),
         );
       }
@@ -411,6 +463,15 @@ class AuthCubit extends Cubit<AuthState> {
           state.copyWith(
             status: AuthStatus.authenticated,
             session: session,
+            needsReauthentication: false,
+          ),
+        );
+      } else if (state.needsReauthentication) {
+        emit(
+          state.copyWith(
+            status: state.status,
+            session: session,
+            needsReauthentication: false,
           ),
         );
       }
