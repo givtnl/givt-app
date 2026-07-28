@@ -73,6 +73,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   }
 
   void setLoading({bool state = true}) {
+    if (!mounted) return;
     setState(() {
       _isLoading = state;
     });
@@ -267,6 +268,10 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                       // Hide keyboard when continue button is tapped
                                       FocusScope.of(context).unfocus();
 
+                                      final country =
+                                          state.country ?? _cubit.currentCountry;
+                                      if (country == null) return;
+
                                       _cubit.updateApi();
                                       setLoading();
                                       AppThemeSwitcher.of(context)
@@ -275,7 +280,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                         await context
                                             .read<AuthCubit>()
                                             .register(
-                                              country: state.country!,
+                                              country: country,
                                               email: state.email,
                                               locale: Localizations.localeOf(
                                                       context)
@@ -284,6 +289,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                       } catch (e) {
                                         // Error surfaced via AuthCubit / dialogs.
                                       }
+                                      if (!mounted) return;
                                       setLoading(state: false);
                                     }
                                   : null,

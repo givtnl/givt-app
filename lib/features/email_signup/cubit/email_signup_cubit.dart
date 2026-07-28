@@ -37,7 +37,7 @@ class EmailSignupCubit
       EmailSignupUiModel(
         email: _currentEmail,
         country: _currentCountry,
-        continueButtonEnabled: validateEmail(_currentEmail),
+        continueButtonEnabled: shouldContinueBeEnabled(_currentEmail),
       ),
     );
   }
@@ -90,12 +90,14 @@ class EmailSignupCubit
       EmailSignupUiModel(
         email: _currentEmail,
         country: _currentCountry,
-        continueButtonEnabled: validateEmail(_currentEmail),
+        continueButtonEnabled: shouldContinueBeEnabled(_currentEmail),
       ),
     );
   }
 
   void updateApi() {
+    if (_currentCountry == null) return;
+
     var baseUrl = const String.fromEnvironment('API_URL_EU');
 
     if (_currentCountry!.isUS) {
