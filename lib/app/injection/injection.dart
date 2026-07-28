@@ -153,6 +153,7 @@ void initRepositories() {
       () => GivtRepositoryImpl(
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<GivingGoalRepository>(

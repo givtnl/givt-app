@@ -319,20 +319,32 @@ class _ChooseAmountState extends State<ChooseAmount> {
                       if (!areAmountsValid) {
                         return;
                       }
-                      widget.onAmountChanged(
-                        double.parse(
-                          controllers[0].text.replaceAll(',', '.'),
-                        ),
-                        double.parse(
-                          controllers[1].text.replaceAll(',', '.'),
-                        ),
-                        double.parse(
-                          controllers[2].text.replaceAll(',', '.'),
+                      if (!context.mounted) {
+                        return;
+                      }
+                      await AuthUtils.checkToken(
+                        context,
+                        checkAuthRequest: CheckAuthRequest(
+                          navigate: (context) async {
+                            widget.onAmountChanged(
+                              double.parse(
+                                controllers[0].text.replaceAll(',', '.'),
+                              ),
+                              double.parse(
+                                controllers[1].text.replaceAll(',', '.'),
+                              ),
+                              double.parse(
+                                controllers[2].text.replaceAll(',', '.'),
+                              ),
+                            );
+                            if (mounted) {
+                              setState(() {
+                                reset = false;
+                              });
+                            }
+                          },
                         ),
                       );
-                      setState(() {
-                        reset = false;
-                      });
                     }
                   : null,
             ),

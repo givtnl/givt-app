@@ -41,7 +41,8 @@ class AuthUtils {
     }
 
     final auth = context.read<AuthCubit>();
-    final isExpired = auth.state.session.isExpired;
+    final needsReauthentication = auth.state.needsReauthentication;
+    final isExpired = auth.state.session.isExpired || needsReauthentication;
     if (!isExpired) {
       // Avoid emitting [AuthStatus.loading]: drawer menu rebuilds to a
       // spinner and deactivates the caller's [BuildContext] mid-flow.
