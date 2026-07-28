@@ -215,7 +215,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     } else if (state == AppLifecycleState.resumed && _isAppInBackground) {
       _isAppInBackground = false;
       LoggingInfo.instance.info('HomePage: App resumed from background');
-      _reauthPromptDismissed = false;
       unawaited(
         _promptReauthenticationIfNeeded(requireExpiredSession: true),
       );
