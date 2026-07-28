@@ -7,8 +7,6 @@ import 'dart:io';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/core/network/network_info.dart';
-import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation_transaction.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
@@ -83,43 +81,16 @@ mixin GivtRepository {
 }
 
 class GivtRepositoryImpl with GivtRepository {
-  GivtRepositoryImpl(this.apiClient, this.prefs, this.networkInfo);
+  GivtRepositoryImpl(this.apiClient, this.prefs);
 
   final APIService apiClient;
   final SharedPreferences prefs;
-  final NetworkInfo networkInfo;
-
-  Session _readSession() {
-    final sessionString = prefs.getString(Session.tag);
-    if (sessionString == null || sessionString.isEmpty) {
-      return const Session.empty();
-    }
-    return Session.fromJson(
-      jsonDecode(sessionString) as Map<String, dynamic>,
-    );
-  }
-
-  void _ensureAuthenticatedWhenOnline() {
-    if (!networkInfo.isConnected) {
-      return;
-    }
-    final session = _readSession();
-    if (!session.isLoggedIn || session.accessToken.isEmpty) {
-      throw const GivtServerFailure(
-        statusCode: 401,
-        body: {
-          'errorMessage': 'Authentication required to submit donations',
-        },
-      );
-    }
-  }
 
   @override
   Future<List<int>> submitGivts({
     required String guid,
     required Map<String, dynamic> body,
   }) async {
-    _ensureAuthenticatedWhenOnline();
     final givts = <String, dynamic>{
       'donationType': 0,
     }..addAll(body);
@@ -188,7 +159,6 @@ class GivtRepositoryImpl with GivtRepository {
       if ((givts['donations'] as List<dynamic>).isEmpty) {
         return;
       }
-      _ensureAuthenticatedWhenOnline();
       final firstTransaction = GivtTransaction.fromJsonList(
         givts['donations'] as List<dynamic>,
       ).first;
