@@ -67,6 +67,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       0; // Counter to force new bloc creation when rescanning same code
   bool _didApplyForYouStartupOverride = false;
   bool _isPromptingReauthentication = false;
+  /// Prevents re-showing the startup reauth sheet on every rebuild after the
+  /// user dismisses it. Cleared on successful reauth; resume can still prompt.
+  bool _reauthPromptDismissed = false;
 
   static const String _forYouStartupFlagKey = 'for_you_new_giving_flow';
 
@@ -123,6 +126,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       return;
     }
 
+    // After a dismiss, do not re-open the sheet on every rebuild. Resume still
+    // re-prompts via [requireExpiredSession].
+    if (auth.needsReauthentication &&
+        _reauthPromptDismissed &&
+        !requireExpiredSession) {
+      return;
+    }
+
     _isPromptingReauthentication = true;
     try {
       await AuthUtils.checkToken(
@@ -130,11 +141,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         checkAuthRequest: CheckAuthRequest(
           navigate: (context) async {
             context.read<AuthCubit>().clearNeedsReauthentication();
+            _reauthPromptDismissed = false;
           },
         ),
       );
+      // Only clear needsReauthentication on successful navigate / refresh.
+      // If the user dismissed biometrics or the login sheet, keep the flag so
+      // give actions still require auth; avoid rebuild loops with a local skip.
       if (mounted) {
-        context.read<AuthCubit>().clearNeedsReauthentication();
+        if (context.read<AuthCubit>().state.needsReauthentication) {
+          _reauthPromptDismissed = true;
+        } else {
+          _reauthPromptDismissed = false;
+        }
       }
     } finally {
       _isPromptingReauthentication = false;
@@ -196,6 +215,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     } else if (state == AppLifecycleState.resumed && _isAppInBackground) {
       _isAppInBackground = false;
       LoggingInfo.instance.info('HomePage: App resumed from background');
+      _reauthPromptDismissed = false;
       unawaited(
         _promptReauthenticationIfNeeded(requireExpiredSession: true),
       );
