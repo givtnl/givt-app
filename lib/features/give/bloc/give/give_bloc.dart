@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:geolocator/geolocator.dart';
@@ -317,7 +318,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           return;
         }
       } catch (e, stackTrace) {
-        if (_handleDonationSubmissionTimeout(e, stackTrace, emit, organisation)) {
+        if (_handleDonationSubmissionTimeout(
+          e,
+          stackTrace,
+          emit,
+          organisation,
+        )) {
           return;
         }
         rethrow;
@@ -1020,7 +1026,31 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     final collectGroupList = await _collectGroupRepository
         .getCollectGroupList();
     if (!mediumId.contains('.')) {
-      return const QrCode.empty();
+      final namespace = mediumId;
+      final exactMatch = collectGroupList
+          .where((org) => org.nameSpace == namespace)
+          .firstOrNull;
+      final matchingGroup =
+          exactMatch ??
+          collectGroupList.firstWhere(
+            (org) => org.nameSpace.startsWith(namespace),
+            orElse: () => const CollectGroup.empty(),
+          );
+      if (matchingGroup.nameSpace.isEmpty) {
+        return const QrCode.empty();
+      }
+
+      for (final qrCode in matchingGroup.qrCodes) {
+        if (qrCode.isActive && qrCode.name.trim().isEmpty) {
+          return qrCode;
+        }
+      }
+
+      return QrCode(
+        name: '',
+        instance: namespace,
+        isActive: true,
+      );
     }
     final namespace = mediumId.split('.').first;
     final instance = mediumId.split('.').last;

@@ -82,11 +82,23 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _syncDecimalSeparatorFromLocale();
     if (_didStartGoalInitialization) {
       return;
     }
     _didStartGoalInitialization = true;
     _initializeGoals();
+  }
+
+  void _syncDecimalSeparatorFromLocale() {
+    final country = Country.fromCode(
+      context.read<AuthCubit>().state.user.country,
+    );
+    _decimalSeparator =
+        country.countryCode == Country.us.countryCode ||
+            Country.unitedKingdomCodes().contains(country.countryCode)
+        ? '.'
+        : ',';
   }
 
   @override
@@ -109,15 +121,12 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       countryCode: country.countryCode,
     );
     final amountLimit = auth.user.amountLimit;
-    if (country.countryCode == Country.us.countryCode ||
-        Country.unitedKingdomCodes().contains(country.countryCode)) {
-      _decimalSeparator = '.';
-    }
-    final hasAmountLimitViolation = DonationAmountValidation.anyExceedsUserAmountLimit(
-      values: _controllers.map((controller) => controller.text),
-      amountLimit: amountLimit,
-      decimalSeparator: _decimalSeparator,
-    );
+    final hasAmountLimitViolation =
+        DonationAmountValidation.anyExceedsUserAmountLimit(
+          values: _controllers.map((controller) => controller.text),
+          amountLimit: amountLimit,
+          decimalSeparator: _decimalSeparator,
+        );
     final canSubmit = _hasValidAmounts && !hasAmountLimitViolation;
 
     if (organisation == null) {
@@ -404,10 +413,10 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     final borderColor = exceedsLimit
         ? theme.error50
         : isComplete
-            ? theme.primary30
-            : isExpanded
-                ? theme.primary70
-                : theme.neutralVariant90;
+        ? theme.primary30
+        : isExpanded
+        ? theme.primary70
+        : theme.neutralVariant90;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -689,7 +698,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       final allocation = allocations[listIndex];
       final parsedGoalIndex = int.tryParse(allocation.collectId);
       final resolvedGoalIndex =
-          parsedGoalIndex != null && parsedGoalIndex >= 1 && parsedGoalIndex <= 3
+          parsedGoalIndex != null &&
+              parsedGoalIndex >= 1 &&
+              parsedGoalIndex <= 3
           ? parsedGoalIndex
           : listIndex + 1;
       if (resolvedGoalIndex < 1 || resolvedGoalIndex > 3) {
