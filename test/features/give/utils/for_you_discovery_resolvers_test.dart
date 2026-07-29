@@ -48,6 +48,88 @@ void main() {
       expect(result?.orgName, equals('Org A'));
     });
 
+    test(
+      'resolveCollectGroupAndQrFromQrMediumId resolves namespace-only mediumId',
+      () async {
+        final group = CollectGroup(
+          nameSpace: '61f7ed014e4c0621d000',
+          orgName: 'Namespace Org',
+          hasCelebration: false,
+          type: CollectGroupType.church,
+          qrCodes: [
+            QrCode(
+              name: '',
+              instance: '61f7ed014e4c0621d000.generic',
+              isActive: true,
+            ),
+          ],
+        );
+
+        final repo = FakeCollectGroupRepository([group]);
+        final result =
+            await ForYouDiscoveryResolvers.resolveCollectGroupAndQrFromQrMediumId(
+              '61f7ed014e4c0621d000',
+              collectGroupRepository: repo,
+            );
+
+        expect(result.isSuccess, isTrue);
+        expect(result.collectGroup?.nameSpace, equals('61f7ed014e4c0621d000'));
+        expect(result.qrCode?.isGeneric, isTrue);
+      },
+    );
+
+    test(
+      'resolveCollectGroupAndQrFromQrMediumId resolves dotted mediumId',
+      () async {
+        final group = CollectGroup(
+          nameSpace: '61f7ed014e4c0424c000',
+          orgName: 'Dotted Org',
+          hasCelebration: false,
+          type: CollectGroupType.church,
+          qrCodes: [
+            QrCode(
+              name: 'Goal',
+              instance: '61f7ed014e4c0424c000.c00000000001',
+              isActive: true,
+            ),
+          ],
+        );
+
+        final repo = FakeCollectGroupRepository([group]);
+        final result =
+            await ForYouDiscoveryResolvers.resolveCollectGroupAndQrFromQrMediumId(
+              '61f7ed014e4c0424c000.c00000000001',
+              collectGroupRepository: repo,
+            );
+
+        expect(result.isSuccess, isTrue);
+        expect(result.collectGroup?.nameSpace, equals('61f7ed014e4c0424c000'));
+        expect(result.qrCode?.instance, endsWith('c00000000001'));
+      },
+    );
+
+    test(
+      'resolveCollectGroupAndQrFromQrMediumId returns notFound for unknown mediumId',
+      () async {
+        final group = CollectGroup(
+          nameSpace: 'known',
+          orgName: 'Known Org',
+          hasCelebration: false,
+          type: CollectGroupType.church,
+        );
+
+        final repo = FakeCollectGroupRepository([group]);
+        final result =
+            await ForYouDiscoveryResolvers.resolveCollectGroupAndQrFromQrMediumId(
+              'unknown-medium-id',
+              collectGroupRepository: repo,
+            );
+
+        expect(result.isSuccess, isFalse);
+        expect(result.failure, equals(ForYouDiscoveryFailure.notFound));
+      },
+    );
+
     test('resolveCollectGroupFromQrMediumId returns null for inactive QR', () async {
       final group = CollectGroup(
         nameSpace: 'abc',

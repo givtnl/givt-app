@@ -78,8 +78,43 @@ class ForYouDiscoveryResolvers {
     }
 
     if (!mediumId.contains('.')) {
-      return const ForYouDiscoveryResult.failure(
-        ForYouDiscoveryFailure.notFound,
+      final namespace = mediumId;
+      final matchingGroup = collectGroups.firstWhere(
+        (group) =>
+            group.nameSpace == namespace ||
+            group.nameSpace.startsWith(namespace),
+        orElse: () => const CollectGroup.empty(),
+      );
+
+      if (matchingGroup.nameSpace.isEmpty) {
+        return const ForYouDiscoveryResult.failure(
+          ForYouDiscoveryFailure.notFound,
+        );
+      }
+
+      if (!matchingGroup.isActive) {
+        return ForYouDiscoveryResult.failure(
+          ForYouDiscoveryFailure.inactiveCollectGroup,
+          collectGroup: matchingGroup,
+        );
+      }
+
+      QrCode? selectedQrCode;
+      for (final qrCode in matchingGroup.qrCodes) {
+        if (qrCode.isActive && qrCode.name.trim().isEmpty) {
+          selectedQrCode = qrCode;
+          break;
+        }
+      }
+      selectedQrCode ??= QrCode(
+        name: '',
+        instance: mediumId,
+        isActive: true,
+      );
+
+      return ForYouDiscoveryResult.success(
+        collectGroup: matchingGroup,
+        qrCode: selectedQrCode,
       );
     }
 

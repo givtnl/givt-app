@@ -776,7 +776,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     }
     _controllers.clear();
     for (var i = 0; i < lines.length; i++) {
-      _controllers.add(TextEditingController(text: '0'));
+      _controllers.add(
+        TextEditingController(text: _controllerTextForLineIndex(i)),
+      );
     }
     _accordionKeys.clear();
     for (var i = 0; i < lines.length; i++) {
@@ -789,6 +791,19 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       _selectedField = 0;
       _isLoadingGoals = false;
     });
+  }
+
+  String _controllerTextForLineIndex(int index) {
+    final initialAmount = widget.flowContext.initialAmount;
+    if (index != 0 || initialAmount == null || initialAmount <= 0) {
+      return '0';
+    }
+
+    if (initialAmount % 1 == 0) {
+      return initialAmount.toInt().toString();
+    }
+
+    return initialAmount.toStringAsFixed(2).replaceAll('.', _decimalSeparator);
   }
 }
 

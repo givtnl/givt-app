@@ -411,6 +411,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   'qr-entry-${widget.code}-$_scanCounter-${auth.status}',
                 ),
                 code: widget.code,
+                initialAmount: widget.initialAmount,
+                retry: widget.retry,
+                afterGivingRedirection: widget.afterGivingRedirection,
                 initialPageIndex: pageIndex,
                 onPageChanged: (index) => setState(
                   () {

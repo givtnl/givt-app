@@ -29,6 +29,9 @@ import 'package:go_router/go_router.dart';
 class HomePageWithQRCode extends StatefulWidget {
   const HomePageWithQRCode({
     required this.code,
+    required this.initialAmount,
+    required this.retry,
+    required this.afterGivingRedirection,
     required this.initialPageIndex,
     required this.onPageChanged,
     required this.auth,
@@ -37,6 +40,9 @@ class HomePageWithQRCode extends StatefulWidget {
   });
 
   final String code;
+  final double? initialAmount;
+  final bool retry;
+  final String afterGivingRedirection;
   final int initialPageIndex;
   final void Function(int) onPageChanged;
   final AuthState auth;
@@ -231,6 +237,7 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
         selectedOrganisation: collectGroup,
         entryMediumId: mediumId,
         restrictToEntryQrGoal: restrictToEntryQrGoal,
+        initialAmount: widget.initialAmount,
       ).toMap(),
     );
   }
@@ -264,11 +271,11 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
       ],
       child: SafeArea(
         child: HomePageView(
-          initialAmount: null,
+          initialAmount: widget.initialAmount,
           given: false,
-          retry: false,
+          retry: widget.retry,
           code: widget.code,
-          afterGivingRedirection: '',
+          afterGivingRedirection: widget.afterGivingRedirection,
           initialPageIndex: widget.initialPageIndex,
           onPageChanged: widget.onPageChanged,
         ),
