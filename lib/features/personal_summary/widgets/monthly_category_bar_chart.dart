@@ -91,8 +91,13 @@ class _MonthlyRow extends StatelessWidget {
       return Row(
         children: [
           SizedBox(
-            width: 28,
-            child: LabelSmallText(monthLabel, color: theme.neutral50),
+            width: 40,
+            child: LabelSmallText(
+              monthLabel,
+              color: theme.neutral50,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -105,8 +110,13 @@ class _MonthlyRow extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          width: 28,
-          child: LabelSmallText(monthLabel, color: theme.neutral50),
+          width: 40,
+          child: LabelSmallText(
+            monthLabel,
+            color: theme.neutral50,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         const SizedBox(width: 10),
         Expanded(

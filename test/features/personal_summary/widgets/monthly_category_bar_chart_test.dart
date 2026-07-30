@@ -3,9 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/features/personal_summary/models/personal_summary_chart_models.dart';
 import 'package:givt_app/features/personal_summary/widgets/monthly_category_bar_chart.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 void main() {
+  setUpAll(() async {
+    await initializeDateFormatting('nl');
+  });
+
   const sampleRows = [
     MonthlyCategoryRow(
       month: 1,
@@ -39,7 +44,7 @@ void main() {
     await tester.pumpAndSettle();
 
     for (final row in sampleRows) {
-      final expectedLabel = DateFormat.MMM('nl').format(
+      final expectedLabel = DateFormat.MMM(locale.toLanguageTag()).format(
         DateTime(2024, row.month),
       );
       expect(find.text(expectedLabel), findsOneWidget);
