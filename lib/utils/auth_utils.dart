@@ -40,37 +40,36 @@ class AuthUtils {
       return;
     }
 
-    final auth = context.read<AuthCubit>();
-    final needsReauthentication = auth.state.needsReauthentication;
-    final isExpired = auth.state.session.isExpired || needsReauthentication;
-    if (!isExpired) {
-      // Avoid emitting [AuthStatus.loading]: drawer menu rebuilds to a
-      // spinner and deactivates the caller's [BuildContext] mid-flow.
-      final didTokenRefresh = await context.read<AuthCubit>().refreshSession(
-            emitAuthentication: false,
-          );
-      if (!context.mounted) {
-        return;
-      }
-      if (didTokenRefresh) {
-        await checkAuthRequest.navigate(
-          context,
+    // Refresh first so an expired access token is renewed without biometrics.
+    final didTokenRefresh = await context.read<AuthCubit>().refreshSession(
+          emitAuthentication: false,
         );
-        return;
-      } else {
-        await displayLoginBottomSheet(
-          context,
-          checkAuthRequest: checkAuthRequest,
-        );
-        return;
-      }
+    if (!context.mounted) {
+      return;
     }
+    if (didTokenRefresh) {
+      await checkAuthRequest.navigate(
+        context,
+      );
+      return;
+    }
+
+    await _promptBiometricsOrLogin(
+      context,
+      checkAuthRequest: checkAuthRequest,
+    );
+  }
+
+  static Future<void> _promptBiometricsOrLogin(
+    BuildContext context, {
+    required CheckAuthRequest checkAuthRequest,
+  }) async {
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
       if (!context.mounted) {
         return;
       }
       LoggingInfo.instance.info(
-        'Token expired, biometrics not available, displaying login bottom sheet.',
+        'Session refresh failed, biometrics not available, displaying login bottom sheet.',
       );
       await displayLoginBottomSheet(
         context,

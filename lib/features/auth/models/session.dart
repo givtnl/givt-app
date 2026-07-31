@@ -85,6 +85,7 @@ class Session {
         isLoggedIn: isLoggedIn ?? this.isLoggedIn,
       );
 
+  /// True when the access token is near or past expiry (small client-side buffer).
   bool get isExpired {
     final now = DateTime.now().toUtc();
 
@@ -92,7 +93,7 @@ class Session {
     if (expires.isEmpty) return true;
     final expiresDate = DateTime.parse(expires).subtract(
       const Duration(
-        minutes: 20,
+        minutes: 2,
       ),
     );
     return now.isAfter(expiresDate);

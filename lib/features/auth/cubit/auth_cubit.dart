@@ -458,34 +458,30 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       LoggingInfo.instance.info('Refreshing session');
       final session = await _authRepositoy.refreshToken();
-      if (emitAuthentication) {
-        emit(
-          state.copyWith(
-            status: AuthStatus.authenticated,
-            session: session,
-            needsReauthentication: false,
-          ),
-        );
-      } else if (state.needsReauthentication) {
-        emit(
-          state.copyWith(
-            status: state.status,
-            session: session,
-            needsReauthentication: false,
-          ),
-        );
-      }
+      emit(
+        state.copyWith(
+          status: emitAuthentication
+              ? AuthStatus.authenticated
+              : state.status,
+          session: session,
+          needsReauthentication: false,
+        ),
+      );
       return true;
     } on SocketException {
       log('No internet connection');
-      emit(state.copyWith(status: AuthStatus.noInternet));
+      if (emitAuthentication) {
+        emit(state.copyWith(status: AuthStatus.noInternet));
+      }
       return false;
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
-      emit(state.copyWith(status: AuthStatus.failure));
+      if (emitAuthentication) {
+        emit(state.copyWith(status: AuthStatus.failure));
+      }
       return false;
     }
   }
