@@ -143,6 +143,33 @@
   "loginUsingTouchId": "Iniciar sesión con Touch ID",
   "loginUsingFingerprint": "Iniciar sesión con huella dactilar",
   "offlineGiftsTitle": "Offline donations",
+  "offlineBannerNoPending": "Estás sin conexión — Todavía puedes donar. Se enviará cuando vuelvas a estar en línea.",
+  "offlineBannerPendingTitleSingular": "1 donación pendiente",
+  "offlineBannerPendingTitlePlural": "{count} donaciones pendientes",
+  "@offlineBannerPendingTitlePlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offlineBannerPendingBodySingular": "{amount} se enviará cuando vuelvas a estar en línea",
+  "@offlineBannerPendingBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingBodyPlural": "{amount} en total se enviarán cuando vuelvas a estar en línea",
+  "@offlineBannerPendingBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineSuccessGotIt": "Entendido",
   "amountTooHigh": "Amount too high",
   "donationAmountExceedsMaximum": "El monto supera la donación máxima permitida de {maxAmount}",
   "@donationAmountExceedsMaximum": {

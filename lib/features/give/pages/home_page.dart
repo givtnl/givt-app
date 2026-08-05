@@ -17,6 +17,7 @@ import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/give/cubit/offline_queue_cubit.dart';
 import 'package:givt_app/features/give/pages/home_page_view.dart';
 import 'package:givt_app/features/give/pages/home_page_with_qr_code.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
@@ -405,7 +406,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ],
         ),
         drawer: const CustomNavigationDrawer(),
-        body: widget.code.isNotEmpty
+        body: BlocProvider(
+          create: (_) => OfflineQueueCubit(getIt(), getIt()),
+          child: widget.code.isNotEmpty
             ? HomePageWithQRCode(
                 key: ValueKey(
                   'qr-entry-${widget.code}-$_scanCounter-${auth.status}',
@@ -493,6 +496,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   ),
                 ),
               ),
+        ),
       ),
     );
   }

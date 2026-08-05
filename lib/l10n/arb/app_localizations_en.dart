@@ -441,6 +441,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offlineGiftsTitle => 'Offline donations';
 
   @override
+  String get offlineBannerNoPending =>
+      'You\'re offline — You can still give. It\'ll be sent once you\'re back online.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 donation pending';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count donations pending';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount will be sent once you\'re back online';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount total will be sent once you\'re back online';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Got it';
+
+  @override
   String get amountTooHigh => 'Amount too high';
 
   @override
@@ -3938,6 +3963,31 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get offlineGiftsTitle => 'Offline donations';
+
+  @override
+  String get offlineBannerNoPending =>
+      'You\'re offline — You can still give. It\'ll be sent once you\'re back online.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 donation pending';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count donations pending';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount will be sent once you\'re back online';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount total will be sent once you\'re back online';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Got it';
 
   @override
   String get amountTooHigh => 'Amount too high';

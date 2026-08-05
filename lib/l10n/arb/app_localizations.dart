@@ -854,6 +854,42 @@ abstract class AppLocalizations {
   /// **'Offline donations'**
   String get offlineGiftsTitle;
 
+  /// No description provided for @offlineBannerNoPending.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline — You can still give. It\'ll be sent once you\'re back online.'**
+  String get offlineBannerNoPending;
+
+  /// No description provided for @offlineBannerPendingTitleSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'1 donation pending'**
+  String get offlineBannerPendingTitleSingular;
+
+  /// No description provided for @offlineBannerPendingTitlePlural.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} donations pending'**
+  String offlineBannerPendingTitlePlural(int count);
+
+  /// No description provided for @offlineBannerPendingBodySingular.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} will be sent once you\'re back online'**
+  String offlineBannerPendingBodySingular(String amount);
+
+  /// No description provided for @offlineBannerPendingBodyPlural.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} total will be sent once you\'re back online'**
+  String offlineBannerPendingBodyPlural(String amount);
+
+  /// No description provided for @offlineSuccessGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get offlineSuccessGotIt;
+
   /// No description provided for @amountTooHigh.
   ///
   /// In en, this message translates to:

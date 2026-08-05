@@ -143,6 +143,33 @@
   "loginUsingTouchId": "Mit Touch ID anmelden",
   "loginUsingFingerprint": "Mit Fingerabdruck anmelden",
   "offlineGiftsTitle": "Offline Spenden",
+  "offlineBannerNoPending": "Du bist offline — Du kannst weiterhin spenden. Es wird gesendet, sobald du wieder online bist.",
+  "offlineBannerPendingTitleSingular": "1 Spende ausstehend",
+  "offlineBannerPendingTitlePlural": "{count} Spenden ausstehend",
+  "@offlineBannerPendingTitlePlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offlineBannerPendingBodySingular": "{amount} wird gesendet, sobald du wieder online bist",
+  "@offlineBannerPendingBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingBodyPlural": "{amount} insgesamt werden gesendet, sobald du wieder online bist",
+  "@offlineBannerPendingBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineSuccessGotIt": "Alles klar",
   "amountTooHigh": "Betrag zu hoch",
   "donationAmountExceedsMaximum": "Der Betrag überschreitet den maximal zulässigen Spendenbetrag von {maxAmount}",
   "@donationAmountExceedsMaximum": {

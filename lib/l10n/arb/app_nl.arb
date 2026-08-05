@@ -143,6 +143,33 @@
   "loginUsingTouchId": "Inloggen met Touch ID",
   "loginUsingFingerprint": "Inloggen met vingerafdruk",
   "offlineGiftsTitle": "Offline giften",
+  "offlineBannerNoPending": "Je bent offline — Je kunt nog steeds geven. Het wordt verzonden zodra je weer online bent.",
+  "offlineBannerPendingTitleSingular": "1 donatie in afwachting",
+  "offlineBannerPendingTitlePlural": "{count} donaties in afwachting",
+  "@offlineBannerPendingTitlePlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offlineBannerPendingBodySingular": "{amount} wordt verzonden zodra je weer online bent",
+  "@offlineBannerPendingBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingBodyPlural": "{amount} totaal wordt verzonden zodra je weer online bent",
+  "@offlineBannerPendingBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineSuccessGotIt": "Begrepen",
   "amountTooHigh": "Bedrag te hoog",
   "donationAmountExceedsMaximum": "Dit bedrag is hoger dan het maximaal toegestane geefbedrag van {maxAmount}",
   "@donationAmountExceedsMaximum": {

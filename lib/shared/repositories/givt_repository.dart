@@ -16,6 +16,10 @@ import 'package:givt_app/shared/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin GivtRepository {
+  Stream<void> get offlineQueueChanged;
+
+  List<GivtTransaction> getCachedOfflineGivtTransactions();
+
   Future<List<int>> submitGivts({
     required String guid,
     required Map<String, dynamic> body,
@@ -86,6 +90,42 @@ class GivtRepositoryImpl with GivtRepository {
   final APIService apiClient;
   final SharedPreferences prefs;
 
+  final StreamController<void> _offlineQueueChangedController =
+      StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get offlineQueueChanged =>
+      _offlineQueueChangedController.stream;
+
+  @override
+  List<GivtTransaction> getCachedOfflineGivtTransactions() {
+    final givtsString = prefs.getString(GivtTransaction.givtTransactions);
+    if (givtsString == null || givtsString.isEmpty) {
+      return [];
+    }
+
+    try {
+      final givts = jsonDecode(givtsString) as Map<String, dynamic>;
+      final donations = givts['donations'] as List<dynamic>?;
+      if (donations == null || donations.isEmpty) {
+        return [];
+      }
+      return GivtTransaction.fromJsonList(donations);
+    } catch (e, stackTrace) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      return [];
+    }
+  }
+
+  void _notifyOfflineQueueChanged() {
+    if (!_offlineQueueChangedController.isClosed) {
+      _offlineQueueChangedController.add(null);
+    }
+  }
+
   @override
   Future<List<int>> submitGivts({
     required String guid,
@@ -137,6 +177,7 @@ class GivtRepositoryImpl with GivtRepository {
         jsonEncode(givts),
       );
     }
+    _notifyOfflineQueueChanged();
   }
 
   @override
@@ -169,6 +210,7 @@ class GivtRepositoryImpl with GivtRepository {
       await prefs.remove(
         GivtTransaction.givtTransactions,
       );
+      _notifyOfflineQueueChanged();
     } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
@@ -180,6 +222,7 @@ class GivtRepositoryImpl with GivtRepository {
         await prefs.remove(
           GivtTransaction.givtTransactions,
         );
+        _notifyOfflineQueueChanged();
       }
       rethrow;
     }

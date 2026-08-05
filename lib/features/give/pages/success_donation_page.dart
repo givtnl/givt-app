@@ -10,11 +10,13 @@ class SuccessDonationPage extends StatelessWidget {
   const SuccessDonationPage({
     required this.organisationName,
     this.isRecurringDonation = false,
+    this.isOfflineQueuedDonation = false,
     super.key,
   });
 
   final String organisationName;
   final bool isRecurringDonation;
+  final bool isOfflineQueuedDonation;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,13 @@ class SuccessDonationPage extends StatelessWidget {
   }
 
   Widget _buildButtons(BuildContext context, AppLocalizations locals) {
+    if (isOfflineQueuedDonation) {
+      return ElevatedButton(
+        onPressed: () => context.goNamed(Pages.home.name),
+        child: Text(locals.offlineSuccessGotIt),
+      );
+    }
+
     return Column(
       children: [
         ElevatedButton(

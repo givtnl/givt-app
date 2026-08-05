@@ -444,6 +444,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get offlineGiftsTitle => 'Offline giften';
 
   @override
+  String get offlineBannerNoPending =>
+      'Je bent offline — Je kunt nog steeds geven. Het wordt verzonden zodra je weer online bent.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 donatie in afwachting';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count donaties in afwachting';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount wordt verzonden zodra je weer online bent';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount totaal wordt verzonden zodra je weer online bent';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Begrepen';
+
+  @override
   String get amountTooHigh => 'Bedrag te hoog';
 
   @override

@@ -441,6 +441,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get offlineGiftsTitle => 'Offline donations';
 
   @override
+  String get offlineBannerNoPending =>
+      'Estás sin conexión — Todavía puedes donar. Se enviará cuando vuelvas a estar en línea.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 donación pendiente';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count donaciones pendientes';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount se enviará cuando vuelvas a estar en línea';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount en total se enviarán cuando vuelvas a estar en línea';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Entendido';
+
+  @override
   String get amountTooHigh => 'Amount too high';
 
   @override
@@ -3955,6 +3980,31 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get offlineGiftsTitle => 'Donaciones sin conexión';
+
+  @override
+  String get offlineBannerNoPending =>
+      'Estás sin conexión — Todavía puedes donar. Se enviará cuando vuelvas a estar en línea.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 donación pendiente';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count donaciones pendientes';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount se enviará cuando vuelvas a estar en línea';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount en total se enviarán cuando vuelvas a estar en línea';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Entendido';
 
   @override
   String get amountTooHigh => 'Monto demasiado alto';

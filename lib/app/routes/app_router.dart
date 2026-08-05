@@ -438,6 +438,7 @@ class AppRouter {
               return SuccessDonationPage(
                 organisationName: extra['orgName'] as String,
                 isRecurringDonation: extra['isRecurringDonation'] as bool,
+                isOfflineQueuedDonation: true,
               );
             },
           ),
