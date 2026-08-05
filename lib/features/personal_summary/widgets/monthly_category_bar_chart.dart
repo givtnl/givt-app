@@ -5,6 +5,7 @@ import 'package:givt_app/features/personal_summary/widgets/personal_summary_cate
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_section_card.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
 
 class MonthlyCategoryBarChart extends StatelessWidget {
@@ -23,6 +24,7 @@ class MonthlyCategoryBarChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = FunTheme.of(context);
     final locals = context.l10n;
+    final locale = Util.getLanguageTageFromLocale(context);
     final maxTotal = rows.fold<double>(
       0,
       (max, row) => row.total > max ? row.total : max,
@@ -53,7 +55,7 @@ class MonthlyCategoryBarChart extends StatelessWidget {
                   row: row,
                   maxTotal: maxTotal,
                   formatAmount: formatAmount,
-                  monthLabel: DateFormat.MMM().format(
+                  monthLabel: DateFormat.MMM(locale).format(
                     DateTime(2024, row.month),
                   ),
                 ),
@@ -89,8 +91,13 @@ class _MonthlyRow extends StatelessWidget {
       return Row(
         children: [
           SizedBox(
-            width: 28,
-            child: LabelSmallText(monthLabel, color: theme.neutral50),
+            width: 40,
+            child: LabelSmallText(
+              monthLabel,
+              color: theme.neutral50,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -103,8 +110,13 @@ class _MonthlyRow extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          width: 28,
-          child: LabelSmallText(monthLabel, color: theme.neutral50),
+          width: 40,
+          child: LabelSmallText(
+            monthLabel,
+            color: theme.neutral50,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         const SizedBox(width: 10),
         Expanded(
@@ -120,9 +132,11 @@ class _MonthlyRow extends StatelessWidget {
                   height: 14,
                   child: Stack(
                     children: [
-                      for (var index = 0;
-                          index < monthlyBarCategoryOrder.length;
-                          index++)
+                      for (
+                        var index = 0;
+                        index < monthlyBarCategoryOrder.length;
+                        index++
+                      )
                         _buildSegment(context, index, totalBarWidth),
                     ],
                   ),
@@ -154,7 +168,8 @@ class _MonthlyRow extends StatelessWidget {
     }
 
     final segmentFraction = amount / row.total;
-    final precedingFraction = monthlyBarCategoryOrder
+    final precedingFraction =
+        monthlyBarCategoryOrder
             .take(index)
             .map(row.amountFor)
             .fold<double>(0, (sum, value) => sum + value) /
