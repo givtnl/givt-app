@@ -463,6 +463,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String offlineBannerPendingOnlineBodySingular(String amount) {
+    return '$amount is being sent now';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodyPlural(String amount) {
+    return '$amount total is being sent now';
+  }
+
+  @override
   String get offlineSuccessGotIt => 'Got it';
 
   @override
@@ -3984,6 +3994,16 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String offlineBannerPendingBodyPlural(String amount) {
     return '$amount total will be sent once you\'re back online';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodySingular(String amount) {
+    return '$amount is being sent now';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodyPlural(String amount) {
+    return '$amount total is being sent now';
   }
 
   @override

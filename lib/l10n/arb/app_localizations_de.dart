@@ -468,6 +468,16 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String offlineBannerPendingOnlineBodySingular(String amount) {
+    return '$amount wird jetzt gesendet';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodyPlural(String amount) {
+    return '$amount insgesamt werden jetzt gesendet';
+  }
+
+  @override
   String get offlineSuccessGotIt => 'Alles klar';
 
   @override

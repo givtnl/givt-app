@@ -29,15 +29,21 @@ class OfflineGivingBanner extends StatelessWidget {
         final String? title;
         final String body;
 
+        final isOffline = state.isOffline;
+
         if (state.pendingCount == 0) {
           title = null;
           body = locals.offlineBannerNoPending;
         } else if (state.pendingCount == 1) {
           title = locals.offlineBannerPendingTitleSingular;
-          body = locals.offlineBannerPendingBodySingular(formattedAmount);
+          body = isOffline
+              ? locals.offlineBannerPendingBodySingular(formattedAmount)
+              : locals.offlineBannerPendingOnlineBodySingular(formattedAmount);
         } else {
           title = locals.offlineBannerPendingTitlePlural(state.pendingCount);
-          body = locals.offlineBannerPendingBodyPlural(formattedAmount);
+          body = isOffline
+              ? locals.offlineBannerPendingBodyPlural(formattedAmount)
+              : locals.offlineBannerPendingOnlineBodyPlural(formattedAmount);
         }
 
         return Padding(
@@ -53,7 +59,7 @@ class OfflineGivingBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Icon(
-                  Icons.wifi_off,
+                  isOffline ? Icons.wifi_off : Icons.sync,
                   size: 20,
                   color: theme.highlight50,
                 ),

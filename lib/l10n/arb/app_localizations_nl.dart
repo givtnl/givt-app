@@ -466,6 +466,16 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String offlineBannerPendingOnlineBodySingular(String amount) {
+    return '$amount wordt nu verzonden';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodyPlural(String amount) {
+    return '$amount totaal wordt nu verzonden';
+  }
+
+  @override
   String get offlineSuccessGotIt => 'Begrepen';
 
   @override

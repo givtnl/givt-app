@@ -884,6 +884,18 @@ abstract class AppLocalizations {
   /// **'{amount} total will be sent once you\'re back online'**
   String offlineBannerPendingBodyPlural(String amount);
 
+  /// No description provided for @offlineBannerPendingOnlineBodySingular.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} is being sent now'**
+  String offlineBannerPendingOnlineBodySingular(String amount);
+
+  /// No description provided for @offlineBannerPendingOnlineBodyPlural.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} total is being sent now'**
+  String offlineBannerPendingOnlineBodyPlural(String amount);
+
   /// No description provided for @offlineSuccessGotIt.
   ///
   /// In en, this message translates to:

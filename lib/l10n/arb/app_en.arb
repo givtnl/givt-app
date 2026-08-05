@@ -169,6 +169,22 @@
       }
     }
   },
+  "offlineBannerPendingOnlineBodySingular": "{amount} is being sent now",
+  "@offlineBannerPendingOnlineBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingOnlineBodyPlural": "{amount} total is being sent now",
+  "@offlineBannerPendingOnlineBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "offlineSuccessGotIt": "Got it",
   "amountTooHigh": "Amount too high",
   "donationAmountExceedsMaximum": "Amount exceeds the maximum allowed donation of {maxAmount}",

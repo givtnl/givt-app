@@ -24,6 +24,8 @@ class OfflineQueueCubit extends Cubit<OfflineQueueState> {
 
     _networkSubscription = _networkInfo.hasInternetConnectionStream().listen(
       (isConnected) {
+        _hasResolvedConnectivity = true;
+
         if (!isConnected) {
           _wasOffline = true;
           _refreshFromCache(isOffline: true);
@@ -46,6 +48,10 @@ class OfflineQueueCubit extends Cubit<OfflineQueueState> {
   late final StreamSubscription<void> _queueSubscription;
   late final StreamSubscription<bool> _networkSubscription;
   bool _wasOffline = false;
+  bool _hasResolvedConnectivity = false;
+  Timer? _syncRetryTimer;
+
+  static const Duration _syncRetryDelay = Duration(seconds: 15);
 
   bool _hasPendingDonations() {
     return _givtRepository.getCachedOfflineGivtTransactions().isNotEmpty;
@@ -54,10 +60,26 @@ class OfflineQueueCubit extends Cubit<OfflineQueueState> {
   Future<void> _syncAndRefresh() async {
     try {
       await _givtRepository.syncOfflineGivts();
+      _syncRetryTimer?.cancel();
+      _syncRetryTimer = null;
     } catch (_) {
-      // Keep queued donations for a later retry.
+      if (_networkInfo.isConnected && _hasPendingDonations()) {
+        _scheduleSyncRetry();
+      }
     }
     _refreshFromCache(isOffline: !_networkInfo.isConnected);
+  }
+
+  void _scheduleSyncRetry() {
+    if (_syncRetryTimer?.isActive ?? false) {
+      return;
+    }
+    _syncRetryTimer = Timer(_syncRetryDelay, () {
+      _syncRetryTimer = null;
+      if (_networkInfo.isConnected && _hasPendingDonations()) {
+        unawaited(_syncAndRefresh());
+      }
+    });
   }
 
   void _refreshFromCache({required bool isOffline}) {
@@ -72,12 +94,14 @@ class OfflineQueueCubit extends Cubit<OfflineQueueState> {
         isOffline: isOffline,
         pendingCount: transactions.length,
         totalAmount: totalAmount,
+        hasResolvedConnectivity: _hasResolvedConnectivity,
       ),
     );
   }
 
   @override
   Future<void> close() {
+    _syncRetryTimer?.cancel();
     _queueSubscription.cancel();
     _networkSubscription.cancel();
     return super.close();

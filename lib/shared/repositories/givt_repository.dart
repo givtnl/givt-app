@@ -93,6 +93,8 @@ class GivtRepositoryImpl with GivtRepository {
   final StreamController<void> _offlineQueueChangedController =
       StreamController<void>.broadcast();
 
+  Future<void>? _syncOfflineGivtsInFlight;
+
   @override
   Stream<void> get offlineQueueChanged =>
       _offlineQueueChangedController.stream;
@@ -181,7 +183,22 @@ class GivtRepositoryImpl with GivtRepository {
   }
 
   @override
-  Future<void> syncOfflineGivts() async {
+  Future<void> syncOfflineGivts() {
+    final inFlight = _syncOfflineGivtsInFlight;
+    if (inFlight != null) {
+      return inFlight;
+    }
+
+    final sync = _syncOfflineGivtsOnce();
+    _syncOfflineGivtsInFlight = sync;
+    return sync.whenComplete(() {
+      if (identical(_syncOfflineGivtsInFlight, sync)) {
+        _syncOfflineGivtsInFlight = null;
+      }
+    });
+  }
+
+  Future<void> _syncOfflineGivtsOnce() async {
     try {
       final givtsString = prefs.getString(
         GivtTransaction.givtTransactions,

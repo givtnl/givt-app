@@ -169,6 +169,22 @@
       }
     }
   },
+  "offlineBannerPendingOnlineBodySingular": "{amount} wordt nu verzonden",
+  "@offlineBannerPendingOnlineBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingOnlineBodyPlural": "{amount} totaal wordt nu verzonden",
+  "@offlineBannerPendingOnlineBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "offlineSuccessGotIt": "Begrepen",
   "amountTooHigh": "Bedrag te hoog",
   "donationAmountExceedsMaximum": "Dit bedrag is hoger dan het maximaal toegestane geefbedrag van {maxAmount}",
