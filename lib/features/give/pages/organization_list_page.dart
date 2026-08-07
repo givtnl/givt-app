@@ -61,7 +61,6 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
           context.goNamed(
             Pages.giveSucess.name,
             extra: {
-              'isRecurringDonation': false,
               'orgName': state.organisation.organisationName,
             },
           );

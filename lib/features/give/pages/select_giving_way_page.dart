@@ -51,7 +51,6 @@ class _SelectGivingWayPageState extends State<SelectGivingWayPage> {
                   context.goNamed(
                     Pages.giveSucess.name,
                     extra: {
-                      'isRecurringDonation': false,
                       'orgName': state.organisation.organisationName,
                     },
                   );

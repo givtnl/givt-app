@@ -139,7 +139,6 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
           context.goNamed(
             Pages.giveSucess.name,
             extra: {
-              'isRecurringDonation': false,
               'orgName': organisation.orgName,
             },
           );

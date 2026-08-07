@@ -1,109 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/l10n/arb/app_localizations.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
-import 'package:share_plus/share_plus.dart';
 
 class SuccessDonationPage extends StatelessWidget {
   const SuccessDonationPage({
     required this.organisationName,
-    this.isRecurringDonation = false,
     super.key,
   });
 
   final String organisationName;
-  final bool isRecurringDonation;
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final size = MediaQuery.sizeOf(context);
-    return Scaffold(
-      appBar: AppBar(
+    return FunScaffold(
+      appBar: FunTopAppBar(
+        variant: FunTopAppBarVariant.white,
         leading: IconButton(
-          onPressed: () => context.goNamed(Pages.home.name),
           icon: const Icon(Icons.close),
-          color: Colors.transparent,
-        ),
-        title: Image.asset(
-          'assets/images/logo.png',
-          height: size.height * 0.04,
+          onPressed: () => context.goNamed(Pages.home.name),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const Spacer(),
-            _buildText(locals, context),
-            const Spacer(),
-            Container(
-              alignment: Alignment.bottomRight,
-              child: Image.asset(
-                'assets/images/givy_gave.png',
-                scale: size.aspectRatio * 4,
-              ),
-            ),
-            _buildButtons(context, locals),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Spacer(),
+          Image.asset(
+            'assets/images/givy_gave.png',
+            height: size.height * 0.28,
+          ),
+          const SizedBox(height: 32),
+          TitleMediumText(
+            locals.offlineSuccessTitle,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          BodyMediumText(
+            locals.offlineSuccessBodyWithOrg(organisationName),
+            textAlign: TextAlign.center,
+          ),
+          const Spacer(),
+          FunButton(
+            text: locals.offlineSuccessGotIt,
+            onTap: () => context.goNamed(Pages.home.name),
+            analyticsEvent:
+                AnalyticsEventName.offlineSuccessGotItTapped.toEvent(),
+          ),
+        ],
       ),
-    );
-  }
-
-  Widget _buildButtons(BuildContext context, AppLocalizations locals) {
-    return Column(
-      children: [
-        ElevatedButton(
-          onPressed: () => context.goNamed(
-            Pages.home.name,
-            queryParameters: {
-              'given': 'true',
-            },
-          ),
-          child: Text(locals.ready),
-        ),
-        const SizedBox(height: 10),
-        ElevatedButton(
-          onPressed: () => Share.share(
-            '${locals.shareTheGivtText(organisationName)} ${locals.joinGivt}',
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppTheme.givtBlue,
-          ),
-          child: Text(locals.shareTheGivtButton),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildText(AppLocalizations locals, BuildContext context) {
-    var text = locals.offlineGegevenGivtMessageWithOrg(organisationName);
-    if (isRecurringDonation) {
-      text = locals.reccurringGivtIsBeingProcessed(organisationName);
-    }
-    return Column(
-      children: [
-        Text(
-          locals.yesSuccess,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-              ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 20),
-        Text(
-          text,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                fontSize: 16,
-                wordSpacing: 1.5,
-              ),
-          textAlign: TextAlign.center,
-        ),
-      ],
     );
   }
 }

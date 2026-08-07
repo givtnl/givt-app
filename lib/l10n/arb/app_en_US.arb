@@ -29,7 +29,6 @@
   "unregisterButton": "Terminate my account",
   "unregisterUnderstood": "I understand",
   "givtIsBeingProcessed": "Thank you for your Givt to {value0}!",
-  "offlineGegevenGivtMessageWithOrg": "Thank you for your Givt to {value0}!\n \n\n When there's a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.",
   "wrongPasswordLockedOut": "Third attempt failed, you cannot login for 15 minutes. Try again later.",
   "giftOverviewGiftAidBanner": "Gift Aided {value0}",
   "faqWhyBluetoothEnabledQ": "Why do I have to enable Bluetooth to use Givt?",
@@ -139,6 +138,58 @@
   "loginUsingTouchId": "Log in with Touch ID",
   "loginUsingFingerprint": "Log in with fingerprint",
   "offlineGiftsTitle": "Offline donations",
+  "offlineBannerNoPending": "You're offline — You can still give. It'll be sent once you're back online.",
+  "offlineBannerPendingTitleSingular": "1 donation pending",
+  "offlineBannerPendingTitlePlural": "{count} donations pending",
+  "@offlineBannerPendingTitlePlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offlineBannerPendingBodySingular": "{amount} will be sent once you're back online",
+  "@offlineBannerPendingBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingBodyPlural": "{amount} total will be sent once you're back online",
+  "@offlineBannerPendingBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingOnlineBodySingular": "{amount} is being sent now",
+  "@offlineBannerPendingOnlineBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingOnlineBodyPlural": "{amount} total is being sent now",
+  "@offlineBannerPendingOnlineBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineSuccessGotIt": "Got it",
+  "offlineSuccessTitle": "Your donation will be sent once you're back online",
+  "offlineSuccessBodyWithOrg": "Thank you for supporting {orgName}",
+  "@offlineSuccessBodyWithOrg": {
+    "placeholders": {
+      "orgName": {
+        "type": "String"
+      }
+    }
+  },
   "amountTooHigh": "Amount too high",
   "donationAmountExceedsMaximum": "Amount exceeds the maximum allowed donation of {maxAmount}",
   "@donationAmountExceedsMaximum": {

@@ -29,7 +29,6 @@
   "unregisterButton": "Eliminar mi cuenta",
   "unregisterUnderstood": "Entendido",
   "givtIsBeingProcessed": "¡Gracias por dar con Givt a {value0}!\nPuede comprobar el estado en el resumen.",
-  "offlineGegevenGivtMessageWithOrg": "¡Gracias por dar con Givt a {value0}!\n \n\n Cuando haya una buena conexión con el servidor de Givt, tu donación se procesará.\n Puedes comprobar el estado en el resumen.",
   "wrongPasswordLockedOut": "Tercer intento fallido, inténtalo de nuevo en 15 minutos.",
   "giftOverviewGiftAidBanner": "Donativo con Ayuda Fiscal {value0}",
   "faqWhyBluetoothEnabledQ": "¿Por qué tengo que activar el Bluetooth para usar Givt?",
@@ -139,6 +138,58 @@
   "loginUsingTouchId": "Iniciar sesión con Touch ID",
   "loginUsingFingerprint": "Iniciar sesión con huella dactilar",
   "offlineGiftsTitle": "Donaciones sin conexión",
+  "offlineBannerNoPending": "Estás sin conexión — Todavía puedes donar. Se enviará cuando vuelvas a estar en línea.",
+  "offlineBannerPendingTitleSingular": "1 donación pendiente",
+  "offlineBannerPendingTitlePlural": "{count} donaciones pendientes",
+  "@offlineBannerPendingTitlePlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offlineBannerPendingBodySingular": "{amount} se enviará cuando vuelvas a estar en línea",
+  "@offlineBannerPendingBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingBodyPlural": "{amount} en total se enviarán cuando vuelvas a estar en línea",
+  "@offlineBannerPendingBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingOnlineBodySingular": "{amount} se está enviando ahora",
+  "@offlineBannerPendingOnlineBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingOnlineBodyPlural": "{amount} en total se están enviando ahora",
+  "@offlineBannerPendingOnlineBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineSuccessGotIt": "Entendido",
+  "offlineSuccessTitle": "Tu donación se enviará cuando vuelvas a estar en línea",
+  "offlineSuccessBodyWithOrg": "Gracias por apoyar a {orgName}",
+  "@offlineSuccessBodyWithOrg": {
+    "placeholders": {
+      "orgName": {
+        "type": "String"
+      }
+    }
+  },
   "amountTooHigh": "Monto demasiado alto",
   "donationAmountExceedsMaximum": "El monto supera la donación máxima permitida de {maxAmount}",
   "@donationAmountExceedsMaximum": {

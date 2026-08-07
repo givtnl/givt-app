@@ -44,11 +44,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String offlineGegevenGivtMessageWithOrg(Object value0) {
-    return 'Thank you for your Givt to $value0!\n \n\n When there\'s a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.';
-  }
-
-  @override
   String get wrongPasswordLockedOut =>
       'Third attempt failed, you cannot login for 15 minutes. Try again later.';
 
@@ -439,6 +434,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlineGiftsTitle => 'Offline donations';
+
+  @override
+  String get offlineBannerNoPending =>
+      'You\'re offline — You can still give. It\'ll be sent once you\'re back online.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 donation pending';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count donations pending';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount will be sent once you\'re back online';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount total will be sent once you\'re back online';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodySingular(String amount) {
+    return '$amount is being sent now';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodyPlural(String amount) {
+    return '$amount total is being sent now';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Got it';
+
+  @override
+  String get offlineSuccessTitle =>
+      'Your donation will be sent once you\'re back online';
+
+  @override
+  String offlineSuccessBodyWithOrg(String orgName) {
+    return 'Thank you for supporting $orgName';
+  }
 
   @override
   String get amountTooHigh => 'Amount too high';
@@ -3555,11 +3594,6 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   }
 
   @override
-  String offlineGegevenGivtMessageWithOrg(Object value0) {
-    return 'Thank you for your Givt to $value0!\n \n\n When there\'s a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.';
-  }
-
-  @override
   String get wrongPasswordLockedOut =>
       'Third attempt failed, you cannot login for 15 minutes. Try again later.';
 
@@ -3938,6 +3972,50 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get offlineGiftsTitle => 'Offline donations';
+
+  @override
+  String get offlineBannerNoPending =>
+      'You\'re offline — You can still give. It\'ll be sent once you\'re back online.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 donation pending';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count donations pending';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount will be sent once you\'re back online';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount total will be sent once you\'re back online';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodySingular(String amount) {
+    return '$amount is being sent now';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodyPlural(String amount) {
+    return '$amount total is being sent now';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Got it';
+
+  @override
+  String get offlineSuccessTitle =>
+      'Your donation will be sent once you\'re back online';
+
+  @override
+  String offlineSuccessBodyWithOrg(String orgName) {
+    return 'Thank you for supporting $orgName';
+  }
 
   @override
   String get amountTooHigh => 'Amount too high';

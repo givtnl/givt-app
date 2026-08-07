@@ -143,6 +143,58 @@
   "loginUsingTouchId": "Mit Touch ID anmelden",
   "loginUsingFingerprint": "Mit Fingerabdruck anmelden",
   "offlineGiftsTitle": "Offline Spenden",
+  "offlineBannerNoPending": "Du bist offline — Du kannst weiterhin spenden. Es wird gesendet, sobald du wieder online bist.",
+  "offlineBannerPendingTitleSingular": "1 Spende ausstehend",
+  "offlineBannerPendingTitlePlural": "{count} Spenden ausstehend",
+  "@offlineBannerPendingTitlePlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offlineBannerPendingBodySingular": "{amount} wird gesendet, sobald du wieder online bist",
+  "@offlineBannerPendingBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingBodyPlural": "{amount} insgesamt werden gesendet, sobald du wieder online bist",
+  "@offlineBannerPendingBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingOnlineBodySingular": "{amount} wird jetzt gesendet",
+  "@offlineBannerPendingOnlineBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingOnlineBodyPlural": "{amount} insgesamt werden jetzt gesendet",
+  "@offlineBannerPendingOnlineBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineSuccessGotIt": "Alles klar",
+  "offlineSuccessTitle": "Deine Spende wird gesendet, sobald du wieder online bist",
+  "offlineSuccessBodyWithOrg": "Vielen Dank für deine Unterstützung von {orgName}",
+  "@offlineSuccessBodyWithOrg": {
+    "placeholders": {
+      "orgName": {
+        "type": "String"
+      }
+    }
+  },
   "amountTooHigh": "Betrag zu hoch",
   "donationAmountExceedsMaximum": "Der Betrag überschreitet den maximal zulässigen Spendenbetrag von {maxAmount}",
   "@donationAmountExceedsMaximum": {
