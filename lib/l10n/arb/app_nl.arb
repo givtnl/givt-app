@@ -186,6 +186,15 @@
     }
   },
   "offlineSuccessGotIt": "Begrepen",
+  "offlineSuccessTitle": "Je donatie wordt verstuurd zodra je weer online bent",
+  "offlineSuccessBodyWithOrg": "Bedankt voor je steun aan {orgName}",
+  "@offlineSuccessBodyWithOrg": {
+    "placeholders": {
+      "orgName": {
+        "type": "String"
+      }
+    }
+  },
   "amountTooHigh": "Bedrag te hoog",
   "donationAmountExceedsMaximum": "Dit bedrag is hoger dan het maximaal toegestane geefbedrag van {maxAmount}",
   "@donationAmountExceedsMaximum": {

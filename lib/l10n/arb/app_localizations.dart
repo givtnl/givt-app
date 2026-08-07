@@ -164,12 +164,6 @@ abstract class AppLocalizations {
   /// **'Thank you for your Givt to {value0}!\n You can check the status in the overview.'**
   String givtIsBeingProcessed(Object value0);
 
-  /// No description provided for @offlineGegevenGivtMessageWithOrg.
-  ///
-  /// In en, this message translates to:
-  /// **'Thank you for your Givt to {value0}!\n \n\n When there\'s a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.'**
-  String offlineGegevenGivtMessageWithOrg(Object value0);
-
   /// No description provided for @wrongPasswordLockedOut.
   ///
   /// In en, this message translates to:
@@ -901,6 +895,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Got it'**
   String get offlineSuccessGotIt;
+
+  /// No description provided for @offlineSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation will be sent once you\'re back online'**
+  String get offlineSuccessTitle;
+
+  /// No description provided for @offlineSuccessBodyWithOrg.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for supporting {orgName}'**
+  String offlineSuccessBodyWithOrg(String orgName);
 
   /// No description provided for @amountTooHigh.
   ///

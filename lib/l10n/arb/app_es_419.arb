@@ -29,7 +29,6 @@
   "unregisterButton": "Eliminar mi cuenta",
   "unregisterUnderstood": "Entendido",
   "givtIsBeingProcessed": "¡Gracias por dar con Givt a {value0}!\nPuede comprobar el estado en el resumen.",
-  "offlineGegevenGivtMessageWithOrg": "¡Gracias por dar con Givt a {value0}!\n \n\n Cuando haya una buena conexión con el servidor de Givt, tu donación se procesará.\n Puedes comprobar el estado en el resumen.",
   "wrongPasswordLockedOut": "Tercer intento fallido, inténtalo de nuevo en 15 minutos.",
   "giftOverviewGiftAidBanner": "Donativo con Ayuda Fiscal {value0}",
   "faqWhyBluetoothEnabledQ": "¿Por qué tengo que activar el Bluetooth para usar Givt?",
@@ -182,6 +181,15 @@
     }
   },
   "offlineSuccessGotIt": "Entendido",
+  "offlineSuccessTitle": "Tu donación se enviará cuando vuelvas a estar en línea",
+  "offlineSuccessBodyWithOrg": "Gracias por apoyar a {orgName}",
+  "@offlineSuccessBodyWithOrg": {
+    "placeholders": {
+      "orgName": {
+        "type": "String"
+      }
+    }
+  },
   "amountTooHigh": "Monto demasiado alto",
   "donationAmountExceedsMaximum": "El monto supera la donación máxima permitida de {maxAmount}",
   "@donationAmountExceedsMaximum": {

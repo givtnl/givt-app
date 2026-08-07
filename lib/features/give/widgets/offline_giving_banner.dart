@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/cubit/offline_queue_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/shared/design_system/components/overlays/fun_snackbar.dart';
+import 'package:givt_app/shared/design_system/theme/fun_theme_legacy.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OfflineGivingBanner extends StatelessWidget {
@@ -19,7 +19,6 @@ class OfflineGivingBanner extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        final theme = FunTheme.of(context);
         final locals = context.l10n;
         final country = Country.fromCode(context.read<AuthCubit>().state.user.country);
         final currencySymbol = Util.getCurrencySymbol(countryCode: country.countryCode);
@@ -48,42 +47,15 @@ class OfflineGivingBanner extends StatelessWidget {
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: theme.highlight95,
-              borderRadius: BorderRadius.circular(16),
+          child: FunSnackbarWidget(
+            title: title,
+            extraText: body,
+            icon: Icon(
+              isOffline ? Icons.wifi_off : Icons.sync,
+              size: 24,
+              color: FamilyAppTheme.highlight50,
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  isOffline ? Icons.wifi_off : Icons.sync,
-                  size: 20,
-                  color: theme.highlight50,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (title != null) ...[
-                        TitleMediumText(
-                          title,
-                          color: theme.highlight30,
-                        ),
-                        const SizedBox(height: 2),
-                      ],
-                      BodyMediumText(
-                        body,
-                        color: theme.highlight30,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            variant: FunSnackbarVariant.alert,
           ),
         );
       },

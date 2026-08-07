@@ -10,6 +10,8 @@ enum FunSnackbarVariant {
   info,
   /// Success variant with primary colors
   success,
+  /// Alert variant with highlight (yellow) colors; used for persistent inline banners
+  alert,
 }
 
 /// This is a class that is used to display a snackbar as (temporary) overlay.
@@ -59,7 +61,7 @@ class FunSnackbar {
   }
 }
 
-/// This is a widget that is used to display a snackbar as static widget.
+/// Persistent inline snackbar widget — same layout as the overlay, without dismiss behaviour.
 class FunSnackbarWidget extends StatelessWidget {
   const FunSnackbarWidget({
     this.title,
@@ -81,6 +83,7 @@ class FunSnackbarWidget extends StatelessWidget {
       extraText: extraText,
       icon: icon,
       variant: variant,
+      persistent: true,
     );
   }
 }
@@ -91,84 +94,86 @@ class _FunSnackbarContent extends StatelessWidget {
     this.extraText,
     this.icon,
     this.variant = FunSnackbarVariant.info,
+    this.persistent = false,
   });
 
   final String? title;
   final String? extraText;
   final Widget? icon;
   final FunSnackbarVariant variant;
+  /// When true the Dismissible wrapper is omitted (use for inline persistent banners).
+  final bool persistent;
 
-  Color get _backgroundColor {
-    switch (variant) {
-      case FunSnackbarVariant.info:
-        return FamilyAppTheme.secondary95;
-      case FunSnackbarVariant.success:
-        return FamilyAppTheme.primary95;
-    }
-  }
+  Color get _backgroundColor => switch (variant) {
+        FunSnackbarVariant.info => FamilyAppTheme.secondary95,
+        FunSnackbarVariant.success => FamilyAppTheme.primary95,
+        FunSnackbarVariant.alert => FamilyAppTheme.highlight95,
+      };
 
-  Color get _textColor {
-    switch (variant) {
-      case FunSnackbarVariant.info:
-        return FamilyAppTheme.secondary30;
-      case FunSnackbarVariant.success:
-        return FamilyAppTheme.primary30;
-    }
-  }
+  Color get _textColor => switch (variant) {
+        FunSnackbarVariant.info => FamilyAppTheme.secondary30,
+        FunSnackbarVariant.success => FamilyAppTheme.primary30,
+        FunSnackbarVariant.alert => FamilyAppTheme.highlight30,
+      };
 
   @override
   Widget build(BuildContext context) {
+    final body = Material(
+      color: Colors.transparent,
+      child: Theme(
+        data: const FamilyAppTheme().toThemeData(),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          decoration: BoxDecoration(
+            color: _backgroundColor,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (icon != null) ...[
+                icon!,
+                const SizedBox(width: 12),
+              ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (title != null)
+                      LabelMediumText(
+                        title!,
+                        color: _textColor,
+                      ),
+                    if (extraText != null)
+                      BodySmallText(
+                        extraText!,
+                        color: _textColor,
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    if (persistent) return body;
+
     return Dismissible(
       key: const ValueKey('FunSnackbar'),
       direction: DismissDirection.down,
       onDismissed: (_) => FunSnackbar._removeCurrent(),
-      child: Material(
-        color: Colors.transparent,
-        child: Theme(
-          data: const FamilyAppTheme().toThemeData(),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            decoration: BoxDecoration(
-              color: _backgroundColor,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.08),
-                  blurRadius: 16,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (icon != null) ...[
-                  icon!,
-                  const SizedBox(width: 12),
-                ],
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (title != null)
-                        LabelMediumText(
-                          title!,
-                          color: _textColor,
-                        ),
-                      if (extraText != null)
-                        BodySmallText(
-                          extraText!,
-                          color: _textColor,
-                        ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      child: body,
     );
   }
 }

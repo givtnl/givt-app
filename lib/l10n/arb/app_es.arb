@@ -186,6 +186,15 @@
     }
   },
   "offlineSuccessGotIt": "Entendido",
+  "offlineSuccessTitle": "Tu donación se enviará cuando vuelvas a estar en línea",
+  "offlineSuccessBodyWithOrg": "Gracias por apoyar a {orgName}",
+  "@offlineSuccessBodyWithOrg": {
+    "placeholders": {
+      "orgName": {
+        "type": "String"
+      }
+    }
+  },
   "amountTooHigh": "Amount too high",
   "donationAmountExceedsMaximum": "El monto supera la donación máxima permitida de {maxAmount}",
   "@donationAmountExceedsMaximum": {

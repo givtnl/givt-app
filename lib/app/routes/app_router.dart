@@ -437,8 +437,6 @@ class AppRouter {
               final extra = state.extra! as Map<String, dynamic>;
               return SuccessDonationPage(
                 organisationName: extra['orgName'] as String,
-                isRecurringDonation: extra['isRecurringDonation'] as bool,
-                isOfflineQueuedDonation: true,
               );
             },
           ),

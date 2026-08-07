@@ -136,6 +136,7 @@ class GivtRepositoryImpl with GivtRepository {
     final givts = <String, dynamic>{
       'donationType': 0,
     }..addAll(body);
+
     try {
       await syncOfflineGivts();
       final result = await apiClient.submitGivts(

@@ -44,11 +44,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String offlineGegevenGivtMessageWithOrg(Object value0) {
-    return 'Thank you for your Givt to $value0!\n \n\n When there\'s a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.';
-  }
-
-  @override
   String get wrongPasswordLockedOut =>
       'Third attempt failed, you cannot login for 15 minutes. Try again later.';
 
@@ -474,6 +469,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get offlineSuccessGotIt => 'Entendido';
+
+  @override
+  String get offlineSuccessTitle =>
+      'Tu donación se enviará cuando vuelvas a estar en línea';
+
+  @override
+  String offlineSuccessBodyWithOrg(String orgName) {
+    return 'Gracias por apoyar a $orgName';
+  }
 
   @override
   String get amountTooHigh => 'Amount too high';
@@ -3601,11 +3605,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   }
 
   @override
-  String offlineGegevenGivtMessageWithOrg(Object value0) {
-    return '¡Gracias por dar con Givt a $value0!\n \n\n Cuando haya una buena conexión con el servidor de Givt, tu donación se procesará.\n Puedes comprobar el estado en el resumen.';
-  }
-
-  @override
   String get wrongPasswordLockedOut =>
       'Tercer intento fallido, inténtalo de nuevo en 15 minutos.';
 
@@ -4025,6 +4024,15 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get offlineSuccessGotIt => 'Entendido';
+
+  @override
+  String get offlineSuccessTitle =>
+      'Tu donación se enviará cuando vuelvas a estar en línea';
+
+  @override
+  String offlineSuccessBodyWithOrg(String orgName) {
+    return 'Gracias por apoyar a $orgName';
+  }
 
   @override
   String get amountTooHigh => 'Monto demasiado alto';
