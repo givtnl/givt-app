@@ -62,14 +62,25 @@ class _ForYouDiscoveryFailure extends ForYouDiscoveryResult {
 class ForYouDiscoveryResolvers {
   ForYouDiscoveryResolvers._();
 
-  static CollectGroup _findCollectGroupByNamespace(
+  static CollectGroup _findCollectGroupByExactNamespace(
     List<CollectGroup> collectGroups,
     String namespace,
   ) {
-    final exactMatch = collectGroups
-        .where((group) => group.nameSpace == namespace)
-        .firstOrNull;
-    if (exactMatch != null) {
+    return collectGroups
+            .where((group) => group.nameSpace == namespace)
+            .firstOrNull ??
+        const CollectGroup.empty();
+  }
+
+  static CollectGroup _findCollectGroupByNamespacePrefix(
+    List<CollectGroup> collectGroups,
+    String namespace,
+  ) {
+    final exactMatch = _findCollectGroupByExactNamespace(
+      collectGroups,
+      namespace,
+    );
+    if (exactMatch.nameSpace.isNotEmpty) {
       return exactMatch;
     }
 
@@ -79,21 +90,39 @@ class ForYouDiscoveryResolvers {
     );
   }
 
+  static ForYouDiscoveryResult? _failureForInactiveGenericQr(
+    CollectGroup matchingGroup,
+  ) {
+    final inactiveGeneric = matchingGroup.qrCodes
+        .where((qrCode) => !qrCode.isActive && qrCode.isGeneric)
+        .firstOrNull;
+    if (inactiveGeneric == null) {
+      return null;
+    }
+    final hasActiveGeneric = matchingGroup.qrCodes.any(
+      (qrCode) => qrCode.isActive && qrCode.isGeneric,
+    );
+    if (hasActiveGeneric) {
+      return null;
+    }
+    return ForYouDiscoveryResult.failure(
+      ForYouDiscoveryFailure.inactiveQrCode,
+      collectGroup: matchingGroup,
+      qrCode: inactiveGeneric,
+    );
+  }
+
   static QrCode _resolveGenericQrCodeForNamespace(
     CollectGroup matchingGroup,
     String namespace,
   ) {
     for (final qrCode in matchingGroup.qrCodes) {
-      if (qrCode.isActive && qrCode.name.trim().isEmpty) {
+      if (qrCode.isActive && qrCode.isGeneric) {
         return qrCode;
       }
     }
 
-    return QrCode(
-      name: '',
-      instance: namespace,
-      isActive: true,
-    );
+    return QrCode.genericForNamespace(namespace);
   }
 
   static Future<ForYouDiscoveryResult> resolveCollectGroupAndQrFromQrMediumId(
@@ -114,7 +143,7 @@ class ForYouDiscoveryResolvers {
 
     if (!mediumId.contains('.')) {
       final namespace = mediumId;
-      final matchingGroup = _findCollectGroupByNamespace(
+      final matchingGroup = _findCollectGroupByExactNamespace(
         collectGroups,
         namespace,
       );
@@ -130,6 +159,11 @@ class ForYouDiscoveryResolvers {
           ForYouDiscoveryFailure.inactiveCollectGroup,
           collectGroup: matchingGroup,
         );
+      }
+
+      final inactiveGenericFailure = _failureForInactiveGenericQr(matchingGroup);
+      if (inactiveGenericFailure != null) {
+        return inactiveGenericFailure;
       }
 
       return ForYouDiscoveryResult.success(
@@ -225,7 +259,7 @@ class ForYouDiscoveryResolvers {
     if (!beaconId.contains('.')) return null;
 
     final namespace = beaconId.split('.').first;
-    final fallbackMatch = _findCollectGroupByNamespace(
+    final fallbackMatch = _findCollectGroupByNamespacePrefix(
       collectGroups,
       namespace,
     );

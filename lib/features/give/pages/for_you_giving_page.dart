@@ -50,7 +50,16 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   bool _didStartGoalInitialization = false;
   OrganisationGoalsResponse? _goalsResponse;
 
-  String _decimalSeparator = ',';
+  static String decimalSeparatorForCountry(Country country) {
+    return country.countryCode == Country.us.countryCode ||
+            Country.unitedKingdomCodes().contains(country.countryCode)
+        ? '.'
+        : ',';
+  }
+
+  String get _decimalSeparator => decimalSeparatorForCountry(
+    Country.fromCode(context.read<AuthCubit>().state.user.country),
+  );
 
   Set<String> get _addedGeneralMediumIds => {
     for (final line in _goalLines)
@@ -82,23 +91,11 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _syncDecimalSeparatorFromLocale();
     if (_didStartGoalInitialization) {
       return;
     }
     _didStartGoalInitialization = true;
     _initializeGoals();
-  }
-
-  void _syncDecimalSeparatorFromLocale() {
-    final country = Country.fromCode(
-      context.read<AuthCubit>().state.user.country,
-    );
-    _decimalSeparator =
-        country.countryCode == Country.us.countryCode ||
-            Country.unitedKingdomCodes().contains(country.countryCode)
-        ? '.'
-        : ',';
   }
 
   @override

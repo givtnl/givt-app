@@ -83,6 +83,35 @@ void main() {
     );
 
     test(
+      'resolveCollectGroupAndQrFromQrMediumId does not match longer namespace by prefix',
+      () async {
+        final longerNamespaceGroup = CollectGroup(
+          nameSpace: '61f7ed014e4c0621d0009',
+          orgName: 'Longer Org',
+          hasCelebration: false,
+          type: CollectGroupType.church,
+          qrCodes: [
+            QrCode(
+              name: '',
+              instance: '61f7ed014e4c0621d0009.generic',
+              isActive: true,
+            ),
+          ],
+        );
+
+        final repo = FakeCollectGroupRepository([longerNamespaceGroup]);
+        final result =
+            await ForYouDiscoveryResolvers.resolveCollectGroupAndQrFromQrMediumId(
+              '61f7ed014e4c0621d000',
+              collectGroupRepository: repo,
+            );
+
+        expect(result.isSuccess, isFalse);
+        expect(result.failure, equals(ForYouDiscoveryFailure.notFound));
+      },
+    );
+
+    test(
       'resolveCollectGroupAndQrFromQrMediumId prefers exact namespace match',
       () async {
         final prefixGroup = CollectGroup(
@@ -114,6 +143,35 @@ void main() {
 
         expect(result.isSuccess, isTrue);
         expect(result.collectGroup?.orgName, equals('Exact Org'));
+      },
+    );
+
+    test(
+      'resolveCollectGroupAndQrFromQrMediumId returns inactiveQrCode for inactive generic QR',
+      () async {
+        final group = CollectGroup(
+          nameSpace: '61f7ed014e4c0621d000',
+          orgName: 'Namespace Org',
+          hasCelebration: false,
+          type: CollectGroupType.church,
+          qrCodes: [
+            QrCode(
+              name: '',
+              instance: '61f7ed014e4c0621d000.generic',
+              isActive: false,
+            ),
+          ],
+        );
+
+        final repo = FakeCollectGroupRepository([group]);
+        final result =
+            await ForYouDiscoveryResolvers.resolveCollectGroupAndQrFromQrMediumId(
+              '61f7ed014e4c0621d000',
+              collectGroupRepository: repo,
+            );
+
+        expect(result.isSuccess, isFalse);
+        expect(result.failure, equals(ForYouDiscoveryFailure.inactiveQrCode));
       },
     );
 
