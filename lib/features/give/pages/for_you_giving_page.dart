@@ -50,7 +50,16 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   bool _didStartGoalInitialization = false;
   OrganisationGoalsResponse? _goalsResponse;
 
-  String _decimalSeparator = ',';
+  static String decimalSeparatorForCountry(Country country) {
+    return country.countryCode == Country.us.countryCode ||
+            Country.unitedKingdomCodes().contains(country.countryCode)
+        ? '.'
+        : ',';
+  }
+
+  String get _decimalSeparator => decimalSeparatorForCountry(
+    Country.fromCode(context.read<AuthCubit>().state.user.country),
+  );
 
   Set<String> get _addedGeneralMediumIds => {
     for (final line in _goalLines)
@@ -109,15 +118,12 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       countryCode: country.countryCode,
     );
     final amountLimit = auth.user.amountLimit;
-    if (country.countryCode == Country.us.countryCode ||
-        Country.unitedKingdomCodes().contains(country.countryCode)) {
-      _decimalSeparator = '.';
-    }
-    final hasAmountLimitViolation = DonationAmountValidation.anyExceedsUserAmountLimit(
-      values: _controllers.map((controller) => controller.text),
-      amountLimit: amountLimit,
-      decimalSeparator: _decimalSeparator,
-    );
+    final hasAmountLimitViolation =
+        DonationAmountValidation.anyExceedsUserAmountLimit(
+          values: _controllers.map((controller) => controller.text),
+          amountLimit: amountLimit,
+          decimalSeparator: _decimalSeparator,
+        );
     final canSubmit = _hasValidAmounts && !hasAmountLimitViolation;
 
     if (organisation == null) {
@@ -403,10 +409,10 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     final borderColor = exceedsLimit
         ? theme.error50
         : isComplete
-            ? theme.primary30
-            : isExpanded
-                ? theme.primary70
-                : theme.neutralVariant90;
+        ? theme.primary30
+        : isExpanded
+        ? theme.primary70
+        : theme.neutralVariant90;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -688,7 +694,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       final allocation = allocations[listIndex];
       final parsedGoalIndex = int.tryParse(allocation.collectId);
       final resolvedGoalIndex =
-          parsedGoalIndex != null && parsedGoalIndex >= 1 && parsedGoalIndex <= 3
+          parsedGoalIndex != null &&
+              parsedGoalIndex >= 1 &&
+              parsedGoalIndex <= 3
           ? parsedGoalIndex
           : listIndex + 1;
       if (resolvedGoalIndex < 1 || resolvedGoalIndex > 3) {
@@ -775,7 +783,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     }
     _controllers.clear();
     for (var i = 0; i < lines.length; i++) {
-      _controllers.add(TextEditingController(text: '0'));
+      _controllers.add(
+        TextEditingController(text: _controllerTextForLineIndex(i)),
+      );
     }
     _accordionKeys.clear();
     for (var i = 0; i < lines.length; i++) {
@@ -788,6 +798,19 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       _selectedField = 0;
       _isLoadingGoals = false;
     });
+  }
+
+  String _controllerTextForLineIndex(int index) {
+    final initialAmount = widget.flowContext.initialAmount;
+    if (index != 0 || initialAmount == null || initialAmount <= 0) {
+      return '0';
+    }
+
+    if (initialAmount % 1 == 0) {
+      return initialAmount.toInt().toString();
+    }
+
+    return initialAmount.toStringAsFixed(2).replaceAll('.', _decimalSeparator);
   }
 }
 

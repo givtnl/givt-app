@@ -16,24 +16,28 @@ class ForYouFlowContext extends Equatable {
     this.selectedOrganisation,
     this.entryMediumId,
     this.restrictToEntryQrGoal = false,
+    this.initialAmount,
   });
 
   final ForYouEntrySource source;
   final CollectGroup? selectedOrganisation;
   final String? entryMediumId;
   final bool restrictToEntryQrGoal;
+  final double? initialAmount;
 
   ForYouFlowContext copyWith({
     ForYouEntrySource? source,
     CollectGroup? selectedOrganisation,
     String? entryMediumId,
     bool? restrictToEntryQrGoal,
+    double? initialAmount,
   }) {
     return ForYouFlowContext(
       source: source ?? this.source,
       selectedOrganisation: selectedOrganisation ?? this.selectedOrganisation,
       entryMediumId: entryMediumId ?? this.entryMediumId,
       restrictToEntryQrGoal: restrictToEntryQrGoal ?? this.restrictToEntryQrGoal,
+      initialAmount: initialAmount ?? this.initialAmount,
     );
   }
 
@@ -43,6 +47,7 @@ class ForYouFlowContext extends Equatable {
       'selectedOrganisation': selectedOrganisation?.toJson(),
       'entryMediumId': entryMediumId,
       'restrictToEntryQrGoal': restrictToEntryQrGoal,
+      'initialAmount': initialAmount,
     };
   }
 
@@ -60,12 +65,17 @@ class ForYouFlowContext extends Equatable {
 
     final entryMediumId = map['entryMediumId'] as String?;
     final restrictToEntryQrGoal = map['restrictToEntryQrGoal'] as bool? ?? false;
+    final initialAmountRaw = map['initialAmount'];
+    final initialAmount = initialAmountRaw is num
+        ? initialAmountRaw.toDouble()
+        : double.tryParse(initialAmountRaw?.toString() ?? '');
 
     return ForYouFlowContext(
       source: resolvedSource,
       selectedOrganisation: selectedOrganisation,
       entryMediumId: entryMediumId,
       restrictToEntryQrGoal: restrictToEntryQrGoal,
+      initialAmount: initialAmount,
     );
   }
 
@@ -75,5 +85,6 @@ class ForYouFlowContext extends Equatable {
     selectedOrganisation,
     entryMediumId,
     restrictToEntryQrGoal,
+    initialAmount,
   ];
 }
