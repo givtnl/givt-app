@@ -1548,6 +1548,8 @@
   "recurringDonationsRestartConfirmTitle": "Bereit, Ihre Spende neu zu starten?",
   "recurringDonationsRestartConfirmButton": "Spende neu starten",
   "recurringDonationsRestartFailed": "Diese Spende konnte nicht neu gestartet werden. Bitte versuchen Sie es erneut.",
+  "recurringDonationsRestartOrganisationNotFoundTitle": "Organisation nicht verfügbar",
+  "recurringDonationsRestartOrganisationNotFoundMessage": "Wir konnten diese Organisation nicht finden. Bitte wählen Sie ein anderes Ziel, um Ihre Spende neu zu starten.",
   "recurringDonationsDetailEditDonation": "Spende bearbeiten",
   "recurringDonationsDetailEditComingSoon": "Bearbeitungsfunktion kommt bald",
   "recurringDonationsDetailPauseDonation": "Spende pausieren",

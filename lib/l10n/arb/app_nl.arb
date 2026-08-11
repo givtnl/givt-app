@@ -1548,6 +1548,8 @@
   "recurringDonationsRestartConfirmTitle": "Klaar om je donatie te herstarten?",
   "recurringDonationsRestartConfirmButton": "Donatie herstarten",
   "recurringDonationsRestartFailed": "We konden deze donatie niet herstarten. Probeer het opnieuw.",
+  "recurringDonationsRestartOrganisationNotFoundTitle": "Organisatie niet beschikbaar",
+  "recurringDonationsRestartOrganisationNotFoundMessage": "We konden deze organisatie niet vinden. Kies een ander doel om je donatie te herstarten.",
   "recurringDonationsDetailEditDonation": "Donatie bewerken",
   "recurringDonationsDetailEditComingSoon": "Bewerkingsfunctionaliteit komt binnenkort",
   "recurringDonationsDetailPauseDonation": "Donatie pauzeren",

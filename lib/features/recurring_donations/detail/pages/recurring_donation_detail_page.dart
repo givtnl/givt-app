@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,15 +16,16 @@ import 'package:givt_app/features/recurring_donations/detail/repositories/recurr
 import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_bottom_sheet.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_confirmation_modal.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_success_modal.dart';
-import 'package:givt_app/features/give/widgets/for_you_qr_discovery_dialogs.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step4_confirm_page.dart';
 import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/recurring_donation_detail_manage_sheet.dart';
+import 'package:givt_app/features/recurring_donations/detail/widgets/recurring_donation_restart_dialogs.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -184,8 +187,8 @@ class _RecurringDonationDetailPageState
           const SizedBox(height: 8),
           // Organization name
           TitleMediumText(
-            uiModel.organizationName.isNotEmpty 
-                ? uiModel.organizationName 
+            uiModel.organizationName.isNotEmpty
+                ? uiModel.organizationName
                 : 'Loading...',
             textAlign: TextAlign.center,
           ),
@@ -220,13 +223,14 @@ class _RecurringDonationDetailPageState
   ) {
     final auth = context.read<AuthCubit>().state;
     final country = Country.fromCode(auth.user.country);
-    
+
     return Row(
       children: [
         Expanded(
           child: _buildSummaryCard(
             icon: FontAwesomeIcons.moneyBillWave,
-            value: '$currency${Util.formatNumberComma(uiModel.totalDonated, country)}',
+            value:
+                '$currency${Util.formatNumberComma(uiModel.totalDonated, country)}',
             label: context.l10n.recurringDonationsDetailSummaryDonated,
           ),
         ),
@@ -331,7 +335,7 @@ class _RecurringDonationDetailPageState
   ) {
     final auth = context.read<AuthCubit>().state;
     final country = Country.fromCode(auth.user.country);
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: const BoxDecoration(
@@ -386,7 +390,8 @@ class _RecurringDonationDetailPageState
       fullBorder: true,
       onTap: () => _cubit.onManageDonationPressed(),
       text: context.l10n.recurringDonationsDetailManageButton,
-      analyticsEvent: AnalyticsEventName.recurringDonationManageClicked.toEvent(),
+      analyticsEvent: AnalyticsEventName.recurringDonationManageClicked
+          .toEvent(),
     );
   }
 
@@ -395,11 +400,12 @@ class _RecurringDonationDetailPageState
       fullBorder: true,
       onTap: () => _onRestartDonationPressed(context),
       text: context.l10n.recurringDonationsDetailRestartButton,
-      analyticsEvent: AnalyticsEventName.recurringDonationRestartClicked.toEvent(
-        parameters: {
-          'recurring_donation_id': widget.recurringDonation.id,
-        },
-      ),
+      analyticsEvent: AnalyticsEventName.recurringDonationRestartClicked
+          .toEvent(
+            parameters: {
+              'recurring_donation_id': widget.recurringDonation.id,
+            },
+          ),
     );
   }
 
@@ -418,12 +424,29 @@ class _RecurringDonationDetailPageState
       await Navigator.of(context).push(
         const Step4ConfirmPage(restartMode: true).toRoute(context),
       );
-    } on InactiveOrganisationException catch (_) {
+    } on OrganisationNotFoundException catch (error) {
       if (!context.mounted) return;
 
-      await ForYouQrDiscoveryDialogs.showInactiveCollectGroupDialog(context);
-    } on Exception catch (_) {
+      await RecurringDonationRestartDialogs.showOrganisationNotFoundDialog(
+        context,
+        organisationName: error.orgName,
+      );
+    } on InactiveOrganisationException catch (error) {
       if (!context.mounted) return;
+
+      await RecurringDonationRestartDialogs.showInactiveOrganisationDialog(
+        context,
+        organisationName: error.orgName,
+      );
+    } on Exception catch (error, stackTrace) {
+      if (!context.mounted) return;
+
+      unawaited(
+        AnalyticsHelper.logError(
+          error,
+          stackTrace: stackTrace,
+        ),
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -480,18 +503,19 @@ class _RecurringDonationDetailPageState
     BuildContext context,
   ) {
     final startDate = DateTime.parse(widget.recurringDonation.startDate);
-    
+
     // Check if the recurring donation has ended (cancelled, completed, or past end date)
     if (uiModel.endDate != null && uiModel.endDate!.isBefore(DateTime.now())) {
       // For cancelled/completed donations, show days between start and last transaction
       final completedTransactions = uiModel.history
           .where((h) => h.status == DonationStatus.processed)
           .toList();
-      
+
       if (completedTransactions.isNotEmpty) {
         // Find the last completed transaction
-        final lastTransaction = completedTransactions
-            .reduce((a, b) => a.date.isAfter(b.date) ? a : b);
+        final lastTransaction = completedTransactions.reduce(
+          (a, b) => a.date.isAfter(b.date) ? a : b,
+        );
         final daysHelped = lastTransaction.date.difference(startDate).inDays;
         // Ensure non-negative value
         final safeDaysHelped = daysHelped < 0 ? 0 : daysHelped;
@@ -523,5 +547,4 @@ class _RecurringDonationDetailPageState
     final locale = Util.getLanguageTageFromLocale(context);
     return DateFormat.yMMMd(locale).format(date);
   }
-
 }

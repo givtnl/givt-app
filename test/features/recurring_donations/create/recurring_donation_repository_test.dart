@@ -81,32 +81,35 @@ void main() {
       );
     }
 
-    test('prefills draft with tomorrow as start date and fixed turns', () async {
-      await repository.initFromRecurringDonation(
-        donation: buildDonation(),
-        guid: 'guid-1',
-        country: 'NL',
-      );
+    test(
+      'prefills draft with tomorrow as start date and fixed turns',
+      () async {
+        await repository.initFromRecurringDonation(
+          donation: buildDonation(),
+          guid: 'guid-1',
+          country: 'NL',
+        );
 
-      final tomorrow = DateTime.now().add(const Duration(days: 1));
-      final expectedStartDate = DateTime(
-        tomorrow.year,
-        tomorrow.month,
-        tomorrow.day,
-      );
+        final tomorrow = DateTime.now().add(const Duration(days: 1));
+        final expectedStartDate = DateTime(
+          tomorrow.year,
+          tomorrow.month,
+          tomorrow.day,
+        );
 
-      expect(repository.selectedOrganization, collectGroup);
-      expect(repository.frequency, overview.Frequency.monthly);
-      expect(repository.amount, '10');
-      expect(repository.startDate, expectedStartDate);
-      expect(
-        repository.selectedEndOption,
-        RecurringDonationStringKeys.afterNumberOfDonations,
-      );
-      expect(repository.numberOfDonations, '12');
-      expect(repository.guid, 'guid-1');
-      expect(repository.country, 'NL');
-    });
+        expect(repository.selectedOrganization, collectGroup);
+        expect(repository.frequency, overview.Frequency.monthly);
+        expect(repository.amount, '10');
+        expect(repository.startDate, expectedStartDate);
+        expect(
+          repository.selectedEndOption,
+          RecurringDonationStringKeys.afterNumberOfDonations,
+        );
+        expect(repository.numberOfDonations, '12');
+        expect(repository.guid, 'guid-1');
+        expect(repository.country, 'NL');
+      },
+    );
 
     test('maps unlimited donations to when I decide', () async {
       await repository.initFromRecurringDonation(
@@ -171,7 +174,7 @@ void main() {
           guid: 'guid-1',
           country: 'NL',
         ),
-        throwsA(isA<InactiveOrganisationException>()),
+        throwsA(isA<OrganisationNotFoundException>()),
       );
     });
 

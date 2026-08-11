@@ -143,13 +143,23 @@ enum AnalyticsEventName {
   recurringDonationRestartConfirmClicked(
     'recurring_donation_restart_confirm_clicked',
   ),
+  recurringDonationRestartInactiveOrgContinueTapped(
+    'recurring_donation_restart_inactive_org_continue_tapped',
+  ),
+  recurringDonationRestartOrgNotFoundContinueTapped(
+    'recurring_donation_restart_org_not_found_continue_tapped',
+  ),
   externalDonationsNavigationClicked('external_donations_navigation_clicked'),
   externalDonationsTabsChanged('external_donations_tabs_changed'),
   externalDonationsAddClicked('external_donations_add_clicked'),
   externalDonationsCardClicked('external_donations_card_clicked'),
-  externalDonationsDetailSummaryViewed('external_donations_detail_summary_viewed'),
+  externalDonationsDetailSummaryViewed(
+    'external_donations_detail_summary_viewed',
+  ),
   externalDonationsStopClicked('external_donations_stop_clicked'),
-  externalDonationsStopConfirmClicked('external_donations_stop_confirm_clicked'),
+  externalDonationsStopConfirmClicked(
+    'external_donations_stop_confirm_clicked',
+  ),
   externalDonationsStopCancelClicked('external_donations_stop_cancel_clicked'),
   externalDonationsCreateOrganisationSearchClicked(
     'external_donations_create_organisation_search_clicked',
@@ -163,7 +173,9 @@ enum AnalyticsEventName {
   externalDonationsCreateOrganisationContinueClicked(
     'external_donations_create_organisation_continue_clicked',
   ),
-  externalDonationsCreateAmountEntered('external_donations_create_amount_entered'),
+  externalDonationsCreateAmountEntered(
+    'external_donations_create_amount_entered',
+  ),
   externalDonationsCreateAmountContinueClicked(
     'external_donations_create_amount_continue_clicked',
   ),
@@ -179,7 +191,9 @@ enum AnalyticsEventName {
   externalDonationsCreateStartDateContinueClicked(
     'external_donations_create_start_date_continue_clicked',
   ),
-  externalDonationsCreateConfirmClicked('external_donations_create_confirm_clicked'),
+  externalDonationsCreateConfirmClicked(
+    'external_donations_create_confirm_clicked',
+  ),
   externalDonationsCreateSuccessDoneClicked(
     'external_donations_create_success_done_clicked',
   ),
@@ -189,9 +203,13 @@ enum AnalyticsEventName {
   externalDonationsCreateCloseCancelClicked(
     'external_donations_create_close_cancel_clicked',
   ),
-  externalDonationsCreateSearchTapped('external_donations_create_search_tapped'),
+  externalDonationsCreateSearchTapped(
+    'external_donations_create_search_tapped',
+  ),
   externalDonationsManageClicked('external_donations_manage_clicked'),
-  externalDonationsManageAmountClicked('external_donations_manage_amount_clicked'),
+  externalDonationsManageAmountClicked(
+    'external_donations_manage_amount_clicked',
+  ),
   externalDonationsManageFrequencyClicked(
     'external_donations_manage_frequency_clicked',
   ),

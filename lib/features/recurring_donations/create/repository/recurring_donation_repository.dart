@@ -1,9 +1,20 @@
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
-import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
+import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart'
+    as overview;
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
+
+class OrganisationNotFoundException implements Exception {
+  const OrganisationNotFoundException(this.orgName);
+
+  final String orgName;
+
+  @override
+  String toString() =>
+      'OrganisationNotFoundException: could not find organization for $orgName';
+}
 
 class InactiveOrganisationException implements Exception {
   const InactiveOrganisationException(this.orgName);
@@ -69,8 +80,9 @@ class RecurringDonationRepository {
   Future<bool> createRecurringDonation(
     RecurringDonation recurringDonation,
   ) async {
-    final response =
-        await _apiService.createRecurringDonation(recurringDonation.toJson());
+    final response = await _apiService.createRecurringDonation(
+      recurringDonation.toJson(),
+    );
 
     return response;
   }
@@ -100,7 +112,11 @@ class RecurringDonationRepository {
       orElse: () => const CollectGroup.empty(),
     );
 
-    if (collectGroup.nameSpace.isEmpty || !collectGroup.isActive) {
+    if (collectGroup.nameSpace.isEmpty) {
+      throw OrganisationNotFoundException(donation.collectGroupName);
+    }
+
+    if (!collectGroup.isActive) {
       throw InactiveOrganisationException(donation.collectGroupName);
     }
 
@@ -127,8 +143,7 @@ class RecurringDonationRepository {
         _selectedEndOption = RecurringDonationStringKeys.onSpecificDate;
         _endDate = parsedEndDate;
       } else {
-        _selectedEndOption =
-            RecurringDonationStringKeys.afterNumberOfDonations;
+        _selectedEndOption = RecurringDonationStringKeys.afterNumberOfDonations;
         _numberOfDonations = donation.numberOfTurns.toString();
       }
     } else {
