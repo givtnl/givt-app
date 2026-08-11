@@ -5,6 +5,16 @@ import 'package:givt_app/features/recurring_donations/overview/models/recurring_
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
+class InactiveOrganisationException implements Exception {
+  const InactiveOrganisationException(this.orgName);
+
+  final String orgName;
+
+  @override
+  String toString() =>
+      'InactiveOrganisationException: $orgName is no longer active';
+}
+
 class RecurringDonationRepository {
   RecurringDonationRepository(
     this._collectGroupRepository,
@@ -90,10 +100,8 @@ class RecurringDonationRepository {
       orElse: () => const CollectGroup.empty(),
     );
 
-    if (collectGroup.nameSpace.isEmpty) {
-      throw StateError(
-        'Could not find organization for ${donation.collectGroupName}',
-      );
+    if (collectGroup.nameSpace.isEmpty || !collectGroup.isActive) {
+      throw InactiveOrganisationException(donation.collectGroupName);
     }
 
     final today = DateTime.now();

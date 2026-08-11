@@ -14,6 +14,7 @@ import 'package:givt_app/features/recurring_donations/detail/repositories/recurr
 import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_bottom_sheet.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_confirmation_modal.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donation_success_modal.dart';
+import 'package:givt_app/features/give/widgets/for_you_qr_discovery_dialogs.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step4_confirm_page.dart';
 import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/recurring_donation_detail_manage_sheet.dart';
@@ -417,6 +418,10 @@ class _RecurringDonationDetailPageState
       await Navigator.of(context).push(
         const Step4ConfirmPage(restartMode: true).toRoute(context),
       );
+    } on InactiveOrganisationException catch (_) {
+      if (!context.mounted) return;
+
+      await ForYouQrDiscoveryDialogs.showInactiveCollectGroupDialog(context);
     } on Exception catch (_) {
       if (!context.mounted) return;
 

@@ -171,8 +171,34 @@ void main() {
           guid: 'guid-1',
           country: 'NL',
         ),
-        throwsStateError,
+        throwsA(isA<InactiveOrganisationException>()),
       );
     });
+
+    test(
+      'throws InactiveOrganisationException when organization is inactive',
+      () async {
+        const inactiveCollectGroup = CollectGroup(
+          nameSpace: 'org.namespace',
+          orgName: 'Test Church',
+          hasCelebration: false,
+          type: CollectGroupType.church,
+          isActive: false,
+        );
+        repository = RecurringDonationRepository(
+          _FakeCollectGroupRepository([inactiveCollectGroup]),
+          apiService,
+        );
+
+        expect(
+          () => repository.initFromRecurringDonation(
+            donation: buildDonation(),
+            guid: 'guid-1',
+            country: 'NL',
+          ),
+          throwsA(isA<InactiveOrganisationException>()),
+        );
+      },
+    );
   });
 }
