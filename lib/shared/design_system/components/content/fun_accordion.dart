@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/shared/design_system/theme/fun_app_theme.dart';
-import 'package:givt_app/shared/design_system/theme/fun_theme.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 
 /// FUN Accordion
 ///
@@ -69,13 +68,13 @@ class FunAccordion extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TitleMediumText(
+                          TitleSmallText(
                             title,
                             color: _titleColor(theme),
                           ),
                           if (subtitle != null) ...[
                             const SizedBox(height: 4),
-                            BodyMediumText(
+                            BodySmallText(
                               subtitle!,
                               color: _subtitleColor(theme),
                             ),
@@ -163,10 +162,9 @@ class FunAccordion extends StatelessWidget {
     }
 
     // Use white icon when header has dark background (active and expanded)
-    final iconColor =
-        (state == FunAccordionState.active && isExpanded)
-            ? Colors.white
-            : _titleColor(theme);
+    final iconColor = (state == FunAccordionState.active && isExpanded)
+        ? Colors.white
+        : _titleColor(theme);
 
     return Icon(
       isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
