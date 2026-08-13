@@ -14,8 +14,8 @@ class RecurringDonationRestartDialogs {
     final locals = context.l10n;
 
     return FunModal(
-      title: locals.inactiveCollectGroupTitle,
-      subtitle: locals.inactiveCollectGroupMessage,
+      title: locals.recurringDonationsRestartInactiveOrganisationTitle,
+      subtitle: locals.recurringDonationsRestartInactiveOrganisationMessage,
       closeAction: () => context.pop(),
       buttons: [
         FunButton(

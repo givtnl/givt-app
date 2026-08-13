@@ -3088,7 +3088,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recurringDonationsRestartOrganisationNotFoundMessage =>
-      'We could not find this organisation. Please choose another goal to restart your donation.';
+      'We could not find the organisation linked to this donation. This donation cannot be restarted.';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationTitle =>
+      'Organisation no longer active';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationMessage =>
+      'The organisation linked to this donation is no longer active. This donation cannot be restarted.';
 
   @override
   String get recurringDonationsDetailEditDonation => 'Edit donation';
@@ -6588,7 +6596,15 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get recurringDonationsRestartOrganisationNotFoundMessage =>
-      'We could not find this organisation. Please choose another goal to restart your donation.';
+      'We could not find the organisation linked to this donation. This donation cannot be restarted.';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationTitle =>
+      'Organisation no longer active';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationMessage =>
+      'The organisation linked to this donation is no longer active. This donation cannot be restarted.';
 
   @override
   String get recurringDonationsDetailEditDonation => 'Edit donation';

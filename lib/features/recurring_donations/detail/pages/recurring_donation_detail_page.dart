@@ -46,6 +46,7 @@ class RecurringDonationDetailPage extends StatefulWidget {
 class _RecurringDonationDetailPageState
     extends State<RecurringDonationDetailPage> {
   late final RecurringDonationDetailCubit _cubit;
+  bool _isRestarting = false;
 
   @override
   void initState() {
@@ -396,7 +397,8 @@ class _RecurringDonationDetailPageState
   Widget _buildRestartButton(BuildContext context) {
     return FunButton(
       fullBorder: true,
-      onTap: () => _onRestartDonationPressed(context),
+      isLoading: _isRestarting,
+      onTap: _isRestarting ? null : () => _onRestartDonationPressed(context),
       text: context.l10n.recurringDonationsDetailRestartButton,
       analyticsEvent: AnalyticsEventName.recurringDonationRestartClicked.toEvent(
         parameters: {
@@ -407,6 +409,10 @@ class _RecurringDonationDetailPageState
   }
 
   Future<void> _onRestartDonationPressed(BuildContext context) async {
+    if (_isRestarting) return;
+
+    setState(() => _isRestarting = true);
+
     final auth = context.read<AuthCubit>().state;
     final repository = getIt<RecurringDonationRepository>();
 
@@ -451,6 +457,10 @@ class _RecurringDonationDetailPageState
           duration: const Duration(seconds: 3),
         ),
       );
+    } finally {
+      if (mounted) {
+        setState(() => _isRestarting = false);
+      }
     }
   }
 

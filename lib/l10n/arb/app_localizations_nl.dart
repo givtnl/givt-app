@@ -3101,7 +3101,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsRestartOrganisationNotFoundMessage =>
-      'We konden deze organisatie niet vinden. Kies een ander doel om je donatie te herstarten.';
+      'We konden de organisatie die aan deze donatie is gekoppeld niet vinden. Deze donatie kan niet worden herstart.';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationTitle =>
+      'Organisatie niet meer actief';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationMessage =>
+      'De organisatie die aan deze donatie is gekoppeld, is niet meer actief. Deze donatie kan niet worden herstart.';
 
   @override
   String get recurringDonationsDetailEditDonation => 'Donatie bewerken';
