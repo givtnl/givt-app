@@ -284,8 +284,13 @@ class PledgeGoal extends Equatable {
   DateTime? get nextExecutionDateTime =>
       _earliestUpcomingTransaction()?.executionDateTime;
 
+  /// Original API string for the next upcoming transaction date.
+  ///
+  /// Must not be re-encoded via [DateTime.toUtc]; [ApiDateTime.parseLocal]
+  /// treats ISO values as wall-clock calendar dates, so a UTC round-trip
+  /// shifts the calendar day east of UTC (ENG-1161).
   String? get nextExecutionDate =>
-      nextExecutionDateTime?.toUtc().toIso8601String();
+      _earliestUpcomingTransaction()?.executionDate;
 
   double get scheduledGivenAmount => transactions
       .where((transaction) => transaction.isProcessed)
