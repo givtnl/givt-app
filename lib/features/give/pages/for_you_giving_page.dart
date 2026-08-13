@@ -491,11 +491,11 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     );
   }
 
-  void _submit(
+  Future<void> _submit(
     BuildContext context,
     String namespace, {
     required int amountLimit,
-  }) {
+  }) async {
     if (!_hasValidAmounts ||
         DonationAmountValidation.anyExceedsUserAmountLimit(
           values: _controllers.map((controller) => controller.text),
@@ -516,11 +516,19 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     if (donations.isEmpty) {
       return;
     }
-    context.read<GiveBloc>().add(
-      GiveForYouSubmitDonations(
-        nameSpace: namespace,
-        userGUID: userGuid,
-        donations: donations,
+    await AuthUtils.checkToken(
+      context,
+      checkAuthRequest: CheckAuthRequest(
+        allowWhenOffline: true,
+        navigate: (context) async {
+          context.read<GiveBloc>().add(
+            GiveForYouSubmitDonations(
+              nameSpace: namespace,
+              userGUID: userGuid,
+              donations: donations,
+            ),
+          );
+        },
       ),
     );
   }

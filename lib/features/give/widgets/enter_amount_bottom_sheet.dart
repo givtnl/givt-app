@@ -63,10 +63,11 @@ class _EnterAmountBottomSheetState extends State<EnterAmountBottomSheet> {
           presets: auth.presets.presets,
           showAddCollectionButton: false,
           onAmountChanged:
-              (firstCollection, secondCollection, thirdCollection) {
-            AuthUtils.checkToken(
+              (firstCollection, secondCollection, thirdCollection) async {
+            await AuthUtils.checkToken(
               context,
               checkAuthRequest: CheckAuthRequest(
+                allowWhenOffline: true,
                 navigate: (context) async {
                   GiveLoadingDialog.showGiveLoadingDialog(context);
                   context.read<GiveBloc>().add(

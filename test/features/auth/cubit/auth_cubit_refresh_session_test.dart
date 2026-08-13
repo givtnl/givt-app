@@ -62,9 +62,9 @@ void main() {
         ),
       );
 
-      final didRefresh = await cubit.refreshSession(emitAuthentication: false);
+      final result = await cubit.refreshSession(emitAuthentication: false);
 
-      expect(didRefresh, isTrue);
+      expect(result, RefreshSessionResult.success);
       expect(cubit.state.status, AuthStatus.authenticated);
       expect(cubit.state.session.accessToken, 'new-access');
     });
@@ -78,9 +78,9 @@ void main() {
         ),
       );
 
-      final didRefresh = await cubit.refreshSession(emitAuthentication: false);
+      final result = await cubit.refreshSession(emitAuthentication: false);
 
-      expect(didRefresh, isFalse);
+      expect(result, RefreshSessionResult.failure);
       expect(cubit.state.status, AuthStatus.authenticated);
     });
 
@@ -88,19 +88,34 @@ void main() {
         () async {
       repository.refreshError = Exception('refresh failed');
 
-      final didRefresh = await cubit.refreshSession();
+      final result = await cubit.refreshSession();
 
-      expect(didRefresh, isFalse);
+      expect(result, RefreshSessionResult.failure);
       expect(cubit.state.status, AuthStatus.failure);
     });
 
     test('sets noInternet when emitAuthentication is true and offline', () async {
       repository.refreshError = const SocketException('offline');
 
-      final didRefresh = await cubit.refreshSession();
+      final result = await cubit.refreshSession();
 
-      expect(didRefresh, isFalse);
+      expect(result, RefreshSessionResult.offline);
       expect(cubit.state.status, AuthStatus.noInternet);
+    });
+
+    test('returns offline without changing status when emitAuthentication is false',
+        () async {
+      repository.refreshError = const SocketException('offline');
+      cubit.emit(
+        cubit.state.copyWith(
+          status: AuthStatus.authenticated,
+        ),
+      );
+
+      final result = await cubit.refreshSession(emitAuthentication: false);
+
+      expect(result, RefreshSessionResult.offline);
+      expect(cubit.state.status, AuthStatus.authenticated);
     });
   });
 }

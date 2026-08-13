@@ -204,6 +204,7 @@ class _SelectGivingWayPageState extends State<SelectGivingWayPage> {
     await AuthUtils.checkToken(
       context,
       checkAuthRequest: CheckAuthRequest(
+        allowWhenOffline: true,
         navigate: (context) async => onAuthenticated(),
       ),
     );
