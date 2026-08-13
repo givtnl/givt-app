@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,11 +19,13 @@ import 'package:givt_app/features/recurring_donations/detail/widgets/pause_donat
 import 'package:givt_app/features/recurring_donations/create/presentation/pages/step4_confirm_page.dart';
 import 'package:givt_app/features/recurring_donations/create/repository/recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/recurring_donation_detail_manage_sheet.dart';
+import 'package:givt_app/features/recurring_donations/detail/widgets/recurring_donation_restart_dialogs.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -42,6 +46,7 @@ class RecurringDonationDetailPage extends StatefulWidget {
 class _RecurringDonationDetailPageState
     extends State<RecurringDonationDetailPage> {
   late final RecurringDonationDetailCubit _cubit;
+  bool _isRestarting = false;
 
   @override
   void initState() {
@@ -392,7 +397,8 @@ class _RecurringDonationDetailPageState
   Widget _buildRestartButton(BuildContext context) {
     return FunButton(
       fullBorder: true,
-      onTap: () => _onRestartDonationPressed(context),
+      isLoading: _isRestarting,
+      onTap: _isRestarting ? null : () => _onRestartDonationPressed(context),
       text: context.l10n.recurringDonationsDetailRestartButton,
       analyticsEvent: AnalyticsEventName.recurringDonationRestartClicked.toEvent(
         parameters: {
@@ -403,6 +409,10 @@ class _RecurringDonationDetailPageState
   }
 
   Future<void> _onRestartDonationPressed(BuildContext context) async {
+    if (_isRestarting) return;
+
+    setState(() => _isRestarting = true);
+
     final auth = context.read<AuthCubit>().state;
     final repository = getIt<RecurringDonationRepository>();
 
@@ -417,8 +427,29 @@ class _RecurringDonationDetailPageState
       await Navigator.of(context).push(
         const Step4ConfirmPage(restartMode: true).toRoute(context),
       );
-    } on Exception catch (_) {
+    } on OrganisationNotFoundException catch (error) {
       if (!context.mounted) return;
+
+      await RecurringDonationRestartDialogs.showOrganisationNotFoundDialog(
+        context,
+        organisationName: error.orgName,
+      );
+    } on InactiveOrganisationException catch (error) {
+      if (!context.mounted) return;
+
+      await RecurringDonationRestartDialogs.showInactiveOrganisationDialog(
+        context,
+        organisationName: error.orgName,
+      );
+    } on Exception catch (error, stackTrace) {
+      if (!context.mounted) return;
+
+      unawaited(
+        AnalyticsHelper.logError(
+          error,
+          stackTrace: stackTrace,
+        ),
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -426,6 +457,10 @@ class _RecurringDonationDetailPageState
           duration: const Duration(seconds: 3),
         ),
       );
+    } finally {
+      if (mounted) {
+        setState(() => _isRestarting = false);
+      }
     }
   }
 

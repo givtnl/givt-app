@@ -5447,6 +5447,30 @@ abstract class AppLocalizations {
   /// **'We couldn\'t restart this donation. Please try again.'**
   String get recurringDonationsRestartFailed;
 
+  /// No description provided for @recurringDonationsRestartOrganisationNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Organisation unavailable'**
+  String get recurringDonationsRestartOrganisationNotFoundTitle;
+
+  /// No description provided for @recurringDonationsRestartOrganisationNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not find the organisation linked to this donation. This donation cannot be restarted.'**
+  String get recurringDonationsRestartOrganisationNotFoundMessage;
+
+  /// No description provided for @recurringDonationsRestartInactiveOrganisationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Organisation no longer active'**
+  String get recurringDonationsRestartInactiveOrganisationTitle;
+
+  /// No description provided for @recurringDonationsRestartInactiveOrganisationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The organisation linked to this donation is no longer active. This donation cannot be restarted.'**
+  String get recurringDonationsRestartInactiveOrganisationMessage;
+
   /// No description provided for @recurringDonationsDetailEditDonation.
   ///
   /// In en, this message translates to:

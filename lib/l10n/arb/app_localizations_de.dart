@@ -3109,6 +3109,22 @@ class AppLocalizationsDe extends AppLocalizations {
       'Diese Spende konnte nicht neu gestartet werden. Bitte versuchen Sie es erneut.';
 
   @override
+  String get recurringDonationsRestartOrganisationNotFoundTitle =>
+      'Organisation nicht verfügbar';
+
+  @override
+  String get recurringDonationsRestartOrganisationNotFoundMessage =>
+      'Wir konnten die mit dieser Spende verknüpfte Organisation nicht finden. Diese Spende kann nicht neu gestartet werden.';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationTitle =>
+      'Organisation nicht mehr aktiv';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationMessage =>
+      'Die mit dieser Spende verknüpfte Organisation ist nicht mehr aktiv. Diese Spende kann nicht neu gestartet werden.';
+
+  @override
   String get recurringDonationsDetailEditDonation => 'Spende bearbeiten';
 
   @override

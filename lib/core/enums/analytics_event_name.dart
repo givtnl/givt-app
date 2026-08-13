@@ -143,6 +143,12 @@ enum AnalyticsEventName {
   recurringDonationRestartConfirmClicked(
     'recurring_donation_restart_confirm_clicked',
   ),
+  recurringDonationRestartInactiveOrgContinueTapped(
+    'recurring_donation_restart_inactive_org_continue_tapped',
+  ),
+  recurringDonationRestartOrgNotFoundContinueTapped(
+    'recurring_donation_restart_org_not_found_continue_tapped',
+  ),
   externalDonationsNavigationClicked('external_donations_navigation_clicked'),
   externalDonationsTabsChanged('external_donations_tabs_changed'),
   externalDonationsAddClicked('external_donations_add_clicked'),
