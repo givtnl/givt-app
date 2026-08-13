@@ -1530,6 +1530,8 @@
   "recurringDonationsRestartConfirmTitle": "Ready to restart your donation?",
   "recurringDonationsRestartConfirmButton": "Restart donation",
   "recurringDonationsRestartFailed": "We couldn't restart this donation. Please try again.",
+  "recurringDonationsRestartOrganisationNotFoundTitle": "Organisation unavailable",
+  "recurringDonationsRestartOrganisationNotFoundMessage": "We could not find this organisation. Please choose another goal to restart your donation.",
   "recurringDonationsDetailEditDonation": "Edit donation",
   "recurringDonationsDetailEditComingSoon": "Edit functionality coming soon",
   "recurringDonationsDetailPauseDonation": "Pause donation",
