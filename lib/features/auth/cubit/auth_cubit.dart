@@ -452,8 +452,14 @@ class AuthCubit extends Cubit<AuthState> {
     return false;
   }
 
-  // returns whether the session was succesfully refreshed
-  Future<bool> refreshSession({bool emitAuthentication = true}) async {
+  /// Refreshes the OAuth session.
+  ///
+  /// Returns [RefreshSessionResult.success] when a new session is stored,
+  /// [RefreshSessionResult.offline] when the request fails due to no network,
+  /// and [RefreshSessionResult.failure] for auth or other errors.
+  Future<RefreshSessionResult> refreshSession({
+    bool emitAuthentication = true,
+  }) async {
     if (emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
       LoggingInfo.instance.info('Refreshing session');
@@ -467,13 +473,13 @@ class AuthCubit extends Cubit<AuthState> {
           needsReauthentication: false,
         ),
       );
-      return true;
+      return RefreshSessionResult.success;
     } on SocketException {
       log('No internet connection');
       if (emitAuthentication) {
         emit(state.copyWith(status: AuthStatus.noInternet));
       }
-      return false;
+      return RefreshSessionResult.offline;
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -482,7 +488,7 @@ class AuthCubit extends Cubit<AuthState> {
       if (emitAuthentication) {
         emit(state.copyWith(status: AuthStatus.failure));
       }
-      return false;
+      return RefreshSessionResult.failure;
     }
   }
 

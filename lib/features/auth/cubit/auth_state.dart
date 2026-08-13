@@ -1,5 +1,11 @@
 part of 'auth_cubit.dart';
 
+enum RefreshSessionResult {
+  success,
+  offline,
+  failure,
+}
+
 enum AuthStatus {
   loading,
   unknown,

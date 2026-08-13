@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 
@@ -13,11 +15,17 @@ class CheckAuthRequest {
     required this.navigate,
     this.email = '',
     this.forceLogin = false,
+    this.allowWhenOffline = false,
   });
 
   final Future<void> Function(BuildContext context) navigate;
   final String email;
   final bool forceLogin;
+
+  /// When true (giving flows only), continue with the local session if the
+  /// device is offline instead of prompting for login. Other destinations
+  /// must leave this false so they never navigate without a refreshed token.
+  final bool allowWhenOffline;
 }
 
 class AuthUtils {
@@ -40,24 +48,76 @@ class AuthUtils {
       return;
     }
 
-    // Refresh first so an expired access token is renewed without biometrics.
-    final didTokenRefresh = await context.read<AuthCubit>().refreshSession(
-          emitAuthentication: false,
-        );
-    if (!context.mounted) {
-      return;
-    }
-    if (didTokenRefresh) {
-      await checkAuthRequest.navigate(
-        context,
+    if (_canSkipRefreshForOfflineGiving(
+      context,
+      checkAuthRequest: checkAuthRequest,
+    )) {
+      LoggingInfo.instance.info(
+        'Offline giving: skipping session refresh, continuing with local session.',
       );
+      await checkAuthRequest.navigate(context);
       return;
     }
 
-    await _promptBiometricsOrLogin(
+    // Refresh first so an expired access token is renewed without biometrics.
+    final refreshResult = await context.read<AuthCubit>().refreshSession(
+      emitAuthentication: false,
+    );
+    if (!context.mounted) {
+      return;
+    }
+    if (await _tryNavigateAfterRefresh(
       context,
       checkAuthRequest: checkAuthRequest,
-    );
+      refreshResult: refreshResult,
+    )) {
+      return;
+    }
+
+    await _promptBiometricsOrLogin(context, checkAuthRequest: checkAuthRequest);
+  }
+
+  static bool _canSkipRefreshForOfflineGiving(
+    BuildContext context, {
+    required CheckAuthRequest checkAuthRequest,
+  }) {
+    if (!checkAuthRequest.allowWhenOffline) {
+      return false;
+    }
+    if (getIt<NetworkInfo>().isConnected) {
+      return false;
+    }
+    return _hasLocalAuthenticatedSession(context.read<AuthCubit>().state);
+  }
+
+  static bool _hasLocalAuthenticatedSession(AuthState auth) {
+    return auth.user.guid.isNotEmpty &&
+        auth.status != AuthStatus.unauthenticated;
+  }
+
+  /// Returns true when [navigate] was invoked and the caller should stop.
+  static Future<bool> _tryNavigateAfterRefresh(
+    BuildContext context, {
+    required CheckAuthRequest checkAuthRequest,
+    required RefreshSessionResult refreshResult,
+  }) async {
+    switch (refreshResult) {
+      case RefreshSessionResult.success:
+        await checkAuthRequest.navigate(context);
+        return true;
+      case RefreshSessionResult.offline:
+        if (checkAuthRequest.allowWhenOffline &&
+            _hasLocalAuthenticatedSession(context.read<AuthCubit>().state)) {
+          LoggingInfo.instance.info(
+            'Offline giving: session refresh failed due to no network, continuing with local session.',
+          );
+          await checkAuthRequest.navigate(context);
+          return true;
+        }
+        return false;
+      case RefreshSessionResult.failure:
+        return false;
+    }
   }
 
   static Future<void> _promptBiometricsOrLogin(
@@ -92,22 +152,23 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      final didTokenRefresh = await context.read<AuthCubit>().refreshSession(
-            emitAuthentication: false,
-          );
+      final refreshResult = await context.read<AuthCubit>().refreshSession(
+        emitAuthentication: false,
+      );
       if (!context.mounted) {
         return;
       }
-      if (didTokenRefresh) {
-        await checkAuthRequest.navigate(
-          context,
-        );
-      } else {
-        await displayLoginBottomSheet(
-          context,
-          checkAuthRequest: checkAuthRequest,
-        );
+      if (await _tryNavigateAfterRefresh(
+        context,
+        checkAuthRequest: checkAuthRequest,
+        refreshResult: refreshResult,
+      )) {
+        return;
       }
+      await displayLoginBottomSheet(
+        context,
+        checkAuthRequest: checkAuthRequest,
+      );
     } on PlatformException catch (e) {
       LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',

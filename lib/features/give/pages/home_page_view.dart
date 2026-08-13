@@ -128,6 +128,7 @@ class _HomePageViewState extends State<HomePageView> {
                       await AuthUtils.checkToken(
                         context,
                         checkAuthRequest: CheckAuthRequest(
+                          allowWhenOffline: true,
                           navigate: (context) async {
                             await HomePageQRFlowHandler.handleQRFlow(
                               context,
