@@ -1,0 +1,5 @@
+{
+  "name": "Givt App",
+  "user": "ubuntu",
+  "install": ".cursor/scripts/cloud-agent-install.sh"
+}
