@@ -108,6 +108,54 @@ void main() {
       expect(pledges.first.endDate, '2026-12-31T00:00:00Z');
       expect(pledges.last.goalName, 'Youth Ministry');
     });
+
+    test('toPledges keeps next execution as original wall-clock API date', () {
+      const executionDate = '2026-08-31T00:00:00Z';
+      final group = PledgeGroup.fromJson({
+        'pledgeGroupId': 'pg-1',
+        'pledgeGroupName': 'Campaign',
+        'collectGroupId': 'cg-1',
+        'collectGroupNamespace': 'org',
+        'collectGroupName': 'Church',
+        'startDate': '2026-01-01T00:00:00Z',
+        'endDate': '2026-12-31T00:00:00Z',
+        'goals': [
+          {
+            'id': 'goal-row-1',
+            'goalId': 'goal-1',
+            'goalName': 'Building Fund',
+            'totalAmount': 1598,
+            'type': 'DirectDebit',
+            'frequency': 'Monthly',
+            'transactions': [
+              {
+                'id': 'tx-1',
+                'amount': 266.32,
+                'executionDate': executionDate,
+                'state': 'Entered',
+              },
+            ],
+          },
+        ],
+      });
+
+      final pledges = group.toPledges();
+      expect(pledges, hasLength(1));
+
+      final pledge = pledges.first;
+      expect(pledge.nextExecutionDate, executionDate);
+      expect(pledge.nextExecutionDateTime, isNotNull);
+      expect(pledge.nextExecutionDateTime!.year, 2026);
+      expect(pledge.nextExecutionDateTime!.month, 8);
+      expect(pledge.nextExecutionDateTime!.day, 31);
+
+      final card = PledgeOverviewCard.fromPledges(pledges);
+      final cardDate = card.earliestNextExecution;
+      expect(cardDate, isNotNull);
+      expect(cardDate!.year, 2026);
+      expect(cardDate.month, 8);
+      expect(cardDate.day, 31);
+    });
   });
 
   group('Pledge', () {
