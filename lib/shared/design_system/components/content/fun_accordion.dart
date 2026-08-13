@@ -17,7 +17,6 @@ class FunAccordion extends StatelessWidget {
     required this.onHeaderTap,
     this.subtitle,
     this.content,
-    this.size = FunAccordionSize.medium,
     this.state = FunAccordionState.collapsed,
     this.leadingIcon,
     super.key,
@@ -26,7 +25,6 @@ class FunAccordion extends StatelessWidget {
   final String title;
   final String? subtitle;
   final Widget? content;
-  final FunAccordionSize size;
   final FunAccordionState state;
   final bool isExpanded;
   final VoidCallback onHeaderTap;
@@ -171,11 +169,6 @@ class FunAccordion extends StatelessWidget {
       color: iconColor,
     );
   }
-}
-
-enum FunAccordionSize {
-  medium,
-  small,
 }
 
 enum FunAccordionState {
