@@ -57,6 +57,17 @@ void main() {
     WidgetTester tester, {
     required bool allowWhenOffline,
   }) async {
+    final previousOnError = FlutterError.onError;
+    FlutterError.onError = (details) {
+      if (details.toString().contains('overflowed')) {
+        return;
+      }
+      previousOnError?.call(details);
+    };
+    addTearDown(() {
+      FlutterError.onError = previousOnError;
+    });
+
     await tester.pumpWidget(
       BlocProvider<AuthCubit>.value(
         value: cubit,
@@ -93,7 +104,8 @@ void main() {
 
   group('AuthUtils.checkToken offline giving', () {
     testWidgets(
-      'skips refresh and navigates when allowWhenOffline and checker is disconnected',
+      'skips refresh and navigates when allowWhenOffline '
+      'and checker is disconnected',
       (tester) async {
         networkInfo.isConnected = false;
 

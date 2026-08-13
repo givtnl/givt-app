@@ -53,7 +53,8 @@ class AuthUtils {
       checkAuthRequest: checkAuthRequest,
     )) {
       LoggingInfo.instance.info(
-        'Offline giving: skipping session refresh, continuing with local session.',
+        'Offline giving: skipping session refresh, '
+        'continuing with local session.',
       );
       await checkAuthRequest.navigate(context);
       return;
@@ -109,7 +110,8 @@ class AuthUtils {
         if (checkAuthRequest.allowWhenOffline &&
             _hasLocalAuthenticatedSession(context.read<AuthCubit>().state)) {
           LoggingInfo.instance.info(
-            'Offline giving: session refresh failed due to no network, continuing with local session.',
+            'Offline giving: session refresh failed due to no network, '
+            'continuing with local session.',
           );
           await checkAuthRequest.navigate(context);
           return true;
@@ -163,6 +165,9 @@ class AuthUtils {
         checkAuthRequest: checkAuthRequest,
         refreshResult: refreshResult,
       )) {
+        return;
+      }
+      if (!context.mounted) {
         return;
       }
       await displayLoginBottomSheet(
