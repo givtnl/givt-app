@@ -8,7 +8,7 @@ import 'package:givt_app/features/external_donations/create/widgets/external_don
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
-/// Builds the pinned preview panel for a create-flow step.
+/// Builds the scroll-linked preview panel for a create-flow step.
 ExternalDonationCreatePreviewPanel? externalDonationCreatePreviewForStep(
   BuildContext context,
   ExternalDonationCreateUIModel uiModel,
