@@ -45,17 +45,28 @@ class ExternalDonationCreateStepShell extends StatelessWidget {
           FunStepper(currentStep: currentStep, stepCount: stepCount),
           const SizedBox(height: 32),
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  body,
-                  if (preview != null) ...[
-                    const SizedBox(height: 16),
-                    preview!,
-                  ],
-                ],
-              ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        body,
+                        if (preview != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16),
+                            child: preview,
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           if (bottom != null) ...[
