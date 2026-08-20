@@ -186,7 +186,7 @@ PersonalSummaryUIModel buildPersonalSummaryUIModel({
   );
 }
 
-int compareCategorySegments(ChartSegment a, ChartSegment b) {
+int _compareCategorySegments(ChartSegment a, ChartSegment b) {
   if (a.hasData != b.hasData) {
     return a.hasData ? -1 : 1;
   }
@@ -199,6 +199,8 @@ int compareCategorySegments(ChartSegment a, ChartSegment b) {
   return a.category.name.compareTo(b.category.name);
 }
 
+/// Donut and legend order: descending by amount, then alphabetical for ties/zeros.
+/// Monthly bar stacks keep a fixed Figma order in the widget layer.
 List<ChartSegment> _buildCategorySegments(
   Map<GivingCategory, double> totals,
   double yearTotal,
@@ -212,7 +214,7 @@ List<ChartSegment> _buildCategorySegments(
       fraction: fraction,
     );
   }).toList()
-    ..sort(compareCategorySegments);
+    ..sort(_compareCategorySegments);
   return segments;
 }
 

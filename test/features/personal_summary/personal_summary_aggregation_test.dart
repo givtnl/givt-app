@@ -326,20 +326,42 @@ void main() {
       );
     });
 
-    test('compareCategorySegments sorts active before zero amounts', () {
-      const active = ChartSegment(
-        category: GivingCategory.charity,
-        amount: 10,
-        fraction: 1,
-      );
-      const zero = ChartSegment(
-        category: GivingCategory.campaign,
-        amount: 0,
-        fraction: 0,
+    test('places zero-donation categories below active categories', () {
+      final givts = [
+        Givt(
+          id: 1,
+          amount: 10,
+          collectGroupId: 'guid-2',
+          organisationName: 'My Charity',
+          organisationTaxDeductible: true,
+          collectId: 2,
+          isGiftAidEnabled: false,
+          status: 3,
+          timeStamp: DateTime(2025, 2, 5),
+          mediumId: 'charity-ns.location',
+          taxYear: 0,
+        ),
+      ];
+
+      final uiModel = buildPersonalSummaryUIModel(
+        allGivts: givts,
+        allExternalDonations: const [],
+        collectGroups: collectGroups,
+        givingGoal: const GivingGoal.empty(),
+        selectedYear: 2025,
       );
 
-      expect(compareCategorySegments(active, zero), lessThan(0));
-      expect(compareCategorySegments(zero, active), greaterThan(0));
+      final categories =
+          uiModel.categorySegments.map((segment) => segment.category).toList();
+      expect(categories.first, GivingCategory.charity);
+      expect(
+        categories.sublist(1),
+        [
+          GivingCategory.campaign,
+          GivingCategory.church,
+          GivingCategory.other,
+        ],
+      );
     });
   });
 }
