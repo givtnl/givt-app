@@ -130,7 +130,9 @@ class _PreviewHistoryItem extends StatelessWidget {
                     FunTag(
                       text: row.typeTagLabel!,
                       variant: FunTagVariant.accent,
-                      iconData: FontAwesomeIcons.arrowsRotate,
+                      iconData: row.isRecurring
+                          ? FontAwesomeIcons.arrowsRotate
+                          : null,
                       iconSize: 12,
                       margin: EdgeInsets.zero,
                     ),

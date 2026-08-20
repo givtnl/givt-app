@@ -200,7 +200,11 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildOrganizationHeader(context, uiModel.donation.description),
+                      _buildOrganizationHeader(
+                        context,
+                        uiModel.donation.description,
+                        isRecurring: uiModel.isRecurring,
+                      ),
                       const SizedBox(height: 24),
                       if (uiModel.isRecurring) ...[
                         _buildSummaryCards(uiModel, currency, context),
@@ -258,8 +262,9 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
 
   Widget _buildOrganizationHeader(
     BuildContext context,
-    String organizationName,
-  ) {
+    String organizationName, {
+    required bool isRecurring,
+  }) {
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -278,7 +283,8 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
           FunTag(
             text: context.l10n.externalDonationsCreatePreviewTypeTag,
             variant: FunTagVariant.accent,
-            iconData: FontAwesomeIcons.arrowsRotate,
+            iconData:
+                isRecurring ? FontAwesomeIcons.arrowsRotate : null,
             iconSize: 12,
             margin: EdgeInsets.zero,
           ),

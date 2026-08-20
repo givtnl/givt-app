@@ -12,6 +12,7 @@ class ExternalDonationCreatePreviewRow extends Equatable {
     this.isUpcoming = false,
     this.isCompleted = false,
     this.isFaded = false,
+    this.isRecurring = false,
   });
 
   final String organisationName;
@@ -27,6 +28,8 @@ class ExternalDonationCreatePreviewRow extends Equatable {
   final bool isCompleted;
   /// Oldest visible past row when three preview cards are shown.
   final bool isFaded;
+  /// Whether the Ext. donation tag should show the recurring icon.
+  final bool isRecurring;
 
   @override
   List<Object?> get props => [
@@ -39,5 +42,6 @@ class ExternalDonationCreatePreviewRow extends Equatable {
         isUpcoming,
         isCompleted,
         isFaded,
+        isRecurring,
       ];
 }

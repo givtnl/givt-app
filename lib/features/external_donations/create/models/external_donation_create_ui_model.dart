@@ -158,6 +158,7 @@ class ExternalDonationCreateUIModel extends Equatable {
       typeTagLabel: _previewTypeTag(locals),
       amountLabel: amount != null ? '$currencySymbol${formatAmount(amount)}' : null,
       primarySubtitle: _donationTypeSubtitle(locals),
+      isRecurring: draft.isOneOff == false,
     );
   }
 
@@ -175,6 +176,7 @@ class ExternalDonationCreateUIModel extends Equatable {
       amountLabel: amount != null ? '$currencySymbol${formatAmount(amount)}' : null,
       primarySubtitle: locals.externalDonationsCreateFrequencyOneOff,
       dateLabel: date != null ? _formatShortDate(date, locale) : null,
+      isRecurring: false,
     );
   }
 
@@ -271,6 +273,7 @@ class ExternalDonationCreateUIModel extends Equatable {
       isUpcoming: isUpcoming,
       isCompleted: isCompleted,
       isFaded: isFaded,
+      isRecurring: true,
     );
   }
 
