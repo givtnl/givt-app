@@ -99,6 +99,15 @@ void main() {
       expect(uiModel.categorySegments.firstWhere((s) => s.category == GivingCategory.church).amount, 20);
       expect(uiModel.categorySegments.firstWhere((s) => s.category == GivingCategory.charity).amount, 30);
       expect(uiModel.categorySegments.firstWhere((s) => s.category == GivingCategory.other).amount, 10);
+      expect(
+        uiModel.categorySegments.map((segment) => segment.category).toList(),
+        [
+          GivingCategory.charity,
+          GivingCategory.church,
+          GivingCategory.other,
+          GivingCategory.campaign,
+        ],
+      );
       expect(uiModel.monthlyRows[0].total, 20);
       expect(uiModel.monthlyRows[1].total, 30);
       expect(uiModel.monthlyRows[2].total, 10);
@@ -162,6 +171,175 @@ void main() {
 
       expect(uiModel.yearTotal, 0);
       expect(uiModel.hasDonationsInYear, isFalse);
+    });
+
+    test('orders category segments descending by amount', () {
+      final collectGroupsWithCampaign = [
+        ...collectGroups,
+        const CollectGroup(
+          nameSpace: 'campaign-ns',
+          orgName: 'My Campaign',
+          hasCelebration: false,
+          type: CollectGroupType.campaign,
+        ),
+      ];
+
+      final givts = [
+        Givt(
+          id: 1,
+          amount: 10,
+          collectGroupId: 'guid-1',
+          organisationName: 'My Campaign',
+          organisationTaxDeductible: true,
+          collectId: 1,
+          isGiftAidEnabled: false,
+          status: 3,
+          timeStamp: DateTime(2025, 1, 10),
+          mediumId: 'campaign-ns.location',
+          taxYear: 0,
+        ),
+        Givt(
+          id: 2,
+          amount: 30,
+          collectGroupId: 'guid-2',
+          organisationName: 'My Church',
+          organisationTaxDeductible: true,
+          collectId: 2,
+          isGiftAidEnabled: false,
+          status: 3,
+          timeStamp: DateTime(2025, 2, 5),
+          mediumId: 'church-ns.location',
+          taxYear: 0,
+        ),
+        Givt(
+          id: 3,
+          amount: 40,
+          collectGroupId: 'guid-3',
+          organisationName: 'My Charity',
+          organisationTaxDeductible: true,
+          collectId: 3,
+          isGiftAidEnabled: false,
+          status: 3,
+          timeStamp: DateTime(2025, 3, 5),
+          mediumId: 'charity-ns.location',
+          taxYear: 0,
+        ),
+      ];
+
+      final external = [
+        const ExternalDonation(
+          id: 'ext-1',
+          amount: 20,
+          description: 'External',
+          frequencyString: 'Once',
+          creationDate: '2025-04-01T00:00:00',
+          taxDeductible: false,
+          startDate: '2025-04-01T00:00:00',
+        ),
+      ];
+
+      final uiModel = buildPersonalSummaryUIModel(
+        allGivts: givts,
+        allExternalDonations: external,
+        collectGroups: collectGroupsWithCampaign,
+        givingGoal: const GivingGoal.empty(),
+        selectedYear: 2025,
+      );
+
+      expect(
+        uiModel.categorySegments.map((segment) => segment.category).toList(),
+        [
+          GivingCategory.charity,
+          GivingCategory.church,
+          GivingCategory.other,
+          GivingCategory.campaign,
+        ],
+      );
+    });
+
+    test('lists zero-donation categories below active categories alphabetically', () {
+      final uiModel = buildPersonalSummaryUIModel(
+        allGivts: const [],
+        allExternalDonations: const [],
+        collectGroups: collectGroups,
+        givingGoal: const GivingGoal.empty(),
+        selectedYear: 2025,
+      );
+
+      expect(
+        uiModel.categorySegments.map((segment) => segment.category).toList(),
+        [
+          GivingCategory.campaign,
+          GivingCategory.charity,
+          GivingCategory.church,
+          GivingCategory.other,
+        ],
+      );
+    });
+
+    test('uses alphabetical order for tied non-zero amounts', () {
+      final givts = [
+        Givt(
+          id: 1,
+          amount: 50,
+          collectGroupId: 'guid-1',
+          organisationName: 'My Church',
+          organisationTaxDeductible: true,
+          collectId: 1,
+          isGiftAidEnabled: false,
+          status: 3,
+          timeStamp: DateTime(2025, 1, 10),
+          mediumId: 'church-ns.location',
+          taxYear: 0,
+        ),
+        Givt(
+          id: 2,
+          amount: 50,
+          collectGroupId: 'guid-2',
+          organisationName: 'My Charity',
+          organisationTaxDeductible: true,
+          collectId: 2,
+          isGiftAidEnabled: false,
+          status: 3,
+          timeStamp: DateTime(2025, 2, 5),
+          mediumId: 'charity-ns.location',
+          taxYear: 0,
+        ),
+      ];
+
+      final uiModel = buildPersonalSummaryUIModel(
+        allGivts: givts,
+        allExternalDonations: const [],
+        collectGroups: collectGroups,
+        givingGoal: const GivingGoal.empty(),
+        selectedYear: 2025,
+      );
+
+      expect(
+        uiModel.categorySegments.map((segment) => segment.category).toList(),
+        [
+          GivingCategory.charity,
+          GivingCategory.church,
+          GivingCategory.campaign,
+          GivingCategory.other,
+        ],
+      );
+    });
+
+    test('compareCategorySegments sorts active before zero amounts', () {
+      const active = ChartSegment(
+        category: GivingCategory.charity,
+        amount: 10,
+        fraction: 1,
+      );
+      const zero = ChartSegment(
+        category: GivingCategory.campaign,
+        amount: 0,
+        fraction: 0,
+      );
+
+      expect(compareCategorySegments(active, zero), lessThan(0));
+      expect(compareCategorySegments(zero, active), greaterThan(0));
     });
   });
 }
