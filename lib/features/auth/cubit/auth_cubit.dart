@@ -23,10 +23,11 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
     this._authRepositoy, {
     NetworkInfo? networkInfo,
-  })  : _networkInfo = networkInfo,
-        super(const AuthState()) {
-    _sessionSubscription =
-        _authRepositoy.hasSessionStream().listen((hasSession) {
+  }) : _networkInfo = networkInfo,
+       super(const AuthState()) {
+    _sessionSubscription = _authRepositoy.hasSessionStream().listen((
+      hasSession,
+    ) {
       checkAuth(hasSession: hasSession);
     });
   }
@@ -34,6 +35,7 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _authRepositoy;
   final NetworkInfo? _networkInfo;
   late StreamSubscription<bool> _sessionSubscription;
+  Future<RefreshSessionResult>? _inFlightRefresh;
 
   bool get _isOnline => _networkInfo?.isConnected ?? true;
 
@@ -86,7 +88,8 @@ class AuthCubit extends Cubit<AuthState> {
 
       final biometricSetting = await BiometricsHelper.getBiometricSetting();
 
-      final showBiometricCheck = biometricSetting == BiometricSetting.unknown &&
+      final showBiometricCheck =
+          biometricSetting == BiometricSetting.unknown &&
           userExt.tempUser == false;
 
       emit(
@@ -100,6 +103,7 @@ class AuthCubit extends Cubit<AuthState> {
           needsReauthentication: false,
         ),
       );
+      unawaited(_authRepositoy.markLocalAuthSucceeded());
       _authRepositoy.updateSessionStream(true);
     } catch (e, stackTrace) {
       if (e.toString().contains('invalid_grant')) {
@@ -158,11 +162,11 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(status: AuthStatus.authenticated));
 
   void clearNavigation() => emit(
-        state.copyWith(
-          status: state.status,
-          navigate: AuthState._emptyNavigate,
-        ),
-      );
+    state.copyWith(
+      status: state.status,
+      navigate: AuthState._emptyNavigate,
+    ),
+  );
 
   void clearNeedsReauthentication() {
     if (!state.needsReauthentication) {
@@ -452,13 +456,56 @@ class AuthCubit extends Cubit<AuthState> {
     return false;
   }
 
+  void markLocalAuthSucceeded() {
+    unawaited(_authRepositoy.markLocalAuthSucceeded());
+  }
+
+  bool get isWithinLocalAuthGrace {
+    final lastLocalAuthAt = _authRepositoy.lastLocalAuthAt();
+    if (lastLocalAuthAt == null) {
+      return false;
+    }
+    return DateTime.now().toUtc().difference(lastLocalAuthAt) <
+        AuthGate.localAuthGracePeriod;
+  }
+
   /// Refreshes the OAuth session.
   ///
   /// Returns [RefreshSessionResult.success] when a new session is stored,
   /// [RefreshSessionResult.offline] when the request fails due to no network,
   /// and [RefreshSessionResult.failure] for auth or other errors.
+  ///
+  /// Skips the network call when the access token is still valid unless
+  /// [force] is true or [AuthState.needsReauthentication] is set. Concurrent
+  /// callers share a single in-flight refresh.
   Future<RefreshSessionResult> refreshSession({
     bool emitAuthentication = true,
+    bool force = false,
+  }) async {
+    if (!force &&
+        !state.needsReauthentication &&
+        state.session.isLoggedIn &&
+        state.session.accessToken.isNotEmpty &&
+        !state.session.isExpired) {
+      return RefreshSessionResult.success;
+    }
+
+    final inFlight = _inFlightRefresh;
+    if (inFlight != null) {
+      return inFlight;
+    }
+
+    final refresh = _refreshSession(emitAuthentication: emitAuthentication);
+    _inFlightRefresh = refresh;
+    try {
+      return await refresh;
+    } finally {
+      _inFlightRefresh = null;
+    }
+  }
+
+  Future<RefreshSessionResult> _refreshSession({
+    required bool emitAuthentication,
   }) async {
     if (emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
@@ -466,9 +513,7 @@ class AuthCubit extends Cubit<AuthState> {
       final session = await _authRepositoy.refreshToken();
       emit(
         state.copyWith(
-          status: emitAuthentication
-              ? AuthStatus.authenticated
-              : state.status,
+          status: emitAuthentication ? AuthStatus.authenticated : state.status,
           session: session,
           needsReauthentication: false,
         ),
@@ -538,8 +583,10 @@ class AuthCubit extends Cubit<AuthState> {
       final notificationPermissionStatus =
           await Permission.notification.status.isGranted;
 
-      LoggingInfo.instance.info('New FCM token: $notificationId; '
-          'Notification permission status: $notificationPermissionStatus');
+      LoggingInfo.instance.info(
+        'New FCM token: $notificationId; '
+        'Notification permission status: $notificationPermissionStatus',
+      );
 
       if (userExt.notificationId == notificationId &&
           userExt.pushNotificationsEnabled == notificationPermissionStatus) {

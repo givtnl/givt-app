@@ -28,5 +28,9 @@ void main() {
       final expires = DateTime.now().toUtc().add(const Duration(minutes: 1));
       expect(sessionWithExpiry(expires).isExpired, isTrue);
     });
+
+    test('uses a two minute refresh buffer', () {
+      expect(Session.accessTokenRefreshBuffer, const Duration(minutes: 2));
+    });
   });
 }

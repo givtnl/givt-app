@@ -69,53 +69,112 @@ void main() {
       expect(cubit.state.session.accessToken, 'new-access');
     });
 
-    test('does not change status on failure when emitAuthentication is false',
-        () async {
-      repository.refreshError = Exception('refresh failed');
+    test(
+      'does not change status on failure when emitAuthentication is false',
+      () async {
+        repository.refreshError = Exception('refresh failed');
+        cubit.emit(
+          cubit.state.copyWith(
+            status: AuthStatus.authenticated,
+          ),
+        );
+
+        final result = await cubit.refreshSession(emitAuthentication: false);
+
+        expect(result, RefreshSessionResult.failure);
+        expect(cubit.state.status, AuthStatus.authenticated);
+      },
+    );
+
+    test(
+      'sets failure status when emitAuthentication is true and refresh fails',
+      () async {
+        repository.refreshError = Exception('refresh failed');
+
+        final result = await cubit.refreshSession();
+
+        expect(result, RefreshSessionResult.failure);
+        expect(cubit.state.status, AuthStatus.failure);
+      },
+    );
+
+    test(
+      'sets noInternet when emitAuthentication is true and offline',
+      () async {
+        repository.refreshError = const SocketException('offline');
+
+        final result = await cubit.refreshSession();
+
+        expect(result, RefreshSessionResult.offline);
+        expect(cubit.state.status, AuthStatus.noInternet);
+      },
+    );
+
+    test(
+      'returns offline without changing status when emitAuthentication is false',
+      () async {
+        repository.refreshError = const SocketException('offline');
+        cubit.emit(
+          cubit.state.copyWith(
+            status: AuthStatus.authenticated,
+          ),
+        );
+
+        final result = await cubit.refreshSession(emitAuthentication: false);
+
+        expect(result, RefreshSessionResult.offline);
+        expect(cubit.state.status, AuthStatus.authenticated);
+      },
+    );
+
+    test('skips network refresh when access token is still valid', () async {
+      repository.refreshResult = refreshedSession();
       cubit.emit(
         cubit.state.copyWith(
           status: AuthStatus.authenticated,
+          session: refreshedSession(),
         ),
       );
 
-      final result = await cubit.refreshSession(emitAuthentication: false);
-
-      expect(result, RefreshSessionResult.failure);
-      expect(cubit.state.status, AuthStatus.authenticated);
-    });
-
-    test('sets failure status when emitAuthentication is true and refresh fails',
-        () async {
-      repository.refreshError = Exception('refresh failed');
-
       final result = await cubit.refreshSession();
 
-      expect(result, RefreshSessionResult.failure);
-      expect(cubit.state.status, AuthStatus.failure);
+      expect(result, RefreshSessionResult.success);
+      expect(repository.refreshCallCount, 0);
     });
 
-    test('sets noInternet when emitAuthentication is true and offline', () async {
-      repository.refreshError = const SocketException('offline');
+    test(
+      'does not skip network refresh when reauthentication is needed',
+      () async {
+        repository.refreshResult = refreshedSession();
+        cubit.emit(
+          cubit.state.copyWith(
+            status: AuthStatus.authenticated,
+            session: refreshedSession(),
+            needsReauthentication: true,
+          ),
+        );
 
-      final result = await cubit.refreshSession();
+        final result = await cubit.refreshSession(emitAuthentication: false);
 
-      expect(result, RefreshSessionResult.offline);
-      expect(cubit.state.status, AuthStatus.noInternet);
-    });
+        expect(result, RefreshSessionResult.success);
+        expect(repository.refreshCallCount, 1);
+        expect(cubit.state.needsReauthentication, isFalse);
+      },
+    );
 
-    test('returns offline without changing status when emitAuthentication is false',
-        () async {
-      repository.refreshError = const SocketException('offline');
+    test('refreshes when force is true even if token is still valid', () async {
+      repository.refreshResult = refreshedSession();
       cubit.emit(
         cubit.state.copyWith(
           status: AuthStatus.authenticated,
+          session: refreshedSession(),
         ),
       );
 
-      final result = await cubit.refreshSession(emitAuthentication: false);
+      final result = await cubit.refreshSession(force: true);
 
-      expect(result, RefreshSessionResult.offline);
-      expect(cubit.state.status, AuthStatus.authenticated);
+      expect(result, RefreshSessionResult.success);
+      expect(repository.refreshCallCount, 1);
     });
   });
 }
@@ -125,6 +184,7 @@ class _RefreshTestAuthRepository with AuthRepository {
 
   Session? refreshResult;
   Object? refreshError;
+  int refreshCallCount = 0;
 
   Future<void> dispose() async {
     await _sessionController.close();
@@ -132,6 +192,7 @@ class _RefreshTestAuthRepository with AuthRepository {
 
   @override
   Future<Session> refreshToken({bool refreshUserExt = false}) async {
+    refreshCallCount++;
     if (refreshError != null) {
       throw refreshError!;
     }
@@ -165,8 +226,7 @@ class _RefreshTestAuthRepository with AuthRepository {
   Future<String> signSepaMandate({
     required String guid,
     required String appLanguage,
-  }) async =>
-      '';
+  }) async => '';
 
   @override
   Future<StripeResponse> fetchStripeSetupIntent() async =>
@@ -176,15 +236,13 @@ class _RefreshTestAuthRepository with AuthRepository {
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isNewUser,
-  }) async =>
-      const UserExt(email: '', guid: '', amountLimit: 0);
+  }) async => const UserExt(email: '', guid: '', amountLimit: 0);
 
   @override
   Future<bool> changeGiftAid({
     required String guid,
     required bool giftAid,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   Future<bool> unregisterUser({required String email}) async => true;
@@ -193,8 +251,7 @@ class _RefreshTestAuthRepository with AuthRepository {
   Future<bool> updateUser({
     required String guid,
     required Map<String, dynamic> newUserExt,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   Future<bool> updateUserExt(Map<String, dynamic> newUserExt) async => true;
@@ -202,8 +259,7 @@ class _RefreshTestAuthRepository with AuthRepository {
   @override
   Future<bool> updateLocalUserPresets({
     required UserPresets newUserPresets,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   Future<void> checkUserExt({required String email}) async {}
@@ -213,8 +269,7 @@ class _RefreshTestAuthRepository with AuthRepository {
     required String guid,
     required String notificationId,
     required bool notificationPermissionStatus,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   void updateSessionStream(bool hasSession) {
