@@ -8,7 +8,10 @@ import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/auth/models/auth_gate.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
+
+export 'package:givt_app/features/auth/models/auth_gate.dart';
 
 class CheckAuthRequest {
   CheckAuthRequest({
@@ -16,6 +19,7 @@ class CheckAuthRequest {
     this.email = '',
     this.forceLogin = false,
     this.allowWhenOffline = false,
+    this.policy = CheckAuthPolicy.ensureSession,
   });
 
   final Future<void> Function(BuildContext context) navigate;
@@ -26,6 +30,10 @@ class CheckAuthRequest {
   /// device is offline instead of prompting for login. Other destinations
   /// must leave this false so they never navigate without a refreshed token.
   final bool allowWhenOffline;
+
+  /// Giving / app-open use [CheckAuthPolicy.ensureSession]. Protected menu
+  /// item taps use [CheckAuthPolicy.stepUp].
+  final CheckAuthPolicy policy;
 }
 
 class AuthUtils {
@@ -60,22 +68,49 @@ class AuthUtils {
       return;
     }
 
-    // Refresh first so an expired access token is renewed without biometrics.
-    final refreshResult = await context.read<AuthCubit>().refreshSession(
-      emitAuthentication: false,
+    final authCubit = context.read<AuthCubit>();
+    final action = AuthGate.decide(
+      policy: checkAuthRequest.policy,
+      isAccessTokenExpired: authCubit.state.session.isExpired,
+      isWithinLocalAuthGrace: authCubit.isWithinLocalAuthGrace,
+      needsReauthentication: authCubit.state.needsReauthentication,
     );
-    if (!context.mounted) {
-      return;
-    }
-    if (await _tryNavigateAfterRefresh(
-      context,
-      checkAuthRequest: checkAuthRequest,
-      refreshResult: refreshResult,
-    )) {
-      return;
-    }
 
-    await _promptBiometricsOrLogin(context, checkAuthRequest: checkAuthRequest);
+    switch (action) {
+      case AuthGateAction.navigate:
+        await checkAuthRequest.navigate(context);
+        return;
+      case AuthGateAction.silentRefresh:
+        final forceRefresh = authCubit.state.needsReauthentication;
+        final refreshResult = await authCubit.refreshSession(
+          emitAuthentication: false,
+          force: forceRefresh,
+        );
+        if (!context.mounted) {
+          return;
+        }
+        if (await _tryNavigateAfterRefresh(
+          context,
+          checkAuthRequest: checkAuthRequest,
+          refreshResult: refreshResult,
+        )) {
+          return;
+        }
+        if (!context.mounted) {
+          return;
+        }
+        await _promptBiometricsOrLogin(
+          context,
+          checkAuthRequest: checkAuthRequest,
+        );
+        return;
+      case AuthGateAction.promptBiometrics:
+        await _promptBiometricsOrLogin(
+          context,
+          checkAuthRequest: checkAuthRequest,
+        );
+        return;
+    }
   }
 
   static bool _canSkipRefreshForOfflineGiving(
@@ -154,6 +189,7 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
+      context.read<AuthCubit>().markLocalAuthSucceeded();
       final refreshResult = await context.read<AuthCubit>().refreshSession(
         emitAuthentication: false,
       );

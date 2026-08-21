@@ -22,6 +22,7 @@ abstract final class AccountSettingsActions {
     return AuthUtils.checkToken(
       context,
       checkAuthRequest: CheckAuthRequest(
+        policy: CheckAuthPolicy.stepUp,
         navigate: (context) => showModalBottomSheet<void>(
           context: context,
           isScrollControlled: true,
@@ -48,11 +49,13 @@ abstract final class AccountSettingsActions {
     return AuthUtils.checkToken(
       context,
       checkAuthRequest: CheckAuthRequest(
+        policy: CheckAuthPolicy.stepUp,
         navigate: (context) async {
           context.pushNamed(Pages.platformContribution.name);
           unawaited(
             AnalyticsHelper.logEvent(
-              eventName: AnalyticsEventName.platformContributionNavigationClicked,
+              eventName:
+                  AnalyticsEventName.platformContributionNavigationClicked,
             ),
           );
         },
@@ -67,6 +70,7 @@ abstract final class AccountSettingsActions {
     return AuthUtils.checkToken(
       context,
       checkAuthRequest: CheckAuthRequest(
+        policy: CheckAuthPolicy.stepUp,
         navigate: (context) => showModalBottomSheet<void>(
           context: context,
           isScrollControlled: true,
@@ -90,6 +94,7 @@ abstract final class AccountSettingsActions {
     return AuthUtils.checkToken(
       context,
       checkAuthRequest: CheckAuthRequest(
+        policy: CheckAuthPolicy.stepUp,
         navigate: (context) async => context.pushNamed(Pages.unregister.name),
       ),
     );

@@ -78,6 +78,12 @@ mixin AuthRepository {
   void setHasSessionInitialValue(bool hasSession);
 
   Future<Session> getStoredSession();
+
+  DateTime? lastLocalAuthAt() => null;
+
+  Future<void> markLocalAuthSucceeded({DateTime? at}) async {}
+
+  Future<void> clearLastLocalAuth() async {}
 }
 
 class AuthRepositoyImpl with AuthRepository {
@@ -144,8 +150,9 @@ class AuthRepositoyImpl with AuthRepository {
       }
       final userExt = UserExt.fromJson(
         jsonDecode(
-          _prefs.getString(UserExt.tag)!,
-        ) as Map<String, dynamic>,
+              _prefs.getString(UserExt.tag)!,
+            )
+            as Map<String, dynamic>,
       );
       final response = await _apiService.getUserExtension(userExt.guid);
       final newUserExt = UserExt.fromJson(response);
@@ -196,8 +203,9 @@ class AuthRepositoyImpl with AuthRepository {
     }
     final userExt = UserExt.fromJson(
       jsonDecode(
-        _prefs.getString(UserExt.tag)!,
-      ) as Map<String, dynamic>,
+            _prefs.getString(UserExt.tag)!,
+          )
+          as Map<String, dynamic>,
     );
     if (userExt.email == email) {
       return;
@@ -290,8 +298,9 @@ class AuthRepositoyImpl with AuthRepository {
 
     final amountPresets = AmountPresets.fromJson(
       jsonDecode(
-        amountPresetsString!,
-      ) as Map<String, dynamic>,
+            amountPresetsString!,
+          )
+          as Map<String, dynamic>,
     );
 
     if (amountPresets.presets.isEmpty) {
@@ -319,6 +328,8 @@ class AuthRepositoyImpl with AuthRepository {
     final sessionString = _prefs.getString(Session.tag);
 
     updateSessionStream(false);
+
+    await clearLastLocalAuth();
 
     // If the data is already gone, just continue :)
     if (sessionString == null) {
@@ -431,14 +442,12 @@ class AuthRepositoyImpl with AuthRepository {
   Future<bool> updateUser({
     required String guid,
     required Map<String, dynamic> newUserExt,
-  }) async =>
-      _apiService.updateUser(guid, newUserExt);
+  }) async => _apiService.updateUser(guid, newUserExt);
 
   @override
   Future<bool> updateUserExt(
     Map<String, dynamic> newUserExt,
-  ) async =>
-      _apiService.updateUserExt(newUserExt);
+  ) async => _apiService.updateUserExt(newUserExt);
 
   @override
   Future<StripeResponse> fetchStripeSetupIntent() async {
@@ -463,8 +472,9 @@ class AuthRepositoyImpl with AuthRepository {
 
     final amountPresets = AmountPresets.fromJson(
       jsonDecode(
-        _prefs.getString(AmountPresets.tag)!,
-      ) as Map<String, dynamic>,
+            _prefs.getString(AmountPresets.tag)!,
+          )
+          as Map<String, dynamic>,
     );
 
     for (final userPreset in amountPresets.presets) {
@@ -491,14 +501,13 @@ class AuthRepositoyImpl with AuthRepository {
     required String guid,
     required String notificationId,
     required bool notificationPermissionStatus,
-  }) =>
-      _apiService.updateNotificationId(
-        guid: guid,
-        body: {
-          'PushNotificationId': notificationId,
-          'PushNotificationsEnabled': notificationPermissionStatus,
-        },
-      );
+  }) => _apiService.updateNotificationId(
+    guid: guid,
+    body: {
+      'PushNotificationId': notificationId,
+      'PushNotificationsEnabled': notificationPermissionStatus,
+    },
+  );
 
   Future<void> setUserProperties(UserExt newUserExt) {
     FirebaseCrashlytics.instance.setUserIdentifier(newUserExt.guid);
@@ -520,5 +529,28 @@ class AuthRepositoyImpl with AuthRepository {
   @override
   void setHasSessionInitialValue(bool hasSession) {
     _hasSession = hasSession;
+  }
+
+  @override
+  DateTime? lastLocalAuthAt() {
+    final value = _prefs.getString(NativeSharedPreferencesKeys.lastLocalAuthAt);
+    if (value == null || value.isEmpty) {
+      return null;
+    }
+    return DateTime.tryParse(value)?.toUtc();
+  }
+
+  @override
+  Future<void> markLocalAuthSucceeded({DateTime? at}) async {
+    final timestamp = (at ?? DateTime.now()).toUtc().toIso8601String();
+    await _prefs.setString(
+      NativeSharedPreferencesKeys.lastLocalAuthAt,
+      timestamp,
+    );
+  }
+
+  @override
+  Future<void> clearLastLocalAuth() async {
+    await _prefs.remove(NativeSharedPreferencesKeys.lastLocalAuthAt);
   }
 }

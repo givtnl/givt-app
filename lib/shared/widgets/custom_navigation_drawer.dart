@@ -47,7 +47,8 @@ class CustomNavigationDrawer extends StatelessWidget {
                         _buildGivtLogo(),
                         _buildDecorativeAvatar(context),
                         DrawerMenuItem(
-                          isVisible: auth.user.needRegistration ||
+                          isVisible:
+                              auth.user.needRegistration ||
                               !auth.user.mandateSigned,
                           showBadge: true,
                           title: locals.finalizeRegistration,
@@ -84,6 +85,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                           onTap: () async => AuthUtils.checkToken(
                             context,
                             checkAuthRequest: CheckAuthRequest(
+                              policy: CheckAuthPolicy.stepUp,
                               navigate: (context) async {
                                 context.goNamed(Pages.personalSummary.name);
                                 unawaited(
@@ -108,11 +110,12 @@ class CustomNavigationDrawer extends StatelessWidget {
                               AnalyticsEventName.menuNavigationHistoryClicked,
                           onTap: () async {
                             context.read<RemoteDataSourceSyncBloc>().add(
-                                  const RemoteDataSourceSyncRequested(),
-                                );
+                              const RemoteDataSourceSyncRequested(),
+                            );
                             await AuthUtils.checkToken(
                               context,
                               checkAuthRequest: CheckAuthRequest(
+                                policy: CheckAuthPolicy.stepUp,
                                 navigate: (context) async => context.goNamed(
                                   Pages.donationOverview.name,
                                 ),
@@ -133,6 +136,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                           onTap: () async => AuthUtils.checkToken(
                             context,
                             checkAuthRequest: CheckAuthRequest(
+                              policy: CheckAuthPolicy.stepUp,
                               navigate: (context) async {
                                 context.goNamed(Pages.recurringDonations.name);
                                 unawaited(
@@ -158,6 +162,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                           onTap: () async => AuthUtils.checkToken(
                             context,
                             checkAuthRequest: CheckAuthRequest(
+                              policy: CheckAuthPolicy.stepUp,
                               navigate: (context) async {
                                 context.goNamed(Pages.externalDonations.name);
                                 unawaited(
@@ -187,6 +192,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                               onTap: () async => AuthUtils.checkToken(
                                 context,
                                 checkAuthRequest: CheckAuthRequest(
+                                  policy: CheckAuthPolicy.stepUp,
                                   navigate: (context) async {
                                     context.goNamed(Pages.pledges.name);
                                   },
@@ -206,11 +212,12 @@ class CustomNavigationDrawer extends StatelessWidget {
                       color: iconColor,
                     ),
                     semanticsIdentifier: 'menuAccountSettings',
-                    analyticsEvent: AnalyticsEventName
-                        .menuNavigationAccountSettingsClicked,
+                    analyticsEvent:
+                        AnalyticsEventName.menuNavigationAccountSettingsClicked,
                     onTap: () async => AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
+                        policy: CheckAuthPolicy.stepUp,
                         navigate: (context) async => context.goNamed(
                           Pages.personalInfoEdit.name,
                         ),
@@ -285,14 +292,14 @@ class CustomNavigationDrawer extends StatelessWidget {
   }
 
   Widget _buildGivtLogo() => Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: Center(
-          child: SizedBox(
-            height: 24,
-            child: Image.asset(
-              'assets/images/logo.png',
-            ),
-          ),
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Center(
+      child: SizedBox(
+        height: 24,
+        child: Image.asset(
+          'assets/images/logo.png',
         ),
-      );
+      ),
+    ),
+  );
 }

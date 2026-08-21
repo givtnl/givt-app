@@ -30,33 +30,34 @@ class Session {
   }
 
   factory Session.fromGenerosityJson(Map<String, dynamic> json) => Session(
-        email: json['email'] as String,
-        userGUID: json['userId'] as String,
-        accessToken: json['accessToken'] as String,
-        refreshToken: json['refreshToken'] as String,
-        expires: json['expirationDate'] as String,
-        expiresIn: json['expiresIn'] as int,
-        isLoggedIn: true,
-      );
+    email: json['email'] as String,
+    userGUID: json['userId'] as String,
+    accessToken: json['accessToken'] as String,
+    refreshToken: json['refreshToken'] as String,
+    expires: json['expirationDate'] as String,
+    expiresIn: json['expiresIn'] as int,
+    isLoggedIn: true,
+  );
 
   factory Session.fromJson(Map<String, dynamic> json) => Session(
-        email: json['Email'] as String,
-        userGUID: json['GUID'] as String,
-        accessToken: json['access_token'] as String,
-        refreshToken: json['refresh_token'] as String,
-        expires: json['.expires'] as String,
-        expiresIn: 0,
-        isLoggedIn:
-            json.containsKey('isLoggedIn') ? json['isLoggedIn'] as bool : false,
-      );
+    email: json['Email'] as String,
+    userGUID: json['GUID'] as String,
+    accessToken: json['access_token'] as String,
+    refreshToken: json['refresh_token'] as String,
+    expires: json['.expires'] as String,
+    expiresIn: 0,
+    isLoggedIn: json.containsKey('isLoggedIn')
+        ? json['isLoggedIn'] as bool
+        : false,
+  );
   const Session.empty()
-      : userGUID = '',
-        email = '',
-        accessToken = '',
-        refreshToken = '',
-        expires = '',
-        expiresIn = 0,
-        isLoggedIn = false;
+    : userGUID = '',
+      email = '',
+      accessToken = '',
+      refreshToken = '',
+      expires = '',
+      expiresIn = 0,
+      isLoggedIn = false;
 
   final String userGUID;
   final String email;
@@ -74,16 +75,18 @@ class Session {
     String? expires,
     int? expiresIn,
     bool? isLoggedIn,
-  }) =>
-      Session(
-        email: email ?? this.email,
-        userGUID: userGUID ?? this.userGUID,
-        accessToken: accessToken ?? this.accessToken,
-        refreshToken: refreshToken ?? this.refreshToken,
-        expires: expires ?? this.expires,
-        expiresIn: expiresIn ?? this.expiresIn,
-        isLoggedIn: isLoggedIn ?? this.isLoggedIn,
-      );
+  }) => Session(
+    email: email ?? this.email,
+    userGUID: userGUID ?? this.userGUID,
+    accessToken: accessToken ?? this.accessToken,
+    refreshToken: refreshToken ?? this.refreshToken,
+    expires: expires ?? this.expires,
+    expiresIn: expiresIn ?? this.expiresIn,
+    isLoggedIn: isLoggedIn ?? this.isLoggedIn,
+  );
+
+  /// Refresh the access token this far before actual expiry.
+  static const Duration accessTokenRefreshBuffer = Duration(minutes: 2);
 
   /// True when the access token is near or past expiry (small client-side buffer).
   bool get isExpired {
@@ -92,22 +95,20 @@ class Session {
     /// If the expires date is empty, then ask user to login.
     if (expires.isEmpty) return true;
     final expiresDate = DateTime.parse(expires).subtract(
-      const Duration(
-        minutes: 2,
-      ),
+      accessTokenRefreshBuffer,
     );
     return now.isAfter(expiresDate);
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'GUID': userGUID,
-        'Email': email,
-        'access_token': accessToken,
-        'refresh_token': refreshToken,
-        '.expires': expires,
-        'expires_In': expiresIn,
-        'isLoggedIn': isLoggedIn,
-      };
+    'GUID': userGUID,
+    'Email': email,
+    'access_token': accessToken,
+    'refresh_token': refreshToken,
+    '.expires': expires,
+    'expires_In': expiresIn,
+    'isLoggedIn': isLoggedIn,
+  };
 
   @override
   String toString() {
