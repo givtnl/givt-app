@@ -172,7 +172,7 @@ void main() {
       return;
     }
 
-    throw exception;
+    throw exception as Object;
   }
 
   setUp(() async {

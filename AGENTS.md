@@ -141,7 +141,7 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 
 ### Toolchain (one-time VM setup)
 
-- **Flutter**: Pin to **3.41.x** (CI uses `3.41.x`). Newer stable (e.g. 3.44+) can break `font_awesome_flutter` tests (`IconData` is final). Install to `$HOME/flutter` and `git checkout 3.41.0`.
+- **Flutter**: Pin to **3.47.x** (CI uses `3.47.x`). Install to `$HOME/flutter` and `git checkout 3.47.1`.
 - **Melos**: `dart pub global activate melos` (executable in `$HOME/.pub-cache/bin`).
 - **Android SDK** (for APK builds): `$HOME/Android/Sdk` with platform 36, build-tools 36.0.0, platform-tools. Run `flutter config --android-sdk $HOME/Android/Sdk`.
 - **PATH** (in `~/.bashrc`): `$HOME/flutter/bin`, `$HOME/.pub-cache/bin`, `$ANDROID_HOME/cmdline-tools/latest/bin`, `$ANDROID_HOME/platform-tools`.
@@ -163,5 +163,5 @@ This is a **mobile-only** client (iOS/Android). Web/desktop targets are not conf
 
 - `make lint` runs `dart format lib test` then `flutter analyze`. **Avoid running `make lint` during env-only setup** — `dart format` reformats the entire codebase. Use `flutter analyze` alone to check static analysis.
 - Analyze reports many pre-existing `info`-level issues; `make lint` may exit non-zero even when there are no errors.
-- `make test`: 123+ tests pass on Flutter 3.41.0. One widget test (`personal_info_page_test.dart`) can fail in headless CI/VM environments due to `FragmentProgram`/shader loading.
+- `make test`: 123+ tests pass on Flutter 3.47. One widget test (`personal_info_page_test.dart`) can fail in headless CI/VM environments due to `FragmentProgram`/shader loading.
 - No local backend — E2E flows hit hosted dev APIs (`dev-backend.givtapp.net` / `dev-backend.givt.app`). Integration tests: see `integration_test/README.md` (Patrol + device).

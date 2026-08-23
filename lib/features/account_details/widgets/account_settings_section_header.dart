@@ -16,7 +16,7 @@ class AccountSettingsSectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       identifier: semanticsIdentifier,
-      header: semanticsIdentifier != null,
+      headingLevel: semanticsIdentifier != null ? 1 : 0,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
         child: Align(
