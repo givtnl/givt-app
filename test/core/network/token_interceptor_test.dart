@@ -24,7 +24,7 @@ void main() {
     });
   });
 
-  test('does not attach Bearer to /oauth2/token', () async {
+  test('attaches Bearer to /oauth2/token', () async {
     final request = Request(
       'POST',
       Uri.https('dev-backend.givtapp.net', '/oauth2/token'),
@@ -34,7 +34,7 @@ void main() {
       request: request,
     );
 
-    expect(intercepted.headers['Authorization'], isNull);
+    expect(intercepted.headers['Authorization'], 'Bearer access-token');
   });
 
   test('attaches Bearer to API requests', () async {

@@ -31,12 +31,12 @@ class TokenInterceptor implements InterceptorContract {
         jsonDecode(sessionString) as Map<String, dynamic>,
       );
 
-      // `/oauth2/token` authenticates via grant_type + refresh_token in the
-      // body. A Bearer access token (especially an expired one) makes the
-      // gateway return 401 with an empty body, which used to skip logout
-      // and show a dismissible login sheet instead.
-      final isOAuthTokenRequest = request.url.path.contains('/oauth2/token');
-      if (!isOAuthTokenRequest && session.accessToken.isNotEmpty) {
+      // Send Bearer on every authenticated request, including `/oauth2/token`.
+      // The refresh_token grant still requires it: omitting Authorization
+      // returns HTTP 400/401 with an empty body even when the refresh token
+      // is valid. A *dead* refresh token returns the same empty 400/401;
+      // [GivtServerFailure.isRejectedOAuthToken] turns that into logout.
+      if (session.accessToken.isNotEmpty) {
         request.headers['Authorization'] = 'Bearer ${session.accessToken}';
       }
     } catch (e, stackTrace) {
