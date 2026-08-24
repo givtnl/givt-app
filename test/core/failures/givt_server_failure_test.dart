@@ -26,5 +26,28 @@ void main() {
 
       expect(failure.isInvalidGrant, isFalse);
     });
+
+    test('fromHttpResponse accepts an empty body', () {
+      final failure = GivtServerFailure.fromHttpResponse(
+        statusCode: 401,
+        body: '',
+      );
+
+      expect(failure.body, isNull);
+      expect(failure.isInvalidGrant, isFalse);
+      expect(failure.isRejectedOAuthToken, isTrue);
+    });
+
+    test('isRejectedOAuthToken is true for 400 without JSON error', () {
+      const failure = GivtServerFailure(statusCode: 400);
+
+      expect(failure.isRejectedOAuthToken, isTrue);
+    });
+
+    test('isRejectedOAuthToken is false for server errors', () {
+      const failure = GivtServerFailure(statusCode: 500);
+
+      expect(failure.isRejectedOAuthToken, isFalse);
+    });
   });
 }
