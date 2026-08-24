@@ -103,6 +103,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     });
   }
 
+  /// Prompts biometrics/login only for recoverable reauth (server error,
+  /// not an invalid refresh token — that already logged the user out).
+  ///
+  /// Call from [initState] and app resume only. Do not call from [build]:
+  /// opening/closing the drawer rebuilds HomePage and would re-prompt Face
+  /// ID or a dismissible login sheet.
   Future<void> _promptReauthenticationIfNeeded({
     bool requireExpiredSession = false,
   }) async {
@@ -294,6 +300,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     final shouldLockScreen =
         _mandatePopupDismissalTracker.shouldForceCompletion &&
         auth.user.needRegistration;
+
+    // Do not prompt reauth here. [build] also runs when the drawer
+    // opens/closes; initState + resume cover app-open and returning
+    // from background.
 
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {

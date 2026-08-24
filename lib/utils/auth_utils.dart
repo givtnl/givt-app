@@ -37,10 +37,13 @@ class CheckAuthRequest {
 }
 
 class AuthUtils {
-  /// Checks if the user is authenticated.
-  /// If the user is authenticated, the [navigate] callback is called.
-  /// If the user is not authenticated, the login bottom sheet is displayed
-  /// or the biometrics are checked.
+  /// Ensures a usable OAuth session for [checkAuthRequest], then calls
+  /// [CheckAuthRequest.navigate].
+  ///
+  /// Recoverable refresh failures may prompt Face ID or a dismissible login
+  /// sheet. [RefreshSessionResult.invalidRefreshToken] means logout already
+  /// ran — return without Face ID or a login sheet so the user lands on
+  /// welcome instead of a popup they can dismiss while still "logged in".
   static Future<void> checkToken(
     BuildContext context, {
     required CheckAuthRequest checkAuthRequest,
@@ -91,6 +94,7 @@ class AuthUtils {
         }
         switch (refreshResult) {
           case RefreshSessionResult.invalidRefreshToken:
+            // Already logged out; do not Face ID or show login.
             return;
           case RefreshSessionResult.success:
             if (_shouldPromptStepUp(checkAuthRequest, authCubit)) {
@@ -131,6 +135,8 @@ class AuthUtils {
     }
   }
 
+  /// After a successful silent refresh on a protected menu item, still
+  /// prompt Face ID when the 15-minute local-auth grace has elapsed.
   static bool _shouldPromptStepUp(
     CheckAuthRequest checkAuthRequest,
     AuthCubit authCubit,
@@ -264,9 +270,11 @@ class AuthUtils {
     }
   }
 
-  /// Displays the login bottom sheet.
-  /// If the user successfully logs in, the [navigate] callback is called.
-  /// If the user cancels the login, nothing happens.
+  /// Displays the dismissible login bottom sheet.
+  ///
+  /// Success calls [CheckAuthRequest.navigate]. Cancel / dismiss does
+  /// nothing — so this must not be used when the refresh token is invalid
+  /// (that path logs the user out instead).
   static Future<void> displayLoginBottomSheet(
     BuildContext context, {
     required CheckAuthRequest checkAuthRequest,

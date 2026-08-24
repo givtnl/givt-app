@@ -19,6 +19,20 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 part 'auth_state.dart';
 
+/// Owns the EU / main-app OAuth session.
+///
+/// Expected behaviour (online unless noted):
+/// * **App open:** silent refresh. Success keeps the user on home.
+/// * **Refresh token rejected** (`invalid_grant`): [logout]. Do not keep a
+///   local session, do not set [AuthState.needsReauthentication], do not
+///   prompt Face ID, and do not show a dismissible login sheet.
+/// * **Refresh fails for another reason** (e.g. server error): stay
+///   authenticated and set [AuthState.needsReauthentication] so Home / give
+///   can prompt biometrics or login.
+/// * **Offline:** keep the local session; no popup.
+/// * **Logout:** persist `isLoggedIn: false` before the session stream
+///   notifies [checkAuth], and never emit [AuthStatus.loading] (that
+///   redirects through splash and can bounce back to home).
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
     this._authRepositoy, {
@@ -40,6 +54,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   bool get _isOnline => _networkInfo?.isConnected ?? true;
 
+  /// True when OAuth `/oauth2/token` rejected the refresh token.
+  /// That is a permanent session failure: the user must log in again.
   bool _isInvalidGrant(Object error) {
     if (error is GivtServerFailure) {
       return error.isInvalidGrant;
@@ -188,6 +204,12 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  /// Loads the stored session and, when [isAppStartupCheck] and online,
+  /// silently refreshes.
+  ///
+  /// Pass [hasSession] `false` from the session stream after logout. That
+  /// path emits [AuthStatus.unauthenticated] without [AuthStatus.loading]
+  /// so the router does not bounce splash → home while still logged in.
   Future<void> checkAuth({
     bool isAppStartupCheck = false,
     bool? hasSession,
@@ -308,6 +330,12 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// Clears the local session and emits [AuthStatus.unauthenticated].
+  ///
+  /// Must not emit [AuthStatus.loading]. The repository persists
+  /// `isLoggedIn: false` before notifying the session stream; [checkAuth]
+  /// then treats `hasSession: false` as logged out instead of re-reading
+  /// a still-logged-in cached session.
   Future<void> logout({bool fullReset = false}) async {
     if (_isLoggingOut) {
       return;
@@ -514,6 +542,9 @@ class AuthCubit extends Cubit<AuthState> {
     unawaited(_authRepositoy.markLocalAuthSucceeded());
   }
 
+  /// Face ID / local-auth succeeded within [AuthGate.localAuthGracePeriod]
+  /// (15 minutes). Used only by [CheckAuthPolicy.stepUp] on protected menu
+  /// items — giving and app-open always use [CheckAuthPolicy.ensureSession].
   bool get isWithinLocalAuthGrace {
     final lastLocalAuthAt = _authRepositoy.lastLocalAuthAt();
     if (lastLocalAuthAt == null) {

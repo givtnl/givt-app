@@ -21,6 +21,10 @@ mixin AuthRepository {
 
   Future<(UserExt, Session, UserPresets)?> isAuthenticated();
 
+  /// Persists `isLoggedIn: false` then notifies [hasSessionStream].
+  ///
+  /// Order matters: notifying first lets [AuthCubit.checkAuth] re-read a
+  /// still-logged-in session and bounce the user back to home.
   Future<bool> logout();
 
   Future<bool> checkTld(String email);

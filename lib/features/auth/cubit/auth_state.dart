@@ -1,9 +1,21 @@
 part of 'auth_cubit.dart';
 
+/// Outcome of [AuthCubit.refreshSession]. Callers must treat
+/// [invalidRefreshToken] as “already logged out” and must not prompt
+/// Face ID or a login sheet.
 enum RefreshSessionResult {
+  /// New tokens stored; [AuthState.needsReauthentication] is cleared.
   success,
+
+  /// No network. Giving may continue with the local session; other
+  /// destinations must not navigate without a refreshed token.
   offline,
+
+  /// Server or other recoverable error. Caller may prompt biometrics/login.
   failure,
+
+  /// Refresh token rejected (`invalid_grant`). [AuthCubit.logout] already
+  /// ran; do not show Face ID or a dismissible login sheet.
   invalidRefreshToken,
 }
 

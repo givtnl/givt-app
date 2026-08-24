@@ -46,6 +46,17 @@ The app has **two main variants**; many features exist in both with different im
 
 When a task mentions “EU” or “US” (or “family”), work in the corresponding feature folder. Do not assume one implementation applies to both.
 
+## EU auth session (main app)
+
+Contract lives in code on [`AuthCubit`](lib/features/auth/cubit/auth_cubit.dart), [`AuthGate`](lib/features/auth/models/auth_gate.dart), and [`AuthUtils.checkToken`](lib/utils/auth_utils.dart). Do not regress this:
+
+- **Online app open:** silent OAuth refresh. Success stays on home.
+- **Invalid refresh token** (`invalid_grant`): **logout** (welcome). Never Face ID, never a dismissible login sheet, never `needsReauthentication`.
+- **Other refresh failure** (server error): stay logged in, set `needsReauthentication`, prompt biometrics/login from Home **init/resume** (not from `build` — drawer open/close rebuilds).
+- **Offline:** keep local session; no popup. Giving may continue with `allowWhenOffline: true`.
+- **Protected menu items** (`CheckAuthPolicy.stepUp`): refresh expired/reauth sessions **before** Face ID so a dead refresh token logs out instead of scanning. Face ID only when the 15-minute local-auth grace has elapsed.
+- **Logout:** persist `isLoggedIn: false` before the session stream; do **not** emit `AuthStatus.loading` (that bounced splash → home on the first tap).
+
 ## Registration mandate flow (EU / UK, main app)
 
 - **Intro**: [`MandateExplanationPage`](lib/features/registration/pages/mandate_explanation_page.dart) — SEPA vs UK Direct Debit intro; continues to sign step.
@@ -126,7 +137,7 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 
 ## Where to look
 
-- **Auth / current user**: `AuthCubit` (EU), `FamilyAuthRepository` / family auth (US).
+- **Auth / current user**: `AuthCubit` (EU; see **EU auth session** above), `FamilyAuthRepository` / family auth (US).
 - **Support / infra**: `InfraCubit`, `contactSupportSafely`; used from `lib/shared/bloc/infra/`.
 - **L10n**: `lib/l10n/arb/app_en.arb` (template), then regenerate with `flutter gen-l10n`.
 - **Language & phrasing**: `docs/language.md` for terminology, tone of voice, and translation guidelines.
