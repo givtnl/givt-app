@@ -51,7 +51,7 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 Contract lives in code on [`AuthCubit`](lib/features/auth/cubit/auth_cubit.dart), [`AuthGate`](lib/features/auth/models/auth_gate.dart), and [`AuthUtils.checkToken`](lib/utils/auth_utils.dart). Do not regress this:
 
 - **Online app open:** silent OAuth refresh. Success stays on home.
-- **Invalid refresh token** (`invalid_grant`): **logout** (welcome). Never Face ID, never a dismissible login sheet, never `needsReauthentication`.
+- **Invalid refresh token** (`invalid_grant`, or HTTP 400/401 with an empty body from `/oauth2/token`): **logout** (welcome). Never Face ID, never a dismissible login sheet, never `needsReauthentication`. Do not send a Bearer access token to `/oauth2/token`.
 - **Other refresh failure** (server error): stay logged in, set `needsReauthentication`, prompt biometrics/login from Home **init/resume** (not from `build` — drawer open/close rebuilds).
 - **Offline:** keep local session; no popup. Giving may continue with `allowWhenOffline: true`.
 - **Protected menu items** (`CheckAuthPolicy.stepUp`): refresh expired/reauth sessions **before** Face ID so a dead refresh token logs out instead of scanning. Face ID only when the 15-minute local-auth grace has elapsed.

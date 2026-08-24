@@ -23,7 +23,8 @@ part 'auth_state.dart';
 ///
 /// Expected behaviour (online unless noted):
 /// * **App open:** silent refresh. Success keeps the user on home.
-/// * **Refresh token rejected** (`invalid_grant`): [logout]. Do not keep a
+/// * **Refresh token rejected** (`invalid_grant`, or HTTP 400/401 from
+///   `/oauth2/token` — often an empty body): [logout]. Do not keep a
 ///   local session, do not set [AuthState.needsReauthentication], do not
 ///   prompt Face ID, and do not show a dismissible login sheet.
 /// * **Refresh fails for another reason** (e.g. server error): stay
@@ -54,11 +55,15 @@ class AuthCubit extends Cubit<AuthState> {
 
   bool get _isOnline => _networkInfo?.isConnected ?? true;
 
-  /// True when OAuth `/oauth2/token` rejected the refresh token.
-  /// That is a permanent session failure: the user must log in again.
+  /// True when OAuth `/oauth2/token` rejected the session (expired/revoked
+  /// refresh token). The token endpoint often returns 400/401 with an empty
+  /// body instead of JSON `invalid_grant` — that must still log the user out.
   bool _isInvalidGrant(Object error) {
     if (error is GivtServerFailure) {
-      return error.isInvalidGrant;
+      return error.isRejectedOAuthToken;
+    }
+    if (error is FormatException) {
+      return true;
     }
     return error.toString().contains('invalid_grant');
   }

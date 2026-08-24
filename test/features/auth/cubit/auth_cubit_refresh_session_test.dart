@@ -205,6 +205,30 @@ void main() {
       expect(cubit.state.needsReauthentication, isFalse);
       expect(repository.logoutCallCount, 1);
     });
+
+    test('logs the user out when refresh returns empty 401', () async {
+      repository.refreshError = const GivtServerFailure(statusCode: 401);
+      cubit.emit(
+        cubit.state.copyWith(
+          status: AuthStatus.authenticated,
+          session: Session(
+            email: 'user@example.com',
+            userGUID: 'guid',
+            accessToken: 'old-access',
+            refreshToken: 'old-refresh',
+            expires: '2000-01-01T00:00:00.000Z',
+            expiresIn: 0,
+            isLoggedIn: true,
+          ),
+        ),
+      );
+
+      final result = await cubit.refreshSession(emitAuthentication: false);
+
+      expect(result, RefreshSessionResult.invalidRefreshToken);
+      expect(cubit.state.status, AuthStatus.unauthenticated);
+      expect(repository.logoutCallCount, 1);
+    });
   });
 }
 

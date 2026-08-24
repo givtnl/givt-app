@@ -115,6 +115,39 @@ void main() {
       expect(repository.logoutCallCount, 1);
     });
 
+    test('online startup empty 401 body logs the user out', () async {
+      repository.refreshError = const GivtServerFailure(statusCode: 401);
+      cubit = AuthCubit(
+        repository,
+        networkInfo: _FakeNetworkInfo(isConnected: true),
+      );
+
+      await cubit.checkAuth(isAppStartupCheck: true);
+
+      expect(cubit.state.status, AuthStatus.unauthenticated);
+      expect(cubit.state.needsReauthentication, isFalse);
+      expect(repository.logoutCallCount, 1);
+    });
+
+    test(
+      'online startup empty-body FormatException logs the user out',
+      () async {
+        repository.refreshError = const FormatException(
+          'Unexpected end of input',
+        );
+        cubit = AuthCubit(
+          repository,
+          networkInfo: _FakeNetworkInfo(isConnected: true),
+        );
+
+        await cubit.checkAuth(isAppStartupCheck: true);
+
+        expect(cubit.state.status, AuthStatus.unauthenticated);
+        expect(cubit.state.needsReauthentication, isFalse);
+        expect(repository.logoutCallCount, 1);
+      },
+    );
+
     test('offline startup skips refresh and does not require reauth', () async {
       repository.refreshError = Exception('should not be called');
       cubit = AuthCubit(
