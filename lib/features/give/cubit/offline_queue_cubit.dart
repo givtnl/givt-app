@@ -13,6 +13,12 @@ class OfflineQueueCubit extends Cubit<OfflineQueueState> {
     this._networkInfo,
   ) : super(OfflineQueueState.initial(isOffline: !_networkInfo.isConnected)) {
     _wasOffline = !_networkInfo.isConnected;
+    // [NetworkInfo.isConnected] defaults to true until the first real check.
+    // false therefore means we already know the device is offline, so show
+    // the banner without waiting for a stream event that may have been missed.
+    if (!_networkInfo.isConnected) {
+      _hasResolvedConnectivity = true;
+    }
     _refreshFromCache(isOffline: !_networkInfo.isConnected);
     if (_networkInfo.isConnected && _hasPendingDonations()) {
       unawaited(_syncAndRefresh());

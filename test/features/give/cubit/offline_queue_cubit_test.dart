@@ -175,6 +175,16 @@ void main() {
       await networkInfo.dispose();
     });
 
+    test('shows offline banner on cold start without a stream event', () {
+      networkInfo = _FakeNetworkInfo(isConnected: false);
+      repository = _FakeGivtRepository();
+      cubit = OfflineQueueCubit(repository, networkInfo);
+
+      expect(cubit.state.hasResolvedConnectivity, isTrue);
+      expect(cubit.state.isOffline, isTrue);
+      expect(cubit.state.shouldShowBanner, isTrue);
+    });
+
     test('marks connectivity resolved and shows offline banner', () async {
       networkInfo = _FakeNetworkInfo(isConnected: true);
       repository = _FakeGivtRepository();
