@@ -44,8 +44,10 @@ class GivtServerFailure extends Equatable implements Exception {
   }
 
   /// Refresh cannot continue: JSON `invalid_grant`, or a 400/401 from the
-  /// token endpoint (often with an empty body). Callers must log the user
-  /// out instead of showing a dismissible login sheet.
+  /// token endpoint (often with an empty body). Reliable only when the
+  /// request sent `Authorization: Bearer` — without it, a still-valid
+  /// refresh token produces the same empty 400/401. Callers must log the
+  /// user out instead of showing a dismissible login sheet.
   bool get isRejectedOAuthToken {
     if (isInvalidGrant) {
       return true;
@@ -55,6 +57,10 @@ class GivtServerFailure extends Equatable implements Exception {
 
   @override
   List<Object> get props => [statusCode, type];
+
+  @override
+  String toString() =>
+      'GivtServerFailure(statusCode: $statusCode, body: $body)';
 }
 
 Map<String, dynamic>? _tryDecodeJsonMap(String body) {

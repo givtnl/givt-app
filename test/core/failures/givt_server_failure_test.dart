@@ -49,5 +49,17 @@ void main() {
 
       expect(failure.isRejectedOAuthToken, isFalse);
     });
+
+    test('toString includes statusCode and body', () {
+      const failure = GivtServerFailure(
+        statusCode: 401,
+        body: {'error': 'invalid_grant'},
+      );
+
+      expect(
+        failure.toString(),
+        'GivtServerFailure(statusCode: 401, body: {error: invalid_grant})',
+      );
+    });
   });
 }

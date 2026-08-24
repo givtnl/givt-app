@@ -24,9 +24,10 @@ part 'auth_state.dart';
 /// Expected behaviour (online unless noted):
 /// * **App open:** silent refresh. Success keeps the user on home.
 /// * **Refresh token rejected** (`invalid_grant`, or HTTP 400/401 from
-///   `/oauth2/token` — often an empty body): [logout]. Do not keep a
-///   local session, do not set [AuthState.needsReauthentication], do not
-///   prompt Face ID, and do not show a dismissible login sheet.
+///   `/oauth2/token` — often an empty body, with Bearer still sent):
+///   [logout]. Do not keep a local session, do not set
+///   [AuthState.needsReauthentication], do not prompt Face ID, and do
+///   not show a dismissible login sheet.
 /// * **Refresh fails for another reason** (e.g. server error): stay
 ///   authenticated and set [AuthState.needsReauthentication] so Home / give
 ///   can prompt biometrics or login.
