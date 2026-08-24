@@ -36,8 +36,16 @@ class AuthCubit extends Cubit<AuthState> {
   final NetworkInfo? _networkInfo;
   late StreamSubscription<bool> _sessionSubscription;
   Future<RefreshSessionResult>? _inFlightRefresh;
+  bool _isLoggingOut = false;
 
   bool get _isOnline => _networkInfo?.isConnected ?? true;
+
+  bool _isInvalidGrant(Object error) {
+    if (error is GivtServerFailure) {
+      return error.isInvalidGrant;
+    }
+    return error.toString().contains('invalid_grant');
+  }
 
   @override
   Future<void> close() async {
@@ -184,6 +192,25 @@ class AuthCubit extends Cubit<AuthState> {
     bool isAppStartupCheck = false,
     bool? hasSession,
   }) async {
+    if (_isLoggingOut) {
+      return;
+    }
+
+    // Logout notifies the session stream with false. Do not re-authenticate
+    // from a still-cached session, and do not emit loading (that redirects
+    // the router to the splash/loading route, then back to home).
+    if (hasSession == false) {
+      emit(
+        state.copyWith(
+          status: AuthStatus.unauthenticated,
+          email: state.user.email,
+          needsReauthentication: false,
+        ),
+      );
+      _authRepositoy.setHasSessionInitialValue(false);
+      return;
+    }
+
     final currentStatus = state.status;
     emit(state.copyWith(status: AuthStatus.loading));
     try {
@@ -213,6 +240,14 @@ class AuthCubit extends Cubit<AuthState> {
             'No internet while refreshing session on startup; continuing offline',
           );
         } on Object catch (e, stackTrace) {
+          if (_isInvalidGrant(e)) {
+            LoggingInfo.instance.warning(
+              'Refresh token invalid on app startup, logging out: $e',
+              methodName: stackTrace.toString(),
+            );
+            await logout();
+            return;
+          }
           LoggingInfo.instance.warning(
             'Session refresh failed on app startup: $e',
             methodName: stackTrace.toString(),
@@ -274,19 +309,38 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout({bool fullReset = false}) async {
-    emit(state.copyWith(status: AuthStatus.loading));
+    if (_isLoggingOut) {
+      return;
+    }
+    _isLoggingOut = true;
     LoggingInfo.instance.info('User is logging out');
 
-    await _authRepositoy.logout();
+    try {
+      await _authRepositoy.logout();
 
-    emit(
-      state.copyWith(
-        status: AuthStatus.unauthenticated,
-        email: fullReset ? null : state.user.email,
-        user: fullReset ? const UserExt.empty() : state.user,
-      ),
-    );
-    AnalyticsHelper.clearUserProperties();
+      emit(
+        state.copyWith(
+          status: AuthStatus.unauthenticated,
+          email: fullReset ? null : state.user.email,
+          user: fullReset ? const UserExt.empty() : state.user,
+          session: const Session.empty(),
+          needsReauthentication: false,
+        ),
+      );
+      await _clearAnalyticsUserProperties();
+    } finally {
+      _isLoggingOut = false;
+    }
+  }
+
+  Future<void> _clearAnalyticsUserProperties() async {
+    try {
+      await AnalyticsHelper.clearUserProperties();
+    } on Object catch (e) {
+      LoggingInfo.instance.warning(
+        'Failed to clear analytics user properties: $e',
+      );
+    }
   }
 
   Future<void> register({
@@ -473,7 +527,9 @@ class AuthCubit extends Cubit<AuthState> {
   ///
   /// Returns [RefreshSessionResult.success] when a new session is stored,
   /// [RefreshSessionResult.offline] when the request fails due to no network,
-  /// and [RefreshSessionResult.failure] for auth or other errors.
+  /// [RefreshSessionResult.invalidRefreshToken] when the refresh token is
+  /// rejected (the user is logged out), and [RefreshSessionResult.failure]
+  /// for other errors.
   ///
   /// Skips the network call when the access token is still valid unless
   /// [force] is true or [AuthState.needsReauthentication] is set. Concurrent
@@ -526,6 +582,14 @@ class AuthCubit extends Cubit<AuthState> {
       }
       return RefreshSessionResult.offline;
     } catch (e, stackTrace) {
+      if (_isInvalidGrant(e)) {
+        LoggingInfo.instance.warning(
+          'Refresh token invalid, logging out: $e',
+          methodName: stackTrace.toString(),
+        );
+        await logout();
+        return RefreshSessionResult.invalidRefreshToken;
+      }
       LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),

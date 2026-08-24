@@ -8,6 +8,7 @@ import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/models/session.dart';
+import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
@@ -177,7 +178,7 @@ void main() {
     );
 
     testWidgets(
-      'stepUp does not navigate when reauthentication is needed within grace',
+      'stepUp refreshes then navigates when reauthentication is needed within grace',
       (tester) async {
         await repository.markLocalAuthSucceeded();
         cubit.emit(
@@ -191,7 +192,30 @@ void main() {
 
         await runCheckToken(tester, policy: CheckAuthPolicy.stepUp);
 
+        expect(cubit.refreshCallCount, 1);
+        expect(navigateCount, 1);
+      },
+    );
+
+    testWidgets(
+      'ensureSession does not show login when refresh token is invalid',
+      (tester) async {
+        cubit
+          ..emit(
+            cubit.state.copyWith(
+              status: AuthStatus.authenticated,
+              user: user,
+              session: validSession(),
+              needsReauthentication: true,
+            ),
+          )
+          ..refreshResult = RefreshSessionResult.invalidRefreshToken;
+
+        await runCheckToken(tester);
+
+        expect(cubit.refreshCallCount, 1);
         expect(navigateCount, 0);
+        expect(find.byType(LoginPage), findsNothing);
       },
     );
   });

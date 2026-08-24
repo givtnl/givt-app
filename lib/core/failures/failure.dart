@@ -19,6 +19,16 @@ class GivtServerFailure extends Equatable implements Exception {
     return FailureType.UNKNOWN;
   }
 
+  /// OAuth `/oauth2/token` returns `{"error":"invalid_grant"}` when the
+  /// refresh token is expired or revoked.
+  bool get isInvalidGrant {
+    final oauthError = body?['error']?.toString() ?? '';
+    if (oauthError == 'invalid_grant') {
+      return true;
+    }
+    return body?.toString().contains('invalid_grant') ?? false;
+  }
+
   @override
   List<Object> get props => [statusCode, type];
 }
@@ -27,8 +37,7 @@ enum FailureType {
   ALLOWANCE_NOT_SUCCESSFUL,
   TOPUP_NOT_SUCCESSFUL,
   VPC_NOT_SUCCESSFUL,
-  UNKNOWN,
-  ;
+  UNKNOWN;
 
   static FailureType getByErrorMessage(String message) {
     try {

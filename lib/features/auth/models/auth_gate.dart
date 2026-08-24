@@ -5,7 +5,8 @@ enum CheckAuthPolicy {
   ensureSession,
 
   /// Protected menu item taps: Face ID when the local-auth grace period has
-  /// elapsed. OAuth refresh only if the access token is actually near expiry.
+  /// elapsed. If the access token is expired or reauth is needed, refresh
+  /// first so an invalid refresh token can log the user out.
   stepUp,
 }
 
@@ -33,11 +34,13 @@ class AuthGate {
         }
         return AuthGateAction.navigate;
       case CheckAuthPolicy.stepUp:
-        if (needsReauthentication || !isWithinLocalAuthGrace) {
-          return AuthGateAction.promptBiometrics;
-        }
-        if (isAccessTokenExpired) {
+        // Refresh first so an invalid refresh token logs the user out
+        // instead of prompting Face ID / a dismissible login sheet.
+        if (needsReauthentication || isAccessTokenExpired) {
           return AuthGateAction.silentRefresh;
+        }
+        if (!isWithinLocalAuthGrace) {
+          return AuthGateAction.promptBiometrics;
         }
         return AuthGateAction.navigate;
     }

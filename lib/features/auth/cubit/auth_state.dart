@@ -4,6 +4,7 @@ enum RefreshSessionResult {
   success,
   offline,
   failure,
+  invalidRefreshToken,
 }
 
 enum AuthStatus {
@@ -45,9 +46,9 @@ class AuthState extends Equatable {
   final AuthStatus status;
   final Future<void> Function(BuildContext context) navigate;
 
-  /// True when the user is still treated as logged in locally, but the
-  /// access/refresh tokens could not be renewed and the UI should prompt
-  /// for biometrics or password login.
+  /// True when the user is still treated as logged in locally, but session
+  /// refresh failed for a non-auth reason (e.g. a server error). Invalid
+  /// refresh tokens log the user out instead of setting this flag.
   final bool needsReauthentication;
 
   static Future<void> _emptyNavigate(
@@ -87,15 +88,15 @@ class AuthState extends Equatable {
 
   @override
   List<Object> get props => [
-        user,
-        session,
-        email,
-        message,
-        status,
-        presets,
-        navigate,
-        needsReauthentication,
-      ];
+    user,
+    session,
+    email,
+    message,
+    status,
+    presets,
+    navigate,
+    needsReauthentication,
+  ];
 
   @override
   String toString() {

@@ -295,13 +295,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         _mandatePopupDismissalTracker.shouldForceCompletion &&
         auth.user.needRegistration;
 
-    if (auth.needsReauthentication &&
-        auth.status == AuthStatus.authenticated) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        unawaited(_promptReauthenticationIfNeeded());
-      });
-    }
-
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {
       LoggingInfo.instance.info('Navigating to ${widget.navigateTo}');

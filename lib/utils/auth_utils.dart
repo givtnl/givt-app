@@ -89,12 +89,30 @@ class AuthUtils {
         if (!context.mounted) {
           return;
         }
-        if (await _tryNavigateAfterRefresh(
-          context,
-          checkAuthRequest: checkAuthRequest,
-          refreshResult: refreshResult,
-        )) {
-          return;
+        switch (refreshResult) {
+          case RefreshSessionResult.invalidRefreshToken:
+            return;
+          case RefreshSessionResult.success:
+            if (_shouldPromptStepUp(checkAuthRequest, authCubit)) {
+              await _promptBiometricsOrLogin(
+                context,
+                checkAuthRequest: checkAuthRequest,
+              );
+              return;
+            }
+            await checkAuthRequest.navigate(context);
+            return;
+          case RefreshSessionResult.offline:
+            if (await _tryNavigateAfterRefresh(
+              context,
+              checkAuthRequest: checkAuthRequest,
+              refreshResult: refreshResult,
+            )) {
+              return;
+            }
+            break;
+          case RefreshSessionResult.failure:
+            break;
         }
         if (!context.mounted) {
           return;
@@ -111,6 +129,14 @@ class AuthUtils {
         );
         return;
     }
+  }
+
+  static bool _shouldPromptStepUp(
+    CheckAuthRequest checkAuthRequest,
+    AuthCubit authCubit,
+  ) {
+    return checkAuthRequest.policy == CheckAuthPolicy.stepUp &&
+        !authCubit.isWithinLocalAuthGrace;
   }
 
   static bool _canSkipRefreshForOfflineGiving(
@@ -154,6 +180,9 @@ class AuthUtils {
         return false;
       case RefreshSessionResult.failure:
         return false;
+      case RefreshSessionResult.invalidRefreshToken:
+        // Logout already happened; do not fall through to a login sheet.
+        return true;
     }
   }
 
