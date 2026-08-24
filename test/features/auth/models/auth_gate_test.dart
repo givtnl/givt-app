@@ -51,7 +51,7 @@ void main() {
     });
 
     test(
-      'prompts biometrics when reauthentication is needed even within grace',
+      'silently refreshes when reauthentication is needed even within grace',
       () {
         expect(
           AuthGate.decide(
@@ -60,7 +60,7 @@ void main() {
             isWithinLocalAuthGrace: true,
             needsReauthentication: true,
           ),
-          AuthGateAction.promptBiometrics,
+          AuthGateAction.silentRefresh,
         );
       },
     );

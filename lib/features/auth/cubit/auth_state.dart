@@ -1,9 +1,22 @@
 part of 'auth_cubit.dart';
 
+/// Outcome of [AuthCubit.refreshSession]. Callers must treat
+/// [invalidRefreshToken] as “already logged out” and must not prompt
+/// Face ID or a login sheet.
 enum RefreshSessionResult {
+  /// New tokens stored; [AuthState.needsReauthentication] is cleared.
   success,
+
+  /// No network. Giving may continue with the local session; other
+  /// destinations must not navigate without a refreshed token.
   offline,
+
+  /// Server or other recoverable error. Caller may prompt biometrics/login.
   failure,
+
+  /// Refresh token rejected (`invalid_grant`). [AuthCubit.logout] already
+  /// ran; do not show Face ID or a dismissible login sheet.
+  invalidRefreshToken,
 }
 
 enum AuthStatus {
@@ -45,9 +58,9 @@ class AuthState extends Equatable {
   final AuthStatus status;
   final Future<void> Function(BuildContext context) navigate;
 
-  /// True when the user is still treated as logged in locally, but the
-  /// access/refresh tokens could not be renewed and the UI should prompt
-  /// for biometrics or password login.
+  /// True when the user is still treated as logged in locally, but session
+  /// refresh failed for a non-auth reason (e.g. a server error). Invalid
+  /// refresh tokens log the user out instead of setting this flag.
   final bool needsReauthentication;
 
   static Future<void> _emptyNavigate(
@@ -87,15 +100,15 @@ class AuthState extends Equatable {
 
   @override
   List<Object> get props => [
-        user,
-        session,
-        email,
-        message,
-        status,
-        presets,
-        navigate,
-        needsReauthentication,
-      ];
+    user,
+    session,
+    email,
+    message,
+    status,
+    presets,
+    navigate,
+    needsReauthentication,
+  ];
 
   @override
   String toString() {

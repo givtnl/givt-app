@@ -21,6 +21,10 @@ mixin AuthRepository {
 
   Future<(UserExt, Session, UserPresets)?> isAuthenticated();
 
+  /// Persists `isLoggedIn: false` then notifies [hasSessionStream].
+  ///
+  /// Order matters: notifying first lets [AuthCubit.checkAuth] re-read a
+  /// still-logged-in session and bounce the user back to home.
   Future<bool> logout();
 
   Future<bool> checkTld(String email);
@@ -327,28 +331,28 @@ class AuthRepositoyImpl with AuthRepository {
     // _prefs.clear();
     final sessionString = _prefs.getString(Session.tag);
 
-    updateSessionStream(false);
-
     await clearLastLocalAuth();
 
-    // If the data is already gone, just continue :)
-    if (sessionString == null) {
-      return true;
+    // Persist logged-out session before notifying listeners so checkAuth
+    // cannot re-read a still-logged-in session and bounce back to home.
+    if (sessionString != null) {
+      final session = Session.fromJson(
+        jsonDecode(sessionString) as Map<String, dynamic>,
+      );
+      await _prefs.setString(
+        Session.tag,
+        jsonEncode(
+          session
+              .copyWith(
+                isLoggedIn: false,
+              )
+              .toJson(),
+        ),
+      );
     }
 
-    final session = Session.fromJson(
-      jsonDecode(sessionString) as Map<String, dynamic>,
-    );
-    return _prefs.setString(
-      Session.tag,
-      jsonEncode(
-        session
-            .copyWith(
-              isLoggedIn: false,
-            )
-            .toJson(),
-      ),
-    );
+    updateSessionStream(false);
+    return true;
   }
 
   @override

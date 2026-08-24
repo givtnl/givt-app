@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/models/session.dart';
@@ -176,6 +177,34 @@ void main() {
       expect(result, RefreshSessionResult.success);
       expect(repository.refreshCallCount, 1);
     });
+
+    test('logs the user out when the refresh token is invalid', () async {
+      repository.refreshError = const GivtServerFailure(
+        statusCode: 400,
+        body: {'error': 'invalid_grant'},
+      );
+      cubit.emit(
+        cubit.state.copyWith(
+          status: AuthStatus.authenticated,
+          session: Session(
+            email: 'user@example.com',
+            userGUID: 'guid',
+            accessToken: 'old-access',
+            refreshToken: 'old-refresh',
+            expires: '2000-01-01T00:00:00.000Z',
+            expiresIn: 0,
+            isLoggedIn: true,
+          ),
+        ),
+      );
+
+      final result = await cubit.refreshSession(emitAuthentication: false);
+
+      expect(result, RefreshSessionResult.invalidRefreshToken);
+      expect(cubit.state.status, AuthStatus.unauthenticated);
+      expect(cubit.state.needsReauthentication, isFalse);
+      expect(repository.logoutCallCount, 1);
+    });
   });
 }
 
@@ -185,6 +214,7 @@ class _RefreshTestAuthRepository with AuthRepository {
   Session? refreshResult;
   Object? refreshError;
   int refreshCallCount = 0;
+  int logoutCallCount = 0;
 
   Future<void> dispose() async {
     await _sessionController.close();
@@ -211,7 +241,10 @@ class _RefreshTestAuthRepository with AuthRepository {
   Future<(UserExt, Session, UserPresets)?> isAuthenticated() async => null;
 
   @override
-  Future<bool> logout() async => true;
+  Future<bool> logout() async {
+    logoutCallCount++;
+    return true;
+  }
 
   @override
   Future<bool> checkTld(String email) async => true;

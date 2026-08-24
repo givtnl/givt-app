@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -25,7 +26,10 @@ void main() {
       userGUID: 'guid-1',
       accessToken: 'access',
       refreshToken: 'refresh',
-      expires: DateTime.now().toUtc().add(const Duration(hours: 1)).toIso8601String(),
+      expires: DateTime.now()
+          .toUtc()
+          .add(const Duration(hours: 1))
+          .toIso8601String(),
       expiresIn: 3600,
       isLoggedIn: true,
     );
@@ -35,7 +39,10 @@ void main() {
       userGUID: 'guid-1',
       accessToken: 'new-access',
       refreshToken: 'new-refresh',
-      expires: DateTime.now().toUtc().add(const Duration(hours: 2)).toIso8601String(),
+      expires: DateTime.now()
+          .toUtc()
+          .add(const Duration(hours: 2))
+          .toIso8601String(),
       expiresIn: 7200,
       isLoggedIn: true,
     );
@@ -57,23 +64,26 @@ void main() {
       repository.dispose();
     });
 
-    test('online startup refresh success clears needsReauthentication', () async {
-      repository.refreshResult = refreshedSession;
-      cubit = AuthCubit(
-        repository,
-        networkInfo: _FakeNetworkInfo(isConnected: true),
-      );
+    test(
+      'online startup refresh success clears needsReauthentication',
+      () async {
+        repository.refreshResult = refreshedSession;
+        cubit = AuthCubit(
+          repository,
+          networkInfo: _FakeNetworkInfo(isConnected: true),
+        );
 
-      await cubit.checkAuth(isAppStartupCheck: true);
+        await cubit.checkAuth(isAppStartupCheck: true);
 
-      expect(cubit.state.status, AuthStatus.authenticated);
-      expect(cubit.state.needsReauthentication, isFalse);
-      expect(cubit.state.session.accessToken, 'new-access');
-      expect(repository.refreshCallCount, 1);
-    });
+        expect(cubit.state.status, AuthStatus.authenticated);
+        expect(cubit.state.needsReauthentication, isFalse);
+        expect(cubit.state.session.accessToken, 'new-access');
+        expect(repository.refreshCallCount, 1);
+      },
+    );
 
     test('online startup refresh failure sets needsReauthentication', () async {
-      repository.refreshError = Exception('invalid_grant');
+      repository.refreshError = Exception('server error');
       cubit = AuthCubit(
         repository,
         networkInfo: _FakeNetworkInfo(isConnected: true),
@@ -85,6 +95,24 @@ void main() {
       expect(cubit.state.needsReauthentication, isTrue);
       expect(cubit.state.session.accessToken, 'access');
       expect(repository.refreshCallCount, 1);
+    });
+
+    test('online startup invalid refresh token logs the user out', () async {
+      repository.refreshError = const GivtServerFailure(
+        statusCode: 400,
+        body: {'error': 'invalid_grant'},
+      );
+      cubit = AuthCubit(
+        repository,
+        networkInfo: _FakeNetworkInfo(isConnected: true),
+      );
+
+      await cubit.checkAuth(isAppStartupCheck: true);
+
+      expect(cubit.state.status, AuthStatus.unauthenticated);
+      expect(cubit.state.needsReauthentication, isFalse);
+      expect(repository.refreshCallCount, 1);
+      expect(repository.logoutCallCount, 1);
     });
 
     test('offline startup skips refresh and does not require reauth', () async {
@@ -101,19 +129,22 @@ void main() {
       expect(repository.refreshCallCount, 0);
     });
 
-    test('online startup SocketException keeps session without reauth', () async {
-      repository.refreshError = const SocketException('offline');
-      cubit = AuthCubit(
-        repository,
-        networkInfo: _FakeNetworkInfo(isConnected: true),
-      );
+    test(
+      'online startup SocketException keeps session without reauth',
+      () async {
+        repository.refreshError = const SocketException('offline');
+        cubit = AuthCubit(
+          repository,
+          networkInfo: _FakeNetworkInfo(isConnected: true),
+        );
 
-      await cubit.checkAuth(isAppStartupCheck: true);
+        await cubit.checkAuth(isAppStartupCheck: true);
 
-      expect(cubit.state.status, AuthStatus.authenticated);
-      expect(cubit.state.needsReauthentication, isFalse);
-      expect(repository.refreshCallCount, 1);
-    });
+        expect(cubit.state.status, AuthStatus.authenticated);
+        expect(cubit.state.needsReauthentication, isFalse);
+        expect(repository.refreshCallCount, 1);
+      },
+    );
 
     test('non-startup checkAuth does not refresh', () async {
       cubit = AuthCubit(
@@ -149,6 +180,7 @@ class _FakeAuthRepository with AuthRepository {
   Object? refreshError;
   Session? refreshResult;
   int refreshCallCount = 0;
+  int logoutCallCount = 0;
 
   void dispose() {
     _sessionController.close();
@@ -176,7 +208,10 @@ class _FakeAuthRepository with AuthRepository {
       authenticated;
 
   @override
-  Future<bool> logout() async => true;
+  Future<bool> logout() async {
+    logoutCallCount++;
+    return true;
+  }
 
   @override
   Future<bool> checkTld(String email) async => true;
@@ -191,8 +226,7 @@ class _FakeAuthRepository with AuthRepository {
   Future<String> signSepaMandate({
     required String guid,
     required String appLanguage,
-  }) async =>
-      '';
+  }) async => '';
 
   @override
   Future<StripeResponse> fetchStripeSetupIntent() async =>
@@ -202,15 +236,13 @@ class _FakeAuthRepository with AuthRepository {
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isNewUser,
-  }) async =>
-      const UserExt(email: '', guid: '', amountLimit: 0);
+  }) async => const UserExt(email: '', guid: '', amountLimit: 0);
 
   @override
   Future<bool> changeGiftAid({
     required String guid,
     required bool giftAid,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   Future<bool> unregisterUser({required String email}) async => true;
@@ -219,8 +251,7 @@ class _FakeAuthRepository with AuthRepository {
   Future<bool> updateUser({
     required String guid,
     required Map<String, dynamic> newUserExt,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   Future<bool> updateUserExt(Map<String, dynamic> newUserExt) async => true;
@@ -228,8 +259,7 @@ class _FakeAuthRepository with AuthRepository {
   @override
   Future<bool> updateLocalUserPresets({
     required UserPresets newUserPresets,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   Future<void> checkUserExt({required String email}) async {}
@@ -239,8 +269,7 @@ class _FakeAuthRepository with AuthRepository {
     required String guid,
     required String notificationId,
     required bool notificationPermissionStatus,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   void updateSessionStream(bool hasSession) {

@@ -19,6 +19,20 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 part 'auth_state.dart';
 
+/// Owns the EU / main-app OAuth session.
+///
+/// Expected behaviour (online unless noted):
+/// * **App open:** silent refresh. Success keeps the user on home.
+/// * **Refresh token rejected** (`invalid_grant`): [logout]. Do not keep a
+///   local session, do not set [AuthState.needsReauthentication], do not
+///   prompt Face ID, and do not show a dismissible login sheet.
+/// * **Refresh fails for another reason** (e.g. server error): stay
+///   authenticated and set [AuthState.needsReauthentication] so Home / give
+///   can prompt biometrics or login.
+/// * **Offline:** keep the local session; no popup.
+/// * **Logout:** persist `isLoggedIn: false` before the session stream
+///   notifies [checkAuth], and never emit [AuthStatus.loading] (that
+///   redirects through splash and can bounce back to home).
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
     this._authRepositoy, {
@@ -36,8 +50,18 @@ class AuthCubit extends Cubit<AuthState> {
   final NetworkInfo? _networkInfo;
   late StreamSubscription<bool> _sessionSubscription;
   Future<RefreshSessionResult>? _inFlightRefresh;
+  bool _isLoggingOut = false;
 
   bool get _isOnline => _networkInfo?.isConnected ?? true;
+
+  /// True when OAuth `/oauth2/token` rejected the refresh token.
+  /// That is a permanent session failure: the user must log in again.
+  bool _isInvalidGrant(Object error) {
+    if (error is GivtServerFailure) {
+      return error.isInvalidGrant;
+    }
+    return error.toString().contains('invalid_grant');
+  }
 
   @override
   Future<void> close() async {
@@ -180,10 +204,35 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  /// Loads the stored session and, when [isAppStartupCheck] and online,
+  /// silently refreshes.
+  ///
+  /// Pass [hasSession] `false` from the session stream after logout. That
+  /// path emits [AuthStatus.unauthenticated] without [AuthStatus.loading]
+  /// so the router does not bounce splash → home while still logged in.
   Future<void> checkAuth({
     bool isAppStartupCheck = false,
     bool? hasSession,
   }) async {
+    if (_isLoggingOut) {
+      return;
+    }
+
+    // Logout notifies the session stream with false. Do not re-authenticate
+    // from a still-cached session, and do not emit loading (that redirects
+    // the router to the splash/loading route, then back to home).
+    if (hasSession == false) {
+      emit(
+        state.copyWith(
+          status: AuthStatus.unauthenticated,
+          email: state.user.email,
+          needsReauthentication: false,
+        ),
+      );
+      _authRepositoy.setHasSessionInitialValue(false);
+      return;
+    }
+
     final currentStatus = state.status;
     emit(state.copyWith(status: AuthStatus.loading));
     try {
@@ -213,6 +262,14 @@ class AuthCubit extends Cubit<AuthState> {
             'No internet while refreshing session on startup; continuing offline',
           );
         } on Object catch (e, stackTrace) {
+          if (_isInvalidGrant(e)) {
+            LoggingInfo.instance.warning(
+              'Refresh token invalid on app startup, logging out: $e',
+              methodName: stackTrace.toString(),
+            );
+            await logout();
+            return;
+          }
           LoggingInfo.instance.warning(
             'Session refresh failed on app startup: $e',
             methodName: stackTrace.toString(),
@@ -273,20 +330,45 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// Clears the local session and emits [AuthStatus.unauthenticated].
+  ///
+  /// Must not emit [AuthStatus.loading]. The repository persists
+  /// `isLoggedIn: false` before notifying the session stream; [checkAuth]
+  /// then treats `hasSession: false` as logged out instead of re-reading
+  /// a still-logged-in cached session.
   Future<void> logout({bool fullReset = false}) async {
-    emit(state.copyWith(status: AuthStatus.loading));
+    if (_isLoggingOut) {
+      return;
+    }
+    _isLoggingOut = true;
     LoggingInfo.instance.info('User is logging out');
 
-    await _authRepositoy.logout();
+    try {
+      await _authRepositoy.logout();
 
-    emit(
-      state.copyWith(
-        status: AuthStatus.unauthenticated,
-        email: fullReset ? null : state.user.email,
-        user: fullReset ? const UserExt.empty() : state.user,
-      ),
-    );
-    AnalyticsHelper.clearUserProperties();
+      emit(
+        state.copyWith(
+          status: AuthStatus.unauthenticated,
+          email: fullReset ? null : state.user.email,
+          user: fullReset ? const UserExt.empty() : state.user,
+          session: const Session.empty(),
+          needsReauthentication: false,
+        ),
+      );
+      await _clearAnalyticsUserProperties();
+    } finally {
+      _isLoggingOut = false;
+    }
+  }
+
+  Future<void> _clearAnalyticsUserProperties() async {
+    try {
+      await AnalyticsHelper.clearUserProperties();
+    } on Object catch (e) {
+      LoggingInfo.instance.warning(
+        'Failed to clear analytics user properties: $e',
+      );
+    }
   }
 
   Future<void> register({
@@ -460,6 +542,9 @@ class AuthCubit extends Cubit<AuthState> {
     unawaited(_authRepositoy.markLocalAuthSucceeded());
   }
 
+  /// Face ID / local-auth succeeded within [AuthGate.localAuthGracePeriod]
+  /// (15 minutes). Used only by [CheckAuthPolicy.stepUp] on protected menu
+  /// items — giving and app-open always use [CheckAuthPolicy.ensureSession].
   bool get isWithinLocalAuthGrace {
     final lastLocalAuthAt = _authRepositoy.lastLocalAuthAt();
     if (lastLocalAuthAt == null) {
@@ -473,7 +558,9 @@ class AuthCubit extends Cubit<AuthState> {
   ///
   /// Returns [RefreshSessionResult.success] when a new session is stored,
   /// [RefreshSessionResult.offline] when the request fails due to no network,
-  /// and [RefreshSessionResult.failure] for auth or other errors.
+  /// [RefreshSessionResult.invalidRefreshToken] when the refresh token is
+  /// rejected (the user is logged out), and [RefreshSessionResult.failure]
+  /// for other errors.
   ///
   /// Skips the network call when the access token is still valid unless
   /// [force] is true or [AuthState.needsReauthentication] is set. Concurrent
@@ -526,6 +613,14 @@ class AuthCubit extends Cubit<AuthState> {
       }
       return RefreshSessionResult.offline;
     } catch (e, stackTrace) {
+      if (_isInvalidGrant(e)) {
+        LoggingInfo.instance.warning(
+          'Refresh token invalid, logging out: $e',
+          methodName: stackTrace.toString(),
+        );
+        await logout();
+        return RefreshSessionResult.invalidRefreshToken;
+      }
       LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
