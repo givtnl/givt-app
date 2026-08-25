@@ -942,7 +942,7 @@
   },
   "pledgesDetailEditButton": "Zusage bearbeiten",
   "pledgesDetailEndsLabel": "Endet",
-  "pledgesDetailTransactionsLabel": "Transaktionen",
+  "pledgesDetailTransactionsLabel": "Spenden",
   "pledgesEditRequestTitle": "Zusageänderung anfragen",
   "pledgesEditRequestBody": "Du kannst deine Zusage noch nicht selbst ändern. Sag uns, was du ändern möchtest, und wir melden uns bei dir.",
   "pledgesEditRequestPrefilledText": "Ich möchte meine Zusage ändern:",

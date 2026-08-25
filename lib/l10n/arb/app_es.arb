@@ -942,7 +942,7 @@
   },
   "pledgesDetailEditButton": "Editar compromiso",
   "pledgesDetailEndsLabel": "Finaliza",
-  "pledgesDetailTransactionsLabel": "Transacciones",
+  "pledgesDetailTransactionsLabel": "Donaciones",
   "pledgesEditRequestTitle": "Solicitar un cambio de compromiso",
   "pledgesEditRequestBody": "Aún no puedes cambiar tu compromiso tú mismo. Cuéntanos qué te gustaría cambiar y nos pondremos en contacto contigo.",
   "pledgesEditRequestPrefilledText": "Me gustaría cambiar mi compromiso:",

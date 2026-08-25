@@ -1271,7 +1271,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Eindigt';
 
   @override
-  String get pledgesDetailTransactionsLabel => 'Transacties';
+  String get pledgesDetailTransactionsLabel => 'Donaties';
 
   @override
   String get pledgesEditRequestTitle => 'Toezegging wijzigen aanvragen';
