@@ -2316,7 +2316,7 @@ abstract class AppLocalizations {
   /// No description provided for @pledgesDetailTransactionsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Transactions'**
+  /// **'Donations'**
   String get pledgesDetailTransactionsLabel;
 
   /// No description provided for @pledgesEditRequestTitle.
