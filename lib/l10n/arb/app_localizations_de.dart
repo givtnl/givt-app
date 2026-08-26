@@ -44,11 +44,6 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String offlineGegevenGivtMessageWithOrg(Object value0) {
-    return 'Vielen Dank für deine Spende an $value0!\n \n\n Sobald es wieder eine gute Verbindung mit dem Givt-Server gibt, wird deine Spende verarbeitet.\n Den Status kannst du jederzeit in der Übersicht überprüfen.';
-  }
-
-  @override
   String get wrongPasswordLockedOut =>
       'Dritter Versuch fehlgeschlagen. Für die nächsten 15 Minuten kannst du dich nicht einloggen. Bitte versuch es später wieder.';
 
@@ -444,6 +439,50 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get offlineGiftsTitle => 'Offline Spenden';
+
+  @override
+  String get offlineBannerNoPending =>
+      'Du bist offline — Du kannst weiterhin spenden. Es wird gesendet, sobald du wieder online bist.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 Spende ausstehend';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count Spenden ausstehend';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount wird gesendet, sobald du wieder online bist';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount insgesamt werden gesendet, sobald du wieder online bist';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodySingular(String amount) {
+    return '$amount wird jetzt gesendet';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodyPlural(String amount) {
+    return '$amount insgesamt werden jetzt gesendet';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Alles klar';
+
+  @override
+  String get offlineSuccessTitle =>
+      'Deine Spende wird gesendet, sobald du wieder online bist';
+
+  @override
+  String offlineSuccessBodyWithOrg(String orgName) {
+    return 'Vielen Dank für deine Unterstützung von $orgName';
+  }
 
   @override
   String get amountTooHigh => 'Betrag zu hoch';
@@ -1231,15 +1270,13 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String pledgesDetailGiveButton(String campaign) {
-    return 'An $campaign geben';
-  }
-
-  @override
   String get pledgesDetailEditButton => 'Zusage bearbeiten';
 
   @override
   String get pledgesDetailEndsLabel => 'Endet';
+
+  @override
+  String get pledgesDetailTransactionsLabel => 'Spenden';
 
   @override
   String get pledgesEditRequestTitle => 'Zusageänderung anfragen';
@@ -3070,6 +3107,22 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get recurringDonationsRestartFailed =>
       'Diese Spende konnte nicht neu gestartet werden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get recurringDonationsRestartOrganisationNotFoundTitle =>
+      'Organisation nicht verfügbar';
+
+  @override
+  String get recurringDonationsRestartOrganisationNotFoundMessage =>
+      'Wir konnten die mit dieser Spende verknüpfte Organisation nicht finden. Diese Spende kann nicht neu gestartet werden.';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationTitle =>
+      'Organisation nicht mehr aktiv';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationMessage =>
+      'Die mit dieser Spende verknüpfte Organisation ist nicht mehr aktiv. Diese Spende kann nicht neu gestartet werden.';
 
   @override
   String get recurringDonationsDetailEditDonation => 'Spende bearbeiten';

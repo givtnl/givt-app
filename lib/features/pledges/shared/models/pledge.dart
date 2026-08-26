@@ -62,8 +62,27 @@ class PledgeTransaction extends Equatable {
       id: json['id'].toString(),
       amount: (json['amount'] as num).toDouble(),
       executionDate: (json['executionDate'] ?? json['donationDate']) as String,
-      state: (json['state'] ?? json['status']) as String,
+      state: parseState(json['state'] ?? json['status']),
     );
+  }
+
+  /// Maps [PledgeTransactionState] from the pledge API (string or int).
+  static String parseState(dynamic raw) {
+    if (raw is int) {
+      return switch (raw) {
+        2 => 'Processed',
+        3 => 'Canceled',
+        _ => 'Entered',
+      };
+    }
+
+    final value = raw?.toString();
+    return switch (value) {
+      'Processed' || '2' => 'Processed',
+      'Canceled' || '3' => 'Canceled',
+      'Entered' || '1' || null || '' => 'Entered',
+      _ => value,
+    };
   }
 
   final String id;
@@ -74,6 +93,11 @@ class PledgeTransaction extends Equatable {
   bool get isProcessed => state == 'Processed';
 
   bool get isEntered => state == 'Entered';
+
+  bool get isCanceled => state == 'Canceled';
+
+  /// Entered or Processed; canceled pledge transactions are excluded from counts.
+  bool get isScheduled => isEntered || isProcessed;
 
   DateTime? get executionDateTime => ApiDateTime.parseLocal(executionDate);
 
@@ -260,8 +284,13 @@ class PledgeGoal extends Equatable {
   DateTime? get nextExecutionDateTime =>
       _earliestUpcomingTransaction()?.executionDateTime;
 
+  /// Original API string for the next upcoming transaction date.
+  ///
+  /// Must not be re-encoded via [DateTime.toUtc]; [ApiDateTime.parseLocal]
+  /// treats ISO values as wall-clock calendar dates, so a UTC round-trip
+  /// shifts the calendar day east of UTC (ENG-1161).
   String? get nextExecutionDate =>
-      nextExecutionDateTime?.toUtc().toIso8601String();
+      _earliestUpcomingTransaction()?.executionDate;
 
   double get scheduledGivenAmount => transactions
       .where((transaction) => transaction.isProcessed)
@@ -270,6 +299,14 @@ class PledgeGoal extends Equatable {
   double get donationGivenAmount => donations
       .where((donation) => donation.isProcessed)
       .fold(0, (sum, donation) => sum + donation.amount);
+
+  /// Completed scheduled pledge transactions ([PledgeTransaction.isProcessed]).
+  int get completedPledgeTransactionCount =>
+      transactions.where((transaction) => transaction.isProcessed).length;
+
+  /// Scheduled pledge transactions (Entered + Processed; not wallet donations).
+  int get totalPledgeTransactionCount =>
+      transactions.where((transaction) => transaction.isScheduled).length;
 
   /// Wallet donations on detail; otherwise processed scheduled transactions.
   double get displayGivenAmount {
@@ -351,6 +388,18 @@ class PledgeGroup extends Equatable {
     }
     return targets.fold<double>(0, (sum, target) => sum + target!);
   }
+
+  /// All scheduled pledge transactions across goals (non-canceled in API).
+  int get totalTransactionCount => goals.fold(
+        0,
+        (sum, goal) => sum + goal.totalPledgeTransactionCount,
+      );
+
+  /// Scheduled pledge transactions with [PledgeTransaction.isProcessed] state.
+  int get completedTransactionCount => goals.fold(
+        0,
+        (sum, goal) => sum + goal.completedPledgeTransactionCount,
+      );
 
   /// Denominator for the segmented "Given so far" bar (Figma).
   double? get segmentBarTotal {

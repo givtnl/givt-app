@@ -28,4 +28,5 @@ class NativeSharedPreferencesKeys {
   static const String mandateSigned = 'MandateSigned';
   static const String mandatePopupDismissals = 'MandatePopupDismissals';
   static const String homePageLastTabIndex = 'HomePageLastTabIndex';
+  static const String lastLocalAuthAt = 'LastLocalAuthAt';
 }

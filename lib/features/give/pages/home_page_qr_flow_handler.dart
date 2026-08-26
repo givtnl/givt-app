@@ -250,6 +250,17 @@ class HomePageQRFlowHandler {
 
       if (!mounted()) return;
 
+      if (finalState.status == GiveStatus.noInternetConnection) {
+        LoggingInfo.instance.info('QR flow: Navigating to offline success');
+        context.goNamed(
+          Pages.giveSucess.name,
+          extra: {
+            'orgName': finalState.organisation.organisationName,
+          },
+        );
+        return;
+      }
+
       // Navigate to giving page if we have transactionIds OR if we have transactions and organisation
       // (transactions will be submitted on the giving page if needed)
       final hasTransactionIds = finalState.transactionIds.isNotEmpty;

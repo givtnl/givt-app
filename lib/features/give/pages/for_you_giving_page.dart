@@ -6,6 +6,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
@@ -16,6 +17,7 @@ import 'package:givt_app/features/give/dialogs/donation_submission_timeout_dialo
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/utils/for_you_donation_transactions.dart';
 import 'package:givt_app/features/give/utils/for_you_giving_analytics.dart';
+import 'package:givt_app/features/give/utils/offline_aware_organisation_goals_loader.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/features/give/widgets/for_you_more_general_goals_sheet.dart';
 import 'package:givt_app/features/give/widgets/numeric_keyboard.dart';
@@ -50,7 +52,16 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
   bool _didStartGoalInitialization = false;
   OrganisationGoalsResponse? _goalsResponse;
 
-  String _decimalSeparator = ',';
+  static String decimalSeparatorForCountry(Country country) {
+    return country.countryCode == Country.us.countryCode ||
+            Country.unitedKingdomCodes().contains(country.countryCode)
+        ? '.'
+        : ',';
+  }
+
+  String get _decimalSeparator => decimalSeparatorForCountry(
+    Country.fromCode(context.read<AuthCubit>().state.user.country),
+  );
 
   Set<String> get _addedGeneralMediumIds => {
     for (final line in _goalLines)
@@ -109,15 +120,12 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       countryCode: country.countryCode,
     );
     final amountLimit = auth.user.amountLimit;
-    if (country.countryCode == Country.us.countryCode ||
-        Country.unitedKingdomCodes().contains(country.countryCode)) {
-      _decimalSeparator = '.';
-    }
-    final hasAmountLimitViolation = DonationAmountValidation.anyExceedsUserAmountLimit(
-      values: _controllers.map((controller) => controller.text),
-      amountLimit: amountLimit,
-      decimalSeparator: _decimalSeparator,
-    );
+    final hasAmountLimitViolation =
+        DonationAmountValidation.anyExceedsUserAmountLimit(
+          values: _controllers.map((controller) => controller.text),
+          amountLimit: amountLimit,
+          decimalSeparator: _decimalSeparator,
+        );
     final canSubmit = _hasValidAmounts && !hasAmountLimitViolation;
 
     if (organisation == null) {
@@ -139,7 +147,6 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
           context.goNamed(
             Pages.giveSucess.name,
             extra: {
-              'isRecurringDonation': false,
               'orgName': organisation.orgName,
             },
           );
@@ -404,10 +411,10 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     final borderColor = exceedsLimit
         ? theme.error50
         : isComplete
-            ? theme.primary30
-            : isExpanded
-                ? theme.primary70
-                : theme.neutralVariant90;
+        ? theme.primary30
+        : isExpanded
+        ? theme.primary70
+        : theme.neutralVariant90;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -486,11 +493,11 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     );
   }
 
-  void _submit(
+  Future<void> _submit(
     BuildContext context,
     String namespace, {
     required int amountLimit,
-  }) {
+  }) async {
     if (!_hasValidAmounts ||
         DonationAmountValidation.anyExceedsUserAmountLimit(
           values: _controllers.map((controller) => controller.text),
@@ -511,11 +518,19 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     if (donations.isEmpty) {
       return;
     }
-    context.read<GiveBloc>().add(
-      GiveForYouSubmitDonations(
-        nameSpace: namespace,
-        userGUID: userGuid,
-        donations: donations,
+    await AuthUtils.checkToken(
+      context,
+      checkAuthRequest: CheckAuthRequest(
+        allowWhenOffline: true,
+        navigate: (context) async {
+          context.read<GiveBloc>().add(
+            GiveForYouSubmitDonations(
+              nameSpace: namespace,
+              userGUID: userGuid,
+              donations: donations,
+            ),
+          );
+        },
       ),
     );
   }
@@ -618,32 +633,32 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       return;
     }
 
-    try {
-      final repository = getIt<OrganisationGoalsRepository>();
-      final response = await repository.fetchGoals(organisation.nameSpace);
-      if (!mounted) {
-        return;
-      }
-      _goalsResponse = response;
-      final restrict = widget.flowContext.restrictToEntryQrGoal;
-      final entryMediumId = widget.flowContext.entryMediumId?.trim() ?? '';
-      if (restrict && entryMediumId.isNotEmpty) {
-        final match = response.qrCodes
-            .where((q) => q.mediumId.trim() == entryMediumId)
-            .toList();
-        if (match.isNotEmpty) {
-          _applyLines([ForYouGeneralGoalLine(match.first)]);
-          return;
-        }
-      }
-      _setupCollectionLinesFromResponse(response);
-    } on Exception {
-      if (!mounted) {
-        return;
-      }
+    final response = await OfflineAwareOrganisationGoalsLoader(
+      repository: getIt<OrganisationGoalsRepository>(),
+      networkInfo: getIt<NetworkInfo>(),
+    ).load(organisation.nameSpace);
+    if (!mounted) {
+      return;
+    }
+    if (response == null) {
       _goalsResponse = const OrganisationGoalsResponse();
       _setupFallbackLines();
+      return;
     }
+
+    _goalsResponse = response;
+    final restrict = widget.flowContext.restrictToEntryQrGoal;
+    final entryMediumId = widget.flowContext.entryMediumId?.trim() ?? '';
+    if (restrict && entryMediumId.isNotEmpty) {
+      final match = response.qrCodes
+          .where((q) => q.mediumId.trim() == entryMediumId)
+          .toList();
+      if (match.isNotEmpty) {
+        _applyLines([ForYouGeneralGoalLine(match.first)]);
+        return;
+      }
+    }
+    _setupCollectionLinesFromResponse(response);
   }
 
   void _setupCollectionLinesFromResponse(OrganisationGoalsResponse response) {
@@ -689,7 +704,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       final allocation = allocations[listIndex];
       final parsedGoalIndex = int.tryParse(allocation.collectId);
       final resolvedGoalIndex =
-          parsedGoalIndex != null && parsedGoalIndex >= 1 && parsedGoalIndex <= 3
+          parsedGoalIndex != null &&
+              parsedGoalIndex >= 1 &&
+              parsedGoalIndex <= 3
           ? parsedGoalIndex
           : listIndex + 1;
       if (resolvedGoalIndex < 1 || resolvedGoalIndex > 3) {
@@ -776,7 +793,9 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
     }
     _controllers.clear();
     for (var i = 0; i < lines.length; i++) {
-      _controllers.add(TextEditingController(text: '0'));
+      _controllers.add(
+        TextEditingController(text: _controllerTextForLineIndex(i)),
+      );
     }
     _accordionKeys.clear();
     for (var i = 0; i < lines.length; i++) {
@@ -789,6 +808,19 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       _selectedField = 0;
       _isLoadingGoals = false;
     });
+  }
+
+  String _controllerTextForLineIndex(int index) {
+    final initialAmount = widget.flowContext.initialAmount;
+    if (index != 0 || initialAmount == null || initialAmount <= 0) {
+      return '0';
+    }
+
+    if (initialAmount % 1 == 0) {
+      return initialAmount.toInt().toString();
+    }
+
+    return initialAmount.toStringAsFixed(2).replaceAll('.', _decimalSeparator);
   }
 }
 

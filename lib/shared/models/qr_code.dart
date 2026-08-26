@@ -29,6 +29,15 @@ class QrCode extends Equatable {
   /// True when this QR has no goal-specific name from the backend (`N` empty).
   bool get isGeneric => name.trim().isEmpty;
 
+  /// Org-level entry when the backend has no generic QR row (namespace-only medium).
+  factory QrCode.genericForNamespace(String namespace) {
+    return QrCode(
+      name: '',
+      instance: namespace,
+      isActive: true,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'N': name,

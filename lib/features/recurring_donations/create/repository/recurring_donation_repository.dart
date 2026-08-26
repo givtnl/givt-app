@@ -1,9 +1,30 @@
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/create/presentation/constants/string_keys.dart';
-import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart' as overview;
+import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart'
+    as overview;
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
+
+class OrganisationNotFoundException implements Exception {
+  const OrganisationNotFoundException(this.orgName);
+
+  final String orgName;
+
+  @override
+  String toString() =>
+      'OrganisationNotFoundException: could not find organization for $orgName';
+}
+
+class InactiveOrganisationException implements Exception {
+  const InactiveOrganisationException(this.orgName);
+
+  final String orgName;
+
+  @override
+  String toString() =>
+      'InactiveOrganisationException: $orgName is no longer active';
+}
 
 class RecurringDonationRepository {
   RecurringDonationRepository(
@@ -91,9 +112,11 @@ class RecurringDonationRepository {
     );
 
     if (collectGroup.nameSpace.isEmpty) {
-      throw StateError(
-        'Could not find organization for ${donation.collectGroupName}',
-      );
+      throw OrganisationNotFoundException(donation.collectGroupName);
+    }
+
+    if (!collectGroup.isActive) {
+      throw InactiveOrganisationException(donation.collectGroupName);
     }
 
     final today = DateTime.now();

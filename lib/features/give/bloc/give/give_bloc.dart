@@ -317,7 +317,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           return;
         }
       } catch (e, stackTrace) {
-        if (_handleDonationSubmissionTimeout(e, stackTrace, emit, organisation)) {
+        if (_handleDonationSubmissionTimeout(
+          e,
+          stackTrace,
+          emit,
+          organisation,
+        )) {
           return;
         }
         rethrow;

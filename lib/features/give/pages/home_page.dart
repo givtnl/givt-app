@@ -13,16 +13,18 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/features/give/cubit/offline_queue_cubit.dart';
 import 'package:givt_app/features/give/pages/home_page_view.dart';
 import 'package:givt_app/features/give/pages/home_page_with_qr_code.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
@@ -65,6 +67,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   int _scanCounter =
       0; // Counter to force new bloc creation when rescanning same code
   bool _didApplyForYouStartupOverride = false;
+  bool _isPromptingReauthentication = false;
+  /// Prevents re-showing the startup reauth sheet on every rebuild after the
+  /// user dismisses it. Cleared on successful reauth; resume can still prompt.
+  bool _reauthPromptDismissed = false;
 
   static const String _forYouStartupFlagKey = 'for_you_new_giving_flow';
 
@@ -84,6 +90,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
       _applyForYouStartupOverrideIfEnabled();
+      unawaited(_promptReauthenticationIfNeeded());
 
       FirebaseMessaging.instance.getInitialMessage().then((message) {
         if (!mounted) return;
@@ -94,6 +101,70 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         }
       });
     });
+  }
+
+  /// Prompts biometrics/login only for recoverable reauth (server error,
+  /// not an invalid refresh token — that already logged the user out).
+  ///
+  /// Call from [initState] and app resume only. Do not call from [build]:
+  /// opening/closing the drawer rebuilds HomePage and would re-prompt Face
+  /// ID or a dismissible login sheet.
+  Future<void> _promptReauthenticationIfNeeded({
+    bool requireExpiredSession = false,
+  }) async {
+    if (!mounted || _isPromptingReauthentication) {
+      return;
+    }
+
+    final networkInfo = getIt<NetworkInfo>();
+    if (!networkInfo.isConnected) {
+      return;
+    }
+
+    final authCubit = context.read<AuthCubit>();
+    final auth = authCubit.state;
+    if (auth.status != AuthStatus.authenticated) {
+      return;
+    }
+
+    final shouldPrompt = auth.needsReauthentication ||
+        (requireExpiredSession && auth.session.isExpired);
+    if (!shouldPrompt) {
+      return;
+    }
+
+    // After a dismiss, do not re-open the sheet on every rebuild. Resume still
+    // re-prompts via [requireExpiredSession].
+    if (auth.needsReauthentication &&
+        _reauthPromptDismissed &&
+        !requireExpiredSession) {
+      return;
+    }
+
+    _isPromptingReauthentication = true;
+    try {
+      await AuthUtils.checkToken(
+        context,
+        checkAuthRequest: CheckAuthRequest(
+          navigate: (context) async {
+            context.read<AuthCubit>().clearNeedsReauthentication();
+            _reauthPromptDismissed = false;
+          },
+        ),
+      );
+      // Only clear needsReauthentication on successful navigate / refresh.
+      // If the user dismissed biometrics or the login sheet, keep the flag so
+      // give actions still require auth; avoid rebuild loops with a local skip.
+      if (mounted) {
+        if (context.read<AuthCubit>().state.needsReauthentication) {
+          _reauthPromptDismissed = true;
+        } else {
+          _reauthPromptDismissed = false;
+        }
+      }
+    } finally {
+      _isPromptingReauthentication = false;
+    }
   }
 
   Future<void> _applyForYouStartupOverrideIfEnabled() async {
@@ -151,6 +222,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     } else if (state == AppLifecycleState.resumed && _isAppInBackground) {
       _isAppInBackground = false;
       LoggingInfo.instance.info('HomePage: App resumed from background');
+      unawaited(
+        _promptReauthenticationIfNeeded(requireExpiredSession: true),
+      );
 
       // If we have a QR code when resuming from background, we should trigger a new scan
       // ONLY if it's a different code or if we previously cleared _lastProcessedCode
@@ -226,6 +300,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     final shouldLockScreen =
         _mandatePopupDismissalTracker.shouldForceCompletion &&
         auth.user.needRegistration;
+
+    // Do not prompt reauth here. [build] also runs when the drawer
+    // opens/closes; initState + resume cover app-open and returning
+    // from background.
 
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {
@@ -331,12 +409,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ],
         ),
         drawer: const CustomNavigationDrawer(),
-        body: widget.code.isNotEmpty
+        body: BlocProvider(
+          create: (_) => OfflineQueueCubit(getIt(), getIt()),
+          child: widget.code.isNotEmpty
             ? HomePageWithQRCode(
                 key: ValueKey(
                   'qr-entry-${widget.code}-$_scanCounter-${auth.status}',
                 ),
                 code: widget.code,
+                initialAmount: widget.initialAmount,
+                retry: widget.retry,
+                afterGivingRedirection: widget.afterGivingRedirection,
                 initialPageIndex: pageIndex,
                 onPageChanged: (index) => setState(
                   () {
@@ -419,6 +502,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   ),
                 ),
               ),
+        ),
       ),
     );
   }

@@ -46,6 +46,17 @@ The app has **two main variants**; many features exist in both with different im
 
 When a task mentions “EU” or “US” (or “family”), work in the corresponding feature folder. Do not assume one implementation applies to both.
 
+## EU auth session (main app)
+
+Contract lives in code on [`AuthCubit`](lib/features/auth/cubit/auth_cubit.dart), [`AuthGate`](lib/features/auth/models/auth_gate.dart), and [`AuthUtils.checkToken`](lib/utils/auth_utils.dart). Do not regress this:
+
+- **Online app open:** silent OAuth refresh. Success stays on home. After access-token expiry the refresh token can still be valid (short-lived test account: access ~5 min, refresh ~15 min) — stay logged in.
+- **Invalid refresh token** (`invalid_grant`, or HTTP 400/401 with an empty body from `/oauth2/token`): **logout** (welcome). Never Face ID, never a dismissible login sheet, never `needsReauthentication`. Still send `Authorization: Bearer` on `/oauth2/token`; omitting it returns the same empty 400/401 while the refresh token is valid.
+- **Other refresh failure** (server error): stay logged in, set `needsReauthentication`, prompt biometrics/login from Home **init/resume** (not from `build` — drawer open/close rebuilds).
+- **Offline:** keep local session; no popup. Giving may continue with `allowWhenOffline: true`.
+- **Protected menu items** (`CheckAuthPolicy.stepUp`): refresh expired/reauth sessions **before** Face ID so a dead refresh token logs out instead of scanning. Face ID only when the 15-minute local-auth grace has elapsed.
+- **Logout:** persist `isLoggedIn: false` before the session stream; do **not** emit `AuthStatus.loading` (that bounced splash → home on the first tap).
+
 ## Registration mandate flow (EU / UK, main app)
 
 - **Intro**: [`MandateExplanationPage`](lib/features/registration/pages/mandate_explanation_page.dart) — SEPA vs UK Direct Debit intro; continues to sign step.
@@ -126,7 +137,7 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 
 ## Where to look
 
-- **Auth / current user**: `AuthCubit` (EU), `FamilyAuthRepository` / family auth (US).
+- **Auth / current user**: `AuthCubit` (EU; see **EU auth session** above), `FamilyAuthRepository` / family auth (US).
 - **Support / infra**: `InfraCubit`, `contactSupportSafely`; used from `lib/shared/bloc/infra/`.
 - **L10n**: `lib/l10n/arb/app_en.arb` (template), then regenerate with `flutter gen-l10n`.
 - **Language & phrasing**: `docs/language.md` for terminology, tone of voice, and translation guidelines.
@@ -141,7 +152,7 @@ When a task mentions “EU” or “US” (or “family”), work in the corresp
 
 ### Toolchain (one-time VM setup)
 
-- **Flutter**: Pin to **3.41.x** (CI uses `3.41.x`). Newer stable (e.g. 3.44+) can break `font_awesome_flutter` tests (`IconData` is final). Install to `$HOME/flutter` and `git checkout 3.41.0`.
+- **Flutter**: Pin to **3.47.x** (CI uses `3.47.x`). Install to `$HOME/flutter` and `git checkout 3.47.1`.
 - **Melos**: `dart pub global activate melos` (executable in `$HOME/.pub-cache/bin`).
 - **Android SDK** (for APK builds): `$HOME/Android/Sdk` with platform 36, build-tools 36.0.0, platform-tools. Run `flutter config --android-sdk $HOME/Android/Sdk`.
 - **PATH** (in `~/.bashrc`): `$HOME/flutter/bin`, `$HOME/.pub-cache/bin`, `$ANDROID_HOME/cmdline-tools/latest/bin`, `$ANDROID_HOME/platform-tools`.
@@ -163,5 +174,5 @@ This is a **mobile-only** client (iOS/Android). Web/desktop targets are not conf
 
 - `make lint` runs `dart format lib test` then `flutter analyze`. **Avoid running `make lint` during env-only setup** — `dart format` reformats the entire codebase. Use `flutter analyze` alone to check static analysis.
 - Analyze reports many pre-existing `info`-level issues; `make lint` may exit non-zero even when there are no errors.
-- `make test`: 123+ tests pass on Flutter 3.41.0. One widget test (`personal_info_page_test.dart`) can fail in headless CI/VM environments due to `FragmentProgram`/shader loading.
+- `make test`: 123+ tests pass on Flutter 3.47. One widget test (`personal_info_page_test.dart`) can fail in headless CI/VM environments due to `FragmentProgram`/shader loading.
 - No local backend — E2E flows hit hosted dev APIs (`dev-backend.givtapp.net` / `dev-backend.givt.app`). Integration tests: see `integration_test/README.md` (Patrol + device).

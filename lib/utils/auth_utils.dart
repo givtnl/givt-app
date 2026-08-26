@@ -3,28 +3,47 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/auth/models/auth_gate.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
+
+export 'package:givt_app/features/auth/models/auth_gate.dart';
 
 class CheckAuthRequest {
   CheckAuthRequest({
     required this.navigate,
     this.email = '',
     this.forceLogin = false,
+    this.allowWhenOffline = false,
+    this.policy = CheckAuthPolicy.ensureSession,
   });
 
   final Future<void> Function(BuildContext context) navigate;
   final String email;
   final bool forceLogin;
+
+  /// When true (giving flows only), continue with the local session if the
+  /// device is offline instead of prompting for login. Other destinations
+  /// must leave this false so they never navigate without a refreshed token.
+  final bool allowWhenOffline;
+
+  /// Giving / app-open use [CheckAuthPolicy.ensureSession]. Protected menu
+  /// item taps use [CheckAuthPolicy.stepUp].
+  final CheckAuthPolicy policy;
 }
 
 class AuthUtils {
-  /// Checks if the user is authenticated.
-  /// If the user is authenticated, the [navigate] callback is called.
-  /// If the user is not authenticated, the login bottom sheet is displayed
-  /// or the biometrics are checked.
+  /// Ensures a usable OAuth session for [checkAuthRequest], then calls
+  /// [CheckAuthRequest.navigate].
+  ///
+  /// Recoverable refresh failures may prompt Face ID or a dismissible login
+  /// sheet. [RefreshSessionResult.invalidRefreshToken] means logout already
+  /// ran — return without Face ID or a login sheet so the user lands on
+  /// welcome instead of a popup they can dismiss while still "logged in".
   static Future<void> checkToken(
     BuildContext context, {
     required CheckAuthRequest checkAuthRequest,
@@ -40,36 +59,149 @@ class AuthUtils {
       return;
     }
 
-    final auth = context.read<AuthCubit>();
-    final isExpired = auth.state.session.isExpired;
-    if (!isExpired) {
-      // Avoid emitting [AuthStatus.loading]: drawer menu rebuilds to a
-      // spinner and deactivates the caller's [BuildContext] mid-flow.
-      final didTokenRefresh = await context.read<AuthCubit>().refreshSession(
-            emitAuthentication: false,
-          );
-      if (!context.mounted) {
+    if (_canSkipRefreshForOfflineGiving(
+      context,
+      checkAuthRequest: checkAuthRequest,
+    )) {
+      LoggingInfo.instance.info(
+        'Offline giving: skipping session refresh, '
+        'continuing with local session.',
+      );
+      await checkAuthRequest.navigate(context);
+      return;
+    }
+
+    final authCubit = context.read<AuthCubit>();
+    final action = AuthGate.decide(
+      policy: checkAuthRequest.policy,
+      isAccessTokenExpired: authCubit.state.session.isExpired,
+      isWithinLocalAuthGrace: authCubit.isWithinLocalAuthGrace,
+      needsReauthentication: authCubit.state.needsReauthentication,
+    );
+
+    switch (action) {
+      case AuthGateAction.navigate:
+        await checkAuthRequest.navigate(context);
         return;
-      }
-      if (didTokenRefresh) {
-        await checkAuthRequest.navigate(
-          context,
+      case AuthGateAction.silentRefresh:
+        final forceRefresh = authCubit.state.needsReauthentication;
+        final refreshResult = await authCubit.refreshSession(
+          emitAuthentication: false,
+          force: forceRefresh,
         );
-        return;
-      } else {
-        await displayLoginBottomSheet(
+        if (!context.mounted) {
+          return;
+        }
+        switch (refreshResult) {
+          case RefreshSessionResult.invalidRefreshToken:
+            // Already logged out; do not Face ID or show login.
+            return;
+          case RefreshSessionResult.success:
+            if (_shouldPromptStepUp(checkAuthRequest, authCubit)) {
+              await _promptBiometricsOrLogin(
+                context,
+                checkAuthRequest: checkAuthRequest,
+              );
+              return;
+            }
+            await checkAuthRequest.navigate(context);
+            return;
+          case RefreshSessionResult.offline:
+            if (await _tryNavigateAfterRefresh(
+              context,
+              checkAuthRequest: checkAuthRequest,
+              refreshResult: refreshResult,
+            )) {
+              return;
+            }
+            break;
+          case RefreshSessionResult.failure:
+            break;
+        }
+        if (!context.mounted) {
+          return;
+        }
+        await _promptBiometricsOrLogin(
           context,
           checkAuthRequest: checkAuthRequest,
         );
         return;
-      }
+      case AuthGateAction.promptBiometrics:
+        await _promptBiometricsOrLogin(
+          context,
+          checkAuthRequest: checkAuthRequest,
+        );
+        return;
     }
+  }
+
+  /// After a successful silent refresh on a protected menu item, still
+  /// prompt Face ID when the 15-minute local-auth grace has elapsed.
+  static bool _shouldPromptStepUp(
+    CheckAuthRequest checkAuthRequest,
+    AuthCubit authCubit,
+  ) {
+    return checkAuthRequest.policy == CheckAuthPolicy.stepUp &&
+        !authCubit.isWithinLocalAuthGrace;
+  }
+
+  static bool _canSkipRefreshForOfflineGiving(
+    BuildContext context, {
+    required CheckAuthRequest checkAuthRequest,
+  }) {
+    if (!checkAuthRequest.allowWhenOffline) {
+      return false;
+    }
+    if (getIt<NetworkInfo>().isConnected) {
+      return false;
+    }
+    return _hasLocalAuthenticatedSession(context.read<AuthCubit>().state);
+  }
+
+  static bool _hasLocalAuthenticatedSession(AuthState auth) {
+    return auth.user.guid.isNotEmpty &&
+        auth.status != AuthStatus.unauthenticated;
+  }
+
+  /// Returns true when [navigate] was invoked and the caller should stop.
+  static Future<bool> _tryNavigateAfterRefresh(
+    BuildContext context, {
+    required CheckAuthRequest checkAuthRequest,
+    required RefreshSessionResult refreshResult,
+  }) async {
+    switch (refreshResult) {
+      case RefreshSessionResult.success:
+        await checkAuthRequest.navigate(context);
+        return true;
+      case RefreshSessionResult.offline:
+        if (checkAuthRequest.allowWhenOffline &&
+            _hasLocalAuthenticatedSession(context.read<AuthCubit>().state)) {
+          LoggingInfo.instance.info(
+            'Offline giving: session refresh failed due to no network, '
+            'continuing with local session.',
+          );
+          await checkAuthRequest.navigate(context);
+          return true;
+        }
+        return false;
+      case RefreshSessionResult.failure:
+        return false;
+      case RefreshSessionResult.invalidRefreshToken:
+        // Logout already happened; do not fall through to a login sheet.
+        return true;
+    }
+  }
+
+  static Future<void> _promptBiometricsOrLogin(
+    BuildContext context, {
+    required CheckAuthRequest checkAuthRequest,
+  }) async {
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
       if (!context.mounted) {
         return;
       }
       LoggingInfo.instance.info(
-        'Token expired, biometrics not available, displaying login bottom sheet.',
+        'Session refresh failed, biometrics not available, displaying login bottom sheet.',
       );
       await displayLoginBottomSheet(
         context,
@@ -92,22 +224,27 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      final didTokenRefresh = await context.read<AuthCubit>().refreshSession(
-            emitAuthentication: false,
-          );
+      context.read<AuthCubit>().markLocalAuthSucceeded();
+      final refreshResult = await context.read<AuthCubit>().refreshSession(
+        emitAuthentication: false,
+      );
       if (!context.mounted) {
         return;
       }
-      if (didTokenRefresh) {
-        await checkAuthRequest.navigate(
-          context,
-        );
-      } else {
-        await displayLoginBottomSheet(
-          context,
-          checkAuthRequest: checkAuthRequest,
-        );
+      if (await _tryNavigateAfterRefresh(
+        context,
+        checkAuthRequest: checkAuthRequest,
+        refreshResult: refreshResult,
+      )) {
+        return;
       }
+      if (!context.mounted) {
+        return;
+      }
+      await displayLoginBottomSheet(
+        context,
+        checkAuthRequest: checkAuthRequest,
+      );
     } on PlatformException catch (e) {
       LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
@@ -133,9 +270,11 @@ class AuthUtils {
     }
   }
 
-  /// Displays the login bottom sheet.
-  /// If the user successfully logs in, the [navigate] callback is called.
-  /// If the user cancels the login, nothing happens.
+  /// Displays the dismissible login bottom sheet.
+  ///
+  /// Success calls [CheckAuthRequest.navigate]. Cancel / dismiss does
+  /// nothing — so this must not be used when the refresh token is invalid
+  /// (that path logs the user out instead).
   static Future<void> displayLoginBottomSheet(
     BuildContext context, {
     required CheckAuthRequest checkAuthRequest,

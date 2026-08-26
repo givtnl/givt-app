@@ -143,6 +143,58 @@
   "loginUsingTouchId": "Iniciar sesión con Touch ID",
   "loginUsingFingerprint": "Iniciar sesión con huella dactilar",
   "offlineGiftsTitle": "Offline donations",
+  "offlineBannerNoPending": "Estás sin conexión — Todavía puedes donar. Se enviará cuando vuelvas a estar en línea.",
+  "offlineBannerPendingTitleSingular": "1 donación pendiente",
+  "offlineBannerPendingTitlePlural": "{count} donaciones pendientes",
+  "@offlineBannerPendingTitlePlural": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "offlineBannerPendingBodySingular": "{amount} se enviará cuando vuelvas a estar en línea",
+  "@offlineBannerPendingBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingBodyPlural": "{amount} en total se enviarán cuando vuelvas a estar en línea",
+  "@offlineBannerPendingBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingOnlineBodySingular": "{amount} se está enviando ahora",
+  "@offlineBannerPendingOnlineBodySingular": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineBannerPendingOnlineBodyPlural": "{amount} en total se están enviando ahora",
+  "@offlineBannerPendingOnlineBodyPlural": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "offlineSuccessGotIt": "Entendido",
+  "offlineSuccessTitle": "Tu donación se enviará cuando vuelvas a estar en línea",
+  "offlineSuccessBodyWithOrg": "Gracias por apoyar a {orgName}",
+  "@offlineSuccessBodyWithOrg": {
+    "placeholders": {
+      "orgName": {
+        "type": "String"
+      }
+    }
+  },
   "amountTooHigh": "Amount too high",
   "donationAmountExceedsMaximum": "El monto supera la donación máxima permitida de {maxAmount}",
   "@donationAmountExceedsMaximum": {
@@ -888,16 +940,9 @@
       }
     }
   },
-  "pledgesDetailGiveButton": "Dar a {campaign}",
-  "@pledgesDetailGiveButton": {
-    "placeholders": {
-      "campaign": {
-        "type": "String"
-      }
-    }
-  },
   "pledgesDetailEditButton": "Editar compromiso",
   "pledgesDetailEndsLabel": "Finaliza",
+  "pledgesDetailTransactionsLabel": "Donaciones",
   "pledgesEditRequestTitle": "Solicitar un cambio de compromiso",
   "pledgesEditRequestBody": "Aún no puedes cambiar tu compromiso tú mismo. Cuéntanos qué te gustaría cambiar y nos pondremos en contacto contigo.",
   "pledgesEditRequestPrefilledText": "Me gustaría cambiar mi compromiso:",
@@ -1503,6 +1548,10 @@
   "recurringDonationsRestartConfirmTitle": "Ready to restart your donation?",
   "recurringDonationsRestartConfirmButton": "Restart donation",
   "recurringDonationsRestartFailed": "We couldn't restart this donation. Please try again.",
+  "recurringDonationsRestartOrganisationNotFoundTitle": "Organización no disponible",
+  "recurringDonationsRestartOrganisationNotFoundMessage": "No pudimos encontrar la organización vinculada a esta donación. Esta donación no se puede reiniciar.",
+  "recurringDonationsRestartInactiveOrganisationTitle": "Organización ya no activa",
+  "recurringDonationsRestartInactiveOrganisationMessage": "La organización vinculada a esta donación ya no está activa. Esta donación no se puede reiniciar.",
   "recurringDonationsDetailEditDonation": "Edit donation",
   "recurringDonationsDetailEditComingSoon": "Edit functionality coming soon",
   "recurringDonationsDetailPauseDonation": "Pause donation",

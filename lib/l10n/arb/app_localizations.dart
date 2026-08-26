@@ -164,12 +164,6 @@ abstract class AppLocalizations {
   /// **'Thank you for your Givt to {value0}!\n You can check the status in the overview.'**
   String givtIsBeingProcessed(Object value0);
 
-  /// No description provided for @offlineGegevenGivtMessageWithOrg.
-  ///
-  /// In en, this message translates to:
-  /// **'Thank you for your Givt to {value0}!\n \n\n When there\'s a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.'**
-  String offlineGegevenGivtMessageWithOrg(Object value0);
-
   /// No description provided for @wrongPasswordLockedOut.
   ///
   /// In en, this message translates to:
@@ -853,6 +847,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Offline donations'**
   String get offlineGiftsTitle;
+
+  /// No description provided for @offlineBannerNoPending.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline — You can still give. It\'ll be sent once you\'re back online.'**
+  String get offlineBannerNoPending;
+
+  /// No description provided for @offlineBannerPendingTitleSingular.
+  ///
+  /// In en, this message translates to:
+  /// **'1 donation pending'**
+  String get offlineBannerPendingTitleSingular;
+
+  /// No description provided for @offlineBannerPendingTitlePlural.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} donations pending'**
+  String offlineBannerPendingTitlePlural(int count);
+
+  /// No description provided for @offlineBannerPendingBodySingular.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} will be sent once you\'re back online'**
+  String offlineBannerPendingBodySingular(String amount);
+
+  /// No description provided for @offlineBannerPendingBodyPlural.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} total will be sent once you\'re back online'**
+  String offlineBannerPendingBodyPlural(String amount);
+
+  /// No description provided for @offlineBannerPendingOnlineBodySingular.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} is being sent now'**
+  String offlineBannerPendingOnlineBodySingular(String amount);
+
+  /// No description provided for @offlineBannerPendingOnlineBodyPlural.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} total is being sent now'**
+  String offlineBannerPendingOnlineBodyPlural(String amount);
+
+  /// No description provided for @offlineSuccessGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get offlineSuccessGotIt;
+
+  /// No description provided for @offlineSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation will be sent once you\'re back online'**
+  String get offlineSuccessTitle;
+
+  /// No description provided for @offlineSuccessBodyWithOrg.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for supporting {orgName}'**
+  String offlineSuccessBodyWithOrg(String orgName);
 
   /// No description provided for @amountTooHigh.
   ///
@@ -2247,12 +2301,6 @@ abstract class AppLocalizations {
   /// **'{given} given of {target}'**
   String pledgesDetailGoalProgress(String given, String target);
 
-  /// No description provided for @pledgesDetailGiveButton.
-  ///
-  /// In en, this message translates to:
-  /// **'Give to {campaign}'**
-  String pledgesDetailGiveButton(String campaign);
-
   /// No description provided for @pledgesDetailEditButton.
   ///
   /// In en, this message translates to:
@@ -2264,6 +2312,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ends'**
   String get pledgesDetailEndsLabel;
+
+  /// No description provided for @pledgesDetailTransactionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Donations'**
+  String get pledgesDetailTransactionsLabel;
 
   /// No description provided for @pledgesEditRequestTitle.
   ///
@@ -5392,6 +5446,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We couldn\'t restart this donation. Please try again.'**
   String get recurringDonationsRestartFailed;
+
+  /// No description provided for @recurringDonationsRestartOrganisationNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Organisation unavailable'**
+  String get recurringDonationsRestartOrganisationNotFoundTitle;
+
+  /// No description provided for @recurringDonationsRestartOrganisationNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not find the organisation linked to this donation. This donation cannot be restarted.'**
+  String get recurringDonationsRestartOrganisationNotFoundMessage;
+
+  /// No description provided for @recurringDonationsRestartInactiveOrganisationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Organisation no longer active'**
+  String get recurringDonationsRestartInactiveOrganisationTitle;
+
+  /// No description provided for @recurringDonationsRestartInactiveOrganisationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The organisation linked to this donation is no longer active. This donation cannot be restarted.'**
+  String get recurringDonationsRestartInactiveOrganisationMessage;
 
   /// No description provided for @recurringDonationsDetailEditDonation.
   ///

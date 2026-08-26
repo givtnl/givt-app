@@ -7,15 +7,19 @@ import 'dart:io';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/give/models/givt_transaction.dart';
-import 'package:givt_app/features/external_donations/shared/models/external_donation_transaction.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation_transaction.dart';
+import 'package:givt_app/features/give/models/givt_transaction.dart';
 import 'package:givt_app/features/pledges/shared/models/pledge.dart';
 import 'package:givt_app/shared/models/givt.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin GivtRepository {
+  Stream<void> get offlineQueueChanged;
+
+  List<GivtTransaction> getCachedOfflineGivtTransactions();
+
   Future<List<int>> submitGivts({
     required String guid,
     required Map<String, dynamic> body,
@@ -86,6 +90,44 @@ class GivtRepositoryImpl with GivtRepository {
   final APIService apiClient;
   final SharedPreferences prefs;
 
+  final StreamController<void> _offlineQueueChangedController =
+      StreamController<void>.broadcast();
+
+  Future<void>? _syncOfflineGivtsInFlight;
+
+  @override
+  Stream<void> get offlineQueueChanged =>
+      _offlineQueueChangedController.stream;
+
+  @override
+  List<GivtTransaction> getCachedOfflineGivtTransactions() {
+    final givtsString = prefs.getString(GivtTransaction.givtTransactions);
+    if (givtsString == null || givtsString.isEmpty) {
+      return [];
+    }
+
+    try {
+      final givts = jsonDecode(givtsString) as Map<String, dynamic>;
+      final donations = givts['donations'] as List<dynamic>?;
+      if (donations == null || donations.isEmpty) {
+        return [];
+      }
+      return GivtTransaction.fromJsonList(donations);
+    } catch (e, stackTrace) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      return [];
+    }
+  }
+
+  void _notifyOfflineQueueChanged() {
+    if (!_offlineQueueChangedController.isClosed) {
+      _offlineQueueChangedController.add(null);
+    }
+  }
+
   @override
   Future<List<int>> submitGivts({
     required String guid,
@@ -94,6 +136,7 @@ class GivtRepositoryImpl with GivtRepository {
     final givts = <String, dynamic>{
       'donationType': 0,
     }..addAll(body);
+
     try {
       await syncOfflineGivts();
       final result = await apiClient.submitGivts(
@@ -137,10 +180,26 @@ class GivtRepositoryImpl with GivtRepository {
         jsonEncode(givts),
       );
     }
+    _notifyOfflineQueueChanged();
   }
 
   @override
-  Future<void> syncOfflineGivts() async {
+  Future<void> syncOfflineGivts() {
+    final inFlight = _syncOfflineGivtsInFlight;
+    if (inFlight != null) {
+      return inFlight;
+    }
+
+    final sync = _syncOfflineGivtsOnce();
+    _syncOfflineGivtsInFlight = sync;
+    return sync.whenComplete(() {
+      if (identical(_syncOfflineGivtsInFlight, sync)) {
+        _syncOfflineGivtsInFlight = null;
+      }
+    });
+  }
+
+  Future<void> _syncOfflineGivtsOnce() async {
     try {
       final givtsString = prefs.getString(
         GivtTransaction.givtTransactions,
@@ -169,6 +228,7 @@ class GivtRepositoryImpl with GivtRepository {
       await prefs.remove(
         GivtTransaction.givtTransactions,
       );
+      _notifyOfflineQueueChanged();
     } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
@@ -180,6 +240,7 @@ class GivtRepositoryImpl with GivtRepository {
         await prefs.remove(
           GivtTransaction.givtTransactions,
         );
+        _notifyOfflineQueueChanged();
       }
       rethrow;
     }

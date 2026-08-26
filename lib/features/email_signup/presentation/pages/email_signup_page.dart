@@ -8,7 +8,6 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/country_dropdown.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
@@ -27,6 +26,7 @@ import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/auth_utils.dart';
+import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class EmailSignupPage extends StatefulWidget {
@@ -73,6 +73,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   }
 
   void setLoading({bool state = true}) {
+    if (!mounted) return;
     setState(() {
       _isLoading = state;
     });
@@ -188,9 +189,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             const Spacer(),
                             CountryDropDown(
                               selectedCountry: state.country,
-                              onChanged: (Country? newValue) {
-                                _cubit.updateCountry(newValue!);
-                              },
+                              onChanged: _cubit.updateCountry,
                             ),
                             const SizedBox(height: 12),
                             Semantics(
@@ -267,6 +266,16 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                       // Hide keyboard when continue button is tapped
                                       FocusScope.of(context).unfocus();
 
+                                      final country =
+                                          state.country ?? _cubit.currentCountry;
+                                      if (country == null) {
+                                        SnackBarHelper.showMessage(
+                                          context,
+                                          text: locals.selectCountryHint,
+                                        );
+                                        return;
+                                      }
+
                                       _cubit.updateApi();
                                       setLoading();
                                       AppThemeSwitcher.of(context)
@@ -275,7 +284,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                         await context
                                             .read<AuthCubit>()
                                             .register(
-                                              country: state.country!,
+                                              country: country,
                                               email: state.email,
                                               locale: Localizations.localeOf(
                                                       context)
@@ -284,6 +293,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                       } catch (e) {
                                         // Error surfaced via AuthCubit / dialogs.
                                       }
+                                      if (!mounted) return;
                                       setLoading(state: false);
                                     }
                                   : null,

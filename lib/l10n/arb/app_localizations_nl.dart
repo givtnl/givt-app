@@ -44,11 +44,6 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String offlineGegevenGivtMessageWithOrg(Object value0) {
-    return 'Bedankt voor je Givt!\n \n\n Zodra er een goede verbinding is met de Givt-server, wordt je Givt aan $value0 verwerkt.\n Kijk voor de status in je overzicht.';
-  }
-
-  @override
   String get wrongPasswordLockedOut =>
       'Je hebt drie verkeerde pogingen gedaan, je kunt 15 minuten niet inloggen. Probeer straks opnieuw of vraag een nieuw wachtwoord aan.';
 
@@ -442,6 +437,50 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get offlineGiftsTitle => 'Offline giften';
+
+  @override
+  String get offlineBannerNoPending =>
+      'Je bent offline — Je kunt nog steeds geven. Het wordt verzonden zodra je weer online bent.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 donatie in afwachting';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count donaties in afwachting';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount wordt verzonden zodra je weer online bent';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount totaal wordt verzonden zodra je weer online bent';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodySingular(String amount) {
+    return '$amount wordt nu verzonden';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodyPlural(String amount) {
+    return '$amount totaal wordt nu verzonden';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Begrepen';
+
+  @override
+  String get offlineSuccessTitle =>
+      'Je donatie wordt verstuurd zodra je weer online bent';
+
+  @override
+  String offlineSuccessBodyWithOrg(String orgName) {
+    return 'Bedankt voor je steun aan $orgName';
+  }
 
   @override
   String get amountTooHigh => 'Bedrag te hoog';
@@ -1226,15 +1265,13 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String pledgesDetailGiveButton(String campaign) {
-    return 'Geef aan $campaign';
-  }
-
-  @override
   String get pledgesDetailEditButton => 'Toezegging bewerken';
 
   @override
   String get pledgesDetailEndsLabel => 'Eindigt';
+
+  @override
+  String get pledgesDetailTransactionsLabel => 'Donaties';
 
   @override
   String get pledgesEditRequestTitle => 'Toezegging wijzigen aanvragen';
@@ -3057,6 +3094,22 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get recurringDonationsRestartFailed =>
       'We konden deze donatie niet herstarten. Probeer het opnieuw.';
+
+  @override
+  String get recurringDonationsRestartOrganisationNotFoundTitle =>
+      'Organisatie niet beschikbaar';
+
+  @override
+  String get recurringDonationsRestartOrganisationNotFoundMessage =>
+      'We konden de organisatie die aan deze donatie is gekoppeld niet vinden. Deze donatie kan niet worden herstart.';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationTitle =>
+      'Organisatie niet meer actief';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationMessage =>
+      'De organisatie die aan deze donatie is gekoppeld, is niet meer actief. Deze donatie kan niet worden herstart.';
 
   @override
   String get recurringDonationsDetailEditDonation => 'Donatie bewerken';

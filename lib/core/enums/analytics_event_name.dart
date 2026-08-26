@@ -143,6 +143,12 @@ enum AnalyticsEventName {
   recurringDonationRestartConfirmClicked(
     'recurring_donation_restart_confirm_clicked',
   ),
+  recurringDonationRestartInactiveOrgContinueTapped(
+    'recurring_donation_restart_inactive_org_continue_tapped',
+  ),
+  recurringDonationRestartOrgNotFoundContinueTapped(
+    'recurring_donation_restart_org_not_found_continue_tapped',
+  ),
   externalDonationsNavigationClicked('external_donations_navigation_clicked'),
   externalDonationsTabsChanged('external_donations_tabs_changed'),
   externalDonationsAddClicked('external_donations_add_clicked'),
@@ -628,7 +634,6 @@ enum AnalyticsEventName {
   pledgesTabsChanged('pledges_tabs_changed'),
   pledgesAddClicked('pledges_add_clicked'),
   pledgesDetailOpened('pledges_detail_opened'),
-  pledgesDetailGiveClicked('pledges_detail_give_clicked'),
   pledgesDetailEditClicked('pledges_detail_edit_clicked'),
   pledgesEditRequestSendClicked('pledges_edit_request_send_clicked'),
   menuNavigationRecurringDonationClicked(
@@ -679,7 +684,8 @@ enum AnalyticsEventName {
     'flow_generic_error_contact_support_clicked',
   ),
   flowGenericErrorGoHomeClicked('flow_generic_error_go_home_clicked'),
-  homeFaqIconClicked('home_faq_icon_clicked');
+  homeFaqIconClicked('home_faq_icon_clicked'),
+  offlineSuccessGotItTapped('offline_success_got_it_tapped');
 
   const AnalyticsEventName(this.value);
 

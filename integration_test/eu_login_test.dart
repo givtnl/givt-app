@@ -23,6 +23,7 @@ void main() {
 
 
     await emailSignupPage.verifyEmailInputIsVisible();
+    await emailSignupPage.selectCountry('Netherlands');
     await emailSignupPage.enterEmail('tamara+test3@givtapp.net');
     await emailSignupPage.tapContinueButton();
 

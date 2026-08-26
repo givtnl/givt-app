@@ -45,9 +45,9 @@ class APIService {
       encoding: Encoding.getByName('utf-8'),
     );
     if (response.statusCode >= 400) {
-      throw GivtServerFailure(
+      throw GivtServerFailure.fromHttpResponse(
         statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
+        body: response.body,
       );
     } else {
       return jsonDecode(response.body) as Map<String, dynamic>;
@@ -800,7 +800,9 @@ class APIService {
     return decodedBody['item'] as bool? ?? false;
   }
 
-  Future<ExternalDonation?> addExternalDonation(Map<String, dynamic> body) async {
+  Future<ExternalDonation?> addExternalDonation(
+    Map<String, dynamic> body,
+  ) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/externaldonations');
 
     final response = await client.post(

@@ -44,11 +44,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String offlineGegevenGivtMessageWithOrg(Object value0) {
-    return 'Thank you for your Givt to $value0!\n \n\n When there\'s a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.';
-  }
-
-  @override
   String get wrongPasswordLockedOut =>
       'Third attempt failed, you cannot login for 15 minutes. Try again later.';
 
@@ -439,6 +434,50 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get offlineGiftsTitle => 'Offline donations';
+
+  @override
+  String get offlineBannerNoPending =>
+      'Estás sin conexión — Todavía puedes donar. Se enviará cuando vuelvas a estar en línea.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 donación pendiente';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count donaciones pendientes';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount se enviará cuando vuelvas a estar en línea';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount en total se enviarán cuando vuelvas a estar en línea';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodySingular(String amount) {
+    return '$amount se está enviando ahora';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodyPlural(String amount) {
+    return '$amount en total se están enviando ahora';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Entendido';
+
+  @override
+  String get offlineSuccessTitle =>
+      'Tu donación se enviará cuando vuelvas a estar en línea';
+
+  @override
+  String offlineSuccessBodyWithOrg(String orgName) {
+    return 'Gracias por apoyar a $orgName';
+  }
 
   @override
   String get amountTooHigh => 'Amount too high';
@@ -1222,15 +1261,13 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String pledgesDetailGiveButton(String campaign) {
-    return 'Dar a $campaign';
-  }
-
-  @override
   String get pledgesDetailEditButton => 'Editar compromiso';
 
   @override
   String get pledgesDetailEndsLabel => 'Finaliza';
+
+  @override
+  String get pledgesDetailTransactionsLabel => 'Donaciones';
 
   @override
   String get pledgesEditRequestTitle => 'Solicitar un cambio de compromiso';
@@ -3054,6 +3091,22 @@ class AppLocalizationsEs extends AppLocalizations {
       'We couldn\'t restart this donation. Please try again.';
 
   @override
+  String get recurringDonationsRestartOrganisationNotFoundTitle =>
+      'Organización no disponible';
+
+  @override
+  String get recurringDonationsRestartOrganisationNotFoundMessage =>
+      'No pudimos encontrar la organización vinculada a esta donación. Esta donación no se puede reiniciar.';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationTitle =>
+      'Organización ya no activa';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationMessage =>
+      'La organización vinculada a esta donación ya no está activa. Esta donación no se puede reiniciar.';
+
+  @override
   String get recurringDonationsDetailEditDonation => 'Edit donation';
 
   @override
@@ -3568,11 +3621,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   }
 
   @override
-  String offlineGegevenGivtMessageWithOrg(Object value0) {
-    return '¡Gracias por dar con Givt a $value0!\n \n\n Cuando haya una buena conexión con el servidor de Givt, tu donación se procesará.\n Puedes comprobar el estado en el resumen.';
-  }
-
-  @override
   String get wrongPasswordLockedOut =>
       'Tercer intento fallido, inténtalo de nuevo en 15 minutos.';
 
@@ -3957,6 +4005,50 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get offlineGiftsTitle => 'Donaciones sin conexión';
+
+  @override
+  String get offlineBannerNoPending =>
+      'Estás sin conexión — Todavía puedes donar. Se enviará cuando vuelvas a estar en línea.';
+
+  @override
+  String get offlineBannerPendingTitleSingular => '1 donación pendiente';
+
+  @override
+  String offlineBannerPendingTitlePlural(int count) {
+    return '$count donaciones pendientes';
+  }
+
+  @override
+  String offlineBannerPendingBodySingular(String amount) {
+    return '$amount se enviará cuando vuelvas a estar en línea';
+  }
+
+  @override
+  String offlineBannerPendingBodyPlural(String amount) {
+    return '$amount en total se enviarán cuando vuelvas a estar en línea';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodySingular(String amount) {
+    return '$amount se está enviando ahora';
+  }
+
+  @override
+  String offlineBannerPendingOnlineBodyPlural(String amount) {
+    return '$amount en total se están enviando ahora';
+  }
+
+  @override
+  String get offlineSuccessGotIt => 'Entendido';
+
+  @override
+  String get offlineSuccessTitle =>
+      'Tu donación se enviará cuando vuelvas a estar en línea';
+
+  @override
+  String offlineSuccessBodyWithOrg(String orgName) {
+    return 'Gracias por apoyar a $orgName';
+  }
 
   @override
   String get amountTooHigh => 'Monto demasiado alto';
@@ -4744,15 +4836,13 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   }
 
   @override
-  String pledgesDetailGiveButton(String campaign) {
-    return 'Dar a $campaign';
-  }
-
-  @override
   String get pledgesDetailEditButton => 'Editar compromiso';
 
   @override
   String get pledgesDetailEndsLabel => 'Finaliza';
+
+  @override
+  String get pledgesDetailTransactionsLabel => 'Donaciones';
 
   @override
   String get pledgesEditRequestTitle => 'Solicitar un cambio de compromiso';
@@ -6588,6 +6678,22 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get recurringDonationsRestartFailed =>
       'We couldn\'t restart this donation. Please try again.';
+
+  @override
+  String get recurringDonationsRestartOrganisationNotFoundTitle =>
+      'Organización no disponible';
+
+  @override
+  String get recurringDonationsRestartOrganisationNotFoundMessage =>
+      'No pudimos encontrar la organización vinculada a esta donación. Esta donación no se puede reiniciar.';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationTitle =>
+      'Organización ya no activa';
+
+  @override
+  String get recurringDonationsRestartInactiveOrganisationMessage =>
+      'La organización vinculada a esta donación ya no está activa. Esta donación no se puede reiniciar.';
 
   @override
   String get recurringDonationsDetailEditDonation => 'Edit donation';

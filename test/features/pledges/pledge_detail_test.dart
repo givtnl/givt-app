@@ -17,6 +17,32 @@ void main() {
       expect(transaction.isProcessed, isTrue);
       expect(transaction.executionDateTime, isNotNull);
     });
+
+    test('fromJson parses numeric PledgeTransactionState values', () {
+      final entered = PledgeTransaction.fromJson({
+        'id': 'tx-1',
+        'amount': 10,
+        'executionDate': '2026-06-15T00:00:00Z',
+        'state': 1,
+      });
+      final processed = PledgeTransaction.fromJson({
+        'id': 'tx-2',
+        'amount': 10,
+        'executionDate': '2026-06-15T00:00:00Z',
+        'state': 2,
+      });
+
+      expect(entered.isEntered, isTrue);
+      expect(processed.isProcessed, isTrue);
+    });
+
+    test('parseState maps backend enum values', () {
+      expect(PledgeTransaction.parseState('Entered'), 'Entered');
+      expect(PledgeTransaction.parseState('Processed'), 'Processed');
+      expect(PledgeTransaction.parseState(1), 'Entered');
+      expect(PledgeTransaction.parseState(2), 'Processed');
+      expect(PledgeTransaction.parseState(3), 'Canceled');
+    });
   });
 
   group('PledgeDonation', () {
@@ -109,6 +135,145 @@ void main() {
       expect(group.givenSoFar, 350);
       expect(group.totalPledged, 2400);
       expect(group.segmentBarTotal, 2400);
+    });
+
+    test('transaction counts sum processed and total across goals', () {
+      expect(group.totalTransactionCount, 3);
+      expect(group.completedTransactionCount, 3);
+    });
+
+    test('transaction counts treat Entered as not completed', () {
+      final singleGoalGroup = PledgeGroup.fromJson({
+        'pledgeGroupId': 'group-1',
+        'pledgeGroupName': 'Actie Kerkbalans',
+        'collectGroupId': 'church-1',
+        'collectGroupNamespace': 'church',
+        'collectGroupName': 'Church',
+        'goals': [
+          {
+            'id': 'goal-1',
+            'goalId': 'g1',
+            'goalName': 'Church fund',
+            'totalAmount': 450,
+            'type': 'Online',
+            'transactions': [
+              {
+                'id': 'tx-1',
+                'amount': 150,
+                'executionDate': '2026-04-15T00:00:00Z',
+                'state': 'Processed',
+              },
+              {
+                'id': 'tx-2',
+                'amount': 150,
+                'executionDate': '2026-05-15T00:00:00Z',
+                'state': 'Processed',
+              },
+              {
+                'id': 'tx-3',
+                'amount': 150,
+                'executionDate': '2026-06-15T00:00:00Z',
+                'state': 'Entered',
+              },
+            ],
+          },
+        ],
+      });
+
+      expect(singleGoalGroup.totalTransactionCount, 3);
+      expect(singleGoalGroup.completedTransactionCount, 2);
+    });
+
+    test('transaction counts are zero when no transactions exist', () {
+      final emptyGroup = PledgeGroup.fromJson({
+        'pledgeGroupId': 'group-1',
+        'pledgeGroupName': 'Actie Kerkbalans',
+        'collectGroupId': 'church-1',
+        'collectGroupNamespace': 'church',
+        'collectGroupName': 'Church',
+        'goals': [
+          {
+            'id': 'goal-1',
+            'goalId': 'g1',
+            'goalName': 'Church fund',
+            'totalAmount': 0,
+            'type': 'Online',
+            'transactions': const [],
+          },
+        ],
+      });
+
+      expect(emptyGroup.totalTransactionCount, 0);
+      expect(emptyGroup.completedTransactionCount, 0);
+    });
+
+    test('transaction counts ignore wallet donations', () {
+      final groupWithDonations = PledgeGroup.fromJson({
+        'pledgeGroupId': 'group-1',
+        'pledgeGroupName': 'Actie Kerkbalans',
+        'collectGroupId': 'church-1',
+        'collectGroupNamespace': 'church',
+        'collectGroupName': 'Church',
+        'goals': [
+          {
+            'id': 'goal-1',
+            'goalId': 'g1',
+            'goalName': 'Church fund',
+            'totalAmount': 450,
+            'type': 'Online',
+            'transactions': [
+              {
+                'id': 'tx-1',
+                'amount': 150,
+                'executionDate': '2026-04-15T00:00:00Z',
+                'state': 'Processed',
+              },
+              {
+                'id': 'tx-2',
+                'amount': 150,
+                'executionDate': '2026-05-15T00:00:00Z',
+                'state': 'Entered',
+              },
+              {
+                'id': 'tx-3',
+                'amount': 150,
+                'executionDate': '2026-06-15T00:00:00Z',
+                'state': 'Entered',
+              },
+            ],
+            'donations': [
+              {
+                'id': 1,
+                'amount': 150,
+                'donationDate': '2026-04-15T00:00:00Z',
+                'status': 'Processed',
+              },
+              {
+                'id': 2,
+                'amount': 150,
+                'donationDate': '2026-05-15T00:00:00Z',
+                'status': 'Processed',
+              },
+              {
+                'id': 3,
+                'amount': 150,
+                'donationDate': '2026-06-15T00:00:00Z',
+                'status': 'Processed',
+              },
+              {
+                'id': 4,
+                'amount': 150,
+                'donationDate': '2026-07-15T00:00:00Z',
+                'status': 'Processed',
+              },
+            ],
+          },
+        ],
+      });
+
+      expect(groupWithDonations.totalTransactionCount, 3);
+      expect(groupWithDonations.completedTransactionCount, 1);
+      expect(groupWithDonations.givenSoFar, 600);
     });
 
     test('segmentBarTotal falls back to givenSoFar without commitment totals', () {

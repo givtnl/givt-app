@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/shared/models/models.dart';
@@ -61,6 +62,69 @@ class _ForYouDiscoveryFailure extends ForYouDiscoveryResult {
 class ForYouDiscoveryResolvers {
   ForYouDiscoveryResolvers._();
 
+  static CollectGroup _findCollectGroupByExactNamespace(
+    List<CollectGroup> collectGroups,
+    String namespace,
+  ) {
+    return collectGroups
+            .where((group) => group.nameSpace == namespace)
+            .firstOrNull ??
+        const CollectGroup.empty();
+  }
+
+  static CollectGroup _findCollectGroupByNamespacePrefix(
+    List<CollectGroup> collectGroups,
+    String namespace,
+  ) {
+    final exactMatch = _findCollectGroupByExactNamespace(
+      collectGroups,
+      namespace,
+    );
+    if (exactMatch.nameSpace.isNotEmpty) {
+      return exactMatch;
+    }
+
+    return collectGroups.firstWhere(
+      (group) => group.nameSpace.startsWith(namespace),
+      orElse: () => const CollectGroup.empty(),
+    );
+  }
+
+  static ForYouDiscoveryResult? _failureForInactiveGenericQr(
+    CollectGroup matchingGroup,
+  ) {
+    final inactiveGeneric = matchingGroup.qrCodes
+        .where((qrCode) => !qrCode.isActive && qrCode.isGeneric)
+        .firstOrNull;
+    if (inactiveGeneric == null) {
+      return null;
+    }
+    final hasActiveGeneric = matchingGroup.qrCodes.any(
+      (qrCode) => qrCode.isActive && qrCode.isGeneric,
+    );
+    if (hasActiveGeneric) {
+      return null;
+    }
+    return ForYouDiscoveryResult.failure(
+      ForYouDiscoveryFailure.inactiveQrCode,
+      collectGroup: matchingGroup,
+      qrCode: inactiveGeneric,
+    );
+  }
+
+  static QrCode _resolveGenericQrCodeForNamespace(
+    CollectGroup matchingGroup,
+    String namespace,
+  ) {
+    for (final qrCode in matchingGroup.qrCodes) {
+      if (qrCode.isActive && qrCode.isGeneric) {
+        return qrCode;
+      }
+    }
+
+    return QrCode.genericForNamespace(namespace);
+  }
+
   static Future<ForYouDiscoveryResult> resolveCollectGroupAndQrFromQrMediumId(
     String mediumId, {
     CollectGroupRepository? collectGroupRepository,
@@ -78,8 +142,33 @@ class ForYouDiscoveryResolvers {
     }
 
     if (!mediumId.contains('.')) {
-      return const ForYouDiscoveryResult.failure(
-        ForYouDiscoveryFailure.notFound,
+      final namespace = mediumId;
+      final matchingGroup = _findCollectGroupByExactNamespace(
+        collectGroups,
+        namespace,
+      );
+
+      if (matchingGroup.nameSpace.isEmpty) {
+        return const ForYouDiscoveryResult.failure(
+          ForYouDiscoveryFailure.notFound,
+        );
+      }
+
+      if (!matchingGroup.isActive) {
+        return ForYouDiscoveryResult.failure(
+          ForYouDiscoveryFailure.inactiveCollectGroup,
+          collectGroup: matchingGroup,
+        );
+      }
+
+      final inactiveGenericFailure = _failureForInactiveGenericQr(matchingGroup);
+      if (inactiveGenericFailure != null) {
+        return inactiveGenericFailure;
+      }
+
+      return ForYouDiscoveryResult.success(
+        collectGroup: matchingGroup,
+        qrCode: _resolveGenericQrCodeForNamespace(matchingGroup, namespace),
       );
     }
 
@@ -170,10 +259,9 @@ class ForYouDiscoveryResolvers {
     if (!beaconId.contains('.')) return null;
 
     final namespace = beaconId.split('.').first;
-    final fallbackMatch = collectGroups.firstWhere(
-      (group) =>
-          group.nameSpace == namespace || group.nameSpace.startsWith(namespace),
-      orElse: () => const CollectGroup.empty(),
+    final fallbackMatch = _findCollectGroupByNamespacePrefix(
+      collectGroups,
+      namespace,
     );
 
     return fallbackMatch.nameSpace.isEmpty ? null : fallbackMatch;

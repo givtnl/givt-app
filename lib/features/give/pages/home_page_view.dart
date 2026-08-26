@@ -5,7 +5,9 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/home_page_qr_flow_handler.dart';
+import 'package:givt_app/features/give/widgets/offline_giving_banner.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class HomePageView extends StatefulWidget {
   const HomePageView({
@@ -72,6 +74,8 @@ class _HomePageViewState extends State<HomePageView> {
     final auth = context.watch<AuthCubit>().state;
     return Column(
       children: [
+        const OfflineGivingBanner(),
+        const SizedBox(height: 8),
         AnimatedSwitch(
           pageIndex: pageIndex,
           onChanged: onPageChanged,
@@ -121,15 +125,23 @@ class _HomePageViewState extends State<HomePageView> {
                     );
 
                     if (isQR) {
-                      await HomePageQRFlowHandler.handleQRFlow(
+                      await AuthUtils.checkToken(
                         context,
-                        widget.giveBloc!,
-                        firstCollection,
-                        secondCollection,
-                        thirdCollection,
-                        widget.code,
-                        widget.afterGivingRedirection,
-                        () => mounted,
+                        checkAuthRequest: CheckAuthRequest(
+                          allowWhenOffline: true,
+                          navigate: (context) async {
+                            await HomePageQRFlowHandler.handleQRFlow(
+                              context,
+                              widget.giveBloc!,
+                              firstCollection,
+                              secondCollection,
+                              thirdCollection,
+                              widget.code,
+                              widget.afterGivingRedirection,
+                              () => mounted,
+                            );
+                          },
+                        ),
                       );
                     } else {
                       LoggingInfo.instance.info(
