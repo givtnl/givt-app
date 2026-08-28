@@ -14,6 +14,7 @@ import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/design_system/components/actions/fun_button.dart';
+import 'package:givt_app/shared/models/bacs_mandate_response.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -41,6 +42,13 @@ void main() {
   });
 
   tearDown(() async {
+    final completer = repository.fetchUserExtensionCompleter;
+    if (completer != null && !completer.isCompleted) {
+      completer.complete(
+        const UserExt(email: '', guid: '', amountLimit: 0),
+      );
+      await Future<void>.delayed(Duration.zero);
+    }
     await personalInfoEditBloc.close();
     await authCubit.close();
     repository.dispose();
@@ -86,6 +94,51 @@ void main() {
       await personalInfoEditBloc.stream.firstWhere(
         (state) => state.status == PersonalInfoEditStatus.initial,
       );
+    },
+  );
+
+  test(
+    'resetPersonalInfoEditSheetOnDismiss applies saved bank details before refreshUser',
+    () async {
+      const original = UserExt(
+        email: 'uk@givt.app',
+        guid: 'guid',
+        amountLimit: 499,
+        country: 'GB',
+        sortCode: '123456',
+        accountNumber: '12345678',
+      );
+      authCubit.emit(
+        authCubit.state.copyWith(
+          status: AuthStatus.authenticated,
+          user: original,
+        ),
+      );
+      repository.fetchUserExtensionCompleter = Completer<UserExt>();
+
+      await personalInfoEditBloc.close();
+      personalInfoEditBloc = PersonalInfoEditBloc(
+        authRepository: repository,
+        loggedInUserExt: original,
+      );
+
+      personalInfoEditBloc.add(
+        const PersonalInfoEditBankDetails(
+          iban: '',
+          accountNumber: '87654321',
+          sortCode: '654321',
+        ),
+      );
+      await personalInfoEditBloc.stream.firstWhere(
+        (state) => state.status == PersonalInfoEditStatus.success,
+      );
+
+      resetPersonalInfoEditSheetOnDismiss(personalInfoEditBloc, authCubit);
+
+      // refreshUser may already have flipped status to loading; bank
+      // details must still be the values just saved.
+      expect(authCubit.state.user.sortCode, '654321');
+      expect(authCubit.state.user.accountNumber, '87654321');
     },
   );
 
@@ -251,10 +304,21 @@ void main() {
 
 class _FakeAuthRepository with AuthRepository {
   final _sessionController = StreamController<bool>.broadcast();
+  Completer<UserExt>? fetchUserExtensionCompleter;
 
   void dispose() {
     _sessionController.close();
   }
+
+  @override
+  Future<BacsMandateResponse> updatePendingBacsBankDetails({
+    required String guid,
+    required String sortCode,
+    required String accountNumber,
+  }) async => BacsMandateResponse(
+    sortCode: sortCode,
+    accountNumber: accountNumber,
+  );
 
   @override
   Future<Session> refreshToken({bool refreshUserExt = false}) async =>
@@ -265,8 +329,13 @@ class _FakeAuthRepository with AuthRepository {
       const Session.empty();
 
   @override
-  Future<UserExt> fetchUserExtension(String guid) async =>
-      const UserExt(email: '', guid: '', amountLimit: 0);
+  Future<UserExt> fetchUserExtension(String guid) async {
+    final completer = fetchUserExtensionCompleter;
+    if (completer != null) {
+      return completer.future;
+    }
+    return const UserExt(email: '', guid: '', amountLimit: 0);
+  }
 
   @override
   Future<(UserExt, Session, UserPresets)?> isAuthenticated() async => (

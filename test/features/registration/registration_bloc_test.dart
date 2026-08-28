@@ -68,6 +68,40 @@ void main() {
     );
   }
 
+  test(
+    'UK sign posts AuthCubit bank details even when fetchUser is stale',
+    () async {
+      emitUser(
+        ukUser.copyWith(
+          sortCode: '654321',
+          accountNumber: '87654321',
+        ),
+      );
+      repository.fetchUser = ukUser;
+
+      bloc.add(
+        const RegistrationSignMandate(
+          guid: 'existing-guid',
+          appLanguage: 'en',
+        ),
+      );
+
+      await expectLater(
+        bloc.stream,
+        emitsThrough(
+          predicate<RegistrationState>(
+            (state) =>
+                state.status == RegistrationStatus.bacsDirectDebitMandateSigned,
+          ),
+        ),
+      );
+
+      expect(repository.bacsSortCodes, ['654321']);
+      expect(repository.bacsAccountNumbers, ['87654321']);
+      expect(repository.signGuids, ['existing-guid']);
+    },
+  );
+
   test('UK sign patches BACS then signs with the existing GUID', () async {
     emitUser(ukUser);
     repository.fetchUser = ukUser;
