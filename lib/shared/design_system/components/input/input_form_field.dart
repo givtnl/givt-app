@@ -32,7 +32,7 @@ class InputFormField extends StatelessWidget {
     this.scrollPadding = const EdgeInsets.all(20),
     this.errorMaxLines,
     this.minLines,
-    this.maxLines,
+    this.maxLines = 1,
     this.onTap,
   });
 

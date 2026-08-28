@@ -31,7 +31,7 @@ class FunInput extends StatefulWidget {
     this.scrollPadding = const EdgeInsets.all(20),
     this.errorMaxLines,
     this.minLines,
-    this.maxLines,
+    this.maxLines = 1,
     super.key,
   });
 
