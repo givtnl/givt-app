@@ -1276,7 +1276,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Endet';
 
   @override
-  String get pledgesDetailTransactionsLabel => 'Transaktionen';
+  String get pledgesDetailTransactionsLabel => 'Spenden';
 
   @override
   String get pledgesEditRequestTitle => 'Zusageänderung anfragen';

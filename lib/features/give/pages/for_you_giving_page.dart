@@ -6,6 +6,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
@@ -16,6 +17,7 @@ import 'package:givt_app/features/give/dialogs/donation_submission_timeout_dialo
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/utils/for_you_donation_transactions.dart';
 import 'package:givt_app/features/give/utils/for_you_giving_analytics.dart';
+import 'package:givt_app/features/give/utils/offline_aware_organisation_goals_loader.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/features/give/widgets/for_you_more_general_goals_sheet.dart';
 import 'package:givt_app/features/give/widgets/numeric_keyboard.dart';
@@ -631,32 +633,32 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       return;
     }
 
-    try {
-      final repository = getIt<OrganisationGoalsRepository>();
-      final response = await repository.fetchGoals(organisation.nameSpace);
-      if (!mounted) {
-        return;
-      }
-      _goalsResponse = response;
-      final restrict = widget.flowContext.restrictToEntryQrGoal;
-      final entryMediumId = widget.flowContext.entryMediumId?.trim() ?? '';
-      if (restrict && entryMediumId.isNotEmpty) {
-        final match = response.qrCodes
-            .where((q) => q.mediumId.trim() == entryMediumId)
-            .toList();
-        if (match.isNotEmpty) {
-          _applyLines([ForYouGeneralGoalLine(match.first)]);
-          return;
-        }
-      }
-      _setupCollectionLinesFromResponse(response);
-    } on Exception {
-      if (!mounted) {
-        return;
-      }
+    final response = await OfflineAwareOrganisationGoalsLoader(
+      repository: getIt<OrganisationGoalsRepository>(),
+      networkInfo: getIt<NetworkInfo>(),
+    ).load(organisation.nameSpace);
+    if (!mounted) {
+      return;
+    }
+    if (response == null) {
       _goalsResponse = const OrganisationGoalsResponse();
       _setupFallbackLines();
+      return;
     }
+
+    _goalsResponse = response;
+    final restrict = widget.flowContext.restrictToEntryQrGoal;
+    final entryMediumId = widget.flowContext.entryMediumId?.trim() ?? '';
+    if (restrict && entryMediumId.isNotEmpty) {
+      final match = response.qrCodes
+          .where((q) => q.mediumId.trim() == entryMediumId)
+          .toList();
+      if (match.isNotEmpty) {
+        _applyLines([ForYouGeneralGoalLine(match.first)]);
+        return;
+      }
+    }
+    _setupCollectionLinesFromResponse(response);
   }
 
   void _setupCollectionLinesFromResponse(OrganisationGoalsResponse response) {

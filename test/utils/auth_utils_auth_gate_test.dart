@@ -8,6 +8,7 @@ import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/models/session.dart';
+import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
@@ -30,12 +31,31 @@ void main() {
     amountLimit: 499,
   );
 
+  Session validSession() {
+    return Session(
+      email: user.email,
+      userGUID: user.guid,
+      accessToken: 'access',
+      refreshToken: 'refresh',
+      expires: DateTime.now()
+          .toUtc()
+          .add(const Duration(minutes: 30))
+          .toIso8601String(),
+      expiresIn: 1800,
+      isLoggedIn: true,
+    );
+  }
+
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
     repository = _FakeAuthRepository();
     cubit = _RecordingAuthCubit(repository);
     cubit.emit(
-      cubit.state.copyWith(status: AuthStatus.authenticated, user: user),
+      cubit.state.copyWith(
+        status: AuthStatus.authenticated,
+        user: user,
+        session: validSession(),
+      ),
     );
     networkInfo = _FakeNetworkInfo(isConnected: true);
     if (getIt.isRegistered<NetworkInfo>()) {
@@ -55,7 +75,7 @@ void main() {
 
   Future<void> runCheckToken(
     WidgetTester tester, {
-    required bool allowWhenOffline,
+    CheckAuthPolicy policy = CheckAuthPolicy.ensureSession,
   }) async {
     final previousOnError = FlutterError.onError;
     FlutterError.onError = (details) {
@@ -82,7 +102,7 @@ void main() {
                     AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
-                        allowWhenOffline: allowWhenOffline,
+                        policy: policy,
                         navigate: (_) async {
                           navigateCount++;
                         },
@@ -102,14 +122,11 @@ void main() {
     await tester.pump(const Duration(milliseconds: 50));
   }
 
-  group('AuthUtils.checkToken offline giving', () {
+  group('AuthUtils.checkToken auth gate', () {
     testWidgets(
-      'skips refresh and navigates when allowWhenOffline '
-      'and checker is disconnected',
+      'ensureSession navigates without refresh when token is valid',
       (tester) async {
-        networkInfo.isConnected = false;
-
-        await runCheckToken(tester, allowWhenOffline: true);
+        await runCheckToken(tester);
 
         expect(cubit.refreshCallCount, 0);
         expect(navigateCount, 1);
@@ -117,40 +134,88 @@ void main() {
     );
 
     testWidgets(
-      'navigates without login when allowWhenOffline and refresh is offline',
+      'stepUp does not navigate when grace has elapsed',
       (tester) async {
-        cubit.refreshResult = RefreshSessionResult.offline;
+        await runCheckToken(tester, policy: CheckAuthPolicy.stepUp);
 
-        await runCheckToken(tester, allowWhenOffline: true);
-
-        expect(cubit.refreshCallCount, 1);
-        expect(navigateCount, 1);
-      },
-    );
-
-    testWidgets(
-      'does not navigate when offline and allowWhenOffline is false',
-      (tester) async {
-        networkInfo.isConnected = false;
-        cubit.refreshResult = RefreshSessionResult.offline;
-
-        await runCheckToken(tester, allowWhenOffline: false);
-
-        expect(cubit.refreshCallCount, 1);
+        expect(cubit.refreshCallCount, 0);
         expect(navigateCount, 0);
       },
     );
 
     testWidgets(
-      'does not skip refresh for non-giving when checker is disconnected',
+      'stepUp navigates without refresh when within grace and token is valid',
       (tester) async {
-        networkInfo.isConnected = false;
-        cubit.refreshResult = RefreshSessionResult.success;
+        await repository.markLocalAuthSucceeded();
 
-        await runCheckToken(tester, allowWhenOffline: false);
+        await runCheckToken(tester, policy: CheckAuthPolicy.stepUp);
+
+        expect(cubit.refreshCallCount, 0);
+        expect(navigateCount, 1);
+      },
+    );
+
+    testWidgets(
+      'ensureSession forces refresh when reauthentication is needed',
+      (tester) async {
+        cubit
+          ..emit(
+            cubit.state.copyWith(
+              status: AuthStatus.authenticated,
+              user: user,
+              session: validSession(),
+              needsReauthentication: true,
+            ),
+          )
+          ..refreshResult = RefreshSessionResult.failure;
+
+        await runCheckToken(tester);
+
+        expect(cubit.refreshCallCount, 1);
+        expect(cubit.lastForce, isTrue);
+        expect(navigateCount, 0);
+      },
+    );
+
+    testWidgets(
+      'stepUp refreshes then navigates when reauthentication is needed within grace',
+      (tester) async {
+        await repository.markLocalAuthSucceeded();
+        cubit.emit(
+          cubit.state.copyWith(
+            status: AuthStatus.authenticated,
+            user: user,
+            session: validSession(),
+            needsReauthentication: true,
+          ),
+        );
+
+        await runCheckToken(tester, policy: CheckAuthPolicy.stepUp);
 
         expect(cubit.refreshCallCount, 1);
         expect(navigateCount, 1);
+      },
+    );
+
+    testWidgets(
+      'ensureSession does not show login when refresh token is invalid',
+      (tester) async {
+        cubit
+          ..emit(
+            cubit.state.copyWith(
+              status: AuthStatus.authenticated,
+              user: user,
+              session: validSession(),
+              needsReauthentication: true,
+            ),
+          )
+          ..refreshResult = RefreshSessionResult.invalidRefreshToken;
+
+        await runCheckToken(tester);
+
+        expect(cubit.refreshCallCount, 1);
+        expect(navigateCount, 0);
+        expect(find.byType(LoginPage), findsNothing);
       },
     );
   });
@@ -172,6 +237,7 @@ class _RecordingAuthCubit extends AuthCubit {
   _RecordingAuthCubit(super.repository);
 
   int refreshCallCount = 0;
+  bool? lastForce;
   RefreshSessionResult refreshResult = RefreshSessionResult.success;
 
   @override
@@ -180,15 +246,25 @@ class _RecordingAuthCubit extends AuthCubit {
     bool force = false,
   }) async {
     refreshCallCount++;
+    lastForce = force;
     return refreshResult;
   }
 }
 
 class _FakeAuthRepository with AuthRepository {
   final _sessionController = StreamController<bool>.broadcast();
+  DateTime? _lastLocalAuthAt;
 
   void dispose() {
     _sessionController.close();
+  }
+
+  @override
+  DateTime? lastLocalAuthAt() => _lastLocalAuthAt;
+
+  @override
+  Future<void> markLocalAuthSucceeded({DateTime? at}) async {
+    _lastLocalAuthAt = (at ?? DateTime.now()).toUtc();
   }
 
   @override

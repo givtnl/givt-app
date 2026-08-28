@@ -31,6 +31,11 @@ class TokenInterceptor implements InterceptorContract {
         jsonDecode(sessionString) as Map<String, dynamic>,
       );
 
+      // Send Bearer on every authenticated request, including `/oauth2/token`.
+      // The refresh_token grant still requires it: omitting Authorization
+      // returns HTTP 400/401 with an empty body even when the refresh token
+      // is valid. A *dead* refresh token returns the same empty 400/401;
+      // [GivtServerFailure.isRejectedOAuthToken] turns that into logout.
       if (session.accessToken.isNotEmpty) {
         request.headers['Authorization'] = 'Bearer ${session.accessToken}';
       }
@@ -55,8 +60,7 @@ class TokenInterceptor implements InterceptorContract {
   @override
   Future<BaseResponse> interceptResponse({
     required BaseResponse response,
-  }) async =>
-      response;
+  }) async => response;
 
   @override
   Future<bool> shouldInterceptRequest() => Future.value(true);

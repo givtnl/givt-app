@@ -60,6 +60,50 @@ void main() {
       expect(rows.first.amountLabel, '€10.00');
       expect(rows.first.isCompleted, isFalse);
       expect(rows.first.secondarySubtitle, isNull);
+      expect(rows.first.isRecurring, isFalse);
+    });
+
+    test('donation type step sets isRecurring true for recurring draft', () {
+      const model = ExternalDonationCreateUIModel(
+        draft: ExternalDonationCreateDraft(
+          organisationName: 'World Vision',
+          amountInput: '10',
+          isOneOff: false,
+          frequency: ExternalDonationFrequency.monthly,
+        ),
+      );
+
+      final rows = model.previewRowsForStep(
+        ExternalDonationCreateFlowStep.donationType,
+        currencySymbol: '€',
+        formatAmount: (a) => a.toStringAsFixed(2),
+        locals: en,
+        locale: 'en',
+      );
+
+      expect(rows, hasLength(1));
+      expect(rows.first.isRecurring, isTrue);
+    });
+
+    test('donation type step sets isRecurring false when isOneOff is null',
+        () {
+      const model = ExternalDonationCreateUIModel(
+        draft: ExternalDonationCreateDraft(
+          organisationName: 'World Vision',
+          amountInput: '10',
+        ),
+      );
+
+      final rows = model.previewRowsForStep(
+        ExternalDonationCreateFlowStep.donationType,
+        currencySymbol: '€',
+        formatAmount: (a) => a.toStringAsFixed(2),
+        locals: en,
+        locale: 'en',
+      );
+
+      expect(rows, hasLength(1));
+      expect(rows.first.isRecurring, isFalse);
     });
 
     test('one-off date step shows date on third line without completed', () {
@@ -83,6 +127,7 @@ void main() {
       expect(rows, hasLength(1));
       expect(rows.first.dateLabel, '10 Mar 2024');
       expect(rows.first.isCompleted, isFalse);
+      expect(rows.first.isRecurring, isFalse);
     });
 
     test('stepCount is 3 for one-off and recurring', () {
@@ -132,6 +177,7 @@ void main() {
       expect(rows.length, lessThanOrEqualTo(3));
       expect(rows.first.isUpcoming, isTrue);
       expect(rows.any((row) => row.isCompleted), isTrue);
+      expect(rows.every((row) => row.isRecurring), isTrue);
       if (DateTime.now().isAfter(DateTime(2026, 4, 4))) {
         expect(rows.length, 3);
         expect(model.previewMoreRecordsLabel(en, 'en'), isNotNull);
