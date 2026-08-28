@@ -98,7 +98,8 @@ void main() {
   );
 
   test(
-    'resetPersonalInfoEditSheetOnDismiss applies saved bank details before refreshUser',
+    'resetPersonalInfoEditSheetOnDismiss applies saved bank details '
+    'before refreshUser',
     () async {
       const original = UserExt(
         email: 'uk@givt.app',
@@ -117,18 +118,17 @@ void main() {
       repository.fetchUserExtensionCompleter = Completer<UserExt>();
 
       await personalInfoEditBloc.close();
-      personalInfoEditBloc = PersonalInfoEditBloc(
-        authRepository: repository,
-        loggedInUserExt: original,
-      );
-
-      personalInfoEditBloc.add(
-        const PersonalInfoEditBankDetails(
-          iban: '',
-          accountNumber: '87654321',
-          sortCode: '654321',
-        ),
-      );
+      personalInfoEditBloc =
+          PersonalInfoEditBloc(
+            authRepository: repository,
+            loggedInUserExt: original,
+          )..add(
+            const PersonalInfoEditBankDetails(
+              iban: '',
+              accountNumber: '87654321',
+              sortCode: '654321',
+            ),
+          );
       await personalInfoEditBloc.stream.firstWhere(
         (state) => state.status == PersonalInfoEditStatus.success,
       );

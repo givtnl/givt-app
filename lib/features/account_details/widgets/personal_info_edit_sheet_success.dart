@@ -25,7 +25,8 @@ void resetPersonalInfoEditSheetOnDismiss(
     // Apply the just-saved user immediately. [refreshUser] is async and
     // previously left AuthCubit stale, so UK mandate sign could re-POST the
     // old sort code / account number.
-    authCubit.updateLocalUser(updatedUser);
-    authCubit.refreshUser();
+    authCubit
+      ..updateLocalUser(updatedUser)
+      ..refreshUser();
   }
 }
