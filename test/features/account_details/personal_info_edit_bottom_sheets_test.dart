@@ -180,6 +180,31 @@ void main() {
     expect(find.text(locals.editIbanAccount), findsNothing);
   });
 
+  testWidgets('bank sheet shows 6 and 8 digit validation copy', (tester) async {
+    await pumpSheet(
+      tester,
+      const ChangeBankDetailsBottomSheet(
+        iban: '',
+        accountNumber: '12345678',
+        sortCode: '123456',
+      ),
+    );
+
+    final context = tester.element(find.byType(ChangeBankDetailsBottomSheet));
+    final locals = AppLocalizations.of(context)!;
+
+    final fields = find.byType(TextField);
+    expect(fields, findsNWidgets(2));
+
+    await tester.enterText(fields.at(0), '12');
+    await tester.pump();
+    expect(find.text(locals.sortCodeMustBe6Digits), findsOneWidget);
+
+    await tester.enterText(fields.at(1), '123');
+    await tester.pump();
+    expect(find.text(locals.accountNumberMustBe8Digits), findsOneWidget);
+  });
+
   testWidgets('address sheet shows split fields for Netherlands', (
     tester,
   ) async {

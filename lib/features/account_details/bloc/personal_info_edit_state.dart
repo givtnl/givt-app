@@ -9,6 +9,7 @@ enum PersonalInfoEditStatus {
   noInternet,
   invalidEmail,
   emailUsed,
+  mandateAlreadySigned,
 }
 
 class PersonalInfoEditState extends Equatable {
@@ -22,6 +23,7 @@ class PersonalInfoEditState extends Equatable {
   final PersonalInfoEditStatus status;
   final UserExt loggedInUserExt;
   final String error;
+
   /// When status is [PersonalInfoEditStatus.emailUsed], the email the user tried to change to.
   final String? requestedNewEmail;
 
@@ -40,5 +42,10 @@ class PersonalInfoEditState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [status, loggedInUserExt, error, requestedNewEmail];
+  List<Object?> get props => [
+    status,
+    loggedInUserExt,
+    error,
+    requestedNewEmail,
+  ];
 }

@@ -685,6 +685,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get accountNumberMustBe8Digits => 'Kontonummer muss 8-stellig sein';
 
   @override
+  String get mandateAlreadySignedError =>
+      'Bankdaten können nicht geändert werden, weil dein BACS-Mandat bereits unterzeichnet ist.';
+
+  @override
   String get passwordRuleMinChars => 'Mindestens 7 Zeichen verwenden';
 
   @override

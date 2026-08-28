@@ -19,7 +19,8 @@ void resetPersonalInfoEditSheetOnDismiss(
   final status = bloc.state.status;
   bloc.add(const PersonalInfoEditStatusReset());
   if (status == PersonalInfoEditStatus.success ||
-      status == PersonalInfoEditStatus.emailChangeSuccess) {
+      status == PersonalInfoEditStatus.emailChangeSuccess ||
+      status == PersonalInfoEditStatus.mandateAlreadySigned) {
     authCubit.refreshUser();
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -109,14 +111,24 @@ class SignMandatePage extends StatelessWidget {
                         ),
                         leadingIcon: FontAwesomeIcons.hashtag,
                         leadingIconColor: FamilyAppTheme.primary40,
-                        showEdit: false,
+                        showEdit: !user.mandateSigned,
+                        onEdit: () => _onEditUkBankDetails(
+                          context,
+                          user,
+                          rowType: 'sort_code',
+                        ),
                       ),
                       SignMandateDetailRow(
                         label: locals.signMandateRowBankAccountNumber,
                         value: user.accountNumber,
                         leadingIcon: FontAwesomeIcons.buildingColumns,
                         leadingIconColor: FamilyAppTheme.primary40,
-                        showEdit: false,
+                        showEdit: !user.mandateSigned,
+                        onEdit: () => _onEditUkBankDetails(
+                          context,
+                          user,
+                          rowType: 'account_number',
+                        ),
                       ),
                     ] else
                       SignMandateDetailRow(
@@ -220,10 +232,7 @@ class SignMandatePage extends StatelessWidget {
         specificErrorContext: locals.mandateFailTryAgainLater,
       );
     } else if (state.status == RegistrationStatus.bacsDetailsWrong) {
-      pushError(
-        errorReason: 'bacs_details_wrong',
-        specificErrorContext: locals.updateBacsAccountDetailsError,
-      );
+      _showBacsDetailsWrongModal(context, state, locals);
     } else if (state.status == RegistrationStatus.ddiFailed) {
       pushError(
         errorReason: 'ddi_failed',
@@ -231,5 +240,58 @@ class SignMandatePage extends StatelessWidget {
             '${locals.ddiFailedTitle}. ${locals.ddiFailedMessage}',
       );
     }
+  }
+
+  Future<void> _onEditUkBankDetails(
+    BuildContext context,
+    UserExt user, {
+    required String rowType,
+  }) async {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AnalyticsEventName.signMandateChangeDetailsClicked,
+        eventProperties: {'row_type': rowType},
+      ),
+    );
+    final result = await showChangeBankDetailsSheetForUser(context, user);
+    if (!context.mounted) return;
+    if (result == BankDetailsSheetResult.mandateAlreadySigned) {
+      await navigateAfterMandateSigning(context, user.country);
+    }
+  }
+
+  void _showBacsDetailsWrongModal(
+    BuildContext context,
+    RegistrationState state,
+    AppLocalizations locals,
+  ) {
+    final registrationBloc = context.read<RegistrationBloc>();
+    final subtitle = state.errorMessage.contains('MANDATE_ALREADY_SIGNED')
+        ? locals.mandateAlreadySignedError
+        : (state.errorMessage.isNotEmpty
+              ? state.errorMessage
+              : locals.mandateFailTryAgainLater);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!context.mounted) return;
+      FunModal(
+        title: locals.saveFailed,
+        subtitle: subtitle,
+        closeAction: () {
+          registrationBloc.add(const RegistrationMandateErrorDismissed());
+          Navigator.of(context).pop();
+        },
+        buttons: [
+          FunButton(
+            text: locals.confirm,
+            analyticsEvent: AnalyticsEventName.okClicked.toEvent(),
+            onTap: () {
+              registrationBloc.add(const RegistrationMandateErrorDismissed());
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ).show(context);
+    });
   }
 }

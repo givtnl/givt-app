@@ -683,6 +683,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get accountNumberMustBe8Digits => 'Rekeningnummer moet 8 cijfers zijn';
 
   @override
+  String get mandateAlreadySignedError =>
+      'Bankgegevens kunnen niet worden gewijzigd omdat je BACS-machtiging al is ondertekend.';
+
+  @override
   String get passwordRuleMinChars => 'Gebruik minimaal 7 tekens';
 
   @override

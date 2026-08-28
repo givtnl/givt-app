@@ -47,8 +47,13 @@ class PersonalInfoEditFeedbackListener extends StatelessWidget {
           _showInfoModal(
             context,
             title: locals.saveFailed,
-            subtitle: locals.updatePersonalInfoError,
+            subtitle: state.error.isNotEmpty
+                ? state.error
+                : locals.updatePersonalInfoError,
           );
+        }
+        if (state.status == PersonalInfoEditStatus.mandateAlreadySigned) {
+          Navigator.of(context).pop();
         }
       },
       child: child,
