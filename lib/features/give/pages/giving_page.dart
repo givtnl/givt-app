@@ -11,8 +11,12 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/cubit/give_result_cubit.dart';
+import 'package:givt_app/features/give/cubit/give_result_uimodel.dart';
 import 'package:givt_app/features/give/models/models.dart';
+import 'package:givt_app/features/give/widgets/give_result_views.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,12 +32,15 @@ class GivingPage extends StatefulWidget {
 
 class _GivingPageState extends State<GivingPage> {
   late CustomInAppBrowser _customInAppBrowser;
+  late GiveResultCubit _resultCubit;
   bool browserIsOpened = false;
   bool showBackButton = false;
+  bool _isCheckingResult = false;
 
   @override
   void initState() {
     super.initState();
+    _resultCubit = getIt<GiveResultCubit>();
     _customInAppBrowser = CustomInAppBrowser(
       onLoad: (url) async {
         if (url == null) {
@@ -43,12 +50,13 @@ class _GivingPageState extends State<GivingPage> {
           return;
         }
         LoggingInfo.instance.info(
-          'Closing browser and navigating to home page from $url',
+          'Closing confirm browser from $url',
         );
         await _closeBrowser();
       },
+      onExitCallback: _onBrowserExited,
     );
-    
+
     // Show the back button after 1 second delay
     Timer(const Duration(seconds: 1), () {
       if (mounted) {
@@ -59,28 +67,54 @@ class _GivingPageState extends State<GivingPage> {
     });
   }
 
+  @override
+  void dispose() {
+    unawaited(_resultCubit.close());
+    super.dispose();
+  }
+
+  Future<void> _onBrowserExited() async {
+    if (_isCheckingResult) {
+      return;
+    }
+    _isCheckingResult = true;
+    if (!mounted) {
+      return;
+    }
+    LoggingInfo.instance.info(
+      'Confirm browser closed, fetching transaction status',
+    );
+    final transactionIds = context.read<GiveBloc>().state.transactionIds;
+    await _resultCubit.checkStatus(transactionIds);
+  }
+
   Future<void> _closeBrowser() async {
     if (_customInAppBrowser.isOpened()) {
       LoggingInfo.instance.info(
-        'Browser is opened, closing browser and navigating to home page',
+        'Browser is opened, closing browser',
       );
       await _customInAppBrowser.close();
     }
+  }
+
+  Future<void> _goHome({required bool given}) async {
     if (!mounted) {
       return;
     }
 
-    final afterGivingRedirection =
-        context.read<GiveBloc>().state.afterGivingRedirection;
+    final afterGivingRedirection = context
+        .read<GiveBloc>()
+        .state
+        .afterGivingRedirection;
 
     context.goNamed(
       Pages.home.name,
       queryParameters: {
-        'given': 'true',
+        'given': given.toString(),
       },
     );
 
-    if (afterGivingRedirection.isNotEmpty) {
+    if (given && afterGivingRedirection.isNotEmpty) {
       final url = Uri.parse(afterGivingRedirection);
       LoggingInfo.instance.info(
         'Redirecting after external link donation. Attempting to launch $url',
@@ -149,75 +183,95 @@ class _GivingPageState extends State<GivingPage> {
     return country.isCreditCard ? 'confirm-G4F.html' : 'confirm.html';
   }
 
+  void _openBrowser(BuildContext context) {
+    if (browserIsOpened) {
+      return;
+    }
+    final givt = _buildGivt(context);
+    final confirmPath = _confirmPagePath(context);
+
+    Vibration.vibrate(amplitude: 128);
+    LoggingInfo.instance.info(
+      'Opening browser at $confirmPath with $givt',
+    );
+
+    browserIsOpened = true;
+    _customInAppBrowser.openUrlRequest(
+      urlRequest: URLRequest(
+        url: WebUri.uri(
+          Uri.https(
+            getIt<RequestHelper>().apiURL,
+            confirmPath,
+            {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
+          ),
+        ),
+      ),
+      settings: InAppBrowserClassSettings(
+        browserSettings: InAppBrowserSettings(
+          hideCloseButton: true,
+          hideUrlBar: true,
+          hideTitleBar: true,
+          hideToolbarBottom: true,
+          hideToolbarTop: true,
+          toolbarTopBackgroundColor: Colors.white,
+          toolbarTopTintColor: Colors.white,
+          toolbarBottomBackgroundColor: Colors.white,
+          allowGoBackWithBackButton: false,
+          shouldCloseOnBackButtonPressed: false,
+          closeOnCannotGoBack: false,
+        ),
+        webViewSettings: InAppWebViewSettings(
+          underPageBackgroundColor: Colors.white,
+          allowsBackForwardNavigationGestures: false,
+        ),
+      ),
+    );
+  }
+
+  Widget _browserPlaceholder(BuildContext context) {
+    _openBrowser(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: showBackButton
+            ? ElevatedButton(
+                child: const Text('Go Back Home'),
+                onPressed: () {
+                  context.goNamed(
+                    Pages.home.name,
+                    queryParameters: {
+                      'given': 'true',
+                    },
+                  );
+                },
+              )
+            : const SizedBox.shrink(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Builder(
-        builder: (
-          context,
-        ) {
-          if (browserIsOpened) {
-            return const SizedBox.shrink();
+      body: BaseStateConsumer(
+        cubit: _resultCubit,
+        onInitial: _browserPlaceholder,
+        onLoading: (_) => const GiveResultLoadingView(),
+        onData: (context, uiModel) {
+          switch (uiModel.outcome) {
+            case GiveResultOutcome.success:
+              return GiveResultSuccessView(
+                onDone: () => _goHome(given: true),
+              );
+            case GiveResultOutcome.failed:
+              return GiveResultFailedView(
+                onGoHome: () => _goHome(given: false),
+              );
+            case GiveResultOutcome.unknown:
+              return GiveResultUnknownView(
+                onGoHome: () => _goHome(given: false),
+              );
           }
-          final givt = _buildGivt(context);
-          final confirmPath = _confirmPagePath(context);
-
-          Vibration.vibrate(amplitude: 128);
-          LoggingInfo.instance.info(
-            'Opening browser at $confirmPath with $givt',
-          );
-
-          browserIsOpened = true;
-          _customInAppBrowser.openUrlRequest(
-            urlRequest: URLRequest(
-              url: WebUri.uri(
-                Uri.https(
-                  getIt<RequestHelper>().apiURL,
-                  confirmPath,
-                  {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
-                ),
-              ),
-            ),
-            settings: InAppBrowserClassSettings(
-              browserSettings: InAppBrowserSettings(
-                hideCloseButton: true,
-                hideUrlBar: true,
-                hideTitleBar: true,
-                hideToolbarBottom: true,
-                hideToolbarTop: true,
-                toolbarTopBackgroundColor: Colors.white,
-                toolbarTopTintColor: Colors.white,
-                toolbarBottomBackgroundColor: Colors.white,
-                allowGoBackWithBackButton: false,
-                shouldCloseOnBackButtonPressed: false,
-                closeOnCannotGoBack: false,
-              ),
-              webViewSettings: InAppWebViewSettings(
-                underPageBackgroundColor: Colors.white,
-                allowsBackForwardNavigationGestures: false,
-              )
-            ),
-          );
-
-          /// In case the user ends up on the giving screen
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: showBackButton
-                  ? ElevatedButton(
-                      child: const Text('Go Back Home'),
-                      onPressed: () {
-                        context.goNamed(
-                          Pages.home.name,
-                          queryParameters: {
-                            'given': 'true',
-                          },
-                        );
-                      },
-                    )
-                  : const SizedBox.shrink(),
-            ),
-          );
         },
       ),
     );
@@ -226,13 +280,16 @@ class _GivingPageState extends State<GivingPage> {
 
 /// Custom InAppBrowser class with custom callback
 typedef CustomInAppBroserCallback = void Function(Uri? url);
+typedef CustomInAppBrowserExitCallback = Future<void> Function();
 
 class CustomInAppBrowser extends InAppBrowser {
   CustomInAppBrowser({
     required this.onLoad,
+    required this.onExitCallback,
   }) : super();
 
   final CustomInAppBroserCallback onLoad;
+  final CustomInAppBrowserExitCallback onExitCallback;
 
   @override
   Future<void> onLoadStart(Uri? url) async => onLoad(url);
@@ -240,5 +297,10 @@ class CustomInAppBrowser extends InAppBrowser {
   @override
   Future<void> onCloseWindow() async {
     LoggingInfo.instance.info('User has pressed the back button');
+  }
+
+  @override
+  void onExit() {
+    unawaited(onExitCallback());
   }
 }

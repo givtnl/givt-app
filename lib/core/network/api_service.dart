@@ -1545,4 +1545,40 @@ class APIService {
 
     return response.statusCode == 200;
   }
+
+  Future<int> fetchTransactionStatus(int transactionId) async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/Transaction/$transactionId',
+    );
+    final response = await client.get(url);
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure.fromHttpResponse(
+        statusCode: response.statusCode,
+        body: response.body,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    if (decodedBody['isError'] == true) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+    final item = decodedBody['item'];
+    if (item is! Map<String, dynamic>) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+    final status = item['status'];
+    if (status is! num) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+    return status.toInt();
+  }
 }

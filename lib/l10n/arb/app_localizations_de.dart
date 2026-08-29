@@ -748,6 +748,36 @@ class AppLocalizationsDe extends AppLocalizations {
   String get flowGenericErrorGoToHome => 'Zur Startseite';
 
   @override
+  String get giveResultLoadingTitle => 'Bitte warten...';
+
+  @override
+  String get giveResultLoadingMessage => 'Wir prüfen deine Spende.';
+
+  @override
+  String get giveResultSuccessTitle => 'Danke fürs Geben!';
+
+  @override
+  String get giveResultSuccessMessage =>
+      'Deine Spende wird verarbeitet. Den Status siehst du in der Übersicht.';
+
+  @override
+  String get giveResultFailedTitle => 'Spende nicht abgeschlossen';
+
+  @override
+  String get giveResultFailedMessage =>
+      'Diese Spende wurde abgebrochen oder konnte nicht verarbeitet werden. Schau in deine Übersicht oder kontaktiere uns, wenn du Fragen hast.';
+
+  @override
+  String get giveResultUnknownTitle => 'Wir sind uns noch nicht sicher';
+
+  @override
+  String get giveResultUnknownMessage =>
+      'Wir konnten den Status dieser Spende noch nicht bestätigen. Schau gleich in deine Übersicht oder kontaktiere uns, wenn sie nicht erscheint.';
+
+  @override
+  String get giveResultDone => 'Fertig';
+
+  @override
   String get wrongCredentials =>
       'Ungültige E-Mail-Adresse oder Passwort. Ist es möglich, dass du dich mit einem anderen E-Mail-Konto registriert hast?';
 

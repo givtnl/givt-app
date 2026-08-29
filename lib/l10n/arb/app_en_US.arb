@@ -445,6 +445,15 @@
     "description": "Leave shared flow error screen to app home",
     "type": "text"
   },
+  "giveResultLoadingTitle": "Please wait...",
+  "giveResultLoadingMessage": "We're checking your donation.",
+  "giveResultSuccessTitle": "Thanks for giving!",
+  "giveResultSuccessMessage": "Your donation is being processed. You can check the status in the overview.",
+  "giveResultFailedTitle": "Donation not completed",
+  "giveResultFailedMessage": "This donation was cancelled or could not be processed. Check your overview or contact us if you have questions.",
+  "giveResultUnknownTitle": "We're not sure what happened",
+  "giveResultUnknownMessage": "We couldn't confirm the status of this donation yet. Check your overview in a moment, or contact us if it doesn't appear.",
+  "giveResultDone": "Done",
   "wrongCredentials": "Invalid email address or password. Is it possible that you registered with a different email account?",
   "@wrongCredentials": {
     "description": "Kan dit leuker? \n  Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert",

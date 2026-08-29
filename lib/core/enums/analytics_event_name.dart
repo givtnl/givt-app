@@ -153,9 +153,13 @@ enum AnalyticsEventName {
   externalDonationsTabsChanged('external_donations_tabs_changed'),
   externalDonationsAddClicked('external_donations_add_clicked'),
   externalDonationsCardClicked('external_donations_card_clicked'),
-  externalDonationsDetailSummaryViewed('external_donations_detail_summary_viewed'),
+  externalDonationsDetailSummaryViewed(
+    'external_donations_detail_summary_viewed',
+  ),
   externalDonationsStopClicked('external_donations_stop_clicked'),
-  externalDonationsStopConfirmClicked('external_donations_stop_confirm_clicked'),
+  externalDonationsStopConfirmClicked(
+    'external_donations_stop_confirm_clicked',
+  ),
   externalDonationsStopCancelClicked('external_donations_stop_cancel_clicked'),
   externalDonationsCreateOrganisationSearchClicked(
     'external_donations_create_organisation_search_clicked',
@@ -169,7 +173,9 @@ enum AnalyticsEventName {
   externalDonationsCreateOrganisationContinueClicked(
     'external_donations_create_organisation_continue_clicked',
   ),
-  externalDonationsCreateAmountEntered('external_donations_create_amount_entered'),
+  externalDonationsCreateAmountEntered(
+    'external_donations_create_amount_entered',
+  ),
   externalDonationsCreateAmountContinueClicked(
     'external_donations_create_amount_continue_clicked',
   ),
@@ -185,7 +191,9 @@ enum AnalyticsEventName {
   externalDonationsCreateStartDateContinueClicked(
     'external_donations_create_start_date_continue_clicked',
   ),
-  externalDonationsCreateConfirmClicked('external_donations_create_confirm_clicked'),
+  externalDonationsCreateConfirmClicked(
+    'external_donations_create_confirm_clicked',
+  ),
   externalDonationsCreateSuccessDoneClicked(
     'external_donations_create_success_done_clicked',
   ),
@@ -195,9 +203,13 @@ enum AnalyticsEventName {
   externalDonationsCreateCloseCancelClicked(
     'external_donations_create_close_cancel_clicked',
   ),
-  externalDonationsCreateSearchTapped('external_donations_create_search_tapped'),
+  externalDonationsCreateSearchTapped(
+    'external_donations_create_search_tapped',
+  ),
   externalDonationsManageClicked('external_donations_manage_clicked'),
-  externalDonationsManageAmountClicked('external_donations_manage_amount_clicked'),
+  externalDonationsManageAmountClicked(
+    'external_donations_manage_amount_clicked',
+  ),
   externalDonationsManageFrequencyClicked(
     'external_donations_manage_frequency_clicked',
   ),
@@ -685,7 +697,16 @@ enum AnalyticsEventName {
   ),
   flowGenericErrorGoHomeClicked('flow_generic_error_go_home_clicked'),
   homeFaqIconClicked('home_faq_icon_clicked'),
-  offlineSuccessGotItTapped('offline_success_got_it_tapped');
+  offlineSuccessGotItTapped('offline_success_got_it_tapped'),
+  giveResultSuccessDoneClicked('give_result_success_done_clicked'),
+  giveResultFailedGoHomeClicked('give_result_failed_go_home_clicked'),
+  giveResultFailedContactSupportClicked(
+    'give_result_failed_contact_support_clicked',
+  ),
+  giveResultUnknownGoHomeClicked('give_result_unknown_go_home_clicked'),
+  giveResultUnknownContactSupportClicked(
+    'give_result_unknown_contact_support_clicked',
+  );
 
   const AnalyticsEventName(this.value);
 

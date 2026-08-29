@@ -68,8 +68,7 @@ class _FakeGivtRepository with GivtRepository {
   Future<List<int>> submitGivts({
     required String guid,
     required Map<String, dynamic> body,
-  }) =>
-      throw UnimplementedError();
+  }) => throw UnimplementedError();
 
   @override
   Future<List<Givt>> fetchGivts() => throw UnimplementedError();
@@ -89,14 +88,12 @@ class _FakeGivtRepository with GivtRepository {
   Future<List<ExternalDonation>> fetchExternalDonationSummary({
     required String fromDate,
     required String tillDate,
-  }) =>
-      throw UnimplementedError();
+  }) => throw UnimplementedError();
 
   @override
   Future<List<ExternalDonationTransaction>> fetchExternalDonationTransactions(
     String externalDonationId,
-  ) =>
-      throw UnimplementedError();
+  ) => throw UnimplementedError();
 
   @override
   Future<bool> stopExternalDonation(String id) => throw UnimplementedError();
@@ -108,14 +105,12 @@ class _FakeGivtRepository with GivtRepository {
   Future<bool> downloadYearlyOverview({
     required String fromDate,
     required String toDate,
-  }) =>
-      throw UnimplementedError();
+  }) => throw UnimplementedError();
 
   @override
   Future<ExternalDonation?> addExternalDonation({
     required Map<String, dynamic> body,
-  }) =>
-      throw UnimplementedError();
+  }) => throw UnimplementedError();
 
   @override
   Future<ExternalDonation?> fetchExternalDonationDetail(String id) =>
@@ -125,8 +120,7 @@ class _FakeGivtRepository with GivtRepository {
   Future<bool> updateExternalDonation({
     required String id,
     required Map<String, dynamic> body,
-  }) =>
-      throw UnimplementedError();
+  }) => throw UnimplementedError();
 
   @override
   Future<bool> deleteExternalDonation(String id) => throw UnimplementedError();
@@ -135,14 +129,12 @@ class _FakeGivtRepository with GivtRepository {
   Future<bool> bulkUpdateExternalDonationTransactions({
     required List<String> transactionIds,
     required double newAmount,
-  }) =>
-      throw UnimplementedError();
+  }) => throw UnimplementedError();
 
   @override
   Future<bool> bulkDeleteExternalDonationTransactions({
     required List<String> transactionIds,
-  }) =>
-      throw UnimplementedError();
+  }) => throw UnimplementedError();
 
   @override
   Future<List<SummaryItem>> fetchSummary({
@@ -151,7 +143,10 @@ class _FakeGivtRepository with GivtRepository {
     required String tillDate,
     required String orderType,
     required String groupType,
-  }) =>
+  }) => throw UnimplementedError();
+
+  @override
+  Future<int> fetchTransactionStatus(int transactionId) =>
       throw UnimplementedError();
 }
 
@@ -200,7 +195,9 @@ void main() {
 
     test('syncs when reconnecting after being offline', () async {
       networkInfo = _FakeNetworkInfo(isConnected: false);
-      repository = _FakeGivtRepository(transactions: const [_sampleTransaction]);
+      repository = _FakeGivtRepository(
+        transactions: const [_sampleTransaction],
+      );
       cubit = OfflineQueueCubit(repository, networkInfo);
 
       networkInfo.emitConnection(false);
@@ -218,7 +215,9 @@ void main() {
 
     test('keeps pending count when sync fails while online', () async {
       networkInfo = _FakeNetworkInfo(isConnected: true);
-      repository = _FakeGivtRepository(transactions: const [_sampleTransaction]);
+      repository = _FakeGivtRepository(
+        transactions: const [_sampleTransaction],
+      );
       repository.failSync = true;
       cubit = OfflineQueueCubit(repository, networkInfo);
 

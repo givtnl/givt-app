@@ -742,6 +742,36 @@ class AppLocalizationsEs extends AppLocalizations {
   String get flowGenericErrorGoToHome => 'Ir al inicio';
 
   @override
+  String get giveResultLoadingTitle => 'Por favor, espera...';
+
+  @override
+  String get giveResultLoadingMessage => 'Estamos comprobando tu donación.';
+
+  @override
+  String get giveResultSuccessTitle => '¡Gracias por dar!';
+
+  @override
+  String get giveResultSuccessMessage =>
+      'Tu donación se está procesando. Puedes ver el estado en el resumen.';
+
+  @override
+  String get giveResultFailedTitle => 'Donación no completada';
+
+  @override
+  String get giveResultFailedMessage =>
+      'Esta donación se canceló o no se pudo procesar. Revisa el resumen o contáctanos si tienes preguntas.';
+
+  @override
+  String get giveResultUnknownTitle => 'No estamos seguros de lo que pasó';
+
+  @override
+  String get giveResultUnknownMessage =>
+      'Aún no pudimos confirmar el estado de esta donación. Revisa el resumen en un momento o contáctanos si no aparece.';
+
+  @override
+  String get giveResultDone => 'Listo';
+
+  @override
   String get wrongCredentials =>
       'Invalid e-mail address or password. Is it possible that you registered with a different e-mail account?';
 
@@ -4312,6 +4342,36 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get flowGenericErrorGoToHome => 'Ir al inicio';
+
+  @override
+  String get giveResultLoadingTitle => 'Por favor, espera...';
+
+  @override
+  String get giveResultLoadingMessage => 'Estamos comprobando tu donación.';
+
+  @override
+  String get giveResultSuccessTitle => '¡Gracias por dar!';
+
+  @override
+  String get giveResultSuccessMessage =>
+      'Tu donación se está procesando. Puedes ver el estado en el resumen.';
+
+  @override
+  String get giveResultFailedTitle => 'Donación no completada';
+
+  @override
+  String get giveResultFailedMessage =>
+      'Esta donación se canceló o no se pudo procesar. Revisa el resumen o contáctanos si tienes preguntas.';
+
+  @override
+  String get giveResultUnknownTitle => 'No estamos seguros de lo que pasó';
+
+  @override
+  String get giveResultUnknownMessage =>
+      'Aún no pudimos confirmar el estado de esta donación. Revisa el resumen en un momento o contáctanos si no aparece.';
+
+  @override
+  String get giveResultDone => 'Listo';
 
   @override
   String get wrongCredentials =>

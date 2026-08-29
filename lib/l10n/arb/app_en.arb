@@ -449,6 +449,51 @@
     "description": "Leave shared flow error screen to app home",
     "type": "text"
   },
+  "giveResultLoadingTitle": "Please wait...",
+  "@giveResultLoadingTitle": {
+    "description": "Title shown while checking donation status after the confirm browser closes",
+    "type": "text"
+  },
+  "giveResultLoadingMessage": "We're checking your donation.",
+  "@giveResultLoadingMessage": {
+    "description": "Body shown while checking donation status after the confirm browser closes",
+    "type": "text"
+  },
+  "giveResultSuccessTitle": "Thanks for giving!",
+  "@giveResultSuccessTitle": {
+    "description": "Title on native success screen after donation confirmation",
+    "type": "text"
+  },
+  "giveResultSuccessMessage": "Your donation is being processed. You can check the status in the overview.",
+  "@giveResultSuccessMessage": {
+    "description": "Body on native success screen after donation confirmation",
+    "type": "text"
+  },
+  "giveResultFailedTitle": "Donation not completed",
+  "@giveResultFailedTitle": {
+    "description": "Title when the confirmed donation was cancelled or refused",
+    "type": "text"
+  },
+  "giveResultFailedMessage": "This donation was cancelled or could not be processed. Check your overview or contact us if you have questions.",
+  "@giveResultFailedMessage": {
+    "description": "Body when the confirmed donation was cancelled or refused",
+    "type": "text"
+  },
+  "giveResultUnknownTitle": "We're not sure what happened",
+  "@giveResultUnknownTitle": {
+    "description": "Title when donation status could not be confirmed in time",
+    "type": "text"
+  },
+  "giveResultUnknownMessage": "We couldn't confirm the status of this donation yet. Check your overview in a moment, or contact us if it doesn't appear.",
+  "@giveResultUnknownMessage": {
+    "description": "Body when donation status could not be confirmed in time",
+    "type": "text"
+  },
+  "giveResultDone": "Done",
+  "@giveResultDone": {
+    "description": "Primary action on native donation success screen",
+    "type": "text"
+  },
   "wrongCredentials": "Invalid e-mail address or password. Is it possible that you registered with a different e-mail account?",
   "@wrongCredentials": {
     "description": "Kan dit leuker? \n  Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert",

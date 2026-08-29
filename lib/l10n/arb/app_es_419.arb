@@ -445,6 +445,15 @@
     "description": "Leave shared flow error screen to app home",
     "type": "text"
   },
+  "giveResultLoadingTitle": "Por favor, espera...",
+  "giveResultLoadingMessage": "Estamos comprobando tu donación.",
+  "giveResultSuccessTitle": "¡Gracias por dar!",
+  "giveResultSuccessMessage": "Tu donación se está procesando. Puedes ver el estado en el resumen.",
+  "giveResultFailedTitle": "Donación no completada",
+  "giveResultFailedMessage": "Esta donación se canceló o no se pudo procesar. Revisa el resumen o contáctanos si tienes preguntas.",
+  "giveResultUnknownTitle": "No estamos seguros de lo que pasó",
+  "giveResultUnknownMessage": "Aún no pudimos confirmar el estado de esta donación. Revisa el resumen en un momento o contáctanos si no aparece.",
+  "giveResultDone": "Listo",
   "wrongCredentials": "Correo electrónico o contraseña no válidos. ¿Es posible que te hayas registrado con un correo electrónico diferente?",
   "@wrongCredentials": {
     "description": "Kan dit leuker? \n  Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert",
