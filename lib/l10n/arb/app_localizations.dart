@@ -1397,6 +1397,60 @@ abstract class AppLocalizations {
   /// **'Go to home'**
   String get flowGenericErrorGoToHome;
 
+  /// Title shown while checking donation status after the confirm browser closes
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait...'**
+  String get giveResultLoadingTitle;
+
+  /// Body shown while checking donation status after the confirm browser closes
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re checking your donation.'**
+  String get giveResultLoadingMessage;
+
+  /// Title on native success screen after donation confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks for giving!'**
+  String get giveResultSuccessTitle;
+
+  /// Body on native success screen after donation confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Your donation is being processed. You can check the status in the overview.'**
+  String get giveResultSuccessMessage;
+
+  /// Title when the confirmed donation was cancelled or refused
+  ///
+  /// In en, this message translates to:
+  /// **'Donation not completed'**
+  String get giveResultFailedTitle;
+
+  /// Body when the confirmed donation was cancelled or refused
+  ///
+  /// In en, this message translates to:
+  /// **'This donation was cancelled or could not be processed. Check your overview or contact us if you have questions.'**
+  String get giveResultFailedMessage;
+
+  /// Title when donation status could not be confirmed in time
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re not sure what happened'**
+  String get giveResultUnknownTitle;
+
+  /// Body when donation status could not be confirmed in time
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t confirm the status of this donation yet. Check your overview in a moment, or contact us if it doesn\'t appear.'**
+  String get giveResultUnknownMessage;
+
+  /// Primary action on native donation success screen
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get giveResultDone;
+
   /// Kan dit leuker?
   ///   Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert
   ///

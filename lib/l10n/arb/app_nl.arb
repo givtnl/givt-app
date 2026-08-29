@@ -450,6 +450,51 @@
     "description": "Leave shared flow error screen to app home",
     "type": "text"
   },
+  "giveResultLoadingTitle": "Even geduld...",
+  "@giveResultLoadingTitle": {
+    "description": "Title shown while checking donation status after the confirm browser closes",
+    "type": "text"
+  },
+  "giveResultLoadingMessage": "We controleren je gift.",
+  "@giveResultLoadingMessage": {
+    "description": "Body shown while checking donation status after the confirm browser closes",
+    "type": "text"
+  },
+  "giveResultSuccessTitle": "Bedankt voor je gift!",
+  "@giveResultSuccessTitle": {
+    "description": "Title on native success screen after donation confirmation",
+    "type": "text"
+  },
+  "giveResultSuccessMessage": "Je gift wordt verwerkt. Je kunt de status bekijken in het overzicht.",
+  "@giveResultSuccessMessage": {
+    "description": "Body on native success screen after donation confirmation",
+    "type": "text"
+  },
+  "giveResultFailedTitle": "Gift niet afgerond",
+  "@giveResultFailedTitle": {
+    "description": "Title when the confirmed donation was cancelled or refused",
+    "type": "text"
+  },
+  "giveResultFailedMessage": "Deze gift is geannuleerd of kon niet worden verwerkt. Bekijk je overzicht of neem contact op als je vragen hebt.",
+  "@giveResultFailedMessage": {
+    "description": "Body when the confirmed donation was cancelled or refused",
+    "type": "text"
+  },
+  "giveResultUnknownTitle": "We weten het nog niet zeker",
+  "@giveResultUnknownTitle": {
+    "description": "Title when donation status could not be confirmed in time",
+    "type": "text"
+  },
+  "giveResultUnknownMessage": "We konden de status van deze gift nog niet bevestigen. Bekijk zo je overzicht, of neem contact op als de gift niet verschijnt.",
+  "@giveResultUnknownMessage": {
+    "description": "Body when donation status could not be confirmed in time",
+    "type": "text"
+  },
+  "giveResultDone": "Klaar",
+  "@giveResultDone": {
+    "description": "Primary action on native donation success screen",
+    "type": "text"
+  },
   "wrongCredentials": "Dit e-mailadres of wachtwoord komt ons niet bekend voor. Is het mogelijk dat je een ander e-mailadres en/of wachtwoord hebt opgegeven?",
   "@wrongCredentials": {
     "description": "Kan dit leuker? \n  Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert",

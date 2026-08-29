@@ -82,6 +82,8 @@ mixin GivtRepository {
     required String orderType,
     required String groupType,
   });
+
+  Future<int> fetchTransactionStatus(int transactionId);
 }
 
 class GivtRepositoryImpl with GivtRepository {
@@ -96,8 +98,7 @@ class GivtRepositoryImpl with GivtRepository {
   Future<void>? _syncOfflineGivtsInFlight;
 
   @override
-  Stream<void> get offlineQueueChanged =>
-      _offlineQueueChangedController.stream;
+  Stream<void> get offlineQueueChanged => _offlineQueueChangedController.stream;
 
   @override
   List<GivtTransaction> getCachedOfflineGivtTransactions() {
@@ -252,6 +253,11 @@ class GivtRepositoryImpl with GivtRepository {
     return Givt.fromJsonList(
       decodedJson,
     );
+  }
+
+  @override
+  Future<int> fetchTransactionStatus(int transactionId) {
+    return apiClient.fetchTransactionStatus(transactionId);
   }
 
   @override

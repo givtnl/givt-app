@@ -450,6 +450,51 @@
     "description": "Leave shared flow error screen to app home",
     "type": "text"
   },
+  "giveResultLoadingTitle": "Por favor, espera...",
+  "@giveResultLoadingTitle": {
+    "description": "Title shown while checking donation status after the confirm browser closes",
+    "type": "text"
+  },
+  "giveResultLoadingMessage": "Estamos comprobando tu donación.",
+  "@giveResultLoadingMessage": {
+    "description": "Body shown while checking donation status after the confirm browser closes",
+    "type": "text"
+  },
+  "giveResultSuccessTitle": "¡Gracias por dar!",
+  "@giveResultSuccessTitle": {
+    "description": "Title on native success screen after donation confirmation",
+    "type": "text"
+  },
+  "giveResultSuccessMessage": "Tu donación se está procesando. Puedes ver el estado en el resumen.",
+  "@giveResultSuccessMessage": {
+    "description": "Body on native success screen after donation confirmation",
+    "type": "text"
+  },
+  "giveResultFailedTitle": "Donación no completada",
+  "@giveResultFailedTitle": {
+    "description": "Title when the confirmed donation was cancelled or refused",
+    "type": "text"
+  },
+  "giveResultFailedMessage": "Esta donación se canceló o no se pudo procesar. Revisa el resumen o contáctanos si tienes preguntas.",
+  "@giveResultFailedMessage": {
+    "description": "Body when the confirmed donation was cancelled or refused",
+    "type": "text"
+  },
+  "giveResultUnknownTitle": "No estamos seguros de lo que pasó",
+  "@giveResultUnknownTitle": {
+    "description": "Title when donation status could not be confirmed in time",
+    "type": "text"
+  },
+  "giveResultUnknownMessage": "Aún no pudimos confirmar el estado de esta donación. Revisa el resumen en un momento o contáctanos si no aparece.",
+  "@giveResultUnknownMessage": {
+    "description": "Body when donation status could not be confirmed in time",
+    "type": "text"
+  },
+  "giveResultDone": "Listo",
+  "@giveResultDone": {
+    "description": "Primary action on native donation success screen",
+    "type": "text"
+  },
   "wrongCredentials": "Invalid e-mail address or password. Is it possible that you registered with a different e-mail account?",
   "@wrongCredentials": {
     "description": "Kan dit leuker? \n  Foutmelding die je te zien krijgt als je een verkeerd email of wachtwoord invoert",

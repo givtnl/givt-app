@@ -746,6 +746,36 @@ class AppLocalizationsNl extends AppLocalizations {
   String get flowGenericErrorGoToHome => 'Naar home';
 
   @override
+  String get giveResultLoadingTitle => 'Even geduld...';
+
+  @override
+  String get giveResultLoadingMessage => 'We controleren je gift.';
+
+  @override
+  String get giveResultSuccessTitle => 'Bedankt voor je gift!';
+
+  @override
+  String get giveResultSuccessMessage =>
+      'Je gift wordt verwerkt. Je kunt de status bekijken in het overzicht.';
+
+  @override
+  String get giveResultFailedTitle => 'Gift niet afgerond';
+
+  @override
+  String get giveResultFailedMessage =>
+      'Deze gift is geannuleerd of kon niet worden verwerkt. Bekijk je overzicht of neem contact op als je vragen hebt.';
+
+  @override
+  String get giveResultUnknownTitle => 'We weten het nog niet zeker';
+
+  @override
+  String get giveResultUnknownMessage =>
+      'We konden de status van deze gift nog niet bevestigen. Bekijk zo je overzicht, of neem contact op als de gift niet verschijnt.';
+
+  @override
+  String get giveResultDone => 'Klaar';
+
+  @override
   String get wrongCredentials =>
       'Dit e-mailadres of wachtwoord komt ons niet bekend voor. Is het mogelijk dat je een ander e-mailadres en/of wachtwoord hebt opgegeven?';
 
