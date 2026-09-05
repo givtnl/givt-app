@@ -18,22 +18,17 @@ class SuccessDonationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final size = MediaQuery.sizeOf(context);
     return FunScaffold(
-      appBar: FunTopAppBar(
+      canPop: false,
+      appBar: const FunTopAppBar(
         variant: FunTopAppBarVariant.white,
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => context.goNamed(Pages.home.name),
-        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Spacer(),
-          Image.asset(
-            'assets/images/givy_gave.png',
-            height: size.height * 0.28,
+          Center(
+            child: FunIconGivy.hourglass(circleSize: 140),
           ),
           const SizedBox(height: 32),
           TitleMediumText(
@@ -49,8 +44,8 @@ class SuccessDonationPage extends StatelessWidget {
           FunButton(
             text: locals.offlineSuccessGotIt,
             onTap: () => context.goNamed(Pages.home.name),
-            analyticsEvent:
-                AnalyticsEventName.offlineSuccessGotItTapped.toEvent(),
+            analyticsEvent: AnalyticsEventName.offlineSuccessGotItTapped
+                .toEvent(),
           ),
         ],
       ),
