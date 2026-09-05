@@ -366,6 +366,11 @@
     "description": "Error message shown when bank account number is not 8 digits",
     "type": "text"
   },
+  "mandateAlreadySignedError": "Bankgegevens kunnen niet worden gewijzigd omdat je BACS-machtiging al is ondertekend.",
+  "@mandateAlreadySignedError": {
+    "description": "Shown when UK BACS bank details cannot be edited because the mandate is already signed",
+    "type": "text"
+  },
   "passwordRuleMinChars": "Gebruik minimaal 7 tekens",
   "@passwordRuleMinChars": {
     "description": "Password requirement: minimum 7 characters",

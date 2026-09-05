@@ -62,4 +62,28 @@ void main() {
       );
     });
   });
+
+  group('GivtServerFailure mandate already signed', () {
+    test('is true when 409 message contains the code', () {
+      const failure = GivtServerFailure(
+        statusCode: 409,
+        body: {'errorMessage': 'MANDATE_ALREADY_SIGNED: closed.completed'},
+      );
+
+      expect(failure.isMandateAlreadySigned, isTrue);
+      expect(
+        failure.userFacingMessage,
+        'MANDATE_ALREADY_SIGNED: closed.completed',
+      );
+    });
+
+    test('is false for other 409s', () {
+      const failure = GivtServerFailure(
+        statusCode: 409,
+        body: {'errorMessage': 'duplicate'},
+      );
+
+      expect(failure.isMandateAlreadySigned, isFalse);
+    });
+  });
 }

@@ -366,6 +366,11 @@
     "description": "Error message shown when bank account number is not 8 digits",
     "type": "text"
   },
+  "mandateAlreadySignedError": "No se pueden cambiar los datos bancarios porque tu mandato BACS ya está firmado.",
+  "@mandateAlreadySignedError": {
+    "description": "Shown when UK BACS bank details cannot be edited because the mandate is already signed",
+    "type": "text"
+  },
   "passwordRuleMinChars": "Use at least 7 characters",
   "@passwordRuleMinChars": {
     "description": "Password requirement: minimum 7 characters",

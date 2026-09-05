@@ -214,12 +214,52 @@ class APIService {
     final response = await client.post(url);
 
     if (response.statusCode >= 400) {
-      throw GivtServerFailure(
+      throw GivtServerFailure.fromHttpResponse(
         statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
+        body: response.body,
       );
     }
     return response.body;
+  }
+
+  /// Updates pending UK BACS sort code / account number before mandate sign.
+  Future<Map<String, dynamic>> updatePendingBacsBankDetails({
+    required String guid,
+    required String sortCode,
+    required String accountNumber,
+  }) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/Mandates/bacs');
+    final response = await client.post(
+      url,
+      body: jsonEncode({
+        'guid': guid,
+        'sortCode': sortCode,
+        'accountNumber': accountNumber,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure.fromHttpResponse(
+        statusCode: response.statusCode,
+        body: response.body,
+      );
+    }
+
+    if (response.body.isEmpty) {
+      return <String, dynamic>{};
+    }
+    final responseBody = jsonDecode(response.body);
+    if (responseBody is Map<String, dynamic>) {
+      final item = responseBody['item'];
+      if (item is Map<String, dynamic>) {
+        return item;
+      }
+      return responseBody;
+    }
+    return <String, dynamic>{};
   }
 
   Future<Map<String, dynamic>> fetchStripeSetupIntent() async {

@@ -478,6 +478,20 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// Copies [user] into [AuthState] without a network fetch or loading flash.
+  ///
+  /// Used after a successful personal-info sheet so the next action (for
+  /// example UK BACS sign) reads the values just saved, before [refreshUser]
+  /// completes.
+  void updateLocalUser(UserExt user) {
+    emit(
+      state.copyWith(
+        status: state.status,
+        user: user,
+      ),
+    );
+  }
+
   Future<void> refreshUser({bool emitAuthentication = true}) async {
     if (emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {

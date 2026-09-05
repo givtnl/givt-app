@@ -17,9 +17,16 @@ void resetPersonalInfoEditSheetOnDismiss(
   AuthCubit authCubit,
 ) {
   final status = bloc.state.status;
+  final updatedUser = bloc.state.loggedInUserExt;
   bloc.add(const PersonalInfoEditStatusReset());
   if (status == PersonalInfoEditStatus.success ||
-      status == PersonalInfoEditStatus.emailChangeSuccess) {
-    authCubit.refreshUser();
+      status == PersonalInfoEditStatus.emailChangeSuccess ||
+      status == PersonalInfoEditStatus.mandateAlreadySigned) {
+    // Apply the just-saved user immediately. [refreshUser] is async and
+    // previously left AuthCubit stale, so UK mandate sign could re-POST the
+    // old sort code / account number.
+    authCubit
+      ..updateLocalUser(updatedUser)
+      ..refreshUser();
   }
 }

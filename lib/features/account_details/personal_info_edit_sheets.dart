@@ -65,18 +65,52 @@ Future<void> showChangePhoneSheetForUser(
   ),
 );
 
-Future<void> showChangeBankDetailsSheetForUser(
+enum BankDetailsSheetResult {
+  saved,
+  mandateAlreadySigned,
+  dismissed,
+}
+
+Future<BankDetailsSheetResult> showChangeBankDetailsSheetForUser(
   BuildContext context,
   UserExt user,
-) => _showSheet(
-  context,
-  user,
-  ChangeBankDetailsBottomSheet(
-    sortCode: user.sortCode,
-    accountNumber: user.accountNumber,
-    iban: user.iban,
-  ),
-);
+) async {
+  final authCubit = context.read<AuthCubit>();
+  final bloc = PersonalInfoEditBloc(
+    authRepository: getIt<AuthRepository>(),
+    loggedInUserExt: user,
+  );
+  try {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => BlocProvider.value(
+        value: bloc,
+        child: PersonalInfoEditFeedbackListener(
+          child: ChangeBankDetailsBottomSheet(
+            sortCode: user.sortCode,
+            accountNumber: user.accountNumber,
+            iban: user.iban,
+          ),
+        ),
+      ),
+    );
+    final status = bloc.state.status;
+    if (context.mounted) {
+      resetPersonalInfoEditSheetOnDismiss(bloc, authCubit);
+    }
+    if (status == PersonalInfoEditStatus.mandateAlreadySigned) {
+      return BankDetailsSheetResult.mandateAlreadySigned;
+    }
+    if (status == PersonalInfoEditStatus.success) {
+      return BankDetailsSheetResult.saved;
+    }
+    return BankDetailsSheetResult.dismissed;
+  } finally {
+    await bloc.close();
+  }
+}
 
 Future<void> _showSheet(
   BuildContext context,

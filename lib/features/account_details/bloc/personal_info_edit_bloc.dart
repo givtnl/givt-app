@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network_info.dart';
@@ -19,10 +20,10 @@ class PersonalInfoEditBloc
     required this.authRepository,
     required UserExt loggedInUserExt,
   }) : super(
-          PersonalInfoEditState(
-            loggedInUserExt: loggedInUserExt,
-          ),
-        ) {
+         PersonalInfoEditState(
+           loggedInUserExt: loggedInUserExt,
+         ),
+       ) {
     on<PersonalInfoEditName>(_onNameChanged);
 
     on<PersonalInfoEditEmail>(_onEmailChanged);
@@ -63,10 +64,19 @@ class PersonalInfoEditBloc
       e.toString(),
       methodName: stackTrace.toString(),
     );
+    if (e.isMandateAlreadySigned) {
+      emit(
+        state.copyWith(
+          status: PersonalInfoEditStatus.mandateAlreadySigned,
+          error: e.userFacingMessage ?? '',
+        ),
+      );
+      return;
+    }
     emit(
       state.copyWith(
         status: PersonalInfoEditStatus.error,
-        error: e.body.toString(),
+        error: e.userFacingMessage ?? e.body.toString(),
       ),
     );
   }
@@ -136,10 +146,12 @@ class PersonalInfoEditBloc
 
       final result = await authRepository.checkEmail(event.email);
       if (result.contains('temp') || result.contains('true')) {
-        emit(state.copyWith(
-          status: PersonalInfoEditStatus.emailUsed,
-          requestedNewEmail: event.email,
-        ));
+        emit(
+          state.copyWith(
+            status: PersonalInfoEditStatus.emailUsed,
+            requestedNewEmail: event.email,
+          ),
+        );
         return;
       }
       final stateUser = state.loggedInUserExt.copyWith(email: event.email);
@@ -202,8 +214,9 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      LoggingInfo.instance
-          .info('Changing phone number to ${event.phoneNumber}');
+      LoggingInfo.instance.info(
+        'Changing phone number to ${event.phoneNumber}',
+      );
       final stateUser = state.loggedInUserExt.copyWith(
         phoneNumber: event.phoneNumber,
       );
@@ -237,14 +250,35 @@ class PersonalInfoEditBloc
 
       final cleanedIban = event.iban.replaceAll(' ', '');
 
-      final stateUser = state.loggedInUserExt.copyWith(
+      var stateUser = state.loggedInUserExt.copyWith(
         iban: cleanedIban,
         accountNumber: event.accountNumber,
         sortCode: event.sortCode,
       );
-      await authRepository.updateUserExt(
-        stateUser.toUpdateJsonBankOnly(),
-      );
+
+      final isUnsignedUkBacs =
+          Country.unitedKingdomCodes().contains(stateUser.country) &&
+          !stateUser.mandateSigned;
+
+      if (isUnsignedUkBacs) {
+        final result = await authRepository.updatePendingBacsBankDetails(
+          guid: stateUser.guid,
+          sortCode: event.sortCode,
+          accountNumber: event.accountNumber,
+        );
+        stateUser = stateUser.copyWith(
+          sortCode: result.sortCode.isNotEmpty
+              ? result.sortCode
+              : event.sortCode,
+          accountNumber: result.accountNumber.isNotEmpty
+              ? result.accountNumber
+              : event.accountNumber,
+        );
+      } else {
+        await authRepository.updateUserExt(
+          stateUser.toUpdateJsonBankOnly(),
+        );
+      }
       emit(
         state.copyWith(
           status: PersonalInfoEditStatus.success,
@@ -266,8 +300,9 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      LoggingInfo.instance
-          .info('Changing gift aid to ${event.isGiftAidEnabled}');
+      LoggingInfo.instance.info(
+        'Changing gift aid to ${event.isGiftAidEnabled}',
+      );
 
       final stateUser = state.loggedInUserExt.copyWith(
         isGiftAidEnabled: event.isGiftAidEnabled,
@@ -296,11 +331,13 @@ class PersonalInfoEditBloc
     PersonalInfoEditStatusReset event,
     Emitter<PersonalInfoEditState> emit,
   ) {
-    emit(PersonalInfoEditState(
-      status: PersonalInfoEditStatus.initial,
-      loggedInUserExt: state.loggedInUserExt,
-      error: state.error,
-    ));
+    emit(
+      PersonalInfoEditState(
+        status: PersonalInfoEditStatus.initial,
+        loggedInUserExt: state.loggedInUserExt,
+        error: state.error,
+      ),
+    );
   }
 
   FutureOr<void> _onMaxAmountChanged(
@@ -309,8 +346,9 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      LoggingInfo.instance
-          .info('Changing max amount to ${event.newAmountLimit}');
+      LoggingInfo.instance.info(
+        'Changing max amount to ${event.newAmountLimit}',
+      );
       final stateUser = state.loggedInUserExt.copyWith(
         amountLimit: event.newAmountLimit,
       );

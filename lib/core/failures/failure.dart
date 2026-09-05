@@ -55,6 +55,36 @@ class GivtServerFailure extends Equatable implements Exception {
     return statusCode == 400 || statusCode == 401;
   }
 
+  /// Best-effort user-facing text from a BFF/legacy error body.
+  String? get userFacingMessage {
+    if (body == null) {
+      return null;
+    }
+    const keys = ['errorMessage', 'message', 'detail', 'title', 'raw'];
+    for (final key in keys) {
+      final value = body![key];
+      if (value is String && value.trim().isNotEmpty) {
+        return value.trim();
+      }
+    }
+    return null;
+  }
+
+  /// `POST /givtservice/v1/Mandates/bacs` 409 when the latest mandate is
+  /// already signed or active. Message starts with `MANDATE_ALREADY_SIGNED`.
+  bool get isMandateAlreadySigned {
+    if (statusCode != 409) {
+      return false;
+    }
+    final candidates = <String>[
+      if (userFacingMessage != null) userFacingMessage!,
+      if (body != null) body.toString(),
+    ];
+    return candidates.any(
+      (text) => text.contains('MANDATE_ALREADY_SIGNED'),
+    );
+  }
+
   @override
   List<Object> get props => [statusCode, type];
 

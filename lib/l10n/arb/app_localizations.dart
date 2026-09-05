@@ -1274,6 +1274,12 @@ abstract class AppLocalizations {
   /// **'Account number must be 8 digits'**
   String get accountNumberMustBe8Digits;
 
+  /// Shown when UK BACS bank details cannot be edited because the mandate is already signed
+  ///
+  /// In en, this message translates to:
+  /// **'Bank details cannot be changed because your BACS mandate is already signed.'**
+  String get mandateAlreadySignedError;
+
   /// Password requirement: minimum 7 characters
   ///
   /// In en, this message translates to:

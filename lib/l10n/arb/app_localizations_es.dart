@@ -679,6 +679,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accountNumberMustBe8Digits => 'Account number must be 8 digits';
 
   @override
+  String get mandateAlreadySignedError =>
+      'No se pueden cambiar los datos bancarios porque tu mandato BACS ya está firmado.';
+
+  @override
   String get passwordRuleMinChars => 'Use at least 7 characters';
 
   @override
@@ -4250,6 +4254,10 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get accountNumberMustBe8Digits =>
       'El número de cuenta debe tener 8 dígitos';
+
+  @override
+  String get mandateAlreadySignedError =>
+      'No se pueden cambiar los datos bancarios porque tu mandato BACS ya está firmado.';
 
   @override
   String get passwordRuleMinChars => 'Usa al menos 7 caracteres';
