@@ -5,15 +5,8 @@ import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 
-const _recurringFrequencies = [
-  ExternalDonationFrequency.weekly,
-  ExternalDonationFrequency.monthly,
-  ExternalDonationFrequency.halfYearly,
-  ExternalDonationFrequency.yearly,
-];
-
-/// Includes [ExternalDonationFrequency.quarterly] for editing legacy donations.
-const manageRecurringFrequencies = [
+/// Recurring frequencies for create and manage flows, including quarterly.
+const List<ExternalDonationFrequency> manageRecurringFrequencies = [
   ExternalDonationFrequency.weekly,
   ExternalDonationFrequency.monthly,
   ExternalDonationFrequency.quarterly,
@@ -42,7 +35,7 @@ class ExternalDonationFrequencyDropdown extends StatelessWidget {
     return FunInputDropdown<ExternalDonationFrequency>(
       label: label ?? locals.externalDonationsCreateFrequencyLabel,
       value: value,
-      items: frequencies ?? _recurringFrequencies,
+      items: frequencies ?? manageRecurringFrequencies,
       hint: Text(locals.recurringDonationsCreateFrequencyHint),
       onChanged: onChanged,
       itemBuilder: (context, option) => Padding(

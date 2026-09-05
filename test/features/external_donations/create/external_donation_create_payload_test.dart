@@ -31,26 +31,46 @@ void main() {
       expect(body.containsKey('collectGroupId'), isFalse);
     });
 
-    test('builds recurring payload with startDate from first donation date', () {
+    test(
+      'builds recurring payload with startDate from first donation date',
+      () {
+        final body = ExternalDonationCreatePayloadBuilder.build(
+          ExternalDonationCreateDraft(
+            organisationName: 'WWF',
+            amountInput: '10',
+            isOneOff: false,
+            frequency: ExternalDonationFrequency.monthly,
+            seriesStartDate: DateTime(2024, 1, 12),
+            selectedOrganisation: null,
+            isCustomOrganisation: false,
+          ),
+        );
+
+        expect(body['frequency'], 'Monthly');
+        expect(body['startDate'], '2024-01-12T00:00:00.000');
+        expect((body['startDate'] as String).endsWith('Z'), isFalse);
+        expect(body.containsKey('creationDate'), isFalse);
+        expect(body['taxDeductable'], isFalse);
+        expect(body.containsKey('active'), isFalse);
+        expect(body.containsKey('collectGroupId'), isFalse);
+      },
+    );
+
+    test('builds recurring payload with Quarterly frequency', () {
       final body = ExternalDonationCreatePayloadBuilder.build(
         ExternalDonationCreateDraft(
           organisationName: 'WWF',
           amountInput: '10',
           isOneOff: false,
-          frequency: ExternalDonationFrequency.monthly,
+          frequency: ExternalDonationFrequency.quarterly,
           seriesStartDate: DateTime(2024, 1, 12),
           selectedOrganisation: null,
           isCustomOrganisation: false,
         ),
       );
 
-      expect(body['frequency'], 'Monthly');
+      expect(body['frequency'], 'Quarterly');
       expect(body['startDate'], '2024-01-12T00:00:00.000');
-      expect((body['startDate'] as String).endsWith('Z'), isFalse);
-      expect(body.containsKey('creationDate'), isFalse);
-      expect(body['taxDeductable'], isFalse);
-      expect(body.containsKey('active'), isFalse);
-      expect(body.containsKey('collectGroupId'), isFalse);
     });
   });
 
@@ -104,6 +124,24 @@ void main() {
       );
 
       expect(preview.length, greaterThan(2));
+    });
+
+    test('supports quarterly frequency with next occurrence', () {
+      final preview = generateOccurrencePreview(
+        seriesStartDate: DateTime(2024, 1, 12),
+        frequency: ExternalDonationFrequency.quarterly,
+        now: DateTime(2024, 7, 12),
+      );
+
+      expect(
+        preview,
+        [
+          DateTime(2024, 1, 12),
+          DateTime(2024, 4, 12),
+          DateTime(2024, 7, 12),
+          DateTime(2024, 10, 12),
+        ],
+      );
     });
   });
 }
