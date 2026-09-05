@@ -162,11 +162,9 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                           return ListTile(
                             key: UniqueKey(),
                             onTap: () {
-                              // Build metadata with search text if available
-                              final metadata =
-                                  state.previousSearchQuery.isNotEmpty
-                                  ? {'searchText': state.previousSearchQuery}
-                                  : null;
+                              final metadata = state.buildSupportMetadata(
+                                locals,
+                              );
 
                               showModalBottomSheet<void>(
                                 context: context,
@@ -342,8 +340,8 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               ? FunButton(
                   onTap: onPressed,
                   text: title,
-                  analyticsEvent:
-                      AnalyticsEventName.giveButtonPressed.toEvent(),
+                  analyticsEvent: AnalyticsEventName.giveButtonPressed
+                      .toEvent(),
                   isDisabled: onPressed == null,
                 )
               : const Center(
@@ -483,7 +481,8 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: FaIcon(FontAwesomeIcons.handHoldingHeart,
+            leading: FaIcon(
+              FontAwesomeIcons.handHoldingHeart,
               color: AppTheme.givtBlue,
             ),
             title: Text(locals.discoverOrAmountActionSheetOnce),

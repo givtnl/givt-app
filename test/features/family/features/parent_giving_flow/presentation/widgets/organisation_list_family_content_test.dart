@@ -72,15 +72,13 @@ class _FakeInfraRepository with InfraRepository {
     required String guid,
     required String message,
     String? subject,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   Future<AppUpdate?> checkAppUpdate({
     required String buildNumber,
     required String platform,
-  }) async =>
-      null;
+  }) async => null;
 }
 
 class _TestAuthCubit extends AuthCubit {
@@ -112,17 +110,18 @@ void main() {
 
   Future<void> initBloc({List<CollectGroup> groups = const []}) async {
     final prefs = await SharedPreferences.getInstance();
-    organisationBloc = OrganisationBloc(
-      _FakeCollectGroupRepository(groups),
-      _FakeCampaignRepository(),
-      prefs,
-    )..add(
-        OrganisationFetch(
-          Country.nl,
-          showLastDonated: false,
-          type: CollectGroupType.none.index,
-        ),
-      );
+    organisationBloc =
+        OrganisationBloc(
+          _FakeCollectGroupRepository(groups),
+          _FakeCampaignRepository(),
+          prefs,
+        )..add(
+          OrganisationFetch(
+            Country.nl,
+            showLastDonated: false,
+            type: CollectGroupType.none.index,
+          ),
+        );
     await organisationBloc.stream.firstWhere(
       (s) => s.status == OrganisationStatus.filtered,
     );
@@ -283,7 +282,46 @@ void main() {
       final bottomSheet = tester.widget<AboutGivtBottomSheet>(
         find.byType(AboutGivtBottomSheet),
       );
-      expect(bottomSheet.metadata, {'searchText': searchQuery});
+      expect(bottomSheet.metadata, {
+        'searchText': searchQuery,
+        'categoryFilterActive': 'false',
+        'categoryFilter': 'None',
+      });
+    },
+  );
+
+  testWidgets(
+    'passes active category filter in metadata when church chip is selected',
+    (tester) async {
+      await pumpContent(
+        tester,
+        showReportMissingOption: true,
+        groups: const [],
+      );
+
+      organisationBloc.add(
+        OrganisationTypeChanged(CollectGroupType.church.index),
+      );
+      await tester.pump();
+      expect(
+        organisationBloc.state.selectedType,
+        CollectGroupType.church.index,
+      );
+
+      await tester.tap(
+        find.byKey(const ValueKey('reportMissingOrganisationTile')),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+      ignoreKnownBottomSheetOverflow(tester);
+
+      final bottomSheet = tester.widget<AboutGivtBottomSheet>(
+        find.byType(AboutGivtBottomSheet),
+      );
+      expect(bottomSheet.metadata, {
+        'categoryFilterActive': 'true',
+        'categoryFilter': 'Church',
+      });
     },
   );
 }

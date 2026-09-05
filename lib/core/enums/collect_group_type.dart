@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -62,6 +63,28 @@ enum CollectGroupType {
       }
     }
     return CollectGroupType.none;
+  }
+
+  /// Chip / Zendesk label for organisation search filters.
+  ///
+  /// Church, Charity, Campaign, Other (enum value artists). [none] is the
+  /// support-ticket technical value `'None'`, not a user-facing ARB key.
+  String localizedOrganisationFilterTitle(AppLocalizations locals) {
+    switch (this) {
+      case CollectGroupType.church:
+        return locals.church;
+      case CollectGroupType.charities:
+        return locals.charity;
+      case CollectGroupType.campaign:
+        return locals.campaign;
+      case CollectGroupType.artists:
+      case CollectGroupType.unknown:
+      case CollectGroupType.demo:
+      case CollectGroupType.debug:
+        return locals.other;
+      case CollectGroupType.none:
+        return 'None';
+    }
   }
 
   /// Order for organisation search filter chips: Church, Charity, Campaign,
@@ -154,7 +177,8 @@ enum CollectGroupType {
   }
 
   /// Same mapping as [getIconByType] (US-specific variants were unified).
-  static FaIconData getIconByTypeUS(CollectGroupType type) => getIconByType(type);
+  static FaIconData getIconByTypeUS(CollectGroupType type) =>
+      getIconByType(type);
 
   static Color getHighlightColor(CollectGroupType type) {
     switch (type) {
