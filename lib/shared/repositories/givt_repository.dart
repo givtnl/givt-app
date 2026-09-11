@@ -8,7 +8,7 @@ import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/donation_overview/models/donation_history_mapper.dart';
-import 'package:givt_app/features/donation_overview/models/donation_history_result.dart';
+import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation_transaction.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
@@ -31,7 +31,7 @@ mixin GivtRepository {
 
   Future<List<Givt>> fetchGivts();
 
-  Future<DonationHistoryResult> fetchDonationHistory({
+  Future<List<DonationItem>> fetchDonationHistory({
     DateTime? startDate,
     DateTime? endDate,
   });
@@ -262,7 +262,7 @@ class GivtRepositoryImpl with GivtRepository {
   }
 
   @override
-  Future<DonationHistoryResult> fetchDonationHistory({
+  Future<List<DonationItem>> fetchDonationHistory({
     DateTime? startDate,
     DateTime? endDate,
   }) async {
@@ -276,18 +276,13 @@ class GivtRepositoryImpl with GivtRepository {
 
     final decodedJson = await apiClient.fetchDonationHistory(body: body);
     final itemsJson = decodedJson['items'] as List<dynamic>? ?? [];
-    final items = itemsJson
+    return itemsJson
         .map(
           (item) => DonationHistoryMapper.fromHistoryJson(
             item as Map<String, dynamic>,
           ),
         )
         .toList();
-
-    return DonationHistoryResult(
-      items: items,
-      partialError: decodedJson['partialError'] as bool? ?? false,
-    );
   }
 
   @override

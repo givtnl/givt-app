@@ -8,7 +8,6 @@ mixin DonationOverviewRepository {
   List<DonationItem> getDonations();
   bool isLoading();
   String? getError();
-  bool hasPartialError();
   Future<void> loadDonations();
   Future<bool> deleteDonation(List<int> ids);
   Future<bool> downloadYearlyOverview({
@@ -27,7 +26,6 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
   List<DonationItem> _donations = [];
   bool _isLoading = false;
   String? _error;
-  bool _partialError = false;
 
   @override
   Stream<List<DonationItem>> onDonationsChanged() {
@@ -50,21 +48,13 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
   }
 
   @override
-  bool hasPartialError() {
-    return _partialError;
-  }
-
-  @override
   Future<void> loadDonations() async {
     try {
       _isLoading = true;
       _error = null;
-      _partialError = false;
       _emitDonationsChanged();
 
-      final history = await _givtRepository.fetchDonationHistory();
-      _donations = history.items;
-      _partialError = history.partialError;
+      _donations = await _givtRepository.fetchDonationHistory();
 
       _donations.sort((a, b) {
         if (a.timeStamp == null && b.timeStamp == null) return 0;
