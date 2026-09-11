@@ -3320,6 +3320,25 @@ class AppLocalizationsDe extends AppLocalizations {
       'Hallo, ich habe folgende Frage zu meiner Spende:';
 
   @override
+  String get donationHistoryExternalListSubtitle => 'Externe Spende';
+
+  @override
+  String get donationHistoryExternalOneOffSubtitle =>
+      'Externe Spende: nicht von Givt verarbeitet';
+
+  @override
+  String get donationHistoryExternalRecurringSubtitle =>
+      'Nicht von Givt verarbeitet';
+
+  @override
+  String get donationHistoryExternalEditDonation =>
+      'Diese Spende bearbeiten';
+
+  @override
+  String get donationHistoryExternalManageRecurring =>
+      'Wiederkehrende Spende verwalten';
+
+  @override
   String get date => 'Datum';
 
   @override

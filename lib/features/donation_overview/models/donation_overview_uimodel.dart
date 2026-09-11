@@ -52,9 +52,10 @@ class DonationOverviewUIModel extends Equatable {
         donationGroups: [],
       );
     }
-    // Calculate GiftAid amount (25% of amount for GiftAid enabled donations)
+    // Calculate GiftAid amount (25% of amount for GiftAid enabled donations).
+    // External donations are excluded from Gift Aid totals.
     final giftAidAmount = donations
-        .where((d) => d.isGiftAidEnabled)
+        .where((d) => d.isGiftAidEnabled && !d.isExternal)
         .fold<double>(
           0.0,
           (sum, d) =>
@@ -85,12 +86,7 @@ class DonationOverviewUIModel extends Equatable {
 
       final monthAmount = monthDonations.fold<double>(
         0.0,
-        (sum, d) =>
-            d.status.type == DonationStatusType.completed ||
-                d.status.type == DonationStatusType.created ||
-                d.status.type == DonationStatusType.inProcess
-            ? sum + d.amount
-            : sum,
+        (sum, d) => _countsTowardMonthTotal(d) ? sum + d.amount : sum,
       );
 
       // Calculate platform fees for this month (avoiding duplicates)
@@ -135,9 +131,9 @@ class DonationOverviewUIModel extends Equatable {
 
     for (final donation in donations) {
       if (donation.timeStamp != null) {
-        // Create a key based on timestamp and organization
-        final groupKey =
-            '${donation.timeStamp!.millisecondsSinceEpoch}_${donation.organisationName}';
+        final groupKey = donation.isExternal
+            ? 'ext_${donation.externalTransactionId ?? donation.historyId}'
+            : '${donation.timeStamp!.millisecondsSinceEpoch}_${donation.organisationName}';
         groupMap.putIfAbsent(groupKey, () => []).add(donation);
       }
     }
@@ -159,8 +155,12 @@ class DonationOverviewUIModel extends Equatable {
             amount: groupAmount,
             isGiftAidEnabled: firstDonation.isGiftAidEnabled,
             organisationTaxDeductible: firstDonation.organisationTaxDeductible,
-            isOnlineGiving: firstDonation.donationType == 7,
-            isRecurringDonation: firstDonation.donationType == 1,
+            isOnlineGiving:
+                !firstDonation.isExternal && firstDonation.donationType == 7,
+            isRecurringDonation: firstDonation.isExternal
+                ? firstDonation.isExternalRecurring
+                : firstDonation.donationType == 1,
+            isExternal: firstDonation.isExternal,
           ),
         );
       }
@@ -254,4 +254,14 @@ class MonthlyGroup extends Equatable {
 
   @override
   List<Object?> get props => [year, month, donations, totalAmount];
+}
+
+bool _countsTowardMonthTotal(DonationItem donation) {
+  if (donation.isExternal) {
+    return true;
+  }
+
+  return donation.status.type == DonationStatusType.completed ||
+      donation.status.type == DonationStatusType.created ||
+      donation.status.type == DonationStatusType.inProcess;
 }

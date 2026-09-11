@@ -383,6 +383,17 @@ enum AnalyticsEventName {
   assignCoinPressed('assign_coin_pressed'),
   qrCodeScanned('qr_code_scanned'),
   seeDonationHistoryPressed('see_donation_history_pressed'),
+  donationHistoryExternalRowClicked('donation_history_external_row_clicked'),
+  donationHistoryExternalEditClicked('donation_history_external_edit_clicked'),
+  donationHistoryExternalEditSaveClicked(
+    'donation_history_external_edit_save_clicked',
+  ),
+  donationHistoryExternalManageClicked(
+    'donation_history_external_manage_clicked',
+  ),
+  donationHistoryExternalDeleteClicked(
+    'donation_history_external_delete_clicked',
+  ),
   locationSelected('location_selected'),
   locationNextClicked('location_next_clicked'),
   citySelected('city_selected'),

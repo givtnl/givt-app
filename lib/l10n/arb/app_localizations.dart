@@ -5795,6 +5795,36 @@ abstract class AppLocalizations {
   /// **'Hi, I have the following question about my donation:'**
   String get donationOverviewContactMessage;
 
+  /// No description provided for @donationHistoryExternalListSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'External donation'**
+  String get donationHistoryExternalListSubtitle;
+
+  /// No description provided for @donationHistoryExternalOneOffSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'External donation: not processed by Givt'**
+  String get donationHistoryExternalOneOffSubtitle;
+
+  /// No description provided for @donationHistoryExternalRecurringSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not processed by Givt'**
+  String get donationHistoryExternalRecurringSubtitle;
+
+  /// No description provided for @donationHistoryExternalEditDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit this donation'**
+  String get donationHistoryExternalEditDonation;
+
+  /// No description provided for @donationHistoryExternalManageRecurring.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage recurring donation'**
+  String get donationHistoryExternalManageRecurring;
+
   /// No description provided for @date.
   ///
   /// In en, this message translates to:
