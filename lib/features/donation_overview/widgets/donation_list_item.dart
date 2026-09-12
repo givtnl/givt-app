@@ -67,128 +67,20 @@ class DonationListItem extends StatelessWidget {
                 : _buildStatusIndicator(firstDonation.status),
             const SizedBox(width: 16),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: LabelMediumText(
-                          donationGroup.organisationName,
-                        ),
-                      ),
-                      if (!donationGroup.isExternal &&
-                          donationGroup.isGiftAidEnabled) ...[
-                        const SizedBox(width: 4),
-                        Image.asset(
-                          'assets/images/gift_aid_yellow.png',
-                          height: 20,
-                        ),
-                      ],
-                      if (!donationGroup.isExternal &&
-                          donationGroup.isOnlineGiving) ...[
-                        const SizedBox(width: 4),
-                        const FaIcon(
-                          FontAwesomeIcons.globe,
-                          size: 16,
-                          color: FamilyAppTheme.primary20,
-                        ),
-                      ],
-                      if (donationGroup.isRecurringDonation) ...[
-                        const SizedBox(width: 4),
-                        FaIcon(
-                          FontAwesomeIcons.repeat,
-                          size: 12,
-                          color: donationGroup.isExternal
-                              ? FunTheme.of(context).tertiary20
-                              : FamilyAppTheme.primary20,
-                        ),
-                      ],
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (donationGroup.isExternal)
-                              BodySmallText(
-                                context.l10n.donationHistoryExternalListSubtitle,
-                                color: FamilyAppTheme.neutralVariant40,
-                              )
-                            else
-                              ...sortedDonations.map(
-                                (donation) => Padding(
-                                  padding: const EdgeInsets.only(bottom: 2),
-                                  child: BodySmallText(
-                                    donation.allocationDisplayLabel(
-                                      context.l10n,
-                                    ),
-                                    color: FamilyAppTheme.neutralVariant40,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ),
-                            if (!donationGroup.isExternal &&
-                                donationGroup.platformFeeAmount > 0)
-                              BodySmallText(
-                                context
-                                    .l10n
-                                    .donationOverviewPlatformContribution,
-                                color: FamilyAppTheme.neutralVariant40,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            if (donationGroup.timeStamp != null)
-                              LabelSmallText(
-                                Util.formatDateAtTimeLocal(
-                                  donationGroup.timeStamp!,
-                                  Platform.localeName,
-                                ),
-                                color: FamilyAppTheme.neutralVariant50,
-                              ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          ...sortedDonations.map(
-                            (donation) => LabelMediumText(
-                              '$currencySymbol ${Util.formatNumberComma(
-                                donation.amount,
-                                Country.fromCode(country),
-                              )}',
-                              color: donationGroup.isExternal
-                                  ? FamilyAppTheme.neutralVariant20
-                                  : donation.status.textColor,
-                            ),
-                          ),
-                          if (!donationGroup.isExternal &&
-                              donationGroup.platformFeeAmount > 0)
-                            LabelMediumText(
-                              '$currencySymbol ${Util.formatNumberComma(
-                                donationGroup.platformFeeAmount,
-                                Country.fromCode(country),
-                              )}',
-                              color: sortedDonations.first.status.textColor,
-                            ),
-                          if (!donationGroup.isExternal)
-                            BodySmallText(
-                              _getStatusText(
-                                context,
-                                firstDonation.status.type,
-                              ),
-                              color: FamilyAppTheme.neutralVariant50,
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              child: donationGroup.isExternal
+                  ? _buildExternalContent(
+                      context,
+                      country: country,
+                      currencySymbol: currencySymbol,
+                      donation: firstDonation,
+                    )
+                  : _buildGivtContent(
+                      context,
+                      country: country,
+                      currencySymbol: currencySymbol,
+                      sortedDonations: sortedDonations,
+                      firstDonation: firstDonation,
+                    ),
             ),
           ],
         ),
@@ -228,6 +120,172 @@ class DonationListItem extends StatelessWidget {
     );
   }
 
+  Widget _buildExternalContent(
+    BuildContext context, {
+    required String country,
+    required String currencySymbol,
+    required DonationItem donation,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: LabelMediumText(donationGroup.organisationName),
+            ),
+            if (donationGroup.isRecurringDonation)
+              FaIcon(
+                FontAwesomeIcons.arrowsRotate,
+                size: 12,
+                color: FamilyAppTheme.neutralVariant50,
+              ),
+          ],
+        ),
+        const SizedBox(height: 2),
+        Row(
+          children: [
+            Expanded(
+              child: BodySmallText.secondary30(
+                context.l10n.donationHistoryExternalListSubtitle,
+              ),
+            ),
+            LabelMediumText.primary40(
+              '$currencySymbol${Util.formatNumberComma(
+                donation.amount,
+                Country.fromCode(country),
+              )}',
+            ),
+          ],
+        ),
+        if (donationGroup.timeStamp != null) ...[
+          const SizedBox(height: 2),
+          LabelSmallText(
+            Util.formatDateAtTimeLocal(
+              donationGroup.timeStamp!,
+              Platform.localeName,
+            ),
+            color: FamilyAppTheme.neutralVariant50,
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildGivtContent(
+    BuildContext context, {
+    required String country,
+    required String currencySymbol,
+    required List<DonationItem> sortedDonations,
+    required DonationItem firstDonation,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: LabelMediumText(
+                donationGroup.organisationName,
+              ),
+            ),
+            if (donationGroup.isGiftAidEnabled) ...[
+              const SizedBox(width: 4),
+              Image.asset(
+                'assets/images/gift_aid_yellow.png',
+                height: 20,
+              ),
+            ],
+            if (donationGroup.isOnlineGiving) ...[
+              const SizedBox(width: 4),
+              const FaIcon(
+                FontAwesomeIcons.globe,
+                size: 16,
+                color: FamilyAppTheme.primary20,
+              ),
+            ],
+            if (donationGroup.isRecurringDonation) ...[
+              const SizedBox(width: 4),
+              const FaIcon(
+                FontAwesomeIcons.repeat,
+                size: 12,
+                color: FamilyAppTheme.primary20,
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...sortedDonations.map(
+                    (donation) => Padding(
+                      padding: const EdgeInsets.only(bottom: 2),
+                      child: BodySmallText(
+                        donation.allocationDisplayLabel(
+                          context.l10n,
+                        ),
+                        color: FamilyAppTheme.neutralVariant40,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  if (donationGroup.platformFeeAmount > 0)
+                    BodySmallText(
+                      context.l10n.donationOverviewPlatformContribution,
+                      color: FamilyAppTheme.neutralVariant40,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  if (donationGroup.timeStamp != null)
+                    LabelSmallText(
+                      Util.formatDateAtTimeLocal(
+                        donationGroup.timeStamp!,
+                        Platform.localeName,
+                      ),
+                      color: FamilyAppTheme.neutralVariant50,
+                    ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                ...sortedDonations.map(
+                  (donation) => LabelMediumText(
+                    '$currencySymbol ${Util.formatNumberComma(
+                      donation.amount,
+                      Country.fromCode(country),
+                    )}',
+                    color: donation.status.textColor,
+                  ),
+                ),
+                if (donationGroup.platformFeeAmount > 0)
+                  LabelMediumText(
+                    '$currencySymbol ${Util.formatNumberComma(
+                      donationGroup.platformFeeAmount,
+                      Country.fromCode(country),
+                    )}',
+                    color: sortedDonations.first.status.textColor,
+                  ),
+                BodySmallText(
+                  _getStatusText(
+                    context,
+                    firstDonation.status.type,
+                  ),
+                  color: FamilyAppTheme.neutralVariant50,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget _buildExternalIndicator(BuildContext context) {
     final theme = FunTheme.of(context);
     return Container(
@@ -241,7 +299,7 @@ class DonationListItem extends StatelessWidget {
         child: FaIcon(
           FontAwesomeIcons.arrowUpRightFromSquare,
           color: theme.tertiary40,
-          size: 16,
+          size: 20,
         ),
       ),
     );

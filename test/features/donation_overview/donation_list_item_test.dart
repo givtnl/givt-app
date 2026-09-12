@@ -77,7 +77,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('External donation'), findsOneWidget);
-      expect(find.byIcon(FontAwesomeIcons.repeat), findsOneWidget);
+      expect(find.byIcon(FontAwesomeIcons.arrowsRotate), findsOneWidget);
       expect(find.byIcon(FontAwesomeIcons.arrowUpRightFromSquare), findsOneWidget);
     });
 

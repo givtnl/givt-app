@@ -13,6 +13,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/cubit/donation_overview_cubit.dart';
 import 'package:givt_app/features/donation_overview/cubit/external_donation_history_detail_cubit.dart';
 import 'package:givt_app/features/donation_overview/models/donation_item.dart';
+import 'package:givt_app/features/donation_overview/widgets/donation_detail_row.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_frequency_dropdown.dart';
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_past_date_picker.dart';
 import 'package:givt_app/features/external_donations/detail/pages/external_donation_detail_page.dart';
@@ -86,12 +87,11 @@ class _ExternalDonationHistoryDetailPageState
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
-            BodySmallText(
+            BodySmallText.secondary30(
               uiModel.isOneOff
                   ? context.l10n.donationHistoryExternalOneOffSubtitle
                   : context.l10n.donationHistoryExternalRecurringSubtitle,
               textAlign: TextAlign.center,
-              color: FamilyAppTheme.neutralVariant50,
             ),
             const SizedBox(height: 24),
             _buildDetailRows(context, uiModel),
@@ -99,6 +99,8 @@ class _ExternalDonationHistoryDetailPageState
             if (uiModel.isOneOff)
               FunButton(
                 text: context.l10n.donationHistoryExternalEditDonation,
+                variant: FunButtonVariant.secondary,
+                fullBorder: true,
                 onTap: () => _showOneOffEditSheet(context, uiModel),
                 analyticsEvent: AnalyticsEventName
                     .donationHistoryExternalEditClicked
@@ -107,6 +109,8 @@ class _ExternalDonationHistoryDetailPageState
             else ...[
               FunButton(
                 text: context.l10n.donationHistoryExternalEditDonation,
+                variant: FunButtonVariant.secondary,
+                fullBorder: true,
                 onTap: () => _showOccurrenceEditSheet(context, uiModel),
                 analyticsEvent: AnalyticsEventName
                     .donationHistoryExternalEditClicked
@@ -115,7 +119,7 @@ class _ExternalDonationHistoryDetailPageState
               const SizedBox(height: 12),
               FunButton(
                 text: context.l10n.donationHistoryExternalManageRecurring,
-                variant: FunButtonVariant.secondary,
+                variant: FunButtonVariant.tertiary,
                 onTap: () => _openManagePage(context),
                 analyticsEvent: AnalyticsEventName
                     .donationHistoryExternalManageClicked
@@ -131,8 +135,8 @@ class _ExternalDonationHistoryDetailPageState
   Widget _buildHeaderIcon(BuildContext context) {
     final theme = FunTheme.of(context);
     return Container(
-      width: 80,
-      height: 80,
+      width: 72,
+      height: 72,
       decoration: BoxDecoration(
         color: theme.tertiary98,
         shape: BoxShape.circle,
@@ -156,31 +160,33 @@ class _ExternalDonationHistoryDetailPageState
     final country = Country.fromCode(auth.user.country);
     final donation = uiModel.donation;
 
-    return Column(
-      children: [
-        _DetailRow(
-          label: context.l10n.externalDonationsManageAmount,
-          value:
-              '$currency${Util.formatNumberComma(donation.amount, country)}',
+    final rows = <Widget>[
+      DonationDetailRow(
+        label: context.l10n.donationHistoryExternalListSubtitle,
+        value: '$currency${Util.formatNumberComma(donation.amount, country)}',
+        showDivider: true,
+      ),
+      if (donation.timeStamp != null)
+        DonationDetailRow(
+          label: context.l10n.date,
+          value: Util.formatFullDateLocal(
+            donation.timeStamp!,
+            Platform.localeName,
+          ),
+          showDivider: !uiModel.isOneOff && donation.externalFrequency != null,
         ),
-        if (donation.timeStamp != null)
-          _DetailRow(
-            label: context.l10n.externalDonationsDetailOneOffDate,
-            value: Util.formatDateAtTimeLocal(
-              donation.timeStamp!,
-              Platform.localeName,
-            ),
+      if (!uiModel.isOneOff && donation.externalFrequency != null)
+        DonationDetailRow(
+          label: context.l10n.discoverOrAmountActionSheetRecurring,
+          value: ExternalDonationFrequencyDropdown.frequencyLabel(
+            context.l10n,
+            donation.externalFrequency!,
           ),
-        if (!uiModel.isOneOff && donation.externalFrequency != null)
-          _DetailRow(
-            label: context.l10n.externalDonationsManageFrequency,
-            value: ExternalDonationFrequencyDropdown.frequencyLabel(
-              context.l10n,
-              donation.externalFrequency!,
-            ),
-          ),
-      ],
-    );
+          showDivider: false,
+        ),
+    ];
+
+    return Column(children: rows);
   }
 
   Future<void> _openManagePage(BuildContext context) async {
@@ -384,29 +390,6 @@ class _ExternalDonationHistoryDetailPageState
       SnackBar(
         content: Text(context.l10n.somethingWentWrong),
         backgroundColor: FamilyAppTheme.error50,
-      ),
-    );
-  }
-}
-
-class _DetailRow extends StatelessWidget {
-  const _DetailRow({
-    required this.label,
-    required this.value,
-  });
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Expanded(child: BodyMediumText(label)),
-          LabelMediumText(value),
-        ],
       ),
     );
   }
