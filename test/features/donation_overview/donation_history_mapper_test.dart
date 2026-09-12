@@ -29,6 +29,38 @@ void main() {
       expect(item.status.type, DonationStatusType.completed);
     });
 
+    test('maps platform fee transaction id from BFF when present', () {
+      final item = DonationHistoryMapper.fromHistoryJson({
+        'source': 'givtProcessed',
+        'id': '42',
+        'amount': 10,
+        'timestamp': '2026-03-15T10:30:00',
+        'organisationName': 'Hope Church',
+        'status': 2,
+        'platformFeeAmount': 0.5,
+        'platformFeeTransactionId': 99,
+      });
+
+      expect(item.platformFeeAmount, 0.5);
+      expect(item.platformFeeTransactionId, 99);
+    });
+
+    test('synthesizes platform fee transaction id from donation id when missing',
+        () {
+      final item = DonationHistoryMapper.fromHistoryJson({
+        'source': 'givtProcessed',
+        'id': '42',
+        'amount': 10,
+        'timestamp': '2026-03-15T10:30:00',
+        'organisationName': 'Hope Church',
+        'status': 2,
+        'platformFeeAmount': 0.5,
+      });
+
+      expect(item.platformFeeAmount, 0.5);
+      expect(item.platformFeeTransactionId, 42);
+    });
+
     test('maps external recurring rows with frequency', () {
       final item = DonationHistoryMapper.fromHistoryJson({
         'source': 'external',
@@ -79,6 +111,26 @@ void main() {
       expect(uiModel.donationGroups, hasLength(1));
       expect(uiModel.donationGroups.first.donations, hasLength(2));
       expect(uiModel.donationGroups.first.isExternal, isFalse);
+    });
+
+    test('includes platform fees in month totals when transaction id is mapped',
+        () {
+      final donations = [
+        DonationHistoryMapper.fromHistoryJson({
+          'source': 'givtProcessed',
+          'id': '1',
+          'amount': 10,
+          'timestamp': '2026-03-10T12:00:00',
+          'organisationName': 'Hope Church',
+          'status': 2,
+          'platformFeeAmount': 2,
+        }),
+      ];
+
+      final uiModel = DonationOverviewUIModel.fromDonations(donations);
+
+      expect(uiModel.monthlyGroups.single.totalAmount, 12);
+      expect(uiModel.donationGroups.single.platformFeeAmount, 2);
     });
 
     test('does not merge external rows and includes them in month totals', () {

@@ -97,13 +97,16 @@ class ExternalDonationHistoryDetailCubit extends CommonCubit<
       return;
     }
 
-    await _runMutation(() => _givtRepository.updateExternalDonation(
-          id: externalDonationId,
-          body: ExternalDonationUpdatePayload.oneOffDate(
-            amount: amount,
-            date: donation.timeStamp ?? DateTime.now(),
-          ),
-        ));
+    await _runMutation(
+      () => _givtRepository.updateExternalDonation(
+        id: externalDonationId,
+        body: ExternalDonationUpdatePayload.oneOffDate(
+          amount: amount,
+          date: donation.timeStamp ?? DateTime.now(),
+        ),
+      ),
+      applyMutation: (current) => current.copyWith(amount: amount),
+    );
   }
 
   Future<void> updateOneOffDate(DateTime date) async {
@@ -113,13 +116,16 @@ class ExternalDonationHistoryDetailCubit extends CommonCubit<
       return;
     }
 
-    await _runMutation(() => _givtRepository.updateExternalDonation(
-          id: externalDonationId,
-          body: ExternalDonationUpdatePayload.oneOffDate(
-            amount: donation.amount,
-            date: date,
-          ),
-        ));
+    await _runMutation(
+      () => _givtRepository.updateExternalDonation(
+        id: externalDonationId,
+        body: ExternalDonationUpdatePayload.oneOffDate(
+          amount: donation.amount,
+          date: date,
+        ),
+      ),
+      applyMutation: (current) => current.copyWith(timeStamp: date),
+    );
   }
 
   Future<void> deleteOneOff() async {
@@ -161,11 +167,7 @@ class ExternalDonationHistoryDetailCubit extends CommonCubit<
         transactionIds: [transactionId],
         newAmount: amount,
       ),
-      onSuccess: (success) {
-        if (success) {
-          _donation = _donation?.copyWith(amount: amount);
-        }
-      },
+      applyMutation: (current) => current.copyWith(amount: amount),
     );
   }
 
@@ -201,12 +203,14 @@ class ExternalDonationHistoryDetailCubit extends CommonCubit<
 
   Future<void> _runMutation(
     Future<bool> Function() action, {
-    void Function(bool success)? onSuccess,
+    DonationItem Function(DonationItem donation)? applyMutation,
   }) async {
     await _setSaving(true);
     try {
       final success = await action();
-      onSuccess?.call(success);
+      if (success && applyMutation != null && _donation != null) {
+        _donation = applyMutation(_donation!);
+      }
       if (success) {
         emitCustom(const ExternalDonationHistoryDetailCustom.mutationSucceeded());
       } else {
@@ -229,9 +233,14 @@ class ExternalDonationHistoryDetailCubit extends CommonCubit<
     if (isClosed) {
       return;
     }
-    final current = state.data;
-    if (current != null) {
-      emitData(current.copyWith(isSaving: isSaving));
+    final donation = _donation;
+    if (donation != null) {
+      emitData(
+        ExternalDonationHistoryDetailUIModel(
+          donation: donation,
+          isSaving: isSaving,
+        ),
+      );
     }
   }
 }

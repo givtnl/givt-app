@@ -41,6 +41,7 @@ abstract final class DonationHistoryMapper {
     final givtId = int.tryParse(json['id'] as String? ?? '') ??
         (json['id'] as num?)?.toInt() ??
         0;
+    final platformFeeAmount = (json['platformFeeAmount'] as num?)?.toDouble();
 
     return DonationItem(
       id: givtId,
@@ -54,11 +55,38 @@ abstract final class DonationHistoryMapper {
       mediumId: json['mediumId'] as String? ?? '',
       taxYear: timestamp != null ? ukGiftAidTaxYearIndexForDate(timestamp) : 0,
       donationType: json['donationType'] as int? ?? 0,
-      platformFeeAmount: (json['platformFeeAmount'] as num?)?.toDouble(),
+      platformFeeAmount: platformFeeAmount,
+      platformFeeTransactionId: _resolvePlatformFeeTransactionId(
+        json: json,
+        givtId: givtId,
+        platformFeeAmount: platformFeeAmount,
+      ),
       collectId: json['collectId'] as int?,
       allocationName: (json['allocationName'] as String? ?? '').trim(),
       isExternal: false,
     );
+  }
+
+  static int? _resolvePlatformFeeTransactionId({
+    required Map<String, dynamic> json,
+    required int givtId,
+    required double? platformFeeAmount,
+  }) {
+    final bffId = (json['platformFeeTransactionId'] as num?)?.toInt();
+    if (bffId != null) {
+      return bffId;
+    }
+    if (platformFeeAmount == null || platformFeeAmount <= 0) {
+      return null;
+    }
+    if (givtId != 0) {
+      return givtId;
+    }
+    final historyId = json['id']?.toString();
+    if (historyId != null && historyId.isNotEmpty) {
+      return historyId.hashCode;
+    }
+    return null;
   }
 
   static ExternalDonationFrequency _parseExternalFrequency(
