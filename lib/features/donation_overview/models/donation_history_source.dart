@@ -2,11 +2,13 @@ enum DonationHistorySource {
   givtProcessed,
   external;
 
-  static DonationHistorySource fromJson(String? value) {
-    switch (value) {
+  /// BFF `JsonStringEnumConverter` emits PascalCase (`External`) unless a
+  /// camelCase naming policy is set. Accept both.
+  static DonationHistorySource fromJson(Object? value) {
+    switch (value?.toString().toLowerCase()) {
       case 'external':
+      case '1':
         return DonationHistorySource.external;
-      case 'givtProcessed':
       default:
         return DonationHistorySource.givtProcessed;
     }
