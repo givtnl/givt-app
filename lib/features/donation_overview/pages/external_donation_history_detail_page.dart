@@ -209,6 +209,8 @@ class _ExternalDonationHistoryDetailPageState
     BuildContext context,
     ExternalDonationHistoryDetailUIModel uiModel,
   ) {
+    final amount = _formattedExternalHistoryAmount(context, uiModel.donation);
+    final date = _formattedExternalHistoryDate(context, uiModel.donation);
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -218,7 +220,8 @@ class _ExternalDonationHistoryDetailPageState
       ),
       builder: (sheetContext) {
         return _OneOffEditSheet(
-          uiModel: uiModel,
+          amount: amount,
+          date: date,
           onEditAmount: () {
             Navigator.of(sheetContext).pop();
             _showAmountEditor(context, uiModel, isOneOff: true);
@@ -240,6 +243,7 @@ class _ExternalDonationHistoryDetailPageState
     BuildContext context,
     ExternalDonationHistoryDetailUIModel uiModel,
   ) {
+    final amount = _formattedExternalHistoryAmount(context, uiModel.donation);
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -249,7 +253,7 @@ class _ExternalDonationHistoryDetailPageState
       ),
       builder: (sheetContext) {
         return _OccurrenceEditSheet(
-          uiModel: uiModel,
+          amount: amount,
           onEditAmount: () {
             Navigator.of(sheetContext).pop();
             _showAmountEditor(context, uiModel, isOneOff: false);
@@ -339,7 +343,8 @@ class _ExternalDonationHistoryDetailPageState
           text: locals.externalDonationsDeleteModalConfirm,
           variant: FunButtonVariant.destructiveSecondary,
           fullBorder: true,
-          analyticsEvent: AnalyticsEventName.donationHistoryExternalDeleteClicked
+          analyticsEvent: AnalyticsEventName
+              .donationHistoryExternalDeleteClicked
               .toEvent(),
         ),
         FunButton(
@@ -395,13 +400,15 @@ class _ExternalDonationHistoryDetailPageState
 
 class _OneOffEditSheet extends StatelessWidget {
   const _OneOffEditSheet({
-    required this.uiModel,
+    required this.amount,
+    required this.date,
     required this.onEditAmount,
     required this.onEditDate,
     required this.onDelete,
   });
 
-  final ExternalDonationHistoryDetailUIModel uiModel;
+  final String amount;
+  final String date;
   final VoidCallback onEditAmount;
   final VoidCallback onEditDate;
   final VoidCallback onDelete;
@@ -417,7 +424,7 @@ class _OneOffEditSheet extends StatelessWidget {
           ExternalDonationManageListItem(
             icon: FontAwesomeIcons.moneyBillWave,
             label: locals.externalDonationsManageAmount,
-            value: _formattedExternalHistoryAmount(context, uiModel.donation),
+            value: amount,
             analyticsEvent: AnalyticsEventName
                 .donationHistoryExternalEditAmountClicked
                 .toEvent(),
@@ -426,7 +433,7 @@ class _OneOffEditSheet extends StatelessWidget {
           ExternalDonationManageListItem(
             icon: FontAwesomeIcons.solidCalendar,
             label: locals.externalDonationsDetailOneOffDate,
-            value: _formattedExternalHistoryDate(context, uiModel.donation),
+            value: date,
             analyticsEvent: AnalyticsEventName
                 .donationHistoryExternalEditDateClicked
                 .toEvent(),
@@ -452,12 +459,12 @@ class _OneOffEditSheet extends StatelessWidget {
 
 class _OccurrenceEditSheet extends StatelessWidget {
   const _OccurrenceEditSheet({
-    required this.uiModel,
+    required this.amount,
     required this.onEditAmount,
     required this.onDelete,
   });
 
-  final ExternalDonationHistoryDetailUIModel uiModel;
+  final String amount;
   final VoidCallback onEditAmount;
   final VoidCallback onDelete;
 
@@ -472,7 +479,7 @@ class _OccurrenceEditSheet extends StatelessWidget {
           ExternalDonationManageListItem(
             icon: FontAwesomeIcons.moneyBillWave,
             label: locals.externalDonationsManageAmount,
-            value: _formattedExternalHistoryAmount(context, uiModel.donation),
+            value: amount,
             analyticsEvent: AnalyticsEventName
                 .donationHistoryExternalEditAmountClicked
                 .toEvent(),
@@ -522,8 +529,10 @@ class _AmountEditorSheetState extends State<_AmountEditorSheet> {
     _country = Country.fromCode(
       context.read<AuthCubit>().state.user.country,
     );
-    _initialAmountInput =
-        Util.formatNumberComma(widget.uiModel.donation.amount, _country);
+    _initialAmountInput = Util.formatNumberComma(
+      widget.uiModel.donation.amount,
+      _country,
+    );
     _amountController = TextEditingController(text: _initialAmountInput);
   }
 
@@ -543,8 +552,9 @@ class _AmountEditorSheetState extends State<_AmountEditorSheet> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final currency =
-        Util.getCurrencySymbol(countryCode: context.read<AuthCubit>().state.user.country);
+    final currency = Util.getCurrencySymbol(
+      countryCode: context.read<AuthCubit>().state.user.country,
+    );
 
     return FunBottomSheet(
       title: locals.externalDonationsManageAmount,
@@ -567,8 +577,9 @@ class _AmountEditorSheetState extends State<_AmountEditorSheet> {
         text: locals.externalDonationsSave,
         isDisabled: !_canSave,
         isLoading: widget.uiModel.isSaving,
-        analyticsEvent:
-            AnalyticsEventName.donationHistoryExternalEditSaveClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName
+            .donationHistoryExternalEditSaveClicked
+            .toEvent(),
         onTap: _canSave && !widget.uiModel.isSaving
             ? () async {
                 final amount = DonationAmountValidation.parseAmount(
@@ -611,7 +622,8 @@ class _DateEditorSheetState extends State<_DateEditorSheet> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final initialDate = widget.uiModel.donation.timeStamp;
-    final hasChanged = _selectedDate != null &&
+    final hasChanged =
+        _selectedDate != null &&
         (initialDate == null ||
             _selectedDate!.year != initialDate.year ||
             _selectedDate!.month != initialDate.month ||
@@ -629,8 +641,9 @@ class _DateEditorSheetState extends State<_DateEditorSheet> {
         text: locals.externalDonationsSave,
         isDisabled: !hasChanged,
         isLoading: widget.uiModel.isSaving,
-        analyticsEvent:
-            AnalyticsEventName.donationHistoryExternalEditSaveClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName
+            .donationHistoryExternalEditSaveClicked
+            .toEvent(),
         onTap: hasChanged && !widget.uiModel.isSaving && _selectedDate != null
             ? () => widget.onSave(_selectedDate!)
             : null,

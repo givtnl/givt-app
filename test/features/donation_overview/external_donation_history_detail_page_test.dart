@@ -93,6 +93,11 @@ void main() {
       WidgetTester tester, {
       required Map<String, dynamic> json,
     }) async {
+      tester.view.physicalSize = const Size(640, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
       final donation = DonationHistoryMapper.fromHistoryJson(json);
       await tester.pumpWidget(
         MaterialApp(
@@ -107,7 +112,9 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('renders one-off external copy and edit action', (tester) async {
+    testWidgets('renders one-off external copy and edit action', (
+      tester,
+    ) async {
       await pumpPage(
         tester,
         json: {
@@ -134,47 +141,49 @@ void main() {
     });
 
     testWidgets(
-        'edit sheet shows current amount and date without a pencil on delete',
-        (tester) async {
-      await pumpPage(
-        tester,
-        json: {
-          'source': 'external',
-          'id': 'tx-1',
-          'externalDonationId': 'series-1',
-          'externalTransactionId': 'tx-1',
-          'amount': 69,
-          'timestamp': '2026-09-12T00:00:00',
-          'organisationName': 'Food Bank',
-          'frequency': 'Once',
-          'isRecurring': false,
-        },
-      );
+      'edit sheet shows current amount and date without a pencil on delete',
+      (tester) async {
+        await pumpPage(
+          tester,
+          json: {
+            'source': 'external',
+            'id': 'tx-1',
+            'externalDonationId': 'series-1',
+            'externalTransactionId': 'tx-1',
+            'amount': 69,
+            'timestamp': '2026-09-12T00:00:00',
+            'organisationName': 'Food Bank',
+            'frequency': 'Once',
+            'isRecurring': false,
+          },
+        );
 
-      await tester.tap(find.text('Edit this donation'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Edit this donation'));
+        await tester.pumpAndSettle();
 
-      final pageContext = tester.element(
-        find.byType(ExternalDonationHistoryDetailPage),
-      );
-      final date = ExternalDonationDisplay.formatDate(
-        DateTime(2026, 9, 12),
-        Util.getLanguageTageFromLocale(pageContext),
-      );
+        final pageContext = tester.element(
+          find.byType(ExternalDonationHistoryDetailPage),
+        );
+        final date = ExternalDonationDisplay.formatDate(
+          DateTime(2026, 9, 12),
+          Util.getLanguageTageFromLocale(pageContext),
+        );
 
-      expect(find.text('Edit this donation'), findsWidgets);
-      expect(find.text('€69,00'), findsNWidgets(2));
-      expect(find.text(date), findsNWidgets(2));
-      expect(find.text('Amount'), findsOneWidget);
-      expect(find.text('Date'), findsNWidgets(2));
-      expect(find.text('Delete donation'), findsOneWidget);
-      expect(find.byType(ExternalDonationManageListItem), findsNWidgets(2));
-      expect(find.byIcon(FontAwesomeIcons.pen), findsNWidgets(2));
-      expect(find.byIcon(FontAwesomeIcons.trash), findsNothing);
-    });
+        expect(find.text('Edit this donation'), findsWidgets);
+        expect(find.text('€69,00'), findsNWidgets(2));
+        expect(find.text(date), findsNWidgets(2));
+        expect(find.text('Amount'), findsOneWidget);
+        expect(find.text('Date'), findsNWidgets(2));
+        expect(find.text('Delete donation'), findsOneWidget);
+        expect(find.byType(ExternalDonationManageListItem), findsNWidgets(2));
+        expect(find.byIcon(FontAwesomeIcons.pen.data), findsNWidgets(2));
+        expect(find.byIcon(FontAwesomeIcons.trash.data), findsNothing);
+      },
+    );
 
-    testWidgets('renders recurring occurrence copy and manage action',
-        (tester) async {
+    testWidgets('renders recurring occurrence copy and manage action', (
+      tester,
+    ) async {
       await pumpPage(
         tester,
         json: {
@@ -197,31 +206,32 @@ void main() {
     });
 
     testWidgets(
-        'occurrence edit sheet shows current amount and a delete button',
-        (tester) async {
-      await pumpPage(
-        tester,
-        json: {
-          'source': 'external',
-          'id': 'tx-2',
-          'externalDonationId': 'series-2',
-          'externalTransactionId': 'tx-2',
-          'amount': 30,
-          'timestamp': '2026-03-11T09:00:00',
-          'organisationName': 'Shelter',
-          'frequency': 'Monthly',
-          'isRecurring': true,
-        },
-      );
+      'occurrence edit sheet shows current amount and a delete button',
+      (tester) async {
+        await pumpPage(
+          tester,
+          json: {
+            'source': 'external',
+            'id': 'tx-2',
+            'externalDonationId': 'series-2',
+            'externalTransactionId': 'tx-2',
+            'amount': 30,
+            'timestamp': '2026-03-11T09:00:00',
+            'organisationName': 'Shelter',
+            'frequency': 'Monthly',
+            'isRecurring': true,
+          },
+        );
 
-      await tester.tap(find.text('Edit this donation'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Edit this donation'));
+        await tester.pumpAndSettle();
 
-      expect(find.text('€30,00'), findsNWidgets(2));
-      expect(find.text('Amount'), findsOneWidget);
-      expect(find.text('Delete donation'), findsOneWidget);
-      expect(find.byType(ExternalDonationManageListItem), findsOneWidget);
-      expect(find.byIcon(FontAwesomeIcons.pen), findsOneWidget);
-    });
+        expect(find.text('€30,00'), findsNWidgets(2));
+        expect(find.text('Amount'), findsOneWidget);
+        expect(find.text('Delete donation'), findsOneWidget);
+        expect(find.byType(ExternalDonationManageListItem), findsOneWidget);
+        expect(find.byIcon(FontAwesomeIcons.pen.data), findsOneWidget);
+      },
+    );
   });
 }
