@@ -54,9 +54,11 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
       _error = null;
       _emitDonationsChanged();
 
-      _donations = await _givtRepository.fetchDonationHistory(
-        startDate: startDate,
-        endDate: endDate,
+      _donations = List<DonationItem>.of(
+        await _givtRepository.fetchDonationHistory(
+          startDate: startDate,
+          endDate: endDate,
+        ),
       );
 
       _donations.sort((a, b) {

@@ -22,7 +22,7 @@ class _EmptyGivtRepository with GivtRepository {
   Future<List<DonationItem>> fetchDonationHistory({
     DateTime? startDate,
     DateTime? endDate,
-  }) async => const [];
+  }) async => <DonationItem>[];
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -39,7 +39,7 @@ class _CapturingGivtRepository with GivtRepository {
   }) async {
     this.startDate = startDate;
     this.endDate = endDate;
-    return const [];
+    return <DonationItem>[];
   }
 
   @override
