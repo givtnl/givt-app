@@ -54,10 +54,8 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
       _error = null;
       _emitDonationsChanged();
 
-      final givts = await _givtRepository.fetchGivts();
-      _donations = givts.map((givt) => DonationItem.fromGivt(givt)).toList();
-      
-      // Sort donations by timestamp (newest first)
+      _donations = await _givtRepository.fetchDonationHistory();
+
       _donations.sort((a, b) {
         if (a.timeStamp == null && b.timeStamp == null) return 0;
         if (a.timeStamp == null) return 1;
@@ -79,7 +77,6 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
     try {
       final result = await _givtRepository.deleteGivt(ids);
       if (result) {
-        // Remove deleted donations from local list
         _donations.removeWhere((donation) => ids.contains(donation.id));
         _emitDonationsChanged();
       }

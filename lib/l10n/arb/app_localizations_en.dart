@@ -3294,6 +3294,24 @@ class AppLocalizationsEn extends AppLocalizations {
       'Hi, I have the following question about my donation:';
 
   @override
+  String get donationHistoryExternalListSubtitle => 'External donation';
+
+  @override
+  String get donationHistoryExternalOneOffSubtitle =>
+      'External donation: not processed by Givt';
+
+  @override
+  String get donationHistoryExternalRecurringSubtitle =>
+      'Not processed by Givt';
+
+  @override
+  String get donationHistoryExternalEditDonation => 'Edit this donation';
+
+  @override
+  String get donationHistoryExternalManageRecurring =>
+      'Manage recurring donation';
+
+  @override
   String get date => 'Date';
 
   @override
@@ -6804,6 +6822,24 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String get donationOverviewContactMessage =>
       'Hi, I have the following question about my donation:';
+
+  @override
+  String get donationHistoryExternalListSubtitle => 'External donation';
+
+  @override
+  String get donationHistoryExternalOneOffSubtitle =>
+      'External donation: not processed by Givt';
+
+  @override
+  String get donationHistoryExternalRecurringSubtitle =>
+      'Not processed by Givt';
+
+  @override
+  String get donationHistoryExternalEditDonation => 'Edit this donation';
+
+  @override
+  String get donationHistoryExternalManageRecurring =>
+      'Manage recurring donation';
 
   @override
   String get date => 'Date';

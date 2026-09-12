@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/models/givt.dart';
 
@@ -20,6 +21,11 @@ class DonationItem extends Equatable {
     this.collectGroupId,
     this.collectId,
     this.allocationName = '',
+    this.historyId,
+    this.isExternal = false,
+    this.externalDonationId,
+    this.externalTransactionId,
+    this.externalFrequency,
   });
 
   factory DonationItem.fromGivt(Givt givt) {
@@ -57,6 +63,16 @@ class DonationItem extends Equatable {
   final String? collectGroupId;
   final int? collectId;
   final String allocationName;
+  final String? historyId;
+  final bool isExternal;
+  final String? externalDonationId;
+  final String? externalTransactionId;
+  final ExternalDonationFrequency? externalFrequency;
+
+  bool get isExternalRecurring =>
+      isExternal &&
+      externalFrequency != null &&
+      externalFrequency != ExternalDonationFrequency.once;
 
   /// Allocation label: API name when set, else localized "Collection N".
   String allocationDisplayLabel(AppLocalizations l10n) {
@@ -82,6 +98,11 @@ class DonationItem extends Equatable {
     String? collectGroupId,
     int? collectId,
     String? allocationName,
+    String? historyId,
+    bool? isExternal,
+    String? externalDonationId,
+    String? externalTransactionId,
+    ExternalDonationFrequency? externalFrequency,
   }) {
     return DonationItem(
       id: id ?? this.id,
@@ -99,6 +120,12 @@ class DonationItem extends Equatable {
       collectGroupId: collectGroupId ?? this.collectGroupId,
       collectId: collectId ?? this.collectId,
       allocationName: allocationName ?? this.allocationName,
+      historyId: historyId ?? this.historyId,
+      isExternal: isExternal ?? this.isExternal,
+      externalDonationId: externalDonationId ?? this.externalDonationId,
+      externalTransactionId:
+          externalTransactionId ?? this.externalTransactionId,
+      externalFrequency: externalFrequency ?? this.externalFrequency,
     );
   }
 
@@ -120,6 +147,9 @@ class DonationItem extends Equatable {
         'collectGroupId': collectGroupId,
         'collectId': collectId,
         'allocationName': allocationName,
+        'isExternal': isExternal,
+        'externalDonationId': externalDonationId,
+        'externalTransactionId': externalTransactionId,
     };
   }
 
@@ -140,5 +170,10 @@ class DonationItem extends Equatable {
         collectGroupId,
         collectId,
         allocationName,
+        historyId,
+        isExternal,
+        externalDonationId,
+        externalTransactionId,
+        externalFrequency,
       ];
 }

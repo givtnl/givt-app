@@ -3307,6 +3307,24 @@ class AppLocalizationsNl extends AppLocalizations {
       'Hoi, ik heb de volgende vraag over mijn donatie:';
 
   @override
+  String get donationHistoryExternalListSubtitle => 'Externe gift';
+
+  @override
+  String get donationHistoryExternalOneOffSubtitle =>
+      'Externe gift: niet verwerkt door Givt';
+
+  @override
+  String get donationHistoryExternalRecurringSubtitle =>
+      'Niet verwerkt door Givt';
+
+  @override
+  String get donationHistoryExternalEditDonation => 'Deze gift bewerken';
+
+  @override
+  String get donationHistoryExternalManageRecurring =>
+      'Terugkerende gift beheren';
+
+  @override
   String get date => 'Datum';
 
   @override

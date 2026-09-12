@@ -7,6 +7,8 @@ import 'dart:io';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
+import 'package:givt_app/features/donation_overview/models/donation_history_mapper.dart';
+import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation_transaction.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
@@ -28,6 +30,11 @@ mixin GivtRepository {
   Future<void> syncOfflineGivts();
 
   Future<List<Givt>> fetchGivts();
+
+  Future<List<DonationItem>> fetchDonationHistory({
+    DateTime? startDate,
+    DateTime? endDate,
+  });
 
   Future<List<Pledge>> fetchPledges();
 
@@ -252,6 +259,30 @@ class GivtRepositoryImpl with GivtRepository {
     return Givt.fromJsonList(
       decodedJson,
     );
+  }
+
+  @override
+  Future<List<DonationItem>> fetchDonationHistory({
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    final body = <String, dynamic>{};
+    if (startDate != null) {
+      body['startDate'] = startDate.toIso8601String();
+    }
+    if (endDate != null) {
+      body['endDate'] = endDate.toIso8601String();
+    }
+
+    final decodedJson = await apiClient.fetchDonationHistory(body: body);
+    final itemsJson = decodedJson['items'] as List<dynamic>? ?? [];
+    return itemsJson
+        .map(
+          (item) => DonationHistoryMapper.fromHistoryJson(
+            item as Map<String, dynamic>,
+          ),
+        )
+        .toList();
   }
 
   @override
