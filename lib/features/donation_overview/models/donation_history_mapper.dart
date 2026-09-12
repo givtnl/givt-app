@@ -9,7 +9,7 @@ abstract final class DonationHistoryMapper {
   const DonationHistoryMapper._();
 
   static DonationItem fromHistoryJson(Map<String, dynamic> json) {
-    final source = DonationHistorySource.fromJson(json['source'] as String?);
+    final source = DonationHistorySource.fromJson(json['source']);
     final timestampRaw = json['timestamp'] as String?;
     final timestamp = timestampRaw != null
         ? ApiDateTime.parseLocal(timestampRaw) ??
@@ -20,8 +20,8 @@ abstract final class DonationHistoryMapper {
       final frequency = _parseExternalFrequency(json);
       return DonationItem(
         id: 0,
-        historyId: json['id'] as String?,
-        amount: (json['amount'] as num).toDouble(),
+        historyId: json['id']?.toString(),
+        amount: _readDouble(json['amount']) ?? 0,
         organisationName: json['organisationName'] as String? ?? '',
         organisationTaxDeductible: false,
         isGiftAidEnabled: false,
@@ -31,37 +31,35 @@ abstract final class DonationHistoryMapper {
         taxYear: timestamp != null ? ukGiftAidTaxYearIndexForDate(timestamp) : 0,
         donationType: 0,
         isExternal: true,
-        externalDonationId: json['externalDonationId'] as String?,
-        externalTransactionId: json['externalTransactionId'] as String? ??
-            json['id'] as String?,
+        externalDonationId: json['externalDonationId']?.toString(),
+        externalTransactionId: json['externalTransactionId']?.toString() ??
+            json['id']?.toString(),
         externalFrequency: frequency,
       );
     }
 
-    final givtId = int.tryParse(json['id'] as String? ?? '') ??
-        (json['id'] as num?)?.toInt() ??
-        0;
-    final platformFeeAmount = (json['platformFeeAmount'] as num?)?.toDouble();
+    final givtId = _readInt(json['id']) ?? 0;
+    final platformFeeAmount = _readDouble(json['platformFeeAmount']);
 
     return DonationItem(
       id: givtId,
       historyId: json['id']?.toString(),
-      amount: (json['amount'] as num).toDouble(),
+      amount: _readDouble(json['amount']) ?? 0,
       organisationName: json['organisationName'] as String? ?? '',
       organisationTaxDeductible: false,
       isGiftAidEnabled: json['giftAidEnabled'] as bool? ?? false,
-      status: DonationStatus.fromLegacyStatus(json['status'] as int? ?? 0),
+      status: DonationStatus.fromLegacyStatus(_readInt(json['status']) ?? 0),
       timeStamp: timestamp,
       mediumId: json['mediumId'] as String? ?? '',
       taxYear: timestamp != null ? ukGiftAidTaxYearIndexForDate(timestamp) : 0,
-      donationType: json['donationType'] as int? ?? 0,
+      donationType: _readInt(json['donationType']) ?? 0,
       platformFeeAmount: platformFeeAmount,
       platformFeeTransactionId: _resolvePlatformFeeTransactionId(
         json: json,
         givtId: givtId,
         platformFeeAmount: platformFeeAmount,
       ),
-      collectId: json['collectId'] as int?,
+      collectId: _readInt(json['collectId']),
       allocationName: (json['allocationName'] as String? ?? '').trim(),
       isExternal: false,
     );
@@ -72,7 +70,7 @@ abstract final class DonationHistoryMapper {
     required int givtId,
     required double? platformFeeAmount,
   }) {
-    final bffId = (json['platformFeeTransactionId'] as num?)?.toInt();
+    final bffId = _readInt(json['platformFeeTransactionId']);
     if (bffId != null) {
       return bffId;
     }
@@ -97,7 +95,7 @@ abstract final class DonationHistoryMapper {
       return ExternalDonationFrequency.once;
     }
 
-    final frequency = json['frequency'] as String?;
+    final frequency = json['frequency']?.toString();
     switch (frequency) {
       case 'Weekly':
         return ExternalDonationFrequency.weekly;
@@ -117,5 +115,34 @@ abstract final class DonationHistoryMapper {
             ? ExternalDonationFrequency.monthly
             : ExternalDonationFrequency.once;
     }
+  }
+
+  static int? _readInt(Object? value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is int) {
+      return value;
+    }
+    if (value is num) {
+      return value.toInt();
+    }
+    if (value is String) {
+      return int.tryParse(value);
+    }
+    return null;
+  }
+
+  static double? _readDouble(Object? value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is num) {
+      return value.toDouble();
+    }
+    if (value is String) {
+      return double.tryParse(value);
+    }
+    return null;
   }
 }

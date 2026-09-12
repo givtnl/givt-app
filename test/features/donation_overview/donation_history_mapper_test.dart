@@ -61,6 +61,54 @@ void main() {
       expect(item.platformFeeTransactionId, 42);
     });
 
+    test('maps PascalCase External source with Guid id without throwing', () {
+      const guid = '8c2f0b1a-4d3e-4f5a-9b6c-7d8e9f0a1b2c';
+      final item = DonationHistoryMapper.fromHistoryJson({
+        'source': 'External',
+        'id': guid,
+        'externalDonationId': 'series-1',
+        'externalTransactionId': guid,
+        'amount': 20,
+        'timestamp': '2026-03-10T09:00:00',
+        'organisationName': 'Local Food Bank',
+        'frequency': 'Once',
+        'isRecurring': false,
+      });
+
+      expect(item.isExternal, isTrue);
+      expect(item.id, 0);
+      expect(item.historyId, guid);
+      expect(item.externalTransactionId, guid);
+      expect(item.amount, 20);
+    });
+
+    test('maps GivtProcessed PascalCase source', () {
+      final item = DonationHistoryMapper.fromHistoryJson({
+        'source': 'GivtProcessed',
+        'id': '42',
+        'amount': 12.5,
+        'timestamp': '2026-03-15T10:30:00',
+        'organisationName': 'Hope Church',
+        'status': 3,
+      });
+
+      expect(item.isExternal, isFalse);
+      expect(item.id, 42);
+    });
+
+    test('does not throw when Givt id is a non-numeric string', () {
+      final item = DonationHistoryMapper.fromHistoryJson({
+        'source': 'givtProcessed',
+        'id': '8c2f0b1a-4d3e-4f5a-9b6c-7d8e9f0a1b2c',
+        'amount': 10,
+        'timestamp': '2026-03-15T10:30:00',
+        'organisationName': 'Hope Church',
+      });
+
+      expect(item.isExternal, isFalse);
+      expect(item.id, 0);
+    });
+
     test('maps external recurring rows with frequency', () {
       final item = DonationHistoryMapper.fromHistoryJson({
         'source': 'external',
