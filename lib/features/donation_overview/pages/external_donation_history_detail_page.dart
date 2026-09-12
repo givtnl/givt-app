@@ -69,7 +69,9 @@ class _ExternalDonationHistoryDetailPageState
         appBar: FunTopAppBar(
           variant: FunTopAppBarVariant.white,
           leading: GivtBackButtonFlat(
-            onPressed: () => context.pop(),
+            onPressed: () async {
+              context.pop();
+            },
           ),
           actions: [
             IconButton(
@@ -87,10 +89,11 @@ class _ExternalDonationHistoryDetailPageState
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
-            BodySmallText.secondary30(
+            BodySmallText(
               uiModel.isOneOff
                   ? context.l10n.donationHistoryExternalOneOffSubtitle
                   : context.l10n.donationHistoryExternalRecurringSubtitle,
+              color: FunTheme.of(context).secondary30,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -350,6 +353,9 @@ class _ExternalDonationHistoryDetailPageState
         FunButton(
           onTap: () => context.pop(),
           text: locals.externalDonationsDeleteModalCancel,
+          analyticsEvent: AnalyticsEventName
+              .donationHistoryExternalDeleteCancelClicked
+              .toEvent(),
         ),
       ],
     ).show(context, isDismissible: true);
@@ -538,6 +544,7 @@ class _AmountEditorSheetState extends State<_AmountEditorSheet> {
       closeAction: () => Navigator.of(context).pop(),
       content: FunInput(
         label: locals.externalDonationsManageAmount,
+        hintText: locals.recurringDonationsCreateStep2AmountHint,
         controller: _amountController,
         prefixText: currency,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),

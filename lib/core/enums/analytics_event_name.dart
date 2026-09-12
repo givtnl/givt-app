@@ -394,6 +394,9 @@ enum AnalyticsEventName {
   donationHistoryExternalDeleteClicked(
     'donation_history_external_delete_clicked',
   ),
+  donationHistoryExternalDeleteCancelClicked(
+    'donation_history_external_delete_cancel_clicked',
+  ),
   locationSelected('location_selected'),
   locationNextClicked('location_next_clicked'),
   citySelected('city_selected'),
