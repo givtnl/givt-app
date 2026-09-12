@@ -385,6 +385,12 @@ enum AnalyticsEventName {
   seeDonationHistoryPressed('see_donation_history_pressed'),
   donationHistoryExternalRowClicked('donation_history_external_row_clicked'),
   donationHistoryExternalEditClicked('donation_history_external_edit_clicked'),
+  donationHistoryExternalEditAmountClicked(
+    'donation_history_external_edit_amount_clicked',
+  ),
+  donationHistoryExternalEditDateClicked(
+    'donation_history_external_edit_date_clicked',
+  ),
   donationHistoryExternalEditSaveClicked(
     'donation_history_external_edit_save_clicked',
   ),
