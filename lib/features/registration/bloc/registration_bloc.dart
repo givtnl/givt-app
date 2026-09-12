@@ -220,7 +220,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       emit(
         state.copyWith(
           status: RegistrationStatus.failure,
-          errorMessage: e.userFacingMessage ?? '',
+          errorMessage: e.isGenericServerError
+              ? ''
+              : (e.userFacingMessage ?? ''),
         ),
       );
     } catch (e, stackTrace) {

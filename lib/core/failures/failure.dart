@@ -60,7 +60,15 @@ class GivtServerFailure extends Equatable implements Exception {
     if (body == null) {
       return null;
     }
-    const keys = ['errorMessage', 'message', 'detail', 'title', 'raw'];
+    const keys = [
+      'errorMessage',
+      'ErrorMessage',
+      'message',
+      'Message',
+      'detail',
+      'title',
+      'raw',
+    ];
     for (final key in keys) {
       final value = body![key];
       if (value is String && value.trim().isNotEmpty) {
@@ -68,6 +76,28 @@ class GivtServerFailure extends Equatable implements Exception {
       }
     }
     return null;
+  }
+
+  /// True when the body is a generic BFF/exception dump, not copy we can show.
+  bool get isGenericServerError {
+    final candidates = <String>[
+      if (userFacingMessage != null) userFacingMessage!,
+      if (body != null) body.toString(),
+    ];
+    if (candidates.isEmpty) {
+      return true;
+    }
+    return candidates.any(_isGenericServerErrorText);
+  }
+
+  static bool _isGenericServerErrorText(String text) {
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) {
+      return true;
+    }
+    return trimmed.contains('An unexpected error occurred') ||
+        trimmed.contains('Exception of type') ||
+        trimmed.contains('HttpBaseException');
   }
 
   /// `POST /givtservice/v1/Mandates/bacs` 409 when the latest mandate is

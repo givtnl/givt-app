@@ -86,4 +86,37 @@ void main() {
       expect(failure.isMandateAlreadySigned, isFalse);
     });
   });
+
+  group('GivtServerFailure user-facing errors', () {
+    test('reads PascalCase ErrorMessage from exception middleware JSON', () {
+      const failure = GivtServerFailure(
+        statusCode: 500,
+        body: {
+          'ErrorCode': 500,
+          'StatusCode': 500,
+          'ErrorMessage': 'An unexpected error occurred.',
+          'Message':
+              "Exception of type 'Givt.Common.Library.Exceptions.HttpBaseException' was thrown.",
+        },
+      );
+
+      expect(failure.userFacingMessage, 'An unexpected error occurred.');
+      expect(failure.isGenericServerError, isTrue);
+    });
+
+    test('isGenericServerError is false for specific API copy', () {
+      const failure = GivtServerFailure(
+        statusCode: 409,
+        body: {'errorMessage': 'MANDATE_ALREADY_SIGNED: closed.completed'},
+      );
+
+      expect(failure.isGenericServerError, isFalse);
+    });
+
+    test('isGenericServerError is true when body is missing', () {
+      const failure = GivtServerFailure(statusCode: 500);
+
+      expect(failure.isGenericServerError, isTrue);
+    });
+  });
 }
