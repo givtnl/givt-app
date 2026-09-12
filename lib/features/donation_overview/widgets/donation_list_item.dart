@@ -11,7 +11,6 @@ import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
 import 'package:givt_app/features/donation_overview/pages/donation_detail_page.dart';
 import 'package:givt_app/features/donation_overview/pages/external_donation_history_detail_page.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/l10n/l10n.dart';

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,16 +13,27 @@ import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 
 class _FakeAuthRepository with AuthRepository {
+  final _sessionController = StreamController<bool>.broadcast();
+
+  @override
+  Stream<bool> hasSessionStream() => _sessionController.stream;
+
+  void dispose() {
+    _sessionController.close();
+  }
+
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 void main() {
   group('DonationListItem', () {
+    late _FakeAuthRepository authRepository;
     late AuthCubit authCubit;
 
     setUp(() {
-      authCubit = AuthCubit(_FakeAuthRepository());
+      authRepository = _FakeAuthRepository();
+      authCubit = AuthCubit(authRepository);
       authCubit.emit(
         authCubit.state.copyWith(
           status: AuthStatus.authenticated,
@@ -36,6 +49,7 @@ void main() {
 
     tearDown(() async {
       await authCubit.close();
+      authRepository.dispose();
     });
 
     Widget buildSubject(DonationGroup group) {
@@ -77,8 +91,14 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('External donation'), findsOneWidget);
-      expect(find.byIcon(FontAwesomeIcons.arrowsRotate), findsOneWidget);
-      expect(find.byIcon(FontAwesomeIcons.arrowUpRightFromSquare), findsOneWidget);
+      expect(
+        find.byIcon(FontAwesomeIcons.arrowsRotate.data),
+        findsOneWidget,
+      );
+      expect(
+        find.byIcon(FontAwesomeIcons.arrowUpRightFromSquare.data),
+        findsOneWidget,
+      );
     });
 
     testWidgets('shows givt status text for processed donations',
@@ -103,7 +123,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('External donation'), findsNothing);
-      expect(find.byIcon(FontAwesomeIcons.arrowUpRightFromSquare), findsNothing);
+      expect(
+        find.byIcon(FontAwesomeIcons.arrowUpRightFromSquare.data),
+        findsNothing,
+      );
     });
   });
 }

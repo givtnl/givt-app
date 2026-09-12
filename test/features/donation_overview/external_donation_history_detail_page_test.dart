@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,6 +16,15 @@ import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 class _FakeAuthRepository with AuthRepository {
+  final _sessionController = StreamController<bool>.broadcast();
+
+  @override
+  Stream<bool> hasSessionStream() => _sessionController.stream;
+
+  void dispose() {
+    _sessionController.close();
+  }
+
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -30,10 +41,12 @@ class _FakeDonationOverviewRepository with DonationOverviewRepository {
 
 void main() {
   group('ExternalDonationHistoryDetailPage', () {
+    late _FakeAuthRepository authRepository;
     late AuthCubit authCubit;
 
     setUp(() {
-      authCubit = AuthCubit(_FakeAuthRepository());
+      authRepository = _FakeAuthRepository();
+      authCubit = AuthCubit(authRepository);
       authCubit.emit(
         authCubit.state.copyWith(
           status: AuthStatus.authenticated,
@@ -63,6 +76,7 @@ void main() {
 
     tearDown(() async {
       await authCubit.close();
+      authRepository.dispose();
       if (getIt.isRegistered<ExternalDonationHistoryDetailCubit>()) {
         getIt.unregister<ExternalDonationHistoryDetailCubit>();
       }
