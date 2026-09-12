@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +15,7 @@ import 'package:givt_app/features/external_donations/create/widgets/external_don
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_past_date_picker.dart';
 import 'package:givt_app/features/external_donations/detail/pages/external_donation_detail_page.dart';
 import 'package:givt_app/features/external_donations/detail/widgets/external_donation_manage_list_item.dart';
+import 'package:givt_app/features/external_donations/shared/external_donation_display.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -158,24 +156,18 @@ class _ExternalDonationHistoryDetailPageState
     BuildContext context,
     ExternalDonationHistoryDetailUIModel uiModel,
   ) {
-    final auth = context.read<AuthCubit>().state;
-    final currency = Util.getCurrencySymbol(countryCode: auth.user.country);
-    final country = Country.fromCode(auth.user.country);
     final donation = uiModel.donation;
 
     final rows = <Widget>[
       DonationDetailRow(
         label: context.l10n.donationHistoryExternalListSubtitle,
-        value: '$currency${Util.formatNumberComma(donation.amount, country)}',
+        value: _formattedExternalHistoryAmount(context, donation),
         showDivider: true,
       ),
       if (donation.timeStamp != null)
         DonationDetailRow(
           label: context.l10n.date,
-          value: Util.formatFullDateLocal(
-            donation.timeStamp!,
-            Platform.localeName,
-          ),
+          value: _formattedExternalHistoryDate(context, donation),
           showDivider: !uiModel.isOneOff && donation.externalFrequency != null,
         ),
       if (!uiModel.isOneOff && donation.externalFrequency != null)
@@ -217,6 +209,8 @@ class _ExternalDonationHistoryDetailPageState
     BuildContext context,
     ExternalDonationHistoryDetailUIModel uiModel,
   ) {
+    final amount = _formattedExternalHistoryAmount(context, uiModel.donation);
+    final date = _formattedExternalHistoryDate(context, uiModel.donation);
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -226,7 +220,8 @@ class _ExternalDonationHistoryDetailPageState
       ),
       builder: (sheetContext) {
         return _OneOffEditSheet(
-          uiModel: uiModel,
+          amount: amount,
+          date: date,
           onEditAmount: () {
             Navigator.of(sheetContext).pop();
             _showAmountEditor(context, uiModel, isOneOff: true);
@@ -248,6 +243,7 @@ class _ExternalDonationHistoryDetailPageState
     BuildContext context,
     ExternalDonationHistoryDetailUIModel uiModel,
   ) {
+    final amount = _formattedExternalHistoryAmount(context, uiModel.donation);
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -257,7 +253,7 @@ class _ExternalDonationHistoryDetailPageState
       ),
       builder: (sheetContext) {
         return _OccurrenceEditSheet(
-          uiModel: uiModel,
+          amount: amount,
           onEditAmount: () {
             Navigator.of(sheetContext).pop();
             _showAmountEditor(context, uiModel, isOneOff: false);
@@ -347,7 +343,8 @@ class _ExternalDonationHistoryDetailPageState
           text: locals.externalDonationsDeleteModalConfirm,
           variant: FunButtonVariant.destructiveSecondary,
           fullBorder: true,
-          analyticsEvent: AnalyticsEventName.donationHistoryExternalDeleteClicked
+          analyticsEvent: AnalyticsEventName
+              .donationHistoryExternalDeleteClicked
               .toEvent(),
         ),
         FunButton(
@@ -403,13 +400,15 @@ class _ExternalDonationHistoryDetailPageState
 
 class _OneOffEditSheet extends StatelessWidget {
   const _OneOffEditSheet({
-    required this.uiModel,
+    required this.amount,
+    required this.date,
     required this.onEditAmount,
     required this.onEditDate,
     required this.onDelete,
   });
 
-  final ExternalDonationHistoryDetailUIModel uiModel;
+  final String amount;
+  final String date;
   final VoidCallback onEditAmount;
   final VoidCallback onEditDate;
   final VoidCallback onDelete;
@@ -425,23 +424,32 @@ class _OneOffEditSheet extends StatelessWidget {
           ExternalDonationManageListItem(
             icon: FontAwesomeIcons.moneyBillWave,
             label: locals.externalDonationsManageAmount,
-            value: '',
+            value: amount,
+            analyticsEvent: AnalyticsEventName
+                .donationHistoryExternalEditAmountClicked
+                .toEvent(),
             onTap: onEditAmount,
           ),
           ExternalDonationManageListItem(
             icon: FontAwesomeIcons.solidCalendar,
             label: locals.externalDonationsDetailOneOffDate,
-            value: '',
+            value: date,
+            analyticsEvent: AnalyticsEventName
+                .donationHistoryExternalEditDateClicked
+                .toEvent(),
             onTap: onEditDate,
           ),
-          ExternalDonationManageListItem(
-            icon: FontAwesomeIcons.trash,
-            label: locals.externalDonationsManageDeleteDonation,
-            value: '',
-            onTap: onDelete,
+          const SizedBox(height: 24),
+          FunButton(
+            text: locals.externalDonationsManageDeleteDonation,
+            variant: FunButtonVariant.secondary,
+            fullBorder: true,
+            borderColor: FamilyAppTheme.error40,
+            textColor: FamilyAppTheme.error40,
             analyticsEvent: AnalyticsEventName
                 .donationHistoryExternalDeleteClicked
                 .toEvent(),
+            onTap: onDelete,
           ),
         ],
       ),
@@ -451,12 +459,12 @@ class _OneOffEditSheet extends StatelessWidget {
 
 class _OccurrenceEditSheet extends StatelessWidget {
   const _OccurrenceEditSheet({
-    required this.uiModel,
+    required this.amount,
     required this.onEditAmount,
     required this.onDelete,
   });
 
-  final ExternalDonationHistoryDetailUIModel uiModel;
+  final String amount;
   final VoidCallback onEditAmount;
   final VoidCallback onDelete;
 
@@ -471,17 +479,23 @@ class _OccurrenceEditSheet extends StatelessWidget {
           ExternalDonationManageListItem(
             icon: FontAwesomeIcons.moneyBillWave,
             label: locals.externalDonationsManageAmount,
-            value: '',
+            value: amount,
+            analyticsEvent: AnalyticsEventName
+                .donationHistoryExternalEditAmountClicked
+                .toEvent(),
             onTap: onEditAmount,
           ),
-          ExternalDonationManageListItem(
-            icon: FontAwesomeIcons.trash,
-            label: locals.externalDonationsManageDeleteDonation,
-            value: '',
-            onTap: onDelete,
+          const SizedBox(height: 24),
+          FunButton(
+            text: locals.externalDonationsManageDeleteDonation,
+            variant: FunButtonVariant.secondary,
+            fullBorder: true,
+            borderColor: FamilyAppTheme.error40,
+            textColor: FamilyAppTheme.error40,
             analyticsEvent: AnalyticsEventName
                 .donationHistoryExternalDeleteClicked
                 .toEvent(),
+            onTap: onDelete,
           ),
         ],
       ),
@@ -515,8 +529,10 @@ class _AmountEditorSheetState extends State<_AmountEditorSheet> {
     _country = Country.fromCode(
       context.read<AuthCubit>().state.user.country,
     );
-    _initialAmountInput =
-        Util.formatNumberComma(widget.uiModel.donation.amount, _country);
+    _initialAmountInput = Util.formatNumberComma(
+      widget.uiModel.donation.amount,
+      _country,
+    );
     _amountController = TextEditingController(text: _initialAmountInput);
   }
 
@@ -536,8 +552,9 @@ class _AmountEditorSheetState extends State<_AmountEditorSheet> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final currency =
-        Util.getCurrencySymbol(countryCode: context.read<AuthCubit>().state.user.country);
+    final currency = Util.getCurrencySymbol(
+      countryCode: context.read<AuthCubit>().state.user.country,
+    );
 
     return FunBottomSheet(
       title: locals.externalDonationsManageAmount,
@@ -560,8 +577,9 @@ class _AmountEditorSheetState extends State<_AmountEditorSheet> {
         text: locals.externalDonationsSave,
         isDisabled: !_canSave,
         isLoading: widget.uiModel.isSaving,
-        analyticsEvent:
-            AnalyticsEventName.donationHistoryExternalEditSaveClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName
+            .donationHistoryExternalEditSaveClicked
+            .toEvent(),
         onTap: _canSave && !widget.uiModel.isSaving
             ? () async {
                 final amount = DonationAmountValidation.parseAmount(
@@ -604,7 +622,8 @@ class _DateEditorSheetState extends State<_DateEditorSheet> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final initialDate = widget.uiModel.donation.timeStamp;
-    final hasChanged = _selectedDate != null &&
+    final hasChanged =
+        _selectedDate != null &&
         (initialDate == null ||
             _selectedDate!.year != initialDate.year ||
             _selectedDate!.month != initialDate.month ||
@@ -622,12 +641,33 @@ class _DateEditorSheetState extends State<_DateEditorSheet> {
         text: locals.externalDonationsSave,
         isDisabled: !hasChanged,
         isLoading: widget.uiModel.isSaving,
-        analyticsEvent:
-            AnalyticsEventName.donationHistoryExternalEditSaveClicked.toEvent(),
+        analyticsEvent: AnalyticsEventName
+            .donationHistoryExternalEditSaveClicked
+            .toEvent(),
         onTap: hasChanged && !widget.uiModel.isSaving && _selectedDate != null
             ? () => widget.onSave(_selectedDate!)
             : null,
       ),
     );
   }
+}
+
+String _formattedExternalHistoryAmount(
+  BuildContext context,
+  DonationItem donation,
+) {
+  final auth = context.read<AuthCubit>().state;
+  final currency = Util.getCurrencySymbol(countryCode: auth.user.country);
+  final country = Country.fromCode(auth.user.country);
+  return '$currency${Util.formatNumberComma(donation.amount, country)}';
+}
+
+String _formattedExternalHistoryDate(
+  BuildContext context,
+  DonationItem donation,
+) {
+  return ExternalDonationDisplay.formatDate(
+    donation.timeStamp,
+    Util.getLanguageTageFromLocale(context),
+  );
 }

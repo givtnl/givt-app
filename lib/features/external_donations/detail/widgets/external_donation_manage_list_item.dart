@@ -60,11 +60,13 @@ class ExternalDonationManageListItem extends StatelessWidget {
                         color: theme.primary20,
                         fontWeight: FontWeight.w600,
                       ),
-                      const SizedBox(height: 4),
-                      BodySmallText(
-                        value,
-                        color: theme.neutral50,
-                      ),
+                      if (value.isNotEmpty) ...[
+                        const SizedBox(height: 4),
+                        BodySmallText(
+                          value,
+                          color: theme.neutral50,
+                        ),
+                      ],
                     ],
                   ),
                 ),
