@@ -47,8 +47,7 @@ class DonationOverviewCubit
     if (_donationOverviewRepository.isLoading()) {
       emitLoading();
     } else if (_donationOverviewRepository.getError() != null) {
-      // Handle error state
-      // emitError(_donationOverviewRepository.getError());
+      emitError(_donationOverviewRepository.getError());
     } else {
       _emitData();
     }

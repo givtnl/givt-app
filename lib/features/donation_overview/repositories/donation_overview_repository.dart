@@ -69,6 +69,9 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
       _error = e.toString();
       _isLoading = false;
       _emitDonationsChanged();
+      // Rethrow so DonationOverviewCubit can emit error UI (Retry).
+      // Swallowing here painted the empty-history screen for 4xx/5xx.
+      rethrow;
     }
   }
 
