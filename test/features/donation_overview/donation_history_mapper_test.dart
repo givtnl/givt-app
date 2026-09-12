@@ -13,7 +13,7 @@ void main() {
         'amount': 12.5,
         'timestamp': '2026-03-15T10:30:00',
         'organisationName': 'Hope Church',
-        'status': 2,
+        'status': 3,
         'collectId': 1,
         'allocationName': 'General fund',
         'giftAidEnabled': true,
