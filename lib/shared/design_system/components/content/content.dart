@@ -3,6 +3,7 @@ export 'avatar_widget.dart';
 export 'fun_accordion.dart';
 export 'fun_bubble.dart';
 export 'fun_card.dart';
+export 'fun_filter_chip.dart';
 export 'fun_mission_card.dart';
 export 'fun_organisation_filter_tile_bar.dart';
 export 'fun_progressbar.dart';

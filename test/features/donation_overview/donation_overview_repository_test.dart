@@ -22,8 +22,25 @@ class _EmptyGivtRepository with GivtRepository {
   Future<List<DonationItem>> fetchDonationHistory({
     DateTime? startDate,
     DateTime? endDate,
-  }) async =>
-      const [];
+  }) async => const [];
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _CapturingGivtRepository with GivtRepository {
+  DateTime? startDate;
+  DateTime? endDate;
+
+  @override
+  Future<List<DonationItem>> fetchDonationHistory({
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    this.startDate = startDate;
+    this.endDate = endDate;
+    return const [];
+  }
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -46,15 +63,25 @@ void main() {
     });
 
     test('keeps a successful empty list as empty data, not an error', () async {
-      final repository = DonationOverviewRepositoryImpl(
-        _EmptyGivtRepository(),
-      );
+      final repository = DonationOverviewRepositoryImpl(_EmptyGivtRepository());
 
       await repository.loadDonations();
 
       expect(repository.getDonations(), isEmpty);
       expect(repository.getError(), isNull);
       expect(repository.isLoading(), isFalse);
+    });
+
+    test('forwards start and end dates to the donation history API', () async {
+      final givtRepository = _CapturingGivtRepository();
+      final repository = DonationOverviewRepositoryImpl(givtRepository);
+      final start = DateTime(2026, 9);
+      final end = DateTime(2026, 9, 12, 23, 59, 59, 999);
+
+      await repository.loadDonations(startDate: start, endDate: end);
+
+      expect(givtRepository.startDate, start);
+      expect(givtRepository.endDate, end);
     });
   });
 }

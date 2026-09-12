@@ -54,9 +54,7 @@ enum AnalyticsEventName {
   organisationFavoriteToggled('organisation_favorite_toggled'),
   organisationSortByFavoritesToggled('organisation_sort_by_favorites_toggled'),
   onInfoRowClicked('on_info_row_clicked'),
-  accountSettingsTerminateClicked(
-    'account_settings_terminate_clicked',
-  ),
+  accountSettingsTerminateClicked('account_settings_terminate_clicked'),
   profileSectionClicked('profile_section_clicked'),
   maxAmountSaveClicked('max_amount_save_clicked'),
   amountPresetsSaveClicked('amount_presets_save_clicked'),
@@ -153,9 +151,13 @@ enum AnalyticsEventName {
   externalDonationsTabsChanged('external_donations_tabs_changed'),
   externalDonationsAddClicked('external_donations_add_clicked'),
   externalDonationsCardClicked('external_donations_card_clicked'),
-  externalDonationsDetailSummaryViewed('external_donations_detail_summary_viewed'),
+  externalDonationsDetailSummaryViewed(
+    'external_donations_detail_summary_viewed',
+  ),
   externalDonationsStopClicked('external_donations_stop_clicked'),
-  externalDonationsStopConfirmClicked('external_donations_stop_confirm_clicked'),
+  externalDonationsStopConfirmClicked(
+    'external_donations_stop_confirm_clicked',
+  ),
   externalDonationsStopCancelClicked('external_donations_stop_cancel_clicked'),
   externalDonationsCreateOrganisationSearchClicked(
     'external_donations_create_organisation_search_clicked',
@@ -169,7 +171,9 @@ enum AnalyticsEventName {
   externalDonationsCreateOrganisationContinueClicked(
     'external_donations_create_organisation_continue_clicked',
   ),
-  externalDonationsCreateAmountEntered('external_donations_create_amount_entered'),
+  externalDonationsCreateAmountEntered(
+    'external_donations_create_amount_entered',
+  ),
   externalDonationsCreateAmountContinueClicked(
     'external_donations_create_amount_continue_clicked',
   ),
@@ -185,7 +189,9 @@ enum AnalyticsEventName {
   externalDonationsCreateStartDateContinueClicked(
     'external_donations_create_start_date_continue_clicked',
   ),
-  externalDonationsCreateConfirmClicked('external_donations_create_confirm_clicked'),
+  externalDonationsCreateConfirmClicked(
+    'external_donations_create_confirm_clicked',
+  ),
   externalDonationsCreateSuccessDoneClicked(
     'external_donations_create_success_done_clicked',
   ),
@@ -195,9 +201,13 @@ enum AnalyticsEventName {
   externalDonationsCreateCloseCancelClicked(
     'external_donations_create_close_cancel_clicked',
   ),
-  externalDonationsCreateSearchTapped('external_donations_create_search_tapped'),
+  externalDonationsCreateSearchTapped(
+    'external_donations_create_search_tapped',
+  ),
   externalDonationsManageClicked('external_donations_manage_clicked'),
-  externalDonationsManageAmountClicked('external_donations_manage_amount_clicked'),
+  externalDonationsManageAmountClicked(
+    'external_donations_manage_amount_clicked',
+  ),
   externalDonationsManageFrequencyClicked(
     'external_donations_manage_frequency_clicked',
   ),
@@ -285,39 +295,27 @@ enum AnalyticsEventName {
   registrationFilledInPersonalInfoSheetFilled(
     'registration_filled_in_personal_info_sheet_filled',
   ),
-  registrationStripeSheetFilled(
-    'registration_stripe_sheet_filled',
-  ),
+  registrationStripeSheetFilled('registration_stripe_sheet_filled'),
   registrationStripeSheetIncompleteClosed(
     'registration_stripe_sheet_incomplete_closed',
   ),
-  registrationSuccesButtonClicked(
-    'registration_success_button_clicked',
-  ),
+  registrationSuccesButtonClicked('registration_success_button_clicked'),
   registrationEnterPaymentDetailsClicked(
     'registration_enter_payment_details_clicked',
   ),
   registrationContinueAfterPersonalInfoClicked(
     'registration_continue_after_personal_info_clicked',
   ),
-  giftAidRegistrationActivateClicked(
-    'gift_aid_registration_activate_clicked',
-  ),
+  giftAidRegistrationActivateClicked('gift_aid_registration_activate_clicked'),
   giftAidRegistrationSetUpLaterClicked(
     'gift_aid_registration_set_up_later_clicked',
   ),
   giftAidRegistrationLearnMoreClicked(
     'gift_aid_registration_learn_more_clicked',
   ),
-  giftAidRegistrationInfoIconClicked(
-    'gift_aid_registration_info_icon_clicked',
-  ),
-  giftAidRegistrationDoneClicked(
-    'gift_aid_registration_done_clicked',
-  ),
-  giftAidRegistrationCheckboxChanged(
-    'gift_aid_registration_checkbox_changed',
-  ),
+  giftAidRegistrationInfoIconClicked('gift_aid_registration_info_icon_clicked'),
+  giftAidRegistrationDoneClicked('gift_aid_registration_done_clicked'),
+  giftAidRegistrationCheckboxChanged('gift_aid_registration_checkbox_changed'),
   manageGiftAidInfoClicked('manage_gift_aid_info_clicked'),
   manageGiftAidDeactivateClicked('manage_gift_aid_deactivate_clicked'),
   manageGiftAidKeepActiveClicked('manage_gift_aid_keep_active_clicked'),
@@ -397,6 +395,10 @@ enum AnalyticsEventName {
   donationHistoryExternalDeleteCancelClicked(
     'donation_history_external_delete_cancel_clicked',
   ),
+  donationHistoryFilterChipClicked('donation_history_filter_chip_clicked'),
+  donationHistoryFilterOptionClicked('donation_history_filter_option_clicked'),
+  donationHistoryFilterApplied('donation_history_filter_applied'),
+  donationHistoryFilterCleared('donation_history_filter_cleared'),
   locationSelected('location_selected'),
   locationNextClicked('location_next_clicked'),
   citySelected('city_selected'),

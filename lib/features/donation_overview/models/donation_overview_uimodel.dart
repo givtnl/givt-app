@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/features/donation_overview/models/donation_history_filters.dart';
 import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_group.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
@@ -16,6 +17,8 @@ class DonationOverviewUIModel extends Equatable {
       giftAidAmount: 0.0,
       monthlyGroups: [],
       donationGroups: [],
+      filters: DonationHistoryFilters.empty,
+      hasUnfilteredDonations: false,
     );
   }
 
@@ -27,6 +30,8 @@ class DonationOverviewUIModel extends Equatable {
       giftAidAmount: 0.0,
       monthlyGroups: [],
       donationGroups: [],
+      filters: DonationHistoryFilters.empty,
+      hasUnfilteredDonations: false,
     );
   }
 
@@ -38,18 +43,26 @@ class DonationOverviewUIModel extends Equatable {
       giftAidAmount: 0.0,
       monthlyGroups: const [],
       donationGroups: const [],
+      filters: DonationHistoryFilters.empty,
+      hasUnfilteredDonations: false,
     );
   }
 
-  factory DonationOverviewUIModel.fromDonations(List<DonationItem> donations) {
+  factory DonationOverviewUIModel.fromDonations(
+    List<DonationItem> donations, {
+    DonationHistoryFilters filters = DonationHistoryFilters.empty,
+    bool hasUnfilteredDonations = true,
+  }) {
     if (donations.isEmpty) {
-      return const DonationOverviewUIModel(
-        donations: [],
+      return DonationOverviewUIModel(
+        donations: const [],
         isLoading: false,
         error: null,
         giftAidAmount: 0.0,
-        monthlyGroups: [],
-        donationGroups: [],
+        monthlyGroups: const [],
+        donationGroups: const [],
+        filters: filters,
+        hasUnfilteredDonations: hasUnfilteredDonations,
       );
     }
     // Calculate GiftAid amount (25% of amount for GiftAid enabled donations).
@@ -91,22 +104,19 @@ class DonationOverviewUIModel extends Equatable {
 
       // Calculate platform fees for this month (avoiding duplicates)
       final seenPlatformFeeIds = <int>{};
-      final monthPlatformFees = monthDonations.fold<double>(
-        0.0,
-        (sum, d) {
-          if (d.status.type == DonationStatusType.completed ||
-              d.status.type == DonationStatusType.created ||
-              d.status.type == DonationStatusType.inProcess) {
-            final id = d.platformFeeTransactionId;
-            final fee = d.platformFeeAmount;
-            if (id != null && fee != null && !seenPlatformFeeIds.contains(id)) {
-              seenPlatformFeeIds.add(id);
-              return sum + fee;
-            }
+      final monthPlatformFees = monthDonations.fold<double>(0.0, (sum, d) {
+        if (d.status.type == DonationStatusType.completed ||
+            d.status.type == DonationStatusType.created ||
+            d.status.type == DonationStatusType.inProcess) {
+          final id = d.platformFeeTransactionId;
+          final fee = d.platformFeeAmount;
+          if (id != null && fee != null && !seenPlatformFeeIds.contains(id)) {
+            seenPlatformFeeIds.add(id);
+            return sum + fee;
           }
-          return sum;
-        },
-      );
+        }
+        return sum;
+      });
 
       final totalMonthAmount = monthAmount + monthPlatformFees;
 
@@ -181,6 +191,8 @@ class DonationOverviewUIModel extends Equatable {
       giftAidAmount: giftAidAmount,
       monthlyGroups: monthlyGroups,
       donationGroups: donationGroups,
+      filters: filters,
+      hasUnfilteredDonations: hasUnfilteredDonations,
     );
   }
   const DonationOverviewUIModel({
@@ -190,6 +202,8 @@ class DonationOverviewUIModel extends Equatable {
     required this.giftAidAmount,
     required this.monthlyGroups,
     required this.donationGroups,
+    this.filters = DonationHistoryFilters.empty,
+    this.hasUnfilteredDonations = true,
   });
 
   final List<DonationItem> donations;
@@ -198,6 +212,8 @@ class DonationOverviewUIModel extends Equatable {
   final double giftAidAmount;
   final List<MonthlyGroup> monthlyGroups;
   final List<DonationGroup> donationGroups;
+  final DonationHistoryFilters filters;
+  final bool hasUnfilteredDonations;
 
   DonationOverviewUIModel copyWith({
     List<DonationItem>? donations,
@@ -206,6 +222,8 @@ class DonationOverviewUIModel extends Equatable {
     double? giftAidAmount,
     List<MonthlyGroup>? monthlyGroups,
     List<DonationGroup>? donationGroups,
+    DonationHistoryFilters? filters,
+    bool? hasUnfilteredDonations,
   }) {
     return DonationOverviewUIModel(
       donations: donations ?? this.donations,
@@ -214,6 +232,9 @@ class DonationOverviewUIModel extends Equatable {
       giftAidAmount: giftAidAmount ?? this.giftAidAmount,
       monthlyGroups: monthlyGroups ?? this.monthlyGroups,
       donationGroups: donationGroups ?? this.donationGroups,
+      filters: filters ?? this.filters,
+      hasUnfilteredDonations:
+          hasUnfilteredDonations ?? this.hasUnfilteredDonations,
     );
   }
 
@@ -225,6 +246,8 @@ class DonationOverviewUIModel extends Equatable {
     giftAidAmount,
     monthlyGroups,
     donationGroups,
+    filters,
+    hasUnfilteredDonations,
   ];
 }
 
@@ -240,7 +263,6 @@ class MonthlyGroup extends Equatable {
   final int month;
   final List<DonationItem> donations;
   final double totalAmount;
-
 
   String get monthName {
     final date = DateTime(year, month);

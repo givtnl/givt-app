@@ -902,6 +902,48 @@ class AppLocalizationsEn extends AppLocalizations {
       'This is where you\'ll find information about your donations, but first you\'ll need to start giving';
 
   @override
+  String get historyFilterDonations => 'Filter donations';
+
+  @override
+  String get historyFilterDonationSource => 'Donation source';
+
+  @override
+  String get historyFilterDonationType => 'Donation type';
+
+  @override
+  String get historyFilterCategories => 'Categories';
+
+  @override
+  String get historyFilterDateRange => 'Date range';
+
+  @override
+  String get historyFilterFrom => 'From';
+
+  @override
+  String get historyFilterTo => 'To';
+
+  @override
+  String get historyFilterSelect => 'Select';
+
+  @override
+  String get historyFilterThisMonth => 'This month';
+
+  @override
+  String get historyFilterLastMonth => 'Last month';
+
+  @override
+  String get historyFilterLastThreeMonths => 'Last 3 months';
+
+  @override
+  String get historyFilterClearAll => 'Clear all';
+
+  @override
+  String get historyFilterApply => 'Apply';
+
+  @override
+  String get historyFilterNoMatches => 'No donations match these filters';
+
+  @override
   String get updateAlertTitle => 'Update available';
 
   @override
@@ -4478,6 +4520,48 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
       'This is where you\'ll find information about your donations, but first you\'ll need to start giving';
 
   @override
+  String get historyFilterDonations => 'Filter donations';
+
+  @override
+  String get historyFilterDonationSource => 'Donation source';
+
+  @override
+  String get historyFilterDonationType => 'Donation type';
+
+  @override
+  String get historyFilterCategories => 'Categories';
+
+  @override
+  String get historyFilterDateRange => 'Date range';
+
+  @override
+  String get historyFilterFrom => 'From';
+
+  @override
+  String get historyFilterTo => 'To';
+
+  @override
+  String get historyFilterSelect => 'Select';
+
+  @override
+  String get historyFilterThisMonth => 'This month';
+
+  @override
+  String get historyFilterLastMonth => 'Last month';
+
+  @override
+  String get historyFilterLastThreeMonths => 'Last 3 months';
+
+  @override
+  String get historyFilterClearAll => 'Clear all';
+
+  @override
+  String get historyFilterApply => 'Apply';
+
+  @override
+  String get historyFilterNoMatches => 'No donations match these filters';
+
+  @override
   String get updateAlertTitle => 'Update available';
 
   @override
@@ -6822,24 +6906,6 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String get donationOverviewContactMessage =>
       'Hi, I have the following question about my donation:';
-
-  @override
-  String get donationHistoryExternalListSubtitle => 'External donation';
-
-  @override
-  String get donationHistoryExternalOneOffSubtitle =>
-      'External donation: not processed by Givt';
-
-  @override
-  String get donationHistoryExternalRecurringSubtitle =>
-      'Not processed by Givt';
-
-  @override
-  String get donationHistoryExternalEditDonation => 'Edit this donation';
-
-  @override
-  String get donationHistoryExternalManageRecurring =>
-      'Manage recurring donation';
 
   @override
   String get date => 'Date';

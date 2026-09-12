@@ -906,6 +906,49 @@ class AppLocalizationsNl extends AppLocalizations {
       'Hier komen jouw giften te staan, maar het geld moet eerst nog rollen';
 
   @override
+  String get historyFilterDonations => 'Filter giften';
+
+  @override
+  String get historyFilterDonationSource => 'Bron van de gift';
+
+  @override
+  String get historyFilterDonationType => 'Type gift';
+
+  @override
+  String get historyFilterCategories => 'Categorieën';
+
+  @override
+  String get historyFilterDateRange => 'Periode';
+
+  @override
+  String get historyFilterFrom => 'Van';
+
+  @override
+  String get historyFilterTo => 'Tot';
+
+  @override
+  String get historyFilterSelect => 'Selecteer';
+
+  @override
+  String get historyFilterThisMonth => 'Deze maand';
+
+  @override
+  String get historyFilterLastMonth => 'Vorige maand';
+
+  @override
+  String get historyFilterLastThreeMonths => 'Laatste 3 maanden';
+
+  @override
+  String get historyFilterClearAll => 'Alles wissen';
+
+  @override
+  String get historyFilterApply => 'Toepassen';
+
+  @override
+  String get historyFilterNoMatches =>
+      'Geen giften die bij deze filters passen';
+
+  @override
   String get updateAlertTitle => 'Update beschikbaar';
 
   @override

@@ -29,6 +29,20 @@ void main() {
       expect(item.status.type, DonationStatusType.completed);
     });
 
+    test('maps collectGroupType from BFF enum strings', () {
+      final item = DonationHistoryMapper.fromHistoryJson({
+        'source': 'givtProcessed',
+        'id': '42',
+        'amount': 12.5,
+        'timestamp': '2026-03-15T10:30:00',
+        'organisationName': 'Hope Church',
+        'status': 3,
+        'collectGroupType': 'Charities',
+      });
+
+      expect(item.collectGroupType, 'Charities');
+    });
+
     test('maps platform fee transaction id from BFF when present', () {
       final item = DonationHistoryMapper.fromHistoryJson({
         'source': 'givtProcessed',
@@ -45,21 +59,23 @@ void main() {
       expect(item.platformFeeTransactionId, 99);
     });
 
-    test('synthesizes platform fee transaction id from donation id when missing',
-        () {
-      final item = DonationHistoryMapper.fromHistoryJson({
-        'source': 'givtProcessed',
-        'id': '42',
-        'amount': 10,
-        'timestamp': '2026-03-15T10:30:00',
-        'organisationName': 'Hope Church',
-        'status': 2,
-        'platformFeeAmount': 0.5,
-      });
+    test(
+      'synthesizes platform fee transaction id from donation id when missing',
+      () {
+        final item = DonationHistoryMapper.fromHistoryJson({
+          'source': 'givtProcessed',
+          'id': '42',
+          'amount': 10,
+          'timestamp': '2026-03-15T10:30:00',
+          'organisationName': 'Hope Church',
+          'status': 2,
+          'platformFeeAmount': 0.5,
+        });
 
-      expect(item.platformFeeAmount, 0.5);
-      expect(item.platformFeeTransactionId, 42);
-    });
+        expect(item.platformFeeAmount, 0.5);
+        expect(item.platformFeeTransactionId, 42);
+      },
+    );
 
     test('maps PascalCase External source with Guid id without throwing', () {
       const guid = '8c2f0b1a-4d3e-4f5a-9b6c-7d8e9f0a1b2c';
@@ -161,25 +177,27 @@ void main() {
       expect(uiModel.donationGroups.first.isExternal, isFalse);
     });
 
-    test('includes platform fees in month totals when transaction id is mapped',
-        () {
-      final donations = [
-        DonationHistoryMapper.fromHistoryJson({
-          'source': 'givtProcessed',
-          'id': '1',
-          'amount': 10,
-          'timestamp': '2026-03-10T12:00:00',
-          'organisationName': 'Hope Church',
-          'status': 2,
-          'platformFeeAmount': 2,
-        }),
-      ];
+    test(
+      'includes platform fees in month totals when transaction id is mapped',
+      () {
+        final donations = [
+          DonationHistoryMapper.fromHistoryJson({
+            'source': 'givtProcessed',
+            'id': '1',
+            'amount': 10,
+            'timestamp': '2026-03-10T12:00:00',
+            'organisationName': 'Hope Church',
+            'status': 2,
+            'platformFeeAmount': 2,
+          }),
+        ];
 
-      final uiModel = DonationOverviewUIModel.fromDonations(donations);
+        final uiModel = DonationOverviewUIModel.fromDonations(donations);
 
-      expect(uiModel.monthlyGroups.single.totalAmount, 12);
-      expect(uiModel.donationGroups.single.platformFeeAmount, 2);
-    });
+        expect(uiModel.monthlyGroups.single.totalAmount, 12);
+        expect(uiModel.donationGroups.single.platformFeeAmount, 2);
+      },
+    );
 
     test('does not merge external rows and includes them in month totals', () {
       final donations = [

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/donation_overview/models/donation_history_filters.dart';
 import 'package:givt_app/features/donation_overview/models/donation_overview_custom.dart';
 import 'package:givt_app/features/donation_overview/models/donation_overview_uimodel.dart';
 import 'package:givt_app/features/donation_overview/repositories/donation_overview_repository.dart';
@@ -11,12 +12,14 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 /// Uses [DonationOverviewRepository] for fetching donation data.
 class DonationOverviewCubit
     extends CommonCubit<DonationOverviewUIModel, DonationOverviewCustom> {
-  DonationOverviewCubit(
-    this._donationOverviewRepository,
-  ) : super(const BaseState.loading());
+  DonationOverviewCubit(this._donationOverviewRepository)
+    : super(const BaseState.loading());
 
   final DonationOverviewRepository _donationOverviewRepository;
   StreamSubscription<List<dynamic>>? _donationsSubscription;
+  DonationHistoryFilters _filters = DonationHistoryFilters.empty;
+
+  DonationHistoryFilters get filters => _filters;
 
   Future<void> init() async {
     // First load donations to get initial data
@@ -45,7 +48,10 @@ class DonationOverviewCubit
     if (isClosed) return;
 
     if (_donationOverviewRepository.isLoading()) {
-      emitLoading();
+      if (state
+          is! DataState<DonationOverviewUIModel, DonationOverviewCustom>) {
+        emitLoading();
+      }
     } else if (_donationOverviewRepository.getError() != null) {
       emitError(_donationOverviewRepository.getError());
     } else {
@@ -55,7 +61,14 @@ class DonationOverviewCubit
 
   Future<void> _loadDonations() async {
     try {
-      await _donationOverviewRepository.loadDonations();
+      await _donationOverviewRepository.loadDonations(
+        startDate: _filters.startDate == null
+            ? null
+            : DonationHistoryFilters.startOfDay(_filters.startDate!),
+        endDate: _filters.endDate == null
+            ? null
+            : DonationHistoryFilters.endOfDay(_filters.endDate!),
+      );
       _emitData();
     } catch (error) {
       LoggingInfo.instance.error(
@@ -80,8 +93,46 @@ class DonationOverviewCubit
     if (isClosed) return;
 
     final donations = _donationOverviewRepository.getDonations();
-    final uiModel = DonationOverviewUIModel.fromDonations(donations);
+    final filtered = DonationHistoryFilter.apply(donations, _filters);
+    final uiModel = DonationOverviewUIModel.fromDonations(
+      filtered,
+      filters: _filters,
+      hasUnfilteredDonations: donations.isNotEmpty || _filters.hasActive,
+    );
     emitData(uiModel);
+  }
+
+  void applyFilters(DonationHistoryFilters filters) {
+    final datesChanged =
+        !_sameDay(_filters.startDate, filters.startDate) ||
+        !_sameDay(_filters.endDate, filters.endDate);
+    _filters = filters;
+    if (datesChanged) {
+      _loadDonations();
+    } else {
+      _emitData();
+    }
+  }
+
+  void clearFilters() {
+    final hadDates = _filters.startDate != null || _filters.endDate != null;
+    _filters = DonationHistoryFilters.empty;
+    if (hadDates) {
+      _loadDonations();
+    } else {
+      _emitData();
+    }
+  }
+
+  static bool _sameDay(DateTime? a, DateTime? b) {
+    if (a == null && b == null) {
+      return true;
+    }
+    if (a == null || b == null) {
+      return false;
+    }
+    return DonationHistoryFilters.startOfDay(a) ==
+        DonationHistoryFilters.startOfDay(b);
   }
 
   Future<void> deleteDonation(List<int> ids) async {
@@ -101,20 +152,15 @@ class DonationOverviewCubit
       // Check if cubit is closed before emitting states
       if (isClosed) return;
 
-      emitCustom(
-        DonationOverviewCustom.showErrorMessage(
-          e.toString(),
-        ),
-      );
+      emitCustom(DonationOverviewCustom.showErrorMessage(e.toString()));
     }
   }
 
   Future<void> downloadYearlyOverview({required String year}) async {
     try {
       final fromDate = DateTime.parse('$year-01-01').toIso8601String();
-      final tillDate = DateTime.parse(
-        '${int.parse(year) + 1}-01-01',
-      ).toIso8601String();
+      final tillDate = DateTime.parse('${int.parse(year) + 1}-01-01')
+          .toIso8601String();
 
       final success = await _donationOverviewRepository.downloadYearlyOverview(
         fromDate: fromDate,
@@ -141,11 +187,7 @@ class DonationOverviewCubit
       // Check if cubit is closed before emitting states
       if (isClosed) return;
 
-      emitCustom(
-        DonationOverviewCustom.showErrorMessage(
-          e.toString(),
-        ),
-      );
+      emitCustom(DonationOverviewCustom.showErrorMessage(e.toString()));
     }
   }
 
