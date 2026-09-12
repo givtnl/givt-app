@@ -76,7 +76,7 @@ class PersonalInfoEditBloc
     emit(
       state.copyWith(
         status: PersonalInfoEditStatus.error,
-        error: e.isGenericServerError ? '' : (e.userFacingMessage ?? ''),
+        error: e.userFacingMessage ?? '',
       ),
     );
   }
