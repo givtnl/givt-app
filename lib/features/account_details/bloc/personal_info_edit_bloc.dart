@@ -76,7 +76,7 @@ class PersonalInfoEditBloc
     emit(
       state.copyWith(
         status: PersonalInfoEditStatus.error,
-        error: e.userFacingMessage ?? e.body.toString(),
+        error: e.userFacingMessage ?? '',
       ),
     );
   }

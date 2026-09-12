@@ -145,6 +145,51 @@ void main() {
       );
     },
   );
+
+  test(
+    'unsigned UK generic 500 emits error without raw exception dump',
+    () async {
+      bloc = createBloc(
+        const UserExt(
+          email: 'uk@givt.app',
+          guid: 'existing-guid',
+          amountLimit: 499,
+          country: 'GB',
+          sortCode: '123456',
+          accountNumber: '12345678',
+        ),
+      );
+      repository.bacsError = const GivtServerFailure(
+        statusCode: 500,
+        body: {
+          'ErrorCode': 500,
+          'StatusCode': 500,
+          'ErrorMessage': 'An unexpected error occurred.',
+          'Message':
+              "Exception of type 'Givt.Common.Library.Exceptions.HttpBaseException' was thrown.",
+        },
+      );
+
+      bloc.add(
+        const PersonalInfoEditBankDetails(
+          iban: '',
+          accountNumber: '87654321',
+          sortCode: '654321',
+        ),
+      );
+
+      await expectLater(
+        bloc.stream,
+        emitsThrough(
+          predicate<PersonalInfoEditState>(
+            (state) =>
+                state.status == PersonalInfoEditStatus.error &&
+                state.error.isEmpty,
+          ),
+        ),
+      );
+    },
+  );
 }
 
 class _FakeAuthRepository with AuthRepository {
