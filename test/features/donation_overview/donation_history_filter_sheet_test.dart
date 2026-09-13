@@ -72,8 +72,8 @@ void main() {
       ),
     );
 
-    expect(find.text('9/1/2026'), findsOneWidget);
-    expect(find.text('9/10/2026'), findsOneWidget);
+    expect(find.text('9/1/26'), findsOneWidget);
+    expect(find.text('9/10/26'), findsOneWidget);
     expect(find.textContaining('Thu'), findsNothing);
     expect(find.textContaining('Sep'), findsNothing);
   });

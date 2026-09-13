@@ -17,11 +17,11 @@ void main() {
     test('filter date format is compact numeric without a weekday', () {
       expect(
         formatDonationHistoryFilterDate(DateTime(2026, 9, 10), 'en_US'),
-        '9/10/2026',
+        '9/10/26',
       );
       expect(
         formatDonationHistoryFilterDate(DateTime(2026, 9, 10), 'en_GB'),
-        '10/09/2026',
+        '10/09/26',
       );
     });
 

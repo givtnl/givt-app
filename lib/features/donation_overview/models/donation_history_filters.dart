@@ -326,8 +326,13 @@ abstract final class DonationHistoryFilter {
 
 /// Compact locale date for the filter From/To fields (no weekday).
 ///
-/// Uses ICU short date (`yMd`), e.g. `9/10/2026` in en-US, so it fits the
-/// 160px inputs next to the calendar icon.
+/// Uses the locale short date with a two-digit year, e.g. `9/10/26` in
+/// en-US, so it fits the 160px inputs next to the calendar icon.
 String formatDonationHistoryFilterDate(DateTime date, String locale) {
-  return DateFormat.yMd(locale).format(date);
+  return DateFormat.yMd(locale)
+      .format(date)
+      .replaceFirstMapped(
+        RegExp(r'\d{4}'),
+        (match) => match[0]!.substring(2),
+      );
 }
