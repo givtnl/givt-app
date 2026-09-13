@@ -911,6 +911,49 @@ class AppLocalizationsDe extends AppLocalizations {
       'Hier findest du Informationen zu deinen getätigten Spenden, aber zuerst musst du natürlich erstmal mit dem Spenden beginnen';
 
   @override
+  String get historyFilterDonations => 'Spenden filtern';
+
+  @override
+  String get historyFilterDonationSource => 'Spendenquelle';
+
+  @override
+  String get historyFilterDonationType => 'Spendenart';
+
+  @override
+  String get historyFilterCategories => 'Kategorien';
+
+  @override
+  String get historyFilterDateRange => 'Zeitraum';
+
+  @override
+  String get historyFilterFrom => 'Von';
+
+  @override
+  String get historyFilterTo => 'Bis';
+
+  @override
+  String get historyFilterSelect => 'Auswählen';
+
+  @override
+  String get historyFilterThisMonth => 'Dieser Monat';
+
+  @override
+  String get historyFilterLastMonth => 'Letzter Monat';
+
+  @override
+  String get historyFilterLastThreeMonths => 'Letzte 3 Monate';
+
+  @override
+  String get historyFilterClearAll => 'Alles löschen';
+
+  @override
+  String get historyFilterApply => 'Anwenden';
+
+  @override
+  String get historyFilterNoMatches =>
+      'Keine Spenden entsprechen diesen Filtern';
+
+  @override
   String get updateAlertTitle => 'Update verfügbar';
 
   @override
@@ -3331,8 +3374,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Nicht von Givt verarbeitet';
 
   @override
-  String get donationHistoryExternalEditDonation =>
-      'Diese Spende bearbeiten';
+  String get donationHistoryExternalEditDonation => 'Diese Spende bearbeiten';
 
   @override
   String get donationHistoryExternalManageRecurring =>

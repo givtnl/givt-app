@@ -26,6 +26,7 @@ class DonationItem extends Equatable {
     this.externalDonationId,
     this.externalTransactionId,
     this.externalFrequency,
+    this.collectGroupType,
   });
 
   factory DonationItem.fromGivt(Givt givt) {
@@ -68,6 +69,7 @@ class DonationItem extends Equatable {
   final String? externalDonationId;
   final String? externalTransactionId;
   final ExternalDonationFrequency? externalFrequency;
+  final String? collectGroupType;
 
   bool get isExternalRecurring =>
       isExternal &&
@@ -103,19 +105,22 @@ class DonationItem extends Equatable {
     String? externalDonationId,
     String? externalTransactionId,
     ExternalDonationFrequency? externalFrequency,
+    String? collectGroupType,
   }) {
     return DonationItem(
       id: id ?? this.id,
       amount: amount ?? this.amount,
       organisationName: organisationName ?? this.organisationName,
-      organisationTaxDeductible: organisationTaxDeductible ?? this.organisationTaxDeductible,
+      organisationTaxDeductible:
+          organisationTaxDeductible ?? this.organisationTaxDeductible,
       isGiftAidEnabled: isGiftAidEnabled ?? this.isGiftAidEnabled,
       status: status ?? this.status,
       timeStamp: timeStamp ?? this.timeStamp,
       mediumId: mediumId ?? this.mediumId,
       taxYear: taxYear ?? this.taxYear,
       donationType: donationType ?? this.donationType,
-      platformFeeTransactionId: platformFeeTransactionId ?? this.platformFeeTransactionId,
+      platformFeeTransactionId:
+          platformFeeTransactionId ?? this.platformFeeTransactionId,
       platformFeeAmount: platformFeeAmount ?? this.platformFeeAmount,
       collectGroupId: collectGroupId ?? this.collectGroupId,
       collectId: collectId ?? this.collectId,
@@ -126,54 +131,56 @@ class DonationItem extends Equatable {
       externalTransactionId:
           externalTransactionId ?? this.externalTransactionId,
       externalFrequency: externalFrequency ?? this.externalFrequency,
+      collectGroupType: collectGroupType ?? this.collectGroupType,
     );
   }
 
   Map<String, dynamic> toJson() {
-
     return {
       'id': id,
-        'amount': amount,
-        'organisationName': organisationName,
-        'organisationTaxDeductible': organisationTaxDeductible,
-        'isGiftAidEnabled': isGiftAidEnabled,
-        'status': status.type.name,
-        'timeStamp': timeStamp?.toIso8601String(),
-        'mediumId': mediumId,
-        'taxYear': taxYear,
-        'donationType': donationType,
-        'platformFeeTransactionId': platformFeeTransactionId,
-        'platformFeeAmount': platformFeeAmount,
-        'collectGroupId': collectGroupId,
-        'collectId': collectId,
-        'allocationName': allocationName,
-        'isExternal': isExternal,
-        'externalDonationId': externalDonationId,
-        'externalTransactionId': externalTransactionId,
+      'amount': amount,
+      'organisationName': organisationName,
+      'organisationTaxDeductible': organisationTaxDeductible,
+      'isGiftAidEnabled': isGiftAidEnabled,
+      'status': status.type.name,
+      'timeStamp': timeStamp?.toIso8601String(),
+      'mediumId': mediumId,
+      'taxYear': taxYear,
+      'donationType': donationType,
+      'platformFeeTransactionId': platformFeeTransactionId,
+      'platformFeeAmount': platformFeeAmount,
+      'collectGroupId': collectGroupId,
+      'collectId': collectId,
+      'allocationName': allocationName,
+      'isExternal': isExternal,
+      'externalDonationId': externalDonationId,
+      'externalTransactionId': externalTransactionId,
+      'collectGroupType': collectGroupType,
     };
   }
 
   @override
   List<Object?> get props => [
-        id,
-        amount,
-        organisationName,
-        organisationTaxDeductible,
-        isGiftAidEnabled,
-        status,
-        timeStamp,
-        mediumId,
-        taxYear,
-        donationType,
-        platformFeeTransactionId,
-        platformFeeAmount,
-        collectGroupId,
-        collectId,
-        allocationName,
-        historyId,
-        isExternal,
-        externalDonationId,
-        externalTransactionId,
-        externalFrequency,
-      ];
+    id,
+    amount,
+    organisationName,
+    organisationTaxDeductible,
+    isGiftAidEnabled,
+    status,
+    timeStamp,
+    mediumId,
+    taxYear,
+    donationType,
+    platformFeeTransactionId,
+    platformFeeAmount,
+    collectGroupId,
+    collectId,
+    allocationName,
+    historyId,
+    isExternal,
+    externalDonationId,
+    externalTransactionId,
+    externalFrequency,
+    collectGroupType,
+  ];
 }

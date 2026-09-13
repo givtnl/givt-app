@@ -25,6 +25,8 @@ class AnalyticsHelper {
   static const String organizationNameKey = 'organization_name';
   static const String toggleStatusKey = 'toggle_status';
   static const String contributionLevelKey = 'contribution_level';
+  static const String filterKey = 'filter';
+  static const String filterValueKey = 'filter_value';
 
   static bool _isInitialized = false;
   static Completer<void>? _initCompleter;
@@ -60,9 +62,7 @@ class AnalyticsHelper {
     config.errorTrackingConfig.captureNativeExceptions = true; // Android only
     config.errorTrackingConfig.captureSilentFlutterErrors = false;
 
-    await Posthog().setup(
-      config,
-    );
+    await Posthog().setup(config);
     // Fetch feature flags early so pages can safely gate behavior at startup.
     await Posthog().reloadFeatureFlags();
     _isInitialized = true;
@@ -187,10 +187,7 @@ class AnalyticsHelper {
       return properties;
     }
 
-    return <String, Object>{
-      ...common,
-      ...properties,
-    };
+    return <String, Object>{...common, ...properties};
   }
 
   static Future<void> logError(
@@ -222,10 +219,7 @@ class AnalyticsHelper {
         properties: _withCommonProperties(props),
       );
     } catch (e, s) {
-      log(
-        'Failed to log error to PostHog: $e',
-        stackTrace: s,
-      );
+      log('Failed to log error to PostHog: $e', stackTrace: s);
     }
   }
 }

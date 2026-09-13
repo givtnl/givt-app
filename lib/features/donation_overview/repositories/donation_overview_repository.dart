@@ -8,7 +8,7 @@ mixin DonationOverviewRepository {
   List<DonationItem> getDonations();
   bool isLoading();
   String? getError();
-  Future<void> loadDonations();
+  Future<void> loadDonations({DateTime? startDate, DateTime? endDate});
   Future<bool> deleteDonation(List<int> ids);
   Future<bool> downloadYearlyOverview({
     required String fromDate,
@@ -48,13 +48,18 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
   }
 
   @override
-  Future<void> loadDonations() async {
+  Future<void> loadDonations({DateTime? startDate, DateTime? endDate}) async {
     try {
       _isLoading = true;
       _error = null;
       _emitDonationsChanged();
 
-      _donations = await _givtRepository.fetchDonationHistory();
+      _donations = List<DonationItem>.of(
+        await _givtRepository.fetchDonationHistory(
+          startDate: startDate,
+          endDate: endDate,
+        ),
+      );
 
       _donations.sort((a, b) {
         if (a.timeStamp == null && b.timeStamp == null) return 0;

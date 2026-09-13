@@ -1,4 +1,5 @@
 import 'package:givt_app/core/datetime/api_date_time.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/donation_overview/models/donation_history_source.dart';
 import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
@@ -13,7 +14,7 @@ abstract final class DonationHistoryMapper {
     final timestampRaw = json['timestamp'] as String?;
     final timestamp = timestampRaw != null
         ? ApiDateTime.parseLocal(timestampRaw) ??
-            DateTime.tryParse(timestampRaw)
+              DateTime.tryParse(timestampRaw)
         : null;
 
     if (source == DonationHistorySource.external) {
@@ -28,12 +29,14 @@ abstract final class DonationHistoryMapper {
         status: DonationStatus.fromLegacyStatus(0),
         timeStamp: timestamp,
         mediumId: '',
-        taxYear: timestamp != null ? ukGiftAidTaxYearIndexForDate(timestamp) : 0,
+        taxYear: timestamp != null
+            ? ukGiftAidTaxYearIndexForDate(timestamp)
+            : 0,
         donationType: 0,
         isExternal: true,
         externalDonationId: json['externalDonationId']?.toString(),
-        externalTransactionId: json['externalTransactionId']?.toString() ??
-            json['id']?.toString(),
+        externalTransactionId:
+            json['externalTransactionId']?.toString() ?? json['id']?.toString(),
         externalFrequency: frequency,
       );
     }
@@ -61,6 +64,7 @@ abstract final class DonationHistoryMapper {
       ),
       collectId: _readInt(json['collectId']),
       allocationName: (json['allocationName'] as String? ?? '').trim(),
+      collectGroupType: _readCollectGroupType(json['collectGroupType']),
       isExternal: false,
     );
   }
@@ -115,6 +119,19 @@ abstract final class DonationHistoryMapper {
             ? ExternalDonationFrequency.monthly
             : ExternalDonationFrequency.once;
     }
+  }
+
+  static String? _readCollectGroupType(Object? value) {
+    if (value == null) {
+      return null;
+    }
+    if (value is String) {
+      return value.isEmpty ? null : value;
+    }
+    if (value is num) {
+      return CollectGroupType.fromInt(value.toInt()).name;
+    }
+    return value.toString();
   }
 
   static int? _readInt(Object? value) {
