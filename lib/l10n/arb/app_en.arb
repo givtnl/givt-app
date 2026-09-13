@@ -1213,6 +1213,16 @@
   "personalSummaryExternal": "External donations",
   "personalSummaryYearTotal": "Total given",
   "personalSummaryYearCenterLabel": "this year",
+  "personalSummaryMonthCenterLabel": "in {month}",
+  "@personalSummaryMonthCenterLabel": {
+    "description": "Donut center label when a month chip is selected, e.g. in January",
+    "placeholders": {
+      "month": {
+        "type": "String",
+        "example": "January"
+      }
+    }
+  },
   "personalSummaryAddDonationSheetTitle": "Add a donation",
   "personalSummaryGiveThroughGivt": "Give through Givt",
   "personalSummaryGiveThroughGivtSubtitle": "Find a charity and donate now",

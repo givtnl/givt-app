@@ -161,6 +161,47 @@ void main() {
       );
     });
 
+    test('maps singular Charity collect-group type to charity', () {
+      expect(
+        DonationHistoryFilter.categoryOf(
+          _item(id: 1, collectGroupType: 'Charity'),
+        ),
+        DonationHistoryCategoryFilter.charity,
+      );
+    });
+
+    test('fromRoute prefers extra category over query', () {
+      final extra = DonationHistoryFilters.empty.toggleCategory(
+        DonationHistoryCategoryFilter.church,
+      );
+      final filters = DonationHistoryFilters.fromRoute(
+        extra: extra,
+        query: {'category': 'charity'},
+      );
+      expect(filters.categories, {DonationHistoryCategoryFilter.church});
+    });
+
+    test('fromRoute restores category from query when extra is missing', () {
+      final filters = DonationHistoryFilters.fromRoute(
+        extra: null,
+        query: {'category': 'charity'},
+      );
+      expect(filters.categories, {DonationHistoryCategoryFilter.charity});
+      expect(filters.hasActive, isTrue);
+      expect(
+        filters.orderedDimensions().first,
+        DonationHistoryFilterDimension.categories,
+      );
+    });
+
+    test('fromRoute uses query when extra is an empty filter object', () {
+      final filters = DonationHistoryFilters.fromRoute(
+        extra: DonationHistoryFilters.empty,
+        query: {'category': 'charity'},
+      );
+      expect(filters.categories, {DonationHistoryCategoryFilter.charity});
+    });
+
     test('excludes rows without a timestamp when a date filter is set', () {
       final undated = _item(id: 1, hasTimestamp: false);
       final dated = _item(id: 2, timeStamp: DateTime(2026, 9, 1));

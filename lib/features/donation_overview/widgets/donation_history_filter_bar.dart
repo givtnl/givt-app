@@ -24,26 +24,31 @@ class DonationHistoryFilterBar extends StatelessWidget {
     final locals = context.l10n;
     final ordered = filters.orderedDimensions();
 
+    // Figma history chip row is 48px (8px inset around a ~32px pill).
+    // Horizontal ListView would otherwise stretch FunFilterChip to fill
+    // the viewport, which made chips look taller than the DS spec.
     return SizedBox(
-      height: 60,
+      height: 48,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         itemCount: ordered.length,
         separatorBuilder: (_, _) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
           final dimension = ordered[index];
-          return FunFilterChip(
-            mode: FunFilterChipMode.dropdown,
-            label: _label(locals, dimension),
-            selected: filters.isDimensionActive(dimension),
-            isExpanded: expandedDimension == dimension,
-            analyticsEvent: AnalyticsEvent(
-              AnalyticsEventName.donationHistoryFilterChipClicked,
-              parameters: {AnalyticsHelper.filterKey: dimension.name},
+          return Align(
+            child: FunFilterChip(
+              mode: FunFilterChipMode.dropdown,
+              label: _label(locals, dimension),
+              selected: filters.isDimensionActive(dimension),
+              isExpanded: expandedDimension == dimension,
+              analyticsEvent: AnalyticsEvent(
+                AnalyticsEventName.donationHistoryFilterChipClicked,
+                parameters: {AnalyticsHelper.filterKey: dimension.name},
+              ),
+              semanticsIdentifier: 'history-filter-${dimension.name}',
+              onPressed: () => onChipPressed(dimension),
             ),
-            semanticsIdentifier: 'history-filter-${dimension.name}',
-            onPressed: () => onChipPressed(dimension),
           );
         },
       ),

@@ -7,6 +7,7 @@ class PersonalSummaryUIModel extends Equatable {
     required this.selectedYear,
     required this.availableYears,
     required this.yearTotal,
+    required this.periodTotal,
     required this.categorySegments,
     required this.monthlyRows,
     required this.recurringSplit,
@@ -14,11 +15,20 @@ class PersonalSummaryUIModel extends Equatable {
     required this.givingGoal,
     required this.goalProgress,
     required this.hasDonationsInYear,
+    this.selectedMonth,
   });
 
   final int selectedYear;
+
+  /// 1–12 when a month chip is selected; otherwise the full year.
+  final int? selectedMonth;
   final List<int> availableYears;
+
+  /// Full-year total, used by the giving-goal card.
   final double yearTotal;
+
+  /// Total for the visible period (selected month, or the full year).
+  final double periodTotal;
   final List<ChartSegment> categorySegments;
   final List<MonthlyCategoryRow> monthlyRows;
   final SplitBarData recurringSplit;
@@ -29,6 +39,8 @@ class PersonalSummaryUIModel extends Equatable {
 
   bool get hasGivingGoal => givingGoal.hasGoal;
   bool get isCurrentYear => selectedYear == DateTime.now().year;
+  bool get hasMonthFilter => selectedMonth != null;
+  bool get showMonthlyChart => selectedMonth == null;
 
   bool get canGoToNextYear {
     if (availableYears.isEmpty) return false;
@@ -45,15 +57,17 @@ class PersonalSummaryUIModel extends Equatable {
 
   @override
   List<Object?> get props => [
-        selectedYear,
-        availableYears,
-        yearTotal,
-        categorySegments,
-        monthlyRows,
-        recurringSplit,
-        givtVsExternalSplit,
-        givingGoal,
-        goalProgress,
-        hasDonationsInYear,
-      ];
+    selectedYear,
+    selectedMonth,
+    availableYears,
+    yearTotal,
+    periodTotal,
+    categorySegments,
+    monthlyRows,
+    recurringSplit,
+    givtVsExternalSplit,
+    givingGoal,
+    goalProgress,
+    hasDonationsInYear,
+  ];
 }

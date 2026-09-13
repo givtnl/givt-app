@@ -12,14 +12,20 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 /// Uses [DonationOverviewRepository] for fetching donation data.
 class DonationOverviewCubit
     extends CommonCubit<DonationOverviewUIModel, DonationOverviewCustom> {
-  DonationOverviewCubit(this._donationOverviewRepository)
-    : super(const BaseState.loading());
+  DonationOverviewCubit(
+    this._donationOverviewRepository, {
+    DonationHistoryFilters initialFilters = DonationHistoryFilters.empty,
+  }) : _filters = initialFilters,
+       super(const BaseState.loading());
 
   final DonationOverviewRepository _donationOverviewRepository;
   StreamSubscription<List<dynamic>>? _donationsSubscription;
-  DonationHistoryFilters _filters = DonationHistoryFilters.empty;
+  DonationHistoryFilters _filters;
 
   DonationHistoryFilters get filters => _filters;
+
+  /// Seed filters before [init] so the first fetch uses the date range.
+  set initialFilters(DonationHistoryFilters filters) => _filters = filters;
 
   Future<void> init() async {
     // First load donations to get initial data
@@ -159,8 +165,9 @@ class DonationOverviewCubit
   Future<void> downloadYearlyOverview({required String year}) async {
     try {
       final fromDate = DateTime.parse('$year-01-01').toIso8601String();
-      final tillDate = DateTime.parse('${int.parse(year) + 1}-01-01')
-          .toIso8601String();
+      final tillDate = DateTime.parse(
+        '${int.parse(year) + 1}-01-01',
+      ).toIso8601String();
 
       final success = await _donationOverviewRepository.downloadYearlyOverview(
         fromDate: fromDate,

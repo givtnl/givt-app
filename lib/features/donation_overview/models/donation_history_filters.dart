@@ -27,6 +27,75 @@ class DonationHistoryFilters extends Equatable {
 
   static const empty = DonationHistoryFilters();
 
+  /// Reconstructs filters from `pushNamed` extra, then query params.
+  ///
+  /// Nested home-shell routes can drop `state.extra` in the builder while
+  /// `GoRouterState.extra` or query params still carry the tap-through filter.
+  static DonationHistoryFilters fromRoute({
+    Object? extra,
+    Map<String, String> query = const {},
+  }) {
+    if (extra is DonationHistoryFilters && extra.hasActive) {
+      return extra;
+    }
+    return fromQueryParameters(query);
+  }
+
+  static DonationHistoryFilters fromQueryParameters(
+    Map<String, String> query,
+  ) {
+    var filters = empty;
+    final sourceName = query['source'];
+    if (sourceName != null) {
+      for (final value in DonationHistorySourceFilter.values) {
+        if (value.name == sourceName) {
+          filters = filters.toggleSource(value);
+          break;
+        }
+      }
+    }
+    final typeName = query['type'];
+    if (typeName != null) {
+      for (final value in DonationHistoryTypeFilter.values) {
+        if (value.name == typeName) {
+          filters = filters.toggleType(value);
+          break;
+        }
+      }
+    }
+    final categoryNames = query['category']?.split(',') ?? const [];
+    for (final name in categoryNames) {
+      for (final value in DonationHistoryCategoryFilter.values) {
+        if (value.name == name) {
+          filters = filters.toggleCategory(value);
+          break;
+        }
+      }
+    }
+    final start = query['startDate'];
+    final end = query['endDate'];
+    if (start != null || end != null) {
+      filters = filters.setCustomDates(
+        startDate: start == null ? null : DateTime.tryParse(start),
+        endDate: end == null ? null : DateTime.tryParse(end),
+        clearStartDate: start == null,
+        clearEndDate: end == null,
+      );
+    }
+    return filters;
+  }
+
+  Map<String, String> toQueryParameters() {
+    return {
+      if (source != null) 'source': source!.name,
+      if (type != null) 'type': type!.name,
+      if (categories.isNotEmpty)
+        'category': categories.map((category) => category.name).join(','),
+      if (startDate != null) 'startDate': startDate!.toIso8601String(),
+      if (endDate != null) 'endDate': endDate!.toIso8601String(),
+    };
+  }
+
   final DonationHistorySourceFilter? source;
   final DonationHistoryTypeFilter? type;
   final Set<DonationHistoryCategoryFilter> categories;
@@ -310,7 +379,8 @@ abstract final class DonationHistoryFilter {
     if (item.isExternal) {
       return DonationHistoryCategoryFilter.other;
     }
-    final type = CollectGroupType.fromString(item.collectGroupType ?? '');
+    final raw = item.collectGroupType ?? '';
+    final type = CollectGroupType.fromString(raw);
     return switch (type) {
       CollectGroupType.church => DonationHistoryCategoryFilter.church,
       CollectGroupType.charities => DonationHistoryCategoryFilter.charity,
@@ -319,7 +389,18 @@ abstract final class DonationHistoryFilter {
       CollectGroupType.unknown ||
       CollectGroupType.demo ||
       CollectGroupType.debug ||
-      CollectGroupType.none => DonationHistoryCategoryFilter.other,
+      CollectGroupType.none => _categoryFromRaw(raw),
+    };
+  }
+
+  /// Summary uses the charity category name; BFF may send `Charities` or
+  /// the singular `Charity` used by the summary enum name.
+  static DonationHistoryCategoryFilter _categoryFromRaw(String raw) {
+    return switch (raw.toLowerCase()) {
+      'charity' || 'charities' => DonationHistoryCategoryFilter.charity,
+      'church' => DonationHistoryCategoryFilter.church,
+      'campaign' => DonationHistoryCategoryFilter.campaign,
+      _ => DonationHistoryCategoryFilter.other,
     };
   }
 }

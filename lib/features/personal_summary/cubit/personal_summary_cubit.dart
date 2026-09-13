@@ -5,6 +5,7 @@ import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/domain/personal_summary_aggregation.dart';
+import 'package:givt_app/features/personal_summary/domain/personal_summary_history_filters.dart';
 import 'package:givt_app/features/personal_summary/models/models.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
@@ -32,6 +33,7 @@ class PersonalSummaryCubit
   List<CollectGroup> _collectGroups = const [];
   GivingGoal _givingGoal = const GivingGoal.empty();
   int _selectedYear = DateTime.now().year;
+  int? _selectedMonth;
   bool _isSavingGoal = false;
 
   bool get isSavingGoal => _isSavingGoal;
@@ -84,6 +86,46 @@ class PersonalSummaryCubit
     }
     _selectedYear = uiModel.selectedYear + 1;
     _emitData();
+  }
+
+  void toggleMonth(int month) {
+    _selectedMonth = _selectedMonth == month ? null : month;
+    _emitData();
+  }
+
+  void openHistoryForCategory(GivingCategory category) {
+    emitCustom(
+      NavigateToDonationHistory(
+        PersonalSummaryHistoryFilters.forCategory(category),
+      ),
+    );
+  }
+
+  void openHistoryForMonth(int month) {
+    emitCustom(
+      NavigateToDonationHistory(
+        PersonalSummaryHistoryFilters.forMonth(
+          year: _selectedYear,
+          month: month,
+        ),
+      ),
+    );
+  }
+
+  void openHistoryForDonationType({required bool recurring}) {
+    emitCustom(
+      NavigateToDonationHistory(
+        PersonalSummaryHistoryFilters.forDonationType(recurring: recurring),
+      ),
+    );
+  }
+
+  void openHistoryForSource({required bool givtProcessed}) {
+    emitCustom(
+      NavigateToDonationHistory(
+        PersonalSummaryHistoryFilters.forSource(givtProcessed: givtProcessed),
+      ),
+    );
   }
 
   void requestAddDonationSheet() {
@@ -258,7 +300,8 @@ class PersonalSummaryCubit
 
   PersonalSummaryUIModel? _currentUiModelOrNull() {
     final currentState = state;
-    if (currentState is DataState<PersonalSummaryUIModel, PersonalSummaryCustom>) {
+    if (currentState
+        is DataState<PersonalSummaryUIModel, PersonalSummaryCustom>) {
       return currentState.data;
     }
     return null;
@@ -274,6 +317,7 @@ class PersonalSummaryCubit
       collectGroups: _collectGroups,
       givingGoal: _givingGoal,
       selectedYear: _selectedYear,
+      selectedMonth: _selectedMonth,
     );
     emitData(uiModel);
   }

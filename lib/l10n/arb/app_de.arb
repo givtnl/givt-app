@@ -1172,6 +1172,14 @@
   "personalSummaryExternal": "Externe Spenden",
   "personalSummaryYearTotal": "Insgesamt gegeben",
   "personalSummaryYearCenterLabel": "dieses Jahr",
+  "personalSummaryMonthCenterLabel": "im {month}",
+  "@personalSummaryMonthCenterLabel": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
   "personalSummaryAddDonationSheetTitle": "Spende hinzufügen",
   "personalSummaryGiveThroughGivt": "Über Givt geben",
   "personalSummaryGiveThroughGivtSubtitle": "Finde eine Organisation und gib jetzt",

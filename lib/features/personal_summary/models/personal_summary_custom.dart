@@ -1,5 +1,13 @@
+import 'package:givt_app/features/donation_overview/models/donation_history_filters.dart';
+
 sealed class PersonalSummaryCustom {
   const PersonalSummaryCustom();
+}
+
+final class NavigateToDonationHistory extends PersonalSummaryCustom {
+  const NavigateToDonationHistory(this.filters);
+
+  final DonationHistoryFilters filters;
 }
 
 final class NavigateToForYouList extends PersonalSummaryCustom {

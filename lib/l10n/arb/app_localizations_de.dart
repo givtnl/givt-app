@@ -1805,6 +1805,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get personalSummaryYearCenterLabel => 'dieses Jahr';
 
   @override
+  String personalSummaryMonthCenterLabel(String month) {
+    return 'im $month';
+  }
+
+  @override
   String get personalSummaryAddDonationSheetTitle => 'Spende hinzufügen';
 
   @override

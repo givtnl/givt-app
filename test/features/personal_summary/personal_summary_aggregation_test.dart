@@ -91,14 +91,32 @@ void main() {
         allGivts: givts,
         allExternalDonations: external,
         collectGroups: collectGroups,
-        givingGoal: const GivingGoal(amount: 100, frequency: GivingGoalFrequency.annually),
+        givingGoal: const GivingGoal(
+          amount: 100,
+          frequency: GivingGoalFrequency.annually,
+        ),
         selectedYear: 2025,
       );
 
       expect(uiModel.yearTotal, 60);
-      expect(uiModel.categorySegments.firstWhere((s) => s.category == GivingCategory.church).amount, 20);
-      expect(uiModel.categorySegments.firstWhere((s) => s.category == GivingCategory.charity).amount, 30);
-      expect(uiModel.categorySegments.firstWhere((s) => s.category == GivingCategory.other).amount, 10);
+      expect(
+        uiModel.categorySegments
+            .firstWhere((s) => s.category == GivingCategory.church)
+            .amount,
+        20,
+      );
+      expect(
+        uiModel.categorySegments
+            .firstWhere((s) => s.category == GivingCategory.charity)
+            .amount,
+        30,
+      );
+      expect(
+        uiModel.categorySegments
+            .firstWhere((s) => s.category == GivingCategory.other)
+            .amount,
+        10,
+      );
       expect(
         uiModel.categorySegments.map((segment) => segment.category).toList(),
         [
@@ -116,6 +134,121 @@ void main() {
       expect(uiModel.givtVsExternalSplit.primaryAmount, 50);
       expect(uiModel.givtVsExternalSplit.secondaryAmount, 10);
       expect(uiModel.goalProgress, closeTo(0.6, 0.001));
+      expect(uiModel.periodTotal, 60);
+      expect(uiModel.selectedMonth, isNull);
+      expect(uiModel.showMonthlyChart, isTrue);
+    });
+
+    test('month filter recomputes donut and splits but keeps yearly goal', () {
+      final givts = [
+        Givt(
+          id: 1,
+          amount: 20,
+          collectGroupId: 'guid-1',
+          organisationName: 'My Church',
+          organisationTaxDeductible: true,
+          collectId: 1,
+          isGiftAidEnabled: false,
+          status: 3,
+          timeStamp: DateTime(2025, 1, 10),
+          mediumId: 'church-ns.location',
+          taxYear: 0,
+          donationType: 1,
+        ),
+        Givt(
+          id: 2,
+          amount: 30,
+          collectGroupId: 'guid-2',
+          organisationName: 'My Charity',
+          organisationTaxDeductible: true,
+          collectId: 2,
+          isGiftAidEnabled: false,
+          status: 3,
+          timeStamp: DateTime(2025, 2, 5),
+          mediumId: 'charity-ns.location',
+          taxYear: 0,
+        ),
+      ];
+
+      final external = [
+        const ExternalDonation(
+          id: 'ext-1',
+          amount: 10,
+          description: 'External',
+          frequencyString: 'Once',
+          creationDate: '2025-03-01T00:00:00',
+          taxDeductible: false,
+          startDate: '2025-03-01T00:00:00',
+        ),
+      ];
+
+      final january = buildPersonalSummaryUIModel(
+        allGivts: givts,
+        allExternalDonations: external,
+        collectGroups: collectGroups,
+        givingGoal: const GivingGoal(
+          amount: 100,
+          frequency: GivingGoalFrequency.annually,
+        ),
+        selectedYear: 2025,
+        selectedMonth: 1,
+      );
+
+      expect(january.selectedMonth, 1);
+      expect(january.showMonthlyChart, isFalse);
+      expect(january.periodTotal, 20);
+      expect(january.yearTotal, 60);
+      expect(january.goalProgress, closeTo(0.6, 0.001));
+      expect(
+        january.categorySegments
+            .firstWhere((s) => s.category == GivingCategory.church)
+            .amount,
+        20,
+      );
+      expect(
+        january.categorySegments
+            .firstWhere((s) => s.category == GivingCategory.charity)
+            .amount,
+        0,
+      );
+      expect(january.recurringSplit.primaryAmount, 20);
+      expect(january.recurringSplit.secondaryAmount, 0);
+      expect(january.givtVsExternalSplit.primaryAmount, 20);
+      expect(january.givtVsExternalSplit.secondaryAmount, 0);
+      expect(january.monthlyRows[0].total, 20);
+      expect(january.monthlyRows[1].total, 30);
+      expect(january.monthlyRows[2].total, 10);
+    });
+
+    test('empty month still zeros the visible period', () {
+      final givts = [
+        Givt(
+          id: 1,
+          amount: 20,
+          collectGroupId: 'guid-1',
+          organisationName: 'My Church',
+          organisationTaxDeductible: true,
+          collectId: 1,
+          isGiftAidEnabled: false,
+          status: 3,
+          timeStamp: DateTime(2025, 1, 10),
+          mediumId: 'church-ns.location',
+          taxYear: 0,
+        ),
+      ];
+
+      final august = buildPersonalSummaryUIModel(
+        allGivts: givts,
+        allExternalDonations: const [],
+        collectGroups: collectGroups,
+        givingGoal: const GivingGoal.empty(),
+        selectedYear: 2025,
+        selectedMonth: 8,
+      );
+
+      expect(august.periodTotal, 0);
+      expect(august.yearTotal, 20);
+      expect(august.hasDonationsInYear, isTrue);
     });
 
     test('always includes current calendar year in available years', () {
@@ -257,25 +390,28 @@ void main() {
       );
     });
 
-    test('lists zero-donation categories below active categories alphabetically', () {
-      final uiModel = buildPersonalSummaryUIModel(
-        allGivts: const [],
-        allExternalDonations: const [],
-        collectGroups: collectGroups,
-        givingGoal: const GivingGoal.empty(),
-        selectedYear: 2025,
-      );
+    test(
+      'lists zero-donation categories below active categories alphabetically',
+      () {
+        final uiModel = buildPersonalSummaryUIModel(
+          allGivts: const [],
+          allExternalDonations: const [],
+          collectGroups: collectGroups,
+          givingGoal: const GivingGoal.empty(),
+          selectedYear: 2025,
+        );
 
-      expect(
-        uiModel.categorySegments.map((segment) => segment.category).toList(),
-        [
-          GivingCategory.campaign,
-          GivingCategory.charity,
-          GivingCategory.church,
-          GivingCategory.other,
-        ],
-      );
-    });
+        expect(
+          uiModel.categorySegments.map((segment) => segment.category).toList(),
+          [
+            GivingCategory.campaign,
+            GivingCategory.charity,
+            GivingCategory.church,
+            GivingCategory.other,
+          ],
+        );
+      },
+    );
 
     test('uses alphabetical order for tied non-zero amounts', () {
       final givts = [
@@ -351,8 +487,9 @@ void main() {
         selectedYear: 2025,
       );
 
-      final categories =
-          uiModel.categorySegments.map((segment) => segment.category).toList();
+      final categories = uiModel.categorySegments
+          .map((segment) => segment.category)
+          .toList();
       expect(categories.first, GivingCategory.charity);
       expect(
         categories.sublist(1),
