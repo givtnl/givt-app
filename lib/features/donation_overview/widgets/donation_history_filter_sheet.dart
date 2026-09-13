@@ -421,12 +421,15 @@ class _DateFieldState extends State<_DateField> {
       hintText: widget.hint,
       controller: _controller,
       readOnly: true,
-      prefixIcon: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 8),
-        child: FaIcon(
-          FontAwesomeIcons.calendar,
-          size: 24,
-          color: theme.neutral40,
+      prefixIcon: SizedBox(
+        width: 24,
+        height: 24,
+        child: Center(
+          child: FaIcon(
+            FontAwesomeIcons.solidCalendar,
+            size: 24,
+            color: theme.neutral40,
+          ),
         ),
       ),
       analyticsEvent: AnalyticsEvent(
