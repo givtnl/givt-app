@@ -51,4 +51,55 @@ void main() {
     );
     expect(calendarBoxes.length, greaterThanOrEqualTo(2));
   });
+
+  testWidgets('From/To show a compact numeric date instead of weekday medium', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en', 'US'),
+        theme: FunGivtTheme().toThemeData(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: DonationHistoryFilterSheet(
+            initial: DonationHistoryFilters(
+              startDate: DateTime(2026, 9, 1),
+              endDate: DateTime(2026, 9, 10),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('9/1/2026'), findsOneWidget);
+    expect(find.text('9/10/2026'), findsOneWidget);
+    expect(find.textContaining('Thu'), findsNothing);
+    expect(find.textContaining('Sep'), findsNothing);
+  });
+
+  testWidgets('From opens a compact calendar sheet, not the Material dialog', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: FunGivtTheme().toThemeData(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Scaffold(
+          body: DonationHistoryFilterSheet(
+            initial: DonationHistoryFilters.empty,
+          ),
+        ),
+      ),
+    );
+
+    await tester.ensureVisible(find.byType(TextField).first);
+    await tester.tap(find.byType(TextField).first);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CalendarDatePicker), findsOneWidget);
+    expect(find.byType(DatePickerDialog), findsNothing);
+    expect(find.text('Select date'), findsNothing);
+  });
 }

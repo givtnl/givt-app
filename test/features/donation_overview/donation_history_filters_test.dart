@@ -3,10 +3,27 @@ import 'package:givt_app/features/donation_overview/models/donation_history_filt
 import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_status.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   group('DonationHistoryFilters', () {
     final now = DateTime(2026, 9, 12);
+
+    setUpAll(() async {
+      await initializeDateFormatting('en_US');
+      await initializeDateFormatting('en_GB');
+    });
+
+    test('filter date format is compact numeric without a weekday', () {
+      expect(
+        formatDonationHistoryFilterDate(DateTime(2026, 9, 10), 'en_US'),
+        '9/10/2026',
+      );
+      expect(
+        formatDonationHistoryFilterDate(DateTime(2026, 9, 10), 'en_GB'),
+        '10/09/2026',
+      );
+    });
 
     test('orderedDimensions puts active chips first in selection order', () {
       var filters = DonationHistoryFilters.empty

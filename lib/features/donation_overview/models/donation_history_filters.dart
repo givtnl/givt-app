@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/donation_overview/models/donation_item.dart';
+import 'package:intl/intl.dart';
 
 /// Top-level donation-history filter chips, in default (unselected) order.
 enum DonationHistoryFilterDimension { source, type, categories, dateRange }
@@ -321,4 +322,12 @@ abstract final class DonationHistoryFilter {
       CollectGroupType.none => DonationHistoryCategoryFilter.other,
     };
   }
+}
+
+/// Compact locale date for the filter From/To fields (no weekday).
+///
+/// Uses ICU short date (`yMd`), e.g. `9/10/2026` in en-US, so it fits the
+/// 160px inputs next to the calendar icon.
+String formatDonationHistoryFilterDate(DateTime date, String locale) {
+  return DateFormat.yMd(locale).format(date);
 }

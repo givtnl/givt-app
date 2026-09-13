@@ -406,10 +406,66 @@ class _DateFieldState extends State<_DateField> {
   void _syncText() {
     final text = widget.date == null
         ? ''
-        : MaterialLocalizations.of(context).formatMediumDate(widget.date!);
+        : formatDonationHistoryFilterDate(
+            widget.date!,
+            Localizations.localeOf(context).toLanguageTag(),
+          );
     if (_controller.text != text) {
       _controller.text = text;
     }
+  }
+
+  DateTime _clampToRange(DateTime date, DateTime first, DateTime last) {
+    if (date.isBefore(first)) {
+      return first;
+    }
+    if (date.isAfter(last)) {
+      return last;
+    }
+    return date;
+  }
+
+  Future<DateTime?> _showCompactDatePicker() {
+    final now = DateTime.now();
+    final firstDate = widget.firstDate ?? DateTime(2015);
+    final lastDate = widget.lastDate ?? now;
+    final initialDate = _clampToRange(
+      widget.date ?? lastDate,
+      firstDate,
+      lastDate,
+    );
+
+    return showModalBottomSheet<DateTime>(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 16, 8, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TitleMediumText(
+                  widget.label,
+                  color: FunTheme.of(sheetContext).primary20,
+                ),
+                CalendarDatePicker(
+                  initialDate: initialDate,
+                  firstDate: firstDate,
+                  lastDate: lastDate,
+                  onDateChanged: (date) {
+                    Navigator.of(sheetContext).pop(date);
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -440,14 +496,8 @@ class _DateFieldState extends State<_DateField> {
         },
       ),
       onTap: () async {
-        final now = DateTime.now();
-        final picked = await showDatePicker(
-          context: context,
-          initialDate: widget.date ?? widget.lastDate ?? now,
-          firstDate: widget.firstDate ?? DateTime(2015),
-          lastDate: widget.lastDate ?? now,
-        );
-        if (picked != null) {
+        final picked = await _showCompactDatePicker();
+        if (picked != null && mounted) {
           widget.onDateSelected(picked);
         }
       },
