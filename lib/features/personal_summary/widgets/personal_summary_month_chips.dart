@@ -23,28 +23,28 @@ class PersonalSummaryMonthChips extends StatelessWidget {
 
     return SizedBox(
       height: 45,
-      child: ListView.separated(
+      child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        primary: false,
-        itemCount: 12,
-        separatorBuilder: (_, _) => const SizedBox(width: 8),
-        itemBuilder: (context, index) {
-          final month = index + 1;
-          final label = DateFormat.MMM(locale).format(DateTime(2024, month));
-          return FunFilterChip(
-            label: label,
-            selected: selectedMonth == month,
-            analyticsEvent: AnalyticsEvent(
-              AnalyticsEventName.personalSummaryMonthChipClicked,
-              parameters: {
-                AnalyticsHelper.filterKey: 'month',
-                AnalyticsHelper.filterValueKey: month.toString(),
-              },
-            ),
-            semanticsIdentifier: 'personal-summary-month-$month',
-            onPressed: () => onMonthPressed(month),
-          );
-        },
+        child: Row(
+          children: [
+            for (var month = 1; month <= 12; month++) ...[
+              if (month > 1) const SizedBox(width: 8),
+              FunFilterChip(
+                label: DateFormat.MMM(locale).format(DateTime(2024, month)),
+                selected: selectedMonth == month,
+                analyticsEvent: AnalyticsEvent(
+                  AnalyticsEventName.personalSummaryMonthChipClicked,
+                  parameters: {
+                    AnalyticsHelper.filterKey: 'month',
+                    AnalyticsHelper.filterValueKey: month.toString(),
+                  },
+                ),
+                semanticsIdentifier: 'personal-summary-month-$month',
+                onPressed: () => onMonthPressed(month),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
