@@ -8,7 +8,10 @@ abstract final class PersonalSummaryHistoryFilters {
   const PersonalSummaryHistoryFilters._();
 
   static DonationHistoryFilters forCategory(GivingCategory category) {
-    return DonationHistoryFilters.empty.toggleCategory(_categoryOf(category));
+    return DonationHistoryFilters(
+      categories: {_categoryOf(category)},
+      selectionOrder: const [DonationHistoryFilterDimension.categories],
+    );
   }
 
   static DonationHistoryFilters forMonth({

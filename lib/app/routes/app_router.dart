@@ -636,9 +636,10 @@ class AppRouter {
             path: Pages.donationOverview.path,
             name: Pages.donationOverview.name,
             builder: (context, state) => DonationOverviewPage(
-              initialFilters: state.extra is DonationHistoryFilters
-                  ? state.extra! as DonationHistoryFilters
-                  : null,
+              initialFilters: DonationHistoryFilters.fromRoute(
+                extra: state.extra,
+                query: state.uri.queryParameters,
+              ),
             ),
           ),
           GoRoute(

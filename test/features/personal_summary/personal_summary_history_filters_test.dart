@@ -19,6 +19,7 @@ void main() {
         filters.orderedDimensions().first,
         DonationHistoryFilterDimension.categories,
       );
+      expect(filters.toQueryParameters(), {'category': 'charity'});
     });
 
     test('month tap uses inclusive local first and last day', () {

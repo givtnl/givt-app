@@ -92,6 +92,7 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
           context.pushNamed(
             Pages.donationOverview.name,
             extra: filters,
+            queryParameters: filters.toQueryParameters(),
           ),
         );
       case NavigateToForYouList():

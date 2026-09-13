@@ -22,7 +22,7 @@ class PersonalSummaryMonthChips extends StatelessWidget {
     final locale = Util.getLanguageTageFromLocale(context);
 
     return SizedBox(
-      height: 45,
+      height: 36,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(

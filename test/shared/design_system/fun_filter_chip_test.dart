@@ -29,6 +29,33 @@ void main() {
     expect(find.text('One-off'), findsOneWidget);
     expect(find.byIcon(FontAwesomeIcons.check.data), findsNothing);
     expect(find.byIcon(FontAwesomeIcons.chevronDown.data), findsNothing);
+    final text = tester.widget<Text>(find.text('One-off'));
+    expect(text.style?.height, 1.1);
+    expect(
+      tester.getSize(find.byType(AnimatedContainer)).height,
+      inInclusiveRange(30, 36),
+    );
+  });
+
+  testWidgets('chip keeps Figma height inside a taller filter row', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        SizedBox(
+          height: 60,
+          width: 200,
+          child: Align(
+            child: FunFilterChip(label: 'Jan', analyticsEvent: _event),
+          ),
+        ),
+      ),
+    );
+
+    expect(
+      tester.getSize(find.byType(AnimatedContainer)).height,
+      inInclusiveRange(30, 36),
+    );
   });
 
   testWidgets('multi-select selected state shows a leading checkmark', (

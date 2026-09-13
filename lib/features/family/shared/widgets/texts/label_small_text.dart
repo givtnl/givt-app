@@ -21,6 +21,7 @@ class LabelSmallText extends StatelessWidget {
     this.strutStyle,
     this.fontFeatures,
     this.fontWeight,
+    this.height,
   });
 
   factory LabelSmallText.primary30(String text) =>
@@ -60,7 +61,8 @@ class LabelSmallText extends StatelessWidget {
   final StrutStyle? strutStyle;
   final List<FontFeature>? fontFeatures;
   final FontWeight? fontWeight;
-  
+  final double? height;
+
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -81,6 +83,7 @@ class LabelSmallText extends StatelessWidget {
         color: color,
         fontFeatures: fontFeatures,
         fontWeight: fontWeight,
+        height: height,
       ),
     );
   }

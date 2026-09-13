@@ -21,6 +21,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class DonationOverviewPage extends StatefulWidget {
@@ -36,18 +37,31 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
   late final DonationOverviewCubit _cubit;
   late final String country;
   DonationHistoryFilterDimension? _expandedDimension;
+  var _didStart = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didStart) {
+      return;
+    }
+    _didStart = true;
 
     country = context.read<AuthCubit>().state.user.country;
     _cubit = getIt<DonationOverviewCubit>();
-    final initialFilters = widget.initialFilters;
-    if (initialFilters != null) {
-      _cubit.initialFilters = initialFilters;
+    final routeState = GoRouterState.of(context);
+    final builderFilters = widget.initialFilters;
+    final extra = builderFilters != null && builderFilters.hasActive
+        ? builderFilters
+        : routeState.extra;
+    final filters = DonationHistoryFilters.fromRoute(
+      extra: extra,
+      query: routeState.uri.queryParameters,
+    );
+    if (filters.hasActive) {
+      _cubit.initialFilters = filters;
     }
-    _cubit.init();
+    unawaited(_cubit.init());
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/shared/design_system/theme/fun_app_theme.dart';
+import 'package:givt_app/shared/design_system/theme/fun_text_styles.dart';
 import 'package:givt_app/shared/design_system/theme/fun_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -135,7 +136,17 @@ class _FunFilterChipState extends State<FunFilterChip> {
                   ),
                   const SizedBox(width: 4),
                 ],
-                LabelSmallText(widget.label, color: colors.foreground),
+                LabelSmallText(
+                  widget.label,
+                  color: colors.foreground,
+                  // FUN Chip label/small: 14px, line-height 1.1.
+                  height: 1.1,
+                  strutStyle: StrutStyle(
+                    fontSize: FunTextStyles.labelSmall.fontSize,
+                    height: 1.1,
+                    forceStrutHeight: true,
+                  ),
+                ),
                 if (_showDropdownChevron) ...[
                   const SizedBox(width: 4),
                   FaIcon(
