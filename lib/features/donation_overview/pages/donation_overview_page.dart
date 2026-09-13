@@ -24,7 +24,9 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class DonationOverviewPage extends StatefulWidget {
-  const DonationOverviewPage({super.key});
+  const DonationOverviewPage({this.initialFilters, super.key});
+
+  final DonationHistoryFilters? initialFilters;
 
   @override
   State<DonationOverviewPage> createState() => _DonationOverviewPageState();
@@ -41,6 +43,10 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
 
     country = context.read<AuthCubit>().state.user.country;
     _cubit = getIt<DonationOverviewCubit>();
+    final initialFilters = widget.initialFilters;
+    if (initialFilters != null) {
+      _cubit.initialFilters = initialFilters;
+    }
     _cubit.init();
   }
 

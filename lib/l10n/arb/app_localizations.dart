@@ -3243,6 +3243,12 @@ abstract class AppLocalizations {
   /// **'this year'**
   String get personalSummaryYearCenterLabel;
 
+  /// Donut center label when a month chip is selected, e.g. in January
+  ///
+  /// In en, this message translates to:
+  /// **'in {month}'**
+  String personalSummaryMonthCenterLabel(String month);
+
   /// No description provided for @personalSummaryAddDonationSheetTitle.
   ///
   /// In en, this message translates to:

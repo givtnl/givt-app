@@ -1801,6 +1801,11 @@ class AppLocalizationsNl extends AppLocalizations {
   String get personalSummaryYearCenterLabel => 'dit jaar';
 
   @override
+  String personalSummaryMonthCenterLabel(String month) {
+    return 'in $month';
+  }
+
+  @override
   String get personalSummaryAddDonationSheetTitle => 'Donatie toevoegen';
 
   @override

@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/personal_summary/models/personal_summary_chart_models.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_category_colors.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_section_card.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
 
@@ -12,11 +17,13 @@ class MonthlyCategoryBarChart extends StatelessWidget {
   const MonthlyCategoryBarChart({
     required this.rows,
     required this.formatAmount,
+    this.onMonthTap,
     super.key,
   });
 
   final List<MonthlyCategoryRow> rows;
   final String Function(double amount) formatAmount;
+  final ValueChanged<int>? onMonthTap;
 
   bool get _hasData => rows.any((row) => row.total > 0);
 
@@ -58,6 +65,9 @@ class MonthlyCategoryBarChart extends StatelessWidget {
                   monthLabel: DateFormat.MMM(locale).format(
                     DateTime(2024, row.month),
                   ),
+                  onTap: onMonthTap == null
+                      ? null
+                      : () => onMonthTap!(row.month),
                 ),
               ),
             ),
@@ -76,37 +86,77 @@ class _MonthlyRow extends StatelessWidget {
     required this.maxTotal,
     required this.formatAmount,
     required this.monthLabel,
+    this.onTap,
   });
 
   final MonthlyCategoryRow row;
   final double maxTotal;
   final String Function(double amount) formatAmount;
   final String monthLabel;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = FunTheme.of(context);
+    final content = row.total <= 0
+        ? _emptyRow(theme)
+        : _filledRow(context, theme);
 
-    if (row.total <= 0) {
-      return Row(
-        children: [
-          SizedBox(
-            width: 40,
-            child: LabelSmallText(
-              monthLabel,
-              color: theme.neutral50,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: LabelSmallText('–', color: theme.neutral50),
-          ),
-        ],
-      );
+    if (onTap == null) {
+      return content;
     }
 
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          unawaited(
+            AnalyticsHelper.logEvent(
+              eventName: AnalyticsEventName.personalSummaryMonthlyRowClicked,
+              eventProperties: {
+                AnalyticsHelper.filterKey: 'month',
+                AnalyticsHelper.filterValueKey: row.month.toString(),
+              },
+            ),
+          );
+          onTap!();
+        },
+        child: Row(
+          children: [
+            Expanded(child: content),
+            const SizedBox(width: 8),
+            FaIcon(
+              FontAwesomeIcons.chevronRight,
+              size: 16,
+              color: theme.neutral60,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _emptyRow(FunAppTheme theme) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 40,
+          child: LabelSmallText(
+            monthLabel,
+            color: theme.neutral50,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: LabelSmallText('–', color: theme.neutral50),
+        ),
+      ],
+    );
+  }
+
+  Widget _filledRow(BuildContext context, FunAppTheme theme) {
     return Row(
       children: [
         SizedBox(

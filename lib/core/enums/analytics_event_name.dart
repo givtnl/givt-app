@@ -89,6 +89,10 @@ enum AnalyticsEventName {
   personalSummaryClicked('personal_summary_clicked'),
   personalSummaryYearClicked('personal_summary_year_clicked'),
   personalSummaryYearLoaded('personal_summary_year_loaded'),
+  personalSummaryMonthChipClicked('personal_summary_month_chip_clicked'),
+  personalSummaryCategoryRowClicked('personal_summary_category_row_clicked'),
+  personalSummaryMonthlyRowClicked('personal_summary_monthly_row_clicked'),
+  personalSummarySplitRowClicked('personal_summary_split_row_clicked'),
   personalSummaryAddDonationClicked('personal_summary_add_donation_clicked'),
   personalSummaryAddDonationContinueClicked(
     'personal_summary_add_donation_continue_clicked',

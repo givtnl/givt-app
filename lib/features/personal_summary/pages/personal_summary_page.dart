@@ -12,11 +12,12 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
 import 'package:givt_app/features/personal_summary/cubit/personal_summary_cubit.dart';
+import 'package:givt_app/features/personal_summary/giving_goal_setup/models/giving_goal_setup_extra.dart';
 import 'package:givt_app/features/personal_summary/models/models.dart';
 import 'package:givt_app/features/personal_summary/widgets/category_donut_chart.dart';
 import 'package:givt_app/features/personal_summary/widgets/giving_goal_card.dart';
 import 'package:givt_app/features/personal_summary/widgets/monthly_category_bar_chart.dart';
-import 'package:givt_app/features/personal_summary/giving_goal_setup/models/giving_goal_setup_extra.dart';
+import 'package:givt_app/features/personal_summary/widgets/personal_summary_month_chips.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_sheets.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_sticky_actions.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_year_header.dart';
@@ -32,6 +33,7 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class PersonalSummaryPage extends StatefulWidget {
   const PersonalSummaryPage({super.key});
@@ -85,6 +87,13 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
         );
       case NavigateToGivingGoalSetup():
         unawaited(_navigateToGivingGoalSetup(context));
+      case NavigateToDonationHistory(:final filters):
+        unawaited(
+          context.pushNamed(
+            Pages.donationOverview.name,
+            extra: filters,
+          ),
+        );
       case NavigateToForYouList():
         unawaited(_navigateToForYouAndRefresh(context));
       case NavigateToExternalDonationCreate():
@@ -110,8 +119,7 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
     final goalChanged = await context.pushNamed<bool>(
       Pages.givingGoalSetup.name,
       extra: GivingGoalSetupExtra(
-        initialYearlyAmount:
-            goal.hasGoal ? goal.yearlyGivingGoal.round() : 0,
+        initialYearlyAmount: goal.hasGoal ? goal.yearlyGivingGoal.round() : 0,
         goalId: goal.id,
       ),
     );
@@ -169,7 +177,9 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: BodyMediumText(
-            message == 'no_internet' ? locals.noInternet : locals.somethingWentWrong,
+            message == 'no_internet'
+                ? locals.noInternet
+                : locals.somethingWentWrong,
             textAlign: TextAlign.center,
           ),
         ),
@@ -181,8 +191,9 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
     _uiModel = uiModel;
     final locals = context.l10n;
     final theme = FunTheme.of(context);
-    final currencySymbol =
-        Util.getCurrencySymbol(countryCode: _country.countryCode);
+    final currencySymbol = Util.getCurrencySymbol(
+      countryCode: _country.countryCode,
+    );
     String formatAmount(double amount) =>
         '$currencySymbol${Util.formatNumberComma(amount, _country)}';
 
@@ -223,6 +234,11 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
                     onPreviousYear: _cubit.selectPreviousYear,
                     onNextYear: _cubit.selectNextYear,
                   ),
+                  const SizedBox(height: 16),
+                  PersonalSummaryMonthChips(
+                    selectedMonth: uiModel.selectedMonth,
+                    onMonthPressed: _cubit.toggleMonth,
+                  ),
                   const SizedBox(height: 32),
                   if (uiModel.hasGivingGoal) ...[
                     GivingGoalCard(
@@ -231,22 +247,28 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
                       goalAmount: uiModel.givingGoal.yearlyGivingGoal,
                       goalProgress: uiModel.goalProgress,
                       formattedYearTotal: formatAmount(uiModel.yearTotal),
-                      formattedGoalAmount:
-                          formatAmount(uiModel.givingGoal.yearlyGivingGoal),
+                      formattedGoalAmount: formatAmount(
+                        uiModel.givingGoal.yearlyGivingGoal,
+                      ),
                       onEdit: _cubit.navigateToGivingGoalSetup,
                     ),
                     const SizedBox(height: 32),
                   ],
                   CategoryDonutChart(
                     segments: uiModel.categorySegments,
-                    centerAmount: formatAmount(uiModel.yearTotal),
+                    centerAmount: formatAmount(uiModel.periodTotal),
+                    centerLabel: _centerLabel(context, uiModel),
                     formatAmount: formatAmount,
+                    onCategoryTap: _cubit.openHistoryForCategory,
                   ),
-                  const SizedBox(height: 32),
-                  MonthlyCategoryBarChart(
-                    rows: uiModel.monthlyRows,
-                    formatAmount: formatAmount,
-                  ),
+                  if (uiModel.showMonthlyChart) ...[
+                    const SizedBox(height: 32),
+                    MonthlyCategoryBarChart(
+                      rows: uiModel.monthlyRows,
+                      formatAmount: formatAmount,
+                      onMonthTap: _cubit.openHistoryForMonth,
+                    ),
+                  ],
                   const SizedBox(height: 32),
                   SplitBarChart(
                     title: locals.personalSummarySectionRecurring,
@@ -261,11 +283,18 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
                     primaryIconColor: theme.secondary30,
                     secondaryIconColor: theme.primary80,
                     formatAmount: formatAmount,
+                    primaryFilterValue: 'recurring',
+                    secondaryFilterValue: 'oneOff',
+                    onPrimaryTap: () =>
+                        _cubit.openHistoryForDonationType(recurring: true),
+                    onSecondaryTap: () =>
+                        _cubit.openHistoryForDonationType(recurring: false),
                   ),
                   const SizedBox(height: 32),
                   SplitBarChart(
                     title: locals.personalSummarySectionGivtVsExternal,
-                    subtitle: locals.personalSummarySectionGivtVsExternalSubtitle,
+                    subtitle:
+                        locals.personalSummarySectionGivtVsExternalSubtitle,
                     primaryLabel: locals.personalSummaryThroughGivt,
                     secondaryLabel: locals.personalSummaryExternal,
                     data: uiModel.givtVsExternalSplit,
@@ -276,6 +305,12 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
                     primaryIconColor: theme.secondary70,
                     secondaryIconColor: theme.neutral80,
                     formatAmount: formatAmount,
+                    primaryFilterValue: 'givtProcessed',
+                    secondaryFilterValue: 'external',
+                    onPrimaryTap: () =>
+                        _cubit.openHistoryForSource(givtProcessed: true),
+                    onSecondaryTap: () =>
+                        _cubit.openHistoryForSource(givtProcessed: false),
                   ),
                 ],
               ),
@@ -289,5 +324,18 @@ class _PersonalSummaryPageState extends State<PersonalSummaryPage> {
         ],
       ),
     );
+  }
+
+  String _centerLabel(BuildContext context, PersonalSummaryUIModel uiModel) {
+    final locals = context.l10n;
+    final month = uiModel.selectedMonth;
+    if (month == null) {
+      return locals.personalSummaryYearCenterLabel;
+    }
+    final locale = Util.getLanguageTageFromLocale(context);
+    final monthName = DateFormat.MMMM(locale).format(
+      DateTime(uiModel.selectedYear, month),
+    );
+    return locals.personalSummaryMonthCenterLabel(monthName);
   }
 }

@@ -1172,6 +1172,14 @@
   "personalSummaryExternal": "Externe donaties",
   "personalSummaryYearTotal": "Totaal gegeven",
   "personalSummaryYearCenterLabel": "dit jaar",
+  "personalSummaryMonthCenterLabel": "in {month}",
+  "@personalSummaryMonthCenterLabel": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
   "personalSummaryAddDonationSheetTitle": "Donatie toevoegen",
   "personalSummaryGiveThroughGivt": "Geven via Givt",
   "personalSummaryGiveThroughGivtSubtitle": "Vind een goed doel en geef nu",

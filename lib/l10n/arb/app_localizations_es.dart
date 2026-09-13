@@ -1797,6 +1797,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get personalSummaryYearCenterLabel => 'this year';
 
   @override
+  String personalSummaryMonthCenterLabel(String month) {
+    return 'en $month';
+  }
+
+  @override
   String get personalSummaryAddDonationSheetTitle => 'Add a donation';
 
   @override
@@ -5437,6 +5442,11 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get personalSummaryYearCenterLabel => 'este año';
+
+  @override
+  String personalSummaryMonthCenterLabel(String month) {
+    return 'en $month';
+  }
 
   @override
   String get personalSummaryAddDonationSheetTitle => 'Añadir una donación';
