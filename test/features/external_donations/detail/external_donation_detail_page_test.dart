@@ -211,4 +211,66 @@ void main() {
     expect(tag.iconSize, 12);
     expect(tag.variant, FunTagVariant.accent);
   });
+
+  testWidgets(
+    'shows I\'ve stopped giving for an active recurring donation',
+    (tester) async {
+      const donation = ExternalDonation(
+        id: 'donation-recurring-active',
+        amount: 20,
+        description: 'Red Cross',
+        frequencyString: 'Monthly',
+        creationDate: '2024-01-01T00:00:00.000Z',
+        taxDeductible: false,
+        startDate: '2024-06-15T00:00:00.000Z',
+        active: true,
+      );
+      repository.setDonation(donation);
+
+      await pumpDetailPage(tester, donation);
+
+      expect(find.text("I've stopped giving"), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'hides I\'ve stopped giving when the recurring donation is inactive',
+    (tester) async {
+      const donation = ExternalDonation(
+        id: 'donation-recurring-stopped',
+        amount: 20,
+        description: 'Red Cross',
+        frequencyString: 'Monthly',
+        creationDate: '2024-01-01T00:00:00.000Z',
+        taxDeductible: false,
+        startDate: '2024-06-15T00:00:00.000Z',
+        active: false,
+      );
+      repository.setDonation(donation);
+
+      await pumpDetailPage(tester, donation);
+
+      expect(find.text("I've stopped giving"), findsNothing);
+    },
+  );
+
+  testWidgets('hides I\'ve stopped giving for a one-off donation', (
+    tester,
+  ) async {
+    const donation = ExternalDonation(
+      id: 'donation-one-off',
+      amount: 20,
+      description: 'World Vision',
+      frequencyString: 'Once',
+      creationDate: '2024-01-01T00:00:00.000Z',
+      taxDeductible: false,
+      startDate: '2024-06-15T00:00:00.000Z',
+      active: true,
+    );
+    repository.setDonation(donation);
+
+    await pumpDetailPage(tester, donation);
+
+    expect(find.text("I've stopped giving"), findsNothing);
+  });
 }

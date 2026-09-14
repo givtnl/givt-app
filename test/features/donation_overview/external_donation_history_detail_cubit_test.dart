@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/features/donation_overview/cubit/external_donation_history_detail_cubit.dart';
 import 'package:givt_app/features/donation_overview/models/donation_history_mapper.dart';
+import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
@@ -8,6 +9,9 @@ class _FakeGivtRepository with GivtRepository {
   bool updateResult = true;
   double? lastUpdatedAmount;
   String? lastUpdatedStartDate;
+  List<ExternalDonation> donations = const [];
+  int fetchExternalDonationsCalls = 0;
+  int fetchExternalDonationDetailCalls = 0;
 
   @override
   Future<bool> updateExternalDonation({
@@ -26,6 +30,26 @@ class _FakeGivtRepository with GivtRepository {
   }) async {
     lastUpdatedAmount = newAmount;
     return updateResult;
+  }
+
+  @override
+  Future<List<ExternalDonation>> fetchExternalDonations() async {
+    fetchExternalDonationsCalls++;
+    return donations;
+  }
+
+  @override
+  Future<ExternalDonation?> fetchExternalDonationDetail(String id) async {
+    fetchExternalDonationDetailCalls++;
+    return ExternalDonation(
+      id: id,
+      amount: 30,
+      description: 'Shelter',
+      frequencyString: 'Monthly',
+      creationDate: '2026-01-01T00:00:00.000Z',
+      taxDeductible: false,
+      active: false,
+    );
   }
 
   @override
@@ -109,5 +133,54 @@ void main() {
       expect(state.data.donation.amount, 45);
       expect(state.data.isSaving, isFalse);
     });
+
+    test(
+      'loadExternalDonationForManage uses list so active recurring stays active',
+      () async {
+        const listed = ExternalDonation(
+          id: 'series-2',
+          amount: 30,
+          description: 'Shelter',
+          frequencyString: 'Monthly',
+          creationDate: '2026-01-01T00:00:00.000Z',
+          taxDeductible: false,
+          active: true,
+        );
+        repository.donations = [listed];
+
+        final recurringDonation = DonationHistoryMapper.fromHistoryJson({
+          'source': 'external',
+          'id': 'tx-2',
+          'externalDonationId': 'series-2',
+          'externalTransactionId': 'tx-2',
+          'amount': 30,
+          'timestamp': '2026-03-11T09:00:00',
+          'organisationName': 'Shelter',
+          'frequency': 'Monthly',
+          'isRecurring': true,
+        });
+        cubit.init(recurringDonation);
+
+        final donation = await cubit.loadExternalDonationForManage();
+
+        expect(repository.fetchExternalDonationsCalls, 1);
+        expect(repository.fetchExternalDonationDetailCalls, 0);
+        expect(donation, listed);
+        expect(donation?.active, isTrue);
+        expect(donation?.isRecurring, isTrue);
+      },
+    );
+
+    test(
+      'loadExternalDonationForManage returns null when series is not listed',
+      () async {
+        repository.donations = const [];
+
+        final donation = await cubit.loadExternalDonationForManage();
+
+        expect(donation, isNull);
+        expect(repository.fetchExternalDonationDetailCalls, 0);
+      },
+    );
   });
 }

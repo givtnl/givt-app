@@ -72,6 +72,11 @@ class ExternalDonationHistoryDetailCubit extends CommonCubit<
     emitData(ExternalDonationHistoryDetailUIModel(donation: donation));
   }
 
+  /// Loads the series for [ExternalDonationDetailPage] (Manage).
+  ///
+  /// Uses the list endpoint so `active` is correct. `GET …/details` omits
+  /// `Active` in the BFF mapping (serializes as false), which hides
+  /// "I've stopped giving" for an otherwise active recurring donation.
   Future<ExternalDonation?> loadExternalDonationForManage() async {
     final donationId = _donation?.externalDonationId;
     if (donationId == null) {
@@ -79,7 +84,13 @@ class ExternalDonationHistoryDetailCubit extends CommonCubit<
     }
 
     try {
-      return await _givtRepository.fetchExternalDonationDetail(donationId);
+      final donations = await _givtRepository.fetchExternalDonations();
+      for (final donation in donations) {
+        if (donation.id == donationId) {
+          return donation;
+        }
+      }
+      return null;
     } catch (error) {
       LoggingInfo.instance.error(
         'Failed to load external donation for manage: $error',
