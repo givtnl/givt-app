@@ -145,15 +145,17 @@ class DonationListItem extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: BodySmallText.secondary30(
+              child: BodySmallText(
                 context.l10n.donationHistoryExternalListSubtitle,
+                color: FunTheme.of(context).neutralVariant40,
               ),
             ),
-            LabelMediumText.primary40(
+            LabelMediumText(
               '$currencySymbol${Util.formatNumberComma(
                 donation.amount,
                 Country.fromCode(country),
               )}',
+              color: FunTheme.of(context).primary50,
             ),
           ],
         ),
@@ -291,7 +293,7 @@ class DonationListItem extends StatelessWidget {
       width: 40,
       height: 40,
       decoration: BoxDecoration(
-        color: theme.tertiary98,
+        color: theme.tertiary90,
         shape: BoxShape.circle,
       ),
       child: Center(
