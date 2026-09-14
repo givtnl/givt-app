@@ -117,7 +117,7 @@ class SplitBarChart extends StatelessWidget {
             label: primaryLabel,
             percent: primaryPercent,
             amount: formatAmount(data.primaryAmount),
-            onTap: onPrimaryTap,
+            onTap: data.primaryAmount > 0 ? onPrimaryTap : null,
             filterValue: primaryFilterValue,
           ),
           _SplitLegendRow(
@@ -126,7 +126,7 @@ class SplitBarChart extends StatelessWidget {
             percent: secondaryPercent,
             amount: formatAmount(data.secondaryAmount),
             showDivider: false,
-            onTap: onSecondaryTap,
+            onTap: data.secondaryAmount > 0 ? onSecondaryTap : null,
             filterValue: secondaryFilterValue,
           ),
         ],
