@@ -5,6 +5,8 @@ enum ForYouBeaconDiscoveryPhase {
   searching,
   bluetoothOff,
   bluetoothPermissionSettings,
+  locationOff,
+  locationPermissionSettings,
 }
 
 class ForYouBeaconDiscoveryUIModel extends Equatable {
