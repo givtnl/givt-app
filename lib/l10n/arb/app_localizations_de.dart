@@ -3372,11 +3372,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get donationHistoryExternalOneOffSubtitle =>
-      'Externe Spende: nicht von Givt verarbeitet';
+      'Externe Spende - Nicht von Givt verarbeitet';
 
   @override
   String get donationHistoryExternalRecurringSubtitle =>
-      'Nicht von Givt verarbeitet';
+      'Externe Spende - Nicht von Givt verarbeitet';
 
   @override
   String get donationHistoryExternalEditDonation => 'Diese Spende bearbeiten';

@@ -3354,11 +3354,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get donationHistoryExternalOneOffSubtitle =>
-      'Donación externa: no procesada por Givt';
+      'Donación externa - No procesada por Givt';
 
   @override
   String get donationHistoryExternalRecurringSubtitle =>
-      'No procesada por Givt';
+      'Donación externa - No procesada por Givt';
 
   @override
   String get donationHistoryExternalEditDonation => 'Editar esta donación';
