@@ -34,6 +34,7 @@ class FunAppTheme extends ThemeExtension<FunAppTheme> {
   Color get secondary20 => tokens.secondary20;
   Color get secondary30 => tokens.secondary30;
   Color get secondary40 => tokens.secondary40;
+  Color get secondary60 => tokens.secondary60;
   Color get secondary70 => tokens.secondary70;
   Color get secondary80 => tokens.secondary80;
   Color get secondary90 => tokens.secondary90;

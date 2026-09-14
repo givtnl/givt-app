@@ -23,6 +23,7 @@ abstract interface class FunThemeTokens {
   Color get secondary20;
   Color get secondary30;
   Color get secondary40;
+  Color get secondary60;
   Color get secondary70;
   Color get secondary80;
   Color get secondary90;
