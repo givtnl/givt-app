@@ -36,6 +36,7 @@ class _BTScanPageState extends State<BTScanPage> with WidgetsBindingObserver {
   bool isSearching = false;
   bool _isDisposed = false;
   bool _isShowingLocationDialog = false;
+  bool _isProcessingBeacon = false;
 
   late final GiveBloc _giveBloc;
   final AndroidBleLocationAccess _androidBleLocationAccess =
@@ -74,6 +75,11 @@ class _BTScanPageState extends State<BTScanPage> with WidgetsBindingObserver {
 
   Future<void> _onAppResumed() async {
     if (_isDisposed || !mounted) return;
+    if (_isProcessingBeacon) return;
+    if (_giveBloc.isClosed) return;
+    final giveState = _giveBloc.state;
+    if (giveState.status == GiveStatus.processingBeaconData) return;
+    if (giveState.transactionIds.isNotEmpty) return;
     if (FlutterBluePlus.adapterStateNow != BluetoothAdapterState.on) return;
     if (FlutterBluePlus.isScanningNow) return;
     await startBluetoothScan();
@@ -81,6 +87,7 @@ class _BTScanPageState extends State<BTScanPage> with WidgetsBindingObserver {
 
   Future<void> startBluetoothScan() async {
     if (_isDisposed || !mounted) return;
+    if (_isProcessingBeacon) return;
 
     final locationStatus = await _androidBleLocationAccess.ensureReady();
     if (locationStatus != AndroidBleLocationStatus.ready) {
@@ -359,6 +366,7 @@ class _BTScanPageState extends State<BTScanPage> with WidgetsBindingObserver {
 
       // We found a valid beacon, stop scanning immediately
       isSearching = false;
+      _isProcessingBeacon = true;
 
       // Stop the scan asynchronously but don't wait for it
       FlutterBluePlus.stopScan().catchError((Object e) {

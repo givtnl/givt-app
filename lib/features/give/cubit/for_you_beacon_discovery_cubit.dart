@@ -236,6 +236,11 @@ class ForYouBeaconDiscoveryCubit
           await _stopScanSafe();
           return;
         }
+        // Location must be ready before searching so a location-blocked
+        // screen does not flash the searching UI when adapter re-emits on.
+        if (!await _ensureAndroidLocationReady()) {
+          return;
+        }
         _setPhase(ForYouBeaconDiscoveryPhase.searching);
         _ensureScanResultsSubscription();
         await _ensureScanning(reason: 'adapter_on');

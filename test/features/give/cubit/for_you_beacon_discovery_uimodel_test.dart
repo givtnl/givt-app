@@ -1,8 +1,10 @@
 // Manual QA (physical device): Android — BT scan+connect, off + turn-on flow,
 // 30s scan cycles; location permission denied, approximate-only, GPS off, then
-// grant + resume from Settings; iOS — Bluetooth permission denied then fixed in
-// Settings (no location prompt); beacon seen but org not in list keeps
-// searching without leaving the screen.
+// grant + resume from Settings (searching UI must not flash while location is
+// still blocked); iOS — Bluetooth permission denied then fixed in Settings (no
+// location prompt); beacon seen but org not in list keeps searching without
+// leaving the screen; after a beacon is found, app resume must not restart BLE
+// scan during processingBeaconData.
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_custom.dart';
