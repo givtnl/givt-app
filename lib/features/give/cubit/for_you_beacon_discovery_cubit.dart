@@ -8,6 +8,7 @@ import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_custom.dart';
 import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_uimodel.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
+import 'package:givt_app/features/give/utils/android_ble_location_access.dart';
 import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
@@ -23,7 +24,10 @@ class ForYouBeaconDiscoveryCubit
         CommonCubit<ForYouBeaconDiscoveryUIModel, ForYouBeaconDiscoveryCustom> {
   ForYouBeaconDiscoveryCubit({
     required CollectGroupRepository collectGroupRepository,
+    AndroidBleLocationAccess? androidBleLocationAccess,
   }) : _collectGroupRepository = collectGroupRepository,
+       _androidBleLocationAccess =
+           androidBleLocationAccess ?? AndroidBleLocationAccess(),
        super(const BaseState.loading());
 
   static const Duration _scanTimeout = Duration(seconds: 30);
@@ -35,10 +39,10 @@ class ForYouBeaconDiscoveryCubit
 
   /// Wait this long after the isScanning stream reports false before
   /// scheduling a restart — avoids transient false during startup / stream lag.
-  static const Duration _scanStoppedDebounceDelay =
-      Duration(milliseconds: 450);
+  static const Duration _scanStoppedDebounceDelay = Duration(milliseconds: 450);
 
   final CollectGroupRepository _collectGroupRepository;
+  final AndroidBleLocationAccess _androidBleLocationAccess;
 
   ForYouFlowContext? _flowContext;
   bool _closing = false;
@@ -79,6 +83,8 @@ class ForYouBeaconDiscoveryCubit
       final granted = await _requestAndroidBlePermissions();
       if (!granted) {
         _setPhase(ForYouBeaconDiscoveryPhase.bluetoothPermissionSettings);
+      } else {
+        await _ensureAndroidLocationReady();
       }
     }
 
@@ -111,14 +117,17 @@ class ForYouBeaconDiscoveryCubit
 
     if (Platform.isAndroid) {
       final granted = await _requestAndroidBlePermissions();
-      if (granted) {
-        _setPhase(ForYouBeaconDiscoveryPhase.searching);
-        if (FlutterBluePlus.adapterStateNow == BluetoothAdapterState.on) {
-          _ensureScanResultsSubscription();
-          await _ensureScanning(reason: 'app_resumed_android');
-        }
-      } else {
+      if (!granted) {
         _setPhase(ForYouBeaconDiscoveryPhase.bluetoothPermissionSettings);
+        return;
+      }
+      if (!await _ensureAndroidLocationReady()) {
+        return;
+      }
+      _setPhase(ForYouBeaconDiscoveryPhase.searching);
+      if (FlutterBluePlus.adapterStateNow == BluetoothAdapterState.on) {
+        _ensureScanResultsSubscription();
+        await _ensureScanning(reason: 'app_resumed_android');
       }
       return;
     }
@@ -156,6 +165,36 @@ class ForYouBeaconDiscoveryCubit
     return scan.isGranted && connect.isGranted;
   }
 
+  /// Returns true when Android location is ready for BLE scanning (or the
+  /// platform is not Android). Sets a location UI phase and stops scanning
+  /// when services, permission, or fine accuracy are missing.
+  Future<bool> _ensureAndroidLocationReady() async {
+    final status = await _androidBleLocationAccess.ensureReady();
+    switch (status) {
+      case AndroidBleLocationStatus.ready:
+        return true;
+      case AndroidBleLocationStatus.serviceDisabled:
+        if (_phase != ForYouBeaconDiscoveryPhase.locationOff) {
+          await AnalyticsHelper.logEvent(
+            eventName: AnalyticsEventName.forYouLocationServiceOff,
+          );
+        }
+        _setPhase(ForYouBeaconDiscoveryPhase.locationOff);
+        await _stopScanSafe();
+        return false;
+      case AndroidBleLocationStatus.permissionDenied:
+      case AndroidBleLocationStatus.reducedAccuracy:
+        if (_phase != ForYouBeaconDiscoveryPhase.locationPermissionSettings) {
+          await AnalyticsHelper.logEvent(
+            eventName: AnalyticsEventName.forYouLocationPermissionDenied,
+          );
+        }
+        _setPhase(ForYouBeaconDiscoveryPhase.locationPermissionSettings);
+        await _stopScanSafe();
+        return false;
+    }
+  }
+
   void _setPhase(ForYouBeaconDiscoveryPhase phase) {
     _phase = phase;
     _emitData();
@@ -185,8 +224,10 @@ class ForYouBeaconDiscoveryCubit
   Future<void> _onAdapterStateChanged(BluetoothAdapterState state) async {
     if (_closing) return;
 
-    _logBle('adapterState=$state phase=$_phase isScanningNow='
-        '${FlutterBluePlus.isScanningNow}');
+    _logBle(
+      'adapterState=$state phase=$_phase isScanningNow='
+      '${FlutterBluePlus.isScanningNow}',
+    );
 
     switch (state) {
       case BluetoothAdapterState.on:
@@ -307,6 +348,10 @@ class ForYouBeaconDiscoveryCubit
       return;
     }
 
+    if (!await _ensureAndroidLocationReady()) {
+      return;
+    }
+
     // flutter_blue_plus startScan() stops an existing scan before starting a
     // new one. If adapterState re-emits [on] while a scan is already running
     // (common on some Android builds), we'd churn stopScan/startScan — guard.
@@ -339,8 +384,10 @@ class ForYouBeaconDiscoveryCubit
         androidUsesFineLocation: true,
       );
       _consecutiveScanFailures = 0;
-      _logBle('startScan invoked OK reason=$reason (returns before 30s timeout '
-          'elapses; timeout stops scan on native side)');
+      _logBle(
+        'startScan invoked OK reason=$reason (returns before 30s timeout '
+        'elapses; timeout stops scan on native side)',
+      );
     } on Object catch (e, s) {
       _consecutiveScanFailures++;
       LoggingInfo.instance.error(
@@ -348,6 +395,9 @@ class ForYouBeaconDiscoveryCubit
         methodName: 'startScan',
       );
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+      if (!await _ensureAndroidLocationReady()) {
+        return;
+      }
       _scheduleScanRestart(reason: 'startScan_failed');
     } finally {
       // Let isScanning / native catch up before another adapter_on can call

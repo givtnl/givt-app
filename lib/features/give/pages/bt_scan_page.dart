@@ -14,6 +14,7 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
+import 'package:givt_app/features/give/utils/android_ble_location_access.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -30,12 +31,15 @@ class BTScanPage extends StatefulWidget {
   State<BTScanPage> createState() => _BTScanPageState();
 }
 
-class _BTScanPageState extends State<BTScanPage> {
+class _BTScanPageState extends State<BTScanPage> with WidgetsBindingObserver {
   bool isVisible = false;
   bool isSearching = false;
   bool _isDisposed = false;
+  bool _isShowingLocationDialog = false;
 
   late final GiveBloc _giveBloc;
+  final AndroidBleLocationAccess _androidBleLocationAccess =
+      AndroidBleLocationAccess();
 
   StreamSubscription<List<ScanResult>>? _scanResultsStream;
   StreamSubscription<BluetoothAdapterState>? _adapterStateStream;
@@ -49,6 +53,7 @@ class _BTScanPageState extends State<BTScanPage> {
     super.initState();
 
     _giveBloc = context.read<GiveBloc>();
+    WidgetsBinding.instance.addObserver(this);
 
     // Signal to GiveBloc that BT scan page is active
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -60,8 +65,30 @@ class _BTScanPageState extends State<BTScanPage> {
     initBluetooth();
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      unawaited(_onAppResumed());
+    }
+  }
+
+  Future<void> _onAppResumed() async {
+    if (_isDisposed || !mounted) return;
+    if (FlutterBluePlus.adapterStateNow != BluetoothAdapterState.on) return;
+    if (FlutterBluePlus.isScanningNow) return;
+    await startBluetoothScan();
+  }
+
   Future<void> startBluetoothScan() async {
     if (_isDisposed || !mounted) return;
+
+    final locationStatus = await _androidBleLocationAccess.ensureReady();
+    if (locationStatus != AndroidBleLocationStatus.ready) {
+      isSearching = false;
+      await stopBluetoothScan();
+      await _showLocationRequiredDialog(locationStatus);
+      return;
+    }
 
     try {
       isSearching = true;
@@ -72,6 +99,10 @@ class _BTScanPageState extends State<BTScanPage> {
     } catch (e) {
       LoggingInfo.instance.error('Failed to start Bluetooth scan: $e');
       isSearching = false;
+      final afterFailure = await _androidBleLocationAccess.ensureReady();
+      if (afterFailure != AndroidBleLocationStatus.ready) {
+        await _showLocationRequiredDialog(afterFailure);
+      }
     }
   }
 
@@ -237,6 +268,42 @@ class _BTScanPageState extends State<BTScanPage> {
     );
   }
 
+  Future<void> _showLocationRequiredDialog(
+    AndroidBleLocationStatus status,
+  ) async {
+    if (_isDisposed || !mounted || _isShowingLocationDialog) {
+      return;
+    }
+    if (status == AndroidBleLocationStatus.ready) return;
+
+    _isShowingLocationDialog = true;
+    try {
+      final locals = context.l10n;
+      final content = switch (status) {
+        AndroidBleLocationStatus.serviceDisabled ||
+        AndroidBleLocationStatus.reducedAccuracy =>
+          locals.locationEnabledMessage,
+        AndroidBleLocationStatus.permissionDenied =>
+          locals.allowGivtLocationMessage,
+        AndroidBleLocationStatus.ready => locals.allowGivtLocationMessage,
+      };
+
+      await showDialog<void>(
+        context: context,
+        builder: (_) => WarningDialog(
+          title: locals.allowGivtLocationTitle,
+          content: content,
+          onConfirm: () {
+            openAppSettings();
+            context.pop();
+          },
+        ),
+      );
+    } finally {
+      _isShowingLocationDialog = false;
+    }
+  }
+
   void _onPeripheralsDetectedData(List<ScanResult> results) {
     if (_isDisposed || !mounted || !isSearching) return;
 
@@ -320,6 +387,7 @@ class _BTScanPageState extends State<BTScanPage> {
   @override
   void dispose() {
     _isDisposed = true;
+    WidgetsBinding.instance.removeObserver(this);
 
     // Signal to GiveBloc that BT scan page is being disposed
     try {
@@ -399,8 +467,8 @@ class _BTScanPageState extends State<BTScanPage> {
                     Visibility(
                       visible: isVisible && !isProcessingBeacon,
                       child: FunButton(
-                        analyticsEvent:
-                            AnalyticsEventName.giveButtonPressed.toEvent(),
+                        analyticsEvent: AnalyticsEventName.giveButtonPressed
+                            .toEvent(),
                         onTap: () async {
                           if (_isDisposed || !mounted) return;
 
@@ -438,10 +506,12 @@ class _BTScanPageState extends State<BTScanPage> {
                     ),
                     Visibility(
                       visible:
-                          isVisible && orgName.isNotEmpty && !isProcessingBeacon,
+                          isVisible &&
+                          orgName.isNotEmpty &&
+                          !isProcessingBeacon,
                       child: FunTextButton(
-                        analyticsEvent:
-                            AnalyticsEventName.giveButtonPressed.toEvent(),
+                        analyticsEvent: AnalyticsEventName.giveButtonPressed
+                            .toEvent(),
                         onTap: () async {
                           if (_isDisposed || !mounted) return;
 
