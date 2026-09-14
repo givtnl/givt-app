@@ -90,7 +90,7 @@ void main() {
       expect(_chevronFinder(), findsOneWidget);
 
       final janLabel = DateFormat.MMM(locale.toLanguageTag()).format(
-        DateTime(2024, 1),
+        DateTime(2024),
       );
       final febLabel = DateFormat.MMM(locale.toLanguageTag()).format(
         DateTime(2024, 2),
