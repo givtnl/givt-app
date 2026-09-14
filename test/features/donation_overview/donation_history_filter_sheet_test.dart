@@ -26,10 +26,7 @@ void main() {
     expect(find.text('From'), findsOneWidget);
     expect(find.text('To'), findsOneWidget);
     expect(find.text('Select'), findsNWidgets(2));
-    expect(
-      find.byIcon(FontAwesomeIcons.solidCalendar.data),
-      findsNWidgets(2),
-    );
+    expect(find.byIcon(FontAwesomeIcons.solidCalendar.data), findsNWidgets(2));
 
     final calendars = tester.widgetList<FaIcon>(
       find.byWidgetPredicate(
@@ -102,4 +99,71 @@ void main() {
     expect(find.byType(DatePickerDialog), findsNothing);
     expect(find.text('Select date'), findsNothing);
   });
+
+  testWidgets('en-US category chips say Charity, not org-type Non-profit', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en', 'US'),
+        theme: FunGivtTheme().toThemeData(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Scaffold(
+          body: DonationHistoryFilterSheet(
+            initial: DonationHistoryFilters.empty,
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Charity'), findsOneWidget);
+    expect(find.text('Non-profit'), findsNothing);
+    expect(find.text('Church'), findsOneWidget);
+    expect(find.text('Campaign'), findsOneWidget);
+    expect(find.text('Other'), findsOneWidget);
+  });
+
+  testWidgets('Dutch category chips use Goed doel for Charity', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('nl'),
+        theme: FunGivtTheme().toThemeData(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Scaffold(
+          body: DonationHistoryFilterSheet(
+            initial: DonationHistoryFilters.empty,
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Goed doel'), findsOneWidget);
+    expect(find.text('Charity'), findsNothing);
+    expect(find.text('Non-profit'), findsNothing);
+  });
+
+  testWidgets(
+    'German category chips use Wohltätigkeitsorganisation for Charity',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('de'),
+          theme: FunGivtTheme().toThemeData(),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const Scaffold(
+            body: DonationHistoryFilterSheet(
+              initial: DonationHistoryFilters.empty,
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Wohltätigkeitsorganisation'), findsOneWidget);
+      expect(find.text('Charity'), findsNothing);
+      expect(find.text('Non-profit'), findsNothing);
+    },
+  );
 }

@@ -144,7 +144,9 @@ class _DonationHistoryFilterSheetState
             children: [
               FunFilterChip(
                 mode: FunFilterChipMode.multiSelect,
-                label: locals.charity,
+                // Donation categories use personal-summary copy so en-US
+                // shows Figma "Charity", not the org-type key "Non-profit".
+                label: locals.personalSummaryCategoryCharity,
                 selected: _draft.categories.contains(
                   DonationHistoryCategoryFilter.charity,
                 ),
@@ -163,7 +165,7 @@ class _DonationHistoryFilterSheetState
               ),
               FunFilterChip(
                 mode: FunFilterChipMode.multiSelect,
-                label: locals.church,
+                label: locals.personalSummaryCategoryChurch,
                 selected: _draft.categories.contains(
                   DonationHistoryCategoryFilter.church,
                 ),
@@ -182,7 +184,7 @@ class _DonationHistoryFilterSheetState
               ),
               FunFilterChip(
                 mode: FunFilterChipMode.multiSelect,
-                label: locals.campaign,
+                label: locals.personalSummaryCategoryCampaign,
                 selected: _draft.categories.contains(
                   DonationHistoryCategoryFilter.campaign,
                 ),
@@ -201,7 +203,7 @@ class _DonationHistoryFilterSheetState
               ),
               FunFilterChip(
                 mode: FunFilterChipMode.multiSelect,
-                label: locals.other,
+                label: locals.personalSummaryCategoryOther,
                 selected: _draft.categories.contains(
                   DonationHistoryCategoryFilter.other,
                 ),
