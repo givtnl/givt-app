@@ -5894,13 +5894,13 @@ abstract class AppLocalizations {
   /// No description provided for @donationHistoryExternalOneOffSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'External donation: not processed by Givt'**
+  /// **'External donation - Not processed by Givt'**
   String get donationHistoryExternalOneOffSubtitle;
 
   /// No description provided for @donationHistoryExternalRecurringSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Not processed by Givt'**
+  /// **'External donation - Not processed by Givt'**
   String get donationHistoryExternalRecurringSubtitle;
 
   /// No description provided for @donationHistoryExternalEditDonation.

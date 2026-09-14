@@ -3359,11 +3359,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get donationHistoryExternalOneOffSubtitle =>
-      'Externe gift: niet verwerkt door Givt';
+      'Externe gift - Niet verwerkt door Givt';
 
   @override
   String get donationHistoryExternalRecurringSubtitle =>
-      'Niet verwerkt door Givt';
+      'Externe gift - Niet verwerkt door Givt';
 
   @override
   String get donationHistoryExternalEditDonation => 'Deze gift bewerken';

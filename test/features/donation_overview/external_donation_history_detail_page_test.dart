@@ -131,7 +131,7 @@ void main() {
       );
 
       expect(
-        find.text('External donation: not processed by Givt'),
+        find.text('External donation - Not processed by Givt'),
         findsOneWidget,
       );
       expect(find.text('External donation'), findsOneWidget);
@@ -199,7 +199,10 @@ void main() {
         },
       );
 
-      expect(find.text('Not processed by Givt'), findsOneWidget);
+      expect(
+        find.text('External donation - Not processed by Givt'),
+        findsOneWidget,
+      );
       expect(find.text('External donation'), findsOneWidget);
       expect(find.text('Recurring donation'), findsOneWidget);
       expect(find.text('Manage recurring donation'), findsOneWidget);
