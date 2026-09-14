@@ -2,8 +2,10 @@ import 'package:givt_app/features/donation_overview/models/donation_history_filt
 import 'package:givt_app/features/personal_summary/models/personal_summary_chart_models.dart';
 
 /// Maps personal-summary taps onto the ENG-1428 history filter contract.
-/// Each helper applies **one** filter so history opens with a single
-/// chip active.
+///
+/// Dimension helpers default to **one** active chip. When a month chip is
+/// selected, [applyMonthFilter] attaches that month's date range without
+/// clearing the tapped dimension.
 abstract final class PersonalSummaryHistoryFilters {
   const PersonalSummaryHistoryFilters._();
 
@@ -14,13 +16,26 @@ abstract final class PersonalSummaryHistoryFilters {
     );
   }
 
+  /// Inclusive local first and last day of [month] in [year].
+  static DonationHistoryFilters applyMonthFilter(
+    DonationHistoryFilters filters, {
+    required int year,
+    required int month,
+  }) {
+    return filters.setCustomDates(
+      startDate: DateTime(year, month),
+      endDate: DateTime(year, month + 1, 0),
+    );
+  }
+
   static DonationHistoryFilters forMonth({
     required int year,
     required int month,
   }) {
-    return DonationHistoryFilters.empty.setCustomDates(
-      startDate: DateTime(year, month),
-      endDate: DateTime(year, month + 1, 0),
+    return applyMonthFilter(
+      DonationHistoryFilters.empty,
+      year: year,
+      month: month,
     );
   }
 
