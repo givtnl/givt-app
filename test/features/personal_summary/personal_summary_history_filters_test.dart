@@ -52,5 +52,63 @@ void main() {
       expect(external.source, DonationHistorySourceFilter.external);
       expect(external.type, isNull);
     });
+
+    test(
+      'applyMonthFilter keeps category and sets inclusive month bounds',
+      () {
+        final filters = PersonalSummaryHistoryFilters.applyMonthFilter(
+          PersonalSummaryHistoryFilters.forCategory(GivingCategory.charity),
+          year: 2026,
+          month: 1,
+        );
+
+        expect(filters.categories, {DonationHistoryCategoryFilter.charity});
+        expect(filters.startDate, DateTime(2026, 1));
+        expect(filters.endDate, DateTime(2026, 1, 31));
+        expect(filters.source, isNull);
+        expect(filters.type, isNull);
+        expect(filters.orderedDimensions(), [
+          DonationHistoryFilterDimension.categories,
+          DonationHistoryFilterDimension.dateRange,
+          DonationHistoryFilterDimension.source,
+          DonationHistoryFilterDimension.type,
+        ]);
+        expect(filters.toQueryParameters(), {
+          'category': 'charity',
+          'startDate': DateTime(2026, 1).toIso8601String(),
+          'endDate': DateTime(2026, 1, 31).toIso8601String(),
+        });
+      },
+    );
+
+    test('applyMonthFilter keeps donation type and source filters', () {
+      final typed = PersonalSummaryHistoryFilters.applyMonthFilter(
+        PersonalSummaryHistoryFilters.forDonationType(recurring: true),
+        year: 2026,
+        month: 3,
+      );
+      expect(typed.type, DonationHistoryTypeFilter.recurring);
+      expect(typed.startDate, DateTime(2026, 3));
+      expect(typed.endDate, DateTime(2026, 3, 31));
+      expect(typed.toQueryParameters(), {
+        'type': 'recurring',
+        'startDate': DateTime(2026, 3).toIso8601String(),
+        'endDate': DateTime(2026, 3, 31).toIso8601String(),
+      });
+
+      final sourced = PersonalSummaryHistoryFilters.applyMonthFilter(
+        PersonalSummaryHistoryFilters.forSource(givtProcessed: false),
+        year: 2026,
+        month: 12,
+      );
+      expect(sourced.source, DonationHistorySourceFilter.external);
+      expect(sourced.startDate, DateTime(2026, 12));
+      expect(sourced.endDate, DateTime(2026, 12, 31));
+      expect(sourced.toQueryParameters(), {
+        'source': 'external',
+        'startDate': DateTime(2026, 12).toIso8601String(),
+        'endDate': DateTime(2026, 12, 31).toIso8601String(),
+      });
+    });
   });
 }
