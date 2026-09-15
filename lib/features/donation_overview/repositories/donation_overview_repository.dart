@@ -1,9 +1,6 @@
 import 'dart:async';
 
-import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/donation_overview/models/models.dart';
-import 'package:givt_app/shared/models/collect_group.dart';
-import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 mixin DonationOverviewRepository {
@@ -20,13 +17,9 @@ mixin DonationOverviewRepository {
 }
 
 class DonationOverviewRepositoryImpl with DonationOverviewRepository {
-  DonationOverviewRepositoryImpl(
-    this._givtRepository,
-    this._collectGroupRepository,
-  );
+  DonationOverviewRepositoryImpl(this._givtRepository);
 
   final GivtRepository _givtRepository;
-  final CollectGroupRepository _collectGroupRepository;
   final StreamController<List<DonationItem>> _donationsController =
       StreamController<List<DonationItem>>.broadcast();
 
@@ -61,14 +54,12 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
       _error = null;
       _emitDonationsChanged();
 
-      final fetched = List<DonationItem>.of(
+      _donations = List<DonationItem>.of(
         await _givtRepository.fetchDonationHistory(
           startDate: startDate,
           endDate: endDate,
         ),
       );
-
-      _donations = await _withResolvedOrganisationNames(fetched);
 
       _donations.sort((a, b) {
         if (a.timeStamp == null && b.timeStamp == null) return 0;
@@ -120,43 +111,6 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
       _error = e.toString();
       _emitDonationsChanged();
       return false;
-    }
-  }
-
-  Future<List<DonationItem>> _withResolvedOrganisationNames(
-    List<DonationItem> donations,
-  ) async {
-    final needsLookup = donations.any(
-      (donation) =>
-          !donation.isExternal &&
-          donation.organisationName.trim().isEmpty &&
-          donation.mediumId.trim().isNotEmpty,
-    );
-    if (!needsLookup) {
-      return donations;
-    }
-
-    final collectGroups = await _collectGroupsForNameLookup();
-    return DonationOrganisationNameResolver.fillMissingNames(
-      donations,
-      collectGroups,
-    );
-  }
-
-  Future<List<CollectGroup>> _collectGroupsForNameLookup() async {
-    try {
-      var collectGroups = await _collectGroupRepository.getCollectGroupList();
-      if (collectGroups.isEmpty) {
-        collectGroups = await _collectGroupRepository.fetchCollectGroupList();
-      }
-      return collectGroups;
-    } catch (error) {
-      LoggingInfo.instance.error(
-        'Failed to load collect groups for organisation names: $error',
-        methodName:
-            'DonationOverviewRepositoryImpl._collectGroupsForNameLookup',
-      );
-      return const [];
     }
   }
 
