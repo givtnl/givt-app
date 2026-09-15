@@ -23,7 +23,7 @@ abstract final class DonationHistoryMapper {
         id: 0,
         historyId: json['id']?.toString(),
         amount: _readDouble(json['amount']) ?? 0,
-        organisationName: json['organisationName'] as String? ?? '',
+        organisationName: _readOrganisationName(json),
         organisationTaxDeductible: false,
         isGiftAidEnabled: false,
         status: DonationStatus.fromLegacyStatus(0),
@@ -48,12 +48,12 @@ abstract final class DonationHistoryMapper {
       id: givtId,
       historyId: json['id']?.toString(),
       amount: _readDouble(json['amount']) ?? 0,
-      organisationName: json['organisationName'] as String? ?? '',
+      organisationName: _readOrganisationName(json),
       organisationTaxDeductible: false,
       isGiftAidEnabled: json['giftAidEnabled'] as bool? ?? false,
       status: DonationStatus.fromLegacyStatus(_readInt(json['status']) ?? 0),
       timeStamp: timestamp,
-      mediumId: json['mediumId'] as String? ?? '',
+      mediumId: _readString(json, const ['mediumId', 'MediumId']),
       taxYear: timestamp != null ? ukGiftAidTaxYearIndexForDate(timestamp) : 0,
       donationType: _readInt(json['donationType']) ?? 0,
       platformFeeAmount: platformFeeAmount,
@@ -119,6 +119,26 @@ abstract final class DonationHistoryMapper {
             ? ExternalDonationFrequency.monthly
             : ExternalDonationFrequency.once;
     }
+  }
+
+  static String _readOrganisationName(Map<String, dynamic> json) {
+    return _readString(
+      json,
+      const ['organisationName', 'OrganisationName', 'orgName', 'OrgName'],
+    );
+  }
+
+  static String _readString(Map<String, dynamic> json, List<String> keys) {
+    for (final key in keys) {
+      final value = json[key];
+      if (value is String) {
+        final trimmed = value.trim();
+        if (trimmed.isNotEmpty) {
+          return trimmed;
+        }
+      }
+    }
+    return '';
   }
 
   static String? _readCollectGroupType(Object? value) {

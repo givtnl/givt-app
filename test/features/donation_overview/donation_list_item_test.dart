@@ -127,7 +127,32 @@ void main() {
       );
     });
 
-    testWidgets('shows givt status text for processed donations', (
+    testWidgets('hides the title row when the organisation name is blank', (
+      tester,
+    ) async {
+      final donation = DonationHistoryMapper.fromHistoryJson({
+        'source': 'givtProcessed',
+        'id': '1',
+        'amount': 10,
+        'timestamp': '2026-03-10T09:00:00',
+        'organisationName': '',
+        'status': 3,
+        'collectId': 1,
+      });
+      final group = DonationGroup(
+        timeStamp: donation.timeStamp,
+        organisationName: donation.organisationName,
+        donations: [donation],
+        amount: donation.amount,
+      );
+
+      await tester.pumpWidget(buildSubject(group));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Collection 1'), findsOneWidget);
+    });
+
+    testWidgets('shows givt organisation name for processed donations', (
       tester,
     ) async {
       final donation = DonationHistoryMapper.fromHistoryJson({
@@ -149,6 +174,7 @@ void main() {
       await tester.pumpWidget(buildSubject(group));
       await tester.pumpAndSettle();
 
+      expect(find.text('Hope Church'), findsOneWidget);
       expect(find.text('External donation'), findsNothing);
       expect(
         find.byIcon(FontAwesomeIcons.arrowUpRightFromSquare.data),
