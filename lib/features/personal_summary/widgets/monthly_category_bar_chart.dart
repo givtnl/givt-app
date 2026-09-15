@@ -65,7 +65,7 @@ class MonthlyCategoryBarChart extends StatelessWidget {
                   monthLabel: DateFormat.MMM(locale).format(
                     DateTime(2024, row.month),
                   ),
-                  onTap: onMonthTap == null
+                  onTap: (onMonthTap == null || row.total <= 0)
                       ? null
                       : () => onMonthTap!(row.month),
                 ),
