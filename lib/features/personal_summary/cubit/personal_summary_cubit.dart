@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/donation_overview/models/donation_history_filters.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/domain/personal_summary_aggregation.dart';
 import 'package:givt_app/features/personal_summary/domain/personal_summary_history_filters.dart';
@@ -96,7 +97,7 @@ class PersonalSummaryCubit
   void openHistoryForCategory(GivingCategory category) {
     emitCustom(
       NavigateToDonationHistory(
-        PersonalSummaryHistoryFilters.forCategory(category),
+        _withSelectedMonth(PersonalSummaryHistoryFilters.forCategory(category)),
       ),
     );
   }
@@ -115,7 +116,9 @@ class PersonalSummaryCubit
   void openHistoryForDonationType({required bool recurring}) {
     emitCustom(
       NavigateToDonationHistory(
-        PersonalSummaryHistoryFilters.forDonationType(recurring: recurring),
+        _withSelectedMonth(
+          PersonalSummaryHistoryFilters.forDonationType(recurring: recurring),
+        ),
       ),
     );
   }
@@ -123,8 +126,22 @@ class PersonalSummaryCubit
   void openHistoryForSource({required bool givtProcessed}) {
     emitCustom(
       NavigateToDonationHistory(
-        PersonalSummaryHistoryFilters.forSource(givtProcessed: givtProcessed),
+        _withSelectedMonth(
+          PersonalSummaryHistoryFilters.forSource(givtProcessed: givtProcessed),
+        ),
       ),
+    );
+  }
+
+  DonationHistoryFilters _withSelectedMonth(DonationHistoryFilters filters) {
+    final month = _selectedMonth;
+    if (month == null) {
+      return filters;
+    }
+    return PersonalSummaryHistoryFilters.applyMonthFilter(
+      filters,
+      year: _selectedYear,
+      month: month,
     );
   }
 

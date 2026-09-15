@@ -40,6 +40,9 @@ abstract interface class FunThemeTokens {
   Color get tertiary95;
   Color get tertiary98;
 
+  Color get accent20;
+  Color get accent80;
+
   Color get info20;
   Color get info30;
   Color get info40;

@@ -77,6 +77,10 @@ class FunGivt4KidsTokens implements FunThemeTokens {
   @override
   Color get tertiary90 => const Color(0xFFEEDBFF);
   @override
+  Color get accent20 => tertiary20;
+  @override
+  Color get accent80 => tertiary80;
+  @override
   Color get tertiary95 => const Color(0xFFEEDBFF);
   @override
   Color get tertiary98 => const Color(0xFFFFF7FF);

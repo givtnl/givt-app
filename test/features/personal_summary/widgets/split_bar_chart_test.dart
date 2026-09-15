@@ -8,16 +8,21 @@ import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/design_system/theme/fun_givt_theme.dart';
 import 'package:givt_app/shared/design_system/tokens/fun_givt_tokens.dart';
 
+Finder _chevronFinder() => find.byIcon(FontAwesomeIcons.chevronRight.data);
+
 void main() {
   final tokens = FunGivtTokens.instance;
 
   Widget wrapChart({
-    required Color primaryColor,
-    required Color secondaryColor,
-    required Color primaryLabelColor,
-    required Color secondaryLabelColor,
-    required Color primaryIconColor,
-    required Color secondaryIconColor,
+    required SplitBarData data,
+    Color? primaryColor,
+    Color? secondaryColor,
+    Color? primaryLabelColor,
+    Color? secondaryLabelColor,
+    Color? primaryIconColor,
+    Color? secondaryIconColor,
+    VoidCallback? onPrimaryTap,
+    VoidCallback? onSecondaryTap,
   }) {
     return MaterialApp(
       locale: const Locale('en'),
@@ -30,19 +35,16 @@ void main() {
           subtitle: 'How much of your giving is regular',
           primaryLabel: 'Recurring',
           secondaryLabel: 'One-off',
-          data: const SplitBarData(
-            primaryAmount: 60,
-            secondaryAmount: 40,
-            primaryFraction: 0.6,
-            secondaryFraction: 0.4,
-          ),
-          primaryColor: primaryColor,
-          secondaryColor: secondaryColor,
-          primaryLabelColor: primaryLabelColor,
-          secondaryLabelColor: secondaryLabelColor,
-          primaryIconColor: primaryIconColor,
-          secondaryIconColor: secondaryIconColor,
+          data: data,
+          primaryColor: primaryColor ?? tokens.secondary30,
+          secondaryColor: secondaryColor ?? tokens.secondary60,
+          primaryLabelColor: primaryLabelColor ?? Colors.white,
+          secondaryLabelColor: secondaryLabelColor ?? tokens.primary20,
+          primaryIconColor: primaryIconColor ?? tokens.secondary30,
+          secondaryIconColor: secondaryIconColor ?? tokens.secondary60,
           formatAmount: (amount) => '€${amount.toStringAsFixed(0)}',
+          onPrimaryTap: onPrimaryTap,
+          onSecondaryTap: onSecondaryTap,
         ),
       ),
     );
@@ -89,6 +91,12 @@ void main() {
     (tester) async {
       await tester.pumpWidget(
         wrapChart(
+          data: const SplitBarData(
+            primaryAmount: 60,
+            secondaryAmount: 40,
+            primaryFraction: 0.6,
+            secondaryFraction: 0.4,
+          ),
           primaryColor: tokens.secondary30,
           secondaryColor: tokens.secondary60,
           primaryLabelColor: Colors.white,
@@ -110,16 +118,22 @@ void main() {
   );
 
   testWidgets(
-    'givt vs external uses primary90 / tertiary80 fills, labels, and dots',
+    'givt vs external uses primary90 / accent80 fills, labels, and dots',
     (tester) async {
       await tester.pumpWidget(
         wrapChart(
+          data: const SplitBarData(
+            primaryAmount: 50,
+            secondaryAmount: 50,
+            primaryFraction: 0.5,
+            secondaryFraction: 0.5,
+          ),
           primaryColor: tokens.primary90,
-          secondaryColor: tokens.tertiary80,
+          secondaryColor: tokens.accent80,
           primaryLabelColor: tokens.primary30,
-          secondaryLabelColor: tokens.tertiary20,
+          secondaryLabelColor: tokens.accent20,
           primaryIconColor: tokens.primary90,
-          secondaryIconColor: tokens.tertiary80,
+          secondaryIconColor: tokens.accent80,
         ),
       );
       await tester.pumpAndSettle();
@@ -127,10 +141,111 @@ void main() {
       await expectSeriesColors(
         tester,
         primaryColor: tokens.primary90,
-        secondaryColor: tokens.tertiary80,
+        secondaryColor: tokens.accent80,
         primaryLabelColor: tokens.primary30,
-        secondaryLabelColor: tokens.tertiary20,
+        secondaryLabelColor: tokens.accent20,
       );
+    },
+  );
+
+  testWidgets(
+    'hides chevron and disables tap on zero-value split rows',
+    (tester) async {
+      var primaryTaps = 0;
+      var secondaryTaps = 0;
+      await tester.pumpWidget(
+        wrapChart(
+          data: const SplitBarData(
+            primaryAmount: 40,
+            secondaryAmount: 0,
+            primaryFraction: 1,
+            secondaryFraction: 0,
+          ),
+          onPrimaryTap: () => primaryTaps++,
+          onSecondaryTap: () => secondaryTaps++,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(_chevronFinder(), findsOneWidget);
+
+      final oneOffFinder = find.text('One-off');
+      expect(
+        find.ancestor(of: oneOffFinder, matching: find.byType(InkWell)),
+        findsNothing,
+      );
+
+      await tester.tap(oneOffFinder);
+      await tester.pump();
+      expect(secondaryTaps, 0);
+
+      await tester.tap(find.text('Recurring'));
+      await tester.pump();
+      expect(primaryTaps, 1);
+    },
+  );
+
+  testWidgets(
+    'keeps chevrons and taps when both split amounts are greater than zero',
+    (tester) async {
+      var primaryTaps = 0;
+      var secondaryTaps = 0;
+      await tester.pumpWidget(
+        wrapChart(
+          data: const SplitBarData(
+            primaryAmount: 40,
+            secondaryAmount: 10,
+            primaryFraction: 0.8,
+            secondaryFraction: 0.2,
+          ),
+          onPrimaryTap: () => primaryTaps++,
+          onSecondaryTap: () => secondaryTaps++,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(_chevronFinder(), findsNWidgets(2));
+
+      await tester.tap(find.text('Recurring'));
+      await tester.tap(find.text('One-off'));
+      await tester.pump();
+      expect(primaryTaps, 1);
+      expect(secondaryTaps, 1);
+    },
+  );
+
+  testWidgets(
+    'hides both chevrons when split data is empty',
+    (tester) async {
+      var primaryTaps = 0;
+      var secondaryTaps = 0;
+      await tester.pumpWidget(
+        wrapChart(
+          data: const SplitBarData.empty(),
+          onPrimaryTap: () => primaryTaps++,
+          onSecondaryTap: () => secondaryTaps++,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(_chevronFinder(), findsNothing);
+      expect(
+        find.ancestor(
+          of: find.text('Recurring'),
+          matching: find.byType(InkWell),
+        ),
+        findsNothing,
+      );
+      expect(
+        find.ancestor(of: find.text('One-off'), matching: find.byType(InkWell)),
+        findsNothing,
+      );
+
+      await tester.tap(find.text('Recurring'));
+      await tester.tap(find.text('One-off'));
+      await tester.pump();
+      expect(primaryTaps, 0);
+      expect(secondaryTaps, 0);
     },
   );
 }

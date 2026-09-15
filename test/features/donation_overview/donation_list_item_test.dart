@@ -10,6 +10,7 @@ import 'package:givt_app/features/donation_overview/models/donation_group.dart';
 import 'package:givt_app/features/donation_overview/models/donation_history_mapper.dart';
 import 'package:givt_app/features/donation_overview/widgets/donation_list_item.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 
 class _FakeAuthRepository with AuthRepository {
@@ -65,8 +66,9 @@ void main() {
       );
     }
 
-    testWidgets('shows external subtitle and repeat icon for recurring rows',
-        (tester) async {
+    testWidgets('shows external subtitle and repeat icon for recurring rows', (
+      tester,
+    ) async {
       final donation = DonationHistoryMapper.fromHistoryJson({
         'source': 'external',
         'id': 'tx-1',
@@ -99,10 +101,35 @@ void main() {
         find.byIcon(FontAwesomeIcons.arrowUpRightFromSquare.data),
         findsOneWidget,
       );
+
+      final subtitle = tester.widget<Text>(find.text('External donation'));
+      expect(subtitle.style?.color, FamilyAppTheme.neutralVariant40);
+
+      final amount = tester.widget<Text>(find.text('€20,00'));
+      expect(amount.style?.color, FamilyAppTheme.primary50);
+
+      final iconFinder = find.byIcon(
+        FontAwesomeIcons.arrowUpRightFromSquare.data,
+      );
+      final circleFinder = find.ancestor(
+        of: iconFinder,
+        matching: find.byWidgetPredicate(
+          (widget) =>
+              widget is Container &&
+              widget.decoration is BoxDecoration &&
+              (widget.decoration! as BoxDecoration).shape == BoxShape.circle,
+        ),
+      );
+      final circle = tester.widget<Container>(circleFinder);
+      expect(
+        (circle.decoration! as BoxDecoration).color,
+        FamilyAppTheme.tertiary90,
+      );
     });
 
-    testWidgets('shows givt status text for processed donations',
-        (tester) async {
+    testWidgets('shows givt status text for processed donations', (
+      tester,
+    ) async {
       final donation = DonationHistoryMapper.fromHistoryJson({
         'source': 'givtProcessed',
         'id': '1',

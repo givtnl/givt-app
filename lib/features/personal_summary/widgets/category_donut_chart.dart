@@ -88,7 +88,7 @@ class CategoryDonutChart extends StatelessWidget {
                 (segment) => _CategoryLegendRow(
                   segment: segment,
                   formatAmount: formatAmount,
-                  onTap: onCategoryTap == null
+                  onTap: (onCategoryTap == null || !segment.hasData)
                       ? null
                       : () => onCategoryTap!(segment.category),
                 ),
