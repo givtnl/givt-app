@@ -98,6 +98,33 @@ void main() {
       expect(item.amount, 20);
     });
 
+    test('maps PascalCase OrganisationName for givt-processed rows', () {
+      final item = DonationHistoryMapper.fromHistoryJson({
+        'source': 'GivtProcessed',
+        'id': '42',
+        'amount': 12.5,
+        'timestamp': '2026-03-15T10:30:00',
+        'OrganisationName': 'Hope Church',
+        'MediumId': 'ns1.c1',
+        'status': 3,
+      });
+
+      expect(item.organisationName, 'Hope Church');
+      expect(item.mediumId, 'ns1.c1');
+    });
+
+    test('treats whitespace-only organisationName as empty', () {
+      final item = DonationHistoryMapper.fromHistoryJson({
+        'source': 'givtProcessed',
+        'id': '42',
+        'amount': 12.5,
+        'timestamp': '2026-03-15T10:30:00',
+        'organisationName': '  ',
+      });
+
+      expect(item.organisationName, isEmpty);
+    });
+
     test('maps GivtProcessed PascalCase source', () {
       final item = DonationHistoryMapper.fromHistoryJson({
         'source': 'GivtProcessed',

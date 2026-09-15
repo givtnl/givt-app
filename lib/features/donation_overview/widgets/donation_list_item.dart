@@ -130,9 +130,12 @@ class DonationListItem extends StatelessWidget {
       children: [
         Row(
           children: [
-            Expanded(
-              child: LabelMediumText(donationGroup.organisationName),
-            ),
+            if (donationGroup.organisationName.trim().isNotEmpty)
+              Expanded(
+                child: LabelMediumText(donationGroup.organisationName),
+              )
+            else
+              const Spacer(),
             if (donationGroup.isRecurringDonation)
               FaIcon(
                 FontAwesomeIcons.arrowsRotate,
@@ -185,11 +188,14 @@ class DonationListItem extends StatelessWidget {
       children: [
         Row(
           children: [
-            Expanded(
-              child: LabelMediumText(
-                donationGroup.organisationName,
-              ),
-            ),
+            if (donationGroup.organisationName.trim().isNotEmpty)
+              Expanded(
+                child: LabelMediumText(
+                  donationGroup.organisationName,
+                ),
+              )
+            else
+              const Spacer(),
             if (donationGroup.isGiftAidEnabled) ...[
               const SizedBox(width: 4),
               Image.asset(

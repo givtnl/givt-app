@@ -89,7 +89,7 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
       overlayColor: Colors.transparent,
       builder: (context) => FunScaffold(
         appBar: FunTopAppBar(
-        variant: FunTopAppBarVariant.white,
+          variant: FunTopAppBarVariant.white,
           leading: GivtBackButtonFlat(
             onPressed: () async {
               context.pop();
@@ -128,11 +128,13 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
             const SizedBox(height: 16),
 
             // Organization name
-            TitleMediumText(
-              widget.donationGroup.organisationName,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
+            if (widget.donationGroup.organisationName.trim().isNotEmpty) ...[
+              TitleMediumText(
+                widget.donationGroup.organisationName,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+            ],
 
             // Status text
             BodySmallText(
@@ -450,9 +452,10 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
           fullBorder: true,
           onTap: () => _handleRefund(context, donationGroup, country),
           text: context.l10n.requestRefund,
-          analyticsEvent: AnalyticsEventName.donationDetailRefundClicked.toEvent(
-            parameters: {'donation': donationGroup.toJson()},
-          ),
+          analyticsEvent: AnalyticsEventName.donationDetailRefundClicked
+              .toEvent(
+                parameters: {'donation': donationGroup.toJson()},
+              ),
         );
 
       case DonationStatusType.created:
@@ -461,9 +464,10 @@ class _DonationDetailPageState extends State<DonationDetailPage> {
           fullBorder: true,
           onTap: () => _handleCancel(context, donationGroup),
           text: context.l10n.cancel,
-          analyticsEvent: AnalyticsEventName.donationDetailCancelClicked.toEvent(
-            parameters: {'donation': donationGroup.toJson()},
-          ),
+          analyticsEvent: AnalyticsEventName.donationDetailCancelClicked
+              .toEvent(
+                parameters: {'donation': donationGroup.toJson()},
+              ),
         );
 
       case DonationStatusType.inProcess:
