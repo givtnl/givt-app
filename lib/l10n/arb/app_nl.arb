@@ -366,6 +366,11 @@
     "description": "Error message shown when bank account number is not 8 digits",
     "type": "text"
   },
+  "mandateAlreadySignedError": "Bankgegevens kunnen niet worden gewijzigd omdat je BACS-machtiging al is ondertekend.",
+  "@mandateAlreadySignedError": {
+    "description": "Shown when UK BACS bank details cannot be edited because the mandate is already signed",
+    "type": "text"
+  },
   "passwordRuleMinChars": "Gebruik minimaal 7 tekens",
   "@passwordRuleMinChars": {
     "description": "Password requirement: minimum 7 characters",
@@ -675,6 +680,20 @@
     "description": "Tekst op de giften historiek wanneer er geen gifts gegeven zijn.",
     "type": "text"
   },
+  "historyFilterDonations": "Filter giften",
+  "historyFilterDonationSource": "Bron van de gift",
+  "historyFilterDonationType": "Type gift",
+  "historyFilterCategories": "Categorieën",
+  "historyFilterDateRange": "Periode",
+  "historyFilterFrom": "Van",
+  "historyFilterTo": "Tot",
+  "historyFilterSelect": "Selecteer",
+  "historyFilterThisMonth": "Deze maand",
+  "historyFilterLastMonth": "Vorige maand",
+  "historyFilterLastThreeMonths": "Laatste 3 maanden",
+  "historyFilterClearAll": "Alles wissen",
+  "historyFilterApply": "Toepassen",
+  "historyFilterNoMatches": "Geen giften die bij deze filters passen",
   "updateAlertTitle": "Update beschikbaar",
   "@updateAlertTitle": {
     "description": "Titel bovenaan een popup alert dat een nieuwe update beschikbaar is",
@@ -1153,6 +1172,14 @@
   "personalSummaryExternal": "Externe donaties",
   "personalSummaryYearTotal": "Totaal gegeven",
   "personalSummaryYearCenterLabel": "dit jaar",
+  "personalSummaryMonthCenterLabel": "in {month}",
+  "@personalSummaryMonthCenterLabel": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
   "personalSummaryAddDonationSheetTitle": "Donatie toevoegen",
   "personalSummaryGiveThroughGivt": "Geven via Givt",
   "personalSummaryGiveThroughGivtSubtitle": "Vind een goed doel en geef nu",
@@ -1603,6 +1630,11 @@
   "donationOverviewStatusInProcessFull": "In behandeling",
   "donationOverviewStatusRefusedFull": "Geweigerd door de bank",
   "donationOverviewContactMessage": "Hoi, ik heb de volgende vraag over mijn donatie:",
+  "donationHistoryExternalListSubtitle": "Externe gift",
+  "donationHistoryExternalOneOffSubtitle": "Externe gift - Niet verwerkt door Givt",
+  "donationHistoryExternalRecurringSubtitle": "Externe gift - Niet verwerkt door Givt",
+  "donationHistoryExternalEditDonation": "Deze gift bewerken",
+  "donationHistoryExternalManageRecurring": "Terugkerende gift beheren",
   "date": "Datum",
   "platformFeeGoodOption": "Altijd goed",
   "platformFeeRemember": "Onthoud mijn keuze voor volgende donaties aan deze organisatie.",

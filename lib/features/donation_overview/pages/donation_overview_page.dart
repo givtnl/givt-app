@@ -7,6 +7,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/donation_overview/cubit/donation_overview_cubit.dart';
+import 'package:givt_app/features/donation_overview/models/donation_history_filters.dart';
 import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/donation_overview/models/donation_overview_custom.dart';
 import 'package:givt_app/features/donation_overview/models/donation_overview_uimodel.dart';
@@ -20,12 +21,13 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class DonationOverviewPage extends StatefulWidget {
-  const DonationOverviewPage({
-    super.key,
-  });
+  const DonationOverviewPage({this.initialFilters, super.key});
+
+  final DonationHistoryFilters? initialFilters;
 
   @override
   State<DonationOverviewPage> createState() => _DonationOverviewPageState();
@@ -34,14 +36,32 @@ class DonationOverviewPage extends StatefulWidget {
 class _DonationOverviewPageState extends State<DonationOverviewPage> {
   late final DonationOverviewCubit _cubit;
   late final String country;
+  DonationHistoryFilterDimension? _expandedDimension;
+  var _didStart = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_didStart) {
+      return;
+    }
+    _didStart = true;
 
     country = context.read<AuthCubit>().state.user.country;
     _cubit = getIt<DonationOverviewCubit>();
-    _cubit.init();
+    final routeState = GoRouterState.of(context);
+    final builderFilters = widget.initialFilters;
+    final extra = builderFilters != null && builderFilters.hasActive
+        ? builderFilters
+        : routeState.extra;
+    final filters = DonationHistoryFilters.fromRoute(
+      extra: extra,
+      query: routeState.uri.queryParameters,
+    );
+    if (filters.hasActive) {
+      _cubit.initialFilters = filters;
+    }
+    unawaited(_cubit.init());
   }
 
   @override
@@ -64,8 +84,10 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
   Widget _buildScaffold(BuildContext context, DonationOverviewUIModel uiModel) {
     final locals = context.l10n;
     final user = context.read<AuthCubit>().state.user;
+    final showFilters =
+        uiModel.hasUnfilteredDonations || uiModel.filters.hasActive;
 
-    if (uiModel.donations.isEmpty) {
+    if (uiModel.donations.isEmpty && !showFilters) {
       return _buildEmptyScaffold(context);
     }
 
@@ -87,67 +109,114 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
       ),
       body: Column(
         children: [
-          // Donations list with monthly grouping
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                _cubit.refreshDonations();
-                unawaited(
-                  AnalyticsHelper.logEvent(
-                    eventName: AnalyticsEventName.retryClicked,
-                  ),
-                );
-              },
-              child: ListView.builder(
-                itemCount: uiModel.monthlyGroups.length,
-                itemBuilder: (context, index) {
-                  final monthGroup = uiModel.monthlyGroups[index];
-
-                  // Get donation groups for this month
-                  final monthDonationGroups = uiModel.donationGroups.where((
-                    group,
-                  ) {
-                    if (group.timeStamp == null) return false;
-                    return group.timeStamp!.year == monthGroup.year &&
-                        group.timeStamp!.month == monthGroup.month;
-                  }).toList();
-
-                  return StickyHeader(
-                    header: _buildMonthHeader(
-                      context,
-                      monthGroup,
-                      user.country,
-                      uiModel.donations,
-                    ),
-                    content: Column(
-                      children: monthDonationGroups.map((donationGroup) {
-                        return Column(
-                          children: [
-                            DonationListItem(
-                              donationGroup: donationGroup,
-                              analyticsEvent: AnalyticsEvent(
-                                AnalyticsEventName.seeDonationHistoryPressed,
-                                parameters: {
-                                  'donation': donationGroup.toJson(),
-                                },
-                              ),
-                            ),
-                            const Divider(
-                              height: 0,
-                              color: FamilyAppTheme.neutralVariant95,
-                            ),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  );
-                },
-              ),
+          if (showFilters)
+            DonationHistoryFilterBar(
+              filters: uiModel.filters,
+              expandedDimension: _expandedDimension,
+              onChipPressed: (dimension) =>
+                  _openFilters(context, dimension, uiModel.filters),
             ),
+          Expanded(
+            child: uiModel.donations.isEmpty
+                ? _buildFilteredEmpty(context)
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      _cubit.refreshDonations();
+                      unawaited(
+                        AnalyticsHelper.logEvent(
+                          eventName: AnalyticsEventName.retryClicked,
+                        ),
+                      );
+                    },
+                    child: ListView.builder(
+                      itemCount: uiModel.monthlyGroups.length,
+                      itemBuilder: (context, index) {
+                        final monthGroup = uiModel.monthlyGroups[index];
+
+                        final monthDonationGroups = uiModel.donationGroups
+                            .where((group) {
+                              if (group.timeStamp == null) return false;
+                              return group.timeStamp!.year == monthGroup.year &&
+                                  group.timeStamp!.month == monthGroup.month;
+                            })
+                            .toList();
+
+                        return StickyHeader(
+                          header: _buildMonthHeader(
+                            context,
+                            monthGroup,
+                            user.country,
+                            uiModel.donations,
+                          ),
+                          content: Column(
+                            children: monthDonationGroups.map((donationGroup) {
+                              return Column(
+                                children: [
+                                  DonationListItem(
+                                    donationGroup: donationGroup,
+                                    analyticsEvent: AnalyticsEvent(
+                                      AnalyticsEventName
+                                          .seeDonationHistoryPressed,
+                                      parameters: {
+                                        'donation': donationGroup.toJson(),
+                                      },
+                                    ),
+                                  ),
+                                  const Divider(
+                                    height: 0,
+                                    color: FamilyAppTheme.neutralVariant95,
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildFilteredEmpty(BuildContext context) {
+    final locals = context.l10n;
+    return RefreshIndicator(
+      onRefresh: () async {
+        _cubit.refreshDonations();
+      },
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(16),
+        children: [
+          const SizedBox(height: 80),
+          TitleMediumText(
+            locals.historyFilterNoMatches,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _openFilters(
+    BuildContext context,
+    DonationHistoryFilterDimension dimension,
+    DonationHistoryFilters current,
+  ) async {
+    setState(() => _expandedDimension = dimension);
+    final result = await DonationHistoryFilterSheet.show(
+      context,
+      initial: current,
+    );
+    if (!mounted) {
+      return;
+    }
+    setState(() => _expandedDimension = null);
+    if (result != null) {
+      _cubit.applyFilters(result);
+    }
   }
 
   Widget _buildMonthHeader(
@@ -171,10 +240,7 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
           ),
         ],
         // Regular monthly header
-        MonthlyHeader(
-          monthGroup: monthGroup,
-          country: country,
-        ),
+        MonthlyHeader(monthGroup: monthGroup, country: country),
       ],
     );
   }
@@ -212,9 +278,7 @@ class _DonationOverviewPageState extends State<DonationOverviewPage> {
 
   Widget _buildLoadingScaffold() {
     return const FunScaffold(
-      body: Center(
-        child: CustomCircularProgressIndicator(),
-      ),
+      body: Center(child: CustomCircularProgressIndicator()),
     );
   }
 

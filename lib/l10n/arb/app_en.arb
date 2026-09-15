@@ -365,6 +365,11 @@
     "description": "Error message shown when bank account number is not 8 digits",
     "type": "text"
   },
+  "mandateAlreadySignedError": "Bank details cannot be changed because your BACS mandate is already signed.",
+  "@mandateAlreadySignedError": {
+    "description": "Shown when UK BACS bank details cannot be edited because the mandate is already signed",
+    "type": "text"
+  },
   "passwordRuleMinChars": "Use at least 7 characters",
   "@passwordRuleMinChars": {
     "description": "Password requirement: minimum 7 characters",
@@ -673,6 +678,62 @@
   "@historyIsEmpty": {
     "description": "Tekst op de giften historiek wanneer er geen gifts gegeven zijn.",
     "type": "text"
+  },
+  "historyFilterDonations": "Filter donations",
+  "@historyFilterDonations": {
+    "description": "Title of the donation history filter bottom sheet"
+  },
+  "historyFilterDonationSource": "Donation source",
+  "@historyFilterDonationSource": {
+    "description": "Top-level filter chip and section label for Givt vs external donations"
+  },
+  "historyFilterDonationType": "Donation type",
+  "@historyFilterDonationType": {
+    "description": "Top-level filter chip and section label for recurring vs one-off"
+  },
+  "historyFilterCategories": "Categories",
+  "@historyFilterCategories": {
+    "description": "Top-level filter chip and section label for organisation categories"
+  },
+  "historyFilterDateRange": "Date range",
+  "@historyFilterDateRange": {
+    "description": "Top-level filter chip and section label for donation date range"
+  },
+  "historyFilterFrom": "From",
+  "@historyFilterFrom": {
+    "description": "Start date field label in donation history filters"
+  },
+  "historyFilterTo": "To",
+  "@historyFilterTo": {
+    "description": "End date field label in donation history filters"
+  },
+  "historyFilterSelect": "Select",
+  "@historyFilterSelect": {
+    "description": "Placeholder for unset date fields in donation history filters"
+  },
+  "historyFilterThisMonth": "This month",
+  "@historyFilterThisMonth": {
+    "description": "Date range preset for the current calendar month"
+  },
+  "historyFilterLastMonth": "Last month",
+  "@historyFilterLastMonth": {
+    "description": "Date range preset for the previous calendar month"
+  },
+  "historyFilterLastThreeMonths": "Last 3 months",
+  "@historyFilterLastThreeMonths": {
+    "description": "Date range preset covering this month and the two previous months"
+  },
+  "historyFilterClearAll": "Clear all",
+  "@historyFilterClearAll": {
+    "description": "Clears all donation history filter selections"
+  },
+  "historyFilterApply": "Apply",
+  "@historyFilterApply": {
+    "description": "Applies donation history filter selections"
+  },
+  "historyFilterNoMatches": "No donations match these filters",
+  "@historyFilterNoMatches": {
+    "description": "Empty state when donation history filters match no rows"
   },
   "updateAlertTitle": "Update available",
   "@updateAlertTitle": {
@@ -1152,6 +1213,16 @@
   "personalSummaryExternal": "External donations",
   "personalSummaryYearTotal": "Total given",
   "personalSummaryYearCenterLabel": "this year",
+  "personalSummaryMonthCenterLabel": "in {month}",
+  "@personalSummaryMonthCenterLabel": {
+    "description": "Donut center label when a month chip is selected, e.g. in January",
+    "placeholders": {
+      "month": {
+        "type": "String",
+        "example": "January"
+      }
+    }
+  },
   "personalSummaryAddDonationSheetTitle": "Add a donation",
   "personalSummaryGiveThroughGivt": "Give through Givt",
   "personalSummaryGiveThroughGivtSubtitle": "Find a charity and donate now",
@@ -1757,6 +1828,11 @@
   "donationOverviewStatusInProcessFull": "In Process",
   "donationOverviewStatusRefusedFull": "Refused by bank",
   "donationOverviewContactMessage": "Hi, I have the following question about my donation:",
+  "donationHistoryExternalListSubtitle": "External donation",
+  "donationHistoryExternalOneOffSubtitle": "External donation - Not processed by Givt",
+  "donationHistoryExternalRecurringSubtitle": "External donation - Not processed by Givt",
+  "donationHistoryExternalEditDonation": "Edit this donation",
+  "donationHistoryExternalManageRecurring": "Manage recurring donation",
   "date": "Date",
   "platformFeeGoodOption": "Good choice",
   "platformFeeRemember": "Remember my choice for future donations to this organisation.",

@@ -94,66 +94,64 @@ class _Step2DonationTypePageState extends State<Step2DonationTypePage> {
             uiModel,
             ExternalDonationCreateFlowStep.donationType,
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ExternalDonationStepDescription(
-                  text: locals.externalDonationsCreateDonationTypeDescription,
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ExternalDonationStepDescription(
+                text: locals.externalDonationsCreateDonationTypeDescription,
+              ),
+              const SizedBox(height: 32),
+              FunPrimaryTabs(
+                margin: EdgeInsets.zero,
+                options: [
+                  locals.externalDonationsCreateFrequencyOneOff,
+                  locals.externalDonationsCreateFrequencyRecurring,
+                ],
+                selectedIndex: tabIndex,
+                onPressed: (index) {
+                  if (index == 0) {
+                    _cubit.selectOneOff();
+                  } else {
+                    _cubit.selectRecurring(
+                      draft.frequency ?? ExternalDonationFrequency.monthly,
+                    );
+                  }
+                },
+                analyticsEvent: AnalyticsEventName
+                    .externalDonationsCreateFrequencySelected
+                    .toEvent(),
+              ),
+              const SizedBox(height: 24),
+              if (isRecurring)
+                ExternalDonationFrequencyDropdown(
+                  value: draft.frequency,
+                  onChanged: _cubit.selectRecurring,
                 ),
-                const SizedBox(height: 32),
-                FunPrimaryTabs(
-                  margin: EdgeInsets.zero,
-                  options: [
-                    locals.externalDonationsCreateFrequencyOneOff,
-                    locals.externalDonationsCreateFrequencyRecurring,
-                  ],
-                  selectedIndex: tabIndex,
-                  onPressed: (index) {
-                    if (index == 0) {
-                      _cubit.selectOneOff();
-                    } else {
-                      _cubit.selectRecurring(
-                        draft.frequency ?? ExternalDonationFrequency.monthly,
-                      );
-                    }
-                  },
-                  analyticsEvent: AnalyticsEventName
-                      .externalDonationsCreateFrequencySelected
-                      .toEvent(),
-                ),
-                const SizedBox(height: 24),
-                if (isRecurring)
-                  ExternalDonationFrequencyDropdown(
-                    value: draft.frequency,
-                    onChanged: _cubit.selectRecurring,
+              if (isRecurring) const SizedBox(height: 24),
+              FunInput(
+                label: locals.externalDonationsCreateAmountLabel,
+                controller: _amountController,
+                hintText: locals.recurringDonationsCreateStep2AmountHint,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    Util.numberInputFieldRegExp(),
                   ),
-                if (isRecurring) const SizedBox(height: 24),
-                FunInput(
-                  label: locals.externalDonationsCreateAmountLabel,
-                  controller: _amountController,
-                  hintText: locals.recurringDonationsCreateStep2AmountHint,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                      Util.numberInputFieldRegExp(),
-                    ),
-                    LengthLimitingTextInputFormatter(
-                      DonationAmountConstants.maxIntegerDigits + 3,
-                    ),
-                  ],
-                  prefixText: Util.getCurrencySymbol(
-                    countryCode: context.read<AuthCubit>().state.user.country,
+                  LengthLimitingTextInputFormatter(
+                    DonationAmountConstants.maxIntegerDigits + 3,
                   ),
-                  errorText: _amountErrorText(context, draft.amountInput),
-                  onChanged: _cubit.updateAmount,
-                  analyticsEvent: AnalyticsEventName
-                      .externalDonationsCreateAmountEntered
-                      .toEvent(),
+                ],
+                prefixText: Util.getCurrencySymbol(
+                  countryCode: context.read<AuthCubit>().state.user.country,
                 ),
-              ],
-            ),
+                errorText: _amountErrorText(context, draft.amountInput),
+                onChanged: _cubit.updateAmount,
+                analyticsEvent: AnalyticsEventName
+                    .externalDonationsCreateAmountEntered
+                    .toEvent(),
+              ),
+            ],
           ),
           bottom: FunButton(
             text: locals.buttonContinue,

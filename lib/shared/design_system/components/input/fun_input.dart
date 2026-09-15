@@ -31,7 +31,7 @@ class FunInput extends StatefulWidget {
     this.scrollPadding = const EdgeInsets.all(20),
     this.errorMaxLines,
     this.minLines,
-    this.maxLines,
+    this.maxLines = 1,
     super.key,
   });
 
@@ -40,7 +40,11 @@ class FunInput extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final FocusNode? focusNode;
   final bool readOnly;
+
+  /// Leading icon inside the field. Laid out in the FUN Input slot:
+  /// 16px inset, 30×24 centered box, 10px gap before the text.
   final Widget? prefixIcon;
+
   /// When non-empty, shown inside the field before the text (e.g. currency).
   /// [prefixIcon] is not shown when this is set.
   final String? prefixText;
@@ -67,10 +71,35 @@ class FunInput extends StatefulWidget {
 }
 
 class _FunInputState extends State<FunInput> {
+  /// FUN Input leading-icon slot (Figma Input: px 16, 30-wide icon box, gap 10).
+  static const _prefixInset = 16.0;
+  static const _prefixIconSlotWidth = 30.0;
+  static const _prefixIconSize = 24.0;
+  static const _prefixIconGap = 10.0;
+  static const _fieldPadding = 16.0;
+  static const _fieldPaddingWithPrefix = 12.0;
+
   late TextEditingController _textController;
   late FocusNode _focusNode;
   bool _ownsTextController = false;
   bool _ownsFocusNode = false;
+
+  Widget? _leadingIcon(Widget? icon) {
+    if (icon == null) {
+      return null;
+    }
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: _prefixInset,
+        right: _prefixIconGap,
+      ),
+      child: SizedBox(
+        width: _prefixIconSlotWidth,
+        height: _prefixIconSize,
+        child: Center(child: icon),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -171,7 +200,8 @@ class _FunInputState extends State<FunInput> {
     final theme = FunTheme.of(context);
     final hasPrefixText =
         widget.prefixText != null && widget.prefixText!.isNotEmpty;
-    final prefixIcon = hasPrefixText ? null : widget.prefixIcon;
+    final prefixIcon = hasPrefixText ? null : _leadingIcon(widget.prefixIcon);
+    final hasLeadingIcon = prefixIcon != null;
     final prefix = hasPrefixText
         ? Padding(
             padding: const EdgeInsets.only(right: 8),
@@ -185,10 +215,8 @@ class _FunInputState extends State<FunInput> {
     final hint = widget.hintText.isEmpty ? null : widget.hintText;
     final labelStyle = Theme.of(context).textTheme.labelLarge;
     // TextField asserts: !obscureText || maxLines == 1
-    final effectiveMinLines =
-        widget.obscureText ? null : widget.minLines;
-    final effectiveMaxLines =
-        widget.obscureText ? 1 : widget.maxLines;
+    final effectiveMinLines = widget.obscureText ? null : widget.minLines;
+    final effectiveMaxLines = widget.obscureText ? 1 : widget.maxLines;
 
     final field = TextField(
       controller: _textController,
@@ -224,13 +252,24 @@ class _FunInputState extends State<FunInput> {
         errorStyle: labelStyle?.copyWith(color: theme.error40),
         suffixIcon: widget.suffixIcon,
         prefixIcon: prefixIcon,
+        prefixIconConstraints: hasLeadingIcon
+            ? const BoxConstraints(minWidth: 0, minHeight: 0)
+            : null,
+        isDense: hasLeadingIcon,
         prefix: prefix,
         filled: true,
         fillColor: theme.neutral100,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
+        contentPadding: hasLeadingIcon
+            ? const EdgeInsets.fromLTRB(
+                0,
+                _fieldPaddingWithPrefix,
+                _fieldPadding,
+                _fieldPaddingWithPrefix,
+              )
+            : const EdgeInsets.symmetric(
+                horizontal: _fieldPadding,
+                vertical: _fieldPadding,
+              ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(

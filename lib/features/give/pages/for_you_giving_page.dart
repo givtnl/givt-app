@@ -83,7 +83,8 @@ class _ForYouGivingPageState extends State<ForYouGivingPage> {
       _goalsResponse != null &&
       _goalsResponse!.qrCodes.isNotEmpty &&
       _sheetAvailableQrCodes.isNotEmpty &&
-      !widget.flowContext.restrictToEntryQrGoal;
+      !widget.flowContext.restrictToEntryQrGoal &&
+      !widget.flowContext.giveViaListOnly;
 
   @override
   void initState() {

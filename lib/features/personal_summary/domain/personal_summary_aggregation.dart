@@ -93,12 +93,20 @@ List<ExternalDonation> externalDonationsForYear(
   }).toList();
 }
 
+bool isInSelectedMonth(DateTime? date, int? selectedMonth) {
+  if (selectedMonth == null) {
+    return true;
+  }
+  return date != null && date.month == selectedMonth;
+}
+
 PersonalSummaryUIModel buildPersonalSummaryUIModel({
   required List<Givt> allGivts,
   required List<ExternalDonation> allExternalDonations,
   required List<CollectGroup> collectGroups,
   required GivingGoal givingGoal,
   required int selectedYear,
+  int? selectedMonth,
 }) {
   final availableYears = deriveAvailableYears(
     givts: allGivts,
@@ -106,17 +114,21 @@ PersonalSummaryUIModel buildPersonalSummaryUIModel({
   );
 
   final yearGivts = givtsForYear(allGivts, selectedYear);
-  final yearExternal =
-      externalDonationsForYear(allExternalDonations, selectedYear);
+  final yearExternal = externalDonationsForYear(
+    allExternalDonations,
+    selectedYear,
+  );
 
-  final categoryTotals = {
+  final periodCategoryTotals = {
     for (final category in GivingCategoryX.ordered) category: 0.0,
   };
 
-  var givtTotal = 0.0;
-  var externalTotal = 0.0;
-  var recurringTotal = 0.0;
-  var oneOffTotal = 0.0;
+  var yearGivtTotal = 0.0;
+  var yearExternalTotal = 0.0;
+  var periodGivtTotal = 0.0;
+  var periodExternalTotal = 0.0;
+  var periodRecurringTotal = 0.0;
+  var periodOneOffTotal = 0.0;
 
   final monthlyTotals = {
     for (var month = 1; month <= 12; month++)
@@ -128,54 +140,73 @@ PersonalSummaryUIModel buildPersonalSummaryUIModel({
   for (final givt in yearGivts) {
     final amount = givt.amount;
     final category = categoryForGivt(givt, collectGroups);
-    categoryTotals[category] = categoryTotals[category]! + amount;
-    givtTotal += amount;
-
-    if (givt.donationType == 1) {
-      recurringTotal += amount;
-    } else {
-      oneOffTotal += amount;
-    }
-
     final month = givt.timeStamp?.month;
+    yearGivtTotal += amount;
+
     if (month != null) {
       monthlyTotals[month]![category] =
           monthlyTotals[month]![category]! + amount;
+    }
+
+    if (!isInSelectedMonth(givt.timeStamp, selectedMonth)) {
+      continue;
+    }
+
+    periodCategoryTotals[category] = periodCategoryTotals[category]! + amount;
+    periodGivtTotal += amount;
+    if (givt.donationType == 1) {
+      periodRecurringTotal += amount;
+    } else {
+      periodOneOffTotal += amount;
     }
   }
 
   for (final donation in yearExternal) {
     final amount = donation.amount;
-    categoryTotals[GivingCategory.other] =
-        categoryTotals[GivingCategory.other]! + amount;
-    externalTotal += amount;
+    final date = donationDateForExternal(donation);
+    final month = date?.month;
+    yearExternalTotal += amount;
 
-    if (donation.isRecurring) {
-      recurringTotal += amount;
-    } else {
-      oneOffTotal += amount;
-    }
-
-    final month = donationDateForExternal(donation)?.month;
     if (month != null) {
       monthlyTotals[month]![GivingCategory.other] =
           monthlyTotals[month]![GivingCategory.other]! + amount;
     }
+
+    if (!isInSelectedMonth(date, selectedMonth)) {
+      continue;
+    }
+
+    periodCategoryTotals[GivingCategory.other] =
+        periodCategoryTotals[GivingCategory.other]! + amount;
+    periodExternalTotal += amount;
+    if (donation.isRecurring) {
+      periodRecurringTotal += amount;
+    } else {
+      periodOneOffTotal += amount;
+    }
   }
 
-  final yearTotal = givtTotal + externalTotal;
-  final categorySegments = _buildCategorySegments(categoryTotals, yearTotal);
+  final yearTotal = yearGivtTotal + yearExternalTotal;
+  final periodTotal = periodGivtTotal + periodExternalTotal;
+  final categorySegments = _buildCategorySegments(
+    periodCategoryTotals,
+    periodTotal,
+  );
   final monthlyRows = _buildMonthlyRows(monthlyTotals);
-  final recurringSplit = _buildSplit(recurringTotal, oneOffTotal);
-  final givtVsExternalSplit = _buildSplit(givtTotal, externalTotal);
+  final recurringSplit = _buildSplit(periodRecurringTotal, periodOneOffTotal);
+  final givtVsExternalSplit = _buildSplit(periodGivtTotal, periodExternalTotal);
 
   final goalAmount = givingGoal.yearlyGivingGoal;
-  final goalProgress = goalAmount > 0 ? (yearTotal / goalAmount).clamp(0.0, 1.0) : 0.0;
+  final goalProgress = goalAmount > 0
+      ? (yearTotal / goalAmount).clamp(0.0, 1.0)
+      : 0.0;
 
   return PersonalSummaryUIModel(
     selectedYear: selectedYear,
+    selectedMonth: selectedMonth,
     availableYears: availableYears,
     yearTotal: yearTotal,
+    periodTotal: periodTotal,
     categorySegments: categorySegments,
     monthlyRows: monthlyRows,
     recurringSplit: recurringSplit,
@@ -213,8 +244,7 @@ List<ChartSegment> _buildCategorySegments(
       amount: amount,
       fraction: fraction,
     );
-  }).toList()
-    ..sort(_compareCategorySegments);
+  }).toList()..sort(_compareCategorySegments);
   return segments;
 }
 

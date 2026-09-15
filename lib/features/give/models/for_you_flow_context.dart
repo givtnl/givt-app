@@ -16,40 +16,9 @@ class ForYouFlowContext extends Equatable {
     this.selectedOrganisation,
     this.entryMediumId,
     this.restrictToEntryQrGoal = false,
+    this.giveViaListOnly = false,
     this.initialAmount,
   });
-
-  final ForYouEntrySource source;
-  final CollectGroup? selectedOrganisation;
-  final String? entryMediumId;
-  final bool restrictToEntryQrGoal;
-  final double? initialAmount;
-
-  ForYouFlowContext copyWith({
-    ForYouEntrySource? source,
-    CollectGroup? selectedOrganisation,
-    String? entryMediumId,
-    bool? restrictToEntryQrGoal,
-    double? initialAmount,
-  }) {
-    return ForYouFlowContext(
-      source: source ?? this.source,
-      selectedOrganisation: selectedOrganisation ?? this.selectedOrganisation,
-      entryMediumId: entryMediumId ?? this.entryMediumId,
-      restrictToEntryQrGoal: restrictToEntryQrGoal ?? this.restrictToEntryQrGoal,
-      initialAmount: initialAmount ?? this.initialAmount,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'source': source.name,
-      'selectedOrganisation': selectedOrganisation?.toJson(),
-      'entryMediumId': entryMediumId,
-      'restrictToEntryQrGoal': restrictToEntryQrGoal,
-      'initialAmount': initialAmount,
-    };
-  }
 
   factory ForYouFlowContext.fromMap(Map<String, dynamic> map) {
     final sourceName = map['source'] as String?;
@@ -64,7 +33,9 @@ class ForYouFlowContext extends Equatable {
         : null;
 
     final entryMediumId = map['entryMediumId'] as String?;
-    final restrictToEntryQrGoal = map['restrictToEntryQrGoal'] as bool? ?? false;
+    final restrictToEntryQrGoal =
+        map['restrictToEntryQrGoal'] as bool? ?? false;
+    final giveViaListOnly = map['giveViaListOnly'] as bool? ?? false;
     final initialAmountRaw = map['initialAmount'];
     final initialAmount = initialAmountRaw is num
         ? initialAmountRaw.toDouble()
@@ -75,8 +46,59 @@ class ForYouFlowContext extends Equatable {
       selectedOrganisation: selectedOrganisation,
       entryMediumId: entryMediumId,
       restrictToEntryQrGoal: restrictToEntryQrGoal,
+      giveViaListOnly: giveViaListOnly,
       initialAmount: initialAmount,
     );
+  }
+
+  final ForYouEntrySource source;
+  final CollectGroup? selectedOrganisation;
+  final String? entryMediumId;
+  final bool restrictToEntryQrGoal;
+
+  /// When true, giving continues via list (namespace beacon only) and the
+  /// named/active QR goal picker is hidden. Used after an inactive QR scan.
+  final bool giveViaListOnly;
+  final double? initialAmount;
+
+  /// Continue after a deactivated QR: organisation namespace only, no named QR.
+  ForYouFlowContext forGiveViaListAfterInactiveQr(CollectGroup collectGroup) {
+    return copyWith(
+      selectedOrganisation: collectGroup,
+      entryMediumId: collectGroup.nameSpace,
+      restrictToEntryQrGoal: false,
+      giveViaListOnly: true,
+    );
+  }
+
+  ForYouFlowContext copyWith({
+    ForYouEntrySource? source,
+    CollectGroup? selectedOrganisation,
+    String? entryMediumId,
+    bool? restrictToEntryQrGoal,
+    bool? giveViaListOnly,
+    double? initialAmount,
+  }) {
+    return ForYouFlowContext(
+      source: source ?? this.source,
+      selectedOrganisation: selectedOrganisation ?? this.selectedOrganisation,
+      entryMediumId: entryMediumId ?? this.entryMediumId,
+      restrictToEntryQrGoal:
+          restrictToEntryQrGoal ?? this.restrictToEntryQrGoal,
+      giveViaListOnly: giveViaListOnly ?? this.giveViaListOnly,
+      initialAmount: initialAmount ?? this.initialAmount,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'source': source.name,
+      'selectedOrganisation': selectedOrganisation?.toJson(),
+      'entryMediumId': entryMediumId,
+      'restrictToEntryQrGoal': restrictToEntryQrGoal,
+      'giveViaListOnly': giveViaListOnly,
+      'initialAmount': initialAmount,
+    };
   }
 
   @override
@@ -85,6 +107,7 @@ class ForYouFlowContext extends Equatable {
     selectedOrganisation,
     entryMediumId,
     restrictToEntryQrGoal,
+    giveViaListOnly,
     initialAmount,
   ];
 }

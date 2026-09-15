@@ -55,8 +55,8 @@ class _ChangeBankDetailsBottomSheetState
   }
 
   String get _submittedSortCode => SortCodeTextFormatter.stripDashes(
-        sortCodeController.text,
-      );
+    sortCodeController.text,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,9 @@ class _ChangeBankDetailsBottomSheetState
 
         return FunBottomSheet(
           closeAction: () => Navigator.of(context).pop(),
-          title: _isSepa ? locals.editIbanAccount : locals.changeBankAccountNumberAndSortCode,
+          title: _isSepa
+              ? locals.editIbanAccount
+              : locals.changeBankAccountNumberAndSortCode,
           content: Form(
             key: formKey,
             child: Column(
@@ -127,8 +129,11 @@ class _ChangeBankDetailsBottomSheetState
                     hintText: locals.bankAccountNumberPlaceholder,
                     keyboardType: TextInputType.number,
                     validator: (value) {
-                      if (value == null || value.isEmpty || value.length != 8) {
-                        return '';
+                      if (value == null || value.isEmpty) {
+                        return locals.fieldRequired;
+                      }
+                      if (value.length != 8) {
+                        return locals.accountNumberMustBe8Digits;
                       }
                       return null;
                     },
@@ -156,12 +161,12 @@ class _ChangeBankDetailsBottomSheetState
       return;
     }
     context.read<PersonalInfoEditBloc>().add(
-          PersonalInfoEditBankDetails(
-            iban: ibanController.text.replaceAll(' ', ''),
-            accountNumber: accountNumberController.text,
-            sortCode: _submittedSortCode,
-          ),
-        );
+      PersonalInfoEditBankDetails(
+        iban: ibanController.text.replaceAll(' ', ''),
+        accountNumber: accountNumberController.text,
+        sortCode: _submittedSortCode,
+      ),
+    );
   }
 
   bool get isEnabled {

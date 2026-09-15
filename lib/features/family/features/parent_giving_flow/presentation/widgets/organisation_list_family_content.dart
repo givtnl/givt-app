@@ -122,7 +122,8 @@ class _OrganisationListFamilyContentState
                     color: AppTheme.neutralVariant95,
                   ),
                   shrinkWrap: true,
-                  itemCount: visibleOrganisations.length +
+                  itemCount:
+                      visibleOrganisations.length +
                       (widget.showReportMissingOption ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (widget.showReportMissingOption &&
@@ -145,11 +146,8 @@ class _OrganisationListFamilyContentState
                           ),
                         ),
                         onTap: () {
-                          final searchQuery =
-                              widget.bloc.state.previousSearchQuery;
-                          final metadata = searchQuery.isNotEmpty
-                              ? {'searchText': searchQuery}
-                              : null;
+                          final metadata = widget.bloc.state
+                              .buildSupportMetadata(locals);
                           showModalBottomSheet<void>(
                             context: context,
                             isScrollControlled: true,

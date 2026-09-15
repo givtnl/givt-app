@@ -22,41 +22,22 @@ class FilterTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: edgeInsets ?? EdgeInsets.zero,
-        child: QuickTile(
-          onClick: (context) => onClick?.call(context),
-          isSelected: isSelected,
-          colorCombo: CollectGroupType.getColorComboByType(type),
-          iconPath: iconPath ?? '',
-          iconData:
-              iconPath == null ? CollectGroupType.getIconByTypeUS(type) : null,
-          titleBig: _localizedFilterTitle(context, type),
-          analyticsEvent:
-              AnalyticsEventName.parentGiveFilterTileClicked.toEvent(
-            parameters: {
-              'type': type.name,
-              'isSelected': isSelected,
-            },
-          ),
-        ),
-      );
-}
-
-String _localizedFilterTitle(BuildContext context, CollectGroupType type) {
-  final locals = context.l10n;
-  switch (type) {
-    case CollectGroupType.charities:
-      return locals.charity;
-    case CollectGroupType.church:
-      return locals.church;
-    case CollectGroupType.campaign:
-      return locals.campaign;
-    case CollectGroupType.artists:
-    case CollectGroupType.unknown:
-    case CollectGroupType.demo:
-    case CollectGroupType.debug:
-      return locals.other;
-    case CollectGroupType.none:
-      return type.name[0].toUpperCase() + type.name.substring(1);
-  }
+    padding: edgeInsets ?? EdgeInsets.zero,
+    child: QuickTile(
+      onClick: (context) => onClick?.call(context),
+      isSelected: isSelected,
+      colorCombo: CollectGroupType.getColorComboByType(type),
+      iconPath: iconPath ?? '',
+      iconData: iconPath == null
+          ? CollectGroupType.getIconByTypeUS(type)
+          : null,
+      titleBig: type.localizedOrganisationFilterTitle(context.l10n),
+      analyticsEvent: AnalyticsEventName.parentGiveFilterTileClicked.toEvent(
+        parameters: {
+          'type': type.name,
+          'isSelected': isSelected,
+        },
+      ),
+    ),
+  );
 }

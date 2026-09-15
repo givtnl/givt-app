@@ -8,7 +8,7 @@ mixin DonationOverviewRepository {
   List<DonationItem> getDonations();
   bool isLoading();
   String? getError();
-  Future<void> loadDonations();
+  Future<void> loadDonations({DateTime? startDate, DateTime? endDate});
   Future<bool> deleteDonation(List<int> ids);
   Future<bool> downloadYearlyOverview({
     required String fromDate,
@@ -48,16 +48,19 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
   }
 
   @override
-  Future<void> loadDonations() async {
+  Future<void> loadDonations({DateTime? startDate, DateTime? endDate}) async {
     try {
       _isLoading = true;
       _error = null;
       _emitDonationsChanged();
 
-      final givts = await _givtRepository.fetchGivts();
-      _donations = givts.map((givt) => DonationItem.fromGivt(givt)).toList();
-      
-      // Sort donations by timestamp (newest first)
+      _donations = List<DonationItem>.of(
+        await _givtRepository.fetchDonationHistory(
+          startDate: startDate,
+          endDate: endDate,
+        ),
+      );
+
       _donations.sort((a, b) {
         if (a.timeStamp == null && b.timeStamp == null) return 0;
         if (a.timeStamp == null) return 1;
@@ -71,6 +74,9 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
       _error = e.toString();
       _isLoading = false;
       _emitDonationsChanged();
+      // Rethrow so DonationOverviewCubit can emit error UI (Retry).
+      // Swallowing here painted the empty-history screen for 4xx/5xx.
+      rethrow;
     }
   }
 
@@ -79,7 +85,6 @@ class DonationOverviewRepositoryImpl with DonationOverviewRepository {
     try {
       final result = await _givtRepository.deleteGivt(ids);
       if (result) {
-        // Remove deleted donations from local list
         _donations.removeWhere((donation) => ids.contains(donation.id));
         _emitDonationsChanged();
       }

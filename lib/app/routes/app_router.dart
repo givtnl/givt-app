@@ -635,7 +635,12 @@ class AppRouter {
           GoRoute(
             path: Pages.donationOverview.path,
             name: Pages.donationOverview.name,
-            builder: (context, state) => const DonationOverviewPage(),
+            builder: (context, state) => DonationOverviewPage(
+              initialFilters: DonationHistoryFilters.fromRoute(
+                extra: state.extra,
+                query: state.uri.queryParameters,
+              ),
+            ),
           ),
           GoRoute(
             path: Pages.unregister.path,

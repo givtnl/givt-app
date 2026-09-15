@@ -1274,6 +1274,12 @@ abstract class AppLocalizations {
   /// **'Account number must be 8 digits'**
   String get accountNumberMustBe8Digits;
 
+  /// Shown when UK BACS bank details cannot be edited because the mandate is already signed
+  ///
+  /// In en, this message translates to:
+  /// **'Bank details cannot be changed because your BACS mandate is already signed.'**
+  String get mandateAlreadySignedError;
+
   /// Password requirement: minimum 7 characters
   ///
   /// In en, this message translates to:
@@ -1672,6 +1678,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This is where you\'ll find information about your donations, but first you\'ll need to start giving'**
   String get historyIsEmpty;
+
+  /// Title of the donation history filter bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Filter donations'**
+  String get historyFilterDonations;
+
+  /// Top-level filter chip and section label for Givt vs external donations
+  ///
+  /// In en, this message translates to:
+  /// **'Donation source'**
+  String get historyFilterDonationSource;
+
+  /// Top-level filter chip and section label for recurring vs one-off
+  ///
+  /// In en, this message translates to:
+  /// **'Donation type'**
+  String get historyFilterDonationType;
+
+  /// Top-level filter chip and section label for organisation categories
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get historyFilterCategories;
+
+  /// Top-level filter chip and section label for donation date range
+  ///
+  /// In en, this message translates to:
+  /// **'Date range'**
+  String get historyFilterDateRange;
+
+  /// Start date field label in donation history filters
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get historyFilterFrom;
+
+  /// End date field label in donation history filters
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get historyFilterTo;
+
+  /// Placeholder for unset date fields in donation history filters
+  ///
+  /// In en, this message translates to:
+  /// **'Select'**
+  String get historyFilterSelect;
+
+  /// Date range preset for the current calendar month
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get historyFilterThisMonth;
+
+  /// Date range preset for the previous calendar month
+  ///
+  /// In en, this message translates to:
+  /// **'Last month'**
+  String get historyFilterLastMonth;
+
+  /// Date range preset covering this month and the two previous months
+  ///
+  /// In en, this message translates to:
+  /// **'Last 3 months'**
+  String get historyFilterLastThreeMonths;
+
+  /// Clears all donation history filter selections
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get historyFilterClearAll;
+
+  /// Applies donation history filter selections
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get historyFilterApply;
+
+  /// Empty state when donation history filters match no rows
+  ///
+  /// In en, this message translates to:
+  /// **'No donations match these filters'**
+  String get historyFilterNoMatches;
 
   /// Titel bovenaan een popup alert dat een nieuwe update beschikbaar is
   ///
@@ -3152,6 +3242,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'this year'**
   String get personalSummaryYearCenterLabel;
+
+  /// Donut center label when a month chip is selected, e.g. in January
+  ///
+  /// In en, this message translates to:
+  /// **'in {month}'**
+  String personalSummaryMonthCenterLabel(String month);
 
   /// No description provided for @personalSummaryAddDonationSheetTitle.
   ///
@@ -5788,6 +5884,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hi, I have the following question about my donation:'**
   String get donationOverviewContactMessage;
+
+  /// No description provided for @donationHistoryExternalListSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'External donation'**
+  String get donationHistoryExternalListSubtitle;
+
+  /// No description provided for @donationHistoryExternalOneOffSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'External donation - Not processed by Givt'**
+  String get donationHistoryExternalOneOffSubtitle;
+
+  /// No description provided for @donationHistoryExternalRecurringSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'External donation - Not processed by Givt'**
+  String get donationHistoryExternalRecurringSubtitle;
+
+  /// No description provided for @donationHistoryExternalEditDonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit this donation'**
+  String get donationHistoryExternalEditDonation;
+
+  /// No description provided for @donationHistoryExternalManageRecurring.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage recurring donation'**
+  String get donationHistoryExternalManageRecurring;
 
   /// No description provided for @date.
   ///

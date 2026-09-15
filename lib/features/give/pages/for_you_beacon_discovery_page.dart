@@ -88,8 +88,9 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage>
   @override
   Widget build(BuildContext context) {
     return BlocListener<
-        ForYouBeaconDiscoveryCubit,
-        BaseState<ForYouBeaconDiscoveryUIModel, ForYouBeaconDiscoveryCustom>>(
+      ForYouBeaconDiscoveryCubit,
+      BaseState<ForYouBeaconDiscoveryUIModel, ForYouBeaconDiscoveryCustom>
+    >(
       bloc: _cubit,
       listenWhen: (previous, current) => previous != current,
       listener: (context, state) {
@@ -120,6 +121,22 @@ class _ForYouBeaconDiscoveryPageState extends State<ForYouBeaconDiscoveryPage>
                   ForYouBeaconDiscoveryPhase.bluetoothPermissionSettings =>
                     _PermissionDeniedBody(
                       locals: context.l10n,
+                      onOpenSettings: () =>
+                          unawaited(_cubit.openSystemSettings()),
+                    ),
+                  ForYouBeaconDiscoveryPhase.locationOff =>
+                    _LocationProblemBody(
+                      locals: context.l10n,
+                      title: context.l10n.forYouLocationOffTitle,
+                      body: context.l10n.forYouLocationOffBody,
+                      onOpenSettings: () =>
+                          unawaited(_cubit.openSystemSettings()),
+                    ),
+                  ForYouBeaconDiscoveryPhase.locationPermissionSettings =>
+                    _LocationProblemBody(
+                      locals: context.l10n,
+                      title: context.l10n.forYouLocationPermissionTitle,
+                      body: context.l10n.forYouLocationPermissionBody,
                       onOpenSettings: () =>
                           unawaited(_cubit.openSystemSettings()),
                     ),
@@ -247,6 +264,50 @@ class _PermissionDeniedBody extends StatelessWidget {
         const SizedBox(height: 12),
         BodyMediumText(
           locals.authoriseBluetoothErrorMessage,
+          textAlign: TextAlign.center,
+        ),
+        const Spacer(),
+        FunButton(
+          text: locals.forYouLocationOpenSettings,
+          analyticsEvent: AnalyticsEvent(
+            AnalyticsEventName.forYouLocationOpenSettingsTapped,
+          ),
+          onTap: onOpenSettings,
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+}
+
+class _LocationProblemBody extends StatelessWidget {
+  const _LocationProblemBody({
+    required this.locals,
+    required this.title,
+    required this.body,
+    required this.onOpenSettings,
+  });
+
+  final AppLocalizations locals;
+  final String title;
+  final String body;
+  final VoidCallback onOpenSettings;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Spacer(),
+        FunIconGivy.sad(circleSize: 140),
+        const SizedBox(height: 28),
+        TitleLargeText(
+          title,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 12),
+        BodyMediumText(
+          body,
           textAlign: TextAlign.center,
         ),
         const Spacer(),

@@ -361,6 +361,11 @@
     "description": "Error message shown when bank account number is not 8 digits",
     "type": "text"
   },
+  "mandateAlreadySignedError": "Bank details cannot be changed because your BACS mandate is already signed.",
+  "@mandateAlreadySignedError": {
+    "description": "Shown when UK BACS bank details cannot be edited because the mandate is already signed",
+    "type": "text"
+  },
   "passwordRuleMinChars": "Use at least 7 characters",
   "@passwordRuleMinChars": {
     "description": "Password requirement: minimum 7 characters",
@@ -670,6 +675,20 @@
     "description": "Tekst op de giften historiek wanneer er geen gifts gegeven zijn.",
     "type": "text"
   },
+  "historyFilterDonations": "Filter donations",
+  "historyFilterDonationSource": "Donation source",
+  "historyFilterDonationType": "Donation type",
+  "historyFilterCategories": "Categories",
+  "historyFilterDateRange": "Date range",
+  "historyFilterFrom": "From",
+  "historyFilterTo": "To",
+  "historyFilterSelect": "Select",
+  "historyFilterThisMonth": "This month",
+  "historyFilterLastMonth": "Last month",
+  "historyFilterLastThreeMonths": "Last 3 months",
+  "historyFilterClearAll": "Clear all",
+  "historyFilterApply": "Apply",
+  "historyFilterNoMatches": "No donations match these filters",
   "updateAlertTitle": "Update available",
   "@updateAlertTitle": {
     "description": "Titel bovenaan een popup alert dat een nieuwe update beschikbaar is",
@@ -1135,6 +1154,15 @@
   "personalSummaryExternal": "External donations",
   "personalSummaryYearTotal": "Total given",
   "personalSummaryYearCenterLabel": "this year",
+  "personalSummaryMonthCenterLabel": "in {month}",
+  "@personalSummaryMonthCenterLabel": {
+    "placeholders": {
+      "month": {
+        "type": "String",
+        "example": "January"
+      }
+    }
+  },
   "personalSummaryAddDonationSheetTitle": "Add a donation",
   "personalSummaryGiveThroughGivt": "Give through Givt",
   "personalSummaryGiveThroughGivtSubtitle": "Find a charity and donate now",

@@ -1,24 +1,32 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/personal_summary/models/personal_summary_chart_models.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_category_colors.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_section_card.dart';
+import 'package:givt_app/features/personal_summary/widgets/personal_summary_tappable_row.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 class CategoryDonutChart extends StatelessWidget {
   const CategoryDonutChart({
     required this.segments,
     required this.centerAmount,
+    required this.centerLabel,
     required this.formatAmount,
+    this.onCategoryTap,
     super.key,
   });
 
   final List<ChartSegment> segments;
   final String centerAmount;
+  final String centerLabel;
   final String Function(double amount) formatAmount;
+  final ValueChanged<GivingCategory>? onCategoryTap;
 
   bool get _hasData => segments.any((segment) => segment.hasData);
 
@@ -55,7 +63,7 @@ class CategoryDonutChart extends StatelessWidget {
                             children: [
                               TitleLargeText(centerAmount),
                               LabelSmallText(
-                                locals.personalSummaryYearCenterLabel,
+                                centerLabel,
                                 color: theme.neutral50,
                               ),
                             ],
@@ -69,7 +77,7 @@ class CategoryDonutChart extends StatelessWidget {
                         ),
                         child: Center(
                           child: LabelSmallText(
-                            locals.personalSummaryYearCenterLabel,
+                            centerLabel,
                             color: theme.neutral50,
                           ),
                         ),
@@ -80,6 +88,9 @@ class CategoryDonutChart extends StatelessWidget {
                 (segment) => _CategoryLegendRow(
                   segment: segment,
                   formatAmount: formatAmount,
+                  onTap: (onCategoryTap == null || !segment.hasData)
+                      ? null
+                      : () => onCategoryTap!(segment.category),
                 ),
               ),
             ],
@@ -94,53 +105,71 @@ class _CategoryLegendRow extends StatelessWidget {
   const _CategoryLegendRow({
     required this.segment,
     required this.formatAmount,
+    this.onTap,
   });
 
   final ChartSegment segment;
   final String Function(double amount) formatAmount;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = FunTheme.of(context);
     final percent = (segment.fraction * 100).round();
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: theme.neutralVariant95),
+    final row = Row(
+      children: [
+        SizedBox(
+          width: 48,
+          height: 48,
+          child: categoryFunIcon(segment.category),
         ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              LabelMediumText(
+                categoryLabel(context, segment.category),
+                color: theme.primary20,
+              ),
+              const SizedBox(height: 4),
+              BodySmallText(
+                localsPercent(context, percent),
+                color: theme.neutral50,
+              ),
+            ],
+          ),
+        ),
+        LabelMediumText(
+          formatAmount(segment.amount),
+          color: theme.primary50,
+        ),
+      ],
+    );
+
+    if (onTap == null) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: theme.neutralVariant95),
+          ),
+        ),
+        child: row,
+      );
+    }
+
+    return PersonalSummaryTappableRow(
+      onTap: onTap!,
+      analyticsEvent: AnalyticsEvent(
+        AnalyticsEventName.personalSummaryCategoryRowClicked,
+        parameters: {
+          AnalyticsHelper.filterKey: 'category',
+          AnalyticsHelper.filterValueKey: segment.category.name,
+        },
       ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 48,
-            height: 48,
-            child: categoryFunIcon(segment.category),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                LabelMediumText(
-                  categoryLabel(context, segment.category),
-                  color: theme.primary20,
-                ),
-                const SizedBox(height: 4),
-                BodySmallText(
-                  localsPercent(context, percent),
-                  color: theme.neutral50,
-                ),
-              ],
-            ),
-          ),
-          LabelMediumText(
-            formatAmount(segment.amount),
-            color: theme.primary50,
-          ),
-        ],
-      ),
+      child: row,
     );
   }
 
@@ -175,8 +204,9 @@ class _DonutChartPainter extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.butt;
 
-    final activeSegments =
-        segments.where((segment) => segment.amount > 0).toList();
+    final activeSegments = segments
+        .where((segment) => segment.amount > 0)
+        .toList();
     if (activeSegments.isEmpty) {
       paint.color = emptyColor;
       canvas.drawArc(rect, 0, math.pi * 2, false, paint);

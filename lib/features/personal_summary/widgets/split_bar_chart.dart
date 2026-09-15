@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/personal_summary/models/personal_summary_chart_models.dart';
 import 'package:givt_app/features/personal_summary/widgets/personal_summary_section_card.dart';
+import 'package:givt_app/features/personal_summary/widgets/personal_summary_tappable_row.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 class SplitBarChart extends StatelessWidget {
   const SplitBarChart({
@@ -20,6 +24,10 @@ class SplitBarChart extends StatelessWidget {
     required this.primaryIconColor,
     required this.secondaryIconColor,
     required this.formatAmount,
+    this.onPrimaryTap,
+    this.onSecondaryTap,
+    this.primaryFilterValue,
+    this.secondaryFilterValue,
     super.key,
   });
 
@@ -35,6 +43,10 @@ class SplitBarChart extends StatelessWidget {
   final Color primaryIconColor;
   final Color secondaryIconColor;
   final String Function(double amount) formatAmount;
+  final VoidCallback? onPrimaryTap;
+  final VoidCallback? onSecondaryTap;
+  final String? primaryFilterValue;
+  final String? secondaryFilterValue;
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +72,10 @@ class SplitBarChart extends StatelessWidget {
                       children: [
                         if (data.primaryFraction > 0)
                           Expanded(
-                            flex: (data.primaryFraction * 1000)
-                                .round()
-                                .clamp(1, 1000),
+                            flex: (data.primaryFraction * 1000).round().clamp(
+                              1,
+                              1000,
+                            ),
                             child: ColoredBox(
                               color: primaryColor,
                               child: Center(
@@ -77,9 +90,10 @@ class SplitBarChart extends StatelessWidget {
                           ),
                         if (data.secondaryFraction > 0)
                           Expanded(
-                            flex: (data.secondaryFraction * 1000)
-                                .round()
-                                .clamp(1, 1000),
+                            flex: (data.secondaryFraction * 1000).round().clamp(
+                              1,
+                              1000,
+                            ),
                             child: ColoredBox(
                               color: secondaryColor,
                               child: Center(
@@ -103,6 +117,8 @@ class SplitBarChart extends StatelessWidget {
             label: primaryLabel,
             percent: primaryPercent,
             amount: formatAmount(data.primaryAmount),
+            onTap: data.primaryAmount > 0 ? onPrimaryTap : null,
+            filterValue: primaryFilterValue,
           ),
           _SplitLegendRow(
             iconColor: secondaryIconColor,
@@ -110,6 +126,8 @@ class SplitBarChart extends StatelessWidget {
             percent: secondaryPercent,
             amount: formatAmount(data.secondaryAmount),
             showDivider: false,
+            onTap: data.secondaryAmount > 0 ? onSecondaryTap : null,
+            filterValue: secondaryFilterValue,
           ),
         ],
       ),
@@ -124,6 +142,8 @@ class _SplitLegendRow extends StatelessWidget {
     required this.percent,
     required this.amount,
     this.showDivider = true,
+    this.onTap,
+    this.filterValue,
   });
 
   final Color iconColor;
@@ -131,50 +151,69 @@ class _SplitLegendRow extends StatelessWidget {
   final int percent;
   final String amount;
   final bool showDivider;
+  final VoidCallback? onTap;
+  final String? filterValue;
 
   @override
   Widget build(BuildContext context) {
     final theme = FunTheme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: showDivider ? theme.neutralVariant95 : Colors.transparent,
+    final row = Row(
+      children: [
+        SizedBox(
+          width: 24,
+          height: 24,
+          child: Center(
+            child: FaIcon(
+              FontAwesomeIcons.solidCircle,
+              size: 12,
+              color: iconColor,
+            ),
           ),
         ),
-      ),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 24,
-            height: 24,
-            child: Center(
-              child: FaIcon(
-                FontAwesomeIcons.solidCircle,
-                size: 12,
-                color: iconColor,
+        const SizedBox(width: 4),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              LabelMediumText(label, color: theme.primary20),
+              const SizedBox(height: 4),
+              BodySmallText(
+                context.l10n.personalSummaryGivingGoalPercent(percent),
+                color: theme.neutral50,
               ),
+            ],
+          ),
+        ),
+        LabelMediumText(amount, color: theme.primary50),
+      ],
+    );
+
+    if (onTap == null) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: showDivider ? theme.neutralVariant95 : Colors.transparent,
             ),
           ),
-          const SizedBox(width: 4),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                LabelMediumText(label, color: theme.primary20),
-                const SizedBox(height: 4),
-                BodySmallText(
-                  context.l10n.personalSummaryGivingGoalPercent(percent),
-                  color: theme.neutral50,
-                ),
-              ],
-            ),
-          ),
-          LabelMediumText(amount, color: theme.primary50),
-        ],
+        ),
+        child: row,
+      );
+    }
+
+    return PersonalSummaryTappableRow(
+      onTap: onTap!,
+      showBottomBorder: showDivider,
+      analyticsEvent: AnalyticsEvent(
+        AnalyticsEventName.personalSummarySplitRowClicked,
+        parameters: {
+          AnalyticsHelper.filterKey: 'split',
+          AnalyticsHelper.filterValueKey: filterValue ?? label,
+        },
       ),
+      child: row,
     );
   }
 }

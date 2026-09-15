@@ -685,6 +685,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get accountNumberMustBe8Digits => 'Kontonummer muss 8-stellig sein';
 
   @override
+  String get mandateAlreadySignedError =>
+      'Bankdaten können nicht geändert werden, weil dein BACS-Mandat bereits unterzeichnet ist.';
+
+  @override
   String get passwordRuleMinChars => 'Mindestens 7 Zeichen verwenden';
 
   @override
@@ -905,6 +909,49 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get historyIsEmpty =>
       'Hier findest du Informationen zu deinen getätigten Spenden, aber zuerst musst du natürlich erstmal mit dem Spenden beginnen';
+
+  @override
+  String get historyFilterDonations => 'Spenden filtern';
+
+  @override
+  String get historyFilterDonationSource => 'Spendenquelle';
+
+  @override
+  String get historyFilterDonationType => 'Spendenart';
+
+  @override
+  String get historyFilterCategories => 'Kategorien';
+
+  @override
+  String get historyFilterDateRange => 'Zeitraum';
+
+  @override
+  String get historyFilterFrom => 'Von';
+
+  @override
+  String get historyFilterTo => 'Bis';
+
+  @override
+  String get historyFilterSelect => 'Auswählen';
+
+  @override
+  String get historyFilterThisMonth => 'Dieser Monat';
+
+  @override
+  String get historyFilterLastMonth => 'Letzter Monat';
+
+  @override
+  String get historyFilterLastThreeMonths => 'Letzte 3 Monate';
+
+  @override
+  String get historyFilterClearAll => 'Alles löschen';
+
+  @override
+  String get historyFilterApply => 'Anwenden';
+
+  @override
+  String get historyFilterNoMatches =>
+      'Keine Spenden entsprechen diesen Filtern';
 
   @override
   String get updateAlertTitle => 'Update verfügbar';
@@ -1756,6 +1803,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get personalSummaryYearCenterLabel => 'dieses Jahr';
+
+  @override
+  String personalSummaryMonthCenterLabel(String month) {
+    return 'im $month';
+  }
 
   @override
   String get personalSummaryAddDonationSheetTitle => 'Spende hinzufügen';
@@ -3314,6 +3366,24 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get donationOverviewContactMessage =>
       'Hallo, ich habe folgende Frage zu meiner Spende:';
+
+  @override
+  String get donationHistoryExternalListSubtitle => 'Externe Spende';
+
+  @override
+  String get donationHistoryExternalOneOffSubtitle =>
+      'Externe Spende - Nicht von Givt verarbeitet';
+
+  @override
+  String get donationHistoryExternalRecurringSubtitle =>
+      'Externe Spende - Nicht von Givt verarbeitet';
+
+  @override
+  String get donationHistoryExternalEditDonation => 'Diese Spende bearbeiten';
+
+  @override
+  String get donationHistoryExternalManageRecurring =>
+      'Wiederkehrende Spende verwalten';
 
   @override
   String get date => 'Datum';

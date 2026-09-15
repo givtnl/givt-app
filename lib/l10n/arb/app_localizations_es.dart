@@ -679,6 +679,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accountNumberMustBe8Digits => 'Account number must be 8 digits';
 
   @override
+  String get mandateAlreadySignedError =>
+      'No se pueden cambiar los datos bancarios porque tu mandato BACS ya está firmado.';
+
+  @override
   String get passwordRuleMinChars => 'Use at least 7 characters';
 
   @override
@@ -896,6 +900,49 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get historyIsEmpty =>
       'This is where you\'ll find information about your donations, but first you\'ll need to start giving';
+
+  @override
+  String get historyFilterDonations => 'Filtrar donaciones';
+
+  @override
+  String get historyFilterDonationSource => 'Origen de la donación';
+
+  @override
+  String get historyFilterDonationType => 'Tipo de donación';
+
+  @override
+  String get historyFilterCategories => 'Categorías';
+
+  @override
+  String get historyFilterDateRange => 'Rango de fechas';
+
+  @override
+  String get historyFilterFrom => 'Desde';
+
+  @override
+  String get historyFilterTo => 'Hasta';
+
+  @override
+  String get historyFilterSelect => 'Seleccionar';
+
+  @override
+  String get historyFilterThisMonth => 'Este mes';
+
+  @override
+  String get historyFilterLastMonth => 'El mes pasado';
+
+  @override
+  String get historyFilterLastThreeMonths => 'Últimos 3 meses';
+
+  @override
+  String get historyFilterClearAll => 'Borrar todo';
+
+  @override
+  String get historyFilterApply => 'Aplicar';
+
+  @override
+  String get historyFilterNoMatches =>
+      'Ninguna donación coincide con estos filtros';
 
   @override
   String get updateAlertTitle => 'Update available';
@@ -1748,6 +1795,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get personalSummaryYearCenterLabel => 'this year';
+
+  @override
+  String personalSummaryMonthCenterLabel(String month) {
+    return 'en $month';
+  }
 
   @override
   String get personalSummaryAddDonationSheetTitle => 'Add a donation';
@@ -3298,6 +3350,24 @@ class AppLocalizationsEs extends AppLocalizations {
       'Hi, I have the following question about my donation:';
 
   @override
+  String get donationHistoryExternalListSubtitle => 'Donación externa';
+
+  @override
+  String get donationHistoryExternalOneOffSubtitle =>
+      'Donación externa - No procesada por Givt';
+
+  @override
+  String get donationHistoryExternalRecurringSubtitle =>
+      'Donación externa - No procesada por Givt';
+
+  @override
+  String get donationHistoryExternalEditDonation => 'Editar esta donación';
+
+  @override
+  String get donationHistoryExternalManageRecurring =>
+      'Gestionar donación recurrente';
+
+  @override
   String get date => 'Date';
 
   @override
@@ -4252,6 +4322,10 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
       'El número de cuenta debe tener 8 dígitos';
 
   @override
+  String get mandateAlreadySignedError =>
+      'No se pueden cambiar los datos bancarios porque tu mandato BACS ya está firmado.';
+
+  @override
   String get passwordRuleMinChars => 'Usa al menos 7 caracteres';
 
   @override
@@ -4469,6 +4543,49 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get historyIsEmpty =>
       'Aquí encontrará información sobre sus donaciones, pero primero necesita empezar a donar';
+
+  @override
+  String get historyFilterDonations => 'Filtrar donaciones';
+
+  @override
+  String get historyFilterDonationSource => 'Origen de la donación';
+
+  @override
+  String get historyFilterDonationType => 'Tipo de donación';
+
+  @override
+  String get historyFilterCategories => 'Categorías';
+
+  @override
+  String get historyFilterDateRange => 'Rango de fechas';
+
+  @override
+  String get historyFilterFrom => 'Desde';
+
+  @override
+  String get historyFilterTo => 'Hasta';
+
+  @override
+  String get historyFilterSelect => 'Seleccionar';
+
+  @override
+  String get historyFilterThisMonth => 'Este mes';
+
+  @override
+  String get historyFilterLastMonth => 'El mes pasado';
+
+  @override
+  String get historyFilterLastThreeMonths => 'Últimos 3 meses';
+
+  @override
+  String get historyFilterClearAll => 'Borrar todo';
+
+  @override
+  String get historyFilterApply => 'Aplicar';
+
+  @override
+  String get historyFilterNoMatches =>
+      'Ninguna donación coincide con estos filtros';
 
   @override
   String get updateAlertTitle => 'Actualización disponible';
@@ -5325,6 +5442,11 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get personalSummaryYearCenterLabel => 'este año';
+
+  @override
+  String personalSummaryMonthCenterLabel(String month) {
+    return 'en $month';
+  }
 
   @override
   String get personalSummaryAddDonationSheetTitle => 'Añadir una donación';

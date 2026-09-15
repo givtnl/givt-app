@@ -77,6 +77,34 @@ void main() {
       expect(txs[1].collectId, '2');
     });
 
+    test(
+      'collection goal uses namespace-only override as beaconId',
+      () {
+        const namespace = '61f7ed014e4c0620d000';
+        final lines = <ForYouGoalLineKind>[
+          const ForYouCollectionGoalLine(
+            title: 'A',
+            subtitleIndex: 1,
+            allocation: OrganisationAllocation(
+              collectId: '1',
+              allocationName: 'A',
+              collectGroupId: 'g',
+            ),
+          ),
+        ];
+        final txs = buildForYouDonationTransactions(
+          userGuid: 'u1',
+          collectGroupNamespace: namespace,
+          lines: lines,
+          amounts: [10],
+          collectionGoalsMediumIdOverride: namespace,
+        );
+        expect(txs, hasLength(1));
+        expect(txs.single.beaconId, namespace);
+        expect(txs.single.beaconId, isNot(contains('.')));
+      },
+    );
+
     test('general goal uses QR mediumId and collectId 1', () {
       final lines = <ForYouGoalLineKind>[
         ForYouGeneralGoalLine(

@@ -123,10 +123,7 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
       }
 
       if (!resolved.isSuccess) {
-        await _handleDiscoveryFailure(
-          resolved,
-          mediumId: mediumId,
-        );
+        await _handleDiscoveryFailure(resolved);
         return;
       }
 
@@ -161,9 +158,8 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
   }
 
   Future<void> _handleDiscoveryFailure(
-    ForYouDiscoveryResult resolved, {
-    required String mediumId,
-  }) async {
+    ForYouDiscoveryResult resolved,
+  ) async {
     final failure = resolved.failure ?? ForYouDiscoveryFailure.notFound;
 
     switch (failure) {
@@ -182,10 +178,13 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
           return;
         }
         if (choice ?? false) {
-          _openForYouGiving(
-            collectGroup: collectGroup,
-            mediumId: mediumId,
-            restrictToEntryQrGoal: false,
+          _hasEnteredGivingFlow = true;
+          context.goNamed(
+            Pages.forYouGiving.name,
+            extra: ForYouFlowContext(
+              source: ForYouEntrySource.qrCode,
+              initialAmount: widget.initialAmount,
+            ).forGiveViaListAfterInactiveQr(collectGroup).toMap(),
           );
         }
       case ForYouDiscoveryFailure.inactiveCollectGroup:
@@ -294,7 +293,8 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
 
     try {
       final collectGroupRepository = getIt<CollectGroupRepository>();
-      final collectGroupList = await collectGroupRepository.getCollectGroupList();
+      final collectGroupList = await collectGroupRepository
+          .getCollectGroupList();
 
       if (collectGroupList.isEmpty) {
         return FontAwesomeIcons.church;
@@ -302,7 +302,8 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
 
       final collectGroup = collectGroupList.firstWhere(
         (group) =>
-            group.nameSpace == namespace || group.nameSpace.startsWith(namespace),
+            group.nameSpace == namespace ||
+            group.nameSpace.startsWith(namespace),
         orElse: CollectGroup.empty,
       );
 

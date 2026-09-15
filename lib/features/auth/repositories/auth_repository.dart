@@ -6,6 +6,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/session.dart';
+import 'package:givt_app/shared/models/bacs_mandate_response.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -60,6 +61,15 @@ mixin AuthRepository {
   });
 
   Future<bool> updateUserExt(Map<String, dynamic> newUserExt);
+
+  /// Patches pending UK BACS details for an existing user before mandate sign.
+  Future<BacsMandateResponse> updatePendingBacsBankDetails({
+    required String guid,
+    required String sortCode,
+    required String accountNumber,
+  }) {
+    throw UnimplementedError();
+  }
 
   Future<bool> updateLocalUserPresets({
     required UserPresets newUserPresets,
@@ -452,6 +462,20 @@ class AuthRepositoyImpl with AuthRepository {
   Future<bool> updateUserExt(
     Map<String, dynamic> newUserExt,
   ) async => _apiService.updateUserExt(newUserExt);
+
+  @override
+  Future<BacsMandateResponse> updatePendingBacsBankDetails({
+    required String guid,
+    required String sortCode,
+    required String accountNumber,
+  }) async {
+    final item = await _apiService.updatePendingBacsBankDetails(
+      guid: guid,
+      sortCode: sortCode,
+      accountNumber: accountNumber,
+    );
+    return BacsMandateResponse.fromJson(item);
+  }
 
   @override
   Future<StripeResponse> fetchStripeSetupIntent() async {

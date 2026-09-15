@@ -361,6 +361,11 @@
     "description": "Error message shown when bank account number is not 8 digits",
     "type": "text"
   },
+  "mandateAlreadySignedError": "No se pueden cambiar los datos bancarios porque tu mandato BACS ya está firmado.",
+  "@mandateAlreadySignedError": {
+    "description": "Shown when UK BACS bank details cannot be edited because the mandate is already signed",
+    "type": "text"
+  },
   "passwordRuleMinChars": "Usa al menos 7 caracteres",
   "@passwordRuleMinChars": {
     "description": "Password requirement: minimum 7 characters",
@@ -670,6 +675,20 @@
     "description": "Tekst op de giften historiek wanneer er geen gifts gegeven zijn.",
     "type": "text"
   },
+  "historyFilterDonations": "Filtrar donaciones",
+  "historyFilterDonationSource": "Origen de la donación",
+  "historyFilterDonationType": "Tipo de donación",
+  "historyFilterCategories": "Categorías",
+  "historyFilterDateRange": "Rango de fechas",
+  "historyFilterFrom": "Desde",
+  "historyFilterTo": "Hasta",
+  "historyFilterSelect": "Seleccionar",
+  "historyFilterThisMonth": "Este mes",
+  "historyFilterLastMonth": "El mes pasado",
+  "historyFilterLastThreeMonths": "Últimos 3 meses",
+  "historyFilterClearAll": "Borrar todo",
+  "historyFilterApply": "Aplicar",
+  "historyFilterNoMatches": "Ninguna donación coincide con estos filtros",
   "updateAlertTitle": "Actualización disponible",
   "@updateAlertTitle": {
     "description": "Titel bovenaan een popup alert dat een nieuwe update beschikbaar is",
@@ -1148,6 +1167,14 @@
   "personalSummaryExternal": "Donaciones externas",
   "personalSummaryYearTotal": "Total donado",
   "personalSummaryYearCenterLabel": "este año",
+  "personalSummaryMonthCenterLabel": "en {month}",
+  "@personalSummaryMonthCenterLabel": {
+    "placeholders": {
+      "month": {
+        "type": "String"
+      }
+    }
+  },
   "personalSummaryAddDonationSheetTitle": "Añadir una donación",
   "personalSummaryGiveThroughGivt": "Donar a través de Givt",
   "personalSummaryGiveThroughGivtSubtitle": "Encuentra una organización y dona ahora",

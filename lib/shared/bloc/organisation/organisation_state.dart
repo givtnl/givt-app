@@ -52,15 +52,28 @@ class OrganisationState extends Equatable {
     );
   }
 
+  Map<String, String> buildSupportMetadata(AppLocalizations locals) {
+    final metadata = <String, String>{};
+    if (previousSearchQuery.isNotEmpty) {
+      metadata['searchText'] = previousSearchQuery;
+    }
+
+    final type = CollectGroupType.fromInt(selectedType);
+    final isFilterActive = type != CollectGroupType.none;
+    metadata['categoryFilterActive'] = isFilterActive ? 'true' : 'false';
+    metadata['categoryFilter'] = type.localizedOrganisationFilterTitle(locals);
+    return metadata;
+  }
+
   @override
   List<Object> get props => [
-        organisations,
-        selectedType,
-        filteredOrganisations,
-        status,
-        selectedCollectGroup,
-        previousSearchQuery,
-        favoritedOrganisations,
-        sortByFavorites,
-      ];
+    organisations,
+    selectedType,
+    filteredOrganisations,
+    status,
+    selectedCollectGroup,
+    previousSearchQuery,
+    favoritedOrganisations,
+    sortByFavorites,
+  ];
 }

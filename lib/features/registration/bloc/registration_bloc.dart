@@ -12,6 +12,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
+import 'package:givt_app/shared/widgets/sort_code_text_formatter.dart';
 import 'package:givt_app/utils/utils.dart';
 
 part 'registration_event.dart';
@@ -19,7 +20,7 @@ part 'registration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   RegistrationBloc({required this.authRepositoy, required this.authCubit})
-      : super(const RegistrationState()) {
+    : super(const RegistrationState()) {
     on<RegistrationPasswordSubmitted>(_onRegistrationPasswordSubmitted);
 
     on<RegistrationPersonalInfoSubmitted>(_onRegistrationPersonalInfoSubmitted);
@@ -62,8 +63,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   ) async {
     emit(state.copyWith(status: RegistrationStatus.loading));
 
-    final isUs =
-        event.country.toUpperCase() == Country.us.countryCode;
+    final isUs = event.country.toUpperCase() == Country.us.countryCode;
 
     try {
       // Trim spaces from IBAN and phone number to avoid duplicates - KIDS-2075
@@ -75,8 +75,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         country: event.country,
         appLanguage: event.appLanguage,
         timeZoneId: (await FlutterTimezone.getLocalTimezone()).identifier,
-        amountLimit:
-            event.country.toUpperCase() == Country.us.countryCode ? 4999 : 499,
+        amountLimit: event.country.toUpperCase() == Country.us.countryCode
+            ? 4999
+            : 499,
         address: event.address,
         city: event.city,
         firstName: state.firstName,
@@ -133,9 +134,23 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationSignMandate event,
     Emitter<RegistrationState> emit,
   ) async {
-    emit(state.copyWith(status: RegistrationStatus.loading));
+    emit(state.copyWith(status: RegistrationStatus.loading, errorMessage: ''));
+
+    final userBeforeSign = authCubit.state.user;
+    final isUk = Country.unitedKingdomCodes().contains(userBeforeSign.country);
 
     try {
+      if (isUk) {
+        await authRepositoy.updatePendingBacsBankDetails(
+          guid: event.guid,
+          sortCode: SortCodeTextFormatter.stripDashes(userBeforeSign.sortCode),
+          accountNumber: userBeforeSign.accountNumber.replaceAll(
+            RegExp(r'[\s-]'),
+            '',
+          ),
+        );
+      }
+
       final response = await authRepositoy.signSepaMandate(
         appLanguage: event.appLanguage,
         guid: event.guid,
@@ -145,12 +160,13 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       await authCubit.refreshUser();
       await authCubit.refreshSession();
       final user = authCubit.state.user;
-      
+
       // Reset mandate popup dismissal tracker when mandate is signed
-      final mandatePopupDismissalTracker =
-          MandatePopupDismissalTracker(getIt());
+      final mandatePopupDismissalTracker = MandatePopupDismissalTracker(
+        getIt(),
+      );
       await mandatePopupDismissalTracker.reset();
-      
+
       if (user.sortCode.isNotEmpty && user.accountNumber.isNotEmpty) {
         emit(
           state.copyWith(
@@ -172,24 +188,40 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         body.toString(),
         methodName: stackTrace.toString(),
       );
-      if (statusCode == 409) {
+      if (e.isMandateAlreadySigned) {
+        await authCubit.refreshUser();
         emit(
           state.copyWith(
-            status: RegistrationStatus.conflict,
+            status: RegistrationStatus.bacsDirectDebitMandateSigned,
           ),
         );
         return;
       }
-      if (statusCode == 400) {
+      if (statusCode == 409) {
         emit(
           state.copyWith(
-            status: RegistrationStatus.badRequest,
+            status: RegistrationStatus.conflict,
+            errorMessage: e.userFacingMessage ?? '',
+          ),
+        );
+        return;
+      }
+      if (statusCode == 400 || statusCode == 422) {
+        emit(
+          state.copyWith(
+            status: isUk
+                ? RegistrationStatus.bacsDetailsWrong
+                : RegistrationStatus.badRequest,
+            errorMessage: e.userFacingMessage ?? '',
           ),
         );
         return;
       }
       emit(
-        state.copyWith(status: RegistrationStatus.failure),
+        state.copyWith(
+          status: RegistrationStatus.failure,
+          errorMessage: e.userFacingMessage ?? '',
+        ),
       );
     } catch (e, stackTrace) {
       log(e.toString());
@@ -245,7 +277,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       ///and update it in the app
       await authCubit.refreshUser(emitAuthentication: event.emitAuthenticated);
       user = authCubit.state.user;
-      log('trial number $trials, delay time is $delayTime,\n   user is temporary: ${user.tempUser}');
+      log(
+        'trial number $trials, delay time is $delayTime,\n   user is temporary: ${user.tempUser}',
+      );
 
       if (trials > 16) {
         delayTime = 60;
@@ -297,7 +331,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   }
 
   FutureOr<void> _onReset(
-      RegistrationReset event, Emitter<RegistrationState> emit) {
+    RegistrationReset event,
+    Emitter<RegistrationState> emit,
+  ) {
     emit(const RegistrationState());
   }
 
@@ -309,13 +345,15 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     if (Country.unitedKingdomCodes().contains(user.country)) {
       emit(
         state.copyWith(
-          status: RegistrationStatus.bacsDirectDebitMandateExplanation,
+          status: RegistrationStatus.bacsDirectDebitMandate,
+          errorMessage: '',
         ),
       );
     } else {
       emit(
         state.copyWith(
-          status: RegistrationStatus.sepaMandateExplanation,
+          status: RegistrationStatus.sepaMandate,
+          errorMessage: '',
         ),
       );
     }

@@ -105,7 +105,8 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
           children: [
             MobileScanner(
               controller: _controller,
-              errorBuilder: (context, error) => ScannerErrorWidget(error: error),
+              errorBuilder: (context, error) =>
+                  ScannerErrorWidget(error: error),
               onDetect: (capture) => _processBarcode(barcodeCapture: capture),
             ),
             const Positioned.fill(child: QrCodeTarget()),
@@ -168,10 +169,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
       if (!mounted) return;
 
       if (!resolved.isSuccess) {
-        await _handleDiscoveryFailure(
-          resolved,
-          mediumId: mediumId,
-        );
+        await _handleDiscoveryFailure(resolved);
         return;
       }
 
@@ -198,7 +196,6 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
       if (!mounted) return;
       await _handleDiscoveryFailure(
         const ForYouDiscoveryResult.failure(ForYouDiscoveryFailure.notFound),
-        mediumId: '',
       );
     } finally {
       if (mounted) setState(() => _isProcessing = false);
@@ -206,9 +203,8 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
   }
 
   Future<void> _handleDiscoveryFailure(
-    ForYouDiscoveryResult resolved, {
-    required String mediumId,
-  }) async {
+    ForYouDiscoveryResult resolved,
+  ) async {
     final failure = resolved.failure ?? ForYouDiscoveryFailure.notFound;
 
     switch (failure) {
@@ -230,11 +226,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
           context.goNamed(
             Pages.forYouOrganisationConfirm.name,
             extra: widget.flowContext
-                .copyWith(selectedOrganisation: collectGroup)
-                .copyWith(
-                  entryMediumId: mediumId,
-                  restrictToEntryQrGoal: false,
-                )
+                .forGiveViaListAfterInactiveQr(collectGroup)
                 .toMap(),
           );
         } else {

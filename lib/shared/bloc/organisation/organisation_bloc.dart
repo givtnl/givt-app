@@ -13,6 +13,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
+import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/utils/util.dart';
