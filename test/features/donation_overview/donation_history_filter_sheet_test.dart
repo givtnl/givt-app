@@ -144,6 +144,27 @@ void main() {
     expect(find.text('Non-profit'), findsNothing);
   });
 
+  testWidgets('Dutch source chips use gift, not donatie', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('nl'),
+        theme: FunGivtTheme().toThemeData(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Scaffold(
+          body: DonationHistoryFilterSheet(
+            initial: DonationHistoryFilters.empty,
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Givt-giften'), findsOneWidget);
+    expect(find.text('Externe giften'), findsOneWidget);
+    expect(find.text('Givt-donaties'), findsNothing);
+    expect(find.text('Externe donaties'), findsNothing);
+  });
+
   testWidgets(
     'German category chips use Wohltätigkeitsorganisation for Charity',
     (tester) async {
