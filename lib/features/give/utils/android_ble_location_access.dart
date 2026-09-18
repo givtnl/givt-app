@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -39,11 +40,30 @@ class AndroidBleLocationAccess {
   final Future<PermissionStatus> Function() _requestLocationPermission;
   final Future<LocationAccuracyStatus> Function() _locationAccuracy;
 
+  Future<AndroidBleLocationStatus>? _inFlight;
+
   static bool _defaultIsAndroid() => Platform.isAndroid;
 
   /// Returns [AndroidBleLocationStatus.ready] on iOS and other non-Android
   /// platforms. On Android, requests fine location once when status is denied.
-  Future<AndroidBleLocationStatus> ensureReady() async {
+  ///
+  /// Concurrent callers share one in-flight check so `permission_handler`
+  /// does not throw when init, resume, and adapter events overlap.
+  Future<AndroidBleLocationStatus> ensureReady() {
+    final inFlight = _inFlight;
+    if (inFlight != null) {
+      return inFlight;
+    }
+    final future = _ensureReady();
+    _inFlight = future;
+    return future.whenComplete(() {
+      if (identical(_inFlight, future)) {
+        _inFlight = null;
+      }
+    });
+  }
+
+  Future<AndroidBleLocationStatus> _ensureReady() async {
     if (!_isAndroid()) {
       return AndroidBleLocationStatus.ready;
     }
@@ -55,7 +75,12 @@ class AndroidBleLocationAccess {
 
     var permission = await _locationPermissionStatus();
     if (permission.isDenied) {
-      permission = await _requestLocationPermission();
+      try {
+        permission = await _requestLocationPermission();
+      } on PlatformException {
+        // Another permission dialog is already showing; use current status.
+        permission = await _locationPermissionStatus();
+      }
     }
     if (!permission.isGranted) {
       return AndroidBleLocationStatus.permissionDenied;

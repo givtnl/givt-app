@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -61,6 +62,10 @@ class ForYouBeaconDiscoveryCubit
   /// the first on Android — native stopScan + startScan churn).
   bool _ensureScanningInFlight = false;
 
+  /// Prevents overlapping Android BLE/location `.request()` from init,
+  /// resume, and the permission-dialog pause/resume cycle.
+  bool _permissionsInFlight = false;
+
   void _logBle(String message) {
     if (kDebugMode) {
       LoggingInfo.instance.debug(
@@ -80,12 +85,7 @@ class ForYouBeaconDiscoveryCubit
     }
 
     if (Platform.isAndroid) {
-      final granted = await _requestAndroidBlePermissions();
-      if (!granted) {
-        _setPhase(ForYouBeaconDiscoveryPhase.bluetoothPermissionSettings);
-      } else {
-        await _ensureAndroidLocationReady();
-      }
+      await _requestAndroidPermissionsAndUpdatePhase();
     }
 
     _adapterSubscription = FlutterBluePlus.adapterState.listen(
@@ -116,12 +116,7 @@ class ForYouBeaconDiscoveryCubit
     if (_closing || _flowContext == null) return;
 
     if (Platform.isAndroid) {
-      final granted = await _requestAndroidBlePermissions();
-      if (!granted) {
-        _setPhase(ForYouBeaconDiscoveryPhase.bluetoothPermissionSettings);
-        return;
-      }
-      if (!await _ensureAndroidLocationReady()) {
+      if (!await _requestAndroidPermissionsAndUpdatePhase()) {
         return;
       }
       _setPhase(ForYouBeaconDiscoveryPhase.searching);
@@ -152,10 +147,46 @@ class ForYouBeaconDiscoveryCubit
     }
   }
 
+  /// Requests BLE (+ location) in one batched dialog when needed.
+  /// Returns false when Bluetooth scan/connect was not granted (and sets
+  /// the Bluetooth settings phase) or when location is not ready.
+  Future<bool> _requestAndroidPermissionsAndUpdatePhase() async {
+    if (_permissionsInFlight) {
+      return false;
+    }
+    _permissionsInFlight = true;
+    try {
+      final granted = await _requestAndroidBlePermissions();
+      if (!granted) {
+        _setPhase(ForYouBeaconDiscoveryPhase.bluetoothPermissionSettings);
+        return false;
+      }
+      return await _ensureAndroidLocationReady();
+    } finally {
+      _permissionsInFlight = false;
+    }
+  }
+
   Future<bool> _requestAndroidBlePermissions() async {
-    final scan = await Permission.bluetoothScan.request();
-    final connect = await Permission.bluetoothConnect.request();
-    return scan.isGranted && connect.isGranted;
+    if (await _hasAndroidBlePermissions()) {
+      return true;
+    }
+    try {
+      final statuses = await [
+        Permission.bluetoothScan,
+        Permission.bluetoothConnect,
+        Permission.location,
+      ].request();
+      final scan = statuses[Permission.bluetoothScan];
+      final connect = statuses[Permission.bluetoothConnect];
+      return (scan?.isGranted ?? false) && (connect?.isGranted ?? false);
+    } on PlatformException catch (e) {
+      LoggingInfo.instance.warning(
+        'Android BLE permission request already running: $e',
+        methodName: '_requestAndroidBlePermissions',
+      );
+      return _hasAndroidBlePermissions();
+    }
   }
 
   Future<bool> _hasAndroidBlePermissions() async {
