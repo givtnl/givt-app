@@ -1682,7 +1682,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get budgetExternalGiftsAmount => 'Summe';
 
   @override
-  String get budgetExternalGiftsSave => 'speichern';
+  String get budgetExternalGiftsSave => 'Speichern';
 
   @override
   String get budgetGivingGoalTitle => 'Ein Spendenziel setzen';

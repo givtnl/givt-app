@@ -24,7 +24,7 @@ The application distinguishes between the **action** of giving, the **object** (
 
 ### 2. The Object: "Donation" vs "Gift"
 *   **English**: Use **"Donation"** when referring to the transaction (e.g., "Cancel donation", "Max donation amount"). Use "Gift" primarily in the context of "Gift Aid" or specific branding.
-*   **Dutch**: Use **"Gift"** consistently for the donation object. When forming compound words with "bedrag" (amount), use the verb form: **"geefbedrag"** (not "giftbedrag") for better natural flow.
+*   **Dutch**: Use **"Gift"** consistently for the donation object. Do not use **"donatie"** in UI copy. English "external donation" becomes **"externe gift"** (plural **"externe giften"**), never "externe donatie". When forming compound words with "bedrag" (amount), use the verb form: **"geefbedrag"** (not "giftbedrag") for better natural flow.
 *   **German**: Use **"Spende"**.
 *   **Spanish**: Use **"Donación"**.
 
@@ -68,3 +68,6 @@ The application distinguishes between the **action** of giving, the **object** (
 | `cancel` | Cancel | Annuleren | Abbrechen | Cancelar |
 | `success` | Success! | Gelukt! | Fertig! | ¡Listo! |
 | `loading` | Please wait... | Even geduld... | Bitte warten... | Por favor, espera... |
+| `external donation` | External donation | Externe gift | Externe Spende | Donación externa |
+| `processed by Givt` | Processed by Givt | Verwerkt door Givt | Von Givt verarbeitet | Procesada por Givt |
+| `not processed by Givt` | Not processed by Givt | Niet verwerkt door Givt | Nicht von Givt verarbeitet | No procesada por Givt |

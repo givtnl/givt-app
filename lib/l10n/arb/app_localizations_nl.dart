@@ -1271,7 +1271,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get pledgesOverviewTabCurrent => 'Huidig';
 
   @override
-  String get pledgesOverviewTabPast => 'Verleden';
+  String get pledgesOverviewTabPast => 'Eerder';
 
   @override
   String get pledgesOverviewAddButton => 'Toezegging toevoegen';
@@ -1318,7 +1318,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get pledgesDetailEndsLabel => 'Eindigt';
 
   @override
-  String get pledgesDetailTransactionsLabel => 'Donaties';
+  String get pledgesDetailTransactionsLabel => 'Giften';
 
   @override
   String get pledgesEditRequestTitle => 'Toezegging wijzigen aanvragen';
@@ -1659,14 +1659,14 @@ class AppLocalizationsNl extends AppLocalizations {
   String get budgetSummaryYear => 'Per jaar';
 
   @override
-  String get budgetExternalGiftsTitle => 'Donaties buiten Givt';
+  String get budgetExternalGiftsTitle => 'Geven buiten Givt';
 
   @override
   String get budgetExternalGiftsInfo =>
       'Je overzicht is pas compleet als al je giften erin staan. Voeg toe wat je niet via Givt geeft. Je vindt alles terug in je samenvatting.';
 
   @override
-  String get budgetExternalGiftsSubTitle => 'Donaties buiten Givt';
+  String get budgetExternalGiftsSubTitle => 'Je giften buiten Givt';
 
   @override
   String get budgetExternalGiftsOrg => 'Naam organisatie';
@@ -1709,7 +1709,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get personalSummaryTitle => 'Persoonlijke samenvatting';
 
   @override
-  String get personalSummaryAddDonation => 'Donatie toevoegen';
+  String get personalSummaryAddDonation => 'Gift toevoegen';
 
   @override
   String get personalSummarySetGivingGoal => 'Streefbedrag instellen';
@@ -1789,10 +1789,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get personalSummaryOneOff => 'Eenmalig';
 
   @override
-  String get personalSummaryThroughGivt => 'Givt-donaties';
+  String get personalSummaryThroughGivt => 'Givt-giften';
 
   @override
-  String get personalSummaryExternal => 'Externe donaties';
+  String get personalSummaryExternal => 'Externe giften';
 
   @override
   String get personalSummaryYearTotal => 'Totaal gegeven';
@@ -1806,7 +1806,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get personalSummaryAddDonationSheetTitle => 'Donatie toevoegen';
+  String get personalSummaryAddDonationSheetTitle => 'Gift toevoegen';
 
   @override
   String get personalSummaryGiveThroughGivt => 'Geven via Givt';
@@ -1816,7 +1816,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Vind een goed doel en geef nu';
 
   @override
-  String get personalSummaryAddExternalDonation => 'Externe donatie toevoegen';
+  String get personalSummaryAddExternalDonation => 'Externe gift toevoegen';
 
   @override
   String get personalSummaryAddExternalDonationSubtitle =>
@@ -1936,7 +1936,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get budgetSummaryNoGiftsExternal =>
-      'Donaties buiten Givt? Voeg ze hier toe';
+      'Giften buiten Givt? Voeg ze hier toe';
 
   @override
   String get budgetYearlyOverviewGivenThroughGivt => 'Totaal via Givt';
@@ -2659,7 +2659,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get platformFeeText =>
-      'Givt streeft naar 0% servicefee. Met een kleine donatie aan Givt help je dat te bereiken.';
+      'Givt streeft naar 0% servicefee. Met een kleine gift aan Givt help je dat te bereiken.';
 
   @override
   String get platformFeeNoContribution => 'Niet nu';
@@ -2673,7 +2673,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get donationOverviewPlatformContributionText =>
-      'Dankzij jouw gekozen vrijwillige platformbijdrage kunnen we het ontvangen van donaties goedkoper maken.';
+      'Dankzij jouw gekozen vrijwillige platformbijdrage kunnen we het ontvangen van giften goedkoper maken.';
 
   @override
   String get platformFeePlaceholder => 'Selecteer bedrag';
@@ -2703,7 +2703,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsStep3Description =>
-      'Voor welke periode wil je deze donatie plannen?';
+      'Voor welke periode wil je deze gift plannen?';
 
   @override
   String get recurringDonationsStartingTitle => 'Beginnen op';
@@ -2716,34 +2716,34 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsEndsAfterNumber =>
-      'Na een gekozen aantal donaties';
+      'Na een gekozen aantal giften';
 
   @override
   String get recurringDonationsEndsAfterDate => 'Op een gekozen datum';
 
   @override
   String recurringDonationsEndDateHintEveryMonth(Object dag, Object day) {
-    return 'Je donatie vindt plaats op de $dag van elke maand';
+    return 'Je gift vindt plaats op de $dag van elke maand';
   }
 
   @override
   String recurringDonationsEndDateHintEveryWeek(Object day) {
-    return 'Je donatie vindt elke week plaats op de $day';
+    return 'Je gift vindt elke week plaats op de $day';
   }
 
   @override
   String recurringDonationsEndDateHintEveryXMonth(Object day, Object freq) {
-    return 'Je donatie vindt elke $freq maanden plaats op de $day';
+    return 'Je gift vindt elke $freq maanden plaats op de $day';
   }
 
   @override
   String recurringDonationsEndDateHintEveryYear(Object day, Object month) {
-    return 'Je donatie vindt elk jaar plaats op de $day van $month';
+    return 'Je gift vindt elk jaar plaats op de $day van $month';
   }
 
   @override
   String recurringDonationsEndsAfterXDonations(Object amount) {
-    return 'Na $amount donaties';
+    return 'Na $amount giften';
   }
 
   @override
@@ -2754,7 +2754,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Klaar om een verschil te maken?';
 
   @override
-  String get recurringDonationsStep4YoullDonateTo => 'Je doneert aan';
+  String get recurringDonationsStep4YoullDonateTo => 'Je geeft aan';
 
   @override
   String get recurringDonationsStep4Amount => 'Bedrag';
@@ -2769,8 +2769,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get recurringDonationsStep4Ends => 'Eindigt op';
 
   @override
-  String get recurringDonationsStep4ConfirmMyDonation =>
-      'Bevestig mijn donatie';
+  String get recurringDonationsStep4ConfirmMyDonation => 'Bevestig mijn gift';
 
   @override
   String get recurringDonationsEmptyStateTitle =>
@@ -2778,22 +2777,22 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsEmptyStateDescription =>
-      'Stel een terugkerende donatie in die je altijd kunt aanpassen of annuleren.';
+      'Stel een terugkerende gift in die je altijd kunt aanpassen of annuleren.';
 
   @override
   String get recurringDonationsOverviewTabCurrent => 'Huidig';
 
   @override
-  String get recurringDonationsOverviewTabPast => 'Verleden';
+  String get recurringDonationsOverviewTabPast => 'Eerder';
 
   @override
-  String get recurringDonationsOverviewAddButton => 'Terugkerende donatie';
+  String get recurringDonationsOverviewAddButton => 'Terugkerende gift';
 
   @override
   String get externalDonationsOverviewTabCurrent => 'Huidig';
 
   @override
-  String get externalDonationsOverviewTabPast => 'Verleden';
+  String get externalDonationsOverviewTabPast => 'Eerder';
 
   @override
   String get externalDonationsOverviewAddButton => 'Externe gift toevoegen';
@@ -2803,7 +2802,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get externalDonationsEmptyStateDescription =>
-      'Voeg giften toe die je rechtstreeks aan organisaties doet, zodat je overzicht compleet blijft.';
+      'Voeg giften toe die je rechtstreeks aan organisaties doet, zodat je overzicht compleet blijft. Er wordt geen geld van je rekening afgeschreven.';
 
   @override
   String get externalDonationsListStatusStopped => 'Gestopt';
@@ -2818,7 +2817,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String get externalDonationsDetailStopButton => 'Ik ben gestopt met geven';
 
   @override
-  String get externalDonationsStopModalTitle => 'Stoppen met registreren?';
+  String get externalDonationsStopModalTitle =>
+      'Stoppen met het registreren van deze gift?';
 
   @override
   String get externalDonationsStopModalMessage =>
@@ -2916,14 +2916,14 @@ class AppLocalizationsNl extends AppLocalizations {
       'Je overzichtsregel wordt opgebouwd:';
 
   @override
-  String get externalDonationsCreatePreviewTypeTag => 'Ext. Gift';
+  String get externalDonationsCreatePreviewTypeTag => 'Ext. gift';
 
   @override
   String externalDonationsCreatePreviewMoreRecords(
     int count,
     String startMonthYear,
   ) {
-    return '+ $count extra records terug tot $startMonthYear';
+    return '+ $count extra giften terug tot $startMonthYear';
   }
 
   @override
@@ -2940,7 +2940,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get externalDonationsManageEditSpecificRecords =>
-      'Specifieke records bewerken';
+      'Specifieke giften bewerken';
 
   @override
   String externalDonationsDeleteModalTitle(String organisation) {
@@ -2955,25 +2955,25 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get externalDonationsBulkDeleteModalTitle =>
-      'Geselecteerde records verwijderen?';
+      'Geselecteerde giften verwijderen?';
 
   @override
   String externalDonationsBulkDeleteModalMessage(int count) {
-    return 'Hiermee verwijder je $count geselecteerde records uit je historie.';
+    return 'Hiermee verwijder je $count geselecteerde giften uit je overzicht.';
   }
 
   @override
   String get externalDonationsBulkDeleteModalConfirm =>
-      'Ja, records verwijderen';
+      'Ja, giften verwijderen';
 
   @override
-  String get externalDonationsBulkDeleteModalCancel => 'Nee, records behouden';
+  String get externalDonationsBulkDeleteModalCancel => 'Nee, giften behouden';
 
   @override
-  String get externalDonationsScopeTitle => 'Welke gifts moeten veranderen?';
+  String get externalDonationsScopeTitle => 'Welke giften moeten veranderen?';
 
   @override
-  String get externalDonationsScopeAll => 'Alle gifts';
+  String get externalDonationsScopeAll => 'Alle giften';
 
   @override
   String get externalDonationsScopeOnwards => 'Vanaf nu';
@@ -2986,26 +2986,26 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String externalDonationsEditAmountInfoAll(String amount) {
-    return 'Al je records — verleden en toekomst — worden bijgewerkt naar $amount.';
+    return 'Al je giften — verleden en toekomst — worden bijgewerkt naar $amount.';
   }
 
   @override
   String externalDonationsEditAmountInfoOnwards(String date, String amount) {
-    return 'Vanaf $date geef je $amount per maand. Eerdere records blijven zoals ze zijn.';
+    return 'Vanaf $date geef je $amount per maand. Eerdere giften blijven zoals ze zijn.';
   }
 
   @override
   String externalDonationsEditAmountInfoOneOff(String amount) {
-    return 'Dit record wordt bijgewerkt naar $amount.';
+    return 'Deze gift wordt bijgewerkt naar $amount.';
   }
 
   @override
   String get externalDonationsEditAmountBulkInfo =>
-      'Het nieuwe bedrag geldt alleen voor de geselecteerde records.';
+      'Het nieuwe bedrag geldt alleen voor de geselecteerde giften.';
 
   @override
   String externalDonationsEditFrequencyInfoAll(String frequency) {
-    return 'Je hele historie wordt herberekend naar $frequency.';
+    return 'Je hele overzicht wordt opnieuw berekend naar $frequency.';
   }
 
   @override
@@ -3013,12 +3013,12 @@ class AppLocalizationsNl extends AppLocalizations {
     String date,
     String frequency,
   ) {
-    return 'Vanaf $date herhaalt je gift zich $frequency. Eerdere records blijven zoals ze zijn.';
+    return 'Vanaf $date herhaalt je gift zich $frequency. Eerdere giften blijven zoals ze zijn.';
   }
 
   @override
   String externalDonationsEditStartDateInfo(String monthYear) {
-    return 'Je historie wordt herbouwd vanaf $monthYear.';
+    return 'Je overzicht wordt opnieuw opgebouwd vanaf $monthYear.';
   }
 
   @override
@@ -3067,10 +3067,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get externalDonationsSelectionDone => 'Klaar';
 
   @override
-  String get recurringDonationsDetailProgressSuffix => 'donaties';
+  String get recurringDonationsDetailProgressSuffix => 'giften';
 
   @override
-  String get recurringDonationsDetailSummaryDonated => 'Gedoneerd';
+  String get recurringDonationsDetailSummaryDonated => 'Gegeven';
 
   @override
   String get recurringDonationsDetailSummaryHelping => 'Helpen';
@@ -3131,21 +3131,21 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get recurringDonationsDetailManageButton => 'Donatie beheren';
+  String get recurringDonationsDetailManageButton => 'Gift beheren';
 
   @override
-  String get recurringDonationsDetailRestartButton => 'Donatie herstarten';
+  String get recurringDonationsDetailRestartButton => 'Gift herstarten';
 
   @override
   String get recurringDonationsRestartConfirmTitle =>
-      'Klaar om je donatie te herstarten?';
+      'Klaar om je gift te herstarten?';
 
   @override
-  String get recurringDonationsRestartConfirmButton => 'Donatie herstarten';
+  String get recurringDonationsRestartConfirmButton => 'Gift herstarten';
 
   @override
   String get recurringDonationsRestartFailed =>
-      'We konden deze donatie niet herstarten. Probeer het opnieuw.';
+      'We konden deze gift niet herstarten. Probeer het opnieuw.';
 
   @override
   String get recurringDonationsRestartOrganisationNotFoundTitle =>
@@ -3153,7 +3153,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsRestartOrganisationNotFoundMessage =>
-      'We konden de organisatie die aan deze donatie is gekoppeld niet vinden. Deze donatie kan niet worden herstart.';
+      'We konden de organisatie die aan deze gift is gekoppeld niet vinden. Deze gift kan niet worden herstart.';
 
   @override
   String get recurringDonationsRestartInactiveOrganisationTitle =>
@@ -3161,28 +3161,28 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsRestartInactiveOrganisationMessage =>
-      'De organisatie die aan deze donatie is gekoppeld, is niet meer actief. Deze donatie kan niet worden herstart.';
+      'De organisatie die aan deze gift is gekoppeld, is niet meer actief. Deze gift kan niet worden herstart.';
 
   @override
-  String get recurringDonationsDetailEditDonation => 'Donatie bewerken';
+  String get recurringDonationsDetailEditDonation => 'Gift bewerken';
 
   @override
   String get recurringDonationsDetailEditComingSoon =>
       'Bewerkingsfunctionaliteit komt binnenkort';
 
   @override
-  String get recurringDonationsDetailPauseDonation => 'Donatie pauzeren';
+  String get recurringDonationsDetailPauseDonation => 'Gift pauzeren';
 
   @override
   String get recurringDonationsDetailPauseComingSoon =>
       'Pauzeringsfunctionaliteit komt binnenkort';
 
   @override
-  String get recurringDonationsPauseSheetTitle => 'Donatie pauzeren';
+  String get recurringDonationsPauseSheetTitle => 'Gift pauzeren';
 
   @override
   String get recurringDonationsPauseSheetDescription =>
-      'Selecteer een datum om je donatie te hervatten.';
+      'Selecteer een datum om je gift te hervatten.';
 
   @override
   String get recurringDonationsPauseRestartDateLabel => 'Hervattingsdatum';
@@ -3191,33 +3191,33 @@ class AppLocalizationsNl extends AppLocalizations {
   String get recurringDonationsPauseContinueButton => 'Doorgaan';
 
   @override
-  String get recurringDonationsPauseConfirmTitle => 'Donatie pauzeren?';
+  String get recurringDonationsPauseConfirmTitle => 'Gift pauzeren?';
 
   @override
   String recurringDonationsPauseConfirmMessage(String date) {
-    return 'Je donatie wordt gepauzeerd tot $date. Een nieuwe periodieke donatie start op die datum met je resterende donaties.';
+    return 'Je gift wordt gepauzeerd tot $date. Een nieuwe periodieke gift start op die datum met je resterende giften.';
   }
 
   @override
-  String get recurringDonationsPauseConfirmButton => 'Ja, pauzeer donatie';
+  String get recurringDonationsPauseConfirmButton => 'Ja, pauzeer gift';
 
   @override
   String get recurringDonationsPauseCancelButton => 'Annuleren';
 
   @override
-  String get recurringDonationsPauseSuccessTitle => 'Donatie gepauzeerd';
+  String get recurringDonationsPauseSuccessTitle => 'Gift gepauzeerd';
 
   @override
   String recurringDonationsPauseSuccessMessage(String date) {
-    return 'Je donatie wordt hervat op $date.';
+    return 'Je gift wordt hervat op $date.';
   }
 
   @override
   String get recurringDonationsPauseFailed =>
-      'We konden je donatie niet pauzeren. Probeer het opnieuw.';
+      'We konden je gift niet pauzeren. Probeer het opnieuw.';
 
   @override
-  String get recurringDonationsDetailCancelDonation => 'Donatie annuleren';
+  String get recurringDonationsDetailCancelDonation => 'Gift annuleren';
 
   @override
   String get recurringDonationsCreateStep2AmountHint => 'Voer bedrag in';
@@ -3233,12 +3233,12 @@ class AppLocalizationsNl extends AppLocalizations {
     Object date,
     Object number,
   ) {
-    return 'Je doneert $number keer, eindigend op $date';
+    return 'Je geeft $number keer, eindigend op $date';
   }
 
   @override
   String recurringDonationsCreateDurationSnackbarOnce(Object date) {
-    return 'Je doneert 1 keer, eindigend op $date';
+    return 'Je geeft 1 keer, eindigend op $date';
   }
 
   @override
@@ -3246,7 +3246,7 @@ class AppLocalizationsNl extends AppLocalizations {
     Object count,
     Object date,
   ) {
-    return 'Je doneert $count keer, eindigend op $date';
+    return 'Je geeft $count keer, eindigend op $date';
   }
 
   @override
@@ -3310,7 +3310,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get recurringDonationsCreationErrorTitle =>
-      'Het is niet gelukt je donatie in te stellen';
+      'Het is niet gelukt je gift in te stellen';
 
   @override
   String get recurringDonationsCreationErrorDescription =>
@@ -3352,7 +3352,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get donationOverviewContactMessage =>
-      'Hoi, ik heb de volgende vraag over mijn donatie:';
+      'Hoi, ik heb de volgende vraag over mijn gift:';
 
   @override
   String get donationHistoryExternalListSubtitle => 'Externe gift';
@@ -3380,7 +3380,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get platformFeeRemember =>
-      'Onthoud mijn keuze voor volgende donaties aan deze organisatie.';
+      'Onthoud mijn keuze voor volgende giften aan deze organisatie.';
 
   @override
   String get platformFeeCustomOption => 'Kies zelf';
