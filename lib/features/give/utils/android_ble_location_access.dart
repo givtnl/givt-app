@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:givt_app/features/give/utils/permission_request_guard.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 /// Android BLE scan preconditions for `FlutterBluePlus.startScan` with
@@ -55,7 +57,7 @@ class AndroidBleLocationAccess {
 
     var permission = await _locationPermissionStatus();
     if (permission.isDenied) {
-      permission = await _requestLocationPermission();
+      permission = await _requestLocationPermissionSerialized();
     }
     if (!permission.isGranted) {
       return AndroidBleLocationStatus.permissionDenied;
@@ -71,5 +73,24 @@ class AndroidBleLocationAccess {
     }
 
     return AndroidBleLocationStatus.ready;
+  }
+
+  /// Serializes location `.request()` and re-reads status so a concurrent
+  /// [ensureReady] does not open a second system dialog.
+  Future<PermissionStatus> _requestLocationPermissionSerialized() {
+    return PermissionRequestGuard.run(() async {
+      final current = await _locationPermissionStatus();
+      if (!current.isDenied) {
+        return current;
+      }
+      try {
+        return await _requestLocationPermission();
+      } on PlatformException catch (e) {
+        if (!PermissionRequestGuard.isConcurrentRequest(e)) {
+          rethrow;
+        }
+        return _locationPermissionStatus();
+      }
+    });
   }
 }

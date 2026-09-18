@@ -15,6 +15,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/features/give/utils/android_ble_location_access.dart';
+import 'package:givt_app/features/give/utils/permission_request_guard.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -172,8 +173,9 @@ class _BTScanPageState extends State<BTScanPage> with WidgetsBindingObserver {
                 final status = await Permission.bluetoothConnect.status;
                 if (status.isDenied || status.isPermanentlyDenied) {
                   try {
-                    final newStatus = await Permission.bluetoothConnect
-                        .request();
+                    final newStatus = await PermissionRequestGuard.run(
+                      Permission.bluetoothConnect.request,
+                    );
                     if (newStatus.isGranted) {
                       await startBluetoothScan();
                       return;
