@@ -14,6 +14,7 @@ import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/errors/scanner_error_widget.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -37,6 +38,8 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
 
   bool _isProcessing = false;
   bool _isStartingScanner = false;
+  double _zoomScale = QrScannerZoom.minScale;
+  double _pinchStartZoom = QrScannerZoom.minScale;
 
   @override
   void didChangeDependencies() {
@@ -57,9 +60,57 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
     _isStartingScanner = true;
     try {
       await _controller.start();
+      if (mounted) {
+        setState(() {
+          _zoomScale = QrScannerZoom.minScale;
+        });
+      }
     } finally {
       _isStartingScanner = false;
     }
+  }
+
+  Future<void> _setZoomScale(double next) async {
+    final clamped = QrScannerZoom.clamp(next);
+    if (!QrScannerZoom.shouldApply(_zoomScale, clamped)) {
+      return;
+    }
+    if (!_controller.value.isRunning) {
+      return;
+    }
+
+    setState(() {
+      _zoomScale = clamped;
+    });
+
+    try {
+      await _controller.setZoomScale(clamped);
+    } on MobileScannerException {
+      return;
+    }
+  }
+
+  void _onScaleStart(ScaleStartDetails details) {
+    _pinchStartZoom = _zoomScale;
+  }
+
+  void _onScaleUpdate(ScaleUpdateDetails details) {
+    if (details.pointerCount < 2) {
+      return;
+    }
+
+    unawaited(
+      _setZoomScale(
+        QrScannerZoom.fromPinch(
+          startScale: _pinchStartZoom,
+          gestureScale: details.scale,
+        ),
+      ),
+    );
+  }
+
+  void _onZoomToggle() {
+    unawaited(_setZoomScale(QrScannerZoom.toggleTarget(_zoomScale)));
   }
 
   void _goToForYouList() {
@@ -103,13 +154,47 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
         ),
         body: Stack(
           children: [
-            MobileScanner(
-              controller: _controller,
-              errorBuilder: (context, error) =>
-                  ScannerErrorWidget(error: error),
-              onDetect: (capture) => _processBarcode(barcodeCapture: capture),
+            GestureDetector(
+              onScaleStart: _onScaleStart,
+              onScaleUpdate: _onScaleUpdate,
+              child: Stack(
+                children: [
+                  MobileScanner(
+                    controller: _controller,
+                    errorBuilder: (context, error) =>
+                        ScannerErrorWidget(error: error),
+                    onDetect: (capture) =>
+                        _processBarcode(barcodeCapture: capture),
+                  ),
+                  const Positioned.fill(
+                    child: IgnorePointer(child: QrCodeTarget()),
+                  ),
+                ],
+              ),
             ),
-            const Positioned.fill(child: QrCodeTarget()),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 24 + MediaQuery.paddingOf(context).bottom,
+              child: Center(
+                child: QrScannerZoomButton(
+                  isZoomed: !QrScannerZoom.isAtRest(_zoomScale),
+                  semanticsLabel: QrScannerZoom.isAtRest(_zoomScale)
+                      ? locals.forYouQrZoomIn
+                      : locals.forYouQrZoomOut,
+                  analyticsEvent: AnalyticsEvent(
+                    AnalyticsEventName.forYouQrZoomToggled,
+                    parameters: {
+                      AnalyticsHelper.toggleStatusKey:
+                          QrScannerZoom.isAtRest(_zoomScale)
+                          ? 'zoomed_in'
+                          : 'zoomed_out',
+                    },
+                  ),
+                  onPressed: _onZoomToggle,
+                ),
+              ),
+            ),
             if (_isProcessing)
               const Positioned.fill(
                 child: Opacity(

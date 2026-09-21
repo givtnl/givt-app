@@ -1007,6 +1007,8 @@
   "forYouLocationBasedSubtitle": "Gib an Organisationen in deiner Nähe",
   "forYouQrCodeTitle": "QR-code",
   "forYouQrCodeSubtitle": "Scanne einen Givt-QR-Code",
+  "forYouQrZoomIn": "Vergrößern",
+  "forYouQrZoomOut": "Verkleinern",
   "forYouCollectionDeviceTitle": "Sammelgerät",
   "forYouCollectionDeviceSubtitle": "Gib, wenn die Kollektentasche oder -platte vorbeikommt",
   "forYouGoalsCountCollectionsOne": "1 Sammelziel",

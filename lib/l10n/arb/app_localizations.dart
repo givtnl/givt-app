@@ -2661,6 +2661,18 @@ abstract class AppLocalizations {
   /// **'Scan a Givt QR code'**
   String get forYouQrCodeSubtitle;
 
+  /// No description provided for @forYouQrZoomIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in'**
+  String get forYouQrZoomIn;
+
+  /// No description provided for @forYouQrZoomOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom out'**
+  String get forYouQrZoomOut;
+
   /// No description provided for @forYouCollectionDeviceTitle.
   ///
   /// In en, this message translates to:

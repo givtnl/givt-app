@@ -1468,6 +1468,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get forYouQrCodeSubtitle => 'Scanne einen Givt-QR-Code';
 
   @override
+  String get forYouQrZoomIn => 'Vergrößern';
+
+  @override
+  String get forYouQrZoomOut => 'Verkleinern';
+
+  @override
   String get forYouCollectionDeviceTitle => 'Sammelgerät';
 
   @override

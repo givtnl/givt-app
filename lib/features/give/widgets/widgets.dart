@@ -12,3 +12,4 @@ export 'numeric_keyboard.dart';
 export 'offline_giving_banner.dart';
 export 'qr_code_target.dart';
 export 'qr_confirm_org_dialog.dart';
+export 'qr_scanner_zoom.dart';

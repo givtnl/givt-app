@@ -372,6 +372,7 @@ enum AnalyticsEventName {
     'for_you_qr_inactive_collect_group_continue_tapped',
   ),
   forYouQrNotFoundContinueTapped('for_you_qr_not_found_continue_tapped'),
+  forYouQrZoomToggled('for_you_qr_zoom_toggled'),
   helpMeFindCharityPressed('help_me_find_charity_pressed'),
   askToFindCharityPressed('ask_my_parents_to_find_charity_pressed'),
   loginPressed('login_pressed'),
