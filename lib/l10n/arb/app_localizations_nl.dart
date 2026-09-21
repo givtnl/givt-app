@@ -1709,7 +1709,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get personalSummaryTitle => 'Persoonlijke samenvatting';
 
   @override
-  String get personalSummaryAddDonation => 'Donatie toevoegen';
+  String get personalSummaryAddDonation => 'Gift toevoegen';
 
   @override
   String get personalSummarySetGivingGoal => 'Streefbedrag instellen';
@@ -1789,10 +1789,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get personalSummaryOneOff => 'Eenmalig';
 
   @override
-  String get personalSummaryThroughGivt => 'Givt-donaties';
+  String get personalSummaryThroughGivt => 'Via Givt';
 
   @override
-  String get personalSummaryExternal => 'Externe donaties';
+  String get personalSummaryExternal => 'Buiten Givt';
 
   @override
   String get personalSummaryYearTotal => 'Totaal gegeven';
@@ -1806,7 +1806,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get personalSummaryAddDonationSheetTitle => 'Donatie toevoegen';
+  String get personalSummaryAddDonationSheetTitle => 'Gift toevoegen';
 
   @override
   String get personalSummaryGiveThroughGivt => 'Geven via Givt';
@@ -1816,7 +1816,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Vind een goed doel en geef nu';
 
   @override
-  String get personalSummaryAddExternalDonation => 'Externe donatie toevoegen';
+  String get personalSummaryAddExternalDonation => 'Externe gift toevoegen';
 
   @override
   String get personalSummaryAddExternalDonationSubtitle =>
@@ -2586,15 +2586,15 @@ class AppLocalizationsNl extends AppLocalizations {
       'I’m here to help your family build gratitude and foster generosity. Let’s get started!\'';
 
   @override
-  String get refundTitle => 'Donatie terugboeken?';
+  String get refundTitle => 'Gift terugboeken?';
 
   @override
   String get refundMessageBACS =>
-      'Neem contact met ons op via support@givt.co.uk zodat wij de donatie kunnen terugboeken.';
+      'Neem contact met ons op via support@givt.co.uk zodat wij de gift kunnen terugboeken.';
 
   @override
   String get refundMessageGeneral =>
-      'Ga naar je online bankomgeving om je donatie terug te boeken.';
+      'Ga naar je online bankomgeving om je gift terug te boeken.';
 
   @override
   String get requestRefund => 'Terugboeken';
@@ -2673,7 +2673,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get donationOverviewPlatformContributionText =>
-      'Dankzij jouw gekozen vrijwillige platformbijdrage kunnen we het ontvangen van donaties goedkoper maken.';
+      'Dankzij jouw gekozen vrijwillige platformbijdrage kunnen we het ontvangen van giften goedkoper maken.';
 
   @override
   String get platformFeePlaceholder => 'Selecteer bedrag';
@@ -2916,7 +2916,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Je overzichtsregel wordt opgebouwd:';
 
   @override
-  String get externalDonationsCreatePreviewTypeTag => 'Ext. Gift';
+  String get externalDonationsCreatePreviewTypeTag => 'Ext. gift';
 
   @override
   String externalDonationsCreatePreviewMoreRecords(
@@ -2970,10 +2970,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get externalDonationsBulkDeleteModalCancel => 'Nee, records behouden';
 
   @override
-  String get externalDonationsScopeTitle => 'Welke gifts moeten veranderen?';
+  String get externalDonationsScopeTitle => 'Welke giften wil je aanpassen?';
 
   @override
-  String get externalDonationsScopeAll => 'Alle gifts';
+  String get externalDonationsScopeAll => 'Alle giften';
 
   @override
   String get externalDonationsScopeOnwards => 'Vanaf nu';
@@ -3352,7 +3352,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get donationOverviewContactMessage =>
-      'Hoi, ik heb de volgende vraag over mijn donatie:';
+      'Hoi, ik heb de volgende vraag over mijn gift:';
 
   @override
   String get donationHistoryExternalListSubtitle => 'Externe gift';

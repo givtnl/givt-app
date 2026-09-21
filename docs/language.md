@@ -10,6 +10,7 @@ The application distinguishes between the **action** of giving, the **object** (
 | :--- | :--- | :--- | :--- | :--- |
 | **Action (Verb)** | Give | Geven | Geben | Donar / Dar* |
 | **Object (Noun)** | Donation | Gift | Spende | Donación |
+| **Object, external** | External donation | Externe gift | Externe Spende | Donación externa |
 | **Context** | Collection / Collection Bag | Collectemiddel / collectedoel | Kollekte | Colecta / Recolección |
 
 *\*Note: Spanish uses "Donar" for primary actions (buttons) but may use "Dar" in conversational text (e.g., "Gracias por dar").*
@@ -24,9 +25,10 @@ The application distinguishes between the **action** of giving, the **object** (
 
 ### 2. The Object: "Donation" vs "Gift"
 *   **English**: Use **"Donation"** when referring to the transaction (e.g., "Cancel donation", "Max donation amount"). Use "Gift" primarily in the context of "Gift Aid" or specific branding.
-*   **Dutch**: Use **"Gift"** consistently for the donation object. When forming compound words with "bedrag" (amount), use the verb form: **"geefbedrag"** (not "giftbedrag") for better natural flow.
+*   **Dutch**: Use **"Gift"** consistently for the donation object, never **"donatie"**. The plural is **"giften"** (not the English "gifts"). When forming compound words with "bedrag" (amount), use the verb form: **"geefbedrag"** (not "giftbedrag") for better natural flow.
 *   **German**: Use **"Spende"**.
 *   **Spanish**: Use **"Donación"**.
+*   **Source labels**: When a label answers *where* a donation came from rather than naming the object — chart legends, source filters — prefer the source over the noun. Dutch uses **"Via Givt"** / **"Buiten Givt"**, not "Givt-giften" / "Externe giften".
 
 ### 3. Tone of Voice
 *   **Friendly & Direct**: The app addresses the user directly.
