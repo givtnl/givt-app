@@ -1045,6 +1045,8 @@
   "forYouLocationBasedSubtitle": "Give to organisations near you",
   "forYouQrCodeTitle": "QR code",
   "forYouQrCodeSubtitle": "Scan a Givt QR code",
+  "forYouQrZoomIn": "Zoom in",
+  "forYouQrZoomOut": "Zoom out",
   "forYouCollectionDeviceTitle": "Collection device",
   "forYouCollectionDeviceSubtitle": "Give when the collection bag or plate passes by",
   "forYouGoalsCountCollectionsOne": "1 Collection Goal",

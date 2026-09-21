@@ -1463,6 +1463,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forYouQrCodeSubtitle => 'Scan een Givt-QR-code';
 
   @override
+  String get forYouQrZoomIn => 'Inzoomen';
+
+  @override
+  String get forYouQrZoomOut => 'Uitzoomen';
+
+  @override
   String get forYouCollectionDeviceTitle => 'Collectemiddel';
 
   @override

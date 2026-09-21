@@ -1007,6 +1007,8 @@
   "forYouLocationBasedSubtitle": "Geef aan organisaties bij jou in de buurt",
   "forYouQrCodeTitle": "QR-code",
   "forYouQrCodeSubtitle": "Scan een Givt-QR-code",
+  "forYouQrZoomIn": "Inzoomen",
+  "forYouQrZoomOut": "Uitzoomen",
   "forYouCollectionDeviceTitle": "Collectemiddel",
   "forYouCollectionDeviceSubtitle": "Geef wanneer de collectezak of -plaat langskomt",
   "forYouGoalsCountCollectionsOne": "1 collectedoel",

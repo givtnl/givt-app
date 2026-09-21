@@ -1458,6 +1458,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get forYouQrCodeSubtitle => 'Escanea un código QR de Givt';
 
   @override
+  String get forYouQrZoomIn => 'Acercar';
+
+  @override
+  String get forYouQrZoomOut => 'Alejar';
+
+  @override
   String get forYouCollectionDeviceTitle => 'Dispositivo de recaudación';
 
   @override
@@ -5101,6 +5107,12 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get forYouQrCodeSubtitle => 'Escanea un código QR de Givt';
+
+  @override
+  String get forYouQrZoomIn => 'Acercar';
+
+  @override
+  String get forYouQrZoomOut => 'Alejar';
 
   @override
   String get forYouCollectionDeviceTitle => 'Dispositivo de recaudación';

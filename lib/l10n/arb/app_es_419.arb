@@ -1002,6 +1002,8 @@
   "forYouLocationBasedSubtitle": "Dona a organizaciones cerca de ti",
   "forYouQrCodeTitle": "QR-code",
   "forYouQrCodeSubtitle": "Escanea un código QR de Givt",
+  "forYouQrZoomIn": "Acercar",
+  "forYouQrZoomOut": "Alejar",
   "forYouCollectionDeviceTitle": "Dispositivo de recaudación",
   "forYouCollectionDeviceSubtitle": "Dona cuando pase la bolsa de colecta o la placa",
   "forYouGoalsCountCollectionsOne": "1 objetivo de colecta",

@@ -1457,6 +1457,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouQrCodeSubtitle => 'Scan a Givt QR code';
 
   @override
+  String get forYouQrZoomIn => 'Zoom in';
+
+  @override
+  String get forYouQrZoomOut => 'Zoom out';
+
+  @override
   String get forYouCollectionDeviceTitle => 'Collection device';
 
   @override
@@ -5078,6 +5084,12 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get forYouQrCodeSubtitle => 'Scan a Givt QR code';
+
+  @override
+  String get forYouQrZoomIn => 'Zoom in';
+
+  @override
+  String get forYouQrZoomOut => 'Zoom out';
 
   @override
   String get forYouCollectionDeviceTitle => 'Collection device';
