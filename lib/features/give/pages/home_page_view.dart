@@ -18,6 +18,7 @@ class HomePageView extends StatefulWidget {
     required this.afterGivingRedirection,
     required this.code,
     required this.initialPageIndex,
+    this.showGivingFlowSwitch = true,
     this.giveBloc,
     this.qrConfirmWidget,
     super.key,
@@ -29,6 +30,11 @@ class HomePageView extends StatefulWidget {
   final String code;
   final String afterGivingRedirection;
   final int initialPageIndex;
+
+  /// When false, the old give flow and the tab switch are not shown.
+  /// Defaults to true so current behaviour stays until the feature flag hides
+  /// the switch.
+  final bool showGivingFlowSwitch;
   final void Function(int) onPageChanged;
   final GiveBloc? giveBloc;
   final Widget? qrConfirmWidget;
@@ -52,6 +58,10 @@ class _HomePageViewState extends State<HomePageView> {
   @override
   void didUpdateWidget(HomePageView oldWidget) {
     super.didUpdateWidget(oldWidget);
+    // The old flow is not on screen, so don't treat this as a tab change.
+    if (!widget.showGivingFlowSwitch) {
+      return;
+    }
     if (widget.initialPageIndex != oldWidget.initialPageIndex &&
         widget.initialPageIndex != pageIndex) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -71,6 +81,21 @@ class _HomePageViewState extends State<HomePageView> {
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.showGivingFlowSwitch) {
+      return const Column(
+        children: [
+          OfflineGivingBanner(),
+          SizedBox(height: 8),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: ForYou(),
+            ),
+          ),
+        ],
+      );
+    }
+
     final auth = context.watch<AuthCubit>().state;
     return Column(
       children: [
