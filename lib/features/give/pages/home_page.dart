@@ -12,6 +12,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/core/feature_flags.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/core/network/request_helper.dart';
@@ -20,6 +21,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/cubit/offline_queue_cubit.dart';
 import 'package:givt_app/features/give/pages/home_page_view.dart';
 import 'package:givt_app/features/give/pages/home_page_with_qr_code.dart';
+import 'package:givt_app/features/give/utils/giving_flow_switch.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
@@ -66,30 +68,23 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   bool _isAppInBackground = false;
   int _scanCounter =
       0; // Counter to force new bloc creation when rescanning same code
-  bool _didApplyForYouStartupOverride = false;
+  bool _hideGivingFlowSwitch = false;
   bool _isPromptingReauthentication = false;
+
   /// Prevents re-showing the startup reauth sheet on every rebuild after the
   /// user dismisses it. Cleared on successful reauth; resume can still prompt.
   bool _reauthPromptDismissed = false;
 
-  static const String _forYouStartupFlagKey = 'for_you_new_giving_flow';
-
   @override
   void initState() {
     super.initState();
-    // QR deep links open on the For You tab (ENG-595).
-    if (widget.code.isNotEmpty) {
-      pageIndex = 1;
-    } else {
-      pageIndex = getIt<SharedPreferences>().getInt(
-            NativeSharedPreferencesKeys.homePageLastTabIndex,
-          ) ??
-          0;
-    }
+    // For You is the home tab, including QR deep links (ENG-595).
+    // A switch to the old give flow lasts only for this visit.
+    pageIndex = GivingFlowSwitchDecision.newFlowPageIndex;
     WidgetsBinding.instance.addObserver(this); // Add lifecycle observer
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
-      _applyForYouStartupOverrideIfEnabled();
+      unawaited(_applyHideGivingFlowSwitchIfEnabled());
       unawaited(_promptReauthenticationIfNeeded());
 
       FirebaseMessaging.instance.getInitialMessage().then((message) {
@@ -127,7 +122,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       return;
     }
 
-    final shouldPrompt = auth.needsReauthentication ||
+    final shouldPrompt =
+        auth.needsReauthentication ||
         (requireExpiredSession && auth.session.isExpired);
     if (!shouldPrompt) {
       return;
@@ -167,48 +163,27 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _applyForYouStartupOverrideIfEnabled() async {
-    if (_didApplyForYouStartupOverride) {
-      return;
-    }
-    _didApplyForYouStartupOverride = true;
-
-    // Don't interfere with QR flows or deep-links.
-    if (widget.code.isNotEmpty || widget.navigateTo.isNotEmpty) {
-      return;
-    }
-
-    bool isEnabled;
-    try {
-      isEnabled = await (() async {
-        await AnalyticsHelper.ensureInitialized();
-        return AnalyticsHelper.isFeatureEnabled(
-          _forYouStartupFlagKey,
-          fallback: true,
-        );
-      })().timeout(const Duration(seconds: 1));
-    } on TimeoutException {
-      // Phased rollout: if the flag cannot be evaluated in time, default to
-      // the new giving flow (same as ENG-555 PostHog fallback).
-      isEnabled = true;
-    } on Object {
-      isEnabled = true;
-    }
-    if (!mounted || !isEnabled) {
-      return;
-    }
-
-    if (pageIndex == 1) {
-      return;
-    }
-
-    setState(() {
-      pageIndex = 1;
-    });
-    await getIt<SharedPreferences>().setInt(
-      NativeSharedPreferencesKeys.homePageLastTabIndex,
-      1,
+  /// Hides the old/new flow switch for users in the PostHog rollout.
+  ///
+  /// Unknown or disabled flags keep the switch. Home still opens on For You.
+  /// Evaluating the flag also attaches it to later events, so giving can be
+  /// compared between the hidden group and everyone else.
+  Future<void> _applyHideGivingFlowSwitchIfEnabled() async {
+    final hideSwitch = await AnalyticsHelper.isFeatureEnabled(
+      FeatureFlags.hideGivingFlowSwitch,
     );
+    if (!mounted || !hideSwitch) {
+      return;
+    }
+
+    final decision = GivingFlowSwitchDecision.resolve(
+      hideSwitch: true,
+      currentPageIndex: pageIndex,
+    );
+    setState(() {
+      _hideGivingFlowSwitch = true;
+      pageIndex = decision.pageIndex;
+    });
   }
 
   @override
@@ -326,9 +301,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           key: const ValueKey('EU-Home-AppBar'),
           title: switch (pageIndex) {
             0 => locals.amount,
-            1 => (auth.user.tempUser || auth.user.needRegistration)
-                ? locals.welcomeOnly
-                : locals.chooseGroup(auth.user.firstName),
+            1 =>
+              (auth.user.tempUser || auth.user.needRegistration)
+                  ? locals.welcomeOnly
+                  : locals.chooseGroup(auth.user.firstName),
             _ => locals.give,
           },
           leading: badges.Badge(
@@ -412,96 +388,84 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         body: BlocProvider(
           create: (_) => OfflineQueueCubit(getIt(), getIt()),
           child: widget.code.isNotEmpty
-            ? HomePageWithQRCode(
-                key: ValueKey(
-                  'qr-entry-${widget.code}-$_scanCounter-${auth.status}',
-                ),
-                code: widget.code,
-                initialAmount: widget.initialAmount,
-                retry: widget.retry,
-                afterGivingRedirection: widget.afterGivingRedirection,
-                initialPageIndex: pageIndex,
-                onPageChanged: (index) => setState(
-                  () {
-                    pageIndex = index;
-                    getIt<SharedPreferences>().setInt(
-                      NativeSharedPreferencesKeys.homePageLastTabIndex,
-                      index,
-                    );
-                  },
-                ),
-                auth: auth,
-                mandatePopupDismissalTracker: _mandatePopupDismissalTracker,
-              )
-            : MultiBlocListener(
-                listeners: [
-                  BlocListener<
-                    RemoteDataSourceSyncBloc,
-                    RemoteDataSourceSyncState
-                  >(
-                    listener: (context, state) {
-                      // Debug information
-                      if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                        var syncString = 'Synced successfully';
-                        if (widget.code.isNotEmpty) {
-                          syncString += ' with mediumId/code ${widget.code}';
-                        }
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              syncString,
+              ? HomePageWithQRCode(
+                  key: ValueKey(
+                    'qr-entry-${widget.code}-$_scanCounter-${auth.status}',
+                  ),
+                  code: widget.code,
+                  initialAmount: widget.initialAmount,
+                  retry: widget.retry,
+                  afterGivingRedirection: widget.afterGivingRedirection,
+                  initialPageIndex: pageIndex,
+                  showGivingFlowSwitch: !_hideGivingFlowSwitch,
+                  onPageChanged: (index) => setState(() => pageIndex = index),
+                  auth: auth,
+                  mandatePopupDismissalTracker: _mandatePopupDismissalTracker,
+                )
+              : MultiBlocListener(
+                  listeners: [
+                    BlocListener<
+                      RemoteDataSourceSyncBloc,
+                      RemoteDataSourceSyncState
+                    >(
+                      listener: (context, state) {
+                        // Debug information
+                        if (state is RemoteDataSourceSyncSuccess &&
+                            kDebugMode) {
+                          var syncString = 'Synced successfully';
+                          if (widget.code.isNotEmpty) {
+                            syncString += ' with mediumId/code ${widget.code}';
+                          }
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                syncString,
+                              ),
                             ),
-                          ),
-                        );
-                      }
-
-                      // Needs registration dialog
-                      if (state is RemoteDataSourceSyncSuccess) {
-                        if (!auth.user.needRegistration &&
-                            auth.user.mandateSigned) {
-                          return;
+                          );
                         }
 
-                        // TODO: Not show over biometrics
-                        NeedsRegistrationDialog.show(
-                          context,
-                          mandatePopupDismissalTracker:
-                              _mandatePopupDismissalTracker,
-                        );
-                      }
-                    },
-                  ),
-                  BlocListener<InfraCubit, InfraState>(
-                    listener: (context, state) {
-                      if (state is InfraUpdateAvailable) {
-                        _displayUpdateDialog(
-                          context,
-                          state.appUpdate,
-                        );
-                      }
-                    },
-                  ),
-                ],
-                child: SafeArea(
-                  child: HomePageView(
-                    initialAmount: widget.initialAmount,
-                    given: widget.given,
-                    retry: widget.retry,
-                    code: widget.code,
-                    afterGivingRedirection: widget.afterGivingRedirection,
-                    initialPageIndex: pageIndex,
-                    onPageChanged: (index) => setState(
-                      () {
-                        pageIndex = index;
-                        getIt<SharedPreferences>().setInt(
-                          NativeSharedPreferencesKeys.homePageLastTabIndex,
-                          index,
-                        );
+                        // Needs registration dialog
+                        if (state is RemoteDataSourceSyncSuccess) {
+                          if (!auth.user.needRegistration &&
+                              auth.user.mandateSigned) {
+                            return;
+                          }
+
+                          // TODO: Not show over biometrics
+                          NeedsRegistrationDialog.show(
+                            context,
+                            mandatePopupDismissalTracker:
+                                _mandatePopupDismissalTracker,
+                          );
+                        }
                       },
+                    ),
+                    BlocListener<InfraCubit, InfraState>(
+                      listener: (context, state) {
+                        if (state is InfraUpdateAvailable) {
+                          _displayUpdateDialog(
+                            context,
+                            state.appUpdate,
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                  child: SafeArea(
+                    child: HomePageView(
+                      initialAmount: widget.initialAmount,
+                      given: widget.given,
+                      retry: widget.retry,
+                      code: widget.code,
+                      afterGivingRedirection: widget.afterGivingRedirection,
+                      initialPageIndex: pageIndex,
+                      showGivingFlowSwitch: !_hideGivingFlowSwitch,
+                      onPageChanged: (index) =>
+                          setState(() => pageIndex = index),
                     ),
                   ),
                 ),
-              ),
         ),
       ),
     );

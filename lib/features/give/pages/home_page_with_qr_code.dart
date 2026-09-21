@@ -36,6 +36,7 @@ class HomePageWithQRCode extends StatefulWidget {
     required this.onPageChanged,
     required this.auth,
     required this.mandatePopupDismissalTracker,
+    this.showGivingFlowSwitch = true,
     super.key,
   });
 
@@ -45,6 +46,7 @@ class HomePageWithQRCode extends StatefulWidget {
   final String afterGivingRedirection;
   final int initialPageIndex;
   final void Function(int) onPageChanged;
+  final bool showGivingFlowSwitch;
   final AuthState auth;
   final MandatePopupDismissalTracker mandatePopupDismissalTracker;
 
@@ -276,6 +278,7 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
           code: widget.code,
           afterGivingRedirection: widget.afterGivingRedirection,
           initialPageIndex: widget.initialPageIndex,
+          showGivingFlowSwitch: widget.showGivingFlowSwitch,
           onPageChanged: widget.onPageChanged,
         ),
       ),
