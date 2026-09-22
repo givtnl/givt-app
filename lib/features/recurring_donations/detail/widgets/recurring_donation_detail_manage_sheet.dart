@@ -21,76 +21,90 @@ class RecurringDonationDetailManageSheet {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.sizeOf(context).height * 0.85,
+      ),
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (sheetContext) {
-        return FunBottomSheet(
-          title: locals.recurringDonationsDetailManageButton,
-          closeAction: () => Navigator.of(sheetContext).pop(),
-          content: Column(
-            children: [
-              FunButton(
-                text: locals.recurringDonationsDetailEditDonation,
-                variant: FunButtonVariant.secondary,
-                fullBorder: true,
-                analyticsEvent:
-                    AnalyticsEventName.recurringDonationEditActionClicked
-                        .toEvent(),
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        locals.recurringDonationsDetailEditComingSoon,
+        // Edge-to-edge Android can zero MediaQuery.padding while viewPadding
+        // still holds the gesture/nav inset. FunBottomSheet's SafeArea uses
+        // padding, so copy viewPadding in for this sheet.
+        final mediaQuery = MediaQuery.of(sheetContext);
+        return MediaQuery(
+          data: mediaQuery.copyWith(padding: mediaQuery.viewPadding),
+          child: FunBottomSheet(
+            title: locals.recurringDonationsDetailManageButton,
+            closeAction: () => Navigator.of(sheetContext).pop(),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FunButton(
+                  text: locals.recurringDonationsDetailEditDonation,
+                  variant: FunButtonVariant.secondary,
+                  fullBorder: true,
+                  analyticsEvent: AnalyticsEventName
+                      .recurringDonationEditActionClicked
+                      .toEvent(),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          locals.recurringDonationsDetailEditComingSoon,
+                        ),
+                        duration: const Duration(seconds: 2),
                       ),
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 12),
-              FunButton(
-                text: locals.recurringDonationsDetailPauseDonation,
-                variant: FunButtonVariant.secondary,
-                fullBorder: true,
-                analyticsEvent:
-                    AnalyticsEventName.recurringDonationPauseActionClicked
-                        .toEvent(),
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  cubit.onPauseDonationPressed();
-                },
-              ),
-              const SizedBox(height: 12),
-              FunButton(
-                text: locals.recurringDonationsDetailCancelDonation,
-                variant: FunButtonVariant.secondary,
-                fullBorder: true,
-                borderColor: FamilyAppTheme.error40,
-                textColor: FamilyAppTheme.error40,
-                analyticsEvent:
-                    AnalyticsEventName.recurringDonationCancelActionClicked
-                        .toEvent(),
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  showDialog<bool>(
-                    context: context,
-                    builder: (dialogContext) =>
-                        CancelRecurringDonationConfirmationDialog(
-                      recurringDonation: recurringDonation,
-                    ),
-                  ).then((result) {
-                    if (result == true && context.mounted) {
-                      Navigator.of(context).push(
-                        const RecurringDonationsOverviewPage().toRoute(context),
-                      );
-                    }
-                  });
-                },
-              ),
-            ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 12),
+                FunButton(
+                  text: locals.recurringDonationsDetailPauseDonation,
+                  variant: FunButtonVariant.secondary,
+                  fullBorder: true,
+                  analyticsEvent: AnalyticsEventName
+                      .recurringDonationPauseActionClicked
+                      .toEvent(),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    cubit.onPauseDonationPressed();
+                  },
+                ),
+                const SizedBox(height: 12),
+                FunButton(
+                  text: locals.recurringDonationsDetailCancelDonation,
+                  variant: FunButtonVariant.secondary,
+                  fullBorder: true,
+                  borderColor: FamilyAppTheme.error40,
+                  textColor: FamilyAppTheme.error40,
+                  analyticsEvent: AnalyticsEventName
+                      .recurringDonationCancelActionClicked
+                      .toEvent(),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    showDialog<bool>(
+                      context: context,
+                      builder: (dialogContext) =>
+                          CancelRecurringDonationConfirmationDialog(
+                            recurringDonation: recurringDonation,
+                          ),
+                    ).then((result) {
+                      if (result == true && context.mounted) {
+                        Navigator.of(context).push(
+                          const RecurringDonationsOverviewPage().toRoute(
+                            context,
+                          ),
+                        );
+                      }
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
