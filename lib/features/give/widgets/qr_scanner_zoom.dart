@@ -10,7 +10,7 @@ import 'package:givt_app/utils/analytics_helper.dart';
 class QrScannerZoom {
   static const double minScale = 0;
   static const double maxScale = 1;
-  static const double togglePreset = 0.5;
+  static const double togglePreset = 0.4;
   static const double restThreshold = 0.05;
   static const double minDelta = 0.02;
   static const double pinchSensitivity = 0.5;
