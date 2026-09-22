@@ -1457,6 +1457,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouQrCodeSubtitle => 'Scan a Givt QR code';
 
   @override
+  String get forYouQrZoomIn => 'Zoom in';
+
+  @override
+  String get forYouQrZoomOut => 'Zoom out';
+
+  @override
   String get forYouCollectionDeviceTitle => 'Collection device';
 
   @override
@@ -2912,6 +2918,9 @@ class AppLocalizationsEn extends AppLocalizations {
   ) {
     return '+ $count more records back to $startMonthYear';
   }
+
+  @override
+  String get externalDonationsManageSheetTitle => 'Manage external donation';
 
   @override
   String get externalDonationsManageAmount => 'Amount';
@@ -5080,6 +5089,12 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get forYouQrCodeSubtitle => 'Scan a Givt QR code';
 
   @override
+  String get forYouQrZoomIn => 'Zoom in';
+
+  @override
+  String get forYouQrZoomOut => 'Zoom out';
+
+  @override
   String get forYouCollectionDeviceTitle => 'Collection device';
 
   @override
@@ -6489,6 +6504,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   ) {
     return '+ $count more records back to $startMonthYear';
   }
+
+  @override
+  String get externalDonationsManageSheetTitle => 'Manage external donation';
 
   @override
   String get externalDonationsManageAmount => 'Amount';

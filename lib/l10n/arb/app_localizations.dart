@@ -2661,6 +2661,18 @@ abstract class AppLocalizations {
   /// **'Scan a Givt QR code'**
   String get forYouQrCodeSubtitle;
 
+  /// No description provided for @forYouQrZoomIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in'**
+  String get forYouQrZoomIn;
+
+  /// No description provided for @forYouQrZoomOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom out'**
+  String get forYouQrZoomOut;
+
   /// No description provided for @forYouCollectionDeviceTitle.
   ///
   /// In en, this message translates to:
@@ -5203,6 +5215,12 @@ abstract class AppLocalizations {
     int count,
     String startMonthYear,
   );
+
+  /// No description provided for @externalDonationsManageSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage external donation'**
+  String get externalDonationsManageSheetTitle;
 
   /// No description provided for @externalDonationsManageAmount.
   ///

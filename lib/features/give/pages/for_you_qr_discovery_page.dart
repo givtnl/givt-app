@@ -14,6 +14,7 @@ import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/errors/scanner_error_widget.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -37,6 +38,19 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
 
   bool _isProcessing = false;
   bool _isStartingScanner = false;
+  double _zoomScale = QrScannerZoom.minScale;
+  double _pinchStartZoom = QrScannerZoom.minScale;
+  double? _openingZoom;
+  bool _ownsZoom = false;
+  bool _awaitingOpeningZoom = true;
+
+  double get _restZoom => _openingZoom ?? QrScannerZoom.minScale;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_adoptOpeningZoom);
+  }
 
   @override
   void didChangeDependencies() {
@@ -46,8 +60,43 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
 
   @override
   void dispose() {
+    _controller.removeListener(_adoptOpeningZoom);
     _controller.dispose();
     super.dispose();
+  }
+
+  void _beginOpeningCapture() {
+    _openingZoom = null;
+    _ownsZoom = false;
+    _awaitingOpeningZoom = true;
+  }
+
+  /// Stores the first real zoom the camera reports after it starts.
+  ///
+  /// The controller's zoom stays at [QrScannerZoom.maxScale] until the
+  /// platform sends a reading. On iOS that placeholder is 5×, not the view
+  /// the camera opened on, so it is ignored.
+  void _adoptOpeningZoom() {
+    if (!_awaitingOpeningZoom || _ownsZoom) {
+      return;
+    }
+    if (!_controller.value.isRunning) {
+      return;
+    }
+
+    final reported = _controller.value.zoomScale;
+    if (reported == QrScannerZoom.maxScale) {
+      return;
+    }
+
+    _awaitingOpeningZoom = false;
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _openingZoom = reported;
+      _zoomScale = reported;
+    });
   }
 
   Future<void> _restartScannerIfMounted() async {
@@ -55,11 +104,61 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
       return;
     }
     _isStartingScanner = true;
+    _beginOpeningCapture();
     try {
       await _controller.start();
     } finally {
       _isStartingScanner = false;
     }
+  }
+
+  Future<void> _setZoomScale(double next) async {
+    final clamped = QrScannerZoom.clamp(next);
+    if (!QrScannerZoom.shouldApply(_zoomScale, clamped)) {
+      return;
+    }
+    if (!_controller.value.isRunning) {
+      return;
+    }
+
+    setState(() {
+      _zoomScale = clamped;
+    });
+
+    try {
+      await _controller.setZoomScale(clamped);
+    } on MobileScannerException {
+      return;
+    }
+  }
+
+  void _onScaleStart(ScaleStartDetails details) {
+    _pinchStartZoom = _zoomScale;
+  }
+
+  void _onScaleUpdate(ScaleUpdateDetails details) {
+    if (details.pointerCount < 2) {
+      return;
+    }
+
+    _ownsZoom = true;
+    unawaited(
+      _setZoomScale(
+        QrScannerZoom.fromPinch(
+          startScale: _pinchStartZoom,
+          gestureScale: details.scale,
+        ),
+      ),
+    );
+  }
+
+  void _onZoomToggle() {
+    _ownsZoom = true;
+    unawaited(
+      _setZoomScale(
+        QrScannerZoom.toggleTarget(_zoomScale, opening: _restZoom),
+      ),
+    );
   }
 
   void _goToForYouList() {
@@ -72,6 +171,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final atRest = QrScannerZoom.isAtRest(_zoomScale, opening: _restZoom);
 
     return BlocListener<CameraCubit, CameraState>(
       bloc: _cameraCubit,
@@ -103,13 +203,46 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
         ),
         body: Stack(
           children: [
-            MobileScanner(
-              controller: _controller,
-              errorBuilder: (context, error) =>
-                  ScannerErrorWidget(error: error),
-              onDetect: (capture) => _processBarcode(barcodeCapture: capture),
+            GestureDetector(
+              onScaleStart: _onScaleStart,
+              onScaleUpdate: _onScaleUpdate,
+              child: Stack(
+                children: [
+                  MobileScanner(
+                    controller: _controller,
+                    errorBuilder: (context, error) =>
+                        ScannerErrorWidget(error: error),
+                    onDetect: (capture) =>
+                        _processBarcode(barcodeCapture: capture),
+                  ),
+                  const Positioned.fill(
+                    child: IgnorePointer(child: QrCodeTarget()),
+                  ),
+                ],
+              ),
             ),
-            const Positioned.fill(child: QrCodeTarget()),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 24 + MediaQuery.paddingOf(context).bottom,
+              child: Center(
+                child: QrScannerZoomButton(
+                  isZoomed: !atRest,
+                  semanticsLabel: atRest
+                      ? locals.forYouQrZoomIn
+                      : locals.forYouQrZoomOut,
+                  analyticsEvent: AnalyticsEvent(
+                    AnalyticsEventName.forYouQrZoomToggled,
+                    parameters: {
+                      AnalyticsHelper.toggleStatusKey: atRest
+                          ? 'zoomed_in'
+                          : 'zoomed_out',
+                    },
+                  ),
+                  onPressed: _onZoomToggle,
+                ),
+              ),
+            ),
             if (_isProcessing)
               const Positioned.fill(
                 child: Opacity(
