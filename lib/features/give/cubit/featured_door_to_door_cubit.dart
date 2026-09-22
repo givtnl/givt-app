@@ -17,7 +17,8 @@ class FeaturedDoorToDoorCubit extends Cubit<FeaturedDoorToDoorState> {
     _internetSubscription = _networkInfo.hasInternetConnectionStream().listen(
       (isConnected) {
         if (!isConnected) {
-          emit(const FeaturedDoorToDoorState.hidden());
+          _invalidateInFlightLoads();
+          _emitIfOpen(const FeaturedDoorToDoorState.hidden());
           return;
         }
         unawaited(load());
@@ -29,27 +30,55 @@ class FeaturedDoorToDoorCubit extends Cubit<FeaturedDoorToDoorState> {
   final Future<FeaturedCollectGroup?> Function() _fetchFeatured;
   final NetworkInfo _networkInfo;
   late final StreamSubscription<bool> _internetSubscription;
+  int _loadGeneration = 0;
 
   Future<void> load() async {
+    final generation = ++_loadGeneration;
     if (!_networkInfo.isConnected) {
-      emit(const FeaturedDoorToDoorState.hidden());
+      _emitIfCurrent(generation, const FeaturedDoorToDoorState.hidden());
       return;
     }
 
     try {
       final featured = await _fetchFeatured();
-      if (featured == null || featured.nameSpace.trim().isEmpty) {
-        emit(const FeaturedDoorToDoorState.hidden());
+      if (!_isCurrent(generation)) {
         return;
       }
-      emit(FeaturedDoorToDoorState.loaded(featured));
+      if (!_networkInfo.isConnected ||
+          featured == null ||
+          featured.nameSpace.trim().isEmpty) {
+        _emitIfCurrent(generation, const FeaturedDoorToDoorState.hidden());
+        return;
+      }
+      _emitIfCurrent(generation, FeaturedDoorToDoorState.loaded(featured));
     } on Exception {
-      emit(const FeaturedDoorToDoorState.hidden());
+      _emitIfCurrent(generation, const FeaturedDoorToDoorState.hidden());
     }
+  }
+
+  void _invalidateInFlightLoads() {
+    _loadGeneration++;
+  }
+
+  bool _isCurrent(int generation) => !isClosed && generation == _loadGeneration;
+
+  void _emitIfCurrent(int generation, FeaturedDoorToDoorState next) {
+    if (!_isCurrent(generation)) {
+      return;
+    }
+    emit(next);
+  }
+
+  void _emitIfOpen(FeaturedDoorToDoorState next) {
+    if (isClosed) {
+      return;
+    }
+    emit(next);
   }
 
   @override
   Future<void> close() async {
+    _invalidateInFlightLoads();
     await _internetSubscription.cancel();
     return super.close();
   }

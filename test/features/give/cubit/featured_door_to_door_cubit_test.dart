@@ -123,5 +123,48 @@ void main() {
       expect(cubit.state.isVisible, isFalse);
       await cubit.close();
     });
+
+    test('ignores in-flight fetch after connectivity drops', () async {
+      final inFlight = Completer<FeaturedCollectGroup?>();
+      final cubit = FeaturedDoorToDoorCubit(
+        fetchFeatured: () => inFlight.future,
+        networkInfo: networkInfo,
+      );
+
+      networkInfo.emitConnected(false);
+      await Future<void>.delayed(Duration.zero);
+      expect(cubit.state.isVisible, isFalse);
+
+      inFlight.complete(featured);
+      await Future<void>.delayed(Duration.zero);
+      expect(cubit.state.isVisible, isFalse);
+      await cubit.close();
+    });
+
+    test('older fetch cannot overwrite a newer result', () async {
+      final fetches = <Completer<FeaturedCollectGroup?>>[];
+      final cubit = FeaturedDoorToDoorCubit(
+        fetchFeatured: () {
+          final completer = Completer<FeaturedCollectGroup?>();
+          fetches.add(completer);
+          return completer.future;
+        },
+        networkInfo: networkInfo,
+      );
+
+      expect(fetches, hasLength(1));
+      unawaited(cubit.load());
+      await Future<void>.delayed(Duration.zero);
+      expect(fetches, hasLength(2));
+
+      fetches[1].complete(featured);
+      await Future<void>.delayed(Duration.zero);
+      expect(cubit.state.isVisible, isTrue);
+
+      fetches[0].complete(null);
+      await Future<void>.delayed(Duration.zero);
+      expect(cubit.state.isVisible, isTrue);
+      await cubit.close();
+    });
   });
 }
