@@ -1521,6 +1521,7 @@
   "externalDonationsCreatePreviewTitle": "Creando la entrada de tu resumen:",
   "externalDonationsCreatePreviewTypeTag": "Don. ext.",
   "externalDonationsCreatePreviewMoreRecords": "+ {count} registros más hasta {startMonthYear}",
+  "externalDonationsManageSheetTitle": "Gestionar donación externa",
   "externalDonationsManageAmount": "Importe",
   "externalDonationsManageFrequency": "Frecuencia",
   "externalDonationsManageStartDate": "Fecha de inicio",

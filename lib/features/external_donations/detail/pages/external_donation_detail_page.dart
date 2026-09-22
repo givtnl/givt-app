@@ -93,7 +93,7 @@ class _ExternalDonationDetailPageState extends State<ExternalDonationDetailPage>
                   );
                   _cubit.onManagePressed();
                 },
-                tooltip: context.l10n.recurringDonationsDetailManageButton,
+                tooltip: context.l10n.externalDonationsManageSheetTitle,
               );
             },
             onLoading: (_) => const SizedBox.shrink(),

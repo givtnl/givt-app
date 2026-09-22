@@ -2927,6 +2927,9 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get externalDonationsManageSheetTitle => 'Gestionar donación externa';
+
+  @override
   String get externalDonationsManageAmount => 'Importe';
 
   @override
@@ -6590,6 +6593,9 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   ) {
     return '+ $count registros más hasta $startMonthYear';
   }
+
+  @override
+  String get externalDonationsManageSheetTitle => 'Gestionar donación externa';
 
   @override
   String get externalDonationsManageAmount => 'Importe';

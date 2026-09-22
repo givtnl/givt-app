@@ -5216,6 +5216,12 @@ abstract class AppLocalizations {
     String startMonthYear,
   );
 
+  /// No description provided for @externalDonationsManageSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage external donation'**
+  String get externalDonationsManageSheetTitle;
+
   /// No description provided for @externalDonationsManageAmount.
   ///
   /// In en, this message translates to:

@@ -1521,6 +1521,7 @@
   "externalDonationsCreatePreviewTitle": "Dein Übersichtseintrag wird erstellt:",
   "externalDonationsCreatePreviewTypeTag": "Ext. Spende",
   "externalDonationsCreatePreviewMoreRecords": "+ {count} weitere Einträge zurück bis {startMonthYear}",
+  "externalDonationsManageSheetTitle": "Externe Spende verwalten",
   "externalDonationsManageAmount": "Betrag",
   "externalDonationsManageFrequency": "Häufigkeit",
   "externalDonationsManageStartDate": "Startdatum",

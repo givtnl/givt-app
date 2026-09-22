@@ -2943,6 +2943,9 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get externalDonationsManageSheetTitle => 'Externe Spende verwalten';
+
+  @override
   String get externalDonationsManageAmount => 'Betrag';
 
   @override
