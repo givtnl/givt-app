@@ -31,113 +31,122 @@ class ExternalDonationManageSheet {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (sheetContext) {
-        return FunBottomSheet(
-          title: locals.externalDonationsManageSheetTitle,
-          closeAction: () => Navigator.of(sheetContext).pop(),
-          content: Column(
-            children: [
-              ExternalDonationManageListItem(
-                icon: FontAwesomeIcons.moneyBillWave,
-                label: locals.externalDonationsManageAmount,
-                value:
-                    '$currency${Util.formatNumberComma(donation.amount, country)}',
-                analyticsEvent:
-                    AnalyticsEventName.externalDonationsManageAmountClicked
-                        .toEvent(),
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  cubit.onManageFieldPressed(ExternalDonationManageField.amount);
-                },
-              ),
-              if (donation.isRecurring) ...[
+        final mediaQuery = MediaQuery.of(sheetContext);
+        return MediaQuery(
+          data: mediaQuery.copyWith(padding: mediaQuery.viewPadding),
+          child: FunBottomSheet(
+            title: locals.externalDonationsManageSheetTitle,
+            closeAction: () => Navigator.of(sheetContext).pop(),
+            content: Column(
+              children: [
                 ExternalDonationManageListItem(
-                  icon: FontAwesomeIcons.arrowsRotate,
-                  label: locals.externalDonationsManageFrequency,
-                  value: ExternalDonationDisplay.formatFrequencyWithDay(
-                    locals: locals,
-                    frequency: donation.frequency,
-                    anchorDate: anchorDate,
-                    locale: locale,
-                  ),
+                  icon: FontAwesomeIcons.moneyBillWave,
+                  label: locals.externalDonationsManageAmount,
+                  value:
+                      '$currency${Util.formatNumberComma(donation.amount, country)}',
                   analyticsEvent: AnalyticsEventName
-                      .externalDonationsManageFrequencyClicked
+                      .externalDonationsManageAmountClicked
                       .toEvent(),
                   onTap: () {
                     Navigator.of(sheetContext).pop();
                     cubit.onManageFieldPressed(
-                      ExternalDonationManageField.frequency,
+                      ExternalDonationManageField.amount,
                     );
                   },
                 ),
-                ExternalDonationManageListItem(
-                  icon: FontAwesomeIcons.solidCalendar,
-                  label: locals.externalDonationsManageStartDate,
-                  value: ExternalDonationDisplay.formatStartDate(
-                    donation,
-                    locale,
-                  ),
-                  analyticsEvent: AnalyticsEventName
-                      .externalDonationsManageStartDateClicked
-                      .toEvent(),
-                  onTap: () {
-                    Navigator.of(sheetContext).pop();
-                    cubit.onManageFieldPressed(
-                      ExternalDonationManageField.startDate,
-                    );
-                  },
-                ),
-              ] else
-                ExternalDonationManageListItem(
-                  icon: FontAwesomeIcons.solidCalendar,
-                  label: locals.externalDonationsDetailOneOffDate,
-                  value: ExternalDonationDisplay.formatStartDate(
-                    donation,
-                    locale,
-                  ),
-                  analyticsEvent:
-                      AnalyticsEventName.externalDonationsManageDateClicked
-                          .toEvent(),
-                  onTap: () {
-                    Navigator.of(sheetContext).pop();
-                    cubit.onManageFieldPressed(ExternalDonationManageField.date);
-                  },
-                ),
-              const SizedBox(height: 24),
-              FunButton(
-                text: locals.externalDonationsManageDeleteDonation,
-                variant: FunButtonVariant.secondary,
-                fullBorder: true,
-                borderColor: FamilyAppTheme.error40,
-                textColor: FamilyAppTheme.error40,
-                analyticsEvent:
-                    AnalyticsEventName.externalDonationsManageDeleteClicked
+                if (donation.isRecurring) ...[
+                  ExternalDonationManageListItem(
+                    icon: FontAwesomeIcons.arrowsRotate,
+                    label: locals.externalDonationsManageFrequency,
+                    value: ExternalDonationDisplay.formatFrequencyWithDay(
+                      locals: locals,
+                      frequency: donation.frequency,
+                      anchorDate: anchorDate,
+                      locale: locale,
+                    ),
+                    analyticsEvent: AnalyticsEventName
+                        .externalDonationsManageFrequencyClicked
                         .toEvent(),
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  cubit.onDeleteDonationPressed();
-                },
-              ),
-              if (donation.isRecurring) ...[
-                const SizedBox(height: 12),
+                    onTap: () {
+                      Navigator.of(sheetContext).pop();
+                      cubit.onManageFieldPressed(
+                        ExternalDonationManageField.frequency,
+                      );
+                    },
+                  ),
+                  ExternalDonationManageListItem(
+                    icon: FontAwesomeIcons.solidCalendar,
+                    label: locals.externalDonationsManageStartDate,
+                    value: ExternalDonationDisplay.formatStartDate(
+                      donation,
+                      locale,
+                    ),
+                    analyticsEvent: AnalyticsEventName
+                        .externalDonationsManageStartDateClicked
+                        .toEvent(),
+                    onTap: () {
+                      Navigator.of(sheetContext).pop();
+                      cubit.onManageFieldPressed(
+                        ExternalDonationManageField.startDate,
+                      );
+                    },
+                  ),
+                ] else
+                  ExternalDonationManageListItem(
+                    icon: FontAwesomeIcons.solidCalendar,
+                    label: locals.externalDonationsDetailOneOffDate,
+                    value: ExternalDonationDisplay.formatStartDate(
+                      donation,
+                      locale,
+                    ),
+                    analyticsEvent: AnalyticsEventName
+                        .externalDonationsManageDateClicked
+                        .toEvent(),
+                    onTap: () {
+                      Navigator.of(sheetContext).pop();
+                      cubit.onManageFieldPressed(
+                        ExternalDonationManageField.date,
+                      );
+                    },
+                  ),
+                const SizedBox(height: 24),
                 FunButton(
-                  text: locals.externalDonationsManageEditSpecificRecords,
+                  text: locals.externalDonationsManageDeleteDonation,
                   variant: FunButtonVariant.secondary,
                   fullBorder: true,
+                  borderColor: FamilyAppTheme.error40,
+                  textColor: FamilyAppTheme.error40,
                   analyticsEvent: AnalyticsEventName
-                      .externalDonationsManageEditRecordsClicked
+                      .externalDonationsManageDeleteClicked
                       .toEvent(),
                   onTap: () {
                     Navigator.of(sheetContext).pop();
-                    cubit.onEditSpecificRecordsPressed();
+                    cubit.onDeleteDonationPressed();
                   },
                 ),
+                if (donation.isRecurring) ...[
+                  const SizedBox(height: 12),
+                  FunButton(
+                    text: locals.externalDonationsManageEditSpecificRecords,
+                    variant: FunButtonVariant.secondary,
+                    fullBorder: true,
+                    analyticsEvent: AnalyticsEventName
+                        .externalDonationsManageEditRecordsClicked
+                        .toEvent(),
+                    onTap: () {
+                      Navigator.of(sheetContext).pop();
+                      cubit.onEditSpecificRecordsPressed();
+                    },
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         );
       },

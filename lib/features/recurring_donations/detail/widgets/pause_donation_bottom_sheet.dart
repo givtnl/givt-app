@@ -22,55 +22,60 @@ class PauseDonationBottomSheet {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (sheetContext) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return FunBottomSheet(
-              title: locals.recurringDonationsPauseSheetTitle,
-              closeAction: () => Navigator.of(sheetContext).pop(),
-              content: Column(
-                children: [
-                  BodyMediumText(
-                    locals.recurringDonationsPauseSheetDescription,
-                    color: FunTheme.of(context).neutral50,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 24),
-                  FunDatePicker(
-                    label: locals.recurringDonationsPauseRestartDateLabel,
-                    selectedDate: selectedDate,
-                    onDateSelected: (date) => setState(
-                      () => selectedDate = DateTime(
-                        date.year,
-                        date.month,
-                        date.day,
+        final mediaQuery = MediaQuery.of(sheetContext);
+        return MediaQuery(
+          data: mediaQuery.copyWith(padding: mediaQuery.viewPadding),
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return FunBottomSheet(
+                title: locals.recurringDonationsPauseSheetTitle,
+                closeAction: () => Navigator.of(sheetContext).pop(),
+                content: Column(
+                  children: [
+                    BodyMediumText(
+                      locals.recurringDonationsPauseSheetDescription,
+                      color: FunTheme.of(context).neutral50,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 24),
+                    FunDatePicker(
+                      label: locals.recurringDonationsPauseRestartDateLabel,
+                      selectedDate: selectedDate,
+                      onDateSelected: (date) => setState(
+                        () => selectedDate = DateTime(
+                          date.year,
+                          date.month,
+                          date.day,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              primaryButton: FunButton(
-                text: locals.recurringDonationsPauseContinueButton,
-                analyticsEvent: AnalyticsEventName
-                    .recurringDonationPauseRestartDateContinueClicked
-                    .toEvent(),
-                onTap: () {
-                  Navigator.of(sheetContext).pop();
-                  cubit.onPauseRestartDateSelected(
-                    DateTime(
-                      selectedDate.year,
-                      selectedDate.month,
-                      selectedDate.day,
-                    ),
-                  );
-                },
-              ),
-            );
-          },
+                  ],
+                ),
+                primaryButton: FunButton(
+                  text: locals.recurringDonationsPauseContinueButton,
+                  analyticsEvent: AnalyticsEventName
+                      .recurringDonationPauseRestartDateContinueClicked
+                      .toEvent(),
+                  onTap: () {
+                    Navigator.of(sheetContext).pop();
+                    cubit.onPauseRestartDateSelected(
+                      DateTime(
+                        selectedDate.year,
+                        selectedDate.month,
+                        selectedDate.day,
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         );
       },
     );
