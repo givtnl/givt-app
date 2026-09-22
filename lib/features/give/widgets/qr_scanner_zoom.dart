@@ -6,11 +6,19 @@ import 'package:givt_app/utils/analytics_helper.dart';
 
 /// Zoom scale helpers for the For You QR scanner.
 ///
-/// The camera zoom API uses a 0.0–1.0 scale (0 = fully zoomed out).
+/// The camera zoom API takes a 0.0–1.0 value. On Android that is CameraX linear
+/// zoom: 0 is the widest lens and 1 is maximum digital zoom. A phone's
+/// normal 1× view often sits well above 0, so the button steps up from the
+/// opening zoom instead of aiming at a fixed point on that scale.
 class QrScannerZoom {
   static const double minScale = 0;
   static const double maxScale = 1;
-  static const double togglePreset = 0.4;
+
+  /// How far the zoom button moves past the camera's opening zoom.
+  ///
+  /// A fixed target such as 0.4 is already below the 1× view on many Android
+  /// phones, and treating that as "go to max" snaps to full digital zoom.
+  static const double zoomInStep = 0.15;
   static const double restThreshold = 0.05;
   static const double minDelta = 0.02;
   static const double pinchSensitivity = 0.5;
@@ -37,18 +45,12 @@ class QrScannerZoom {
     return (scale - opening).abs() < restThreshold;
   }
 
-  /// Zooms in to [togglePreset] from the opening view, or returns to [opening].
-  ///
-  /// When the camera already opened above [togglePreset], zoom-in goes to
-  /// [maxScale].
+  /// Steps [zoomInStep] past [opening], or returns to [opening] when zoomed.
   static double toggleTarget(double current, {double opening = minScale}) {
     if (!isAtRest(current, opening: opening)) {
       return opening;
     }
-    if (togglePreset > opening + restThreshold) {
-      return togglePreset;
-    }
-    return maxScale;
+    return clamp(opening + zoomInStep);
   }
 }
 

@@ -44,13 +44,13 @@ void main() {
 
   group('QrScannerZoom.toggleTarget', () {
     test('zooms in from rest', () {
-      expect(QrScannerZoom.toggleTarget(0), QrScannerZoom.togglePreset);
+      expect(QrScannerZoom.toggleTarget(0), QrScannerZoom.zoomInStep);
     });
 
     test('zooms in just under the rest threshold', () {
       expect(
         QrScannerZoom.toggleTarget(0.049),
-        QrScannerZoom.togglePreset,
+        QrScannerZoom.zoomInStep,
       );
     });
 
@@ -59,10 +59,10 @@ void main() {
       expect(QrScannerZoom.toggleTarget(1), 0);
     });
 
-    test('zooms in from a camera that opened above zero', () {
+    test('steps past a camera that opened above zero', () {
       expect(
         QrScannerZoom.toggleTarget(0.25, opening: 0.25),
-        QrScannerZoom.togglePreset,
+        closeTo(0.4, 0.0001),
       );
     });
 
@@ -70,8 +70,11 @@ void main() {
       expect(QrScannerZoom.toggleTarget(0.5, opening: 0.25), 0.25);
     });
 
-    test('zooms to the maximum when the camera opened above the preset', () {
-      expect(QrScannerZoom.toggleTarget(0.7, opening: 0.7), 1);
+    test('stays short of maximum when the camera opened high on the scale', () {
+      expect(
+        QrScannerZoom.toggleTarget(0.7, opening: 0.7),
+        closeTo(0.85, 0.0001),
+      );
     });
   });
 
