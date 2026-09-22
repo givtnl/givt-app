@@ -1,6 +1,7 @@
 export 'app_update.dart';
 export 'bacs_mandate_response.dart';
 export 'collect_group.dart';
+export 'featured_collect_group.dart';
 export 'location.dart';
 export 'multi_use_allocation.dart';
 export 'organisation_goals.dart';

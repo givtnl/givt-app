@@ -1425,6 +1425,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get forYouFavoriteTag => 'Favourite';
 
   @override
+  String get doorToDoorSuggestionTag => 'This week';
+
+  @override
+  String get doorToDoorSuggestionSubtitle =>
+      'Support the door-to-door collection';
+
+  @override
   String get forYouEmptyFavoritesTitle => 'Your favourites, always close';
 
   @override
@@ -5052,6 +5059,13 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get forYouFavoriteTag => 'Favorite';
+
+  @override
+  String get doorToDoorSuggestionTag => 'This week';
+
+  @override
+  String get doorToDoorSuggestionSubtitle =>
+      'Support the door-to-door collection';
 
   @override
   String get forYouEmptyFavoritesTitle => 'Your favorites, always close';

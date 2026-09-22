@@ -3,15 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/core/network/api_service.dart';
+import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/cubit/featured_door_to_door_cubit.dart';
 import 'package:givt_app/features/give/cubit/for_you_goals_cubit.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/utils/for_you_favorite_cards_sorting.dart';
+import 'package:givt_app/features/give/widgets/door_to_door_suggestion_card.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/shared/models/featured_collect_group.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -31,6 +36,7 @@ class ForYou extends StatefulWidget {
 class _ForYouState extends State<ForYou>
     with AutomaticKeepAliveClientMixin<ForYou> {
   late final ForYouGoalsCubit _goalsCubit;
+  late final FeaturedDoorToDoorCubit _featuredDoorToDoorCubit;
   late final PageController _favoritesController;
   int _favoritesIndex = 0;
 
@@ -40,6 +46,15 @@ class _ForYouState extends State<ForYou>
   void initState() {
     super.initState();
     _goalsCubit = ForYouGoalsCubit(getIt(), getIt());
+    _featuredDoorToDoorCubit = FeaturedDoorToDoorCubit(
+      fetchFeatured: () {
+        if (!getIt.isRegistered<APIService>()) {
+          return Future<FeaturedCollectGroup?>.value();
+        }
+        return getIt<APIService>().getFeaturedDoorToDoorCollectGroup();
+      },
+      networkInfo: getIt<NetworkInfo>(),
+    );
     _favoritesController = PageController(viewportFraction: 0.92);
   }
 
@@ -49,6 +64,7 @@ class _ForYouState extends State<ForYou>
   @override
   void dispose() {
     _goalsCubit.close();
+    _featuredDoorToDoorCubit.close();
     _favoritesController.dispose();
     super.dispose();
   }
@@ -109,6 +125,19 @@ class _ForYouState extends State<ForYou>
                           current: _favoritesIndex,
                         ),
                       ],
+                      BlocBuilder<
+                        FeaturedDoorToDoorCubit,
+                        FeaturedDoorToDoorState
+                      >(
+                        bloc: _featuredDoorToDoorCubit,
+                        builder: (context, featuredState) {
+                          return _buildDoorToDoorSuggestion(
+                            context,
+                            organisationState: state,
+                            featuredState: featuredState,
+                          );
+                        },
+                      ),
                       const SizedBox(height: 24),
                       TitleMediumText(
                         locals.forYouOtherWaysToGive,
@@ -399,14 +428,15 @@ class _ForYouState extends State<ForYou>
                 children: [
                   Row(
                     children: [
-                      CollectGroupType.getFunIconByType(organisation.type)
-                          .copyWith(
-                            padding: EdgeInsets.zero,
-                            circleSize: 44,
-                            iconSize: 20,
-                            circleColorOverride: theme.primary95,
-                            iconColorOverride: theme.primary20,
-                          ),
+                      CollectGroupType.getFunIconByType(
+                        organisation.type,
+                      ).copyWith(
+                        padding: EdgeInsets.zero,
+                        circleSize: 44,
+                        iconSize: 20,
+                        circleColorOverride: theme.primary95,
+                        iconColorOverride: theme.primary20,
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
@@ -578,6 +608,59 @@ class _ForYouState extends State<ForYou>
       eventName: AnalyticsEventName.forYouFavoriteTapped,
       eventProperties: {
         'organisation_name': organisation.orgName,
+      },
+    );
+    context.goNamed(
+      Pages.forYouGiving.name,
+      extra: ForYouFlowContext(
+        source: ForYouEntrySource.favorite,
+        selectedOrganisation: organisation,
+      ).toMap(),
+    );
+  }
+
+  Widget _buildDoorToDoorSuggestion(
+    BuildContext context, {
+    required OrganisationState organisationState,
+    required FeaturedDoorToDoorState featuredState,
+  }) {
+    final featured = featuredState.featured;
+    if (featured == null) {
+      return const SizedBox.shrink();
+    }
+
+    CollectGroup? organisation;
+    for (final org in organisationState.organisations) {
+      if (org.nameSpace == featured.nameSpace) {
+        organisation = org;
+        break;
+      }
+    }
+    if (organisation == null) {
+      for (final org in organisationState.filteredOrganisations) {
+        if (org.nameSpace == featured.nameSpace) {
+          organisation = org;
+          break;
+        }
+      }
+    }
+    if (organisation == null) {
+      return const SizedBox.shrink();
+    }
+
+    final resolvedOrganisation = organisation;
+    return DoorToDoorSuggestionCard(
+      featured: featured,
+      organisation: resolvedOrganisation,
+      onTap: () => _openDoorToDoorGiving(resolvedOrganisation),
+    );
+  }
+
+  void _openDoorToDoorGiving(CollectGroup organisation) {
+    AnalyticsHelper.logEvent(
+      eventName: AnalyticsEventName.forYouDoorToDoorSuggestionTapped,
+      eventProperties: {
+        AnalyticsHelper.organizationNameKey: organisation.orgName,
       },
     );
     context.goNamed(

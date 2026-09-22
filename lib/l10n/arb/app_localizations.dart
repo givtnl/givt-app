@@ -2601,6 +2601,18 @@ abstract class AppLocalizations {
   /// **'Favourite'**
   String get forYouFavoriteTag;
 
+  /// No description provided for @doorToDoorSuggestionTag.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get doorToDoorSuggestionTag;
+
+  /// No description provided for @doorToDoorSuggestionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support the door-to-door collection'**
+  String get doorToDoorSuggestionSubtitle;
+
   /// No description provided for @forYouEmptyFavoritesTitle.
   ///
   /// In en, this message translates to:
