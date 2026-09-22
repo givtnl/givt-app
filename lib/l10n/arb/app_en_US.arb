@@ -1504,6 +1504,7 @@
   "externalDonationsCreatePreviewTitle": "Building your overview entry:",
   "externalDonationsCreatePreviewTypeTag": "Ext. donation",
   "externalDonationsCreatePreviewMoreRecords": "+ {count} more records back to {startMonthYear}",
+  "externalDonationsManageSheetTitle": "Manage external donation",
   "externalDonationsManageAmount": "Amount",
   "externalDonationsManageFrequency": "Frequency",
   "externalDonationsManageStartDate": "Start date",

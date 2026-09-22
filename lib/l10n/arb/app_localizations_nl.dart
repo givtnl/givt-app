@@ -1665,14 +1665,14 @@ class AppLocalizationsNl extends AppLocalizations {
   String get budgetSummaryYear => 'Per jaar';
 
   @override
-  String get budgetExternalGiftsTitle => 'Donaties buiten Givt';
+  String get budgetExternalGiftsTitle => 'Geven buiten Givt';
 
   @override
   String get budgetExternalGiftsInfo =>
       'Je overzicht is pas compleet als al je giften erin staan. Voeg toe wat je niet via Givt geeft. Je vindt alles terug in je samenvatting.';
 
   @override
-  String get budgetExternalGiftsSubTitle => 'Donaties buiten Givt';
+  String get budgetExternalGiftsSubTitle => 'Je giften buiten Givt';
 
   @override
   String get budgetExternalGiftsOrg => 'Naam organisatie';
@@ -1899,7 +1899,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Je maandelijkse samenvatting staat klaar.';
 
   @override
-  String get budgetExternalGiftsListAddEditButton => 'Beheer je externe giften';
+  String get budgetExternalGiftsListAddEditButton => 'Externe giften beheren';
 
   @override
   String get budgetExternalGiftsFrequencyOnce => 'Eenmalig';
@@ -1942,7 +1942,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get budgetSummaryNoGiftsExternal =>
-      'Donaties buiten Givt? Voeg ze hier toe';
+      'Giften buiten Givt? Voeg ze hier toe';
 
   @override
   String get budgetYearlyOverviewGivenThroughGivt => 'Totaal via Givt';
@@ -2931,6 +2931,9 @@ class AppLocalizationsNl extends AppLocalizations {
   ) {
     return '+ $count extra records terug tot $startMonthYear';
   }
+
+  @override
+  String get externalDonationsManageSheetTitle => 'Externe gift beheren';
 
   @override
   String get externalDonationsManageAmount => 'Bedrag';

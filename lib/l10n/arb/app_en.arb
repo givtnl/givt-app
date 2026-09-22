@@ -1603,6 +1603,7 @@
       }
     }
   },
+  "externalDonationsManageSheetTitle": "Manage external donation",
   "externalDonationsManageAmount": "Amount",
   "externalDonationsManageFrequency": "Frequency",
   "externalDonationsManageStartDate": "Start date",

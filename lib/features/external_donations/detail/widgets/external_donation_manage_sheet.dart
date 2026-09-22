@@ -37,7 +37,7 @@ class ExternalDonationManageSheet {
       ),
       builder: (sheetContext) {
         return FunBottomSheet(
-          title: locals.recurringDonationsDetailManageButton,
+          title: locals.externalDonationsManageSheetTitle,
           closeAction: () => Navigator.of(sheetContext).pop(),
           content: Column(
             children: [
