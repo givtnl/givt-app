@@ -40,6 +40,17 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
   bool _isStartingScanner = false;
   double _zoomScale = QrScannerZoom.minScale;
   double _pinchStartZoom = QrScannerZoom.minScale;
+  double? _openingZoom;
+  bool _ownsZoom = false;
+  bool _awaitingOpeningZoom = true;
+
+  double get _restZoom => _openingZoom ?? QrScannerZoom.minScale;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_adoptOpeningZoom);
+  }
 
   @override
   void didChangeDependencies() {
@@ -49,8 +60,43 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
 
   @override
   void dispose() {
+    _controller.removeListener(_adoptOpeningZoom);
     _controller.dispose();
     super.dispose();
+  }
+
+  void _beginOpeningCapture() {
+    _openingZoom = null;
+    _ownsZoom = false;
+    _awaitingOpeningZoom = true;
+  }
+
+  /// Stores the first real zoom the camera reports after it starts.
+  ///
+  /// The controller's zoom stays at [QrScannerZoom.maxScale] until the
+  /// platform sends a reading. On iOS that placeholder is 5×, not the view
+  /// the camera opened on, so it is ignored.
+  void _adoptOpeningZoom() {
+    if (!_awaitingOpeningZoom || _ownsZoom) {
+      return;
+    }
+    if (!_controller.value.isRunning) {
+      return;
+    }
+
+    final reported = _controller.value.zoomScale;
+    if (reported == QrScannerZoom.maxScale) {
+      return;
+    }
+
+    _awaitingOpeningZoom = false;
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _openingZoom = reported;
+      _zoomScale = reported;
+    });
   }
 
   Future<void> _restartScannerIfMounted() async {
@@ -58,13 +104,9 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
       return;
     }
     _isStartingScanner = true;
+    _beginOpeningCapture();
     try {
       await _controller.start();
-      if (mounted) {
-        setState(() {
-          _zoomScale = QrScannerZoom.minScale;
-        });
-      }
     } finally {
       _isStartingScanner = false;
     }
@@ -99,6 +141,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
       return;
     }
 
+    _ownsZoom = true;
     unawaited(
       _setZoomScale(
         QrScannerZoom.fromPinch(
@@ -110,7 +153,12 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
   }
 
   void _onZoomToggle() {
-    unawaited(_setZoomScale(QrScannerZoom.toggleTarget(_zoomScale)));
+    _ownsZoom = true;
+    unawaited(
+      _setZoomScale(
+        QrScannerZoom.toggleTarget(_zoomScale, opening: _restZoom),
+      ),
+    );
   }
 
   void _goToForYouList() {
@@ -123,6 +171,7 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final atRest = QrScannerZoom.isAtRest(_zoomScale, opening: _restZoom);
 
     return BlocListener<CameraCubit, CameraState>(
       bloc: _cameraCubit,
@@ -178,15 +227,14 @@ class _ForYouQrDiscoveryPageState extends State<ForYouQrDiscoveryPage> {
               bottom: 24 + MediaQuery.paddingOf(context).bottom,
               child: Center(
                 child: QrScannerZoomButton(
-                  isZoomed: !QrScannerZoom.isAtRest(_zoomScale),
-                  semanticsLabel: QrScannerZoom.isAtRest(_zoomScale)
+                  isZoomed: !atRest,
+                  semanticsLabel: atRest
                       ? locals.forYouQrZoomIn
                       : locals.forYouQrZoomOut,
                   analyticsEvent: AnalyticsEvent(
                     AnalyticsEventName.forYouQrZoomToggled,
                     parameters: {
-                      AnalyticsHelper.toggleStatusKey:
-                          QrScannerZoom.isAtRest(_zoomScale)
+                      AnalyticsHelper.toggleStatusKey: atRest
                           ? 'zoomed_in'
                           : 'zoomed_out',
                     },

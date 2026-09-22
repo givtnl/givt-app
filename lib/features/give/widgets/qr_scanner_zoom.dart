@@ -10,7 +10,7 @@ import 'package:givt_app/utils/analytics_helper.dart';
 class QrScannerZoom {
   static const double minScale = 0;
   static const double maxScale = 1;
-  static const double togglePreset = 0.35;
+  static const double togglePreset = 0.5;
   static const double restThreshold = 0.05;
   static const double minDelta = 0.02;
   static const double pinchSensitivity = 0.5;
@@ -29,10 +29,26 @@ class QrScannerZoom {
     return (next - current).abs() >= minDelta;
   }
 
-  static bool isAtRest(double scale) => scale < restThreshold;
+  /// True when [scale] is within [restThreshold] of the camera's opening zoom.
+  ///
+  /// [opening] defaults to [minScale] so a camera that starts fully zoomed out
+  /// keeps the previous rest check.
+  static bool isAtRest(double scale, {double opening = minScale}) {
+    return (scale - opening).abs() < restThreshold;
+  }
 
-  static double toggleTarget(double current) {
-    return isAtRest(current) ? togglePreset : minScale;
+  /// Zooms in to [togglePreset] from the opening view, or returns to [opening].
+  ///
+  /// When the camera already opened above [togglePreset], zoom-in goes to
+  /// [maxScale].
+  static double toggleTarget(double current, {double opening = minScale}) {
+    if (!isAtRest(current, opening: opening)) {
+      return opening;
+    }
+    if (togglePreset > opening + restThreshold) {
+      return togglePreset;
+    }
+    return maxScale;
   }
 }
 
