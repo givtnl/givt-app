@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
+import 'package:givt_app/shared/models/featured_collect_group.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 class APIService {
@@ -1226,6 +1227,50 @@ class APIService {
     }
 
     return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  /// Featured door-to-door collect group, or `null` when `item` is null.
+  Future<FeaturedCollectGroup?> getFeaturedDoorToDoorCollectGroup() async {
+    final url = Uri.https(
+      _apiURL,
+      '/givtservice/v1/Organisation/featured-door-to-door',
+    );
+
+    final response = await client.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    if (response.body.isEmpty) {
+      return null;
+    }
+
+    final body = jsonDecode(response.body);
+    if (body is! Map<String, dynamic>) {
+      return null;
+    }
+
+    final item = body['item'];
+    if (item is! Map<String, dynamic>) {
+      return null;
+    }
+
+    final featured = FeaturedCollectGroup.fromJson(item);
+    if (featured.nameSpace.trim().isEmpty) {
+      return null;
+    }
+    return featured;
   }
 
   Future<bool> addGivingGoal({

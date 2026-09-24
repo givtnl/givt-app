@@ -1435,6 +1435,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get forYouFavoriteTag => 'Favorit';
 
   @override
+  String get doorToDoorSuggestionTag => 'Diese Woche';
+
+  @override
+  String get doorToDoorSuggestionSubtitle =>
+      'Unterstütze die Sammlung von Tür zu Tür';
+
+  @override
   String get forYouEmptyFavoritesTitle => 'Deine Favoriten immer griffbereit';
 
   @override

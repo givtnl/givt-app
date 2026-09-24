@@ -1430,6 +1430,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get forYouFavoriteTag => 'Favoriet';
 
   @override
+  String get doorToDoorSuggestionTag => 'Deze week';
+
+  @override
+  String get doorToDoorSuggestionSubtitle =>
+      'Steun de collecte van deur tot deur';
+
+  @override
   String get forYouEmptyFavoritesTitle => 'Je favorieten altijd bij de hand';
 
   @override
