@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/cubit/featured_door_to_door_cubit.dart';
@@ -16,7 +14,6 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
-import 'package:givt_app/shared/models/featured_collect_group.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -46,15 +43,7 @@ class _ForYouState extends State<ForYou>
   void initState() {
     super.initState();
     _goalsCubit = ForYouGoalsCubit(getIt(), getIt());
-    _featuredDoorToDoorCubit = FeaturedDoorToDoorCubit(
-      fetchFeatured: () {
-        if (!getIt.isRegistered<APIService>()) {
-          return Future<FeaturedCollectGroup?>.value();
-        }
-        return getIt<APIService>().getFeaturedDoorToDoorCollectGroup();
-      },
-      networkInfo: getIt<NetworkInfo>(),
-    );
+    _featuredDoorToDoorCubit = FeaturedDoorToDoorCubit(getIt(), getIt());
     _favoritesController = PageController(viewportFraction: 0.92);
   }
 
