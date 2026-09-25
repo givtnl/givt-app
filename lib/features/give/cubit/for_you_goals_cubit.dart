@@ -16,7 +16,7 @@ class ForYouGoalsCubit extends Cubit<ForYouGoalsState> {
     _internetSubscription = _networkInfo.hasInternetConnectionStream().listen(
       (isConnected) {
         if (!isConnected) {
-          emit(
+          _emitIfOpen(
             state.copyWith(
               isOffline: true,
               loadingIds: const {},
@@ -25,7 +25,7 @@ class ForYouGoalsCubit extends Cubit<ForYouGoalsState> {
           return;
         }
 
-        emit(
+        _emitIfOpen(
           state.copyWith(
             isOffline: false,
           ),
@@ -42,13 +42,18 @@ class ForYouGoalsCubit extends Cubit<ForYouGoalsState> {
   late final StreamSubscription<bool> _internetSubscription;
 
   List<String> _lastFavoriteIds = const [];
+  int _loadGeneration = 0;
 
   Future<void> loadForFavorites(List<String> favoriteIds) async {
-    final deduplicatedFavoriteIds = favoriteIds.toSet().toList(growable: false);
+    final generation = ++_loadGeneration;
+    final deduplicatedFavoriteIds = favoriteIds.toSet().toList(
+      growable: false,
+    );
     _lastFavoriteIds = deduplicatedFavoriteIds;
 
     if (deduplicatedFavoriteIds.isEmpty) {
-      emit(
+      _emitIfCurrent(
+        generation,
         state.copyWith(
           summariesByCollectGroupId: const {},
           loadingIds: const {},
@@ -59,7 +64,8 @@ class ForYouGoalsCubit extends Cubit<ForYouGoalsState> {
     }
 
     if (!_networkInfo.isConnected) {
-      emit(
+      _emitIfCurrent(
+        generation,
         state.copyWith(
           isOffline: true,
           loadingIds: const {},
@@ -68,7 +74,8 @@ class ForYouGoalsCubit extends Cubit<ForYouGoalsState> {
       return;
     }
 
-    emit(
+    _emitIfCurrent(
+      generation,
       state.copyWith(
         isOffline: false,
         loadingIds: deduplicatedFavoriteIds.toSet(),
@@ -96,7 +103,8 @@ class ForYouGoalsCubit extends Cubit<ForYouGoalsState> {
       }),
     );
 
-    emit(
+    _emitIfCurrent(
+      generation,
       state.copyWith(
         summariesByCollectGroupId: nextSummaries,
         loadingIds: const {},
@@ -105,8 +113,29 @@ class ForYouGoalsCubit extends Cubit<ForYouGoalsState> {
     );
   }
 
+  void _invalidateInFlightLoads() {
+    _loadGeneration++;
+  }
+
+  bool _isCurrent(int generation) => !isClosed && generation == _loadGeneration;
+
+  void _emitIfCurrent(int generation, ForYouGoalsState next) {
+    if (!_isCurrent(generation)) {
+      return;
+    }
+    emit(next);
+  }
+
+  void _emitIfOpen(ForYouGoalsState next) {
+    if (isClosed) {
+      return;
+    }
+    emit(next);
+  }
+
   @override
   Future<void> close() async {
+    _invalidateInFlightLoads();
     await _internetSubscription.cancel();
     return super.close();
   }
