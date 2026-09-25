@@ -31,7 +31,7 @@ class DoorToDoorSuggestionCard extends StatelessWidget {
     final locals = context.l10n;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 32),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -49,7 +49,7 @@ class DoorToDoorSuggestionCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: theme.tertiary90,
-                      width: theme.borderWidthThicker,
+                      width: theme.borderWidthThinner,
                     ),
                   ),
                   padding: const EdgeInsets.all(24),
