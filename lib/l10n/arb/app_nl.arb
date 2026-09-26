@@ -1735,5 +1735,14 @@
   },
   "manageGiftAidPotentialBonus": "Potentiële Gift Aid-bonus (25%):",
   "manageGiftAidPotentialTotalImpact": "Met Gift Aid zou je totale impact zijn:",
-  "scannerDownloadingModule": "Scanner voorbereiden... Dit kan even duren."
+  "scannerDownloadingModule": "Scanner voorbereiden... Dit kan even duren.",
+  "emailTypoSuggestion": "Bedoelde je {suggestedEmail}?",
+  "@emailTypoSuggestion": {
+    "placeholders": {
+      "suggestedEmail": {
+        "type": "String"
+      }
+    }
+  },
+  "emailTypoDismiss": "Negeren"
 }

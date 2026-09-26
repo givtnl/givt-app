@@ -3667,4 +3667,12 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get scannerDownloadingModule =>
       'Scanner voorbereiden... Dit kan even duren.';
+
+  @override
+  String emailTypoSuggestion(String suggestedEmail) {
+    return 'Bedoelde je $suggestedEmail?';
+  }
+
+  @override
+  String get emailTypoDismiss => 'Negeren';
 }

@@ -1735,5 +1735,14 @@
   },
   "manageGiftAidPotentialBonus": "Potenzieller Gift-Aid-Bonus (25%):",
   "manageGiftAidPotentialTotalImpact": "Mit Gift Aid wäre deine Gesamtwirkung:",
-  "scannerDownloadingModule": "Scanner wird vorbereitet... Das kann einen Moment dauern."
+  "scannerDownloadingModule": "Scanner wird vorbereitet... Das kann einen Moment dauern.",
+  "emailTypoSuggestion": "Meintest du {suggestedEmail}?",
+  "@emailTypoSuggestion": {
+    "placeholders": {
+      "suggestedEmail": {
+        "type": "String"
+      }
+    }
+  },
+  "emailTypoDismiss": "Ignorieren"
 }
