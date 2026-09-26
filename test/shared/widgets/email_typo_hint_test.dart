@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
+import 'package:givt_app/shared/design_system/components/input/input_form_field.dart';
 import 'package:givt_app/shared/widgets/email_typo_field.dart';
+import 'package:givt_app/utils/util.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -98,6 +100,53 @@ void main() {
 
     expect(find.textContaining('test@gmail.com'), findsOneWidget);
   });
+
+  testWidgets(
+    'accepting a syntax fix updates form validation',
+    (tester) async {
+      final controller = TextEditingController();
+      final formKey = GlobalKey<FormState>();
+
+      await tester.pumpWidget(
+        _wrap(
+          Form(
+            key: formKey,
+            child: EmailTypoField(
+              controller: controller,
+              screen: 'registration',
+              fieldBuilder: (context, focusNode) {
+                return InputFormField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  hintText: 'E-mail address',
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        !Util.emailRegEx.hasMatch(value)) {
+                      return 'Invalid e-mail address';
+                    }
+                    return null;
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      );
+
+      await tester.enterText(find.byType(TextField), 'example@gmail..com');
+      await tester.pump();
+      expect(find.text('Invalid e-mail address'), findsOneWidget);
+      expect(formKey.currentState!.validate(), isFalse);
+
+      await tester.tap(find.byKey(const Key('email-typo-suggestion')));
+      await tester.pump();
+
+      expect(controller.text, 'example@gmail.com');
+      expect(formKey.currentState!.validate(), isTrue);
+      expect(find.text('Invalid e-mail address'), findsNothing);
+    },
+  );
 }
 
 Widget _wrap(Widget child) {
