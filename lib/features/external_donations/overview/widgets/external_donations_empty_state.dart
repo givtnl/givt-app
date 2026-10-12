@@ -11,14 +11,17 @@ class ExternalDonationsEmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     final locals = context.l10n;
 
+    final theme = FunTheme.of(context);
+
     return Center(
       child: Column(
         children: [
           _buildIllustration(),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           FunTag(
             text: locals.externalDonationsEmptyStateNotProcessedTag,
-            variant: FunTagVariant.secondary,
+            textColor: theme.neutral40,
+            accentColor: theme.neutral95,
             margin: EdgeInsets.zero,
           ),
           const SizedBox(height: 12),
