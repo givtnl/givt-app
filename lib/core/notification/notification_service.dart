@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
@@ -313,7 +314,7 @@ class NotificationService implements INotificationService {
     );
   }
 
-  Future<void> _scheduleNotifications({
+  Future<bool> _scheduleNotifications({
     required String body,
     required String? title,
     required Map<String, dynamic>? payload,
@@ -324,16 +325,23 @@ class NotificationService implements INotificationService {
 
     await setupFlutterNotifications();
 
+    if (Platform.isIOS) {
+      final canSchedule = await _iosCanScheduleLocalNotifications();
+      if (!canSchedule) {
+        return false;
+      }
+    }
+
     if (Platform.isAndroid) {
       try {
         final androidInfo = await DeviceInfoPlugin().androidInfo;
 
         // Java Datetime support only working for Android 8+
         // So we will not schedule notifications for Android 7 and below
-        if (androidInfo.version.sdkInt <= 25) return;
+        if (androidInfo.version.sdkInt <= 25) return false;
       } catch (e) {
         LoggingInfo.instance.error('Error getting Android version: $e');
-        return;
+        return false;
       }
     }
 
@@ -347,8 +355,34 @@ class NotificationService implements INotificationService {
         notificationDetails: notificationDetailsAndroid,
         payload: jsonEncode(payload),
       );
+      return true;
     } catch (e) {
-      LoggingInfo.instance.error('Error scheduling notification: $e');
+      if (e is PlatformException && e.code == '2003') {
+        LoggingInfo.instance.info(
+          'Skipped scheduling notification: notifications not allowed ($e)',
+        );
+      } else {
+        LoggingInfo.instance.error('Error scheduling notification: $e');
+      }
+      return false;
+    }
+  }
+
+  Future<bool> _iosCanScheduleLocalNotifications() async {
+    try {
+      final iosPlugin = flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>();
+      final options = await iosPlugin?.checkPermissions();
+      if (options == null) {
+        return false;
+      }
+      return options.isEnabled || options.isProvisionalEnabled;
+    } catch (e) {
+      LoggingInfo.instance.info(
+        'Skipped scheduling notification: could not read iOS permissions ($e)',
+      );
+      return false;
     }
   }
 
@@ -394,13 +428,19 @@ class NotificationService implements INotificationService {
       return;
     }
 
-    await _scheduleNotifications(
+    final scheduled = await _scheduleNotifications(
       id: 10,
       body: body,
       title: title,
       payload: {'Type': 'ShowMonthlySummary'},
       scheduledDate: scheduledDate,
     );
+    if (scheduled) {
+      await _saveSummaryNotificationScheduleDate(
+        prefKey: monthlySummaryNotificationKey,
+        scheduledDate: scheduledDate,
+      );
+    }
   }
 
   @override
@@ -419,13 +459,19 @@ class NotificationService implements INotificationService {
       return;
     }
 
-    await _scheduleNotifications(
+    final scheduled = await _scheduleNotifications(
       id: 20,
       body: body,
       title: title,
       payload: {'Type': 'ShowYearlySummary'},
       scheduledDate: scheduledDate,
     );
+    if (scheduled) {
+      await _saveSummaryNotificationScheduleDate(
+        prefKey: yearlySummaryNotificationKey,
+        scheduledDate: scheduledDate,
+      );
+    }
   }
 
   /// Schedule a notification that specifies the date and time at which the
@@ -446,14 +492,15 @@ class NotificationService implements INotificationService {
       lastScheduledDate,
     );
 
-    if (lastScheduledDateParsed.isBefore(proposedScheduleDate)) {
-      return true;
-    }
-    await prefs.setString(
-      monthlySummaryNotificationKey,
-      proposedScheduleDate.toString(),
-    );
-    return false;
+    return lastScheduledDateParsed.isBefore(proposedScheduleDate);
+  }
+
+  Future<void> _saveSummaryNotificationScheduleDate({
+    required String prefKey,
+    required tz.TZDateTime scheduledDate,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(prefKey, scheduledDate.toString());
   }
 
   /// Get the next iteration of the monthly/yearly [tz.TZDateTime]
