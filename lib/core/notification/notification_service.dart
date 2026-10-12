@@ -357,7 +357,7 @@ class NotificationService implements INotificationService {
       );
       return true;
     } catch (e) {
-      if (isNotificationSchedulingNotAuthorized(e)) {
+      if (e is PlatformException && e.code == '2003') {
         LoggingInfo.instance.info(
           'Skipped scheduling notification: notifications not allowed ($e)',
         );
@@ -369,14 +369,21 @@ class NotificationService implements INotificationService {
   }
 
   Future<bool> _iosCanScheduleLocalNotifications() async {
-    final iosPlugin = flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>();
-    final options = await iosPlugin?.checkPermissions();
-    if (options == null) {
+    try {
+      final iosPlugin = flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>();
+      final options = await iosPlugin?.checkPermissions();
+      if (options == null) {
+        return false;
+      }
+      return options.isEnabled || options.isProvisionalEnabled;
+    } catch (e) {
+      LoggingInfo.instance.info(
+        'Skipped scheduling notification: could not read iOS permissions ($e)',
+      );
       return false;
     }
-    return options.isEnabled || options.isProvisionalEnabled;
   }
 
   Future<bool> cancelNotification(int id) async {
@@ -475,14 +482,17 @@ class NotificationService implements INotificationService {
   }) async {
     final prefs = await SharedPreferences.getInstance();
     final lastScheduledDate = prefs.getString(prefKey);
-    final lastScheduledDateParsed = lastScheduledDate == null
-        ? null
-        : tz.TZDateTime.parse(tz.local, lastScheduledDate);
 
-    return NotificationService.summaryNotificationNeedsScheduling(
-      lastScheduled: lastScheduledDateParsed,
-      proposedScheduleDate: proposedScheduleDate,
+    if (lastScheduledDate == null) {
+      return true;
+    }
+
+    final lastScheduledDateParsed = tz.TZDateTime.parse(
+      tz.local,
+      lastScheduledDate,
     );
+
+    return lastScheduledDateParsed.isBefore(proposedScheduleDate);
   }
 
   Future<void> _saveSummaryNotificationScheduleDate({
@@ -525,17 +535,6 @@ class NotificationService implements INotificationService {
   static const monthlySummaryNotificationKey = 'monthy_summary_notification';
   static const yearlySummaryNotificationKey = 'yearly_summary_notification';
 
-  @visibleForTesting
-  static bool summaryNotificationNeedsScheduling({
-    required tz.TZDateTime? lastScheduled,
-    required tz.TZDateTime proposedScheduleDate,
-  }) {
-    if (lastScheduled == null) {
-      return true;
-    }
-    return lastScheduled.isBefore(proposedScheduleDate);
-  }
-
   void handleFirebaseNotificationNavigation(Map<String, dynamic> data) {
     final path = data['Path'].toString();
     final pathName = path.split('?').first;
@@ -563,19 +562,4 @@ class NotificationService implements INotificationService {
       AppRouter.router.goNamed(Pages.home.name);
     }
   }
-}
-
-/// Whether a scheduling failure is iOS "notifications not allowed" (UNError 2003).
-bool isNotificationSchedulingNotAuthorized(Object error) {
-  if (error is PlatformException) {
-    if (error.code == '2003') {
-      return true;
-    }
-    final message = error.message ?? '';
-    if (message.contains('2003') ||
-        message.toLowerCase().contains('not authorized')) {
-      return true;
-    }
-  }
-  return error.toString().contains('2003');
 }
