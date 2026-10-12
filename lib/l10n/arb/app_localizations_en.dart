@@ -2799,11 +2799,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get externalDonationsOverviewAddButton => 'Add external donation';
 
   @override
-  String get externalDonationsEmptyStateTitle => 'Track giving outside Givt';
+  String get externalDonationsEmptyStateNotProcessedTag =>
+      'Not processed by Givt';
+
+  @override
+  String get externalDonationsEmptyStateTitle =>
+      'Get all your donations in one clear overview';
 
   @override
   String get externalDonationsEmptyStateDescription =>
-      'Add donations you make directly to organisations so your donations history stays complete.';
+      'A way to record the gifts you\'ve made in cash, bank transfers or other apps.';
+
+  @override
+  String get externalDonationsCreateNotCollectedNote =>
+      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview';
 
   @override
   String get externalDonationsListStatusStopped => 'Stopped';
@@ -6392,11 +6401,20 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String get externalDonationsOverviewAddButton => 'Add external donation';
 
   @override
-  String get externalDonationsEmptyStateTitle => 'Track giving outside Givt';
+  String get externalDonationsEmptyStateNotProcessedTag =>
+      'Not processed by Givt';
+
+  @override
+  String get externalDonationsEmptyStateTitle =>
+      'Get all your donations in one clear overview';
 
   @override
   String get externalDonationsEmptyStateDescription =>
-      'Add donations you make directly to organizations so your donations history stays complete.';
+      'A way to record the gifts you\'ve made in cash, bank transfers or other apps.';
+
+  @override
+  String get externalDonationsCreateNotCollectedNote =>
+      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview';
 
   @override
   String get externalDonationsListStatusStopped => 'Stopped';

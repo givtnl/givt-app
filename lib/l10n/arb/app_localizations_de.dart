@@ -2821,12 +2821,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String get externalDonationsOverviewAddButton => 'Externe Spende hinzufügen';
 
   @override
+  String get externalDonationsEmptyStateNotProcessedTag =>
+      'Nicht von Givt verarbeitet';
+
+  @override
   String get externalDonationsEmptyStateTitle =>
-      'Spenden außerhalb Givt verfolgen';
+      'Alle deine Spenden in einer übersichtlichen Gesamtansicht';
 
   @override
   String get externalDonationsEmptyStateDescription =>
-      'Füge Spenden hinzu, die du direkt an Organisationen gibst, damit deine Spendenhistorie vollständig bleibt.';
+      'So kannst du festhalten, was du bar, per Überweisung oder in anderen Apps gegeben hast.';
+
+  @override
+  String get externalDonationsCreateNotCollectedNote =>
+      'Denk daran: Givt bucht das nicht ab. Wir fügen es nur deiner Übersicht hinzu';
 
   @override
   String get externalDonationsListStatusStopped => 'Beendet';
