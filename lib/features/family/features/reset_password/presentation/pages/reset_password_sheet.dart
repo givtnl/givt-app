@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
@@ -9,6 +11,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.d
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
+import 'package:givt_app/shared/widgets/email_typo_field.dart';
 import 'package:givt_app/utils/util.dart';
 
 class ResetPasswordSheet extends StatefulWidget {
@@ -66,45 +69,59 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
         return Semantics(
           identifier: 'accountSettingsChangePasswordSheet',
           child: FunBottomSheet(
-          closeAction: () => Navigator.of(context).pop(),
-          title: context.l10n.changePassword,
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 24),
-                FunInput(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  errorText: _emailError,
-                  onChanged: (_) {
-                    setState(() {
-                      _emailError = null;
-                    });
-                  },
-                  hintText: context.l10n.email,
-                ),
-                const SizedBox(height: 24),
-                BodyMediumText(
-                  context.l10n.forgotPasswordText,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            closeAction: () => Navigator.of(context).pop(),
+            title: context.l10n.changePassword,
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 24),
+                  EmailTypoField(
+                    controller: emailController,
+                    screen: 'reset_password',
+                    countryCode: _loggedInCountryCode(context),
+                    onApplied: (_) {
+                      setState(() {
+                        _emailError = null;
+                      });
+                    },
+                    fieldBuilder: (context, focusNode) {
+                      return FunInput(
+                        focusNode: focusNode,
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        errorText: _emailError,
+                        onChanged: (_) {
+                          setState(() {
+                            _emailError = null;
+                          });
+                        },
+                        hintText: context.l10n.email,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  BodyMediumText(
+                    context.l10n.forgotPasswordText,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            primaryButton: FunButton(
+              isDisabled: !isEnabled,
+              onTap: isEnabled
+                  ? () {
+                      if (!_validateEmail(context.l10n.invalidEmail)) {
+                        return;
+                      }
+                      _cubit.resetPassword(emailController.text);
+                    }
+                  : null,
+              text: context.l10n.changePassword,
+              analyticsEvent: AnalyticsEventName.changePasswordClicked
+                  .toEvent(),
             ),
           ),
-          primaryButton: FunButton(
-            isDisabled: !isEnabled,
-            onTap: isEnabled
-                ? () {
-                    if (!_validateEmail(context.l10n.invalidEmail)) {
-                      return;
-                    }
-                    _cubit.resetPassword(emailController.text);
-                  }
-                : null,
-            text: context.l10n.changePassword,
-            analyticsEvent: AnalyticsEventName.changePasswordClicked.toEvent(),
-          ),
-        ),
         );
       },
       onLoading: (context) {
@@ -170,6 +187,14 @@ class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
         );
       },
     );
+  }
+
+  String? _loggedInCountryCode(BuildContext context) {
+    final country = context.read<AuthCubit>().state.user.country;
+    if (country.isEmpty) {
+      return null;
+    }
+    return country;
   }
 
   bool _validateEmail(String invalidEmailMessage) {

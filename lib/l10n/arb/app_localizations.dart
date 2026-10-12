@@ -6436,6 +6436,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preparing scanner... This might take a moment.'**
   String get scannerDownloadingModule;
+
+  /// Hint shown when an email domain looks like a typo of a common provider
+  ///
+  /// In en, this message translates to:
+  /// **'Did you mean {suggestedEmail}?'**
+  String emailTypoSuggestion(String suggestedEmail);
+
+  /// Dismiss action for the email typo suggestion hint
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get emailTypoDismiss;
 }
 
 class _AppLocalizationsDelegate

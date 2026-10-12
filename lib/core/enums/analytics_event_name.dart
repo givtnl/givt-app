@@ -713,7 +713,9 @@ enum AnalyticsEventName {
   ),
   flowGenericErrorGoHomeClicked('flow_generic_error_go_home_clicked'),
   homeFaqIconClicked('home_faq_icon_clicked'),
-  offlineSuccessGotItTapped('offline_success_got_it_tapped');
+  offlineSuccessGotItTapped('offline_success_got_it_tapped'),
+  emailTypoSuggestionAccepted('email_typo_suggestion_accepted'),
+  emailTypoSuggestionDismissed('email_typo_suggestion_dismissed');
 
   const AnalyticsEventName(this.value);
 

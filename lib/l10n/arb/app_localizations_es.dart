@@ -3665,6 +3665,14 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get scannerDownloadingModule =>
       'Preparando el escáner... Esto puede tardar un momento.';
+
+  @override
+  String emailTypoSuggestion(String suggestedEmail) {
+    return '¿Quisiste decir $suggestedEmail?';
+  }
+
+  @override
+  String get emailTypoDismiss => 'Ignorar';
 }
 
 /// The translations for Spanish Castilian, as used in Latin America and the Caribbean (`es_419`).
@@ -7322,4 +7330,12 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   @override
   String get scannerDownloadingModule =>
       'Preparando el escáner... Esto puede tardar un momento.';
+
+  @override
+  String emailTypoSuggestion(String suggestedEmail) {
+    return '¿Quisiste decir $suggestedEmail?';
+  }
+
+  @override
+  String get emailTypoDismiss => 'Ignorar';
 }

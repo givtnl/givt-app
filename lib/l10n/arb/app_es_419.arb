@@ -1725,5 +1725,14 @@
   },
   "manageGiftAidPotentialBonus": "Bonificación potencial de Gift Aid (25%):",
   "manageGiftAidPotentialTotalImpact": "Con Gift Aid, tu impacto total sería:",
-  "scannerDownloadingModule": "Preparando el escáner... Esto puede tardar un momento."
+  "scannerDownloadingModule": "Preparando el escáner... Esto puede tardar un momento.",
+  "emailTypoSuggestion": "¿Quisiste decir {suggestedEmail}?",
+  "@emailTypoSuggestion": {
+    "placeholders": {
+      "suggestedEmail": {
+        "type": "String"
+      }
+    }
+  },
+  "emailTypoDismiss": "Ignorar"
 }
