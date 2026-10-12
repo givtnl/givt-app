@@ -2834,7 +2834,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get externalDonationsCreateNotCollectedNote =>
-      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview';
+      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview.';
 
   @override
   String get externalDonationsListStatusStopped => 'Beendet';

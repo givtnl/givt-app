@@ -2816,7 +2816,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get externalDonationsCreateNotCollectedNote =>
-      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview';
+      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview.';
 
   @override
   String get externalDonationsListStatusStopped => 'Detenida';
@@ -6499,7 +6499,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get externalDonationsCreateNotCollectedNote =>
-      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview';
+      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview.';
 
   @override
   String get externalDonationsListStatusStopped => 'Detenida';

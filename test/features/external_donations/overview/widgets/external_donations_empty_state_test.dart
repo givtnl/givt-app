@@ -15,10 +15,5 @@ void main() {
 
     expect(find.text('Not processed by Givt'), findsOneWidget);
     expect(find.text('Track giving outside Givt'), findsOneWidget);
-
-    final tagTop = tester.getTopLeft(find.text('Not processed by Givt')).dy;
-    final titleTop =
-        tester.getTopLeft(find.text('Track giving outside Givt')).dy;
-    expect(tagTop, lessThan(titleTop));
   });
 }

@@ -5037,7 +5037,7 @@ abstract class AppLocalizations {
   /// No description provided for @externalDonationsCreateNotCollectedNote.
   ///
   /// In en, this message translates to:
-  /// **'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview'**
+  /// **'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview.'**
   String get externalDonationsCreateNotCollectedNote;
 
   /// No description provided for @externalDonationsListStatusStopped.

@@ -1492,7 +1492,7 @@
   "externalDonationsEmptyStateNotProcessedTag": "Not processed by Givt",
   "externalDonationsEmptyStateTitle": "Spenden außerhalb Givt verfolgen",
   "externalDonationsEmptyStateDescription": "Füge Spenden hinzu, die du direkt an Organisationen gibst, damit deine Spendenhistorie vollständig bleibt.",
-  "externalDonationsCreateNotCollectedNote": "Remember, Givt doesn't collect this. We'll only add it to your overview",
+  "externalDonationsCreateNotCollectedNote": "Remember, Givt doesn't collect this. We'll only add it to your overview.",
   "externalDonationsListStatusStopped": "Beendet",
   "externalDonationsDetailSummaryGiving": "Gegeben",
   "externalDonationsDetailOneOffDate": "Datum",

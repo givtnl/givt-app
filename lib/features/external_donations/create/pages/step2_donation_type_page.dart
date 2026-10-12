@@ -18,6 +18,7 @@ import 'package:givt_app/features/external_donations/create/widgets/external_don
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_frequency_dropdown.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/design_system/components/overlays/fun_snackbar.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -154,11 +155,11 @@ class _Step2DonationTypePageState extends State<Step2DonationTypePage> {
               ),
               const SizedBox(height: 16),
               FunSnackbarWidget(
-                title: locals.externalDonationsCreateNotCollectedNote,
+                extraText: locals.externalDonationsCreateNotCollectedNote,
                 icon: FaIcon(
                   FontAwesomeIcons.circleInfo,
-                  size: 20,
-                  color: FunTheme.of(context).secondary30,
+                  size: 24,
+                  color: FamilyAppTheme.secondary30,
                 ),
               ),
             ],
