@@ -95,7 +95,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           NotificationService.instance.navigateFirebaseNotification(message);
         }
       });
+
+      unawaited(_scheduleSummaryNotifications());
     });
+  }
+
+  Future<void> _scheduleSummaryNotifications() async {
+    if (!mounted) {
+      return;
+    }
+    final locals = context.l10n;
+    final notificationService = getIt<NotificationService>();
+    await notificationService.scheduleMonthlySummaryNotification(
+      body: locals.budgetPushMonthly,
+      title: locals.budgetPushMonthlyBold,
+    );
+    await notificationService.scheduleYearlySummaryNotification(
+      body: locals.budgetPushYearlyNearlyEnd,
+      title: locals.budgetPushYearlyNearlyEndBold(DateTime.now().year),
+    );
   }
 
   /// Prompts biometrics/login only for recoverable reauth (server error,
@@ -260,17 +278,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-
-    getIt<NotificationService>()
-      ..scheduleMonthlySummaryNotification(
-        body: locals.budgetPushMonthly,
-        title: locals.budgetPushMonthlyBold,
-      )
-      ..scheduleYearlySummaryNotification(
-        body: locals.budgetPushYearlyNearlyEnd,
-        title: locals.budgetPushYearlyNearlyEndBold(DateTime.now().year),
-      );
-
     final auth = context.watch<AuthCubit>().state;
     final shouldLockScreen =
         _mandatePopupDismissalTracker.shouldForceCompletion &&
