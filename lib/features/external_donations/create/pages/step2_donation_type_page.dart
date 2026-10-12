@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/constants/donation_amount_constants.dart';
@@ -150,6 +151,15 @@ class _Step2DonationTypePageState extends State<Step2DonationTypePage> {
                 analyticsEvent: AnalyticsEventName
                     .externalDonationsCreateAmountEntered
                     .toEvent(),
+              ),
+              const SizedBox(height: 16),
+              FunSnackbarWidget(
+                title: locals.externalDonationsCreateNotCollectedNote,
+                icon: FaIcon(
+                  FontAwesomeIcons.circleInfo,
+                  size: 20,
+                  color: FunTheme.of(context).secondary30,
+                ),
               ),
             ],
           ),

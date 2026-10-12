@@ -5016,6 +5016,12 @@ abstract class AppLocalizations {
   /// **'Add external donation'**
   String get externalDonationsOverviewAddButton;
 
+  /// No description provided for @externalDonationsEmptyStateNotProcessedTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Not processed by Givt'**
+  String get externalDonationsEmptyStateNotProcessedTag;
+
   /// No description provided for @externalDonationsEmptyStateTitle.
   ///
   /// In en, this message translates to:
@@ -5027,6 +5033,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add donations you make directly to organisations so your donations history stays complete.'**
   String get externalDonationsEmptyStateDescription;
+
+  /// No description provided for @externalDonationsCreateNotCollectedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview'**
+  String get externalDonationsCreateNotCollectedNote;
 
   /// No description provided for @externalDonationsListStatusStopped.
   ///

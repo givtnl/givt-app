@@ -2812,11 +2812,19 @@ class AppLocalizationsNl extends AppLocalizations {
   String get externalDonationsOverviewAddButton => 'Externe gift toevoegen';
 
   @override
+  String get externalDonationsEmptyStateNotProcessedTag =>
+      'Niet verwerkt door Givt';
+
+  @override
   String get externalDonationsEmptyStateTitle => 'Houd giften buiten Givt bij';
 
   @override
   String get externalDonationsEmptyStateDescription =>
       'Voeg giften toe die je rechtstreeks aan organisaties doet, zodat je overzicht compleet blijft.';
+
+  @override
+  String get externalDonationsCreateNotCollectedNote =>
+      'Ter herinnering: Givt schrijft dit niet af. We zetten het alleen in je overzicht.';
 
   @override
   String get externalDonationsListStatusStopped => 'Gestopt';

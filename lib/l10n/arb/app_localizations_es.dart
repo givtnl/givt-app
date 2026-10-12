@@ -2803,12 +2803,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get externalDonationsOverviewAddButton => 'Añadir donación externa';
 
   @override
+  String get externalDonationsEmptyStateNotProcessedTag =>
+      'Not processed by Givt';
+
+  @override
   String get externalDonationsEmptyStateTitle =>
       'Registra donaciones fuera de Givt';
 
   @override
   String get externalDonationsEmptyStateDescription =>
       'Añade donaciones que haces directamente a organizaciones para que tu historial de donaciones esté completo.';
+
+  @override
+  String get externalDonationsCreateNotCollectedNote =>
+      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview';
 
   @override
   String get externalDonationsListStatusStopped => 'Detenida';
@@ -6478,12 +6486,20 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get externalDonationsOverviewAddButton => 'Agregar donación externa';
 
   @override
+  String get externalDonationsEmptyStateNotProcessedTag =>
+      'Not processed by Givt';
+
+  @override
   String get externalDonationsEmptyStateTitle =>
       'Registra donaciones fuera de Givt';
 
   @override
   String get externalDonationsEmptyStateDescription =>
       'Agrega donaciones que haces directamente a organizaciones para que tu historial de donaciones esté completo.';
+
+  @override
+  String get externalDonationsCreateNotCollectedNote =>
+      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview';
 
   @override
   String get externalDonationsListStatusStopped => 'Detenida';
