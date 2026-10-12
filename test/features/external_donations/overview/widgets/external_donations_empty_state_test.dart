@@ -14,6 +14,9 @@ void main() {
     );
 
     expect(find.text('Not processed by Givt'), findsOneWidget);
-    expect(find.text('Track giving outside Givt'), findsOneWidget);
+    expect(
+      find.text('Get all your donations in one clear overview'),
+      findsOneWidget,
+    );
   });
 }

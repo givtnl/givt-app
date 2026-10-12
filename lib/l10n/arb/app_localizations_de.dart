@@ -2822,19 +2822,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get externalDonationsEmptyStateNotProcessedTag =>
-      'Not processed by Givt';
+      'Nicht von Givt verarbeitet';
 
   @override
   String get externalDonationsEmptyStateTitle =>
-      'Spenden außerhalb Givt verfolgen';
+      'Alle deine Spenden in einer übersichtlichen Gesamtansicht';
 
   @override
   String get externalDonationsEmptyStateDescription =>
-      'Füge Spenden hinzu, die du direkt an Organisationen gibst, damit deine Spendenhistorie vollständig bleibt.';
+      'So kannst du festhalten, was du bar, per Überweisung oder in anderen Apps gegeben hast.';
 
   @override
   String get externalDonationsCreateNotCollectedNote =>
-      'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview.';
+      'Denk daran: Givt bucht das nicht ab. Wir fügen es nur deiner Übersicht hinzu';
 
   @override
   String get externalDonationsListStatusStopped => 'Beendet';
