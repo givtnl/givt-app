@@ -1504,7 +1504,6 @@
   "externalDonationsCreateTitle": "Externe Spende hinzufügen",
   "externalDonationsCreateOrganisationDescription": "An welche Organisation hast du gegeben?",
   "externalDonationsCreateOrganisationLabel": "Organisation",
-  "externalDonationsCreateSearchTitle": "Organisationen suchen",
   "externalDonationsCreateSearchHint": "Nach Name suchen",
   "externalDonationsCreateAddCustomOrganisation": "\"{name}\" hinzufügen",
   "externalDonationsCreateAmountLabel": "Betrag",

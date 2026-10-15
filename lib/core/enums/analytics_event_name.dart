@@ -208,6 +208,9 @@ enum AnalyticsEventName {
   externalDonationsCreateSearchTapped(
     'external_donations_create_search_tapped',
   ),
+  externalDonationsCreateFilterTileClicked(
+    'external_donations_create_filter_tile_clicked',
+  ),
   externalDonationsManageClicked('external_donations_manage_clicked'),
   externalDonationsManageAmountClicked(
     'external_donations_manage_amount_clicked',

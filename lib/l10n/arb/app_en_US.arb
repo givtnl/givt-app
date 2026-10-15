@@ -1487,7 +1487,6 @@
   "externalDonationsCreateTitle": "Add external donation",
   "externalDonationsCreateOrganisationDescription": "Which organisation did you give to?",
   "externalDonationsCreateOrganisationLabel": "Organisation",
-  "externalDonationsCreateSearchTitle": "Search organization",
   "externalDonationsCreateSearchHint": "Search by name",
   "externalDonationsCreateAddCustomOrganisation": "Add \"{name}\"",
   "externalDonationsCreateAmountLabel": "Amount",

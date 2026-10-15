@@ -42,7 +42,8 @@ class _OrganisationSearchPageState extends State<OrganisationSearchPage> {
           type: CollectGroupType.none.index,
         ),
       )
-      ..add(const OrganisationFilterQueryChanged(''));
+      ..add(const OrganisationFilterQueryChanged(''))
+      ..add(const FavoritesRefresh());
   }
 
   @override
@@ -50,7 +51,7 @@ class _OrganisationSearchPageState extends State<OrganisationSearchPage> {
     return FunScaffold(
       appBar: FunTopAppBar(
         variant: FunTopAppBarVariant.white,
-        title: context.l10n.externalDonationsCreateSearchTitle,
+        title: context.l10n.forYouSearchOrganizations,
         leading: const GivtBackButtonFlat(),
       ),
       body: ExternalDonationOrganisationSearchContent(
@@ -58,7 +59,8 @@ class _OrganisationSearchPageState extends State<OrganisationSearchPage> {
         onOrganisationSelected: (organisation) {
           widget.cubit.selectKnownOrganisation(organisation);
           AnalyticsHelper.logEvent(
-            eventName: AnalyticsEventName.externalDonationsCreateOrganisationSelected,
+            eventName:
+                AnalyticsEventName.externalDonationsCreateOrganisationSelected,
             eventProperties: {'organisation_name': organisation.orgName},
           );
           Navigator.of(context).pop();
@@ -66,7 +68,8 @@ class _OrganisationSearchPageState extends State<OrganisationSearchPage> {
         onCustomNameSelected: (name) {
           widget.cubit.selectCustomOrganisation(name);
           AnalyticsHelper.logEvent(
-            eventName: AnalyticsEventName.externalDonationsCreateCustomOrganisationAdded,
+            eventName: AnalyticsEventName
+                .externalDonationsCreateCustomOrganisationAdded,
             eventProperties: {'organisation_name': name},
           );
           Navigator.of(context).pop();

@@ -2855,9 +2855,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get externalDonationsCreateOrganisationLabel => 'Organización';
 
   @override
-  String get externalDonationsCreateSearchTitle => 'Buscar organizaciones';
-
-  @override
   String get externalDonationsCreateSearchHint => 'Buscar por nombre';
 
   @override
@@ -6536,9 +6533,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get externalDonationsCreateOrganisationLabel => 'Organización';
-
-  @override
-  String get externalDonationsCreateSearchTitle => 'Buscar organizaciones';
 
   @override
   String get externalDonationsCreateSearchHint => 'Buscar por nombre';
