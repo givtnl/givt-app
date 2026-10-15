@@ -62,6 +62,8 @@ class _ExternalDonationOrganisationSearchContentState
           children: [
             FunOrganisationFilterTilesBar(
               bloc: widget.bloc,
+              analyticsEventName:
+                  AnalyticsEventName.externalDonationsCreateFilterTileClicked,
             ),
             const SizedBox(height: 16),
             FunInput(

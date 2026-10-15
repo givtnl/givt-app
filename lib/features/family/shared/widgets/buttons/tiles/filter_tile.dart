@@ -12,6 +12,7 @@ class FilterTile extends StatelessWidget {
     this.type = CollectGroupType.none,
     this.iconPath,
     this.onClick,
+    this.analyticsEventName,
   });
 
   final EdgeInsets? edgeInsets;
@@ -19,6 +20,10 @@ class FilterTile extends StatelessWidget {
   final String? iconPath;
   final bool isSelected;
   final void Function(BuildContext context)? onClick;
+
+  /// Defaults to the parent-giving filter event. Other flows pass their own
+  /// name so taps are not attributed to parent giving.
+  final AnalyticsEventName? analyticsEventName;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -32,12 +37,14 @@ class FilterTile extends StatelessWidget {
           ? CollectGroupType.getIconByTypeUS(type)
           : null,
       titleBig: type.localizedOrganisationFilterTitle(context.l10n),
-      analyticsEvent: AnalyticsEventName.parentGiveFilterTileClicked.toEvent(
-        parameters: {
-          'type': type.name,
-          'isSelected': isSelected,
-        },
-      ),
+      analyticsEvent:
+          (analyticsEventName ?? AnalyticsEventName.parentGiveFilterTileClicked)
+              .toEvent(
+                parameters: {
+                  'type': type.name,
+                  'isSelected': isSelected,
+                },
+              ),
     ),
   );
 }

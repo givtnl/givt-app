@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -17,6 +18,7 @@ import 'package:givt_app/features/external_donations/create/repositories/externa
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_organisation_search_content.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/tiles/quick_tile.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
@@ -220,6 +222,14 @@ void main() {
     expect(find.text('Search organisations'), findsOneWidget);
     expect(find.byType(FunOrganisationFilterTilesBar), findsOneWidget);
     expect(find.byType(FilterSuggestionCard), findsNothing);
+    final tiles = tester.widgetList<QuickTile>(find.byType(QuickTile));
+    expect(tiles, isNotEmpty);
+    for (final tile in tiles) {
+      expect(
+        tile.analyticsEvent.name,
+        AnalyticsEventName.externalDonationsCreateFilterTileClicked,
+      );
+    }
   });
 
   testWidgets(
