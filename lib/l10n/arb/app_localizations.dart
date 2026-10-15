@@ -5106,12 +5106,6 @@ abstract class AppLocalizations {
   /// **'Organisation'**
   String get externalDonationsCreateOrganisationLabel;
 
-  /// No description provided for @externalDonationsCreateSearchTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Search organization'**
-  String get externalDonationsCreateSearchTitle;
-
   /// No description provided for @externalDonationsCreateSearchHint.
   ///
   /// In en, this message translates to:

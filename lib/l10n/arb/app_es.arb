@@ -1504,7 +1504,6 @@
   "externalDonationsCreateTitle": "Añadir donación externa",
   "externalDonationsCreateOrganisationDescription": "¿A qué organización donaste?",
   "externalDonationsCreateOrganisationLabel": "Organización",
-  "externalDonationsCreateSearchTitle": "Buscar organizaciones",
   "externalDonationsCreateSearchHint": "Buscar por nombre",
   "externalDonationsCreateAddCustomOrganisation": "Añadir \"{name}\"",
   "externalDonationsCreateAmountLabel": "Importe",

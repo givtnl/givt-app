@@ -1504,7 +1504,6 @@
   "externalDonationsCreateTitle": "Externe gift toevoegen",
   "externalDonationsCreateOrganisationDescription": "Aan welke organisatie heb je gegeven?",
   "externalDonationsCreateOrganisationLabel": "Organisatie",
-  "externalDonationsCreateSearchTitle": "Organisaties zoeken",
   "externalDonationsCreateSearchHint": "Zoek op naam",
   "externalDonationsCreateAddCustomOrganisation": "\"{name}\" toevoegen",
   "externalDonationsCreateAmountLabel": "Bedrag",

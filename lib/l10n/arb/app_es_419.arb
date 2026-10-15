@@ -1499,7 +1499,6 @@
   "externalDonationsCreateTitle": "Agregar donación externa",
   "externalDonationsCreateOrganisationDescription": "¿A qué organización donaste?",
   "externalDonationsCreateOrganisationLabel": "Organización",
-  "externalDonationsCreateSearchTitle": "Buscar organizaciones",
   "externalDonationsCreateSearchHint": "Buscar por nombre",
   "externalDonationsCreateAddCustomOrganisation": "Agregar \"{name}\"",
   "externalDonationsCreateAmountLabel": "Monto",
