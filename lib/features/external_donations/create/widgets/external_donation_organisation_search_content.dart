@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
-import 'package:givt_app/features/give/widgets/filter_suggestion_card.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 /// Organisation search list with an "Add [query]" row for custom names.
 class ExternalDonationOrganisationSearchContent extends StatefulWidget {
@@ -60,67 +60,19 @@ class _ExternalDonationOrganisationSearchContentState
 
         return Column(
           children: [
-            SizedBox(
-              height: 104,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  FilterSuggestionCard(
-                    isFocused:
-                        state.selectedType == CollectGroupType.church.index,
-                    title: locals.church,
-                    iconData: CollectGroupType.church.iconData,
-                    color: CollectGroupType.church.color,
-                    onTap: () => widget.bloc.add(
-                      OrganisationTypeChanged(CollectGroupType.church.index),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  FilterSuggestionCard(
-                    isFocused:
-                        state.selectedType == CollectGroupType.charities.index,
-                    title: locals.charity,
-                    iconData: CollectGroupType.charities.iconData,
-                    color: CollectGroupType.charities.color,
-                    onTap: () => widget.bloc.add(
-                      OrganisationTypeChanged(CollectGroupType.charities.index),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  FilterSuggestionCard(
-                    isFocused:
-                        state.selectedType == CollectGroupType.campaign.index,
-                    title: locals.campaign,
-                    iconData: CollectGroupType.campaign.iconData,
-                    color: CollectGroupType.campaign.color,
-                    onTap: () => widget.bloc.add(
-                      OrganisationTypeChanged(CollectGroupType.campaign.index),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  FilterSuggestionCard(
-                    isFocused:
-                        state.selectedType == CollectGroupType.artists.index,
-                    title: locals.other,
-                    iconData: CollectGroupType.artists.iconData,
-                    color: CollectGroupType.artists.color,
-                    onTap: () => widget.bloc.add(
-                      OrganisationTypeChanged(CollectGroupType.artists.index),
-                    ),
-                  ),
-                ],
-              ),
+            FunOrganisationFilterTilesBar(
+              bloc: widget.bloc,
             ),
             const SizedBox(height: 16),
             FunInput(
-              hintText: locals.externalDonationsCreateSearchHint,
+              hintText: locals.forYouSearchOrganizations,
               prefixIcon: Icon(
                 Icons.search,
                 color: FunTheme.of(context).neutral40,
               ),
-              analyticsEvent:
-                  AnalyticsEventName.externalDonationsCreateSearchTapped
-                      .toEvent(),
+              analyticsEvent: AnalyticsEventName
+                  .externalDonationsCreateSearchTapped
+                  .toEvent(),
               focusNode: _searchFocusNode,
               onChanged: (value) {
                 setState(() => _query = value);
@@ -153,6 +105,9 @@ class _ExternalDonationOrganisationSearchContentState
                     }
 
                     final organisation = organisations[index];
+                    final isFavorited = state.favoritedOrganisations.contains(
+                      organisation.nameSpace,
+                    );
                     return ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: FaIcon(
@@ -160,6 +115,45 @@ class _ExternalDonationOrganisationSearchContentState
                         color: FunTheme.of(context).primary20,
                       ),
                       title: LabelMediumText(organisation.orgName),
+                      trailing: IconButton(
+                        icon: Icon(
+                          isFavorited ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorited ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: () {
+                          if (isFavorited) {
+                            widget.bloc.add(
+                              RemoveOrganisationFromFavorites(
+                                organisation.nameSpace,
+                                reSort: false,
+                              ),
+                            );
+                            AnalyticsHelper.logEvent(
+                              eventName: AnalyticsEventName
+                                  .organisationFavoriteToggled,
+                              eventProperties: {
+                                'organisation_name': organisation.orgName,
+                                'is_favorited': false,
+                              },
+                            );
+                          } else {
+                            widget.bloc.add(
+                              AddOrganisationToFavorites(
+                                organisation.nameSpace,
+                                reSort: false,
+                              ),
+                            );
+                            AnalyticsHelper.logEvent(
+                              eventName: AnalyticsEventName
+                                  .organisationFavoriteToggled,
+                              eventProperties: {
+                                'organisation_name': organisation.orgName,
+                                'is_favorited': true,
+                              },
+                            );
+                          }
+                        },
+                      ),
                       onTap: () => widget.onOrganisationSelected(organisation),
                     );
                   },
