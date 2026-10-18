@@ -194,6 +194,7 @@
       }
     }
   },
+  "receivedSuccessTitle": "Thanks, your gift has been received",
   "amountTooHigh": "Amount too high",
   "donationAmountExceedsMaximum": "Amount exceeds the maximum allowed donation of {maxAmount}",
   "@donationAmountExceedsMaximum": {

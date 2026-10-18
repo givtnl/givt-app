@@ -7,17 +7,34 @@ import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
+enum SuccessDonationVariant {
+  offline,
+  received;
+
+  static SuccessDonationVariant fromExtra(Object? value) {
+    if (value == 'received') {
+      return SuccessDonationVariant.received;
+    }
+    return SuccessDonationVariant.offline;
+  }
+}
+
 class SuccessDonationPage extends StatelessWidget {
   const SuccessDonationPage({
     required this.organisationName,
+    this.variant = SuccessDonationVariant.offline,
     super.key,
   });
 
   final String organisationName;
+  final SuccessDonationVariant variant;
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final title = variant == SuccessDonationVariant.received
+        ? locals.receivedSuccessTitle
+        : locals.offlineSuccessTitle;
     return FunScaffold(
       canPop: false,
       appBar: const FunTopAppBar(
@@ -32,7 +49,7 @@ class SuccessDonationPage extends StatelessWidget {
           ),
           const SizedBox(height: 32),
           TitleMediumText(
-            locals.offlineSuccessTitle,
+            title,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),

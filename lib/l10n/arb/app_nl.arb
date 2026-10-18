@@ -195,6 +195,7 @@
       }
     }
   },
+  "receivedSuccessTitle": "Bedankt, je gift is ontvangen",
   "amountTooHigh": "Bedrag te hoog",
   "donationAmountExceedsMaximum": "Dit bedrag is hoger dan het maximaal toegestane geefbedrag van {maxAmount}",
   "@donationAmountExceedsMaximum": {

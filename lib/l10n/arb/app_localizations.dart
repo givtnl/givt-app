@@ -908,6 +908,12 @@ abstract class AppLocalizations {
   /// **'Thank you for supporting {orgName}'**
   String offlineSuccessBodyWithOrg(String orgName);
 
+  /// No description provided for @receivedSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks, your gift has been received'**
+  String get receivedSuccessTitle;
+
   /// No description provided for @amountTooHigh.
   ///
   /// In en, this message translates to:
