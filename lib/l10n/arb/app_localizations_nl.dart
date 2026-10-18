@@ -483,6 +483,9 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String get receivedSuccessTitle => 'Bedankt, je gift is ontvangen';
+
+  @override
   String get amountTooHigh => 'Bedrag te hoog';
 
   @override

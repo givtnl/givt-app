@@ -195,6 +195,7 @@
       }
     }
   },
+  "receivedSuccessTitle": "Danke, deine Spende ist eingegangen",
   "amountTooHigh": "Betrag zu hoch",
   "donationAmountExceedsMaximum": "Der Betrag überschreitet den maximal zulässigen Spendenbetrag von {maxAmount}",
   "@donationAmountExceedsMaximum": {

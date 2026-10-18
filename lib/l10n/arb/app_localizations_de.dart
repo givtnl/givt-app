@@ -485,6 +485,9 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get receivedSuccessTitle => 'Danke, deine Spende ist eingegangen';
+
+  @override
   String get amountTooHigh => 'Betrag zu hoch';
 
   @override

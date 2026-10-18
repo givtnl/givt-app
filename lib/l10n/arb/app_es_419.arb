@@ -190,6 +190,7 @@
       }
     }
   },
+  "receivedSuccessTitle": "Gracias, tu donación ha sido recibida",
   "amountTooHigh": "Monto demasiado alto",
   "donationAmountExceedsMaximum": "El monto supera la donación máxima permitida de {maxAmount}",
   "@donationAmountExceedsMaximum": {

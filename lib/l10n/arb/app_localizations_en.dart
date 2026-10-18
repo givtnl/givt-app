@@ -480,6 +480,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get receivedSuccessTitle => 'Thanks, your gift has been received';
+
+  @override
   String get amountTooHigh => 'Amount too high';
 
   @override
@@ -4123,6 +4126,9 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   String offlineSuccessBodyWithOrg(String orgName) {
     return 'Thank you for supporting $orgName';
   }
+
+  @override
+  String get receivedSuccessTitle => 'Thanks, your gift has been received';
 
   @override
   String get amountTooHigh => 'Amount too high';

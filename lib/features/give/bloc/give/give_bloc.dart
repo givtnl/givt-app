@@ -336,6 +336,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           transactionIds: transactionIds,
           userGUID: event.userGUID,
           isForYouFlow: true,
+          submitted: true,
         ),
       );
     } catch (e, stackTrace) {
@@ -521,6 +522,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         organisation: organisation,
         givtTransactions: transactionList,
         transactionIds: transactionIds,
+        submitted: true,
       ),
     );
   }
@@ -790,7 +792,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           'donations': GivtTransaction.toApiJsonList(state.givtTransactions),
         },
       );
-      emit(state.copyWith(status: GiveStatus.readyToGive));
+      emit(
+        state.copyWith(
+          status: GiveStatus.readyToGive,
+          submitted: true,
+        ),
+      );
     } on SocketException catch (e, stackTrace) {
       log(e.toString());
       LoggingInfo.instance.error(
@@ -874,6 +881,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           instanceName: currentInstanceName, // Preserve instance name
           afterGivingRedirection:
               currentAfterGivingRedirection, // Preserve redirect
+          submitted: true,
         ),
       );
 

@@ -32,11 +32,38 @@ void main() {
         findsNothing,
       );
       expect(find.text(locals.offlineSuccessTitle), findsOneWidget);
+      expect(find.text(locals.receivedSuccessTitle), findsNothing);
       expect(
         find.text(locals.offlineSuccessBodyWithOrg(organisationName)),
         findsOneWidget,
       );
       expect(find.text(locals.offlineSuccessGotIt), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'received confirmation shows received title',
+    (tester) async {
+      const organisationName = 'Presbyterian Church';
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: SuccessDonationPage(
+            organisationName: organisationName,
+            variant: SuccessDonationVariant.received,
+          ),
+        ),
+      );
+      await tester.pump();
+
+      final locals = AppLocalizations.of(
+        tester.element(find.byType(SuccessDonationPage)),
+      );
+
+      expect(find.text(locals.receivedSuccessTitle), findsOneWidget);
+      expect(find.text(locals.offlineSuccessTitle), findsNothing);
     },
   );
 }
