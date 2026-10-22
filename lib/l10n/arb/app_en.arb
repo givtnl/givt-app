@@ -194,6 +194,7 @@
       }
     }
   },
+  "receivedSuccessTitle": "Thanks, your gift has been received",
   "amountTooHigh": "Amount too high",
   "donationAmountExceedsMaximum": "Amount exceeds the maximum allowed donation of {maxAmount}",
   "@donationAmountExceedsMaximum": {
@@ -1538,8 +1539,10 @@
   "externalDonationsOverviewTabCurrent": "Current",
   "externalDonationsOverviewTabPast": "Past",
   "externalDonationsOverviewAddButton": "Add external donation",
-  "externalDonationsEmptyStateTitle": "Track giving outside Givt",
-  "externalDonationsEmptyStateDescription": "Add donations you make directly to organisations so your donations history stays complete.",
+  "externalDonationsEmptyStateNotProcessedTag": "Not processed by Givt",
+  "externalDonationsEmptyStateTitle": "Get all your donations in one clear overview",
+  "externalDonationsEmptyStateDescription": "A way to record the gifts you've made in cash, bank transfers or other apps.",
+  "externalDonationsCreateNotCollectedNote": "Remember, Givt doesn't collect this. We'll only add it to your overview",
   "externalDonationsListStatusStopped": "Stopped",
   "externalDonationsDetailSummaryGiving": "Giving",
   "externalDonationsDetailOneOffDate": "Date",
@@ -1551,7 +1554,6 @@
   "externalDonationsCreateTitle": "Add external donation",
   "externalDonationsCreateOrganisationDescription": "Which organisation did you give to?",
   "externalDonationsCreateOrganisationLabel": "Organisation",
-  "externalDonationsCreateSearchTitle": "Search organization",
   "externalDonationsCreateSearchHint": "Search by name",
   "externalDonationsCreateAddCustomOrganisation": "Add \"{name}\"",
   "@externalDonationsCreateAddCustomOrganisation": {

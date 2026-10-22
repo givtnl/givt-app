@@ -195,6 +195,7 @@
       }
     }
   },
+  "receivedSuccessTitle": "Gracias, tu donación ha sido recibida",
   "amountTooHigh": "Amount too high",
   "donationAmountExceedsMaximum": "El monto supera la donación máxima permitida de {maxAmount}",
   "@donationAmountExceedsMaximum": {
@@ -1489,8 +1490,10 @@
   "externalDonationsOverviewTabCurrent": "Actuales",
   "externalDonationsOverviewTabPast": "Anteriores",
   "externalDonationsOverviewAddButton": "Añadir donación externa",
-  "externalDonationsEmptyStateTitle": "Registra donaciones fuera de Givt",
-  "externalDonationsEmptyStateDescription": "Añade donaciones que haces directamente a organizaciones para que tu historial de donaciones esté completo.",
+  "externalDonationsEmptyStateNotProcessedTag": "No procesado por Givt",
+  "externalDonationsEmptyStateTitle": "Ten todas tus donaciones en un resumen claro",
+  "externalDonationsEmptyStateDescription": "Una forma de registrar los regalos que has hecho en efectivo, transferencias u otras apps.",
+  "externalDonationsCreateNotCollectedNote": "Recuerda: Givt no cobra esto. Solo lo añadimos a tu resumen",
   "externalDonationsListStatusStopped": "Detenida",
   "externalDonationsDetailSummaryGiving": "Donando",
   "externalDonationsDetailOneOffDate": "Fecha",
@@ -1502,7 +1505,6 @@
   "externalDonationsCreateTitle": "Añadir donación externa",
   "externalDonationsCreateOrganisationDescription": "¿A qué organización donaste?",
   "externalDonationsCreateOrganisationLabel": "Organización",
-  "externalDonationsCreateSearchTitle": "Buscar organizaciones",
   "externalDonationsCreateSearchHint": "Buscar por nombre",
   "externalDonationsCreateAddCustomOrganisation": "Añadir \"{name}\"",
   "externalDonationsCreateAmountLabel": "Importe",

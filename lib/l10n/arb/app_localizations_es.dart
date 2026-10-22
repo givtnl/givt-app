@@ -480,6 +480,9 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get receivedSuccessTitle => 'Gracias, tu donación ha sido recibida';
+
+  @override
   String get amountTooHigh => 'Amount too high';
 
   @override
@@ -2803,12 +2806,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get externalDonationsOverviewAddButton => 'Añadir donación externa';
 
   @override
+  String get externalDonationsEmptyStateNotProcessedTag =>
+      'No procesado por Givt';
+
+  @override
   String get externalDonationsEmptyStateTitle =>
-      'Registra donaciones fuera de Givt';
+      'Ten todas tus donaciones en un resumen claro';
 
   @override
   String get externalDonationsEmptyStateDescription =>
-      'Añade donaciones que haces directamente a organizaciones para que tu historial de donaciones esté completo.';
+      'Una forma de registrar los regalos que has hecho en efectivo, transferencias u otras apps.';
+
+  @override
+  String get externalDonationsCreateNotCollectedNote =>
+      'Recuerda: Givt no cobra esto. Solo lo añadimos a tu resumen';
 
   @override
   String get externalDonationsListStatusStopped => 'Detenida';
@@ -2845,9 +2856,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get externalDonationsCreateOrganisationLabel => 'Organización';
-
-  @override
-  String get externalDonationsCreateSearchTitle => 'Buscar organizaciones';
 
   @override
   String get externalDonationsCreateSearchHint => 'Buscar por nombre';
@@ -4135,6 +4143,9 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String offlineSuccessBodyWithOrg(String orgName) {
     return 'Gracias por apoyar a $orgName';
   }
+
+  @override
+  String get receivedSuccessTitle => 'Gracias, tu donación ha sido recibida';
 
   @override
   String get amountTooHigh => 'Monto demasiado alto';
@@ -6478,12 +6489,20 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
   String get externalDonationsOverviewAddButton => 'Agregar donación externa';
 
   @override
+  String get externalDonationsEmptyStateNotProcessedTag =>
+      'No procesado por Givt';
+
+  @override
   String get externalDonationsEmptyStateTitle =>
-      'Registra donaciones fuera de Givt';
+      'Ten todas tus donaciones en un resumen claro';
 
   @override
   String get externalDonationsEmptyStateDescription =>
-      'Agrega donaciones que haces directamente a organizaciones para que tu historial de donaciones esté completo.';
+      'Una forma de registrar los regalos que hiciste en efectivo, transferencias u otras apps.';
+
+  @override
+  String get externalDonationsCreateNotCollectedNote =>
+      'Recuerda: Givt no cobra esto. Solo lo agregamos a tu resumen';
 
   @override
   String get externalDonationsListStatusStopped => 'Detenida';
@@ -6520,9 +6539,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get externalDonationsCreateOrganisationLabel => 'Organización';
-
-  @override
-  String get externalDonationsCreateSearchTitle => 'Buscar organizaciones';
 
   @override
   String get externalDonationsCreateSearchHint => 'Buscar por nombre';

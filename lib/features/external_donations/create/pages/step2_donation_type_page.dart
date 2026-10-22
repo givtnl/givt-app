@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/constants/donation_amount_constants.dart';
@@ -17,6 +18,7 @@ import 'package:givt_app/features/external_donations/create/widgets/external_don
 import 'package:givt_app/features/external_donations/create/widgets/external_donation_frequency_dropdown.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation_frequency.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/design_system/components/overlays/fun_snackbar.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -150,6 +152,15 @@ class _Step2DonationTypePageState extends State<Step2DonationTypePage> {
                 analyticsEvent: AnalyticsEventName
                     .externalDonationsCreateAmountEntered
                     .toEvent(),
+              ),
+              const SizedBox(height: 16),
+              FunSnackbarWidget(
+                extraText: locals.externalDonationsCreateNotCollectedNote,
+                icon: FaIcon(
+                  FontAwesomeIcons.circleInfo,
+                  size: 24,
+                  color: FamilyAppTheme.secondary30,
+                ),
               ),
             ],
           ),

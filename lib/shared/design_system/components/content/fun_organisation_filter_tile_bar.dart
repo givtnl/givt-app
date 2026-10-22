@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/filter_tile.dart';
@@ -11,12 +12,16 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
     this.stratPadding = 24,
     this.removedTypes = const [],
     this.bloc,
+    this.analyticsEventName,
     super.key,
   });
   final double stratPadding;
   final List<String> removedTypes;
   final void Function(CollectGroupType)? onFilterChanged;
   final OrganisationBloc? bloc;
+
+  /// When null, tiles keep [AnalyticsEventName.parentGiveFilterTileClicked].
+  final AnalyticsEventName? analyticsEventName;
   @override
   Widget build(BuildContext context) {
     final effectiveBloc = bloc ?? getIt<OrganisationBloc>();
@@ -48,18 +53,20 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
             children: [
               ...types.map(
                 (e) => FilterTile(
-                    type: e,
-                    edgeInsets: const EdgeInsets.only(right: 8),
-                    isSelected: state.selectedType == e.index,
-                    onClick: (context) {
-                      final typeIndex = state.selectedType == e.index
-                          ? CollectGroupType.none.index
-                          : e.index;
-                      onFilterChanged?.call(CollectGroupType.values[typeIndex]);
-                      effectiveBloc.add(
-                        OrganisationTypeChanged(typeIndex),
-                      );
-                    }),
+                  type: e,
+                  edgeInsets: const EdgeInsets.only(right: 8),
+                  isSelected: state.selectedType == e.index,
+                  analyticsEventName: analyticsEventName,
+                  onClick: (context) {
+                    final typeIndex = state.selectedType == e.index
+                        ? CollectGroupType.none.index
+                        : e.index;
+                    onFilterChanged?.call(CollectGroupType.values[typeIndex]);
+                    effectiveBloc.add(
+                      OrganisationTypeChanged(typeIndex),
+                    );
+                  },
+                ),
               ),
             ],
           ),

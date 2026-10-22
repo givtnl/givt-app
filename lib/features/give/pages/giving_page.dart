@@ -12,6 +12,8 @@ import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
+import 'package:givt_app/features/give/pages/success_donation_page.dart';
+import 'package:givt_app/features/give/utils/webview_availability.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -30,6 +32,7 @@ class _GivingPageState extends State<GivingPage> {
   late CustomInAppBrowser _customInAppBrowser;
   bool browserIsOpened = false;
   bool showBackButton = false;
+  bool _givingFlowStarted = false;
 
   @override
   void initState() {
@@ -57,6 +60,90 @@ class _GivingPageState extends State<GivingPage> {
         });
       }
     });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      unawaited(_startGivingFlow());
+    });
+  }
+
+  String _organisationDisplayName(GiveState giveBlocState) {
+    var orgName = giveBlocState.organisation.organisationName!;
+    final instanceName = giveBlocState.instanceName;
+    if (giveBlocState.instanceName.isNotEmpty && instanceName != orgName) {
+      orgName = '$orgName: $instanceName';
+    }
+    return orgName;
+  }
+
+  Future<void> _startGivingFlow() async {
+    if (_givingFlowStarted || !mounted) {
+      return;
+    }
+    _givingFlowStarted = true;
+
+    final giveBlocState = context.read<GiveBloc>().state;
+    final hasWebView = await WebViewAvailability.hasUsableWebView();
+    if (!mounted) {
+      return;
+    }
+
+    if (!hasWebView) {
+      LoggingInfo.instance.warning(
+        'No usable Android WebView; showing success screen instead of browser',
+      );
+      context.goNamed(
+        Pages.giveSucess.name,
+        extra: {
+          'orgName': _organisationDisplayName(giveBlocState),
+          'variant': giveBlocState.submitted
+              ? SuccessDonationVariant.received.name
+              : SuccessDonationVariant.offline.name,
+        },
+      );
+      return;
+    }
+
+    final givt = _buildGivt(context);
+    final confirmPath = _confirmPagePath(context);
+
+    Vibration.vibrate(amplitude: 128);
+    LoggingInfo.instance.info(
+      'Opening browser at $confirmPath with $givt',
+    );
+
+    browserIsOpened = true;
+    setState(() {});
+
+    await _customInAppBrowser.openUrlRequest(
+      urlRequest: URLRequest(
+        url: WebUri.uri(
+          Uri.https(
+            getIt<RequestHelper>().apiURL,
+            confirmPath,
+            {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
+          ),
+        ),
+      ),
+      settings: InAppBrowserClassSettings(
+        browserSettings: InAppBrowserSettings(
+          hideCloseButton: true,
+          hideUrlBar: true,
+          hideTitleBar: true,
+          hideToolbarBottom: true,
+          hideToolbarTop: true,
+          toolbarTopBackgroundColor: Colors.white,
+          toolbarTopTintColor: Colors.white,
+          toolbarBottomBackgroundColor: Colors.white,
+          allowGoBackWithBackButton: false,
+          shouldCloseOnBackButtonPressed: false,
+          closeOnCannotGoBack: false,
+        ),
+        webViewSettings: InAppWebViewSettings(
+          underPageBackgroundColor: Colors.white,
+          allowsBackForwardNavigationGestures: false,
+        ),
+      ),
+    );
   }
 
   Future<void> _closeBrowser() async {
@@ -159,45 +246,6 @@ class _GivingPageState extends State<GivingPage> {
           if (browserIsOpened) {
             return const SizedBox.shrink();
           }
-          final givt = _buildGivt(context);
-          final confirmPath = _confirmPagePath(context);
-
-          Vibration.vibrate(amplitude: 128);
-          LoggingInfo.instance.info(
-            'Opening browser at $confirmPath with $givt',
-          );
-
-          browserIsOpened = true;
-          _customInAppBrowser.openUrlRequest(
-            urlRequest: URLRequest(
-              url: WebUri.uri(
-                Uri.https(
-                  getIt<RequestHelper>().apiURL,
-                  confirmPath,
-                  {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
-                ),
-              ),
-            ),
-            settings: InAppBrowserClassSettings(
-              browserSettings: InAppBrowserSettings(
-                hideCloseButton: true,
-                hideUrlBar: true,
-                hideTitleBar: true,
-                hideToolbarBottom: true,
-                hideToolbarTop: true,
-                toolbarTopBackgroundColor: Colors.white,
-                toolbarTopTintColor: Colors.white,
-                toolbarBottomBackgroundColor: Colors.white,
-                allowGoBackWithBackButton: false,
-                shouldCloseOnBackButtonPressed: false,
-                closeOnCannotGoBack: false,
-              ),
-              webViewSettings: InAppWebViewSettings(
-                underPageBackgroundColor: Colors.white,
-                allowsBackForwardNavigationGestures: false,
-              )
-            ),
-          );
 
           /// In case the user ends up on the giving screen
           return Center(

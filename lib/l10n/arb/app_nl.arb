@@ -195,6 +195,7 @@
       }
     }
   },
+  "receivedSuccessTitle": "Bedankt, je gift is ontvangen",
   "amountTooHigh": "Bedrag te hoog",
   "donationAmountExceedsMaximum": "Dit bedrag is hoger dan het maximaal toegestane geefbedrag van {maxAmount}",
   "@donationAmountExceedsMaximum": {
@@ -1489,8 +1490,10 @@
   "externalDonationsOverviewTabCurrent": "Huidig",
   "externalDonationsOverviewTabPast": "Verleden",
   "externalDonationsOverviewAddButton": "Externe gift toevoegen",
-  "externalDonationsEmptyStateTitle": "Houd giften buiten Givt bij",
-  "externalDonationsEmptyStateDescription": "Voeg giften toe die je rechtstreeks aan organisaties doet, zodat je overzicht compleet blijft.",
+  "externalDonationsEmptyStateNotProcessedTag": "Niet verwerkt door Givt",
+  "externalDonationsEmptyStateTitle": "Krijg al je giften in één duidelijk overzicht",
+  "externalDonationsEmptyStateDescription": "Zo leg je vast wat je contant, via overschrijving of in andere apps hebt gegeven.",
+  "externalDonationsCreateNotCollectedNote": "Ter herinnering: Givt schrijft dit niet af. We zetten het alleen in je overzicht",
   "externalDonationsListStatusStopped": "Gestopt",
   "externalDonationsDetailSummaryGiving": "Gegeven",
   "externalDonationsDetailOneOffDate": "Datum",
@@ -1502,7 +1505,6 @@
   "externalDonationsCreateTitle": "Externe gift toevoegen",
   "externalDonationsCreateOrganisationDescription": "Aan welke organisatie heb je gegeven?",
   "externalDonationsCreateOrganisationLabel": "Organisatie",
-  "externalDonationsCreateSearchTitle": "Organisaties zoeken",
   "externalDonationsCreateSearchHint": "Zoek op naam",
   "externalDonationsCreateAddCustomOrganisation": "\"{name}\" toevoegen",
   "externalDonationsCreateAmountLabel": "Bedrag",

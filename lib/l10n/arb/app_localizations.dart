@@ -908,6 +908,12 @@ abstract class AppLocalizations {
   /// **'Thank you for supporting {orgName}'**
   String offlineSuccessBodyWithOrg(String orgName);
 
+  /// No description provided for @receivedSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks, your gift has been received'**
+  String get receivedSuccessTitle;
+
   /// No description provided for @amountTooHigh.
   ///
   /// In en, this message translates to:
@@ -5016,17 +5022,29 @@ abstract class AppLocalizations {
   /// **'Add external donation'**
   String get externalDonationsOverviewAddButton;
 
+  /// No description provided for @externalDonationsEmptyStateNotProcessedTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Not processed by Givt'**
+  String get externalDonationsEmptyStateNotProcessedTag;
+
   /// No description provided for @externalDonationsEmptyStateTitle.
   ///
   /// In en, this message translates to:
-  /// **'Track giving outside Givt'**
+  /// **'Get all your donations in one clear overview'**
   String get externalDonationsEmptyStateTitle;
 
   /// No description provided for @externalDonationsEmptyStateDescription.
   ///
   /// In en, this message translates to:
-  /// **'Add donations you make directly to organisations so your donations history stays complete.'**
+  /// **'A way to record the gifts you\'ve made in cash, bank transfers or other apps.'**
   String get externalDonationsEmptyStateDescription;
+
+  /// No description provided for @externalDonationsCreateNotCollectedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember, Givt doesn\'t collect this. We\'ll only add it to your overview'**
+  String get externalDonationsCreateNotCollectedNote;
 
   /// No description provided for @externalDonationsListStatusStopped.
   ///
@@ -5093,12 +5111,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Organisation'**
   String get externalDonationsCreateOrganisationLabel;
-
-  /// No description provided for @externalDonationsCreateSearchTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Search organization'**
-  String get externalDonationsCreateSearchTitle;
 
   /// No description provided for @externalDonationsCreateSearchHint.
   ///
