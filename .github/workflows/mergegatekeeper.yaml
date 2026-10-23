@@ -12,6 +12,6 @@ jobs:
         runs-on: ubuntu-latest
         if: ${{ github.event.pull_request.head.ref != 'develop' && !contains('hotfix', github.event.pull_request.title) }}
         steps:
-        - uses: superbrothers/close-pull-request@v3
+        - uses: superbrothers/close-pull-request@9c18513d320d7b2c7185fb93396d0c664d5d8448 # v3.1.2
           with:
             comment: "Canceled because this does not follow the merge strategy. If this is a hotfix, add the term hotfix in the title of the merge to bypass this check."
