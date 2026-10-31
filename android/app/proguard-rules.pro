@@ -9,25 +9,9 @@
 -dontwarn kotlinx.parcelize.Parceler
 -dontwarn kotlinx.parcelize.Parcelize
 
-# flutter_inappwebview: consumer rules keep JS bridge; explicit keep for payment webview reliability
--keepclassmembers class com.pichillilorenzo.flutter_inappwebview_android$JavaScriptBridgeInterface {
-    <fields>;
-    <methods>;
-}
+# flutter_inappwebview: plugin consumer rules keep com.pichillilorenzo.flutter_inappwebview_android.webview.JavaScriptBridgeInterface
 
-# flutter_local_notifications: Gson needs generic signatures; scheduled reminders deserialize model classes
--keepattributes Signature
--keepattributes *Annotation*
--dontwarn sun.misc.**
--keep class * extends com.google.gson.TypeAdapter
--keep class * implements com.google.gson.TypeAdapterFactory
--keep class * implements com.google.gson.JsonSerializer
--keep class * implements com.google.gson.JsonDeserializer
--keepclassmembers,allowobfuscation class * {
-    @com.google.gson.annotations.SerializedName <fields>;
-}
--keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
--keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+# flutter_local_notifications: keep notification model classes so reminders rescheduled after the update still deserialize
 -keep class com.dexterous.flutterlocalnotifications.models.** { *; }
 
 # mobile_scanner ships consumer Proguard rules for ML Kit; no extra rules needed here.
