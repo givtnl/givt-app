@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/shared/design_system/design_system.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/body_small_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
-import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/design_system/design_system.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 
 class MethodButton extends StatelessWidget {
@@ -12,6 +11,7 @@ class MethodButton extends StatelessWidget {
     required this.imagePath,
     required this.title,
     required this.subtitle,
+    required this.analyticsEvent,
     super.key,
   });
 
@@ -19,15 +19,17 @@ class MethodButton extends StatelessWidget {
   final String imagePath;
   final String title;
   final String subtitle;
+  final AnalyticsEvent analyticsEvent;
 
   @override
   Widget build(BuildContext context) {
     return ActionContainer(
-      analyticsEvent: AnalyticsEventName.debugButtonClicked.toEvent(),
+      analyticsEvent: analyticsEvent,
       onTap: onPressed,
       borderColor: FunTheme.of(context).neutralVariant80,
       baseBorderSize: FunTheme.of(context).borderWidthThin,
-      borderSize: FunTheme.of(context).borderWidthThin + FunTheme.of(context).shadowYSm,
+      borderSize:
+          FunTheme.of(context).borderWidthThin + FunTheme.of(context).shadowYSm,
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(

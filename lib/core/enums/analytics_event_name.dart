@@ -625,7 +625,14 @@ enum AnalyticsEventName {
   generosityHuntLevelTileClicked('generosity_hunt_level_tile_clicked'),
   generosityHuntLevelStart('generosity_hunt_level_start'),
   generosityHuntBarcodeScanned('generosity_hunt_barcode_scanned'),
+  @Deprecated('Placeholder. Do not use for product buttons.')
   debugButtonClicked('debug_button_clicked'),
+  recurringStep1SelectOrganisationListClicked(
+    'recurring_step1_select_organisation_list_clicked',
+  ),
+  recurringStep1SelectOrganisationContinueClicked(
+    'recurring_step1_select_organisation_continue_clicked',
+  ),
   recurringStep2SetAmountFrequencySelected(
     'recurring_step2_set_amount_frequency_selected',
   ),
