@@ -54,8 +54,10 @@ class _Step1SelectOrganisationPageState
 
   @override
   Widget build(BuildContext context) {
-    return BaseStateConsumer<SelectOrganisationUIModel,
-        SelectOrganizationAction>(
+    return BaseStateConsumer<
+      SelectOrganisationUIModel,
+      SelectOrganizationAction
+    >(
       cubit: _cubit,
       onLoading: (context) => const FunScaffold(
         body: Center(
@@ -77,7 +79,7 @@ class _Step1SelectOrganisationPageState
       onData: (context, uiModel) {
         return FunScaffold(
           appBar: FunTopAppBar(
-          variant: FunTopAppBarVariant.white,
+            variant: FunTopAppBarVariant.white,
             title: context.l10n.recurringDonationsStep1Title,
             leading: const GivtBackButtonFlat(),
             actions: [
@@ -121,6 +123,9 @@ class _Step1SelectOrganisationPageState
                 imagePath: 'assets/images/select_list.png',
                 title: context.l10n.recurringDonationsStep1ListTitle,
                 subtitle: context.l10n.recurringDonationsStep1ListSubtitle,
+                analyticsEvent: AnalyticsEventName
+                    .recurringStep1SelectOrganisationListClicked
+                    .toEvent(),
               ),
               // const SizedBox(height: 16),
               // MethodButton(
