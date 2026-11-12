@@ -23,6 +23,7 @@ import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/email_typo_field.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/auth_utils.dart';
@@ -53,7 +54,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   StreamSubscription<dynamic>? _emailHydrationSub;
 
   final EmailSignupCubit _cubit = getIt<EmailSignupCubit>();
-  final InternetConnectionCubit _connectionCubit = getIt<InternetConnectionCubit>();
+  final InternetConnectionCubit _connectionCubit =
+      getIt<InternetConnectionCubit>();
 
   @override
   void didChangeDependencies() {
@@ -192,54 +194,65 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               onChanged: _cubit.updateCountry,
                             ),
                             const SizedBox(height: 12),
-                            Semantics(
-                              identifier: 'Email-Input',
-                              textField: true,
-                              child: InputFormField(
+                            EmailTypoField(
                               controller: _emailController,
-                              hintText: locals.email,
-                              onChanged: _cubit.updateEmail,
-                              validator: (value) {
-                                if (!_cubit.validateEmail(value)) {
-                                  return context.l10n.invalidEmail;
-                                }
+                              screen: 'welcome',
+                              countryCode: state.country?.countryCode,
+                              onApplied: _cubit.updateEmail,
+                              fieldBuilder: (context, focusNode) {
+                                return Semantics(
+                                  identifier: 'Email-Input',
+                                  textField: true,
+                                  child: InputFormField(
+                                    focusNode: focusNode,
+                                    controller: _emailController,
+                                    hintText: locals.email,
+                                    onChanged: _cubit.updateEmail,
+                                    validator: (value) {
+                                      if (!_cubit.validateEmail(value)) {
+                                        return context.l10n.invalidEmail;
+                                      }
 
-                                return null;
+                                      return null;
+                                    },
+                                    keyboardType: TextInputType.emailAddress,
+                                    autofillHints: const [
+                                      AutofillHints.username,
+                                      AutofillHints.email,
+                                    ],
+                                  ),
+                                );
                               },
-                              keyboardType: TextInputType.emailAddress,
-                              autofillHints: const [
-                                AutofillHints.username,
-                                AutofillHints.email,
-                              ],
-                            ),
                             ),
                             const Spacer(),
                             Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
                               child: GestureDetector(
                                 onTap: state.country == null
                                     ? null
                                     : () => showModalBottomSheet<void>(
-                                          context: context,
-                                          useSafeArea: true,
-                                          scrollControlDisabledMaxHeightRatio:
-                                              1,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          builder: (BuildContext context) =>
-                                              TermsAndConditionsDialog(
-                                            content: locals.termsText,
-                                            overrideCountryIso:
-                                                state.country?.countryCode,
+                                        context: context,
+                                        useSafeArea: true,
+                                        scrollControlDisabledMaxHeightRatio: 1,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            20,
                                           ),
                                         ),
+                                        builder: (BuildContext context) =>
+                                            TermsAndConditionsDialog(
+                                              content: locals.termsText,
+                                              overrideCountryIso:
+                                                  state.country?.countryCode,
+                                            ),
+                                      ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    FaIcon(FontAwesomeIcons.circleInfo,
+                                    FaIcon(
+                                      FontAwesomeIcons.circleInfo,
                                       size: 20,
                                       color: FamilyAppTheme.primary20,
                                     ),
@@ -267,7 +280,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                       FocusScope.of(context).unfocus();
 
                                       final country =
-                                          state.country ?? _cubit.currentCountry;
+                                          state.country ??
+                                          _cubit.currentCountry;
                                       if (country == null) {
                                         SnackBarHelper.showMessage(
                                           context,
@@ -278,8 +292,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
 
                                       _cubit.updateApi();
                                       setLoading();
-                                      AppThemeSwitcher.of(context)
-                                          .switchTheme(isFamilyApp: false);
+                                      AppThemeSwitcher.of(
+                                        context,
+                                      ).switchTheme(isFamilyApp: false);
                                       try {
                                         await context
                                             .read<AuthCubit>()
@@ -287,8 +302,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                               country: country,
                                               email: state.email,
                                               locale: Localizations.localeOf(
-                                                      context)
-                                                  .languageCode,
+                                                context,
+                                              ).languageCode,
                                             );
                                       } catch (e) {
                                         // Error surfaced via AuthCubit / dialogs.
@@ -298,12 +313,14 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                     }
                                   : null,
                               text: locals.buttonContinue,
-                              analyticsEvent: AnalyticsEventName.emailSignupContinueClicked.toEvent(
-                                parameters: {
-                                  'email': state.email,
-                                  'country': state.country?.name,
-                                },
-                              ),
+                              analyticsEvent: AnalyticsEventName
+                                  .emailSignupContinueClicked
+                                  .toEvent(
+                                    parameters: {
+                                      'email': state.email,
+                                      'country': state.country?.name,
+                                    },
+                                  ),
                             ),
                             const SizedBox(height: 24),
                           ],
@@ -321,7 +338,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   }
 
   Future<void> handleCustom(
-      BuildContext context, EmailSignupCustom custom) async {
+    BuildContext context,
+    EmailSignupCustom custom,
+  ) async {
     switch (custom) {
       case EmailSignupCheckingEmail():
         setLoading();

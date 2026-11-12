@@ -9,6 +9,7 @@ import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/email_typo_field.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 
@@ -140,27 +141,36 @@ class FamilyMemberForm extends StatelessWidget {
           textCapitalization: TextCapitalization.sentences,
         ),
         const SizedBox(height: 16),
-        InputFormField(
-          validator: (value) {
-            if (value == null ||
-                value.isEmpty ||
-                !Util.emailRegEx.hasMatch(value)) {
-              return context.l10n.invalidEmail;
-            }
-            if (value.trim() == context.read<FamilyAuthCubit>().user?.email) {
-              return context.l10n.addMemberAdultEmailSameAsLoggedIn;
-            }
-            return null;
-          },
-          keyboardType: TextInputType.emailAddress,
-          autofillHints: const [
-            AutofillHints.username,
-            AutofillHints.email,
-          ],
+        EmailTypoField(
           controller: emailController,
-          hintText: context.l10n.email,
-          textInputAction: TextInputAction.done,
-          errorMaxLines: 2,
+          screen: 'add_member',
+          countryCode: 'US',
+          fieldBuilder: (context, focusNode) {
+            return InputFormField(
+              focusNode: focusNode,
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    !Util.emailRegEx.hasMatch(value)) {
+                  return context.l10n.invalidEmail;
+                }
+                if (value.trim() ==
+                    context.read<FamilyAuthCubit>().user?.email) {
+                  return context.l10n.addMemberAdultEmailSameAsLoggedIn;
+                }
+                return null;
+              },
+              keyboardType: TextInputType.emailAddress,
+              autofillHints: const [
+                AutofillHints.username,
+                AutofillHints.email,
+              ],
+              controller: emailController,
+              hintText: context.l10n.email,
+              textInputAction: TextInputAction.done,
+              errorMaxLines: 2,
+            );
+          },
         ),
         const SizedBox(height: 16),
         BodySmallText(
@@ -181,7 +191,8 @@ class FamilyMemberForm extends StatelessWidget {
         children: [
           const Padding(
             padding: EdgeInsets.only(left: 4, right: 8),
-            child: FaIcon(FontAwesomeIcons.check,
+            child: FaIcon(
+              FontAwesomeIcons.check,
               color: AppTheme.primary40,
               size: 16,
             ),
