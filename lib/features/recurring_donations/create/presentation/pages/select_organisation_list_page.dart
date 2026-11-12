@@ -87,7 +87,13 @@ class _SelectOrganisationListPageState
               widget.onCollectGroupSelected(selectedCollectgroup);
             },
             text: context.l10n.selectReceiverButton,
-            analyticsEvent: AnalyticsEventName.debugButtonClicked.toEvent(),
+            analyticsEvent: AnalyticsEventName
+                .recurringStep1SelectOrganisationContinueClicked
+                .toEvent(
+                  parameters: {
+                    'organization': selectedCollectgroup.orgName,
+                  },
+                ),
           ),
         ],
       ),

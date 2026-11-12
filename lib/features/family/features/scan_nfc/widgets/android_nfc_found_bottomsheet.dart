@@ -35,6 +35,7 @@ class FoundNfcAnimation extends StatelessWidget {
               isDisabled: true,
               onTap: null,
               text: '',
+              // ignore: deprecated_member_use, hidden disabled placeholder
               analyticsEvent: AnalyticsEventName.debugButtonClicked.toEvent(),
             ),
           ),

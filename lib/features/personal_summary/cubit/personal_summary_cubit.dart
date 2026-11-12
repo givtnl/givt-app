@@ -97,7 +97,9 @@ class PersonalSummaryCubit
   void openHistoryForCategory(GivingCategory category) {
     emitCustom(
       NavigateToDonationHistory(
-        _withSelectedMonth(PersonalSummaryHistoryFilters.forCategory(category)),
+        _withSelectedPeriod(
+          PersonalSummaryHistoryFilters.forCategory(category),
+        ),
       ),
     );
   }
@@ -116,7 +118,7 @@ class PersonalSummaryCubit
   void openHistoryForDonationType({required bool recurring}) {
     emitCustom(
       NavigateToDonationHistory(
-        _withSelectedMonth(
+        _withSelectedPeriod(
           PersonalSummaryHistoryFilters.forDonationType(recurring: recurring),
         ),
       ),
@@ -126,17 +128,20 @@ class PersonalSummaryCubit
   void openHistoryForSource({required bool givtProcessed}) {
     emitCustom(
       NavigateToDonationHistory(
-        _withSelectedMonth(
+        _withSelectedPeriod(
           PersonalSummaryHistoryFilters.forSource(givtProcessed: givtProcessed),
         ),
       ),
     );
   }
 
-  DonationHistoryFilters _withSelectedMonth(DonationHistoryFilters filters) {
+  DonationHistoryFilters _withSelectedPeriod(DonationHistoryFilters filters) {
     final month = _selectedMonth;
     if (month == null) {
-      return filters;
+      return PersonalSummaryHistoryFilters.applyYearFilter(
+        filters,
+        year: _selectedYear,
+      );
     }
     return PersonalSummaryHistoryFilters.applyMonthFilter(
       filters,

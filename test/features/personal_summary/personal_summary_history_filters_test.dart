@@ -81,6 +81,58 @@ void main() {
       },
     );
 
+    test('applyYearFilter keeps category and sets inclusive year bounds', () {
+      final filters = PersonalSummaryHistoryFilters.applyYearFilter(
+        PersonalSummaryHistoryFilters.forCategory(GivingCategory.charity),
+        year: 2025,
+      );
+
+      expect(filters.categories, {DonationHistoryCategoryFilter.charity});
+      expect(filters.startDate, DateTime(2025));
+      expect(filters.endDate, DateTime(2025, 12, 31));
+      expect(filters.source, isNull);
+      expect(filters.type, isNull);
+      expect(filters.orderedDimensions(), [
+        DonationHistoryFilterDimension.categories,
+        DonationHistoryFilterDimension.dateRange,
+        DonationHistoryFilterDimension.source,
+        DonationHistoryFilterDimension.type,
+      ]);
+      expect(filters.toQueryParameters(), {
+        'category': 'charity',
+        'startDate': DateTime(2025).toIso8601String(),
+        'endDate': DateTime(2025, 12, 31).toIso8601String(),
+      });
+    });
+
+    test('applyYearFilter keeps donation type and source filters', () {
+      final typed = PersonalSummaryHistoryFilters.applyYearFilter(
+        PersonalSummaryHistoryFilters.forDonationType(recurring: true),
+        year: 2025,
+      );
+      expect(typed.type, DonationHistoryTypeFilter.recurring);
+      expect(typed.startDate, DateTime(2025));
+      expect(typed.endDate, DateTime(2025, 12, 31));
+      expect(typed.toQueryParameters(), {
+        'type': 'recurring',
+        'startDate': DateTime(2025).toIso8601String(),
+        'endDate': DateTime(2025, 12, 31).toIso8601String(),
+      });
+
+      final sourced = PersonalSummaryHistoryFilters.applyYearFilter(
+        PersonalSummaryHistoryFilters.forSource(givtProcessed: false),
+        year: 2025,
+      );
+      expect(sourced.source, DonationHistorySourceFilter.external);
+      expect(sourced.startDate, DateTime(2025));
+      expect(sourced.endDate, DateTime(2025, 12, 31));
+      expect(sourced.toQueryParameters(), {
+        'source': 'external',
+        'startDate': DateTime(2025).toIso8601String(),
+        'endDate': DateTime(2025, 12, 31).toIso8601String(),
+      });
+    });
+
     test('applyMonthFilter keeps donation type and source filters', () {
       final typed = PersonalSummaryHistoryFilters.applyMonthFilter(
         PersonalSummaryHistoryFilters.forDonationType(recurring: true),
