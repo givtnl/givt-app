@@ -6,7 +6,6 @@ import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/pledges/shared/models/pledge.dart';
-import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/models/givt.dart';
@@ -20,7 +19,6 @@ void main() {
 
   late _FakeCampaignRepository campaignRepository;
   late _FakeGivtRepository givtRepository;
-  late _FakeBeaconRepository beaconRepository;
   late _FakeCollectGroupRepository collectGroupRepository;
   late GiveBloc bloc;
 
@@ -43,12 +41,10 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     campaignRepository = _FakeCampaignRepository(testOrganisation);
     givtRepository = _FakeGivtRepository();
-    beaconRepository = _FakeBeaconRepository();
     collectGroupRepository = _FakeCollectGroupRepository();
     bloc = GiveBloc(
       campaignRepository,
       givtRepository,
-      beaconRepository,
       collectGroupRepository,
     );
   });
@@ -74,91 +70,32 @@ void main() {
           isA<GiveState>().having((s) => s.status, 'status', GiveStatus.loading),
           isA<GiveState>()
               .having((s) => s.status, 'status', GiveStatus.readyToGive)
-              .having((s) => s.submitted, 'submitted', isTrue),
+              .having((s) => s.submitted, 'submitted', isTrue)
+              .having((s) => s.isForYouFlow, 'isForYouFlow', isTrue),
           isA<GiveState>().having((s) => s.status, 'status', GiveStatus.processed),
         ]),
       );
     },
   );
 
-  test(
-    'confirm QR with skipSubmission leaves submitted false',
-    () async {
-      bloc.emit(
-        bloc.state.copyWith(
-          status: GiveStatus.readyToConfirm,
-          organisation: testOrganisation,
-          givtTransactions: [testDonation],
-          userGUID: 'user-guid',
-          tempAmount: 5,
-        ),
-      );
-
-      bloc.add(const GiveConfirmQRCodeScannedOutOfApp(skipSubmission: true));
-
-      await expectLater(
-        bloc.stream,
-        emitsInOrder([
-          isA<GiveState>().having((s) => s.status, 'status', GiveStatus.loading),
-          isA<GiveState>()
-              .having((s) => s.status, 'status', GiveStatus.readyToGive)
-              .having((s) => s.submitted, 'submitted', isFalse),
-        ]),
-      );
-
-      expect(givtRepository.submitCallCount, 0);
-    },
-  );
-
-  test('amount changed leaves submitted false', () async {
-    bloc.emit(
-      bloc.state.copyWith(
-        status: GiveStatus.readyToGive,
-        organisation: testOrganisation,
-        userGUID: 'user-guid',
-        submitted: false,
-      ),
-    );
-
+  test('For You submit emits error when donations list is empty', () async {
     bloc.add(
-      const GiveAmountChanged(
-        firstCollectionAmount: 10,
-        secondCollectionAmount: 0,
-        thirdCollectionAmount: 0,
+      const GiveForYouSubmitDonations(
+        nameSpace: 'namespace.instance',
+        userGUID: 'user-guid',
+        donations: [],
       ),
     );
-
-    await expectLater(
-      bloc.stream,
-      emits(
-        isA<GiveState>()
-            .having((s) => s.status, 'status', GiveStatus.readyToGive)
-            .having((s) => s.submitted, 'submitted', isFalse),
-      ),
-    );
-  });
-
-  test('submit transactions sets submitted when submitGivts succeeds', () async {
-    bloc.emit(
-      bloc.state.copyWith(
-        status: GiveStatus.readyToGive,
-        organisation: testOrganisation,
-        givtTransactions: [testDonation],
-        transactionIds: const [],
-      ),
-    );
-
-    bloc.add(const GiveSubmitTransactions());
 
     await expectLater(
       bloc.stream,
       emitsInOrder([
         isA<GiveState>().having((s) => s.status, 'status', GiveStatus.loading),
-        isA<GiveState>()
-            .having((s) => s.status, 'status', GiveStatus.readyToGive)
-            .having((s) => s.submitted, 'submitted', isTrue),
+        isA<GiveState>().having((s) => s.status, 'status', GiveStatus.error),
       ]),
     );
+
+    expect(givtRepository.submitCallCount, 0);
   });
 }
 
@@ -291,16 +228,6 @@ class _FakeGivtRepository with GivtRepository {
     required String groupType,
   }) =>
       throw UnimplementedError();
-}
-
-class _FakeBeaconRepository with BeaconRepository {
-  @override
-  Future<bool> sendBeaconBatteryStatus({
-    required String guid,
-    required String beaconId,
-    required int batteryVoltage,
-  }) async =>
-      true;
 }
 
 class _FakeCollectGroupRepository with CollectGroupRepository {
