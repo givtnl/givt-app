@@ -10,8 +10,8 @@ import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_custom.dar
 import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_uimodel.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
 import 'package:givt_app/features/give/utils/android_ble_location_access.dart';
-import 'package:givt_app/features/give/utils/for_you_beacon_scan_errors.dart';
-import 'package:givt_app/features/give/utils/for_you_beacon_scan_session.dart';
+import 'package:givt_app/features/give/utils/for_you_beacon_native_stop.dart';
+import 'package:givt_app/features/give/utils/for_you_beacon_scan_start.dart';
 import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
@@ -60,7 +60,9 @@ class ForYouBeaconDiscoveryCubit
 
   int _consecutiveScanFailures = 0;
 
-  final ForYouBeaconScanSession _scanSession = ForYouBeaconScanSession();
+  /// Prevents overlapping [FlutterBluePlus.startScan] calls (second call stops
+  /// the first on Android — native stopScan + startScan churn).
+  bool _ensureScanningInFlight = false;
 
   /// Prevents overlapping Android BLE/location `.request()` from init,
   /// resume, and the permission-dialog pause/resume cycle.
@@ -244,13 +246,6 @@ class ForYouBeaconDiscoveryCubit
     _scanResultsSubscription = FlutterBluePlus.scanResults.listen(
       _onScanResults,
       onError: (Object e, StackTrace s) {
-        if (isBleScanAlreadyStartedError(e)) {
-          _scanSession.onScanStartRejectedAsAlreadyRunning();
-          _logBle(
-            'scanResults error: scan already active — keep subscription',
-          );
-          return;
-        }
         LoggingInfo.instance.error(
           'ForYou beacon scanResults error: $e',
           methodName: 'scanResults',
@@ -326,7 +321,6 @@ class ForYouBeaconDiscoveryCubit
     // FBP can emit false briefly before native scanning is stable; cubit
     // emitWithClear does not affect BLE. Debounce before scheduling restart.
     if (isScanning) {
-      _scanSession.setPlatformScanning(active: true);
       _scanStoppedDebounce?.cancel();
       _scanStoppedDebounce = null;
       if (_restartTimer != null) {
@@ -353,7 +347,6 @@ class ForYouBeaconDiscoveryCubit
         );
         return;
       }
-      _scanSession.setPlatformScanning(active: false);
       _scheduleScanRestart(reason: 'isScanning_stream_false');
     });
   }
@@ -397,66 +390,47 @@ class ForYouBeaconDiscoveryCubit
       return;
     }
 
-    // flutter_blue_plus startScan() stops an existing scan before starting a new
-    // one. If adapterState re-emits [on] while a scan is already running
+    // flutter_blue_plus startScan() stops an existing scan before starting a
+    // new one. If adapterState re-emits [on] while a scan is already running
     // (common on some Android builds), we'd churn stopScan/startScan — guard.
-    final isScanningNow = FlutterBluePlus.isScanningNow;
-    if (_scanSession.shouldSkipStart(isScanningNow: isScanningNow)) {
+    if (FlutterBluePlus.isScanningNow) {
       if (reason.startsWith('timer_after')) {
         _logBle(
-          'ensureScanning skip: scan active or start in flight '
-          '(reason=$reason, isScanningNow=$isScanningNow, '
-          'sessionOpen=${_scanSession.sessionOpen})',
+          'ensureScanning skip: already scanning (reason=$reason) — '
+          'expected if restart timer was stale',
         );
       } else {
         _logBle(
-          'ensureScanning skip: scan active or start in flight '
-          '(reason=$reason) — avoids duplicate startScan',
+          'ensureScanning skip: already scanning (reason=$reason) — '
+          'likely duplicate adapter on; avoids FBP stop+start churn',
         );
       }
       return;
     }
 
-    if (!_scanSession.beginStartAttempt()) {
-      _logBle(
-        'ensureScanning skip: coalesced in-flight start (reason=$reason)',
-      );
+    if (_ensureScanningInFlight) {
+      _logBle('ensureScanning skip: in-flight (reason=$reason)');
       return;
     }
 
-    await _stopScanSafe();
-    if (Platform.isAndroid &&
-        (reason.startsWith('timer_after') ||
-            reason == 'app_resumed_android' ||
-            reason == 'coalesced_pending' ||
-            reason.startsWith('resolver_') ||
-            reason.startsWith('resolve_'))) {
-      await Future<void>.delayed(const Duration(milliseconds: 150));
-    }
-
+    _ensureScanningInFlight = true;
     _logBle('startScan begin reason=$reason');
 
     try {
-      await FlutterBluePlus.startScan(
-        timeout: _scanTimeout,
-        androidUsesFineLocation: true,
+      await startForYouBeaconScanWithAlreadyStartedRetry(
+        startScan: () => FlutterBluePlus.startScan(
+          timeout: _scanTimeout,
+          androidUsesFineLocation: true,
+        ),
+        stopOnPlatform: stopForYouBleScanOnPlatform,
+        androidSettleAfterPlatformStop: Platform.isAndroid,
       );
       _consecutiveScanFailures = 0;
-      _scanSession.onScanStartAccepted();
       _logBle(
         'startScan invoked OK reason=$reason (returns before 30s timeout '
         'elapses; timeout stops scan on native side)',
       );
     } on Object catch (e, s) {
-      if (isBleScanAlreadyStartedError(e)) {
-        _consecutiveScanFailures = 0;
-        _scanSession.onScanStartRejectedAsAlreadyRunning();
-        _logBle(
-          'startScan: native scan already active — reusing (reason=$reason)',
-        );
-        return;
-      }
-      _scanSession.onExplicitStop();
       _consecutiveScanFailures++;
       LoggingInfo.instance.error(
         'ForYou beacon startScan failed: $e',
@@ -468,16 +442,10 @@ class ForYouBeaconDiscoveryCubit
       }
       _scheduleScanRestart(reason: 'startScan_failed');
     } finally {
-      _scanSession.endStartAttempt();
-      if (_scanSession.takePendingStart() &&
-          !_closing &&
-          !_isProcessingBeacon &&
-          _phase == ForYouBeaconDiscoveryPhase.searching) {
-        unawaited(_ensureScanning(reason: 'coalesced_pending'));
-      }
       // Let isScanning / native catch up before another adapter_on can call
       // startScan (which would stop the scan that just started).
       await Future<void>.delayed(const Duration(milliseconds: 120));
+      _ensureScanningInFlight = false;
     }
   }
 
@@ -572,7 +540,6 @@ class ForYouBeaconDiscoveryCubit
       if (FlutterBluePlus.isScanningNow) {
         await FlutterBluePlus.stopScan();
       }
-      _scanSession.onExplicitStop();
     } on Object catch (e, s) {
       LoggingInfo.instance.error(
         'ForYou beacon stopScan: $e',
@@ -587,7 +554,6 @@ class ForYouBeaconDiscoveryCubit
     _scanStoppedDebounce = null;
     _restartTimer?.cancel();
     _restartTimer = null;
-    _scanSession.reset();
     await _scanResultsSubscription?.cancel();
     _scanResultsSubscription = null;
     await _adapterSubscription?.cancel();

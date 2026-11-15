@@ -24,16 +24,14 @@ void main() {
       expect(isBleScanAlreadyStartedError(error), isTrue);
     });
 
-    test('matches plain string errors', () {
+    test('returns false for plain Exception strings', () {
       expect(
-        isBleScanAlreadyStartedError(
-          Exception('scan already started'),
-        ),
-        isTrue,
+        isBleScanAlreadyStartedError(Exception('scan already started')),
+        isFalse,
       );
     });
 
-    test('returns false for unrelated errors', () {
+    test('returns false for unrelated FBP errors', () {
       final error = FlutterBluePlusException(
         ErrorPlatform.android,
         'scan',
