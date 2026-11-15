@@ -10,6 +10,8 @@ import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_custom.dar
 import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_uimodel.dart';
 import 'package:givt_app/features/give/models/for_you_flow_context.dart';
 import 'package:givt_app/features/give/utils/android_ble_location_access.dart';
+import 'package:givt_app/features/give/utils/for_you_beacon_native_stop.dart';
+import 'package:givt_app/features/give/utils/for_you_beacon_scan_start.dart';
 import 'package:givt_app/features/give/utils/for_you_discovery_resolvers.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
@@ -415,9 +417,13 @@ class ForYouBeaconDiscoveryCubit
     _logBle('startScan begin reason=$reason');
 
     try {
-      await FlutterBluePlus.startScan(
-        timeout: _scanTimeout,
-        androidUsesFineLocation: true,
+      await startForYouBeaconScanWithAlreadyStartedRetry(
+        startScan: () => FlutterBluePlus.startScan(
+          timeout: _scanTimeout,
+          androidUsesFineLocation: true,
+        ),
+        stopOnPlatform: stopForYouBleScanOnPlatform,
+        androidSettleAfterPlatformStop: Platform.isAndroid,
       );
       _consecutiveScanFailures = 0;
       _logBle(
