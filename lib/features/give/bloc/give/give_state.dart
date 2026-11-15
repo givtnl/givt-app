@@ -3,15 +3,10 @@ part of 'give_bloc.dart';
 enum GiveStatus {
   initial,
   loading,
-  readyToConfirm,
-  readyToConfirmGPS,
   readyToGive,
-  processingBeaconData,
   noInternetConnection,
   submissionTimeout,
   donatedToSameOrganisationInLessThan30Seconds,
-  beaconNotActive,
-  success,
   processed,
   error,
 }
@@ -20,68 +15,45 @@ class GiveState extends Equatable {
   const GiveState({
     this.status = GiveStatus.initial,
     this.organisation = const Organisation.empty(),
-    this.nearestBeacon = const Beacon.empty(),
-    this.nearestLocation = const Location.empty(),
-    this.collections = const [0.0, 0.0, 0.0],
     this.givtTransactions = const [],
     this.instanceName = '',
     this.afterGivingRedirection = '',
     this.transactionIds = const [],
     this.userGUID = '',
-    this.tempAmount,
     this.isForYouFlow = false,
     this.submitted = false,
   });
 
   final GiveStatus status;
   final Organisation organisation;
-  final Beacon nearestBeacon;
-  final Location nearestLocation;
-  final List<double> collections;
   final List<GivtTransaction> givtTransactions;
   final String instanceName;
   final String afterGivingRedirection;
   final List<int> transactionIds;
   final String userGUID;
-  final double? tempAmount;
   final bool isForYouFlow;
   final bool submitted;
 
   GiveState copyWith({
     GiveStatus? status,
     Organisation? organisation,
-    Beacon? nearestBeacon,
-    Location? nearestLocation,
-    String? error,
-    double? firstCollection,
-    double? secondCollection,
-    double? thirdCollection,
     String? instanceName,
     String? afterGivingRedirection,
     List<GivtTransaction>? givtTransactions,
     List<int>? transactionIds,
     String? userGUID,
-    double? tempAmount,
     bool? isForYouFlow,
     bool? submitted,
   }) {
     return GiveState(
       status: status ?? this.status,
       organisation: organisation ?? this.organisation,
-      nearestBeacon: nearestBeacon ?? this.nearestBeacon,
-      nearestLocation: nearestLocation ?? this.nearestLocation,
       instanceName: instanceName ?? this.instanceName,
       afterGivingRedirection:
           afterGivingRedirection ?? this.afterGivingRedirection,
-      collections: [
-        firstCollection ?? collections[0],
-        secondCollection ?? collections[1],
-        thirdCollection ?? collections[2],
-      ],
       givtTransactions: givtTransactions ?? this.givtTransactions,
       transactionIds: transactionIds ?? this.transactionIds,
       userGUID: userGUID ?? this.userGUID,
-      tempAmount: tempAmount ?? this.tempAmount,
       isForYouFlow: isForYouFlow ?? this.isForYouFlow,
       submitted: submitted ?? this.submitted,
     );
@@ -91,15 +63,11 @@ class GiveState extends Equatable {
   List<Object> get props => [
     status,
     organisation,
-    nearestBeacon,
-    nearestLocation,
-    collections,
     givtTransactions,
     instanceName,
     afterGivingRedirection,
     transactionIds,
     userGUID,
-    tempAmount ?? 0.0,
     isForYouFlow,
     submitted,
   ];
