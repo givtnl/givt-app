@@ -520,11 +520,6 @@ class AppRouter {
                   ? double.tryParse(routerState.uri.queryParameters['amount']!)
                   : null,
               code: routerState.uri.queryParameters['code'] ?? '',
-              afterGivingRedirection:
-                  routerState.uri.queryParameters['afterGivingRedirection'] ??
-                  '',
-              given: routerState.uri.queryParameters.containsKey('given'),
-              retry: routerState.uri.queryParameters.containsKey('retry'),
               navigateTo: routerState.uri.queryParameters['page'] ?? '',
             ),
           ),
@@ -554,7 +549,6 @@ class AppRouter {
     final auth = context.read<AuthCubit>().state;
     var code = '';
     var navigatingPage = '';
-    var afterGivingRedirection = '';
     var amount = '';
 
     UTMHelper.trackToAnalytics(uri: state.uri);
@@ -565,10 +559,6 @@ class AppRouter {
 
     if (state.uri.queryParameters.containsKey('page')) {
       navigatingPage = state.uri.queryParameters['page']!;
-    }
-
-    if (state.uri.queryParameters.containsKey('from')) {
-      afterGivingRedirection = state.uri.queryParameters['from']!;
     }
 
     if (state.uri.queryParameters.containsKey('amount')) {
@@ -599,8 +589,6 @@ class AppRouter {
     if (amount.isNotEmpty) {
       params['amount'] = amount;
     }
-
-    params['afterGivingRedirection'] = afterGivingRedirection;
 
     final query = Uri(
       queryParameters: params,

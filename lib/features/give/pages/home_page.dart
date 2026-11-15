@@ -37,19 +37,13 @@ class HomePage extends StatefulWidget {
   const HomePage({
     required this.initialAmount,
     required this.code,
-    required this.afterGivingRedirection,
     required this.navigateTo,
-    required this.given,
-    required this.retry,
     super.key,
   });
 
   final double? initialAmount;
   final String code;
   final String navigateTo;
-  final String afterGivingRedirection;
-  final bool given;
-  final bool retry;
 
   @override
   State<HomePage> createState() => _HomePageState();
