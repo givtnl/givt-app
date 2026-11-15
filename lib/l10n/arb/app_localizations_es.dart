@@ -208,17 +208,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Yes, simply go to the donation overview and click the cancel button below the specific donation that you want to cancel. If the cancel button is not visible the donation has already been processed. Note: You can only cancel your donation if you have completed your registration in the Givt app.\n \n\n No transactions take place in the moment of giving. The transactions take place afterwards via a direct debit. Since these transactions are revertible via your bank, it is completely safe and immune to fraud.';
 
   @override
-  String get selectContextCollect =>
-      'Give in the church, at the door or on the street';
-
-  @override
   String get giveContextQr => 'Give by scanning a QR code';
-
-  @override
-  String get selectContextList => 'Select a cause from the list';
-
-  @override
-  String get selectContext => 'Choose the way you give';
 
   @override
   String get chooseWhoYouWantToGiveTo => 'Choose who you want to give to';
@@ -1412,12 +1402,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get discoverDiscoverButton => 'See all';
-
-  @override
-  String get discoverSegmentNow => 'Give';
-
-  @override
-  String get discoverSegmentWho => 'Para ti';
 
   @override
   String get forYouOtherWaysToGive => 'Otras formas de donar';
@@ -3868,17 +3852,7 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
       'Puedes cancelar tu donación a través del resumen de donaciones pulsando el botón de cancelar debajo de la donación específica. Si ya no puedes eliminar la donación, significa que ya ha sido procesada. Atención: Esto solo es posible si has completado tu registro en la aplicación Givt.\n\nTambién puedes revocar tus donaciones en un momento posterior. Al dar con Givt, no se realizan transferencias inmediatas; estas se llevan a cabo posteriormente mediante una domiciliación bancaria. Todas las domiciliaciones pueden ser revocadas posteriormente a través de tu banco.';
 
   @override
-  String get selectContextCollect =>
-      'Dona en la iglesia, en la puerta o en la calle';
-
-  @override
   String get giveContextQr => 'Dona escaneando un código QR';
-
-  @override
-  String get selectContextList => 'Selecciona una causa de la lista';
-
-  @override
-  String get selectContext => 'Elige la forma en que quieres donar';
 
   @override
   String get chooseWhoYouWantToGiveTo => 'Elige a quién quieres donar';
@@ -5081,12 +5055,6 @@ class AppLocalizationsEs419 extends AppLocalizationsEs {
 
   @override
   String get discoverDiscoverButton => 'Ver todo';
-
-  @override
-  String get discoverSegmentNow => 'Donar';
-
-  @override
-  String get discoverSegmentWho => 'Para ti';
 
   @override
   String get forYouOtherWaysToGive => 'Otras formas de donar';

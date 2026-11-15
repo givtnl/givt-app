@@ -30,23 +30,13 @@ class HomePageWithQRCode extends StatefulWidget {
   const HomePageWithQRCode({
     required this.code,
     required this.initialAmount,
-    required this.retry,
-    required this.afterGivingRedirection,
-    required this.initialPageIndex,
-    required this.onPageChanged,
     required this.auth,
     required this.mandatePopupDismissalTracker,
-    this.showGivingFlowSwitch = true,
     super.key,
   });
 
   final String code;
   final double? initialAmount;
-  final bool retry;
-  final String afterGivingRedirection;
-  final int initialPageIndex;
-  final void Function(int) onPageChanged;
-  final bool showGivingFlowSwitch;
   final AuthState auth;
   final MandatePopupDismissalTracker mandatePopupDismissalTracker;
 
@@ -270,17 +260,8 @@ class _HomePageWithQRCodeState extends State<HomePageWithQRCode> {
           },
         ),
       ],
-      child: SafeArea(
-        child: HomePageView(
-          initialAmount: widget.initialAmount,
-          given: false,
-          retry: widget.retry,
-          code: widget.code,
-          afterGivingRedirection: widget.afterGivingRedirection,
-          initialPageIndex: widget.initialPageIndex,
-          showGivingFlowSwitch: widget.showGivingFlowSwitch,
-          onPageChanged: widget.onPageChanged,
-        ),
+      child: const SafeArea(
+        child: HomePageView(),
       ),
     );
   }

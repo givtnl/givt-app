@@ -209,17 +209,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Je kan via het giftenoverzicht je gift annuleren door op de annuleren knop onder de specifieke donatie te drukken. Als je de Gift niet meer kan annuleren is deze al verwerkt. Let op: dit kan alleen als je je registratie in de Givt-app hebt voltooid.\n \n\n Je kunt je giften ook op een later moment herroepen. Er vinden geen overschrijvingen plaats tijdens het geven met Givt, dit gebeurt achteraf door middel van een automatische incasso. Alle automatische incasso’s zijn achteraf via je eigen bank te herroepen.';
 
   @override
-  String get selectContextCollect =>
-      'Geef in de kerk, aan de deur of op straat';
-
-  @override
   String get giveContextQr => 'Geef door middel van een QR-code';
-
-  @override
-  String get selectContextList => 'Kies een doel uit de lijst';
-
-  @override
-  String get selectContext => 'Kies hoe je wilt geven';
 
   @override
   String get chooseWhoYouWantToGiveTo => 'Kies aan wie je wil geven';
@@ -1416,12 +1406,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get discoverDiscoverButton => 'Bekijk alle';
-
-  @override
-  String get discoverSegmentNow => 'Geef';
-
-  @override
-  String get discoverSegmentWho => 'Voor jou';
 
   @override
   String get forYouOtherWaysToGive => 'Andere manieren om te geven';

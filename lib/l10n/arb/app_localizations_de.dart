@@ -209,17 +209,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Du kannst deine Spende über die Spendenübersicht stornieren, indem du auf den „Abbrechen“-Button unter der entsprechenden Spende klickst. Wenn du die Spende nicht mehr löschen kannst, wurde sie bereits verarbeitet. Achtung: Das ist nur möglich, wenn du deine Registrierung in der Givt-App abgeschlossen hast.\n\nDu kannst deine Spenden auch zu einem späteren Zeitpunkt widerrufen. Beim Geben mit Givt finden keine Überweisungen in Echtzeit statt – diese erfolgen nachträglich per Lastschrift. Alle Lastschriften können im Nachhinein über deine eigene Bank widerrufen werden.';
 
   @override
-  String get selectContextCollect =>
-      'Spende in der Kirche, an der Haustür oder auf der Straße';
-
-  @override
   String get giveContextQr => 'Spende, indem du einen QR-Code scannst';
-
-  @override
-  String get selectContextList => 'Suche ein Spendenziel aus der Liste aus';
-
-  @override
-  String get selectContext => 'Wähle die Art zu Spenden';
 
   @override
   String get chooseWhoYouWantToGiveTo => 'Wähle dein Spendenziel';
@@ -1421,12 +1411,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get discoverDiscoverButton => 'Alles zeigen';
-
-  @override
-  String get discoverSegmentNow => 'Spende';
-
-  @override
-  String get discoverSegmentWho => 'Für dich';
 
   @override
   String get forYouOtherWaysToGive => 'Andere Möglichkeiten zu geben';

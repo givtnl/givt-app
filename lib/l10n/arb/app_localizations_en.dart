@@ -208,17 +208,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Yes, simply go to the donation overview and click the cancel button below the specific donation that you want to cancel. If the cancel button is not visible the donation has already been processed. Note: You can only cancel your donation if you have completed your registration in the Givt app.\n \n\n No transactions take place in the moment of giving. The transactions take place afterwards via a direct debit. Since these transactions are revertible via your bank, it is completely safe and immune to fraud.';
 
   @override
-  String get selectContextCollect =>
-      'Give in the church, at the door or on the street';
-
-  @override
   String get giveContextQr => 'Give by scanning a QR code';
-
-  @override
-  String get selectContextList => 'Select a cause from the list';
-
-  @override
-  String get selectContext => 'Choose the way you give';
 
   @override
   String get chooseWhoYouWantToGiveTo => 'Choose who you want to give to';
@@ -1411,12 +1401,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get discoverDiscoverButton => 'See all';
-
-  @override
-  String get discoverSegmentNow => 'Give';
-
-  @override
-  String get discoverSegmentWho => 'For You';
 
   @override
   String get forYouOtherWaysToGive => 'Other ways to give';
@@ -3856,17 +3840,7 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
       'Yes, simply go to the donation overview and click the cancel button below the specific donation that you want to cancel. If the cancel button is not visible the donation has already been processed. Note: You can only cancel your donation if you have completed your registration in the Givt app.\n \n\n We believe giving should never come with obligations. We\'re therefore happy to reverse any donations you\'ve made. Simply contact us through the contact field in the menu to get in touch.';
 
   @override
-  String get selectContextCollect =>
-      'Give in the church, at the door or on the street';
-
-  @override
   String get giveContextQr => 'Give by scanning a QR code';
-
-  @override
-  String get selectContextList => 'Select a cause from the list';
-
-  @override
-  String get selectContext => 'Choose the way you give';
 
   @override
   String get chooseWhoYouWantToGiveTo => 'Choose who you want to give to';
@@ -5059,12 +5033,6 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
 
   @override
   String get discoverDiscoverButton => 'See all';
-
-  @override
-  String get discoverSegmentNow => 'Give';
-
-  @override
-  String get discoverSegmentWho => 'For You';
 
   @override
   String get forYouOtherWaysToGive => 'Other ways to give';

@@ -1,222 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/features/give/pages/home_page_qr_flow_handler.dart';
 import 'package:givt_app/features/give/widgets/offline_giving_banner.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
-import 'package:givt_app/utils/utils.dart';
 
-class HomePageView extends StatefulWidget {
-  const HomePageView({
-    required this.initialAmount,
-    required this.onPageChanged,
-    required this.given,
-    required this.retry,
-    required this.afterGivingRedirection,
-    required this.code,
-    required this.initialPageIndex,
-    this.showGivingFlowSwitch = true,
-    this.giveBloc,
-    this.qrConfirmWidget,
-    super.key,
-  });
-
-  final double? initialAmount;
-  final bool given;
-  final bool retry;
-  final String code;
-  final String afterGivingRedirection;
-  final int initialPageIndex;
-
-  /// When false, the old give flow and the tab switch are not shown.
-  /// Defaults to true so current behaviour stays until the feature flag hides
-  /// the switch.
-  final bool showGivingFlowSwitch;
-  final void Function(int) onPageChanged;
-  final GiveBloc? giveBloc;
-  final Widget? qrConfirmWidget;
-
-  @override
-  State<HomePageView> createState() => _HomePageViewState();
-}
-
-class _HomePageViewState extends State<HomePageView> {
-  late PageController pageController;
-  late int pageIndex;
-  bool isPageAnimationActive = false;
-
-  @override
-  void initState() {
-    pageIndex = widget.initialPageIndex;
-    pageController = PageController(initialPage: widget.initialPageIndex);
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(HomePageView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    // The old flow is not on screen, so don't treat this as a tab change.
-    if (!widget.showGivingFlowSwitch) {
-      return;
-    }
-    if (widget.initialPageIndex != oldWidget.initialPageIndex &&
-        widget.initialPageIndex != pageIndex) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) {
-          return;
-        }
-        onPageChanged(widget.initialPageIndex);
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
+/// Home tab body: offline queue banner and the For You giving hub.
+class HomePageView extends StatelessWidget {
+  const HomePageView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.showGivingFlowSwitch) {
-      return const Column(
-        children: [
-          OfflineGivingBanner(),
-          SizedBox(height: 8),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: ForYou(),
-            ),
-          ),
-        ],
-      );
-    }
-
-    final auth = context.watch<AuthCubit>().state;
-    return Column(
+    return const Column(
       children: [
-        const OfflineGivingBanner(),
-        const SizedBox(height: 8),
-        AnimatedSwitch(
-          pageIndex: pageIndex,
-          onChanged: onPageChanged,
-        ),
-        const SizedBox(height: 8),
+        OfflineGivingBanner(),
+        SizedBox(height: 8),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: PageView(
-              controller: pageController,
-              onPageChanged: onPageChanged,
-              allowImplicitScrolling: true,
-              children: [
-                ChooseAmount(
-                  initialAmount:
-                      (widget.giveBloc?.state.collections[0] ?? 0) > 0
-                      ? widget.giveBloc!.state.collections[0]
-                      : (widget.code.isEmpty ? widget.initialAmount : null),
-                  country: Country.fromCode(auth.user.country),
-                  amountLimit: auth.user.amountLimit,
-                  hasGiven: widget.given,
-                  retry: widget.retry,
-                  arePresetsEnabled: auth.presets.isEnabled,
-                  presets: auth.presets.presets,
-                  qrConfirmWidget: widget.qrConfirmWidget,
-                  onAmountChanged: (firstCollection, secondCollection, thirdCollection) async {
-                    final currentState =
-                        widget.giveBloc?.state ?? const GiveState();
-
-                    final isQR = HomePageQRFlowHandler.isQRFlow(
-                      currentState,
-                      widget.code,
-                      widget.giveBloc,
-                    );
-
-                    LoggingInfo.instance.info(
-                      'HomePageView: onAmountChanged - '
-                      'isQRFlow: $isQR, '
-                      'status: ${currentState.status}, '
-                      'hasOrg: ${currentState.organisation.mediumId?.isNotEmpty ?? false}, '
-                      'orgName: ${currentState.organisation.organisationName}, '
-                      'mediumId: ${currentState.organisation.mediumId}, '
-                      'code: ${widget.code.isNotEmpty}, '
-                      'codeValue: ${widget.code}, '
-                      'hasTransactions: ${currentState.givtTransactions.isNotEmpty}, '
-                      'transactionCount: ${currentState.givtTransactions.length}',
-                    );
-
-                    if (isQR) {
-                      await AuthUtils.checkToken(
-                        context,
-                        checkAuthRequest: CheckAuthRequest(
-                          allowWhenOffline: true,
-                          navigate: (context) async {
-                            await HomePageQRFlowHandler.handleQRFlow(
-                              context,
-                              widget.giveBloc!,
-                              firstCollection,
-                              secondCollection,
-                              thirdCollection,
-                              widget.code,
-                              widget.afterGivingRedirection,
-                              () => mounted,
-                            );
-                          },
-                        ),
-                      );
-                    } else {
-                      LoggingInfo.instance.info(
-                        'HomePageView: Not QR flow, navigating to select giving way',
-                      );
-                      HomePageQRFlowHandler.navigateToSelectGivingWay(
-                        context,
-                        firstCollection,
-                        secondCollection,
-                        thirdCollection,
-                        widget.code,
-                        widget.afterGivingRedirection,
-                      );
-                    }
-                  },
-                ),
-                const ForYou(),
-              ],
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: ForYou(),
           ),
         ),
       ],
     );
-  }
-
-  void onPageChanged(int index) {
-    if (index == pageIndex || isPageAnimationActive) {
-      return;
-    }
-    setState(() {
-      pageIndex = index;
-      widget.onPageChanged(index);
-    });
-
-    setState(() {
-      isPageAnimationActive = true;
-    });
-
-    pageController
-        .animateToPage(
-          index,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        )
-        .then(
-          (_) {
-            setState(() {
-              isPageAnimationActive = false;
-            });
-          },
-        );
   }
 }
