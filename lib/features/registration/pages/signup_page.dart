@@ -14,6 +14,7 @@ import 'package:givt_app/features/registration/widgets/accept_policy_row.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/fun_faq_bottom_sheet.dart';
+import 'package:givt_app/shared/widgets/email_typo_field.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
@@ -94,7 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
       builder: (context, state) {
         return FunScaffold(
           appBar: FunTopAppBar(
-          variant: FunTopAppBarVariant.white,
+            variant: FunTopAppBarVariant.white,
             title: locals.personalInfo,
             actions: [
               IconButton(
@@ -161,7 +162,8 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AnalyticsEventName.registrationFilledInPersonalInfoSheetFilled,
+        eventName:
+            AnalyticsEventName.registrationFilledInPersonalInfoSheetFilled,
         eventProperties: {
           'id': context.read<AuthCubit>().state.user.guid,
           'profile_country': _selectedCountry.countryCode,
@@ -246,26 +248,36 @@ class _SignUpPageState extends State<SignUpPage> {
               textCapitalization: TextCapitalization.words,
             ),
             const SizedBox(height: 16),
-            InputFormField(
-              enabled: widget.email.isEmpty,
-              readOnly: widget.email.isNotEmpty,
+            EmailTypoField(
               controller: _emailController,
-              onChanged: (value) => setState(() {}),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return context.l10n.invalidEmail;
-                }
-                if (!Util.emailRegEx.hasMatch(value)) {
-                  return context.l10n.invalidEmail;
-                }
-                return null;
+              screen: 'registration',
+              countryCode: _selectedCountry.countryCode,
+              readOnly: widget.email.isNotEmpty,
+              onApplied: (_) => setState(() {}),
+              fieldBuilder: (context, focusNode) {
+                return InputFormField(
+                  focusNode: focusNode,
+                  enabled: widget.email.isEmpty,
+                  readOnly: widget.email.isNotEmpty,
+                  controller: _emailController,
+                  onChanged: (value) => setState(() {}),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return context.l10n.invalidEmail;
+                    }
+                    if (!Util.emailRegEx.hasMatch(value)) {
+                      return context.l10n.invalidEmail;
+                    }
+                    return null;
+                  },
+                  autofillHints: const [
+                    AutofillHints.email,
+                    AutofillHints.username,
+                  ],
+                  hintText: context.l10n.email,
+                  keyboardType: TextInputType.emailAddress,
+                );
               },
-              autofillHints: const [
-                AutofillHints.email,
-                AutofillHints.username,
-              ],
-              hintText: context.l10n.email,
-              keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 16),
             InputFormField(

@@ -7,7 +7,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 ///
 /// This is **not** a FUN design-system component (no `Fun` prefix): it is app
 /// glue. The visual input remains [FunInput].
-class InputFormField extends StatelessWidget {
+class InputFormField extends StatefulWidget {
   const InputFormField({
     required this.controller,
     required this.hintText,
@@ -62,40 +62,86 @@ class InputFormField extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
+  State<InputFormField> createState() => _InputFormFieldState();
+}
+
+class _InputFormFieldState extends State<InputFormField> {
+  final GlobalKey<FormFieldState<String>> _fieldKey =
+      GlobalKey<FormFieldState<String>>();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.addListener(_syncFromController);
+  }
+
+  @override
+  void didUpdateWidget(covariant InputFormField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_syncFromController);
+      widget.controller.addListener(_syncFromController);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_syncFromController);
+    super.dispose();
+  }
+
+  /// [TextField.onChanged] does not run when the controller is updated in
+  /// code. Keep [FormField] on the same text so validate() sees the suggestion.
+  void _syncFromController() {
+    final field = _fieldKey.currentState;
+    if (field == null || !field.mounted) {
+      return;
+    }
+    final text = widget.controller.text;
+    if (field.value == text) {
+      return;
+    }
+    field.didChange(text);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FormField<String>(
-      initialValue: controller.text,
+      key: _fieldKey,
+      initialValue: widget.controller.text,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: validator,
+      validator: widget.validator,
       builder: (field) {
         return FunInput(
-          controller: controller,
-          hintText: hintText,
+          controller: widget.controller,
+          hintText: widget.hintText,
           errorText: field.errorText,
           onChanged: (value) {
-            field.didChange(value);
-            onChanged?.call(value);
+            if (field.value != value) {
+              field.didChange(value);
+            }
+            widget.onChanged?.call(value);
           },
-          onTap: onTap,
-          focusNode: focusNode,
-          readOnly: readOnly,
-          prefixIcon: prefixIcon,
-          prefixText: prefixText,
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
-          textInputAction: textInputAction ?? TextInputAction.next,
-          analyticsEvent: analyticsEvent,
-          heroTag: heroTag,
-          label: label,
-          enabled: enabled,
-          obscureText: obscureText,
-          suffixIcon: suffixIcon,
-          autofillHints: autofillHints,
-          textCapitalization: textCapitalization,
-          scrollPadding: scrollPadding,
-          errorMaxLines: errorMaxLines,
-          minLines: minLines,
-          maxLines: maxLines,
+          onTap: widget.onTap,
+          focusNode: widget.focusNode,
+          readOnly: widget.readOnly,
+          prefixIcon: widget.prefixIcon,
+          prefixText: widget.prefixText,
+          keyboardType: widget.keyboardType,
+          inputFormatters: widget.inputFormatters,
+          textInputAction: widget.textInputAction ?? TextInputAction.next,
+          analyticsEvent: widget.analyticsEvent,
+          heroTag: widget.heroTag,
+          label: widget.label,
+          enabled: widget.enabled,
+          obscureText: widget.obscureText,
+          suffixIcon: widget.suffixIcon,
+          autofillHints: widget.autofillHints,
+          textCapitalization: widget.textCapitalization,
+          scrollPadding: widget.scrollPadding,
+          errorMaxLines: widget.errorMaxLines,
+          minLines: widget.minLines,
+          maxLines: widget.maxLines,
         );
       },
     );

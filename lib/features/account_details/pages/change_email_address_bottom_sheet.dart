@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/widgets/personal_info_edit_sheet_success.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/email_typo_field.dart';
 import 'package:givt_app/utils/util.dart';
 
 class ChangeEmailAddressBottomSheet extends StatefulWidget {
@@ -72,16 +74,29 @@ class _ChangeEmailAddressBottomSheetState
           content: Column(
             children: [
               const SizedBox(height: 24),
-              FunInput(
+              EmailTypoField(
                 controller: emailController,
-                hintText: locals.email,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.go,
-                errorText: _emailError,
-                onChanged: (_) {
+                screen: 'change_email',
+                countryCode: _loggedInCountryCode(context),
+                onApplied: (_) {
                   setState(() {
                     _emailError = null;
                   });
+                },
+                fieldBuilder: (context, focusNode) {
+                  return FunInput(
+                    focusNode: focusNode,
+                    controller: emailController,
+                    hintText: locals.email,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.go,
+                    errorText: _emailError,
+                    onChanged: (_) {
+                      setState(() {
+                        _emailError = null;
+                      });
+                    },
+                  );
                 },
               ),
             ],
@@ -116,6 +131,14 @@ class _ChangeEmailAddressBottomSheetState
 
   void _onEmailChangeSuccessDone(BuildContext context) {
     completePersonalInfoEditSheet(context);
+  }
+
+  String? _loggedInCountryCode(BuildContext context) {
+    final country = context.read<AuthCubit>().state.user.country;
+    if (country.isEmpty) {
+      return null;
+    }
+    return country;
   }
 
   bool _validateEmail(String invalidEmailMessage) {

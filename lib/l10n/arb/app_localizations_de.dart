@@ -3675,4 +3675,12 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get scannerDownloadingModule =>
       'Scanner wird vorbereitet... Das kann einen Moment dauern.';
+
+  @override
+  String emailTypoSuggestion(String suggestedEmail) {
+    return 'Meintest du $suggestedEmail?';
+  }
+
+  @override
+  String get emailTypoDismiss => 'Ignorieren';
 }

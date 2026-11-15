@@ -3646,6 +3646,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get scannerDownloadingModule =>
       'Preparing scanner... This might take a moment.';
+
+  @override
+  String emailTypoSuggestion(String suggestedEmail) {
+    return 'Did you mean $suggestedEmail?';
+  }
+
+  @override
+  String get emailTypoDismiss => 'Dismiss';
 }
 
 /// The translations for English, as used in the United States (`en_US`).
@@ -7214,4 +7222,12 @@ class AppLocalizationsEnUs extends AppLocalizationsEn {
   @override
   String get scannerDownloadingModule =>
       'Preparing scanner... This might take a moment.';
+
+  @override
+  String emailTypoSuggestion(String suggestedEmail) {
+    return 'Did you mean $suggestedEmail?';
+  }
+
+  @override
+  String get emailTypoDismiss => 'Dismiss';
 }
