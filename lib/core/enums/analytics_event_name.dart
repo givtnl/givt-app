@@ -290,7 +290,6 @@ enum AnalyticsEventName {
   organisationCardClicked('organisation_card_clicked'),
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
   sliderAmountChanged('slider_amount_changed'),
-  chooseAmountDonateClicked('choose_amount_donate_clicked'),
   redirectCoinToNoAppFlow('redirect_coin_to_noapp_flow'),
   // Registration flow
   continueByEmailSignUpNewUserCliked(
@@ -341,7 +340,6 @@ enum AnalyticsEventName {
   choseGiveWithCoin('chose_give_with_coin'),
   choseGiveWithQRCode('chose_give_with_qr_code'),
   cancelGive('cancel_give'),
-  giveHomeTabsChanged('give_home_tabs_changed'),
   forYouSearchTapped('for_you_search_tapped'),
   forYouOtherWaysLocationTapped('for_you_other_ways_location_tapped'),
   forYouOtherWaysQrTapped('for_you_other_ways_qr_tapped'),

@@ -22,7 +22,6 @@ import 'package:givt_app/features/family/shared/widgets/buttons/tiles/quick_tile
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
-import 'package:givt_app/features/give/widgets/filter_suggestion_card.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
 import 'package:givt_app/shared/design_system/design_system.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
@@ -221,7 +220,6 @@ void main() {
 
     expect(find.text('Search organisations'), findsOneWidget);
     expect(find.byType(FunOrganisationFilterTilesBar), findsOneWidget);
-    expect(find.byType(FilterSuggestionCard), findsNothing);
     final tiles = tester.widgetList<QuickTile>(find.byType(QuickTile));
     expect(tiles, isNotEmpty);
     for (final tile in tiles) {

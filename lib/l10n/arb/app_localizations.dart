@@ -452,29 +452,11 @@ abstract class AppLocalizations {
   /// **'Yes, simply go to the donation overview and click the cancel button below the specific donation that you want to cancel. If the cancel button is not visible the donation has already been processed. Note: You can only cancel your donation if you have completed your registration in the Givt app.\n \n\n No transactions take place in the moment of giving. The transactions take place afterwards via a direct debit. Since these transactions are revertible via your bank, it is completely safe and immune to fraud.'**
   String get faqAntwoord16;
 
-  /// No description provided for @selectContextCollect.
-  ///
-  /// In en, this message translates to:
-  /// **'Give in the church, at the door or on the street'**
-  String get selectContextCollect;
-
   /// No description provided for @giveContextQr.
   ///
   /// In en, this message translates to:
   /// **'Give by scanning a QR code'**
   String get giveContextQr;
-
-  /// No description provided for @selectContextList.
-  ///
-  /// In en, this message translates to:
-  /// **'Select a cause from the list'**
-  String get selectContextList;
-
-  /// No description provided for @selectContext.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose the way you give'**
-  String get selectContext;
 
   /// No description provided for @chooseWhoYouWantToGiveTo.
   ///
@@ -2576,18 +2558,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'See all'**
   String get discoverDiscoverButton;
-
-  /// No description provided for @discoverSegmentNow.
-  ///
-  /// In en, this message translates to:
-  /// **'Give'**
-  String get discoverSegmentNow;
-
-  /// No description provided for @discoverSegmentWho.
-  ///
-  /// In en, this message translates to:
-  /// **'For You'**
-  String get discoverSegmentWho;
 
   /// No description provided for @forYouOtherWaysToGive.
   ///

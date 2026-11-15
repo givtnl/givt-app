@@ -18,7 +18,6 @@ import 'package:givt_app/features/email_signup/presentation/pages/email_signup_p
 import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
-import 'package:givt_app/features/give/pages/bt_scan_page.dart';
 import 'package:givt_app/features/give/pages/for_you_beacon_discovery_page.dart';
 import 'package:givt_app/features/give/pages/for_you_giving_page.dart';
 import 'package:givt_app/features/give/pages/for_you_gps_discovery_page.dart';
@@ -26,11 +25,7 @@ import 'package:givt_app/features/give/pages/for_you_list_page.dart';
 import 'package:givt_app/features/give/pages/for_you_organisation_confirm_page.dart';
 import 'package:givt_app/features/give/pages/for_you_qr_discovery_page.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
-import 'package:givt_app/features/give/pages/gps_scan_page.dart';
 import 'package:givt_app/features/give/pages/home_page.dart';
-import 'package:givt_app/features/give/pages/organization_list_page.dart';
-import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
-import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
@@ -325,104 +320,6 @@ class AppRouter {
             ),
           ),
           GoRoute(
-            path: Pages.selectGivingWay.path,
-            name: Pages.selectGivingWay.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) {
-                final extra = state.extra! as Map<String, dynamic>;
-                final auth = context.read<AuthCubit>().state;
-                final bloc =
-                    GiveBloc(
-                      getIt(),
-                      getIt(),
-                      getIt(),
-                      getIt(),
-                    )..add(
-                      GiveAmountChanged(
-                        firstCollectionAmount:
-                            extra['firstCollection'] as double,
-                        secondCollectionAmount:
-                            extra['secondCollection'] as double,
-                        thirdCollectionAmount:
-                            extra['thirdCollection'] as double,
-                      ),
-                    );
-                if ((extra['code'] as String).isNotEmpty) {
-                  bloc.add(
-                    GiveQRCodeScannedOutOfApp(
-                      extra['code'] as String,
-                      extra['afterGivingRedirection'] as String,
-                      auth.user.guid,
-                      amount: extra['amount'] as String? ?? '',
-                    ),
-                  );
-                }
-                return bloc;
-              },
-              child: const SelectGivingWayPage(),
-            ),
-            routes: [
-              GoRoute(
-                path: Pages.giveByBeacon.path,
-                name: Pages.giveByBeacon.name,
-                builder: (context, state) => BlocProvider.value(
-                  value: state.extra! as GiveBloc
-                    ..add(
-                      const GiveCheckLastDonation(),
-                    ),
-                  child: const BTScanPage(),
-                ),
-              ),
-              GoRoute(
-                path: Pages.giveByLocation.path,
-                name: Pages.giveByLocation.name,
-                builder: (context, state) => BlocProvider.value(
-                  value: state.extra! as GiveBloc
-                    ..add(
-                      const GiveCheckLastDonation(),
-                    ),
-                  child: const GPSScanPage(),
-                ),
-              ),
-              GoRoute(
-                path: Pages.giveByQrCode.path,
-                name: Pages.giveByQrCode.name,
-                builder: (context, state) => BlocProvider.value(
-                  value: state.extra! as GiveBloc,
-                  child: const QrCodeScanPage(),
-                ),
-              ),
-              GoRoute(
-                path: Pages.giveByList.path,
-                name: Pages.giveByList.name,
-                builder: (context, state) {
-                  final user = context.read<AuthCubit>().state.user;
-                  return MultiBlocProvider(
-                    providers: [
-                      BlocProvider.value(
-                        value: state.extra! as GiveBloc,
-                      ),
-                      BlocProvider(
-                        create: (_) =>
-                            OrganisationBloc(
-                              getIt(),
-                              getIt(),
-                              getIt(),
-                            )..add(
-                              OrganisationFetch(
-                                Country.fromCode(user.country),
-                                type: CollectGroupType.none.index,
-                              ),
-                            ),
-                      ),
-                    ],
-                    child: const OrganizationListPage(),
-                  );
-                },
-              ),
-            ],
-          ),
-          GoRoute(
             path: Pages.give.path,
             name: Pages.give.name,
             builder: (context, state) => BlocProvider.value(
@@ -438,75 +335,6 @@ class AppRouter {
               return SuccessDonationPage(
                 organisationName: extra['orgName'] as String,
                 variant: SuccessDonationVariant.fromExtra(extra['variant']),
-              );
-            },
-          ),
-          GoRoute(
-            path: Pages.chooseCategoryList.path,
-            name: Pages.chooseCategoryList.name,
-            pageBuilder: (context, state) {
-              final user = context.read<AuthCubit>().state.user;
-              return CustomTransitionPage<void>(
-                key: state.pageKey,
-                transitionDuration: const Duration(milliseconds: 220),
-                reverseTransitionDuration: const Duration(milliseconds: 180),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                      final fadeAnimation = CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeOutCubic,
-                      );
-                      final slideAnimation = Tween<Offset>(
-                        begin: const Offset(0, 0.02),
-                        end: Offset.zero,
-                      ).animate(fadeAnimation);
-
-                      return FadeTransition(
-                        opacity: fadeAnimation,
-                        child: SlideTransition(
-                          position: slideAnimation,
-                          child: child,
-                        ),
-                      );
-                    },
-                child: MultiBlocProvider(
-                  providers: [
-                    BlocProvider(
-                      create: (_) =>
-                          GiveBloc(
-                            getIt(),
-                            getIt(),
-                            getIt(),
-                            getIt(),
-                          )..add(
-                            const GiveCheckLastDonation(),
-                          ),
-                    ),
-                    BlocProvider(
-                      create: (_) =>
-                          OrganisationBloc(
-                            getIt(),
-                            getIt(),
-                            getIt(),
-                          )..add(
-                            OrganisationFetch(
-                              Country.fromCode(user.country),
-
-                              /// Disable last donated organisation
-                              /// in the discover flow as it's
-                              /// not present in the native app
-                              showLastDonated: false,
-                              type: state.extra != null && state.extra is int
-                                  ? state.extra! as int
-                                  : CollectGroupType.none.index,
-                            ),
-                          ),
-                    ),
-                  ],
-                  child: const OrganizationListPage(
-                    isChooseCategory: true,
-                  ),
-                ),
               );
             },
           ),

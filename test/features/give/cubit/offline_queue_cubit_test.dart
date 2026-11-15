@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:givt_app/core/network/network_info.dart';
+import 'package:givt_app/features/donation_overview/models/donation_item.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation.dart';
 import 'package:givt_app/features/external_donations/shared/models/external_donation_transaction.dart';
 import 'package:givt_app/features/give/cubit/offline_queue_cubit.dart';
@@ -73,6 +74,13 @@ class _FakeGivtRepository with GivtRepository {
 
   @override
   Future<List<Givt>> fetchGivts() => throw UnimplementedError();
+
+  @override
+  Future<List<DonationItem>> fetchDonationHistory({
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async =>
+      [];
 
   @override
   Future<List<Pledge>> fetchPledges() => throw UnimplementedError();

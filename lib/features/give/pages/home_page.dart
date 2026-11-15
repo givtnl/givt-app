@@ -12,7 +12,6 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/analytics_event_name.dart';
-import 'package:givt_app/core/feature_flags.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network_info.dart';
 import 'package:givt_app/core/network/request_helper.dart';
@@ -21,7 +20,6 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/cubit/offline_queue_cubit.dart';
 import 'package:givt_app/features/give/pages/home_page_view.dart';
 import 'package:givt_app/features/give/pages/home_page_with_qr_code.dart';
-import 'package:givt_app/features/give/utils/giving_flow_switch.dart';
 import 'package:givt_app/features/give/utils/mandate_popup_dismissal_tracker.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
@@ -58,7 +56,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  late int pageIndex;
   final _key = GlobalKey<ScaffoldState>();
   final AppConfig _appConfig = getIt();
   final MandatePopupDismissalTracker _mandatePopupDismissalTracker =
@@ -68,7 +65,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   bool _isAppInBackground = false;
   int _scanCounter =
       0; // Counter to force new bloc creation when rescanning same code
-  bool _hideGivingFlowSwitch = false;
   bool _isPromptingReauthentication = false;
 
   /// Prevents re-showing the startup reauth sheet on every rebuild after the
@@ -78,13 +74,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    // For You is the home tab, including QR deep links (ENG-595).
-    // A switch to the old give flow lasts only for this visit.
-    pageIndex = GivingFlowSwitchDecision.newFlowPageIndex;
-    WidgetsBinding.instance.addObserver(this); // Add lifecycle observer
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
-      unawaited(_applyHideGivingFlowSwitchIfEnabled());
       unawaited(_promptReauthenticationIfNeeded());
 
       FirebaseMessaging.instance.getInitialMessage().then((message) {
@@ -179,29 +171,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     } finally {
       _isPromptingReauthentication = false;
     }
-  }
-
-  /// Hides the old/new flow switch for users in the PostHog rollout.
-  ///
-  /// Unknown or disabled flags keep the switch. Home still opens on For You.
-  /// Evaluating the flag also attaches it to later events, so giving can be
-  /// compared between the hidden group and everyone else.
-  Future<void> _applyHideGivingFlowSwitchIfEnabled() async {
-    final hideSwitch = await AnalyticsHelper.isFeatureEnabled(
-      FeatureFlags.hideGivingFlowSwitch,
-    );
-    if (!mounted || !hideSwitch) {
-      return;
-    }
-
-    final decision = GivingFlowSwitchDecision.resolve(
-      hideSwitch: true,
-      currentPageIndex: pageIndex,
-    );
-    setState(() {
-      _hideGivingFlowSwitch = true;
-      pageIndex = decision.pageIndex;
-    });
   }
 
   @override
@@ -306,14 +275,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         appBar: FunTopAppBar(
           variant: FunTopAppBarVariant.white,
           key: const ValueKey('EU-Home-AppBar'),
-          title: switch (pageIndex) {
-            0 => locals.amount,
-            1 =>
-              (auth.user.tempUser || auth.user.needRegistration)
-                  ? locals.welcomeOnly
-                  : locals.chooseGroup(auth.user.firstName),
-            _ => locals.give,
-          },
+          title: (auth.user.tempUser || auth.user.needRegistration)
+              ? locals.welcomeOnly
+              : locals.chooseGroup(auth.user.firstName),
           leading: badges.Badge(
             showBadge: auth.user.needRegistration || !auth.user.mandateSigned,
             position: badges.BadgePosition.topStart(
@@ -401,11 +365,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   ),
                   code: widget.code,
                   initialAmount: widget.initialAmount,
-                  retry: widget.retry,
-                  afterGivingRedirection: widget.afterGivingRedirection,
-                  initialPageIndex: pageIndex,
-                  showGivingFlowSwitch: !_hideGivingFlowSwitch,
-                  onPageChanged: (index) => setState(() => pageIndex = index),
                   auth: auth,
                   mandatePopupDismissalTracker: _mandatePopupDismissalTracker,
                 )
@@ -459,18 +418,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       },
                     ),
                   ],
-                  child: SafeArea(
-                    child: HomePageView(
-                      initialAmount: widget.initialAmount,
-                      given: widget.given,
-                      retry: widget.retry,
-                      code: widget.code,
-                      afterGivingRedirection: widget.afterGivingRedirection,
-                      initialPageIndex: pageIndex,
-                      showGivingFlowSwitch: !_hideGivingFlowSwitch,
-                      onPageChanged: (index) =>
-                          setState(() => pageIndex = index),
-                    ),
+                  child: const SafeArea(
+                    child: HomePageView(),
                   ),
                 ),
         ),
