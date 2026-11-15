@@ -7,6 +7,7 @@ import 'package:flutter_blue_plus_platform_interface/flutter_blue_plus_platform_
 ///
 /// FBP 1.36.8 [FlutterBluePlus.stopScan] only calls native stop when
 /// [FlutterBluePlus.isScanningNow] is true; otherwise it logs and returns.
+/// Relies on that FBP 1.36.8 stopScan behaviour; re-check when bumping FBP.
 Future<bool> stopForYouBleScanOnPlatform() async {
   if (FlutterBluePlus.isScanningNow) {
     await FlutterBluePlus.stopScan();

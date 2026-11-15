@@ -26,7 +26,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
-  flutter_blue_plus: ^1.36.8
+  flutter_blue_plus: 1.36.8
+  flutter_blue_plus_platform_interface: 7.0.0
   flutter_inappwebview: ^6.1.5
   flutter_layout_grid: ^2.0.8
   flutter_local_notifications: ^22.0.1

@@ -11,10 +11,10 @@ bool isBleScanAlreadyStartedError(Object error) {
   if (error.function != 'scan' && error.function != 'startScan') {
     return false;
   }
-  if (error.code == androidScanFailedAlreadyStartedCode) {
+  if (error.platform == ErrorPlatform.android &&
+      error.code == androidScanFailedAlreadyStartedCode) {
     return true;
   }
   final description = error.description?.toUpperCase() ?? '';
-  return description.contains('SCAN_FAILED_ALREADY_STARTED') ||
-      description.contains('ALREADY_STARTED');
+  return description.contains('ALREADY_STARTED');
 }
