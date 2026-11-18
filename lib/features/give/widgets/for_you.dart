@@ -31,10 +31,12 @@ class ForYou extends StatefulWidget {
 }
 
 class _ForYouState extends State<ForYou>
-    with AutomaticKeepAliveClientMixin<ForYou> {
+    with AutomaticKeepAliveClientMixin<ForYou>, WidgetsBindingObserver {
   late final ForYouGoalsCubit _goalsCubit;
   late final FeaturedDoorToDoorCubit _featuredDoorToDoorCubit;
   late final PageController _favoritesController;
+  GoRouterDelegate? _routerDelegate;
+  String? _routePath;
   int _favoritesIndex = 0;
 
   static const double _sidePadding = 8;
@@ -45,6 +47,56 @@ class _ForYouState extends State<ForYou>
     _goalsCubit = ForYouGoalsCubit(getIt(), getIt());
     _featuredDoorToDoorCubit = FeaturedDoorToDoorCubit(getIt(), getIt());
     _favoritesController = PageController(viewportFraction: 0.92);
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final delegate = GoRouter.of(context).routerDelegate;
+      _routerDelegate = delegate;
+      _routePath = delegate.currentConfiguration.uri.path;
+      delegate.addListener(_onHomeRouteChanged);
+      _refreshFavoriteGoals();
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed || !mounted) {
+      return;
+    }
+    final path = _routerDelegate?.currentConfiguration.uri.path;
+    if (path == Pages.home.path) {
+      _refreshFavoriteGoals();
+    }
+  }
+
+  void _onHomeRouteChanged() {
+    final delegate = _routerDelegate;
+    if (!mounted || delegate == null) {
+      return;
+    }
+    final path = delegate.currentConfiguration.uri.path;
+    final previousPath = _routePath;
+    _routePath = path;
+    if (previousPath != path && path == Pages.home.path) {
+      _refreshFavoriteGoals();
+    }
+  }
+
+  void _refreshFavoriteGoals() {
+    if (!mounted) {
+      return;
+    }
+    final organisationState = context.read<OrganisationBloc>().state;
+    final favoriteIds = organisationState.favoritedOrganisations
+        .where(
+          (id) => organisationState.filteredOrganisations.any(
+            (org) => org.nameSpace == id,
+          ),
+        )
+        .toList();
+    _goalsCubit.loadForFavorites(favoriteIds);
   }
 
   @override
@@ -52,6 +104,8 @@ class _ForYouState extends State<ForYou>
 
   @override
   void dispose() {
+    _routerDelegate?.removeListener(_onHomeRouteChanged);
+    WidgetsBinding.instance.removeObserver(this);
     _goalsCubit.close();
     _featuredDoorToDoorCubit.close();
     _favoritesController.dispose();
@@ -67,13 +121,7 @@ class _ForYouState extends State<ForYou>
           previous.favoritedOrganisations != current.favoritedOrganisations ||
           previous.filteredOrganisations != current.filteredOrganisations,
       listener: (context, state) {
-        final favoriteIds = state.favoritedOrganisations
-            .where(
-              (id) =>
-                  state.filteredOrganisations.any((org) => org.nameSpace == id),
-            )
-            .toList();
-        _goalsCubit.loadForFavorites(favoriteIds);
+        _refreshFavoriteGoals();
       },
       child: BlocBuilder<OrganisationBloc, OrganisationState>(
         builder: (context, state) {
@@ -374,22 +422,8 @@ class _ForYouState extends State<ForYou>
     final theme = FunTheme.of(context);
     final summary =
         goalsState.summariesByCollectGroupId[organisation.nameSpace];
-
-    var allocationsCount = summary?.allocationsCount ?? 0;
-    if (allocationsCount == 0) {
-      if (organisation.type == CollectGroupType.church) {
-        allocationsCount = 3;
-      } else {
-        // Charity, campaign, and all other organisation types (incl. legacy
-        // "artists" and uncategorized).
-        allocationsCount = 1;
-      }
-    }
-
-    // Always show fallback collection goals if they exist.
-    // General goals are still showCounts-gated,
-    // as they depend on the API summary.
-    final hasAllocationGoals = allocationsCount > 0;
+    final allocationsCount = summary?.allocationsCount ?? 0;
+    final hasAllocationGoals = summary != null && allocationsCount > 0;
     final hasGeneralGoals =
         showCounts && summary != null && summary.qrCodesCount > 0;
     final hasAnyGoalText = hasAllocationGoals || hasGeneralGoals;

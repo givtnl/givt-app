@@ -9,7 +9,10 @@ import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/give/widgets/for_you.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/l10n/arb/app_localizations.dart';
+import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/core/network/network_info.dart';
+import 'package:givt_app/core/network/request_helper.dart';
+import 'package:givt_app/shared/models/featured_collect_group.dart';
 import 'package:givt_app/shared/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/shared/repositories/organisation_goals_repository.dart';
@@ -34,12 +37,20 @@ class FakeNetworkInfo with NetworkInfo {
   }
 }
 
+class _FakeApiService extends APIService {
+  _FakeApiService(RequestHelper requestHelper) : super(requestHelper);
+
+  @override
+  Future<FeaturedCollectGroup?> getFeaturedDoorToDoorCollectGroup() async =>
+      null;
+}
+
 class FakeOrganisationGoalsRepository with OrganisationGoalsRepository {
   @override
   Future<OrganisationGoalsSummary> fetchGoalsSummary(
-    String collectGroupId,
-  ) async =>
-      const OrganisationGoalsSummary.empty();
+    String collectGroupId, {
+    bool forceRefresh = false,
+  }) async => const OrganisationGoalsSummary.empty();
 
   @override
   Future<OrganisationGoalsResponse> fetchGoals(String collectGroupId) async =>
@@ -81,15 +92,24 @@ class FakeCampaignRepository with CampaignRepository {
 void main() {
   setUp(() async {
     try {
-      getIt.reset();
+      await getIt.reset();
     } catch (_) {}
     SharedPreferences.setMockInitialValues({});
 
     getIt.registerLazySingleton<OrganisationGoalsRepository>(
       () => FakeOrganisationGoalsRepository(),
     );
-    getIt.registerLazySingleton<NetworkInfo>(
-      () => FakeNetworkInfo(isConnected: true),
+    final networkInfo = FakeNetworkInfo(isConnected: true);
+    getIt.registerLazySingleton<NetworkInfo>(() => networkInfo);
+    final preferences = await SharedPreferences.getInstance();
+    getIt.registerLazySingleton<APIService>(
+      () => _FakeApiService(
+        RequestHelper(
+          networkInfo,
+          preferences,
+          apiURL: 'api.example.com',
+        ),
+      ),
     );
   });
 
@@ -107,8 +127,7 @@ void main() {
   }) {
     return MaterialApp.router(
       locale: const Locale('en'),
-      localizationsDelegates:
-          AppLocalizations.localizationsDelegates,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: GoRouter(
         initialLocation: '/',
@@ -185,7 +204,8 @@ void main() {
       // is partially visible by default. Drag until it can be tapped.
       final horizontalScroll = find.byWidgetPredicate(
         (widget) =>
-            widget is SingleChildScrollView && widget.scrollDirection == Axis.horizontal,
+            widget is SingleChildScrollView &&
+            widget.scrollDirection == Axis.horizontal,
       );
       expect(horizontalScroll, findsOneWidget);
 
@@ -199,4 +219,3 @@ void main() {
     },
   );
 }
-
