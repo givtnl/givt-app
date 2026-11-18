@@ -22,9 +22,14 @@ class _FakeNetworkInfo with NetworkInfo {
 
 class _FakeGoalsRepository with OrganisationGoalsRepository {
   final pending = <String, Completer<OrganisationGoalsSummary>>{};
+  final calls = <({String collectGroupId, bool forceRefresh})>[];
 
   @override
-  Future<OrganisationGoalsSummary> fetchGoalsSummary(String collectGroupId) {
+  Future<OrganisationGoalsSummary> fetchGoalsSummary(
+    String collectGroupId, {
+    bool forceRefresh = false,
+  }) {
+    calls.add((collectGroupId: collectGroupId, forceRefresh: forceRefresh));
     final completer = Completer<OrganisationGoalsSummary>();
     pending[collectGroupId] = completer;
     return completer.future;
@@ -74,12 +79,25 @@ void main() {
 
       expect(cubit.state.loadingIds, {'org-a'});
       expect(cubit.state.summariesByCollectGroupId, isEmpty);
+      expect(repository.calls, [
+        (collectGroupId: 'org-a', forceRefresh: true),
+      ]);
 
       repository.complete('org-a', firstSummary);
       await load;
 
       expect(cubit.state.loadingIds, isEmpty);
       expect(cubit.state.summariesByCollectGroupId['org-a'], firstSummary);
+      await cubit.close();
+    });
+
+    test('does not fetch when offline', () async {
+      networkInfo.isConnected = false;
+      final cubit = ForYouGoalsCubit(repository, networkInfo);
+
+      await cubit.loadForFavorites(const ['org-a']);
+
+      expect(repository.calls, isEmpty);
       await cubit.close();
     });
 

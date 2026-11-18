@@ -94,6 +94,7 @@ class ForYouGoalsCubit extends Cubit<ForYouGoalsState> {
         try {
           final summary = await _organisationGoalsRepository.fetchGoalsSummary(
             collectGroupId,
+            forceRefresh: true,
           );
           nextSummaries[collectGroupId] = summary;
           failedIds.remove(collectGroupId);
