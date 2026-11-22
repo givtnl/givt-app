@@ -252,13 +252,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {
-      LoggingInfo.instance.info('Navigating to ${widget.navigateTo}');
-      final routeName = Pages.values.firstWhere(
-        (element) => element.path == widget.navigateTo,
-      );
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.goNamed(routeName.name);
-      });
+      final page = Pages.fromPath(widget.navigateTo);
+      if (page == null) {
+        LoggingInfo.instance.warning(
+          'Unknown home deep link page "${widget.navigateTo}". '
+          'Staying on home.',
+        );
+      } else {
+        LoggingInfo.instance.info('Navigating to ${widget.navigateTo}');
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.goNamed(page.name);
+        });
+      }
     }
 
     return PopScope(
