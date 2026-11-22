@@ -181,32 +181,6 @@ class APIService {
         });
   }
 
-  Future<bool> putBeaconBatteryStatus({
-    required String beaconId,
-    required Map<String, dynamic> query,
-    required Map<String, dynamic> body,
-  }) async {
-    final url = Uri.https(
-      _apiURL,
-      '/v2/beacons/$beaconId',
-      query,
-    );
-    return client
-        .put(
-          url,
-          body: jsonEncode(body),
-        )
-        .then((response) {
-          if (response.statusCode >= 400) {
-            throw GivtServerFailure(
-              statusCode: response.statusCode,
-              body: jsonDecode(response.body) as Map<String, dynamic>,
-            );
-          }
-          return response.statusCode == 200;
-        });
-  }
-
   Future<String> signSepaMandate(
     String guid,
     String appLanguage,

@@ -22,7 +22,6 @@ import 'package:givt_app/features/family/features/family_goal/repositories/creat
 import 'package:givt_app/features/family/features/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/family/features/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/give/cubit/for_you_beacon_discovery_cubit.dart';
-import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups_legacy_logic/repo/impact_groups_repository.dart';
 import 'package:givt_app/features/platform_contribution/injection/injection.dart';
@@ -163,11 +162,6 @@ void initRepositories() {
     )
     ..registerLazySingleton<OrganisationGoalsRepository>(
       () => OrganisationGoalsRepositoryImpl(
-        getIt(),
-      ),
-    )
-    ..registerLazySingleton<BeaconRepository>(
-      () => BeaconRepositoryImpl(
         getIt(),
       ),
     )
