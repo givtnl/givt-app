@@ -1,4 +1,3 @@
-export 'beacon.dart';
 export 'for_you_flow_context.dart';
 export 'for_you_goal_line.dart';
 export 'givt_transaction.dart';

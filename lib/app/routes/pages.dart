@@ -102,8 +102,7 @@ enum Pages {
   donationsProcessedSuccess(
     path: 'donations-processed-success',
     name: 'DONATIONS-PROCESSED-SUCCESS',
-  ),
-  ;
+  );
 
   const Pages({
     required this.path,
@@ -112,4 +111,18 @@ enum Pages {
 
   final String path;
   final String name;
+
+  /// Looks up a page by its route path.
+  ///
+  /// Returns null when [path] is not a current page, including removed deep
+  /// links such as `select-giving-way`. Home uses that to stay put instead
+  /// of throwing while the screen is building.
+  static Pages? fromPath(String path) {
+    for (final page in Pages.values) {
+      if (page.path == path) {
+        return page;
+      }
+    }
+    return null;
+  }
 }
