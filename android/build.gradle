@@ -19,21 +19,6 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-// posthog_flutter 5.30.0 declares posthog-android [3.51.0,4.0.0] (inclusive upper
-// bound). Gradle then picks 4.0.x, which depends on posthog-java 7.x and breaks
-// the plugin's Kotlin bridge (RRStyle, PostHogOnFeatureFlags, etc.).
-subprojects {
-    configurations.configureEach {
-        resolutionStrategy.eachDependency { details ->
-            if (details.requested.group == 'com.posthog' &&
-                    details.requested.name == 'posthog-android') {
-                details.useVersion '3.77.1'
-                details.because 'Keep posthog-android 3.x for posthog_flutter 5.30.0'
-            }
-        }
-    }
-}
-
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
