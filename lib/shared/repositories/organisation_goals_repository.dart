@@ -2,7 +2,10 @@ import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/shared/models/organisation_goals.dart';
 
 mixin OrganisationGoalsRepository {
-  Future<OrganisationGoalsSummary> fetchGoalsSummary(String collectGroupId);
+  Future<OrganisationGoalsSummary> fetchGoalsSummary(
+    String collectGroupId, {
+    bool forceRefresh = false,
+  });
   Future<OrganisationGoalsResponse> fetchGoals(String collectGroupId);
 
   void clearCache();
@@ -17,9 +20,10 @@ class OrganisationGoalsRepositoryImpl with OrganisationGoalsRepository {
 
   @override
   Future<OrganisationGoalsSummary> fetchGoalsSummary(
-    String collectGroupId,
-  ) async {
-    if (_cache.containsKey(collectGroupId)) {
+    String collectGroupId, {
+    bool forceRefresh = false,
+  }) async {
+    if (!forceRefresh && _cache.containsKey(collectGroupId)) {
       return _cache[collectGroupId]!;
     }
 
@@ -32,6 +36,9 @@ class OrganisationGoalsRepositoryImpl with OrganisationGoalsRepository {
           );
     final summary = first.toSummary();
     _cache[collectGroupId] = summary;
+    if (forceRefresh) {
+      _goalsCache.remove(collectGroupId);
+    }
     return summary;
   }
 

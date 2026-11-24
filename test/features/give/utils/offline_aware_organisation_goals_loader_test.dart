@@ -24,8 +24,9 @@ class _FakeOrganisationGoalsRepository with OrganisationGoalsRepository {
 
   @override
   Future<OrganisationGoalsSummary> fetchGoalsSummary(
-    String collectGroupId,
-  ) async => const OrganisationGoalsSummary.empty();
+    String collectGroupId, {
+    bool forceRefresh = false,
+  }) async => const OrganisationGoalsSummary.empty();
 
   @override
   Future<OrganisationGoalsResponse> fetchGoals(String collectGroupId) async {
