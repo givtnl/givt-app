@@ -92,7 +92,7 @@ dependencies:
     path: ./packages/waveform
   backoff: ^1.0.1
   flutter_confetti: ^0.6.0
-  posthog_flutter: 5.61.3
+  posthog_flutter: ^5.61.3
 
 dev_dependencies:
   flutter_test:
